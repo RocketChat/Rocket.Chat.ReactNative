@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
-import ImagePicker, { Image, ImageOrVideo } from 'react-native-image-crop-picker';
+import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
@@ -20,7 +20,7 @@ import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import LeftButtons from './LeftButtons';
@@ -44,13 +44,15 @@ import {
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IPreviewItem, IUser } from '../../definitions';
+import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { TSupportedThemes } from '../../theme';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -63,18 +65,18 @@ const imagePickerConfig = {
 	forceJpg: true
 };
 
-const libraryPickerConfig = {
+const libraryPickerConfig: Options = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
 	mediaType: 'any',
 	forceJpg: true
 };
 
-const videoPickerConfig = {
+const videoPickerConfig: Options = {
 	mediaType: 'video'
 };
 
-export interface IMessageBoxProps {
+export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackParamList, any> {
 	rid: string;
 	baseUrl: string;
 	message: IMessage;
@@ -94,10 +96,9 @@ export interface IMessageBoxProps {
 	editRequest: Function;
 	onSubmit: Function;
 	typing: Function;
-	theme: string;
+	theme: TSupportedThemes;
 	replyCancel(): void;
 	showSend: boolean;
-	navigation: any;
 	children: JSX.Element;
 	isMasterDetail: boolean;
 	showActionSheet: Function;
@@ -118,7 +119,7 @@ interface IMessageBoxState {
 	commandPreview: IPreviewItem[];
 	showCommandPreview: boolean;
 	command: {
-		appId?: any;
+		appId?: string;
 	};
 	tshow: boolean;
 	mentionLoading: boolean;
@@ -132,17 +133,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	private focused: boolean;
 
-	private options: any;
+	private imagePickerConfig: Options;
 
-	private imagePickerConfig: any;
+	private libraryPickerConfig: Options;
 
-	private libraryPickerConfig: any;
+	private videoPickerConfig: Options;
 
-	private videoPickerConfig: any;
+	private room!: TSubscriptionModel;
 
-	private room: any;
-
-	private thread: any;
+	private thread!: TThreadModel;
 
 	private unsubscribeFocus: any;
 
@@ -681,7 +680,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (result.success) {
 			return true;
 		}
-		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
+		Alert.alert(I18n.t('Error_uploading'), result.error && I18n.isTranslated(result.error) ? I18n.t(result.error) : result.error);
 		return false;
 	};
 
@@ -713,7 +712,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFromLibrary = async () => {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
-			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as ImageOrVideo[];
+			// The type can be video or photo, however the lib understands that it is just one of them.
+			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as unknown as ImageOrVideo[];
 			attachments = attachments.map(att => forceJpgExtension(att));
 			this.openShareView(attachments);
 		} catch (e) {
@@ -757,12 +757,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	openShareView = (attachments: any) => {
 		const { message, replyCancel, replyWithMention } = this.props;
 		// Start a thread with an attachment
-		let { thread } = this;
+		let value: TThreadModel | IMessage = this.thread;
 		if (replyWithMention) {
-			thread = message;
+			value = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, thread, attachments });
+		Navigation.navigate('ShareView', { room: this.room, thread: value, attachments });
 	};
 
 	createDiscussion = () => {
@@ -1060,7 +1060,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} loading={mentionLoading} />
+				<Mentions mentions={mentions} trackingType={trackingType} loading={mentionLoading} />
 			</>
 		) : null;
 
@@ -1071,7 +1071,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				username={user.username}
 				replying={replying}
 				getCustomEmoji={getCustomEmoji}
-				theme={theme}
 			/>
 		) : null;
 

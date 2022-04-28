@@ -1,5 +1,4 @@
 import React from 'react';
 
-// @ts-ignore
-const MessageboxContext = React.createContext<any>();
+const MessageboxContext = React.createContext<any>(null);
 export default MessageboxContext;

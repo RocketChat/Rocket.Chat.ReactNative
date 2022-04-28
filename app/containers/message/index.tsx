@@ -1,16 +1,17 @@
 import React from 'react';
 import { Keyboard, ViewStyle } from 'react-native';
+import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
-import messagesStatus from '../../constants/messagesStatus';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { TAnyMessageModel } from '../../definitions';
+import { IAttachment, TAnyMessageModel } from '../../definitions';
+import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -20,7 +21,7 @@ interface IMessageContainerProps {
 		token: string;
 	};
 	msg?: string;
-	rid?: string;
+	rid: string;
 	timeFormat?: string;
 	style?: ViewStyle;
 	archived?: boolean;
@@ -37,55 +38,47 @@ interface IMessageContainerProps {
 	isIgnored?: boolean;
 	highlighted?: boolean;
 	getCustomEmoji: TGetCustomEmoji;
-	onLongPress?: Function;
-	onReactionPress?: Function;
-	onEncryptedPress?: Function;
-	onDiscussionPress?: Function;
-	onThreadPress?: Function;
-	errorActionsShow?: Function;
-	replyBroadcast?: Function;
-	reactionInit?: Function;
-	fetchThreadName?: Function;
-	showAttachment?: Function;
-	onReactionLongPress?: Function;
-	navToRoomInfo?: Function;
-	callJitsi?: Function;
-	blockAction?: Function;
-	onAnswerButtonPress?: Function;
-	theme?: string;
+	onLongPress?: (item: TAnyMessageModel) => void;
+	onReactionPress?: (emoji: string, id: string) => void;
+	onEncryptedPress?: () => void;
+	onDiscussionPress?: (item: TAnyMessageModel) => void;
+	onThreadPress?: (item: TAnyMessageModel) => void;
+	errorActionsShow?: (item: TAnyMessageModel) => void;
+	replyBroadcast?: (item: TAnyMessageModel) => void;
+	reactionInit?: (item: TAnyMessageModel) => void;
+	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
+	showAttachment: (file: IAttachment) => void;
+	onReactionLongPress?: (item: TAnyMessageModel) => void;
+	navToRoomInfo: (navParam: IRoomInfoParam) => void;
+	callJitsi?: () => void;
+	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
+	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
 	threadBadgeColor?: string;
-	toggleFollowThread?: Function;
-	jumpToMessage?: Function;
-	onPress?: Function;
+	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
+	jumpToMessage?: (link: string) => void;
+	onPress?: () => void;
+	theme: TSupportedThemes;
 }
 
-class MessageContainer extends React.Component<IMessageContainerProps> {
+interface IMessageContainerState {
+	isManualUnignored: boolean;
+}
+
+class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> {
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
-		onReactionPress: () => {},
-		onEncryptedPress: () => {},
-		onDiscussionPress: () => {},
-		onThreadPress: () => {},
-		onAnswerButtonPress: () => {},
-		errorActionsShow: () => {},
-		replyBroadcast: () => {},
-		reactionInit: () => {},
-		fetchThreadName: () => {},
-		showAttachment: () => {},
-		onReactionLongPress: () => {},
-		navToRoomInfo: () => {},
 		callJitsi: () => {},
 		blockAction: () => {},
 		archived: false,
 		broadcast: false,
 		isIgnored: false,
-		theme: 'light'
+		theme: 'light' as TSupportedThemes
 	};
 
 	state = { isManualUnignored: false };
 
-	private subscription: any;
+	private subscription?: Subscription;
 
 	componentDidMount() {
 		const { item } = this.props;
@@ -97,12 +90,9 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		}
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
-		const { theme, threadBadgeColor, isIgnored, highlighted } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
+		const { threadBadgeColor, isIgnored, highlighted } = this.props;
 		if (nextProps.highlighted !== highlighted) {
 			return true;
 		}
@@ -169,7 +159,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		}
 	};
 
-	onReactionPress = (emoji: any) => {
+	onReactionPress = (emoji: string) => {
 		const { onReactionPress, item } = this.props;
 		if (onReactionPress) {
 			onReactionPress(emoji, item.id);
@@ -228,7 +218,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 				previousItem.u.username === item.u.username &&
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
 				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-				item.ts - previousItem.ts < Message_GroupingPeriod! * 1000 &&
+				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
 				previousItem.tmid === item.tmid
 			) {
 				return false;
@@ -303,10 +293,10 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 	};
 
 	onLinkPress = (link: string): void => {
-		const { item, theme, jumpToMessage } = this.props;
-		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
-		if (isMessageLink) {
-			return jumpToMessage!(link);
+		const { item, jumpToMessage, theme } = this.props;
+		const isMessageLink = item?.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
+		if (isMessageLink && jumpToMessage) {
+			return jumpToMessage(link);
 		}
 		openLink(link, theme);
 	};
@@ -332,7 +322,6 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 			callJitsi,
 			blockAction,
 			rid,
-			theme,
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
@@ -365,14 +354,15 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 			blocks,
 			autoTranslate: autoTranslateMessage,
 			replies,
-			md
+			md,
+			comment
 		} = item;
 
 		let message = msg;
 		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
 		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
-		if (autoTranslateRoom && autoTranslateMessage) {
-			message = getMessageTranslation(item, autoTranslateLanguage!) || message;
+		if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage) {
+			message = getMessageTranslation(item, autoTranslateLanguage) || message;
 		}
 
 		return (
@@ -396,14 +386,15 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					toggleFollowThread,
 					replies
 				}}>
+				{/* @ts-ignore*/}
 				<Message
 					id={id}
 					msg={message}
 					md={md}
-					rid={rid!}
+					rid={rid}
 					author={u}
 					ts={ts}
-					type={t as any}
+					type={t}
 					attachments={attachments}
 					blocks={blocks}
 					urls={urls}
@@ -413,23 +404,20 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					emoji={emoji}
 					timeFormat={timeFormat}
 					style={style}
-					archived={archived!}
-					broadcast={broadcast!}
+					archived={archived}
+					broadcast={broadcast}
 					useRealName={useRealName}
-					isReadReceiptEnabled={isReadReceiptEnabled!}
+					isReadReceiptEnabled={isReadReceiptEnabled}
 					unread={unread}
 					role={role}
 					drid={drid}
 					dcount={dcount}
-					// @ts-ignore
 					dlm={dlm}
 					tmid={tmid}
 					tcount={tcount}
-					// @ts-ignore
 					tlm={tlm}
 					tmsg={tmsg}
-					fetchThreadName={fetchThreadName!}
-					// @ts-ignore
+					fetchThreadName={fetchThreadName}
 					mentions={mentions}
 					channels={channels}
 					isIgnored={this.isIgnored}
@@ -442,13 +430,13 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					isTemp={this.isTemp}
 					isEncrypted={this.isEncrypted}
 					hasError={this.hasError}
-					showAttachment={showAttachment!}
+					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
-					navToRoomInfo={navToRoomInfo!}
-					callJitsi={callJitsi!}
-					blockAction={blockAction!}
-					theme={theme as string}
-					highlighted={highlighted!}
+					navToRoomInfo={navToRoomInfo}
+					callJitsi={callJitsi}
+					blockAction={blockAction}
+					highlighted={highlighted}
+					comment={comment}
 				/>
 			</MessageContext.Provider>
 		);

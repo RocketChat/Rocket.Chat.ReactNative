@@ -1,30 +1,32 @@
+import { dequal } from 'dequal';
 import React from 'react';
 import { FlatList } from 'react-native';
-import { dequal } from 'dequal';
 
-import Item from './Item';
-import styles from '../styles';
-import { themes } from '../../../constants/colors';
-import { withTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
 import { IPreviewItem } from '../../../definitions';
+import { useTheme } from '../../../theme';
+import styles from '../styles';
+import Item from './Item';
 
 interface IMessageBoxCommandsPreview {
 	commandPreview: IPreviewItem[];
 	showCommandPreview: boolean;
-	theme?: string;
 }
 
 const CommandsPreview = React.memo(
-	({ theme, commandPreview, showCommandPreview }: IMessageBoxCommandsPreview) => {
+	({ commandPreview, showCommandPreview }: IMessageBoxCommandsPreview) => {
+		const { theme } = useTheme();
+
 		if (!showCommandPreview) {
 			return null;
 		}
+
 		return (
 			<FlatList
 				testID='commandbox-container'
-				style={[styles.mentionList, { backgroundColor: themes[theme!].messageboxBackground }]}
+				style={[styles.mentionList, { backgroundColor: themes[theme].messageboxBackground }]}
 				data={commandPreview}
-				renderItem={({ item }) => <Item item={item} theme={theme} />}
+				renderItem={({ item }) => <Item item={item} />}
 				keyExtractor={(item: any) => item.id}
 				keyboardShouldPersistTaps='always'
 				horizontal
@@ -33,9 +35,6 @@ const CommandsPreview = React.memo(
 		);
 	},
 	(prevProps, nextProps) => {
-		if (prevProps.theme !== nextProps.theme) {
-			return false;
-		}
 		if (prevProps.showCommandPreview !== nextProps.showCommandPreview) {
 			return false;
 		}
@@ -46,4 +45,4 @@ const CommandsPreview = React.memo(
 	}
 );
 
-export default withTheme(CommandsPreview);
+export default CommandsPreview;

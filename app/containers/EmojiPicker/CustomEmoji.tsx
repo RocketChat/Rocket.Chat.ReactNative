@@ -8,6 +8,7 @@ const CustomEmoji = React.memo(
 		<FastImage
 			style={style}
 			source={{
+				// @ts-ignore
 				uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.content || emoji.name)}.${emoji.extension}`,
 				priority: FastImage.priority.high
 			}}

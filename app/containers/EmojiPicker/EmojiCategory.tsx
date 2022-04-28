@@ -56,6 +56,7 @@ class EmojiCategory extends React.Component<Partial<IEmojiCategory>> {
 				contentContainerStyle={{ marginHorizontal }}
 				// rerender FlatList in case of width changes
 				key={`emoji-category-${width}`}
+				// @ts-ignore
 				keyExtractor={item => (item && item.isCustom && item.content) || item}
 				data={emojis}
 				extraData={this.props}

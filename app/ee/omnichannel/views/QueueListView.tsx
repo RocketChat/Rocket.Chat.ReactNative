@@ -6,14 +6,12 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
 import I18n from '../../../i18n';
-import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
-import { MAX_SIDEBAR_WIDTH } from '../../../constants/tablet';
+import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import { withDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
-import { themes } from '../../../constants/colors';
 import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../utils/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
@@ -21,7 +19,7 @@ import RocketChat from '../../../lib/rocketchat';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
-import { DisplayMode } from '../../../constants/constantDisplayMode';
+import { DisplayMode, MAX_SIDEBAR_WIDTH, themes } from '../../../lib/constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TSettingsValues } from '../../../reducers/settings';
@@ -44,7 +42,7 @@ interface IQueueListView extends INavigationOptions {
 	queued: IOmnichannelRoom[];
 	server: string;
 	useRealName?: TSettingsValues;
-	theme: string;
+	theme: TSupportedThemes;
 	showAvatar: any;
 	displayMode: DisplayMode;
 }

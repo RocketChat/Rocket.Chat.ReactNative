@@ -3,7 +3,7 @@ import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
 import { IRocketChatRecord } from './IRocketChatRecord';
-import { RoomID, RoomType } from './IRoom';
+import { IOmnichannelSource, RoomID, RoomType } from './IRoom';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
@@ -98,6 +98,8 @@ export interface ISubscription {
 	teamMain?: boolean;
 	unsubscribe: () => Promise<any>;
 	separator?: boolean;
+	onHold?: boolean;
+	source?: IOmnichannelSource;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: RelationModified<TMessageModel>;
 	threads: RelationModified<TThreadModel>;
@@ -106,6 +108,7 @@ export interface ISubscription {
 }
 
 export type TSubscriptionModel = ISubscription & Model;
+export type TSubscription = TSubscriptionModel | ISubscription;
 
 // https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
 export interface IServerSubscription extends IRocketChatRecord {

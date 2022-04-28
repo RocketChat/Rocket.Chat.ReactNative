@@ -7,7 +7,7 @@ import { TNavigationOptions } from './definitions/navigationTypes';
 export interface IDimensionsContextProps {
 	width: number;
 	height: number;
-	scale?: number;
+	scale: number;
 	fontScale: number;
 	setDimensions?: ({
 		width,

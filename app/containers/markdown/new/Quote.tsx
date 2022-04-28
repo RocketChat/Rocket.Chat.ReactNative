@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Quote as QuoteProps } from '@rocket.chat/message-parser';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import Paragraph from './Paragraph';

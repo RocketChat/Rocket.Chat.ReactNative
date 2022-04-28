@@ -6,12 +6,13 @@ import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../../constants/colors';
+import { TSupportedThemes } from '../../../theme';
+import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
+import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
 import RocketChat from '../../../lib/rocketchat';
-import { compareServerVersion } from '../../../lib/utils';
 import debounce from '../../../utils/debounce';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import log from '../../../utils/log';
@@ -39,7 +40,7 @@ export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
 	tmid?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	loading: boolean;
 	listRef: React.RefObject<IListProps>;
 	hideSystemMessages?: string[];
