@@ -1,5 +1,5 @@
 import React from 'react';
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { TSupportedThemes } from '../theme';
 import { themes } from '../lib/constants';
@@ -9,6 +9,7 @@ interface ITouchProps extends RectButtonProps {
 	theme: TSupportedThemes;
 	accessibilityLabel?: string;
 	testID?: string;
+	touchable?: boolean;
 }
 
 class Touch extends React.Component<ITouchProps> {
@@ -23,8 +24,15 @@ class Touch extends React.Component<ITouchProps> {
 	};
 
 	render(): JSX.Element {
-		const { children, onPress, theme, underlayColor, ...props } = this.props;
+		const { children, onPress, theme, underlayColor, touchable, ...props } = this.props;
 
+		if (touchable) {
+			return (
+				<TouchableOpacity onPress={onPress as () => void} {...(props as any)}>
+					{children}
+				</TouchableOpacity>
+			);
+		}
 		return (
 			<RectButton
 				ref={this.getRef}

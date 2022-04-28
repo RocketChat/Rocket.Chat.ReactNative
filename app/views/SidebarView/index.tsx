@@ -146,8 +146,10 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	}
 
 	sidebarNavigate = (route: string) => {
+		const { navigation } = this.props;
 		// @ts-ignore
 		logEvent(events[`SIDEBAR_GO_${route.replace('StackNavigator', '').replace('View', '').toUpperCase()}`]);
+		navigation.closeDrawer();
 		Navigation.navigate(route);
 	};
 
@@ -177,7 +179,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					text={I18n.t('Admin_Panel')}
 					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate(routeName)}
-					testID='sidebar-admin'
+					test='sidebar-admin'
 					theme={theme!}
 					current={this.currentItemKey === routeName}
 				/>
@@ -188,12 +190,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	renderNavigation = () => {
 		const { theme } = this.props;
 		return (
-			<>
+			<View>
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
-					testID='sidebar-chats'
+					test='sidebar-chats'
 					theme={theme!}
 					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
@@ -201,7 +203,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
-					testID='sidebar-profile'
+					test='sidebar-profile'
 					theme={theme!}
 					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
@@ -209,7 +211,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					text={I18n.t('Display')}
 					left={<CustomIcon name='sort' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
-					testID='sidebar-display'
+					test='sidebar-display'
 					theme={theme!}
 					current={this.currentItemKey === 'DisplayPrefStackNavigator'}
 				/>
@@ -217,12 +219,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
-					testID='sidebar-settings'
+					test='sidebar-settings'
 					theme={theme!}
 					current={this.currentItemKey === 'SettingsStackNavigator'}
 				/>
 				{this.renderAdmin()}
-			</>
+			</View>
 		);
 	};
 

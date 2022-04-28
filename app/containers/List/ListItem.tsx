@@ -61,7 +61,6 @@ interface IListItemContent {
 	right?: () => JSX.Element | null;
 	disabled?: boolean;
 	theme: TSupportedThemes;
-	testID?: string;
 	color?: string;
 	translateTitle?: boolean;
 	translateSubtitle?: boolean;
@@ -76,7 +75,6 @@ const Content = React.memo(
 		title,
 		subtitle,
 		disabled,
-		testID,
 		left,
 		right,
 		color,
@@ -91,9 +89,7 @@ const Content = React.memo(
 		const { fontScale } = useDimensions();
 
 		return (
-			<View
-				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
-				{...testProps(testID || '')}>
+			<View style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
@@ -121,16 +117,17 @@ const Content = React.memo(
 	}
 );
 
-interface IListButtonPress extends IListItemButton {
-	onPress: Function;
-}
-
 interface IListItemButton {
 	title?: string;
 	disabled?: boolean;
 	theme: TSupportedThemes;
 	backgroundColor?: string;
+	testID?: string;
 	underlayColor?: string;
+}
+
+interface IListButtonPress extends IListItemButton {
+	onPress: Function;
 }
 
 const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => (
@@ -139,7 +136,9 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
-		theme={props.theme}>
+		theme={props.theme}
+		{...testProps(props.testID)}
+		touchable>
 		<Content {...props} />
 	</Touch>
 ));
