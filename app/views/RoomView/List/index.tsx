@@ -366,4 +366,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	}
 }
 
+export type ListContainerType = ListContainer;
+
 export default ListContainer;

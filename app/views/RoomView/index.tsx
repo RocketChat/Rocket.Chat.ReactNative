@@ -17,7 +17,7 @@ import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
-import MessageBox, { IMessageBoxProps } from '../../containers/MessageBox';
+import MessageBox, { MessageBoxType } from '../../containers/MessageBox';
 import log, { events, logEvent } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
@@ -62,7 +62,7 @@ import styles from './styles';
 import JoinCode, { IJoinCodeProps } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
-import List, { IListContainerProps, IListProps } from './List';
+import List, { ListContainerType, IListProps } from './List';
 import { ChatsStackParamList } from '../../stacks/types';
 import {
 	IApplicationState,
@@ -82,6 +82,8 @@ import {
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 
+type TStateAttrsUpdate = keyof IRoomViewState;
+
 const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
@@ -95,7 +97,10 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member',
 	'showingBlockingLoader'
-];
+] as TStateAttrsUpdate[];
+
+type TRoomUpdate = keyof TSubscriptionModel;
+
 const roomAttrsUpdate = [
 	'f',
 	'ro',
@@ -118,7 +123,7 @@ const roomAttrsUpdate = [
 	'teamMain',
 	'teamId',
 	'onHold'
-] as const;
+] as TRoomUpdate[];
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
@@ -139,14 +144,12 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	insets: EdgeInsets;
 }
 
-type TRoomUpdate = typeof roomAttrsUpdate[number];
-
 interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
 	room: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean };
 	roomUpdate: {
-		[K in TRoomUpdate]?: any; // TODO: get type from TSubscriptionModel
+		[K in TRoomUpdate]?: any;
 	};
 	member: any;
 	lastOpen: Date | null;
@@ -171,8 +174,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
 	// TODO: review these refs
-	private messagebox: React.RefObject<IMessageBoxProps>;
-	private list: React.RefObject<IListContainerProps>;
+	private messagebox: React.RefObject<MessageBoxType>;
+	private list: React.RefObject<ListContainerType>;
 	private joinCode: React.RefObject<IJoinCodeProps>;
 	private flatList: React.RefObject<IListProps>;
 	private mounted: boolean;
@@ -300,6 +303,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (member.statusText !== nextState.member.statusText) {
 			return true;
 		}
+
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
 		if (stateUpdated) {
 			return true;
@@ -328,8 +332,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			// Fire List.query() just to keep observables working
 			if (this.list && this.list.current) {
-				// @ts-ignore TODO: is this working?
-				this.list.current?.query?.();
+				this.list.current?.query();
 			}
 		}
 		// If it's not direct message
@@ -367,7 +370,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const db = database.active;
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
-			// @ts-ignore
 			const { text } = this.messagebox.current;
 			let obj: TSubscriptionModel | TThreadModel | null = null;
 			if (this.tmid) {
@@ -382,9 +384,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (obj) {
 				try {
+					const object = obj;
 					await db.write(async () => {
-						// FIXME: why do I need to tell ts this is non null if we have that if condition above?
-						await obj!.update(r => {
+						await object.update(r => {
 							r.draftMessage = text;
 						});
 					});
@@ -1098,9 +1100,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.goRoomActionsView('SearchMessagesView');
 			} else if (handleCommandReplyLatest(event)) {
 				if (this.list && this.list.current) {
-					// @ts-ignore
 					const message = this.list.current.getLastMessage();
-					this.onReplyInit(message, false);
+					console.log('🚀 ~ file: index.tsx ~ line 1104 ~ RoomView ~ message', message);
+					if (message) {
+						this.onReplyInit(message, false);
+					}
 				}
 			}
 		}
@@ -1384,11 +1388,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<StatusBar />
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
-					// @ts-ignore
 					ref={this.list}
 					listRef={this.flatList}
 					rid={rid}
-					t={t}
 					tmid={this.tmid}
 					theme={theme}
 					tunread={tunread}

@@ -127,7 +127,7 @@ interface IMessageBoxState {
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
-	private text: string;
+	public text: string;
 
 	private selection: { start: number; end: number };
 
@@ -1181,4 +1181,6 @@ const dispatchToProps = {
 	typing: (rid: any, status: any) => userTypingAction(rid, status)
 };
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox)) as any;
+export type MessageBoxType = MessageBox;
+
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
