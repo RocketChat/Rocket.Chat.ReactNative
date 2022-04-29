@@ -10,7 +10,6 @@ import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import { TSupportedThemes, withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -19,6 +18,7 @@ import sharedStyles from '../Styles';
 import { IOptionsField, OPTIONS } from './options';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IRoomNotifications } from '../../definitions';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -90,7 +90,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 			});
 
 			try {
-				const result = await RocketChat.saveNotificationSettings(this.rid, params);
+				const result = await Services.saveNotificationSettings(this.rid, params);
 				if (result.success) {
 					return;
 				}

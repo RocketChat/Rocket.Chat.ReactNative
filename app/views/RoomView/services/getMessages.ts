@@ -1,5 +1,4 @@
-import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
-import loadMissedMessages from '../../../lib/methods/loadMissedMessages';
+import { loadMessagesForRoom, loadMissedMessages } from '../../../lib/methods';
 
 // TODO: clarify latest vs lastOpen
 const getMessages = ({
@@ -20,4 +19,5 @@ const getMessages = ({
 	}
 	return loadMessagesForRoom({ rid, t: t as any, latest, loaderItem });
 };
+
 export default getMessages;

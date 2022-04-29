@@ -4,7 +4,6 @@ import { Q } from '@nozbe/watermelondb';
 import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
@@ -12,6 +11,7 @@ import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { IUser, TUploadModel } from '../../definitions';
+import { cancelUpload, isUploadActive, sendFileMessage } from '../../lib/methods';
 
 const styles = StyleSheet.create({
 	container: {
@@ -114,7 +114,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		this.ranInitialUploadCheck = true;
 		const { uploads } = this.state;
 		uploads.forEach(async u => {
-			if (!RocketChat.isUploadActive(u.path)) {
+			if (!isUploadActive(u.path)) {
 				try {
 					const db = database.active;
 					await db.write(async () => {
@@ -140,9 +140,9 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		}
 	};
 
-	cancelUpload = async (item: TUploadModel) => {
+	handleCancelUpload = async (item: TUploadModel) => {
 		try {
-			await RocketChat.cancelUpload(item);
+			await cancelUpload(item);
 		} catch (e) {
 			log(e);
 		}
@@ -158,7 +158,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await RocketChat.sendFileMessage(rid, item, undefined, server, user);
+			await sendFileMessage(rid, item, undefined, server, user);
 		} catch (e) {
 			log(e);
 		}
@@ -176,7 +176,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 						numberOfLines={1}>
 						{I18n.t('Uploading')} {item.name}
 					</Text>
-					<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.cancelUpload(item)} />
+					<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.handleCancelUpload(item)} />
 				</View>,
 				<View
 					key='progress'
