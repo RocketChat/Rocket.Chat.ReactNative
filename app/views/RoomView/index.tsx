@@ -180,9 +180,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private joinCode: React.RefObject<IJoinCode>;
 	private flatList: TListRef;
 	private mounted: boolean;
-	private sub?: any;
 	private offset = 0;
-	private didMountInteraction: any;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
@@ -191,6 +189,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryFindTimeout?: number;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
+	// Type of InteractionManager.runAfterInteractions
+	private didMountInteraction?: {
+		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
+		done: (...args: any[]) => any;
+		cancel: () => void;
+	};
+	private sub?: RoomClass;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
