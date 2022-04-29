@@ -194,8 +194,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	encryptionEnabled: state.encryption.enabled
 });
 
-// const mapDispatchToProps = (dispatch: Dispatch) => ({
-// 	logout: () => dispatch(logoutAction(true))
-// });
-
 export default connect(mapStateToProps)(withTheme(E2EEncryptionSecurityView));
