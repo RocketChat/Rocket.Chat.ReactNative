@@ -12,10 +12,8 @@ export interface IAvatar {
 	borderRadius?: number;
 	type?: string;
 	children?: React.ReactElement | null;
-	user?: {
-		id?: string;
-		token?: string;
-	};
+	userId?: string;
+	token?: string;
 	onPress?: () => void;
 	getCustomEmoji?: TGetCustomEmoji;
 	avatarETag?: string;

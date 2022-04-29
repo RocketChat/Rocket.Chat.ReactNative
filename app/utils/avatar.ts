@@ -8,7 +8,8 @@ export const avatarURL = ({
 	type,
 	text = '',
 	size = 25,
-	user = {},
+	userId,
+	token,
 	avatar,
 	server,
 	avatarETag,
@@ -30,10 +31,9 @@ export const avatarURL = ({
 		room = `@${text}`;
 	}
 
-	const { id, token } = user;
 	let query = '';
-	if (id && token && blockUnauthenticatedAccess) {
-		query += `&rc_token=${token}&rc_uid=${id}`;
+	if (userId && token && blockUnauthenticatedAccess) {
+		query += `&rc_token=${token}&rc_uid=${userId}`;
 	}
 	if (avatarETag) {
 		query += `&etag=${avatarETag}`;

@@ -30,7 +30,7 @@ const AvatarContainer = ({
 
 	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
 	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
-	const user = useSelector((state: IApplicationState) => getUserSelector(state));
+	const { id, token } = useSelector((state: IApplicationState) => getUserSelector(state));
 	const externalProviderUrl = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AvatarExternalProviderUrl as string
 	);
@@ -86,7 +86,8 @@ const AvatarContainer = ({
 			borderRadius={borderRadius}
 			type={type}
 			children={children}
-			user={user}
+			userId={id}
+			token={token}
 			onPress={onPress}
 			getCustomEmoji={getCustomEmoji}
 			isStatic={isStatic}
