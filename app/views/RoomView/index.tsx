@@ -16,7 +16,7 @@ import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
-import MessageErrorActions from '../../containers/MessageErrorActions';
+import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
 import MessageBox, { MessageBoxType } from '../../containers/MessageBox';
 import log, { events, logEvent } from '../../utils/log';
 import EventEmitter from '../../utils/events';
@@ -82,6 +82,7 @@ import {
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 import { TListRef } from './List/List';
+import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -188,8 +189,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryInitTimeout?: number;
 	private retryFindCount = 0;
 	private retryFindTimeout?: number;
-	private messageErrorActions?: React.RefObject<any>; // TODO: type me
-	private messageActions?: React.RefObject<IMessageActions>;
+	private messageErrorActions?: IMessageErrorActions | null;
+	private messageActions?: IMessageActions | null;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -533,20 +534,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	goRoomActionsView = (screen?: string) => {
+	goRoomActionsView = (screen?: keyof ModalStackParamList) => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			// @ts-ignore TODO: find a way to make it work
+			// @ts-ignore
 			navigation.navigate('ModalStackNavigator', {
-				// @ts-ignore
 				screen: screen ?? 'RoomActionsView',
 				params: {
 					rid: this.rid as string,
 					t: this.t as SubscriptionType,
-					// @ts-ignore
-					room,
+					room: room as ISubscription,
 					member,
 					showCloseModal: !!screen,
 					joined
@@ -685,7 +684,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	errorActionsShow = (message: TAnyMessageModel) => {
-		// @ts-ignore
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
@@ -735,7 +733,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		// @ts-ignore
 		this.messageActions?.showMessageActions(message);
 	};
 
@@ -865,10 +862,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (message.fromServer && !message.tmid && this.rid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
 				}
-				// @ts-ignore
-				await Promise.race([this.list.current.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				// @ts-ignore
-				this.list.current.cancelJumpToMessage();
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				this.list.current?.cancelJumpToMessage();
 			}
 		} catch (e) {
 			log(e);
@@ -910,8 +905,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { user } = this.props;
 		RocketChat.sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
 			if (this.list && this.list.current) {
-				// @ts-ignore
-				this.list.current.update();
+				this.list.current?.update();
 			}
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
@@ -1349,7 +1343,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					// @ts-ignore
 					ref={ref => (this.messageActions = ref)}
 					tmid={this.tmid}
 					room={room}
@@ -1360,7 +1353,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
-				{/* @ts-ignore TODO: missing interface on MessageErrorActions */}
 				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
 			</>
 		);
