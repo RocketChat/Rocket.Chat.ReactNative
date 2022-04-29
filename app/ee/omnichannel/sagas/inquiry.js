@@ -1,14 +1,14 @@
 import { put, select, takeLatest } from 'redux-saga/effects';
 
 import * as types from '../../../actions/actionsTypes';
-import RocketChat from '../../../lib/rocketchat';
+import { Services } from '../../../lib/services';
 import EventEmitter from '../../../utils/events';
 import { inquiryFailure, inquirySetEnabled, inquirySuccess } from '../actions/inquiry';
 import { getInquiriesQueued, isOmnichannelStatusAvailable } from '../lib';
 
 const handleRequest = function* handleRequest() {
 	try {
-		const routingConfig = yield RocketChat.getRoutingConfig();
+		const routingConfig = yield Services.getRoutingConfig();
 		const user = yield select(state => state.login.user);
 		// if routingConfig showQueue is enabled and omnichannel is enabled
 		const showQueue = routingConfig.showQueue && isOmnichannelStatusAvailable(user);

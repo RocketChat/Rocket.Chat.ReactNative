@@ -9,8 +9,8 @@ import log from '../../utils/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
-import { parseSettings, _prepareSettings } from './helpers';
 import protectedFunction from './helpers/protectedFunction';
+import { parseSettings, _prepareSettings } from './parseSettings';
 
 const serverInfoKeys = [
 	'Site_Name',
