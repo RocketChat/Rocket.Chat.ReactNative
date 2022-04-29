@@ -50,8 +50,12 @@ export interface IJoinCodeProps {
 	theme: TSupportedThemes;
 }
 
+export interface IJoinCode {
+	show: () => void;
+}
+
 const JoinCode = React.memo(
-	forwardRef(({ rid, t, onJoin, isMasterDetail, theme }: IJoinCodeProps, ref) => {
+	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);
 		const [code, setCode] = useState('');
@@ -125,4 +129,5 @@ const JoinCode = React.memo(
 const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
+
 export default connect(mapStateToProps, null, null, { forwardRef: true })(JoinCode);

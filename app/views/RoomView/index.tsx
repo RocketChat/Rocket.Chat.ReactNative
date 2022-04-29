@@ -59,10 +59,10 @@ import Separator from './Separator';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
 import styles from './styles';
-import JoinCode, { IJoinCodeProps } from './JoinCode';
+import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
-import List, { ListContainerType, IListProps } from './List';
+import List, { ListContainerType } from './List';
 import { ChatsStackParamList } from '../../stacks/types';
 import {
 	IApplicationState,
@@ -81,6 +81,7 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
+import { TListRef } from './List/List';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -173,11 +174,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	// TODO: review these refs
 	private messagebox: React.RefObject<MessageBoxType>;
 	private list: React.RefObject<ListContainerType>;
-	private joinCode: React.RefObject<IJoinCodeProps>;
-	private flatList: React.RefObject<IListProps>;
+	private joinCode: React.RefObject<IJoinCode>;
+	private flatList: TListRef;
 	private mounted: boolean;
 	private sub?: any;
 	private offset = 0;
@@ -949,7 +949,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				const { joinCodeRequired, rid } = room;
 				if (joinCodeRequired) {
-					// @ts-ignore
 					this.joinCode.current?.show();
 				} else {
 					await RocketChat.joinRoom(rid, null, this.t as any);
@@ -1092,8 +1091,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (handleCommandScroll(event)) {
 				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
 				this.offset += offset;
-				// @ts-ignore
-				this.flatList?.scrollToOffset({ offset: this.offset });
+				this.flatList?.current?.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
 				this.goRoomActionsView();
 			} else if (handleCommandSearchMessages(event)) {
@@ -1101,7 +1099,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else if (handleCommandReplyLatest(event)) {
 				if (this.list && this.list.current) {
 					const message = this.list.current.getLastMessage();
-					console.log('🚀 ~ file: index.tsx ~ line 1104 ~ RoomView ~ message', message);
 					if (message) {
 						this.onReplyInit(message, false);
 					}
