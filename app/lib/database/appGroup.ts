@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-import { isIOS } from './deviceInfo';
+import { isIOS } from '../../utils/deviceInfo';
 
 const { AppGroup } = NativeModules;
 
