@@ -3,13 +3,13 @@ import { Text } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import debounce from '../../utils/debounce';
-import { avatarURL } from '../../utils/avatar';
+import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
-import { SubscriptionType } from '../../definitions/ISubscription';
+import { SubscriptionType } from '../../definitions';
 import { getRoomAvatar, getRoomTitle, search } from '../../lib/methods';
 
 interface IUser {
@@ -42,7 +42,7 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		avatarURL({
+		getAvatarURL({
 			text: getRoomAvatar(item),
 			type: SubscriptionType.DIRECT,
 			user: { id: userId, token },

@@ -5,7 +5,7 @@ import { themes } from '../../lib/constants';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
-import { avatarURL } from '../../utils/avatar';
+import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import debounce from '../../utils/debounce';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
@@ -33,7 +33,7 @@ const SelectChannel = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		avatarURL({
+		getAvatarURL({
 			text: getRoomAvatar(item),
 			type: item.t,
 			user: { id: userId, token },
