@@ -6,7 +6,7 @@ import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../lib/Icons';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
-import { hasNotch } from '../../../utils/deviceInfo';
+import { hasNotch } from '../../../lib/methods/helpers/deviceInfo';
 
 const SCROLL_LIMIT = 200;
 const SEND_TO_CHANNEL_HEIGHT = 40;

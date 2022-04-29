@@ -11,7 +11,7 @@ import { themes } from '../../lib/constants';
 import { useDimensions, useOrientation } from '../../dimensions';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import * as List from '../List';
 import { Button } from './Button';
 import { Handle } from './Handle';

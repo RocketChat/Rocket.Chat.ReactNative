@@ -15,7 +15,7 @@ import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import { appStart } from '../../actions/app';
 import debounce from '../../utils/debounce';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';

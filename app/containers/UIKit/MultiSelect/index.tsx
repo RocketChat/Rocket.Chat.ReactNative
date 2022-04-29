@@ -17,7 +17,7 @@ import TextInput from '../../TextInput';
 import { textParser } from '../utils';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
-import { isIOS } from '../../../utils/deviceInfo';
+import { isIOS } from '../../../lib/methods/helpers/deviceInfo';
 import { useTheme } from '../../../theme';
 import { BlockContext, IText } from '../interfaces';
 import Chips from './Chips';

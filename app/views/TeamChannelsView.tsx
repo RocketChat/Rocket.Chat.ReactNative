@@ -28,7 +28,7 @@ import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../utils/debounce';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';

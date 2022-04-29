@@ -5,7 +5,7 @@ import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
-import { supportSystemTheme } from '../utils/deviceInfo';
+import { supportSystemTheme } from '../lib/methods/helpers/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/methods/userPreferences';
 import { events, logEvent } from '../utils/log';

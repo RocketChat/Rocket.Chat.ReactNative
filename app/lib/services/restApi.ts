@@ -14,7 +14,7 @@ import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
 import { getDeviceToken } from '../notifications';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
+import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
 import { RoomTypes, roomTypeToApiType } from '../methods';
 import sdk from './sdk';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';

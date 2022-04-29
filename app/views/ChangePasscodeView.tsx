@@ -7,7 +7,7 @@ import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../theme';
-import { hasNotch, isTablet } from '../utils/deviceInfo';
+import { hasNotch, isTablet } from '../lib/methods/helpers/deviceInfo';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
 import { CustomIcon } from '../lib/Icons';

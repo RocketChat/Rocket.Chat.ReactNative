@@ -22,7 +22,7 @@ import { IServer } from '../../reducers/server';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { getDeviceModel, getReadableVersion, isAndroid } from '../../utils/deviceInfo';
+import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { events, logEvent } from '../../utils/log';

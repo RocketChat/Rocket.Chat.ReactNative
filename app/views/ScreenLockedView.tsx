@@ -6,7 +6,7 @@ import Orientation from 'react-native-orientation-locker';
 
 import EventEmitter from '../utils/events';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
-import { isTablet } from '../utils/deviceInfo';
+import { isTablet } from '../lib/methods/helpers/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';
 
 interface IData {

@@ -27,7 +27,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
 import {

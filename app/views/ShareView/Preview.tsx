@@ -10,7 +10,7 @@ import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid } from '../../lib/methods/helpers/deviceInfo';
 import { allowPreview } from './utils';
 import { IAttachment, IUseDimensions } from './interfaces';
 import { THUMBS_HEIGHT } from './constants';

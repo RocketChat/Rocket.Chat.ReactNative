@@ -6,7 +6,7 @@ import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../lib/Icons';
-import { isIOS, isTablet } from '../../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';
 

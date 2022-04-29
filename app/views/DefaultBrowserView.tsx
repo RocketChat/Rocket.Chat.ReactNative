@@ -8,7 +8,7 @@ import { themes } from '../lib/constants';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/methods/userPreferences';
 import { events, logEvent } from '../utils/log';

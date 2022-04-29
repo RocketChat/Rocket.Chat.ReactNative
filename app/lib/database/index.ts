@@ -2,7 +2,7 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../methods/helpers/deviceInfo';
 import appGroup from './appGroup';
 import { isOfficial } from '../constants';
 import Subscription from './model/Subscription';

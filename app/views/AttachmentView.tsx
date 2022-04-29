@@ -18,7 +18,7 @@ import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
-import { isAndroid } from '../utils/deviceInfo';
+import { isAndroid } from '../lib/methods/helpers/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import { getHeaderHeight } from '../containers/Header';

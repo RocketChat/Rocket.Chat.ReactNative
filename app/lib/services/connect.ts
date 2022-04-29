@@ -16,7 +16,7 @@ import sdk from './sdk';
 import I18n from '../../i18n';
 import RocketChat from '../rocketchat';
 import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../definitions';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../methods/helpers/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../../utils/events';

@@ -3,7 +3,7 @@ import { HeaderStyleInterpolators, TransitionPreset, TransitionPresets } from '@
 // eslint-disable-next-line import/no-unresolved
 import { StackCardStyleInterpolator, TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 
-import { isAndroid } from '../deviceInfo';
+import { isAndroid } from '../../lib/methods/helpers/deviceInfo';
 import conditional from './conditional';
 
 const { multiply } = Animated;

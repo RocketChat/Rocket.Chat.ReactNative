@@ -7,7 +7,7 @@ import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import { RouteProp } from '@react-navigation/core';
 
 import { OutsideModalParamList } from '../stacks/types';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { TSupportedThemes, withTheme } from '../theme';

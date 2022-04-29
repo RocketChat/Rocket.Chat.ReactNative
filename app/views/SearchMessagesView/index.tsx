@@ -27,7 +27,7 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { IEmoji } from '../../definitions/IEmoji';

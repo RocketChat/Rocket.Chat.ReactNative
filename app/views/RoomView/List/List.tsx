@@ -3,7 +3,7 @@ import { FlatList, FlatListProps, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 
-import { isIOS } from '../../../utils/deviceInfo';
+import { isIOS } from '../../../lib/methods/helpers/deviceInfo';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);

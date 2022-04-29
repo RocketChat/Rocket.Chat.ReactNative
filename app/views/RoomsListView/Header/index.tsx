@@ -6,7 +6,7 @@ import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../a
 import { TSupportedThemes, withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
-import { isTablet } from '../../../utils/deviceInfo';
+import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import { events, logEvent } from '../../../utils/log';
 import Header from './Header';
 import { IApplicationState } from '../../../definitions';

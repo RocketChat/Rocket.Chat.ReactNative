@@ -17,7 +17,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';

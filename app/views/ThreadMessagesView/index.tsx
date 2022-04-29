@@ -24,7 +24,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import EventEmitter from '../../utils/events';

@@ -22,7 +22,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet } from '../../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../../utils/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
 import { showConfirmationAlert } from '../../utils/info';

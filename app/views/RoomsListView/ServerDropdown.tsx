@@ -16,7 +16,7 @@ import database from '../../lib/database';
 import { themes, TOKEN_KEY } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet } from '../../lib/methods/helpers/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';

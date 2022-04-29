@@ -9,7 +9,7 @@ import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
-import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import { isAndroid, isIOS } from '../../lib/methods/helpers/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';
 import ServerItem from '../../containers/ServerItem';

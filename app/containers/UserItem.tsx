@@ -5,7 +5,7 @@ import Avatar from './Avatar';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({

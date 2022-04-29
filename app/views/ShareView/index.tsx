@@ -21,7 +21,7 @@ import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../utils/media';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid } from '../../lib/methods/helpers/deviceInfo';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';

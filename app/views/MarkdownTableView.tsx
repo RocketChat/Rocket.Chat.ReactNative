@@ -4,7 +4,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import { ChatsStackParamList } from '../stacks/types';

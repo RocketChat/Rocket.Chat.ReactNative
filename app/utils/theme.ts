@@ -6,7 +6,7 @@ import { IThemePreference, TThemeMode } from '../definitions/ITheme';
 import { themes, THEME_PREFERENCES_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
 import { TSupportedThemes } from '../theme';
-import { isAndroid } from './deviceInfo';
+import { isAndroid } from '../lib/methods/helpers/deviceInfo';
 
 let themeListener: { remove: () => void } | null;
 
