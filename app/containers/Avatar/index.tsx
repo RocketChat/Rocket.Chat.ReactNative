@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { Observable, Subscription } from 'rxjs';
 
@@ -10,7 +10,6 @@ import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
 const AvatarContainer = ({
-	server,
 	style,
 	text = '',
 	avatar,
@@ -19,19 +18,28 @@ const AvatarContainer = ({
 	borderRadius,
 	type,
 	children,
-	user,
 	onPress,
 	getCustomEmoji,
 	isStatic,
-	rid,
-	blockUnauthenticatedAccess,
-	serverVersion,
-	externalProviderUrl
+	rid
 }: IAvatar): React.ReactElement => {
+	const subscription = useRef<Subscription>();
 	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
-	let subscription: Subscription;
 
 	const isDirect = () => type === 'd';
+
+	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
+	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
+	const user = useSelector((state: IApplicationState) => getUserSelector(state));
+	const externalProviderUrl = useSelector(
+		(state: IApplicationState) => state.settings.Accounts_AvatarExternalProviderUrl as string
+	);
+	const blockUnauthenticatedAccess = useSelector(
+		(state: IApplicationState) =>
+			(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
+			state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
+			true
+	);
 
 	const init = async () => {
 		const db = database.active;
@@ -52,7 +60,7 @@ const AvatarContainer = ({
 
 		if (record) {
 			const observable = record.observe() as Observable<TSubscriptionModel | TUserModel>;
-			subscription = observable.subscribe(r => {
+			subscription.current = observable.subscribe(r => {
 				setAvatarETag(r.avatarETag);
 			});
 		}
@@ -61,8 +69,8 @@ const AvatarContainer = ({
 	useEffect(() => {
 		init();
 		return () => {
-			if (subscription?.unsubscribe) {
-				subscription.unsubscribe();
+			if (subscription?.current?.unsubscribe) {
+				subscription.current.unsubscribe();
 			}
 		};
 	}, [text, type, size, avatarETag, externalProviderUrl]);
@@ -91,14 +99,4 @@ const AvatarContainer = ({
 	);
 };
 
-const mapStateToProps = (state: IApplicationState) => ({
-	user: getUserSelector(state),
-	server: state.share.server.server || state.server.server,
-	serverVersion: state.share.server.version || state.server.version,
-	blockUnauthenticatedAccess:
-		(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
-		state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
-		true,
-	externalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string
-});
-export default connect(mapStateToProps)(AvatarContainer);
+export default AvatarContainer;
