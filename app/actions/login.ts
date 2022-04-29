@@ -81,7 +81,6 @@ export function loginFailure(err: Record<string, any>): ILoginFailure {
 }
 
 export function logout(forcedByServer = false, message = ''): ILogout {
-	console.log('**** logout action ****');
 	return {
 		type: types.LOGOUT,
 		forcedByServer,
