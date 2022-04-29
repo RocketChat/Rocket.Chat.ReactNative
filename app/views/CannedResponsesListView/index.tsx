@@ -14,7 +14,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import debounce from '../../utils/debounce';
+import debounce from '../../lib/methods/helpers/debounce';
 import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../utils/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';

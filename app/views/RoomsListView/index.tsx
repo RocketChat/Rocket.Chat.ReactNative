@@ -14,7 +14,7 @@ import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import { appStart } from '../../actions/app';
-import debounce from '../../utils/debounce';
+import debounce from '../../lib/methods/helpers/debounce';
 import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';

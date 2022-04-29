@@ -5,7 +5,7 @@ import ByteBuffer from 'bytebuffer';
 
 import { IMessage } from '../../definitions';
 import Deferred from '../../utils/deferred';
-import debounce from '../../utils/debounce';
+import debounce from '../methods/helpers/debounce';
 import database from '../database';
 import log from '../../utils/log';
 import {

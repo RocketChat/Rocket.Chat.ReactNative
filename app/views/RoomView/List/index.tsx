@@ -12,7 +12,7 @@ import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
-import debounce from '../../../utils/debounce';
+import debounce from '../../../lib/methods/helpers/debounce';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';

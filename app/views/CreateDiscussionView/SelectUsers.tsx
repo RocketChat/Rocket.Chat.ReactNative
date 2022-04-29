@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import debounce from '../../utils/debounce';
+import debounce from '../../lib/methods/helpers/debounce';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';

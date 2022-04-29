@@ -6,7 +6,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
-import debounce from '../../utils/debounce';
+import debounce from '../../lib/methods/helpers/debounce';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
 import { getRoomAvatar, getRoomTitle, localSearch } from '../../lib/methods';

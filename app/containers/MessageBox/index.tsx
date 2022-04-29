@@ -18,7 +18,7 @@ import log, { events, logEvent } from '../../utils/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
-import debounce from '../../utils/debounce';
+import debounce from '../../lib/methods/helpers/debounce';
 import { themes } from '../../lib/constants';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved

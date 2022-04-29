@@ -19,7 +19,7 @@ import Loading from '../containers/Loading';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
-import debounce from '../utils/debounce';
+import debounce from '../lib/methods/helpers/debounce';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../definitions';
 import { getRoomTitle, hasPermission } from '../lib/methods';

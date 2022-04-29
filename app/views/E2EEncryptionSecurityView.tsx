@@ -20,7 +20,7 @@ import { logout as logoutAction } from '../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../utils/info';
 import EventEmitter from '../utils/events';
 import { LISTENER } from '../containers/Toast';
-import debounce from '../utils/debounce';
+import debounce from '../lib/methods/helpers/debounce';
 import sharedStyles from './Styles';
 import { IUser } from '../definitions';
 import { Services } from '../lib/services';

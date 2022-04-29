@@ -11,7 +11,7 @@ import { IAttachment } from '../../definitions/IAttachment';
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
-import debounce from '../../utils/debounce';
+import debounce from '../../lib/methods/helpers/debounce';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
