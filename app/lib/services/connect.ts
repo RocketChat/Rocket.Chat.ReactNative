@@ -34,8 +34,15 @@ interface IServices {
 	service: string;
 }
 
-// FIXME: Remove `this` context
-function connect(this: any, { server, logoutOnError = false }: { server: string; logoutOnError: boolean }): Promise<void> {
+let connectingListener: any;
+let connectedListener: any;
+let closeListener: any;
+let usersListener: any;
+let notifyAllListener: any;
+let rolesListener: any;
+let notifyLoggedListener: any;
+
+function connect({ server, logoutOnError = false }: { server: string; logoutOnError: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
@@ -45,36 +52,37 @@ function connect(this: any, { server, logoutOnError = false }: { server: string;
 
 		store.dispatch(connectRequest());
 
-		if (this.connectTimeout) {
-			clearTimeout(this.connectTimeout);
+		// It's not called anywhere else
+		// if (this.connectTimeout) {
+		// 	clearTimeout(this.connectTimeout);
+		// }
+
+		if (connectingListener) {
+			connectingListener.then(stopListener);
 		}
 
-		if (this.connectingListener) {
-			this.connectingListener.then(stopListener);
+		if (connectedListener) {
+			connectedListener.then(stopListener);
 		}
 
-		if (this.connectedListener) {
-			this.connectedListener.then(stopListener);
+		if (closeListener) {
+			closeListener.then(stopListener);
 		}
 
-		if (this.closeListener) {
-			this.closeListener.then(stopListener);
+		if (usersListener) {
+			usersListener.then(stopListener);
 		}
 
-		if (this.usersListener) {
-			this.usersListener.then(stopListener);
+		if (notifyAllListener) {
+			notifyAllListener.then(stopListener);
 		}
 
-		if (this.notifyAllListener) {
-			this.notifyAllListener.then(stopListener);
+		if (rolesListener) {
+			rolesListener.then(stopListener);
 		}
 
-		if (this.rolesListener) {
-			this.rolesListener.then(stopListener);
-		}
-
-		if (this.notifyLoggedListener) {
-			this.notifyLoggedListener.then(stopListener);
+		if (notifyLoggedListener) {
+			notifyLoggedListener.then(stopListener);
 		}
 
 		unsubscribeRooms();
@@ -93,11 +101,11 @@ function connect(this: any, { server, logoutOnError = false }: { server: string;
 				console.log('connect error', err);
 			});
 
-		this.connectingListener = sdk.current.onStreamData('connecting', () => {
+		connectingListener = sdk.current.onStreamData('connecting', () => {
 			store.dispatch(connectRequest());
 		});
 
-		this.connectedListener = sdk.current.onStreamData('connected', () => {
+		connectedListener = sdk.current.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;
@@ -109,16 +117,16 @@ function connect(this: any, { server, logoutOnError = false }: { server: string;
 			}
 		});
 
-		this.closeListener = sdk.current.onStreamData('close', () => {
+		closeListener = sdk.current.onStreamData('close', () => {
 			store.dispatch(disconnectAction());
 		});
 
-		this.usersListener = sdk.current.onStreamData(
+		usersListener = sdk.current.onStreamData(
 			'users',
 			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
-		this.notifyAllListener = sdk.current.onStreamData(
+		notifyAllListener = sdk.current.onStreamData(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -146,7 +154,7 @@ function connect(this: any, { server, logoutOnError = false }: { server: string;
 			})
 		);
 
-		this.rolesListener = sdk.current.onStreamData(
+		rolesListener = sdk.current.onStreamData(
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
@@ -167,7 +175,7 @@ function connect(this: any, { server, logoutOnError = false }: { server: string;
 			}
 		});
 
-		this.notifyLoggedListener = sdk.current.onStreamData(
+		notifyLoggedListener = sdk.current.onStreamData(
 			'stream-notify-logged',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
 				const { eventName } = ddpMessage.fields;
