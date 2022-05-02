@@ -7,8 +7,8 @@ export type TActionSheetOptionsItem = { title: string; icon: TIconsName; onPress
 
 export type TActionSheetOptions = {
 	options: TActionSheetOptionsItem[];
-	headerHeight: number;
-	customHeader: React.ReactElement | null;
+	headerHeight?: number;
+	customHeader?: React.ReactElement | null;
 	hasCancel?: boolean;
 };
 interface IActionSheetProvider {
