@@ -1,7 +1,3 @@
-import { connect } from './services/connect';
-
-const RocketChat = {
-	connect
-};
+const RocketChat = {};
 
 export default RocketChat;
