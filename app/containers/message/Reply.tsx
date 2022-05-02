@@ -10,7 +10,7 @@ import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
-import { fileDownloadAndPreview } from './fileDownload';
+import { fileDownloadAndPreview } from './helpers/fileDownload';
 import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';

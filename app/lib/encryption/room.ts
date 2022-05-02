@@ -4,7 +4,7 @@ import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
 
 import { IMessage, IUser } from '../../definitions';
-import Deferred from './deferred';
+import Deferred from './helpers/deferred';
 import debounce from '../methods/helpers/debounce';
 import database from '../database';
 import log from '../methods/helpers/log';
