@@ -12,7 +12,7 @@ import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
-import { isReadOnly } from '../../utils/isReadOnly';
+import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { TSupportedThemes, withTheme } from '../../theme';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';

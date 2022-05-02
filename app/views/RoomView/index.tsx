@@ -26,7 +26,7 @@ import debounce from '../../lib/methods/helpers/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../utils/room';
-import { isReadOnly } from '../../utils/isReadOnly';
+import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
