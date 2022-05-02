@@ -4,7 +4,7 @@ import * as FileSystem from 'expo-file-system';
 
 import UserPreferences from '../lib/methods/userPreferences';
 import I18n from '../i18n';
-import { extractHostname } from './server';
+import { extractHostname } from '../lib/methods/helpers/server';
 import { ICertificate } from '../definitions';
 
 const { SSLPinning } = NativeModules;
