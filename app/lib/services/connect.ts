@@ -24,7 +24,7 @@ import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { onRolesChanged } from '../methods/getRoles';
-import { getSettings, unsubscribeRooms } from '../methods';
+import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUserTimer } from '../methods';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -178,20 +178,22 @@ function connect(
 
 				// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
 				if (/user-status/.test(eventName)) {
-					this.activeUsers = this.activeUsers || {};
-					if (!this._setUserTimer) {
-						this._setUserTimer = setTimeout(() => {
-							const activeUsersBatch = this.activeUsers;
+					_activeUsers.activeUsers = _activeUsers.activeUsers || {};
+					if (!_setUserTimer.setUserTimer) {
+						_setUserTimer.setUserTimer = setTimeout(() => {
+							const activeUsersBatch = _activeUsers.activeUsers;
 							InteractionManager.runAfterInteractions(() => {
+								// @ts-ignore
 								store.dispatch(setActiveUsers(activeUsersBatch));
 							});
-							this._setUserTimer = null;
-							return (this.activeUsers = {});
+							_setUserTimer.setUserTimer = null;
+							_activeUsers.activeUsers = {} as IActiveUsers;
+							return null;
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
 					const [id, , status, statusText] = userStatus;
-					this.activeUsers[id] = { status: STATUSES[status], statusText };
+					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
 
 					const { user: loggedUser } = store.getState().login;
 					if (loggedUser && loggedUser.id === id) {
