@@ -4,7 +4,7 @@ import { CREATE_CHANNEL } from '../actions/actionsTypes';
 interface ICreateChannelResult {
 	name: string;
 	users: string[];
-	teamId: string;
+	teamId?: string;
 	type: boolean;
 	readOnly: boolean;
 	encrypted: boolean;

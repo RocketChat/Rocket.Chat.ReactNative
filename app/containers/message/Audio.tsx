@@ -9,7 +9,7 @@ import { Sound } from 'expo-av/build/Audio/Sound';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
