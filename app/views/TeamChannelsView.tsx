@@ -29,7 +29,7 @@ import { ChatsStackParamList } from '../stacks/types';
 import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../lib/methods/helpers/debounce';
 import { isIOS } from '../lib/methods/helpers/deviceInfo';
-import { goRoom } from '../utils/goRoom';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';

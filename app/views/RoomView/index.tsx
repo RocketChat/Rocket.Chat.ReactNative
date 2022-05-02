@@ -47,7 +47,7 @@ import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
-import { goRoom, TGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';

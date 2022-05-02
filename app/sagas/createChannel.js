@@ -8,7 +8,7 @@ import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import I18n from '../i18n';
 import { events, logEvent } from '../utils/log';
-import { goRoom } from '../utils/goRoom';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 import { Services } from '../lib/services';
 
 const handleRequest = function* handleRequest({ data }) {

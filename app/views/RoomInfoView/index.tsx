@@ -23,7 +23,7 @@ import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import Navigation from '../../lib/navigation/appNavigation';
 import Livechat from './Livechat';
 import Channel from './Channel';

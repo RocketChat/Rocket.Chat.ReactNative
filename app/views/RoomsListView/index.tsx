@@ -35,7 +35,7 @@ import {
 	IKeyCommandEvent
 } from '../../commands';
 import { getUserSelector } from '../../selectors/login';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';

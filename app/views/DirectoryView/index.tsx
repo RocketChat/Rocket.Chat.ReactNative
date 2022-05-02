@@ -22,7 +22,7 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom, TGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';

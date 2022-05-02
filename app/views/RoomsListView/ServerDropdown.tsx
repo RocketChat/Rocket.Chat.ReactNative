@@ -21,7 +21,7 @@ import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { IApplicationState, IBaseScreen, RootEnum, TServerModel } from '../../definitions';
 import styles from './styles';

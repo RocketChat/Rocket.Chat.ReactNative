@@ -23,7 +23,7 @@ import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { goRoom, TGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';

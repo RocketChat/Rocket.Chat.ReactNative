@@ -17,7 +17,7 @@ import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import Loading from '../containers/Loading';
 import { animateNextTransition } from '../utils/layoutAnimation';
-import { goRoom } from '../utils/goRoom';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../lib/methods/helpers/debounce';
 import { ChatsStackParamList } from '../stacks/types';

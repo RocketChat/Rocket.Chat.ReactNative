@@ -13,7 +13,7 @@ import { TSupportedThemes, withTheme } from '../../../theme';
 import { withDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
 import StatusBar from '../../../containers/StatusBar';
-import { goRoom } from '../../../utils/goRoom';
+import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';

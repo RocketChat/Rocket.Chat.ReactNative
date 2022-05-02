@@ -16,7 +16,7 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import debounce from '../../lib/methods/helpers/debounce';
 import Navigation from '../../lib/navigation/appNavigation';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';

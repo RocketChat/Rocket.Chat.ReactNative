@@ -20,7 +20,7 @@ import Navigation from '../lib/navigation/appNavigation';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
-import { goRoom } from '../utils/goRoom';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
