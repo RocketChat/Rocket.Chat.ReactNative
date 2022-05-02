@@ -6,7 +6,7 @@ import { getDeviceToken } from '../notifications';
 import { extractHostname } from './helpers/server';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
-import { isSsl } from '../../utils/url';
+import { isSsl } from './helpers/url';
 import log from '../../utils/log';
 import { ICertificate, IRocketChat } from '../../definitions';
 import sdk from '../services/sdk';

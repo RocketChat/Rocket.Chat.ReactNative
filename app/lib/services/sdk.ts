@@ -3,7 +3,7 @@ import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
 import { twoFactor } from './twoFactor';
-import { isSsl } from '../../utils/url';
+import { isSsl } from '../methods/helpers/url';
 import { store as reduxStore } from '../store/auxStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
 
