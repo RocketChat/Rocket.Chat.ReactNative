@@ -158,11 +158,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={NotificationPrefView}
 					options={NotificationPrefView.navigationOptions}
 				/>
-				<ModalStack.Screen
-					name='ForwardLivechatView'
-					component={ForwardLivechatView}
-					options={ForwardLivechatView.navigationOptions}
-				/>
+				<ModalStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 				<ModalStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />

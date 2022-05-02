@@ -14,7 +14,6 @@ import StatusBar from '../containers/StatusBar';
 import TextInput from '../containers/TextInput';
 import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { TSupportedThemes, withTheme } from '../theme';
@@ -22,6 +21,7 @@ import { isTablet } from '../utils/deviceInfo';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import sharedStyles from './Styles';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -64,7 +64,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 	}
 
 	async componentDidMount() {
-		const suggestion = await RocketChat.getUsernameSuggestion();
+		const suggestion = await Services.getUsernameSuggestion();
 		if (suggestion.success) {
 			this.setState({ username: suggestion.result });
 		}
@@ -95,7 +95,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 
 		this.setState({ saving: true });
 		try {
-			await RocketChat.saveUserProfile({ username });
+			await Services.saveUserProfile({ username });
 			dispatch(loginRequest({ resume: token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
