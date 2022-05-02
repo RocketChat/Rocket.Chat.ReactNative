@@ -1,6 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
-import Model from '@nozbe/watermelondb/Model';
 
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
@@ -101,7 +100,7 @@ export type ChatsStackParamList = {
 	DirectoryView: undefined;
 	NotificationPrefView: {
 		rid: string;
-		room: Model;
+		room: TSubscriptionModel;
 	};
 	ForwardLivechatView: {
 		rid: string;

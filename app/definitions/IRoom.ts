@@ -213,6 +213,7 @@ export interface IServerRoom extends IRocketChatRecord {
 }
 
 export interface IRoomNotifications {
+	[key: string]: any;
 	disableNotifications?: boolean;
 	muteGroupMentions?: boolean;
 	hideUnreadStatus?: boolean;
@@ -221,3 +222,5 @@ export interface IRoomNotifications {
 	mobilePushNotifications?: TNotifications;
 	emailNotifications?: TNotifications;
 }
+
+export type TRoomNotificationsModel = IRoomNotifications & Model;
