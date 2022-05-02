@@ -28,7 +28,7 @@ import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../utils/log';
 import { moderateScale, verticalScale } from './scaling';
-import SSLPinning from '../../utils/sslPinning';
+import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 
