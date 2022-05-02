@@ -74,7 +74,7 @@ class PushNotification {
 	}
 
 	setBadgeCount = (count?: number) => {
-		if (isIOS && count) {
+		if (isIOS && typeof count === 'number') {
 			Notifications.ios.setBadgeCount(count);
 		}
 	};
