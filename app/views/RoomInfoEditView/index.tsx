@@ -28,7 +28,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { MessageTypeValues } from './messageTypes';
 import random from '../../lib/methods/helpers/random';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';

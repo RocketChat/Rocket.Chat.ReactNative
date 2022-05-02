@@ -11,7 +11,7 @@ import { DEFAULT_BROWSER_KEY } from '../lib/methods/helpers/openLink';
 import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/methods/userPreferences';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 
 type TValue = 'inApp' | 'systemDefault:' | 'googlechrome:' | 'firefox:' | 'brave:';
 

@@ -15,7 +15,7 @@ import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
-import { setCurrentScreen } from './utils/log';
+import { setCurrentScreen } from './lib/methods/helpers/log';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();

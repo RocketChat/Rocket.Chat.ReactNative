@@ -7,7 +7,7 @@ import { IMessage, IUser } from '../../definitions';
 import Deferred from './deferred';
 import debounce from '../methods/helpers/debounce';
 import database from '../database';
-import log from '../../utils/log';
+import log from '../methods/helpers/log';
 import {
 	b64ToBuffer,
 	bufferToB64,

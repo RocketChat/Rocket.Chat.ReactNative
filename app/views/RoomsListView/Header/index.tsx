@@ -7,7 +7,7 @@ import { TSupportedThemes, withTheme } from '../../../theme';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
 import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
-import { events, logEvent } from '../../../utils/log';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 import Header from './Header';
 import { IApplicationState } from '../../../definitions';
 

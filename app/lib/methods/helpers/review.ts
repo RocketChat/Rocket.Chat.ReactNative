@@ -5,7 +5,7 @@ import I18n from '../../../i18n';
 import { isFDroidBuild, STORE_REVIEW_LINK } from '../../constants';
 import { showErrorAlert } from './info';
 import { isIOS } from './deviceInfo';
-import { events, logEvent } from '../../../utils/log';
+import { events, logEvent } from './log';
 
 const store = isIOS ? 'App Store' : 'Play Store';
 

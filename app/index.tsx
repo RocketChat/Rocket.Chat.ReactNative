@@ -27,7 +27,7 @@ import { ThemeContext, TSupportedThemes } from './theme';
 import debounce from './lib/methods/helpers/debounce';
 import { isTablet } from './lib/methods/helpers/deviceInfo';
 import EventEmitter from './lib/methods/helpers/events';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
+import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';

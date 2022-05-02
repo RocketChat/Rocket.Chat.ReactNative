@@ -10,7 +10,7 @@ import isValidEmail from '../lib/methods/helpers/isValidEmail';
 import I18n from '../i18n';
 import { useTheme } from '../theme';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 

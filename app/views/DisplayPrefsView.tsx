@@ -16,7 +16,7 @@ import { IApplicationState, IPreferences } from '../definitions';
 import I18n from '../i18n';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods';
 
 const DisplayPrefsView = (): React.ReactElement => {

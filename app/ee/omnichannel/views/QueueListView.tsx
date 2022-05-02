@@ -15,7 +15,7 @@ import SafeAreaView from '../../../containers/SafeAreaView';
 import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
-import { events, logEvent } from '../../../utils/log';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
 import { DisplayMode, MAX_SIDEBAR_WIDTH, themes } from '../../../lib/constants';

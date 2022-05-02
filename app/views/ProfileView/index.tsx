@@ -17,7 +17,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import RCTextInput from '../../containers/TextInput';
-import log, { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';

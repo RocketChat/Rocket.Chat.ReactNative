@@ -1,7 +1,7 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
 import Push from '../lib/notifications/push';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';

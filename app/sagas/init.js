@@ -6,7 +6,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { appReady, appStart } from '../actions/app';

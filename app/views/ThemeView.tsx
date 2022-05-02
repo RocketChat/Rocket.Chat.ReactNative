@@ -8,7 +8,7 @@ import * as List from '../containers/List';
 import { supportSystemTheme } from '../lib/methods/helpers/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/methods/userPreferences';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { IThemePreference, TThemeMode, TDarkLevel } from '../definitions/ITheme';
 import { THEME_PREFERENCES_KEY, themes } from '../lib/constants';
 

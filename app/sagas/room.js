@@ -6,7 +6,7 @@ import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
 import * as types from '../actions/actionsTypes';
 import { removedRoom } from '../actions/room';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';

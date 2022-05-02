@@ -1,4 +1,4 @@
-import log from '../../../../utils/log';
+import log from '../../../../lib/methods/helpers/log';
 import { store } from '../../../../lib/store/auxStore';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 import sdk from '../../../../lib/services/sdk';

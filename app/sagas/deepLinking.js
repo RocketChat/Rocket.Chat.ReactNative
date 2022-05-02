@@ -11,7 +11,7 @@ import { appInit, appStart } from '../actions/app';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { loginRequest } from '../actions/login';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import { callJitsi, callJitsiWithoutServer, canOpenRoom, getUidDirectMessage } from '../lib/methods';

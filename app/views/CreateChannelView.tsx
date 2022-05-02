@@ -18,7 +18,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../lib/constants';
 import { withTheme } from '../theme';
 import { Review } from '../lib/methods/helpers/review';
 import { getUserSelector } from '../selectors/login';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';

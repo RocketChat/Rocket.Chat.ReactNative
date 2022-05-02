@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import protectedFunction from './helpers/protectedFunction';
 import { ISlashCommandResult, TSlashCommandModel } from '../../definitions';
 import sdk from '../services/sdk';

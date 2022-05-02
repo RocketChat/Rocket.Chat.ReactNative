@@ -31,7 +31,7 @@ import debounce from '../lib/methods/helpers/debounce';
 import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';
 import { Services } from '../lib/services';
 

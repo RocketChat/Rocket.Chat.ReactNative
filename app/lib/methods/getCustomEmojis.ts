@@ -4,7 +4,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
 import { ICustomEmoji, TCustomEmojiModel } from '../../definitions';
 import sdk from '../services/sdk';

@@ -17,7 +17,7 @@ import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import isValidEmail from '../lib/methods/helpers/isValidEmail';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import openLink from '../lib/methods/helpers/openLink';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';

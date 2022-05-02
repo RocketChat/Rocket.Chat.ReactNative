@@ -14,7 +14,7 @@ import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
 import debounce from '../../../lib/methods/helpers/debounce';
 import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
-import log from '../../../utils/log';
+import log from '../../../lib/methods/helpers/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
 import NavBottomFAB from './NavBottomFAB';

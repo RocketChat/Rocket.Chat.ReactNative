@@ -8,7 +8,7 @@ import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import RocketChat from '../lib/rocketchat';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';

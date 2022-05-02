@@ -14,7 +14,7 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
-import log from '../../utils/log';
+import log from '../../lib/methods/helpers/log';
 import debounce from '../../lib/methods/helpers/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../lib/constants';

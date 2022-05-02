@@ -19,7 +19,7 @@ import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../
 import { isTablet } from '../../lib/methods/helpers/deviceInfo';
 import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import UserPreferences from '../../lib/methods/userPreferences';

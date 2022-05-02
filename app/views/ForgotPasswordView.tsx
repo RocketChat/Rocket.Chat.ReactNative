@@ -13,7 +13,7 @@ import { OutsideParamList } from '../stacks/types';
 import { TSupportedThemes, withTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import isValidEmail from '../lib/methods/helpers/isValidEmail';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 
 interface IForgotPasswordViewState {

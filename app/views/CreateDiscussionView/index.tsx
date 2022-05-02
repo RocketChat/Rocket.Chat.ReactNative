@@ -17,7 +17,7 @@ import { createDiscussionRequest } from '../../actions/createDiscussion';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';

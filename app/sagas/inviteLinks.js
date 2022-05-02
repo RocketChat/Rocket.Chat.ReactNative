@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
 import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '../actions/inviteLinks';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
 import { getRoomTitle } from '../lib/methods';

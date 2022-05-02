@@ -22,7 +22,7 @@ import WithoutServersView from './views/WithoutServersView';
 import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
-import { setCurrentScreen } from './utils/log';
+import { setCurrentScreen } from './lib/methods/helpers/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './lib/methods/helpers/debounce';

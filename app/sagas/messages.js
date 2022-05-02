@@ -4,7 +4,7 @@ import { Q } from '@nozbe/watermelondb';
 import Navigation from '../lib/navigation/appNavigation';
 import { MESSAGES } from '../actions/actionsTypes';
 import database from '../lib/database';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { Services } from '../lib/services';
 

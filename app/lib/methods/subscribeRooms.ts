@@ -1,4 +1,4 @@
-import log from '../../utils/log';
+import log from './helpers/log';
 import subscribeRoomsTmp from './subscriptions/rooms';
 
 // TODO: remove this

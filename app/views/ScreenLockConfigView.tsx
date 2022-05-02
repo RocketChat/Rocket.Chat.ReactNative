@@ -12,7 +12,7 @@ import database from '../lib/database';
 import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../lib/methods/helpers/localAuthentication';
 import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes, SWITCH_TRACK_COLOR } from '../lib/constants';
 import SafeAreaView from '../containers/SafeAreaView';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { TServerModel } from '../definitions/IServer';
 import userPreferences from '../lib/methods/userPreferences';
 

@@ -7,7 +7,7 @@ import { dequal } from 'dequal';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';

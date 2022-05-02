@@ -6,7 +6,7 @@ import Model from '@nozbe/watermelondb/Model';
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
-import log from '../../../utils/log';
+import log from '../helpers/log';
 import random from '../helpers/random';
 import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';

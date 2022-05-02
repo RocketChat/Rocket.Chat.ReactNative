@@ -21,7 +21,7 @@ import { compareServerVersion } from '../lib/methods/helpers/compareServerVersio
 import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import Touch from '../lib/methods/helpers/touch';
 import sharedStyles from './Styles';
 import { hasPermission, search } from '../lib/methods';

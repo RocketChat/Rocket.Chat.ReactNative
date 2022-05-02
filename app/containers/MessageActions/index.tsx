@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
-import log, { logEvent } from '../../utils/log';
+import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
@@ -14,7 +14,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
-import events from '../../utils/log/events';
+import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage, hasPermission } from '../../lib/methods';
 import { Services } from '../../lib/services';

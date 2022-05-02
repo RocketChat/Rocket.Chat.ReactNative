@@ -8,7 +8,7 @@ import { Q } from '@nozbe/watermelondb';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import I18n from '../i18n';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import SearchBox from '../containers/SearchBox';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';

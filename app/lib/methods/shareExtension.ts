@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { shareSetSettings, shareSelectServer, shareSetUser } from '../../actions/share';
 import SSLPinning from './helpers/sslPinning';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { IShareServer, IShareUser } from '../../reducers/share';
 import UserPreferences from './userPreferences';
 import database from '../database';

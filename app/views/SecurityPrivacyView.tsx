@@ -14,7 +14,7 @@ import {
 	toggleAnalyticsEventsReport,
 	getReportCrashErrorsValue,
 	getReportAnalyticsEventsValue
-} from '../utils/log';
+} from '../lib/methods/helpers/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
 

@@ -13,7 +13,7 @@ import { clearUser, setUser } from '../actions/login';
 import { clearActiveUsers } from '../actions/activeUsers';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import log, { logServerVersion } from '../utils/log';
+import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';

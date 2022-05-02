@@ -15,7 +15,7 @@ import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { E2EEnterYourPasswordStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 

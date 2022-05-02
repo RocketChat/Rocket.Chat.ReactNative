@@ -17,7 +17,7 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../lib/methods/helpers/debounce';
-import log, { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';

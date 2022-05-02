@@ -1,5 +1,5 @@
 // @ts-nocheck - TEMP
-import log from '../../utils/log';
+import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 

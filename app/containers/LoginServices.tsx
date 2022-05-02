@@ -13,7 +13,7 @@ import OrSeparator from './OrSeparator';
 import Touch from '../lib/methods/helpers/touch';
 import I18n from '../i18n';
 import random from '../lib/methods/helpers/random';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { CustomIcon } from '../lib/Icons';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';

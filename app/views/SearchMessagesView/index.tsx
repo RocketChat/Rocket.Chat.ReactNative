@@ -17,7 +17,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
+import log from '../../lib/methods/helpers/log';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';

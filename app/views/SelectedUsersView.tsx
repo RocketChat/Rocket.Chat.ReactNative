@@ -22,7 +22,7 @@ import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 import { isGroupChat, search } from '../lib/methods';
 

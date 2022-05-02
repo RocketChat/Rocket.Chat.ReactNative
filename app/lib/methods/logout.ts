@@ -7,7 +7,7 @@ import { extractHostname } from './helpers/server';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import { isSsl } from './helpers/url';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { ICertificate, IRocketChat } from '../../definitions';
 import sdk from '../services/sdk';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';

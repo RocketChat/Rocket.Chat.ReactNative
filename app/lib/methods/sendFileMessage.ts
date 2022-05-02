@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import FileUpload from './helpers/fileUpload';
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { IUpload, IUser, TUploadModel } from '../../definitions';
 import { IFileUpload } from './helpers/fileUpload/interfaces';
 
