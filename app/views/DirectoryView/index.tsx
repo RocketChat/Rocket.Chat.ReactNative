@@ -7,7 +7,7 @@ import { CompositeNavigationProp } from '@react-navigation/native';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';

@@ -10,7 +10,7 @@ import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import Button from './Button';
 import OrSeparator from './OrSeparator';
-import Touch from '../utils/touch';
+import Touch from '../lib/methods/helpers/touch';
 import I18n from '../i18n';
 import random from '../lib/methods/helpers/random';
 import { events, logEvent } from '../utils/log';

@@ -5,7 +5,7 @@ import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanima
 import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../lib/Icons';
 import { useTheme } from '../../../theme';
-import Touch from '../../../utils/touch';
+import Touch from '../../../lib/methods/helpers/touch';
 import { hasNotch } from '../../../lib/methods/helpers/deviceInfo';
 
 const SCROLL_LIMIT = 200;

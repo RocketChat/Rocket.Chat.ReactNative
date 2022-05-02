@@ -26,7 +26,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../utils/log';
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';

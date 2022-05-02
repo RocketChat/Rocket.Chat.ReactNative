@@ -9,7 +9,7 @@ import {
 	State
 } from 'react-native-gesture-handler';
 
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { isRTL } from '../../i18n';
 import { themes } from '../../lib/constants';

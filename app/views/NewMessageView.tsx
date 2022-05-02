@@ -22,7 +22,7 @@ import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../utils/log';
-import Touch from '../utils/touch';
+import Touch from '../lib/methods/helpers/touch';
 import sharedStyles from './Styles';
 import { hasPermission, search } from '../lib/methods';
 

@@ -10,7 +10,7 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
 import { IReduxEmoji } from '../../definitions/IEmoji';
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
