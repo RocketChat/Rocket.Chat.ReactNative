@@ -25,7 +25,7 @@ import StatusBar from '../../containers/StatusBar';
 import debounce from '../../lib/methods/helpers/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../utils/room';
+import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import { showErrorAlert } from '../../lib/methods/helpers/info';

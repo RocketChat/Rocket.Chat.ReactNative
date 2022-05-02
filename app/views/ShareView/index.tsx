@@ -11,7 +11,7 @@ import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { isBlocked } from '../../utils/room';
+import { isBlocked } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { TSupportedThemes, withTheme } from '../../theme';
 import TextInput from '../../containers/TextInput';
