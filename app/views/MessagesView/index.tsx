@@ -9,7 +9,6 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../lib/constants';
@@ -24,6 +23,7 @@ import { ISubscription, SubscriptionType } from '../../definitions/ISubscription
 import { IEmoji } from '../../definitions/IEmoji';
 import { IRoomInfoParam } from '../SearchMessagesView';
 import { TMessageModel } from '../../definitions';
+import { Services } from '../../lib/services';
 
 interface IMessagesViewProps {
 	user: {
@@ -191,7 +191,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Files'),
 				fetchFunc: async () => {
 					const { messages } = this.state;
-					const result = await RocketChat.getFiles(this.rid, this.t, messages.length);
+					const result = await Services.getFiles(this.rid, this.t, messages.length);
 					if (result.success) {
 						return { ...result, messages: result.files };
 					}
@@ -222,7 +222,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
@@ -234,7 +234,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
@@ -247,14 +247,14 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 					icon: message.starred ? 'star-filled' : 'star',
 					onPress: this.handleActionPress
 				}),
-				handleActionPress: (message: IMessageItem) => RocketChat.toggleStarMessage(message._id, message.starred)
+				handleActionPress: (message: IMessageItem) => Services.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
+					return Services.getMessages(this.rid, this.t, { pinned: true }, messages.length);
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
@@ -263,7 +263,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
 				),
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
-				handleActionPress: (message: IMessageItem) => RocketChat.togglePinMessage(message._id, message.pinned)
+				handleActionPress: (message: IMessageItem) => Services.togglePinMessage(message._id, message.pinned)
 			}
 			// @ts-ignore
 		}[name];

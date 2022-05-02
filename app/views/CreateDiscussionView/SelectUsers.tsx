@@ -4,13 +4,13 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
-import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType } from '../../definitions/ISubscription';
+import { getRoomAvatar, getRoomTitle, search } from '../../lib/methods';
 
 interface IUser {
 	name: string;
@@ -31,7 +31,7 @@ const SelectUsers = ({
 
 	const getUsers = debounce(async (keyword = '') => {
 		try {
-			const res = await RocketChat.search({ text: keyword, filterRooms: false });
+			const res = await search({ text: keyword, filterRooms: false });
 			const selectedUsers = users.filter((u: IUser) => selected.includes(u.name));
 			const filteredUsers = res.filter(r => !users.find((u: IUser) => u.name === r.name));
 			const items = [...selectedUsers, ...filteredUsers];
@@ -43,7 +43,7 @@ const SelectUsers = ({
 
 	const getAvatar = (item: any) =>
 		avatarURL({
-			text: RocketChat.getRoomAvatar(item),
+			text: getRoomAvatar(item),
 			type: SubscriptionType.DIRECT,
 			user: { id: userId, token },
 			server,
@@ -61,7 +61,7 @@ const SelectUsers = ({
 				onChange={onUserSelect}
 				options={users.map((user: IUser) => ({
 					value: user.name,
-					text: { text: RocketChat.getRoomTitle(user) },
+					text: { text: getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
 				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}

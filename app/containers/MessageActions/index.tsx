@@ -4,7 +4,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import log, { logEvent } from '../../utils/log';
@@ -17,6 +16,8 @@ import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../utils/log/events';
 import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import { getPermalinkMessage, hasPermission } from '../../lib/methods';
+import { Services } from '../../lib/services';
 
 export interface IMessageActions {
 	room: TSubscriptionModel;
@@ -81,7 +82,7 @@ const MessageActions = React.memo(
 			const getPermissions = async () => {
 				try {
 					const permission = [editMessagePermission, deleteMessagePermission, forceDeleteMessagePermission, pinMessagePermission];
-					const result = await RocketChat.hasPermission(permission, room.rid);
+					const result = await hasPermission(permission, room.rid);
 					permissions = {
 						hasEditPermission: result[0],
 						hasDeletePermission: result[1],
@@ -150,7 +151,7 @@ const MessageActions = React.memo(
 				return true;
 			};
 
-			const getPermalink = (message: TAnyMessageModel) => RocketChat.getPermalinkMessage(message);
+			const getPermalink = (message: TAnyMessageModel) => getPermalinkMessage(message);
 
 			const handleReply = (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_REPLY);
@@ -178,7 +179,7 @@ const MessageActions = React.memo(
 				const { rid } = room;
 				try {
 					const db = database.active;
-					const result = await RocketChat.markAsUnread({ messageId });
+					const result = await Services.markAsUnread({ messageId });
 					if (result.success) {
 						const subCollection = db.get('subscriptions');
 						const subRecord = await subCollection.find(rid);
@@ -234,7 +235,7 @@ const MessageActions = React.memo(
 			const handleStar = async (message: TAnyMessageModel) => {
 				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
-					await RocketChat.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
+					await Services.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
 					EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
@@ -245,7 +246,7 @@ const MessageActions = React.memo(
 			const handlePin = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_PIN);
 				try {
-					await RocketChat.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
+					await Services.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_PIN_F);
 					log(e);
@@ -292,7 +293,7 @@ const MessageActions = React.memo(
 							u: message.u,
 							msg: message.msg
 						};
-						await RocketChat.translateMessage(m, room.autoTranslateLanguage);
+						await Services.translateMessage(m, room.autoTranslateLanguage);
 					}
 				} catch (e) {
 					log(e);
@@ -302,7 +303,7 @@ const MessageActions = React.memo(
 			const handleReport = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_REPORT);
 				try {
-					await RocketChat.reportMessage(message.id);
+					await Services.reportMessage(message.id);
 					Alert.alert(I18n.t('Message_Reported'));
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_REPORT_F);
@@ -317,7 +318,7 @@ const MessageActions = React.memo(
 					onPress: async () => {
 						try {
 							logEvent(events.ROOM_MSG_ACTION_DELETE);
-							await RocketChat.deleteMessage(message.id, message.subscription ? message.subscription.id : '');
+							await Services.deleteMessage(message.id, message.subscription ? message.subscription.id : '');
 						} catch (e) {
 							logEvent(events.ROOM_MSG_ACTION_DELETE_F);
 							log(e);

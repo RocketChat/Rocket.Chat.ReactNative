@@ -12,12 +12,12 @@ import StatusBar from '../../containers/StatusBar';
 import { IApplicationState, IBaseScreen, IUser, RootEnum } from '../../definitions';
 import I18n, { isRTL, LANGUAGES } from '../../i18n';
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
+import { Services } from '../../lib/services';
 
 interface ILanguageViewProps extends IBaseScreen<SettingsStackParamList, 'LanguageView'> {
 	user: IUser;
@@ -92,7 +92,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 		}
 
 		try {
-			await RocketChat.saveUserPreferences(params);
+			await Services.saveUserPreferences(params);
 			dispatch(setUser({ language: params.language }));
 
 			const serversDB = database.servers;
