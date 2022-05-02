@@ -16,7 +16,7 @@ import { themes } from '../../lib/constants';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IReadReceipts } from '../../definitions';
+import { IApplicationState, IReadReceipts } from '../../definitions';
 import { Services } from '../../lib/services';
 
 interface IReadReceiptViewState {
@@ -167,8 +167,8 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat
+const mapStateToProps = (state: IApplicationState) => ({
+	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat as string
 });
 
 export default connect(mapStateToProps)(withTheme(ReadReceiptView));

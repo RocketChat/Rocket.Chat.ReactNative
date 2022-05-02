@@ -4,13 +4,12 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { forwardRoom, ITransferData } from '../actions/room';
-import { themes } from '../lib/constants';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { IBaseScreen, IServerRoom } from '../definitions';
 import I18n from '../i18n';
 import { ChatsStackParamList } from '../stacks/types';
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import { IOptionsField } from './NotificationPreferencesView/options';
 import { Services } from '../lib/services';
 
@@ -28,14 +27,15 @@ interface IParsedData {
 
 const COUNT_DEPARTMENT = 50;
 
-const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStackParamList, 'ForwardLivechatView'>) => {
+const ForwardLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamList, 'ForwardLivechatView'>) => {
 	const [departments, setDepartments] = useState<IParsedData[]>([]);
 	const [departmentId, setDepartment] = useState('');
 	const [departmentTotal, setDepartmentTotal] = useState(0);
 	const [users, setUsers] = useState<IOptionsField[]>([]);
 	const [userId, setUser] = useState();
-	const [room, setRoom] = useState<IServerRoom>({} as IServerRoom);
+	const [room, setRoom] = useState({} as IServerRoom);
 	const dispatch = useDispatch();
+	const { theme, colors } = useTheme();
 
 	const rid = route.params?.rid;
 
@@ -149,7 +149,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+		<View style={[styles.container, { backgroundColor: colors.auxiliaryBackground }]}>
 			<Input onPress={onPressDepartment} placeholder={I18n.t('Select_a_Department')} theme={theme} />
 			<OrSeparator theme={theme} />
 			<Input onPress={onPressUser} placeholder={I18n.t('Select_a_User')} theme={theme} />
@@ -157,4 +157,4 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 	);
 };
 
-export default withTheme(ForwardLivechatView);
+export default ForwardLivechatView;

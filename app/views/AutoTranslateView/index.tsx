@@ -1,16 +1,16 @@
 import React from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
-import { RouteProp } from '@react-navigation/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { ChatsStackParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
-import { ISubscription } from '../../definitions/ISubscription';
+import { IBaseScreen, ISubscription } from '../../definitions';
 import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
@@ -19,22 +19,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IAutoTranslateViewProps {
-	route: RouteProp<ChatsStackParamList, 'AutoTranslateView'>;
-	theme: TSupportedThemes;
-}
+type TAutoTranslateViewProps = IBaseScreen<ChatsStackParamList, 'AutoTranslateView'>;
 
-class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
+class AutoTranslateView extends React.Component<TAutoTranslateViewProps, any> {
 	static navigationOptions = () => ({
 		title: I18n.t('Auto_Translate')
 	});
 
 	private mounted: boolean;
 	private rid: string;
-	private roomObservable: any;
-	private subscription: any;
+	private roomObservable?: Observable<ISubscription>;
+	private subscription?: Subscription;
 
-	constructor(props: IAutoTranslateViewProps) {
+	constructor(props: TAutoTranslateViewProps) {
 		super(props);
 		this.mounted = false;
 		this.rid = props.route.params?.rid ?? '';
@@ -111,7 +108,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme!].tintColor} />;
+		return <List.Icon name='check' color={themes[theme].tintColor} />;
 	};
 
 	renderSwitch = () => {
