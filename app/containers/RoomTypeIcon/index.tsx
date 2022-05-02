@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
-import { CustomIcon, TIconsName } from './CustomIcon';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 import { STATUS_COLORS, themes } from '../../lib/constants';
 import Status from '../Status/Status';
 import { useTheme } from '../../theme';

@@ -197,5 +197,6 @@ export const mappedIcons = {
 	'wordpress-monochromatic': 59656,
 	workspaces: 59870,
 	zip: 59871,
-	add: 59872
+	add: 59872,
+	sms: 59753
 };
