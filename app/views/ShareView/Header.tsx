@@ -3,13 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import RocketChat from '../../lib/rocketchat';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../utils/room';
 import { ISubscription } from '../../definitions';
+import { getRoomTitle, isGroupChat } from '../../lib/methods';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 
@@ -60,7 +60,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	} else if (type === 'l') {
 		icon = 'omnichannel';
 	} else if (type === 'd') {
-		if (RocketChat.isGroupChat(room)) {
+		if (isGroupChat(room)) {
 			icon = 'team';
 		} else {
 			icon = 'mention';
@@ -75,7 +75,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	if (thread?.id) {
 		title = makeThreadName(thread);
 	} else {
-		title = RocketChat.getRoomTitle(room);
+		title = getRoomTitle(room);
 	}
 
 	return (

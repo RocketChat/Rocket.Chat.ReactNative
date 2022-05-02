@@ -16,7 +16,6 @@ import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen, ISearch, ISearchLocal, IUser } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
 import UserItem from '../containers/UserItem';
 import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
@@ -25,6 +24,7 @@ import { withTheme } from '../theme';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
+import { isGroupChat, search } from '../lib/methods';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
@@ -115,11 +115,11 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	};
 
 	onSearchChangeText(text: string) {
-		this.search(text);
+		this.handleSearch(text);
 	}
 
-	search = async (text: string) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
+	handleSearch = async (text: string) => {
+		const result = await search({ text, filterRooms: false });
 		this.setState({
 			search: result
 		});
@@ -254,10 +254,9 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		const { search, chats } = this.state;
 		const { theme } = this.props;
 
-		const data = (search.length > 0 ? search : chats)
-			// filter DM between multiple users
-			// @ts-ignore
-			.filter((sub: any) => !RocketChat.isGroupChat(sub));
+		const searchOrChats = (search.length > 0 ? search : chats) as ISelectedUser[];
+		// filter DM between multiple users
+		const data = searchOrChats.filter(sub => !isGroupChat(sub));
 
 		return (
 			<FlatList
