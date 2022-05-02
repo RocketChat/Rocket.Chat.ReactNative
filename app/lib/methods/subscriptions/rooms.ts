@@ -7,7 +7,7 @@ import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../../../utils/log';
-import random from '../../../utils/random';
+import random from '../helpers/random';
 import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';

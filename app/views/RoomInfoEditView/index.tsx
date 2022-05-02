@@ -30,7 +30,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../utils/log';
 import { MessageTypeValues } from './messageTypes';
-import random from '../../utils/random';
+import random from '../../lib/methods/helpers/random';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IAvatar } from '../../definitions/IProfileViewInterfaces';
 import sharedStyles from '../Styles';
