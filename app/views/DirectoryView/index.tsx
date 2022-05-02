@@ -12,7 +12,7 @@ import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -195,7 +195,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { type } = this.state;
 		const { theme } = this.props;
 		let text = 'Users';
-		let icon = 'user';
+		let icon: TIconsName = 'user';
 
 		if (type === 'channels') {
 			text = 'Channels';
@@ -217,12 +217,13 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 							styles.toggleDropdownContainer,
 							{ borderColor: themes[theme].separatorColor }
 						]}>
-						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={icon} />
+						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
 						<CustomIcon
 							name='chevron-down'
 							size={20}
-							style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]}
+							color={themes[theme].auxiliaryTintColor}
+							style={styles.toggleDropdownArrow}
 						/>
 					</View>
 				</Touch>
