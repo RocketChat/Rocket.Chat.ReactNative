@@ -4,7 +4,7 @@ import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-nat
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import { allowPreview } from './utils';

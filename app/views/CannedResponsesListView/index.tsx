@@ -15,7 +15,6 @@ import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
 import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../utils/goRoom';
@@ -30,6 +29,8 @@ import styles from './styles';
 import { ICannedResponse, IDepartment } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription } from '../../definitions/ISubscription';
+import { getRoomTitle, getUidDirectMessage } from '../../lib/methods';
+import { Services } from '../../lib/services';
 
 const COUNT = 25;
 
@@ -92,7 +93,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const getDepartments = debounce(async () => {
 		try {
-			const res: any = await RocketChat.getDepartments();
+			const res: any = await Services.getDepartments();
 			if (res.success) {
 				setDepartments([...fixedScopes, ...res.departments]);
 			}
@@ -115,12 +116,12 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		const { name } = room;
 		const params = {
 			rid: room.rid,
-			name: RocketChat.getRoomTitle({
+			name: getRoomTitle({
 				t: room.t,
 				fname: name
 			}),
 			t: room.t as any,
-			roomUserId: RocketChat.getUidDirectMessage(room),
+			roomUserId: getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};
 
@@ -152,7 +153,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		debounced: boolean;
 	}) => {
 		try {
-			const res = await RocketChat.getListCannedResponse({
+			const res = await Services.getListCannedResponse({
 				text,
 				offset,
 				count: COUNT,
