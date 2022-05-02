@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';
-import { showErrorAlert } from '../utils/info';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import I18n from '../i18n';

@@ -16,7 +16,7 @@ import { Services } from '../lib/services';
 import { getUserSelector } from '../selectors/login';
 import { withTheme } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
-import { showErrorAlert } from '../utils/info';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../utils/log';
 
 interface IStatus {

@@ -30,7 +30,7 @@ import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../lib/methods/helpers/debounce';
 import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { goRoom } from '../lib/methods/helpers/goRoom';
-import { showErrorAlert } from '../utils/info';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../utils/log';
 import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';
 import { Services } from '../lib/services';

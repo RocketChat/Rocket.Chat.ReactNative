@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import I18n from '../i18n';
 import { isFDroidBuild, STORE_REVIEW_LINK } from '../lib/constants';
-import { showErrorAlert } from './info';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { events, logEvent } from './log';
 

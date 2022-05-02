@@ -13,7 +13,7 @@ import Touch from '../../utils/touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import RCTextInput from '../../containers/TextInput';

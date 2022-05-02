@@ -24,7 +24,7 @@ import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { getRoomTitle, hasPermission, isGroupChat, RoomTypes } from '../../lib/methods';

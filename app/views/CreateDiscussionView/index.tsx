@@ -14,7 +14,7 @@ import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
 import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest } from '../../actions/createDiscussion';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { events, logEvent } from '../../utils/log';

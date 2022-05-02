@@ -18,7 +18,7 @@ import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { TSupportedThemes, withTheme } from '../theme';
 import { isTablet } from '../lib/methods/helpers/deviceInfo';
-import { showErrorAlert } from '../utils/info';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';

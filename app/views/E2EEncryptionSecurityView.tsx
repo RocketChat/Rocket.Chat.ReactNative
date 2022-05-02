@@ -17,7 +17,7 @@ import { PADDING_HORIZONTAL } from '../containers/List/constants';
 import { themes } from '../lib/constants';
 import { Encryption } from '../lib/encryption';
 import { logout as logoutAction } from '../actions/login';
-import { showConfirmationAlert, showErrorAlert } from '../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../lib/methods/helpers/info';
 import EventEmitter from '../lib/methods/helpers/events';
 import { LISTENER } from '../containers/Toast';
 import debounce from '../lib/methods/helpers/debounce';

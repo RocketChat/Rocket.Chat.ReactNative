@@ -11,7 +11,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { showConfirmationAlert } from '../../utils/info';
+import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../utils/log/events';

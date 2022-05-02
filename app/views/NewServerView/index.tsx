@@ -25,7 +25,7 @@ import { withTheme } from '../../theme';
 import { isTablet } from '../../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
-import { showConfirmationAlert } from '../../utils/info';
+import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../utils/log';
 import { moderateScale, verticalScale } from '../../utils/scaling';
 import SSLPinning from '../../utils/sslPinning';

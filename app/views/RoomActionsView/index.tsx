@@ -24,7 +24,7 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../utils/log';
 import Touch from '../../utils/touch';
 import sharedStyles from '../Styles';

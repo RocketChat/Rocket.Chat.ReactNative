@@ -24,7 +24,7 @@ import { SettingsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../utils/log';
 import openLink from '../../utils/openLink';
 import { onReviewPress } from '../../utils/review';
