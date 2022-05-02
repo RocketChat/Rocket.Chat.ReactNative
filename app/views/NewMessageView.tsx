@@ -18,13 +18,13 @@ import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
 import Navigation from '../lib/navigation/appNavigation';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
-import RocketChat from '../lib/rocketchat';
 import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
 import { goRoom } from '../utils/goRoom';
 import log, { events, logEvent } from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
+import { hasPermission, search } from '../lib/methods';
 
 const QUERY_SIZE = 50;
 
@@ -127,20 +127,20 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		}
 	}
 
+	handleSearch = async (text: string) => {
+		const result = (await search({ text, filterRooms: false })) as ISearch[];
+		this.setState({
+			search: result
+		});
+	};
+
 	onSearchChangeText(text: string) {
-		this.search(text);
+		this.handleSearch(text);
 	}
 
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
-	};
-
-	search = async (text: string) => {
-		const result = (await RocketChat.search({ text, filterRooms: false })) as ISearch[];
-		this.setState({
-			search: result
-		});
 	};
 
 	createChannel = () => {
@@ -214,7 +214,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 			createDirectMessagePermission,
 			createDiscussionPermission
 		];
-		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const permissionsToCreate = await hasPermission(permissions);
 		this.setState({ permissions: permissionsToCreate });
 	};
 

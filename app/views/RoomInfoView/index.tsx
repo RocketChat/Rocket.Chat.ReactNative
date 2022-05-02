@@ -12,7 +12,6 @@ import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -34,6 +33,8 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { SubscriptionType, TSubscriptionModel, ISubscription, IUser, IApplicationState } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
+import { callJitsi, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods';
+import { Services } from '../../lib/services';
 
 interface IGetRoomTitle {
 	room: ISubscription;
@@ -44,7 +45,7 @@ interface IGetRoomTitle {
 	theme: TSupportedThemes;
 }
 
-const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
+const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
 	type === SubscriptionType.DIRECT ? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>
@@ -71,7 +72,7 @@ const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoo
 				sourceType={room.source}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
-				{RocketChat.getRoomTitle(room)}
+				{getRoomTitle(room)}
 			</Text>
 		</View>
 	);
@@ -203,7 +204,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { room } = this.state;
 		try {
 			if (room.visitor?._id) {
-				const result = await RocketChat.getVisitorInfo(room.visitor._id);
+				const result = await Services.getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
@@ -234,8 +235,8 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = RocketChat.getUidDirectMessage(room);
-				const result = await RocketChat.getUserInfo(roomUserId);
+				const roomUserId = getUidDirectMessage(room);
+				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
 					const { roles } = user;
@@ -276,7 +277,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			});
 		} else {
 			try {
-				const result = await RocketChat.getRoomInfo(this.rid);
+				const result = await Services.getRoomInfo(this.rid);
 				if (result.success) {
 					({ room } = result);
 					this.setState({ room: { ...roomState, ...room } });
@@ -288,7 +289,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 		const permissionToEdit = this.isLivechat ? [editOmnichannelContact, editLivechatRoomCustomfields] : [editRoomPermission];
 
-		const permissions = await RocketChat.hasPermission(permissionToEdit, room.rid);
+		const permissions = await hasPermission(permissionToEdit, room.rid);
 		if (permissions.some(Boolean)) {
 			this.setState({ showEdit: true }, () => this.setHeader());
 		}
@@ -309,7 +310,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				const {
 					roomUser: { username }
 				} = this.state;
-				const result = await RocketChat.createDirectMessage(username);
+				const result = await Services.createDirectMessage(username);
 				if (result.success) {
 					const {
 						room: { rid }
@@ -329,13 +330,13 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { rooms, navigation, isMasterDetail } = this.props;
 		const params = {
 			rid: room.rid,
-			name: RocketChat.getRoomTitle({
+			name: getRoomTitle({
 				t: room.t,
 				fname: name,
 				name: username
 			}),
 			t: room.t,
-			roomUserId: RocketChat.getUidDirectMessage(room)
+			roomUserId: getUidDirectMessage(room)
 		};
 
 		if (room.rid) {
@@ -356,7 +357,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	videoCall = () => {
 		const { room } = this.state;
-		RocketChat.callJitsi(room);
+		callJitsi(room);
 	};
 
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
@@ -431,7 +432,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>
-							{getRoomTitle({
+							{renderRoomTitle({
 								room,
 								type: this.t,
 								name: roomUser?.name,

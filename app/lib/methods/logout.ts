@@ -10,14 +10,14 @@ import { isSsl } from '../../utils/url';
 import log from '../../utils/log';
 import { ICertificate, IRocketChat } from '../../definitions';
 import sdk from '../services/sdk';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../constants';
+import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
 import UserPreferences from './userPreferences';
-import RocketChat from '../rocketchat';
+import { Services } from '../services';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
-	UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
+	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
 	if (userId) {
-		UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${userId}`);
+		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
 	}
 	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
@@ -42,7 +42,7 @@ async function removeServerData({ server }: { server: string }) {
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		const usersCollection = serversDB.get('users');
 		if (userId) {
@@ -62,7 +62,7 @@ async function removeServerData({ server }: { server: string }) {
 }
 
 function removeCurrentServer() {
-	UserPreferences.removeItem(RocketChat.CURRENT_SERVER);
+	UserPreferences.removeItem(CURRENT_SERVER);
 }
 
 async function removeServerDatabase({ server }: { server: string }) {
@@ -76,9 +76,9 @@ async function removeServerDatabase({ server }: { server: string }) {
 
 export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		if (userId) {
-			const resume = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
+			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
 			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 			await sdk.login({ resume });
@@ -110,7 +110,7 @@ export async function logout(this: IRocketChat, { server }: { server: string }):
 	}
 
 	try {
-		await this.removePushToken();
+		await Services.removePushToken();
 	} catch (e) {
 		log(e);
 	}

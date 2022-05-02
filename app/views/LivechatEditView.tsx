@@ -9,7 +9,6 @@ import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import TextInput from '../containers/TextInput';
 import KeyboardView from '../containers/KeyboardView';
-import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
@@ -22,6 +21,8 @@ import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../defin
 import { IApplicationState } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
+import { hasPermission } from '../lib/methods';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	container: {
@@ -74,7 +75,7 @@ const LivechatEditView = ({
 	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async () => {
-		const result = await RocketChat.getCustomFields();
+		const result = await Services.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
@@ -99,8 +100,8 @@ const LivechatEditView = ({
 		setTags(uniqueArray);
 	}, [availableUserTags]);
 
-	const getTagsList = async (agentDepartments: string[]) => {
-		const tags = await RocketChat.getTagsList();
+	const handleGetTagsList = async (agentDepartments: string[]) => {
+		const tags = await Services.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
@@ -108,11 +109,11 @@ const LivechatEditView = ({
 		setAvailableUserTags(availableTags);
 	};
 
-	const getAgentDepartments = async () => {
-		const result = await RocketChat.getAgentDepartments(visitor?._id);
+	const handleGetAgentDepartments = async () => {
+		const result = await Services.getAgentDepartments(visitor?._id);
 		if (result.success) {
 			const agentDepartments = result.departments.map(dept => dept.departmentId);
-			getTagsList(agentDepartments);
+			handleGetTagsList(agentDepartments);
 		}
 	};
 
@@ -158,7 +159,7 @@ const LivechatEditView = ({
 			delete userData.phone;
 		}
 
-		const { error } = await RocketChat.editLivechat(userData, roomData);
+		const { error } = await Services.editLivechat(userData, roomData);
 		if (error) {
 			EventEmitter.emit(LISTENER, { message: error });
 		} else {
@@ -172,7 +173,7 @@ const LivechatEditView = ({
 	};
 
 	const getPermissions = async () => {
-		const permissionsArray = await RocketChat.hasPermission([editOmnichannelContact, editLivechatRoomCustomfields], livechat.rid);
+		const permissionsArray = await hasPermission([editOmnichannelContact, editLivechatRoomCustomfields], livechat.rid);
 		setPermissions(permissionsArray);
 	};
 
@@ -180,7 +181,7 @@ const LivechatEditView = ({
 		navigation.setOptions({
 			title: I18n.t('Edit')
 		});
-		getAgentDepartments();
+		handleGetAgentDepartments();
 		getCustomFields();
 		getPermissions();
 	}, []);

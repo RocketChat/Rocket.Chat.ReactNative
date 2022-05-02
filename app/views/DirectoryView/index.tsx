@@ -8,7 +8,6 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
-import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
@@ -27,6 +26,7 @@ import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';
+import { Services } from '../../lib/services';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -103,7 +103,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		try {
 			const { data, type, globalUsers } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
-			const directories = await RocketChat.getDirectory({
+			const directories = await Services.getDirectory({
 				query,
 				offset: data.length,
 				count: 50,
@@ -164,12 +164,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	onPressItem = async (item: IServerRoom) => {
 		const { type } = this.state;
 		if (type === 'users') {
-			const result = await RocketChat.createDirectMessage(item.username as string);
+			const result = await Services.createDirectMessage(item.username as string);
 			if (result.success) {
 				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 			}
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const result = await RocketChat.getRoomInfo(item._id);
+			const result = await Services.getRoomInfo(item._id);
 			if (result.success) {
 				this.goRoom({
 					rid: item._id,
