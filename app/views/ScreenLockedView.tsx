@@ -4,7 +4,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Orientation from 'react-native-orientation-locker';
 
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
 import { isTablet } from '../lib/methods/helpers/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';

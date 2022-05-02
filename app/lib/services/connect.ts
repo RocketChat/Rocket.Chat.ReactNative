@@ -19,7 +19,7 @@ import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../definiti
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';

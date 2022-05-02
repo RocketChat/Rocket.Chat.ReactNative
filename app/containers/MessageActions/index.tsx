@@ -10,7 +10,7 @@ import log, { logEvent } from '../../utils/log';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../utils/info';
 import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';

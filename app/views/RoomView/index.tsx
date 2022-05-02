@@ -18,7 +18,7 @@ import MessageActions, { IMessageActions } from '../../containers/MessageActions
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox, { IMessageBoxProps } from '../../containers/MessageBox';
 import log, { events, logEvent } from '../../utils/log';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';

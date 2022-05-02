@@ -21,7 +21,7 @@ import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/navigation/appNavigation';

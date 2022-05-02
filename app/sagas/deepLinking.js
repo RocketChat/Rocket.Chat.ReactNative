@@ -6,7 +6,7 @@ import * as types from '../actions/actionsTypes';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import database from '../lib/database';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { appInit, appStart } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';

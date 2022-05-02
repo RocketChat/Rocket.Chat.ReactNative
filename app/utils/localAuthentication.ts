@@ -19,7 +19,7 @@ import {
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
 import { TServerModel } from '../definitions/IServer';
-import EventEmitter from './events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { isIOS } from '../lib/methods/helpers/deviceInfo';
 
 export const saveLastLocalAuthenticationSession = async (

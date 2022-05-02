@@ -5,7 +5,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import styles from './styles';
 import { themes } from '../../lib/constants';
 import { LISTENER } from '../Toast';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
 import { TOnLinkPress } from './interfaces';

@@ -22,7 +22,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import {
 	KEY_COMMAND,
 	handleCommandAddNewServer,

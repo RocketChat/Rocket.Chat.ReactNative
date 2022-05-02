@@ -27,7 +27,7 @@ import BackgroundContainer from '../../containers/BackgroundContainer';
 import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
 import { ChatsStackParamList } from '../../stacks/types';

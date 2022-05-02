@@ -26,7 +26,7 @@ import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes, withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
 import { MessageTypeValues } from '../../utils/messageTypes';

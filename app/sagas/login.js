@@ -11,7 +11,7 @@ import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';

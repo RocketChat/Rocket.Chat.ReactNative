@@ -15,7 +15,7 @@ import I18n from '../i18n';
 import { Services } from '../lib/services';
 import { getUserSelector } from '../selectors/login';
 import { withTheme } from '../theme';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 

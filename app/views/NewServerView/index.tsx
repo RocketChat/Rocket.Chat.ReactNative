@@ -23,7 +23,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { isTablet } from '../../lib/methods/helpers/deviceInfo';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
 import { showConfirmationAlert } from '../../utils/info';
 import { events, logEvent } from '../../utils/log';

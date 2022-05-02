@@ -11,7 +11,7 @@ import random from '../../../utils/random';
 import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
-import EventEmitter from '../../../utils/events';
+import EventEmitter from '../helpers/events';
 import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';

@@ -10,7 +10,7 @@ import { toggleServerDropdown } from '../../actions/rooms';
 import { selectServerRequest, serverInitAdd } from '../../actions/server';
 import { appStart } from '../../actions/app';
 import I18n from '../../i18n';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import ServerItem from '../../containers/ServerItem';
 import database from '../../lib/database';
 import { themes, TOKEN_KEY } from '../../lib/constants';

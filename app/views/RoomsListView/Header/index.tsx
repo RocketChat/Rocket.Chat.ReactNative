@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 
 import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
 import { TSupportedThemes, withTheme } from '../../../theme';
-import EventEmitter from '../../../utils/events';
+import EventEmitter from '../../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
 import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import { events, logEvent } from '../../../utils/log';

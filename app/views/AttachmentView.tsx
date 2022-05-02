@@ -11,7 +11,7 @@ import { sha256 } from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';

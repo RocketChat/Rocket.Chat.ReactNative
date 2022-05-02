@@ -11,7 +11,7 @@ import TextInput from '../containers/TextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';

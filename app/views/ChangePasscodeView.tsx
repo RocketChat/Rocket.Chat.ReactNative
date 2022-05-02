@@ -9,7 +9,7 @@ import Touchable from 'react-native-platform-touchable';
 import { useTheme } from '../theme';
 import { hasNotch, isTablet } from '../lib/methods/helpers/deviceInfo';
 import { PasscodeChoose } from '../containers/Passcode';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../lib/Icons';
 import { CHANGE_PASSCODE_EMITTER, themes } from '../lib/constants';
 

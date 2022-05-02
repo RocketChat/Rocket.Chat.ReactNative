@@ -1,6 +1,6 @@
-import { IEmitUserInteraction } from '../containers/UIKit/interfaces';
-import { ICommand } from '../definitions/ICommand';
-import log from './log';
+import { IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
+import { ICommand } from '../../../definitions/ICommand';
+import log from '../../../utils/log';
 
 type TEventEmitterEmmitArgs =
 	| { rid: string }

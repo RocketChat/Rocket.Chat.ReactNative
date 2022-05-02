@@ -22,7 +22,7 @@ import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { TSupportedThemes, withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
