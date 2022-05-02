@@ -30,6 +30,7 @@ import {
 	getSlashCommands,
 	getUserPresence,
 	isOmnichannelModuleAvailable,
+	logout,
 	subscribeSettings
 } from '../lib/methods';
 import { Services } from '../lib/services';
@@ -37,7 +38,7 @@ import { Services } from '../lib/services';
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
 const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
-const logoutCall = args => RocketChat.logout(args);
+const logoutCall = args => logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);

@@ -24,7 +24,7 @@ import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { onRolesChanged } from '../methods/getRoles';
-import { getSettings } from '../methods';
+import { getSettings, unsubscribeRooms } from '../methods';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -81,7 +81,7 @@ function connect(
 			this.notifyLoggedListener.then(stopListener);
 		}
 
-		this.unsubscribeRooms();
+		unsubscribeRooms();
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 

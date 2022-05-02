@@ -13,6 +13,7 @@ import sdk from '../services/sdk';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
 import UserPreferences from './userPreferences';
 import { Services } from '../services';
+import { roomsSubscription } from './subscriptions/rooms';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
@@ -99,9 +100,8 @@ export async function removeServer({ server }: { server: string }): Promise<void
 }
 
 export async function logout(this: IRocketChat, { server }: { server: string }): Promise<void> {
-	if (this.roomsSub) {
-		this.roomsSub.stop();
-		this.roomsSub = null;
+	if (roomsSubscription?.stop) {
+		roomsSubscription.stop();
 	}
 
 	if (this.activeUsersSubTimeout) {
