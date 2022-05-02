@@ -9,9 +9,12 @@ import log from '../utils/log';
 import { TMessageModel } from '../definitions';
 import { resendMessage } from '../lib/methods';
 
-const MessageErrorActions = forwardRef(({ tmid }: { tmid: string }, ref) => {
-	// TODO - remove this any after merge ActionSheet evaluate
-	const { showActionSheet }: any = useActionSheet();
+export interface IMessageErrorActions {
+	showMessageErrorActions: (message: TMessageModel) => void;
+}
+
+const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(({ tmid }, ref) => {
+	const { showActionSheet } = useActionSheet();
 
 	const handleResend = protectedFunction(async (message: TMessageModel) => {
 		await resendMessage(message, tmid);
