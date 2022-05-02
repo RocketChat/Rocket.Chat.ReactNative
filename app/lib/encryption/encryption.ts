@@ -6,7 +6,7 @@ import { Q, Model } from '@nozbe/watermelondb';
 import UserPreferences from '../methods/userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
-import Deferred from '../../utils/deferred';
+import Deferred from './deferred';
 import log from '../../utils/log';
 import { store } from '../store/auxStore';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
