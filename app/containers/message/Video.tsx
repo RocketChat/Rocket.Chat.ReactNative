@@ -8,7 +8,7 @@ import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
-import { fileDownload } from '../../utils/fileDownload';
+import { fileDownload } from './fileDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
 import I18n from '../../i18n';
