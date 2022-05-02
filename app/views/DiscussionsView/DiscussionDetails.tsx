@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
 import { IMessageFromServer } from '../../definitions';
@@ -35,8 +34,8 @@ interface IDiscussionDetails {
 	date: string;
 }
 
-const DiscussionDetails = ({ item, date }: IDiscussionDetails): JSX.Element => {
-	const { theme } = useTheme();
+const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactElement => {
+	const { colors } = useTheme();
 	let count: string | number | undefined = item.dcount;
 	if (count && count >= 1000) {
 		count = '+999';
@@ -46,15 +45,15 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): JSX.Element => {
 		<View style={[styles.container]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name={'discussions'} size={24} color={themes[theme!].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
+					<CustomIcon name={'discussions'} size={24} color={colors.auxiliaryText} />
+					<Text style={[styles.detailText, { color: colors.auxiliaryText }]} numberOfLines={1}>
 						{count}
 					</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name={'clock'} size={24} color={themes[theme!].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
+					<CustomIcon name={'clock'} size={24} color={colors.auxiliaryText} />
+					<Text style={[styles.detailText, { color: colors.auxiliaryText }]} numberOfLines={1}>
 						{date}
 					</Text>
 				</View>
