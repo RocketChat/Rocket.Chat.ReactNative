@@ -9,13 +9,8 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
-import { SubscriptionType } from '../../definitions/ISubscription';
+import { SubscriptionType, IUser } from '../../definitions';
 import { getRoomAvatar, getRoomTitle, search } from '../../lib/methods';
-
-interface IUser {
-	name: string;
-	username: string;
-}
 
 const SelectUsers = ({
 	server,
@@ -26,7 +21,7 @@ const SelectUsers = ({
 	blockUnauthenticatedAccess,
 	serverVersion,
 	theme
-}: ICreateDiscussionViewSelectUsers): JSX.Element => {
+}: ICreateDiscussionViewSelectUsers): React.ReactElement => {
 	const [users, setUsers] = useState<any[]>([]);
 
 	const getUsers = debounce(async (keyword = '') => {
@@ -41,7 +36,7 @@ const SelectUsers = ({
 		}
 	}, 300);
 
-	const getAvatar = (item: any) =>
+	const getAvatar = (item: IUser) =>
 		avatarURL({
 			text: getRoomAvatar(item),
 			type: SubscriptionType.DIRECT,

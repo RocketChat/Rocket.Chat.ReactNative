@@ -16,7 +16,7 @@ import { LISTENER } from '../../containers/Toast';
 import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TRoomModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
