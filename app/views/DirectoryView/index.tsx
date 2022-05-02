@@ -1,9 +1,11 @@
 import React from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { ChatsStackParamList } from '../../stacks/types';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
 import DirectoryItem from '../../containers/DirectoryItem';
@@ -20,25 +22,36 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../utils/goRoom';
+import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';
 import { Services } from '../../lib/services';
 
 interface IDirectoryViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'DirectoryView'>;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
+		StackNavigationProp<MasterDetailInsideStackParamList>
+	>;
 	baseUrl: string;
 	isFederationEnabled: boolean;
-	user: {
-		id: string;
-		token: string;
-	};
+	user: IUser;
 	theme: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
 }
 
-class DirectoryView extends React.Component<IDirectoryViewProps, any> {
+interface IDirectoryViewState {
+	data: IServerRoom[];
+	loading: boolean;
+	text: string;
+	total: number;
+	showOptionsDropdown: boolean;
+	globalUsers: boolean;
+	type: string;
+}
+
+class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
 	static navigationOptions = ({ navigation, isMasterDetail }: IDirectoryViewProps) => {
 		const options: StackNavigationOptions = {
 			title: I18n.t('Directory')
@@ -70,7 +83,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		this.setState({ text }, this.search);
 	};
 
-	// eslint-disable-next-line react/sort-comp
 	load = debounce(async ({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
@@ -99,7 +111,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 			});
 			if (directories.success) {
 				this.setState({
-					data: [...data, ...directories.result],
+					data: [...data, ...(directories.result as IServerRoom[])],
 					loading: false,
 					total: directories.total
 				});
@@ -130,17 +142,17 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 
 	toggleWorkspace = () => {
 		this.setState(
-			({ globalUsers }: any) => ({ globalUsers: !globalUsers, data: [] }),
+			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
 			() => this.search()
 		);
 	};
 
 	toggleDropdown = () => {
-		this.setState(({ showOptionsDropdown }: any) => ({ showOptionsDropdown: !showOptionsDropdown }));
+		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
 	};
 
-	goRoom = (item: any) => {
-		const { navigation, isMasterDetail }: any = this.props;
+	goRoom = (item: TGoRoomItem) => {
+		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
 		} else {
@@ -149,12 +161,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		goRoom({ item, isMasterDetail });
 	};
 
-	onPressItem = async (item: any) => {
+	onPressItem = async (item: IServerRoom) => {
 		const { type } = this.state;
 		if (type === 'users') {
-			const result = await Services.createDirectMessage(item.username);
+			const result = await Services.createDirectMessage(item.username as string);
 			if (result.success) {
-				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
+				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 			}
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
 			const result = await Services.getRoomInfo(item._id);
@@ -163,7 +175,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 					rid: item._id,
 					name: item.name,
 					joinCodeRequired: result.room.joinCodeRequired,
-					t: item.t,
+					t: item.t as SubscriptionType,
 					search: true
 				});
 			}
@@ -171,7 +183,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 			this.goRoom({
 				rid: item._id,
 				name: item.name,
-				t: item.t,
+				t: item.t as SubscriptionType,
 				search: true,
 				teamMain: item.teamMain,
 				teamId: item.teamId
@@ -218,7 +230,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		);
 	};
 
-	renderItem = ({ item, index }: any) => {
+	renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
 
@@ -231,7 +243,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		}
 
 		const commonProps = {
-			title: item.name,
+			title: item.name as string,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
 			testID: `directory-view-item-${item.name}`.toLowerCase(),
@@ -311,11 +323,11 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 	};
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	isFederationEnabled: state.settings.FEDERATION_Enabled,
-	directoryDefaultView: state.settings.Accounts_Directory_DefaultView,
+	isFederationEnabled: state.settings.FEDERATION_Enabled as boolean,
+	directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string,
 	isMasterDetail: state.app.isMasterDetail
 });
 
