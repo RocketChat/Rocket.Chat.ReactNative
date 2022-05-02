@@ -4,18 +4,21 @@ import { shareSetSettings, shareSelectServer, shareSetUser } from '../../actions
 import SSLPinning from '../../utils/sslPinning';
 import log from '../../utils/log';
 import { IShareServer, IShareUser } from '../../reducers/share';
-import UserPreferences from '../methods/userPreferences';
+import UserPreferences from './userPreferences';
 import database from '../database';
-import RocketChat from '../rocketchat';
 import { encryptionInit } from '../../actions/encryption';
 import { store } from '../store/auxStore';
-import sdk from './sdk';
+import sdk from '../services/sdk';
+import { CERTIFICATE_KEY, TOKEN_KEY } from '../constants';
+import { setCustomEmojis } from './getCustomEmojis';
+import { Services } from '../services';
+import { parseSettings } from './parseSettings';
 
 export async function shareExtensionInit(server: string) {
 	database.setShareDB(server);
 
 	try {
-		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (SSLPinning && certificate) {
 			await SSLPinning.setCertificate(certificate, server);
 		}
@@ -41,7 +44,7 @@ export async function shareExtensionInit(server: string) {
 	}
 	store.dispatch(shareSelectServer(currentServer));
 
-	RocketChat.setCustomEmojis();
+	setCustomEmojis();
 
 	try {
 		// set Settings
@@ -57,10 +60,10 @@ export async function shareExtensionInit(server: string) {
 			valueAsArray: item.valueAsArray,
 			_updatedAt: item._updatedAt
 		}));
-		store.dispatch(shareSetSettings(RocketChat.parseSettings(parsed)));
+		store.dispatch(shareSetSettings(parseSettings(parsed)));
 
 		// set User info
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {
@@ -74,7 +77,7 @@ export async function shareExtensionInit(server: string) {
 		}
 		store.dispatch(shareSetUser(user as IShareUser));
 		if (user) {
-			await RocketChat.login({ resume: user.token });
+			await Services.login({ resume: user.token });
 		}
 		store.dispatch(encryptionInit());
 	} catch (e) {

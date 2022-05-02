@@ -142,6 +142,11 @@ export interface IServerRoom extends IRocketChatRecord {
 	encrypted?: boolean;
 	topic?: any;
 
+	username?: string;
+	nickname?: string;
+	federation?: any;
+	roomsCount?: number;
+
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
 	uids: Array<string>;
 

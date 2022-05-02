@@ -1,13 +1,13 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 
-import { IRoom } from '../definitions/IRoom';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
+import { TDataSelect } from '../definitions/IDataSelect';
 import { ModalStackParamList } from './MasterDetailStack/types';
 
 export type ChatsStackParamList = {
@@ -42,13 +42,13 @@ export type ChatsStackParamList = {
 		joined: boolean;
 	};
 	SelectListView: {
-		data?: IRoom[];
+		data?: TDataSelect[];
 		title: string;
 		infoText?: string;
 		nextAction: (selected: string[]) => void;
 		showAlert?: () => void;
 		isSearch?: boolean;
-		onSearch?: (text: string) => Promise<Partial<IRoom[]> | any>;
+		onSearch?: (text: string) => Promise<TDataSelect[] | any>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {
