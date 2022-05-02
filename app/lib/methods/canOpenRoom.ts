@@ -1,8 +1,8 @@
 import { ERoomTypes } from '../../definitions';
 import { store } from '../store/auxStore';
 import database from '../database';
-import RocketChat from '../rocketchat';
 import sdk from '../services/sdk';
+import { Services } from '../services';
 
 const restTypes = {
 	channel: 'channels',
@@ -17,7 +17,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		// if it's a direct link without rid we'll create a new dm
 		// if the dm already exists it'll return the existent
 		if (type === ERoomTypes.DIRECT && !rid) {
-			const result = await RocketChat.createDirectMessage(name);
+			const result = await Services.createDirectMessage(name);
 			if (result.success) {
 				const { room } = result;
 				return {
@@ -63,7 +63,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 	}
 }
 
-export default async function canOpenRoom({ rid, path, isCall }: { rid: string; isCall: boolean; path: string }): Promise<any> {
+export async function canOpenRoom({ rid, path, isCall }: { rid: string; isCall: boolean; path: string }): Promise<any> {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
