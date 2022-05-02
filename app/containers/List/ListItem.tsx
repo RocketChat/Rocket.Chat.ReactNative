@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { useDimensions } from '../../dimensions';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -100,7 +100,7 @@ const Content = React.memo(
 							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
-							<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
+							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].dangerColor} style={styles.alertIcon} />
 						) : null}
 					</View>
 					{subtitle ? (

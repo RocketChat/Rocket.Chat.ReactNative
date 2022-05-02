@@ -224,7 +224,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			broadcast,
 			encrypted,
 			isTeam,
-			teamId: this.teamId!
+			teamId: this.teamId
 		};
 		dispatch(createChannelRequest(data));
 		Review.pushPositiveEvent();

@@ -10,7 +10,7 @@ import { useTheme } from '../theme';
 import { hasNotch, isTablet } from '../lib/methods/helpers/deviceInfo';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from '../containers/CustomIcon';
 import { CHANGE_PASSCODE_EMITTER, themes } from '../lib/constants';
 
 const styles = StyleSheet.create({

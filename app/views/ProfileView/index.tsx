@@ -22,7 +22,7 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import { setUser as setUserAction } from '../../actions/login';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../lib/constants';

@@ -20,7 +20,7 @@ import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubsc
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import KeyboardView from '../../containers/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';

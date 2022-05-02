@@ -15,7 +15,7 @@ import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen, ISearch, TSubscriptionModel } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon, TIconsName } from '../containers/CustomIcon';
 import Navigation from '../lib/navigation/appNavigation';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import UserItem from '../containers/UserItem';
@@ -51,7 +51,7 @@ interface IButton {
 	onPress: () => void;
 	testID: string;
 	title: string;
-	icon: string;
+	icon: TIconsName;
 	first?: boolean;
 }
 
@@ -187,7 +187,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 						styles.button,
 						{ borderColor: themes[theme].separatorColor }
 					]}>
-					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].tintColor }]} size={24} name={icon} />
+					<CustomIcon name={icon} size={24} color={themes[theme].tintColor} style={styles.buttonIcon} />
 					<Text style={[styles.buttonText, { color: themes[theme].tintColor }]}>{title}</Text>
 				</View>
 			</Touch>

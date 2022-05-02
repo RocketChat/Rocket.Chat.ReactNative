@@ -6,7 +6,7 @@ import { Notifier } from 'react-native-notifier';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Avatar from '../Avatar';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
@@ -136,7 +136,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				</>
 			</Touchable>
 			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
-				<CustomIcon name='close' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
+				<CustomIcon name='close' size={20} color={themes[theme].titleText} style={styles.close} />
 			</Touchable>
 		</View>
 	);

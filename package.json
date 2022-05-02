@@ -17,7 +17,8 @@
 		"precommit": "lint-staged",
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"build-icon-set": "node scripts/build-icon-set.js"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [
@@ -158,6 +159,7 @@
 		"@types/react-native-config-reader": "^4.1.0",
 		"@types/react-native-platform-touchable": "^1.1.2",
 		"@types/react-native-scrollable-tab-view": "^0.10.2",
+		"@types/react-native-vector-icons": "^6.4.10",
 		"@types/react-redux": "^7.1.18",
 		"@types/react-test-renderer": "^17.0.1",
 		"@types/semver": "^7.3.9",
