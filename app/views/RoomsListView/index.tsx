@@ -20,7 +20,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
-import { animateNextTransition } from '../../utils/layoutAnimation';
+import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import {

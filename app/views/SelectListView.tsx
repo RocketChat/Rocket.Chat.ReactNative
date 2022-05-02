@@ -14,7 +14,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../utils/layoutAnimation';
+import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';

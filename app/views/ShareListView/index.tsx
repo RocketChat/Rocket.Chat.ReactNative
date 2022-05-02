@@ -17,7 +17,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';
-import { animateNextTransition } from '../../utils/layoutAnimation';
+import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';

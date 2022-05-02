@@ -16,7 +16,7 @@ import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import Loading from '../containers/Loading';
-import { animateNextTransition } from '../utils/layoutAnimation';
+import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import debounce from '../lib/methods/helpers/debounce';

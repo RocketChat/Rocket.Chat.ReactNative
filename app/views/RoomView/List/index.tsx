@@ -13,7 +13,7 @@ import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } fr
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
 import debounce from '../../../lib/methods/helpers/debounce';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
+import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
