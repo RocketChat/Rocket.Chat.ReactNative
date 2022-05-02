@@ -8,7 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Observable, Subscription } from 'rxjs';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
@@ -374,7 +374,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		);
 	};
 
-	renderButton = (onPress: () => void, iconName: string, text: string) => {
+	renderButton = (onPress: () => void, iconName: TIconsName, text: string) => {
 		const { theme } = this.props;
 
 		const onActionPress = async () => {

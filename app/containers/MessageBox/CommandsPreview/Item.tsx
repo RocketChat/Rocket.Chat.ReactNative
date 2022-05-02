@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { themes } from '../../../lib/constants';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import ActivityIndicator from '../../ActivityIndicator';
 import MessageboxContext from '../Context';

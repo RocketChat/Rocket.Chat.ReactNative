@@ -5,7 +5,7 @@ import Touchable from './Touchable';
 import { BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants';
 import { IMessageCallButton } from './interfaces';
 import { useTheme } from '../../theme';
