@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { themes } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { Button } from './Button';
 import styles from './styles';
@@ -10,7 +10,7 @@ import styles from './styles';
 export interface IActionSheetItem {
 	item: {
 		title: string;
-		icon: string;
+		icon: TIconsName;
 		danger?: boolean;
 		testID?: string;
 		onPress: () => void;

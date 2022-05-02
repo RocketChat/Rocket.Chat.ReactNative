@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import Touch from '../../utils/touch';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
 import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
@@ -52,7 +52,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 	renderItem = (itemType: string) => {
 		const { changeType, type: propType, theme } = this.props;
 		let text = 'Users';
-		let icon = 'user';
+		let icon: TIconsName = 'user';
 		if (itemType === 'channels') {
 			text = 'Channels';
 			icon = 'channel-public';
@@ -70,7 +70,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 				theme={theme}
 				accessibilityLabel={I18n.t(text)}>
 				<View style={styles.dropdownItemContainer}>
-					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
+					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
 					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
 					{propType === itemType ? <Check /> : null}
 				</View>
@@ -104,9 +104,10 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 							]}>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon
-								style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].auxiliaryTintColor }]}
+								style={[styles.dropdownItemIcon, styles.inverted]}
 								size={22}
 								name='chevron-down'
+								color={themes[theme].auxiliaryTintColor}
 							/>
 						</View>
 					</Touch>
