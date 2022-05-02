@@ -18,7 +18,8 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
-import { IRoom } from '../definitions/IRoom';
+import { IApplicationState } from '../definitions';
+import { TDataSelect } from '../definitions/IDataSelect';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -29,8 +30,8 @@ const styles = StyleSheet.create({
 });
 
 interface ISelectListViewState {
-	data?: IRoom[];
-	dataFiltered?: IRoom[];
+	data?: TDataSelect[];
+	dataFiltered?: TDataSelect[];
 	isSearching: boolean;
 	selected: string[];
 }
@@ -53,7 +54,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 
 	private isSearch: boolean;
 
-	private onSearch?: (text: string) => Promise<Partial<IRoom[]> | any>;
+	private onSearch?: (text: string) => Promise<TDataSelect[] | any>;
 
 	private isRadio?: boolean;
 
@@ -122,7 +123,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	search = async (text: string) => {
 		try {
 			this.setState({ isSearching: true });
-			const result = (await this.onSearch?.(text)) as IRoom[];
+			const result = await this.onSearch?.(text);
 			this.setState({ dataFiltered: result });
 		} catch (e) {
 			log(e);
@@ -150,19 +151,19 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		}
 	};
 
-	renderItem = ({ item }: { item: Partial<IRoom> }) => {
+	renderItem = ({ item }: { item: TDataSelect }) => {
 		const { theme } = this.props;
 		const { selected } = this.state;
 
 		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
 		const icon = item.teamMain ? teamIcon : channelIcon;
-		const checked = this.isChecked(item.rid!) ? 'check' : '';
+		const checked = this.isChecked(item.rid) ? 'check' : '';
 
 		const showRadio = () => (
 			<RadioButton
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				selected={selected.includes(item.rid!)}
+				selected={selected.includes(item.rid)}
 				color={themes[theme].actionTintColor}
 				size={ICON_SIZE}
 			/>
@@ -182,7 +183,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${item.name}`}
-					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid!))}
+					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
@@ -211,7 +212,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
