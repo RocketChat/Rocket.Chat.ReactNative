@@ -19,10 +19,10 @@ import BackgroundContainer from '../../containers/BackgroundContainer';
 import { isIOS } from '../../utils/deviceInfo';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import SearchHeader from '../../containers/SearchHeader';
 import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
+import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;
 
@@ -62,7 +62,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 
 		setLoading(true);
 		try {
-			const result = await RocketChat.getDiscussions({
+			const result = await Services.getDiscussions({
 				roomId: rid,
 				offset: isSearching ? search.length : discussions.length,
 				count: API_FETCH_COUNT,

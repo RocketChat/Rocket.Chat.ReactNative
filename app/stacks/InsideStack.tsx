@@ -115,11 +115,7 @@ const ChatsStackNavigator = () => {
 				component={NotificationPrefView}
 				options={NotificationPrefView.navigationOptions}
 			/>
-			<ChatsStack.Screen
-				name='ForwardLivechatView'
-				component={ForwardLivechatView}
-				options={ForwardLivechatView.navigationOptions}
-			/>
+			<ChatsStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 			<ChatsStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 			<ChatsStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 			<ChatsStack.Screen
