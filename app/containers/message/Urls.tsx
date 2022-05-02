@@ -5,7 +5,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, useTheme, withTheme } from '../../theme';

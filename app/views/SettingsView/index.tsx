@@ -26,7 +26,7 @@ import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../utils/log';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../utils/review';
 import SidebarView from '../SidebarView';
 import { clearCache } from '../../lib/methods';

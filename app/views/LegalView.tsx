@@ -4,7 +4,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
-import openLink from '../utils/openLink';
+import openLink from '../lib/methods/helpers/openLink';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';

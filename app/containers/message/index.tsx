@@ -7,7 +7,7 @@ import MessageContext from './Context';
 import debounce from '../../lib/methods/helpers/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import { TSupportedThemes, withTheme } from '../../theme';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, TAnyMessageModel } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
