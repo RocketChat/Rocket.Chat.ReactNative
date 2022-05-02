@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
-import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
+import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
 import { RootEnum } from './definitions';
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';

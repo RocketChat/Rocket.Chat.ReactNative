@@ -3,7 +3,7 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
-import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../utils/navigation';
+import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 // Outside Stack
 import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';

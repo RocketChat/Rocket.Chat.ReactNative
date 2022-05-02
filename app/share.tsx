@@ -11,7 +11,7 @@ import Navigation from './lib/navigation/shareNavigation';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { closeShareExtension, shareExtensionInit } from './lib/methods/shareExtension';
-import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
+import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './lib/methods/helpers/navigation';
 import { ThemeContext, TSupportedThemes } from './theme';
 import { localAuthenticate } from './lib/methods/helpers/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
