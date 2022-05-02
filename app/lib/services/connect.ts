@@ -9,7 +9,7 @@ import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
 import { selectServerFailure } from '../../actions/server';
-import { twoFactor } from '../../utils/twoFactor';
+import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
