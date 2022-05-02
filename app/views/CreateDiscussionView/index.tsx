@@ -13,7 +13,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
 import Navigation from '../../lib/navigation/appNavigation';
-import { createDiscussionRequest } from '../../actions/createDiscussion';
+import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
 import { showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
@@ -21,19 +21,19 @@ import { events, logEvent } from '../../utils/log';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
-import { ICreateChannelViewProps, IResult, IError } from './interfaces';
-import { IApplicationState } from '../../definitions';
+import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
+import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { getRoomTitle } from '../../lib/methods';
 
-class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
-	private channel: any;
+class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
+	private channel: ISubscription;
 
 	constructor(props: ICreateChannelViewProps) {
 		super(props);
 		const { route } = props;
 		this.channel = route.params?.channel;
-		const message: any = route.params?.message ?? {};
+		const message = route.params?.message ?? {};
 		this.state = {
 			channel: this.channel,
 			message,
@@ -45,7 +45,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 		this.setHeader();
 	}
 
-	componentDidUpdate(prevProps: any, prevState: any) {
+	componentDidUpdate(prevProps: ICreateChannelViewProps, prevState: ICreateChannelViewState) {
 		const { channel, name } = this.state;
 		const { loading, failure, error, result, isMasterDetail } = this.props;
 
@@ -96,7 +96,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	submit = () => {
 		const {
 			name: t_name,
-			channel: { prid, rid },
+			channel,
 			message: { id: pmid },
 			reply,
 			users,
@@ -104,8 +104,8 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 		} = this.state;
 		const { dispatch } = this.props;
 
-		const params: any = {
-			prid: prid || rid,
+		const params: ICreateDiscussionRequestData = {
+			prid: ('prid' in channel && channel.prid) || channel.rid,
 			pmid,
 			t_name,
 			reply,
@@ -121,15 +121,15 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	valid = () => {
 		const { channel, name } = this.state;
 
-		return channel && channel.rid && channel.rid.trim().length && name.trim().length;
+		return channel && channel.rid && channel.rid.trim().length && name?.trim().length;
 	};
 
-	selectChannel = ({ value }: any) => {
+	selectChannel = ({ value }: { value: ISearchLocal }) => {
 		logEvent(events.CD_SELECT_CHANNEL);
 		this.setState({ channel: value, encrypted: value?.encrypted });
 	};
 
-	selectUsers = ({ value }: any) => {
+	selectUsers = ({ value }: { value: string[] }) => {
 		logEvent(events.CD_SELECT_USERS);
 		this.setState({ users: value });
 	};
@@ -140,7 +140,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 	}
 
-	onEncryptedChange = (value: any) => {
+	onEncryptedChange = (value: boolean) => {
 		logEvent(events.CD_TOGGLE_ENCRY);
 		this.setState({ encrypted: value });
 	};
