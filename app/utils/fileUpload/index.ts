@@ -1,6 +1,6 @@
 import RNFetchBlob from 'rn-fetch-blob';
 
-import { TMethods } from '../fetch';
+import { TMethods } from '../../lib/methods/helpers/fetch';
 import { IFileUpload } from './interfaces';
 
 class FileUpload {
