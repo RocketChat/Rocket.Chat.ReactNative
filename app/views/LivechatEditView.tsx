@@ -12,7 +12,7 @@ import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../lib/methods/helpers/events';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';

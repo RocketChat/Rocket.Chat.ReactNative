@@ -13,7 +13,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import debounce from '../../lib/methods/helpers/debounce';
 import Message from '../../containers/message';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';

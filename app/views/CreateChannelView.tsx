@@ -9,7 +9,7 @@ import Loading from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../containers/KeyboardView';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../containers/UserItem';
 import * as HeaderButton from '../containers/HeaderButton';

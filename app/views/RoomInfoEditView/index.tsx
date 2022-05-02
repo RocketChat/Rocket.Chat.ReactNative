@@ -31,7 +31,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import log, { events, logEvent } from '../../utils/log';
 import { MessageTypeValues } from './messageTypes';
 import random from '../../lib/methods/helpers/random';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IAvatar } from '../../definitions/IProfileViewInterfaces';
 import sharedStyles from '../Styles';
 import styles from './styles';

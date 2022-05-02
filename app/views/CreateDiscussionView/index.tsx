@@ -5,7 +5,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';

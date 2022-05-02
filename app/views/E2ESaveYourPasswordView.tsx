@@ -17,7 +17,7 @@ import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
 import { events, logEvent } from '../utils/log';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
