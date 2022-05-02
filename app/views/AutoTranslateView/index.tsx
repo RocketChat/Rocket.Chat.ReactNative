@@ -3,7 +3,6 @@ import { FlatList, StyleSheet, Switch } from 'react-native';
 import { RouteProp } from '@react-navigation/core';
 
 import { ChatsStackParamList } from '../../stacks/types';
-import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
@@ -12,6 +11,7 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
 import { ISubscription } from '../../definitions/ISubscription';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	list: {
@@ -64,7 +64,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 	async componentDidMount() {
 		this.mounted = true;
 		try {
-			const languages = await RocketChat.getSupportedLanguagesAutoTranslate();
+			const languages = await Services.getSupportedLanguagesAutoTranslate();
 			this.setState({ languages });
 		} catch (error) {
 			console.log(error);
@@ -81,7 +81,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 		logEvent(events.AT_TOGGLE_TRANSLATE);
 		const { enableAutoTranslate } = this.state;
 		try {
-			await RocketChat.saveAutoTranslate({
+			await Services.saveAutoTranslate({
 				rid: this.rid,
 				field: 'autoTranslate',
 				value: enableAutoTranslate ? '0' : '1',
@@ -97,7 +97,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 	saveAutoTranslateLanguage = async (language: string) => {
 		logEvent(events.AT_SET_LANG);
 		try {
-			await RocketChat.saveAutoTranslate({
+			await Services.saveAutoTranslate({
 				rid: this.rid,
 				field: 'autoTranslateLanguage',
 				value: language

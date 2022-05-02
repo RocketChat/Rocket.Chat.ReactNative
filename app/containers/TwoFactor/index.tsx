@@ -13,9 +13,9 @@ import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
-import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import { IApplicationState } from '../../definitions';
+import { Services } from '../../lib/services';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
@@ -63,7 +63,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
-	const sendEmail = () => RocketChat.sendEmailCode();
+	const sendEmail = () => Services.sendEmailCode();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {

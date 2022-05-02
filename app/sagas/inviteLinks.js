@@ -3,20 +3,21 @@ import { Alert } from 'react-native';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
 import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '../actions/inviteLinks';
-import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
+import { getRoomTitle } from '../lib/methods';
+import { Services } from '../lib/services';
 
 const handleRequest = function* handleRequest({ token }) {
 	try {
-		const validateResult = yield RocketChat.validateInviteToken(token);
+		const validateResult = yield Services.validateInviteToken(token);
 		if (!validateResult.valid) {
 			yield put(inviteLinksFailure());
 			return;
 		}
 
-		const result = yield RocketChat.inviteToken(token);
+		const result = yield Services.inviteToken(token);
 		if (!result.success) {
 			yield put(inviteLinksFailure());
 			return;
@@ -28,7 +29,7 @@ const handleRequest = function* handleRequest({ token }) {
 			const { room } = result;
 			Navigation.navigate('RoomView', {
 				rid: room.rid,
-				name: RocketChat.getRoomTitle(room),
+				name: getRoomTitle(room),
 				t: room.t
 			});
 		}
@@ -47,7 +48,7 @@ const handleFailure = function handleFailure() {
 const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
 	try {
 		const inviteLinks = yield select(state => state.inviteLinks);
-		const result = yield RocketChat.findOrCreateInvite({
+		const result = yield Services.findOrCreateInvite({
 			rid,
 			days: inviteLinks.days,
 			maxUses: inviteLinks.maxUses
