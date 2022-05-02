@@ -14,8 +14,7 @@ import { store } from '../store/auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import I18n from '../../i18n';
-import RocketChat from '../rocketchat';
-import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../definitions';
+import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
 import { isIOS } from '../../utils/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
@@ -24,7 +23,7 @@ import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { onRolesChanged } from '../methods/getRoles';
-import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUserTimer } from '../methods';
+import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUser, _setUserTimer } from '../methods';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -36,10 +35,7 @@ interface IServices {
 }
 
 // FIXME: Remove `this` context
-function connect(
-	this: IRocketChat,
-	{ server, logoutOnError = false }: { server: string; logoutOnError: boolean }
-): Promise<void> {
+function connect(this: any, { server, logoutOnError = false }: { server: string; logoutOnError: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
@@ -119,7 +115,7 @@ function connect(
 
 		this.usersListener = sdk.current.onStreamData(
 			'users',
-			protectedFunction((ddpMessage: any) => RocketChat._setUser(ddpMessage))
+			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
 		this.notifyAllListener = sdk.current.onStreamData(

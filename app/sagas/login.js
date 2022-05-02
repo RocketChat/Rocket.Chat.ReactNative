@@ -31,7 +31,8 @@ import {
 	getUserPresence,
 	isOmnichannelModuleAvailable,
 	logout,
-	subscribeSettings
+	subscribeSettings,
+	subscribeUsersPresence
 } from '../lib/methods';
 import { Services } from '../lib/services';
 
@@ -115,7 +116,7 @@ const registerPushTokenFork = function* registerPushTokenFork() {
 };
 
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
-	RocketChat.subscribeUsersPresence();
+	subscribeUsersPresence();
 };
 
 const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
