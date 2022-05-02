@@ -20,11 +20,11 @@ import { themes } from '../../lib/constants';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import RocketChat from '../../lib/rocketchat';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
 import { IServerInfo } from '../../definitions';
+import { getRoomAvatar } from '../../lib/methods';
 
 interface IDataFromShare {
 	value: string;
@@ -389,7 +389,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		return (
 			<DirectoryItem
 				title={this.getRoomTitle(item)}
-				avatar={RocketChat.getRoomAvatar(item)}
+				avatar={getRoomAvatar(item)}
 				description={description}
 				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}

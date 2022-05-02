@@ -12,13 +12,14 @@ import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
-import RocketChat from '../../../lib/rocketchat';
 import debounce from '../../../utils/debounce';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
 import NavBottomFAB from './NavBottomFAB';
+import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
+import { Services } from '../../../lib/services';
 
 const QUERY_SIZE = 50;
 
@@ -219,7 +220,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 		if (tmid) {
 			try {
-				await RocketChat.readThreads(tmid);
+				await Services.readThreads(tmid);
 			} catch {
 				// Do nothing
 			}
@@ -236,9 +237,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			if (messages.length) {
 				try {
 					if (tmid) {
-						await RocketChat.loadThreadMessages({ tmid, rid });
+						await loadThreadMessages({ tmid, rid });
 					} else {
-						await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
+						await loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
 					}
 				} catch (e) {
 					log(e);
