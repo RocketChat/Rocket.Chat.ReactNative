@@ -11,9 +11,9 @@ import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
-import RocketChat from '../../lib/rocketchat';
 import { ProfileStackParamList } from '../../stacks/types';
 import { IApplicationState } from '../../definitions';
+import { Services } from '../../lib/services';
 
 interface IUserPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -37,7 +37,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const toggleMessageParser = async (value: boolean) => {
 		try {
 			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
-			await RocketChat.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+			await Services.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
 		} catch (e) {
 			log(e);
 		}

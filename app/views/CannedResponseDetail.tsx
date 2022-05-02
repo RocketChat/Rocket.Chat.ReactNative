@@ -9,7 +9,6 @@ import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
 import { TSupportedThemes, useTheme } from '../theme';
-import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/navigation/appNavigation';
 import { goRoom } from '../utils/goRoom';
 import { themes } from '../lib/constants';
@@ -17,6 +16,7 @@ import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
+import { getRoomTitle, getUidDirectMessage } from '../lib/methods';
 
 const styles = StyleSheet.create({
 	scroll: {
@@ -111,12 +111,12 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 		const { name } = room;
 		const params = {
 			rid: room.rid,
-			name: RocketChat.getRoomTitle({
+			name: getRoomTitle({
 				t: room.t,
 				fname: name
 			}),
 			t: room.t as any,
-			roomUserId: RocketChat.getUidDirectMessage(room),
+			roomUserId: getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};
 

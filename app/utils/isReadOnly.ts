@@ -1,11 +1,11 @@
-import RocketChat from '../lib/rocketchat';
 import { store as reduxStore } from '../lib/store/auxStore';
 import { ISubscription } from '../definitions/ISubscription';
+import { hasPermission } from '../lib/methods';
 
 const canPostReadOnly = async ({ rid }: { rid: string }) => {
 	// TODO: this is not reactive. If this permission changes, the component won't be updated
 	const postReadOnlyPermission = reduxStore.getState().permissions['post-readonly'];
-	const permission = await RocketChat.hasPermission([postReadOnlyPermission], rid);
+	const permission = await hasPermission([postReadOnlyPermission], rid);
 	return permission[0];
 };
 

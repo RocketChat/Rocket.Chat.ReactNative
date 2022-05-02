@@ -11,7 +11,6 @@ import random from '../../../utils/random';
 import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
-import RocketChat from '../../rocketchat';
 import EventEmitter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
@@ -26,13 +25,16 @@ import {
 	TMessageModel,
 	TRoomModel,
 	TThreadMessageModel,
-	TThreadModel
+	TThreadModel,
+	SubscriptionType
 } from '../../../definitions';
 import sdk from '../../services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { E2E_MESSAGE_TYPE } from '../../constants';
+import { getRoom } from '../getRoom';
+import { getRoomAvatar, getRoomTitle, getSenderName } from '../helpers';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -99,7 +101,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey,
-					avatarETag: s.avatarETag
+					avatarETag: s.avatarETag,
+					onHold: s.onHold
 				} as ISubscription;
 			} catch (error) {
 				try {
@@ -251,6 +254,11 @@ const debouncedUpdate = (subscription: ISubscription) => {
 							createOrUpdateSubscription(sub, room);
 						} else {
 							const room = batch[key] as IRoom;
+							// If the omnichannel's chat is onHold and waitingResponse we shouldn't create or update the chat,
+							// because it should go to Queue
+							if (room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse) {
+								return null;
+							}
 							const subQueueId = getSubQueueId(room._id);
 							const sub = batch[subQueueId] as ISubscription;
 							delete batch[subQueueId];
@@ -351,9 +359,9 @@ export default function subscribeRooms() {
 				const {
 					payload: { rid, message, sender }
 				} = notification;
-				const room = await RocketChat.getRoom(rid);
-				notification.title = RocketChat.getRoomTitle(room);
-				notification.avatar = RocketChat.getRoomAvatar(room);
+				const room = await getRoom(rid);
+				notification.title = getRoomTitle(room);
+				notification.avatar = getRoomAvatar(room);
 
 				// If it's from a encrypted room
 				if (message?.t === E2E_MESSAGE_TYPE) {
@@ -364,7 +372,7 @@ export default function subscribeRooms() {
 						notification.text = msg;
 						// If it's a private group we should add the sender name
 					} else {
-						notification.text = `${RocketChat.getSenderName(sender)}: ${msg}`;
+						notification.text = `${getSenderName(sender)}: ${msg}`;
 					}
 				}
 			} catch (e) {

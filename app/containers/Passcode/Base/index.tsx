@@ -19,7 +19,7 @@ interface IPasscodeBase {
 	type: string;
 	previousPasscode?: string;
 	title: string;
-	subtitle?: string;
+	subtitle?: string | null;
 	showBiometry?: boolean;
 	onEndProcess: Function;
 	onError?: Function;

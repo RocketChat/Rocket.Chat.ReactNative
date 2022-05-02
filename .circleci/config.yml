@@ -339,7 +339,7 @@ jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: circleci/node:15
+      - image: cimg/node:16.14
     resource_class: large
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
@@ -372,7 +372,7 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -383,7 +383,7 @@ jobs:
   android-build-official:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -394,7 +394,7 @@ jobs:
   android-internal-app-sharing-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-internal-app-sharing
@@ -402,7 +402,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:
@@ -411,14 +411,14 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:

@@ -5,37 +5,10 @@ import I18n from '../../i18n';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
-import { TUserStatus } from '../../definitions';
-import { TSupportedThemes } from '../../theme';
+import { ISubscription, TUserStatus } from '../../definitions';
+import { IRoomItemContainerProps } from './interfaces';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
-interface IRoomItemContainerProps {
-	item: any;
-	showLastMessage: boolean;
-	id: string;
-	onPress: Function;
-	onLongPress: Function;
-	username: string;
-	avatarSize: number;
-	width: number;
-	status: TUserStatus;
-	toggleFav(): void;
-	toggleRead(): void;
-	hideChannel(): void;
-	useRealName: boolean;
-	getUserPresence: Function;
-	connected: boolean;
-	theme: TSupportedThemes;
-	isFocused: boolean;
-	getRoomTitle: Function;
-	getRoomAvatar: Function;
-	getIsGroupChat: Function;
-	getIsRead: Function;
-	swipeEnabled: boolean;
-	autoJoin: boolean;
-	showAvatar: boolean;
-	displayMode: string;
-}
 
 const attrs = [
 	'width',
@@ -51,12 +24,9 @@ const attrs = [
 ];
 
 class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
-	private mounted: boolean;
-
-	private roomSubscription: any;
+	private roomSubscription: ISubscription | undefined;
 
 	static defaultProps: Partial<IRoomItemContainerProps> = {
-		avatarSize: 48,
 		status: 'offline',
 		getUserPresence: () => {},
 		getRoomTitle: () => 'title',
@@ -68,24 +38,22 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 
 	constructor(props: IRoomItemContainerProps) {
 		super(props);
-		this.mounted = false;
 		this.init();
 	}
 
 	componentDidMount() {
-		this.mounted = true;
 		const { connected, getUserPresence, id } = this.props;
 		if (connected && this.isDirect) {
 			getUserPresence(id);
 		}
 	}
 
-	shouldComponentUpdate(nextProps: any) {
-		const { props }: any = this;
+	shouldComponentUpdate(nextProps: IRoomItemContainerProps) {
+		const { props } = this;
 		return !attrs.every(key => props[key] === nextProps[key]);
 	}
 
-	componentDidUpdate(prevProps: any) {
+	componentDidUpdate(prevProps: IRoomItemContainerProps) {
 		const { connected, getUserPresence, id } = this.props;
 		if (prevProps.connected !== connected && connected && this.isDirect) {
 			getUserPresence(id);
@@ -107,7 +75,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		const {
 			item: { t },
 			id
-		}: any = this.props;
+		} = this.props;
 		return t === 'd' && id && !this.isGroupChat;
 	}
 
@@ -145,7 +113,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			hideChannel,
 			theme,
 			isFocused,
-			avatarSize,
 			status,
 			showLastMessage,
 			username,
@@ -178,7 +145,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		}
 
 		return (
-			// @ts-ignore
 			<RoomItem
 				name={name}
 				avatar={avatar}
@@ -198,7 +164,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				type={item.t}
 				theme={theme}
 				isFocused={isFocused}
-				size={avatarSize}
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
@@ -218,6 +183,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
+				sourceType={item.source}
 			/>
 		);
 	}

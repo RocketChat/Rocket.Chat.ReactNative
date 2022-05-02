@@ -9,8 +9,7 @@ import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
-import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
@@ -40,17 +39,26 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
-import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	getUidDirectMessage,
+	getUserPresence,
+	hasPermission,
+	isGroupChat,
+	isRead,
+	RoomTypes,
+	search
+} from '../../lib/methods';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
+import { Services } from '../../lib/services';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
 	[key: string]: any;
@@ -90,7 +98,8 @@ interface IRoomsListViewState {
 	searching: boolean;
 	search: ISubscription[];
 	loading: boolean;
-	chatsUpdate: [];
+	chatsUpdate: string[];
+	omnichannelsUpdate: string[];
 	chats: ISubscription[];
 	item: ISubscription;
 	canCreateRoom: boolean;
@@ -109,7 +118,8 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
-const OMNICHANNEL_HEADER = 'Open_Livechats';
+const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
+const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
 
 const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
@@ -174,6 +184,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			search: [],
 			loading: true,
 			chatsUpdate: [],
+			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
 			canCreateRoom: false
@@ -228,12 +239,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.getSubscriptions();
 		}
 		if (searchText !== nextProps.searchText) {
-			this.search(nextProps.searchText);
+			this.handleSearch(nextProps.searchText);
 		}
 	}
 
 	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
-		const { chatsUpdate, searching, item, canCreateRoom } = this.state;
+		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -259,6 +270,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
+			this.shouldUpdate = true;
+		}
+
+		const omnichannelsNotEqual = !dequal(nextState.omnichannelsUpdate, omnichannelsUpdate);
+
+		if (omnichannelsNotEqual) {
 			this.shouldUpdate = true;
 		}
 
@@ -297,7 +314,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return true;
 		}
 		// If it's focused and there are changes, update
-		if (chatsNotEqual) {
+		if (chatsNotEqual || omnichannelsNotEqual) {
 			this.shouldUpdate = false;
 			return true;
 		}
@@ -389,7 +406,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDirectMessagePermission,
 			createDiscussionPermission
 		];
-		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const permissionsToCreate = await hasPermission(permissions);
 		const canCreateRoom = permissionsToCreate.filter((r: boolean) => r === true).length > 0;
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
@@ -482,21 +499,21 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['alert']);
-
+				.observeWithColumns(['alert', 'on_hold']);
 			// When we're NOT grouping
 		} else {
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
-				.observe();
+				.observeWithColumns(['on_hold']);
 		}
 
 		this.querySubscription = observable.subscribe(data => {
 			let tempChats = [] as TSubscriptionModel[];
 			let chats = data;
 
+			let omnichannelsUpdate: string[] = [];
 			let chatsUpdate = [];
 			if (showUnread) {
 				/**
@@ -515,8 +532,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
 			if (isOmnichannelAgent) {
 				const omnichannel = chats.filter(s => filterIsOmnichannel(s));
+				const omnichannelInProgress = omnichannel.filter(s => !s.onHold);
+				const omnichannelOnHold = omnichannel.filter(s => s.onHold);
 				chats = chats.filter(s => !filterIsOmnichannel(s));
-				tempChats = this.addRoomsGroup(omnichannel, OMNICHANNEL_HEADER, tempChats);
+				omnichannelsUpdate = omnichannelInProgress.map(s => s.rid);
+				tempChats = this.addRoomsGroup(omnichannelInProgress, OMNICHANNEL_HEADER_IN_PROGRESS, tempChats);
+				tempChats = this.addRoomsGroup(omnichannelOnHold, OMNICHANNEL_HEADER_ON_HOLD, tempChats);
 			}
 
 			// unread
@@ -553,6 +574,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				this.internalSetState({
 					chats: tempChats,
 					chatsUpdate,
+					omnichannelsUpdate,
 					loading: false
 				});
 			} else {
@@ -560,6 +582,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				this.state.chats = tempChats;
 				// @ts-ignore
 				this.state.chatsUpdate = chatsUpdate;
+				// @ts-ignore
+				this.state.omnichannelsUpdate = omnichannelsUpdate;
 				// @ts-ignore
 				this.state.loading = false;
 			}
@@ -577,7 +601,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { dispatch } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			dispatch(openSearchHeader());
-			this.search('');
+			this.handleSearch('');
 			this.setHeader();
 		});
 	};
@@ -611,8 +635,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	// eslint-disable-next-line react/sort-comp
-	search = debounce(async (text: string) => {
-		const result = await RocketChat.search({ text });
+	handleSearch = debounce(async (text: string) => {
+		const result = await search({ text });
 
 		// if the search was cancelled before the promise is resolved
 		const { searching } = this.state;
@@ -626,19 +650,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.scrollToTop();
 	}, 300);
 
-	getRoomTitle = (item: ISubscription) => RocketChat.getRoomTitle(item);
-
-	getRoomAvatar = (item: ISubscription) => RocketChat.getRoomAvatar(item);
-
-	isGroupChat = (item: ISubscription) => RocketChat.isGroupChat(item);
-
-	isRead = (item: ISubscription) => RocketChat.isRead(item);
-
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
-	getUserPresence = (uid: string) => RocketChat.getUserPresence(uid);
-
-	getUidDirectMessage = (room: ISubscription) => RocketChat.getUidDirectMessage(room);
+	handleGetUserPresence = (uid: string) => getUserPresence(uid);
 
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -665,7 +679,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await RocketChat.toggleFavorite(rid, !favorite);
+			const result = await Services.toggleFavorite(rid, !favorite);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
@@ -685,11 +699,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	toggleRead = async (rid: string, isRead: boolean) => {
-		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
+	toggleRead = async (rid: string, tIsRead: boolean) => {
+		logEvent(tIsRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await RocketChat.toggleRead(isRead, rid);
+			const result = await Services.toggleRead(tIsRead, rid);
 
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
@@ -697,7 +711,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update(sub => {
-							sub.alert = isRead;
+							sub.alert = tIsRead;
 							sub.unread = 0;
 						});
 					} catch (e) {
@@ -715,7 +729,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await RocketChat.hideRoom(rid, type);
+			const result = await Services.hideRoom(rid, type);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
@@ -745,30 +759,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
-		const { navigation, isMasterDetail, queueSize, inquiryEnabled, user } = this.props;
-
-		// if not-available, prompt to change to available
-		if (!isOmnichannelStatusAvailable(user)) {
-			showConfirmationAlert({
-				message: I18n.t('Omnichannel_enable_alert'),
-				confirmationText: I18n.t('Yes'),
-				onPress: async () => {
-					try {
-						await changeLivechatStatus();
-					} catch {
-						// Do nothing
-					}
-				}
-			});
-		}
+		const { navigation, isMasterDetail, inquiryEnabled } = this.props;
 
 		if (!inquiryEnabled) {
 			return;
 		}
-		// prevent navigation to empty list
-		if (!queueSize) {
-			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
-		}
+
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
 		} else {
@@ -950,7 +946,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showAvatar,
 			displayMode
 		} = this.props;
-		const id = this.getUidDirectMessage(item);
+		const id = getUidDirectMessage(item);
 		const swipeEnabled = this.isSwipeEnabled(item);
 
 		return (
@@ -967,11 +963,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
-				getUserPresence={this.getUserPresence}
-				getRoomTitle={this.getRoomTitle}
-				getRoomAvatar={this.getRoomAvatar}
-				getIsGroupChat={this.isGroupChat}
-				getIsRead={this.isRead}
+				getUserPresence={this.handleGetUserPresence}
+				getRoomTitle={getRoomTitle}
+				getRoomAvatar={getRoomAvatar}
+				getIsGroupChat={isGroupChat}
+				getIsRead={isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
 				swipeEnabled={swipeEnabled}
