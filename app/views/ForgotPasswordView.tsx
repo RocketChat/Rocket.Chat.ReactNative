@@ -12,7 +12,7 @@ import { Services } from '../lib/services';
 import { OutsideParamList } from '../stacks/types';
 import { TSupportedThemes, withTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import isValidEmail from '../utils/isValidEmail';
+import isValidEmail from '../lib/methods/helpers/isValidEmail';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
 
