@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { isIOS } from '../../utils/deviceInfo';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { fileDownload } from '../../utils/fileDownload';
