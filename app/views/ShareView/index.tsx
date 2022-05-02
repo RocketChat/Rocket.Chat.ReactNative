@@ -20,7 +20,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
-import { canUploadFile } from '../../utils/media';
+import { canUploadFile } from '../../lib/methods/helpers/media';
 import { isAndroid } from '../../lib/methods/helpers/deviceInfo';
 import Thumbs from './Thumbs';
 import Preview from './Preview';

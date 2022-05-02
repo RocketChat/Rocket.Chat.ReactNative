@@ -27,7 +27,7 @@ import LeftButtons from './LeftButtons';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
 import { isAndroid, isTablet } from '../../lib/methods/helpers/deviceInfo';
-import { canUploadFile } from '../../utils/media';
+import { canUploadFile } from '../../lib/methods/helpers/media';
 import EventEmiter from '../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
 import getMentionRegexp from './getMentionRegexp';

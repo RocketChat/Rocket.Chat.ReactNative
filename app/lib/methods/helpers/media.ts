@@ -1,4 +1,4 @@
-import { IAttachment } from '../views/ShareView/interfaces';
+import { IAttachment } from '../../../views/ShareView/interfaces';
 
 export const canUploadFile = (
 	file: IAttachment,
