@@ -38,7 +38,7 @@ import {
 	handleCommandSearchMessages,
 	IKeyCommandEvent
 } from '../../commands';
-import { Review } from '../../utils/review';
+import { Review } from '../../lib/methods/helpers/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';

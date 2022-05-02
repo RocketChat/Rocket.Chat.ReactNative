@@ -16,7 +16,7 @@ import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../lib/constants';
 import { withTheme } from '../theme';
-import { Review } from '../utils/review';
+import { Review } from '../lib/methods/helpers/review';
 import { getUserSelector } from '../selectors/login';
 import { events, logEvent } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
