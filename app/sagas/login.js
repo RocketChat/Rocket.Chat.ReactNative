@@ -14,7 +14,7 @@ import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import { localAuthenticate } from '../utils/localAuthentication';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';

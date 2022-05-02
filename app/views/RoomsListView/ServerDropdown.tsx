@@ -17,7 +17,7 @@ import { themes, TOKEN_KEY } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
 import { isTablet } from '../../lib/methods/helpers/deviceInfo';
-import { localAuthenticate } from '../../utils/localAuthentication';
+import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';

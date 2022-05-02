@@ -13,7 +13,7 @@ import { initStore } from './lib/store/auxStore';
 import { closeShareExtension, shareExtensionInit } from './lib/methods/shareExtension';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import { ThemeContext, TSupportedThemes } from './theme';
-import { localAuthenticate } from './utils/localAuthentication';
+import { localAuthenticate } from './lib/methods/helpers/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
 import ScreenLockedView from './views/ScreenLockedView';
 // Outside Stack

@@ -8,7 +8,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
 import { appInit, appStart } from '../actions/app';
-import { localAuthenticate } from '../utils/localAuthentication';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { loginRequest } from '../actions/login';
 import log from '../utils/log';

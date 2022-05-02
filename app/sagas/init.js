@@ -8,7 +8,7 @@ import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../utils/log';
 import database from '../lib/database';
-import { localAuthenticate } from '../utils/localAuthentication';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods';
