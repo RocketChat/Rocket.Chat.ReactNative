@@ -8,7 +8,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from '../containers/CustomIcon';
 import { useTheme } from '../theme';
 import { hasNotch, isTablet } from '../utils/deviceInfo';
 import EventEmitter from '../utils/events';
