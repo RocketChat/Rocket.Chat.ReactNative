@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import Touchable from './Touchable';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../lib/constants';

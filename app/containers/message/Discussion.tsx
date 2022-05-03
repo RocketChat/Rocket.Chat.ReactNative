@@ -5,7 +5,7 @@ import Touchable from './Touchable';
 import { BUTTON_HIT_SLOP, formatMessageCount } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';

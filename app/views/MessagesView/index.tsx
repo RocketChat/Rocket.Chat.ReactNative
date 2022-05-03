@@ -22,7 +22,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IEmoji } from '../../definitions/IEmoji';
 import { IRoomInfoParam } from '../SearchMessagesView';
-import { TMessageModel } from '../../definitions';
+import { TMessageModel, IUrl } from '../../definitions';
 import { Services } from '../../lib/services';
 
 interface IMessagesViewProps {
@@ -280,8 +280,25 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		try {
 			const result = await this.content.fetchFunc();
 			if (result.success) {
+				const urlRenderMessages = result.messages?.map((message: any) => {
+					if (message.urls && message.urls.length > 0) {
+						message.urls = message.urls?.map((url: any, index: any) => {
+							if (url.meta) {
+								return {
+									_id: index,
+									title: url.meta.pageTitle,
+									description: url.meta.ogDescription,
+									image: url.meta.ogImage,
+									url: url.url
+								} as IUrl;
+							}
+							return {} as IUrl;
+						});
+					}
+					return message;
+				});
 				this.setState({
-					messages: [...messages, ...result.messages],
+					messages: [...messages, ...urlRenderMessages],
 					total: result.total,
 					loading: false
 				});
