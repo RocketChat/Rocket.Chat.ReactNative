@@ -23,6 +23,4 @@ export const types: { [K in RoomTypes]: ApiTypes<K> } = {
 	l: ETypes.Channels
 };
 
-const roomTypeToApiType = <T extends RoomTypes>(t: T) => types[t];
-
-export default roomTypeToApiType;
+export const roomTypeToApiType = <T extends RoomTypes>(t: T) => types[t];
