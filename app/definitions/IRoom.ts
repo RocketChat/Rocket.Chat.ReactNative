@@ -142,6 +142,11 @@ export interface IServerRoom extends IRocketChatRecord {
 	encrypted?: boolean;
 	topic?: any;
 
+	username?: string;
+	nickname?: string;
+	federation?: any;
+	roomsCount?: number;
+
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
 	uids: Array<string>;
 
@@ -205,9 +210,12 @@ export interface IServerRoom extends IRocketChatRecord {
 	departmentId?: string;
 	livechatData?: any;
 	tags?: string[];
+
+	isLastOwner?: boolean;
 }
 
 export interface IRoomNotifications {
+	[key: string]: any;
 	disableNotifications?: boolean;
 	muteGroupMentions?: boolean;
 	hideUnreadStatus?: boolean;
@@ -216,3 +224,5 @@ export interface IRoomNotifications {
 	mobilePushNotifications?: TNotifications;
 	emailNotifications?: TNotifications;
 }
+
+export type TRoomNotificationsModel = IRoomNotifications & Model;

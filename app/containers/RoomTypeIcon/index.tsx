@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 import { STATUS_COLORS, themes } from '../../lib/constants';
 import Status from '../Status/Status';
 import { useTheme } from '../../theme';
@@ -46,7 +46,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, s
 	}
 
 	// TODO: move this to a separate function
-	let icon = 'channel-private';
+	let icon: TIconsName = 'channel-private';
 	if (teamMain) {
 		icon = `teams${type === 'p' ? '-private' : ''}`;
 	} else if (type === 'discussion') {
@@ -61,7 +61,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, s
 		}
 	}
 
-	return <CustomIcon name={icon} size={size} style={iconStyle} />;
+	return <CustomIcon name={icon} size={size} color={color} style={iconStyle} />;
 });
 
 export default RoomTypeIcon;
