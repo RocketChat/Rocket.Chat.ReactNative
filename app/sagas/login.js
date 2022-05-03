@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
-import { loginFailure, loginSuccess, logout, setUser } from '../actions/login';
+import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
@@ -21,10 +21,22 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
+import { TOKEN_KEY } from '../lib/constants';
+import {
+	getCustomEmojis,
+	getEnterpriseModules,
+	getPermissions,
+	getRoles,
+	getSlashCommands,
+	getUserPresence,
+	isOmnichannelModuleAvailable,
+	subscribeSettings
+} from '../lib/methods';
+import { Services } from '../lib/services';
 
 const getServer = state => state.server.server;
-const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
+const loginWithPasswordCall = args => Services.loginWithPassword(args);
+const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
@@ -66,9 +78,9 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		}
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
-			yield put(logout(true, 'Logged_out_by_server'));
+			yield put(logoutAction(true, 'Logged_out_by_server'));
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
-			yield put(logout(true, 'Token_expired'));
+			yield put(logoutAction(true, 'Token_expired'));
 		} else {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
 			yield put(loginFailure(e));
@@ -76,61 +88,61 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 	}
 };
 
-const subscribeSettings = function* subscribeSettings() {
-	yield RocketChat.subscribeSettings();
+const subscribeSettingsFork = function* subscribeSettingsFork() {
+	yield subscribeSettings();
 };
 
-const fetchPermissions = function* fetchPermissions() {
-	yield RocketChat.getPermissions();
+const fetchPermissionsFork = function* fetchPermissionsFork() {
+	yield getPermissions();
 };
 
-const fetchCustomEmojis = function* fetchCustomEmojis() {
-	yield RocketChat.getCustomEmojis();
+const fetchCustomEmojisFork = function* fetchCustomEmojisFork() {
+	yield getCustomEmojis();
 };
 
-const fetchRoles = function* fetchRoles() {
+const fetchRolesFork = function* fetchRolesFork() {
 	sdk.subscribe('stream-roles', 'roles');
-	yield RocketChat.getRoles();
+	yield getRoles();
 };
 
-const fetchSlashCommands = function* fetchSlashCommands() {
-	yield RocketChat.getSlashCommands();
+const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
+	yield getSlashCommands();
 };
 
-const registerPushToken = function* registerPushToken() {
-	yield RocketChat.registerPushToken();
+const registerPushTokenFork = function* registerPushTokenFork() {
+	yield Services.registerPushToken();
 };
 
-const fetchUsersPresence = function* fetchUserPresence() {
+const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	RocketChat.subscribeUsersPresence();
 };
 
-const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
-	yield RocketChat.getEnterpriseModules();
+const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
+	yield getEnterpriseModules();
 
-	if (isOmnichannelStatusAvailable(user) && RocketChat.isOmnichannelModuleAvailable()) {
+	if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
 		yield put(inquiryRequest());
 	}
 };
 
-const fetchRooms = function* fetchRooms() {
+const fetchRoomsFork = function* fetchRoomsFork() {
 	yield put(roomsRequest());
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		RocketChat.getUserPresence(user.id);
+		getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield fork(fetchRooms);
-		yield fork(fetchPermissions);
-		yield fork(fetchCustomEmojis);
-		yield fork(fetchRoles);
-		yield fork(fetchSlashCommands);
-		yield fork(registerPushToken);
-		yield fork(fetchUsersPresence);
-		yield fork(fetchEnterpriseModules, { user });
-		yield fork(subscribeSettings);
+		yield fork(fetchRoomsFork);
+		yield fork(fetchPermissionsFork);
+		yield fork(fetchCustomEmojisFork);
+		yield fork(fetchRolesFork);
+		yield fork(fetchSlashCommandsFork);
+		yield fork(registerPushTokenFork);
+		yield fork(fetchUsersPresenceFork);
+		yield fork(fetchEnterpriseModulesFork, { user });
+		yield fork(subscribeSettingsFork);
 		yield put(encryptionInit());
 
 		setLanguage(user?.language);
@@ -164,8 +176,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${server}`, user.id);
-		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
+		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
@@ -205,7 +217,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				if (servers.length > 0) {
 					for (let i = 0; i < servers.length; i += 1) {
 						const newServer = servers[i].id;
-						const token = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${newServer}`);
+						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 						if (token) {
 							yield put(selectServerRequest(newServer));
 							return;
@@ -225,7 +237,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
-	if (user?.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
+	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user)) {
 			yield put(inquiryRequest());
 		} else {

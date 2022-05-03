@@ -16,7 +16,6 @@ import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
 import { themes } from '../lib/constants';
 import { Encryption } from '../lib/encryption';
-import RocketChat from '../lib/rocketchat';
 import { logout as logoutAction } from '../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../utils/info';
 import EventEmitter from '../utils/events';
@@ -24,6 +23,7 @@ import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import { IUser } from '../definitions';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	container: {
@@ -101,7 +101,7 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const res = await RocketChat.e2eResetOwnKey();
+					const res = await Services.e2eResetOwnKey();
 					/**
 					 * It might return an empty object when TOTP is enabled,
 					 * that's why we're using strict equality to boolean
