@@ -1,7 +1,5 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
@@ -10,9 +8,9 @@ import { getUserSelector } from '../selectors/login';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { events, logEvent } from '../utils/log';
 import { isAndroid, isIOS } from '../utils/deviceInfo';
-import { TSupportedThemes, withTheme } from '../theme';
+import { withTheme } from '../theme';
 import { InsideStackParamList } from '../stacks/types';
-import { IApplicationState, IUser } from '../definitions';
+import { IApplicationState, IUser, IBaseScreen } from '../definitions';
 import { Services } from '../lib/services';
 
 const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
@@ -26,11 +24,8 @@ interface IJitsiMeetViewState {
 	loading: boolean;
 }
 
-interface IJitsiMeetViewProps {
-	navigation: StackNavigationProp<InsideStackParamList, 'JitsiMeetView'>;
-	route: RouteProp<InsideStackParamList, 'JitsiMeetView'>;
+interface IJitsiMeetViewProps extends IBaseScreen<InsideStackParamList, 'JitsiMeetView'> {
 	baseUrl: string;
-	theme: TSupportedThemes;
 	user: IUser;
 }
 
