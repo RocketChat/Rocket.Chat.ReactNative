@@ -55,6 +55,8 @@ export interface IRoom {
 	uids: Array<string>;
 	lm?: Date;
 	sysMes?: string[];
+	onHold?: boolean;
+	waitingResponse?: boolean;
 }
 
 export enum OmnichannelSourceType {
@@ -65,6 +67,24 @@ export enum OmnichannelSourceType {
 	API = 'api',
 	OTHER = 'other' // catch-all source type
 }
+
+export interface IOmnichannelSource {
+	// The source, or client, which created the Omnichannel room
+	type: OmnichannelSourceType;
+	// An optional identification of external sources, such as an App
+	id?: string;
+	// A human readable alias that goes with the ID, for post analytical purposes
+	alias?: string;
+	// A label to be shown in the room info
+	label?: string;
+	// The sidebar icon
+	sidebarIcon?: string;
+	// The default sidebar icon
+	defaultIcon?: string;
+	_updatedAt?: Date;
+	queuedAt?: Date;
+}
+
 export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featured' | 'broadcast'>> {
 	_id: string;
 	rid: string;
@@ -77,23 +97,7 @@ export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featu
 		replyTo: string;
 		subject: string;
 	};
-	source: {
-		// TODO: looks like this is not so required as the definition suggests
-		// The source, or client, which created the Omnichannel room
-		type: OmnichannelSourceType;
-		// An optional identification of external sources, such as an App
-		id?: string;
-		// A human readable alias that goes with the ID, for post analytical purposes
-		alias?: string;
-		// A label to be shown in the room info
-		label?: string;
-		// The sidebar icon
-		sidebarIcon?: string;
-		// The default sidebar icon
-		defaultIcon?: string;
-		_updatedAt?: Date;
-		queuedAt?: Date;
-	};
+	source: IOmnichannelSource;
 	transcriptRequest?: IRequestTranscript;
 	servedBy?: IServedBy;
 	onHold?: boolean;
@@ -137,6 +141,11 @@ export interface IServerRoom extends IRocketChatRecord {
 	featured?: boolean;
 	encrypted?: boolean;
 	topic?: any;
+
+	username?: string;
+	nickname?: string;
+	federation?: any;
+	roomsCount?: number;
 
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
 	uids: Array<string>;
@@ -201,9 +210,12 @@ export interface IServerRoom extends IRocketChatRecord {
 	departmentId?: string;
 	livechatData?: any;
 	tags?: string[];
+
+	isLastOwner?: boolean;
 }
 
 export interface IRoomNotifications {
+	[key: string]: any;
 	disableNotifications?: boolean;
 	muteGroupMentions?: boolean;
 	hideUnreadStatus?: boolean;
@@ -212,3 +224,5 @@ export interface IRoomNotifications {
 	mobilePushNotifications?: TNotifications;
 	emailNotifications?: TNotifications;
 }
+
+export type TRoomNotificationsModel = IRoomNotifications & Model;

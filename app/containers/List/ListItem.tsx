@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18nManager, StyleSheet, Text, View } from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
 import Touch from '../../utils/touch';
 import { themes } from '../../lib/constants';
@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { useDimensions } from '../../dimensions';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -66,6 +66,8 @@ interface IListItemContent {
 	translateSubtitle?: boolean;
 	showActionIndicator?: boolean;
 	alert?: boolean;
+	heightContainer?: number;
+	styleTitle?: StyleProp<TextStyle>;
 }
 
 const Content = React.memo(
@@ -81,20 +83,24 @@ const Content = React.memo(
 		translateTitle = true,
 		translateSubtitle = true,
 		showActionIndicator = false,
-		theme
+		theme,
+		heightContainer,
+		styleTitle
 	}: IListItemContent) => {
 		const { fontScale } = useDimensions();
 
 		return (
-			<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID}>
+			<View
+				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
+				testID={testID}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
-						<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>
-							{translateTitle ? I18n.t(title) : title}
+						<Text style={[styles.title, styleTitle, { color: color || themes[theme].titleText }]} numberOfLines={1}>
+							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
-							<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
+							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].dangerColor} style={styles.alertIcon} />
 						) : null}
 					</View>
 					{subtitle ? (

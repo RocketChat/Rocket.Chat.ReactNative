@@ -7,9 +7,11 @@ import { useSelector } from 'react-redux';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
+import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
 import useServer from '../lib/methods/useServer';
+import { SettingsStackParamList } from '../stacks/types';
 import { handleLocalAuthentication } from '../utils/localAuthentication';
 import {
 	events,
@@ -21,20 +23,21 @@ import {
 } from '../utils/log';
 
 interface ISecurityPrivacyViewProps {
-	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;
+	navigation: StackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
 const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();
-	const e2eEnabled = useSelector((state: any) => state.settings.E2E_Enable);
+
+	const e2eEnabled = useSelector((state: IApplicationState) => state.settings.E2E_Enable);
 
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Security_and_privacy')
 		});
-	}, []);
+	}, [navigation]);
 
 	const toggleCrashReport = (value: boolean) => {
 		logEvent(events.SP_TOGGLE_CRASH_REPORT);
