@@ -3,7 +3,7 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import MessageboxContext from '../Context';
