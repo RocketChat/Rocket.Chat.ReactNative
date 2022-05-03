@@ -22,13 +22,16 @@ import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
+import { Services } from '../lib/services';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
-		const serverInfo = yield RocketChat.getServerInfo(server);
+		const serverInfo = yield Services.getServerInfo(server);
 		let websocketInfo = { success: true };
 		if (raiseError) {
-			websocketInfo = yield RocketChat.getWebsocketInfo({ server });
+			websocketInfo = yield Services.getWebsocketInfo({ server });
 		}
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
@@ -69,14 +72,14 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		SSLPinning.setCertificate(certificate, server);
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
 		const serversDB = database.servers;
-		UserPreferences.setString(RocketChat.CURRENT_SERVER, server);
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		UserPreferences.setString(CURRENT_SERVER, server);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {
@@ -96,7 +99,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				};
 			} catch {
 				// search credentials on shared credentials (Experimental/Official)
-				const token = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
+				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
 				}
@@ -107,7 +110,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
-		RocketChat.abort();
+		Services.abort();
 
 		if (user) {
 			yield put(clearSettings());
@@ -122,11 +125,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
-		RocketChat.setSettings();
-		RocketChat.setCustomEmojis();
-		RocketChat.setPermissions();
-		RocketChat.setRoles();
-		RocketChat.setEnterpriseModules();
+		setSettings();
+		setCustomEmojis();
+		setPermissions();
+		setRoles();
+		setEnterpriseModules();
 
 		let serverInfo;
 		if (fetchVersion) {
@@ -148,7 +151,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		SSLPinning.setCertificate(certificate, server);
 
 		const serverInfo = yield getServerInfo({ server });
@@ -156,8 +159,8 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield RocketChat.getLoginServices(server);
-			yield RocketChat.getLoginSettings({ server });
+			yield Services.getLoginServices(server);
+			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 
 			if (fromServerHistory) {

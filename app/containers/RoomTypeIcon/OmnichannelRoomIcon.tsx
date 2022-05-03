@@ -5,9 +5,13 @@ import { useSelector } from 'react-redux';
 
 import { OmnichannelSourceType, IApplicationState, IOmnichannelSource } from '../../definitions';
 import { STATUS_COLORS } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 
-const iconMap = {
+interface IIconMap {
+	[key: string]: TIconsName;
+}
+
+const iconMap: IIconMap = {
 	widget: 'livechat-monochromatic',
 	email: 'mail',
 	sms: 'sms',

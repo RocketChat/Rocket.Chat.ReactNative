@@ -4,7 +4,6 @@ import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
 
 import { IMessage } from '../../definitions';
-import RocketChat from '../rocketchat';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
 import database from '../database';
@@ -22,6 +21,7 @@ import {
 import { Encryption } from './index';
 import { IUser } from '../../definitions/IUser';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
+import { Services } from '../services';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -134,7 +134,7 @@ export default class EncryptionRoom {
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
 		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
 
-		await RocketChat.e2eSetRoomKeyID(this.roomId, this.keyID);
+		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
 
 		await this.encryptRoomKey();
 	};
@@ -147,7 +147,7 @@ export default class EncryptionRoom {
 	// this will be called again and run once in 5 seconds
 	requestRoomKey = debounce(
 		async (e2eKeyId: string) => {
-			await RocketChat.e2eRequestRoomKey(this.roomId, e2eKeyId);
+			await Services.e2eRequestRoomKey(this.roomId, e2eKeyId);
 		},
 		5000,
 		true
@@ -155,7 +155,7 @@ export default class EncryptionRoom {
 
 	// Create an encrypted key for this room based on users
 	encryptRoomKey = async () => {
-		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(this.roomId);
+		const result = await Services.e2eGetUsersOfRoomWithoutKey(this.roomId);
 		if (result.success) {
 			const { users } = result;
 			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
@@ -168,7 +168,7 @@ export default class EncryptionRoom {
 			const { public_key: publicKey } = user.e2e;
 			const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
 			const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString as string, userKey);
-			await RocketChat.e2eUpdateGroupKey(user?._id, this.roomId, this.keyID + encryptedUserKey);
+			await Services.e2eUpdateGroupKey(user?._id, this.roomId, this.keyID + encryptedUserKey);
 		}
 	};
 

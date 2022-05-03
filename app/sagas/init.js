@@ -1,20 +1,20 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import { BIOMETRY_ENABLED_KEY } from '../lib/constants';
+import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
-import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
+import { getSortPreferences } from '../lib/methods';
 
 export const initLocalSettings = function* initLocalSettings() {
-	const sortPreferences = RocketChat.getSortPreferences();
+	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 
@@ -22,8 +22,8 @@ const BIOMETRY_MIGRATION_KEY = 'kBiometryMigration';
 
 const restore = function* restore() {
 	try {
-		const server = UserPreferences.getString(RocketChat.CURRENT_SERVER);
-		let userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const server = UserPreferences.getString(CURRENT_SERVER);
+		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		// Migration biometry setting from WatermelonDB to MMKV
 		// TODO: remove it after a few versions
@@ -48,7 +48,7 @@ const restore = function* restore() {
 			if (servers.length > 0) {
 				for (let i = 0; i < servers.length; i += 1) {
 					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${newServer}`);
+					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (userId) {
 						return yield put(selectServerRequest(newServer));
 					}

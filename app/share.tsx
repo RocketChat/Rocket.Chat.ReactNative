@@ -10,9 +10,8 @@ import UserPreferences from './lib/methods/userPreferences';
 import Navigation from './lib/navigation/shareNavigation';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
-import { closeShareExtension, shareExtensionInit } from './lib/services/shareExtension';
+import { closeShareExtension, shareExtensionInit } from './lib/methods/shareExtension';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
-import RocketChat from './lib/rocketchat';
 import { ThemeContext, TSupportedThemes } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
@@ -28,7 +27,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
-import { colors } from './lib/constants';
+import { colors, CURRENT_SERVER } from './lib/constants';
 
 initStore(store);
 
@@ -114,7 +113,7 @@ class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		const currentServer = UserPreferences.getString(RocketChat.CURRENT_SERVER);
+		const currentServer = UserPreferences.getString(CURRENT_SERVER);
 
 		if (currentServer) {
 			await localAuthenticate(currentServer);
