@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { themes } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { Button } from './Button';
 import { TActionSheetOptionsItem } from './Provider';
