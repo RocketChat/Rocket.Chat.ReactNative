@@ -18,7 +18,7 @@ import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
 import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
-import { IApplicationState } from '../definitions';
+import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { hasPermission } from '../lib/methods';
@@ -44,8 +44,7 @@ const styles = StyleSheet.create({
 });
 
 interface ILivechatEditViewProps {
-	// TODO: Refactor when migrate models
-	user: any;
+	user: IUser;
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: TSupportedThemes;
@@ -102,7 +101,7 @@ const LivechatEditView = ({
 
 	const handleGetTagsList = async (agentDepartments: string[]) => {
 		const tags = await Services.getTagsList();
-		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
+		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles?.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
 			.map(({ name }) => name);
