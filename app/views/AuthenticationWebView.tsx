@@ -7,13 +7,13 @@ import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import { RouteProp } from '@react-navigation/core';
 
 import { OutsideModalParamList } from '../stacks/types';
-import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import * as HeaderButton from '../containers/HeaderButton';
+import { Services } from '../lib/services';
 
 const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
@@ -102,7 +102,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 		this.setState({ logging: true });
 
 		try {
-			RocketChat.loginOAuthOrSso(params);
+			Services.loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
 		}

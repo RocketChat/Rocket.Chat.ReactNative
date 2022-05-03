@@ -1,6 +1,5 @@
 import { SubscriptionType, TAnyMessageModel } from '../../../definitions';
-import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
-import loadNextMessages from '../../../lib/methods/loadNextMessages';
+import { loadNextMessages, loadMessagesForRoom } from '../../../lib/methods';
 import { MessageTypeLoad } from '../../../lib/constants';
 
 const getMoreMessages = ({
@@ -33,4 +32,5 @@ const getMoreMessages = ({
 	}
 	return Promise.resolve();
 };
+
 export default getMoreMessages;

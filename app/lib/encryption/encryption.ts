@@ -3,7 +3,6 @@ import SimpleCrypto from 'react-native-simple-crypto';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
 
-import RocketChat from '../rocketchat';
 import UserPreferences from '../methods/userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
@@ -21,6 +20,7 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
 } from '../constants';
+import { Services } from '../services';
 
 class Encryption {
 	ready: boolean;
@@ -141,10 +141,10 @@ class Encryption {
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
 
 		// Send the new keys to the server
-		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 
 		// Request e2e keys of all encrypted rooms
-		await RocketChat.e2eRequestSubscriptionKeys();
+		await Services.e2eRequestSubscriptionKeys();
 	};
 
 	// Encode a private key before send it to the server
@@ -197,7 +197,7 @@ class Encryption {
 		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		// Send the new keys to the server
-		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 	};
 
 	// get a encryption room instance

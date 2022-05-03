@@ -4,18 +4,13 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
-import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
-import { SubscriptionType } from '../../definitions/ISubscription';
-
-interface IUser {
-	name: string;
-	username: string;
-}
+import { SubscriptionType, IUser } from '../../definitions';
+import { getRoomAvatar, getRoomTitle, search } from '../../lib/methods';
 
 const SelectUsers = ({
 	server,
@@ -26,21 +21,24 @@ const SelectUsers = ({
 	blockUnauthenticatedAccess,
 	serverVersion,
 	theme
-}: ICreateDiscussionViewSelectUsers): JSX.Element => {
+}: ICreateDiscussionViewSelectUsers): React.ReactElement => {
 	const [users, setUsers] = useState<any[]>([]);
 
 	const getUsers = debounce(async (keyword = '') => {
 		try {
-			const res = await RocketChat.search({ text: keyword, filterRooms: false });
-			setUsers(res);
+			const res = await search({ text: keyword, filterRooms: false });
+			const selectedUsers = users.filter((u: IUser) => selected.includes(u.name));
+			const filteredUsers = res.filter(r => !users.find((u: IUser) => u.name === r.name));
+			const items = [...selectedUsers, ...filteredUsers];
+			setUsers(items);
 		} catch {
 			// do nothing
 		}
 	}, 300);
 
-	const getAvatar = (item: any) =>
+	const getAvatar = (item: IUser) =>
 		avatarURL({
-			text: RocketChat.getRoomAvatar(item),
+			text: getRoomAvatar(item),
 			type: SubscriptionType.DIRECT,
 			user: { id: userId, token },
 			server,
@@ -58,7 +56,7 @@ const SelectUsers = ({
 				onChange={onUserSelect}
 				options={users.map((user: IUser) => ({
 					value: user.name,
-					text: { text: RocketChat.getRoomTitle(user) },
+					text: { text: getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
 				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}
