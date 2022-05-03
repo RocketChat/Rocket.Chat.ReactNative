@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { IDepartment } from '../../../definitions/ICannedResponse';
+import { ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
 import DropdownItem from './DropdownItem';
 
 interface IDropdownItemFilter {
-	currentDepartment: IDepartment;
-	value: IDepartment;
-	onPress: (value: IDepartment) => void;
+	currentDepartment: ILivechatDepartment;
+	value: ILivechatDepartment;
+	onPress: (value: ILivechatDepartment) => void;
 }
 
 const DropdownItemFilter = ({ currentDepartment, value, onPress }: IDropdownItemFilter): JSX.Element => (

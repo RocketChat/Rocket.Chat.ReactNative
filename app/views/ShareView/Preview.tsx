@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer, types } from '../../presentation/ImageViewer';
 import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 });
 
 interface IIconPreview {
-	iconName: string;
+	iconName: TIconsName;
 	title: string;
 	description?: string;
 	theme: TSupportedThemes;
