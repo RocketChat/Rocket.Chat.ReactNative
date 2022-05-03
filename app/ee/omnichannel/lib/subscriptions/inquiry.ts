@@ -1,9 +1,10 @@
 import log from '../../../../utils/log';
 import { store } from '../../../../lib/store/auxStore';
-import RocketChat from '../../../../lib/rocketchat';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 import sdk from '../../../../lib/services/sdk';
 import { IOmnichannelRoom } from '../../../../definitions';
+import { hasRole } from '../../../../lib/methods';
+import { Services } from '../../../../lib/services';
 
 interface IArgsQueueOmnichannel extends IOmnichannelRoom {
 	type: string;
@@ -81,11 +82,11 @@ export default function subscribeInquiry() {
 			throw new Error('inquiry: @subscribeInquiry user.id not found');
 		}
 
-		RocketChat.getAgentDepartments(user.id).then(result => {
+		Services.getAgentDepartments(user.id).then(result => {
 			if (result.success) {
 				const { departments } = result;
 
-				if (!departments.length || RocketChat.hasRole('livechat-manager')) {
+				if (!departments.length || hasRole('livechat-manager')) {
 					sdk.subscribe(streamTopic, 'public').catch((e: unknown) => console.log(e));
 				}
 

@@ -3,7 +3,7 @@ import { Animated, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import { isRTL } from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { DisplayMode, themes } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
