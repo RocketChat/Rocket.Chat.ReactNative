@@ -9,7 +9,7 @@ import Button from '../Button';
 import { textParser } from './utils';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '../../utils/deviceInfo';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';

@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { IDepartment } from '../../../definitions/ICannedResponse';
+import { ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
 import DropdownItem from './DropdownItem';
 
 interface IDropdownItemHeader {
-	department: IDepartment;
+	department: ILivechatDepartment;
 	onPress: () => void;
 }
 
-const DropdownItemHeader = ({ department, onPress }: IDropdownItemHeader): JSX.Element => (
+const DropdownItemHeader = ({ department, onPress }: IDropdownItemHeader): React.ReactElement => (
 	<DropdownItem text={department?.name} iconName='filter' onPress={onPress} />
 );
 
