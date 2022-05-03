@@ -66,7 +66,7 @@ const LivechatEditView = ({
 }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
 	const [availableUserTags, setAvailableUserTags] = useState<string[]>([]);
-	const [permissions, setPermissions] = useState([]);
+	const [permissions, setPermissions] = useState<boolean[]>([]);
 
 	const params = {} as TParams;
 	const inputs = {} as IInputsRefs;

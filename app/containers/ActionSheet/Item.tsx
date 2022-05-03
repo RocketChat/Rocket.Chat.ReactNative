@@ -2,20 +2,14 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { themes } from '../../lib/constants';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { Button } from './Button';
+import { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 
 export interface IActionSheetItem {
-	item: {
-		title: string;
-		icon: TIconsName;
-		danger?: boolean;
-		testID?: string;
-		onPress: () => void;
-		right?: Function;
-	};
+	item: TActionSheetOptionsItem;
 	hide(): void;
 }
 
