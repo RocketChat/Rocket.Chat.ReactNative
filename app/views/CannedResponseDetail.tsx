@@ -84,7 +84,6 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
 				{label}
 			</Text>
-			{/* @ts-ignore */}
 			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} theme={theme} />
 		</View>
 	) : null;
@@ -115,7 +114,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 				t: room.t,
 				fname: name
 			}),
-			t: room.t as any,
+			t: room.t,
 			roomUserId: getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};
