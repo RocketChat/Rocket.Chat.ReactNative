@@ -4,14 +4,14 @@ import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-
 import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
 
-import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { events, logEvent } from '../utils/log';
 import { isAndroid, isIOS } from '../utils/deviceInfo';
 import { withTheme } from '../theme';
 import { InsideStackParamList } from '../stacks/types';
-import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import { IApplicationState, IUser, IBaseScreen } from '../definitions';
+import { Services } from '../lib/services';
 
 const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
 	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
@@ -88,14 +88,14 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	onConferenceJoined = () => {
 		logEvent(events.JM_CONFERENCE_JOIN);
 		if (this.rid) {
-			RocketChat.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
+			Services.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			if (this.jitsiTimeout) {
 				BackgroundTimer.clearInterval(this.jitsiTimeout);
 				BackgroundTimer.stopBackgroundTimer();
 				this.jitsiTimeout = null;
 			}
 			this.jitsiTimeout = BackgroundTimer.setInterval(() => {
-				RocketChat.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
+				Services.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			}, 10000);
 		}
 	};
