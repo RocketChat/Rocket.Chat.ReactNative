@@ -95,14 +95,14 @@ interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsLis
 }
 
 interface IRoomsListViewState {
-	searching: boolean;
-	search: IRoomItem[];
-	loading: boolean;
+	searching?: boolean;
+	search?: IRoomItem[];
+	loading?: boolean;
 	chatsUpdate?: string[] | { rid: string; alert?: boolean }[];
-	omnichannelsUpdate: string[];
-	chats: IRoomItem[];
-	item: ISubscription;
-	canCreateRoom: boolean;
+	omnichannelsUpdate?: string[];
+	chats?: IRoomItem[];
+	item?: ISubscription;
+	canCreateRoom?: boolean;
 }
 
 interface IRoomItem extends ISubscription {
@@ -784,7 +784,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	goRoomByIndex = (index: number) => {
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
-		const filteredChats = chats.filter(c => !c.separator);
+		const filteredChats = chats ? chats.filter(c => !c.separator) : [];
 		const room = filteredChats[index - 1];
 		if (room) {
 			this.goRoom({ item: room, isMasterDetail });
@@ -794,7 +794,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	findOtherRoom = (index: number, sign: number): ISubscription | void => {
 		const { chats } = this.state;
 		const otherIndex = index + sign;
-		const otherRoom = chats[otherIndex];
+		const otherRoom = chats?.length ? chats[otherIndex] : ({} as IRoomItem);
 		if (!otherRoom) {
 			return;
 		}
@@ -814,12 +814,17 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		// Don't run during search
 		const { search } = this.state;
-		if (search.length > 0) {
+		if (search && search?.length > 0) {
 			return;
 		}
 
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
+
+		if (!chats?.length) {
+			return;
+		}
+
 		const index = chats.findIndex(c => c.rid === item.rid);
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
@@ -902,7 +907,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { queueSize, inquiryEnabled, encryptionBanner, user } = this.props;
 		return (
 			<ListHeader
-				searching={searching}
+				searching={searching as boolean}
 				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
