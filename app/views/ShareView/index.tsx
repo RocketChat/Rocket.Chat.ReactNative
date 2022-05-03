@@ -14,7 +14,6 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { TSupportedThemes, withTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -29,6 +28,7 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
 import { IUser, TSubscriptionModel } from '../../definitions';
+import { hasPermission, sendFileMessage, sendMessage } from '../../lib/methods';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -144,7 +144,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const permissionsCollection = db.get('permissions');
 		const uploadFilePermissionFetch = await permissionsCollection.query(Q.where('id', Q.like('mobile-upload-file'))).fetch();
 		const uploadFilePermission = uploadFilePermissionFetch[0]?.roles;
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], room.rid);
+		const permissionToUpload = await hasPermission([uploadFilePermission], room.rid);
 		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
 		return !uploadFilePermission || permissionToUpload[0];
 	};
@@ -218,7 +218,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
-							return RocketChat.sendFileMessage(
+							return sendFileMessage(
 								room.rid,
 								{
 									name,
@@ -240,7 +240,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Send text message
 			} else if (text.length) {
-				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
+				await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
 			}
 		} catch {
 			// Do nothing

@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
 import { themes } from '../lib/constants';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import ActivityIndicator from './ActivityIndicator';
 import { TSupportedThemes } from '../theme';
 
@@ -59,8 +59,8 @@ export interface IRCTextInputProps extends TextInputProps {
 	inputStyle?: StyleProp<TextStyle>;
 	inputRef?: React.Ref<RNTextInput>;
 	testID?: string;
-	iconLeft?: string;
-	iconRight?: string;
+	iconLeft?: TIconsName;
+	iconRight?: TIconsName;
 	left?: JSX.Element;
 	onIconRightPress?(): void;
 	theme: TSupportedThemes;
@@ -82,23 +82,24 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 
 	get iconLeft() {
 		const { testID, iconLeft, theme } = this.props;
-		return (
+		return iconLeft ? (
 			<CustomIcon
 				name={iconLeft}
-				testID={testID ? `${testID}-icon-left` : null}
-				style={[styles.iconContainer, styles.iconLeft, { color: themes[theme].bodyText }]}
+				testID={testID ? `${testID}-icon-left` : undefined}
 				size={20}
+				color={themes[theme].bodyText}
+				style={[styles.iconContainer, styles.iconLeft]}
 			/>
-		);
+		) : null;
 	}
 
 	get iconRight() {
 		const { iconRight, onIconRightPress, theme } = this.props;
-		return (
+		return iconRight ? (
 			<Touchable onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
-				<CustomIcon name={iconRight} style={{ color: themes[theme].bodyText }} size={20} />
+				<CustomIcon name={iconRight} size={20} color={themes[theme].bodyText} />
 			</Touchable>
-		);
+		) : null;
 	}
 
 	get iconPassword() {
@@ -108,9 +109,9 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 			<Touchable onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
 					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
-					testID={testID ? `${testID}-icon-right` : null}
-					style={{ color: themes[theme].auxiliaryText }}
+					testID={testID ? `${testID}-icon-right` : undefined}
 					size={20}
+					color={themes[theme].auxiliaryText}
 				/>
 			</Touchable>
 		);
