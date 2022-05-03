@@ -210,9 +210,12 @@ export interface IServerRoom extends IRocketChatRecord {
 	departmentId?: string;
 	livechatData?: any;
 	tags?: string[];
+
+	isLastOwner?: boolean;
 }
 
 export interface IRoomNotifications {
+	[key: string]: any;
 	disableNotifications?: boolean;
 	muteGroupMentions?: boolean;
 	hideUnreadStatus?: boolean;
@@ -221,3 +224,5 @@ export interface IRoomNotifications {
 	mobilePushNotifications?: TNotifications;
 	emailNotifications?: TNotifications;
 }
+
+export type TRoomNotificationsModel = IRoomNotifications & Model;

@@ -20,7 +20,7 @@ const SelectChannel = ({
 	blockUnauthenticatedAccess,
 	serverVersion,
 	theme
-}: ICreateDiscussionViewSelectChannel): JSX.Element => {
+}: ICreateDiscussionViewSelectChannel): React.ReactElement => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 
 	const getChannels = debounce(async (keyword = '') => {
@@ -32,7 +32,7 @@ const SelectChannel = ({
 		}
 	}, 300);
 
-	const getAvatar = (item: any) =>
+	const getAvatar = (item: ISearchLocal) =>
 		avatarURL({
 			text: getRoomAvatar(item),
 			type: item.t,
