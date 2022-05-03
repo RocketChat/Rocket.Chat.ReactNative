@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Switch, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Model from '@nozbe/watermelondb/Model';
 import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
@@ -10,7 +9,6 @@ import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import { TSupportedThemes, withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -18,7 +16,8 @@ import log, { events, logEvent } from '../../utils/log';
 import sharedStyles from '../Styles';
 import { IOptionsField, OPTIONS } from './options';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoomNotifications } from '../../definitions';
+import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -27,23 +26,27 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface INotificationPreferencesView {
+interface INotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>;
 	route: RouteProp<ChatsStackParamList, 'NotificationPrefView'>;
 	theme: TSupportedThemes;
 }
 
-class NotificationPreferencesView extends React.Component<INotificationPreferencesView, any> {
+interface INotificationPreferencesViewState {
+	room: TRoomNotificationsModel;
+}
+
+class NotificationPreferencesView extends React.Component<INotificationPreferencesViewProps, INotificationPreferencesViewState> {
 	static navigationOptions = () => ({
 		title: I18n.t('Notification_Preferences')
 	});
 
 	private mounted: boolean;
 	private rid: string;
-	private roomObservable?: Observable<Model>;
+	private roomObservable?: Observable<TRoomNotificationsModel>;
 	private subscription?: Subscription;
 
-	constructor(props: INotificationPreferencesView) {
+	constructor(props: INotificationPreferencesViewProps) {
 		super(props);
 		this.mounted = false;
 		this.rid = props.route.params?.rid ?? '';
@@ -53,7 +56,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable.subscribe((changes: any) => {
+			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
 					this.setState({ room: changes });
 				} else {
@@ -83,14 +86,14 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 		try {
 			await db.write(async () => {
 				await room.update(
-					protectedFunction((r: any) => {
+					protectedFunction((r: IRoomNotifications) => {
 						r[key] = value;
 					})
 				);
 			});
 
 			try {
-				const result = await RocketChat.saveNotificationSettings(this.rid, params);
+				const result = await Services.saveNotificationSettings(this.rid, params);
 				if (result.success) {
 					return;
 				}
@@ -100,7 +103,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 
 			await db.write(async () => {
 				await room.update(
-					protectedFunction((r: any) => {
+					protectedFunction((r: IRoomNotifications) => {
 						r[key] = room[key];
 					})
 				);
