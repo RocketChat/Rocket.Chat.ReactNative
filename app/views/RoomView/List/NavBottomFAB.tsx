@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanimated';
 
 import { themes } from '../../../lib/constants';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../../containers/CustomIcon';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import { hasNotch } from '../../../utils/deviceInfo';

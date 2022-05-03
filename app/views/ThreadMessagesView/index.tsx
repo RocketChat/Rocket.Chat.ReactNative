@@ -10,7 +10,6 @@ import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import StatusBar from '../../containers/StatusBar';
@@ -38,6 +37,8 @@ import Dropdown from './Dropdown';
 import Item from './Item';
 import styles from './styles';
 import { IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { getUidDirectMessage } from '../../lib/methods';
+import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;
 
@@ -335,7 +336,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.getThreadsList({
+			const result = await Services.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,
@@ -359,7 +360,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.getSyncThreadsList({
+			const result = await Services.getSyncThreadsList({
 				rid: this.rid,
 				updatedSince: updatedSince.toISOString()
 			});
@@ -405,7 +406,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				tmid: item.id,
 				name: makeThreadName(item),
 				t: SubscriptionType.THREAD,
-				roomUserId: RocketChat.getUidDirectMessage(subscription)
+				roomUserId: getUidDirectMessage(subscription)
 			});
 		},
 		1000,
@@ -450,7 +451,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
-			await RocketChat.toggleFollowMessage(tmid, !isFollowingThread);
+			await Services.toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
