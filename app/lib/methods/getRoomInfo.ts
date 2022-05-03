@@ -1,6 +1,6 @@
 import { IServerSubscription, RoomType } from '../../definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import RocketChat from '../rocketchat';
+import { Services } from '../services';
 
 export interface IRoomInfoResult {
 	rid: IServerSubscription['rid'];
@@ -21,7 +21,7 @@ const getRoomInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 		};
 	}
 
-	result = await RocketChat.getRoomInfo(rid);
+	result = await Services.getRoomInfo(rid);
 	if (result?.success) {
 		return {
 			rid,

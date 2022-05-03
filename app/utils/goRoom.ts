@@ -1,7 +1,8 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/navigation/appNavigation';
-import RocketChat from '../lib/rocketchat';
 import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../definitions';
+import { getRoomTitle, getUidDirectMessage } from '../lib/methods';
+import { Services } from '../lib/services';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -32,12 +33,12 @@ const navigate = ({
 
 	navigationMethod('RoomView', {
 		rid: item.rid,
-		name: RocketChat.getRoomTitle(item),
+		name: getRoomTitle(item),
 		t: item.t,
 		prid: item.prid,
 		room: item,
 		visitor: item.visitor,
-		roomUserId: RocketChat.getUidDirectMessage(item),
+		roomUserId: getUidDirectMessage(item),
 		...props
 	});
 };
@@ -62,7 +63,7 @@ export const goRoom = async ({
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
-			const result = await RocketChat.createDirectMessage(username as string);
+			const result = await Services.createDirectMessage(username as string);
 			if (result.success && result?.room?._id) {
 				return navigate({
 					item: {

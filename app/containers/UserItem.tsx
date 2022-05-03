@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import Avatar from './Avatar';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import { isIOS } from '../utils/deviceInfo';
@@ -46,7 +46,7 @@ interface IUserItem {
 	testID: string;
 	onLongPress?: () => void;
 	style?: StyleProp<ViewStyle>;
-	icon?: string | null;
+	icon?: TIconsName | null;
 	theme: TSupportedThemes;
 }
 
@@ -71,7 +71,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, t
 					@{username}
 				</Text>
 			</View>
-			{icon ? <CustomIcon name={icon} size={22} style={[styles.icon, { color: themes[theme].actionTintColor }]} /> : null}
+			{icon ? <CustomIcon name={icon} size={22} color={themes[theme].actionTintColor} style={styles.icon} /> : null}
 		</View>
 	</Pressable>
 );
