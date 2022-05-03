@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { textParser } from './utils';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import ActivityIndicator from '../ActivityIndicator';
