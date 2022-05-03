@@ -23,7 +23,8 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
-import { IServerInfo } from '../../definitions';
+import { TServerModel, TSubscriptionModel } from '../../definitions';
+import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar } from '../../lib/methods';
 
 interface IDataFromShare {
@@ -35,39 +36,25 @@ interface IFileToShare {
 	filename: string;
 	description: string;
 	size: number;
-	mime: any;
+	mime: string;
 	path: string;
-}
-
-interface IChat {
-	rid: string;
-	t: string;
-	name: string;
-	fname: string;
-	blocked: boolean;
-	blocker: boolean;
-	prid: string;
-	uids: string[];
-	usernames: string[];
-	topic: string;
-	description: string;
 }
 
 interface IState {
 	searching: boolean;
 	searchText: string;
-	searchResults: IChat[];
-	chats: IChat[];
+	searchResults: TSubscriptionModel[];
+	chats: TSubscriptionModel[];
 	serversCount: number;
 	attachments: IFileToShare[];
 	text: string;
 	loading: boolean;
-	serverInfo: IServerInfo;
+	serverInfo: TServerModel;
 	needsPermission: boolean;
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<any, 'ShareListView'>;
+	navigation: StackNavigationProp<ShareInsideStackParamList, 'ShareListView'>;
 }
 
 interface IShareListViewProps extends INavigationOption {
@@ -84,7 +71,7 @@ const permission: Rationale = {
 };
 
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
-const keyExtractor = (item: IChat) => item.rid;
+const keyExtractor = (item: TSubscriptionModel) => item.rid;
 
 class ShareListView extends React.Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
@@ -102,7 +89,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			attachments: [],
 			text: '',
 			loading: true,
-			serverInfo: {} as IServerInfo,
+			serverInfo: {} as TServerModel,
 			needsPermission: isAndroid || false
 		};
 		this.setHeader();
@@ -252,7 +239,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const data = (await db
 			.get('subscriptions')
 			.query(...defaultWhereClause)
-			.fetch()) as IChat[];
+			.fetch()) as TSubscriptionModel[];
 
 		return data.map(item => ({
 			rid: item.rid,
@@ -307,12 +294,12 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	uriToPath = (uri: string) => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
-	getRoomTitle = (item: IChat) => {
+	getRoomTitle = (item: TSubscriptionModel) => {
 		const { serverInfo } = this.state;
 		return ((item.prid || serverInfo?.useRealName) && item.fname) || item.name;
 	};
 
-	shareMessage = (room: IChat) => {
+	shareMessage = (room: TSubscriptionModel) => {
 		const { attachments, text, serverInfo } = this.state;
 		const { navigation } = this.props;
 
@@ -369,7 +356,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		);
 	};
 
-	renderItem = ({ item }: { item: IChat }) => {
+	renderItem = ({ item }: { item: TSubscriptionModel }) => {
 		const { serverInfo } = this.state;
 		let description;
 		switch (item.t) {
