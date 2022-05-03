@@ -6,19 +6,19 @@ import styles from '../styles';
 import { themes } from '../../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../../theme';
 import * as List from '../../../containers/List';
-import { IDepartment } from '../../../definitions/ICannedResponse';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
 import { ROW_HEIGHT } from './DropdownItem';
+import { ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
 
 const ANIMATION_DURATION = 200;
 
 interface IDropdownProps {
 	theme?: TSupportedThemes;
-	currentDepartment: IDepartment;
+	currentDepartment: ILivechatDepartment;
 	onClose: () => void;
-	onDepartmentSelected: (value: IDepartment) => void;
-	departments: IDepartment[];
+	onDepartmentSelected: (value: ILivechatDepartment) => void;
+	departments: ILivechatDepartment[];
 }
 
 class Dropdown extends React.Component<IDropdownProps> {
