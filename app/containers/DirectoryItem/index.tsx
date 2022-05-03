@@ -17,8 +17,8 @@ interface IDirectoryItemLabel {
 
 interface IDirectoryItem {
 	title: string;
-	description: string;
-	avatar: string;
+	description?: string;
+	avatar?: string;
 	type: string;
 	onPress(): void;
 	testID: string;
