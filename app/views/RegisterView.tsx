@@ -12,7 +12,6 @@ import LoginServices from '../containers/LoginServices';
 import TextInput from '../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
 import { getShowLoginButton } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
@@ -21,6 +20,7 @@ import isValidEmail from '../utils/isValidEmail';
 import log, { events, logEvent } from '../utils/log';
 import openLink from '../utils/openLink';
 import sharedStyles from './Styles';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	title: {
@@ -128,7 +128,7 @@ class RegisterView extends React.Component<IProps, any> {
 		const { dispatch, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
 
 		try {
-			await RocketChat.register({
+			await Services.register({
 				name,
 				email,
 				pass: password,

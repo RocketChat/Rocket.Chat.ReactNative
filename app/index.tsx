@@ -1,36 +1,36 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
-import { Provider } from 'react-redux';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
 
-import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
-import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
+import AppContainer from './AppContainer';
+import { KEY_COMMAND } from './commands';
+import { ActionSheetProvider } from './containers/ActionSheet';
+import InAppNotification from './containers/InAppNotification';
+import Toast from './containers/Toast';
+import TwoFactor from './containers/TwoFactor';
+import { ICommand } from './definitions/ICommand';
+import { IThemePreference } from './definitions/ITheme';
+import { DimensionsContext } from './dimensions';
+import { colors, isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT, themes } from './lib/constants';
+import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './lib/notifications';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
-import { ThemeContext, TSupportedThemes } from './theme';
-import { DimensionsContext } from './dimensions';
-import RocketChat from './lib/rocketchat';
-import { isTablet } from './utils/deviceInfo';
-import { KEY_COMMAND } from './commands';
-import AppContainer from './AppContainer';
-import TwoFactor from './containers/TwoFactor';
-import ScreenLockedView from './views/ScreenLockedView';
-import ChangePasscodeView from './views/ChangePasscodeView';
-import Toast from './containers/Toast';
-import InAppNotification from './containers/InAppNotification';
-import { ActionSheetProvider } from './containers/ActionSheet';
-import debounce from './utils/debounce';
-import { isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, themes } from './lib/constants';
-import { IThemePreference } from './definitions/ITheme';
-import { ICommand } from './definitions/ICommand';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
+import { ThemeContext, TSupportedThemes } from './theme';
+import debounce from './utils/debounce';
+import { isTablet } from './utils/deviceInfo';
+import EventEmitter from './utils/events';
+import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
+import ChangePasscodeView from './views/ChangePasscodeView';
+import ScreenLockedView from './views/ScreenLockedView';
 
 RNScreens.enableScreens();
 initStore(store);
@@ -193,10 +193,10 @@ export default class Root extends React.Component<{}, IState> {
 	};
 
 	initCrashReport = () => {
-		RocketChat.getAllowCrashReport().then(allowCrashReport => {
+		getAllowCrashReport().then(allowCrashReport => {
 			toggleCrashErrorsReport(allowCrashReport);
 		});
-		RocketChat.getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
+		getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
 			toggleAnalyticsEventsReport(allowAnalyticsEvents);
 		});
 	};
