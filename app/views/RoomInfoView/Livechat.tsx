@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import RocketChat from '../../lib/rocketchat';
 import { TSupportedThemes, useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
@@ -12,6 +11,7 @@ import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	title: {
@@ -31,7 +31,7 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 
 	const getDepartment = async (id: string) => {
 		if (id) {
-			const result = await RocketChat.getDepartmentInfo(id);
+			const result = await Services.getDepartmentInfo(id);
 			if (result.success) {
 				setDepartment(result.department as ILivechatDepartment);
 			}

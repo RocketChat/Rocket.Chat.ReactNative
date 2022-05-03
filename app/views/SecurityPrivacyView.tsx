@@ -17,22 +17,24 @@ import {
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
+import { SettingsStackParamList } from '../stacks/types';
+import { IApplicationState } from '../definitions';
 
 interface ISecurityPrivacyViewProps {
-	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;
+	navigation: StackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
 const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 
-	const e2eEnabled = useSelector((state: any) => state.settings.E2E_Enable);
+	const e2eEnabled = useSelector((state: IApplicationState) => state.settings.E2E_Enable);
 
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Security_and_privacy')
 		});
-	}, []);
+	}, [navigation]);
 
 	const toggleCrashReport = (value: boolean) => {
 		logEvent(events.SP_TOGGLE_CRASH_REPORT);

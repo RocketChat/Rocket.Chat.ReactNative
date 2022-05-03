@@ -13,8 +13,8 @@ import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../uti
 import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes, SWITCH_TRACK_COLOR } from '../lib/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
-import { TServerModel } from '../definitions/IServer';
 import userPreferences from '../lib/methods/userPreferences';
+import { IApplicationState, TServerModel } from '../definitions';
 
 const DEFAULT_BIOMETRY = false;
 
@@ -271,10 +271,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Force_Screen_Lock: state.settings.Force_Screen_Lock,
-	Force_Screen_Lock_After: state.settings.Force_Screen_Lock_After
+	Force_Screen_Lock: state.settings.Force_Screen_Lock as boolean,
+	Force_Screen_Lock_After: state.settings.Force_Screen_Lock_After as number
 });
 
 export default connect(mapStateToProps)(withTheme(ScreenLockConfigView));
