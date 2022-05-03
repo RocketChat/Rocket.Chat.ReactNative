@@ -1,6 +1,6 @@
 import { dequal } from 'dequal';
 import React from 'react';
-import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Alert, Keyboard, StyleSheet, Text, View, TextInput as RNTextInput } from 'react-native';
 import { connect } from 'react-redux';
 
 import { loginRequest } from '../actions/login';
@@ -64,8 +64,13 @@ interface ILoginViewProps extends IBaseScreen<OutsideParamList, 'LoginView'> {
 	inviteLinkToken: string;
 }
 
-class LoginView extends React.Component<ILoginViewProps, any> {
-	private passwordInput: any;
+interface ILoginViewState {
+	user: string;
+	password: string;
+}
+
+class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
+	private passwordInput: RNTextInput | null | undefined;
 
 	static navigationOptions = ({ route, navigation }: ILoginViewProps) => ({
 		title: route?.params?.title ?? 'Rocket.Chat',
@@ -160,7 +165,7 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 					returnKeyType='next'
 					onChangeText={(value: string) => this.setState({ user: value })}
 					onSubmitEditing={() => {
-						this.passwordInput.focus();
+						this.passwordInput?.focus();
 					}}
 					testID='login-view-email'
 					textContentType='username'

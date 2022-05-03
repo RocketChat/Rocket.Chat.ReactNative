@@ -4,7 +4,7 @@ import { Dimensions, ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
 
-import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
+import RoomItemComponent from '../../app/containers/RoomItem/RoomItem';
 import { longText } from '../utils';
 import { DisplayMode, themes } from '../../app/lib/constants';
 import { store } from './index';

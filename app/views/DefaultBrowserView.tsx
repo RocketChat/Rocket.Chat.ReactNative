@@ -2,8 +2,10 @@ import React from 'react';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { FlatList, Linking } from 'react-native';
 
+import { SettingsStackParamList } from '../stacks/types';
+import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import { TSupportedThemes, withTheme } from '../theme';
+import { withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
@@ -47,17 +49,13 @@ const BROWSERS: IBrowsersValues[] = [
 ];
 
 interface IDefaultBrowserViewState {
-	browser: any;
-	supported: any[];
+	browser: string | null;
+	supported: IBrowsersValues[];
 }
 
-interface IDefaultBrowserViewProps {
-	theme: TSupportedThemes;
-}
+type IDefaultBrowserViewProps = IBaseScreen<SettingsStackParamList, 'DefaultBrowserView'>;
 
 class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefaultBrowserViewState> {
-	private mounted?: boolean;
-
 	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Default_browser')
 	});
@@ -74,7 +72,6 @@ class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefa
 	}
 
 	componentDidMount() {
-		this.mounted = true;
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
 		this.setState({ browser });
 	}
@@ -84,13 +81,7 @@ class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefa
 			const { value } = browser;
 			Linking.canOpenURL(value).then(installed => {
 				if (installed) {
-					if (this.mounted) {
-						this.setState(({ supported }) => ({ supported: [...supported, browser] }));
-					} else {
-						const { supported } = this.state;
-						// @ts-ignore
-						this.state.supported = [...supported, browser];
-					}
+					this.setState(({ supported }) => ({ supported: [...supported, browser] }));
 				}
 			});
 		});
