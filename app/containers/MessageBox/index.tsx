@@ -314,8 +314,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tshow,
 			mentionLoading,
 			trackingType,
-			permissionToUpload,
-			canViewCannedResponse
+			permissionToUpload
 		} = this.state;
 
 		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission } = this.props;

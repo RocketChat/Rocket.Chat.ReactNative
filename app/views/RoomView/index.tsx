@@ -183,6 +183,7 @@ interface IRoomViewState {
 				joinCodeRequired?: boolean;
 				status?: boolean;
 				lastMessage?: ILastMessage;
+				sysMes?: boolean;
 				onHold?: boolean;
 		  };
 	roomUpdate: {
@@ -399,7 +400,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		// If it's a livechat room
 		if (this.t === 'l') {
 			if (
-				!roomUpdate?.lastMessage?.token ||
+				!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
 				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
 				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
 				prevState.joined !== joined
@@ -631,6 +632,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
+			// @ts-ignore
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
