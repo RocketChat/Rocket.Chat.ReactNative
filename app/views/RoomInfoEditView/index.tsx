@@ -254,6 +254,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 		if (!this.formIsChanged()) {
 			showErrorAlert(I18n.t('Nothing_to_save'));
+			this.setState({ saving: false });
 			return;
 		}
 
