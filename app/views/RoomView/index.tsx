@@ -143,6 +143,7 @@ const roomAttrsUpdate = [
 	'teamMain',
 	'teamId',
 	'status',
+	'lastMessage',
 	'onHold'
 ] as TRoomUpdate[];
 
@@ -372,7 +373,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined, room } = this.state;
+		const { roomUpdate, joined } = this.state;
 		const { appState, insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
@@ -398,7 +399,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		// If it's a livechat room
 		if (this.t === 'l') {
 			if (
-				!room.lastMessage?.token ||
+				!roomUpdate?.lastMessage?.token ||
 				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
 				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
 				prevState.joined !== joined
@@ -1277,7 +1278,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				dateSeparator = item.ts;
 			}
 		}
-		console.log({ item });
 		let content = null;
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			content = (

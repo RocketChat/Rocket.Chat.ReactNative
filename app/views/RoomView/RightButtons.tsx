@@ -12,11 +12,11 @@ import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
 import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
-import { TActionSheetOptions, withActionSheet } from '../../containers/ActionSheet';
+import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
 import i18n from '../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { closeRoom } from '../../actions/room';
-import RocketChat from '../../lib/rocketchat';
+import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 
 interface IRightButtonsProps {
 	userId?: string;
@@ -188,7 +188,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			confirmationText: i18n.t('Yes'),
 			onPress: async () => {
 				try {
-					await RocketChat.returnLivechat(rid);
+					await returnLivechat(rid);
 				} catch (e: any) {
 					showErrorAlert(e.reason, i18n.t('Oops'));
 				}
@@ -204,7 +204,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			confirmationText: i18n.t('Yes'),
 			onPress: async () => {
 				try {
-					await RocketChat.onHoldLivechat(rid);
+					await onHoldLivechat(rid);
 					navigation.navigate('RoomsListView');
 				} catch (e: any) {
 					showErrorAlert(e.data?.error, i18n.t('Oops'));
@@ -222,7 +222,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
 		const { showActionSheet, rid, navigation, omnichannelPermissions } = this.props;
 
-		const options = [];
+		const options = [] as TActionSheetOptionsItem[];
 		if (omnichannelPermissions.canPlaceLivechatOnHold) {
 			options.push({
 				title: i18n.t('Place_chat_on_hold'),
