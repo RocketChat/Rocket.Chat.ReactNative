@@ -314,7 +314,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tshow,
 			mentionLoading,
 			trackingType,
-			permissionToUpload
+			permissionToUpload,
+			canViewCannedResponse
 		} = this.state;
 
 		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission } = this.props;
@@ -373,8 +374,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission } = this.props;
-		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission)) {
+		const { uploadFilePermission, viewCannedResponsesPermission } = this.props;
+		if (
+			!dequal(prevProps.uploadFilePermission, uploadFilePermission) ||
+			prevProps.viewCannedResponsesPermission !== viewCannedResponsesPermission
+		) {
 			this.setOptions();
 		}
 	}
@@ -412,12 +416,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	canViewCannedResponse = async () => {
 		const { viewCannedResponsesPermission, rid } = this.props;
-		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission], rid);
+		const permissions = await hasPermission([viewCannedResponsesPermission], rid);
 		return permissions[0];
 	};
 
 	setOptions = async () => {
-		const { uploadFilePermission, rid } = this.props;
+		const { uploadFilePermission, viewCannedResponsesPermission, rid } = this.props;
 
 		// Servers older than 4.2
 		if (!uploadFilePermission) {
@@ -425,8 +429,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return;
 		}
 
-		const permissionToUpload = await hasPermission([uploadFilePermission], rid);
-		this.setState({ permissionToUpload: permissionToUpload[0] });
+		const permissions = await hasPermission([uploadFilePermission, viewCannedResponsesPermission], rid);
+		this.setState({ permissionToUpload: permissions[0], canViewCannedResponse: permissions[1] });
 	};
 
 	onChangeText: any = (text: string): void => {
@@ -795,11 +799,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { permissionToUpload, canViewCannedResponse } = this.state;
-		const { showActionSheet, goToCannedResponses } = this.props;
+		const { permissionToUpload } = this.state;
+		const { showActionSheet, goToCannedResponses, roomType } = this.props;
 
 		const options = [];
-		if (canViewCannedResponse) {
+		if (roomType === 'l' && goToCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
 				icon: 'canned-response',

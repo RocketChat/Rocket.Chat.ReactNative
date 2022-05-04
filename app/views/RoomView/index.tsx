@@ -344,7 +344,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
-		const { roomUpdate, member } = state;
+		const { roomUpdate, member, isOnHold } = state;
 		const { appState, theme, insets, route } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
@@ -355,7 +355,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (member.statusText !== nextState.member.statusText) {
 			return true;
 		}
-
+		if (isOnHold !== nextState.isOnHold) {
+			return true;
+		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
 		if (stateUpdated) {
 			return true;
@@ -370,8 +372,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined, isOnHold } = this.state;
-		const { appState, insets, route, livechatAllowManualOnHold } = this.props;
+		const { roomUpdate, joined, room } = this.state;
+		const { appState, insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
@@ -396,16 +398,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		// If it's a livechat room
 		if (this.t === 'l') {
 			if (
+				!room.lastMessage?.token ||
 				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
 				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
 				prevState.joined !== joined
 			) {
-				this.setHeader();
-			}
-
-			if (isOnHold !== prevState.isOnHold || prevProps.livechatAllowManualOnHold !== livechatAllowManualOnHold) {
 				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
 				this.setState({ canPlaceLivechatOnHold });
+				this.setHeader();
 			}
 		}
 		if (roomUpdate.teamMain !== prevState.roomUpdate.teamMain || roomUpdate.teamId !== prevState.roomUpdate.teamId) {
@@ -489,7 +489,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	canPlaceLivechatOnHold = () => {
 		const { livechatAllowManualOnHold } = this.props;
 		const { room } = this.state;
-
 		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
 	};
 
@@ -1278,7 +1277,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				dateSeparator = item.ts;
 			}
 		}
-
+		console.log({ item });
 		let content = null;
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			content = (
@@ -1346,7 +1345,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderFooter = () => {
-		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, loading } = this.state;
+		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, loading, canViewCannedResponse } =
+			this.state;
 		const { navigation, theme, route } = this.props;
 
 		const usedCannedResponse = route?.params?.usedCannedResponse;
@@ -1413,7 +1413,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<MessageBox
 				ref={this.messagebox}
-				goToCannedResponses={this.goToCannedResponses}
+				goToCannedResponses={canViewCannedResponse ? this.goToCannedResponses : null}
 				onSubmit={this.handleSendMessage}
 				rid={this.rid}
 				tmid={this.tmid}

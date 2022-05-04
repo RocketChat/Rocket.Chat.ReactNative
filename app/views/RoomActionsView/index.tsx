@@ -69,7 +69,6 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
-	livechatAllowManualOnHold?: boolean;
 }
 
 interface IRoomActionsViewState {
@@ -345,13 +344,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		// We save the state to read in render
 		const result = t === 'c' || t === 'p';
 		return result;
-	};
-
-	canPlaceLivechatOnHold = (): boolean => {
-		const { livechatAllowManualOnHold } = this.props;
-		const { room } = this.state;
-
-		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
 	};
 
 	renderEncryptedSwitch = () => {
@@ -1034,7 +1026,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.placeOnHoldLivechat
 								})
 							}
-							left={() => <List.Icon name='pause' />}
+							left={() => <List.Icon name='pause' color={themes[theme].titleText} />}
 							showActionIndicator
 						/>
 						<List.Separator />
