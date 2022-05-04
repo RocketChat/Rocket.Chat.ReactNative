@@ -3,6 +3,7 @@ import React from 'react';
 import { Dimensions, ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import RoomItemComponent from '../../app/containers/RoomItem/RoomItem';
 import { longText } from '../utils';
@@ -23,18 +24,20 @@ const updatedAt = {
 };
 
 const RoomItem = props => (
-	<RoomItemComponent
-		type='d'
-		name='rocket.cat'
-		avatar='rocket.cat'
-		baseUrl={baseUrl}
-		width={width}
-		theme={_theme}
-		showAvatar
-		displayMode={DisplayMode.Expanded}
-		{...updatedAt}
-		{...props}
-	/>
+	<SafeAreaProvider>
+		<RoomItemComponent
+			type='d'
+			name='rocket.cat'
+			avatar='rocket.cat'
+			baseUrl={baseUrl}
+			width={width}
+			theme={_theme}
+			showAvatar
+			displayMode={DisplayMode.Expanded}
+			{...updatedAt}
+			{...props}
+		/>
+	</SafeAreaProvider>
 );
 
 const stories = storiesOf('Room Item', module)
