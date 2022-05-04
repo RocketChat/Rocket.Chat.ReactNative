@@ -112,6 +112,7 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	serverVersion: string;
 	viewCannedResponsesPermission: boolean;
 	goToCannedResponses: () => void;
+	joined: boolean;
 }
 
 interface IMessageBoxState {
@@ -317,7 +318,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			permissionToUpload
 		} = this.state;
 
-		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission } = this.props;
+		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission, joined } =
+			this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -325,6 +327,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return false;
 		}
 		if (nextProps.roomType !== roomType) {
+			return true;
+		}
+		if (nextProps.joined !== joined) {
 			return true;
 		}
 		if (nextProps.replying !== replying) {

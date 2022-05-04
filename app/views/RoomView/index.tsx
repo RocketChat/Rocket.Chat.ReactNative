@@ -1419,6 +1419,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				onSubmit={this.handleSendMessage}
 				rid={this.rid}
 				tmid={this.tmid}
+				joined={joined}
 				roomType={room.t}
 				isFocused={navigation.isFocused}
 				theme={theme}
