@@ -10,13 +10,15 @@ import Animated, {
 import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
-import { themes } from '../../lib/constants';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, FAV_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
+import { useTheme } from '../../theme';
 
 const Touchable = (props: ITouchableProps): JSX.Element => {
-	const { testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled, displayMode } = props;
+	const { testID, isRead, width, favorite, children, isFocused, swipeEnabled, displayMode } = props;
+
+	const { theme, colors } = useTheme();
 
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
@@ -195,7 +197,6 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 							isRead={isRead}
 							width={width}
 							onToggleReadPress={onToggleReadPress}
-							theme={theme}
 							displayMode={displayMode}
 						/>
 						<RightActions
@@ -204,7 +205,6 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 							width={width}
 							toggleFav={toggleFav}
 							onHidePress={onHidePress}
-							theme={theme}
 							displayMode={displayMode}
 						/>
 						<Animated.View style={animatedStyles}>
@@ -213,7 +213,7 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 								theme={theme}
 								testID={testID}
 								style={{
-									backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
+									backgroundColor: isFocused ? colors.chatComponentBackground : colors.backgroundColor
 								}}>
 								{children}
 							</Touch>

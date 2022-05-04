@@ -5,7 +5,6 @@ import { TSupportedThemes } from '../../theme';
 import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource } from '../../definitions';
 
 export interface ILeftActionsProps {
-	theme: TSupportedThemes;
 	transX: Animated.SharedValue<number>;
 	isRead: boolean;
 	width: number;
@@ -14,7 +13,6 @@ export interface ILeftActionsProps {
 }
 
 export interface IRightActionsProps {
-	theme: TSupportedThemes;
 	transX: Animated.SharedValue<number>;
 	favorite: boolean;
 	width: number;
