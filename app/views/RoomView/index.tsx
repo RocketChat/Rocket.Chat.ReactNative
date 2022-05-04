@@ -1260,7 +1260,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	goToCannedResponses = () => {
 		const { room } = this.state;
-		Navigation.navigate('CannedResponsesListView', { rid: room.rid, room });
+		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
@@ -1473,6 +1473,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('id' in room) {
 			({ sysMes, bannerClosed, announcement, tunread, ignored } = room);
 		}
+
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
 				<StatusBar />

@@ -1161,7 +1161,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							<>
 								<List.Item
 									title='Canned_Responses'
-									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid, room } })}
+									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid } })}
 									left={() => <List.Icon name='canned-response' />}
 									showActionIndicator
 								/>
