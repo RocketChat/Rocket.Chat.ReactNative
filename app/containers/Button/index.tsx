@@ -35,52 +35,50 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Button = React.memo(
-	({
-		type = 'primary',
-		disabled = false,
-		loading = false,
-		fontSize = 16,
-		title,
-		onPress,
-		backgroundColor,
-		color,
-		style,
-		styleText,
-		...otherProps
-	}: IButtonProps) => {
-		const { theme } = useTheme();
-		const isPrimary = type === 'primary';
+const Button = ({
+	type = 'primary',
+	disabled = false,
+	loading = false,
+	fontSize = 16,
+	title,
+	onPress,
+	backgroundColor,
+	color,
+	style,
+	styleText,
+	...otherProps
+}: IButtonProps): React.ReactElement => {
+	const { theme } = useTheme();
+	const isPrimary = type === 'primary';
 
-		let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
-		if (color) {
-			textColor = color;
-		}
-
-		return (
-			<Touchable
-				onPress={onPress}
-				disabled={disabled || loading}
-				style={[
-					styles.container,
-					backgroundColor
-						? { backgroundColor }
-						: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
-					disabled && styles.disabled,
-					style
-				]}
-				accessibilityLabel={title}
-				{...otherProps}>
-				{loading ? (
-					<ActivityIndicator color={textColor} />
-				) : (
-					<Text style={[styles.text, { color: textColor, fontSize }, styleText]} accessibilityLabel={title}>
-						{title}
-					</Text>
-				)}
-			</Touchable>
-		);
+	let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
+	if (color) {
+		textColor = color;
 	}
-);
+
+	return (
+		<Touchable
+			onPress={onPress}
+			disabled={disabled || loading}
+			style={[
+				styles.container,
+				backgroundColor
+					? { backgroundColor }
+					: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
+				disabled && styles.disabled,
+				style
+			]}
+			accessibilityLabel={title}
+			{...otherProps}>
+			{loading ? (
+				<ActivityIndicator color={textColor} />
+			) : (
+				<Text style={[styles.text, { color: textColor, fontSize }, styleText]} accessibilityLabel={title}>
+					{title}
+				</Text>
+			)}
+		</Touchable>
+	);
+};
 
 export default Button;
