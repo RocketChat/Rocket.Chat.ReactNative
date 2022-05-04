@@ -1,25 +1,30 @@
 import React from 'react';
-import { Animated, View } from 'react-native';
+import { View, I18nManager } from 'react-native';
+import Animated, { useAnimatedStyle, interpolate } from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { isRTL } from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode, themes } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 
-const reverse = new Animated.Value(isRTL() ? -1 : 1);
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
 export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
-	const translateX = Animated.multiply(
-		transX.interpolate({
-			inputRange: [0, ACTION_WIDTH],
-			outputRange: [-ACTION_WIDTH, 0]
-		}),
-		reverse
-	);
+	const animatedStyles = useAnimatedStyle(() => {
+		let translateX = interpolate(transX.value, [0, ACTION_WIDTH], [-ACTION_WIDTH, 0]);
+		if (I18nManager.isRTL) {
+			translateX = interpolate(transX.value, [-ACTION_WIDTH, 0], [width - ACTION_WIDTH, width]);
+			return {
+				transform: [{ translateX }]
+			};
+		}
+		return {
+			right: width - ACTION_WIDTH,
+			transform: [{ translateX }]
+		};
+	});
 
 	const isCondensed = displayMode === DisplayMode.Condensed;
 	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
@@ -30,12 +35,11 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 				style={[
 					styles.actionLeftButtonContainer,
 					{
-						right: width - ACTION_WIDTH,
 						width,
-						transform: [{ translateX }],
 						backgroundColor: themes[theme].tintColor
 					},
-					viewHeight
+					viewHeight,
+					animatedStyles
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
@@ -53,20 +57,37 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 
 export const RightActions = React.memo(
 	({ transX, favorite, width, toggleFav, onHidePress, theme, displayMode }: IRightActionsProps) => {
-		const translateXFav = Animated.multiply(
-			transX.interpolate({
-				inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
-				outputRange: [width / 2, width - ACTION_WIDTH * 2, width]
-			}),
-			reverse
-		);
-		const translateXHide = Animated.multiply(
-			transX.interpolate({
-				inputRange: [-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
-				outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
-			}),
-			reverse
-		);
+		const animatedFavStyles = useAnimatedStyle(() => {
+			let translateXFav = interpolate(
+				transX.value,
+				[-width / 2, -ACTION_WIDTH * 2, 0],
+				[width / 2, width - ACTION_WIDTH * 2, width]
+			);
+			if (I18nManager.isRTL) {
+				translateXFav = interpolate(
+					transX.value,
+					[0, ACTION_WIDTH * 2, width / 2],
+					[-width, -width + ACTION_WIDTH * 2, -width / 2]
+				);
+			}
+			return { transform: [{ translateX: translateXFav }] };
+		});
+
+		const animatedHideStyles = useAnimatedStyle(() => {
+			let translateXHide = interpolate(
+				transX.value,
+				[-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
+				[0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
+			);
+			if (I18nManager.isRTL) {
+				translateXHide = interpolate(
+					transX.value,
+					[0, ACTION_WIDTH * 2, LONG_SWIPE, width],
+					[-width, -width + ACTION_WIDTH, -width + LONG_SWIPE, 0]
+				);
+			}
+			return { transform: [{ translateX: translateXHide }] };
+		});
 
 		const isCondensed = displayMode === DisplayMode.Condensed;
 		const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
@@ -78,10 +99,10 @@ export const RightActions = React.memo(
 						styles.actionRightButtonContainer,
 						{
 							width,
-							transform: [{ translateX: translateXFav }],
 							backgroundColor: themes[theme].hideBackground
 						},
-						viewHeight
+						viewHeight,
+						animatedFavStyles
 					]}>
 					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
 						<CustomIcon
@@ -95,10 +116,10 @@ export const RightActions = React.memo(
 					style={[
 						styles.actionRightButtonContainer,
 						{
-							width,
-							transform: [{ translateX: translateXHide }]
+							width
 						},
-						isCondensed && { height: ROW_HEIGHT_CONDENSED }
+						isCondensed && { height: ROW_HEIGHT_CONDENSED },
+						animatedHideStyles
 					]}>
 					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
 						<CustomIcon

@@ -1,207 +1,81 @@
 import React from 'react';
-import { Animated } from 'react-native';
-import {
-	GestureEvent,
-	HandlerStateChangeEventPayload,
-	LongPressGestureHandler,
-	PanGestureHandler,
-	PanGestureHandlerEventPayload,
-	State
-} from 'react-native-gesture-handler';
+import { I18nManager } from 'react-native';
+import Animated, {
+	useAnimatedGestureHandler,
+	useSharedValue,
+	useAnimatedStyle,
+	withSpring,
+	runOnJS
+} from 'react-native-reanimated';
+import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
-import { isRTL } from '../../i18n';
 import { themes } from '../../lib/constants';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 
-class Touchable extends React.Component<ITouchableProps, any> {
-	private dragX: Animated.Value;
-	private rowOffSet: Animated.Value;
-	private reverse: Animated.Value;
-	private transX: Animated.AnimatedAddition;
-	private transXReverse: Animated.AnimatedMultiplication;
-	private _onGestureEvent: (event: GestureEvent<PanGestureHandlerEventPayload>) => void;
-	private _value: number;
+const Touchable = (props: ITouchableProps): JSX.Element => {
+	const { testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled, displayMode } = props;
 
-	constructor(props: ITouchableProps) {
-		super(props);
-		this.dragX = new Animated.Value(0);
-		this.rowOffSet = new Animated.Value(0);
-		this.reverse = new Animated.Value(isRTL() ? -1 : 1);
-		this.transX = Animated.add(this.rowOffSet, this.dragX);
-		this.transXReverse = Animated.multiply(this.transX, this.reverse);
-		this.state = {
-			rowState: 0 // 0: closed, 1: right opened, -1: left opened
-		};
-		this._onGestureEvent = Animated.event([{ nativeEvent: { translationX: this.dragX } }], { useNativeDriver: true });
-		this._value = 0;
-	}
+	const rowOffSet = useSharedValue(0);
+	const transX = useSharedValue(0);
+	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
+	let _value = 0;
 
-	_onHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload & PanGestureHandlerEventPayload }) => {
-		if (nativeEvent.oldState === State.ACTIVE) {
-			this._handleRelease(nativeEvent);
-		}
+	const close = () => {
+		rowState.value = 0;
+		transX.value = withSpring(0, { overshootClamping: true });
+		rowOffSet.value = 0;
 	};
 
-	onLongPressHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload }) => {
-		if (nativeEvent.state === State.ACTIVE) {
-			this.onLongPress();
-		}
-	};
-
-	_handleRelease = (nativeEvent: PanGestureHandlerEventPayload) => {
-		const { translationX } = nativeEvent;
-		const { rowState } = this.state;
-		this._value += translationX;
-
-		let toValue = 0;
-		if (rowState === 0) {
-			// if no option is opened
-			if (translationX > 0 && translationX < LONG_SWIPE) {
-				// open leading option if he swipe right but not enough to trigger action
-				if (isRTL()) {
-					toValue = 2 * ACTION_WIDTH;
-				} else {
-					toValue = ACTION_WIDTH;
-				}
-				this.setState({ rowState: -1 });
-			} else if (translationX >= LONG_SWIPE) {
-				toValue = 0;
-				if (isRTL()) {
-					this.hideChannel();
-				} else {
-					this.toggleRead();
-				}
-			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
-				// open trailing option if he swipe left
-				if (isRTL()) {
-					toValue = -ACTION_WIDTH;
-				} else {
-					toValue = -2 * ACTION_WIDTH;
-				}
-				this.setState({ rowState: 1 });
-			} else if (translationX <= -LONG_SWIPE) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-				if (isRTL()) {
-					this.toggleRead();
-				} else {
-					this.hideChannel();
-				}
-			} else {
-				toValue = 0;
-			}
-		}
-
-		if (rowState === -1) {
-			// if left option is opened
-			if (this._value < SMALL_SWIPE) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-			} else if (this._value > LONG_SWIPE) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-				if (isRTL()) {
-					this.hideChannel();
-				} else {
-					this.toggleRead();
-				}
-			} else if (isRTL()) {
-				toValue = 2 * ACTION_WIDTH;
-			} else {
-				toValue = ACTION_WIDTH;
-			}
-		}
-
-		if (rowState === 1) {
-			// if right option is opened
-			if (this._value > -2 * SMALL_SWIPE) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-			} else if (this._value < -LONG_SWIPE) {
-				toValue = 0;
-				this.setState({ rowState: 0 });
-				if (isRTL()) {
-					this.toggleRead();
-				} else {
-					this.hideChannel();
-				}
-			} else if (isRTL()) {
-				toValue = -ACTION_WIDTH;
-			} else {
-				toValue = -2 * ACTION_WIDTH;
-			}
-		}
-		this._animateRow(toValue);
-	};
-
-	_animateRow = (toValue: number) => {
-		this.rowOffSet.setValue(this._value);
-		this._value = toValue;
-		this.dragX.setValue(0);
-		Animated.spring(this.rowOffSet, {
-			toValue,
-			bounciness: 0,
-			useNativeDriver: true
-		}).start();
-	};
-
-	close = () => {
-		this.setState({ rowState: 0 });
-		this._animateRow(0);
-	};
-
-	toggleFav = () => {
-		const { toggleFav, rid, favorite } = this.props;
+	const toggleFav = () => {
+		const { toggleFav, rid, favorite } = props;
 		if (toggleFav) {
 			toggleFav(rid, favorite);
 		}
-		this.close();
+		close();
 	};
 
-	toggleRead = () => {
-		const { toggleRead, rid, isRead } = this.props;
+	const toggleRead = () => {
+		const { toggleRead, rid, isRead } = props;
 		if (toggleRead) {
 			toggleRead(rid, isRead);
 		}
 	};
 
-	hideChannel = () => {
-		const { hideChannel, rid, type } = this.props;
+	const hideChannel = () => {
+		const { hideChannel, rid, type } = props;
 		if (hideChannel) {
 			hideChannel(rid, type);
 		}
 	};
 
-	onToggleReadPress = () => {
-		this.toggleRead();
-		this.close();
+	const onToggleReadPress = () => {
+		toggleRead();
+		close();
 	};
 
-	onHidePress = () => {
-		this.hideChannel();
-		this.close();
+	const onHidePress = () => {
+		hideChannel();
+		close();
 	};
 
-	onPress = () => {
-		const { rowState } = this.state;
-		if (rowState !== 0) {
-			this.close();
+	const onPress = () => {
+		if (rowState.value !== 0) {
+			close();
 			return;
 		}
-		const { onPress } = this.props;
+		const { onPress } = props;
 		if (onPress) {
 			onPress();
 		}
 	};
 
-	onLongPress = () => {
-		const { rowState } = this.state;
-		const { onLongPress } = this.props;
-		if (rowState !== 0) {
-			this.close();
+	const onLongPress = () => {
+		const { onLongPress } = props;
+		if (rowState.value !== 0) {
+			close();
 			return;
 		}
 
@@ -210,55 +84,143 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		}
 	};
 
-	render() {
-		const { testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled, displayMode } = this.props;
+	const onLongPressHandlerStateChange = ({ nativeEvent }: any) => {
+		if (nativeEvent.state === State.ACTIVE) {
+			onLongPress();
+		}
+	};
 
-		return (
-			<LongPressGestureHandler onHandlerStateChange={this.onLongPressHandlerStateChange}>
-				<Animated.View>
-					<PanGestureHandler
-						minDeltaX={20}
-						onGestureEvent={this._onGestureEvent}
-						onHandlerStateChange={this._onHandlerStateChange}
-						enabled={swipeEnabled}>
-						<Animated.View>
-							<LeftActions
-								transX={this.transXReverse}
-								isRead={isRead}
-								width={width}
-								onToggleReadPress={this.onToggleReadPress}
+	const handleRelease = (event: any) => {
+		const { translationX } = event;
+		_value += translationX;
+		let toValue = 0;
+		if (rowState.value === 0) {
+			// if no option is opened
+			if (translationX > 0 && translationX < LONG_SWIPE) {
+				if (I18nManager.isRTL) {
+					toValue = 2 * ACTION_WIDTH;
+				} else {
+					toValue = ACTION_WIDTH;
+				}
+				rowState.value = -1;
+			} else if (translationX >= LONG_SWIPE) {
+				toValue = 0;
+				if (I18nManager.isRTL) {
+					hideChannel();
+				} else {
+					toggleRead();
+				}
+			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
+				// open trailing option if he swipe left
+				if (I18nManager.isRTL) {
+					toValue = -ACTION_WIDTH;
+				} else {
+					toValue = -2 * ACTION_WIDTH;
+				}
+				rowState.value = 1;
+			} else if (translationX <= -LONG_SWIPE) {
+				toValue = 0;
+				rowState.value = 1;
+				if (I18nManager.isRTL) {
+					toggleRead();
+				} else {
+					hideChannel();
+				}
+			} else {
+				toValue = 0;
+			}
+		} else if (rowState.value === -1) {
+			// if left option is opened
+			if (_value < SMALL_SWIPE) {
+				toValue = 0;
+				rowState.value = 0;
+			} else if (_value > LONG_SWIPE) {
+				toValue = 0;
+				rowState.value = 0;
+				if (I18nManager.isRTL) {
+					hideChannel();
+				} else {
+					toggleRead();
+				}
+			} else if (I18nManager.isRTL) {
+				toValue = 2 * ACTION_WIDTH;
+			} else {
+				toValue = ACTION_WIDTH;
+			}
+		} else if (rowState.value === 1) {
+			// if right option is opened
+			if (_value > -2 * SMALL_SWIPE) {
+				toValue = 0;
+				rowState.value = 0;
+			} else if (_value < -LONG_SWIPE) {
+				toValue = 0;
+				rowState.value = 0;
+				if (I18nManager.isRTL) {
+					toggleRead();
+				} else {
+					hideChannel();
+				}
+			} else if (I18nManager.isRTL) {
+				toValue = -ACTION_WIDTH;
+			} else {
+				toValue = -2 * ACTION_WIDTH;
+			}
+		}
+		transX.value = withSpring(toValue, { overshootClamping: true });
+		rowOffSet.value = toValue;
+		_value = toValue;
+	};
+
+	const onGestureEvent = useAnimatedGestureHandler({
+		onActive: event => {
+			transX.value = event.translationX + rowOffSet.value;
+		},
+		onEnd: event => {
+			// https://docs.swmansion.com/react-native-reanimated/docs/api/miscellaneous/runOnJS
+			runOnJS(handleRelease)(event);
+		}
+	});
+
+	const animatedStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
+
+	return (
+		<LongPressGestureHandler onHandlerStateChange={onLongPressHandlerStateChange}>
+			<Animated.View>
+				<PanGestureHandler activeOffsetX={[-20, 20]} onGestureEvent={onGestureEvent} enabled={swipeEnabled}>
+					<Animated.View>
+						<LeftActions
+							transX={transX}
+							isRead={isRead}
+							width={width}
+							onToggleReadPress={onToggleReadPress}
+							theme={theme}
+							displayMode={displayMode}
+						/>
+						<RightActions
+							transX={transX}
+							favorite={favorite}
+							width={width}
+							toggleFav={toggleFav}
+							onHidePress={onHidePress}
+							theme={theme}
+							displayMode={displayMode}
+						/>
+						<Animated.View style={animatedStyles}>
+							<Touch
+								onPress={onPress}
 								theme={theme}
-								displayMode={displayMode}
-							/>
-							<RightActions
-								transX={this.transXReverse}
-								favorite={favorite}
-								width={width}
-								toggleFav={this.toggleFav}
-								onHidePress={this.onHidePress}
-								theme={theme}
-								displayMode={displayMode}
-							/>
-							<Animated.View
+								testID={testID}
 								style={{
-									transform: [{ translateX: this.transX }]
+									backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
 								}}>
-								<Touch
-									onPress={this.onPress}
-									theme={theme}
-									testID={testID}
-									style={{
-										backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
-									}}>
-									{children}
-								</Touch>
-							</Animated.View>
+								{children}
+							</Touch>
 						</Animated.View>
-					</PanGestureHandler>
-				</Animated.View>
-			</LongPressGestureHandler>
-		);
-	}
-}
+					</Animated.View>
+				</PanGestureHandler>
+			</Animated.View>
+		</LongPressGestureHandler>
+	);
+};
 
 export default Touchable;
