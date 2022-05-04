@@ -20,8 +20,7 @@ import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubsc
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { CustomIcon } from '../../lib/Icons';
-import RocketChat from '../../lib/rocketchat';
+import { CustomIcon } from '../../containers/CustomIcon';
 import KeyboardView from '../../containers/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -38,11 +37,13 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { getRoomTitle, hasPermission } from '../../lib/methods';
+import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {
 	room: ISubscription;
 	avatar: IAvatar;
-	permissions: Record<TSupportedPermissions, string>;
+	permissions: { [key in TSupportedPermissions]?: boolean };
 	name: string;
 	description?: string;
 	topic?: string;
@@ -93,7 +94,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		this.state = {
 			room: this.room || ({} as ISubscription),
 			avatar: {} as IAvatar,
-			permissions: {} as Record<TSupportedPermissions, string>,
+			permissions: {},
 			name: '',
 			description: '',
 			topic: '',
@@ -133,7 +134,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 		try {
 			this.init(this.room);
-			const result = await RocketChat.hasPermission(
+			const result = await hasPermission(
 				[
 					setReadOnlyPermission,
 					setReactWhenReadOnlyPermission,
@@ -147,7 +148,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			);
 
 			this.setState({
-				// @ts-ignore - Solved by migrating the hasPermission function
 				permissions: {
 					'set-readonly': result[0],
 					'set-react-when-readonly': result[1],
@@ -169,7 +169,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		// fake password just to user knows about it
 		this.setState({
 			room,
-			name: RocketChat.getRoomTitle(room),
+			name: getRoomTitle(room),
 			description,
 			topic,
 			announcement,
@@ -311,7 +311,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 
 		try {
-			await RocketChat.saveRoomSettings(room.rid, params);
+			await Services.saveRoomSettings(room.rid, params);
 		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
 				this.setState({ nameError: e });
@@ -350,7 +350,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
 				// @ts-ignore - wm schema type error dont including array
 				// eslint-disable-next-line no-await-in-loop
-				const permissions = await RocketChat.hasPermission([permissionType], teamChannels[i].rid);
+				const permissions = await hasPermission([permissionType], teamChannels[i].rid);
 				if (permissions[0]) {
 					// @ts-ignore - wm schema type error dont including array
 					teamChannelOwner.push(teamChannels[i]);
@@ -364,7 +364,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					infoText: 'Select_channels_to_delete',
 					nextAction: (selected: string[]) => {
 						showConfirmationAlert({
-							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
+							message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 							onPress: () => deleteRoom(ERoomType.t, room, selected)
 						});
@@ -372,7 +372,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 				});
 			} else {
 				showConfirmationAlert({
-					message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
+					message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					onPress: () => dispatch(deleteRoom(ERoomType.t, room))
 				});
@@ -427,7 +427,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					onPress: async () => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
-							await RocketChat.toggleArchiveRoom(rid, t as SubscriptionType, !archived);
+							await Services.toggleArchiveRoom(rid, t as SubscriptionType, !archived);
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);
