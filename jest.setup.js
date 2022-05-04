@@ -1,5 +1,7 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 
+require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
+
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
 jest.mock('react-native-mmkv-storage', () => ({
