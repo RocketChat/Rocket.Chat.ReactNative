@@ -212,9 +212,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.cancelSearch();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
-			}
-		});
-		console.timeEnd(`${this.constructor.name} mount`);
+			});
+			console.timeEnd(`${this.constructor.name} mount`);
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: IRoomsListViewProps) {
