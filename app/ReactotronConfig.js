@@ -8,7 +8,8 @@ import sagaPlugin from 'reactotron-redux-saga';
 if (__DEV__) {
 	const scriptURL = NativeModules.SourceCode.scriptURL;
 	const scriptHostname = scriptURL.split('://')[1].split(':')[0];
-	Reactotron.setAsyncStorageHandler(AsyncStorage)
+	Reactotron
+		// .setAsyncStorageHandler(AsyncStorage)
 		.configure({ host: scriptHostname })
 		.useReactNative()
 		.use(reactotronRedux())

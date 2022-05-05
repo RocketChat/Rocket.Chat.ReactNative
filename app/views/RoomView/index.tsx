@@ -217,6 +217,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private flatList: TListRef;
 	private mounted: boolean;
 	private offset = 0;
+	private subOmnichannel?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
@@ -311,6 +312,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
+			if (this.t === 'l') {
+				this.observeOmnichannel();
+				const canForwardGuest = this.canForwardGuest();
+				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
+				const canReturnQueue = this.canReturnQueue();
+				const canViewCannedResponse = this.canViewCannedResponse();
+				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
+			}
 			this.setHeader();
 			if (this.rid) {
 				this.sub?.subscribe?.();
@@ -328,13 +337,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
-			}
-			if (this.t === 'l') {
-				const canForwardGuest = this.canForwardGuest();
-				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-				const canReturnQueue = this.canReturnQueue();
-				const canViewCannedResponse = this.canViewCannedResponse();
-				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 			}
 		});
 		if (isTablet) {
@@ -465,6 +467,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.subSubscription && this.subSubscription.unsubscribe) {
 			this.subSubscription.unsubscribe();
 		}
+
+		if (this.subOmnichannel && this.subOmnichannel.unsubscribe) {
+			this.subOmnichannel.unsubscribe();
+		}
 		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
 			this.queryUnreads.unsubscribe();
 		}
@@ -506,6 +512,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return returnQueue;
 		} catch {
 			return false;
+		}
+	};
+
+	observeOmnichannel = () => {
+		try {
+			const db = database.active;
+			const subCollection = db
+				.get('subscriptions')
+				.query(Q.where('rid', this.rid as string))
+				.observe();
+			this.subOmnichannel = subCollection.subscribe(data => {
+				if (data[0]) {
+					if (this.subOmnichannel && this.subOmnichannel.unsubscribe) {
+						this.observeRoom(data[0]);
+						this.subOmnichannel.unsubscribe();
+					}
+				}
+			});
+		} catch (e) {
+			console.log("Can't find subscription to observe");
 		}
 	};
 

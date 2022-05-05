@@ -318,8 +318,18 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			permissionToUpload
 		} = this.state;
 
-		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission, joined } =
-			this.props;
+		const {
+			roomType,
+			replying,
+			editing,
+			isFocused,
+			message,
+			theme,
+			usedCannedResponse,
+			uploadFilePermission,
+			viewCannedResponsesPermission,
+			joined
+		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -369,6 +379,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (!dequal(nextProps.uploadFilePermission, uploadFilePermission)) {
+			return true;
+		}
+		if (!dequal(nextProps.viewCannedResponsesPermission, viewCannedResponsesPermission)) {
 			return true;
 		}
 		if (nextProps.usedCannedResponse !== usedCannedResponse) {
@@ -427,14 +440,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	setOptions = async () => {
 		const { uploadFilePermission, viewCannedResponsesPermission, rid } = this.props;
 
+		const canViewCannedResponse = await hasPermission([viewCannedResponsesPermission], rid);
+		this.setState({ canViewCannedResponse: canViewCannedResponse[0] });
+
 		// Servers older than 4.2
 		if (!uploadFilePermission) {
 			this.setState({ permissionToUpload: true });
 			return;
 		}
 
-		const permissions = await hasPermission([uploadFilePermission, viewCannedResponsesPermission], rid);
-		this.setState({ permissionToUpload: permissions[0], canViewCannedResponse: permissions[1] });
+		const permissionToUpload = await hasPermission([uploadFilePermission], rid);
+		this.setState({ permissionToUpload: permissionToUpload[0] });
 	};
 
 	onChangeText: any = (text: string): void => {
@@ -803,11 +819,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { permissionToUpload } = this.state;
-		const { showActionSheet, goToCannedResponses, roomType } = this.props;
+		const { permissionToUpload, canViewCannedResponse } = this.state;
+		const { showActionSheet, goToCannedResponses } = this.props;
 
 		const options = [];
-		if (roomType === 'l' && goToCannedResponses) {
+		if (canViewCannedResponse) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
 				icon: 'canned-response',
