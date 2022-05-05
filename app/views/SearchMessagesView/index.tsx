@@ -12,7 +12,6 @@ import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
-import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
@@ -33,6 +32,8 @@ import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { IEmoji } from '../../definitions/IEmoji';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { IUrl } from '../../definitions';
+import { Services } from '../../lib/services';
 
 const QUERY_SIZE = 50;
 
@@ -153,11 +154,27 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
+		const result = await Services.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
-			return result.messages;
+			const urlRenderMessages = result.messages?.map(message => {
+				if (message.urls && message.urls.length > 0) {
+					message.urls = message.urls?.map((url, index) => {
+						if (url.meta) {
+							return {
+								_id: index,
+								title: url.meta.pageTitle,
+								description: url.meta.ogDescription,
+								image: url.meta.ogImage,
+								url: url.url
+							} as IUrl;
+						}
+						return {} as IUrl;
+					});
+				}
+				return message;
+			});
+			return urlRenderMessages;
 		}
-
 		return [];
 	};
 	getMessages = async (searchText: string, debounced?: boolean) => {
