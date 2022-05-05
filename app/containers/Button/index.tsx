@@ -3,7 +3,6 @@ import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
@@ -48,10 +47,10 @@ const Button = ({
 	styleText,
 	...otherProps
 }: IButtonProps): React.ReactElement => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const isPrimary = type === 'primary';
 
-	let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
+	let textColor = isPrimary ? colors.buttonText : colors.bodyText;
 	if (color) {
 		textColor = color;
 	}
@@ -62,9 +61,7 @@ const Button = ({
 			disabled={disabled || loading}
 			style={[
 				styles.container,
-				backgroundColor
-					? { backgroundColor }
-					: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
+				backgroundColor ? { backgroundColor } : { backgroundColor: isPrimary ? colors.actionTintColor : colors.backgroundColor },
 				disabled && styles.disabled,
 				style
 			]}
