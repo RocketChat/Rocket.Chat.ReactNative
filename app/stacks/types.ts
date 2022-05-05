@@ -206,7 +206,7 @@ export type NewMessageStackParamList = {
 		buttonText?: string;
 		nextAction?: Function;
 	}; // TODO: Change
-	CreateChannelView: {
+	CreateChannelView?: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;
 	};

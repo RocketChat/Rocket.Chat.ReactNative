@@ -43,7 +43,7 @@ import { Services } from '../../lib/services';
 interface IRoomInfoEditViewState {
 	room: ISubscription;
 	avatar: IAvatar;
-	permissions: Record<TSupportedPermissions, string>;
+	permissions: { [key in TSupportedPermissions]?: boolean };
 	name: string;
 	description?: string;
 	topic?: string;
@@ -93,7 +93,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		this.state = {
 			room: {} as ISubscription,
 			avatar: {} as IAvatar,
-			permissions: {} as Record<TSupportedPermissions, string>,
+			permissions: {},
 			name: '',
 			description: '',
 			topic: '',
@@ -158,7 +158,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			);
 
 			this.setState({
-				// @ts-ignore - Solved by migrating the hasPermission function
 				permissions: {
 					'set-readonly': result[0],
 					'set-react-when-readonly': result[1],

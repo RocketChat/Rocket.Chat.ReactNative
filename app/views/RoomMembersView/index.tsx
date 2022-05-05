@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
 import { themes } from '../../lib/constants';
-import { withActionSheet } from '../../containers/ActionSheet';
+import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -13,7 +13,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
-import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TRoomModel, TUserModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -27,6 +27,7 @@ import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { TSupportedPermissions } from '../../reducers/permissions';
 import { getRoomTitle, hasPermission, isGroupChat, RoomTypes } from '../../lib/methods';
 import styles from './styles';
 import { Services } from '../../lib/services';
@@ -37,13 +38,13 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 	rid: string;
 	members: string[];
 	baseUrl: string;
-	room: TRoomModel;
+	room: TSubscriptionModel;
 	user: {
 		id: string;
 		token: string;
 		roles: string[];
 	};
-	showActionSheet: (params: any) => {}; // TODO: this work?
+	showActionSheet: (params: TActionSheetOptions) => {};
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	useRealName: boolean;
@@ -64,14 +65,14 @@ interface IRoomMembersViewState {
 	rid: string;
 	members: TUserModel[];
 	membersFiltered: TUserModel[];
-	room: TRoomModel;
+	room: TSubscriptionModel;
 	end: boolean;
 }
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
 	private mounted: boolean;
-	private permissions: any; // TODO: fix when get props from api
-	private roomObservable!: Observable<TRoomModel>;
+	private permissions: { [key in TSupportedPermissions]?: boolean };
+	private roomObservable!: Observable<TSubscriptionModel>;
 	private subscription!: Subscription;
 	private roomRoles: any;
 
@@ -88,7 +89,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			rid,
 			members: [],
 			membersFiltered: [],
-			room: room || ({} as TRoomModel),
+			room: room || ({} as TSubscriptionModel),
 			end: false
 		};
 		if (room && room.observe) {
@@ -109,7 +110,6 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		this.mounted = true;
 		this.fetchMembers();
 
-		// @ts-ignore - TODO: room param is wrong
 		if (isGroupChat(room)) {
 			return;
 		}
@@ -285,7 +285,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		const { room } = this.state;
 		const { showActionSheet, user, theme } = this.props;
 
-		const options: {}[] = [
+		const options: TActionSheetOptionsItem[] = [
 			{
 				icon: 'message',
 				title: I18n.t('Direct_message'),

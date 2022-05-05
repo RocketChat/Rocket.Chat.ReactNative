@@ -27,7 +27,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		navigation.setOptions({
 			title: I18n.t('Preferences')
 		});
-	}, []);
+	}, [navigation]);
 
 	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
 		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);

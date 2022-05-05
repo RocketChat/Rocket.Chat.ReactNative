@@ -15,8 +15,8 @@ import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
-import MessageErrorActions from '../../containers/MessageErrorActions';
-import MessageBox, { IMessageBoxProps } from '../../containers/MessageBox';
+import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
+import MessageBox, { MessageBoxType } from '../../containers/MessageBox';
 import log, { events, logEvent } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
@@ -57,10 +57,10 @@ import Separator from './Separator';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
 import styles from './styles';
-import JoinCode, { IJoinCodeProps } from './JoinCode';
+import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
-import List, { IListContainerProps, IListProps } from './List';
+import List, { ListContainerType } from './List';
 import { ChatsStackParamList } from '../../stacks/types';
 import {
 	IApplicationState,
@@ -79,6 +79,8 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
+import { TListRef } from './List/List';
+import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
 	canAutoTranslate as canAutoTranslateMethod,
@@ -93,6 +95,8 @@ import {
 } from '../../lib/methods';
 import { Services } from '../../lib/services';
 
+type TStateAttrsUpdate = keyof IRoomViewState;
+
 const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
@@ -106,7 +110,10 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member',
 	'showingBlockingLoader'
-];
+] as TStateAttrsUpdate[];
+
+type TRoomUpdate = keyof TSubscriptionModel;
+
 const roomAttrsUpdate = [
 	'f',
 	'ro',
@@ -129,7 +136,7 @@ const roomAttrsUpdate = [
 	'teamMain',
 	'teamId',
 	'onHold'
-] as const;
+] as TRoomUpdate[];
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
@@ -150,14 +157,14 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	insets: EdgeInsets;
 }
 
-type TRoomUpdate = typeof roomAttrsUpdate[number];
-
 interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
-	room: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean };
+	room:
+		| TSubscriptionModel
+		| { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean; sysMes?: boolean };
 	roomUpdate: {
-		[K in TRoomUpdate]?: any; // TODO: get type from TSubscriptionModel
+		[K in TRoomUpdate]?: any;
 	};
 	member: any;
 	lastOpen: Date | null;
@@ -181,23 +188,27 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	// TODO: review these refs
-	private messagebox: React.RefObject<IMessageBoxProps>;
-	private list: React.RefObject<IListContainerProps>;
-	private joinCode: React.RefObject<IJoinCodeProps>;
-	private flatList: React.RefObject<IListProps>;
+	private messagebox: React.RefObject<MessageBoxType>;
+	private list: React.RefObject<ListContainerType>;
+	private joinCode: React.RefObject<IJoinCode>;
+	private flatList: TListRef;
 	private mounted: boolean;
-	private sub?: any;
 	private offset = 0;
-	private didMountInteraction: any;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
 	private retryInitTimeout?: number;
 	private retryFindCount = 0;
 	private retryFindTimeout?: number;
-	private messageErrorActions?: React.RefObject<any>; // TODO: type me
-	private messageActions?: React.RefObject<IMessageActions>;
+	private messageErrorActions?: IMessageErrorActions | null;
+	private messageActions?: IMessageActions | null;
+	// Type of InteractionManager.runAfterInteractions
+	private didMountInteraction?: {
+		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
+		done: (...args: any[]) => any;
+		cancel: () => void;
+	};
+	private sub?: RoomClass;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -311,6 +322,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (member.statusText !== nextState.member.statusText) {
 			return true;
 		}
+
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
 		if (stateUpdated) {
 			return true;
@@ -339,8 +351,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			// Fire List.query() just to keep observables working
 			if (this.list && this.list.current) {
-				// @ts-ignore TODO: is this working?
-				this.list.current?.query?.();
+				this.list.current?.query();
 			}
 		}
 		// If it's not direct message
@@ -378,7 +389,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const db = database.active;
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
-			// @ts-ignore
 			const { text } = this.messagebox.current;
 			let obj: TSubscriptionModel | TThreadModel | null = null;
 			if (this.tmid) {
@@ -393,9 +403,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (obj) {
 				try {
+					const object = obj;
 					await db.write(async () => {
-						// FIXME: why do I need to tell ts this is non null if we have that if condition above?
-						await obj!.update(r => {
+						await object.update(r => {
 							r.draftMessage = text;
 						});
 					});
@@ -545,20 +555,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return isMasterDetail ? 20 : 0;
 	};
 
-	goRoomActionsView = (screen?: string) => {
+	goRoomActionsView = (screen?: keyof ModalStackParamList) => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			// @ts-ignore TODO: find a way to make it work
+			// @ts-ignore
 			navigation.navigate('ModalStackNavigator', {
-				// @ts-ignore
 				screen: screen ?? 'RoomActionsView',
 				params: {
 					rid: this.rid as string,
 					t: this.t as SubscriptionType,
-					// @ts-ignore
-					room,
+					room: room as ISubscription,
 					member,
 					showCloseModal: !!screen,
 					joined
@@ -697,7 +705,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	errorActionsShow = (message: TAnyMessageModel) => {
-		// @ts-ignore
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
@@ -747,7 +754,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		// @ts-ignore
 		this.messageActions?.showMessageActions(message);
 	};
 
@@ -877,10 +883,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (message.fromServer && !message.tmid && this.rid) {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
-				// @ts-ignore
-				await Promise.race([this.list.current.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				// @ts-ignore
-				this.list.current.cancelJumpToMessage();
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				this.list.current?.cancelJumpToMessage();
 			}
 		} catch (e) {
 			log(e);
@@ -922,8 +926,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { user } = this.props;
 		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
 			if (this.list && this.list.current) {
-				// @ts-ignore
-				this.list.current.update();
+				this.list.current?.update();
 			}
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
@@ -961,7 +964,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				const { joinCodeRequired, rid } = room;
 				if (joinCodeRequired) {
-					// @ts-ignore
 					this.joinCode.current?.show();
 				} else {
 					await Services.joinRoom(rid, null, this.t as any);
@@ -1104,17 +1106,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (handleCommandScroll(event)) {
 				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
 				this.offset += offset;
-				// @ts-ignore
-				this.flatList?.scrollToOffset({ offset: this.offset });
+				this.flatList?.current?.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
 				this.goRoomActionsView();
 			} else if (handleCommandSearchMessages(event)) {
 				this.goRoomActionsView('SearchMessagesView');
 			} else if (handleCommandReplyLatest(event)) {
 				if (this.list && this.list.current) {
-					// @ts-ignore
 					const message = this.list.current.getLastMessage();
-					this.onReplyInit(message, false);
+					if (message) {
+						this.onReplyInit(message, false);
+					}
 				}
 			}
 		}
@@ -1233,6 +1235,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					reactionInit={this.onReactionInit}
 					replyBroadcast={this.replyBroadcast}
 					errorActionsShow={this.errorActionsShow}
+					isSystemMessage={room.sysMes as boolean}
 					baseUrl={baseUrl}
 					Message_GroupingPeriod={Message_GroupingPeriod}
 					timeFormat={Message_TimeFormat}
@@ -1362,7 +1365,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					// @ts-ignore
 					ref={ref => (this.messageActions = ref)}
 					tmid={this.tmid}
 					room={room}
@@ -1373,7 +1375,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
-				{/* @ts-ignore TODO: missing interface on MessageErrorActions */}
 				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
 			</>
 		);
@@ -1398,11 +1399,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<StatusBar />
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
-					// @ts-ignore
 					ref={this.list}
 					listRef={this.flatList}
 					rid={rid}
-					t={t}
 					tmid={this.tmid}
 					theme={theme}
 					tunread={tunread}

@@ -14,7 +14,7 @@ import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
-import { IBaseScreen, TServerHistoryModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
 interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
 	connecting: boolean;
-	previousServer: string;
+	previousServer: string | null;
 	width: number;
 	height: number;
 }
@@ -75,7 +75,7 @@ interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerVi
 interface INewServerViewState {
 	text: string;
 	connectingOpen: boolean;
-	certificate: any;
+	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
 }
 
@@ -162,7 +162,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	close = () => {
 		const { dispatch, previousServer } = this.props;
 		dispatch(inviteLinksClear());
-		dispatch(selectServerRequest(previousServer));
+		if (previousServer) {
+			dispatch(selectServerRequest(previousServer));
+		}
 	};
 
 	handleNewServerEvent = (event: { server: string }) => {
@@ -265,8 +267,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		showConfirmationAlert({
 			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
 			confirmationText: I18n.t('Remove'),
-			// @ts-ignore
-			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
+			onPress: () => this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	};
 
@@ -405,7 +406,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	connecting: state.server.connecting,
 	previousServer: state.server.previousServer
 });
