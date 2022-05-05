@@ -12,17 +12,30 @@ export const click = async tag => await $(`~${tag}`).click();
 
 export const clickById = async tag => await $(`id=${tag}`).click();
 
-export const openDrawer = async () =>
-	await $('//android.view.ViewGroup[@content-desc="rooms-list-view-sidebar"]/android.widget.TextView').click(); //TEMP
+export const isAndroid = () => driver.capabilities.platformName === 'Android';
 
-export const clickAlert = async tag => await clickById('android:id/button1');
+export const openDrawer = async () => {
+	if (isAndroid()) {
+		await $('//android.view.ViewGroup[@content-desc="rooms-list-view-sidebar"]/android.widget.TextView').click(); //TEMP
+	} else {
+		await $('[name="rooms-list-view-sidebar"]').click();
+	}
+};
+
+export const clickAlert = async tag => {
+	if (isAndroid()) {
+		await clickById('android:id/button1');
+	} else {
+		await $(`[name="${tag}"]`).click();
+	}
+};
 
 export const setValueAndEnter = async (tag, value) => {
-	if (driver.capabilities.platformName === 'Android') {
+	if (isAndroid()) {
 		await $(`~${tag}`).click();
 		await $(`~${tag}`).setValue(value);
 		await $(`~${tag}`).pressKeyCode(66);
 	} else {
-		await $(`~${tag}`).setValue(`${value} \n`);
+		await $(`~${tag}`).setValue(`${value}\n`);
 	}
 };
