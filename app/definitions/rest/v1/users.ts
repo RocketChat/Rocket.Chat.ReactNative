@@ -1,4 +1,4 @@
-import { IParams } from '../../IProfileViewInterfaces';
+import { IParams } from '../../../views/ProfileView/interfaces';
 import type { ITeam } from '../../ITeam';
 import type { IUser } from '../../IUser';
 import { INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';

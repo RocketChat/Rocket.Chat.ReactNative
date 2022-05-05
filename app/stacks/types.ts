@@ -157,6 +157,7 @@ export type ChatsStackParamList = {
 
 export type ProfileStackParamList = {
 	ProfileView: undefined;
+	AvatarEditView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
 	PickerView: {

@@ -16,12 +16,12 @@ export default StyleSheet.create({
 	},
 	avatarButton: {
 		backgroundColor: '#e1e5e8',
-		width: 50,
-		height: 50,
+		width: 48,
+		height: 32,
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginRight: 15,
-		marginBottom: 15,
+		marginTop: 16,
+		marginBottom: 24,
 		borderRadius: 2
 	}
 });
