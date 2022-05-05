@@ -1,9 +1,8 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
-import { TSupportedThemes } from '../theme';
-import { ProfileStackParamList } from '../stacks/types';
-import { IUser } from './IUser';
+import { IBaseScreen, IUser } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
+import { ProfileStackParamList } from '../../stacks/types';
 
 export interface IParams {
 	name: string;
@@ -20,12 +19,7 @@ export interface IAvatarButton {
 	disabled: boolean;
 }
 
-export interface INavigationOptions {
-	navigation: StackNavigationProp<ProfileStackParamList, 'ProfileView'>;
-	isMasterDetail?: boolean;
-}
-
-export interface IProfileViewProps {
+export interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
 	baseUrl: string;
 	Accounts_AllowEmailChange: boolean;

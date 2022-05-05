@@ -44,6 +44,7 @@ import UserNotificationPrefView from '../../views/UserNotificationPreferencesVie
 import SecurityPrivacyView from '../../views/SecurityPrivacyView';
 import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
 // InsideStackNavigator
+import AvatarEditView from '../../views/AvatarEditView';
 import AttachmentView from '../../views/AttachmentView';
 import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
@@ -195,6 +196,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={ProfileView}
 					options={props => ProfileView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
+				<ModalStack.Screen name='AvatarEditView' component={AvatarEditView} />
 				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen
 					name='AdminPanelView'

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, ScrollView, View } from 'react-native';
+import { Keyboard, ScrollView, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import { sha256 } from 'js-sha256';
@@ -22,7 +22,6 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import { setUser as setUserAction } from '../../actions/login';
-import { CustomIcon } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../lib/constants';
@@ -30,14 +29,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import {
-	IAvatar,
-	IAvatarButton,
-	INavigationOptions,
-	IParams,
-	IProfileViewProps,
-	IProfileViewState
-} from '../../definitions/IProfileViewInterfaces';
+import { IAvatar, IAvatarButton, IParams, IProfileViewProps, IProfileViewState } from './interfaces';
 import { IUser } from '../../definitions';
 import { Services } from '../../lib/services';
 
@@ -48,7 +40,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private avatarUrl: any;
 	private newPassword: any;
 
-	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions) => {
+	static navigationOptions = ({ navigation, isMasterDetail }: IProfileViewProps) => {
 		const options: StackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
@@ -319,48 +311,48 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		);
 	};
 
-	renderAvatarButtons = () => {
-		const { avatarUrl, avatarSuggestions } = this.state;
-		const { user, theme, Accounts_AllowUserAvatarChange } = this.props;
+	// renderAvatarButtons = () => {
+	// 	const { avatarUrl, avatarSuggestions } = this.state;
+	// 	const { user, theme, Accounts_AllowUserAvatarChange } = this.props;
 
-		return (
-			<View style={styles.avatarButtons}>
-				{this.renderAvatarButton({
-					child: <Avatar text={`@${user.username}`} size={50} />,
-					onPress: () => this.resetAvatar(),
-					disabled: !Accounts_AllowUserAvatarChange,
-					key: 'profile-view-reset-avatar'
-				})}
-				{this.renderAvatarButton({
-					child: <CustomIcon name='upload' size={30} color={themes[theme].bodyText} />,
-					onPress: () => this.pickImage(),
-					disabled: !Accounts_AllowUserAvatarChange,
-					key: 'profile-view-upload-avatar'
-				})}
-				{this.renderAvatarButton({
-					child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
-					onPress: () => this.pickImageWithURL(avatarUrl!),
-					disabled: !avatarUrl,
-					key: 'profile-view-avatar-url-button'
-				})}
-				{Object.keys(avatarSuggestions).map(service => {
-					const { url, blob, contentType } = avatarSuggestions[service];
-					return this.renderAvatarButton({
-						disabled: !Accounts_AllowUserAvatarChange,
-						key: `profile-view-avatar-${service}`,
-						child: <Avatar avatar={url} size={50} />,
-						onPress: () =>
-							this.setAvatar({
-								url,
-								data: blob,
-								service,
-								contentType
-							})
-					});
-				})}
-			</View>
-		);
-	};
+	// 	return (
+	// 		<View style={styles.avatarButtons}>
+	// 			{this.renderAvatarButton({
+	// 				child: <Avatar text={`@${user.username}`} size={50} />,
+	// 				onPress: () => this.resetAvatar(),
+	// 				disabled: !Accounts_AllowUserAvatarChange,
+	// 				key: 'profile-view-reset-avatar'
+	// 			})}
+	// 			{this.renderAvatarButton({
+	// 				child: <CustomIcon name='upload' size={30} color={themes[theme].bodyText} />,
+	// 				onPress: () => this.pickImage(),
+	// 				disabled: !Accounts_AllowUserAvatarChange,
+	// 				key: 'profile-view-upload-avatar'
+	// 			})}
+	// 			{this.renderAvatarButton({
+	// 				child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
+	// 				onPress: () => this.pickImageWithURL(avatarUrl!),
+	// 				disabled: !avatarUrl,
+	// 				key: 'profile-view-avatar-url-button'
+	// 			})}
+	// 			{Object.keys(avatarSuggestions).map(service => {
+	// 				const { url, blob, contentType } = avatarSuggestions[service];
+	// 				return this.renderAvatarButton({
+	// 					disabled: !Accounts_AllowUserAvatarChange,
+	// 					key: `profile-view-avatar-${service}`,
+	// 					child: <Avatar avatar={url} size={50} />,
+	// 					onPress: () =>
+	// 						this.setAvatar({
+	// 							url,
+	// 							data: blob,
+	// 							service,
+	// 							contentType
+	// 						})
+	// 				});
+	// 			})}
+	// 		</View>
+	// 	);
+	// };
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
@@ -448,7 +440,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	render() {
-		const { name, username, email, newPassword, avatarUrl, customFields, avatar, saving } = this.state;
+		const { name, username, email, newPassword, customFields, avatar, saving } = this.state;
 		const {
 			user,
 			theme,
@@ -457,7 +449,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			Accounts_AllowRealNameChange,
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
-			Accounts_CustomFields
+			Accounts_CustomFields,
+			navigation
 		} = this.props;
 
 		return (
@@ -469,7 +462,17 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				<SafeAreaView testID='profile-view'>
 					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
-							<Avatar text={user.username} avatar={avatar?.url} isStatic={avatar?.url} size={100} />
+							<Avatar text={user.username} avatar={avatar?.url} isStatic={avatar?.url} size={120} />
+							{Accounts_AllowUserAvatarChange ? (
+								<Touch
+									key={'profile-view-edit-avatar'}
+									testID={'profile-view-edit-avatar'}
+									onPress={() => navigation.navigate('AvatarEditView')}
+									style={[styles.avatarButton, { backgroundColor: themes[theme].borderColor }]}
+									theme={theme}>
+									<Text style={{ color: themes[theme].bodyText }}>Edit</Text>
+								</Touch>
+							) : null}
 						</View>
 						<RCTextInput
 							editable={Accounts_AllowRealNameChange}
@@ -534,28 +537,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 									// @ts-ignore
 									return this[Object.keys(customFields)[0]].focus();
 								}
-								this.avatarUrl.focus();
+								this.submit();
 							}}
 							secureTextEntry
 							testID='profile-view-new-password'
 							theme={theme}
 						/>
 						{this.renderCustomFields()}
-						<RCTextInput
-							editable={Accounts_AllowUserAvatarChange}
-							inputStyle={[!Accounts_AllowUserAvatarChange && styles.disabled]}
-							inputRef={e => {
-								this.avatarUrl = e;
-							}}
-							label={I18n.t('Avatar_Url')}
-							placeholder={I18n.t('Avatar_Url')}
-							value={avatarUrl!}
-							onChangeText={value => this.setState({ avatarUrl: value })}
-							onSubmitEditing={this.submit}
-							testID='profile-view-avatar-url'
-							theme={theme}
-						/>
-						{this.renderAvatarButtons()}
 						<Button
 							title={I18n.t('Save_Changes')}
 							type='primary'

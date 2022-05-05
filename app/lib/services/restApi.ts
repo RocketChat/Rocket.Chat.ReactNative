@@ -7,7 +7,7 @@ import {
 	SubscriptionType,
 	IUser
 } from '../../definitions';
-import { IAvatarSuggestion, IParams } from '../../definitions/IProfileViewInterfaces';
+import { IAvatarSuggestion, IParams } from '../../views/ProfileView/interfaces';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
