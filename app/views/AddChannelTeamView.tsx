@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-import { connect } from 'react-redux';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import { CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
@@ -10,15 +10,14 @@ import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { ChatsStackParamList, DrawerParamList, NewMessageStackParamList } from '../stacks/types';
+import { IApplicationState } from '../definitions';
 
-interface IAddChannelTeamView {
-	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
-		CompositeNavigationProp<StackNavigationProp<NewMessageStackParamList>, StackNavigationProp<DrawerParamList>>
-	>;
-	route: RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
-	isMasterDetail: boolean;
-}
+type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
+
+type TNavigation = CompositeNavigationProp<
+	StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
+	CompositeNavigationProp<StackNavigationProp<NewMessageStackParamList>, StackNavigationProp<DrawerParamList>>
+>;
 
 const setHeader = ({
 	navigation,
@@ -38,12 +37,14 @@ const setHeader = ({
 	navigation.setOptions(options);
 };
 
-const AddChannelTeamView = ({ navigation, route, isMasterDetail }: IAddChannelTeamView) => {
-	const { teamId, teamChannels } = route.params;
+const AddChannelTeamView = () => {
+	const navigation = useNavigation<TNavigation>();
+	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const { teamChannels, teamId } = useRoute<TRoute>().params;
 
 	useEffect(() => {
 		setHeader({ navigation, isMasterDetail });
-	}, []);
+	}, [isMasterDetail, navigation]);
 
 	return (
 		<SafeAreaView testID='add-channel-team-view'>
@@ -80,8 +81,4 @@ const AddChannelTeamView = ({ navigation, route, isMasterDetail }: IAddChannelTe
 	);
 };
 
-const mapStateToProps = (state: any) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(AddChannelTeamView);
+export default AddChannelTeamView;
