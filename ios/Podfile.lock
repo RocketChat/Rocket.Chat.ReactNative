@@ -584,7 +584,7 @@ PODS:
     - React
   - RNSVG (12.3.0):
     - React-Core
-  - RNVectorIcons (8.1.0):
+  - RNVectorIcons (9.1.0):
     - React-Core
   - SDWebImage (5.8.4):
     - SDWebImage/Core (= 5.8.4)
@@ -960,7 +960,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: c9b6dfcde9b3d497793c40d4ccbfbfb05092e0df
-  FBReactNativeSpec: c39f7fc0cd6cc64f0a2a5beffc64b1aa5d42740e
+  FBReactNativeSpec: f41358a735632327671ea9a34346fcb01a538da3
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -1052,7 +1052,7 @@ SPEC CHECKSUMS:
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
-  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   simdjson: 85016870cd17207312b718ef6652eb6a1cd6a2b0
