@@ -51,8 +51,6 @@ const QueueListView = React.memo(() => {
 	const displayMode = useSelector((state: IApplicationState) => state.sortPreferences.displayMode);
 
 	useEffect(() => {
-		console.count('navigationOptions');
-
 		const options: StackNavigationOptions = {
 			title: I18n.t('Queued_chats')
 		};
@@ -82,9 +80,6 @@ const QueueListView = React.memo(() => {
 
 	const renderItem: ListRenderItem<IOmnichannelRoom> = ({ item }) => {
 		const id = getUidDirectMessage(item);
-
-		console.count(`renderItem ${item.name}`);
-
 		return (
 			<RoomItem
 				item={item}
@@ -109,7 +104,6 @@ const QueueListView = React.memo(() => {
 		);
 	};
 
-	console.count('Render');
 	return (
 		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.backgroundColor }}>
 			<StatusBar />
@@ -125,7 +119,6 @@ const QueueListView = React.memo(() => {
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				windowSize={9}
-				// onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
 			/>
 		</SafeAreaView>
