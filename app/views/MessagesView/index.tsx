@@ -19,10 +19,8 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
-import { IEmoji } from '../../definitions/IEmoji';
 import { IRoomInfoParam } from '../SearchMessagesView';
-import { TMessageModel, IUrl } from '../../definitions';
+import { TMessageModel, IEmoji, ISubscription, SubscriptionType, IUrl } from '../../definitions';
 import { Services } from '../../lib/services';
 
 interface IMessagesViewProps {
