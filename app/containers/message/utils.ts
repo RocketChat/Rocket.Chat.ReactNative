@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
@@ -56,8 +57,23 @@ export const SYSTEM_MESSAGES = [
 	'user-converted-to-channel',
 	'user-deleted-room-from-team',
 	'user-removed-room-from-team',
+	'room-disallowed-reacting',
+	'room-allowed-reacting',
+	'room-set-read-only',
+	'room-removed-read-only',
 	'omnichannel_placed_chat_on_hold',
 	'omnichannel_on_hold_chat_resumed'
+];
+
+export const IGNORED_LIVECHAT_SYSTEM_MESSAGES = [
+	'livechat_navigation_history',
+	'livechat_transcript_history',
+	'livechat_transfer_history',
+	'command',
+	'livechat-close',
+	'livechat-started',
+	'livechat_video_call',
+	'livechat_webrtc_video_call'
 ];
 
 export const SYSTEM_MESSAGE_TYPES = {
@@ -77,7 +93,15 @@ export const SYSTEM_MESSAGE_TYPES = {
 	DELETED_ROOM_FROM_TEAM: 'user-deleted-room-from-team',
 	REMOVED_ROOM_FROM_TEAM: 'user-removed-room-from-team',
 	OMNICHANNEL_PLACED_CHAT_ON_HOLD: 'omnichannel_placed_chat_on_hold',
-	OMNICHANNEL_ON_HOLD_CHAT_RESUMED: 'omnichannel_on_hold_chat_resumed'
+	OMNICHANNEL_ON_HOLD_CHAT_RESUMED: 'omnichannel_on_hold_chat_resumed',
+	LIVECHAT_NAVIGATION_HISTORY: 'livechat_navigation_history',
+	LIVECHAT_TRANSCRIPT_HISTORY: 'livechat_transcript_history',
+	COMMAND: 'command',
+	LIVECHAT_STARTED: 'livechat-started',
+	LIVECHAT_CLOSE: 'livechat-close',
+	LIVECHAT_VIDEO_CALL: 'livechat_video_call',
+	LIVECHAT_WEBRTC_VIDEO_CALL: 'livechat_webrtc_video_call',
+	LIVECHAT_TRANSFER_HISTORY: 'livechat_transfer_history'
 };
 
 export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
@@ -95,7 +119,15 @@ export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
 	SYSTEM_MESSAGE_TYPES.CONVERTED_TO_TEAM,
 	SYSTEM_MESSAGE_TYPES.CONVERTED_TO_CHANNEL,
 	SYSTEM_MESSAGE_TYPES.DELETED_ROOM_FROM_TEAM,
-	SYSTEM_MESSAGE_TYPES.REMOVED_ROOM_FROM_TEAM
+	SYSTEM_MESSAGE_TYPES.REMOVED_ROOM_FROM_TEAM,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_NAVIGATION_HISTORY,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_TRANSCRIPT_HISTORY,
+	SYSTEM_MESSAGE_TYPES.COMMAND,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_STARTED,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_CLOSE,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_VIDEO_CALL,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_WEBRTC_VIDEO_CALL,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_TRANSFER_HISTORY
 ];
 
 type TInfoMessage = {
@@ -108,6 +140,7 @@ type TInfoMessage = {
 
 export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessage): string => {
 	const { username } = author;
+
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
 	}
@@ -198,13 +231,37 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 	if (type === 'user-removed-room-from-team') {
 		return I18n.t('Removed__roomName__from_this_team', { roomName: msg });
 	}
+	if (type === 'room-disallowed-reacting') {
+		return I18n.t('Room_disallowed_reacting', { userBy: username });
+	}
+	if (type === 'room-allowed-reacting') {
+		return I18n.t('Room_allowed_reacting', { userBy: username });
+	}
+	if (type === 'room-set-read-only') {
+		return I18n.t('Room_set_read_only', { userBy: username });
+	}
+	if (type === 'room-removed-read-only') {
+		return I18n.t('Room_removed_read_only', { userBy: username });
+	}
 	if (type === 'omnichannel_placed_chat_on_hold') {
 		return I18n.t('Omnichannel_placed_chat_on_hold', { comment });
 	}
 	if (type === 'omnichannel_on_hold_chat_resumed') {
 		return I18n.t('Omnichannel_on_hold_chat_resumed', { comment });
 	}
-	return '';
+	if (type === 'command') {
+		return I18n.t('Livechat_transfer_return_to_the_queue');
+	}
+	if (type === 'livechat-started') {
+		return I18n.t('Chat_started');
+	}
+	if (type === 'livechat-close') {
+		return I18n.t('Conversation_closed');
+	}
+	if (type === 'livechat_transfer_history') {
+		return I18n.t('New_chat_transfer', { agent: username });
+	}
+	return I18n.t('Unsupported_system_message');
 };
 
 export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string) => {

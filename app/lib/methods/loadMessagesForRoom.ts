@@ -4,7 +4,7 @@ import { MessageTypeLoad } from '../constants';
 import { IMessage, TMessageModel } from '../../definitions';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import roomTypeToApiType, { RoomTypes } from './roomTypeToApiType';
+import { RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
@@ -30,7 +30,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 	return data.messages;
 }
 
-export default function loadMessagesForRoom(args: {
+export function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
 	latest?: Date;

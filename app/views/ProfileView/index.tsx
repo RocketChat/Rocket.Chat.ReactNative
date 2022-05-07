@@ -16,13 +16,13 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
-import { CustomIcon } from '../../lib/Icons';
+import { setUser } from '../../actions/login';
+import { CustomIcon } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../lib/constants';
@@ -30,6 +30,8 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
+import { ProfileStackParamList } from '../../stacks/types';
+import { Services } from '../../lib/services';
 import {
 	IApplicationState,
 	IAvatar,
@@ -39,8 +41,6 @@ import {
 	IProfileParams,
 	IUser
 } from '../../definitions';
-import { ProfileStackParamList } from '../../stacks/types';
-import { setUser } from '../../actions/login';
 
 interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
@@ -109,7 +109,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		this.init();
 
 		try {
-			const result = await RocketChat.getAvatarSuggestion();
+			const result = await Services.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
 		} catch (e) {
 			log(e);
@@ -256,7 +256,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			if (avatar.url) {
 				try {
 					logEvent(events.PROFILE_SAVE_AVATAR);
-					await RocketChat.setAvatarFromService(avatar);
+					await Services.setAvatarFromService(avatar);
 				} catch (e) {
 					logEvent(events.PROFILE_SAVE_AVATAR_F);
 					this.setState({ saving: false, currentPassword: null });
@@ -264,7 +264,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				}
 			}
 
-			const result = await RocketChat.saveUserProfile(params, customFields);
+			const result = await Services.saveUserProfile(params, customFields);
 
 			if (result.success) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
@@ -293,7 +293,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		try {
 			const { user } = this.props;
-			await RocketChat.resetAvatar(user.id);
+			await Services.resetAvatar(user.id);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
 			this.init();
 		} catch (e) {
@@ -465,7 +465,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			confirmationText: I18n.t('Logout'),
 			onPress: async () => {
 				try {
-					await RocketChat.logoutOtherLocations();
+					await Services.logoutOtherLocations();
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
 				} catch {
 					logEvent(events.PL_OTHER_LOCATIONS_F);
