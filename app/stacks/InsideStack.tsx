@@ -223,6 +223,7 @@ const DrawerNavigator = () => {
 
 	return (
 		<Drawer.Navigator
+			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
 			screenOptions={{ swipeEnabled: false }}
