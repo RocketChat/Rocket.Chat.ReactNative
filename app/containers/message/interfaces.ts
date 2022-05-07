@@ -45,7 +45,7 @@ export interface IMessageCallButton {
 export interface IMessageContent {
 	_id: string;
 	isTemp: boolean;
-	isInfo: boolean;
+	isInfo: string | boolean;
 	tmid?: string;
 	isThreadRoom: boolean;
 	msg?: string;
@@ -59,6 +59,7 @@ export interface IMessageContent {
 	useRealName?: boolean;
 	isIgnored: boolean;
 	type: string;
+	comment?: string;
 	hasError: boolean;
 	isHeader: boolean;
 }
@@ -77,7 +78,7 @@ export interface IMessageThread extends Pick<IThread, 'msg' | 'tcount' | 'tlm' |
 
 export interface IMessageTouchable {
 	hasError: boolean;
-	isInfo: boolean;
+	isInfo: string | boolean;
 	isThreadReply: boolean;
 	isTemp: boolean;
 	archived?: boolean;
@@ -111,7 +112,7 @@ export interface IMessageInner
 export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {
 	isThreadReply: boolean;
 	isThreadSequential: boolean;
-	isInfo: boolean;
+	isInfo: string | boolean;
 	isTemp: boolean;
 	isHeader: boolean;
 	hasError: boolean;

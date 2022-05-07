@@ -1,11 +1,11 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
+import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
-import { TSupportedThemes, withTheme } from '../theme';
-import { themes } from '../lib/constants';
+import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -22,25 +22,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IAuthLoadingView {
-	theme: TSupportedThemes;
-	text: string;
-}
-
-const AuthLoadingView = React.memo(({ theme, text }: IAuthLoadingView) => (
-	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-		<StatusBar />
-		{text ? (
-			<>
-				<ActivityIndicator color={themes[theme].auxiliaryText} size='large' />
-				<Text style={[styles.text, { color: themes[theme].bodyText }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
-			</>
-		) : null}
-	</View>
-));
-
-const mapStateToProps = (state: any) => ({
-	text: state.app.text
+const AuthLoadingView = React.memo((): React.ReactElement => {
+	const text = useSelector((state: IApplicationState) => state.app.text);
+	const { colors } = useTheme();
+	return (
+		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
+			<StatusBar />
+			{text ? (
+				<>
+					<ActivityIndicator color={colors.auxiliaryText} size='large' />
+					<Text style={[styles.text, { color: colors.bodyText }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
+				</>
+			) : null}
+		</View>
+	);
 });
 
-export default connect(mapStateToProps)(withTheme(AuthLoadingView));
+export default AuthLoadingView;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { themes } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import { useTheme } from '../../theme';
 
