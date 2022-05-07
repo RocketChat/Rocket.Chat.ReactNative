@@ -6,7 +6,6 @@ import * as types from '../actions/actionsTypes';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appInit, appStart } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
@@ -14,6 +13,9 @@ import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
 import log from '../utils/log';
 import { RootEnum } from '../definitions';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { callJitsi, callJitsiWithoutServer, canOpenRoom, getUidDirectMessage } from '../lib/methods';
+import { Services } from '../lib/services';
 
 const roomTypes = {
 	channel: 'c',
@@ -52,12 +54,12 @@ const navigate = function* navigate({ params }) {
 			[type, name, , jumpToThreadId] = params.path.split('/');
 		}
 		if (type !== 'invite' || params.rid) {
-			const room = yield RocketChat.canOpenRoom(params);
+			const room = yield canOpenRoom(params);
 			if (room) {
 				const item = {
 					name,
 					t: roomTypes[type],
-					roomUserId: RocketChat.getUidDirectMessage(room),
+					roomUserId: getUidDirectMessage(room),
 					...room
 				};
 
@@ -84,7 +86,7 @@ const navigate = function* navigate({ params }) {
 				}
 
 				if (params.isCall) {
-					RocketChat.callJitsi(item);
+					callJitsi(item);
 				}
 			}
 		} else {
@@ -104,7 +106,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
 	try {
-		yield RocketChat.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		yield Services.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
 		log(e);
 	}
@@ -125,7 +127,7 @@ const handleOpen = function* handleOpen({ params }) {
 		});
 
 		if (!host && params.fullURL) {
-			RocketChat.callJitsiWithoutServer(params.fullURL);
+			callJitsiWithoutServer(params.fullURL);
 			return;
 		}
 	}
@@ -158,8 +160,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const [server, user] = yield all([
-		UserPreferences.getString(RocketChat.CURRENT_SERVER),
-		UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${host}`)
+		UserPreferences.getString(CURRENT_SERVER),
+		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
 	]);
 
 	// TODO: needs better test
@@ -187,7 +189,7 @@ const handleOpen = function* handleOpen({ params }) {
 			// do nothing?
 		}
 		// if deep link is from a different server
-		const result = yield RocketChat.getServerInfo(host);
+		const result = yield Services.getServerInfo(host);
 		if (!result.success) {
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 interface IDropdownItem {
 	text: string;
-	iconName: string | null;
+	iconName: TIconsName | null;
 	onPress: () => void;
 }
 
