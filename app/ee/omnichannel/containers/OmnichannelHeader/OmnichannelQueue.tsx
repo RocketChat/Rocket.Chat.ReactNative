@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import { useTheme } from '../../../../theme';
 import { themes } from '../../../../lib/constants';
-import { CustomIcon } from '../../../../lib/Icons';
+import { CustomIcon } from '../../../../containers/CustomIcon';
 import * as List from '../../../../containers/List';
 import styles from './styles';
 import UnreadBadge from '../../../../containers/UnreadBadge';

@@ -7,7 +7,6 @@ import { Q } from '@nozbe/watermelondb';
 
 import * as List from '../containers/List';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
@@ -23,6 +22,8 @@ import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../definitions';
+import { getRoomTitle, hasPermission } from '../lib/methods';
+import { Services } from '../lib/services';
 
 interface IAddExistingChannelViewState {
 	search: TSubscriptionModel[];
@@ -100,7 +101,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 						if (channel.prid) {
 							return false;
 						}
-						const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+						const permissions = await hasPermission([addTeamChannelPermission], channel.rid);
 						if (!permissions[0]) {
 							return false;
 						}
@@ -133,7 +134,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		this.setState({ loading: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await RocketChat.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
+			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
 				// @ts-ignore
@@ -181,7 +182,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		const icon = item.t === SubscriptionType.DIRECT && !item?.teamId ? 'channel-private' : 'channel-public';
 		return (
 			<List.Item
-				title={RocketChat.getRoomTitle(item)}
+				title={getRoomTitle(item)}
 				translateTitle={false}
 				onPress={() => this.toggleChannel(item.rid)}
 				testID={`add-existing-channel-view-item-${item.name}`}
