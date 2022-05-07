@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import styles from './styles';
