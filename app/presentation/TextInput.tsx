@@ -1,7 +1,7 @@
 import React from 'react';
 import { I18nManager, StyleProp, StyleSheet, TextInput, TextStyle } from 'react-native';
 
-import { IRCTextInputProps } from '../containers/TextInput';
+import { IRCTextInputProps } from '../containers/TextInput/FormTextInput';
 import { themes } from '../lib/constants';
 import { TSupportedThemes } from '../theme';
 

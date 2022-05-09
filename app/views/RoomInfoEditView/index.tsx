@@ -13,7 +13,7 @@ import Avatar from '../../containers/Avatar';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubscriptionModel, IAvatar } from '../../definitions';
@@ -583,7 +583,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								)}
 							</Avatar>
 						</TouchableOpacity>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.name = e;
 							}}
@@ -597,7 +597,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-name'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.description = e;
 							}}
@@ -610,7 +610,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-description'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.topic = e;
 							}}
@@ -623,7 +623,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-topic'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.announcement = e;
 							}}
@@ -636,7 +636,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-announcement'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.joinCode = e;
 							}}

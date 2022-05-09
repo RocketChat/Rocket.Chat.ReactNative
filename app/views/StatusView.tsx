@@ -8,7 +8,7 @@ import * as List from '../containers/List';
 import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import Status from '../containers/Status/Status';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { LISTENER } from '../containers/Toast';
 import { IApplicationState, IBaseScreen, IUser, TUserStatus } from '../definitions';
 import I18n from '../i18n';
@@ -134,7 +134,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 
 		return (
 			<>
-				<TextInput
+				<FormTextInput
 					theme={theme}
 					value={statusText}
 					containerStyle={styles.inputContainer}

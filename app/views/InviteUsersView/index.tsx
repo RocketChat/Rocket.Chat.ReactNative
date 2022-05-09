@@ -10,7 +10,7 @@ import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { TInvite } from '../../reducers/inviteLinks';
@@ -107,7 +107,7 @@ class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 					showsVerticalScrollIndicator={false}>
 					<StatusBar />
 					<View style={styles.innerContainer}>
-						<RCTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
+						<FormTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
 						{this.renderExpiration()}
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 						<Button title={I18n.t('Share_Link')} type='primary' onPress={this.share} theme={theme} />
