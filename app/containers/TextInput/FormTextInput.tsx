@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, Text, TextInputProps, TextInput as RNTextInput, 
 import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../../views/Styles';
-import TextInput from '../../presentation/TextInput';
+import TextInput from './index';
 import { themes } from '../../lib/constants';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
