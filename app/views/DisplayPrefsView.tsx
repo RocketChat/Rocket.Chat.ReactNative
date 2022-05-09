@@ -18,10 +18,14 @@ import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../utils/log';
 import { saveSortPreference } from '../lib/methods';
+import usePermissions from '../hooks/usePermissions';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
 	const { colors } = useTheme();
+
+	const test = usePermissions(['add-team-channel', 'create-c'])
+	console.log("🚀 ~ file: DisplayPrefsView.tsx ~ line 28 ~ test", test)
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
 		(state: IApplicationState) => state.sortPreferences
