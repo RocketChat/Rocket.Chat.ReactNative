@@ -9,7 +9,7 @@ import { themes } from '../../lib/constants';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from '../../containers/ThreadDetails';
-import { TThreadModel } from '../../definitions/IThread';
+import { TThreadModel } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 interface IItem {
 	item: TThreadModel;
 	useRealName: boolean;
-	user: any;
+	user: { id: string };
 	badgeColor?: string;
 	onPress: (item: TThreadModel) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;

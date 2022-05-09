@@ -1,14 +1,14 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
-import Model from '@nozbe/watermelondb/Model';
 
-import { IRoom } from '../definitions/IRoom';
+import { IItem } from '../views/TeamChannelsView';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
+import { TDataSelect } from '../definitions/IDataSelect';
 import { ModalStackParamList } from './MasterDetailStack/types';
 
 export type ChatsStackParamList = {
@@ -37,19 +37,19 @@ export type ChatsStackParamList = {
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
 		room: TSubscriptionModel;
-		member: any;
+		member?: any;
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
 	};
 	SelectListView: {
-		data?: IRoom[];
+		data?: TDataSelect[];
 		title: string;
 		infoText?: string;
 		nextAction: (selected: string[]) => void;
 		showAlert?: () => void;
 		isSearch?: boolean;
-		onSearch?: (text: string) => Promise<Partial<IRoom[]> | any>;
+		onSearch?: (text: string) => Promise<TDataSelect[] | any>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {
@@ -101,7 +101,7 @@ export type ChatsStackParamList = {
 	DirectoryView: undefined;
 	NotificationPrefView: {
 		rid: string;
-		room: Model;
+		room: TSubscriptionModel;
 	};
 	ForwardLivechatView: {
 		rid: string;
@@ -126,6 +126,7 @@ export type ChatsStackParamList = {
 	};
 	TeamChannelsView: {
 		teamId: string;
+		joined: boolean;
 	};
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
@@ -133,11 +134,11 @@ export type ChatsStackParamList = {
 	};
 	AddChannelTeamView: {
 		teamId?: string;
-		teamChannels: []; // TODO: Change
+		teamChannels: IItem[];
 	};
 	AddExistingChannelView: {
 		teamId?: string;
-		teamChannels: []; // TODO: Change
+		teamChannels: IItem[];
 	};
 	MarkdownTableView: {
 		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
@@ -207,7 +208,7 @@ export type NewMessageStackParamList = {
 		buttonText?: string;
 		nextAction?: Function;
 	}; // TODO: Change
-	CreateChannelView: {
+	CreateChannelView?: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;
 	};

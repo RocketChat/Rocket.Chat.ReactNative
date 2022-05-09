@@ -11,10 +11,9 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
-import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
-import { emojis } from '../../emojis';
+import { emojis } from '../EmojiPicker/emojis';
 import log, { events, logEvent } from '../../utils/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
@@ -47,12 +46,14 @@ import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { testProps } from '../../lib/methods/testProps';
+import { getPermalinkMessage, hasPermission, search, sendFileMessage } from '../../lib/methods';
+import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 
 if (isAndroid) {
@@ -92,7 +93,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
 	Message_AudioRecorderEnabled: boolean;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
@@ -128,7 +129,7 @@ interface IMessageBoxState {
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
-	private text: string;
+	public text: string;
 
 	private selection: { start: number; end: number };
 
@@ -409,7 +410,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return;
 		}
 
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], rid);
+		const permissionToUpload = await hasPermission([uploadFilePermission], rid);
 		this.setState({ permissionToUpload: permissionToUpload[0] });
 	};
 
@@ -530,14 +531,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		try {
 			const { appId } = command;
 			const triggerId = generateTriggerId(appId);
-			RocketChat.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
+			Services.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
 			replyCancel();
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	onEmojiSelected = (keyboardId: any, params: any) => {
+	onEmojiSelected = (keyboardId: string, params: { emoji: string }) => {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
@@ -553,7 +554,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	getPermalink = async (message: any) => {
 		try {
-			return await RocketChat.getPermalinkMessage(message);
+			return await getPermalinkMessage(message);
 		} catch (error) {
 			return null;
 		}
@@ -571,13 +572,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	getUsers = debounce(async (keyword: any) => {
-		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
+		let res = await search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
 	getRooms = debounce(async (keyword = '') => {
-		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
+		const res = await search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
@@ -605,7 +606,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}, 300);
 
 	getCannedResponses = debounce(async (text?: string) => {
-		const res = await RocketChat.getListCannedResponse({ text });
+		const res = await Services.getListCannedResponse({ text });
 		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
@@ -642,7 +643,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	setCommandPreview = async (command: any, name: string, params: string) => {
 		const { rid } = this.props;
 		try {
-			const response = await RocketChat.getCommandPreview(name, rid, params);
+			const response = await Services.getCommandPreview(name, rid, params);
 			if (response.success) {
 				return this.setState({ commandPreview: response.preview?.items || [], showCommandPreview: true, command });
 			}
@@ -837,7 +838,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+					await sendFileMessage(rid, fileInfo, tmid, server, user);
 				}
 			} catch (e) {
 				log(e);
@@ -889,7 +890,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					await Services.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
 					logEvent(events.COMMAND_RUN_F);
@@ -1182,4 +1183,6 @@ const dispatchToProps = {
 	typing: (rid: any, status: any) => userTypingAction(rid, status)
 };
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox)) as any;
+export type MessageBoxType = MessageBox;
+
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { themes } from '../../../../lib/constants';
 import { IAttachment } from '../../../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
-import { CustomIcon } from '../../../../lib/Icons';
+import { CustomIcon } from '../../../CustomIcon';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import Markdown from '../../../markdown';

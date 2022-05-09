@@ -3,7 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import styles from '../styles';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import { testProps } from '../../../lib/methods/testProps';
@@ -13,11 +13,11 @@ interface IBaseButton {
 	onPress(): void;
 	testID: string;
 	accessibilityLabel: string;
-	icon: string;
-	color: string;
+	icon: TIconsName;
+	color?: string;
 }
 
-const BaseButton = ({ accessibilityLabel, icon, color, ...props }: Partial<IBaseButton>) => {
+const BaseButton = ({ accessibilityLabel, icon, color, ...props }: IBaseButton) => {
 	const { theme } = useTheme();
 	return (
 		<BorderlessButton {...props} style={styles.actionButton} {...testProps(props.testID)}>
