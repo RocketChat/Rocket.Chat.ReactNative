@@ -13,7 +13,7 @@ import TextInput from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
-import RocketChat from '../../lib/rocketchat';
+import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
 import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../utils/info';
@@ -71,7 +71,7 @@ const Status = ({ status, statusText }: { status: IStatus; statusText: string })
 				logEvent(events[key]);
 				if (user.status !== status.id) {
 					try {
-						const result = await RocketChat.setUserStatus(status.id, statusText);
+						const result = await Services.setUserStatus(status.id, statusText);
 						if (result.success) {
 							dispatch(setUser({ status: status.id }));
 						}
@@ -132,7 +132,7 @@ const StatusView = (): React.ReactElement => {
 	const setCustomStatus = async (statusText: string) => {
 		setLoading(true);
 		try {
-			const result = await RocketChat.setUserStatus(user.status, statusText);
+			const result = await Services.setUserStatus(user.status, statusText);
 			if (result.success) {
 				dispatch(setUser({ statusText }));
 				logEvent(events.STATUS_CUSTOM);
