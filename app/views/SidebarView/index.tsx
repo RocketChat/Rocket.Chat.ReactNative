@@ -237,7 +237,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				theme={theme!}
 				right={<CustomIcon name='edit' size={20} color={themes[theme!].titleText} />}
 				onPress={() => this.sidebarNavigate('StatusView')}
-				testID='sidebar-custom-status'
+				test='sidebar-custom-status'
 			/>
 		);
 	};

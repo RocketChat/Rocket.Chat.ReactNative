@@ -1,3 +1,4 @@
+// @ts-ignore
 import { RectReturn } from '@wdio/protocols/build/types';
 
 /**
@@ -37,6 +38,7 @@ const SWIPE_DIRECTION = {
 };
 
 async function swipe(from: XY, to: XY) {
+	// @ts-ignore
 	await driver.performActions([
 		{
 			// a. Create the event
@@ -61,6 +63,7 @@ async function swipe(from: XY, to: XY) {
 		}
 	]);
 	// Add a pause, just to make sure the swipe is done
+	// @ts-ignore
 	await driver.pause(1000);
 }
 
@@ -81,6 +84,7 @@ function getDeviceScreenCoordinates(screenSize: RectReturn, coordinates: XY): XY
 async function swipeOnPercentage(from: XY, to: XY) {
 	// Get the screen size and store it so it can be re-used.
 	// This will save a lot of webdriver calls if this methods is used multiple times.
+	// @ts-ignore
 	SCREEN_SIZE = SCREEN_SIZE || (await driver.getWindowRect());
 	// Get the start position on the screen for the swipe
 	const pressOptions = getDeviceScreenCoordinates(SCREEN_SIZE, from);
