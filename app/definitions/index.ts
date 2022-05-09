@@ -12,8 +12,7 @@ export * from './IRoom';
 export * from './IMessage';
 export * from './IThread';
 export * from './IThreadMessage';
-export * from './ICustomEmoji';
-export * from './IFrequentlyUsedEmoji';
+export * from './IEmoji';
 export * from './IUpload';
 export * from './ISettings';
 export * from './IRole';
@@ -28,6 +27,7 @@ export * from './IUrl';
 export * from './ICredentials';
 export * from './ISearch';
 export * from './TUserStatus';
+export * from './IProfile';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;

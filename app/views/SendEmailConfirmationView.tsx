@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
 
 import { OutsideParamList } from '../stacks/types';
 import TextInput from '../containers/TextInput';
@@ -12,18 +10,15 @@ import { useTheme } from '../theme';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
+import { IBaseScreen } from '../definitions';
 import { Services } from '../lib/services';
 
-interface ISendEmailConfirmationViewProps {
-	navigation: StackNavigationProp<OutsideParamList, 'SendEmailConfirmationView'>;
-	route: RouteProp<OutsideParamList, 'SendEmailConfirmationView'>;
-}
+type ISendEmailConfirmationViewProps = IBaseScreen<OutsideParamList, 'SendEmailConfirmationView'>;
 
-const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmationViewProps): JSX.Element => {
+const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmationViewProps): React.ReactElement => {
 	const [email, setEmail] = useState('');
 	const [invalidEmail, setInvalidEmail] = useState(true);
 	const [isFetching, setIsFetching] = useState(false);
-
 	const { theme } = useTheme();
 
 	const validate = (val: string) => {
