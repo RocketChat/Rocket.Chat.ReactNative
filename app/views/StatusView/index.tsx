@@ -127,7 +127,7 @@ const StatusView = (): React.ReactElement => {
 			});
 		};
 		setHeader();
-	}, [statusText]);
+	}, [statusText, user.status]);
 
 	const setCustomStatus = async (statusText: string) => {
 		setLoading(true);
