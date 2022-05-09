@@ -6,7 +6,6 @@ import moment from 'moment';
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import DiscussionDetails from './DiscussionDetails';
@@ -55,15 +54,14 @@ interface IItem {
 	};
 }
 
-const Item = ({ item, onPress }: IItem): JSX.Element => {
-	const { theme } = useTheme();
+const Item = ({ item, onPress }: IItem): React.ReactElement => {
+	const { colors } = useTheme();
 	const username = item?.u?.username;
 	let messageTime = '';
 	let messageDate = '';
 
 	if (item?.ts) {
 		messageTime = moment(item.ts).format('LT');
-		// @ts-ignore TODO: Unify IMessage
 		messageDate = formatDateThreads(item.ts);
 	}
 
@@ -71,15 +69,15 @@ const Item = ({ item, onPress }: IItem): JSX.Element => {
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`discussions-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme].backgroundColor }}>
+			style={{ backgroundColor: colors.backgroundColor }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: colors.titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						{messageTime ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{messageTime}</Text> : null}
+						{messageTime ? <Text style={[styles.time, { color: colors.auxiliaryText }]}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
 						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} /> : null}

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
 import { DisplayMode, themes } from '../lib/constants';
-import { TActionSheetOptions, withActionSheet } from '../containers/ActionSheet';
+import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../containers/Header';
@@ -21,8 +21,7 @@ import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import { CustomIcon } from '../lib/Icons';
-import RocketChat from '../lib/rocketchat';
+import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
@@ -32,6 +31,8 @@ import { isIOS } from '../utils/deviceInfo';
 import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
+import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';
+import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
 
@@ -132,7 +133,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				throw new Error();
 			}
 
-			const permissions = await RocketChat.hasPermission([addTeamChannelPermission], this.team.rid);
+			const permissions = await hasPermission([addTeamChannelPermission], this.team.rid);
 			if (permissions[0]) {
 				this.setState({ showCreate: true }, () => this.setHeader());
 			}
@@ -157,7 +158,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 		this.setState({ loadingMore: true });
 		try {
-			const result = await RocketChat.getTeamListRoom({
+			const result = await Services.getTeamListRoom({
 				teamId: this.teamId,
 				offset: length,
 				count: API_FETCH_COUNT,
@@ -230,13 +231,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitle: () => (
-				<RoomHeader
-					title={RocketChat.getRoomTitle(team)}
-					subtitle={team.topic}
-					type={team.t}
-					onPress={this.goRoomActionsView}
-					teamMain
-				/>
+				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
 			)
 		};
 
@@ -329,21 +324,17 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		}
 	};
 
-	getRoomTitle = (item: IItem) => RocketChat.getRoomTitle(item);
-
-	getRoomAvatar = (item: IItem) => RocketChat.getRoomAvatar(item);
-
 	onPressItem = debounce(
 		async (item: IItem) => {
 			logEvent(events.TC_GO_ROOM);
 			const { navigation, isMasterDetail } = this.props;
 			try {
 				let params = {};
-				const result = await RocketChat.getRoomInfo(item._id);
+				const result = await Services.getRoomInfo(item._id);
 				if (result.success) {
 					params = {
 						rid: item._id,
-						name: RocketChat.getRoomTitle(result.room),
+						name: getRoomTitle(result.room),
 						joinCodeRequired: result.room.joinCodeRequired,
 						t: result.room.t,
 						teamId: result.room.teamId
@@ -369,7 +360,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
-			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
+			const result = await Services.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
 				const newData = data.map(i => {
 					if (i._id === item._id) {
@@ -408,7 +399,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
-			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
+			const result = await Services.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
 			if (result.success) {
 				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ data: newData });
@@ -456,9 +447,9 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
 		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
 
-		const options = [];
+		const options: TActionSheetOptionsItem[] = [];
 
-		const permissionsTeam = await RocketChat.hasPermission([editTeamChannelPermission], this.team.rid);
+		const permissionsTeam = await hasPermission([editTeamChannelPermission], this.team.rid);
 		if (permissionsTeam[0]) {
 			options.push({
 				title: I18n.t('Auto-join'),
@@ -476,7 +467,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			});
 		}
 
-		const permissionsRemoveTeam = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
+		const permissionsRemoveTeam = await hasPermission([removeTeamChannelPermission], this.team.rid);
 		if (permissionsRemoveTeam[0]) {
 			options.push({
 				title: I18n.t('Remove_from_Team'),
@@ -487,7 +478,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			});
 		}
 
-		const permissionsChannel = await RocketChat.hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
+		const permissionsChannel = await hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
 		if (permissionsChannel[0]) {
 			options.push({
 				title: I18n.t('Delete'),
@@ -516,8 +507,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				width={width}
 				onLongPress={this.showChannelActions}
 				useRealName={useRealName}
-				getRoomTitle={this.getRoomTitle}
-				getRoomAvatar={this.getRoomAvatar}
+				getRoomTitle={getRoomTitle}
+				getRoomAvatar={getRoomAvatar}
 				swipeEnabled={false}
 				autoJoin={item.teamDefault}
 				showAvatar={showAvatar}

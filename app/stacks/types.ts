@@ -1,15 +1,14 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
-import Model from '@nozbe/watermelondb/Model';
 
 import { IItem } from '../views/TeamChannelsView';
-import { IRoom } from '../definitions/IRoom';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
+import { TDataSelect } from '../definitions/IDataSelect';
 import { ModalStackParamList } from './MasterDetailStack/types';
 
 export type ChatsStackParamList = {
@@ -44,13 +43,13 @@ export type ChatsStackParamList = {
 		joined: boolean;
 	};
 	SelectListView: {
-		data?: IRoom[];
+		data?: TDataSelect[];
 		title: string;
 		infoText?: string;
 		nextAction: (selected: string[]) => void;
 		showAlert?: () => void;
 		isSearch?: boolean;
-		onSearch?: (text: string) => Promise<Partial<IRoom[]> | any>;
+		onSearch?: (text: string) => Promise<TDataSelect[] | any>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {
@@ -102,7 +101,7 @@ export type ChatsStackParamList = {
 	DirectoryView: undefined;
 	NotificationPrefView: {
 		rid: string;
-		room: Model;
+		room: TSubscriptionModel;
 	};
 	ForwardLivechatView: {
 		rid: string;
@@ -209,7 +208,7 @@ export type NewMessageStackParamList = {
 		buttonText?: string;
 		nextAction?: Function;
 	}; // TODO: Change
-	CreateChannelView: {
+	CreateChannelView?: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;
 	};

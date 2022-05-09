@@ -1,11 +1,11 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
-import RocketChat from '../lib/rocketchat';
 import Push from '../lib/notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
+import { Services } from '../lib/services';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
@@ -19,9 +19,9 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	try {
 		yield localAuthenticate(server.server);
-		RocketChat.checkAndReopen();
+		Services.checkAndReopen();
 		Push.setBadgeCount();
-		return yield RocketChat.setUserPresenceOnline();
+		return yield Services.setUserPresenceOnline();
 	} catch (e) {
 		log(e);
 	}
@@ -36,7 +36,7 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 		const server = yield select(state => state.server.server);
 		yield saveLastLocalAuthenticationSession(server);
 
-		yield RocketChat.setUserPresenceAway();
+		yield Services.setUserPresenceAway();
 	} catch (e) {
 		log(e);
 	}

@@ -1,8 +1,16 @@
 import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
 
 import ActionSheet from './ActionSheet';
+import { TIconsName } from '../CustomIcon';
 
-export type TActionSheetOptionsItem = { title: string; icon: string; onPress: () => void; danger?: boolean };
+export type TActionSheetOptionsItem = {
+	title: string;
+	icon: TIconsName;
+	danger?: boolean;
+	testID?: string;
+	onPress: () => void;
+	right?: () => React.ReactElement;
+};
 
 export type TActionSheetOptions = {
 	options: TActionSheetOptionsItem[];

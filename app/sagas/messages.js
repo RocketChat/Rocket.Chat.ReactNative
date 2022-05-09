@@ -3,10 +3,10 @@ import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../lib/navigation/appNavigation';
 import { MESSAGES } from '../actions/actionsTypes';
-import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log from '../utils/log';
 import { goRoom } from '../utils/goRoom';
+import { Services } from '../lib/services';
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
@@ -25,7 +25,7 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		if (subscriptions.length) {
 			goRoom({ item: subscriptions[0], isMasterDetail, message });
 		} else {
-			const result = yield RocketChat.createDirectMessage(username);
+			const result = yield Services.createDirectMessage(username);
 			if (result?.success) {
 				goRoom({ item: result?.room, isMasterDetail, message });
 			}
