@@ -13,14 +13,14 @@ interface SidebarItemProps {
 	text: string;
 	current?: boolean;
 	onPress(): void;
-	test: string;
+	testID: string;
 	theme: TSupportedThemes;
 }
 
-const Item = React.memo(({ left, right, text, onPress, test, current, theme }: SidebarItemProps) => (
+const Item = React.memo(({ left, right, text, onPress, testID, current, theme }: SidebarItemProps) => (
 	<Touch
-		key={test}
-		{...testProps(test)}
+		key={testID}
+		{...testProps(testID)}
 		onPress={onPress}
 		theme={theme}
 		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
