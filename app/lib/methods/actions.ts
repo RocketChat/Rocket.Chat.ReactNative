@@ -1,7 +1,7 @@
 import { ITriggerAction, IUserInteraction, ModalActions } from '../../containers/UIKit/interfaces';
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';
-import random from './helpers/random';
+import { random } from './helpers';
 import Navigation from '../navigation/appNavigation';
 import sdk from '../services/sdk';
 

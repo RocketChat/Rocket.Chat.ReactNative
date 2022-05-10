@@ -13,9 +13,9 @@ export * from './room';
 export * from './server';
 export * from './url';
 export * from './isValidEmail';
+export * from './random';
 
 // export * from './mergeSubscriptionsRooms';
-// export * from './random';
 
 // export * from './goRoom';
 // export * from './localAuthentication';

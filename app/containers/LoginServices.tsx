@@ -12,7 +12,7 @@ import Button from './Button';
 import OrSeparator from './OrSeparator';
 import Touch from '../lib/methods/helpers/touch';
 import I18n from '../i18n';
-import random from '../lib/methods/helpers/random';
+import { random } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { CustomIcon, TIconsName } from './CustomIcon';
 import { IServices } from '../selectors/login';
