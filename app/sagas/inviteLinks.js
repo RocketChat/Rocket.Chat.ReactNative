@@ -6,7 +6,7 @@ import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '..
 import log from '../lib/methods/helpers/log';
 import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
-import { getRoomTitle } from '../lib/methods';
+import { getRoomTitle } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const handleRequest = function* handleRequest({ token }) {

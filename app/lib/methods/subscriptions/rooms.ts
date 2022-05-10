@@ -4,10 +4,8 @@ import EJSON from 'ejson';
 import Model from '@nozbe/watermelondb/Model';
 
 import database from '../../database';
-import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../helpers/log';
-import random from '../helpers/random';
 import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
@@ -34,7 +32,7 @@ import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { E2E_MESSAGE_TYPE } from '../../constants';
 import { getRoom } from '../getRoom';
-import { getRoomAvatar, getRoomTitle, getSenderName } from '../helpers';
+import { getRoomAvatar, getRoomTitle, getSenderName, merge, random } from '../helpers';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 

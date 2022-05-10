@@ -3,7 +3,7 @@ import { Model } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from './helpers/log';
-import random from './helpers/random';
+import { random } from './helpers';
 import { Encryption } from '../encryption';
 import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
 import sdk from '../services/sdk';

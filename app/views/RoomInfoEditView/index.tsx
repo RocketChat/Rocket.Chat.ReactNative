@@ -27,15 +27,20 @@ import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { MessageTypeValues } from './messageTypes';
-import random from '../../lib/methods/helpers/random';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { getRoomTitle, hasPermission, compareServerVersion } from '../../lib/methods/helpers';
+import {
+	getRoomTitle,
+	hasPermission,
+	compareServerVersion,
+	random,
+	showConfirmationAlert,
+	showErrorAlert
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {

@@ -3,10 +3,9 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
-import { extractHostname } from './helpers/server';
+import { extractHostname, isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
-import { isSsl } from './helpers/url';
 import log from './helpers/log';
 import { ICertificate, IRocketChat } from '../../definitions';
 import sdk from '../services/sdk';
