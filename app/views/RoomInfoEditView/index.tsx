@@ -33,11 +33,11 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
+import random from '../../lib/methods/helpers/random';
 import {
 	getRoomTitle,
 	hasPermission,
 	compareServerVersion,
-	random,
 	showConfirmationAlert,
 	showErrorAlert
 } from '../../lib/methods/helpers';

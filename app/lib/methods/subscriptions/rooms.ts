@@ -32,7 +32,9 @@ import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { E2E_MESSAGE_TYPE } from '../../constants';
 import { getRoom } from '../getRoom';
-import { getRoomAvatar, getRoomTitle, getSenderName, merge, random } from '../helpers';
+import random from '../helpers/random';
+import { merge } from '../helpers/mergeSubscriptionsRooms';
+import { getRoomAvatar, getRoomTitle, getSenderName } from '../helpers';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 

@@ -1,7 +1,7 @@
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
-import { random } from '../methods/helpers';
+import random from '../methods/helpers/random';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
