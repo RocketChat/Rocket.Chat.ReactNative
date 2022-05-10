@@ -14,9 +14,3 @@ export * from './server';
 export * from './url';
 export * from './isValidEmail';
 export * from './random';
-
-// export * from './mergeSubscriptionsRooms';
-
-// export * from './goRoom';
-// export * from './localAuthentication';
-// export * from './theme';
