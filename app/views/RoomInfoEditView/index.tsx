@@ -1,11 +1,12 @@
+import React from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import React from 'react';
 import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
+import { Subscription } from 'rxjs';
 
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
@@ -16,7 +17,15 @@ import StatusBar from '../../containers/StatusBar';
 import RCTextInput from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubscriptionModel, IAvatar } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	IRoomSettings,
+	ISubscription,
+	SubscriptionType,
+	TSubscriptionModel,
+	IAvatar
+} from '../../definitions';
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -25,7 +34,7 @@ import KeyboardView from '../../containers/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { MessageTypeValues } from './messageTypes';
@@ -66,7 +75,6 @@ interface IRoomInfoEditViewState {
 interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {
 	serverVersion?: string;
 	encryptionEnabled: boolean;
-	theme: TSupportedThemes;
 	setReadOnlyPermission: string[];
 	setReactWhenReadOnlyPermission: string[];
 	archiveRoomPermission: string[];
@@ -74,18 +82,17 @@ interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | Modal
 	deleteCPermission: string[];
 	deletePPermission: string[];
 	deleteTeamPermission: string[];
-	isMasterDetail: boolean;
 }
 
 class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfoEditViewState> {
 	randomValue = random(15);
-	private querySubscription: any; // Observable dont have unsubscribe prop
-	private room!: TSubscriptionModel;
-	private name!: TextInput | null;
-	private description!: TextInput | null;
-	private topic!: TextInput | null;
-	private announcement!: TextInput | null;
-	private joinCode!: TextInput | null;
+	private querySubscription: Subscription | undefined;
+	private room: TSubscriptionModel;
+	private name: TextInput | null | undefined;
+	private description: TextInput | null | undefined;
+	private topic: TextInput | null | undefined;
+	private announcement: TextInput | null | undefined;
+	private joinCode: TextInput | null | undefined;
 
 	static navigationOptions = () => ({
 		title: I18n.t('Room_Info_Edit')
@@ -93,6 +100,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 	constructor(props: IRoomInfoEditViewProps) {
 		super(props);
+		this.room = {} as TSubscriptionModel;
 		this.state = {
 			room: {} as ISubscription,
 			avatar: {} as IAvatar,
@@ -121,7 +129,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	loadRoom = async () => {
 		const {
 			route,
@@ -273,7 +280,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		// Clear error objects
 		await this.clearErrors();
 
-		const params = {} as any;
+		const params = {} as IRoomSettings;
 
 		// Name
 		if (room.name !== name) {
@@ -281,7 +288,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 		// Avatar
 		if (!isEmpty(avatar)) {
-			params.roomAvatar = avatar.data;
+			params.roomAvatar = avatar.data as string;
 		}
 		// Description
 		if (room.description !== description) {
@@ -297,7 +304,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 		// Room Type
 		if ((room.t === SubscriptionType.GROUP) !== t) {
-			params.roomType = t ? 'p' : 'c';
+			params.roomType = t ? ('p' as SubscriptionType) : ('c' as SubscriptionType);
 		}
 		// Read Only
 		if (room.ro !== ro) {
@@ -309,7 +316,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 
 		if (!dequal(room.sysMes, systemMessages)) {
-			params.systemMessages = systemMessages;
+			params.systemMessages = systemMessages as string[];
 		}
 
 		// Join Code
@@ -350,21 +357,16 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
-			const teamChannels = await subCollection.query(
-				Q.where('team_id', room.teamId as string),
-				Q.where('team_main', Q.notEq(true))
-			);
+			const teamChannels = await subCollection
+				.query(Q.where('team_id', room.teamId as string), Q.where('team_main', Q.notEq(true)))
+				.fetch();
 
 			const teamChannelOwner = [];
-			// @ts-ignore - wm schema type error dont including array
 			for (let i = 0; i < teamChannels.length; i += 1) {
-				// @ts-ignore - wm schema type error dont including array
 				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
-				// @ts-ignore - wm schema type error dont including array
 				// eslint-disable-next-line no-await-in-loop
 				const permissions = await hasPermission([permissionType], teamChannels[i].rid);
 				if (permissions[0]) {
-					// @ts-ignore - wm schema type error dont including array
 					teamChannelOwner.push(teamChannels[i]);
 				}
 			}
