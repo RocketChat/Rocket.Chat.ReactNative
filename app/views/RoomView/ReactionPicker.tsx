@@ -19,7 +19,7 @@ interface IReactionPickerProps {
 	show: boolean;
 	isMasterDetail: boolean;
 	reactionClose: () => void;
-	onEmojiSelected: Function; // TODO: properly type this
+	onEmojiSelected: (shortname: string, id: string) => void;
 	width: number;
 	height: number;
 	theme: TSupportedThemes;
@@ -31,7 +31,7 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 		return nextProps.show !== show || width !== nextProps.width || height !== nextProps.height;
 	}
 
-	onEmojiSelected = (emoji: string, shortname: string) => {
+	onEmojiSelected = (emoji: string, shortname?: string) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
@@ -70,11 +70,7 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 						}
 					]}
 					testID='reaction-picker'>
-					<EmojiPicker
-						// tabEmojiStyle={tabEmojiStyle}
-						onEmojiSelected={this.onEmojiSelected}
-						baseUrl={baseUrl}
-					/>
+					<EmojiPicker theme={theme} onEmojiSelected={this.onEmojiSelected} baseUrl={baseUrl} />
 				</View>
 			</Modal>
 		) : null;

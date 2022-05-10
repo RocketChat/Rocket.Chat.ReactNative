@@ -13,6 +13,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import TextInput from '../containers/TextInput';
 import { IApplicationState } from '../definitions';
+import { SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
@@ -36,8 +37,8 @@ interface ISetUsernameViewState {
 }
 
 interface ISetUsernameViewProps {
-	navigation: StackNavigationProp<any, 'SetUsernameView'>;
-	route: RouteProp<{ SetUsernameView: { title: string } }, 'SetUsernameView'>;
+	navigation: StackNavigationProp<SetUsernameStackParamList, 'SetUsernameView'>;
+	route: RouteProp<SetUsernameStackParamList, 'SetUsernameView'>;
 	server: string;
 	userId: string;
 	token: string;

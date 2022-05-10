@@ -1,38 +1,43 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
 import { useSelector } from 'react-redux';
 
-import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
-import I18n from '../i18n';
-import {
-	logEvent,
-	events,
-	toggleCrashErrorsReport,
-	toggleAnalyticsEventsReport,
-	getReportCrashErrorsValue,
-	getReportAnalyticsEventsValue
-} from '../lib/methods/helpers/log';
 import SafeAreaView from '../containers/SafeAreaView';
+import StatusBar from '../containers/StatusBar';
+import { IApplicationState } from '../definitions';
+import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
+import useServer from '../lib/methods/useServer';
+import { SettingsStackParamList } from '../stacks/types';
+import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
+import {
+	events,
+	getReportAnalyticsEventsValue,
+	getReportCrashErrorsValue,
+	logEvent,
+	toggleAnalyticsEventsReport,
+	toggleCrashErrorsReport
+} from '../lib/methods/helpers/log';
 
 interface ISecurityPrivacyViewProps {
-	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;
+	navigation: StackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
 const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
+	const [server] = useServer();
 
-	const e2eEnabled = useSelector((state: any) => state.settings.E2E_Enable);
+	const e2eEnabled = useSelector((state: IApplicationState) => state.settings.E2E_Enable);
 
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Security_and_privacy')
 		});
-	}, []);
+	}, [navigation]);
 
 	const toggleCrashReport = (value: boolean) => {
 		logEvent(events.SP_TOGGLE_CRASH_REPORT);
@@ -52,6 +57,13 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		// @ts-ignore
 		logEvent(events[`SP_GO_${screen.replace('View', '').toUpperCase()}`]);
 		navigation.navigate(screen);
+	};
+
+	const navigateToScreenLockConfigView = async () => {
+		if (server?.autoLock) {
+			await handleLocalAuthentication(true);
+		}
+		navigateToScreen('ScreenLockConfigView');
 	};
 
 	return (
@@ -74,7 +86,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 					<List.Item
 						title='Screen_lock'
 						showActionIndicator
-						onPress={() => navigateToScreen('ScreenLockConfigView')}
+						onPress={navigateToScreenLockConfigView}
 						testID='security-privacy-view-screen-lock'
 					/>
 					<List.Separator />

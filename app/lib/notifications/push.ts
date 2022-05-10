@@ -73,8 +73,8 @@ class PushNotification {
 		return this.deviceToken;
 	}
 
-	setBadgeCount = (count?: number) => {
-		if (isIOS && count) {
+	setBadgeCount = (count = 0) => {
+		if (isIOS) {
 			Notifications.ios.setBadgeCount(count);
 		}
 	};

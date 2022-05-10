@@ -16,7 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import RCTextInput from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubscriptionModel, IAvatar } from '../../definitions';
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -32,7 +32,6 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { MessageTypeValues } from './messageTypes';
 import random from '../../lib/methods/helpers/random';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { IAvatar } from '../../definitions/IProfileViewInterfaces';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
@@ -43,7 +42,7 @@ import { Services } from '../../lib/services';
 interface IRoomInfoEditViewState {
 	room: ISubscription;
 	avatar: IAvatar;
-	permissions: Record<TSupportedPermissions, string>;
+	permissions: { [key in TSupportedPermissions]?: boolean };
 	name: string;
 	description?: string;
 	topic?: string;
@@ -93,7 +92,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		this.state = {
 			room: {} as ISubscription,
 			avatar: {} as IAvatar,
-			permissions: {} as Record<TSupportedPermissions, string>,
+			permissions: {},
 			name: '',
 			description: '',
 			topic: '',
@@ -158,7 +157,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			);
 
 			this.setState({
-				// @ts-ignore - Solved by migrating the hasPermission function
 				permissions: {
 					'set-readonly': result[0],
 					'set-react-when-readonly': result[1],

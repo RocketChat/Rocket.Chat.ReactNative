@@ -210,6 +210,8 @@ export interface IServerRoom extends IRocketChatRecord {
 	departmentId?: string;
 	livechatData?: any;
 	tags?: string[];
+
+	isLastOwner?: boolean;
 }
 
 export interface IRoomNotifications {

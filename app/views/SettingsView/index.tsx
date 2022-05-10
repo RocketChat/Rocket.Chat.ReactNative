@@ -177,7 +177,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 						<>
 							<List.Section>
 								<List.Separator />
-								<SidebarView />
+								<SidebarView theme={theme} />
 								<List.Separator />
 							</List.Section>
 							<List.Section>

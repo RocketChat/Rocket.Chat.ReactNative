@@ -19,7 +19,7 @@ import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } 
 import { getPermalinkMessage, hasPermission } from '../../lib/methods';
 import { Services } from '../../lib/services';
 
-export interface IMessageActions {
+export interface IMessageActionsProps {
 	room: TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
@@ -43,8 +43,12 @@ export interface IMessageActions {
 	pinMessagePermission?: string[];
 }
 
+export interface IMessageActions {
+	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
+}
+
 const MessageActions = React.memo(
-	forwardRef(
+	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{
 				room,
@@ -68,7 +72,7 @@ const MessageActions = React.memo(
 				deleteMessagePermission,
 				forceDeleteMessagePermission,
 				pinMessagePermission
-			}: IMessageActions,
+			},
 			ref
 		) => {
 			let permissions = {

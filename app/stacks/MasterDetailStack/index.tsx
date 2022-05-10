@@ -178,7 +178,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					options={props => SettingsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
-				<ModalStack.Screen name='ThemeView' component={ThemeView} options={ThemeView.navigationOptions} />
+				<ModalStack.Screen name='ThemeView' component={ThemeView} />
 				<ModalStack.Screen
 					name='DefaultBrowserView'
 					component={DefaultBrowserView}

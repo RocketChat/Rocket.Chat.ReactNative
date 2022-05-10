@@ -5,9 +5,10 @@ import {
 	IRoom,
 	IRoomNotifications,
 	SubscriptionType,
-	IUser
+	IUser,
+	IAvatarSuggestion,
+	IProfileParams
 } from '../../definitions';
-import { IAvatarSuggestion, IParams } from '../../definitions/IProfileViewInterfaces';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
@@ -561,7 +562,10 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, customFields?: { [key: string | number]: string }) =>
+export const saveUserProfile = (
+	data: IProfileParams | Pick<IProfileParams, 'username'>,
+	customFields?: { [key: string | number]: string }
+) =>
 	// RC 0.62.2
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 

@@ -361,7 +361,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
-				<Loading visible={loading} theme={theme} />
+				<Loading visible={loading} />
 			</SafeAreaView>
 		);
 	}
