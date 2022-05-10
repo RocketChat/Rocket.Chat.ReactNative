@@ -18,7 +18,6 @@ import { LISTENER } from '../../containers/Toast';
 import { IApplicationState, IBaseScreen, IUser, RootEnum } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import { IServer } from '../../reducers/server';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
@@ -30,6 +29,8 @@ import { events, logEvent } from '../../utils/log';
 import openLink from '../../utils/openLink';
 import { onReviewPress } from '../../utils/review';
 import SidebarView from '../SidebarView';
+import { clearCache } from '../../lib/methods';
+import { Services } from '../../lib/services';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
@@ -97,10 +98,10 @@ class SettingsView extends React.Component<ISettingsViewProps> {
 					dispatch
 				} = this.props;
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
-				await RocketChat.clearCache({ server });
+				await clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
-				RocketChat.disconnect();
+				Services.disconnect();
 				dispatch(selectServerRequest(server));
 			}
 		});
@@ -177,7 +178,7 @@ class SettingsView extends React.Component<ISettingsViewProps> {
 						<>
 							<List.Section>
 								<List.Separator />
-								<SidebarView />
+								<SidebarView theme={theme} />
 								<List.Separator />
 							</List.Section>
 							<List.Section>

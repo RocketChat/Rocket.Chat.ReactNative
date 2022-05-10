@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import Touchable from './Touchable';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../lib/constants';
@@ -18,8 +18,8 @@ const MessageError = React.memo(
 		}
 
 		return (
-			<Touchable onPress={onErrorPress} style={styles.errorButton} hitSlop={BUTTON_HIT_SLOP}>
-				<CustomIcon name='warning' color={themes[theme].dangerColor} size={18} />
+			<Touchable onPress={onErrorPress} style={styles.leftIcons} hitSlop={BUTTON_HIT_SLOP}>
+				<CustomIcon name='warning' color={themes[theme].dangerColor} size={16} />
 			</Touchable>
 		);
 	},
