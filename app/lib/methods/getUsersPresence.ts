@@ -8,7 +8,7 @@ import { setUser } from '../../actions/login';
 import database from '../database';
 import { IRocketChat, IUser } from '../../definitions';
 import sdk from '../services/sdk';
-import { compareServerVersion } from './helpers/compareServerVersion';
+import { compareServerVersion } from './helpers';
 
 export function subscribeUsersPresence(this: IRocketChat) {
 	const serverVersion = reduxStore.getState().server.version as string;

@@ -35,8 +35,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { getRoomTitle, hasPermission } from '../../lib/methods/helpers';
+import { getRoomTitle, hasPermission, compareServerVersion } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {

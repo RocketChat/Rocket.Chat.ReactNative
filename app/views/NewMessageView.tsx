@@ -17,7 +17,6 @@ import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon, TIconsName } from '../containers/CustomIcon';
 import Navigation from '../lib/navigation/appNavigation';
-import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
 import { goRoom, TGoRoomItem } from '../lib/methods/helpers/goRoom';
@@ -26,7 +25,7 @@ import Touch from '../lib/methods/helpers/touch';
 import sharedStyles from './Styles';
 import { NewMessageStackParamList } from '../stacks/types';
 import { search } from '../lib/methods';
-import { hasPermission } from '../lib/methods/helpers';
+import { hasPermission, compareServerVersion } from '../lib/methods/helpers';
 
 const QUERY_SIZE = 50;
 

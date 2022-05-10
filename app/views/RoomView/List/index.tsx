@@ -11,7 +11,7 @@ import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
-import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
+import { compareServerVersion } from '../../../lib/methods/helpers';
 import debounce from '../../../lib/methods/helpers/debounce';
 import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
 import log from '../../../lib/methods/helpers/log';

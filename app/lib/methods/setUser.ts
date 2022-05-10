@@ -3,7 +3,7 @@ import { InteractionManager } from 'react-native';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion } from './helpers/compareServerVersion';
+import { compareServerVersion } from './helpers';
 
 // TODO
 export function _setUser(this: any, ddpMessage: { fields: any; id: any; cleared: any }) {

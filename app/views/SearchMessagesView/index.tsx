@@ -6,8 +6,6 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
-import { IAttachment } from '../../definitions/IAttachment';
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
@@ -30,9 +28,8 @@ import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
-import { IEmoji } from '../../definitions/IEmoji';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { IUrl } from '../../definitions';
+import { compareServerVersion } from '../../lib/methods/helpers';
+import { IUrl, IEmoji, IAttachment, ISubscription, SubscriptionType } from '../../definitions';
 import { Services } from '../../lib/services';
 
 const QUERY_SIZE = 50;

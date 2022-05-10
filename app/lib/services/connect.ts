@@ -22,9 +22,8 @@ import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import { onRolesChanged } from '../methods/getRoles';
-import { getSettings } from '../methods';
+import { compareServerVersion } from '../methods/helpers';
+import { getSettings, onRolesChanged } from '../methods';
 
 interface IServices {
 	[index: string]: string | boolean;

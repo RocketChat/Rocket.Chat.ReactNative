@@ -7,7 +7,7 @@ import log from './helpers/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
 import { ICustomEmojiModel, TCustomEmojiModel, ICustomEmojis } from '../../definitions';
 import sdk from '../services/sdk';
-import { compareServerVersion } from './helpers/compareServerVersion';
+import { compareServerVersion } from './helpers';
 
 interface IUpdateEmojis {
 	update: TCustomEmojiModel[];

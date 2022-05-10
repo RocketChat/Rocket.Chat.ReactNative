@@ -18,7 +18,7 @@ import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
 import { RoomTypes, roomTypeToApiType } from '../methods';
 import sdk from './sdk';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { compareServerVersion } from '../methods/helpers';
 import RocketChat from '../rocketchat';
 
 export const createChannel = ({
