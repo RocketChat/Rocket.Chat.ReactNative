@@ -17,7 +17,7 @@ const Encrypted = React.memo(({ type }: { type: string }) => {
 	}
 
 	return (
-		<Touchable onPress={onEncryptedPress} style={styles.encrypted} hitSlop={BUTTON_HIT_SLOP}>
+		<Touchable onPress={onEncryptedPress} style={styles.leftIcons} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='encrypted' size={16} color={themes[theme].auxiliaryText} />
 		</Touchable>
 	);
