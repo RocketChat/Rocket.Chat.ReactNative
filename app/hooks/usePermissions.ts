@@ -8,8 +8,10 @@ import { getUserSelector } from '../selectors/login';
 import database from '../lib/database';
 import log from '../utils/log';
 
+type TPermissionState = (boolean | undefined)[];
+
 function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
-	const [permissionsState, setPermissionsState] = useState<(boolean | undefined)[]>([]);
+	const [permissionsState, setPermissionsState] = useState<TPermissionState>([]);
 
 	const permissionsRedux = useSelector(
 		(state: IApplicationState) => state.permissions,
@@ -25,8 +27,6 @@ function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 
 	const userRoles = useSelector((state: IApplicationState) => getUserSelector(state).roles);
 
-	console.count('usePermissions');
-
 	const _hasPermissions = async (perms: (string[] | undefined)[], _rid?: string) => {
 		let roomRoles: string[] = [];
 		if (rid) {
@@ -39,12 +39,12 @@ function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 				roomRoles = room.roles || [];
 			} catch (error) {
 				console.log('hasPermission -> Room not found');
-				return perms.map(() => false);
+				const result = perms.map(() => false);
+				setPermissionsState(result);
 			}
 		}
 
 		try {
-			// get user roles on the server from redux
 			const userRolesTmp = userRoles || [];
 			const mergedRoles = [...new Set([...roomRoles, ...userRolesTmp])];
 			const result = perms.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
@@ -56,6 +56,7 @@ function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 
 	useEffect(() => {
 		if (permissionsRedux) {
+			console.count('Hooks: usePermissions');
 			const array: (string[] | undefined)[] = [];
 			permissions.forEach(p => array.push(permissionsRedux[p]));
 			_hasPermissions(array, rid);
