@@ -105,7 +105,7 @@
 		"react-native-picker-select": "^8.0.4",
 		"react-native-platform-touchable": "1.1.1",
 		"react-native-popover-view": "4.0.1",
-		"react-native-progress": "4.1.2",
+		"react-native-progress": "5.0.0",
 		"react-native-prompt-android": "^1.1.0",
 		"react-native-reanimated": "2.2.2",
 		"react-native-restart": "0.0.22",
