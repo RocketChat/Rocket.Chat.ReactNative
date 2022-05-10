@@ -13,12 +13,12 @@ import { isIOS } from '../../utils/deviceInfo';
 import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
 
+export let deviceToken = '';
+
 class PushNotification {
 	onNotification: (notification: any) => void;
-	deviceToken: string;
 	constructor() {
 		this.onNotification = () => {};
-		this.deviceToken = '';
 		if (isIOS) {
 			// init
 			Notifications.ios.registerRemoteNotifications();
@@ -36,7 +36,7 @@ class PushNotification {
 		}
 
 		Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {
-			this.deviceToken = event.deviceToken;
+			deviceToken = event.deviceToken;
 		});
 
 		Notifications.events().registerRemoteNotificationsRegistrationFailed((event: RegistrationError) => {
@@ -67,10 +67,6 @@ class PushNotification {
 				completion({ alert: true, sound: true, badge: false });
 			}
 		);
-	}
-
-	getDeviceToken() {
-		return this.deviceToken;
 	}
 
 	setBadgeCount = (count = 0) => {

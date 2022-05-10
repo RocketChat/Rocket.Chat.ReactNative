@@ -3,7 +3,7 @@ import EJSON from 'ejson';
 import { store } from '../store/auxStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
 import { isFDroidBuild } from '../constants';
-import PushNotification from './push';
+import PushNotification, { deviceToken } from './push';
 import { INotification, SubscriptionType } from '../../definitions';
 
 interface IEjson {
@@ -47,7 +47,7 @@ export const onNotification = (push: INotification): void => {
 	}
 };
 
-export const getDeviceToken = (): string => PushNotification.getDeviceToken();
+export const getDeviceToken = (): string => deviceToken;
 export const setBadgeCount = (count?: number): void => PushNotification.setBadgeCount(count);
 export const initializePushNotifications = (): Promise<INotification> | undefined => {
 	if (!isFDroidBuild) {
