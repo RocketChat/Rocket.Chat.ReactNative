@@ -18,13 +18,13 @@ import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
-import { isAndroid } from '../lib/methods/helpers/deviceInfo';
+import { isAndroid } from '../lib/methods/helpers';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
-import { IAttachment } from '../definitions/IAttachment';
+import { IAttachment } from '../definitions';
 import { formatAttachmentUrl } from '../lib/methods/helpers/formatAttachmentUrl';
 
 const styles = StyleSheet.create({

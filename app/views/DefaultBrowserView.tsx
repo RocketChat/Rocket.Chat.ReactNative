@@ -10,7 +10,7 @@ import { themes } from '../lib/constants';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import { DEFAULT_BROWSER_KEY } from '../lib/methods/helpers/openLink';
-import { isIOS } from '../lib/methods/helpers/deviceInfo';
+import { isIOS } from '../lib/methods/helpers';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/methods/userPreferences';
 import { events, logEvent } from '../lib/methods/helpers/log';

@@ -4,7 +4,7 @@ import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import { isIOS } from '../../lib/methods/helpers/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers';
 import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';

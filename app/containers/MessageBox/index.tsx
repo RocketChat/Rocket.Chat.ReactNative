@@ -25,7 +25,6 @@ import LeftButtons from './LeftButtons';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
-import { isAndroid, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import { canUploadFile } from '../../lib/methods/helpers/media';
 import EventEmiter from '../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
@@ -50,7 +49,7 @@ import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel, IMessage } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 

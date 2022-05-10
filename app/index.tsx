@@ -24,8 +24,7 @@ import { initializePushNotifications, onNotification } from './lib/notifications
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { ThemeContext, TSupportedThemes } from './theme';
-import { debounce } from './lib/methods/helpers';
-import { isTablet } from './lib/methods/helpers/deviceInfo';
+import { debounce, isTablet } from './lib/methods/helpers';
 import EventEmitter from './lib/methods/helpers/events';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';

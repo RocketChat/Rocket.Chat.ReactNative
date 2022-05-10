@@ -7,7 +7,6 @@ import { dequal } from 'dequal';
 
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
-import { isIOS, isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
 import { TSupportedThemes, withTheme } from '../../../theme';
 import { withDimensions } from '../../../dimensions';
@@ -22,7 +21,7 @@ import { DisplayMode, MAX_SIDEBAR_WIDTH, themes } from '../../../lib/constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TSettingsValues } from '../../../reducers/settings';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage } from '../../../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 
 interface INavigationOptions {
 	isMasterDetail: boolean;

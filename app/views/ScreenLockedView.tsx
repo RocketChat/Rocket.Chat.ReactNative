@@ -10,7 +10,7 @@ import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
 import { CustomIcon } from '../containers/CustomIcon';
 import { useTheme } from '../theme';
-import { hasNotch, isTablet } from '../lib/methods/helpers/deviceInfo';
+import { hasNotch, isTablet } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 
 interface IData {

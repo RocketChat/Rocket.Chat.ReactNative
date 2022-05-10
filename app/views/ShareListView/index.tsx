@@ -9,7 +9,6 @@ import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
-import { isAndroid, isIOS } from '../../lib/methods/helpers/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';
 import ServerItem from '../../containers/ServerItem';
@@ -25,7 +24,7 @@ import styles from './styles';
 import ShareListHeader from './Header';
 import { TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
-import { getRoomAvatar } from '../../lib/methods/helpers';
+import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
 
 interface IDataFromShare {
 	value: string;

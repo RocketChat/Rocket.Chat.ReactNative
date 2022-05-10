@@ -16,13 +16,12 @@ import sdk from './sdk';
 import I18n from '../../i18n';
 import RocketChat from '../rocketchat';
 import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../definitions';
-import { isIOS } from '../methods/helpers/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
-import { compareServerVersion } from '../methods/helpers';
+import { compareServerVersion, isIOS } from '../methods/helpers';
 import { getSettings, onRolesChanged } from '../methods';
 
 interface IServices {

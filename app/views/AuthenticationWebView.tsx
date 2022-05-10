@@ -7,11 +7,10 @@ import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import { RouteProp } from '@react-navigation/core';
 
 import { OutsideModalParamList } from '../stacks/types';
-import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { TSupportedThemes, withTheme } from '../theme';
-import { debounce } from '../lib/methods/helpers';
+import { debounce, isIOS } from '../lib/methods/helpers';
 import * as HeaderButton from '../containers/HeaderButton';
 import { Services } from '../lib/services';
 

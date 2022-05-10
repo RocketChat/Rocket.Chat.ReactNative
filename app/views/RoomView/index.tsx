@@ -25,7 +25,6 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
-import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
 import {
@@ -94,7 +93,9 @@ import {
 	getUidDirectMessage,
 	getRoomTitle,
 	canAutoTranslate as canAutoTranslateMethod,
-	debounce
+	debounce,
+	isIOS,
+	isTablet
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 

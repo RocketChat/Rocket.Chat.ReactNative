@@ -5,11 +5,10 @@ import I18n from '../../i18n';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import { isAndroid, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';
 import { ISubscription } from '../../definitions';
-import { getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
+import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 

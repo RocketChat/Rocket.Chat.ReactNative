@@ -8,7 +8,7 @@ import KeyboardView from './KeyboardView';
 import { useTheme } from '../theme';
 import StatusBar from './StatusBar';
 import AppVersion from './AppVersion';
-import { isTablet } from '../lib/methods/helpers/deviceInfo';
+import { isTablet } from '../lib/methods/helpers';
 import SafeAreaView from './SafeAreaView';
 
 interface IFormContainer extends ScrollViewProps {

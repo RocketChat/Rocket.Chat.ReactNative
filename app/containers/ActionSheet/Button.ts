@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { isAndroid } from '../../lib/methods/helpers/deviceInfo';
+import { isAndroid } from '../../lib/methods/helpers';
 import Touch from '../../lib/methods/helpers/touch';
 
 // Taken from https://github.com/rgommezz/react-native-scroll-bottom-sheet#touchables

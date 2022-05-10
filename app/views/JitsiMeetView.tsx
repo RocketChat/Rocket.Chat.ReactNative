@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { getUserSelector } from '../selectors/login';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { isAndroid, isIOS } from '../lib/methods/helpers/deviceInfo';
+import { isAndroid, isIOS } from '../lib/methods/helpers';
 import { withTheme } from '../theme';
 import { InsideStackParamList } from '../stacks/types';
 import { IApplicationState, IUser, IBaseScreen } from '../definitions';

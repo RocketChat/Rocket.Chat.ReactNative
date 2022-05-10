@@ -21,7 +21,6 @@ import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../lib/methods/helpers/media';
-import { isAndroid } from '../../lib/methods/helpers/deviceInfo';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
@@ -29,7 +28,7 @@ import styles from './styles';
 import { IAttachment } from './interfaces';
 import { IUser, TSubscriptionModel } from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
-import { hasPermission } from '../../lib/methods/helpers';
+import { hasPermission, isAndroid } from '../../lib/methods/helpers';
 
 interface IShareViewState {
 	selected: IAttachment;

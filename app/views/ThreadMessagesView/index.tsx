@@ -22,7 +22,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -35,7 +34,7 @@ import Dropdown from './Dropdown';
 import Item from './Item';
 import styles from './styles';
 import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
-import { getUidDirectMessage, debounce } from '../../lib/methods/helpers';
+import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;
