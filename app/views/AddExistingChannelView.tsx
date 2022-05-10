@@ -19,10 +19,9 @@ import Loading from '../containers/Loading';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import debounce from '../lib/methods/helpers/debounce';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../definitions';
-import { getRoomTitle, hasPermission } from '../lib/methods/helpers';
+import { getRoomTitle, hasPermission, debounce } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 interface IAddExistingChannelViewState {

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import debounce from '../../lib/methods/helpers/debounce';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
@@ -11,7 +10,7 @@ import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
 import { search } from '../../lib/methods';
-import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, debounce } from '../../lib/methods/helpers';
 
 const SelectUsers = ({
 	server,

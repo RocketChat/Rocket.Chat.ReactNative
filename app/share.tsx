@@ -25,7 +25,7 @@ import SelectServerView from './views/SelectServerView';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
-import debounce from './lib/methods/helpers/debounce';
+import { debounce } from './lib/methods/helpers';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
 import { colors, CURRENT_SERVER } from './lib/constants';
 

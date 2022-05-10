@@ -21,7 +21,6 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
-import debounce from '../../lib/methods/helpers/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../lib/methods/helpers/room';
@@ -94,7 +93,8 @@ import {
 	isGroupChat,
 	getUidDirectMessage,
 	getRoomTitle,
-	canAutoTranslate as canAutoTranslateMethod
+	canAutoTranslate as canAutoTranslateMethod,
+	debounce
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 

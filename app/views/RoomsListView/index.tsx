@@ -14,7 +14,6 @@ import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import { appStart } from '../../actions/app';
-import debounce from '../../lib/methods/helpers/debounce';
 import { isIOS, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -47,7 +46,15 @@ import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
 import { getUserPresence, RoomTypes, search } from '../../lib/methods';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage, hasPermission, isGroupChat, isRead } from '../../lib/methods/helpers';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	getUidDirectMessage,
+	hasPermission,
+	isGroupChat,
+	isRead,
+	debounce
+} from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 

@@ -11,7 +11,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
-import debounce from '../../lib/methods/helpers/debounce';
+import { debounce } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';

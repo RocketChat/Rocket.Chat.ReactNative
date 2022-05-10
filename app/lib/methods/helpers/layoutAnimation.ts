@@ -1,6 +1,6 @@
 import { LayoutAnimation } from 'react-native';
 
-import debounce from './debounce';
+import { debounce } from '.';
 import { isIOS } from './deviceInfo';
 
 export const animateNextTransition = debounce(

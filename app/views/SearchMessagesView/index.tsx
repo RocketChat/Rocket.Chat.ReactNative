@@ -9,7 +9,6 @@ import { dequal } from 'dequal';
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
-import debounce from '../../lib/methods/helpers/debounce';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
@@ -28,7 +27,7 @@ import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { compareServerVersion, debounce } from '../../lib/methods/helpers';
 import { IUrl, IEmoji, IAttachment, ISubscription, SubscriptionType } from '../../definitions';
 import { Services } from '../../lib/services';
 

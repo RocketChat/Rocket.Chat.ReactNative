@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
-import debounce from '../../lib/methods/helpers/debounce';
+import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
 import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';

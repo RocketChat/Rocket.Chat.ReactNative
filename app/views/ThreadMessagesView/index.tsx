@@ -14,7 +14,6 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
-import debounce from '../../lib/methods/helpers/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
@@ -36,7 +35,7 @@ import Dropdown from './Dropdown';
 import Item from './Item';
 import styles from './styles';
 import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
-import { getUidDirectMessage } from '../../lib/methods/helpers';
+import { getUidDirectMessage, debounce } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;
