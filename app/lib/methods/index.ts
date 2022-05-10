@@ -15,7 +15,6 @@ export * from './getSingleMessage';
 export * from './getSlashCommands';
 export * from './getThreadName';
 export * from './getUsersPresence';
-export * from './helpers';
 export * from './loadMessagesForRoom';
 export * from './loadMissedMessages';
 export * from './loadNextMessages';
