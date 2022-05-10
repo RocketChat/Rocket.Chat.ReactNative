@@ -1,5 +1,5 @@
 import RNFetchBlob from 'rn-fetch-blob';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -25,6 +25,7 @@ import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { onRolesChanged } from '../methods/getRoles';
 import { getSettings } from '../methods';
+import { isSsl } from '../../utils/url';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -419,10 +420,10 @@ async function getServerInfo(server: string) {
 }
 
 async function getWebsocketInfo({ server }: { server: string }) {
-	sdk.initialize(server);
+	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
 	try {
-		await sdk.current.connect();
+		await websocketSdk.connect();
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {
@@ -432,7 +433,7 @@ async function getWebsocketInfo({ server }: { server: string }) {
 		}
 	}
 
-	sdk.disconnect();
+	websocketSdk.disconnect();
 
 	return {
 		success: true
