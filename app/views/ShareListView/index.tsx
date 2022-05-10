@@ -25,7 +25,7 @@ import styles from './styles';
 import ShareListHeader from './Header';
 import { TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
-import { getRoomAvatar } from '../../lib/methods';
+import { getRoomAvatar } from '../../lib/methods/helpers';
 
 interface IDataFromShare {
 	value: string;

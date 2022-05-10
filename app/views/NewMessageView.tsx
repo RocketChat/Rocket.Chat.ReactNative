@@ -25,7 +25,8 @@ import log, { events, logEvent } from '../lib/methods/helpers/log';
 import Touch from '../lib/methods/helpers/touch';
 import sharedStyles from './Styles';
 import { NewMessageStackParamList } from '../stacks/types';
-import { hasPermission, search } from '../lib/methods';
+import { search } from '../lib/methods';
+import { hasPermission } from '../lib/methods/helpers';
 
 const QUERY_SIZE = 50;
 

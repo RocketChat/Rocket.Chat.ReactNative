@@ -9,7 +9,7 @@ import { isAndroid, isTablet } from '../../lib/methods/helpers/deviceInfo';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';
 import { ISubscription } from '../../definitions';
-import { getRoomTitle, isGroupChat } from '../../lib/methods';
+import { getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 

@@ -31,7 +31,7 @@ import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';
+import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;

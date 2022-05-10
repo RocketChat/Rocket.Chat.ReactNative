@@ -23,7 +23,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
-import { hasPermission } from '../lib/methods';
+import { hasPermission } from '../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {

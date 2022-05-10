@@ -27,10 +27,9 @@ import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import styles from './styles';
 import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
-import { ISubscription } from '../../definitions/ISubscription';
-import { getRoomTitle, getUidDirectMessage } from '../../lib/methods';
+import { getRoomTitle, getUidDirectMessage } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
-import { IApplicationState } from '../../definitions';
+import { IApplicationState, ISubscription } from '../../definitions';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 
 const COUNT = 25;

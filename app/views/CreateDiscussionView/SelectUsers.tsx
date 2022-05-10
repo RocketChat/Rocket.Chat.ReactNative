@@ -10,7 +10,8 @@ import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
-import { getRoomAvatar, getRoomTitle, search } from '../../lib/methods';
+import { search } from '../../lib/methods';
+import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 
 const SelectUsers = ({
 	server,

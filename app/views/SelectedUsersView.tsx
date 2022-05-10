@@ -24,7 +24,8 @@ import { withTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { isGroupChat, search } from '../lib/methods';
+import { search } from '../lib/methods';
+import { isGroupChat } from '../lib/methods/helpers';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });

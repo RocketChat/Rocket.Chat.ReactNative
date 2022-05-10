@@ -16,7 +16,7 @@ import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { getRoomTitle, getUidDirectMessage } from '../lib/methods';
+import { getRoomTitle, getUidDirectMessage } from '../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	scroll: {

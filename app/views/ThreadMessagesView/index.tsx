@@ -36,7 +36,7 @@ import Dropdown from './Dropdown';
 import Item from './Item';
 import styles from './styles';
 import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
-import { getUidDirectMessage } from '../../lib/methods';
+import { getUidDirectMessage } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;

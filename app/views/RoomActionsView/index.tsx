@@ -33,16 +33,15 @@ import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { callJitsi, getPermalinkChannel } from '../../lib/methods';
 import {
-	callJitsi,
 	canAutoTranslate as canAutoTranslateMethod,
-	getPermalinkChannel,
 	getRoomAvatar,
 	getRoomTitle,
 	getUidDirectMessage,
 	hasPermission,
 	isGroupChat
-} from '../../lib/methods';
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 

@@ -28,7 +28,8 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
 import { IUser, TSubscriptionModel } from '../../definitions';
-import { hasPermission, sendFileMessage, sendMessage } from '../../lib/methods';
+import { sendFileMessage, sendMessage } from '../../lib/methods';
+import { hasPermission } from '../../lib/methods/helpers';
 
 interface IShareViewState {
 	selected: IAttachment;

@@ -22,7 +22,7 @@ import { DisplayMode, MAX_SIDEBAR_WIDTH, themes } from '../../../lib/constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TSettingsValues } from '../../../reducers/settings';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage } from '../../../lib/methods';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage } from '../../../lib/methods/helpers';
 
 interface INavigationOptions {
 	isMasterDetail: boolean;

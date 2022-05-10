@@ -28,7 +28,8 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { TSupportedPermissions } from '../../reducers/permissions';
-import { getRoomTitle, hasPermission, isGroupChat, RoomTypes } from '../../lib/methods';
+import { RoomTypes } from '../../lib/methods';
+import { getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
 import styles from './styles';
 import { Services } from '../../lib/services';
 

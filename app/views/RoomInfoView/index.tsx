@@ -33,7 +33,8 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { SubscriptionType, TSubscriptionModel, ISubscription, IUser, IApplicationState } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
-import { callJitsi, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods';
+import { callJitsi } from '../../lib/methods';
+import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 interface IGetRoomTitle {

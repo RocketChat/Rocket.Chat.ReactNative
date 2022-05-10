@@ -21,7 +21,7 @@ import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../defin
 import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { hasPermission } from '../lib/methods';
+import { hasPermission } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({

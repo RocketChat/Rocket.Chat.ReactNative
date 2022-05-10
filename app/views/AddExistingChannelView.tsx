@@ -22,7 +22,7 @@ import { showErrorAlert } from '../lib/methods/helpers/info';
 import debounce from '../lib/methods/helpers/debounce';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../definitions';
-import { getRoomTitle, hasPermission } from '../lib/methods';
+import { getRoomTitle, hasPermission } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 interface IAddExistingChannelViewState {

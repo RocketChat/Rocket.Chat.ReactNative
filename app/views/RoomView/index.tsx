@@ -84,16 +84,18 @@ import { TListRef } from './List/List';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
-	canAutoTranslate as canAutoTranslateMethod,
-	getRoomTitle,
-	getUidDirectMessage,
-	isGroupChat,
 	loadSurroundingMessages,
 	loadThreadMessages,
 	readMessages,
 	sendMessage,
 	triggerBlockAction
 } from '../../lib/methods';
+import {
+	isGroupChat,
+	getUidDirectMessage,
+	getRoomTitle,
+	canAutoTranslate as canAutoTranslateMethod
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 type TStateAttrsUpdate = keyof IRoomViewState;

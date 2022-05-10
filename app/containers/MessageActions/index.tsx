@@ -16,7 +16,8 @@ import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
-import { getPermalinkMessage, hasPermission } from '../../lib/methods';
+import { getPermalinkMessage } from '../../lib/methods';
+import { hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 export interface IMessageActionsProps {

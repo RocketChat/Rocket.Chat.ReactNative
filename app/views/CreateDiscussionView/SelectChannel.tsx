@@ -9,7 +9,8 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import debounce from '../../lib/methods/helpers/debounce';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
-import { getRoomAvatar, getRoomTitle, localSearch } from '../../lib/methods';
+import { localSearch } from '../../lib/methods';
+import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 
 const SelectChannel = ({
 	server,

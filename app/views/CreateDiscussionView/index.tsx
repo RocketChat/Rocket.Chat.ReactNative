@@ -24,7 +24,7 @@ import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
 import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { getRoomTitle } from '../../lib/methods';
+import { getRoomTitle } from '../../lib/methods/helpers';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;

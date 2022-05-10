@@ -1,7 +1,7 @@
 import { ChatsStackParamList } from '../../../stacks/types';
 import Navigation from '../../navigation/appNavigation';
 import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../../../definitions';
-import { getRoomTitle, getUidDirectMessage } from '../index';
+import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { Services } from '../../services';
 
 interface IGoRoomItem {

@@ -46,17 +46,8 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
-import {
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	getUserPresence,
-	hasPermission,
-	isGroupChat,
-	isRead,
-	RoomTypes,
-	search
-} from '../../lib/methods';
+import { getUserPresence, RoomTypes, search } from '../../lib/methods';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, hasPermission, isGroupChat, isRead } from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 
