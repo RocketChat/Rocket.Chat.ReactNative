@@ -21,7 +21,7 @@ import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
 import { ChatsStackParamList } from '../stacks/types';
-import { TSubscriptionModel, SubscriptionType } from '../definitions';
+import { TSubscriptionModel, SubscriptionType, IApplicationState } from '../definitions';
 import { getRoomTitle, hasPermission } from '../lib/methods';
 import { Services } from '../lib/services';
 
@@ -37,7 +37,7 @@ interface IAddExistingChannelViewProps {
 	route: RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
-	addTeamChannelPermission: string[];
+	addTeamChannelPermission?: string[];
 }
 
 const QUERY_SIZE = 50;
@@ -222,7 +222,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	addTeamChannelPermission: state.permissions['add-team-channel']
 });
