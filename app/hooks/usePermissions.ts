@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { dequal } from 'dequal';
+import { Subscription } from 'rxjs';
 
 import { TSupportedPermissions } from '../reducers/permissions';
 import { IApplicationState } from '../definitions';
@@ -12,6 +13,8 @@ type TPermissionState = (boolean | undefined)[];
 
 function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 	const [permissionsState, setPermissionsState] = useState<TPermissionState>([]);
+	const [roomRoles, setRoomRoles] = useState<string[]>([]);
+	let subscription: Subscription | null = null;
 
 	const permissionsRedux = useSelector(
 		(state: IApplicationState) => state.permissions,
@@ -27,23 +30,7 @@ function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 
 	const userRoles = useSelector((state: IApplicationState) => getUserSelector(state).roles);
 
-	const _hasPermissions = async (perms: (string[] | undefined)[], _rid?: string) => {
-		let roomRoles: string[] = [];
-		if (rid) {
-			const db = database.active;
-			const subsCollection = db.get('subscriptions');
-			try {
-				// get the room from database
-				const room = await subsCollection.find(rid);
-				// get room roles
-				roomRoles = room.roles || [];
-			} catch (error) {
-				console.log('hasPermission -> Room not found');
-				const result = perms.map(() => false);
-				setPermissionsState(result);
-			}
-		}
-
+	const _hasPermissions = (perms: (string[] | undefined)[], _rid?: string) => {
 		try {
 			const userRolesTmp = userRoles || [];
 			const mergedRoles = [...new Set([...roomRoles, ...userRolesTmp])];
@@ -54,6 +41,24 @@ function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 		}
 	};
 
+	const _observeRoom = async (rid: string) => {
+		const db = database.active;
+		const subsCollection = db.get('subscriptions');
+		try {
+			// get the room from database
+			const room = await subsCollection.find(rid);
+			const observable = room.observe();
+			subscription = observable.subscribe(sub => {
+				if (!dequal(sub.roles, roomRoles)) {
+					setRoomRoles(sub.roles ?? []);
+				}
+			});
+		} catch (error) {
+			console.log('hasPermission -> Room not found');
+			setPermissionsState([]);
+		}
+	};
+
 	useEffect(() => {
 		if (permissionsRedux) {
 			console.count('Hooks: usePermissions');
@@ -61,7 +66,19 @@ function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 			permissions.forEach(p => array.push(permissionsRedux[p]));
 			_hasPermissions(array, rid);
 		}
-	}, [userRoles, permissionsRedux]);
+	}, [userRoles, permissionsRedux, roomRoles]);
+
+	useEffect(() => {
+		if (rid && !subscription) {
+			_observeRoom(rid);
+		}
+
+		return () => {
+			if (subscription && subscription.unsubscribe) {
+				subscription.unsubscribe();
+			}
+		};
+	}, [roomRoles]);
 
 	return permissionsState;
 }

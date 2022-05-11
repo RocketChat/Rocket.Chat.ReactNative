@@ -173,8 +173,6 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		getCustomFields();
 	}, []);
 
-	console.count(' 🤙 LivechatEditView');
-
 	return (
 		<KeyboardView
 			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
