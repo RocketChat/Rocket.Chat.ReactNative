@@ -150,7 +150,7 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ ! $KEYSTORE ]]; then
@@ -169,7 +169,7 @@ commands:
                 --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
                 --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               npx bugsnag-source-maps upload-react-native \
                 --api-key=$BUGSNAG_KEY \
                 --app-version-code=$CIRCLE_BUILD_NUM \
@@ -379,7 +379,19 @@ jobs:
     resource_class: large
     steps:
       - android-build
-  
+
+    # Android automatic builds
+  android-automatic-build-experimental:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-29-node
+    environment:
+      <<: *android-env
+      <<: *bash-env
+    resource_class: large
+    steps:
+      - android-build
+
   android-build-official:
     <<: *defaults
     docker:
@@ -485,6 +497,10 @@ workflows:
           type: approval
           requires:
               - lint-testunit
+          filters:
+            branches:
+              ignore:
+                - develop
       - android-build-experimental:
           requires:
             - android-hold-build-experimental
@@ -505,12 +521,16 @@ workflows:
       - android-google-play-production-experimental:
           requires:
             - android-hold-google-play-production-experimental
-      
+
       # Android Official
       - android-hold-build-official:
           type: approval
           requires:
             - lint-testunit
+          filters:
+            branches:
+              ignore:
+                - develop
       - android-build-official:
           requires:
             - android-hold-build-official
@@ -521,3 +541,15 @@ workflows:
       - android-google-play-beta-official:
           requires:
             - android-hold-google-play-beta-official
+
+      # Android Automatic Experimental
+      - android-automatic-build-experimental:
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - lint-testunit
+      - android-google-play-production-experimental:
+          requires:
+            - android-automatic-build-experimental
