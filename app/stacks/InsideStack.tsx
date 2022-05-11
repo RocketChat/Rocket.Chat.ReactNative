@@ -198,7 +198,7 @@ const AdminPanelStackNavigator = () => {
 	return (
 		<AdminPanelStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
-			<AdminPanelStack.Screen name='AdminPanelView' component={AdminPanelView} options={AdminPanelView.navigationOptions} />
+			<AdminPanelStack.Screen name='AdminPanelView' component={AdminPanelView} />
 		</AdminPanelStack.Navigator>
 	);
 };
@@ -223,6 +223,7 @@ const DrawerNavigator = () => {
 
 	return (
 		<Drawer.Navigator
+			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
 			screenOptions={{ swipeEnabled: false }}
