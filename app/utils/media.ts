@@ -1,15 +1,20 @@
-import { IAttachment } from '../views/ShareView/interfaces';
+import { IShareAttachment } from '../definitions';
 
-export const canUploadFile = (
-	file: IAttachment,
-	allowList: string,
-	maxFileSize: number,
-	permissionToUploadFile: boolean
-): { success: boolean; error?: string } => {
+export const canUploadFile = ({
+	file,
+	allowList,
+	maxFileSize,
+	permissionToUploadFile
+}: {
+	file: IShareAttachment;
+	allowList?: string;
+	maxFileSize?: number;
+	permissionToUploadFile: boolean;
+}): { success: boolean; error?: string } => {
 	if (!(file && file.path)) {
 		return { success: true };
 	}
-	if (maxFileSize > -1 && file.size > maxFileSize) {
+	if (maxFileSize && maxFileSize > -1 && file.size > maxFileSize) {
 		return { success: false, error: 'error-file-too-large' };
 	}
 	if (!permissionToUploadFile) {
