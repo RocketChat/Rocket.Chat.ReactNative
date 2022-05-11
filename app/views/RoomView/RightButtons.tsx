@@ -152,7 +152,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	goTeamChannels = () => {
 		logEvent(events.ROOM_GO_TEAM_CHANNELS);
-		const { navigation, isMasterDetail, teamId } = this.props;
+		const { navigation, isMasterDetail, teamId, joined } = this.props;
 		if (!teamId) {
 			return;
 		}
@@ -160,10 +160,10 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			// @ts-ignore TODO: find a way to make this work
 			navigation.navigate('ModalStackNavigator', {
 				screen: 'TeamChannelsView',
-				params: { teamId }
+				params: { teamId, joined }
 			});
 		} else {
-			navigation.navigate('TeamChannelsView', { teamId });
+			navigation.navigate('TeamChannelsView', { teamId, joined });
 		}
 	};
 

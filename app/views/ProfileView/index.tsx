@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, ScrollView, View } from 'react-native';
+import { Keyboard, ScrollView, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import { sha256 } from 'js-sha256';
@@ -21,34 +21,62 @@ import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
-import { setUser as setUserAction } from '../../actions/login';
+import { setUser } from '../../actions/login';
 import { CustomIcon } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
+import { ProfileStackParamList } from '../../stacks/types';
+import { Services } from '../../lib/services';
 import {
+	IApplicationState,
 	IAvatar,
 	IAvatarButton,
-	INavigationOptions,
-	IParams,
-	IProfileViewProps,
-	IProfileViewState
-} from '../../definitions/IProfileViewInterfaces';
-import { IUser } from '../../definitions';
-import { Services } from '../../lib/services';
+	IAvatarSuggestion,
+	IBaseScreen,
+	IProfileParams,
+	IUser
+} from '../../definitions';
+
+interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
+	user: IUser;
+	baseUrl: string;
+	Accounts_AllowEmailChange: boolean;
+	Accounts_AllowPasswordChange: boolean;
+	Accounts_AllowRealNameChange: boolean;
+	Accounts_AllowUserAvatarChange: boolean;
+	Accounts_AllowUsernameChange: boolean;
+	Accounts_CustomFields: string;
+	theme: TSupportedThemes;
+}
+
+interface IProfileViewState {
+	saving: boolean;
+	name: string;
+	username: string;
+	email: string | null;
+	newPassword: string | null;
+	currentPassword: string | null;
+	avatarUrl: string | null;
+	avatar: IAvatar;
+	avatarSuggestions: IAvatarSuggestion;
+	customFields: {
+		[key: string | number]: string;
+	};
+}
 
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
-	private name: any;
-	private username: any;
-	private email: any;
-	private avatarUrl: any;
-	private newPassword: any;
+	private name?: TextInput | null;
+	private username?: TextInput | null;
+	private email?: TextInput;
+	private avatarUrl?: TextInput;
+	private newPassword?: TextInput;
 
-	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions) => {
+	static navigationOptions = ({ navigation, isMasterDetail }: IProfileViewProps) => {
 		const options: StackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
@@ -150,7 +178,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			!newPassword &&
 			user.emails &&
 			user.emails[0].address === email &&
-			!avatar!.data &&
+			!avatar.data &&
 			!customFieldsChanged
 		);
 	};
@@ -172,8 +200,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		this.setState({ saving: true });
 
 		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
-		const { user, setUser } = this.props;
-		const params = {} as IParams;
+		const { user, dispatch } = this.props;
+		const params = {} as IProfileParams;
 
 		// Name
 		if (user.name !== name) {
@@ -225,7 +253,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 
 		try {
-			if (avatar!.url) {
+			if (avatar.url) {
 				try {
 					logEvent(events.PROFILE_SAVE_AVATAR);
 					await Services.setAvatarFromService(avatar);
@@ -241,9 +269,9 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			if (result.success) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
 				if (customFields) {
-					setUser({ customFields, ...params });
+					dispatch(setUser({ customFields, ...params }));
 				} else {
-					setUser({ ...params });
+					dispatch(setUser({ ...params }));
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
@@ -339,7 +367,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				})}
 				{this.renderAvatarButton({
 					child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
-					onPress: () => this.pickImageWithURL(avatarUrl!),
+					onPress: () => (avatarUrl ? this.pickImageWithURL(avatarUrl) : null),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
 				})}
@@ -419,7 +447,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								// @ts-ignore
 								return this[array[index + 1]].focus();
 							}
-							this.avatarUrl.focus();
+							this.avatarUrl?.focus();
 						}}
 						theme={theme}
 					/>
@@ -482,7 +510,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							value={name}
 							onChangeText={(value: string) => this.setState({ name: value })}
 							onSubmitEditing={() => {
-								this.username.focus();
+								this.username?.focus();
 							}}
 							testID='profile-view-name'
 							theme={theme}
@@ -498,7 +526,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							value={username}
 							onChangeText={value => this.setState({ username: value })}
 							onSubmitEditing={() => {
-								this.email.focus();
+								this.email?.focus();
 							}}
 							testID='profile-view-username'
 							theme={theme}
@@ -507,14 +535,16 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
 							inputRef={e => {
-								this.email = e;
+								if (e) {
+									this.email = e;
+								}
 							}}
 							label={I18n.t('Email')}
 							placeholder={I18n.t('Email')}
-							value={email!}
+							value={email || undefined}
 							onChangeText={value => this.setState({ email: value })}
 							onSubmitEditing={() => {
-								this.newPassword.focus();
+								this.newPassword?.focus();
 							}}
 							testID='profile-view-email'
 							theme={theme}
@@ -523,18 +553,20 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 							inputRef={e => {
-								this.newPassword = e;
+								if (e) {
+									this.newPassword = e;
+								}
 							}}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
-							value={newPassword!}
+							value={newPassword || undefined}
 							onChangeText={value => this.setState({ newPassword: value })}
 							onSubmitEditing={() => {
 								if (Accounts_CustomFields && Object.keys(customFields).length) {
 									// @ts-ignore
 									return this[Object.keys(customFields)[0]].focus();
 								}
-								this.avatarUrl.focus();
+								this.avatarUrl?.focus();
 							}}
 							secureTextEntry
 							testID='profile-view-new-password'
@@ -545,11 +577,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							editable={Accounts_AllowUserAvatarChange}
 							inputStyle={[!Accounts_AllowUserAvatarChange && styles.disabled]}
 							inputRef={e => {
-								this.avatarUrl = e;
+								if (e) {
+									this.avatarUrl = e;
+								}
 							}}
 							label={I18n.t('Avatar_Url')}
 							placeholder={I18n.t('Avatar_Url')}
-							value={avatarUrl!}
+							value={avatarUrl || undefined}
 							onChangeText={value => this.setState({ avatarUrl: value })}
 							onSubmitEditing={this.submit}
 							testID='profile-view-avatar-url'
@@ -580,19 +614,15 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
-	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange,
-	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange,
-	Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange,
-	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange,
-	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
-	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange as boolean,
+	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
+	Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange as boolean,
+	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange as boolean,
+	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
+	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
 	baseUrl: state.server.server
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	setUser: (params: any) => dispatch(setUserAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProfileView));
+export default connect(mapStateToProps)(withTheme(ProfileView));

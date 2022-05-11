@@ -10,9 +10,7 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
-import { TAnyMessageModel } from '../../definitions';
-import { IEmoji } from '../../definitions/IEmoji';
+import { TAnyMessageModel, TFrequentlyUsedEmojiModel } from '../../definitions';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
@@ -83,7 +81,7 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
 			theme={theme}>
 			{emojiModel?.isCustom ? (
-				<CustomEmoji style={styles.customEmoji} emoji={emojiModel as IEmoji} baseUrl={server} />
+				<CustomEmoji style={styles.customEmoji} emoji={emojiModel} baseUrl={server} />
 			) : (
 				<Text style={styles.headerIcon}>{shortnameToUnicode(`:${emoji}:`)}</Text>
 			)}

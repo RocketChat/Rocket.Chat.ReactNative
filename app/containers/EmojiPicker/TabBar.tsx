@@ -1,20 +1,20 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { StyleProp, Text, TextStyle, TouchableOpacity, View } from 'react-native';
 
 import styles from './styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
 
 interface ITabBarProps {
-	goToPage: Function;
-	activeTab: number;
-	tabs: [];
-	tabEmojiStyle: object;
+	goToPage?: (page: number) => void;
+	activeTab?: number;
+	tabs?: string[];
+	tabEmojiStyle: StyleProp<TextStyle>;
 	theme: TSupportedThemes;
 }
 
-export default class TabBar extends React.Component<Partial<ITabBarProps>> {
-	shouldComponentUpdate(nextProps: any) {
+export default class TabBar extends React.Component<ITabBarProps> {
+	shouldComponentUpdate(nextProps: ITabBarProps) {
 		const { activeTab, theme } = this.props;
 		if (nextProps.activeTab !== activeTab) {
 			return true;
@@ -30,16 +30,20 @@ export default class TabBar extends React.Component<Partial<ITabBarProps>> {
 
 		return (
 			<View style={styles.tabsContainer}>
-				{tabs!.map((tab, i) => (
+				{tabs?.map((tab, i) => (
 					<TouchableOpacity
 						activeOpacity={0.7}
 						key={tab}
-						onPress={() => goToPage!(i)}
+						onPress={() => {
+							if (goToPage) {
+								goToPage(i);
+							}
+						}}
 						style={styles.tab}
 						testID={`reaction-picker-${tab}`}>
 						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
 						{activeTab === i ? (
-							<View style={[styles.activeTabLine, { backgroundColor: themes[theme!].tintColor }]} />
+							<View style={[styles.activeTabLine, { backgroundColor: themes[theme].tintColor }]} />
 						) : (
 							<View style={styles.tabLine} />
 						)}

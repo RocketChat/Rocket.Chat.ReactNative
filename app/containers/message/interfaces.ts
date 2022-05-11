@@ -60,6 +60,8 @@ export interface IMessageContent {
 	isIgnored: boolean;
 	type: string;
 	comment?: string;
+	hasError: boolean;
+	isHeader: boolean;
 }
 
 export interface IMessageEmoji {
