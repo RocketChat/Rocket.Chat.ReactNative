@@ -21,8 +21,8 @@ import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../defin
 import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { hasPermission } from '../lib/methods';
 import { Services } from '../lib/services';
+import { usePermissions } from '../hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,23 +55,17 @@ interface ILivechatEditViewProps {
 const Title = ({ title, theme }: ITitle) =>
 	title ? <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text> : null;
 
-const LivechatEditView = ({
-	user,
-	navigation,
-	route,
-	theme,
-	editOmnichannelContact,
-	editLivechatRoomCustomfields
-}: ILivechatEditViewProps) => {
+const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
 	const [availableUserTags, setAvailableUserTags] = useState<string[]>([]);
-	const [permissions, setPermissions] = useState<boolean[]>([]);
 
 	const params = {} as TParams;
 	const inputs = {} as IInputsRefs;
 
 	const livechat = (route.params?.room ?? {}) as ILivechat;
 	const visitor = route.params?.roomUser ?? {};
+
+	const permissions = usePermissions(['edit-omnichannel-contact', 'edit-livechat-room-customfields'], livechat.rid);
 
 	const getCustomFields = async () => {
 		const result = await Services.getCustomFields();
@@ -171,18 +165,12 @@ const LivechatEditView = ({
 		params[key] = text;
 	};
 
-	const getPermissions = async () => {
-		const permissionsArray = await hasPermission([editOmnichannelContact, editLivechatRoomCustomfields], livechat.rid);
-		setPermissions(permissionsArray);
-	};
-
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Edit')
 		});
 		handleGetAgentDepartments();
 		getCustomFields();
-		getPermissions();
 	}, []);
 
 	return (
@@ -307,9 +295,7 @@ const LivechatEditView = ({
 
 const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	user: getUserSelector(state),
-	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
-	editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(LivechatEditView));
