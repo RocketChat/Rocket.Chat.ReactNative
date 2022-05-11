@@ -1,6 +1,7 @@
 import { setCustomEmojis } from '../actions/customEmojis';
-import { ICustomEmojis, initialState } from './customEmojis';
+import { initialState } from './customEmojis';
 import { mockedStore } from './mockedStore';
+import { ICustomEmojis } from '../definitions';
 
 describe('test reducer', () => {
 	it('should return initial state', () => {
