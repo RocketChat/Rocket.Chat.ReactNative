@@ -6,7 +6,6 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { RouteProp } from '@react-navigation/native';
 import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
