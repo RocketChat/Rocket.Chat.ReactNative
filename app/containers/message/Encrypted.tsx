@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import Touchable from './Touchable';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { BUTTON_HIT_SLOP } from './utils';
 import MessageContext from './Context';
 import styles from './styles';
@@ -17,7 +17,7 @@ const Encrypted = React.memo(({ type }: { type: string }) => {
 	}
 
 	return (
-		<Touchable onPress={onEncryptedPress} style={styles.encrypted} hitSlop={BUTTON_HIT_SLOP}>
+		<Touchable onPress={onEncryptedPress} style={styles.leftIcons} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='encrypted' size={16} color={themes[theme].auxiliaryText} />
 		</Touchable>
 	);

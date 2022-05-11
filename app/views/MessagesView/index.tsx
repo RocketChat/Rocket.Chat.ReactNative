@@ -9,7 +9,6 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../lib/constants';
@@ -20,17 +19,19 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IEmoji } from '../../definitions/IEmoji';
 import { IRoomInfoParam } from '../SearchMessagesView';
 import {
 	IApplicationState,
 	TMessageModel,
+	IEmoji,
 	ISubscription,
 	SubscriptionType,
 	IAttachment,
 	IMessage,
-	TAnyMessageModel
+	TAnyMessageModel,
+	IUrl
 } from '../../definitions';
+import { Services } from '../../lib/services';
 
 interface IMessagesViewProps {
 	user: {
@@ -182,7 +183,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Files'),
 				fetchFunc: async () => {
 					const { messages } = this.state;
-					const result = await RocketChat.getFiles(this.rid, this.t, messages.length);
+					const result = await Services.getFiles(this.rid, this.t, messages.length);
 					if (result.success) {
 						return { ...result, messages: result.files };
 					}
@@ -213,7 +214,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
@@ -224,7 +225,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
@@ -236,14 +237,14 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					icon: message.starred ? 'star-filled' : 'star',
 					onPress: this.handleActionPress
 				}),
-				handleActionPress: (message: IMessage) => RocketChat.toggleStarMessage(message._id, message.starred)
+				handleActionPress: (message: IMessage) => Services.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
+					return Services.getMessages(this.rid, this.t, { pinned: true }, messages.length);
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
@@ -251,7 +252,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
 				),
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
-				handleActionPress: (message: IMessage) => RocketChat.togglePinMessage(message._id, message.pinned)
+				handleActionPress: (message: IMessage) => Services.togglePinMessage(message._id, message.pinned)
 			}
 		}[name];
 	};
@@ -267,8 +268,25 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		try {
 			const result = await this.content.fetchFunc();
 			if (result.success) {
+				const urlRenderMessages = result.messages?.map((message: any) => {
+					if (message.urls && message.urls.length > 0) {
+						message.urls = message.urls?.map((url: any, index: any) => {
+							if (url.meta) {
+								return {
+									_id: index,
+									title: url.meta.pageTitle,
+									description: url.meta.ogDescription,
+									image: url.meta.ogImage,
+									url: url.url
+								} as IUrl;
+							}
+							return {} as IUrl;
+						});
+					}
+					return message;
+				});
 				this.setState({
-					messages: [...messages, ...result.messages],
+					messages: [...messages, ...urlRenderMessages],
 					total: result.total,
 					loading: false
 				});

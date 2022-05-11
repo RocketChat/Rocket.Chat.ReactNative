@@ -6,9 +6,9 @@ import {
 	IRoomNotifications,
 	SubscriptionType,
 	IUser,
-	TRocketChat
+	IAvatarSuggestion,
+	IProfileParams
 } from '../../definitions';
-import { IAvatarSuggestion, IParams } from '../../definitions/IProfileViewInterfaces';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
@@ -16,9 +16,10 @@ import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
 import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
-import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import { RoomTypes, roomTypeToApiType } from '../methods';
 import sdk from './sdk';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import RocketChat from '../rocketchat';
 
 export const createChannel = ({
 	name,
@@ -561,7 +562,10 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, customFields?: { [key: string | number]: string }) =>
+export const saveUserProfile = (
+	data: IProfileParams | Pick<IProfileParams, 'username'>,
+	customFields?: { [key: string | number]: string }
+) =>
 	// RC 0.62.2
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
@@ -801,10 +805,9 @@ export const emitTyping = (room: IRoom, typing = true) => {
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
 
-export function e2eResetOwnKey(this: TRocketChat): Promise<boolean | {}> {
+export function e2eResetOwnKey(): Promise<boolean | {}> {
 	// {} when TOTP is enabled
-	// TODO: remove this
-	this.unsubscribeRooms();
+	RocketChat.unsubscribeRooms();
 
 	// RC 0.72.0
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
