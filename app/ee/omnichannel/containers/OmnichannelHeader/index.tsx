@@ -5,12 +5,12 @@ import * as List from '../../../../containers/List';
 import styles from './styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../../../lib/constants';
 import { useTheme } from '../../../../theme';
-import RocketChat from '../../../../lib/rocketchat';
 import { IUser } from '../../../../definitions/IUser';
 import { showConfirmationAlert } from '../../../../utils/info';
 import I18n from '../../../../i18n';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
 import OmnichannelQueue from './OmnichannelQueue';
+import { isOmnichannelModuleAvailable } from '../../../../lib/methods';
 
 interface IOmnichannelStatus {
 	searching: boolean;
@@ -28,7 +28,7 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnich
 		setStatus(isOmnichannelStatusAvailable(user));
 	}, [user.statusLivechat]);
 
-	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
+	if (searching || !(isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
 		return null;
 	}
 

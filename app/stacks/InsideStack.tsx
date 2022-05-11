@@ -115,11 +115,7 @@ const ChatsStackNavigator = () => {
 				component={NotificationPrefView}
 				options={NotificationPrefView.navigationOptions}
 			/>
-			<ChatsStack.Screen
-				name='ForwardLivechatView'
-				component={ForwardLivechatView}
-				options={ForwardLivechatView.navigationOptions}
-			/>
+			<ChatsStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 			<ChatsStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 			<ChatsStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 			<ChatsStack.Screen
@@ -179,7 +175,7 @@ const SettingsStackNavigator = () => {
 				options={E2EEncryptionSecurityView.navigationOptions}
 			/>
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
-			<SettingsStack.Screen name='ThemeView' component={ThemeView} options={ThemeView.navigationOptions} />
+			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen
 				name='DefaultBrowserView'
 				component={DefaultBrowserView}
@@ -202,7 +198,7 @@ const AdminPanelStackNavigator = () => {
 	return (
 		<AdminPanelStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
-			<AdminPanelStack.Screen name='AdminPanelView' component={AdminPanelView} options={AdminPanelView.navigationOptions} />
+			<AdminPanelStack.Screen name='AdminPanelView' component={AdminPanelView} />
 		</AdminPanelStack.Navigator>
 	);
 };
@@ -227,6 +223,7 @@ const DrawerNavigator = () => {
 
 	return (
 		<Drawer.Navigator
+			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
 			screenOptions={{ swipeEnabled: false }}
