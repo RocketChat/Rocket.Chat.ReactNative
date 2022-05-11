@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { Switch } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
 import I18n from '../../i18n';
@@ -12,15 +12,15 @@ import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
-import { IApplicationState } from '../../definitions';
 import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 interface IUserPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const { enableMessageParserEarlyAdoption, id } = useSelector((state: IApplicationState) => getUserSelector(state));
+	const { enableMessageParserEarlyAdoption, id } = useAppSelector(state => getUserSelector(state));
 	const dispatch = useDispatch();
 
 	useEffect(() => {

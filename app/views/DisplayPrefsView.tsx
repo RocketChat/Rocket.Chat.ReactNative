@@ -18,7 +18,7 @@ import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../utils/log';
 import { saveSortPreference } from '../lib/methods';
-import useAppSelector from '../lib/methods/useAppSelector';
+import { useAppSelector } from '../lib/hooks';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
