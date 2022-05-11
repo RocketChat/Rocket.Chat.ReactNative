@@ -13,7 +13,7 @@ import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import styles from './styles';
 import database from '../../lib/database';
-import { emojis } from '../../emojis';
+import { emojis } from '../EmojiPicker/emojis';
 import log, { events, logEvent } from '../../utils/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
@@ -49,7 +49,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, hasPermission, search, sendFileMessage } from '../../lib/methods';
 import { Services } from '../../lib/services';
@@ -92,7 +92,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
 	Message_AudioRecorderEnabled: boolean;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
@@ -537,7 +537,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onEmojiSelected = (keyboardId: any, params: any) => {
+	onEmojiSelected = (keyboardId: string, params: { emoji: string }) => {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';

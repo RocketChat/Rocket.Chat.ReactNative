@@ -8,8 +8,7 @@ import debounce from '../../utils/debounce';
 import { getMessageTranslation } from './utils';
 import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, TAnyMessageModel } from '../../definitions';
+import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
