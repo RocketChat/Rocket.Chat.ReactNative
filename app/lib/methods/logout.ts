@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
 
-import { getDeviceToken } from '../notifications';
+// import { getDeviceToken } from '../notifications';
 import { extractHostname } from '../../utils/server';
 import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
@@ -83,7 +83,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 			await sdk.login({ resume });
 
-			const token = getDeviceToken();
+			const token = '';
 			if (token) {
 				await sdk.del('push.token', { token });
 			}

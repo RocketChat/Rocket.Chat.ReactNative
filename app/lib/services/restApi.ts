@@ -14,7 +14,7 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
-import { getDeviceToken } from '../notifications';
+// import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import { RoomTypes, roomTypeToApiType } from '../methods';
 import sdk from './sdk';
@@ -821,7 +821,7 @@ export const editMessage = async (message: IMessage) => {
 
 export const registerPushToken = () =>
 	new Promise<void>(async resolve => {
-		const token = getDeviceToken();
+		const token = ''; // getDeviceToken();
 		if (token) {
 			const type = isIOS ? 'apn' : 'gcm';
 			const data = {
@@ -840,7 +840,7 @@ export const registerPushToken = () =>
 	});
 
 export const removePushToken = (): Promise<boolean | void> => {
-	const token = getDeviceToken();
+	const token = ''; // getDeviceToken();
 	if (token) {
 		// RC 0.60.0
 		return sdk.current.del('push.token', { token });
