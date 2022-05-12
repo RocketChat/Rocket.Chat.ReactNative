@@ -119,7 +119,6 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	uploadFilePermission: string[];
 	serverVersion: string;
 	goToCannedResponses: () => void | null;
-	joined: boolean;
 }
 
 interface IMessageBoxState {
@@ -327,7 +326,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			theme,
 			usedCannedResponse,
 			uploadFilePermission,
-			joined,
 			goToCannedResponses
 		} = this.props;
 		if (nextProps.theme !== theme) {
@@ -337,9 +335,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return false;
 		}
 		if (nextProps.roomType !== roomType) {
-			return true;
-		}
-		if (nextProps.joined !== joined) {
 			return true;
 		}
 		if (nextProps.replying !== replying) {
