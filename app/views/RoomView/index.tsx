@@ -116,7 +116,7 @@ const stateAttrsUpdate = [
 	'showingBlockingLoader',
 	'canForwardGuest',
 	'canReturnQueue',
-	'canViewCannedResponses'
+	'canViewCannedResponse'
 ] as TStateAttrsUpdate[];
 
 type TRoomUpdate = keyof TSubscriptionModel;
@@ -278,7 +278,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			readOnly: false,
 			unreadsCount: null,
 			roomUserId,
-			canViewCannedResponses: false,
+			canViewCannedResponse: false,
 			canForwardGuest: false,
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
@@ -313,12 +313,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
 			if (this.t === 'l') {
-				this.observeOmnichannel();
-				const canForwardGuest = this.canForwardGuest();
-				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-				const canReturnQueue = this.canReturnQueue();
-				const canViewCannedResponse = this.canViewCannedResponse();
-				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
+				this.updateOmnichannel();
 			}
 			this.setHeader();
 			if (this.rid) {
@@ -407,9 +402,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
 				prevState.joined !== joined
 			) {
-				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-				this.setState({ canPlaceLivechatOnHold });
-				this.setHeader();
+				this.updateOmnichannel();
 			}
 		}
 		if (roomUpdate.teamMain !== prevState.roomUpdate.teamMain || roomUpdate.teamId !== prevState.roomUpdate.teamId) {
@@ -429,6 +422,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		this.setReadOnly();
 	}
+
+	updateOmnichannel = async () => {
+		const canForwardGuest = await this.canForwardGuest();
+		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
+		const canReturnQueue = await this.canReturnQueue();
+		const canViewCannedResponse = await this.canViewCannedResponse();
+		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
+		this.setHeader();
+	};
 
 	async componentWillUnmount() {
 		const { editing, room } = this.state;
@@ -526,6 +528,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (data[0]) {
 					if (this.subOmnichannel && this.subOmnichannel.unsubscribe) {
 						this.observeRoom(data[0]);
+						this.setState({ room: data[0] });
 						this.subOmnichannel.unsubscribe();
 					}
 				}
@@ -766,14 +769,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.internalSetState({ joined: false });
 			}
 			if (this.rid) {
-				// We navigate to RoomView before the Room is inserted to the local db
-				// So we retry just to make sure we have the right content
-				this.retryFindCount = this.retryFindCount + 1 || 1;
-				if (this.retryFindCount <= 3) {
-					this.retryFindTimeout = setTimeout(() => {
-						this.findAndObserveRoom(rid);
-						this.init();
-					}, 300);
+				if (this.t === 'l') {
+					this.observeOmnichannel();
+				} else {
+					// We navigate to RoomView before the Room is inserted to the local db
+					// So we retry just to make sure we have the right content
+					this.retryFindCount = this.retryFindCount + 1 || 1;
+					if (this.retryFindCount <= 3) {
+						this.retryFindTimeout = setTimeout(() => {
+							this.findAndObserveRoom(rid);
+							this.init();
+						}, 300);
+					}
 				}
 			}
 		}
@@ -787,6 +794,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	observeRoom = (room: TSubscriptionModel) => {
+		console.log('🚀 ~ file: index.tsx ~ line 790 ~ RoomView ~ room', room);
 		const observable = room.observe();
 		this.subSubscription = observable.subscribe(changes => {
 			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
@@ -854,6 +862,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
+		console.log(this.state);
 		this.messageActions?.showMessageActions(message);
 	};
 
@@ -1013,6 +1022,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	internalSetState = (...args: any[]) => {
+		console.log('🚀 ~ file: index.tsx ~ line 1021 ~ RoomView ~ ...args', ...args);
 		if (!this.mounted) {
 			return;
 		}
