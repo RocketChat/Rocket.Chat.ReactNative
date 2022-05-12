@@ -1036,7 +1036,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				{this.omnichannelPermissions?.canReturnQueue ? (
 					<>
 						<List.Item
-							title='Return'
+							title='Return_to_waiting_line'
 							onPress={() =>
 								this.onPressTouchable({
 									event: this.returnLivechat
