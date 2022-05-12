@@ -144,7 +144,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 
 	cancelSearch = () => {
 		this.setState({ searchText: '' });
-		this.search('');
+		this.handleSearch('');
 	};
 
 	dismiss = () => {
