@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import React, { useEffect, useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
+import { IApplicationState, TSubscriptionModel, TUserModel } from '../../definitions';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { IApplicationState, TSubscriptionModel, TUserModel } from '../../definitions';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
@@ -30,7 +30,14 @@ const AvatarContainer = ({
 
 	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
 	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
-	const { id, token } = useSelector((state: IApplicationState) => getUserSelector(state));
+	const { id, token } = useSelector(
+		(state: IApplicationState) => ({
+			id: getUserSelector(state).id,
+			token: getUserSelector(state).token
+		}),
+		shallowEqual
+	);
+
 	const externalProviderUrl = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AvatarExternalProviderUrl as string
 	);
@@ -67,7 +74,9 @@ const AvatarContainer = ({
 	};
 
 	useEffect(() => {
-		init();
+		if (!avatarETag) {
+			init();
+		}
 		return () => {
 			if (subscription?.current?.unsubscribe) {
 				subscription.current.unsubscribe();
