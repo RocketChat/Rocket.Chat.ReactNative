@@ -284,6 +284,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canPlaceLivechatOnHold: false,
 			isOnHold: false
 		};
+
 		this.setHeader();
 
 		if ('id' in room) {
@@ -301,6 +302,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.flatList = React.createRef();
 		this.mounted = false;
 
+		if (this.t === 'l') {
+			this.updateOmnichannel();
+		}
+
 		// we don't need to subscribe to threads
 		if (this.rid && !this.tmid) {
 			this.sub = new RoomClass(this.rid);
@@ -312,9 +317,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
-			if (this.t === 'l') {
-				this.updateOmnichannel();
-			}
 			this.setHeader();
 			if (this.rid) {
 				this.sub?.subscribe?.();
@@ -429,7 +431,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const canReturnQueue = await this.canReturnQueue();
 		const canViewCannedResponse = await this.canViewCannedResponse();
 		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
-		this.setHeader();
+		if (this.mounted) {
+			this.setHeader();
+		}
 	};
 
 	async componentWillUnmount() {

@@ -118,8 +118,7 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
 	serverVersion: string;
-	viewCannedResponsesPermission: boolean;
-	goToCannedResponses: () => void;
+	goToCannedResponses: () => void | null;
 	joined: boolean;
 }
 
@@ -137,7 +136,6 @@ interface IMessageBoxState {
 	tshow: boolean;
 	mentionLoading: boolean;
 	permissionToUpload: boolean;
-	canViewCannedResponse: boolean;
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
@@ -192,8 +190,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			command: {},
 			tshow: false,
 			mentionLoading: false,
-			permissionToUpload: true,
-			canViewCannedResponse: false
+			permissionToUpload: true
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -223,7 +220,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail, roomType } = this.props;
+		const { rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.get('threads');
@@ -260,11 +257,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		if (isMasterDetail && usedCannedResponse) {
 			this.onChangeText(usedCannedResponse);
-		}
-
-		if (roomType === 'l') {
-			const canViewCannedResponse = await this.canViewCannedResponse();
-			this.setState({ canViewCannedResponse });
 		}
 
 		this.setOptions();
@@ -335,8 +327,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			theme,
 			usedCannedResponse,
 			uploadFilePermission,
-			viewCannedResponsesPermission,
-			joined
+			joined,
+			goToCannedResponses
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -389,21 +381,18 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (!dequal(nextProps.uploadFilePermission, uploadFilePermission)) {
 			return true;
 		}
-		if (!dequal(nextProps.viewCannedResponsesPermission, viewCannedResponsesPermission)) {
+		if (nextProps.usedCannedResponse !== usedCannedResponse) {
 			return true;
 		}
-		if (nextProps.usedCannedResponse !== usedCannedResponse) {
+		if (nextProps.goToCannedResponses !== goToCannedResponses) {
 			return true;
 		}
 		return false;
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission, viewCannedResponsesPermission } = this.props;
-		if (
-			!dequal(prevProps.uploadFilePermission, uploadFilePermission) ||
-			prevProps.viewCannedResponsesPermission !== viewCannedResponsesPermission
-		) {
+		const { uploadFilePermission, goToCannedResponses } = this.props;
+		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
 		}
 	}
@@ -439,17 +428,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	}
 
-	canViewCannedResponse = async () => {
-		const { viewCannedResponsesPermission, rid } = this.props;
-		const permissions = await hasPermission([viewCannedResponsesPermission], rid);
-		return permissions[0];
-	};
-
 	setOptions = async () => {
-		const { uploadFilePermission, viewCannedResponsesPermission, rid } = this.props;
-
-		const canViewCannedResponse = await hasPermission([viewCannedResponsesPermission], rid);
-		this.setState({ canViewCannedResponse: canViewCannedResponse[0] });
+		const { uploadFilePermission, rid } = this.props;
 
 		// Servers older than 4.2
 		if (!uploadFilePermission) {
@@ -827,11 +807,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { permissionToUpload, canViewCannedResponse } = this.state;
+		const { permissionToUpload } = this.state;
 		const { showActionSheet, goToCannedResponses } = this.props;
 
 		const options = [];
-		if (canViewCannedResponse) {
+		if (goToCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
 				icon: 'canned-response',
@@ -1230,8 +1210,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	uploadFilePermission: state.permissions['mobile-upload-file'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses']
+	uploadFilePermission: state.permissions['mobile-upload-file']
 });
 
 const dispatchToProps = {
