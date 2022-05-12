@@ -92,7 +92,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	private rid: string;
 	private t: string;
 	private joined: boolean;
-	private omnichannelPermissions: {
+	private omnichannelPermissions?: {
 		canForwardGuest: boolean;
 		canReturnQueue: boolean;
 		canViewCannedResponse: boolean;
@@ -1000,7 +1000,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 		return (
 			<List.Section>
-				{this.omnichannelPermissions.canForwardGuest ? (
+				{this.omnichannelPermissions?.canForwardGuest ? (
 					<>
 						<List.Item
 							title='Forward'
@@ -1017,7 +1017,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					</>
 				) : null}
 
-				{this.omnichannelPermissions.canPlaceLivechatOnHold ? (
+				{this.omnichannelPermissions?.canPlaceLivechatOnHold ? (
 					<>
 						<List.Item
 							title='Place_chat_on_hold'
@@ -1033,7 +1033,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					</>
 				) : null}
 
-				{this.omnichannelPermissions.canReturnQueue ? (
+				{this.omnichannelPermissions?.canReturnQueue ? (
 					<>
 						<List.Item
 							title='Return'
@@ -1157,7 +1157,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							</>
 						) : null}
 
-						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions.canViewCannedResponse ? (
+						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions?.canViewCannedResponse ? (
 							<>
 								<List.Item
 									title='Canned_Responses'

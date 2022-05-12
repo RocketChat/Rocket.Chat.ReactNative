@@ -42,7 +42,7 @@ export type ChatsStackParamList = {
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
-		omnichannelPermissions: {
+		omnichannelPermissions?: {
 			canForwardGuest: boolean;
 			canReturnQueue: boolean;
 			canViewCannedResponse: boolean;
