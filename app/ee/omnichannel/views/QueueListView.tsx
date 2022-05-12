@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { FlatList, ListRenderItem } from 'react-native';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
@@ -40,15 +40,28 @@ const QueueListView = React.memo(() => {
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
 	const { theme, colors } = useTheme();
 	const { width } = useDimensions();
-	const userId = useSelector((state: IApplicationState) => getUserSelector(state).id);
-	const username = useSelector((state: IApplicationState) => getUserSelector(state).username);
-	const token = useSelector((state: IApplicationState) => getUserSelector(state).token);
+
+	const { userId, token, username } = useSelector(
+		(state: IApplicationState) => ({
+			userId: getUserSelector(state).id,
+			username: getUserSelector(state).username,
+			token: getUserSelector(state).token
+		}),
+		shallowEqual
+	);
+
+	const { showAvatar, displayMode } = useSelector(
+		(state: IApplicationState) => ({
+			showAvatar: state.sortPreferences.showAvatar,
+			displayMode: state.sortPreferences.displayMode
+		}),
+		shallowEqual
+	);
+
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const server = useSelector((state: IApplicationState) => state.server.server);
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 	const queued = useSelector((state: IApplicationState) => getInquiryQueueSelector(state));
-	const showAvatar = useSelector((state: IApplicationState) => state.sortPreferences.showAvatar);
-	const displayMode = useSelector((state: IApplicationState) => state.sortPreferences.displayMode);
 
 	useEffect(() => {
 		const options: StackNavigationOptions = {
