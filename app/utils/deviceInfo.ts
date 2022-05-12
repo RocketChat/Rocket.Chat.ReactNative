@@ -16,3 +16,6 @@ export const supportSystemTheme = (): boolean => {
 
 // Tablet info
 export const isTablet = DeviceInfo.isTablet();
+
+// Is ShareExtension
+export const isShareExtension = DeviceInfo.getBundleId().includes('ShareExtension');

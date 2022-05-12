@@ -9,7 +9,7 @@ import {
 } from 'react-native-notifications';
 
 import { INotification } from '../../definitions/INotification';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isShareExtension } from '../../utils/deviceInfo';
 import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
 
@@ -19,7 +19,7 @@ class PushNotification {
 	onNotification: (notification: any) => void;
 	constructor() {
 		this.onNotification = () => {};
-		if (isIOS) {
+		if (isIOS && !isShareExtension) {
 			// init
 			Notifications.ios.registerRemoteNotifications();
 
