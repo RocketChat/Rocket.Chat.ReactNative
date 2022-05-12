@@ -19,7 +19,7 @@ class PushNotification {
 	onNotification: (notification: any) => void;
 	constructor() {
 		this.onNotification = () => {};
-		if (isIOS) {
+		if (isIOS && !isShareExtension) {
 			// init
 			Notifications.ios.registerRemoteNotifications();
 
