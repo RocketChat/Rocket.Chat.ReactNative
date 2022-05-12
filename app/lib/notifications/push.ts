@@ -9,76 +9,66 @@ import {
 } from 'react-native-notifications';
 
 import { INotification } from '../../definitions/INotification';
-import { isIOS, isShareExtension } from '../../utils/deviceInfo';
+import { isIOS } from '../../utils/deviceInfo';
 import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
 
 export let deviceToken = '';
 
-class PushNotification {
-	onNotification: (notification: any) => void;
-	constructor() {
-		this.onNotification = () => {};
-		if (isIOS && !isShareExtension) {
-			// init
-			Notifications.ios.registerRemoteNotifications();
+export const setNotificationsBadgeCount = (count = 0): void => {
+	if (isIOS) {
+		Notifications.ios.setBadgeCount(count);
+	}
+};
 
-			// setCategories
-			const notificationAction = new NotificationAction('REPLY_ACTION', 'background', I18n.t('Reply'), true, {
-				buttonTitle: I18n.t('Reply'),
-				placeholder: I18n.t('Type_message')
-			});
-			const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
-			Notifications.setCategories([notificationCategory]);
-		} else {
-			// init
-			Notifications.android.registerRemoteNotifications();
-		}
-
-		Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {
-			deviceToken = event.deviceToken;
+export const pushNotificationConfigure = (onNotification: (notification: INotification) => void): Promise<any> => {
+	if (isIOS) {
+		// init
+		Notifications.ios.registerRemoteNotifications();
+		// setCategories
+		const notificationAction = new NotificationAction('REPLY_ACTION', 'background', I18n.t('Reply'), true, {
+			buttonTitle: I18n.t('Reply'),
+			placeholder: I18n.t('Type_message')
 		});
-
-		Notifications.events().registerRemoteNotificationsRegistrationFailed((event: RegistrationError) => {
-			// TODO: Handle error
-			console.log(event);
-		});
-
-		Notifications.events().registerNotificationReceivedForeground(
-			(notification: Notification, completion: (response: NotificationCompletion) => void) => {
-				completion({ alert: false, sound: false, badge: false });
-			}
-		);
-
-		Notifications.events().registerNotificationOpened((notification: Notification, completion: () => void) => {
-			if (isIOS) {
-				const { background } = reduxStore.getState().app;
-				if (background) {
-					this.onNotification(notification);
-				}
-			} else {
-				this.onNotification(notification);
-			}
-			completion();
-		});
-
-		Notifications.events().registerNotificationReceivedBackground(
-			(notification: Notification, completion: (response: any) => void) => {
-				completion({ alert: true, sound: true, badge: false });
-			}
-		);
+		const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
+		Notifications.setCategories([notificationCategory]);
+	} else {
+		// init
+		Notifications.android.registerRemoteNotifications();
 	}
 
-	setBadgeCount = (count = 0) => {
+	Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {
+		deviceToken = event.deviceToken;
+	});
+
+	Notifications.events().registerRemoteNotificationsRegistrationFailed((event: RegistrationError) => {
+		// TODO: Handle error
+		console.log(event);
+	});
+
+	Notifications.events().registerNotificationReceivedForeground(
+		(notification: Notification, completion: (response: NotificationCompletion) => void) => {
+			completion({ alert: false, sound: false, badge: false });
+		}
+	);
+
+	Notifications.events().registerNotificationOpened((notification: Notification, completion: () => void) => {
 		if (isIOS) {
-			Notifications.ios.setBadgeCount(count);
+			const { background } = reduxStore.getState().app;
+			if (background) {
+				onNotification(notification);
+			}
+		} else {
+			onNotification(notification);
 		}
-	};
+		completion();
+	});
 
-	configure(onNotification: (notification: INotification) => void): Promise<any> {
-		this.onNotification = onNotification;
-		return Notifications.getInitialNotification();
-	}
-}
+	Notifications.events().registerNotificationReceivedBackground(
+		(notification: Notification, completion: (response: any) => void) => {
+			completion({ alert: true, sound: true, badge: false });
+		}
+	);
 
-export default new PushNotification();
+	return Notifications.getInitialNotification();
+};
