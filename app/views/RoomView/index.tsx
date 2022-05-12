@@ -538,7 +538,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 			});
 		} catch (e) {
-			console.log("Can't find subscription to observe");
+			console.log("observeOmnichannel: Can't find subscription to observe");
 		}
 	};
 
@@ -798,7 +798,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	observeRoom = (room: TSubscriptionModel) => {
-		console.log('🚀 ~ file: index.tsx ~ line 790 ~ RoomView ~ room', room);
 		const observable = room.observe();
 		this.subSubscription = observable.subscribe(changes => {
 			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
@@ -866,7 +865,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		console.log(this.state);
 		this.messageActions?.showMessageActions(message);
 	};
 
@@ -1026,7 +1024,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	internalSetState = (...args: any[]) => {
-		console.log('🚀 ~ file: index.tsx ~ line 1021 ~ RoomView ~ ...args', ...args);
 		if (!this.mounted) {
 			return;
 		}
