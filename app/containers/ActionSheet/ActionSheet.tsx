@@ -36,8 +36,6 @@ const ActionSheet = React.memo(
 		const { isLandscape } = useOrientation();
 		const insets = useSafeAreaInsets();
 
-		const contentType = data?.type ? data.type : 'FlatList';
-
 		const maxSnap = Math.min(
 			// Items height
 			ITEM_HEIGHT * (data?.options?.length || 0) +
@@ -134,7 +132,7 @@ const ActionSheet = React.memo(
 						style={{ ...styles.container, ...bottomSheet }}
 						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
 						onChange={index => index === -1 && toggleVisible()}>
-						<BottomSheetContent type={contentType} data={data} hide={hide} children={data?.children && data.children} />
+						<BottomSheetContent options={data?.options} hide={hide} children={data?.children} hasCancel={data?.hasCancel} />
 					</BottomSheet>
 				)}
 			</>

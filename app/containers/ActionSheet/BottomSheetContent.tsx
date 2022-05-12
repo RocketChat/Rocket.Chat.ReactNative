@@ -6,22 +6,22 @@ import { Button } from './Button';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { IActionSheetItem, Item } from './Item';
-import { TActionSheetOptions } from './Provider';
+import { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 
 interface BottomSheetContentProps {
-	type: string;
-	data: TActionSheetOptions;
+	hasCancel?: boolean;
+	options?: TActionSheetOptionsItem[];
 	hide: () => void;
 	children?: React.ReactElement | null;
 }
 
-const BottomSheetContent = React.memo(({ type, data, hide, children }: BottomSheetContentProps) => {
+const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: BottomSheetContentProps) => {
 	const { theme, colors } = useTheme();
 
 	const renderFooter = () =>
-		data?.hasCancel ? (
+		hasCancel ? (
 			<Button
 				onPress={hide}
 				style={[styles.button, { backgroundColor: colors.auxiliaryBackground }]}
@@ -34,10 +34,10 @@ const BottomSheetContent = React.memo(({ type, data, hide, children }: BottomShe
 
 	const renderItem = ({ item }: { item: IActionSheetItem['item'] }) => <Item item={item} hide={hide} />;
 
-	if (type === 'FlatList') {
+	if (options) {
 		return (
 			<BottomSheetFlatList
-				data={data.options}
+				data={options}
 				refreshing={false}
 				keyExtractor={item => item.title}
 				bounces={true}
