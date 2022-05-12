@@ -6,7 +6,7 @@ import { themes } from '../lib/constants';
 import I18n from '../i18n';
 import { CustomIcon } from './CustomIcon';
 import TextInput from '../presentation/TextInput';
-import { useTheme } from '../theme';
+import { TSupportedThemes, useTheme } from '../theme';
 import { isIOS, isAndroid } from '../utils/deviceInfo';
 import sharedStyles from '../views/Styles';
 
@@ -64,7 +64,7 @@ const CancelButton = ({ onCancelPress }: { onCancelPress?: () => void }) => {
 	);
 };
 
-const CancelIconButton = (onCancelPress: Function, theme: string) => (
+const CancelIconButton = (onCancelPress: () => void, theme: TSupportedThemes) => (
 	<Touchable onPress={onCancelPress} style={styles.cancelIcon}>
 		<CustomIcon name='input-clear' size={18} color={themes[theme].auxiliaryText} />
 	</Touchable>
@@ -93,7 +93,7 @@ const SearchBox = ({ hasCancel, onCancelPress, inputRef, hasCancelIcon = false, 
 					theme={theme}
 					{...props}
 				/>
-				{isAndroid && hasCancelIcon && onCancelPress ? CancelIconButton(onCancelPress!, theme!) : null}
+				{isAndroid && hasCancelIcon && onCancelPress ? CancelIconButton(onCancelPress, theme) : null}
 			</View>
 			{hasCancel && onCancelPress ? <CancelButton onCancelPress={onCancelPress} /> : null}
 		</View>
