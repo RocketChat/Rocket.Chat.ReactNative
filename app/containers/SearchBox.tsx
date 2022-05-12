@@ -7,7 +7,7 @@ import I18n from '../i18n';
 import { CustomIcon } from './CustomIcon';
 import TextInput from '../presentation/TextInput';
 import { useTheme } from '../theme';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 import sharedStyles from '../views/Styles';
 
 const styles = StyleSheet.create({
@@ -41,12 +41,16 @@ const styles = StyleSheet.create({
 	cancelText: {
 		...sharedStyles.textRegular,
 		fontSize: 17
+	},
+	cancelIcon: {
+		right: 5
 	}
 });
 
 interface ISearchBox extends TextInputProps {
 	value?: string;
 	hasCancel?: boolean;
+	hasCancelIcon?: boolean;
 	onCancelPress?: () => void;
 	inputRef?: React.Ref<RNTextInput>;
 }
@@ -60,7 +64,13 @@ const CancelButton = ({ onCancelPress }: { onCancelPress?: () => void }) => {
 	);
 };
 
-const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox): React.ReactElement => {
+const CancelIconButton = (onCancelPress: Function, theme: string) => (
+	<Touchable onPress={onCancelPress} style={styles.cancelIcon}>
+		<CustomIcon name='input-clear' size={18} color={themes[theme].auxiliaryText} />
+	</Touchable>
+);
+
+const SearchBox = ({ hasCancel, onCancelPress, inputRef, hasCancelIcon = false, ...props }: ISearchBox): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<View
@@ -83,6 +93,7 @@ const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox)
 					theme={theme}
 					{...props}
 				/>
+				{isAndroid && hasCancelIcon && onCancelPress ? CancelIconButton(onCancelPress!, theme!) : null}
 			</View>
 			{hasCancel && onCancelPress ? <CancelButton onCancelPress={onCancelPress} /> : null}
 		</View>
