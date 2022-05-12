@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import database from '../../lib/database';
 import log from '../../utils/log';
 import I18n from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';

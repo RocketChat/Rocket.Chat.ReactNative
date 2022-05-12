@@ -94,10 +94,6 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
-	edited: {
-		fontSize: 14,
-		...sharedStyles.textRegular
-	},
 	heading1: {
 		...sharedStyles.textBold,
 		fontSize: 24

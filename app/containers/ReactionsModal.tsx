@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import Emoji from './message/Emoji';
 import I18n from '../i18n';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from './CustomIcon';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, useTheme, withTheme } from '../theme';
@@ -125,7 +125,7 @@ const ModalContent = React.memo(({ message, onClose, ...props }: IModalContent) 
 			<SafeAreaView style={styles.safeArea}>
 				<Touchable onPress={onClose}>
 					<View style={styles.titleContainer}>
-						<CustomIcon style={[styles.closeButton, { color: themes[props.theme].buttonText }]} name='close' size={20} />
+						<CustomIcon name='close' size={20} color={themes[props.theme].buttonText} style={styles.closeButton} />
 						<Text style={[styles.title, { color: themes[props.theme].buttonText }]}>{I18n.t('Reactions')}</Text>
 					</View>
 				</Touchable>
