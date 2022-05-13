@@ -1,124 +1,85 @@
+import React, { useEffect, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { dequal } from 'dequal';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import { IApplicationState, TUserStatus, IOmnichannelSource } from '../../definitions';
-import { withDimensions } from '../../dimensions';
+import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
+import { useDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
 
 interface IRoomHeaderContainerProps {
-	title: string;
-	subtitle: string;
+	title?: string;
+	subtitle?: string;
 	type: string;
-	prid: string;
-	tmid: string;
-	teamMain: boolean;
-	usersTyping: [];
-	status: TUserStatus;
-	statusText: string;
-	connecting: boolean;
-	connected: boolean;
-	roomUserId: string;
-	widthOffset: number;
+	prid?: string;
+	tmid?: string;
+	teamMain?: boolean;
+	roomUserId?: string | null;
 	onPress(): void;
-	width: number;
-	height: number;
 	parentTitle: string;
 	isGroupChat: boolean;
 	testID: string;
 	sourceType?: IOmnichannelSource;
+	visitor?: IVisitor;
 }
 
-class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
-	shouldComponentUpdate(nextProps: IRoomHeaderContainerProps) {
-		const {
-			type,
-			title,
-			subtitle,
-			status,
-			statusText,
-			connecting,
-			connected,
-			onPress,
-			usersTyping,
-			width,
-			height,
-			teamMain,
-			sourceType
-		} = this.props;
-		if (nextProps.type !== type) {
-			return true;
-		}
-		if (nextProps.title !== title) {
-			return true;
-		}
-		if (nextProps.subtitle !== subtitle) {
-			return true;
-		}
-		if (nextProps.status !== status) {
-			return true;
-		}
-		if (nextProps.statusText !== statusText) {
-			return true;
-		}
-		if (nextProps.connecting !== connecting) {
-			return true;
-		}
-		if (nextProps.connected !== connected) {
-			return true;
-		}
-		if (nextProps.width !== width) {
-			return true;
-		}
-		if (nextProps.height !== height) {
-			return true;
-		}
-		if (!dequal(nextProps.usersTyping, usersTyping)) {
-			return true;
-		}
-		if (!dequal(nextProps.sourceType, sourceType)) {
-			return true;
-		}
-		if (nextProps.onPress !== onPress) {
-			return true;
-		}
-		if (nextProps.teamMain !== teamMain) {
-			return true;
-		}
-		return false;
-	}
+const RoomHeaderContainer = React.memo(
+	({
+		isGroupChat,
+		onPress,
+		parentTitle,
+		prid,
+		roomUserId,
+		subtitle: subtitleProp,
+		teamMain,
+		testID,
+		title,
+		tmid,
+		type,
+		sourceType,
+		visitor
+	}: IRoomHeaderContainerProps) => {
+		const [subtitle, setSubtitle] = useState<string | undefined>(undefined);
+		const [status, setStatus] = useState<TUserStatus>('offline');
+		const [statusText, setStatusText] = useState<string | undefined>(undefined);
+		const { width, height } = useDimensions();
 
-	render() {
-		const {
-			title,
-			subtitle: subtitleProp,
-			type,
-			teamMain,
-			prid,
-			tmid,
-			status = 'offline',
-			statusText,
-			connecting,
-			connected,
-			usersTyping,
-			onPress,
-			width,
-			height,
-			parentTitle,
-			isGroupChat,
-			testID,
-			sourceType
-		} = this.props;
+		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
+		const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
+		const connected = useSelector((state: IApplicationState) => state.meteor.connected);
+		const activeUser = useSelector(
+			(state: IApplicationState) => (roomUserId ? state.activeUsers?.[roomUserId] : undefined),
+			shallowEqual
+		);
 
-		let subtitle;
-		if (connecting) {
-			subtitle = I18n.t('Connecting');
-		} else if (!connected) {
-			subtitle = I18n.t('Waiting_for_network');
-		} else {
-			subtitle = subtitleProp;
-		}
+		useEffect(() => {
+			if (connecting) {
+				console.count(`connecting: ${connecting}`);
+				setSubtitle(I18n.t('Connecting'));
+			} else if (!connected) {
+				console.count(`else if connected: ${connected}`);
+				setSubtitle(I18n.t('Waiting_for_network'));
+			} else {
+				console.count(`subtitleProp: ${subtitleProp}`);
+				setSubtitle(subtitleProp);
+			}
+		}, [connecting, connected]);
+
+		useEffect(() => {
+			if (connected) {
+				console.count(`connected: ${connected}`);
+				if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
+					const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
+					setStatus(statusActiveUser);
+					setStatusText(statusTextActiveUser);
+				} else if (type === 'l' && visitor?.status) {
+					const { status: statusVisitor } = visitor;
+					setStatus(statusVisitor);
+				}
+			}
+		}, [connected, activeUser]);
+
+		console.count('RoomHeader');
 
 		return (
 			<RoomHeader
@@ -139,29 +100,28 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 				sourceType={sourceType}
 			/>
 		);
-	}
-}
-
-const mapStateToProps = (state: IApplicationState, ownProps: any) => {
-	let statusText = '';
-	let status = 'offline';
-	const { roomUserId, type, visitor = {}, tmid } = ownProps;
-
-	if (state.meteor.connected) {
-		if ((type === 'd' || (tmid && roomUserId)) && state.activeUsers[roomUserId]) {
-			({ status, statusText } = state.activeUsers[roomUserId]);
-		} else if (type === 'l' && visitor?.status) {
-			({ status } = visitor);
+	},
+	(prevProps, nextProps) => {
+		if (nextProps.type !== prevProps.type) {
+			return false;
 		}
+		if (nextProps.title !== prevProps.title) {
+			return false;
+		}
+		if (nextProps.subtitle !== prevProps.subtitle) {
+			return false;
+		}
+		if (!dequal(nextProps.sourceType, prevProps.sourceType)) {
+			return false;
+		}
+		if (nextProps.onPress !== prevProps.onPress) {
+			return false;
+		}
+		if (nextProps.teamMain !== prevProps.teamMain) {
+			return false;
+		}
+		return true;
 	}
+);
 
-	return {
-		connecting: state.meteor.connecting || state.server.loading,
-		connected: state.meteor.connected,
-		usersTyping: state.usersTyping,
-		status: status as TUserStatus,
-		statusText
-	};
-};
-
-export default connect(mapStateToProps)(withDimensions(RoomHeaderContainer));
+export default RoomHeaderContainer;
