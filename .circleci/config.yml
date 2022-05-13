@@ -530,7 +530,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - develop
+                - regression/bring-android-official-back
       - android-build-official:
           requires:
             - android-hold-build-official
