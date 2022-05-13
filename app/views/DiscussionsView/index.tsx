@@ -1,12 +1,11 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { RouteProp } from '@react-navigation/core';
 
-import { IApplicationState, IMessageFromServer } from '../../definitions';
+import { IMessageFromServer } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -24,6 +23,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
 import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 const API_FETCH_COUNT = 50;
 
@@ -43,8 +43,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	const rid = route.params?.rid;
 	const t = route.params?.t;
 
-	const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app?.isMasterDetail);
+	const baseUrl = useAppSelector(state => state.server?.server);
+	const isMasterDetail = useAppSelector(state => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
