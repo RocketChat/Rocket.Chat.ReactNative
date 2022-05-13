@@ -166,7 +166,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
-				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} options={MarkdownTableView.navigationOptions} />
+				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 				<ModalStack.Screen
 					name='ReadReceiptsView'
 					component={ReadReceiptsView}
