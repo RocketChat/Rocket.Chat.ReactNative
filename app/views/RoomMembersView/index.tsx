@@ -10,7 +10,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import SearchBox from '../../containers/SearchBox';
+import NewSearchBox from '../../containers/NewSearchBox';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
@@ -67,6 +67,7 @@ interface IRoomMembersViewState {
 	membersFiltered: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
+	searchText: string;
 }
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
@@ -90,7 +91,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			members: [],
 			membersFiltered: [],
 			room: room || ({} as TSubscriptionModel),
-			end: false
+			end: false,
+			searchText: ''
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -179,6 +181,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	};
 
 	onSearchChangeText = protectedFunction((text: string) => {
+		this.setState({ searchText: text });
 		const { members } = this.state;
 		let membersFiltered: TUserModel[] = [];
 		text = text.trim();
@@ -190,6 +193,11 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 		this.setState({ filtering: !!text, membersFiltered });
 	});
+
+	cancelSearch = () => {
+		this.setState({ searchText: '' });
+		this.onSearchChangeText('');
+	};
 
 	navToDirectMessage = async (item: IUser) => {
 		try {
@@ -605,7 +613,15 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 	};
 
-	renderSearchBar = () => <SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />;
+	renderSearchBar = () => (
+		<NewSearchBox
+			showCancelIcon={this.state.filtering}
+			onCancelSearch={this.cancelSearch}
+			onChangeText={text => this.onSearchChangeText(text)}
+			value={this.state.searchText}
+			testID='room-members-view-search'
+		/>
+	);
 
 	renderItem = ({ item }: { item: TUserModel }) => {
 		const { theme } = this.props;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, TextInput as RNTextInput, View } from 'react-native';
+import { StyleSheet, TextInput as RNTextInput, TextInputProps, View } from 'react-native';
+import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
@@ -28,8 +29,13 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface INewSearchBox extends TextInputProps {
+	showCancelIcon: boolean;
+	onCancelSearch: () => void;
+}
+
 // TODO: Rename this component to searchbox
-const NewSearchBox = (): JSX.Element => {
+const NewSearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, value, testID }: INewSearchBox): JSX.Element => {
 	const { colors } = useTheme();
 	return (
 		<>
@@ -43,9 +49,18 @@ const NewSearchBox = (): JSX.Element => {
 						returnKeyType='search'
 						underlineColorAndroid='transparent'
 						style={styles.input}
+						onChangeText={onChangeText}
+						value={value}
+						testID={testID}
 					/>
-					<CustomIcon name='search' size={16} color={colors.auxiliaryTintColor} />
-					<CustomIcon name='input-clear' size={16} color={colors.auxiliaryTintColor} />
+
+					{showCancelIcon ? (
+						<Touchable onPress={onCancelSearch}>
+							<CustomIcon name='input-clear' size={18} color={colors.auxiliaryText} />
+						</Touchable>
+					) : (
+						<CustomIcon name='search' size={18} color={colors.auxiliaryTintColor} />
+					)}
 				</View>
 			</View>
 		</>
