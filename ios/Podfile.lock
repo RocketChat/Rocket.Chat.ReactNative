@@ -960,7 +960,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: c9b6dfcde9b3d497793c40d4ccbfbfb05092e0df
-  FBReactNativeSpec: c39f7fc0cd6cc64f0a2a5beffc64b1aa5d42740e
+  FBReactNativeSpec: addc4f0e6ab00dc628fe91de8bfca4601762673a
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
