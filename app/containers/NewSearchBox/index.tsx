@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'row',
 		borderRadius: 2,
+		borderWidth: 2,
 		height: 44,
 		margin: 16,
 		paddingHorizontal: 16
@@ -40,7 +41,7 @@ const NewSearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, value, tes
 	return (
 		<>
 			<View style={styles.container}>
-				<View style={[styles.searchBox, { backgroundColor: colors.searchboxBackground }]}>
+				<View style={[styles.searchBox, { borderColor: colors.searchboxBackground }]}>
 					<RNTextInput
 						autoCapitalize='none'
 						autoCorrect={false}
