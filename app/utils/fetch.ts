@@ -2,8 +2,6 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import RocketChat from '../lib/rocketchat';
-
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
 interface CustomHeaders {
@@ -46,13 +44,11 @@ export default (url: string, options: IOptions = {}): Promise<Response> => {
 	if (options && options.headers) {
 		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
 	}
-	// TODO: Refactor when migrate rocketchat.js
-	// @ts-ignore
-	// WHAT?
-	if (RocketChat.controller) {
-		// @ts-ignore
-		const { signal } = RocketChat.controller;
-		customOptions = { ...customOptions, signal };
-	}
+	// TODO: Check if this really works and if anyone else has complained about this problem.
+	// if (RocketChat.controller) {
+	// 	// @ts-ignore
+	// 	const { signal } = RocketChat.controller;
+	// 	customOptions = { ...customOptions, signal };
+	// }
 	return fetch(url, customOptions);
 };
