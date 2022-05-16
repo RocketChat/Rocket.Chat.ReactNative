@@ -527,10 +527,6 @@ workflows:
           type: approval
           requires:
             - lint-testunit
-          filters:
-            branches:
-              ignore:
-                - develop
       - android-build-official:
           requires:
             - android-hold-build-official
