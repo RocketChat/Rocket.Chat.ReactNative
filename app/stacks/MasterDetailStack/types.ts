@@ -28,7 +28,7 @@ export type MasterDetailDrawerParamList = {
 export type ModalStackParamList = {
 	RoomActionsView: {
 		room: ISubscription;
-		member: any;
+		member?: any;
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
@@ -135,6 +135,7 @@ export type ModalStackParamList = {
 	};
 	TeamChannelsView: {
 		teamId: string;
+		joined: boolean;
 	};
 	MarkdownTableView: {
 		renderRows: Function;

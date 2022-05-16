@@ -1,6 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 
+import { IItem } from '../views/TeamChannelsView';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
@@ -9,6 +10,7 @@ import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definiti
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
 import { ModalStackParamList } from './MasterDetailStack/types';
+import { TThreadModel } from '../definitions';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
@@ -36,7 +38,7 @@ export type ChatsStackParamList = {
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
 		room: TSubscriptionModel;
-		member: any;
+		member?: any;
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
@@ -125,6 +127,7 @@ export type ChatsStackParamList = {
 	};
 	TeamChannelsView: {
 		teamId: string;
+		joined: boolean;
 	};
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
@@ -132,11 +135,11 @@ export type ChatsStackParamList = {
 	};
 	AddChannelTeamView: {
 		teamId?: string;
-		teamChannels: []; // TODO: Change
+		teamChannels: IItem[];
 	};
 	AddExistingChannelView: {
 		teamId?: string;
-		teamChannels: []; // TODO: Change
+		teamChannels: IItem[];
 	};
 	MarkdownTableView: {
 		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
@@ -244,7 +247,7 @@ export type InsideStackParamList = {
 		serverInfo: IServer;
 		text: string;
 		room: TSubscriptionModel;
-		thread: any; // TODO: Change
+		thread: TThreadModel;
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;

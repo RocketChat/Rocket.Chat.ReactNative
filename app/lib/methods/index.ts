@@ -34,3 +34,4 @@ export * from './userPreferences';
 export * from './userPreferencesMethods';
 export * from './crashReport';
 export * from './parseSettings';
+export * from './subscribeRooms';
