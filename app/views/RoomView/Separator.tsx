@@ -23,9 +23,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
-	marginLeft: {
-		marginLeft: 14
-	},
 	marginRight: {
 		marginRight: 14
 	},
@@ -52,7 +49,8 @@ const DateSeparator = ({ ts, unread }: { ts: Date | string | null; unread: boole
 		return (
 			<View style={styles.container}>
 				<View style={[styles.line, { backgroundColor: themes[theme].borderColor }]} />
-				<Text style={[styles.text, { color: themes[theme].auxiliaryText }, styles.marginLeft]}>{date}</Text>
+				<Text style={[styles.text, { color: themes[theme].auxiliaryText }, styles.marginHorizontal]}>{date}</Text>
+				<View style={[styles.line, { backgroundColor: themes[theme].borderColor }]} />
 			</View>
 		);
 	}

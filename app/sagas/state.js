@@ -1,11 +1,11 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
-import Push from '../lib/notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
 import { Services } from '../lib/services';
+import { setBadgeCount } from '../lib/notifications';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
@@ -20,7 +20,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
 		yield localAuthenticate(server.server);
 		Services.checkAndReopen();
-		Push.setBadgeCount();
+		setBadgeCount();
 		return yield Services.setUserPresenceOnline();
 	} catch (e) {
 		log(e);
