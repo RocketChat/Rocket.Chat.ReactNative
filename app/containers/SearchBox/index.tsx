@@ -35,7 +35,7 @@ interface ISearchBox extends TextInputProps {
 	onCancelSearch: () => void;
 }
 
-const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, value, testID }: ISearchBox): JSX.Element => {
+const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, onSubmitEditing, value, testID }: ISearchBox): JSX.Element => {
 	const { colors } = useTheme();
 	return (
 		<>
@@ -50,6 +50,7 @@ const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, value, testID
 						underlineColorAndroid='transparent'
 						style={styles.input}
 						onChangeText={onChangeText}
+						onSubmitEditing={onSubmitEditing}
 						value={value}
 						testID={testID}
 					/>
