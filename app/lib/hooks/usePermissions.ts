@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect, useRef } from 'react';
 import { dequal } from 'dequal';
 import { Subscription } from 'rxjs';
 
-import { TSupportedPermissions } from '../reducers/permissions';
-import { IApplicationState } from '../definitions';
-import { getUserSelector } from '../selectors/login';
-import database from '../lib/database';
-import log from '../utils/log';
+import { TSupportedPermissions } from '../../reducers/permissions';
+import { IApplicationState } from '../../definitions';
+import { getUserSelector } from '../../selectors/login';
+import database from '../database';
+import log from '../../utils/log';
+import { useAppSelector } from './useAppSelector';
 
 type TPermissionState = (boolean | undefined)[];
 
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 	const [permissionsState, setPermissionsState] = useState<TPermissionState>([]);
 	const [roomRoles, setRoomRoles] = useState<string[]>([]);
-	let subscription: Subscription | null = null;
+	const subscription = useRef<Subscription | null>(null);
 
-	const permissionsRedux = useSelector(
-		(state: IApplicationState) => state.permissions,
+	const permissionsRedux = useAppSelector(
+		state => state.permissions,
 		(nextState, previousState) => {
 			const someDifferent = permissions.some(key => !dequal(nextState?.[key], previousState?.[key]));
 			// The equality function is expecting return false when we want to re-render and true when we don't want to re-render
@@ -28,7 +28,7 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 		}
 	);
 
-	const userRoles = useSelector((state: IApplicationState) => getUserSelector(state).roles);
+	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles);
 
 	const _hasPermissions = (perms: (string[] | undefined)[], _rid?: string) => {
 		try {
@@ -48,7 +48,7 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 			// get the room from database
 			const room = await subsCollection.find(rid);
 			const observable = room.observe();
-			subscription = observable.subscribe(sub => {
+			subscription.current = observable.subscribe(sub => {
 				if (!dequal(sub.roles, roomRoles)) {
 					setRoomRoles(sub.roles ?? []);
 				}
@@ -69,13 +69,13 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	}, [userRoles, permissionsRedux, roomRoles]);
 
 	useEffect(() => {
-		if (rid && !subscription) {
+		if (rid && !subscription.current) {
 			_observeRoom(rid);
 		}
 
 		return () => {
-			if (subscription && subscription.unsubscribe) {
-				subscription.unsubscribe();
+			if (subscription.current && subscription.current?.unsubscribe) {
+				subscription.current.unsubscribe();
 			}
 		};
 	}, [roomRoles]);

@@ -22,7 +22,7 @@ import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
-import { usePermissions } from '../hooks';
+import { usePermissions } from '../lib/hooks';
 
 const styles = StyleSheet.create({
 	container: {
