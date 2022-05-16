@@ -56,3 +56,14 @@ export interface IServerAttachment {
 	url: string;
 	user: Pick<IUser, '_id' | 'username' | 'name'>;
 }
+
+export interface IShareAttachment {
+	filename: string;
+	description?: string;
+	size: number;
+	mime?: string;
+	path: string;
+	canUpload: boolean;
+	error?: any;
+	uri: string;
+}
