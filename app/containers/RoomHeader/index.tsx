@@ -54,20 +54,16 @@ const RoomHeaderContainer = React.memo(
 
 		useEffect(() => {
 			if (connecting) {
-				console.count(`connecting: ${connecting}`);
 				setSubtitle(I18n.t('Connecting'));
 			} else if (!connected) {
-				console.count(`else if connected: ${connected}`);
 				setSubtitle(I18n.t('Waiting_for_network'));
 			} else {
-				console.count(`subtitleProp: ${subtitleProp}`);
 				setSubtitle(subtitleProp);
 			}
 		}, [connecting, connected]);
 
 		useEffect(() => {
 			if (connected) {
-				console.count(`connected: ${connected}`);
 				if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
 					const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
 					setStatus(statusActiveUser);
@@ -78,8 +74,6 @@ const RoomHeaderContainer = React.memo(
 				}
 			}
 		}, [connected, activeUser]);
-
-		console.count('RoomHeader');
 
 		return (
 			<RoomHeader

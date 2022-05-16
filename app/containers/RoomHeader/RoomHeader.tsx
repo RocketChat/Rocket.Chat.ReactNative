@@ -43,28 +43,28 @@ const styles = StyleSheet.create({
 
 type TRoomHeaderSubTitle = {
 	usersTyping: [];
-	subtitle: string;
+	subtitle?: string;
 	renderFunc?: () => React.ReactElement;
 	scale: number;
 };
 
 type TRoomHeaderHeaderTitle = {
-	title: string;
-	tmid: string;
-	prid: string;
+	title?: string;
+	tmid?: string;
+	prid?: string;
 	scale: number;
 	testID: string;
 };
 
 interface IRoomHeader {
-	title: string;
-	subtitle: string;
+	title?: string;
+	subtitle?: string;
 	type: string;
 	width: number;
 	height: number;
-	prid: string;
-	tmid: string;
-	teamMain: boolean;
+	prid?: string;
+	tmid?: string;
+	teamMain?: boolean;
 	status: TUserStatus;
 	usersTyping: [];
 	isGroupChat: boolean;
