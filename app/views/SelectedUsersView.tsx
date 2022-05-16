@@ -32,6 +32,7 @@ const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: 
 interface ISelectedUsersViewState {
 	maxUsers?: number;
 	search: (ISearch | ISearchLocal)[];
+	searchText: string;
 	chats: ISelectedUser[];
 }
 
@@ -54,7 +55,8 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		this.state = {
 			maxUsers,
 			search: [],
-			chats: []
+			chats: [],
+			searchText: ''
 		};
 		const { user, dispatch } = this.props;
 		if (this.isGroupChat()) {
@@ -115,8 +117,14 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	};
 
 	onSearchChangeText(text: string) {
+		this.setState({ searchText: text });
 		this.handleSearch(text);
 	}
+
+	cancelSearch = () => {
+		this.setState({ searchText: '' });
+		this.handleSearch('');
+	};
 
 	handleSearch = async (text: string) => {
 		const result = await search({ text, filterRooms: false });
@@ -174,7 +182,13 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='select-users-view-search' />
+				<SearchBox
+					showCancelIcon={this.state.searchText.length > 0}
+					onCancelSearch={this.cancelSearch}
+					onChangeText={(text: string) => this.onSearchChangeText(text)}
+					value={this.state.searchText}
+					testID='select-users-view-search'
+				/>
 				{this.renderSelected()}
 			</View>
 		);
