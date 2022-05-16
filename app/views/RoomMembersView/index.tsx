@@ -10,7 +10,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import NewSearchBox from '../../containers/NewSearchBox';
+import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
@@ -614,7 +614,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	};
 
 	renderSearchBar = () => (
-		<NewSearchBox
+		<SearchBox
 			showCancelIcon={this.state.filtering}
 			onCancelSearch={this.cancelSearch}
 			onChangeText={text => this.onSearchChangeText(text)}

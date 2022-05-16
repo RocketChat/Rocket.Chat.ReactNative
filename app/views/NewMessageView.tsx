@@ -10,7 +10,7 @@ import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import NewSearchBox from '../containers/NewSearchBox';
+import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen, ISearch, TSubscriptionModel } from '../definitions';
 import I18n from '../i18n';
@@ -232,7 +232,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<NewSearchBox
+				<SearchBox
 					showCancelIcon={this.state.searchText.length > 0}
 					onCancelSearch={this.cancelSearch}
 					onChangeText={(text: string) => this.onSearchChangeText(text)}

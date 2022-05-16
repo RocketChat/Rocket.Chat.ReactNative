@@ -30,13 +30,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface INewSearchBox extends TextInputProps {
+interface ISearchBox extends TextInputProps {
 	showCancelIcon: boolean;
 	onCancelSearch: () => void;
 }
 
-// TODO: Rename this component to searchbox
-const NewSearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, value, testID }: INewSearchBox): JSX.Element => {
+const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, value, testID }: ISearchBox): JSX.Element => {
 	const { colors } = useTheme();
 	return (
 		<>
@@ -68,4 +67,4 @@ const NewSearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, value, tes
 	);
 };
 
-export default NewSearchBox;
+export default SearchBox;
