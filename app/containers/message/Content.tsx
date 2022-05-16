@@ -7,16 +7,17 @@ import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
-import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
-import { E2E_MESSAGE_TYPE } from '../../lib/constants';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
+import { E2E_MESSAGE_TYPE, themes } from '../../lib/constants';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
 		const { theme } = useTheme();
+		const { baseUrl, user, onLinkPress } = useContext(MessageContext);
+
 		if (props.isInfo) {
 			// @ts-ignore
 			const infoMessage = getInfoMessage({ ...props });
@@ -50,7 +51,6 @@ const Content = React.memo(
 		} else if (isPreview) {
 			content = <MarkdownPreview msg={props.msg} />;
 		} else {
-			const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 			content = (
 				<Markdown
 					msg={props.msg}
@@ -59,7 +59,6 @@ const Content = React.memo(
 					getCustomEmoji={props.getCustomEmoji}
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
-					isEdited={props.isEdited}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
@@ -72,7 +71,7 @@ const Content = React.memo(
 		}
 
 		// If this is a encrypted message and is not a preview
-		if (props.type === E2E_MESSAGE_TYPE && !isPreview) {
+		if (props.type === E2E_MESSAGE_TYPE && !isPreview && !props.isHeader) {
 			content = (
 				<View style={styles.flex}>
 					<View style={styles.contentContainer}>{content}</View>

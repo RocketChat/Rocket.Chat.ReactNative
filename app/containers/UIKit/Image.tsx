@@ -4,7 +4,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Image';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { IThumb, IImage, IElement } from './interfaces';
 import { IAttachment } from '../../definitions';
 

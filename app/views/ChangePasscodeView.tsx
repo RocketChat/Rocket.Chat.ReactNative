@@ -10,9 +10,8 @@ import { useTheme } from '../theme';
 import { hasNotch, isTablet } from '../utils/deviceInfo';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
-import { CustomIcon } from '../lib/Icons';
-import { CHANGE_PASSCODE_EMITTER } from '../constants/localAuthentication';
-import { themes } from '../constants/colors';
+import { CustomIcon } from '../containers/CustomIcon';
+import { CHANGE_PASSCODE_EMITTER, themes } from '../lib/constants';
 
 const styles = StyleSheet.create({
 	modal: {

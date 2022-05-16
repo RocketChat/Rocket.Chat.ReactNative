@@ -5,25 +5,22 @@ import { connect } from 'react-redux';
 
 import { appStart } from '../../actions/app';
 import { setUser } from '../../actions/login';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import { IApplicationState, IBaseScreen, RootEnum } from '../../definitions';
+import { IApplicationState, IBaseScreen, IUser, RootEnum } from '../../definitions';
 import I18n, { isRTL, LANGUAGES } from '../../i18n';
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
+import { Services } from '../../lib/services';
 
 interface ILanguageViewProps extends IBaseScreen<SettingsStackParamList, 'LanguageView'> {
-	user: {
-		id: string;
-		language: string;
-	};
+	user: IUser;
 }
 
 interface ILanguageViewState {
@@ -38,7 +35,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 	constructor(props: ILanguageViewProps) {
 		super(props);
 		this.state = {
-			language: props.user ? props.user.language : 'en'
+			language: props.user ? (props.user.language as string) : 'en'
 		};
 	}
 
@@ -95,7 +92,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 		}
 
 		try {
-			await RocketChat.saveUserPreferences(params);
+			await Services.saveUserPreferences(params);
 			dispatch(setUser({ language: params.language }));
 
 			const serversDB = database.servers;
@@ -103,7 +100,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 			await serversDB.write(async () => {
 				try {
 					const userRecord = await usersCollection.find(user.id);
-					await userRecord.update((record: any) => {
+					await userRecord.update(record => {
 						record.language = params.language;
 					});
 				} catch (e) {

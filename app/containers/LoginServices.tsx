@@ -1,24 +1,24 @@
 import React from 'react';
-import { Animated, Easing, Linking, StyleSheet, Text, View } from 'react-native';
+import { Animated, Easing, Linking, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from './Button';
 import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
 import { events, logEvent } from '../utils/log';
-import RocketChat from '../lib/rocketchat';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
+import { Services } from '../lib/services';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -100,7 +100,7 @@ interface ILoginServicesProps {
 	CAS_enabled: boolean;
 	CAS_login_url: string;
 	separator: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface ILoginServicesState {
@@ -248,7 +248,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 					AppleAuthentication.AppleAuthenticationScope.EMAIL
 				]
 			});
-			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
+			await Services.loginOAuthOrSso({ fullName, email, identityToken });
 		} catch {
 			logEvent(events.ENTER_WITH_APPLE_F);
 		}
@@ -345,7 +345,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `${name}-monochromatic`;
+		const icon = `${name}-monochromatic` as TIconsName;
 		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 
@@ -410,7 +410,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		const { servicesHeight } = this.state;
 		const { services, separator } = this.props;
 		const { length } = Object.values(services);
-		const style = {
+		const style: Animated.AnimatedProps<ViewStyle> = {
 			overflow: 'hidden',
 			height: servicesHeight
 		};

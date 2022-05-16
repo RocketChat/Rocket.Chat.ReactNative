@@ -3,9 +3,9 @@ import { FlatList, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';

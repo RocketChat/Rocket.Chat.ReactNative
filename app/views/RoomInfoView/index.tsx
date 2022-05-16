@@ -8,24 +8,23 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Observable, Subscription } from 'rxjs';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log, { events, logEvent } from '../../utils/log';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import Livechat from './Livechat';
 import Channel from './Channel';
 import Direct from './Direct';
@@ -34,6 +33,8 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { SubscriptionType, TSubscriptionModel, ISubscription, IUser, IApplicationState } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
+import { callJitsi, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods';
+import { Services } from '../../lib/services';
 
 interface IGetRoomTitle {
 	room: ISubscription;
@@ -41,10 +42,10 @@ interface IGetRoomTitle {
 	name?: string;
 	username: string;
 	statusText?: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
-const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
+const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
 	type === SubscriptionType.DIRECT ? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>
@@ -68,9 +69,10 @@ const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoo
 				teamMain={room.teamMain}
 				key='room-info-type'
 				status={room.visitor?.status}
+				sourceType={room.source}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
-				{RocketChat.getRoomTitle(room)}
+				{getRoomTitle(room)}
 			</Text>
 		</View>
 	);
@@ -82,7 +84,7 @@ interface IRoomInfoViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 	rooms: string[];
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
 	editRoomPermission?: string[];
@@ -91,7 +93,7 @@ interface IRoomInfoViewProps {
 	roles: { [key: string]: string };
 }
 
-interface IUserParsed extends IUser {
+export interface IUserParsed extends IUser {
 	parsedRoles?: string[];
 }
 
@@ -102,8 +104,7 @@ export interface ILivechatVisitorModified extends ILivechatVisitor {
 
 interface IRoomInfoViewState {
 	room: ISubscription;
-	// TODO: Could be IUserParsed or ILivechatVisitorModified
-	roomUser: any;
+	roomUser: IUserParsed | ILivechatVisitorModified;
 	showEdit: boolean;
 }
 
@@ -202,7 +203,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { room } = this.state;
 		try {
 			if (room.visitor?._id) {
-				const result = await RocketChat.getVisitorInfo(room.visitor._id);
+				const result = await Services.getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
@@ -212,7 +213,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
 						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
 					}
-					this.setState({ roomUser: { ...visitor, ...params } }, () => this.setHeader());
+					this.setState({ roomUser: { ...visitor, ...params } as ILivechatVisitorModified }, () => this.setHeader());
 				}
 			}
 		} catch (error) {
@@ -233,8 +234,8 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = RocketChat.getUidDirectMessage(room);
-				const result = await RocketChat.getUserInfo(roomUserId);
+				const roomUserId = getUidDirectMessage(room);
+				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
 					const { roles } = user;
@@ -243,14 +244,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 						parsedRoles.parsedRoles = await this.parseRoles(roles);
 					}
 
-					this.setState({ roomUser: { ...user, ...parsedRoles } });
+					this.setState({ roomUser: { ...user, ...parsedRoles } as IUserParsed });
 				}
 			} catch {
 				// do nothing
 			}
 		} else {
 			try {
-				const { roles } = roomUser;
+				const { roles } = roomUser as IUserParsed;
 				if (roles && roles.length) {
 					const parsedRoles = await this.parseRoles(roles);
 					this.setState({ roomUser: { ...roomUser, parsedRoles } });
@@ -275,7 +276,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			});
 		} else {
 			try {
-				const result = await RocketChat.getRoomInfo(this.rid);
+				const result = await Services.getRoomInfo(this.rid);
 				if (result.success) {
 					({ room } = result);
 					this.setState({ room: { ...roomState, ...room } });
@@ -287,7 +288,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 		const permissionToEdit = this.isLivechat ? [editOmnichannelContact, editLivechatRoomCustomfields] : [editRoomPermission];
 
-		const permissions = await RocketChat.hasPermission(permissionToEdit, room.rid);
+		const permissions = await hasPermission(permissionToEdit, room.rid);
 		if (permissions.some(Boolean)) {
 			this.setState({ showEdit: true }, () => this.setHeader());
 		}
@@ -308,7 +309,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				const {
 					roomUser: { username }
 				} = this.state;
-				const result = await RocketChat.createDirectMessage(username);
+				const result = await Services.createDirectMessage(username);
 				if (result.success) {
 					const {
 						room: { rid }
@@ -328,13 +329,13 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { rooms, navigation, isMasterDetail } = this.props;
 		const params = {
 			rid: room.rid,
-			name: RocketChat.getRoomTitle({
+			name: getRoomTitle({
 				t: room.t,
 				fname: name,
 				name: username
 			}),
 			t: room.t,
-			roomUserId: RocketChat.getUidDirectMessage(room)
+			roomUserId: getUidDirectMessage(room)
 		};
 
 		if (room.rid) {
@@ -355,7 +356,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	videoCall = () => {
 		const { room } = this.state;
-		RocketChat.callJitsi(room);
+		callJitsi(room);
 	};
 
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
@@ -372,7 +373,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		);
 	};
 
-	renderButton = (onPress: () => void, iconName: string, text: string) => {
+	renderButton = (onPress: () => void, iconName: TIconsName, text: string) => {
 		const { theme } = this.props;
 
 		const onActionPress = async () => {
@@ -410,11 +411,11 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { room, roomUser } = this.state;
 
 		if (this.isDirect) {
-			return <Direct roomUser={roomUser} />;
+			return <Direct roomUser={roomUser as IUserParsed} />;
 		}
 
 		if (this.t === SubscriptionType.OMNICHANNEL) {
-			return <Livechat room={room} roomUser={roomUser} />;
+			return <Livechat room={room} roomUser={roomUser as ILivechatVisitorModified} />;
 		}
 		return <Channel room={room} />;
 	};
@@ -422,19 +423,21 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
+		const roomUserParsed = roomUser as IUserParsed;
+
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-info-view'>
 					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-						{this.renderAvatar(room, roomUser)}
+						{this.renderAvatar(room, roomUserParsed)}
 						<View style={styles.roomTitleContainer}>
-							{getRoomTitle({
+							{renderRoomTitle({
 								room,
 								type: this.t,
-								name: roomUser?.name,
-								username: roomUser?.username,
-								statusText: roomUser?.statusText,
+								name: roomUserParsed?.name,
+								username: roomUserParsed?.username,
+								statusText: roomUserParsed?.statusText,
 								theme
 							})}
 						</View>

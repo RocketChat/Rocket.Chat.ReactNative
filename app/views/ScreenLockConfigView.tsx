@@ -5,17 +5,16 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
-import { withTheme } from '../theme';
-import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
+import { TSupportedThemes, withTheme } from '../theme';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../utils/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes, SWITCH_TRACK_COLOR } from '../lib/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
-import { TServerModel } from '../definitions/IServer';
-import userPreferences from '../lib/userPreferences';
+import userPreferences from '../lib/methods/userPreferences';
+import { IApplicationState, TServerModel } from '../definitions';
 
 const DEFAULT_BIOMETRY = false;
 
@@ -26,7 +25,7 @@ interface IItem {
 }
 
 interface IScreenLockConfigViewProps {
-	theme: string;
+	theme: TSupportedThemes;
 	server: string;
 	Force_Screen_Lock: boolean;
 	Force_Screen_Lock_After: number;
@@ -272,10 +271,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Force_Screen_Lock: state.settings.Force_Screen_Lock,
-	Force_Screen_Lock_After: state.settings.Force_Screen_Lock_After
+	Force_Screen_Lock: state.settings.Force_Screen_Lock as boolean,
+	Force_Screen_Lock_After: state.settings.Force_Screen_Lock_After as number
 });
 
 export default connect(mapStateToProps)(withTheme(ScreenLockConfigView));

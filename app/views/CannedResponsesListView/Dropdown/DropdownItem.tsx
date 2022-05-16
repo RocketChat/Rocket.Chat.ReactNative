@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
 
 export const ROW_HEIGHT = 44;
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 
 interface IDropdownItem {
 	text: string;
-	iconName: string | null;
+	iconName: TIconsName | null;
 	onPress: () => void;
 }
 

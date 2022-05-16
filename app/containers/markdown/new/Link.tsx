@@ -9,7 +9,7 @@ import { LISTENER } from '../../Toast';
 import { useTheme } from '../../../theme';
 import openLink from '../../../utils/openLink';
 import EventEmitter from '../../../utils/events';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import Strike from './Strike';
 import Italic from './Italic';
 import Bold from './Bold';

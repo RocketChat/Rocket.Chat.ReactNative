@@ -2,14 +2,14 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 
 interface IPasscodeButton {
 	text?: string;
-	icon?: string;
+	icon?: TIconsName;
 	disabled?: boolean;
 	onPress?: Function;
 }

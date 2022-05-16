@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { IPreviewItem } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
@@ -15,10 +15,12 @@ interface IMessageBoxCommandsPreview {
 
 const CommandsPreview = React.memo(
 	({ commandPreview, showCommandPreview }: IMessageBoxCommandsPreview) => {
+		const { theme } = useTheme();
+
 		if (!showCommandPreview) {
 			return null;
 		}
-		const { theme } = useTheme();
+
 		return (
 			<FlatList
 				testID='commandbox-container'

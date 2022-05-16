@@ -6,7 +6,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { createChannelRequest } from '../actions/createChannel';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -15,16 +15,17 @@ import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen, ISearch, TSubscriptionModel } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import { CustomIcon } from '../lib/Icons';
-import Navigation from '../lib/Navigation';
-import RocketChat from '../lib/rocketchat';
-import { compareServerVersion } from '../lib/utils';
-import UserItem from '../presentation/UserItem';
+import { CustomIcon, TIconsName } from '../containers/CustomIcon';
+import Navigation from '../lib/navigation/appNavigation';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
+import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
-import { goRoom } from '../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../utils/goRoom';
 import log, { events, logEvent } from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
+import { NewMessageStackParamList } from '../stacks/types';
+import { hasPermission, search } from '../lib/methods';
 
 const QUERY_SIZE = 50;
 
@@ -51,7 +52,7 @@ interface IButton {
 	onPress: () => void;
 	testID: string;
 	title: string;
-	icon: string;
+	icon: TIconsName;
 	first?: boolean;
 }
 
@@ -61,15 +62,15 @@ interface INewMessageViewState {
 	permissions: boolean[];
 }
 
-interface INewMessageViewProps extends IBaseScreen<any, 'NewMessageView'> {
+interface INewMessageViewProps extends IBaseScreen<NewMessageStackParamList, 'NewMessageView'> {
 	maxUsers: number;
 	isMasterDetail: boolean;
 	serverVersion: string;
-	createTeamPermission: string[] | undefined;
-	createDirectMessagePermission: string[] | undefined;
-	createPublicChannelPermission: string[] | undefined;
-	createPrivateChannelPermission: string[] | undefined;
-	createDiscussionPermission: string[] | undefined;
+	createTeamPermission?: string[];
+	createDirectMessagePermission?: string[];
+	createPublicChannelPermission?: string[];
+	createPrivateChannelPermission?: string[];
+	createDiscussionPermission?: string[];
 }
 
 class NewMessageView extends React.Component<INewMessageViewProps, INewMessageViewState> {
@@ -127,20 +128,20 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		}
 	}
 
+	handleSearch = async (text: string) => {
+		const result = (await search({ text, filterRooms: false })) as ISearch[];
+		this.setState({
+			search: result
+		});
+	};
+
 	onSearchChangeText(text: string) {
-		this.search(text);
+		this.handleSearch(text);
 	}
 
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
-	};
-
-	search = async (text: string) => {
-		const result = (await RocketChat.search({ text, filterRooms: false })) as ISearch[];
-		this.setState({
-			search: result
-		});
 	};
 
 	createChannel = () => {
@@ -167,8 +168,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		});
 	};
 
-	// TODO: Refactor when migrate room
-	goRoom = (item: any) => {
+	goRoom = (item: TGoRoomItem) => {
 		logEvent(events.NEW_MSG_CHAT_WITH_USER);
 		const { isMasterDetail, navigation } = this.props;
 		if (isMasterDetail) {
@@ -187,7 +187,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 						styles.button,
 						{ borderColor: themes[theme].separatorColor }
 					]}>
-					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].tintColor }]} size={24} name={icon} />
+					<CustomIcon name={icon} size={24} color={themes[theme].tintColor} style={styles.buttonIcon} />
 					<Text style={[styles.buttonText, { color: themes[theme].tintColor }]}>{title}</Text>
 				</View>
 			</Touch>
@@ -214,7 +214,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 			createDirectMessagePermission,
 			createDiscussionPermission
 		];
-		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const permissionsToCreate = await hasPermission(permissions);
 		this.setState({ permissions: permissionsToCreate });
 	};
 
@@ -286,7 +286,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 			<UserItem
 				name={itemSearch.search ? itemSearch.name : itemModel.fname || ''}
 				username={itemSearch.search ? itemSearch.username : itemModel.name}
-				onPress={() => this.goRoom(item)}
+				onPress={() => this.goRoom(itemModel)}
 				testID={`new-message-view-item-${item.name}`}
 				style={style}
 				theme={theme}

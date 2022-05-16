@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { FlatList } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp } from '@react-navigation/native';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
@@ -14,21 +13,24 @@ import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../utils/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import log from '../../utils/log';
 import CannedResponseItem from './CannedResponseItem';
 import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import styles from './styles';
-import { ICannedResponse, IDepartment } from '../../definitions/ICannedResponse';
+import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription } from '../../definitions/ISubscription';
+import { getRoomTitle, getUidDirectMessage } from '../../lib/methods';
+import { Services } from '../../lib/services';
+import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { useAppSelector } from '../../lib/hooks';
 
 const COUNT = 25;
 
@@ -45,7 +47,7 @@ const fixedScopes = [
 		_id: 'user',
 		name: I18n.t('Private')
 	}
-] as IDepartment[];
+] as ILivechatDepartment[];
 
 interface ICannedResponsesListViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'CannedResponsesListView'>;
@@ -57,7 +59,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
-	const [departments, setDepartments] = useState<IDepartment[]>([]);
+	const [departments, setDepartments] = useState<ILivechatDepartment[]>([]);
 
 	// states used by the filter in Header and Dropdown
 	const [isSearching, setIsSearching] = useState(false);
@@ -73,8 +75,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const insets = useSafeAreaInsets();
 	const { theme } = useTheme();
-	const { isMasterDetail } = useSelector((state: any) => state.app);
-	const { rooms } = useSelector((state: any) => state.room);
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const rooms = useAppSelector(state => state.room.rooms);
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -91,9 +93,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const getDepartments = debounce(async () => {
 		try {
-			const res: any = await RocketChat.getDepartments();
+			const res = await Services.getDepartments();
 			if (res.success) {
-				setDepartments([...fixedScopes, ...res.departments]);
+				setDepartments([...fixedScopes, ...(res.departments as ILivechatDepartment[])]);
 			}
 		} catch (e) {
 			setDepartments(fixedScopes);
@@ -114,12 +116,12 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		const { name } = room;
 		const params = {
 			rid: room.rid,
-			name: RocketChat.getRoomTitle({
+			name: getRoomTitle({
 				t: room.t,
 				fname: name
 			}),
-			t: room.t as any,
-			roomUserId: RocketChat.getUidDirectMessage(room),
+			t: room.t,
+			roomUserId: getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};
 
@@ -151,7 +153,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		debounced: boolean;
 	}) => {
 		try {
-			const res = await RocketChat.getListCannedResponse({
+			const res = await Services.getListCannedResponse({
 				text,
 				offset,
 				count: COUNT,
@@ -213,7 +215,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		searchCallback(text, scope, departmentId);
 	};
 
-	const onDepartmentSelect = (value: IDepartment) => {
+	const onDepartmentSelect = (value: ILivechatDepartment) => {
 		let department = '';
 		let depId = '';
 
@@ -276,8 +278,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Canned_Responses'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			}
 		};
 

@@ -3,24 +3,25 @@ import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { textParser } from '../utils';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import styles from './styles';
 import { IItemData } from '.';
+import { TSupportedThemes } from '../../../theme';
 
 interface IChip {
 	item: IItemData;
 	onSelect: (item: IItemData) => void;
 	style?: object;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IChips {
 	items: IItemData[];
 	onSelect: (item: IItemData) => void;
 	style?: object;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const keyExtractor = (item: IItemData) => item.value.toString();

@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import NewMarkdown from '../../app/containers/markdown/new';
-import { themes } from '../../app/constants/colors';
+import { themes } from '../../app/lib/constants';
 import { longText } from '../utils';
 
 const stories = storiesOf('NewMarkdown', module);

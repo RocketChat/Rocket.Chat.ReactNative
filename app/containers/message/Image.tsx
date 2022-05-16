@@ -8,18 +8,18 @@ import * as Progress from 'react-native-progress';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import styles from './styles';
-import { formatAttachmentUrl } from '../../lib/utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
-import { useTheme } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
 interface IMessageButton {
 	children: React.ReactElement;
 	disabled?: boolean;
 	onPress: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IMessageImage {
@@ -43,7 +43,7 @@ const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButto
 	</Touchable>
 ));
 
-export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; theme: string }) => (
+export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; theme: TSupportedThemes }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(imgUri) }}

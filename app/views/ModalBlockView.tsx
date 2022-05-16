@@ -5,17 +5,17 @@ import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import EventEmitter from '../utils/events';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
-import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +53,7 @@ interface IModalBlockViewState {
 interface IModalBlockViewProps {
 	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	language: string;
 	user: {
 		id: string;
@@ -183,7 +183,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		}
 
 		try {
-			await RocketChat.triggerCancel({
+			await triggerCancel({
 				appId,
 				viewId,
 				view: {
@@ -209,7 +209,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
 		try {
-			await RocketChat.triggerSubmitView({
+			await triggerSubmitView({
 				viewId,
 				appId,
 				payload: {
@@ -230,7 +230,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 	action = async ({ actionId, value, blockId }: IActions) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
-		await RocketChat.triggerBlockAction({
+		await triggerBlockAction({
 			container: {
 				type: ContainerTypes.VIEW,
 				id: viewId

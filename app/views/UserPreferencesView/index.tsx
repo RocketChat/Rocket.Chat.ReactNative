@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { Switch } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
 import I18n from '../../i18n';
@@ -9,25 +9,25 @@ import log, { logEvent, events } from '../../utils/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
-import RocketChat from '../../lib/rocketchat';
 import { ProfileStackParamList } from '../../stacks/types';
-import { IApplicationState } from '../../definitions';
+import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 interface IUserPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const { enableMessageParserEarlyAdoption, id } = useSelector((state: IApplicationState) => getUserSelector(state));
+	const { enableMessageParserEarlyAdoption, id } = useAppSelector(state => getUserSelector(state));
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Preferences')
 		});
-	}, []);
+	}, [navigation]);
 
 	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
 		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
@@ -37,7 +37,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const toggleMessageParser = async (value: boolean) => {
 		try {
 			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
-			await RocketChat.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+			await Services.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
 		} catch (e) {
 			log(e);
 		}

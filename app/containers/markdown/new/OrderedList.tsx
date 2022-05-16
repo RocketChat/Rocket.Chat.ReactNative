@@ -4,7 +4,7 @@ import { OrderedList as OrderedListProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
 import styles from '../styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 
 interface IOrderedListProps {

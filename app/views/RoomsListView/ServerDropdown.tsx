@@ -9,12 +9,11 @@ import Button from '../../containers/Button';
 import { toggleServerDropdown } from '../../actions/rooms';
 import { selectServerRequest, serverInitAdd } from '../../actions/server';
 import { appStart } from '../../actions/app';
-import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import ServerItem from '../../presentation/ServerItem';
+import ServerItem from '../../containers/ServerItem';
 import database from '../../lib/database';
-import { themes } from '../../constants/colors';
+import { themes, TOKEN_KEY } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
@@ -23,10 +22,11 @@ import { showConfirmationAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
-import UserPreferences from '../../lib/userPreferences';
+import UserPreferences from '../../lib/methods/userPreferences';
 import { IApplicationState, IBaseScreen, RootEnum, TServerModel } from '../../definitions';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
+import { removeServer } from '../../lib/methods';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -135,7 +135,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 		this.close();
 		if (currentServer !== server) {
 			logEvent(events.RL_CHANGE_SERVER);
-			const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+			const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}
@@ -160,7 +160,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 			onPress: async () => {
 				this.close();
 				try {
-					await RocketChat.removeServer({ server });
+					await removeServer({ server });
 				} catch {
 					// do nothing
 				}
@@ -180,7 +180,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 	};
 
 	renderServer = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => {
-		const { server, theme } = this.props;
+		const { server } = this.props;
 
 		return (
 			<ServerItem
@@ -188,7 +188,6 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 				onPress={() => this.select(item.id, item.version)}
 				onLongPress={() => item.id === server || this.remove(item.id)}
 				hasCheck={item.id === server}
-				theme={theme}
 			/>
 		);
 	};

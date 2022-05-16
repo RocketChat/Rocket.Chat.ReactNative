@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
-import { CustomIcon } from '../../lib/Icons';
+import { themes } from '../../lib/constants';
+import { CustomIcon } from '../CustomIcon';
 import { textParser } from './utils';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import ActivityIndicator from '../ActivityIndicator';

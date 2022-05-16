@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
-import { themes } from '../../app/constants/colors';
+import { themes } from '../../app/lib/constants';
 import { TGetCustomEmoji, IEmoji } from '../../app/definitions/IEmoji';
 
 const theme = 'light';
@@ -51,12 +51,6 @@ stories.add('Text', () => (
 		<Markdown msg={lineBreakText} theme={theme} />
 		<Markdown msg={sequentialEmptySpacesText} theme={theme} />
 		<Markdown msg='Strong emphasis, aka bold, with **asterisks** or __underscores__' theme={theme} />
-	</View>
-));
-
-stories.add('Edited', () => (
-	<View style={styles.container}>
-		<Markdown msg='This is edited' theme={theme} isEdited />
 	</View>
 ));
 

@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Dispatch } from 'redux';
 
-import { TColors } from '../theme';
+import { TColors, TSupportedThemes } from '../theme';
 
 export * from './IAttachment';
 export * from './INotification';
@@ -12,8 +12,7 @@ export * from './IRoom';
 export * from './IMessage';
 export * from './IThread';
 export * from './IThreadMessage';
-export * from './ICustomEmoji';
-export * from './IFrequentlyUsedEmoji';
+export * from './IEmoji';
 export * from './IUpload';
 export * from './ISettings';
 export * from './IRole';
@@ -23,12 +22,12 @@ export * from './IUser';
 export * from './IServer';
 export * from './ILoggedUser';
 export * from './IServerHistory';
-export * from './IRocketChat';
 export * from './ICertificate';
 export * from './IUrl';
 export * from './ICredentials';
 export * from './ISearch';
 export * from './TUserStatus';
+export * from './IProfile';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;
@@ -36,7 +35,7 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 	dispatch: Dispatch;
 	isMasterDetail: boolean;
 	// TODO: remove after migrating all Class components
-	theme: string;
+	theme: TSupportedThemes;
 	colors: TColors;
 }
 

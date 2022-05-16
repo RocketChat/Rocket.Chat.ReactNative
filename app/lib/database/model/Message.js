@@ -83,4 +83,6 @@ export default class Message extends Model {
 	@field('tshow') tshow;
 
 	@json('md', sanitizer) md;
+
+	@field('comment') comment;
 }

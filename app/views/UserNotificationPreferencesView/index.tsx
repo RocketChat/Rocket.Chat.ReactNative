@@ -3,19 +3,19 @@ import { StyleSheet, Text } from 'react-native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
-import { INotificationPreferences } from '../../definitions';
+import { IApplicationState, INotificationPreferences, IUser } from '../../definitions';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -33,10 +33,8 @@ interface IUserNotificationPreferencesViewState {
 
 interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
-	theme: string;
-	user: {
-		id: string;
-	};
+	theme: TSupportedThemes;
+	user: IUser;
 }
 
 class UserNotificationPreferencesView extends React.Component<
@@ -58,7 +56,7 @@ class UserNotificationPreferencesView extends React.Component<
 	async componentDidMount() {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.getUserPreferences(id);
+		const result = await Services.getUserPreferences(id);
 		if (result.success) {
 			const { preferences } = result;
 			this.setState({ preferences, loading: true });
@@ -74,7 +72,11 @@ class UserNotificationPreferencesView extends React.Component<
 	renderPickerOption = (key: TKey) => {
 		const { theme } = this.props;
 		const text = this.findDefaultOption(key);
-		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label)}</Text>;
+		return (
+			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
+				{text?.label ? I18n.t(text?.label) : text?.label}
+			</Text>
+		);
 	};
 
 	pickerSelection = (title: string, key: TKey) => {
@@ -84,7 +86,9 @@ class UserNotificationPreferencesView extends React.Component<
 
 		const defaultOption = this.findDefaultOption(key);
 		if (OPTIONS[key][0]?.value !== 'default') {
-			const defaultValue = { label: `${I18n.t('Default')} (${I18n.t(defaultOption?.label)})` } as {
+			const defaultValue = {
+				label: `${I18n.t('Default')} (${defaultOption?.label ? I18n.t(defaultOption?.label) : defaultOption?.label})`
+			} as {
 				label: string;
 				value: string;
 			};
@@ -104,7 +108,7 @@ class UserNotificationPreferencesView extends React.Component<
 	saveNotificationPreferences = async (params: { [key: string]: string }) => {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.setUserPreferences(id, params);
+		const result = await Services.setUserPreferences(id, params);
 		if (result.success) {
 			const {
 				user: { settings }
@@ -166,7 +170,7 @@ class UserNotificationPreferencesView extends React.Component<
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state)
 });
 

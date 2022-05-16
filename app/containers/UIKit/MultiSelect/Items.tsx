@@ -6,29 +6,30 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import Check from '../../Check';
 import * as List from '../../List';
 import { textParser } from '../utils';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import styles from './styles';
 import { IItemData } from '.';
+import { TSupportedThemes } from '../../../theme';
 
 interface IItem {
 	item: IItemData;
 	selected?: string;
 	onSelect: Function;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IItems {
 	items: IItemData[];
 	selected: string[];
 	onSelect: Function;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const keyExtractor = (item: IItemData) => item.value.toString();
 
 // RectButton doesn't work on modal (Android)
 const Item = ({ item, selected, onSelect, theme }: IItem) => {
-	const itemName = item.value || item.text.text.toLowerCase();
+	const itemName = item.value?.name || item.text.text.toLowerCase();
 	return (
 		<Touchable
 			testID={`multi-select-item-${itemName}`}

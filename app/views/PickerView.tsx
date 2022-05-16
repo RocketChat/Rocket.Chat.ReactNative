@@ -1,11 +1,10 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
+import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants';
 import debounce from '../utils/debounce';
 import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
@@ -34,7 +33,7 @@ interface IItem {
 	item: IOptionsField;
 	selected: boolean;
 	onItemPress: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IRenderSearch {
@@ -49,11 +48,7 @@ interface IPickerViewState {
 	searchText: string;
 }
 
-interface IPickerViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'PickerView'>;
-	route: RouteProp<ChatsStackParamList, 'PickerView'>;
-	theme: string;
-}
+type IPickerViewProps = IBaseScreen<ChatsStackParamList, 'PickerView'>;
 
 const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 	<List.Item

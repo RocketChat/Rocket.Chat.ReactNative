@@ -1,7 +1,6 @@
 import { SubscriptionType, TAnyMessageModel } from '../../../definitions';
-import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
-import loadNextMessages from '../../../lib/methods/loadNextMessages';
-import { MessageTypeLoad } from '../../../constants/messageTypeLoad';
+import { loadNextMessages, loadMessagesForRoom } from '../../../lib/methods';
+import { MessageTypeLoad } from '../../../lib/constants';
 
 const getMoreMessages = ({
 	rid,
@@ -33,4 +32,5 @@ const getMoreMessages = ({
 	}
 	return Promise.resolve();
 };
+
 export default getMoreMessages;

@@ -1,20 +1,19 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 
-import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
+import FormContainer, { FormContainerInner } from '../containers/FormContainer';
+import TextInput from '../containers/TextInput';
+import I18n from '../i18n';
+import { themes } from '../lib/constants';
+import { Services } from '../lib/services';
+import { OutsideParamList } from '../stacks/types';
+import { withTheme } from '../theme';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
-import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
-import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
+import { IBaseScreen } from '../definitions';
 import sharedStyles from './Styles';
-import { OutsideParamList } from '../stacks/types';
 
 interface IForgotPasswordViewState {
 	email: string;
@@ -22,14 +21,10 @@ interface IForgotPasswordViewState {
 	isFetching: boolean;
 }
 
-interface IForgotPasswordViewProps {
-	navigation: StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>;
-	route: RouteProp<OutsideParamList, 'ForgotPasswordView'>;
-	theme: string;
-}
+type IForgotPasswordViewProps = IBaseScreen<OutsideParamList, 'ForgotPasswordView'>;
 
 class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForgotPasswordViewState> {
-	static navigationOptions = ({ route }: Pick<IForgotPasswordViewProps, 'route'>) => ({
+	static navigationOptions = ({ route }: IForgotPasswordViewProps) => ({
 		title: route.params?.title ?? 'Rocket.Chat'
 	});
 
@@ -73,7 +68,7 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 		}
 		try {
 			this.setState({ isFetching: true });
-			const result = await RocketChat.forgotPassword(email);
+			const result = await Services.forgotPassword(email);
 			if (result.success) {
 				const { navigation } = this.props;
 				navigation.pop();

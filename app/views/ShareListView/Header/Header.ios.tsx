@@ -4,7 +4,7 @@ import ShareExtension from 'rn-extensions-share';
 
 import SearchBox from '../../../containers/SearchBox';
 import * as HeaderButton from '../../../containers/HeaderButton';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import sharedStyles from '../../Styles';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import { IShareListHeaderIos } from './interface';

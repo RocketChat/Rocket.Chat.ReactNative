@@ -4,8 +4,8 @@ import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityPro
 import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
+import { themes } from '../../../lib/constants';
+import { CustomIcon } from '../../../containers/CustomIcon';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';

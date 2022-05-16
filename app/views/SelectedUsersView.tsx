@@ -6,18 +6,17 @@ import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
 import { addUser, removeUser, reset } from '../actions/selectedUsers';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen, ISubscription } from '../definitions';
+import { IApplicationState, IBaseScreen, ISearch, ISearchLocal, IUser } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
-import UserItem from '../presentation/UserItem';
+import UserItem from '../containers/UserItem';
 import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
@@ -25,26 +24,21 @@ import { withTheme } from '../theme';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
+import { isGroupChat, search } from '../lib/methods';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
 
 interface ISelectedUsersViewState {
 	maxUsers?: number;
-	search: ISelectedUser[];
+	search: (ISearch | ISearchLocal)[];
 	chats: ISelectedUser[];
 }
 
 interface ISelectedUsersViewProps extends IBaseScreen<ChatsStackParamList, 'SelectedUsersView'> {
-	// REDUX STATE
 	users: ISelectedUser[];
 	loading: boolean;
-	user: {
-		id: string;
-		token: string;
-		username: string;
-		name: string;
-	};
+	user: IUser;
 	baseUrl: string;
 }
 
@@ -64,7 +58,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		};
 		const { user, dispatch } = this.props;
 		if (this.isGroupChat()) {
-			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name }));
+			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
 		}
 		this.setHeader(props.route.params?.showButton);
 	}
@@ -111,9 +105,8 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 			const db = database.active;
 			const observable = await db.get('subscriptions').query(Q.where('t', 'd')).observeWithColumns(['room_updated_at']);
 
-			// TODO: Refactor when migrate room
-			this.querySubscription = observable.subscribe((data: any) => {
-				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
+			this.querySubscription = observable.subscribe(data => {
+				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']) as ISelectedUser[];
 				this.setState({ chats });
 			});
 		} catch (e) {
@@ -122,13 +115,11 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	};
 
 	onSearchChangeText(text: string) {
-		this.search(text);
+		this.handleSearch(text);
 	}
 
-	search = async (text: string) => {
-		// TODO: When migrate rocketchat.js pass the param IUser to there and the return should be
-		// IUser | TSubscriptionModel, this because we do a local search too
-		const result = (await RocketChat.search({ text, filterRooms: false })) as ISelectedUser[];
+	handleSearch = async (text: string) => {
+		const result = await search({ text, filterRooms: false });
 		this.setState({
 			search: result
 		});
@@ -136,7 +127,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 
 	isGroupChat = () => {
 		const { maxUsers } = this.state;
-		return maxUsers! > 2;
+		return maxUsers && maxUsers > 2;
 	};
 
 	isChecked = (username: string) => {
@@ -171,7 +162,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 
 	_onPressItem = (id: string, item = {} as ISelectedUser) => {
 		if (item.search) {
-			this.toggleUser({ _id: item._id, name: item.username!, fname: item.name });
+			this.toggleUser({ _id: item._id, name: item.username as string, fname: item.name });
 		} else {
 			this.toggleUser({ _id: item._id, name: item.name, fname: item.fname });
 		}
@@ -235,7 +226,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		const { theme } = this.props;
 
 		const name = item.search ? item.name : item.fname;
-		const username = item.search ? item.username! : item.name;
+		const username = item.search ? (item.username as string) : item.name;
 		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
 			style = { ...style, ...sharedStyles.separatorTop };
@@ -263,9 +254,9 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		const { search, chats } = this.state;
 		const { theme } = this.props;
 
-		const data = (search.length > 0 ? search : chats)
-			// filter DM between multiple users
-			.filter(sub => !RocketChat.isGroupChat(sub as ISubscription));
+		const searchOrChats = (search.length > 0 ? search : chats) as ISelectedUser[];
+		// filter DM between multiple users
+		const data = searchOrChats.filter(sub => !isGroupChat(sub));
 
 		return (
 			<FlatList

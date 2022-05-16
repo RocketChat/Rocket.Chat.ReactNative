@@ -19,4 +19,11 @@ export interface IServer {
 	E2E_Enable: boolean;
 }
 
+export interface IServerInfo {
+	id: string;
+	iconURL: string;
+	name: string;
+	useRealName?: boolean;
+}
+
 export type TServerModel = IServer & Model;

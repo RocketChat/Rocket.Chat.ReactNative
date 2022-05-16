@@ -10,14 +10,14 @@ import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
-import { withTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IReadReceipts } from '../../definitions';
+import { IApplicationState, IReadReceipts } from '../../definitions';
+import { Services } from '../../lib/services';
 
 interface IReadReceiptViewState {
 	loading: boolean;
@@ -32,7 +32,7 @@ interface INavigationOption {
 
 interface IReadReceiptViewProps extends INavigationOption {
 	Message_TimeAndDateFormat: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {
@@ -85,7 +85,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.getReadReceipts(this.messageId);
+			const result = await Services.getReadReceipts(this.messageId);
 			if (result.success) {
 				this.setState({
 					receipts: result.receipts,
@@ -167,8 +167,8 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat
+const mapStateToProps = (state: IApplicationState) => ({
+	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat as string
 });
 
 export default connect(mapStateToProps)(withTheme(ReadReceiptView));

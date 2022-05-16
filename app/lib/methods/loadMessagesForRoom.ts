@@ -1,13 +1,13 @@
 import moment from 'moment';
 
-import { MessageTypeLoad } from '../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../constants';
 import { IMessage, TMessageModel } from '../../definitions';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import roomTypeToApiType, { RoomTypes } from './roomTypeToApiType';
-import sdk from '../rocketchat/services/sdk';
-import { generateLoadMoreId } from '../utils';
+import { RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
+import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
+import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 
@@ -30,7 +30,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 	return data.messages;
 }
 
-export default function loadMessagesForRoom(args: {
+export function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
 	latest?: Date;

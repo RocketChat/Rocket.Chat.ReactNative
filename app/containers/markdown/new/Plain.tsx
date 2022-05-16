@@ -4,7 +4,7 @@ import { Plain as PlainProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
 import { useTheme } from '../../../theme';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 
 interface IPlainProps {
 	value: PlainProps['value'];

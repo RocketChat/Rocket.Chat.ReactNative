@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { CustomIcon } from '../lib/Icons';
-import { themes } from '../constants/colors';
+import { CustomIcon } from './CustomIcon';
+import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
 import { TThreadModel } from '../definitions/IThread';

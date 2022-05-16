@@ -5,14 +5,12 @@ import { Subscription } from 'rxjs';
 import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
-import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
-import messagesStatus from '../../constants/messagesStatus';
-import { useTheme, withTheme } from '../../theme';
+import { getMessageTranslation } from './utils';
+import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, TAnyMessageModel } from '../../definitions';
+import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -32,6 +30,7 @@ interface IMessageContainerProps {
 	Message_GroupingPeriod?: number;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom: boolean;
+	isSystemMessage?: boolean;
 	useRealName?: boolean;
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
@@ -58,6 +57,7 @@ interface IMessageContainerProps {
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
 	onPress?: () => void;
+	theme: TSupportedThemes;
 }
 
 interface IMessageContainerState {
@@ -73,7 +73,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		archived: false,
 		broadcast: false,
 		isIgnored: false,
-		theme: 'light'
+		theme: 'light' as TSupportedThemes
 	};
 
 	state = { isManualUnignored: false };
@@ -254,9 +254,12 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		return t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE;
 	}
 
-	get isInfo(): boolean {
+	get isInfo(): string | boolean {
 		const { item } = this.props;
-		return (item.t && SYSTEM_MESSAGES.includes(item.t)) ?? false;
+		if (['e2e', 'discussion-created'].includes(item.t)) {
+			return false;
+		}
+		return item.t;
 	}
 
 	get isTemp(): boolean {
@@ -293,8 +296,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	};
 
 	onLinkPress = (link: string): void => {
-		const { theme } = useTheme();
-		const { item, jumpToMessage } = this.props;
+		const { item, jumpToMessage, theme } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
 		if (isMessageLink && jumpToMessage) {
 			return jumpToMessage(link);
@@ -355,7 +357,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			blocks,
 			autoTranslate: autoTranslateMessage,
 			replies,
-			md
+			md,
+			comment
 		} = item;
 
 		let message = msg;
@@ -436,6 +439,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					callJitsi={callJitsi}
 					blockAction={blockAction}
 					highlighted={highlighted}
+					comment={comment}
 				/>
 			</MessageContext.Provider>
 		);

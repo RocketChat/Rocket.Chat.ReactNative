@@ -12,7 +12,7 @@ import TextInput from '../containers/TextInput';
 import { LISTENER } from '../containers/Toast';
 import { IApplicationState, IBaseScreen, IUser, TUserStatus } from '../definitions';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
+import { Services } from '../lib/services';
 import { getUserSelector } from '../selectors/login';
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
@@ -65,7 +65,7 @@ interface IStatusViewState {
 }
 
 interface IStatusViewProps extends IBaseScreen<any, 'StatusView'> {
-	user: Pick<IUser, 'id' | 'status' | 'statusText'>;
+	user: IUser;
 	isMasterDetail: boolean;
 	Accounts_AllowInvisibleStatusOption: boolean;
 }
@@ -98,7 +98,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 		if (statusText !== user.statusText || status !== user.status) {
 			this.setState({ loading: true });
 			try {
-				const result = await RocketChat.setUserStatus(status, statusText);
+				const result = await Services.setUserStatus(status, statusText);
 				if (result.success) {
 					dispatch(
 						setUser({

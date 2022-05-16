@@ -5,11 +5,11 @@ import Touchable from 'react-native-platform-touchable';
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from '../../containers/ThreadDetails';
-import { TThreadModel } from '../../definitions/IThread';
+import { TThreadModel } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 interface IItem {
 	item: TThreadModel;
 	useRealName: boolean;
-	user: any;
+	user: { id: string };
 	badgeColor?: string;
 	onPress: (item: TThreadModel) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;

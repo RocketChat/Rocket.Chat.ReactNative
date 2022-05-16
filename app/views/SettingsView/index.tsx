@@ -9,18 +9,15 @@ import { connect } from 'react-redux';
 import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
 import { selectServerRequest } from '../../actions/server';
-import { themes } from '../../constants/colors';
-import { isFDroidBuild } from '../../constants/environment';
-import { APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../constants/links';
+import { APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK, isFDroidBuild, themes } from '../../lib/constants';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
-import { IApplicationState, IBaseScreen, RootEnum } from '../../definitions';
+import { IApplicationState, IBaseScreen, IUser, RootEnum } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import { IServer } from '../../reducers/server';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
@@ -32,17 +29,17 @@ import { events, logEvent } from '../../utils/log';
 import openLink from '../../utils/openLink';
 import { onReviewPress } from '../../utils/review';
 import SidebarView from '../SidebarView';
+import { clearCache } from '../../lib/methods';
+import { Services } from '../../lib/services';
+
+type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
 interface ISettingsViewProps extends IBaseScreen<SettingsStackParamList, 'SettingsView'> {
 	server: IServer;
-	isMasterDetail: boolean;
-	user: {
-		roles: [];
-		id: string;
-	};
+	user: IUser;
 }
 
-class SettingsView extends React.Component<ISettingsViewProps, any> {
+class SettingsView extends React.Component<ISettingsViewProps> {
 	static navigationOptions = ({ navigation, isMasterDetail }: ISettingsViewProps): StackNavigationOptions => ({
 		headerLeft: () =>
 			isMasterDetail ? (
@@ -58,7 +55,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 		const db = database.servers;
 		const usersCollection = db.get('users');
 		try {
-			const userRecord: any = await usersCollection.find(user.id);
+			const userRecord = await usersCollection.find(user.id);
 			if (userRecord.isFromWebView) {
 				showConfirmationAlert({
 					title: I18n.t('Clear_cookies_alert'),
@@ -101,25 +98,25 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 					dispatch
 				} = this.props;
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
-				await RocketChat.clearCache({ server });
+				await clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
-				RocketChat.disconnect();
+				Services.disconnect();
 				dispatch(selectServerRequest(server));
 			}
 		});
 	};
 
 	navigateToScreen = (screen: keyof SettingsStackParamList) => {
-		/* @ts-ignore */
-		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
+		const screenName = screen.replace('View', '').toUpperCase();
+		logEvent(events[`SE_GO_${screenName}` as TLogScreenName]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
 	};
 
 	sendEmail = async () => {
 		logEvent(events.SE_CONTACT_US);
-		const subject = encodeURI('React Native App Support');
+		const subject = encodeURI('Rocket.Chat Mobile App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
 			version: ${getReadableVersion}
@@ -181,7 +178,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 						<>
 							<List.Section>
 								<List.Separator />
-								<SidebarView />
+								<SidebarView theme={theme} />
 								<List.Separator />
 							</List.Section>
 							<List.Section>

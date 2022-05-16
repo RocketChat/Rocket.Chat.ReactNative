@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
 import moment from 'moment';
 
-import UserPreferences from '../lib/userPreferences';
-import { store } from '../lib/auxStore';
+import UserPreferences from '../lib/methods/userPreferences';
+import { store } from '../lib/store/auxStore';
 import database from '../lib/database';
-import { getServerTimeSync } from '../lib/rocketchat/services/getServerTimeSync';
+import { getServerTimeSync } from '../lib/services/getServerTimeSync';
 import {
 	ATTEMPTS_KEY,
 	BIOMETRY_ENABLED_KEY,
@@ -15,7 +15,7 @@ import {
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
-} from '../constants/localAuthentication';
+} from '../lib/constants';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
 import { TServerModel } from '../definitions/IServer';
@@ -50,11 +50,13 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-const openModal = (hasBiometry: boolean) =>
-	new Promise<void>(resolve => {
+const openModal = (hasBiometry: boolean, force?: boolean) =>
+	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
-			hasBiometry
+			hasBiometry,
+			force,
+			cancel: () => reject()
 		});
 	});
 
@@ -100,6 +102,20 @@ export const checkHasPasscode = async ({ force = true }: { force?: boolean }): P
 	return Promise.resolve();
 };
 
+export const handleLocalAuthentication = async (canCloseModal = false) => {
+	// let hasBiometry = false;
+	let hasBiometry = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+
+	// if biometry is enabled on the app
+	if (hasBiometry) {
+		const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+		hasBiometry = isEnrolled;
+	}
+
+	// Authenticate
+	await openModal(hasBiometry, canCloseModal);
+};
+
 export const localAuthenticate = async (server: string): Promise<void> => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
@@ -136,17 +152,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
-				// let hasBiometry = false;
-				let hasBiometry = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
-
-				// if biometry is enabled on the app
-				if (hasBiometry) {
-					const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-					hasBiometry = isEnrolled;
-				}
-
-				// Authenticate
-				await openModal(hasBiometry);
+				await handleLocalAuthentication();
 
 				// set isLocalAuthenticated to true
 				store.dispatch(setLocalAuthenticated(true));

@@ -13,10 +13,9 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';
-import { themes } from '../constants/colors';
-import { formatAttachmentUrl } from '../lib/utils';
+import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
@@ -26,6 +25,8 @@ import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
 import { IAttachment } from '../definitions/IAttachment';
+import { formatAttachmentUrl } from '../lib/methods/helpers/formatAttachmentUrl';
+import { IApplicationState, IUser } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,15 +42,12 @@ interface IAttachmentViewState {
 interface IAttachmentViewProps {
 	navigation: StackNavigationProp<InsideStackParamList, 'AttachmentView'>;
 	route: RouteProp<InsideStackParamList, 'AttachmentView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	baseUrl: string;
 	width: number;
 	height: number;
 	insets: { left: number; bottom: number; right: number; top: number };
-	user: {
-		id: string;
-		token: string;
-	};
+	user: IUser;
 	Allow_Save_Media_to_Gallery: boolean;
 }
 
@@ -200,10 +198,10 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery ?? true
+	Allow_Save_Media_to_Gallery: (state.settings.Allow_Save_Media_to_Gallery as boolean) ?? true
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));

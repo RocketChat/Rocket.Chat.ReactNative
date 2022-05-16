@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 
 export const Handle = React.memo(() => {

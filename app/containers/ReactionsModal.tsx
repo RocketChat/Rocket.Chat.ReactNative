@@ -5,10 +5,10 @@ import Touchable from 'react-native-platform-touchable';
 
 import Emoji from './message/Emoji';
 import I18n from '../i18n';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from './CustomIcon';
 import sharedStyles from '../views/Styles';
-import { themes } from '../constants/colors';
-import { useTheme, withTheme } from '../theme';
+import { themes } from '../lib/constants';
+import { TSupportedThemes, useTheme, withTheme } from '../theme';
 import { TGetCustomEmoji } from '../definitions/IEmoji';
 import { TMessageModel, ILoggedUser } from '../definitions';
 import SafeAreaView from './SafeAreaView';
@@ -77,7 +77,7 @@ interface IItem extends ISharedFields {
 interface IModalContent extends ISharedFields {
 	message?: TMessageModel;
 	onClose: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IReactionsModal extends ISharedFields {
@@ -125,7 +125,7 @@ const ModalContent = React.memo(({ message, onClose, ...props }: IModalContent) 
 			<SafeAreaView style={styles.safeArea}>
 				<Touchable onPress={onClose}>
 					<View style={styles.titleContainer}>
-						<CustomIcon style={[styles.closeButton, { color: themes[props.theme].buttonText }]} name='close' size={20} />
+						<CustomIcon name='close' size={20} color={themes[props.theme].buttonText} style={styles.closeButton} />
 						<Text style={[styles.title, { color: themes[props.theme].buttonText }]}>{I18n.t('Reactions')}</Text>
 					</View>
 				</Touchable>

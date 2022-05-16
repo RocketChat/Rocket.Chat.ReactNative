@@ -4,9 +4,9 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import { MarkdownPreview } from '../markdown';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IMessage } from '../../definitions/IMessage';
 import { useTheme } from '../../theme';
 import { IApplicationState } from '../../definitions';
@@ -56,10 +56,12 @@ interface IMessageBoxReplyPreview {
 
 const ReplyPreview = React.memo(
 	({ message, Message_TimeFormat, replying, close, useRealName }: IMessageBoxReplyPreview) => {
+		const { theme } = useTheme();
+
 		if (!replying) {
 			return null;
 		}
-		const { theme } = useTheme();
+
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
