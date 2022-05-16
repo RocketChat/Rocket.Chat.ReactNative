@@ -53,7 +53,7 @@ type TRoomHeaderHeaderTitle = {
 	tmid?: string;
 	prid?: string;
 	scale: number;
-	testID: string;
+	testID?: string;
 };
 
 interface IRoomHeader {
@@ -67,10 +67,10 @@ interface IRoomHeader {
 	teamMain?: boolean;
 	status: TUserStatus;
 	usersTyping: [];
-	isGroupChat: boolean;
-	parentTitle: string;
-	onPress: () => void;
-	testID: string;
+	isGroupChat?: boolean;
+	parentTitle?: string;
+	onPress: Function;
+	testID?: string;
 	sourceType?: IOmnichannelSource;
 }
 
