@@ -596,6 +596,7 @@
   "you": "vous",
   "You": "Vous",
   "Logged_out_by_server": "Vous avez été déconnecté du serveur. Veuillez vous reconnecter.",
+  "Token_expired": "Votre session a expiré. Veuillez vous reconnecter.",
   "You_need_to_access_at_least_one_RocketChat_server_to_share_something": "Vous devez accéder à au moins un serveur Rocket.Chat pour partager quelque chose.",
   "You_need_to_verifiy_your_email_address_to_get_notications": "Vous devez vérifier votre adresse e-mail pour recevoir des notifications",
   "Your_certificate": "Votre certificat",
@@ -805,5 +806,7 @@
   "Removed__roomName__from_this_team": "#{{roomName}} supprimé de cette équipe",
   "Removed__username__from_team": "@{{user_removed}} supprimé de cette équipe",
   "User_joined_team": "a rejoint cette équipe",
-  "User_left_team": "a quitté cette équipe"
+  "User_left_team": "a quitté cette équipe",
+  "Omnichannel_queue": "File d'attente omnicanale",
+  "Empty": "Vide"
 }
