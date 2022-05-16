@@ -139,11 +139,15 @@ const StatusView = (): React.ReactElement => {
 				showToast(I18n.t('Status_saved_successfully'));
 			} else {
 				logEvent(events.STATUS_CUSTOM_F);
-				showToast(I18n.t(I18n.t('error-could-not-change-status')));
+				showToast(I18n.t('error-could-not-change-status'));
 			}
-		} catch {
+		} catch (e: any) {
+			const messageError =
+				e.data && e.data.error.includes('[error-too-many-requests]')
+					? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
+					: e.data.errorType;
 			logEvent(events.STATUS_CUSTOM_F);
-			showToast(I18n.t(I18n.t('error-could-not-change-status')));
+			showErrorAlert(messageError);
 		}
 		setLoading(false);
 	};
