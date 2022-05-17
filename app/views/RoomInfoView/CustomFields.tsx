@@ -2,7 +2,7 @@ import React from 'react';
 
 import Item from './Item';
 
-const CustomFields = ({ customFields }: { customFields: { [key: string]: string } }) => {
+const CustomFields = ({ customFields }: { customFields?: { [key: string]: string } }) => {
 	if (customFields) {
 		return (
 			<>

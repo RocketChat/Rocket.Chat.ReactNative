@@ -2,14 +2,14 @@ import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 
 interface IHeaderButtonItem {
 	title?: string;
-	iconName?: string;
+	iconName?: TIconsName;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
 	badge?(): void;

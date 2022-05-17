@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
@@ -47,11 +46,22 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
-import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	getUidDirectMessage,
+	getUserPresence,
+	hasPermission,
+	isGroupChat,
+	isRead,
+	RoomTypes,
+	search
+} from '../../lib/methods';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
+import { Services } from '../../lib/services';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
-	[key: string]: any;
+	[key: string]: IUser | string | boolean | ISubscription[] | number | object | TEncryptionBanner;
 	user: IUser;
 	server: string;
 	searchText: string;
@@ -66,7 +76,7 @@ interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsLis
 	StoreLastMessage: boolean;
 	useRealName: boolean;
 	isMasterDetail: boolean;
-	rooms: ISubscription[];
+	rooms: string[];
 	width: number;
 	insets: {
 		left: number;
@@ -85,14 +95,14 @@ interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsLis
 }
 
 interface IRoomsListViewState {
-	searching: boolean;
-	search: ISubscription[];
-	loading: boolean;
-	chatsUpdate: string[];
-	omnichannelsUpdate: string[];
-	chats: ISubscription[];
-	item: ISubscription;
-	canCreateRoom: boolean;
+	searching?: boolean;
+	search?: IRoomItem[];
+	loading?: boolean;
+	chatsUpdate?: string[] | { rid: string; alert?: boolean }[];
+	omnichannelsUpdate?: string[];
+	chats?: IRoomItem[];
+	item?: ISubscription;
+	canCreateRoom?: boolean;
 }
 
 interface IRoomItem extends ISubscription {
@@ -173,7 +183,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			searching: false,
 			search: [],
 			loading: true,
-			chatsUpdate: [],
+			chatsUpdate: [] as TSubscriptionModel[],
 			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
@@ -229,7 +239,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.getSubscriptions();
 		}
 		if (searchText !== nextProps.searchText) {
-			this.search(nextProps.searchText);
+			this.handleSearch(nextProps.searchText);
 		}
 	}
 
@@ -343,10 +353,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.getSubscriptions();
 		}
 		// Update current item in case of another action triggers an update on rooms reducer
-		if (isMasterDetail && rooms[0] && item?.rid !== rooms[0].rid && !dequal(rooms, prevProps.rooms)) {
-			// eslint-disable-next-line react/no-did-update-set-state
-			// @ts-ignore
-			this.setState({ item: { rid: rooms[0] } });
+		if (isMasterDetail && rooms[0] && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
+			this.setState({ item: { rid: rooms[0] } as ISubscription });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
@@ -396,7 +404,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDirectMessagePermission,
 			createDiscussionPermission
 		];
-		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const permissionsToCreate = await hasPermission(permissions);
 		const canCreateRoom = permissionsToCreate.filter((r: boolean) => r === true).length > 0;
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
@@ -450,12 +458,19 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	// internalSetState = (...args: { chats: TSubscriptionModel; chatsUpdate: TSubscriptionModel; loading: boolean }[]) => {
-	internalSetState = (...args: any) => {
+	internalSetState = (
+		state:
+			| ((
+					prevState: Readonly<IRoomsListViewState>,
+					props: Readonly<IRoomsListViewProps>
+			  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
+			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
+		callback?: () => void
+	) => {
 		if (this.animated) {
 			animateNextTransition();
 		}
-		// @ts-ignore
-		this.setState(...args);
+		this.setState(state, callback);
 	};
 
 	addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[]) => {
@@ -560,23 +575,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				tempChats = chats;
 			}
 
-			if (this.mounted) {
-				this.internalSetState({
-					chats: tempChats,
-					chatsUpdate,
-					omnichannelsUpdate,
-					loading: false
-				});
-			} else {
-				// @ts-ignore
-				this.state.chats = tempChats;
-				// @ts-ignore
-				this.state.chatsUpdate = chatsUpdate;
-				// @ts-ignore
-				this.state.omnichannelsUpdate = omnichannelsUpdate;
-				// @ts-ignore
-				this.state.loading = false;
-			}
+			this.internalSetState({
+				chats: tempChats,
+				chatsUpdate,
+				omnichannelsUpdate,
+				loading: false
+			});
 		});
 	};
 
@@ -591,7 +595,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { dispatch } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			dispatch(openSearchHeader());
-			this.search('');
+			this.handleSearch('');
 			this.setHeader();
 		});
 	};
@@ -625,8 +629,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	// eslint-disable-next-line react/sort-comp
-	search = debounce(async (text: string) => {
-		const result = await RocketChat.search({ text });
+	handleSearch = debounce(async (text: string) => {
+		const result = await search({ text });
 
 		// if the search was cancelled before the promise is resolved
 		const { searching } = this.state;
@@ -634,25 +638,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return;
 		}
 		this.internalSetState({
-			search: result,
+			search: result as IRoomItem[],
 			searching: true
 		});
 		this.scrollToTop();
 	}, 300);
 
-	getRoomTitle = (item: ISubscription) => RocketChat.getRoomTitle(item);
-
-	getRoomAvatar = (item: ISubscription) => RocketChat.getRoomAvatar(item);
-
-	isGroupChat = (item: ISubscription) => RocketChat.isGroupChat(item);
-
-	isRead = (item: ISubscription) => RocketChat.isRead(item);
-
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
-	getUserPresence = (uid: string) => RocketChat.getUserPresence(uid);
-
-	getUidDirectMessage = (room: ISubscription) => RocketChat.getUidDirectMessage(room);
+	handleGetUserPresence = (uid: string) => getUserPresence(uid);
 
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -679,7 +673,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await RocketChat.toggleFavorite(rid, !favorite);
+			const result = await Services.toggleFavorite(rid, !favorite);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
@@ -699,11 +693,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	toggleRead = async (rid: string, isRead: boolean) => {
-		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
+	toggleRead = async (rid: string, tIsRead: boolean) => {
+		logEvent(tIsRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await RocketChat.toggleRead(isRead, rid);
+			const result = await Services.toggleRead(tIsRead, rid);
 
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
@@ -711,7 +705,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update(sub => {
-							sub.alert = isRead;
+							sub.alert = tIsRead;
 							sub.unread = 0;
 						});
 					} catch (e) {
@@ -729,7 +723,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await RocketChat.hideRoom(rid, type);
+			const result = await Services.hideRoom(rid, type);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
@@ -790,7 +784,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	goRoomByIndex = (index: number) => {
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
-		const filteredChats = chats.filter(c => !c.separator);
+		const filteredChats = chats ? chats.filter(c => !c.separator) : [];
 		const room = filteredChats[index - 1];
 		if (room) {
 			this.goRoom({ item: room, isMasterDetail });
@@ -800,7 +794,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	findOtherRoom = (index: number, sign: number): ISubscription | void => {
 		const { chats } = this.state;
 		const otherIndex = index + sign;
-		const otherRoom = chats[otherIndex];
+		const otherRoom = chats?.length ? chats[otherIndex] : ({} as IRoomItem);
 		if (!otherRoom) {
 			return;
 		}
@@ -820,12 +814,17 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		// Don't run during search
 		const { search } = this.state;
-		if (search.length > 0) {
+		if (search && search?.length > 0) {
 			return;
 		}
 
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
+
+		if (!chats?.length) {
+			return;
+		}
+
 		const index = chats.findIndex(c => c.rid === item.rid);
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
@@ -908,7 +907,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { queueSize, inquiryEnabled, encryptionBanner, user } = this.props;
 		return (
 			<ListHeader
-				searching={searching}
+				searching={searching as boolean}
 				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
@@ -930,7 +929,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return <Header {...options} />;
 	};
 
-	renderItem = ({ item }: { item: ISubscription }) => {
+	renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
 		}
@@ -946,7 +945,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showAvatar,
 			displayMode
 		} = this.props;
-		const id = this.getUidDirectMessage(item);
+		const id = getUidDirectMessage(item);
 		const swipeEnabled = this.isSwipeEnabled(item);
 
 		return (
@@ -963,11 +962,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
-				getUserPresence={this.getUserPresence}
-				getRoomTitle={this.getRoomTitle}
-				getRoomAvatar={this.getRoomAvatar}
-				getIsGroupChat={this.isGroupChat}
-				getIsRead={this.isRead}
+				getUserPresence={this.handleGetUserPresence}
+				getRoomTitle={getRoomTitle}
+				getRoomAvatar={getRoomAvatar}
+				getIsGroupChat={isGroupChat}
+				getIsRead={isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
 				swipeEnabled={swipeEnabled}

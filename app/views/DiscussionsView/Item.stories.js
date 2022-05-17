@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native';
 import { Provider } from 'react-redux';
 
 import * as List from '../../containers/List';
-import { themes } from '../../lib/constants';
+import { themes, colors } from '../../lib/constants';
 import { ThemeContext } from '../../theme';
 import { store } from '../../../storybook/stories';
 import Item from './Item';
@@ -82,7 +82,7 @@ stories.add('content', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
 		<BaseItem badgeColor={themes[theme].mentionMeColor} />
 	</ThemeContext.Provider>
 );

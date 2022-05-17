@@ -1,39 +1,36 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
 import { RadioButton } from 'react-native-ui-lib';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy, themes } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IPreferences } from '../definitions';
+import { IPreferences } from '../definitions';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../utils/log';
+import { saveSortPreference } from '../lib/methods';
+import { useAppSelector } from '../lib/hooks';
 
-interface IDisplayPrefsView {
-	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
-	isMasterDetail: boolean;
-}
+const DisplayPrefsView = (): React.ReactElement => {
+	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
+	const { colors } = useTheme();
 
-const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
-	const { theme } = useTheme();
-
-	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
-		(state: IApplicationState) => state.sortPreferences
+	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
+		state => state.sortPreferences
 	);
-	const { isMasterDetail } = useSelector((state: any) => state.app);
+	const { isMasterDetail } = useAppSelector(state => state.app);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const { navigation } = props;
 		navigation.setOptions({
 			title: I18n.t('Display')
 		});
@@ -42,11 +39,11 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
 			});
 		}
-	}, []);
+	}, [isMasterDetail, navigation]);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
-		RocketChat.saveSortPreference(param);
+		saveSortPreference(param);
 	};
 
 	const sortByName = () => {
@@ -90,7 +87,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	};
 
 	const renderCheckBox = (value: boolean) => (
-		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? themes[theme].actionTintColor : null} />
+		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.actionTintColor : null} />
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
@@ -98,11 +95,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	);
 
 	const renderRadio = (value: boolean) => (
-		<RadioButton
-			selected={!!value}
-			color={value ? themes[theme].actionTintColor : themes[theme].auxiliaryText}
-			size={ICON_SIZE}
-		/>
+		<RadioButton selected={!!value} color={value ? colors.actionTintColor : colors.auxiliaryText} size={ICON_SIZE} />
 	);
 
 	return (
@@ -187,7 +180,5 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 		</SafeAreaView>
 	);
 };
-
-DisplayPrefsView.propTypes = {};
 
 export default DisplayPrefsView;

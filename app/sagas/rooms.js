@@ -7,8 +7,8 @@ import { roomsFailure, roomsRefresh, roomsSuccess } from '../actions/rooms';
 import database from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
-import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
+import { getRooms, subscribeRooms } from '../lib/methods';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -29,7 +29,7 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 	try {
 		const serversDB = database.servers;
-		RocketChat.subscribeRooms();
+		subscribeRooms();
 		const newRoomsUpdatedAt = new Date();
 		let roomsUpdatedAt;
 		const server = yield select(state => state.server.server);
@@ -45,7 +45,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			}
 		}
 
-		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
+		const [subscriptionsResult, roomsResult] = yield getRooms(roomsUpdatedAt);
 		const subscriptions = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
