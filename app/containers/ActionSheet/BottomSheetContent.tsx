@@ -10,14 +10,14 @@ import { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 
-interface BottomSheetContentProps {
+interface IBottomSheetContentProps {
 	hasCancel?: boolean;
 	options?: TActionSheetOptionsItem[];
 	hide: () => void;
 	children?: React.ReactElement | null;
 }
 
-const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: BottomSheetContentProps) => {
+const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: IBottomSheetContentProps) => {
 	const { theme, colors } = useTheme();
 
 	const renderFooter = () =>
