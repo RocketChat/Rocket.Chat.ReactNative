@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ISearchBox extends TextInputProps {
+export interface ISearchBox extends TextInputProps {
 	showCancelIcon: boolean;
 	onCancelSearch: () => void;
 }
@@ -38,33 +38,31 @@ interface ISearchBox extends TextInputProps {
 const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, onSubmitEditing, value, testID }: ISearchBox): JSX.Element => {
 	const { colors } = useTheme();
 	return (
-		<>
-			<View style={styles.container}>
-				<View style={[styles.searchBox, { borderColor: colors.searchboxBackground }]}>
-					<RNTextInput
-						autoCapitalize='none'
-						autoCorrect={false}
-						blurOnSubmit
-						placeholder={I18n.t('Search')}
-						returnKeyType='search'
-						underlineColorAndroid='transparent'
-						style={styles.input}
-						onChangeText={onChangeText}
-						onSubmitEditing={onSubmitEditing}
-						value={value}
-						testID={testID}
-					/>
+		<View style={styles.container} testID='searchbox-component'>
+			<View style={[styles.searchBox, { borderColor: colors.searchboxBackground }]}>
+				<RNTextInput
+					autoCapitalize='none'
+					autoCorrect={false}
+					blurOnSubmit
+					placeholder={I18n.t('Search')}
+					returnKeyType='search'
+					underlineColorAndroid='transparent'
+					style={styles.input}
+					onChangeText={onChangeText}
+					onSubmitEditing={onSubmitEditing}
+					value={value}
+					testID={testID}
+				/>
 
-					{showCancelIcon ? (
-						<Touchable onPress={onCancelSearch}>
-							<CustomIcon name='input-clear' size={18} color={colors.auxiliaryText} />
-						</Touchable>
-					) : (
-						<CustomIcon name='search' size={18} color={colors.auxiliaryTintColor} />
-					)}
-				</View>
+				{showCancelIcon ? (
+					<Touchable onPress={onCancelSearch} testID='searchbox-component-cancel-search'>
+						<CustomIcon name='input-clear' size={18} color={colors.auxiliaryText} />
+					</Touchable>
+				) : (
+					<CustomIcon name='search' size={18} color={colors.auxiliaryTintColor} />
+				)}
 			</View>
-		</>
+		</View>
 	);
 };
 
