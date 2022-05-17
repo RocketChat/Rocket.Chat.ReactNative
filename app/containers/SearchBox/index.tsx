@@ -37,7 +37,7 @@ export interface ISearchBox extends TextInputProps {
 
 const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, onSubmitEditing, value, testID }: ISearchBox): JSX.Element => {
 	const { colors, theme } = useTheme();
-	const background = theme === 'light' ? colors.buttonText : colors.searchboxBackground;
+	const background = theme === 'light' ? colors.backgroundColor : colors.searchboxBackground;
 	return (
 		<View style={styles.container} testID='searchbox-component'>
 			<View style={[styles.searchBox, { borderColor: colors.searchboxBackground, backgroundColor: background }]}>
