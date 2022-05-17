@@ -1,10 +1,17 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { IUserChannel } from './interfaces';
 import styles from './styles';
+import database from '../../lib/database';
+import { IApplicationState } from '../../definitions';
+import { ChatsStackParamList } from '../../stacks/types';
+import Navigation from '../../lib/navigation/appNavigation';
 
 interface IHashtag {
 	hashtag: string;
@@ -15,15 +22,29 @@ interface IHashtag {
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
+	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'RoomView'>>();
 
-	const handlePress = () => {
+	const handlePress = async () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
 		if (typeof index !== 'undefined' && navToRoomInfo) {
 			const navParam = {
 				t: 'c',
 				rid: channels?.[index]._id
 			};
-			navToRoomInfo(navParam);
+			try {
+				const db = database.active;
+				const subsCollection = db.get('subscriptions');
+				const room = await subsCollection.find(navParam.rid!);
+				if (isMasterDetail) {
+					// Close the modal if it is open and then redirect to the channel
+					Navigation.navigate('DrawerNavigator');
+					navigation.replace('RoomView', room);
+				} else navigation.push('RoomView', room);
+			} catch (err) {
+				// Navigate to RoomInfoView if the channel is not joined
+				navToRoomInfo(navParam);
+			}
 		}
 	};
 
