@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
 import { RadioButton } from 'react-native-ui-lib';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
 import { DisplayMode, SortBy } from '../lib/constants';
@@ -12,21 +12,22 @@ import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IPreferences } from '../definitions';
+import { IPreferences } from '../definitions';
 import I18n from '../i18n';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../utils/log';
 import { saveSortPreference } from '../lib/methods';
+import { useAppSelector } from '../lib/hooks';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
 	const { colors } = useTheme();
 
-	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
-		(state: IApplicationState) => state.sortPreferences
+	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
+		state => state.sortPreferences
 	);
-	const { isMasterDetail } = useSelector((state: IApplicationState) => state.app);
+	const { isMasterDetail } = useAppSelector(state => state.app);
 	const dispatch = useDispatch();
 
 	useEffect(() => {

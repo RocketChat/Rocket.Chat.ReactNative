@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -17,6 +16,7 @@ import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { getRoomTitle, getUidDirectMessage } from '../lib/methods';
+import { useAppSelector } from '../lib/hooks';
 
 const styles = StyleSheet.create({
 	scroll: {
@@ -96,8 +96,8 @@ interface ICannedResponseDetailProps {
 const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps): JSX.Element => {
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
-	const { isMasterDetail } = useSelector((state: any) => state.app);
-	const { rooms } = useSelector((state: any) => state.room);
+	const { isMasterDetail } = useAppSelector(state => state.app);
+	const { rooms } = useAppSelector(state => state.room);
 
 	useEffect(() => {
 		navigation.setOptions({
