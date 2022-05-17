@@ -36,18 +36,20 @@ export interface ISearchBox extends TextInputProps {
 }
 
 const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, onSubmitEditing, value, testID }: ISearchBox): JSX.Element => {
-	const { colors } = useTheme();
+	const { colors, theme } = useTheme();
+	const background = theme === 'light' ? colors.buttonText : colors.searchboxBackground;
 	return (
 		<View style={styles.container} testID='searchbox-component'>
-			<View style={[styles.searchBox, { borderColor: colors.searchboxBackground }]}>
+			<View style={[styles.searchBox, { borderColor: colors.searchboxBackground, backgroundColor: background }]}>
 				<RNTextInput
 					autoCapitalize='none'
 					autoCorrect={false}
 					blurOnSubmit
 					placeholder={I18n.t('Search')}
+					placeholderTextColor={colors.auxiliaryTintColor}
 					returnKeyType='search'
 					underlineColorAndroid='transparent'
-					style={styles.input}
+					style={[styles.input, { color: colors.auxiliaryTintColor }]}
 					onChangeText={onChangeText}
 					onSubmitEditing={onSubmitEditing}
 					value={value}
@@ -56,7 +58,7 @@ const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, onSubmitEditi
 
 				{showCancelIcon ? (
 					<Touchable onPress={onCancelSearch} testID='searchbox-component-cancel-search'>
-						<CustomIcon name='input-clear' size={18} color={colors.auxiliaryText} />
+						<CustomIcon name='input-clear' size={18} color={colors.auxiliaryTintColor} />
 					</Touchable>
 				) : (
 					<CustomIcon name='search' size={18} color={colors.auxiliaryTintColor} />
