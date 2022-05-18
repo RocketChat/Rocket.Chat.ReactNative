@@ -14,7 +14,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { TSupportedThemes, withTheme } from '../../theme';
-import TextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
@@ -332,7 +332,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		return (
-			<TextInput
+			<FormTextInput
 				containerStyle={styles.inputContainer}
 				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].focusedBackground }]}
 				placeholder=''
