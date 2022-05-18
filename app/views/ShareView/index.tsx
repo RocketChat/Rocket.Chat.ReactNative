@@ -26,20 +26,19 @@ import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import { IAttachment } from './interfaces';
-import { IUser, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, IServer, IShareAttachment, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { hasPermission, sendFileMessage, sendMessage } from '../../lib/methods';
 
 interface IShareViewState {
-	selected: IAttachment;
+	selected: IShareAttachment;
 	loading: boolean;
 	readOnly: boolean;
-	attachments: IAttachment[];
+	attachments: IShareAttachment[];
 	text: string;
 	room: TSubscriptionModel;
-	thread: any; // change
-	maxFileSize: number;
-	mediaAllowList: string;
+	thread: TThreadModel;
+	maxFileSize?: number;
+	mediaAllowList?: string;
 }
 
 interface IShareViewProps {
@@ -65,7 +64,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private messagebox: React.RefObject<IMessageBoxShareView>;
 	private files: any[];
 	private isShareExtension: boolean;
-	private serverInfo: any;
+	private serverInfo: IServer;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -75,7 +74,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 
 		this.state = {
-			selected: {} as IAttachment,
+			selected: {} as IShareAttachment,
 			loading: false,
 			readOnly: false,
 			attachments: [],
@@ -163,7 +162,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const items = await Promise.all(
 			this.files.map(async item => {
 				// Check server settings
-				const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize, permissionToUploadFile);
+				const { success: canUpload, error } = canUploadFile({
+					file: item,
+					allowList: mediaAllowList,
+					maxFileSize,
+					permissionToUploadFile
+				});
 				item.canUpload = canUpload;
 				item.error = error;
 
@@ -230,7 +234,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								},
 								thread?.id,
 								server,
-								// @ts-ignore
 								{ id: user.id, token: user.token }
 							);
 						}
@@ -252,7 +255,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
-	selectFile = (item: IAttachment) => {
+	selectFile = (item: IShareAttachment) => {
 		const { attachments, selected } = this.state;
 		if (attachments.length > 0) {
 			const text = this.messagebox.current?.text;
@@ -266,7 +269,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
-	removeFile = (item: IAttachment) => {
+	removeFile = (item: IShareAttachment) => {
 		const { selected, attachments } = this.state;
 		let newSelected;
 		if (item.path === selected.path) {
@@ -367,11 +370,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	server: state.share.server.server || state.server.server,
-	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
-	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList as string,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number
 });
 
 export default connect(mapStateToProps)(withTheme(ShareView));

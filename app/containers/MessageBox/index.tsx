@@ -677,7 +677,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	canUploadFile = (file: any) => {
 		const { permissionToUpload } = this.state;
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const result = canUploadFile(file, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize, permissionToUpload);
+		const result = canUploadFile({
+			file,
+			allowList: FileUpload_MediaTypeWhiteList,
+			maxFileSize: FileUpload_MaxFileSize,
+			permissionToUploadFile: permissionToUpload
+		});
 		if (result.success) {
 			return true;
 		}

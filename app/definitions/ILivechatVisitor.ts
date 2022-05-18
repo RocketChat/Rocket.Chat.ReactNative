@@ -22,7 +22,7 @@ export interface IVisitorEmail {
 
 export interface ILivechatVisitor extends IRocketChatRecord {
 	username: string;
-	ts: Date;
+	ts: Date | string;
 	token: string;
 	department?: string;
 	name?: string;

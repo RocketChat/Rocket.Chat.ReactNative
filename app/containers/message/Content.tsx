@@ -59,7 +59,6 @@ const Content = React.memo(
 					getCustomEmoji={props.getCustomEmoji}
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
-					isEdited={props.isEdited}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
@@ -72,7 +71,7 @@ const Content = React.memo(
 		}
 
 		// If this is a encrypted message and is not a preview
-		if (props.type === E2E_MESSAGE_TYPE && !isPreview) {
+		if (props.type === E2E_MESSAGE_TYPE && !isPreview && !props.isHeader) {
 			content = (
 				<View style={styles.flex}>
 					<View style={styles.contentContainer}>{content}</View>
