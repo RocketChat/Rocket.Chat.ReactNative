@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { dequal } from 'dequal';
 import { Subscription } from 'rxjs';
+import { createSelector } from 'reselect';
+import { shallowEqual } from 'react-redux';
 
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { IApplicationState } from '../../definitions';
@@ -11,22 +13,23 @@ import { useAppSelector } from './useAppSelector';
 
 type TPermissionState = (boolean | undefined)[];
 
+const getPermissionsSelector = createSelector(
+	[(state: IApplicationState) => state.permissions, (_state: any, permissionsArray: TSupportedPermissions[]) => permissionsArray],
+	(permissions, permissionsArray) =>
+		Object.keys(permissions)
+			.filter(key => permissionsArray.includes(key))
+			.reduce((obj: any, key) => {
+				obj[key] = permissions[key];
+				return obj;
+			}, {})
+);
+
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 	const [permissionsState, setPermissionsState] = useState<TPermissionState>([]);
 	const [roomRoles, setRoomRoles] = useState<string[]>([]);
 	const subscription = useRef<Subscription | null>(null);
 
-	const permissionsRedux = useAppSelector(
-		state => state.permissions,
-		(nextState, previousState) => {
-			const someDifferent = permissions.some(key => !dequal(nextState?.[key], previousState?.[key]));
-			// The equality function is expecting return false when we want to re-render and true when we don't want to re-render
-			if (someDifferent) {
-				return false;
-			}
-			return true;
-		}
-	);
+	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
 
 	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles);
 
