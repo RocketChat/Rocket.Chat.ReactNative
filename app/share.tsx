@@ -104,6 +104,9 @@ class Root extends React.Component<{}, IState> {
 			scale,
 			fontScale
 		};
+	}
+
+	UNSAFE_componentWillMount() {
 		this.init();
 	}
 
