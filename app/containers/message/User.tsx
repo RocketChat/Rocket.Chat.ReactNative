@@ -106,9 +106,9 @@ const User = React.memo(
 						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{textContent}
 						</Text>
+						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor, lineHeight: 22 }]}>{time}</Text>
 					</TouchableOpacity>
 					<View style={styles.actionIcons}>
-						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text>
 						<Encrypted type={type} />
 						<Edited isEdited={isEdited} />
 						<MessageError hasError={hasError} {...props} />

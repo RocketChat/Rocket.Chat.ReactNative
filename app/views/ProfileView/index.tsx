@@ -16,7 +16,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
@@ -412,7 +412,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
 							value={customFields[key]}>
-							<RCTextInput
+							<FormTextInput
 								inputRef={e => {
 									// @ts-ignore
 									this[key] = e;
@@ -428,7 +428,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				}
 
 				return (
-					<RCTextInput
+					<FormTextInput
 						inputRef={e => {
 							// @ts-ignore
 							this[key] = e;
@@ -499,7 +499,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar text={user.username} avatar={avatar?.url} isStatic={avatar?.url} size={100} />
 						</View>
-						<RCTextInput
+						<FormTextInput
 							editable={Accounts_AllowRealNameChange}
 							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
 							inputRef={e => {
@@ -515,7 +515,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							testID='profile-view-name'
 							theme={theme}
 						/>
-						<RCTextInput
+						<FormTextInput
 							editable={Accounts_AllowUsernameChange}
 							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
 							inputRef={e => {
@@ -531,7 +531,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							testID='profile-view-username'
 							theme={theme}
 						/>
-						<RCTextInput
+						<FormTextInput
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
 							inputRef={e => {
@@ -549,7 +549,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							testID='profile-view-email'
 							theme={theme}
 						/>
-						<RCTextInput
+						<FormTextInput
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 							inputRef={e => {
@@ -573,7 +573,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							theme={theme}
 						/>
 						{this.renderCustomFields()}
-						<RCTextInput
+						<FormTextInput
 							editable={Accounts_AllowUserAvatarChange}
 							inputStyle={[!Accounts_AllowUserAvatarChange && styles.disabled]}
 							inputRef={e => {

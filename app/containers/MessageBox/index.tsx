@@ -9,7 +9,7 @@ import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
-import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
+import TextInput, { IThemedTextInput } from '../TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import styles from './styles';
 import database from '../../lib/database';
@@ -700,7 +700,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	canUploadFile = (file: any) => {
 		const { permissionToUpload } = this.state;
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const result = canUploadFile(file, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize, permissionToUpload);
+		const result = canUploadFile({
+			file,
+			allowList: FileUpload_MediaTypeWhiteList,
+			maxFileSize: FileUpload_MaxFileSize,
+			permissionToUploadFile: permissionToUpload
+		});
 		if (result.success) {
 			return true;
 		}
