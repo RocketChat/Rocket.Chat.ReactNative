@@ -31,3 +31,10 @@ jest.mock('react-native-file-viewer', () => ({
 }));
 
 jest.mock('./app/lib/database', () => jest.fn(() => null));
+
+const mockedNavigate = jest.fn();
+
+jest.mock('@react-navigation/native', () => ({
+	...jest.requireActual('@react-navigation/native'),
+	useNavigation: () => mockedNavigate
+}));

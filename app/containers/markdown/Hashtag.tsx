@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -9,9 +8,9 @@ import { useTheme } from '../../theme';
 import { IUserChannel } from './interfaces';
 import styles from './styles';
 import database from '../../lib/database';
-import { IApplicationState } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import Navigation from '../../lib/navigation/appNavigation';
+import { useAppSelector } from '../../lib/hooks';
 
 interface IHashtag {
 	hashtag: string;
@@ -22,7 +21,7 @@ interface IHashtag {
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'RoomView'>>();
 
 	const handlePress = async () => {
