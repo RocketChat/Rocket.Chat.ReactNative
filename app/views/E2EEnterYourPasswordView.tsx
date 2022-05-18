@@ -9,7 +9,7 @@ import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
@@ -75,7 +75,7 @@ class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordView
 					<SafeAreaView
 						style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 						testID='e2e-enter-your-password-view'>
-						<TextInput
+						<FormTextInput
 							inputRef={(e: RNTextInput) => {
 								this.passwordInput = e;
 							}}

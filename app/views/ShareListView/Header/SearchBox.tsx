@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../containers/CustomIcon';
-import TextInput from '../../../presentation/TextInput';
+import TextInput from '../../../containers/TextInput';
 import { TSupportedThemes, useTheme } from '../../../theme';
 import { isIOS, isAndroid } from '../../../utils/deviceInfo';
 import sharedStyles from '../../Styles';

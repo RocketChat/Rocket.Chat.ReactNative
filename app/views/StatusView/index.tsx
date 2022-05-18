@@ -9,7 +9,7 @@ import * as List from '../../containers/List';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
-import TextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
@@ -162,7 +162,7 @@ const StatusView = (): React.ReactElement => {
 				renderItem={({ item }) => <Status status={item} statusText={statusText} />}
 				ListHeaderComponent={
 					<>
-						<TextInput
+						<FormTextInput
 							theme={theme}
 							value={statusText}
 							containerStyle={styles.inputContainer}
