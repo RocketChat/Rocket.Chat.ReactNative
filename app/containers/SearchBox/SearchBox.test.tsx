@@ -35,7 +35,7 @@ describe('SearchBox', () => {
 			/>
 		);
 
-		expect(findByTestId('searchbox-component')).toBeTruthy();
+		expect(findByTestId('searchbox')).toBeTruthy();
 	});
 	it('should not render clear-input icon', async () => {
 		const { queryByTestId } = render(
@@ -47,7 +47,7 @@ describe('SearchBox', () => {
 				testID={testSearchInputs.testID}
 			/>
 		);
-		const clearInput = await queryByTestId('searchbox-component-cancel-search');
+		const clearInput = await queryByTestId('searchbox-clear');
 		expect(clearInput).toBeNull();
 	});
 
@@ -79,7 +79,7 @@ describe('SearchBox', () => {
 			/>
 		);
 
-		const component = await findByTestId('searchbox-component-cancel-search');
+		const component = await findByTestId('searchbox-clear');
 		fireEvent.press(component, '');
 		expect(onCancelSearchMock).toHaveBeenCalledWith('');
 	});

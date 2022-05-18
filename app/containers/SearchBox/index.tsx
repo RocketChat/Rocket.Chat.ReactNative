@@ -39,7 +39,7 @@ const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, onSubmitEditi
 	const { colors, theme } = useTheme();
 	const background = theme === 'light' ? colors.backgroundColor : colors.searchboxBackground;
 	return (
-		<View style={styles.container} testID='searchbox-component'>
+		<View style={styles.container} testID='searchbox'>
 			<View style={[styles.searchBox, { borderColor: colors.searchboxBackground, backgroundColor: background }]}>
 				<RNTextInput
 					autoCapitalize='none'
@@ -57,7 +57,7 @@ const SearchBox = ({ showCancelIcon, onCancelSearch, onChangeText, onSubmitEditi
 				/>
 
 				{showCancelIcon ? (
-					<Touchable onPress={onCancelSearch} testID='searchbox-component-cancel-search'>
+					<Touchable onPress={onCancelSearch} testID='searchbox-clear'>
 						<CustomIcon name='input-clear' size={18} color={colors.auxiliaryTintColor} />
 					</Touchable>
 				) : (
