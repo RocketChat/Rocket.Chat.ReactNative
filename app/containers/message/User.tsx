@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
+		flexShrink: 1,
 		fontSize: 16,
 		lineHeight: 22,
 		...sharedStyles.textMedium
@@ -35,7 +36,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
-		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
