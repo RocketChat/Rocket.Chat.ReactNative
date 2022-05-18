@@ -65,7 +65,10 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	const livechat = (route.params?.room ?? {}) as ILivechat;
 	const visitor = route.params?.roomUser ?? {};
 
-	const permissions = usePermissions(['edit-omnichannel-contact', 'edit-livechat-room-customfields'], livechat.rid);
+	const [editOmnichannelContactPermission, editLivechatRoomCustomFieldsPermission] = usePermissions(
+		['edit-omnichannel-contact', 'edit-livechat-room-customfields'],
+		livechat.rid
+	);
 
 	const getCustomFields = async () => {
 		const result = await Services.getCustomFields();
@@ -189,7 +192,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 							inputs.name?.focus();
 						}}
 						theme={theme}
-						editable={!!permissions[0]}
+						editable={!!editOmnichannelContactPermission}
 					/>
 					<TextInput
 						label={I18n.t('Email')}
@@ -202,7 +205,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 							inputs.phone?.focus();
 						}}
 						theme={theme}
-						editable={!!permissions[0]}
+						editable={!!editOmnichannelContactPermission}
 					/>
 					<TextInput
 						label={I18n.t('Phone')}
@@ -221,7 +224,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 							}
 						}}
 						theme={theme}
-						editable={!!permissions[0]}
+						editable={!!editOmnichannelContactPermission}
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
 						<TextInput
@@ -238,7 +241,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 								inputs.topic?.focus();
 							}}
 							theme={theme}
-							editable={!!permissions[0]}
+							editable={!!editOmnichannelContactPermission}
 						/>
 					))}
 					<Title title={I18n.t('Conversation')} theme={theme} />
@@ -250,7 +253,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						defaultValue={livechat?.topic}
 						onChangeText={text => onChangeText('topic', text)}
 						theme={theme}
-						editable={!!permissions[1]}
+						editable={!!editLivechatRoomCustomFieldsPermission}
 					/>
 
 					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
@@ -263,7 +266,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						value={tagParamSelected}
 						context={BLOCK_CONTEXT.FORM}
 						multiselect
-						disabled={!permissions[1]}
+						disabled={!editLivechatRoomCustomFieldsPermission}
 						inputStyle={styles.multiSelect}
 					/>
 
@@ -282,7 +285,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 								submit();
 							}}
 							theme={theme}
-							editable={!!permissions[1]}
+							editable={!!editLivechatRoomCustomFieldsPermission}
 						/>
 					))}
 
