@@ -194,11 +194,6 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		this.setState({ filtering: !!text, membersFiltered });
 	});
 
-	cancelSearch = () => {
-		this.setState({ searchText: '' });
-		this.onSearchChangeText('');
-	};
-
 	navToDirectMessage = async (item: IUser) => {
 		try {
 			const db = database.active;
@@ -615,8 +610,6 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 	renderSearchBar = () => (
 		<SearchBox
-			showCancelIcon={this.state.filtering}
-			onCancelSearch={this.cancelSearch}
 			onChangeText={text => this.onSearchChangeText(text)}
 			value={this.state.searchText}
 			testID='room-members-view-search'

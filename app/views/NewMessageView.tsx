@@ -233,8 +233,6 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox
-					showCancelIcon={this.state.searchText.length > 0}
-					onCancelSearch={this.cancelSearch}
 					onChangeText={(text: string) => this.onSearchChangeText(text)}
 					value={this.state.searchText}
 					testID='new-message-view-search'

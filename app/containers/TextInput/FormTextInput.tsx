@@ -64,6 +64,8 @@ export interface IRCTextInputProps extends TextInputProps {
 	left?: JSX.Element;
 	onIconRightPress?(): void;
 	theme: TSupportedThemes;
+	searchbox?: boolean;
+	// onCancelSearch?: () => void;
 }
 
 interface IRCTextInputState {
@@ -126,6 +128,27 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
 	};
 
+	get searchBox() {
+		const { onChangeText, value, theme } = this.props;
+		return value && value?.length > 0 ? (
+			<Touchable
+				onPress={() => {
+					onChangeText ? onChangeText('') : null;
+				}}
+				style={[styles.iconContainer, styles.iconRight]}
+				testID='searchbox-clear'>
+				<CustomIcon name='input-clear' size={18} color={themes[theme].auxiliaryTintColor} />
+			</Touchable>
+		) : (
+			<CustomIcon
+				name='search'
+				size={18}
+				color={themes[theme].auxiliaryTintColor}
+				style={[styles.iconContainer, styles.iconRight]}
+			/>
+		);
+	}
+
 	render() {
 		const { showPassword } = this.state;
 		const {
@@ -142,6 +165,7 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 			testID,
 			placeholder,
 			theme,
+			searchbox,
 			...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
@@ -183,6 +207,7 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 					{secureTextEntry ? this.iconPassword : null}
 					{loading ? this.loading : null}
 					{left}
+					{searchbox ? this.searchBox : null}
 				</View>
 				{error && error.reason ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
 			</View>
