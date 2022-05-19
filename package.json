@@ -30,6 +30,7 @@
 	"dependencies": {
 		"@bugsnag/react-native": "^7.10.5",
 		"@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
+		"@gorhom/bottom-sheet": "^4",
 		"@nozbe/watermelondb": "0.23.0",
 		"@react-native-clipboard/clipboard": "^1.8.5",
 		"@react-native-community/art": "^1.2.0",
@@ -111,7 +112,6 @@
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "3.2.0",
 		"react-native-screens": "2.9.0",
-		"react-native-scroll-bottom-sheet": "0.6.2",
 		"react-native-scrollable-tab-view": "^1.0.0",
 		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto#0.5.0",
 		"react-native-slowlog": "^1.0.2",
