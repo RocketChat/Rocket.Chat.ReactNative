@@ -22,9 +22,9 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	console.log('🚀 ~ file: usePermissions.ts ~ line 25 ~ usePermissions ~ permissions', permissions);
 	const [permissionsState, setPermissionsState] = useState<TPermissionState>(permissions.map(() => false));
 	const [roomRoles, setRoomRoles] = useState<string[]>([]);
+	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || []);
 	const subscription = useRef<Subscription | null>(null);
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
-	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || []);
 
 	const _hasPermissions = (perms: (string[] | undefined)[], _rid?: string) => {
 		try {
