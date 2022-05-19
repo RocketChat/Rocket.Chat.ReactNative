@@ -24,12 +24,11 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	const [roomRoles, setRoomRoles] = useState<string[]>([]);
 	const subscription = useRef<Subscription | null>(null);
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
-	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles);
+	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || []);
 
 	const _hasPermissions = (perms: (string[] | undefined)[], _rid?: string) => {
 		try {
-			const userRolesTmp = userRoles || [];
-			const mergedRoles = [...new Set([...roomRoles, ...userRolesTmp])];
+			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 			const result = perms.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 			setPermissionsState(result);
 		} catch (e) {
