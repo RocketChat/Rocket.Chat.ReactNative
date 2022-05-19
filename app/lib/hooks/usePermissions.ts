@@ -34,11 +34,11 @@ const useSubscription = (rid?: string) => {
 			}
 			setSubscription(sub);
 
-			// const observable = sub.observe();
-			// subSubscription = observable.subscribe(s => {
-			// 	console.count('useSubscription observable setSub');
-			// 	setSubscription(s);
-			// });
+			const observable = sub.observe();
+			subSubscription = observable.subscribe(s => {
+				console.count('useSubscription observable setSub');
+				setSubscription(s);
+			});
 		});
 
 		return () => {
@@ -50,9 +50,20 @@ const useSubscription = (rid?: string) => {
 	return subscription;
 };
 
+// const useHasPermissions = (subscription, userRoles, permissions) => {
+// 	const [permissionsState, setPermissionsState] = useState(permissions.map(() => false))
+// 		const mergedRoles = [...new Set([...(subscription?.roles || []), ...userRoles])];
+// 		const result = perms.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+// 		// if (!dequal(permissionsState, result)) {
+// 		// 	setPermissionsState(result);
+// 		// }
+
+// 	return permissionsState
+// }
+
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 	console.log('🚀 ~ file: usePermissions.ts ~ line 25 ~ usePermissions ~ permissions', permissions);
-	const [permissionsState, setPermissionsState] = useState<TPermissionState>(permissions.map(() => false));
+	// const [permissionsState, setPermissionsState] = useState<TPermissionState>(permissions.map(() => false));
 	// const [roomRoles, setRoomRoles] = useState<string[]>([]);
 	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || [], shallowEqual);
 	// const subscription = useRef<Subscription | null>(null);
@@ -61,17 +72,17 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	const subscription = useSubscription(rid);
 	console.log('🚀 ~ file: usePermissions.ts ~ line 49 ~ usePermissions ~ sub', subscription);
 
-	const _hasPermissions = (perms: (string[] | undefined)[], _rid?: string) => {
-		try {
-			const mergedRoles = [...new Set([...(subscription?.roles || []), ...userRoles])];
-			const result = perms.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
-			if (!dequal(permissionsState, result)) {
-				setPermissionsState(result);
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
+	// const _hasPermissions = (perms: (string[] | undefined)[], _rid?: string) => {
+	// 	try {
+	// 		const mergedRoles = [...new Set([...(subscription?.roles || []), ...userRoles])];
+	// 		const result = perms.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+	// 		if (!dequal(permissionsState, result)) {
+	// 			setPermissionsState(result);
+	// 		}
+	// 	} catch (e) {
+	// 		log(e);
+	// 	}
+	// };
 
 	// const _observeRoom = async (rid: string) => {
 	// 	const db = database.active;
@@ -91,12 +102,18 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	// 	}
 	// };
 
-	useEffect(() => {
-		if (permissionsRedux) {
-			console.count('Hooks: usePermissions');
-			_hasPermissions(permissionsRedux, rid);
-		}
-	}, [userRoles, permissionsRedux, subscription?.roles]);
+	// useEffect(() => {
+	// 	if (permissionsRedux) {
+	// 		console.count('Hooks: usePermissions');
+	// 		_hasPermissions(permissionsRedux, rid);
+	// 	}
+	// }, [userRoles, permissionsRedux, subscription?.roles]);
+
+	const mergedRoles = [...new Set([...(subscription?.roles || []), ...userRoles])];
+	return permissionsRedux.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+	// if (!dequal(permissionsState, result)) {
+	// 	setPermissionsState(result);
+	// }
 
 	// useEffect(() => {
 	// 	if (rid && !subscription.current) {
@@ -110,6 +127,6 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	// 	};
 	// }, [subscription.roomRoles]);
 
-	console.log('🚀 ~ file: usePermissions.ts ~ line 86 ~ usePermissions ~ permissionsState', permissionsState);
-	return permissionsState;
+	// console.log('🚀 ~ file: usePermissions.ts ~ line 86 ~ usePermissions ~ permissionsState', permissionsState);
+	// return permissionsState;
 }
