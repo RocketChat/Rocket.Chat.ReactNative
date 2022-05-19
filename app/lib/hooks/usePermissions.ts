@@ -20,7 +20,7 @@ const getPermissionsSelector = createSelector(
 
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
 	console.log('🚀 ~ file: usePermissions.ts ~ line 25 ~ usePermissions ~ permissions', permissions);
-	const [permissionsState, setPermissionsState] = useState<TPermissionState>([]);
+	const [permissionsState, setPermissionsState] = useState<TPermissionState>(permissions.map(() => false));
 	const [roomRoles, setRoomRoles] = useState<string[]>([]);
 	const subscription = useRef<Subscription | null>(null);
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
