@@ -34,11 +34,11 @@ const useSubscription = (rid?: string) => {
 			}
 			setSubscription(sub);
 
-			const observable = sub.observe();
-			subSubscription = observable.subscribe(s => {
-				console.count('useSubscription observable setSub');
-				setSubscription(s);
-			});
+			// const observable = sub.observe();
+			// subSubscription = observable.subscribe(s => {
+			// 	console.count('useSubscription observable setSub');
+			// 	setSubscription(s);
+			// });
 		});
 
 		return () => {
@@ -54,7 +54,7 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	console.log('🚀 ~ file: usePermissions.ts ~ line 25 ~ usePermissions ~ permissions', permissions);
 	const [permissionsState, setPermissionsState] = useState<TPermissionState>(permissions.map(() => false));
 	// const [roomRoles, setRoomRoles] = useState<string[]>([]);
-	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || []);
+	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || [], shallowEqual);
 	// const subscription = useRef<Subscription | null>(null);
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
 
@@ -65,7 +65,9 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 		try {
 			const mergedRoles = [...new Set([...(subscription?.roles || []), ...userRoles])];
 			const result = perms.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
-			setPermissionsState(result);
+			if (!dequal(permissionsState, result)) {
+				setPermissionsState(result);
+			}
 		} catch (e) {
 			log(e);
 		}
