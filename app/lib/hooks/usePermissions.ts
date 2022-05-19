@@ -46,7 +46,7 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 };
 
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string): boolean[] {
-	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || [], shallowEqual);
+	const userRoles = useAppSelector(state => getUserSelector(state).roles || [], shallowEqual);
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
 	const subscriptionRoles = useSubscriptionRoles(rid);
 
