@@ -5,7 +5,11 @@ import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import FormTextInput from '../TextInput/FormTextInput';
 
-const SearchBox = ({ onChangeText, onSubmitEditing, value, testID }: TextInputProps): JSX.Element => {
+export interface ISearchBox extends TextInputProps {
+	onCancelSearch: () => void;
+}
+
+const SearchBox = ({ onCancelSearch, onChangeText, onSubmitEditing, value, testID }: ISearchBox): JSX.Element => {
 	const { colors, theme } = useTheme();
 	const background = theme === 'light' ? colors.backgroundColor : colors.searchboxBackground;
 	const inputStyle = {
@@ -34,6 +38,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, value, testID }: TextInputPr
 				theme={theme}
 				testID={testID}
 				searchbox
+				onCancelSearch={onCancelSearch}
 			/>
 		</View>
 	);

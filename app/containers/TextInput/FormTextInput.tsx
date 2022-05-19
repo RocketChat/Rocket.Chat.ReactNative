@@ -65,7 +65,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	onIconRightPress?(): void;
 	theme: TSupportedThemes;
 	searchbox?: boolean;
-	// onCancelSearch?: () => void;
+	onCancelSearch?: () => void;
 }
 
 interface IRCTextInputState {
@@ -129,14 +129,9 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 	};
 
 	get searchBox() {
-		const { onChangeText, value, theme } = this.props;
+		const { onCancelSearch, value, theme } = this.props;
 		return value && value?.length > 0 ? (
-			<Touchable
-				onPress={() => {
-					onChangeText ? onChangeText('') : null;
-				}}
-				style={[styles.iconContainer, styles.iconRight]}
-				testID='searchbox-clear'>
+			<Touchable onPress={onCancelSearch} style={[styles.iconContainer, styles.iconRight]} testID='searchbox-clear'>
 				<CustomIcon name='input-clear' size={18} color={themes[theme].auxiliaryTintColor} />
 			</Touchable>
 		) : (

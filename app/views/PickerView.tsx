@@ -68,12 +68,7 @@ const RenderSearch = ({ hasSearch, onChangeText, searchText, onCancelSearch }: I
 	return (
 		<>
 			<View style={styles.search}>
-				<SearchBox
-					showCancelIcon={searchText.length > 0}
-					onCancelSearch={onCancelSearch}
-					onChangeText={onChangeText}
-					value={searchText}
-				/>
+				<SearchBox onCancelSearch={onCancelSearch} onChangeText={onChangeText} value={searchText} />
 			</View>
 			<List.Separator />
 		</>

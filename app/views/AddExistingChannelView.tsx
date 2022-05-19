@@ -160,7 +160,6 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox
-					showCancelIcon={this.state.searchText.length > 0}
 					onCancelSearch={this.cancelSearch}
 					onChangeText={(text: string) => {
 						this.setState({ searchText: text });

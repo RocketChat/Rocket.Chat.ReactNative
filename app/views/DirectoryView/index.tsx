@@ -83,10 +83,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.setState({ text }, this.search);
 	};
 
-	cancelSearch = () => {
-		this.setState({ text: '' }, this.search);
-	};
-
 	load = debounce(async ({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
@@ -214,8 +210,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		return (
 			<>
 				<SearchBox
-					showCancelIcon={this.state.text.length > 0}
-					onCancelSearch={this.cancelSearch}
+					onCancelSearch={() => this.onSearchChangeText('')}
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
 					value={this.state.text}

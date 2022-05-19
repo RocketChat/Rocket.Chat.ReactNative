@@ -114,9 +114,8 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox
-					showCancelIcon={this.state.searchText.length > 0}
-					onCancelSearch={this.cancelSearch}
 					onChangeText={(text: string) => this.search(text)}
+					onCancelSearch={() => this.search('')}
 					value={this.state.searchText}
 					testID='select-list-view-search'
 				/>

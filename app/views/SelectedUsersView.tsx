@@ -121,11 +121,6 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		this.handleSearch(text);
 	}
 
-	cancelSearch = () => {
-		this.setState({ searchText: '' });
-		this.handleSearch('');
-	};
-
 	handleSearch = async (text: string) => {
 		const result = await search({ text, filterRooms: false });
 		this.setState({
@@ -183,8 +178,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<SearchBox
-					showCancelIcon={this.state.searchText.length > 0}
-					onCancelSearch={this.cancelSearch}
+					onCancelSearch={() => this.onSearchChangeText('')}
 					onChangeText={(text: string) => this.onSearchChangeText(text)}
 					value={this.state.searchText}
 					testID='select-users-view-search'
