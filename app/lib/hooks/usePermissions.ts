@@ -46,11 +46,11 @@ const useSubscription = (rid?: string) => {
 	return subscription;
 };
 
-export function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
+export function usePermissions(permissions: TSupportedPermissions[], rid?: string): boolean[] {
 	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || [], shallowEqual);
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
 	const subscription = useSubscription(rid);
 
 	const mergedRoles = [...new Set([...(subscription?.roles || []), ...userRoles])];
-	return permissionsRedux.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+	return permissionsRedux.map(permission => (permission ?? []).some(r => mergedRoles.includes(r)));
 }
