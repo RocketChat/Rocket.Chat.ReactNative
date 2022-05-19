@@ -310,7 +310,6 @@ class RegisterView extends React.Component<IProps, any> {
 						testID='register-view-submit'
 						disabled={!this.valid()}
 						loading={saving}
-						theme={theme}
 						style={styles.registerButton}
 					/>
 

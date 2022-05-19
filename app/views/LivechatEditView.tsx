@@ -298,7 +298,7 @@ const LivechatEditView = ({
 						/>
 					))}
 
-					<Button title={I18n.t('Save')} onPress={submit} theme={theme} />
+					<Button title={I18n.t('Save')} onPress={submit} />
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

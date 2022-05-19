@@ -137,7 +137,6 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 							testID='set-username-view-submit'
 							disabled={!username}
 							loading={saving}
-							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>

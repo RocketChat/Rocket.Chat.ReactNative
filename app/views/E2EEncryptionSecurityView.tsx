@@ -146,7 +146,6 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 					<Button
 						onPress={this.changePassword}
 						title={I18n.t('Save_Changes')}
-						theme={theme}
 						disabled={!newPassword.trim()}
 						style={styles.changePasswordButton}
 						testID='e2e-encryption-security-view-change-password'
@@ -177,7 +176,6 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 							<Button
 								onPress={this.resetOwnKey}
 								title={I18n.t('E2E_encryption_reset_button')}
-								theme={theme}
 								type='secondary'
 								backgroundColor={themes[theme!].chatComponentBackground}
 								testID='e2e-encryption-security-view-reset-key'

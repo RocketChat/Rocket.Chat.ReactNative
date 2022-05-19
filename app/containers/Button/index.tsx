@@ -39,50 +39,52 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Button = ({
-	title = 'Press me!',
-	type = 'primary',
-	onPress = () => alert('It works!'),
-	disabled = false,
-	loading = false,
-	backgroundColor,
-	color,
-	style,
-	fontSize,
-	styleText,
-	...otherProps
-}: Partial<IButtonProps>): React.ReactElement => {
-	const { theme } = useTheme();
-	const isPrimary = type === 'primary';
+const Button = React.memo(
+	({
+		title = 'Press me!',
+		type = 'primary',
+		onPress = () => alert('It works!'),
+		disabled = false,
+		loading = false,
+		backgroundColor,
+		color,
+		style,
+		fontSize,
+		styleText,
+		...otherProps
+	}: Partial<IButtonProps>) => {
+		const { theme } = useTheme();
+		const isPrimary = type === 'primary';
 
-	let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
-	if (color) {
-		textColor = color;
+		let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
+		if (color) {
+			textColor = color;
+		}
+
+		return (
+			<Touchable
+				onPress={onPress}
+				disabled={disabled || loading}
+				style={[
+					styles.container,
+					backgroundColor
+						? { backgroundColor }
+						: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
+					disabled && styles.disabled,
+					style
+				]}
+				accessibilityLabel={title}
+				{...otherProps}>
+				{loading ? (
+					<ActivityIndicator color={textColor} />
+				) : (
+					<Text style={[styles.text, { color: textColor }, fontSize && { fontSize }, styleText]} accessibilityLabel={title}>
+						{title}
+					</Text>
+				)}
+			</Touchable>
+		);
 	}
-
-	return (
-		<Touchable
-			onPress={onPress}
-			disabled={disabled || loading}
-			style={[
-				styles.container,
-				backgroundColor
-					? { backgroundColor }
-					: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
-				disabled && styles.disabled,
-				style
-			]}
-			accessibilityLabel={title}
-			{...otherProps}>
-			{loading ? (
-				<ActivityIndicator color={textColor} />
-			) : (
-				<Text style={[styles.text, { color: textColor }, fontSize && { fontSize }, styleText]} accessibilityLabel={title}>
-					{title}
-				</Text>
-			)}
-		</Touchable>
-	);
-};
+);
 
 export default Button;
