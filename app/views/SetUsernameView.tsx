@@ -11,7 +11,7 @@ import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { IApplicationState } from '../definitions';
 import { SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
@@ -118,7 +118,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}>
 							{I18n.t('Set_username_subtitle')}
 						</Text>
-						<TextInput
+						<FormTextInput
 							autoFocus
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
