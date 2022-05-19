@@ -15,22 +15,15 @@ type TPermissionState = (boolean | undefined)[];
 
 const getPermissionsSelector = createSelector(
 	[(state: IApplicationState) => state.permissions, (_state: any, permissionsArray: TSupportedPermissions[]) => permissionsArray],
-	(permissions, permissionsArray) =>
-		Object.keys(permissions)
-			.filter(key => permissionsArray.includes(key))
-			.reduce((obj: any, key) => {
-				obj[key] = permissions[key];
-				return obj;
-			}, {})
+	(permissions, permissionsArray) => permissionsArray.map(p => permissions[p])
 );
 
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string) {
+	console.log('🚀 ~ file: usePermissions.ts ~ line 25 ~ usePermissions ~ permissions', permissions);
 	const [permissionsState, setPermissionsState] = useState<TPermissionState>([]);
 	const [roomRoles, setRoomRoles] = useState<string[]>([]);
 	const subscription = useRef<Subscription | null>(null);
-
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
-
 	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles);
 
 	const _hasPermissions = (perms: (string[] | undefined)[], _rid?: string) => {
@@ -65,9 +58,7 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	useEffect(() => {
 		if (permissionsRedux) {
 			console.count('Hooks: usePermissions');
-			const array: (string[] | undefined)[] = [];
-			permissions.forEach(p => array.push(permissionsRedux[p]));
-			_hasPermissions(array, rid);
+			_hasPermissions(permissionsRedux, rid);
 		}
 	}, [userRoles, permissionsRedux, roomRoles]);
 
@@ -83,5 +74,6 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 		};
 	}, [roomRoles]);
 
+	console.log('🚀 ~ file: usePermissions.ts ~ line 86 ~ usePermissions ~ permissionsState', permissionsState);
 	return permissionsState;
 }
