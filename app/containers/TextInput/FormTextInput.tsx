@@ -179,7 +179,7 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
-							(secureTextEntry || iconRight) && styles.inputIconRight,
+							(secureTextEntry || iconRight || searchbox) && styles.inputIconRight,
 							{
 								backgroundColor: themes[theme].backgroundColor,
 								borderColor: themes[theme].separatorColor,

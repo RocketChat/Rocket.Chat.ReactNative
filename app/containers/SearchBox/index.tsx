@@ -10,6 +10,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, value, testID }: TextInputPr
 	const background = theme === 'light' ? colors.backgroundColor : colors.searchboxBackground;
 	const inputStyle = {
 		borderWidth: 2,
+		paddingVertical: 0,
 		borderColor: colors.searchboxBackground,
 		backgroundColor: background,
 		color: colors.auxiliaryTintColor
