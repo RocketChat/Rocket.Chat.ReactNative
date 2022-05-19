@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { dequal } from 'dequal';
 import { Subscription } from 'rxjs';
 import { createSelector } from 'reselect';
@@ -15,25 +15,25 @@ const getPermissionsSelector = createSelector(
 	(permissions, permissionsArray) => permissionsArray.map(p => permissions[p])
 );
 
-const useSubscription = (rid?: string) => {
-	const [subscription, setSubscription] = useState<TSubscriptionModel | null>(null);
+const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
+	const [subscriptionRoles, setSubscriptionRoles] = useState<TSubscriptionModel['roles']>([]);
 
 	useEffect(() => {
 		if (!rid) {
 			return;
 		}
-		console.count('useSubscription fetch');
 		let subSubscription: Subscription;
 		getSubscriptionByRoomId(rid).then(sub => {
 			if (!sub) {
 				return;
 			}
-			setSubscription(sub);
+			setSubscriptionRoles(sub.roles);
 
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
-				console.count('useSubscription observable setSub');
-				setSubscription(s);
+				if (!dequal(subscriptionRoles, s.roles)) {
+					setSubscriptionRoles(s.roles);
+				}
 			});
 		});
 
@@ -42,15 +42,14 @@ const useSubscription = (rid?: string) => {
 		};
 	}, []); // FIXME: why is lint complaining about this?
 
-	console.count('useSubscription');
-	return subscription;
+	return subscriptionRoles;
 };
 
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string): boolean[] {
 	const userRoles = useAppSelector((state: IApplicationState) => getUserSelector(state).roles || [], shallowEqual);
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
-	const subscription = useSubscription(rid);
+	const subscriptionRoles = useSubscriptionRoles(rid);
 
-	const mergedRoles = [...new Set([...(subscription?.roles || []), ...userRoles])];
+	const mergedRoles = [...new Set([...(subscriptionRoles || []), ...userRoles])];
 	return permissionsRedux.map(permission => (permission ?? []).some(r => mergedRoles.includes(r)));
 }
