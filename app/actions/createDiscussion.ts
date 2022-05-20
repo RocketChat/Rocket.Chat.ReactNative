@@ -2,8 +2,16 @@ import { Action } from 'redux';
 
 import { CREATE_DISCUSSION } from './actionsTypes';
 
+export interface ICreateDiscussionRequestData {
+	prid: string;
+	pmid?: string;
+	t_name?: string;
+	reply?: string;
+	users: string[];
+	encrypted?: boolean;
+}
 interface ICreateDiscussionRequest extends Action {
-	data: any;
+	data: ICreateDiscussionRequestData;
 }
 
 interface ICreateDiscussionSuccess extends Action {

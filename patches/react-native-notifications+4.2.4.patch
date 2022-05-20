@@ -41,39 +41,3 @@ index f9c858b..94ea188 100644
  
  public abstract class NotificationManagerCompatFacade {
      public static NotificationManagerCompat from(@NonNull Context context) {
-diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
-index 4b33656..36aaa47 100644
---- a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
-+++ b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
-@@ -29,18 +29,20 @@ - (void)requestPermissions:(NSDictionary *)options {
-             authOptions = authOptions | UNAuthorizationOptionAnnouncement;
-         }
-     }
-+    if(![[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"]){
-+        [UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
-+            if (!error && granted) {
-+                [UNUserNotificationCenter.currentNotificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-+                    if (settings.authorizationStatus == UNAuthorizationStatusAuthorized || settings.authorizationStatus == UNAuthorizationStatusProvisional) {
-+                        dispatch_async(dispatch_get_main_queue(), ^{
-+                            [[UIApplication sharedApplication] registerForRemoteNotifications];
-+                        });
-+                    }
-+                }];
-+            }
-+        }];
-+    }
-     
--    [UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
--        if (!error && granted) {
--            [UNUserNotificationCenter.currentNotificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
--                if (settings.authorizationStatus == UNAuthorizationStatusAuthorized || settings.authorizationStatus == UNAuthorizationStatusProvisional) {
--                    dispatch_async(dispatch_get_main_queue(), ^{
--                        [[UIApplication sharedApplication] registerForRemoteNotifications];
--                    });
--                }
--            }];
--        }
--    }];
- }
- 
- - (void)setCategories:(NSArray *)json {

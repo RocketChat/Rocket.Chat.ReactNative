@@ -13,7 +13,7 @@ import {
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
-import TextInput from '../../TextInput';
+import FormTextInput from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
@@ -139,7 +139,7 @@ export const MultiSelect = React.memo(
 			return (
 				<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
 					<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
-						<TextInput
+						<FormTextInput
 							testID='multi-select-search'
 							onChangeText={onSearch || onSearchChange}
 							placeholder={I18n.t('Search')}

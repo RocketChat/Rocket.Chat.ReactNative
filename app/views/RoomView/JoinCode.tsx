@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import TextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
 import { IApplicationState } from '../../definitions';
@@ -50,8 +50,12 @@ export interface IJoinCodeProps {
 	theme: TSupportedThemes;
 }
 
+export interface IJoinCode {
+	show: () => void;
+}
+
 const JoinCode = React.memo(
-	forwardRef(({ rid, t, onJoin, isMasterDetail, theme }: IJoinCodeProps, ref) => {
+	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);
 		const [code, setCode] = useState('');
@@ -82,7 +86,7 @@ const JoinCode = React.memo(
 							{ backgroundColor: themes[theme].backgroundColor }
 						]}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
-						<TextInput
+						<FormTextInput
 							value={code}
 							theme={theme}
 							// TODO: find a way to type this ref
@@ -125,4 +129,5 @@ const JoinCode = React.memo(
 const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
+
 export default connect(mapStateToProps, null, null, { forwardRef: true })(JoinCode);

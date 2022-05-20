@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import isEmpty from 'lodash/isEmpty';
@@ -16,15 +17,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
-import {
-	IApplicationState,
-	IBaseScreen,
-	IRoom,
-	ISubscription,
-	IUser,
-	SubscriptionType,
-	TSubscriptionModel
-} from '../../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -52,6 +45,10 @@ import {
 } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+
+interface IOnPressTouch {
+	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
+}
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -184,7 +181,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				}
 			}
 
-			if (room && room.t !== 'd' && this.canViewMembers()) {
+			if (room && room.t !== 'd' && (await this.canViewMembers())) {
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
@@ -254,8 +251,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return room.t === 'l' && room.status === 'queued' && !this.joined;
 	}
 
-	// TODO: assert params required for navigation
-	onPressTouchable = (item: { route?: keyof ChatsStackParamList; params?: object; event?: Function }) => {
+	onPressTouchable: IOnPressTouch = (item: {
+		route?: keyof ChatsStackParamList;
+		params?: ChatsStackParamList[keyof ChatsStackParamList];
+		event?: Function;
+	}) => {
 		const { route, event, params } = item;
 		if (route) {
 			/**
@@ -587,14 +587,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (result.success) {
 				if (result.rooms?.length) {
-					const teamChannels = result.rooms.map((r: any) => ({
+					const teamChannels = result.rooms.map(r => ({
 						rid: r._id,
 						name: r.name,
 						teamId: r.teamId
 					}));
 					navigation.navigate('SelectListView', {
 						title: 'Converting_Team_To_Channel',
-						data: teamChannels as any,
+						data: teamChannels,
 						infoText: 'Select_Team_Channels_To_Delete',
 						nextAction: (data: string[]) => this.convertTeamToChannelConfirmation(data)
 					});
@@ -648,7 +648,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (result.success) {
 				if (result.rooms?.length) {
-					const teamChannels = result.rooms.map((r: any) => ({
+					const teamChannels = result.rooms.map(r => ({
 						rid: r._id,
 						name: r.name,
 						teamId: r.teamId,
@@ -728,10 +728,10 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (teamRooms.length) {
 				const data = teamRooms.map(team => ({
-					rid: team.teamId,
+					rid: team.teamId as string,
 					t: team.t,
 					name: team.name
-				})) as IRoom[]; // TODO: review this usage later
+				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
 					infoText: 'Move_Channel_Paragraph',
@@ -1098,7 +1098,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										this.onPressTouchable({
 											route: 'SelectedUsersView',
 											params: {
-												rid,
 												title: I18n.t('Add_users'),
 												nextAction: this.addUser
 											}
@@ -1283,7 +1282,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							<>
 								<List.Item
 									title='Canned_Responses'
-									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid, room } })}
+									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid } })}
 									left={() => <List.Icon name='canned-response' />}
 									showActionIndicator
 								/>

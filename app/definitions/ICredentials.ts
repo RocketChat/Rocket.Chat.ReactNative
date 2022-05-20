@@ -18,4 +18,7 @@ export interface ICredentials {
 	fullName?: AppleAuthenticationFullName | null;
 	email?: string | null;
 	identityToken?: string | null;
+	credentialToken?: string;
+	saml?: boolean;
+	cas?: { credentialToken?: string };
 }

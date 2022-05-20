@@ -6,7 +6,7 @@ import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { connect } from 'react-redux';
 
-import TextInput from '../TextInput';
+import FormTextInput from '../TextInput/FormTextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import { useTheme } from '../../theme';
@@ -114,7 +114,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
-					<TextInput
+					<FormTextInput
 						value={code}
 						theme={theme}
 						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
