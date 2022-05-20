@@ -405,7 +405,7 @@ PODS:
     - React-Core
   - react-native-cookies (6.0.8):
     - React-Core
-  - react-native-document-picker (5.2.0):
+  - react-native-document-picker (8.1.0):
     - React-Core
   - react-native-jitsi-meet (3.6.0):
     - JitsiMeetSDK (= 3.6.0)
@@ -1005,7 +1005,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
   react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
-  react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
+  react-native-document-picker: 5663fe4bcdb646200683a41790464d2793307ac8
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
   react-native-mmkv-storage: 88bcb10bbe85a8122061d17d03abcc64a02fe1c9
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
