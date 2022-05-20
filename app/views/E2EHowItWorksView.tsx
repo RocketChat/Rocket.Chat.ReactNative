@@ -1,15 +1,14 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 
 import SafeAreaView from '../containers/SafeAreaView';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import Markdown from '../containers/markdown';
-import { TSupportedThemes, withTheme } from '../theme';
+import { withTheme } from '../theme';
 import I18n from '../i18n';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import { IBaseScreen } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,17 +22,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface INavigation {
-	navigation: StackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>;
-	route: RouteProp<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>;
-}
+type TE2EHowItWorksViewProps = IBaseScreen<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>;
 
-interface IE2EHowItWorksViewProps extends INavigation {
-	theme: TSupportedThemes;
-}
-
-class E2EHowItWorksView extends React.Component<IE2EHowItWorksViewProps, any> {
-	static navigationOptions = ({ route, navigation }: INavigation) => {
+class E2EHowItWorksView extends React.Component<TE2EHowItWorksViewProps, any> {
+	static navigationOptions = ({ route, navigation }: Pick<TE2EHowItWorksViewProps, 'navigation' | 'route'>) => {
 		const showCloseModal = route.params?.showCloseModal;
 		return {
 			title: I18n.t('How_It_Works'),
