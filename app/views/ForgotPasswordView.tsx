@@ -110,7 +110,6 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 						testID='forgot-password-view-submit'
 						loading={isFetching}
 						disabled={invalidEmail}
-						theme={theme}
 					/>
 				</FormContainerInner>
 			</FormContainer>
