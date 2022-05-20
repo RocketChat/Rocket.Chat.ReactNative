@@ -63,7 +63,6 @@ class MessageParser extends UiKitParserMessage {
 	button(element: IButton, context: BlockContext) {
 		const { text, value, actionId, style } = element;
 		const [{ loading }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
 		return (
 			<Button
 				key={actionId}
@@ -72,7 +71,6 @@ class MessageParser extends UiKitParserMessage {
 				loading={loading}
 				onPress={() => action({ value })}
 				style={styles.button}
-				theme={theme}
 			/>
 		);
 	}

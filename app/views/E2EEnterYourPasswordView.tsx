@@ -93,7 +93,6 @@ class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordView
 							onPress={this.submit}
 							title={I18n.t('Confirm')}
 							disabled={!password}
-							theme={theme}
 							testID='e2e-enter-your-password-view-confirm'
 						/>
 						<Text style={[styles.info, { color: themes[theme].bodyText }]}>{I18n.t('Enter_Your_Encryption_Password_desc1')}</Text>

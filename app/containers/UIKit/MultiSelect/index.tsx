@@ -157,7 +157,7 @@ export const MultiSelect = React.memo(
 		});
 
 		let button = multiselect ? (
-			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} theme={theme} />
+			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
 		) : (
 			<Input
 				onPress={onShow}
