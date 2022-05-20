@@ -250,7 +250,6 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						title={I18n.t('Create_a_new_workspace')}
 						type='secondary'
 						onPress={this.createWorkspace}
-						theme={theme}
 						testID='rooms-list-header-create-workspace-button'
 						style={styles.buttonCreateWorkspace}
 						color={themes[theme].tintColor}

@@ -597,7 +597,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							disabled={!this.formIsChanged()}
 							testID='profile-view-submit'
 							loading={saving}
-							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Logout_from_other_logged_in_locations')}
@@ -605,7 +604,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							backgroundColor={themes[theme].chatComponentBackground}
 							onPress={this.logoutOtherLocations}
 							testID='profile-view-logout-other-locations'
-							theme={theme}
 						/>
 					</ScrollView>
 				</SafeAreaView>

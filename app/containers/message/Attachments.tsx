@@ -43,7 +43,7 @@ const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 		};
 
 		if (element.type === 'button') {
-			return <Button theme={theme} onPress={onPress} title={element.text} />;
+			return <Button onPress={onPress} title={element.text} />;
 		}
 
 		return null;
