@@ -133,11 +133,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		}
 	};
 
-	cancelSearch = () => {
-		this.setState({ isSearching: false, searchText: '' });
-		this.search('');
-	};
-
 	isChecked = (rid: string) => {
 		const { selected } = this.state;
 		return selected.includes(rid);

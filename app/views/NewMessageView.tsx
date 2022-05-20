@@ -142,11 +142,6 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		this.handleSearch(text);
 	}
 
-	cancelSearch = () => {
-		this.setState({ searchText: '' });
-		this.handleSearch('');
-	};
-
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
