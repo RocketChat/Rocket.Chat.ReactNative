@@ -5,9 +5,10 @@ import {
 	IRoom,
 	IRoomNotifications,
 	SubscriptionType,
-	IUser
+	IUser,
+	IAvatarSuggestion,
+	IProfileParams
 } from '../../definitions';
-import { IAvatarSuggestion, IParams } from '../../definitions/IProfileViewInterfaces';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
@@ -15,10 +16,9 @@ import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
 import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
-import { RoomTypes, roomTypeToApiType } from '../methods';
+import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
 import sdk from './sdk';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import RocketChat from '../rocketchat';
 
 export const createChannel = ({
 	name,
@@ -253,7 +253,7 @@ export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
-export const toggleStarMessage = (messageId: string, starred: boolean) => {
+export const toggleStarMessage = (messageId: string, starred?: boolean) => {
 	if (starred) {
 		// RC 0.59.0
 		return sdk.post('chat.unStarMessage', { messageId });
@@ -262,7 +262,7 @@ export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	return sdk.post('chat.starMessage', { messageId });
 };
 
-export const togglePinMessage = (messageId: string, pinned: boolean) => {
+export const togglePinMessage = (messageId: string, pinned?: boolean) => {
 	if (pinned) {
 		// RC 0.59.0
 		return sdk.post('chat.unPinMessage', { messageId });
@@ -561,7 +561,10 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, customFields?: { [key: string | number]: string }) =>
+export const saveUserProfile = (
+	data: IProfileParams | Pick<IProfileParams, 'username'>,
+	customFields?: { [key: string | number]: string }
+) =>
 	// RC 0.62.2
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
@@ -803,7 +806,7 @@ export const emitTyping = (room: IRoom, typing = true) => {
 
 export function e2eResetOwnKey(): Promise<boolean | {}> {
 	// {} when TOTP is enabled
-	RocketChat.unsubscribeRooms();
+	unsubscribeRooms();
 
 	// RC 0.72.0
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');

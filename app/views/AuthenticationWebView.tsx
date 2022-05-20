@@ -14,6 +14,7 @@ import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import * as HeaderButton from '../containers/HeaderButton';
 import { Services } from '../lib/services';
+import { IApplicationState, ICredentials } from '../definitions';
 
 const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
@@ -93,7 +94,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 		navigation.pop();
 	};
 
-	login = (params: any) => {
+	login = (params: ICredentials) => {
 		const { logging } = this.state;
 		if (logging) {
 			return;
@@ -111,7 +112,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 	};
 
 	// Force 3s delay so the server has time to evaluate the token
-	debouncedLogin = debounce((params: any) => this.login(params), 3000);
+	debouncedLogin = debounce((params: ICredentials) => this.login(params), 3000);
 
 	tryLogin = debounce(
 		async () => {
@@ -135,7 +136,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 			const parsedUrl = parse(url, true);
 			// ticket -> cas / validate & saml_idp_credentialToken -> saml
 			if (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken) {
-				let payload;
+				let payload: ICredentials;
 				if (authType === 'saml') {
 					const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
 					const credentialToken = { credentialToken: token };
@@ -202,10 +203,10 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url,
-	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method
+	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url as string,
+	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method as string
 });
 
 export default connect(mapStateToProps)(withTheme(AuthenticationWebView));

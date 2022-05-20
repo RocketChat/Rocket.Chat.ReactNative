@@ -5,7 +5,7 @@ import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKi
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
-import TextInput from '../TextInput';
+import FormTextInput from '../TextInput/FormTextInput';
 import { textParser, useBlockContext } from './utils';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
@@ -171,7 +171,7 @@ class ModalParser extends UiKitParserModal {
 		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
-			<TextInput
+			<FormTextInput
 				key={actionId}
 				placeholder={plainText(placeholder)}
 				multiline={multiline}
