@@ -89,11 +89,7 @@ export interface IMessageFromServer {
 	drid?: string;
 	dcount?: number;
 	dml: string | Date;
-	starred?:
-		| {
-				_id: string;
-		  }
-		| boolean;
+	starred?: boolean;
 	pinned?: boolean;
 	pinnedAt?: string | Date;
 	pinnedBy?: {
@@ -120,11 +116,6 @@ export interface IMessage extends IMessageFromServer {
 	emoji?: string;
 	status?: number;
 	pinned?: boolean;
-	starred?:
-		| {
-				_id: string;
-		  }
-		| boolean;
 	editedBy?: IEditedBy;
 	reactions?: IReaction[];
 	role?: string;
@@ -144,6 +135,8 @@ export interface IMessage extends IMessageFromServer {
 	tshow?: boolean;
 	comment?: string;
 	subscription?: { id: string };
+	user?: string;
+	editedAt?: string | Date;
 }
 
 export type TMessageModel = IMessage & Model;

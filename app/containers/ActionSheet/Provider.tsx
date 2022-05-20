@@ -13,10 +13,13 @@ export type TActionSheetOptionsItem = {
 };
 
 export type TActionSheetOptions = {
-	options: TActionSheetOptionsItem[];
+	options?: TActionSheetOptionsItem[];
 	headerHeight?: number;
 	customHeader?: React.ReactElement | null;
 	hasCancel?: boolean;
+	type?: string;
+	children?: React.ReactElement | null;
+	snaps?: string[] | number[];
 };
 interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;

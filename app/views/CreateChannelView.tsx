@@ -4,7 +4,7 @@ import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } fro
 import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
-import TextInput from '../presentation/TextInput';
+import TextInput from '../containers/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';

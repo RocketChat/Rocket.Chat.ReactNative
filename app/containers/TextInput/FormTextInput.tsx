@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleProp, StyleSheet, Text, TextInputProps, TextInput as RNTextInput, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import sharedStyles from '../views/Styles';
-import TextInput from '../presentation/TextInput';
-import { themes } from '../lib/constants';
-import { CustomIcon, TIconsName } from './CustomIcon';
-import ActivityIndicator from './ActivityIndicator';
-import { TSupportedThemes } from '../theme';
+import sharedStyles from '../../views/Styles';
+import TextInput from './index';
+import { themes } from '../../lib/constants';
+import { CustomIcon, TIconsName } from '../CustomIcon';
+import ActivityIndicator from '../ActivityIndicator';
+import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	error: {
@@ -70,7 +70,7 @@ interface IRCTextInputState {
 	showPassword: boolean;
 }
 
-export default class RCTextInput extends React.PureComponent<IRCTextInputProps, IRCTextInputState> {
+export default class FormTextInput extends React.PureComponent<IRCTextInputProps, IRCTextInputState> {
 	static defaultProps = {
 		error: {},
 		theme: 'light'
