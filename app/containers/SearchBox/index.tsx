@@ -37,8 +37,8 @@ const SearchBox = ({ onCancelSearch, onChangeText, onSubmitEditing, value, testI
 				value={value}
 				theme={theme}
 				testID={testID}
-				searchbox
 				onCancelSearch={onCancelSearch}
+				iconRight={'search'}
 			/>
 		</View>
 	);
