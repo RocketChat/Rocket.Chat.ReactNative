@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 });
 
 interface IE2ESaveYourPasswordViewState {
-	password: string;
+	password: string | null;
 }
 
 interface IE2ESaveYourPasswordViewProps extends IBaseScreen<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'> {
@@ -87,7 +87,7 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 			// Set stored password on local state
 			const password = UserPreferences.getString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 			if (this.mounted) {
-				this.setState({ password: password! });
+				this.setState({ password });
 			} else {
 				// @ts-ignore
 				this.state.password = password;
@@ -110,8 +110,10 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 	onCopy = () => {
 		logEvent(events.E2E_SAVE_PW_COPY);
 		const { password } = this.state;
-		Clipboard.setString(password);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		if (password) {
+			Clipboard.setString(password);
+			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		}
 	};
 
 	onHowItWorks = () => {
