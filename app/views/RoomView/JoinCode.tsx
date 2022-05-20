@@ -106,7 +106,6 @@ const JoinCode = React.memo(
 								type='secondary'
 								style={styles.button}
 								backgroundColor={themes[theme].chatComponentBackground}
-								theme={theme}
 								testID='join-code-cancel'
 								onPress={hide}
 							/>
@@ -114,7 +113,6 @@ const JoinCode = React.memo(
 								title={I18n.t('Join')}
 								type='primary'
 								style={styles.button}
-								theme={theme}
 								testID='join-code-submit'
 								onPress={handleJoinRoom}
 							/>

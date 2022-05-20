@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
+		flexShrink: 1,
 		fontSize: 16,
 		lineHeight: 22,
 		...sharedStyles.textMedium
@@ -35,7 +36,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
-		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -106,7 +106,7 @@ const User = React.memo(
 						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor, lineHeight: 22 }]}>{time}</Text>
+						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</TouchableOpacity>
 					<View style={styles.actionIcons}>
 						<Encrypted type={type} />
