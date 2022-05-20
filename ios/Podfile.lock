@@ -426,8 +426,8 @@ PODS:
   - react-native-simple-crypto (0.5.0):
     - OpenSSL-Universal (= 1.1.180)
     - React
-  - react-native-slider (3.0.3):
-    - React
+  - react-native-slider (4.2.2):
+    - React-Core
   - react-native-webview (10.3.2):
     - React
   - React-perflogger (0.64.2-rocket)
@@ -1014,7 +1014,7 @@ SPEC CHECKSUMS:
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-simple-crypto: 9b358cdfd34169031d384a8d4ac2ffc40b323876
-  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
+  react-native-slider: 2f25c919f1dc309b90e2cc8346b8042ecec2102f
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-perflogger: a9754427f4270feb5868631cfc669cde64b82a28
   React-RCTActionSheet: 6fbd3353009fe546806e815ad523f7c5cd9a48ed
