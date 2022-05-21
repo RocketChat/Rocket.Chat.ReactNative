@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 
-import TextInput from '../../../presentation/TextInput';
+import TextInput from '../../../containers/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../lib/constants';

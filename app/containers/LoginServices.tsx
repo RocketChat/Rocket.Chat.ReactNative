@@ -327,7 +327,6 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 						title={collapsed ? I18n.t('Onboarding_more_options') : I18n.t('Onboarding_less_options')}
 						type='secondary'
 						onPress={this.toggleServices}
-						theme={theme}
 						style={styles.options}
 						color={themes[theme].actionTintColor}
 					/>

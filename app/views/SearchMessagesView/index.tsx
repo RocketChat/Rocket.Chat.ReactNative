@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
@@ -317,7 +317,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
 				<StatusBar />
 				<View style={styles.searchContainer}>
-					<RCTextInput
+					<FormTextInput
 						autoFocus
 						label={I18n.t('Search')}
 						onChangeText={this.search}

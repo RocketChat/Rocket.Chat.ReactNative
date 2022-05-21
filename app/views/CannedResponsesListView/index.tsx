@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { FlatList } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp } from '@react-navigation/native';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
@@ -28,8 +27,8 @@ import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
 import { getRoomTitle, getUidDirectMessage, debounce } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
-import { IApplicationState, ISubscription } from '../../definitions';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { useAppSelector } from '../../lib/hooks';
 
 const COUNT = 25;
 
@@ -74,8 +73,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const insets = useSafeAreaInsets();
 	const { theme } = useTheme();
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
-	const rooms = useSelector((state: IApplicationState) => state.room.rooms);
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const rooms = useAppSelector(state => state.room.rooms);
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;

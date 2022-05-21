@@ -171,16 +171,11 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		}
 	};
 
-	cancel = async ({ closeModal }: { closeModal?: () => void }) => {
+	cancel = async () => {
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
 
-		// handle tablet case
-		if (closeModal) {
-			closeModal();
-		} else {
-			Navigation.back();
-		}
+		Navigation.back();
 
 		try {
 			await triggerCancel({

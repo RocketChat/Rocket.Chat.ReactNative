@@ -94,7 +94,7 @@ interface IRoomInfoViewProps {
 	roles: { [key: string]: string };
 }
 
-interface IUserParsed extends IUser {
+export interface IUserParsed extends IUser {
 	parsedRoles?: string[];
 }
 
@@ -105,8 +105,7 @@ export interface ILivechatVisitorModified extends ILivechatVisitor {
 
 interface IRoomInfoViewState {
 	room: ISubscription;
-	// TODO: Could be IUserParsed or ILivechatVisitorModified
-	roomUser: any;
+	roomUser: IUserParsed | ILivechatVisitorModified;
 	showEdit: boolean;
 }
 
@@ -215,7 +214,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
 						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
 					}
-					this.setState({ roomUser: { ...visitor, ...params } }, () => this.setHeader());
+					this.setState({ roomUser: { ...visitor, ...params } as ILivechatVisitorModified }, () => this.setHeader());
 				}
 			}
 		} catch (error) {
@@ -246,14 +245,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 						parsedRoles.parsedRoles = await this.parseRoles(roles);
 					}
 
-					this.setState({ roomUser: { ...user, ...parsedRoles } });
+					this.setState({ roomUser: { ...user, ...parsedRoles } as IUserParsed });
 				}
 			} catch {
 				// do nothing
 			}
 		} else {
 			try {
-				const { roles } = roomUser;
+				const { roles } = roomUser as IUserParsed;
 				if (roles && roles.length) {
 					const parsedRoles = await this.parseRoles(roles);
 					this.setState({ roomUser: { ...roomUser, parsedRoles } });
@@ -413,11 +412,11 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { room, roomUser } = this.state;
 
 		if (this.isDirect) {
-			return <Direct roomUser={roomUser} />;
+			return <Direct roomUser={roomUser as IUserParsed} />;
 		}
 
 		if (this.t === SubscriptionType.OMNICHANNEL) {
-			return <Livechat room={room} roomUser={roomUser} />;
+			return <Livechat room={room} roomUser={roomUser as ILivechatVisitorModified} />;
 		}
 		return <Channel room={room} />;
 	};
@@ -425,20 +424,21 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
+		const roomUserParsed = roomUser as IUserParsed;
 
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-info-view'>
 					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-						{this.renderAvatar(room, roomUser)}
+						{this.renderAvatar(room, roomUserParsed)}
 						<View style={styles.roomTitleContainer}>
 							{renderRoomTitle({
 								room,
 								type: this.t,
-								name: roomUser?.name,
-								username: roomUser?.username,
-								statusText: roomUser?.statusText,
+								name: roomUserParsed?.name,
+								username: roomUserParsed?.username,
+								statusText: roomUserParsed?.statusText,
 								theme
 							})}
 						</View>

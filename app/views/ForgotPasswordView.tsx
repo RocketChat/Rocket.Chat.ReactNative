@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import I18n from '../i18n';
 import { themes } from '../lib/constants';
 import { Services } from '../lib/services';
@@ -91,7 +91,7 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>
 						{I18n.t('Forgot_password')}
 					</Text>
-					<TextInput
+					<FormTextInput
 						autoFocus
 						placeholder={I18n.t('Email')}
 						keyboardType='email-address'
@@ -109,7 +109,6 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 						testID='forgot-password-view-submit'
 						loading={isFetching}
 						disabled={invalidEmail}
-						theme={theme}
 					/>
 				</FormContainerInner>
 			</FormContainer>

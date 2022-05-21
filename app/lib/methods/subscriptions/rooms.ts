@@ -43,6 +43,8 @@ let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: number | null | false = null;
 const WINDOW_TIME = 500;
 
+export let roomsSubscription: { stop: () => void } | null = null;
+
 const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
 	try {
 		const db = database.active;
@@ -403,6 +405,7 @@ export default function subscribeRooms() {
 			clearTimeout(subTimer);
 			subTimer = false;
 		}
+		roomsSubscription = null;
 	};
 
 	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
@@ -411,10 +414,8 @@ export default function subscribeRooms() {
 		// set the server that started this task
 		subServer = sdk.current.client.host;
 		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
-
-		return {
-			stop: () => stop()
-		};
+		roomsSubscription = { stop: () => stop() };
+		return null;
 	} catch (e) {
 		log(e);
 		return Promise.reject();

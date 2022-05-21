@@ -56,9 +56,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 		}
 	};
 
-	let button = placeholder ? (
-		<Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} theme={theme} />
-	) : null;
+	let button = placeholder ? <Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} /> : null;
 
 	if (context === BLOCK_CONTEXT.FORM) {
 		button = (
