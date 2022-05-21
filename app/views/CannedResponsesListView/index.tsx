@@ -29,6 +29,7 @@ import { getRoomTitle, getUidDirectMessage, debounce } from '../../lib/methods/h
 import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { useAppSelector } from '../../lib/hooks';
+import { ISubscription } from '../../definitions';
 
 const COUNT = 25;
 
