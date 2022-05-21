@@ -7,7 +7,7 @@ import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { IUserChannel } from './interfaces';
 import styles from './styles';
-import database from '../../lib/database';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { ChatsStackParamList } from '../../stacks/types';
 import Navigation from '../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../lib/hooks';
@@ -31,16 +31,14 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 				t: 'c',
 				rid: channels?.[index]._id
 			};
-			try {
-				const db = database.active;
-				const subsCollection = db.get('subscriptions');
-				const room = await subsCollection.find(navParam.rid!);
+			const room = await getSubscriptionByRoomId(navParam.rid!);
+			if (room) {
 				if (isMasterDetail) {
 					// Close the modal if it is open and then redirect to the channel
 					Navigation.navigate('DrawerNavigator');
 					navigation.replace('RoomView', room);
 				} else navigation.push('RoomView', room);
-			} catch (err) {
+			} else {
 				// Navigate to RoomInfoView if the channel is not joined
 				navToRoomInfo(navParam);
 			}
