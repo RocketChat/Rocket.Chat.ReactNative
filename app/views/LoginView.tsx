@@ -9,7 +9,7 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
@@ -157,7 +157,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 		return (
 			<>
 				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
-				<TextInput
+				<FormTextInput
 					label={I18n.t('Username_or_email')}
 					containerStyle={styles.inputContainer}
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
@@ -173,7 +173,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					theme={theme}
 					value={user}
 				/>
-				<TextInput
+				<FormTextInput
 					label={I18n.t('Password')}
 					containerStyle={styles.inputContainer}
 					inputRef={e => {
@@ -196,7 +196,6 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					testID='login-view-submit'
 					loading={isFetching}
 					disabled={!this.valid()}
-					theme={theme}
 					style={styles.loginButton}
 				/>
 				{Accounts_PasswordReset && (
@@ -205,7 +204,6 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						type='secondary'
 						onPress={this.forgotPassword}
 						testID='login-view-forgot-password'
-						theme={theme}
 						color={themes[theme].auxiliaryText}
 						fontSize={14}
 					/>
