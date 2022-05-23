@@ -27,8 +27,6 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 			if (!sub) {
 				return;
 			}
-			setSubscriptionRoles(sub.roles);
-
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
 				if (!dequal(subscriptionRoles, s.roles)) {
@@ -38,9 +36,9 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 		});
 
 		return () => {
-			subSubscription.unsubscribe();
+			if (subSubscription && subSubscription?.unsubscribe) subSubscription.unsubscribe();
 		};
-	}, []); // FIXME: why is lint complaining about this?
+	}, [subscriptionRoles]);
 
 	return subscriptionRoles;
 };
