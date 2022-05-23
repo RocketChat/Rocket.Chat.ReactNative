@@ -5,7 +5,7 @@ import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKi
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
-import TextInput from '../TextInput';
+import FormTextInput from '../TextInput/FormTextInput';
 import { textParser, useBlockContext } from './utils';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
@@ -63,7 +63,6 @@ class MessageParser extends UiKitParserMessage {
 	button(element: IButton, context: BlockContext) {
 		const { text, value, actionId, style } = element;
 		const [{ loading }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
 		return (
 			<Button
 				key={actionId}
@@ -72,7 +71,6 @@ class MessageParser extends UiKitParserMessage {
 				loading={loading}
 				onPress={() => action({ value })}
 				style={styles.button}
-				theme={theme}
 			/>
 		);
 	}
@@ -171,7 +169,7 @@ class ModalParser extends UiKitParserModal {
 		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
-			<TextInput
+			<FormTextInput
 				key={actionId}
 				placeholder={plainText(placeholder)}
 				multiline={multiline}
