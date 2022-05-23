@@ -1,9 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { TextInputProps, View } from 'react-native';
+import { StyleSheet, TextInputProps, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import FormTextInput from '../TextInput/FormTextInput';
+
+const styles = StyleSheet.create({
+	inputContainer: { margin: 16 }
+});
 
 const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
 	const { colors, theme } = useTheme();
@@ -32,7 +36,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				placeholderTextColor={colors.auxiliaryTintColor}
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
-				containerStyle={{ margin: 16 }}
+				containerStyle={styles.inputContainer}
 				inputStyle={inputStyle}
 				onChangeText={internalOnChangeText}
 				onSubmitEditing={onSubmitEditing}
