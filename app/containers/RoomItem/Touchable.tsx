@@ -189,6 +189,7 @@ const Touchable = ({
 	const onGestureEvent = useAnimatedGestureHandler({
 		onActive: event => {
 			transX.value = event.translationX + rowOffSet.value;
+			if (transX.value > 2 * width) transX.value = 2 * width;
 		},
 		onEnd: event => {
 			// https://docs.swmansion.com/react-native-reanimated/docs/api/miscellaneous/runOnJS
