@@ -8,7 +8,7 @@ import { dequal } from 'dequal';
 
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IAttachment } from '../../definitions/IAttachment';
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
@@ -322,7 +322,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
 				<StatusBar />
 				<View style={styles.searchContainer}>
-					<RCTextInput
+					<FormTextInput
 						autoFocus
 						label={I18n.t('Search')}
 						onChangeText={this.search}

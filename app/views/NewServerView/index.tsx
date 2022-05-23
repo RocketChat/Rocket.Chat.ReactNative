@@ -374,7 +374,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
-						theme={theme}
 						testID='new-server-view-button'
 						accessibilityLabel='new-server-view-button'
 					/>
@@ -397,7 +396,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						onPress={this.connectOpen}
 						disabled={connecting}
 						loading={connectingOpen && connecting}
-						theme={theme}
 						testID='new-server-view-open'
 					/>
 				</FormContainerInner>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { I18nManager, StyleProp, StyleSheet, TextInput, TextStyle } from 'react-native';
 
-import { IRCTextInputProps } from '../containers/TextInput';
-import { themes } from '../lib/constants';
-import { testProps } from '../lib/methods/testProps';
-import { TSupportedThemes } from '../theme';
+import { IRCTextInputProps } from './FormTextInput';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes } from '../../theme';
+import { testProps } from '../../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	input: {

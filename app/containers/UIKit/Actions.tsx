@@ -4,10 +4,8 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import Button from '../Button';
 import I18n from '../../i18n';
 import { IActions } from './interfaces';
-import { useTheme } from '../../theme';
 
 export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
-	const { theme } = useTheme();
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements && elements.length > 5);
 	const renderedElements = showMoreVisible ? elements?.slice(0, 5) : elements;
 
@@ -18,7 +16,7 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 	return (
 		<>
 			<Elements />
-			{showMoreVisible && <Button theme={theme} title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
+			{showMoreVisible && <Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
 		</>
 	);
 };

@@ -32,13 +32,14 @@ import SidebarView from '../SidebarView';
 import { clearCache } from '../../lib/methods';
 import { Services } from '../../lib/services';
 
+type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
+
 interface ISettingsViewProps extends IBaseScreen<SettingsStackParamList, 'SettingsView'> {
 	server: IServer;
-	isMasterDetail: boolean;
 	user: IUser;
 }
 
-class SettingsView extends React.Component<ISettingsViewProps, any> {
+class SettingsView extends React.Component<ISettingsViewProps> {
 	static navigationOptions = ({ navigation, isMasterDetail }: ISettingsViewProps): StackNavigationOptions => ({
 		headerLeft: () =>
 			isMasterDetail ? (
@@ -54,7 +55,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 		const db = database.servers;
 		const usersCollection = db.get('users');
 		try {
-			const userRecord: any = await usersCollection.find(user.id);
+			const userRecord = await usersCollection.find(user.id);
 			if (userRecord.isFromWebView) {
 				showConfirmationAlert({
 					title: I18n.t('Clear_cookies_alert'),
@@ -107,15 +108,15 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 	};
 
 	navigateToScreen = (screen: keyof SettingsStackParamList) => {
-		/* @ts-ignore */
-		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
+		const screenName = screen.replace('View', '').toUpperCase();
+		logEvent(events[`SE_GO_${screenName}` as TLogScreenName]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
 	};
 
 	sendEmail = async () => {
 		logEvent(events.SE_CONTACT_US);
-		const subject = encodeURI('React Native App Support');
+		const subject = encodeURI('Rocket.Chat Mobile App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
 			version: ${getReadableVersion}

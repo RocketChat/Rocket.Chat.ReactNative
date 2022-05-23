@@ -11,7 +11,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import TextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
 import { showErrorAlert } from '../../utils/info';
@@ -167,7 +167,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						<TextInput
+						<FormTextInput
 							label={I18n.t('Discussion_name')}
 							testID='multi-select-discussion-name'
 							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
