@@ -95,7 +95,7 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 
 	get iconRight() {
 		const { iconRight, theme, onClearInput, value } = this.props;
-		if (onClearInput && value && value?.length > 0) {
+		if (onClearInput && value && value.length > 0) {
 			return (
 				<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='searchbox-clear'>
 					<CustomIcon name='input-clear' size={20} color={themes[theme].auxiliaryTintColor} />

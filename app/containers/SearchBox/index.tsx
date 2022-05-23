@@ -12,14 +12,6 @@ const styles = StyleSheet.create({
 const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
 	const { colors, theme } = useTheme();
 	const [text, setText] = useState('');
-	const background = theme === 'light' ? colors.backgroundColor : colors.searchboxBackground;
-	const inputStyle = {
-		borderWidth: 2,
-		paddingVertical: 0,
-		borderColor: colors.searchboxBackground,
-		backgroundColor: background,
-		color: colors.auxiliaryTintColor
-	};
 
 	const internalOnChangeText = useCallback(value => {
 		setText(value);
@@ -37,7 +29,6 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
 				containerStyle={styles.inputContainer}
-				inputStyle={inputStyle}
 				onChangeText={internalOnChangeText}
 				onSubmitEditing={onSubmitEditing}
 				value={text}
