@@ -67,7 +67,6 @@ interface IRoomMembersViewState {
 	membersFiltered: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
-	searchText: string;
 }
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
@@ -91,8 +90,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			members: [],
 			membersFiltered: [],
 			room: room || ({} as TSubscriptionModel),
-			end: false,
-			searchText: ''
+			end: false
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -181,7 +179,6 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	};
 
 	onSearchChangeText = protectedFunction((text: string) => {
-		this.setState({ searchText: text });
 		const { members } = this.state;
 		let membersFiltered: TUserModel[] = [];
 		text = text.trim();
@@ -608,14 +605,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 	};
 
-	renderSearchBar = () => (
-		<SearchBox
-			onChangeText={text => this.onSearchChangeText(text)}
-			onCancelSearch={() => this.onSearchChangeText('')}
-			value={this.state.searchText}
-			testID='room-members-view-search'
-		/>
-	);
+	renderSearchBar = () => <SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />;
 
 	renderItem = ({ item }: { item: TUserModel }) => {
 		const { theme } = this.props;

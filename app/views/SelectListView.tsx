@@ -33,7 +33,6 @@ interface ISelectListViewState {
 	data?: TDataSelect[];
 	dataFiltered?: TDataSelect[];
 	isSearching: boolean;
-	searchText: string;
 	selected: string[];
 }
 
@@ -73,8 +72,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 			data,
 			dataFiltered: [],
 			isSearching: false,
-			selected: [],
-			searchText: ''
+			selected: []
 		};
 		this.setHeader();
 	}
@@ -113,19 +111,14 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox
-					onChangeText={(text: string) => this.search(text)}
-					onCancelSearch={() => this.search('')}
-					value={this.state.searchText}
-					testID='select-list-view-search'
-				/>
+				<SearchBox onChangeText={(text: string) => this.search(text)} testID='select-list-view-search' />
 			</View>
 		);
 	};
 
 	search = async (text: string) => {
 		try {
-			this.setState({ isSearching: true, searchText: text });
+			this.setState({ isSearching: true });
 			const result = await this.onSearch?.(text);
 			this.setState({ dataFiltered: result });
 		} catch (e) {

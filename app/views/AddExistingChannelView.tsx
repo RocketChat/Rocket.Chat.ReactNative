@@ -30,7 +30,6 @@ interface IAddExistingChannelViewState {
 	channels: TSubscriptionModel[];
 	selected: string[];
 	loading: boolean;
-	searchText: string;
 }
 
 interface IAddExistingChannelViewProps {
@@ -54,8 +53,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			search: [],
 			channels: [],
 			selected: [],
-			loading: false,
-			searchText: ''
+			loading: false
 		};
 		this.setHeader();
 	}
@@ -124,11 +122,6 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		this.query(text);
 	}, 300);
 
-	cancelSearch = () => {
-		this.setState({ searchText: '' });
-		this.query();
-	};
-
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
@@ -159,15 +152,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox
-					onCancelSearch={this.cancelSearch}
-					onChangeText={(text: string) => {
-						this.setState({ searchText: text });
-						this.onSearchChangeText(text);
-					}}
-					value={this.state.searchText}
-					testID='add-existing-channel-view-search'
-				/>
+				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='add-existing-channel-view-search' />
 			</View>
 		);
 	};

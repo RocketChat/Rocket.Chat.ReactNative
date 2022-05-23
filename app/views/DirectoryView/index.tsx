@@ -209,13 +209,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 		return (
 			<>
-				<SearchBox
-					onCancelSearch={() => this.onSearchChangeText('')}
-					onChangeText={this.onSearchChangeText}
-					onSubmitEditing={this.search}
-					value={this.state.text}
-					testID='directory-view-search'
-				/>
+				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
 				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown' theme={theme}>
 					<View
 						style={[

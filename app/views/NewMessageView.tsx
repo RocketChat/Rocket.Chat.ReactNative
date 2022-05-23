@@ -58,7 +58,6 @@ interface IButton {
 
 interface INewMessageViewState {
 	search: (ISearch | TSubscriptionModel)[];
-	searchText: string;
 	chats: TSubscriptionModel[];
 	permissions: boolean[];
 }
@@ -85,7 +84,6 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		this.init();
 		this.state = {
 			search: [],
-			searchText: '',
 			chats: [],
 			permissions: []
 		};
@@ -138,7 +136,6 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	};
 
 	onSearchChangeText(text: string) {
-		this.setState({ searchText: text });
 		this.handleSearch(text);
 	}
 
@@ -227,12 +224,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox
-					onChangeText={(text: string) => this.onSearchChangeText(text)}
-					onCancelSearch={() => this.onSearchChangeText('')}
-					value={this.state.searchText}
-					testID='new-message-view-search'
-				/>
+				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
 					{permissions[0] || permissions[1]
 						? this.renderButton({

@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { TextInputProps, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import FormTextInput from '../TextInput/FormTextInput';
 
-export interface ISearchBox extends TextInputProps {
-	onCancelSearch: () => void;
-}
-
-const SearchBox = ({ onCancelSearch, onChangeText, onSubmitEditing, value, testID }: ISearchBox): JSX.Element => {
+const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
 	const { colors, theme } = useTheme();
+	const [text, setText] = useState('');
 	const background = theme === 'light' ? colors.backgroundColor : colors.searchboxBackground;
 	const inputStyle = {
 		borderWidth: 2,
@@ -19,6 +16,11 @@ const SearchBox = ({ onCancelSearch, onChangeText, onSubmitEditing, value, testI
 		backgroundColor: background,
 		color: colors.auxiliaryTintColor
 	};
+
+	const internalOnChangeText = useCallback(value => {
+		setText(value);
+		onChangeText?.(value);
+	}, []);
 
 	return (
 		<View testID='searchbox'>
@@ -32,12 +34,12 @@ const SearchBox = ({ onCancelSearch, onChangeText, onSubmitEditing, value, testI
 				underlineColorAndroid='transparent'
 				containerStyle={{ margin: 16 }}
 				inputStyle={inputStyle}
-				onChangeText={onChangeText}
+				onChangeText={internalOnChangeText}
 				onSubmitEditing={onSubmitEditing}
-				value={value}
+				value={text}
 				theme={theme}
 				testID={testID}
-				onCancelSearch={onCancelSearch}
+				onClearInput={() => internalOnChangeText('')}
 				iconRight={'search'}
 			/>
 		</View>

@@ -62,9 +62,8 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;
-	onIconRightPress?(): void;
 	theme: TSupportedThemes;
-	onCancelSearch?: () => void;
+	onClearInput?: () => void;
 }
 
 interface IRCTextInputState {
@@ -95,19 +94,17 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 	}
 
 	get iconRight() {
-		const { iconRight, onIconRightPress, theme, onCancelSearch, value } = this.props;
-		if (onCancelSearch && value && value?.length > 0) {
+		const { iconRight, theme, onClearInput, value } = this.props;
+		if (onClearInput && value && value?.length > 0) {
 			return (
-				<Touchable onPress={onCancelSearch} style={[styles.iconContainer, styles.iconRight]} testID='searchbox-clear'>
-					<CustomIcon name='input-clear' size={18} color={themes[theme].auxiliaryTintColor} />
+				<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='searchbox-clear'>
+					<CustomIcon name='input-clear' size={20} color={themes[theme].auxiliaryTintColor} />
 				</Touchable>
 			);
 		}
 
 		return iconRight ? (
-			<Touchable onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
-				<CustomIcon name={iconRight} size={20} color={themes[theme].bodyText} />
-			</Touchable>
+			<CustomIcon name={iconRight} size={20} color={themes[theme].bodyText} style={[styles.iconContainer, styles.iconRight]} />
 		) : null;
 	}
 
