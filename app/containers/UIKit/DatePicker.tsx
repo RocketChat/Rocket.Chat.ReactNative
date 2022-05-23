@@ -9,7 +9,7 @@ import Button from '../Button';
 import { textParser } from './utils';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '../../utils/deviceInfo';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
@@ -56,9 +56,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 		}
 	};
 
-	let button = placeholder ? (
-		<Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} theme={theme} />
-	) : null;
+	let button = placeholder ? <Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} /> : null;
 
 	if (context === BLOCK_CONTEXT.FORM) {
 		button = (

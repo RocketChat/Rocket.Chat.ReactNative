@@ -121,7 +121,6 @@ class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any
 	};
 
 	render() {
-		const { theme } = this.props;
 		return (
 			<SafeAreaView>
 				<List.Container>
@@ -134,7 +133,7 @@ class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any
 						<List.Separator />
 					</List.Section>
 					<View style={styles.innerContainer}>
-						<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={this.createInviteLink} theme={theme} />
+						<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={this.createInviteLink} />
 					</View>
 				</List.Container>
 			</SafeAreaView>
