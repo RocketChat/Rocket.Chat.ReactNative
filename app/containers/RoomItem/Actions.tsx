@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import Animated, { useAnimatedStyle, interpolate, withTiming, useDerivedValue } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, interpolate, withTiming, useDerivedValue, runOnJS } from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '../../lib/constants';
@@ -51,13 +52,21 @@ export const RightActions = React.memo(
 		const { colors } = useTheme();
 
 		const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
-		console.log('isRTL: ', I18n.isRTL);
+
+		const hapticFeedback = () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
 		const translateXHide = useDerivedValue(() => {
 			if (I18n.isRTL) {
-				if (hideActive.value) return withTiming(ACTION_WIDTH, { duration: 200 });
+				if (hideActive.value) {
+					runOnJS(hapticFeedback)();
+					return withTiming(ACTION_WIDTH, { duration: 200 });
+				}
 				return withTiming(0, { duration: 200 });
 			}
-			if (hideActive.value) return withTiming(-ACTION_WIDTH, { duration: 200 });
+			if (hideActive.value) {
+				runOnJS(hapticFeedback)();
+				return withTiming(-ACTION_WIDTH, { duration: 200 });
+			}
 			return withTiming(0, { duration: 200 });
 		});
 
