@@ -171,6 +171,9 @@ describe('Room info screen', () => {
 				await expect(element(by.id('room-info-view-name')))[matcher](`${privateRoomName}new`);
 				// change name to original
 				await element(by.id('room-info-view-edit-button')).tap();
+				// wait until the DB is up to date
+				// TODO: Fix RoomInfoEditView observation
+				await sleep(3000);
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
@@ -226,6 +229,8 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
+				// wait until the DB is up to date
+				await sleep(3000);
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
 				await swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
@@ -245,6 +250,8 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
+				// wait until the DB is up to date
+				await sleep(2000);
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
 				await swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
@@ -264,6 +271,8 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
+				// wait until the DB is up to date
+				await sleep(2000);
 				await element(by.id('room-info-edit-view-password')).replaceText('password');
 				await swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
