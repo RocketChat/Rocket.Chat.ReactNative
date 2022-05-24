@@ -19,6 +19,7 @@ export interface IRightActionsProps {
 	toggleFav(): void;
 	onHidePress(): void;
 	displayMode: string;
+	hideActive: Animated.SharedValue<boolean>;
 }
 
 export interface ITitleProps {

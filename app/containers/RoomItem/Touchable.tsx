@@ -1,5 +1,4 @@
 import React from 'react';
-import { I18nManager } from 'react-native';
 import Animated, {
 	useAnimatedGestureHandler,
 	useSharedValue,
@@ -20,6 +19,7 @@ import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
+import I18n from '../../i18n';
 
 const Touchable = ({
 	children,
@@ -43,6 +43,7 @@ const Touchable = ({
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
+	const hideActive = useSharedValue(false);
 	let _value = 0;
 
 	const close = () => {
@@ -114,7 +115,7 @@ const Touchable = ({
 		if (rowState.value === 0) {
 			// if no option is opened
 			if (translationX > 0 && translationX < LONG_SWIPE) {
-				if (I18nManager.isRTL) {
+				if (I18n.isRTL) {
 					toValue = 2 * ACTION_WIDTH;
 				} else {
 					toValue = ACTION_WIDTH;
@@ -122,14 +123,14 @@ const Touchable = ({
 				rowState.value = -1;
 			} else if (translationX >= LONG_SWIPE) {
 				toValue = 0;
-				if (I18nManager.isRTL) {
+				if (I18n.isRTL) {
 					handleHideChannel();
 				} else {
 					handleToggleRead();
 				}
 			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
 				// open trailing option if he swipe left
-				if (I18nManager.isRTL) {
+				if (I18n.isRTL) {
 					toValue = -ACTION_WIDTH;
 				} else {
 					toValue = -2 * ACTION_WIDTH;
@@ -138,7 +139,7 @@ const Touchable = ({
 			} else if (translationX <= -LONG_SWIPE) {
 				toValue = 0;
 				rowState.value = 1;
-				if (I18nManager.isRTL) {
+				if (I18n.isRTL) {
 					handleToggleRead();
 				} else {
 					handleHideChannel();
@@ -154,12 +155,12 @@ const Touchable = ({
 			} else if (_value > LONG_SWIPE) {
 				toValue = 0;
 				rowState.value = 0;
-				if (I18nManager.isRTL) {
+				if (I18n.isRTL) {
 					handleHideChannel();
 				} else {
 					handleToggleRead();
 				}
-			} else if (I18nManager.isRTL) {
+			} else if (I18n.isRTL) {
 				toValue = 2 * ACTION_WIDTH;
 			} else {
 				toValue = ACTION_WIDTH;
@@ -170,12 +171,12 @@ const Touchable = ({
 				toValue = 0;
 				rowState.value = 0;
 			} else if (_value < -LONG_SWIPE) {
-				if (I18nManager.isRTL) {
+				if (I18n.isRTL) {
 					handleToggleRead();
 				} else {
 					handleHideChannel();
 				}
-			} else if (I18nManager.isRTL) {
+			} else if (I18n.isRTL) {
 				toValue = -ACTION_WIDTH;
 			} else {
 				toValue = -2 * ACTION_WIDTH;
@@ -183,13 +184,20 @@ const Touchable = ({
 		}
 		transX.value = withSpring(toValue, { overshootClamping: true });
 		rowOffSet.value = toValue;
+		hideActive.value = false;
 		_value = toValue;
 	};
 
 	const onGestureEvent = useAnimatedGestureHandler({
 		onActive: event => {
+			// console.log('HideActive: ', hideActive.value);
 			transX.value = event.translationX + rowOffSet.value;
 			if (transX.value > 2 * width) transX.value = 2 * width;
+			if (I18n.isRTL) {
+				if (transX.value > LONG_SWIPE) hideActive.value = true;
+				else hideActive.value = false;
+			} else if (transX.value < -LONG_SWIPE) hideActive.value = true;
+			else hideActive.value = false;
 		},
 		onEnd: event => {
 			runOnJS(handleRelease)(event);
@@ -217,6 +225,7 @@ const Touchable = ({
 							toggleFav={handleToggleFav}
 							onHidePress={onHidePress}
 							displayMode={displayMode}
+							hideActive={hideActive}
 						/>
 						<Animated.View style={animatedStyles}>
 							<Touch
