@@ -230,11 +230,10 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 	};
 
 	render() {
-		const { Accounts_ShowFormLogin, theme, navigation } = this.props;
 		return (
 			<FormContainer testID='login-view'>
 				<FormContainerInner>
-					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} theme={theme} />
+					<LoginServices />
 					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>
