@@ -14845,9 +14845,9 @@ react-native-easy-toast@^1.2.0:
   dependencies:
     prop-types "^15.5.10"
 
-"react-native-fast-image@https://github.com/RocketChat/react-native-fast-image.git#bump-version":
+react-native-fast-image@RocketChat/react-native-fast-image.git#bump-version:
   version "8.5.12"
-  resolved "https://github.com/RocketChat/react-native-fast-image.git#5079333d97482166164fbffc68f939cce34d7d9d"
+  resolved "https://codeload.github.com/RocketChat/react-native-fast-image/tar.gz/8bdb187a4500e23ad1c95324a669c25361bbf685"
 
 react-native-file-viewer@^2.1.4:
   version "2.1.4"
