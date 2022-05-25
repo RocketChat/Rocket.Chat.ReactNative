@@ -1,11 +1,13 @@
-import React from 'react';
-import { Animated, Easing, Linking, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import { shallowEqual } from 'react-redux';
 import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { TSupportedThemes, withTheme } from '../theme';
+import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import Button from './Button';
@@ -17,8 +19,8 @@ import { events, logEvent } from '../utils/log';
 import { CustomIcon, TIconsName } from './CustomIcon';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
-import { IApplicationState } from '../definitions';
 import { Services } from '../lib/services';
+import { useAppSelector } from '../lib/hooks';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -92,154 +94,145 @@ interface IOauthProvider {
 	wordpress: () => void;
 }
 
-interface ILoginServicesProps {
-	navigation: StackNavigationProp<OutsideParamList>;
-	server: string;
-	services: IServices;
-	Gitlab_URL: string;
-	CAS_enabled: boolean;
-	CAS_login_url: string;
-	separator: boolean;
-	theme: TSupportedThemes;
-}
+const LoginServices = (): React.ReactElement => {
+	const [collapsed, setCollapsed] = useState(true);
 
-interface ILoginServicesState {
-	collapsed: boolean;
-	servicesHeight: Animated.Value;
-}
+	const navigation = useNavigation<StackNavigationProp<OutsideParamList>>();
+	const { theme } = useTheme();
 
-class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServicesState> {
-	private _animation?: Animated.CompositeAnimation | void;
+	const { Gitlab_URL, CAS_enabled, CAS_login_url, Accounts_ShowFormLogin } = useAppSelector(
+		state => ({
+			Gitlab_URL: state.settings.API_Gitlab_URL as string,
+			CAS_enabled: state.settings.CAS_enabled as boolean,
+			CAS_login_url: state.settings.CAS_login_url as string,
+			Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin as boolean
+		}),
+		shallowEqual
+	);
+	const server = useAppSelector(state => state.server.server);
+	const services = useAppSelector(state => state.login.services as IServices);
+	const { length } = Object.values(services);
 
-	state = {
-		collapsed: true,
-		servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
-	};
+	const heightButtons = useSharedValue(SERVICES_COLLAPSED_HEIGHT);
 
-	onPressFacebook = () => {
+	const animatedStyle = useAnimatedStyle(() => ({
+		overflow: 'hidden',
+		height: withTiming(heightButtons.value, { duration: 300, easing: Easing.inOut(Easing.quad) })
+	}));
+
+	const onPressFacebook = () => {
 		logEvent(events.ENTER_WITH_FACEBOOK);
-		const { services, server } = this.props;
 		const { clientId } = services.facebook;
 		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
 		const redirect_uri = `${server}/_oauth/facebook?close`;
 		const scope = 'email';
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&display=touch`;
-		this.openOAuth({ url: `${endpoint}${params}` });
+		openOAuth({ url: `${endpoint}${params}` });
 	};
 
-	onPressGithub = () => {
+	const onPressGithub = () => {
 		logEvent(events.ENTER_WITH_GITHUB);
-		const { services, server } = this.props;
 		const { clientId } = services.github;
 		const endpoint = `https://github.com/login?client_id=${clientId}&return_to=${encodeURIComponent('/login/oauth/authorize')}`;
 		const redirect_uri = `${server}/_oauth/github?close`;
 		const scope = 'user:email';
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}`;
-		this.openOAuth({ url: `${endpoint}${encodeURIComponent(params)}` });
+		openOAuth({ url: `${endpoint}${encodeURIComponent(params)}` });
 	};
 
-	onPressGitlab = () => {
+	const onPressGitlab = () => {
 		logEvent(events.ENTER_WITH_GITLAB);
-		const { services, server, Gitlab_URL } = this.props;
 		const { clientId } = services.gitlab;
 		const baseURL = Gitlab_URL ? Gitlab_URL.trim().replace(/\/*$/, '') : 'https://gitlab.com';
 		const endpoint = `${baseURL}/oauth/authorize`;
 		const redirect_uri = `${server}/_oauth/gitlab?close`;
 		const scope = 'read_user';
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
-		this.openOAuth({ url: `${endpoint}${params}` });
+		openOAuth({ url: `${endpoint}${params}` });
 	};
 
-	onPressGoogle = () => {
+	const onPressGoogle = () => {
 		logEvent(events.ENTER_WITH_GOOGLE);
-		const { services, server } = this.props;
 		const { clientId } = services.google;
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
 		const redirect_uri = `${server}/_oauth/google?close`;
 		const scope = 'email';
-		const state = this.getOAuthState(LOGIN_STYPE_REDIRECT);
+		const state = getOAuthState(LOGIN_STYPE_REDIRECT);
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
 		Linking.openURL(`${endpoint}${params}`);
 	};
 
-	onPressLinkedin = () => {
+	const onPressLinkedin = () => {
 		logEvent(events.ENTER_WITH_LINKEDIN);
-		const { services, server } = this.props;
 		const { clientId } = services.linkedin;
 		const endpoint = 'https://www.linkedin.com/oauth/v2/authorization';
 		const redirect_uri = `${server}/_oauth/linkedin?close`;
 		const scope = 'r_liteprofile,r_emailaddress';
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
-		this.openOAuth({ url: `${endpoint}${params}` });
+		openOAuth({ url: `${endpoint}${params}` });
 	};
 
-	onPressMeteor = () => {
+	const onPressMeteor = () => {
 		logEvent(events.ENTER_WITH_METEOR);
-		const { services, server } = this.props;
 		const { clientId } = services['meteor-developer'];
 		const endpoint = 'https://www.meteor.com/oauth2/authorize';
 		const redirect_uri = `${server}/_oauth/meteor-developer`;
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&state=${state}&response_type=code`;
-		this.openOAuth({ url: `${endpoint}${params}` });
+		openOAuth({ url: `${endpoint}${params}` });
 	};
 
-	onPressTwitter = () => {
+	const onPressTwitter = () => {
 		logEvent(events.ENTER_WITH_TWITTER);
-		const { server } = this.props;
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const url = `${server}/_oauth/twitter/?requestTokenAndRedirect=true&state=${state}`;
-		this.openOAuth({ url });
+		openOAuth({ url });
 	};
 
-	onPressWordpress = () => {
+	const onPressWordpress = () => {
 		logEvent(events.ENTER_WITH_WORDPRESS);
-		const { services, server } = this.props;
 		const { clientId, serverURL } = services.wordpress;
 		const endpoint = `${serverURL}/oauth/authorize`;
 		const redirect_uri = `${server}/_oauth/wordpress?close`;
 		const scope = 'openid';
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
-		this.openOAuth({ url: `${endpoint}${params}` });
+		openOAuth({ url: `${endpoint}${params}` });
 	};
 
-	onPressCustomOAuth = (loginService: IItemService) => {
+	const onPressCustomOAuth = (loginService: IItemService) => {
 		logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
-		const { server } = this.props;
 		const { serverURL, authorizePath, clientId, scope, service } = loginService;
 		const redirectUri = `${server}/_oauth/${service}`;
-		const state = this.getOAuthState();
+		const state = getOAuthState();
 		const params = `?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}&scope=${scope}`;
 		const domain = `${serverURL}`;
 		const absolutePath = `${authorizePath}${params}`;
 		const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
-		this.openOAuth({ url });
+		openOAuth({ url });
 	};
 
-	onPressSaml = (loginService: IItemService) => {
+	const onPressSaml = (loginService: IItemService) => {
 		logEvent(events.ENTER_WITH_SAML);
-		const { server } = this.props;
 		const { clientConfig } = loginService;
 		const { provider } = clientConfig;
 		const ssoToken = random(17);
 		const url = `${server}/_saml/authorize/${provider}/${ssoToken}`;
-		this.openOAuth({ url, ssoToken, authType: 'saml' });
+		openOAuth({ url, ssoToken, authType: 'saml' });
 	};
 
-	onPressCas = () => {
+	const onPressCas = () => {
 		logEvent(events.ENTER_WITH_CAS);
-		const { server, CAS_login_url } = this.props;
 		const ssoToken = random(17);
 		const url = `${CAS_login_url}?service=${server}/_cas/${ssoToken}`;
-		this.openOAuth({ url, ssoToken, authType: 'cas' });
+		openOAuth({ url, ssoToken, authType: 'cas' });
 	};
 
-	onPressAppleLogin = async () => {
+	const onPressAppleLogin = async () => {
 		logEvent(events.ENTER_WITH_APPLE);
 		try {
 			const { fullName, email, identityToken } = await AppleAuthentication.signInAsync({
@@ -254,7 +247,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		}
 	};
 
-	getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
+	const getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
 		const credentialToken = random(43);
 		let obj: {
 			loginStyle: string;
@@ -271,62 +264,37 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		return Base64.encodeURI(JSON.stringify(obj));
 	};
 
-	openOAuth = ({ url, ssoToken, authType = 'oauth' }: IOpenOAuth) => {
-		const { navigation } = this.props;
+	const openOAuth = ({ url, ssoToken, authType = 'oauth' }: IOpenOAuth) => {
 		navigation.navigate('AuthenticationWebView', { url, authType, ssoToken });
 	};
 
-	transitionServicesTo = (height: number) => {
-		const { servicesHeight } = this.state;
-		if (this._animation) {
-			this._animation.stop();
-		}
-		this._animation = Animated.timing(servicesHeight, {
-			toValue: height,
-			duration: 300,
-			easing: Easing.inOut(Easing.quad),
-			useNativeDriver: false
-		}).start();
-	};
-
-	toggleServices = () => {
-		const { collapsed } = this.state;
-		const { services } = this.props;
-		const { length } = Object.values(services);
-		if (collapsed) {
-			this.transitionServicesTo(SERVICE_HEIGHT * length);
-		} else {
-			this.transitionServicesTo(SERVICES_COLLAPSED_HEIGHT);
-		}
-		this.setState((prevState: ILoginServicesState) => ({ collapsed: !prevState.collapsed }));
-	};
-
-	getSocialOauthProvider = (name: string) => {
+	const getSocialOauthProvider = (name: string) => {
 		const oauthProviders: IOauthProvider = {
-			facebook: this.onPressFacebook,
-			github: this.onPressGithub,
-			gitlab: this.onPressGitlab,
-			google: this.onPressGoogle,
-			linkedin: this.onPressLinkedin,
-			'meteor-developer': this.onPressMeteor,
-			twitter: this.onPressTwitter,
-			wordpress: this.onPressWordpress
+			facebook: onPressFacebook,
+			github: onPressGithub,
+			gitlab: onPressGitlab,
+			google: onPressGoogle,
+			linkedin: onPressLinkedin,
+			'meteor-developer': onPressMeteor,
+			twitter: onPressTwitter,
+			wordpress: onPressWordpress
 		};
 		return oauthProviders[name];
 	};
 
-	renderServicesSeparator = () => {
-		const { collapsed } = this.state;
-		const { services, separator, theme } = this.props;
+	const renderServicesSeparator = () => {
 		const { length } = Object.values(services);
 
-		if (length > 3 && separator) {
+		if (length > 3 && Accounts_ShowFormLogin) {
 			return (
 				<>
 					<Button
 						title={collapsed ? I18n.t('Onboarding_more_options') : I18n.t('Onboarding_less_options')}
 						type='secondary'
-						onPress={this.toggleServices}
+						onPress={() => {
+							heightButtons.value = collapsed ? SERVICE_HEIGHT * length : SERVICES_COLLAPSED_HEIGHT;
+							setCollapsed(prevState => !prevState);
+						}}
 						style={styles.options}
 						color={themes[theme].actionTintColor}
 					/>
@@ -334,14 +302,13 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 				</>
 			);
 		}
-		if (length > 0 && separator) {
+		if (length > 0 && Accounts_ShowFormLogin) {
 			return <OrSeparator theme={theme} />;
 		}
 		return null;
 	};
 
-	renderItem = (service: IItemService) => {
-		const { CAS_enabled, theme } = this.props;
+	const renderItem = (service: IItemService) => {
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `${name}-monochromatic` as TIconsName;
@@ -350,23 +317,23 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 
 		switch (service.authType) {
 			case 'oauth': {
-				onPress = this.getSocialOauthProvider(service.name);
+				onPress = getSocialOauthProvider(service.name);
 				break;
 			}
 			case 'oauth_custom': {
-				onPress = () => this.onPressCustomOAuth(service);
+				onPress = () => onPressCustomOAuth(service);
 				break;
 			}
 			case 'saml': {
-				onPress = () => this.onPressSaml(service);
+				onPress = () => onPressSaml(service);
 				break;
 			}
 			case 'cas': {
-				onPress = () => this.onPressCas();
+				onPress = () => onPressCas();
 				break;
 			}
 			case 'apple': {
-				onPress = () => this.onPressAppleLogin();
+				onPress = () => onPressAppleLogin();
 				break;
 			}
 			default:
@@ -405,40 +372,22 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		);
 	};
 
-	render() {
-		const { servicesHeight } = this.state;
-		const { services, separator } = this.props;
-		const { length } = Object.values(services);
-		const style: Animated.AnimatedProps<ViewStyle> = {
-			overflow: 'hidden',
-			height: servicesHeight
-		};
-
-		if (length > 3 && separator) {
-			return (
-				<>
-					<Animated.View style={style}>
-						{Object.values(services).map((service: IItemService) => this.renderItem(service))}
-					</Animated.View>
-					{this.renderServicesSeparator()}
-				</>
-			);
-		}
+	if (length > 3 && Accounts_ShowFormLogin) {
 		return (
 			<>
-				{Object.values(services).map((service: IItemService) => this.renderItem(service))}
-				{this.renderServicesSeparator()}
+				<Animated.View style={animatedStyle}>
+					{Object.values(services).map((service: IItemService) => renderItem(service))}
+				</Animated.View>
+				{renderServicesSeparator()}
 			</>
 		);
 	}
-}
+	return (
+		<>
+			{Object.values(services).map((service: IItemService) => renderItem(service))}
+			{renderServicesSeparator()}
+		</>
+	);
+};
 
-const mapStateToProps = (state: IApplicationState) => ({
-	server: state.server.server,
-	Gitlab_URL: state.settings.API_Gitlab_URL as string,
-	CAS_enabled: state.settings.CAS_enabled as boolean,
-	CAS_login_url: state.settings.CAS_login_url as string,
-	services: state.login.services as IServices
-});
-
-export default connect(mapStateToProps)(withTheme(LoginServices));
+export default LoginServices;
