@@ -31,7 +31,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 				t: 'c',
 				rid: channels?.[index]._id
 			};
-			const room = await getSubscriptionByRoomId(navParam.rid!);
+			const room = navParam.rid && (await getSubscriptionByRoomId(navParam.rid));
 			if (room) {
 				if (isMasterDetail) {
 					// Close the modal if it is open and then redirect to the channel
@@ -39,7 +39,6 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 					navigation.replace('RoomView', room);
 				} else navigation.push('RoomView', room);
 			} else {
-				// Navigate to RoomInfoView if the channel is not joined
 				navToRoomInfo(navParam);
 			}
 		}
