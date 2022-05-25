@@ -4,7 +4,7 @@ import { createStackNavigator, StackNavigationOptions, StackNavigationProp } fro
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
-import { FadeFromCenterModal, StackAnimation, defaultHeader, themedHeader } from '../../utils/navigation';
+import { FadeFromCenterModal, StackAnimation, defaultHeader, themedHeader, drawerStyle } from '../../utils/navigation';
 // Chats Stack
 import RoomView from '../../views/RoomView';
 import RoomsListView from '../../views/RoomsListView';
@@ -96,7 +96,7 @@ const ChatsStackNavigator = React.memo(() => {
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
-		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { width: 320 } }}
+		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
 		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 	</Drawer.Navigator>
