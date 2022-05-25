@@ -21,7 +21,7 @@ describe('SearchBox', () => {
 	});
 	it('should not render clear-input icon', async () => {
 		const { queryByTestId } = render(<Render onChangeText={testSearchInputs.onChangeText} testID={testSearchInputs.testID} />);
-		const clearInput = await queryByTestId('searchbox-clear');
+		const clearInput = await queryByTestId('clear-text-input');
 		expect(clearInput).toBeNull();
 	});
 
@@ -38,7 +38,7 @@ describe('SearchBox', () => {
 	it.skip('should clear input when call onCancelSearch function', async () => {
 		const { findByTestId } = render(<Render testID={'input-with-value'} onChangeText={onChangeTextMock} />);
 
-		const component = await findByTestId('searchbox-clear');
+		const component = await findByTestId('clear-text-input');
 		fireEvent.press(component, 'input-with-value');
 		expect(onChangeTextMock).toHaveBeenCalledWith('input-with-value');
 	});

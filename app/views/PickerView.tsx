@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 
 import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
@@ -61,9 +61,7 @@ const RenderSearch = ({ hasSearch, onChangeText }: IRenderSearch) => {
 	}
 	return (
 		<>
-			<View>
-				<SearchBox onChangeText={onChangeText} />
-			</View>
+			<SearchBox onChangeText={onChangeText} />
 			<List.Separator />
 		</>
 	);

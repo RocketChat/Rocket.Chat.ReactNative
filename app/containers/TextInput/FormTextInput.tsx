@@ -87,7 +87,7 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 				name={iconLeft}
 				testID={testID ? `${testID}-icon-left` : undefined}
 				size={20}
-				color={themes[theme].bodyText}
+				color={themes[theme].auxiliaryText}
 				style={[styles.iconContainer, styles.iconLeft]}
 			/>
 		) : null;
@@ -97,14 +97,19 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 		const { iconRight, theme, onClearInput, value } = this.props;
 		if (onClearInput && value && value.length > 0) {
 			return (
-				<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='searchbox-clear'>
+				<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
 					<CustomIcon name='input-clear' size={20} color={themes[theme].auxiliaryTintColor} />
 				</Touchable>
 			);
 		}
 
 		return iconRight ? (
-			<CustomIcon name={iconRight} size={20} color={themes[theme].bodyText} style={[styles.iconContainer, styles.iconRight]} />
+			<CustomIcon
+				name={iconRight}
+				size={20}
+				color={themes[theme].auxiliaryText}
+				style={[styles.iconContainer, styles.iconRight]}
+			/>
 		) : null;
 	}
 
