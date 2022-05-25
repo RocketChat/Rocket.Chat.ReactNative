@@ -1,6 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
-import Animated, { useAnimatedStyle, interpolate, withTiming, useDerivedValue, runOnJS } from 'react-native-reanimated';
+import Animated, {
+	useAnimatedStyle,
+	interpolate,
+	withSpring,
+	runOnJS,
+	useAnimatedReaction,
+	useSharedValue
+} from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
@@ -47,88 +54,102 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 	);
 });
 
-export const RightActions = React.memo(
-	({ transX, favorite, width, toggleFav, onHidePress, displayMode, hideActive }: IRightActionsProps) => {
-		const { colors } = useTheme();
+export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
+	const { colors } = useTheme();
 
-		const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
+	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
-		const hapticFeedback = () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+	const translateXHide = useSharedValue(0);
 
-		const translateXHide = useDerivedValue(() => {
+	const triggerHideAnimation = (toValue: number) => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		translateXHide.value = withSpring(toValue, { overshootClamping: true, mass: 0.7 });
+	};
+
+	useAnimatedReaction(
+		() => transX.value,
+		(currentTransX, previousTransX) => {
+			// Triggers the animation and hapticFeedback if swipe reaches/unreaches the threshold.
 			if (I18n.isRTL) {
-				if (hideActive.value) {
-					runOnJS(hapticFeedback)();
-					return withTiming(ACTION_WIDTH, { duration: 200 });
+				if (previousTransX && currentTransX > LONG_SWIPE && previousTransX <= LONG_SWIPE) {
+					runOnJS(triggerHideAnimation)(ACTION_WIDTH);
+				} else if (previousTransX && currentTransX <= LONG_SWIPE && previousTransX > LONG_SWIPE) {
+					runOnJS(triggerHideAnimation)(0);
 				}
-				return withTiming(0, { duration: 200 });
+			} else if (previousTransX && currentTransX < -LONG_SWIPE && previousTransX >= -LONG_SWIPE) {
+				runOnJS(triggerHideAnimation)(-ACTION_WIDTH);
+			} else if (previousTransX && currentTransX >= -LONG_SWIPE && previousTransX < -LONG_SWIPE) {
+				runOnJS(triggerHideAnimation)(0);
 			}
-			if (hideActive.value) {
-				runOnJS(hapticFeedback)();
-				return withTiming(-ACTION_WIDTH, { duration: 200 });
-			}
-			return withTiming(0, { duration: 200 });
-		});
+		}
+	);
 
-		const animatedHideStyles = useAnimatedStyle(() => {
-			if (I18n.isRTL) {
-				if (transX.value < LONG_SWIPE && transX.value >= 2 * ACTION_WIDTH) {
-					const parallaxSwipe = interpolate(transX.value, [2 * ACTION_WIDTH, LONG_SWIPE], [0, 0.1 * transX.value]);
-					return { transform: [{ translateX: ACTION_WIDTH + parallaxSwipe + translateXHide.value }] };
-				}
-				return { transform: [{ translateX: transX.value - ACTION_WIDTH + translateXHide.value }] };
+	const animatedHideStyles = useAnimatedStyle(() => {
+		if (I18n.isRTL) {
+			if (transX.value < LONG_SWIPE && transX.value >= 2 * ACTION_WIDTH) {
+				const parallaxSwipe = interpolate(
+					transX.value,
+					[2 * ACTION_WIDTH, LONG_SWIPE],
+					[ACTION_WIDTH, ACTION_WIDTH + 0.1 * transX.value]
+				);
+				return { transform: [{ translateX: parallaxSwipe + translateXHide.value }] };
 			}
-			if (transX.value > -LONG_SWIPE && transX.value <= -2 * ACTION_WIDTH) {
-				const parallaxSwipe = interpolate(transX.value, [-2 * ACTION_WIDTH, -LONG_SWIPE], [0, 0.1 * transX.value]);
-				return { transform: [{ translateX: -ACTION_WIDTH + parallaxSwipe + translateXHide.value }] };
-			}
-			return { transform: [{ translateX: transX.value + ACTION_WIDTH + translateXHide.value }] };
-		});
+			return { transform: [{ translateX: transX.value - ACTION_WIDTH + translateXHide.value }] };
+		}
+		if (transX.value > -LONG_SWIPE && transX.value <= -2 * ACTION_WIDTH) {
+			const parallaxSwipe = interpolate(
+				transX.value,
+				[-2 * ACTION_WIDTH, -LONG_SWIPE],
+				[-ACTION_WIDTH, -ACTION_WIDTH + 0.1 * transX.value]
+			);
+			return { transform: [{ translateX: parallaxSwipe + translateXHide.value }] };
+		}
+		return { transform: [{ translateX: transX.value + ACTION_WIDTH + translateXHide.value }] };
+	});
 
-		const isCondensed = displayMode === DisplayMode.Condensed;
-		const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
+	const isCondensed = displayMode === DisplayMode.Condensed;
+	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
-		return (
-			<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
-				<Animated.View
-					style={[
-						styles.actionRightButtonContainer,
-						{
-							width,
-							backgroundColor: colors.favoriteBackground,
-							left: '100%'
-						},
-						viewHeight,
-						animatedFavStyles
-					]}>
-					<RectButton style={[styles.actionButton, { backgroundColor: colors.favoriteBackground }]} onPress={toggleFav}>
-						<CustomIcon
-							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-							name={favorite ? 'star-filled' : 'star'}
-							color={colors.buttonText}
-						/>
-					</RectButton>
-				</Animated.View>
-				<Animated.View
-					style={[
-						styles.actionRightButtonContainer,
-						{
-							width: width * 2,
-							backgroundColor: colors.hideBackground,
-							left: '100%'
-						},
-						isCondensed && { height: ROW_HEIGHT_CONDENSED },
-						animatedHideStyles
-					]}>
-					<RectButton style={[styles.actionButton, { backgroundColor: colors.hideBackground }]} onPress={onHidePress}>
-						<CustomIcon
-							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-							name='unread-on-top-disabled'
-							color={colors.buttonText}
-						/>
-					</RectButton>
-				</Animated.View>
-			</View>
-		);
-	}
-);
+	return (
+		<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
+			<Animated.View
+				style={[
+					styles.actionRightButtonContainer,
+					{
+						width,
+						backgroundColor: colors.favoriteBackground,
+						left: '100%'
+					},
+					viewHeight,
+					animatedFavStyles
+				]}>
+				<RectButton style={[styles.actionButton, { backgroundColor: colors.favoriteBackground }]} onPress={toggleFav}>
+					<CustomIcon
+						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+						name={favorite ? 'star-filled' : 'star'}
+						color={colors.buttonText}
+					/>
+				</RectButton>
+			</Animated.View>
+			<Animated.View
+				style={[
+					styles.actionRightButtonContainer,
+					{
+						width: width * 2,
+						backgroundColor: colors.hideBackground,
+						left: '100%'
+					},
+					isCondensed && { height: ROW_HEIGHT_CONDENSED },
+					animatedHideStyles
+				]}>
+				<RectButton style={[styles.actionButton, { backgroundColor: colors.hideBackground }]} onPress={onHidePress}>
+					<CustomIcon
+						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+						name='unread-on-top-disabled'
+						color={colors.buttonText}
+					/>
+				</RectButton>
+			</Animated.View>
+		</View>
+	);
+});

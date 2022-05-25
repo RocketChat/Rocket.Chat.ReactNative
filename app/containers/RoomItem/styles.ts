@@ -7,7 +7,6 @@ export const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
 export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 2.5;
-export const PARALLAX_SWIPE = 5;
 
 export default StyleSheet.create({
 	flex: {

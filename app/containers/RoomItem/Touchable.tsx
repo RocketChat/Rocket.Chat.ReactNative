@@ -43,7 +43,6 @@ const Touchable = ({
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
-	const hideActive = useSharedValue(false);
 	let _value = 0;
 
 	const close = () => {
@@ -184,20 +183,13 @@ const Touchable = ({
 		}
 		transX.value = withSpring(toValue, { overshootClamping: true });
 		rowOffSet.value = toValue;
-		hideActive.value = false;
 		_value = toValue;
 	};
 
 	const onGestureEvent = useAnimatedGestureHandler({
 		onActive: event => {
-			// console.log('HideActive: ', hideActive.value);
 			transX.value = event.translationX + rowOffSet.value;
 			if (transX.value > 2 * width) transX.value = 2 * width;
-			if (I18n.isRTL) {
-				if (transX.value > LONG_SWIPE) hideActive.value = true;
-				else hideActive.value = false;
-			} else if (transX.value < -LONG_SWIPE) hideActive.value = true;
-			else hideActive.value = false;
 		},
 		onEnd: event => {
 			runOnJS(handleRelease)(event);
@@ -225,7 +217,6 @@ const Touchable = ({
 							toggleFav={handleToggleFav}
 							onHidePress={onHidePress}
 							displayMode={displayMode}
-							hideActive={hideActive}
 						/>
 						<Animated.View style={animatedStyles}>
 							<Touch

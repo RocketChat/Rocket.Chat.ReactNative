@@ -32,4 +32,6 @@ jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
 
+jest.mock('expo-haptics', () => jest.fn(() => null));
+
 jest.mock('./app/lib/database', () => jest.fn(() => null));
