@@ -211,5 +211,9 @@ export const defaultSettings = {
 	},
 	Accounts_AvatarExternalProviderUrl: {
 		type: 'valueAsString'
-	}
+	},
+	Accounts_AllowDeleteOwnAccount: {
+		type: 'valueAsBoolean'
+	},
+	Message_ErasureType: { type: 'valueAsString' }
 } as const;
