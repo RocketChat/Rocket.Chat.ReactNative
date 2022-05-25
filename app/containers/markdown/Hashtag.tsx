@@ -9,8 +9,8 @@ import { IUserChannel } from './interfaces';
 import styles from './styles';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { ChatsStackParamList } from '../../stacks/types';
-import Navigation from '../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../lib/hooks';
+import { goRoom } from '../../utils/goRoom';
 
 interface IHashtag {
 	hashtag: string;
@@ -33,11 +33,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			};
 			const room = navParam.rid && (await getSubscriptionByRoomId(navParam.rid));
 			if (room) {
-				if (isMasterDetail) {
-					// Close the modal if it is open and then redirect to the channel
-					Navigation.navigate('DrawerNavigator');
-					navigation.replace('RoomView', room);
-				} else navigation.push('RoomView', room);
+				goRoom({ item: room, isMasterDetail, navigationMethod: isMasterDetail ? navigation.replace : navigation.push });
 			} else {
 				navToRoomInfo(navParam);
 			}
