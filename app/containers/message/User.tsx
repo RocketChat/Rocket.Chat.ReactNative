@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
+		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

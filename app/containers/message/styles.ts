@@ -168,7 +168,7 @@ export default StyleSheet.create({
 		paddingVertical: 5
 	},
 	readReceipt: {
-		lineHeight: 20
+		lineHeight: 14
 	},
 	threadDetails: {
 		flex: 1,
