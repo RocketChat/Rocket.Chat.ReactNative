@@ -12,12 +12,10 @@ export type TIconsName = keyof typeof mappedIcons;
 
 interface ICustomIcon extends TextProps {
 	name: TIconsName;
-	size: number;
-	color: string;
 }
 
-const CustomIcon = ({ name, size, color, testID, ...props }: ICustomIcon) => (
+const CustomIcon = ({ name, ...props }: ICustomIcon) => (
 	// @ts-ignore TODO remove this after update @types/react-native to 0.65.0
-	<IconSet name={name} size={size} color={color} {...props} />
+	<IconSet name={name} {...props} />
 );
 export { CustomIcon };
