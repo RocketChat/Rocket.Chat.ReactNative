@@ -106,7 +106,7 @@ const Message = React.memo((props: IMessage) => {
 				</View>
 				{!props.isHeader ? (
 					<>
-						<Edited isEdited={props.isEdited} />
+						<Edited testID={`${props.msg}-edited`} isEdited={props.isEdited} />
 						<MessageError hasError={props.hasError} />
 					</>
 				) : null}

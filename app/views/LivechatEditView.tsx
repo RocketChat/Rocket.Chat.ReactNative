@@ -3,11 +3,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
@@ -193,7 +193,7 @@ const LivechatEditView = ({
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<Title title={visitor?.username} theme={theme} />
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Name')}
 						defaultValue={visitor?.name}
 						onChangeText={text => onChangeText('name', text)}
@@ -203,7 +203,7 @@ const LivechatEditView = ({
 						theme={theme}
 						editable={!!permissions[0]}
 					/>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Email')}
 						inputRef={e => {
 							inputs.name = e;
@@ -216,7 +216,7 @@ const LivechatEditView = ({
 						theme={theme}
 						editable={!!permissions[0]}
 					/>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Phone')}
 						inputRef={e => {
 							inputs.phone = e;
@@ -236,7 +236,7 @@ const LivechatEditView = ({
 						editable={!!permissions[0]}
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
-						<TextInput
+						<FormTextInput
 							label={key}
 							defaultValue={value}
 							inputRef={e => {
@@ -254,7 +254,7 @@ const LivechatEditView = ({
 						/>
 					))}
 					<Title title={I18n.t('Conversation')} theme={theme} />
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Topic')}
 						inputRef={e => {
 							inputs.topic = e;
@@ -273,14 +273,14 @@ const LivechatEditView = ({
 						}}
 						placeholder={{ text: I18n.t('Tags') }}
 						value={tagParamSelected}
-						context={BLOCK_CONTEXT.FORM}
+						context={BlockContext.FORM}
 						multiselect
 						disabled={!permissions[1]}
 						inputStyle={styles.multiSelect}
 					/>
 
 					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array: any) => (
-						<TextInput
+						<FormTextInput
 							label={key}
 							defaultValue={value}
 							inputRef={e => {
@@ -298,7 +298,7 @@ const LivechatEditView = ({
 						/>
 					))}
 
-					<Button title={I18n.t('Save')} onPress={submit} theme={theme} />
+					<Button title={I18n.t('Save')} onPress={submit} />
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

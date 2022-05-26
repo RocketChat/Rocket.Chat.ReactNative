@@ -81,7 +81,7 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
 					</View>
 					{showLoginButton ? (
-						<Button title={I18n.t('Login')} type='primary' onPress={this.login} theme={theme} testID='workspace-view-login' />
+						<Button title={I18n.t('Login')} type='primary' onPress={this.login} testID='workspace-view-login' />
 					) : null}
 					{this.showRegistrationButton ? (
 						<Button
@@ -89,7 +89,6 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 							type='secondary'
 							backgroundColor={themes[theme].chatComponentBackground}
 							onPress={this.register}
-							theme={theme}
 							testID='workspace-view-register'
 						/>
 					) : (

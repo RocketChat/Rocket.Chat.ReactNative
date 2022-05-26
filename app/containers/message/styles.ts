@@ -129,7 +129,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	time: {
-		fontSize: 12,
+		fontSize: 13,
 		marginLeft: 8,
 		...sharedStyles.textRegular
 	},

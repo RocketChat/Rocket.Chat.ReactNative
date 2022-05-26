@@ -1,16 +1,15 @@
-import React from 'react';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import React, { useEffect, useRef } from 'react';
+import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { FlatList, ListRenderItem } from 'react-native';
-import { connect } from 'react-redux';
-import { dequal } from 'dequal';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
-import { TSupportedThemes, withTheme } from '../../../theme';
-import { withDimensions } from '../../../dimensions';
+import { useTheme } from '../../../theme';
+import { useDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
 import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../utils/goRoom';
@@ -18,34 +17,15 @@ import * as HeaderButton from '../../../containers/HeaderButton';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
-import { DisplayMode, MAX_SIDEBAR_WIDTH, themes } from '../../../lib/constants';
+import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { TSettingsValues } from '../../../reducers/settings';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage } from '../../../lib/methods';
 
-interface INavigationOptions {
-	isMasterDetail: boolean;
-	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'QueueListView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList>
-	>;
-}
-
-interface IQueueListView extends INavigationOptions {
-	user: {
-		id: string;
-		username: string;
-		token: string;
-	};
-	width: number;
-	queued: IOmnichannelRoom[];
-	server: string;
-	useRealName?: TSettingsValues;
-	theme: TSupportedThemes;
-	showAvatar: any;
-	displayMode: DisplayMode;
-}
+type TNavigation = CompositeNavigationProp<
+	StackNavigationProp<ChatsStackParamList, 'QueueListView'>,
+	StackNavigationProp<MasterDetailInsideStackParamList>
+>;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const getItemLayout = (data: IOmnichannelRoom[] | null | undefined, index: number) => ({
@@ -55,33 +35,46 @@ const getItemLayout = (data: IOmnichannelRoom[] | null | undefined, index: numbe
 });
 const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
-class QueueListView extends React.Component<IQueueListView, any> {
-	private getScrollRef?: React.Ref<FlatList<IOmnichannelRoom>>;
+const QueueListView = React.memo(() => {
+	const navigation = useNavigation<TNavigation>();
+	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
+	const { theme, colors } = useTheme();
+	const { width } = useDimensions();
 
-	private onEndReached: ((info: { distanceFromEnd: number }) => void) | null | undefined;
+	const { userId, token, username } = useSelector(
+		(state: IApplicationState) => ({
+			userId: getUserSelector(state).id,
+			username: getUserSelector(state).username,
+			token: getUserSelector(state).token
+		}),
+		shallowEqual
+	);
 
-	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions) => {
+	const { showAvatar, displayMode } = useSelector(
+		(state: IApplicationState) => ({
+			showAvatar: state.sortPreferences.showAvatar,
+			displayMode: state.sortPreferences.displayMode
+		}),
+		shallowEqual
+	);
+
+	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const server = useSelector((state: IApplicationState) => state.server.server);
+	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
+	const queued = useSelector((state: IApplicationState) => getInquiryQueueSelector(state));
+
+	useEffect(() => {
 		const options: StackNavigationOptions = {
 			title: I18n.t('Queued_chats')
 		};
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
 		}
-		return options;
-	};
+		navigation.setOptions(options);
+	}, [isMasterDetail, navigation]);
 
-	shouldComponentUpdate(nextProps: IQueueListView) {
-		const { queued } = this.props;
-		if (!dequal(nextProps.queued, queued)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	onPressItem = (item = {} as IOmnichannelRoom) => {
+	const onPressItem = (item = {} as IOmnichannelRoom) => {
 		logEvent(events.QL_GO_ROOM);
-		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
 		} else {
@@ -98,19 +91,8 @@ class QueueListView extends React.Component<IQueueListView, any> {
 		});
 	};
 
-	renderItem: ListRenderItem<IOmnichannelRoom> = ({ item }) => {
-		const {
-			user: { id: userId, username, token },
-			server,
-			useRealName,
-			theme,
-			isMasterDetail,
-			width,
-			showAvatar,
-			displayMode
-		} = this.props;
+	const renderItem: ListRenderItem<IOmnichannelRoom> = ({ item }) => {
 		const id = getUidDirectMessage(item);
-
 		return (
 			<RoomItem
 				item={item}
@@ -121,7 +103,7 @@ class QueueListView extends React.Component<IQueueListView, any> {
 				username={username}
 				token={token}
 				baseUrl={server}
-				onPress={this.onPressItem}
+				onPress={onPressItem}
 				testID={`queue-list-view-item-${item.name}`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				useRealName={useRealName}
@@ -135,39 +117,25 @@ class QueueListView extends React.Component<IQueueListView, any> {
 		);
 	};
 
-	render() {
-		const { queued, theme } = this.props;
-		return (
-			<SafeAreaView testID='queue-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar />
-				<FlatList
-					ref={this.getScrollRef}
-					data={queued}
-					extraData={queued}
-					keyExtractor={keyExtractor}
-					style={{ backgroundColor: themes[theme].backgroundColor }}
-					renderItem={this.renderItem}
-					getItemLayout={getItemLayout}
-					removeClippedSubviews={isIOS}
-					keyboardShouldPersistTaps='always'
-					initialNumToRender={INITIAL_NUM_TO_RENDER}
-					windowSize={9}
-					onEndReached={this.onEndReached}
-					onEndReachedThreshold={0.5}
-				/>
-			</SafeAreaView>
-		);
-	}
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	user: getUserSelector(state),
-	isMasterDetail: state.app.isMasterDetail,
-	server: state.server.server,
-	useRealName: state.settings.UI_Use_Real_Name,
-	queued: getInquiryQueueSelector(state),
-	showAvatar: state.sortPreferences.showAvatar,
-	displayMode: state.sortPreferences.displayMode
+	return (
+		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.backgroundColor }}>
+			<StatusBar />
+			<FlatList
+				ref={getScrollRef}
+				data={queued}
+				extraData={queued}
+				keyExtractor={keyExtractor}
+				style={{ backgroundColor: colors.backgroundColor }}
+				renderItem={renderItem}
+				getItemLayout={getItemLayout}
+				removeClippedSubviews={isIOS}
+				keyboardShouldPersistTaps='always'
+				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				windowSize={9}
+				onEndReachedThreshold={0.5}
+			/>
+		</SafeAreaView>
+	);
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(QueueListView)));
+export default QueueListView;
