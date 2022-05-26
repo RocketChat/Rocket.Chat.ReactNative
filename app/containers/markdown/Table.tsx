@@ -1,15 +1,13 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { ScrollView, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 import { CELL_WIDTH } from './TableCell';
+import Navigation from '../../lib/navigation/appNavigation';
 import styles from './styles';
 import I18n from '../../i18n';
 import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 import { useAppSelector } from '../../lib/hooks';
-import { ChatsStackParamList } from '../../stacks/types';
 
 interface ITable {
 	children: React.ReactElement | null;
@@ -22,7 +20,6 @@ const MAX_HEIGHT = 300;
 const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 	const getTableWidth = () => numColumns * CELL_WIDTH;
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'RoomView'>>();
 
 	const renderRows = (drawExtraBorders = true) => {
 		const tableStyle: ViewStyle[] = [styles.table, { borderColor: themes[theme].borderColor }];
@@ -40,12 +37,12 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 
 	const onPress = () => {
 		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', {
+			Navigation.navigate('ModalStackNavigator', {
 				screen: 'MarkdownTableView',
 				params: { renderRows, tableWidth: getTableWidth() }
 			});
 		} else {
-			navigation.navigate('MarkdownTableView', { renderRows, tableWidth: getTableWidth() });
+			Navigation.navigate('MarkdownTableView', { renderRows, tableWidth: getTableWidth() });
 		}
 	};
 
