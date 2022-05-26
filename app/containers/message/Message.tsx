@@ -22,6 +22,7 @@ import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import Edited from './Edited';
 import MessageError from './MessageError';
+import Encrypted from './Encrypted';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { attachments } = props;
@@ -105,12 +106,14 @@ const Message = React.memo((props: IMessage) => {
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (
+					// this whole thing is the same as the user
 					<>
+						<Encrypted type={props.type} />
 						<Edited testID={`${props.msg}-edited`} isEdited={props.isEdited} />
 						<MessageError hasError={props.hasError} />
+						<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
 					</>
 				) : null}
-				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
 			</View>
 		</View>
 	);

@@ -71,14 +71,14 @@ const Content = React.memo(
 		}
 
 		// If this is a encrypted message and is not a preview
-		if (props.type === E2E_MESSAGE_TYPE && !isPreview && !props.isHeader) {
-			content = (
-				<View style={styles.flex}>
-					<View style={styles.contentContainer}>{content}</View>
-					<Encrypted type={props.type} />
-				</View>
-			);
-		}
+		// if (props.type === E2E_MESSAGE_TYPE && !isPreview && !props.isHeader) {
+		// 	content = (
+		// 		<View style={styles.flex}>
+		// 			<View style={styles.contentContainer}>{content}</View>
+		// 			<Encrypted type={props.type} />
+		// 		</View>
+		// 	);
+		// }
 
 		if (props.isIgnored) {
 			content = <Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;

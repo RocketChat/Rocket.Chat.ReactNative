@@ -13,6 +13,7 @@ import { SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import Edited from './Edited';
 import Encrypted from './Encrypted';
+import ReadReceipt from './ReadReceipt';
 
 const styles = StyleSheet.create({
 	container: {
@@ -109,10 +110,12 @@ const User = React.memo(
 						</Text>
 						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</TouchableOpacity>
+					{/* this whole thing is the same as the message */}
 					<View style={styles.actionIcons}>
 						<Encrypted type={type} />
 						<Edited isEdited={isEdited} />
 						<MessageError hasError={hasError} {...props} />
+						<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
 					</View>
 				</View>
 			);
