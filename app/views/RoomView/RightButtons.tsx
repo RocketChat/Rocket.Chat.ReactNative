@@ -284,8 +284,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	isOmnichannelPreview = () => {
-		const { joined, status } = this.props;
-		return !joined && status === 'queued';
+		const { status } = this.props;
+		return status === 'queued';
 	};
 
 	render() {
