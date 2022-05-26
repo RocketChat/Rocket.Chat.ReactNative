@@ -169,7 +169,13 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 			/>
 		);
 		const showCheck = () =>
-			checked !== '' ? <List.Icon testID={`${item.name}-checked`} name={checked} color={themes[theme].actionTintColor} /> : null;
+			checked !== '' ? (
+				<List.Icon
+					testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
+					name={checked}
+					color={themes[theme].actionTintColor}
+				/>
+			) : null;
 
 		return (
 			<>
