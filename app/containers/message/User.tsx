@@ -68,7 +68,7 @@ const User = React.memo(
 		const { user } = useContext(MessageContext);
 		const { theme } = useTheme();
 
-		if (isHeader || hasError) {
+		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? (
 				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>

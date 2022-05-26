@@ -164,11 +164,10 @@ export default StyleSheet.create({
 		marginLeft: 8
 	},
 	leftIcons: {
-		paddingLeft: 5,
-		paddingVertical: 5
+		paddingLeft: 5
 	},
 	readReceipt: {
-		lineHeight: 14
+		lineHeight: 20
 	},
 	threadDetails: {
 		flex: 1,

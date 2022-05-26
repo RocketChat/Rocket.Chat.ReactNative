@@ -887,5 +887,27 @@ stories.add('Long Name user', () => (
 			isReadReceiptEnabled
 			read
 		/>
+
+		<Message
+			msg={longText}
+			author={longNameAuthor}
+			isHeader={false}
+			isEdited
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+
+		<Message
+			msg='small message'
+			author={longNameAuthor}
+			isHeader={false}
+			isEdited
+			type={E2E_MESSAGE_TYPE}
+			// hasError
+			isReadReceiptEnabled
+			read
+		/>
 	</>
 ));
