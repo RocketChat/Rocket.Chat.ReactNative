@@ -396,8 +396,8 @@ describe('Team', () => {
 						.toExist()
 						.withTimeout(5000);
 					await element(by.id(`select-list-view-item-${room}`)).tap();
-					await waitFor(element(by.id(`${room}-unchecked`)))
-						.toExist()
+					await waitFor(element(by.id(`${room}-checked`)))
+						.toNotExist()
 						.withTimeout(5000);
 					await element(by.id('select-list-view-submit')).tap();
 					await waitFor(element(by.id('room-members-view-item-rocket.cat')))
