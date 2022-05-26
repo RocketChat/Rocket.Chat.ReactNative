@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
 import I18n from '../../i18n';
@@ -10,7 +10,7 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 	const renderedElements = showMoreVisible ? elements?.slice(0, 5) : elements;
 
 	const Elements = () => (
-		<>{renderedElements?.map(element => parser?.renderActions({ blockId, appId, ...element }, BLOCK_CONTEXT.ACTION, parser))}</>
+		<>{renderedElements?.map(element => parser?.renderActions({ blockId, appId, ...element }, BlockContext.ACTION, parser))}</>
 	);
 
 	return (
