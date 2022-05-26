@@ -15,14 +15,11 @@ import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
-import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
 import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
-import Edited from './Edited';
-import MessageError from './MessageError';
-import Encrypted from './Encrypted';
+import RightIcons from './Icons/RightIcons';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { attachments } = props;
@@ -106,13 +103,14 @@ const Message = React.memo((props: IMessage) => {
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (
-					// this whole thing is the same as the user
-					<>
-						<Encrypted type={props.type} />
-						<Edited testID={`${props.msg}-edited`} isEdited={props.isEdited} />
-						<MessageError hasError={props.hasError} />
-						<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
-					</>
+					<RightIcons
+						type={props.type}
+						msg={props.msg}
+						isEdited={props.isEdited}
+						hasError={props.hasError}
+						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
+						unread={props.unread || false}
+					/>
 				) : null}
 			</View>
 		</View>

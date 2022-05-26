@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { CustomIcon } from '../CustomIcon';
-import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
-import styles from './styles';
+import { CustomIcon } from '../../CustomIcon';
+import { useTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
+import styles from '../styles';
 
 const Edited = memo(({ isEdited, testID }: { isEdited: boolean; testID?: string }) => {
 	const { theme } = useTheme();

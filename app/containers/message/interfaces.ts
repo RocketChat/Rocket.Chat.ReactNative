@@ -58,7 +58,7 @@ export interface IMessageContent {
 	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	useRealName?: boolean;
 	isIgnored: boolean;
-	type: string;
+	type: MessageType;
 	comment?: string;
 	hasError: boolean;
 	isHeader: boolean;

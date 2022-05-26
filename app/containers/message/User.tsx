@@ -4,16 +4,13 @@ import moment from 'moment';
 
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
-import { SubscriptionType } from '../../definitions';
+import { MessageType, SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
-import Edited from './Edited';
-import Encrypted from './Encrypted';
-import ReadReceipt from './ReadReceipt';
+import RightIcons from './Icons/RightIcons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -60,8 +57,10 @@ interface IMessageUser {
 	ts?: Date;
 	timeFormat?: string;
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
-	type: string;
+	type: MessageType;
 	isEdited: boolean;
+	isReadReceiptEnabled?: boolean;
+	unread?: boolean;
 }
 
 const User = React.memo(
@@ -110,13 +109,13 @@ const User = React.memo(
 						</Text>
 						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</TouchableOpacity>
-					{/* this whole thing is the same as the message */}
-					<View style={styles.actionIcons}>
-						<Encrypted type={type} />
-						<Edited isEdited={isEdited} />
-						<MessageError hasError={hasError} {...props} />
-						<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
-					</View>
+					<RightIcons
+						type={type}
+						isEdited={isEdited}
+						hasError={hasError}
+						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
+						unread={props.unread || false}
+					/>
 				</View>
 			);
 		}
