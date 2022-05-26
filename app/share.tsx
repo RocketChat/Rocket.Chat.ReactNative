@@ -91,6 +91,8 @@ export const App = ({ root }: any) => (
 );
 
 class Root extends React.Component<{}, IState> {
+	private mounted = false;
+
 	constructor(props: any) {
 		super(props);
 		const { width, height, scale, fontScale } = Dimensions.get('screen');
@@ -104,10 +106,11 @@ class Root extends React.Component<{}, IState> {
 			scale,
 			fontScale
 		};
+		this.init();
 	}
 
-	UNSAFE_componentWillMount() {
-		this.init();
+	componentDidMount() {
+		this.mounted = true;
 	}
 
 	componentWillUnmount(): void {
@@ -120,10 +123,12 @@ class Root extends React.Component<{}, IState> {
 
 		if (currentServer) {
 			await localAuthenticate(currentServer);
-			this.setState({ root: 'inside' });
+			// @ts-ignore
+			this.mounted ? this.setState({ root: 'inside' }) : (this.state.root = 'inside');
 			await shareExtensionInit(currentServer);
 		} else {
-			this.setState({ root: 'outside' });
+			// @ts-ignore
+			this.mounted ? this.setState({ root: 'outside' }) : (this.state.root = 'outside');
 		}
 
 		const state = Navigation.navigationRef.current?.getRootState();
