@@ -123,12 +123,13 @@ class Root extends React.Component<{}, IState> {
 
 		if (currentServer) {
 			await localAuthenticate(currentServer);
-			// @ts-ignore
-			this.mounted ? this.setState({ root: 'inside' }) : (this.state.root = 'inside');
+			this.setState({ root: 'inside' });
 			await shareExtensionInit(currentServer);
+		} else if (this.mounted) {
+			this.setState({ root: 'outside' });
 		} else {
 			// @ts-ignore
-			this.mounted ? this.setState({ root: 'outside' }) : (this.state.root = 'outside');
+			this.state.root = 'outside';
 		}
 
 		const state = Navigation.navigationRef.current?.getRootState();
