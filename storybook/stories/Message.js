@@ -905,7 +905,7 @@ stories.add('Long Name user', () => (
 			isHeader={false}
 			isEdited
 			type={E2E_MESSAGE_TYPE}
-			// hasError
+			hasError
 			isReadReceiptEnabled
 			read
 		/>
