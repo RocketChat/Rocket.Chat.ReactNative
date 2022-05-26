@@ -101,7 +101,7 @@ const ChatsStackNavigator = () => {
 				options={SearchMessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
-			<ChatsStack.Screen name='InviteUsersView' component={InviteUsersView} options={InviteUsersView.navigationOptions} />
+			<ChatsStack.Screen name='InviteUsersView' component={InviteUsersView} />
 			<ChatsStack.Screen
 				name='InviteUsersEditView'
 				component={InviteUsersEditView}
@@ -131,9 +131,9 @@ const ChatsStackNavigator = () => {
 				component={AddExistingChannelView}
 				options={AddExistingChannelView.navigationOptions}
 			/>
-			<ChatsStack.Screen name='MarkdownTableView' component={MarkdownTableView} options={MarkdownTableView.navigationOptions} />
+			<ChatsStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 			<ChatsStack.Screen name='ReadReceiptsView' component={ReadReceiptsView} options={ReadReceiptsView.navigationOptions} />
-			<ChatsStack.Screen name='QueueListView' component={QueueListView} options={QueueListView.navigationOptions} />
+			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
 			<ChatsStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 			<ChatsStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 		</ChatsStack.Navigator>

@@ -1,25 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
+import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
 
-import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButtonProps {
+interface IButtonProps extends PlatformTouchableProps {
 	title: string;
-	type: string;
-	onPress(): void;
-	disabled: boolean;
-	backgroundColor: string;
-	loading: boolean;
-	theme: TSupportedThemes;
-	color: string;
-	fontSize: any;
-	style: any;
-	styleText?: any;
-	testID: string;
+	onPress: () => void;
+	type?: string;
+	backgroundColor?: string;
+	loading?: boolean;
+	color?: string;
+	fontSize?: number;
+	styleText?: StyleProp<TextStyle>[];
 }
 
 const styles = StyleSheet.create({
@@ -31,7 +26,6 @@ const styles = StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
@@ -40,47 +34,48 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class Button extends React.PureComponent<Partial<IButtonProps>, any> {
-	static defaultProps = {
-		title: 'Press me!',
-		type: 'primary',
-		onPress: () => alert('It works!'),
-		disabled: false,
-		loading: false
-	};
+const Button = ({
+	type = 'primary',
+	disabled = false,
+	loading = false,
+	fontSize = 16,
+	title,
+	onPress,
+	backgroundColor,
+	color,
+	style,
+	styleText,
+	...otherProps
+}: IButtonProps): React.ReactElement => {
+	const { colors } = useTheme();
+	const isPrimary = type === 'primary';
 
-	render() {
-		const { title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, styleText, ...otherProps } =
-			this.props;
-		const isPrimary = type === 'primary';
-
-		let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
-		if (color) {
-			textColor = color;
-		}
-
-		return (
-			<Touchable
-				onPress={onPress}
-				disabled={disabled || loading}
-				style={[
-					styles.container,
-					backgroundColor
-						? { backgroundColor }
-						: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
-					disabled && styles.disabled,
-					style
-				]}
-				accessibilityLabel={title}
-				{...otherProps}>
-				{loading ? (
-					<ActivityIndicator color={textColor} />
-				) : (
-					<Text style={[styles.text, { color: textColor }, fontSize && { fontSize }, styleText]} accessibilityLabel={title}>
-						{title}
-					</Text>
-				)}
-			</Touchable>
-		);
+	let textColor = isPrimary ? colors.buttonText : colors.bodyText;
+	if (color) {
+		textColor = color;
 	}
-}
+
+	return (
+		<Touchable
+			onPress={onPress}
+			disabled={disabled || loading}
+			style={[
+				styles.container,
+				backgroundColor ? { backgroundColor } : { backgroundColor: isPrimary ? colors.actionTintColor : colors.backgroundColor },
+				disabled && styles.disabled,
+				style
+			]}
+			accessibilityLabel={title}
+			{...otherProps}>
+			{loading ? (
+				<ActivityIndicator color={textColor} />
+			) : (
+				<Text style={[styles.text, { color: textColor, fontSize }, styleText]} accessibilityLabel={title}>
+					{title}
+				</Text>
+			)}
+		</Touchable>
+	);
+};
+
+export default Button;

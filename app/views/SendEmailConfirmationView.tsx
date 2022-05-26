@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { OutsideParamList } from '../stacks/types';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import Button from '../containers/Button';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
@@ -59,7 +59,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 	return (
 		<FormContainer testID='send-email-confirmation-view'>
 			<FormContainerInner>
-				<TextInput
+				<FormTextInput
 					autoFocus
 					placeholder={I18n.t('Email')}
 					keyboardType='email-address'
@@ -78,7 +78,6 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 					testID='send-email-confirmation-view-submit'
 					loading={isFetching}
 					disabled={invalidEmail}
-					theme={theme}
 				/>
 			</FormContainerInner>
 		</FormContainer>
