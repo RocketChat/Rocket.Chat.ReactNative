@@ -44,7 +44,7 @@ describe('Rooms list screen', () => {
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
-				.withTimeout(2000);
+				.withTimeout(6000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat')))
 				.toExist()
 				.withTimeout(60000);
