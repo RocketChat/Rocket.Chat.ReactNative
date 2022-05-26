@@ -217,13 +217,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private flatList: TListRef;
 	private mounted: boolean;
 	private offset = 0;
-	private subOmnichannel?: Subscription;
+	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
 	private retryInitTimeout?: number;
-	private retryFindCount = 0;
-	private retryFindTimeout?: number;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	// Type of InteractionManager.runAfterInteractions
@@ -474,17 +472,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.subSubscription.unsubscribe();
 		}
 
-		if (this.subOmnichannel && this.subOmnichannel.unsubscribe) {
-			this.subOmnichannel.unsubscribe();
+		if (this.subObserveQuery && this.subObserveQuery.unsubscribe) {
+			this.subObserveQuery.unsubscribe();
 		}
 		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
 			this.queryUnreads.unsubscribe();
 		}
 		if (this.retryInitTimeout) {
 			clearTimeout(this.retryInitTimeout);
-		}
-		if (this.retryFindTimeout) {
-			clearTimeout(this.retryFindTimeout);
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		if (isTablet) {
@@ -521,24 +516,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	observeOmnichannel = () => {
+	observeSubscriptions = () => {
 		try {
 			const db = database.active;
-			const subCollection = db
+			const observeSubCollection = db
 				.get('subscriptions')
 				.query(Q.where('rid', this.rid as string))
 				.observe();
-			this.subOmnichannel = subCollection.subscribe(data => {
+			this.subObserveQuery = observeSubCollection.subscribe(data => {
 				if (data[0]) {
-					if (this.subOmnichannel && this.subOmnichannel.unsubscribe) {
+					if (this.subObserveQuery && this.subObserveQuery.unsubscribe) {
 						this.observeRoom(data[0]);
 						this.setState({ room: data[0] });
-						this.subOmnichannel.unsubscribe();
+						this.subObserveQuery.unsubscribe();
 					}
 				}
 			});
 		} catch (e) {
-			console.log("observeOmnichannel: Can't find subscription to observe");
+			console.log("observeSubscriptions: Can't find subscription to observe");
 		}
 	};
 
@@ -773,19 +768,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.internalSetState({ joined: false });
 			}
 			if (this.rid) {
-				if (this.t === 'l') {
-					this.observeOmnichannel();
-				} else {
-					// We navigate to RoomView before the Room is inserted to the local db
-					// So we retry just to make sure we have the right content
-					this.retryFindCount = this.retryFindCount + 1 || 1;
-					if (this.retryFindCount <= 3) {
-						this.retryFindTimeout = setTimeout(() => {
-							this.findAndObserveRoom(rid);
-							this.init();
-						}, 300);
-					}
-				}
+				this.observeSubscriptions();
 			}
 		}
 	};
