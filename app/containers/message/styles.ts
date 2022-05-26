@@ -164,7 +164,6 @@ export default StyleSheet.create({
 		marginLeft: 8
 	},
 	rightIcons: {
-		// not a good naming for icons rendered on the right side
 		paddingLeft: 5
 	},
 	threadDetails: {
