@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
@@ -38,7 +38,7 @@ export const Input = ({ element, parser, label, description, error, hint, theme 
 			<Text style={[styles.label, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>{label}</Text>
 		) : null}
 		{description ? <Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{description}</Text> : null}
-		{parser.renderInputs({ ...element }, BLOCK_CONTEXT.FORM, parser)}
+		{parser.renderInputs({ ...element }, BlockContext.FORM, parser)}
 		{error ? <Text style={[styles.error, { color: themes[theme].dangerColor }]}>{error}</Text> : null}
 		{hint ? <Text style={[styles.hint, { color: themes[theme].auxiliaryText }]}>{hint}</Text> : null}
 	</View>
