@@ -14,7 +14,7 @@ const Edited = memo(({ isEdited, testID }: { isEdited: boolean; testID?: string 
 	}
 
 	return (
-		<View testID={testID} style={styles.leftIcons}>
+		<View testID={testID} style={styles.rightIcons}>
 			<CustomIcon name='edit' size={16} color={themes[theme].auxiliaryText} />
 		</View>
 	);
