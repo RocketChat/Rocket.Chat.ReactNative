@@ -10,7 +10,7 @@ import MessageContext from './Context';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
 import { MessageType, SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
-import RightIcons from './Icons/RightIcons';
+import RightIcons from './Components/RightIcons';
 
 const styles = StyleSheet.create({
 	container: {

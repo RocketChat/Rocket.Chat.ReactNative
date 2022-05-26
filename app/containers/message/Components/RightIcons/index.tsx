@@ -5,7 +5,7 @@ import Encrypted from './Encrypted';
 import Edited from './Edited';
 import MessageError from './MessageError';
 import ReadReceipt from './ReadReceipt';
-import { MessageType } from '../../../definitions';
+import { MessageType } from '../../../../definitions';
 
 const styles = StyleSheet.create({
 	actionIcons: {

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { themes } from '../../../lib/constants';
-import { CustomIcon } from '../../CustomIcon';
-import styles from '../styles';
-import { useTheme } from '../../../theme';
+import { themes } from '../../../../lib/constants';
+import { CustomIcon } from '../../../CustomIcon';
+import styles from '../../styles';
+import { useTheme } from '../../../../theme';
 
 const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread: boolean }) => {
 	const { theme } = useTheme();
