@@ -81,11 +81,11 @@ describe('Room', () => {
 	it('should tap FAB and scroll to bottom', async () => {
 		await waitFor(element(by.id('nav-jump-to-bottom')))
 			.toExist()
-			.withTimeout(5000);
+			.withTimeout(15000);
 		await element(by.id('nav-jump-to-bottom')).tap();
 		await waitFor(element(by[textMatcher]('Quote first message')))
 			.toExist()
-			.withTimeout(5000);
+			.withTimeout(15000);
 		await clearCache();
 	});
 
