@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 
-const Edited = memo(({ isEdited }: { isEdited: boolean }) => {
+const Edited = memo(({ isEdited, testID }: { isEdited: boolean; testID?: string }) => {
 	const { theme } = useTheme();
 
 	if (!isEdited) {
@@ -14,7 +14,7 @@ const Edited = memo(({ isEdited }: { isEdited: boolean }) => {
 	}
 
 	return (
-		<View style={styles.leftIcons}>
+		<View testID={testID} style={styles.leftIcons}>
 			<CustomIcon name='edit' size={16} color={themes[theme].auxiliaryText} />
 		</View>
 	);
