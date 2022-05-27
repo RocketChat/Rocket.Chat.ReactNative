@@ -6,20 +6,24 @@ import { store as reduxStore } from '../store/auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
-import { IRocketChat, IUser } from '../../definitions';
+import { IUser } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers/compareServerVersion';
 
-export function subscribeUsersPresence(this: IRocketChat) {
+export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> } = {
+	activeUsersSubTimeout: false
+};
+
+export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version as string;
 
 	// if server is lower than 1.1.0
 	if (compareServerVersion(serverVersion, 'lowerThan', '1.1.0')) {
-		if (this.activeUsersSubTimeout) {
-			clearTimeout(this.activeUsersSubTimeout);
-			this.activeUsersSubTimeout = false;
+		if (_activeUsersSubTimeout.activeUsersSubTimeout) {
+			clearTimeout(_activeUsersSubTimeout.activeUsersSubTimeout as number);
+			_activeUsersSubTimeout.activeUsersSubTimeout = false;
 		}
-		this.activeUsersSubTimeout = setTimeout(() => {
+		_activeUsersSubTimeout.activeUsersSubTimeout = setTimeout(() => {
 			sdk.subscribe('activeUsers');
 		}, 5000);
 	} else if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
@@ -34,7 +38,7 @@ export function subscribeUsersPresence(this: IRocketChat) {
 
 let usersBatch: string[] = [];
 
-export default async function getUsersPresence(usersParams: string[]) {
+export async function getUsersPresence(usersParams: string[]) {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const { user: loggedUser } = reduxStore.getState().login;
 
@@ -106,6 +110,7 @@ export default async function getUsersPresence(usersParams: string[]) {
 }
 
 let usersTimer: ReturnType<typeof setTimeout> | null = null;
+
 export function getUserPresence(uid: string) {
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {

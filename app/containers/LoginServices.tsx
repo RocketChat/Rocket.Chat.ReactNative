@@ -14,11 +14,11 @@ import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
 import { events, logEvent } from '../utils/log';
-import RocketChat from '../lib/rocketchat';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
+import { Services } from '../lib/services';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -248,7 +248,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 					AppleAuthentication.AppleAuthenticationScope.EMAIL
 				]
 			});
-			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
+			await Services.loginOAuthOrSso({ fullName, email, identityToken });
 		} catch {
 			logEvent(events.ENTER_WITH_APPLE_F);
 		}
@@ -327,7 +327,6 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 						title={collapsed ? I18n.t('Onboarding_more_options') : I18n.t('Onboarding_less_options')}
 						type='secondary'
 						onPress={this.toggleServices}
-						theme={theme}
 						style={styles.options}
 						color={themes[theme].actionTintColor}
 					/>
@@ -345,7 +344,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `${name}-monochromatic`;
+		const icon = `${name}-monochromatic` as TIconsName;
 		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 

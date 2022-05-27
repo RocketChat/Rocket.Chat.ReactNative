@@ -46,8 +46,7 @@ export default StyleSheet.create({
 	},
 	bottomSheet: {
 		width: '50%',
-		alignSelf: 'center',
-		left: '25%'
+		marginHorizontal: '25%'
 	},
 	button: {
 		marginHorizontal: 16,

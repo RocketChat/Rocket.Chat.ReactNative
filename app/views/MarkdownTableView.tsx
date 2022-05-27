@@ -1,43 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
-import { StackNavigationOptions } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
-import { themes } from '../lib/constants';
-import { TSupportedThemes, withTheme } from '../theme';
+import { useTheme } from '../theme';
 import { ChatsStackParamList } from '../stacks/types';
+import { IBaseScreen } from '../definitions';
 
-interface IMarkdownTableViewProps {
-	route: RouteProp<ChatsStackParamList, 'MarkdownTableView'>;
-	theme: TSupportedThemes;
-}
+type IMarkdownTableViewProps = IBaseScreen<ChatsStackParamList, 'MarkdownTableView'>;
 
-class MarkdownTableView extends React.Component<IMarkdownTableViewProps> {
-	static navigationOptions = (): StackNavigationOptions => ({
-		title: I18n.t('Table')
-	});
+const MarkdownTableView = ({ navigation, route }: IMarkdownTableViewProps): React.ReactElement => {
+	const renderRows = route.params?.renderRows;
+	const tableWidth = route.params?.tableWidth;
+	const { colors } = useTheme();
 
-	render() {
-		const { route, theme } = this.props;
-		const renderRows = route.params?.renderRows;
-		const tableWidth = route.params?.tableWidth;
+	useEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Table')
+		});
+	}, []);
 
-		if (isIOS) {
-			return (
-				<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }} contentContainerStyle={{ width: tableWidth }}>
-					{renderRows()}
-				</ScrollView>
-			);
-		}
-
+	if (isIOS) {
 		return (
-			<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<ScrollView horizontal>{renderRows()}</ScrollView>
+			<ScrollView style={{ backgroundColor: colors.backgroundColor }} contentContainerStyle={{ width: tableWidth }}>
+				{renderRows()}
 			</ScrollView>
 		);
 	}
-}
 
-export default withTheme(MarkdownTableView);
+	return (
+		<ScrollView style={{ backgroundColor: colors.backgroundColor }}>
+			<ScrollView horizontal>{renderRows()}</ScrollView>
+		</ScrollView>
+	);
+};
+
+export default MarkdownTableView;
