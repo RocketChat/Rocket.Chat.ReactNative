@@ -42,6 +42,7 @@ const reducers = combineReducers({
 		settings: {}
 	}),
 	meteor: () => ({ connected: true }),
-	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
+	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } }),
+	app: () => ({ isMasterDetail: false })
 });
 export const store = createStore(reducers);
