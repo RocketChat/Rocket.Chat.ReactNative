@@ -101,7 +101,7 @@
 		"react-native-modal": "11.10.0",
 		"react-native-navigation-bar-color": "2.0.1",
 		"react-native-notifications": "^4.2.4",
-		"react-native-notifier": "1.6.1",
+		"react-native-notifier": "1.8.0",
 		"react-native-orientation-locker": "1.1.8",
 		"react-native-picker-select": "^8.0.4",
 		"react-native-platform-touchable": "1.1.1",
