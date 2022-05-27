@@ -1,10 +1,12 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
+import { Provider } from 'react-redux';
 
 import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
 import { themes } from '../../app/lib/constants';
 import { TGetCustomEmoji, IEmoji } from '../../app/definitions/IEmoji';
+import { store } from '.';
 
 const theme = 'light';
 
@@ -42,7 +44,7 @@ const getCustomEmoji: TGetCustomEmoji = content => {
 	return customEmoji;
 };
 
-const stories = storiesOf('Markdown', module);
+const stories = storiesOf('Markdown', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
 
 stories.add('Text', () => (
 	<View style={styles.container}>
