@@ -43,7 +43,7 @@ import {
 } from '../../definitions';
 import { deleteOwnAccount } from '../../lib/services/restApi';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { FirstAlertActionSheetContent } from './components/ActionSheetContent';
+import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 
 interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
@@ -493,7 +493,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	deleteOwnAccount = () => {
 		logEvent(events.DELETE_OWN_ACCOUNT);
 		this.props.showActionSheet({
-			children: <FirstAlertActionSheetContent />,
+			children: <DeleteAccountActionSheetContent />,
 			headerHeight: 275
 		});
 	};

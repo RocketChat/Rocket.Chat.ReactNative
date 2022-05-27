@@ -57,7 +57,7 @@ const FooterButtons = ({
 	);
 };
 
-export function FirstAlertActionSheetContent(): React.ReactElement {
+export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const [password, setPassword] = useState('');
 	const { theme } = useTheme();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
@@ -75,7 +75,7 @@ export function FirstAlertActionSheetContent(): React.ReactElement {
 				setTimeout(() => {
 					showActionSheet({
 						children: (
-							<SecondAlertActionSheetContent
+							<ConfirmDeleteAccountActionSheetContent
 								changeOwnerRooms={changeOwnerRooms}
 								removedRooms={removedRooms}
 								password={sha256(password)}
@@ -125,7 +125,7 @@ export function FirstAlertActionSheetContent(): React.ReactElement {
 	);
 }
 
-function SecondAlertActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
+function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
 	const { colors } = useTheme();
 	const { hideActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
