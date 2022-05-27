@@ -196,6 +196,7 @@
   "Delete": "Delete",
   "DELETE": "DELETE",
   "Delete_Account": "Delete account",
+  "Delete_Account_confirm": "Yes, Delete",
   "move": "move",
   "deleting_room": "deleting room",
   "description": "description",
