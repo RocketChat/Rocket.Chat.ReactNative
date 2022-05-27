@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { dequal } from 'dequal';
 
 import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
 import { useDimensions } from '../../dimensions';
@@ -39,9 +38,9 @@ const RoomHeaderContainer = React.memo(
 		sourceType,
 		visitor
 	}: IRoomHeaderContainerProps) => {
-		const [subtitle, setSubtitle] = useState<string | undefined>(undefined);
-		const [status, setStatus] = useState<TUserStatus>('offline');
-		const [statusText, setStatusText] = useState<string | undefined>(undefined);
+		let subtitle: string | undefined;
+		let status: TUserStatus = 'offline';
+		let statusText: string | undefined;
 		const { width, height } = useDimensions();
 
 		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
@@ -52,28 +51,24 @@ const RoomHeaderContainer = React.memo(
 			shallowEqual
 		);
 
-		useEffect(() => {
-			if (connecting) {
-				setSubtitle(I18n.t('Connecting'));
-			} else if (!connected) {
-				setSubtitle(I18n.t('Waiting_for_network'));
-			} else {
-				setSubtitle(subtitleProp);
-			}
-		}, [connecting, connected]);
+		if (connecting) {
+			subtitle = I18n.t('Connecting');
+		} else if (!connected) {
+			subtitle = I18n.t('Waiting_for_network');
+		} else {
+			subtitle = subtitleProp;
+		}
 
-		useEffect(() => {
-			if (connected) {
-				if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-					const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
-					setStatus(statusActiveUser);
-					setStatusText(statusTextActiveUser);
-				} else if (type === 'l' && visitor?.status) {
-					const { status: statusVisitor } = visitor;
-					setStatus(statusVisitor);
-				}
+		if (connected) {
+			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
+				const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
+				status = statusActiveUser;
+				statusText = statusTextActiveUser;
+			} else if (type === 'l' && visitor?.status) {
+				const { status: statusVisitor } = visitor;
+				status = statusVisitor;
 			}
-		}, [connected, activeUser]);
+		}
 
 		return (
 			<RoomHeader
@@ -94,27 +89,6 @@ const RoomHeaderContainer = React.memo(
 				sourceType={sourceType}
 			/>
 		);
-	},
-	(prevProps, nextProps) => {
-		if (nextProps.type !== prevProps.type) {
-			return false;
-		}
-		if (nextProps.title !== prevProps.title) {
-			return false;
-		}
-		if (nextProps.subtitle !== prevProps.subtitle) {
-			return false;
-		}
-		if (!dequal(nextProps.sourceType, prevProps.sourceType)) {
-			return false;
-		}
-		if (nextProps.onPress !== prevProps.onPress) {
-			return false;
-		}
-		if (nextProps.teamMain !== prevProps.teamMain) {
-			return false;
-		}
-		return true;
 	}
 );
 

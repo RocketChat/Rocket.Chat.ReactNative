@@ -527,7 +527,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					title={title}
 					teamMain={teamMain}
 					parentTitle={parentTitle}
-					subtitle={subtitle || undefined}
+					subtitle={subtitle}
 					type={t}
 					roomUserId={roomUserId}
 					visitor={visitor}
