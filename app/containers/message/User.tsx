@@ -4,15 +4,13 @@ import moment from 'moment';
 
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
-import { SubscriptionType } from '../../definitions';
+import { MessageType, SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
-import Edited from './Edited';
-import Encrypted from './Encrypted';
+import RightIcons from './Components/RightIcons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,6 +34,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
+		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -58,8 +57,10 @@ interface IMessageUser {
 	ts?: Date;
 	timeFormat?: string;
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
-	type: string;
+	type: MessageType;
 	isEdited: boolean;
+	isReadReceiptEnabled?: boolean;
+	unread?: boolean;
 }
 
 const User = React.memo(
@@ -67,7 +68,7 @@ const User = React.memo(
 		const { user } = useContext(MessageContext);
 		const { theme } = useTheme();
 
-		if (isHeader || hasError) {
+		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? (
 				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>
@@ -108,11 +109,13 @@ const User = React.memo(
 						</Text>
 						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</TouchableOpacity>
-					<View style={styles.actionIcons}>
-						<Encrypted type={type} />
-						<Edited isEdited={isEdited} />
-						<MessageError hasError={hasError} {...props} />
-					</View>
+					<RightIcons
+						type={type}
+						isEdited={isEdited}
+						hasError={hasError}
+						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
+						unread={props.unread || false}
+					/>
 				</View>
 			);
 		}
