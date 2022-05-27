@@ -42,7 +42,8 @@ import {
 	IUser
 } from '../../definitions';
 import { deleteOwnAccount } from '../../lib/services/restApi';
-import ConfirmOwnerChangeWarningModal from './components/ConfirmOwnerChangeWarningModal';
+import { withActionSheet } from '../../containers/ActionSheet';
+import { FirstAlertActionSheetContent } from './components/ActionSheetContent';
 
 interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
@@ -56,6 +57,7 @@ interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileV
 	theme: TSupportedThemes;
 	Accounts_AllowDeleteOwnAccount: string;
 	Message_ErasureType: string;
+	showActionSheet: Function;
 }
 
 interface IProfileViewState {
@@ -490,43 +492,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	deleteOwnAccount = () => {
 		logEvent(events.DELETE_OWN_ACCOUNT);
-		prompt(
-			I18n.t('Are_you_sure_you_want_to_delete_your_account?'),
-			I18n.t('For_your_security_you_must_enter_your_current_password_to_continue'),
-			[
-				{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
-				{
-					text: I18n.t('Confirm'),
-					onPress: async (password: string) => {
-						this.setState({ currentPassword: password });
-						const { dispatch } = this.props;
-						try {
-							await deleteOwnAccount(sha256(password));
-							dispatch(deleteAccount());
-						} catch (error) {
-							// @ts-ignore
-							if (error.data.errorType === 'user-last-owner') {
-								// @ts-ignore
-								const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
-								this.setState({ shouldChangeOwner, shouldBeRemoved, confirmOwnerChangeModalVisible: true });
-							} // @ts-ignore
-							else if (error.data.errorType === 'error-invalid-password') {
-								logEvent(events.DELETE_OWN_ACCOUNT_F);
-								EventEmitter.emit(LISTENER, { message: `Invalid password` });
-							} else {
-								// @ts-ignore
-								EventEmitter.emit(LISTENER, { message: error.data.details });
-								logEvent(events.DELETE_OWN_ACCOUNT_F);
-							}
-						}
-					}
-				}
-			],
-			{
-				type: 'secure-text',
-				cancelable: false
-			}
-		);
+		this.props.showActionSheet({
+			children: <FirstAlertActionSheetContent />,
+			headerHeight: 275
+		});
 	};
 
 	handleConfirmOwnerChange = async () => {
@@ -542,19 +511,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	render() {
-		const {
-			name,
-			username,
-			email,
-			newPassword,
-			avatarUrl,
-			customFields,
-			avatar,
-			saving,
-			confirmOwnerChangeModalVisible,
-			shouldChangeOwner,
-			shouldBeRemoved
-		} = this.state;
+		const { name, username, email, newPassword, avatarUrl, customFields, avatar, saving } = this.state;
 		const {
 			user,
 			theme,
@@ -564,8 +521,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
 			Accounts_CustomFields,
-			Accounts_AllowDeleteOwnAccount,
-			Message_ErasureType
+			Accounts_AllowDeleteOwnAccount
 		} = this.props;
 
 		return (
@@ -694,16 +650,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 									onPress={this.deleteOwnAccount}
 									testID='profile-view-delete-my-account'
 								/>
-								<ConfirmOwnerChangeWarningModal
-									theme={theme}
-									confirmOwnerChangeModalVisible={confirmOwnerChangeModalVisible}
-									onConfirm={this.handleConfirmOwnerChange}
-									onCancel={() => this.setState({ confirmOwnerChangeModalVisible: false })}
-									modalTitle={I18n.t('Are_you_sure_question_mark')}
-									contentTitle={I18n.t(`Delete_User_Warning_${Message_ErasureType}`)}
-									shouldChangeOwner={shouldChangeOwner}
-									shouldBeRemoved={shouldBeRemoved}
-								/>
 							</>
 						)}
 					</ScrollView>
@@ -726,4 +672,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_ErasureType: state.settings.Message_ErasureType as string
 });
 
-export default connect(mapStateToProps)(withTheme(ProfileView));
+export default connect(mapStateToProps)(withActionSheet(withTheme(ProfileView)));
