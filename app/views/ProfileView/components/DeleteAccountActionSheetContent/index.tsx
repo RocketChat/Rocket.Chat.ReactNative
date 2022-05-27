@@ -100,7 +100,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 		<KeyboardAwareScrollView>
 			<View style={styles.container}>
 				<AlertHeader
-					title={i18n.t('Are_you_sure_you_want_to_delete_your_account?')}
+					title={i18n.t('Are_you_sure_you_want_to_delete_your_account')}
 					subTitle={i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 				/>
 				<FormTextInput
