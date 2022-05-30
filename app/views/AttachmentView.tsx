@@ -26,6 +26,7 @@ import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
 import { IAttachment } from '../definitions/IAttachment';
 import { formatAttachmentUrl } from '../lib/methods/helpers/formatAttachmentUrl';
+import { IApplicationState, IUser } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -46,10 +47,7 @@ interface IAttachmentViewProps {
 	width: number;
 	height: number;
 	insets: { left: number; bottom: number; right: number; top: number };
-	user: {
-		id: string;
-		token: string;
-	};
+	user: IUser;
 	Allow_Save_Media_to_Gallery: boolean;
 }
 
@@ -200,10 +198,10 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery ?? true
+	Allow_Save_Media_to_Gallery: (state.settings.Allow_Save_Media_to_Gallery as boolean) ?? true
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));

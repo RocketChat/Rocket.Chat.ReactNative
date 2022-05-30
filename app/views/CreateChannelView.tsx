@@ -4,7 +4,7 @@ import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } fro
 import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
-import TextInput from '../presentation/TextInput';
+import TextInput from '../containers/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
@@ -20,10 +20,10 @@ import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
 import { events, logEvent } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
-import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import { hasPermission } from '../lib/methods';
 
 const styles = StyleSheet.create({
 	container: {
@@ -224,7 +224,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			broadcast,
 			encrypted,
 			isTeam,
-			teamId: this.teamId!
+			teamId: this.teamId
 		};
 		dispatch(createChannelRequest(data));
 		Review.pushPositiveEvent();
@@ -255,7 +255,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	handleHasPermission = async () => {
 		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
 		const permissions = [createPublicChannelPermission, createPrivateChannelPermission];
-		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const permissionsToCreate = await hasPermission(permissions);
 		this.setState({ permissions: permissionsToCreate });
 	};
 

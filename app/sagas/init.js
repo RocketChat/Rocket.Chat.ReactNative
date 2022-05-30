@@ -1,22 +1,22 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import { BIOMETRY_ENABLED_KEY } from '../lib/constants';
+import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
-import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
+import { getSortPreferences } from '../lib/methods';
 
 import appConfig from '../../app.json';
 
 export const initLocalSettings = function* initLocalSettings() {
-	const sortPreferences = RocketChat.getSortPreferences();
+	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 
@@ -24,6 +24,9 @@ const BIOMETRY_MIGRATION_KEY = 'kBiometryMigration';
 
 const restore = function* restore() {
 	try {
+		// const server = UserPreferences.getString(CURRENT_SERVER);
+		// let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+
 		// Migration biometry setting from WatermelonDB to MMKV
 		// TODO: remove it after a few versions
 		const hasMigratedBiometry = UserPreferences.getBool(BIOMETRY_MIGRATION_KEY);
@@ -36,11 +39,29 @@ const restore = function* restore() {
 			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
 		}
 
+		// if (!server) {
+		// 	yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		// } else if (!userId) {
+		// 	const serversDB = database.servers;
+		// 	const serversCollection = serversDB.get('servers');
+		// 	const servers = yield serversCollection.query().fetch();
+
+		// 	// Check if there're other logged in servers and picks first one
+		// 	if (servers.length > 0) {
+		// 		for (let i = 0; i < servers.length; i += 1) {
+		// 			const newServer = servers[i].id;
+		// 			userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
+		// 			if (userId) {
+		// 				return yield put(selectServerRequest(newServer));
+		// 			}
+		// 		}
+		// 	}
 		const { server } = appConfig;
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		if (!userId) {
-			yield all([UserPreferences.removeItem(RocketChat.TOKEN_KEY), UserPreferences.removeItem(RocketChat.CURRENT_SERVER)]);
+			UserPreferences.removeItem(TOKEN_KEY);
+			UserPreferences.removeItem(CURRENT_SERVER);
 			yield put(serverRequest(appConfig.server));
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {

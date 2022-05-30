@@ -15,7 +15,7 @@ const ANIMATION_DURATION = 200;
 
 interface IDropdownProps {
 	isMasterDetail?: boolean;
-	theme?: TSupportedThemes;
+	theme: TSupportedThemes;
 	insets?: EdgeInsets;
 	currentFilter: Filter;
 	onClose: () => void;
@@ -59,7 +59,7 @@ class Dropdown extends React.Component<IDropdownProps> {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, themes[theme!].backdropOpacity]
+			outputRange: [0, themes[theme].backdropOpacity]
 		});
 		return (
 			<>
@@ -68,7 +68,7 @@ class Dropdown extends React.Component<IDropdownProps> {
 						style={[
 							styles.backdrop,
 							{
-								backgroundColor: themes[theme!].backdropColor,
+								backgroundColor: themes[theme].backdropColor,
 								opacity: backdropOpacity,
 								top: heightDestination
 							}
@@ -80,8 +80,8 @@ class Dropdown extends React.Component<IDropdownProps> {
 						styles.dropdownContainer,
 						{
 							transform: [{ translateY }],
-							backgroundColor: themes[theme!].backgroundColor,
-							borderColor: themes[theme!].separatorColor
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
 						}
 					]}>
 					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
