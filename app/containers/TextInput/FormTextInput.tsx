@@ -76,7 +76,7 @@ const FormTextInput = React.memo(
 		testID,
 		secureTextEntry,
 		placeholder,
-		...props
+		...inputProps
 	}: IRCTextInputProps) => {
 		const { colors, theme } = useTheme();
 		const [showPassword, setShowPassword] = useState(false);
@@ -154,7 +154,7 @@ const FormTextInput = React.memo(
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
 						theme={theme}
-						{...props}
+						{...inputProps}
 					/>
 					{showIconLeft()}
 					{showIconRight()}
