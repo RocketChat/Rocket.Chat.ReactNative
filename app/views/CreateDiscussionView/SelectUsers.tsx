@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -35,6 +35,10 @@ const SelectUsers = ({
 			// do nothing
 		}
 	}, 300);
+
+	useEffect(() => {
+		getUsers('');
+	}, []);
 
 	const getAvatar = (item: IUser) =>
 		getAvatarURL({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
 import { themes } from '../../lib/constants';
@@ -31,6 +31,10 @@ const SelectChannel = ({
 			// do nothing
 		}
 	}, 300);
+
+	useEffect(() => {
+		getChannels('');
+	}, []);
 
 	const getAvatar = (item: ISearchLocal) =>
 		getAvatarURL({
