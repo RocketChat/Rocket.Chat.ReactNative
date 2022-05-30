@@ -92,7 +92,7 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 				showsVerticalScrollIndicator={false}>
 				<StatusBar />
 				<View style={styles.innerContainer}>
-					<FormTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
+					<FormTextInput label={I18n.t('Invite_Link')} value={invite && invite.url} editable={false} />
 					{renderExpiration()}
 					<View style={[styles.divider, { backgroundColor: colors.separatorColor }]} />
 					<Button title={I18n.t('Share_Link')} type='primary' onPress={share} />

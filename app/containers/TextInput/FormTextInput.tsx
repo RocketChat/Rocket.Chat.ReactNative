@@ -57,7 +57,6 @@ export interface IRCTextInputProps extends TextInputProps {
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
 	inputRef?: React.Ref<RNTextInput>;
-	testID?: string;
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;

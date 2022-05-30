@@ -101,7 +101,6 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 						onSubmitEditing={this.resetPassword}
 						testID='forgot-password-view-email'
 						containerStyle={sharedStyles.inputLastChild}
-						theme={theme}
 					/>
 					<Button
 						title={I18n.t('Reset_password')}

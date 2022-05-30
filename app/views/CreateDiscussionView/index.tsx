@@ -174,7 +174,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							containerStyle={styles.inputStyle}
 							defaultValue={name}
 							onChangeText={(text: string) => this.setState({ name: text })}
-							theme={theme}
 						/>
 						<SelectUsers
 							server={server}

@@ -116,7 +116,6 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<FormTextInput
 						value={code}
-						theme={theme}
 						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 						returnKeyType='send'
 						autoCapitalize='none'

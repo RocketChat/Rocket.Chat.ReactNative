@@ -200,7 +200,6 @@ const LivechatEditView = ({
 						onSubmitEditing={() => {
 							inputs.name?.focus();
 						}}
-						theme={theme}
 						editable={!!permissions[0]}
 					/>
 					<FormTextInput
@@ -213,7 +212,6 @@ const LivechatEditView = ({
 						onSubmitEditing={() => {
 							inputs.phone?.focus();
 						}}
-						theme={theme}
 						editable={!!permissions[0]}
 					/>
 					<FormTextInput
@@ -232,7 +230,6 @@ const LivechatEditView = ({
 								inputs.topic?.focus();
 							}
 						}}
-						theme={theme}
 						editable={!!permissions[0]}
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
@@ -249,7 +246,6 @@ const LivechatEditView = ({
 								}
 								inputs.topic?.focus();
 							}}
-							theme={theme}
 							editable={!!permissions[0]}
 						/>
 					))}
@@ -261,7 +257,6 @@ const LivechatEditView = ({
 						}}
 						defaultValue={livechat?.topic}
 						onChangeText={text => onChangeText('topic', text)}
-						theme={theme}
 						editable={!!permissions[1]}
 					/>
 
@@ -293,7 +288,6 @@ const LivechatEditView = ({
 								}
 								submit();
 							}}
-							theme={theme}
 							editable={!!permissions[1]}
 						/>
 					))}

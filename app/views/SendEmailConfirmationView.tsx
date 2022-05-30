@@ -6,7 +6,6 @@ import Button from '../containers/Button';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
-import { useTheme } from '../theme';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
@@ -19,7 +18,6 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 	const [email, setEmail] = useState('');
 	const [invalidEmail, setInvalidEmail] = useState(true);
 	const [isFetching, setIsFetching] = useState(false);
-	const { theme } = useTheme();
 
 	const validate = (val: string) => {
 		const isInvalidEmail = !isValidEmail(val);
@@ -68,7 +66,6 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 					onSubmitEditing={resendConfirmationEmail}
 					testID='send-email-confirmation-view-email'
 					containerStyle={sharedStyles.inputLastChild}
-					theme={theme}
 					value={email}
 				/>
 				<Button

@@ -138,7 +138,6 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 						secureTextEntry
 						onSubmitEditing={this.changePassword}
 						testID='e2e-encryption-security-view-password'
-						theme={theme}
 						onChangeText={this.onChangePasswordText}
 					/>
 					<Button

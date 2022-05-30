@@ -596,7 +596,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								this.description?.focus();
 							}}
 							error={nameError}
-							theme={theme}
 							testID='room-info-edit-view-name'
 						/>
 						<FormTextInput
@@ -609,7 +608,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.topic?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-description'
 						/>
 						<FormTextInput
@@ -622,7 +620,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.announcement?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-topic'
 						/>
 						<FormTextInput
@@ -635,7 +632,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.joinCode?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-announcement'
 						/>
 						<FormTextInput
@@ -647,7 +643,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onChangeText={value => this.setState({ joinCode: value })}
 							onSubmitEditing={this.submit}
 							secureTextEntry
-							theme={theme}
 							testID='room-info-edit-view-password'
 						/>
 						<SwitchContainer

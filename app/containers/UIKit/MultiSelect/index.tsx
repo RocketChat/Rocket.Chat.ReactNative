@@ -143,7 +143,6 @@ export const MultiSelect = React.memo(
 							testID='multi-select-search'
 							onChangeText={onSearch || onSearchChange}
 							placeholder={I18n.t('Search')}
-							theme={theme}
 						/>
 						<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
 					</View>

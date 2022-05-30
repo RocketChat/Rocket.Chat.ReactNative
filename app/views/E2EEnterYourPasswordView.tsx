@@ -87,7 +87,6 @@ class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordView
 							testID='e2e-enter-your-password-view-password'
 							textContentType='password'
 							autoCompleteType='password'
-							theme={theme}
 						/>
 						<Button
 							onPress={this.submit}

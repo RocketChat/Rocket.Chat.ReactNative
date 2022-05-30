@@ -128,7 +128,6 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 							testID='set-username-view-input'
 							clearButtonMode='while-editing'
 							containerStyle={sharedStyles.inputLastChild}
-							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Register')}

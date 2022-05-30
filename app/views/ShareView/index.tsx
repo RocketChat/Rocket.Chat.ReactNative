@@ -341,7 +341,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				multiline
 				textAlignVertical='top'
 				autoFocus
-				theme={theme}
 				value={text}
 			/>
 		);

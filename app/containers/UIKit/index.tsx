@@ -188,7 +188,6 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 
 	plainInput(element: IElement, context: BlockContext) {
 		const [{ loading, value, error }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
 			<FormTextInput
@@ -201,7 +200,6 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 				containerStyle={styles.input}
 				value={value}
 				error={{ error }}
-				theme={theme}
 			/>
 		);
 	}
