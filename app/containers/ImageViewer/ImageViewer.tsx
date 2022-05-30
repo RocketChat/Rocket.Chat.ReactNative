@@ -18,6 +18,15 @@ interface ImageViewerProps {
 	onLoadEnd?: () => void;
 }
 
+const styles = StyleSheet.create({
+	flex: {
+		flex: 1
+	},
+	image: {
+		flex: 1
+	}
+});
+
 export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...props }: ImageViewerProps): React.ReactElement => {
 	const [centerX, setCenterX] = useState(0);
 	const [centerY, setCenterY] = useState(0);
@@ -87,15 +96,6 @@ export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...pr
 		});
 
 	const gesture = Gesture.Simultaneous(Gesture.Simultaneous(pinchGesture, panGesture), doubleTapGesture);
-
-	const styles = StyleSheet.create({
-		flex: {
-			flex: 1
-		},
-		image: {
-			flex: 1
-		}
-	});
 
 	const Component = ImageComponent(imageComponentType);
 
