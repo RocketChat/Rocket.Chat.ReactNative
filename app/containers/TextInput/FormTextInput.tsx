@@ -1,13 +1,12 @@
-import React from 'react';
-import { StyleProp, StyleSheet, Text, TextInputProps, TextInput as RNTextInput, TextStyle, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../../views/Styles';
 import TextInput from './index';
-import { themes } from '../../lib/constants';
 import { CustomIcon, TIconsName } from '../CustomIcon';
+import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
-import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	error: {
@@ -62,94 +61,62 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;
-	onIconRightPress?(): void;
-	theme: TSupportedThemes;
 }
 
-interface IRCTextInputState {
-	showPassword: boolean;
-}
+const FormTextInput = React.memo(
+	({
+		label,
+		error,
+		loading,
+		containerStyle,
+		inputStyle,
+		inputRef,
+		iconLeft,
+		iconRight,
+		left,
+		testID,
+		secureTextEntry,
+		placeholder,
+		...props
+	}: IRCTextInputProps) => {
+		const { colors, theme } = useTheme();
+		const [showPassword, setShowPassword] = useState(false);
 
-export default class FormTextInput extends React.PureComponent<IRCTextInputProps, IRCTextInputState> {
-	static defaultProps = {
-		error: {},
-		theme: 'light'
-	};
+		const showIconLeft = () =>
+			iconLeft ? (
+				<CustomIcon
+					name={iconLeft}
+					testID={testID ? `${testID}-icon-left` : undefined}
+					size={20}
+					color={colors.bodyText}
+					style={[styles.iconContainer, styles.iconLeft]}
+				/>
+			) : null;
 
-	state = {
-		showPassword: false
-	};
+		const showIconRight = () =>
+			iconRight ? (
+				<CustomIcon name={iconRight} size={20} color={colors.bodyText} style={[styles.iconContainer, styles.iconRight]} />
+			) : null;
 
-	get iconLeft() {
-		const { testID, iconLeft, theme } = this.props;
-		return iconLeft ? (
-			<CustomIcon
-				name={iconLeft}
-				testID={testID ? `${testID}-icon-left` : undefined}
-				size={20}
-				color={themes[theme].bodyText}
-				style={[styles.iconContainer, styles.iconLeft]}
-			/>
-		) : null;
-	}
-
-	get iconRight() {
-		const { iconRight, onIconRightPress, theme } = this.props;
-		return iconRight ? (
-			<Touchable onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
-				<CustomIcon name={iconRight} size={20} color={themes[theme].bodyText} />
-			</Touchable>
-		) : null;
-	}
-
-	get iconPassword() {
-		const { showPassword } = this.state;
-		const { testID, theme } = this.props;
-		return (
-			<Touchable onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
+		const showIconPassword = () => (
+			<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
 					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 					testID={testID ? `${testID}-icon-right` : undefined}
 					size={20}
-					color={themes[theme].auxiliaryText}
+					color={colors.auxiliaryText}
 				/>
 			</Touchable>
 		);
-	}
 
-	get loading() {
-		const { theme } = this.props;
-		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight]} color={themes[theme].bodyText} />;
-	}
+		const showLoading = () => <ActivityIndicator style={[styles.iconContainer, styles.iconRight]} color={colors.bodyText} />;
 
-	tooglePassword = () => {
-		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
-	};
-
-	render() {
-		const { showPassword } = this.state;
-		const {
-			label,
-			left,
-			error,
-			loading,
-			secureTextEntry,
-			containerStyle,
-			inputRef,
-			iconLeft,
-			iconRight,
-			inputStyle,
-			testID,
-			placeholder,
-			theme,
-			...inputProps
-		} = this.props;
-		const { dangerColor } = themes[theme];
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
-					<Text style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>{label}</Text>
+					<Text style={[styles.label, { color: colors.titleText }, error?.error && { color: colors.dangerColor }]}>{label}</Text>
 				) : null}
+
 				<View style={styles.wrap}>
 					<TextInput
 						style={[
@@ -157,13 +124,13 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 							iconLeft && styles.inputIconLeft,
 							(secureTextEntry || iconRight) && styles.inputIconRight,
 							{
-								backgroundColor: themes[theme].backgroundColor,
-								borderColor: themes[theme].separatorColor,
-								color: themes[theme].titleText
+								backgroundColor: colors.backgroundColor,
+								borderColor: colors.separatorColor,
+								color: colors.titleText
 							},
 							error?.error && {
-								color: dangerColor,
-								borderColor: dangerColor
+								color: colors.dangerColor,
+								borderColor: colors.dangerColor
 							},
 							inputStyle
 						]}
@@ -176,16 +143,18 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
 						theme={theme}
-						{...inputProps}
+						{...props}
 					/>
-					{iconLeft ? this.iconLeft : null}
-					{iconRight ? this.iconRight : null}
-					{secureTextEntry ? this.iconPassword : null}
-					{loading ? this.loading : null}
+					{showIconLeft()}
+					{showIconRight()}
+					{secureTextEntry ? showIconPassword() : null}
+					{loading ? showLoading() : null}
 					{left}
 				</View>
-				{error && error.reason ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
+				{error && error.reason ? <Text style={[styles.error, { color: colors.dangerColor }]}>{error.reason}</Text> : null}
 			</View>
 		);
 	}
-}
+);
+
+export default FormTextInput;
