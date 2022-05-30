@@ -13,6 +13,9 @@ describe('Create room screen', () => {
 
 	describe('New Message', () => {
 		before(async () => {
+			await waitFor(element(by.id('rooms-list-view-create-channel')))
+				.toBeVisible()
+				.withTimeout(10000);
 			await element(by.id('rooms-list-view-create-channel')).tap();
 		});
 

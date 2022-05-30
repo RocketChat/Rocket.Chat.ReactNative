@@ -15,11 +15,11 @@ import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
-import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
 import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
+import RightIcons from './Components/RightIcons';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { attachments } = props;
@@ -102,7 +102,16 @@ const Message = React.memo((props: IMessage) => {
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 					<MessageInner {...props} />
 				</View>
-				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
+				{!props.isHeader ? (
+					<RightIcons
+						type={props.type}
+						msg={props.msg}
+						isEdited={props.isEdited}
+						hasError={props.hasError}
+						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
+						unread={props.unread || false}
+					/>
+				) : null}
 			</View>
 		</View>
 	);

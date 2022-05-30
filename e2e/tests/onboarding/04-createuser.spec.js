@@ -28,6 +28,7 @@ describe('Create user screen', () => {
 		});
 
 		it('should have submit button', async () => {
+			await element(by.id('register-view')).atIndex(0).swipe('up', 'fast', 0.5);
 			await expect(element(by.id('register-view-submit'))).toBeVisible();
 		});
 

@@ -12,7 +12,7 @@ describe('Login screen', () => {
 
 	describe('Render', () => {
 		it('should have login screen', async () => {
-			await expect(element(by.id('login-view'))).toBeVisible();
+			await expect(element(by.id('login-view'))).toExist();
 		});
 
 		it('should have email input', async () => {
@@ -44,7 +44,7 @@ describe('Login screen', () => {
 		it('should navigate to register', async () => {
 			await element(by.id('login-view-register')).tap();
 			await waitFor(element(by.id('register-view')))
-				.toBeVisible()
+				.toExist()
 				.withTimeout(2000);
 			await tapBack();
 		});
