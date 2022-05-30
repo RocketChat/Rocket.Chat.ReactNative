@@ -94,21 +94,33 @@ const FormTextInput = React.memo(
 
 		const showIconRight = () =>
 			iconRight ? (
-				<CustomIcon name={iconRight} size={20} color={colors.bodyText} style={[styles.iconContainer, styles.iconRight]} />
+				<CustomIcon
+					name={iconRight}
+					testID={testID ? `${testID}-icon-right` : undefined}
+					size={20}
+					color={colors.bodyText}
+					style={[styles.iconContainer, styles.iconRight]}
+				/>
 			) : null;
 
 		const showIconPassword = () => (
 			<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
 					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
-					testID={testID ? `${testID}-icon-right` : undefined}
+					testID={testID ? `${testID}-icon-password` : undefined}
 					size={20}
 					color={colors.auxiliaryText}
 				/>
 			</Touchable>
 		);
 
-		const showLoading = () => <ActivityIndicator style={[styles.iconContainer, styles.iconRight]} color={colors.bodyText} />;
+		const showLoading = () => (
+			<ActivityIndicator
+				style={[styles.iconContainer, styles.iconRight]}
+				color={colors.bodyText}
+				testID={testID ? `${testID}-loading` : undefined}
+			/>
+		);
 
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
