@@ -1,22 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-native-modal';
-import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import Modal from 'react-native-modal';
 import Orientation from 'react-native-orientation-locker';
+import Touchable from 'react-native-platform-touchable';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import EventEmitter from '../utils/events';
-import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
-import { isTablet } from '../utils/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';
+import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
+import { CustomIcon } from '../containers/CustomIcon';
+import { useTheme } from '../theme';
+import { hasNotch, isTablet } from '../utils/deviceInfo';
+import EventEmitter from '../utils/events';
 
 interface IData {
 	submit?: () => void;
+	cancel?: () => void;
 	hasBiometry?: boolean;
+	force?: boolean;
 }
+
+const styles = StyleSheet.create({
+	close: {
+		position: 'absolute',
+		top: hasNotch ? 50 : 30,
+		left: 15
+	}
+});
 
 const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
+	const { colors } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -51,6 +66,14 @@ const ScreenLockedView = (): JSX.Element => {
 		setData({});
 	};
 
+	const onCancel = () => {
+		const { cancel } = data;
+		if (cancel) {
+			cancel();
+		}
+		setData({});
+	};
+
 	return (
 		<Modal
 			useNativeDriver
@@ -60,6 +83,11 @@ const ScreenLockedView = (): JSX.Element => {
 			animationIn='fadeIn'
 			animationOut='fadeOut'>
 			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
+			{data?.force ? (
+				<Touchable onPress={onCancel} style={styles.close}>
+					<CustomIcon name='close' color={colors.passcodePrimary} size={30} />
+				</Touchable>
+			) : null}
 		</Modal>
 	);
 };

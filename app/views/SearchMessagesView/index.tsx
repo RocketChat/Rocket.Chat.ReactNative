@@ -6,16 +6,14 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { IAttachment } from '../../definitions/IAttachment';
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
-import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { IMessage } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
@@ -33,12 +31,14 @@ import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { IEmoji } from '../../definitions/IEmoji';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { IMessageFromServer, IUser, TMessageModel, IUrl } from '../../definitions';
+import { Services } from '../../lib/services';
 
 const QUERY_SIZE = 50;
 
 interface ISearchMessagesViewState {
 	loading: boolean;
-	messages: IMessage[];
+	messages: (IMessageFromServer | TMessageModel)[];
 	searchText: string;
 }
 
@@ -59,11 +59,7 @@ interface INavigationOption {
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
-	user: {
-		id: string;
-		username: string;
-		token: string;
-	};
+	user: IUser;
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {
@@ -77,7 +73,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	private rid: string;
 
-	private t: string | undefined;
+	private t: SubscriptionType;
 
 	private encrypted: boolean | undefined;
 
@@ -134,7 +130,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async (searchText: string) => {
+	searchMessages = async (searchText: string): Promise<(IMessageFromServer | TMessageModel)[]> => {
 		if (!searchText) {
 			return [];
 		}
@@ -153,17 +149,32 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
+		const result = await Services.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
-			return result.messages;
+			const urlRenderMessages = result.messages?.map(message => {
+				if (message.urls && message.urls.length > 0) {
+					message.urls = message.urls?.map((url, index) => {
+						if (url.meta) {
+							return {
+								_id: index,
+								title: url.meta.pageTitle,
+								description: url.meta.ogDescription,
+								image: url.meta.ogImage,
+								url: url.url
+							} as IUrl;
+						}
+						return {} as IUrl;
+					});
+				}
+				return message;
+			});
+			return urlRenderMessages;
 		}
-
 		return [];
 	};
 	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
 			const messages = await this.searchMessages(searchText);
-			// @ts-ignore TODO: find a way to deal with the difference between IMessageFromServer and TMessageModel expected by state
 			this.setState(prevState => ({
 				messages: debounced ? messages : [...prevState.messages, ...messages],
 				loading: false
@@ -206,21 +217,28 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
-	jumpToMessage = async ({ item }: { item: IMessage }) => {
+	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const { navigation } = this.props;
-		let params: any = {
+		let params: {
+			rid: string;
+			jumpToMessageId: string;
+			t: SubscriptionType;
+			room: TSubscriptionModel | undefined;
+			tmid?: string;
+			name?: string;
+		} = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
 			t: this.t,
-			room: this.room
+			room: this.room as TSubscriptionModel
 		};
-		if (item.tmid) {
+		if ('tmid' in item && item.tmid) {
 			navigation.pop();
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: 'thread'
+				name: await getThreadName(this.rid, item.tmid as string, item._id),
+				t: SubscriptionType.THREAD
 			};
 			navigation.push('RoomView', params);
 		} else {
@@ -254,16 +272,15 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		);
 	};
 
-	renderItem = ({ item }: { item: IMessage }) => {
+	renderItem = ({ item }: { item: IMessageFromServer | TMessageModel }) => {
+		const message = item as TMessageModel;
 		const { user, baseUrl, theme, useRealName } = this.props;
 		return (
 			<Message
-				// @ts-ignore IMessage | TMessageModel?
-				item={item}
+				item={message}
 				baseUrl={baseUrl}
 				user={user}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
-				isHeader
 				isThreadRoom
 				showAttachment={this.showAttachment}
 				getCustomEmoji={this.getCustomEmoji}
@@ -272,6 +289,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				theme={theme}
 				onPress={() => this.jumpToMessage({ item })}
 				jumpToMessage={() => this.jumpToMessage({ item })}
+				rid={message.rid}
 			/>
 		);
 	};
@@ -305,7 +323,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
 				<StatusBar />
 				<View style={styles.searchContainer}>
-					<RCTextInput
+					<FormTextInput
 						autoFocus
 						label={I18n.t('Search')}
 						onChangeText={this.search}

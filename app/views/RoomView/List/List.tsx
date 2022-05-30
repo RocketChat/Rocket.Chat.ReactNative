@@ -17,8 +17,10 @@ const styles = StyleSheet.create({
 	}
 });
 
+export type TListRef = React.RefObject<FlatList & { getNode: () => FlatList }>;
+
 export interface IListProps extends FlatListProps<any> {
-	listRef: any;
+	listRef: TListRef;
 }
 
 const List = ({ listRef, ...props }: IListProps) => (

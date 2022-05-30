@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 import styles from '../styles';
 import i18n from '../../../i18n';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 
@@ -12,11 +12,11 @@ interface IBaseButton {
 	onPress(): void;
 	testID: string;
 	accessibilityLabel: string;
-	icon: string;
-	color: string;
+	icon: TIconsName;
+	color?: string;
 }
 
-const BaseButton = ({ accessibilityLabel, icon, color, ...props }: Partial<IBaseButton>) => {
+const BaseButton = ({ accessibilityLabel, icon, color, ...props }: IBaseButton) => {
 	const { theme } = useTheme();
 	return (
 		<BorderlessButton {...props} style={styles.actionButton}>

@@ -11,7 +11,6 @@ import random from '../../../utils/random';
 import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
-import RocketChat from '../../rocketchat';
 import EventEmitter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
@@ -34,6 +33,8 @@ import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { E2E_MESSAGE_TYPE } from '../../constants';
+import { getRoom } from '../getRoom';
+import { getRoomAvatar, getRoomTitle, getSenderName } from '../helpers';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -42,6 +43,8 @@ let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: number | null | false = null;
 const WINDOW_TIME = 500;
+
+export let roomsSubscription: { stop: () => void } | null = null;
 
 const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
 	try {
@@ -358,9 +361,9 @@ export default function subscribeRooms() {
 				const {
 					payload: { rid, message, sender }
 				} = notification;
-				const room = await RocketChat.getRoom(rid);
-				notification.title = RocketChat.getRoomTitle(room);
-				notification.avatar = RocketChat.getRoomAvatar(room);
+				const room = await getRoom(rid);
+				notification.title = getRoomTitle(room);
+				notification.avatar = getRoomAvatar(room);
 
 				// If it's from a encrypted room
 				if (message?.t === E2E_MESSAGE_TYPE) {
@@ -371,7 +374,7 @@ export default function subscribeRooms() {
 						notification.text = msg;
 						// If it's a private group we should add the sender name
 					} else {
-						notification.text = `${RocketChat.getSenderName(sender)}: ${msg}`;
+						notification.text = `${getSenderName(sender)}: ${msg}`;
 					}
 				}
 			} catch (e) {
@@ -403,6 +406,7 @@ export default function subscribeRooms() {
 			clearTimeout(subTimer);
 			subTimer = false;
 		}
+		roomsSubscription = null;
 	};
 
 	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
@@ -411,10 +415,8 @@ export default function subscribeRooms() {
 		// set the server that started this task
 		subServer = sdk.current.client.host;
 		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
-
-		return {
-			stop: () => stop()
-		};
+		roomsSubscription = { stop: () => stop() };
+		return null;
 	} catch (e) {
 		log(e);
 		return Promise.reject();

@@ -4,12 +4,12 @@ import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-nat
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import { allowPreview } from './utils';
-import { IAttachment } from './interfaces';
 import { TSupportedThemes } from '../../theme';
+import { IShareAttachment } from '../../definitions';
 
 const THUMB_SIZE = 64;
 
@@ -62,18 +62,18 @@ const styles = StyleSheet.create({
 });
 
 interface IThumbContent {
-	item: IAttachment;
+	item: IShareAttachment;
 	theme: TSupportedThemes;
 	isShareExtension: boolean;
 }
 
 interface IThumb extends IThumbContent {
-	onPress(item: IAttachment): void;
-	onRemove(item: IAttachment): void;
+	onPress(item: IShareAttachment): void;
+	onRemove(item: IShareAttachment): void;
 }
 
 interface IThumbs extends Omit<IThumb, 'item'> {
-	attachments: IAttachment[];
+	attachments: IShareAttachment[];
 }
 
 const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbContent) => {

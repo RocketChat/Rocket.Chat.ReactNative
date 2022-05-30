@@ -8,7 +8,7 @@ import { colors } from './lib/constants';
 export type TSupportedThemes = keyof typeof colors;
 export type TColors = typeof colors[TSupportedThemes];
 
-interface IThemeContextProps {
+export interface IThemeContextProps {
 	theme: TSupportedThemes;
 	themePreferences?: IThemePreference;
 	setTheme?: (newTheme?: {}) => void;

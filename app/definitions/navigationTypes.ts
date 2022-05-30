@@ -1,8 +1,8 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
-import { ISubscription } from './ISubscription';
-import { IServer } from './IServer';
+import { TSubscriptionModel } from './ISubscription';
+import { TServerModel } from './IServer';
 import { IAttachment } from './IAttachment';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { OutsideParamList, InsideStackParamList } from '../stacks/types';
@@ -37,10 +37,10 @@ export type ShareInsideStackParamList = {
 		attachments: IAttachment[];
 		isShareView?: boolean;
 		isShareExtension: boolean;
-		serverInfo: IServer;
+		serverInfo: TServerModel;
 		text: string;
-		room: ISubscription;
-		thread: any; // TODO: Change
+		room: TSubscriptionModel;
+		thread?: any; // TODO: Change
 	};
 	SelectServerView: undefined;
 };

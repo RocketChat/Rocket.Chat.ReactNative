@@ -1,13 +1,17 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
-import { useSelector } from 'react-redux';
 
-import { OmnichannelSourceType, IApplicationState, IOmnichannelSource } from '../../definitions';
+import { OmnichannelSourceType, IOmnichannelSource } from '../../definitions';
 import { STATUS_COLORS } from '../../lib/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { useAppSelector } from '../../lib/hooks';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 
-const iconMap = {
+interface IIconMap {
+	[key: string]: TIconsName;
+}
+
+const iconMap: IIconMap = {
 	widget: 'livechat-monochromatic',
 	email: 'mail',
 	sms: 'sms',
@@ -25,8 +29,8 @@ interface IOmnichannelRoomIconProps {
 }
 
 export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnichannelRoomIconProps) => {
-	const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
-	const connected = useSelector((state: IApplicationState) => state.meteor?.connected);
+	const baseUrl = useAppSelector(state => state.server?.server);
+	const connected = useAppSelector(state => state.meteor?.connected);
 
 	if (sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
 		return (
