@@ -1,5 +1,3 @@
-import { IServices } from '../../selectors/login';
-
 export interface IOpenOAuth {
 	url: string;
 	ssoToken?: string;
@@ -19,20 +17,20 @@ export interface IItemService {
 	scope: string;
 }
 
-export interface IFunctions {
-	services: IServices;
+export interface IServiceLogin {
+	service: IItemService;
 	server: string;
 	urlOption?: string;
 }
 
 export interface IOauthProvider {
-	[key: string]: ({ services, server }: IFunctions) => void;
-	facebook: ({ services, server }: IFunctions) => void;
-	github: ({ services, server }: IFunctions) => void;
-	gitlab: ({ services, server }: IFunctions) => void;
-	google: ({ services, server }: IFunctions) => void;
-	linkedin: ({ services, server }: IFunctions) => void;
-	'meteor-developer': ({ services, server }: IFunctions) => void;
-	twitter: ({ services, server }: IFunctions) => void;
-	wordpress: ({ services, server }: IFunctions) => void;
+	[key: string]: ({ service, server }: IServiceLogin) => void;
+	facebook: ({ service, server }: IServiceLogin) => void;
+	github: ({ service, server }: IServiceLogin) => void;
+	gitlab: ({ service, server }: IServiceLogin) => void;
+	google: ({ service, server }: IServiceLogin) => void;
+	linkedin: ({ service, server }: IServiceLogin) => void;
+	'meteor-developer': ({ service, server }: IServiceLogin) => void;
+	twitter: ({ service, server }: IServiceLogin) => void;
+	wordpress: ({ service, server }: IServiceLogin) => void;
 }
