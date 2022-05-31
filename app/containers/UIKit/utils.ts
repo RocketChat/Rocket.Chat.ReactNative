@@ -1,8 +1,8 @@
 /* eslint-disable no-shadow */
 import React, { useContext, useState } from 'react';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
-import { BlockContext, IText } from './interfaces';
+import { IText } from './interfaces';
 
 export const textParser = ([{ text }]: IText[]) => text;
 
@@ -41,7 +41,7 @@ export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUse
 
 	const error = errors && actionId && errors[actionId];
 
-	if ([BLOCK_CONTEXT.SECTION, BLOCK_CONTEXT.ACTION].includes(context)) {
+	if ([BlockContext.SECTION, BlockContext.ACTION].includes(context)) {
 		return [
 			{
 				loading,

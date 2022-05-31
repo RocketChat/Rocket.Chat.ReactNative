@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
+
 import ImageContainer from '../message/Image';
 import Navigation from '../../lib/navigation/appNavigation';
 import { IThumb, IImage, IElement } from './interfaces';
@@ -36,9 +37,9 @@ export const Media = ({ element }: IImage) => {
 
 const genericImage = (element: IElement, context?: number) => {
 	switch (context) {
-		case BLOCK_CONTEXT.SECTION:
+		case BlockContext.SECTION:
 			return <Thumb element={element} />;
-		case BLOCK_CONTEXT.CONTEXT:
+		case BlockContext.CONTEXT:
 			return <ThumbContext element={element} />;
 		default:
 			return <Media element={element} />;
