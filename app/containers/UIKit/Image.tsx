@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
-
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Image';
 import Navigation from '../../lib/navigation/appNavigation';
