@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { FastImageProps } from '@rocket.chat/react-native-fast-image';
+import { FastImageProps } from 'react-native-fast-image';
 
 import { types } from './types';
 
@@ -10,7 +10,7 @@ export const ImageComponent = (type?: string): React.ComponentType<Partial<Image
 		const { Image } = require('react-native');
 		Component = Image;
 	} else {
-		const FastImage = require('@rocket.chat/react-native-fast-image').default;
+		const FastImage = require('react-native-fast-image');
 		Component = FastImage;
 	}
 	return Component;
