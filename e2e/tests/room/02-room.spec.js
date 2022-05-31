@@ -121,6 +121,9 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('messagebox-container')))
 					.toExist()
 					.withTimeout(10000);
+				await waitFor(element(by.id('mention-item-joy')))
+					.toExist()
+					.withTimeout(10000);
 				await element(by.id('mention-item-joy')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(':joy: ');
 				await element(by.id('messagebox-input')).clearText();
@@ -275,7 +278,7 @@ describe('Room screen', () => {
 				await element(by.id('reaction-picker-😃')).tap();
 				await waitFor(element(by.id('reaction-picker-grinning')))
 					.toExist()
-					.withTimeout(2000);
+					.withTimeout(10000);
 				await element(by.id('reaction-picker-grinning')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:')))
 					.toExist()
@@ -342,7 +345,10 @@ describe('Room screen', () => {
 				await element(by[textMatcher]('Edit')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).replaceText(`${data.random}edited`);
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by[textMatcher](`${data.random}edited (edited)`)).atIndex(0))
+				await waitFor(element(by[textMatcher](`${data.random}edited`)).atIndex(0))
+					.toExist()
+					.withTimeout(60000);
+				await waitFor(element(by.id(`${data.random}edited-edited`)))
 					.toExist()
 					.withTimeout(60000);
 			});

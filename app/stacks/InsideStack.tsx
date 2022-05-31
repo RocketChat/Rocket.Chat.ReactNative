@@ -133,7 +133,7 @@ const ChatsStackNavigator = () => {
 			/>
 			<ChatsStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 			<ChatsStack.Screen name='ReadReceiptsView' component={ReadReceiptsView} options={ReadReceiptsView.navigationOptions} />
-			<ChatsStack.Screen name='QueueListView' component={QueueListView} options={QueueListView.navigationOptions} />
+			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
 			<ChatsStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 			<ChatsStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 		</ChatsStack.Navigator>

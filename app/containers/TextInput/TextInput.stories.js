@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 
 import { View, StyleSheet } from 'react-native';
-import TextInput from './TextInput';
+import FormTextInput from './FormTextInput';
 
 const styles = StyleSheet.create({
 	paddingHorizontal: {
@@ -23,9 +23,9 @@ const theme = 'light';
 stories.add('Short and Long Text', () => (
 	<>
 		<View style={styles.paddingHorizontal}>
-			<TextInput label='Short Text' placeholder='placeholder' value={item.name} theme={theme} />
+			<FormTextInput label='Short Text' placeholder='placeholder' value={item.name} theme={theme} />
 
-			<TextInput label='Long Text' placeholder='placeholder' value={item.longText} theme={theme} />
+			<FormTextInput label='Long Text' placeholder='placeholder' value={item.longText} theme={theme} />
 		</View>
 	</>
 ));
