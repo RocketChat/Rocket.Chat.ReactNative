@@ -6,7 +6,10 @@ import I18n from '../../i18n';
 import FormTextInput from '../TextInput/FormTextInput';
 
 const styles = StyleSheet.create({
-	inputContainer: { marginHorizontal: 16, marginVertical: 10 }
+	inputContainer: {
+		margin: 16,
+		marginBottom: 16
+	}
 });
 
 const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
