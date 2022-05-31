@@ -9,7 +9,6 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from '
 
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
-import { themes } from '../lib/constants';
 import Button from './Button';
 import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
@@ -98,7 +97,7 @@ const LoginServices = (): React.ReactElement => {
 	const [collapsed, setCollapsed] = useState(true);
 
 	const navigation = useNavigation<StackNavigationProp<OutsideParamList>>();
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
 
 	const { Gitlab_URL, CAS_enabled, CAS_login_url, Accounts_ShowFormLogin } = useAppSelector(
 		state => ({
@@ -296,7 +295,7 @@ const LoginServices = (): React.ReactElement => {
 							setCollapsed(prevState => !prevState);
 						}}
 						style={styles.options}
-						color={themes[theme].actionTintColor}
+						color={colors.actionTintColor}
 					/>
 					<OrSeparator theme={theme} />
 				</>
@@ -352,7 +351,7 @@ const LoginServices = (): React.ReactElement => {
 			);
 		}
 
-		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : themes[theme].chatComponentBackground;
+		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : colors.chatComponentBackground;
 
 		return (
 			<Touch
@@ -361,12 +360,12 @@ const LoginServices = (): React.ReactElement => {
 				style={[styles.serviceButton, { backgroundColor }]}
 				theme={theme}
 				activeOpacity={0.5}
-				underlayColor={themes[theme].buttonText}>
+				underlayColor={colors.buttonText}>
 				<View style={styles.serviceButtonContainer}>
 					{service.authType === 'oauth' || service.authType === 'apple' ? (
-						<CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} />
+						<CustomIcon name={icon} size={24} color={colors.titleText} style={styles.serviceIcon} />
 					) : null}
-					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
+					<Text style={[styles.serviceText, { color: colors.titleText }]}>{buttonText}</Text>
 				</View>
 			</Touch>
 		);
