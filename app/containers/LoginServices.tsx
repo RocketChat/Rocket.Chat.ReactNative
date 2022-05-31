@@ -93,18 +93,17 @@ interface IOauthProvider {
 	wordpress: () => void;
 }
 
-const LoginServices = (): React.ReactElement => {
+const LoginServices = ({ separator }: { separator: boolean }): React.ReactElement => {
 	const [collapsed, setCollapsed] = useState(true);
 
 	const navigation = useNavigation<StackNavigationProp<OutsideParamList>>();
 	const { theme, colors } = useTheme();
 
-	const { Gitlab_URL, CAS_enabled, CAS_login_url, Accounts_ShowFormLogin } = useAppSelector(
+	const { Gitlab_URL, CAS_enabled, CAS_login_url } = useAppSelector(
 		state => ({
 			Gitlab_URL: state.settings.API_Gitlab_URL as string,
 			CAS_enabled: state.settings.CAS_enabled as boolean,
-			CAS_login_url: state.settings.CAS_login_url as string,
-			Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin as boolean
+			CAS_login_url: state.settings.CAS_login_url as string
 		}),
 		shallowEqual
 	);
@@ -284,7 +283,7 @@ const LoginServices = (): React.ReactElement => {
 	const renderServicesSeparator = () => {
 		const { length } = Object.values(services);
 
-		if (length > 3 && Accounts_ShowFormLogin) {
+		if (length > 3 && separator) {
 			return (
 				<>
 					<Button
@@ -301,7 +300,7 @@ const LoginServices = (): React.ReactElement => {
 				</>
 			);
 		}
-		if (length > 0 && Accounts_ShowFormLogin) {
+		if (length > 0 && separator) {
 			return <OrSeparator theme={theme} />;
 		}
 		return null;
@@ -371,7 +370,7 @@ const LoginServices = (): React.ReactElement => {
 		);
 	};
 
-	if (length > 3 && Accounts_ShowFormLogin) {
+	if (length > 3 && separator) {
 		return (
 			<>
 				<Animated.View style={animatedStyle}>
