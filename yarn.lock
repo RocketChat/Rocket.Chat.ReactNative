@@ -4023,11 +4023,6 @@
   resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.30.0.tgz#63a25aa7fa17724d55db80f95f7f8d6a99ae42ff"
   integrity sha512-pI7ajaojv+GqhQBMnFiBOWerE7zIlJywWFaLzJlIC/wsJ9LgX6YaKY2wqc909nkr+E4qZY1luJ61ErXGGSF9Zw==
 
-"@rocket.chat/react-native-fast-image@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/react-native-fast-image/-/react-native-fast-image-8.2.0.tgz#4f48858f95f40afcb10b39cee9b1239c150d6c51"
-  integrity sha512-NF5KlFt642ZucP/KHnYGBNYLD6O7bcrZMKfRQlH5Y3/1xpnPX1g4wuygtiV7XArMU1FopQT+qmCUPPj8IMDTcw==
-
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
   version "1.3.0-mobile"
   resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/454b4ba784095057b8de862eb99340311b672e15"
@@ -14861,6 +14856,10 @@ react-native-easy-toast@^1.2.0:
   integrity sha512-UtpxnRn1ME+035Uey4VR+9K0P4aVoTcWNOx5QkioWBe3LBKMPb/kZjrQ1LtvWzOyeGP4TeTUTtMX3IOPWv5MtA==
   dependencies:
     prop-types "^15.5.10"
+
+react-native-fast-image@RocketChat/react-native-fast-image.git#bump-version:
+  version "8.5.12"
+  resolved "https://codeload.github.com/RocketChat/react-native-fast-image/tar.gz/8bdb187a4500e23ad1c95324a669c25361bbf685"
 
 react-native-file-viewer@^2.1.4:
   version "2.1.4"

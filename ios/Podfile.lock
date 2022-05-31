@@ -144,49 +144,49 @@ PODS:
   - GoogleDataTransportCCTSupport (3.2.0):
     - GoogleDataTransport (~> 6.1)
     - nanopb (~> 1.30905.0)
-  - GoogleUtilities/AppDelegateSwizzler (6.7.1):
+  - GoogleUtilities/AppDelegateSwizzler (6.7.2):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (6.7.1):
+  - GoogleUtilities/Environment (6.7.2):
     - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (6.7.1):
+  - GoogleUtilities/Logger (6.7.2):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (6.7.1):
+  - GoogleUtilities/MethodSwizzler (6.7.2):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (6.7.1):
+  - GoogleUtilities/Network (6.7.2):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (6.7.1)"
-  - GoogleUtilities/Reachability (6.7.1):
+  - "GoogleUtilities/NSData+zlib (6.7.2)"
+  - GoogleUtilities/Reachability (6.7.2):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (6.7.1):
+  - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
   - hermes-engine (0.7.2)
   - JitsiMeetSDK (3.6.0)
   - KeyCommands (2.0.3):
     - React
   - libevent (2.1.12)
-  - libwebp (1.1.0):
-    - libwebp/demux (= 1.1.0)
-    - libwebp/mux (= 1.1.0)
-    - libwebp/webp (= 1.1.0)
-  - libwebp/demux (1.1.0):
+  - libwebp (1.2.1):
+    - libwebp/demux (= 1.2.1)
+    - libwebp/mux (= 1.2.1)
+    - libwebp/webp (= 1.2.1)
+  - libwebp/demux (1.2.1):
     - libwebp/webp
-  - libwebp/mux (1.1.0):
+  - libwebp/mux (1.2.1):
     - libwebp/demux
-  - libwebp/webp (1.1.0)
+  - libwebp/webp (1.2.1)
   - MMKV (1.2.10):
     - MMKVCore (~> 1.2.10)
-  - MMKVCore (1.2.12)
+  - MMKVCore (1.2.13)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
   - OpenSSL-Universal (1.1.180)
-  - PromisesObjC (1.2.9)
+  - PromisesObjC (1.2.12)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -518,10 +518,10 @@ PODS:
     - React-Core
   - RNDeviceInfo (8.4.8):
     - React-Core
-  - RNFastImage (8.2.0):
-    - React
-    - SDWebImage (~> 5.0)
-    - SDWebImageWebPCoder (~> 0.4.1)
+  - RNFastImage (8.5.11):
+    - React-Core
+    - SDWebImage (~> 5.12.5)
+    - SDWebImageWebPCoder (~> 0.8.4)
   - RNFBAnalytics (7.3.1):
     - Firebase/Analytics (~> 6.27.0)
     - React
@@ -586,14 +586,14 @@ PODS:
     - React-Core
   - RNVectorIcons (8.1.0):
     - React-Core
-  - SDWebImage (5.8.4):
-    - SDWebImage/Core (= 5.8.4)
-  - SDWebImage/Core (5.8.4)
-  - SDWebImageWebPCoder (0.4.1):
+  - SDWebImage (5.12.5):
+    - SDWebImage/Core (= 5.12.5)
+  - SDWebImage/Core (5.12.5)
+  - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.5)
+    - SDWebImage/Core (~> 5.10)
   - simdjson (0.9.6-fix2)
-  - TOCropViewController (2.5.3)
+  - TOCropViewController (2.6.1)
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
   - UMReactNativeAdapter (6.3.9):
@@ -960,7 +960,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: c9b6dfcde9b3d497793c40d4ccbfbfb05092e0df
-  FBReactNativeSpec: addc4f0e6ab00dc628fe91de8bfca4601762673a
+  FBReactNativeSpec: c39f7fc0cd6cc64f0a2a5beffc64b1aa5d42740e
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -978,17 +978,17 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 8cd1f289d60e629cf16ab03363b9e89c776b9651
   GoogleDataTransport: 9a8a16f79feffc7f42096743de2a7c4815e84020
   GoogleDataTransportCCTSupport: 489c1265d2c85b68187a83a911913d190012158d
-  GoogleUtilities: e121a3867449ce16b0e35ddf1797ea7a389ffdf2
+  GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
   JitsiMeetSDK: 476329f72a866f714d2802bafe1729de6d644ccf
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
+  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
   MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
-  MMKVCore: df0565f6b58463604731a68ba6cd89bc0b2d1d55
+  MMKVCore: 3388952ded307e41b3ed8a05892736a236ed1b8e
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 908e7c492c5403cd74fc849bda4dbb13faaa07d7
   RCTTypeSafety: 7d9dfd02b51d4b77ea76dff3172f9839fe5f599a
@@ -1040,7 +1040,7 @@ SPEC CHECKSUMS:
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
-  RNFastImage: f40d202ea2367239f71bc7cf11315f4bebab85b4
+  RNFastImage: 945abf54742505d790d9024d230c69b1e866bc88
   RNFBAnalytics: dae6d7b280ba61c96e1bbdd34aca3154388f025e
   RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
   RNFBCrashlytics: 88de72c2476b5868a892d9523b89b86c527c540e
@@ -1053,10 +1053,10 @@ SPEC CHECKSUMS:
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
-  SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
+  SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
+  SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   simdjson: 85016870cd17207312b718ef6652eb6a1cd6a2b0
-  TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785
