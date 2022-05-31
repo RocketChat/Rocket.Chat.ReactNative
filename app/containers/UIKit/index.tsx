@@ -1,7 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKitModal } from '@rocket.chat/ui-kit';
+import {
+	UiKitParserMessage,
+	UiKitParserModal,
+	uiKitMessage,
+	uiKitModal,
+	BlockContext,
+	Markdown as IMarkdown,
+	PlainText
+} from '@rocket.chat/ui-kit';
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
@@ -20,7 +28,7 @@ import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
-import { BlockContext, IActions, IButton, IElement, IInputIndex, IParser, ISection, IText } from './interfaces';
+import { IActions, IButton, IElement, IInputIndex, IParser, ISection } from './interfaces';
 
 const styles = StyleSheet.create({
 	input: {
@@ -42,22 +50,33 @@ const styles = StyleSheet.create({
 
 const plainText = ({ text } = { text: '' }) => text;
 
-class MessageParser extends UiKitParserMessage {
+class MessageParser extends UiKitParserMessage<React.ReactElement> {
 	get current() {
 		return this as unknown as IParser;
 	}
 
-	text({ text, type }: Partial<IText> = { text: '' }, context: BlockContext) {
+	plain_text(element: PlainText, context: BlockContext): React.ReactElement {
 		const { theme } = useContext(ThemeContext);
-		if (type !== 'mrkdwn') {
-			return <Text style={[styles.text, { color: themes[theme].bodyText }]}>{text}</Text>;
-		}
 
-		const isContext = context === BLOCK_CONTEXT.CONTEXT;
+		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
-			return <MarkdownPreview msg={text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />;
+			return (
+				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />
+			);
 		}
-		return <Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
+		return <Text style={[styles.text, { color: themes[theme].bodyText }]}>{element.text}</Text>;
+	}
+
+	mrkdwn(element: IMarkdown, context: BlockContext) {
+		const { theme } = useContext(ThemeContext);
+
+		const isContext = context === BlockContext.CONTEXT;
+		if (isContext) {
+			return (
+				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />
+			);
+		}
+		return <Markdown msg={element.text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
 	}
 
 	button(element: IButton, context: BlockContext) {
@@ -132,10 +151,13 @@ class MessageParser extends UiKitParserMessage {
 	}
 }
 
-class ModalParser extends UiKitParserModal {
+// plain_text and mrkdwn functions are created in MessageParser and the ModalParser's constructor use the same functions
+// @ts-ignore
+class ModalParser extends UiKitParserModal<React.ReactElement> {
 	constructor() {
 		super();
 		Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {
+			// @ts-ignore
 			ModalParser.prototype[method] = ModalParser.prototype[method] || MessageParser.prototype[method];
 		});
 	}
@@ -188,7 +210,7 @@ class ModalParser extends UiKitParserModal {
 export const messageParser = new MessageParser();
 export const modalParser = new ModalParser();
 
-export const UiKitMessage = uiKitMessage(messageParser);
-export const UiKitModal = uiKitModal(modalParser);
+export const UiKitMessage = uiKitMessage(messageParser, { engine: 'rocket.chat' }) as any;
+export const UiKitModal = uiKitModal(modalParser) as any;
 
 export const UiKitComponent = ({ render, blocks }: any) => render(blocks);

@@ -38,28 +38,28 @@ async function navigateToLogin(server) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-login')).tap();
 	await waitFor(element(by.id('login-view')))
-		.toBeVisible()
+		.toExist()
 		.withTimeout(2000);
-	await expect(element(by.id('login-view'))).toBeVisible();
+	await expect(element(by.id('login-view'))).toExist();
 }
 
 async function navigateToRegister(server) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
 	await waitFor(element(by.id('register-view')))
-		.toBeVisible()
+		.toExist()
 		.withTimeout(2000);
 }
 
 async function login(username, password) {
 	await waitFor(element(by.id('login-view')))
-		.toBeVisible()
+		.toExist()
 		.withTimeout(2000);
 	await element(by.id('login-view-email')).replaceText(username);
 	await element(by.id('login-view-password')).replaceText(password);
 	await element(by.id('login-view-submit')).tap();
 	await waitFor(element(by.id('rooms-list-view')))
-		.toBeVisible()
+		.toExist()
 		.withTimeout(30000);
 }
 
