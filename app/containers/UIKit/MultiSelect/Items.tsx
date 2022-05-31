@@ -26,7 +26,7 @@ interface IItems {
 	theme: TSupportedThemes;
 }
 
-const keyExtractor = (item: IItemData) => item.value?.name || item.text.text.toLowerCase();
+const keyExtractor = (item: IItemData) => item.text?.text;
 
 // RectButton doesn't work on modal (Android)
 const Item = ({ item, selected, onSelect, theme }: IItem) => {

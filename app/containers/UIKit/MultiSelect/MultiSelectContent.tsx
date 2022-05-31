@@ -17,13 +17,13 @@ interface IMultiSelectContentProps {
 	onChange: Function;
 	setCurrentValue: React.Dispatch<React.SetStateAction<string>>;
 	onHide: Function;
-	selectedItems: any;
+	selectedItems: string[];
 }
 
 export const MultiSelectContent = React.memo(
 	({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) => {
 		const { theme, colors } = useTheme();
-		const [selected, setSelected] = useState<any>(Array.isArray(selectedItems) ? selectedItems : []);
+		const [selected, setSelected] = useState<string[]>(Array.isArray(selectedItems) ? selectedItems : []);
 		const [search, onSearchChange] = useState('');
 
 		const onSelect = (item: IItemData) => {
@@ -47,7 +47,7 @@ export const MultiSelectContent = React.memo(
 			}
 		};
 
-		const items: any = onSearch
+		const items: IItemData[] | undefined = onSearch
 			? options
 			: options?.filter((option: any) => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
 
@@ -60,7 +60,7 @@ export const MultiSelectContent = React.memo(
 					theme={theme}
 					inputStyle={{ backgroundColor: colors.focusedBackground }}
 				/>
-				<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
+				<Items items={items || []} selected={selected} onSelect={onSelect} theme={theme} />
 			</View>
 		);
 	}
