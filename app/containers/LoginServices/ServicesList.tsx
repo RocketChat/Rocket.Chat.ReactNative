@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
-import Touch from '../../utils/touch';
 import I18n from '../../i18n';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { TIconsName } from '../CustomIcon';
 import { IItemService, IOauthProvider } from './interfaces';
 import styles from './styles';
 import * as ServiceLogin from './serviceLogin';
+import ButtonService from './ButtonService';
 
 const ServicesList = React.memo(
 	({
@@ -15,8 +15,7 @@ const ServicesList = React.memo(
 		CAS_login_url,
 		Gitlab_URL,
 		server,
-		service,
-		storiesTestOnPress
+		service
 	}: {
 		service: IItemService;
 		server: string;
@@ -25,7 +24,7 @@ const ServicesList = React.memo(
 		CAS_login_url: string;
 		storiesTestOnPress?: () => void;
 	}) => {
-		const { theme, colors } = useTheme();
+		const { colors } = useTheme();
 
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
@@ -87,20 +86,14 @@ const ServicesList = React.memo(
 		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : colors.chatComponentBackground;
 
 		return (
-			<Touch
-				key={service.name}
-				onPress={storiesTestOnPress || onPress}
-				style={[styles.serviceButton, { backgroundColor }]}
-				theme={theme}
-				activeOpacity={0.5}
-				underlayColor={colors.buttonText}>
-				<View style={styles.serviceButtonContainer}>
-					{service.authType === 'oauth' || service.authType === 'apple' ? (
-						<CustomIcon name={icon} size={24} color={colors.titleText} style={styles.serviceIcon} />
-					) : null}
-					<Text style={[styles.serviceText, { color: colors.titleText }]}>{buttonText}</Text>
-				</View>
-			</Touch>
+			<ButtonService
+				onPress={onPress}
+				backgroundColor={backgroundColor}
+				buttonText={buttonText}
+				icon={icon}
+				name={service.name}
+				authType={service.authType}
+			/>
 		);
 	}
 );
