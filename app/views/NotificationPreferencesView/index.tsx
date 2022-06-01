@@ -185,12 +185,23 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 					<List.Section>
 						<List.Separator />
 						<List.Item
-							title='Show_Unread_Counter'
+							title='Mark_as_unread'
 							testID='notification-preference-view-unread-count'
 							right={() => this.renderSwitch('hideUnreadStatus')}
 						/>
 						<List.Separator />
-						<List.Info info='Show_Unread_Counter_Info' />
+						<List.Info info='Mark_as_unread_Info' />
+					</List.Section>
+
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Show_badge_for_mentions'
+							testID='notification-preference-view-unread-count'
+							right={() => this.renderSwitch('hideUnreadStatus')}
+						/>
+						<List.Separator />
+						<List.Info info='Show_badge_for_mentions_Info' />
 					</List.Section>
 
 					<List.Section title='In_App_And_Desktop'>
