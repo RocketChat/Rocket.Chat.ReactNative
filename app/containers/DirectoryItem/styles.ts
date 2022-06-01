@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../../views/Styles';
 
 export const ROW_HEIGHT = 54;
@@ -29,15 +30,15 @@ export default StyleSheet.create({
 	},
 	directoryItemName: {
 		flex: 1,
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	directoryItemUsername: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	directoryItemLabel: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingLeft: 10,
 		...sharedStyles.textRegular
 	}

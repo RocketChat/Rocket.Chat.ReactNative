@@ -17,6 +17,7 @@ import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	scroll: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
 	cannedText: {
 		marginTop: 8,
 		marginBottom: 16,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textRegular
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap'
 	},
 	cannedTag: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		paddingTop: 0,
 		paddingBottom: 0,
 		paddingHorizontal: 4,
@@ -62,11 +63,11 @@ const styles = StyleSheet.create({
 	},
 	itemLabel: {
 		marginBottom: 10,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	itemContent: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

@@ -16,6 +16,7 @@ import { IAttachment, IUseDimensions } from './interfaces';
 import { THUMBS_HEIGHT } from './constants';
 import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
+import { fontSize } from '../../lib/theme';
 
 const MESSAGEBOX_HEIGHT = 56;
 
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textAlignCenter
 	},
 	fileSize: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

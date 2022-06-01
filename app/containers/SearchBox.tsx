@@ -9,6 +9,7 @@ import TextInput from '../presentation/TextInput';
 import { useTheme } from '../theme';
 import { isIOS } from '../utils/deviceInfo';
 import sharedStyles from '../views/Styles';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		flex: 1,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginLeft: 8,
 		paddingTop: 0,
 		paddingBottom: 0,
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
 	},
 	cancelText: {
 		...sharedStyles.textRegular,
-		fontSize: 14
+		fontSize: fontSize[14]
 	}
 });
 

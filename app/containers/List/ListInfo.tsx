@@ -6,6 +6,7 @@ import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
 import I18n from '../../i18n';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	text: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

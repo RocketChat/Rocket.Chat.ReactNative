@@ -11,6 +11,7 @@ import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import DiscussionDetails from './DiscussionDetails';
 import { IMessageFromServer } from '../../definitions';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,11 +29,11 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
-		fontSize: 18,
+		fontSize: fontSize[18],
 		...sharedStyles.textMedium
 	},
 	time: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginLeft: 4,
 		...sharedStyles.textRegular
 	},

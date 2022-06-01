@@ -1,6 +1,7 @@
 import { I18nManager, StyleSheet } from 'react-native';
 
 import { PADDING_HORIZONTAL } from '../../containers/List/constants';
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -16,11 +17,11 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	roomTitle: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	roomDescription: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	roomTitleRow: {

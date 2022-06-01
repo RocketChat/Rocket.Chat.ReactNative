@@ -10,6 +10,7 @@ import Markdown from '../containers/markdown';
 import { TSupportedThemes, withTheme } from '../theme';
 import I18n from '../i18n';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 		paddingTop: 32
 	},
 	info: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginVertical: 8
 	}
 });

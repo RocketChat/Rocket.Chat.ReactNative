@@ -10,6 +10,7 @@ import { themes } from '../../lib/constants';
 import { IMessage } from '../../definitions/IMessage';
 import { useTheme } from '../../theme';
 import { IApplicationState } from '../../definitions';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,11 +29,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	time: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		lineHeight: 16,
 		marginLeft: 6,
 		...sharedStyles.textRegular,

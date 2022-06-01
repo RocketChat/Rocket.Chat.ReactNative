@@ -6,6 +6,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
+import { fontSize } from '../../lib/theme';
 
 interface IHeaderButtonItem {
 	title?: string;
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 6
 	},
 	title: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	}
 });

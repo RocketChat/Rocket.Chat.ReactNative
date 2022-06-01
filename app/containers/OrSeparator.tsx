@@ -5,6 +5,7 @@ import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import { TSupportedThemes } from '../theme';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	text: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginLeft: 14,
 		marginRight: 14,
 		...sharedStyles.textMedium

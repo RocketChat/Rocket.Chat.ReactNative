@@ -14,6 +14,7 @@ import { isAndroid } from '../../utils/deviceInfo';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
 import { IDatePicker } from './interfaces';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	input: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
 	},
 	inputText: {
 		...sharedStyles.textRegular,
-		fontSize: 14
+		fontSize: fontSize[14]
 	},
 	icon: {
 		right: 16,

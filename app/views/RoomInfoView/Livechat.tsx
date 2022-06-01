@@ -12,10 +12,11 @@ import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	title: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingHorizontal: 20,
 		...sharedStyles.textMedium
 	}

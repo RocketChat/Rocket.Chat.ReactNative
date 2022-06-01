@@ -14,6 +14,7 @@ import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -33,11 +34,11 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start'
 	},
 	title: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	description: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	},
 	marginTop: {

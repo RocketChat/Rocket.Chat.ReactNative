@@ -3,6 +3,7 @@ import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
+import { fontSize } from '../../lib/theme';
 
 export * from './animations';
 
@@ -28,7 +29,7 @@ export const themedHeader = (theme: TSupportedThemes) => ({
 		backgroundColor: themes[theme].headerBackground
 	},
 	headerTintColor: themes[theme].headerTintColor,
-	headerTitleStyle: { color: themes[theme].headerTitleColor, fontFamily: 'Inter', fontSize: 16 }
+	headerTitleStyle: { color: themes[theme].headerTitleColor, fontFamily: 'Inter', fontSize: fontSize[16] }
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {

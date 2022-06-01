@@ -7,6 +7,7 @@ import sharedStyles from './Styles';
 import I18n from '../i18n';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,11 +17,11 @@ const styles = StyleSheet.create({
 		padding: 15
 	},
 	title: {
-		fontSize: 18,
+		fontSize: fontSize[18],
 		...sharedStyles.textBold
 	},
 	content: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	}

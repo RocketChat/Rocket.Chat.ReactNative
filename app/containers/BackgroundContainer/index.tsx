@@ -4,6 +4,7 @@ import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'reac
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
+import { fontSize } from '../../lib/theme';
 
 interface IBackgroundContainer {
 	text?: string;
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
 		top: 60,
 		left: 0,
 		right: 0,
-		fontSize: 16,
+		fontSize: fontSize[16],
 		paddingHorizontal: 24,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter

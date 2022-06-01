@@ -22,19 +22,20 @@ import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../defin
 import { IApplicationState } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
 		padding: 16
 	},
 	title: {
-		fontSize: 20,
+		fontSize: fontSize[20],
 		paddingVertical: 10,
 		...sharedStyles.textMedium
 	},
 	label: {
 		marginBottom: 10,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	multiSelect: {

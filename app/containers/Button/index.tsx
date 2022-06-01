@@ -6,6 +6,7 @@ import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
+import { fontSize } from '../../lib/theme';
 
 interface IButtonProps {
 	title: string;
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},

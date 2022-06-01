@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -23,7 +24,7 @@ export default StyleSheet.create({
 	},
 	itemText: {
 		marginVertical: 16,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	separator: {
@@ -45,14 +46,14 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	avatar: {
 		marginHorizontal: 10
 	},
 	currentServerText: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	version: {

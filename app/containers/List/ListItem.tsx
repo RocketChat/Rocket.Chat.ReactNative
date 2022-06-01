@@ -10,6 +10,7 @@ import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { useDimensions } from '../../dimensions';
 import { CustomIcon } from '../../lib/Icons';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,11 +42,11 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	},
 	subtitle: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	actionIndicator: {

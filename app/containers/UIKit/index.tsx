@@ -21,6 +21,7 @@ import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
 import { BlockContext, IActions, IButton, IElement, IInputIndex, IParser, ISection, IText } from './interfaces';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	input: {
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
 		marginBottom: 16
 	},
 	text: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		lineHeight: 22,
 		textAlignVertical: 'center',
 		...sharedStyles.textRegular

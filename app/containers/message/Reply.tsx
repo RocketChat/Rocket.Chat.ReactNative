@@ -17,6 +17,7 @@ import RCActivityIndicator from '../ActivityIndicator';
 import Attachments from './Attachments';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -45,11 +46,11 @@ const styles = StyleSheet.create({
 	},
 	author: {
 		flex: 1,
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	time: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		marginLeft: 8,
 		...sharedStyles.textRegular
 	},
@@ -63,11 +64,11 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	fieldTitle: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	fieldValue: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	},
 	marginTop: {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flex: 1,
-		fontSize: 16,
+		fontSize: fontSize[16],
 		marginBottom: 3,
 		...sharedStyles.textMedium
 	}
@@ -259,7 +260,7 @@ const Reply = React.memo(
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
 							timeFormat={timeFormat}
-							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
+							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: fontSize[14], marginBottom: 8 }]}
 							isReply
 						/>
 						<UrlImage image={attachment.thumb_url} />

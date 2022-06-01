@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -32,12 +33,12 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	roomTitle: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textMedium
 	},
 	roomUsername: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
 	},
@@ -47,11 +48,11 @@ export default StyleSheet.create({
 	},
 	itemLabel: {
 		marginBottom: 10,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	itemContent: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	itemContent__empty: {
@@ -68,7 +69,7 @@ export default StyleSheet.create({
 		marginBottom: 6
 	},
 	role: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	roomButtonsContainer: {

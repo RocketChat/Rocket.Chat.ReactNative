@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../../views/Styles';
 
 export default StyleSheet.create({
@@ -18,7 +19,7 @@ export default StyleSheet.create({
 		paddingBottom: 10
 	},
 	tabEmoji: {
-		fontSize: 20,
+		fontSize: fontSize[20],
 		color: 'black'
 	},
 	activeTabLine: {

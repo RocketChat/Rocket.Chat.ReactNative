@@ -10,6 +10,7 @@ import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from '../../containers/ThreadDetails';
 import { TThreadModel } from '../../definitions/IThread';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -27,11 +28,11 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	time: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		marginLeft: 4,
 		...sharedStyles.textRegular
 	},

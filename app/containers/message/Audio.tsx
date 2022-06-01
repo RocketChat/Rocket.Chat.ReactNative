@@ -19,6 +19,7 @@ import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
+import { fontSize } from '../../lib/theme';
 
 interface IButton {
 	loading: boolean;
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
 	},
 	duration: {
 		marginHorizontal: 12,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

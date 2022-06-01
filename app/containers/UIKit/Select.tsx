@@ -10,6 +10,7 @@ import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import ActivityIndicator from '../ActivityIndicator';
 import { useTheme } from '../../theme';
 import { IText, Option } from './interfaces';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	iosPadding: {
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
-		fontSize: 14
+		fontSize: fontSize[14]
 	},
 	icon: {
 		right: 16

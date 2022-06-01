@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../../lib/theme';
 import sharedStyles from '../../../views/Styles';
 
 export default StyleSheet.create({
@@ -41,11 +42,11 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	textTitle: {
-		fontSize: 22,
+		fontSize: fontSize[22],
 		...sharedStyles.textRegular
 	},
 	textSubtitle: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	dotsContainer: {

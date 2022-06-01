@@ -24,6 +24,7 @@ import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 18
 	},
 	label: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	invitedHeader: {
@@ -57,12 +58,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	invitedTitle: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium,
 		lineHeight: 41
 	},
 	invitedCount: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

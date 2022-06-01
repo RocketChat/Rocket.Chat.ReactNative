@@ -19,6 +19,7 @@ import { CustomIcon } from '../lib/Icons';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
+import { fontSize } from '../lib/theme';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
 	},
 	serviceText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: fontSize[16]
 	},
 	serviceName: {
 		...sharedStyles.textMedium

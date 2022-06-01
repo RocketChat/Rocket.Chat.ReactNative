@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -43,12 +44,12 @@ export default StyleSheet.create({
 		alignItems: 'flex-end'
 	},
 	switchLabelPrimary: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingBottom: 6,
 		...sharedStyles.textRegular
 	},
 	switchLabelSecondary: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		...sharedStyles.textRegular,
 		textAlign: 'right'
 	},

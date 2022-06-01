@@ -12,6 +12,7 @@ import { TSupportedThemes, useTheme, withTheme } from '../theme';
 import { TGetCustomEmoji } from '../definitions/IEmoji';
 import { TMessageModel, ILoggedUser } from '../definitions';
 import SafeAreaView from './SafeAreaView';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -22,16 +23,16 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
 	reactCount: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	peopleReacted: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	peopleItemContainer: {
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
 		top: 10
 	}
 });
-const standardEmojiStyle = { fontSize: 20 };
+const standardEmojiStyle = { fontSize: fontSize[20] };
 const customEmojiStyle = { width: 20, height: 20 };
 
 interface ISharedFields {

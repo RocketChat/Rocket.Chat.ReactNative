@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -58,7 +59,7 @@ export default StyleSheet.create({
 		borderRadius: 2
 	},
 	joinRoomText: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	previewMode: {

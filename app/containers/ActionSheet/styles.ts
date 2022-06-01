@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../../views/Styles';
 
 export const ITEM_HEIGHT = 48;
@@ -26,7 +27,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	title: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		marginLeft: 16,
 		...sharedStyles.textRegular
 	},
@@ -58,7 +59,7 @@ export default StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../../views/Styles';
 
 export default StyleSheet.create({
@@ -14,19 +15,19 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	title: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		paddingBottom: 8,
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter
 	},
 	subtitle: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingBottom: 8,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	},
 	sendEmail: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingBottom: 24,
 		paddingTop: 8,
 		alignSelf: 'center',

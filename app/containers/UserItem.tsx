@@ -7,6 +7,7 @@ import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import { isIOS } from '../utils/deviceInfo';
 import { TSupportedThemes } from '../theme';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -26,11 +27,11 @@ const styles = StyleSheet.create({
 		marginRight: 15
 	},
 	name: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	username: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	icon: {

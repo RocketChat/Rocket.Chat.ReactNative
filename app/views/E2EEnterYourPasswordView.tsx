@@ -18,13 +18,14 @@ import { withTheme } from '../theme';
 import { events, logEvent } from '../utils/log';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import sharedStyles from './Styles';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
 		padding: 28
 	},
 	info: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginVertical: 8,
 		...sharedStyles.textRegular
 	}

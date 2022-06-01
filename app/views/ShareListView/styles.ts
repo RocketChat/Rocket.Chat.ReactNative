@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
@@ -48,11 +49,11 @@ export default StyleSheet.create({
 	fileMime: {
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter,
-		fontSize: 20,
+		fontSize: fontSize[20],
 		marginBottom: 20
 	},
 	title: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textBold
 	},
 	permissionTitle: {
@@ -62,7 +63,7 @@ export default StyleSheet.create({
 		...sharedStyles.textAlignCenter
 	},
 	permissionMessage: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginHorizontal: 30,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter

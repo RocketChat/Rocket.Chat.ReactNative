@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../../lib/theme';
 import sharedStyles from '../../../views/Styles';
 
 export default StyleSheet.create<any>({
@@ -27,7 +28,7 @@ export default StyleSheet.create<any>({
 	pickerText: {
 		...sharedStyles.textRegular,
 		paddingLeft: 6,
-		fontSize: 14
+		fontSize: fontSize[14]
 	},
 	item: {
 		height: 48,
@@ -73,7 +74,7 @@ export default StyleSheet.create<any>({
 		paddingHorizontal: 8,
 		flexShrink: 1,
 		...sharedStyles.textMedium,
-		fontSize: 14
+		fontSize: fontSize[14]
 	},
 	chipImage: {
 		marginLeft: 4,

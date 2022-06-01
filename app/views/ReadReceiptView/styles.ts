@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -31,7 +32,7 @@ export default StyleSheet.create({
 	},
 	time: {
 		...sharedStyles.textRegular,
-		fontSize: 12
+		fontSize: fontSize[12]
 	},
 	infoContainer: {
 		flex: 1,

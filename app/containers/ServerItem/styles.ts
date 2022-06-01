@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../../views/Styles';
 
 export const ROW_HEIGHT = 56;
@@ -23,11 +24,11 @@ export default StyleSheet.create({
 		paddingRight: 18
 	},
 	serverName: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	serverUrl: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

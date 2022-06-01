@@ -11,6 +11,7 @@ import MessageContext from './Context';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
 import { SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,12 +21,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
 	usernameInfoMessage: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	alias: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

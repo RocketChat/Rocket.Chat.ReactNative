@@ -6,6 +6,7 @@ import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import EventEmitter from '../utils/events';
 import { TSupportedThemes, withTheme } from '../theme';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	text: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	}

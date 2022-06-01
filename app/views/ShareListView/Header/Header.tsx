@@ -6,6 +6,7 @@ import I18n from '../../../i18n';
 import { themes } from '../../../lib/constants';
 import sharedStyles from '../../Styles';
 import { IShareListHeader } from './interface';
+import { fontSize } from '../../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,14 +14,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	search: {
-		fontSize: 20,
+		fontSize: fontSize[20],
 		...sharedStyles.textRegular,
 		marginHorizontal: 14
 	},
 	title: {
-		fontSize: 20,
 		...sharedStyles.textBold,
-		marginHorizontal: 16
+		marginHorizontal: 16,
+		fontSize: fontSize[20]
 	}
 });
 

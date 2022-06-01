@@ -15,16 +15,17 @@ import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import sharedStyles from './Styles';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter,
-		fontSize: 14
+		fontSize: fontSize[14]
 	},
 	title: {
 		...sharedStyles.textBold,
-		fontSize: 22
+		fontSize: fontSize[22]
 	},
 	inputContainer: {
 		marginVertical: 16

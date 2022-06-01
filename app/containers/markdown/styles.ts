@@ -1,5 +1,6 @@
 import { Platform, StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../../views/Styles';
 
 const codeFontFamily = Platform.select({
@@ -31,11 +32,11 @@ export default StyleSheet.create({
 		textDecorationLine: 'line-through'
 	},
 	plainText: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		flexShrink: 1
 	},
 	text: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	},
 	textInfo: {
@@ -56,7 +57,7 @@ export default StyleSheet.create({
 	},
 	temp: { opacity: 0.3 },
 	mention: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textMedium
 	},
 	paragraph: {
@@ -73,7 +74,7 @@ export default StyleSheet.create({
 		resizeMode: 'contain'
 	},
 	codeInline: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		lineHeight: 20,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
@@ -83,7 +84,7 @@ export default StyleSheet.create({
 		paddingTop: 2
 	},
 	codeBlock: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		lineHeight: 20,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
@@ -92,11 +93,11 @@ export default StyleSheet.create({
 		padding: 4
 	},
 	link: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	},
 	edited: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		...sharedStyles.textRegular
 	},
 	heading1: {
@@ -105,23 +106,23 @@ export default StyleSheet.create({
 	},
 	heading2: {
 		...sharedStyles.textBold,
-		fontSize: 22
+		fontSize: fontSize[22]
 	},
 	heading3: {
 		...sharedStyles.textMedium,
-		fontSize: 20
+		fontSize: fontSize[20]
 	},
 	heading4: {
 		...sharedStyles.textMedium,
-		fontSize: 18
+		fontSize: fontSize[18]
 	},
 	heading5: {
 		...sharedStyles.textMedium,
-		fontSize: 16
+		fontSize: fontSize[16]
 	},
 	heading6: {
 		...sharedStyles.textMedium,
-		fontSize: 16
+		fontSize: fontSize[16]
 	},
 	quote: {
 		height: '100%',

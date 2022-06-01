@@ -5,29 +5,30 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { IInput } from './interfaces';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
 		marginBottom: 16
 	},
 	label: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginVertical: 10,
 		...sharedStyles.textMedium
 	},
 	description: {
 		marginBottom: 10,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	},
 	error: {
 		marginTop: 8,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	},
 	hint: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textRegular
 	}
 });

@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { isTablet } from '../../utils/deviceInfo';
+import { fontSize } from '../../lib/theme';
 
 export default StyleSheet.create({
 	root: {
@@ -53,13 +54,13 @@ export default StyleSheet.create({
 		minWidth: 46.3
 	},
 	reactionCount: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		marginLeft: 3,
 		marginRight: 8.5,
 		...sharedStyles.textMedium
 	},
 	reactionEmoji: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		marginLeft: 7,
 		color: '#ffffff'
 	},
@@ -95,7 +96,7 @@ export default StyleSheet.create({
 		marginRight: 8
 	},
 	buttonText: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		...sharedStyles.textMedium
 	},
 	imageContainer: {
@@ -118,22 +119,22 @@ export default StyleSheet.create({
 		resizeMode: 'contain'
 	},
 	text: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	},
 	textInfo: {
 		fontStyle: 'italic',
-		fontSize: 16,
+		fontSize: fontSize[16],
 		...sharedStyles.textRegular
 	},
 	startedDiscussion: {
 		fontStyle: 'italic',
-		fontSize: 16,
+		fontSize: fontSize[16],
 		marginBottom: 6,
 		...sharedStyles.textRegular
 	},
 	time: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		marginLeft: 8,
 		...sharedStyles.textRegular
 	},
@@ -148,7 +149,7 @@ export default StyleSheet.create({
 		marginLeft: 16
 	},
 	repliedThreadName: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		flex: 1,
 		...sharedStyles.textRegular
 	},

@@ -7,6 +7,7 @@ import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
 import { TThreadModel } from '../definitions/IThread';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
 		marginRight: 8
 	},
 	detailText: {
-		fontSize: 10,
+		fontSize: fontSize[10],
 		marginLeft: 2,
 		...sharedStyles.textMedium
 	},

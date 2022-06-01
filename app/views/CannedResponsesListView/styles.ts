@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -29,21 +30,21 @@ export default StyleSheet.create({
 	},
 	cannedShortcut: {
 		flex: 1,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textMedium
 	},
 	cannedScope: {
 		flex: 1,
-		fontSize: 12,
+		fontSize: fontSize[12],
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textRegular
 	},
 	cannedText: {
 		marginTop: 8,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textRegular
@@ -59,7 +60,7 @@ export default StyleSheet.create({
 		height: 16
 	},
 	cannedTag: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		paddingTop: 0,
 		paddingBottom: 0,
 		paddingHorizontal: 4,

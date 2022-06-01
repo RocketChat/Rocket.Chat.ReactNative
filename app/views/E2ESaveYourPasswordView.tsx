@@ -19,6 +19,7 @@ import EventEmitter from '../utils/events';
 import { events, logEvent } from '../utils/log';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import sharedStyles from './Styles';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	warning: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	passwordText: {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
 		height: 32
 	},
 	info: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		marginBottom: 64,
 		...sharedStyles.textRegular
 	}

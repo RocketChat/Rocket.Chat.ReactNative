@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { fontSize } from '../../lib/theme';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -54,7 +55,7 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	dropdownItemText: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		flex: 1,
 		...sharedStyles.textRegular
 	},
@@ -65,7 +66,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	dropdownToggleText: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		flex: 1,
 		marginLeft: 15,
 		...sharedStyles.textRegular

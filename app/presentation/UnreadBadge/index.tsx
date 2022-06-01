@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
 import { useTheme } from '../../theme';
+import { fontSize } from '../../lib/theme';
 
 const styles = StyleSheet.create({
 	unreadNumberContainerNormal: {
@@ -21,11 +22,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	unreadText: {
-		fontSize: 12,
+		fontSize: fontSize[12],
 		...sharedStyles.textMedium
 	},
 	textSmall: {
-		fontSize: 10
+		fontSize: fontSize[10]
 	}
 });
 

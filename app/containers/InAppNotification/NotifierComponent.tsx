@@ -15,6 +15,7 @@ import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/navigation/appNavigation';
 import { useOrientation } from '../../dimensions';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
+import { fontSize } from '../../lib/theme';
 
 export interface INotifierComponent {
 	notification: {
@@ -55,12 +56,12 @@ const styles = StyleSheet.create({
 		marginRight: 10
 	},
 	roomName: {
-		fontSize: 16,
+		fontSize: fontSize[16],
 		lineHeight: 20,
 		...sharedStyles.textMedium
 	},
 	message: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		lineHeight: 17,
 		...sharedStyles.textRegular
 	},

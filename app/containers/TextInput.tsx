@@ -8,6 +8,7 @@ import { themes } from '../lib/constants';
 import { CustomIcon } from '../lib/Icons';
 import ActivityIndicator from './ActivityIndicator';
 import { TSupportedThemes } from '../theme';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	error: {
@@ -19,13 +20,13 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		marginBottom: 10,
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	input: {
 		...sharedStyles.textRegular,
 		height: 48,
-		fontSize: 16,
+		fontSize: fontSize[16],
 		padding: 14,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2

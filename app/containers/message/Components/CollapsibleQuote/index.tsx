@@ -13,6 +13,7 @@ import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { BUTTON_HIT_SLOP } from '../../utils';
+import { fontSize } from '../../../../lib/theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 10
 	},
 	fieldTitle: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textBold
 	},
 	marginTop: {
@@ -48,14 +49,14 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	title: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		...sharedStyles.textMedium
 	},
 	touchableContainer: {
 		flexDirection: 'row'
 	},
 	markdownFontSize: {
-		fontSize: 14
+		fontSize: fontSize[14]
 	},
 	iconContainer: {
 		width: 20,

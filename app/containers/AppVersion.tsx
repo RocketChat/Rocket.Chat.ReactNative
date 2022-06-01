@@ -6,6 +6,7 @@ import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../utils/deviceInfo';
 import I18n from '../i18n';
 import { TSupportedThemes } from '../theme';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...sharedStyles.textRegular,
-		fontSize: 14
+		fontSize: fontSize[14]
 	},
 	bold: {
 		...sharedStyles.textMedium

@@ -13,6 +13,7 @@ import sharedStyles from '../../views/Styles';
 import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import { TAnyMessageModel } from '../../definitions';
 import { IEmoji } from '../../definitions/IEmoji';
+import { fontSize } from '../../lib/theme';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
 	},
 	headerIcon: {
 		...sharedStyles.textAlignCenter,
-		fontSize: 20,
+		fontSize: fontSize[20],
 		color: '#fff'
 	},
 	customEmoji: {

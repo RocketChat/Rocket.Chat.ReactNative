@@ -24,6 +24,7 @@ import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import { IUser } from '../definitions';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	description: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		paddingVertical: 10,
 		...sharedStyles.textRegular
 	},

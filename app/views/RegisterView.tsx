@@ -21,11 +21,12 @@ import isValidEmail from '../utils/isValidEmail';
 import log, { events, logEvent } from '../utils/log';
 import openLink from '../utils/openLink';
 import sharedStyles from './Styles';
+import { fontSize } from '../lib/theme';
 
 const styles = StyleSheet.create({
 	title: {
 		...sharedStyles.textBold,
-		fontSize: 22
+		fontSize: fontSize[22]
 	},
 	inputContainer: {
 		marginVertical: 16

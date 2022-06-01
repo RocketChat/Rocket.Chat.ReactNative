@@ -1,6 +1,7 @@
 import { Platform, StyleSheet, TextStyle } from 'react-native';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants';
+import { fontSize, fontWeight } from '../lib/theme';
 
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
@@ -48,12 +49,12 @@ export default StyleSheet.create({
 		opacity: 0.5
 	},
 	loginTitle: {
-		fontSize: 18,
+		fontSize: fontSize[18],
 		marginVertical: 15,
 		lineHeight: 28
 	},
 	loginSubtitle: {
-		fontSize: 14,
+		fontSize: fontSize[14],
 		lineHeight: 20,
 		marginBottom: 15
 	},
@@ -75,15 +76,16 @@ export default StyleSheet.create({
 	},
 	textRegular: {
 		...defaultTextStyle,
-		fontFamily: 'Inter-Regular'
+		...fontWeight('regular')
 	},
 	textMedium: {
 		...defaultTextStyle,
-		fontFamily: 'Inter-Medium'
+		...fontWeight('medium')
 	},
 	textBold: {
 		...defaultTextStyle,
-		fontFamily: 'Inter-Bold'
+		...fontWeight('bold'),
+		fontWeight: '100'
 	},
 	inputLastChild: {
 		marginBottom: 15
