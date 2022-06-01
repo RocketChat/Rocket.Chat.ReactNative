@@ -15,13 +15,15 @@ const ServicesList = React.memo(
 		CAS_login_url,
 		Gitlab_URL,
 		server,
-		service
+		service,
+		storiesTestOnPress
 	}: {
 		service: IItemService;
 		server: string;
 		Gitlab_URL: string;
 		CAS_enabled: boolean;
 		CAS_login_url: string;
+		storiesTestOnPress?: () => void;
 	}) => {
 		const { theme, colors } = useTheme();
 
@@ -87,7 +89,7 @@ const ServicesList = React.memo(
 		return (
 			<Touch
 				key={service.name}
-				onPress={onPress}
+				onPress={storiesTestOnPress || onPress}
 				style={[styles.serviceButton, { backgroundColor }]}
 				theme={theme}
 				activeOpacity={0.5}

@@ -42,6 +42,7 @@ const LoginServices = ({ separator }: { separator: boolean }): React.ReactElemen
 				<Animated.View style={animatedStyle}>
 					{Object.values(services).map((service: IItemService) => (
 						<ServicesList
+							key={service._id}
 							CAS_enabled={CAS_enabled}
 							CAS_login_url={CAS_login_url}
 							Gitlab_URL={Gitlab_URL}
