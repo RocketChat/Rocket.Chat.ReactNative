@@ -5,6 +5,7 @@ export interface IOpenOAuth {
 }
 
 export interface IItemService {
+	_id: string;
 	name: string;
 	service: string;
 	authType: string;
