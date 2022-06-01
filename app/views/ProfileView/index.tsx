@@ -672,4 +672,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_ErasureType: state.settings.Message_ErasureType as string
 });
 
-export default connect(mapStateToProps)(withActionSheet(withTheme(ProfileView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(ProfileView)));
