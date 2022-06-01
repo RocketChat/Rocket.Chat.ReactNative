@@ -73,9 +73,6 @@ interface IProfileViewState {
 	customFields: {
 		[key: string | number]: string;
 	};
-	confirmOwnerChangeModalVisible: boolean;
-	shouldChangeOwner: [];
-	shouldBeRemoved: [];
 }
 
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
@@ -111,10 +108,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			url: ''
 		},
 		avatarSuggestions: {},
-		customFields: {},
-		confirmOwnerChangeModalVisible: false,
-		shouldChangeOwner: [],
-		shouldBeRemoved: []
+		customFields: {}
 	};
 
 	async componentDidMount() {
@@ -166,10 +160,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				data: {},
 				url: ''
 			},
-			customFields: customFields || {},
-			confirmOwnerChangeModalVisible: false,
-			shouldChangeOwner: [],
-			shouldBeRemoved: []
+			customFields: customFields || {}
 		});
 	};
 
