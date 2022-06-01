@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
 import { themes } from '../../../lib/constants';
 import { textParser } from '../utils';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import styles from './styles';
 import { IItemData } from '.';
 import { TSupportedThemes } from '../../../theme';

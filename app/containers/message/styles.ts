@@ -75,10 +75,6 @@ export default StyleSheet.create({
 	avatarSmall: {
 		marginLeft: 16
 	},
-	errorButton: {
-		paddingLeft: 10,
-		paddingVertical: 5
-	},
 	buttonContainer: {
 		marginTop: 8,
 		flexDirection: 'row',
@@ -168,11 +164,8 @@ export default StyleSheet.create({
 	threadBell: {
 		marginLeft: 8
 	},
-	readReceipt: {
-		lineHeight: 20
-	},
-	encrypted: {
-		justifyContent: 'center'
+	rightIcons: {
+		paddingLeft: 5
 	},
 	threadDetails: {
 		flex: 1,

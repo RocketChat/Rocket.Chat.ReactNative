@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
@@ -28,7 +28,8 @@ const Avatar = React.memo(
 		text,
 		size = 25,
 		borderRadius = 4,
-		type = SubscriptionType.DIRECT
+		type = SubscriptionType.DIRECT,
+		externalProviderUrl
 	}: IAvatar) => {
 		const { theme } = useTheme();
 
@@ -67,7 +68,8 @@ const Avatar = React.memo(
 					avatarETag,
 					serverVersion,
 					rid,
-					blockUnauthenticatedAccess
+					blockUnauthenticatedAccess,
+					externalProviderUrl
 				});
 			}
 

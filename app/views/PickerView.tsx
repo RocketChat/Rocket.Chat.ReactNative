@@ -1,8 +1,7 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
+import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
@@ -49,11 +48,7 @@ interface IPickerViewState {
 	searchText: string;
 }
 
-interface IPickerViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'PickerView'>;
-	route: RouteProp<ChatsStackParamList, 'PickerView'>;
-	theme: TSupportedThemes;
-}
+type IPickerViewProps = IBaseScreen<ChatsStackParamList, 'PickerView'>;
 
 const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 	<List.Item

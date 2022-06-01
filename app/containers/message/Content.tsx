@@ -8,10 +8,9 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
 import MessageContext from './Context';
-import Encrypted from './Encrypted';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
-import { E2E_MESSAGE_TYPE, themes } from '../../lib/constants';
+import { themes } from '../../lib/constants';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
@@ -59,7 +58,6 @@ const Content = React.memo(
 					getCustomEmoji={props.getCustomEmoji}
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
-					isEdited={props.isEdited}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
@@ -68,16 +66,6 @@ const Content = React.memo(
 					theme={theme}
 					onLinkPress={onLinkPress}
 				/>
-			);
-		}
-
-		// If this is a encrypted message and is not a preview
-		if (props.type === E2E_MESSAGE_TYPE && !isPreview) {
-			content = (
-				<View style={styles.flex}>
-					<View style={styles.contentContainer}>{content}</View>
-					<Encrypted type={props.type} />
-				</View>
 			);
 		}
 

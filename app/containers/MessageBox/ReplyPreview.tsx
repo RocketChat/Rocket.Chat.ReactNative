@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import { MarkdownPreview } from '../markdown';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { IMessage } from '../../definitions/IMessage';

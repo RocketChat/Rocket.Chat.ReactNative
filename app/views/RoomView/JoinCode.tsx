@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import TextInput from '../../containers/TextInput';
-import RocketChat from '../../lib/rocketchat';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
 import { IApplicationState } from '../../definitions';
+import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -50,8 +50,12 @@ export interface IJoinCodeProps {
 	theme: TSupportedThemes;
 }
 
+export interface IJoinCode {
+	show: () => void;
+}
+
 const JoinCode = React.memo(
-	forwardRef(({ rid, t, onJoin, isMasterDetail, theme }: IJoinCodeProps, ref) => {
+	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);
 		const [code, setCode] = useState('');
@@ -60,9 +64,9 @@ const JoinCode = React.memo(
 
 		const hide = () => setVisible(false);
 
-		const joinRoom = async () => {
+		const handleJoinRoom = async () => {
 			try {
-				await RocketChat.joinRoom(rid, code, t as any);
+				await Services.joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {
@@ -82,7 +86,7 @@ const JoinCode = React.memo(
 							{ backgroundColor: themes[theme].backgroundColor }
 						]}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
-						<TextInput
+						<FormTextInput
 							value={code}
 							theme={theme}
 							// TODO: find a way to type this ref
@@ -90,7 +94,7 @@ const JoinCode = React.memo(
 							returnKeyType='send'
 							autoCapitalize='none'
 							onChangeText={setCode}
-							onSubmitEditing={joinRoom}
+							onSubmitEditing={handleJoinRoom}
 							placeholder={I18n.t('Join_Code')}
 							secureTextEntry
 							error={error ? { error: 'error-code-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
@@ -102,7 +106,6 @@ const JoinCode = React.memo(
 								type='secondary'
 								style={styles.button}
 								backgroundColor={themes[theme].chatComponentBackground}
-								theme={theme}
 								testID='join-code-cancel'
 								onPress={hide}
 							/>
@@ -110,9 +113,8 @@ const JoinCode = React.memo(
 								title={I18n.t('Join')}
 								type='primary'
 								style={styles.button}
-								theme={theme}
 								testID='join-code-submit'
-								onPress={joinRoom}
+								onPress={handleJoinRoom}
 							/>
 						</View>
 					</View>
@@ -125,4 +127,5 @@ const JoinCode = React.memo(
 const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
+
 export default connect(mapStateToProps, null, null, { forwardRef: true })(JoinCode);

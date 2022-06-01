@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 import moment from 'moment';
 
 import Button from '../Button';
 import { textParser } from './utils';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '../../utils/deviceInfo';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
@@ -57,11 +57,9 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 		}
 	};
 
-	let button = placeholder ? (
-		<Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} theme={theme} />
-	) : null;
+	let button = placeholder ? <Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} /> : null;
 
-	if (context === BLOCK_CONTEXT.FORM) {
+	if (context === BlockContext.FORM) {
 		button = (
 			<Touchable
 				onPress={() => onShow(!show)}

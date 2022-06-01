@@ -42,16 +42,16 @@ export interface ITranslations {
 export type E2EType = 'pending' | 'done';
 
 export interface ILastMessage {
-	_id: string;
-	rid: string;
+	_id?: string;
+	rid?: string;
 	tshow?: boolean;
 	t?: MessageType;
 	tmid?: string;
 	msg?: string;
 	e2e?: E2EType;
-	ts: string | Date;
+	ts?: string | Date;
 	u: IUserMessage;
-	_updatedAt: string | Date;
+	_updatedAt?: string | Date;
 	urls?: IUrlFromServer[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
@@ -59,7 +59,9 @@ export interface ILastMessage {
 	attachments?: IAttachment[];
 	reactions?: IReaction[];
 	unread?: boolean;
+	pinned?: boolean;
 	status?: number;
+	token?: string;
 }
 
 interface IMessageFile {
@@ -87,11 +89,7 @@ export interface IMessageFromServer {
 	drid?: string;
 	dcount?: number;
 	dml: string | Date;
-	starred?:
-		| {
-				_id: string;
-		  }
-		| boolean;
+	starred?: boolean;
 	pinned?: boolean;
 	pinnedAt?: string | Date;
 	pinnedBy?: {
@@ -118,11 +116,6 @@ export interface IMessage extends IMessageFromServer {
 	emoji?: string;
 	status?: number;
 	pinned?: boolean;
-	starred?:
-		| {
-				_id: string;
-		  }
-		| boolean;
 	editedBy?: IEditedBy;
 	reactions?: IReaction[];
 	role?: string;
@@ -140,7 +133,10 @@ export interface IMessage extends IMessageFromServer {
 	blocks?: any;
 	e2e?: E2EType;
 	tshow?: boolean;
+	comment?: string;
 	subscription?: { id: string };
+	user?: string;
+	editedAt?: string | Date;
 }
 
 export type TMessageModel = IMessage & Model;

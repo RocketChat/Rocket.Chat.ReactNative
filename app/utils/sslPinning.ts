@@ -29,8 +29,7 @@ const RCSSLPinning = Platform.select({
 		pickCertificate: () =>
 			new Promise(async (resolve, reject) => {
 				try {
-					const res = await DocumentPicker.pick({
-						// @ts-ignore
+					const res = await DocumentPicker.pickSingle({
 						type: ['com.rsa.pkcs-12']
 					});
 					const { uri, name } = res;

@@ -11,17 +11,18 @@ import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { IApplicationState } from '../definitions';
+import { SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
-import KeyboardView from '../presentation/KeyboardView';
+import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { TSupportedThemes, withTheme } from '../theme';
 import { isTablet } from '../utils/deviceInfo';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import sharedStyles from './Styles';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -36,8 +37,8 @@ interface ISetUsernameViewState {
 }
 
 interface ISetUsernameViewProps {
-	navigation: StackNavigationProp<any, 'SetUsernameView'>;
-	route: RouteProp<{ SetUsernameView: { title: string } }, 'SetUsernameView'>;
+	navigation: StackNavigationProp<SetUsernameStackParamList, 'SetUsernameView'>;
+	route: RouteProp<SetUsernameStackParamList, 'SetUsernameView'>;
 	server: string;
 	userId: string;
 	token: string;
@@ -64,7 +65,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 	}
 
 	async componentDidMount() {
-		const suggestion = await RocketChat.getUsernameSuggestion();
+		const suggestion = await Services.getUsernameSuggestion();
 		if (suggestion.success) {
 			this.setState({ username: suggestion.result });
 		}
@@ -95,7 +96,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 
 		this.setState({ saving: true });
 		try {
-			await RocketChat.saveUserProfile({ username });
+			await Services.saveUserProfile({ username });
 			dispatch(loginRequest({ resume: token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
@@ -117,7 +118,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}>
 							{I18n.t('Set_username_subtitle')}
 						</Text>
-						<TextInput
+						<FormTextInput
 							autoFocus
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
@@ -136,7 +137,6 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 							testID='set-username-view-submit'
 							disabled={!username}
 							loading={saving}
-							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>
