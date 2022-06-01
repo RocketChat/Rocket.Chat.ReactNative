@@ -22,9 +22,6 @@ import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 
 const MessageInner = React.memo((props: IMessageInner) => {
-	const { attachments } = props;
-	const isCollapsible = attachments ? (attachments[0] && attachments[0].collapsed) || !!attachments[0]?.fields?.length : false;
-
 	if (props.type === 'discussion-created') {
 		return (
 			<>
