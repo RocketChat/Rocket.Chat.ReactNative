@@ -58,18 +58,10 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	return (
 		<>
 			<User {...props} />
-			{isCollapsible ? (
-				<>
-					<Content {...props} />
-					<Attachments {...props} />
-				</>
-			) : (
-				<>
-					<Attachments {...props} />
-					<Content {...props} />
-				</>
-			)}
-
+			<>
+				<Content {...props} />
+				<Attachments {...props} />
+			</>
 			<Urls {...props} />
 			<Thread {...props} />
 			<Reactions {...props} />
