@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	title: {
+		flexShrink: 1,
 		...sharedStyles.textSemibold
 	},
 	subtitle: {
