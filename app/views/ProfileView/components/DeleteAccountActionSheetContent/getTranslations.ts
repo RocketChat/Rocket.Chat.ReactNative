@@ -10,13 +10,12 @@ export const getTranslations = ({
 	let changeOwnerRooms = '';
 	if (shouldChangeOwner.length) {
 		if (shouldChangeOwner.length === 1) {
-			changeOwnerRooms = i18n.t('A_new_owner_will_be_assigned_automatically_to_the__roomName__room', {
-				roomName: shouldChangeOwner.pop()
+			changeOwnerRooms = i18n.t('A_new_owner_will_be_assigned_automatically_to__count__room', {
+				count: shouldChangeOwner.length
 			});
 		} else {
-			changeOwnerRooms = i18n.t('A_new_owner_will_be_assigned_automatically_to_those__count__rooms__rooms__', {
-				count: shouldChangeOwner.length,
-				rooms: shouldBeRemoved.join(', ')
+			changeOwnerRooms = i18n.t('A_new_owner_will_be_assigned_automatically_to__count__rooms', {
+				count: shouldChangeOwner.length
 			});
 		}
 	}
@@ -24,13 +23,8 @@ export const getTranslations = ({
 	let removedRooms = '';
 	if (shouldBeRemoved.length) {
 		if (shouldBeRemoved.length === 1) {
-			removedRooms = i18n.t('The_empty_room__roomName__will_be_removed_automatically', {
-				roomName: shouldBeRemoved.pop()
-			});
-		} else if (shouldBeRemoved.length <= 5) {
-			removedRooms = i18n.t('__count__empty_rooms_will_be_removed_automatically__rooms__', {
-				count: shouldBeRemoved.length,
-				rooms: shouldBeRemoved.join(', ')
+			removedRooms = i18n.t('__count__empty_room_will_be_removed_automatically', {
+				count: shouldBeRemoved.length
 			});
 		} else {
 			removedRooms = i18n.t('__count__empty_rooms_will_be_removed_automatically', {

@@ -69,6 +69,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			await deleteOwnAccount(sha256(password));
 			hideActionSheet();
 		} catch (error: any) {
+			hideActionSheet();
 			if (error.data.errorType === 'user-last-owner') {
 				const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
 				const { changeOwnerRooms, removedRooms } = getTranslations({ shouldChangeOwner, shouldBeRemoved });
@@ -83,7 +84,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 						),
 						headerHeight: 300
 					});
-				}, 150); // timeout for hide effect
+				}, 250); // timeout for hide effect
 			} else if (error.data.errorType === 'error-invalid-password') {
 				logEvent(events.DELETE_OWN_ACCOUNT_F);
 				showErrorAlert(i18n.t('error-invalid-password'));

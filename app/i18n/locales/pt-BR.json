@@ -1,4 +1,5 @@
-{
+{"__count__empty_rooms_will_be_removed_automatically": "{{count}} salas vazias serão excluídas.",
+  "__count__empty_room_will_be_removed_automatically": "{{count}} sala vazia será excluída.",
   "1_person_reacted": "1 pessoa reagiu",
   "1_user": "1 usuário",
   "error-action-not-allowed": "{{action}} não é permitido",
@@ -78,6 +79,8 @@
   "error-user-registration-secret": "O registro de usuário é permitido somente via URL secreta",
   "error-you-are-last-owner": "Você é o último proprietário da sala. Por favor defina um novo proprietário antes de sair.",
   "error-status-not-allowed": "O status invisível está desativado",
+  "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Um novo proprietário será atribuído automaticamente a {{count}} salas.",
+  "A_new_owner_will_be_assigned_automatically_to__count__room": "Um novo proprietário será atribuído automaticamente a {{count}} sala.",
   "Actions": "Ações",
   "Activity": "Atividade",
   "Add_Reaction": "Reagir",
