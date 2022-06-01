@@ -95,8 +95,11 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 				Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null,
 			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
 			headerTintColor: themes[theme].previewTintColor,
-			headerTitleStyle: { color: themes[theme].previewTintColor, marginHorizontal: 10 }
+			headerTitleStyle: { color: themes[theme].previewTintColor, paddingHorizontal: 20 },
+			headerTitleContainerStyle: { marginHorizontal: -20 },
+			headerTitleAlign: 'center'
 		};
+		// @ts-ignore
 		navigation.setOptions(options);
 	};
 

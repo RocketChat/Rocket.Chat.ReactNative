@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { CommonActions, NavigationContainerRef, StackActions } from '@react-navigation/native';
 
-const navigationRef = React.createRef<NavigationContainerRef>();
-const routeNameRef: React.MutableRefObject<NavigationContainerRef | null> = React.createRef();
+// TODO: we need change this any to the correctly types from our stacks
+const navigationRef = React.createRef<NavigationContainerRef<any>>();
+const routeNameRef: React.MutableRefObject<NavigationContainerRef<any> | null> = React.createRef();
 
 function navigate(name: string, params?: any) {
 	navigationRef.current?.navigate(name, params);
