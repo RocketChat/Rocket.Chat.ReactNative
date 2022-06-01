@@ -751,8 +751,8 @@ export const saveAutoTranslate = ({
 export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
 	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
-export const translateMessage = (message: any, targetLanguage: string) =>
-	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
+export const translateMessage = (messageId: string, targetLanguage: string) =>
+	sdk.post('autotranslate.translateMessage', { messageId, targetLanguage });
 
 export const findOrCreateInvite = ({ rid, days, maxUses }: { rid: string; days: number; maxUses: number }): any =>
 	// RC 2.4.0
