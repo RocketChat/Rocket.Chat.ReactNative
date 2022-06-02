@@ -330,7 +330,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						testID='search-message-view-input'
 						theme={theme}
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} />
 					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 				</View>
 				{this.renderList()}
