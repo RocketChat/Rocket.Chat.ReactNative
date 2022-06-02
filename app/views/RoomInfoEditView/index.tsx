@@ -1,6 +1,6 @@
 import React from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
 import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -479,7 +479,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 				onChange={({ value }: { value: boolean }) => this.setState({ systemMessages: value })}
 				placeholder={{ text: I18n.t('Hide_System_Messages') }}
 				value={systemMessages as string[]}
-				context={BLOCK_CONTEXT.FORM}
+				context={BlockContext.FORM}
 				multiselect
 			/>
 		);

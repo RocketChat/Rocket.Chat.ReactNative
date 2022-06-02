@@ -291,13 +291,7 @@ const MessageActions = React.memo(
 					});
 					const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
 					if (!translatedMessage) {
-						const m = {
-							_id: message.id,
-							rid: message.subscription ? message.subscription.id : '',
-							u: message.u,
-							msg: message.msg
-						};
-						await Services.translateMessage(m, room.autoTranslateLanguage);
+						await Services.translateMessage(message.id, room.autoTranslateLanguage);
 					}
 				} catch (e) {
 					log(e);

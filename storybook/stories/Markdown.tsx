@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
 import { themes } from '../../app/lib/constants';
 import { TGetCustomEmoji, IEmoji } from '../../app/definitions/IEmoji';
-import { store } from './index';
+import { store } from '.';
 
 const theme = 'light';
 

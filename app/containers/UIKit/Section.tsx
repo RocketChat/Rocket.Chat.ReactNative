@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../lib/constants';
 import { IAccessoryComponent, IFields, ISection } from './interfaces';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 const Accessory = ({ element, parser }: IAccessoryComponent) =>
-	parser.renderAccessories({ ...element }, BLOCK_CONTEXT.SECTION, parser);
+	parser.renderAccessories({ ...element }, BlockContext.SECTION, parser);
 
 const Fields = ({ fields, parser, theme }: IFields) => (
 	<>
