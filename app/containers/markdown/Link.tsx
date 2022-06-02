@@ -14,9 +14,10 @@ interface ILink {
 	children: React.ReactElement | null;
 	link: string;
 	onLinkPress?: TOnLinkPress;
+	testID: string;
 }
 
-const Link = React.memo(({ children, link, onLinkPress }: ILink) => {
+const Link = React.memo(({ children, link, onLinkPress, testID }: ILink) => {
 	const { colors, theme } = useTheme();
 
 	const handlePress = () => {
@@ -37,7 +38,11 @@ const Link = React.memo(({ children, link, onLinkPress }: ILink) => {
 
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={{ ...styles.link, color: colors.actionTintColor }}>
+		<Text
+			onPress={handlePress}
+			onLongPress={onLongPress}
+			style={{ ...styles.link, color: colors.actionTintColor }}
+			testID={`${testID}-link`}>
 			{childLength !== 0 ? children : link}
 		</Text>
 	);

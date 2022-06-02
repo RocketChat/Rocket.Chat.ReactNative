@@ -45,12 +45,15 @@ const Inline = ({ value }: IParagraphProps) => {
 								username={username}
 								navToRoomInfo={navToRoomInfo}
 								mentions={mentions}
+								testID='new-markdown'
 							/>
 						);
 					case 'EMOJI':
 						return <Emoji value={block.value} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
+						return (
+							<Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} testID='new-markdown' />
+						);
 					case 'INLINE_CODE':
 						return <InlineCode value={block.value} />;
 					default:

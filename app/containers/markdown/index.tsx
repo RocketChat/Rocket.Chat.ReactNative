@@ -27,7 +27,7 @@ import { IRoomInfoParam } from '../../views/SearchMessagesView';
 
 export { default as MarkdownPreview } from './Preview';
 
-interface IMarkdownProps {
+export interface IMarkdownProps {
 	msg?: string | null;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
@@ -84,6 +84,7 @@ const emojiCount = (str: string) => {
 };
 
 const parser = new Parser();
+export const markdownTestID = 'markdown';
 
 const Markdown = ({
 	msg,
@@ -174,6 +175,7 @@ const Markdown = ({
 
 	const renderCodeInline = ({ literal }: TLiteral) => (
 		<Text
+			testID={`${markdownTestID}-code-in-line`}
 			style={[
 				{
 					...styles.codeInline,
@@ -189,6 +191,7 @@ const Markdown = ({
 
 	const renderCodeBlock = ({ literal }: TLiteral) => (
 		<Text
+			testID={`${markdownTestID}-code-block`}
 			style={[
 				{
 					...styles.codeBlock,
@@ -216,13 +219,13 @@ const Markdown = ({
 	};
 
 	const renderLink = ({ children, href }: { children: React.ReactElement | null; href: string }) => (
-		<MarkdownLink link={href} onLinkPress={onLinkPress}>
+		<MarkdownLink link={href} onLinkPress={onLinkPress} testID={markdownTestID}>
 			{children}
 		</MarkdownLink>
 	);
 
 	const renderHashtag = ({ hashtag }: { hashtag: string }) => (
-		<MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} style={style} />
+		<MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} style={style} testID={markdownTestID} />
 	);
 
 	const renderAtMention = ({ mentionName }: { mentionName: string }) => (
@@ -233,6 +236,7 @@ const Markdown = ({
 			username={username}
 			navToRoomInfo={navToRoomInfo}
 			style={style}
+			testID={markdownTestID}
 		/>
 	);
 
@@ -244,6 +248,7 @@ const Markdown = ({
 			baseUrl={baseUrl || ''}
 			customEmojis={customEmojis}
 			style={style}
+			testID={markdownTestID}
 		/>
 	);
 
@@ -252,14 +257,14 @@ const Markdown = ({
 			return null;
 		}
 
-		return <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} />;
+		return <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} testID={`${markdownTestID}-image`} />;
 	};
 
 	const renderHeading = ({ children, level }: { children: React.ReactElement; level: string }) => {
 		// @ts-ignore
 		const textStyle = styles[`heading${level}Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={[textStyle, { color: colors.bodyText }]}>
+			<Text testID={`${markdownTestID}-header`} numberOfLines={numberOfLines} style={[textStyle, { color: colors.bodyText }]}>
 				{children}
 			</Text>
 		);
@@ -286,7 +291,9 @@ const Markdown = ({
 	);
 
 	const renderTable = ({ children, numColumns }: { children: React.ReactElement; numColumns: number }) => (
-		<MarkdownTable numColumns={numColumns}>{children}</MarkdownTable>
+		<MarkdownTable numColumns={numColumns} testID={markdownTestID}>
+			{children}
+		</MarkdownTable>
 	);
 
 	const renderTableRow = (args: ITableRow) => <MarkdownTableRow {...args} />;

@@ -24,9 +24,10 @@ interface IListItem {
 	ordered: boolean;
 	continue: boolean;
 	index: number;
+	testID: string;
 }
 
-const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue, ordered, index }: IListItem) => {
+const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue, ordered, index, testID }: IListItem) => {
 	const { colors } = useTheme();
 
 	let bullet;
@@ -41,7 +42,7 @@ const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue
 	}
 
 	return (
-		<View style={style.container}>
+		<View style={style.container} testID={`${testID}-list`}>
 			<View style={[{ width: bulletWidth }, style.bullet]}>
 				<Text style={{ color: colors.bodyText }}>{bullet}</Text>
 			</View>

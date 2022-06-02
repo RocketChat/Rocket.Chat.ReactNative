@@ -11,7 +11,7 @@ interface IBlockQuote {
 const BlockQuote = React.memo(({ children }: IBlockQuote) => {
 	const { colors } = useTheme();
 	return (
-		<View style={styles.container}>
+		<View style={styles.container} testID='markdown-block-quote'>
 			<View style={[styles.quote, { backgroundColor: colors.borderColor }]} />
 			<View style={styles.childContainer}>{children}</View>
 		</View>

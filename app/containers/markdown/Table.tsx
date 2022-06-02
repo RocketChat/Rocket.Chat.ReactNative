@@ -11,11 +11,12 @@ import { useAppSelector } from '../../lib/hooks';
 interface ITable {
 	children: React.ReactElement | null;
 	numColumns: number;
+	testID: string;
 }
 
 const MAX_HEIGHT = 300;
 
-const Table = React.memo(({ children, numColumns }: ITable) => {
+const Table = React.memo(({ children, numColumns, testID }: ITable) => {
 	const { colors } = useTheme();
 
 	const getTableWidth = () => numColumns * CELL_WIDTH;
@@ -47,7 +48,7 @@ const Table = React.memo(({ children, numColumns }: ITable) => {
 	};
 
 	return (
-		<TouchableOpacity onPress={onPress}>
+		<TouchableOpacity onPress={onPress} testID={`${testID}-table`}>
 			<ScrollView
 				contentContainerStyle={{ width: getTableWidth() }}
 				scrollEnabled={false}

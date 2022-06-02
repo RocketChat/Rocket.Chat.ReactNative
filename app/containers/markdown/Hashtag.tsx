@@ -10,9 +10,10 @@ interface IHashtag {
 	navToRoomInfo?: Function;
 	style?: StyleProp<TextStyle>[];
 	channels?: IUserChannel[];
+	testID: string;
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, testID, style = [] }: IHashtag) => {
 	const { colors } = useTheme();
 
 	const handlePress = () => {
@@ -36,12 +37,17 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 					},
 					...style
 				]}
-				onPress={handlePress}>
+				onPress={handlePress}
+				testID={`${testID}-hashtag-channels`}>
 				{`#${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: colors.bodyText }, ...style]}>{`#${hashtag}`}</Text>;
+	return (
+		<Text
+			style={[styles.text, { color: colors.bodyText }, ...style]}
+			testID={`${testID}-hashtag-without-channels`}>{`#${hashtag}`}</Text>
+	);
 });
 
 export default Hashtag;
