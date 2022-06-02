@@ -1077,6 +1077,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				username={user.username}
 				replying={replying}
 				getCustomEmoji={getCustomEmoji}
+				timeFormat={user.timeFormat}
 			/>
 		) : null;
 

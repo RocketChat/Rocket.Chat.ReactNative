@@ -52,17 +52,25 @@ interface IMessageBoxReplyPreview {
 	username: string;
 	getCustomEmoji: Function;
 	useRealName: boolean;
+	timeFormat: number;
 }
 
 const ReplyPreview = React.memo(
-	({ message, Message_TimeFormat, replying, close, useRealName }: IMessageBoxReplyPreview) => {
+	({ message, Message_TimeFormat, replying, close, useRealName, timeFormat }: IMessageBoxReplyPreview) => {
 		const { theme } = useTheme();
+
+		const getTimeFormat = () => {
+			const timeFormats = ['h:mm A', 'H:mm'];
+			if (timeFormat) {
+				return timeFormats[timeFormat - 1];
+			}
+			return Message_TimeFormat;
+		};
 
 		if (!replying) {
 			return null;
 		}
-
-		const time = moment(message.ts).format(Message_TimeFormat);
+		const time = moment(message.ts).format(getTimeFormat());
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
 				<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>

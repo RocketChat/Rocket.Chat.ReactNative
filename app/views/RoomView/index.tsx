@@ -139,7 +139,7 @@ const roomAttrsUpdate = [
 ] as TRoomUpdate[];
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
-	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
+	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread' | 'timeFormat'>;
 	appState: string;
 	useRealName?: boolean;
 	isAuthenticated: boolean;
@@ -1183,10 +1183,19 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
+	getMessageTimeFormat = () => {
+		const { user, Message_TimeFormat } = this.props;
+		const timeFormats = ['h:mm A', 'H:mm'];
+		if (user.timeFormat) {
+			return timeFormats[user.timeFormat - 1];
+		}
+		return Message_TimeFormat;
+	};
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
-		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
-			this.props;
+		const { user, Message_GroupingPeriod, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } = this.props;
+		const Message_TimeFormat = this.getMessageTimeFormat();
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 

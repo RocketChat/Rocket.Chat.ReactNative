@@ -285,7 +285,8 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
-			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true
+			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true,
+			timeFormat: result.me.settings?.preferences?.clockMode ?? 0
 		};
 		return user;
 	}
