@@ -1,10 +1,10 @@
 import { sha256 } from 'js-sha256';
 import React, { useState } from 'react';
 import { Keyboard, Text, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-ui-lib';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
-import { logout } from '../../../../actions/login';
+import { deleteAccount } from '../../../../actions/login';
 import { useActionSheet } from '../../../../containers/ActionSheet';
 import Button from '../../../../containers/Button';
 import { CustomIcon } from '../../../../containers/CustomIcon';
@@ -62,7 +62,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const { theme } = useTheme();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
-
+	const insets = useSafeAreaInsets();
 	const handleDeleteAccount = async () => {
 		Keyboard.dismiss();
 		try {
@@ -73,6 +73,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			if (error.data.errorType === 'user-last-owner') {
 				const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
 				const { changeOwnerRooms, removedRooms } = getTranslations({ shouldChangeOwner, shouldBeRemoved });
+
 				setTimeout(() => {
 					showActionSheet({
 						children: (
@@ -82,7 +83,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 								password={sha256(password)}
 							/>
 						),
-						headerHeight: 300
+						headerHeight: 225 + insets.bottom
 					});
 				}, 250); // timeout for hide effect
 			} else if (error.data.errorType === 'error-invalid-password') {
@@ -94,35 +95,34 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			}
 			return;
 		}
-		dispatch(logout());
+		dispatch(deleteAccount());
 	};
 
 	return (
-		<KeyboardAwareScrollView>
-			<View style={styles.container}>
-				<AlertHeader
-					title={i18n.t('Are_you_sure_you_want_to_delete_your_account')}
-					subTitle={i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-				/>
-				<FormTextInput
-					value={password}
-					placeholder={i18n.t('Password')}
-					onChangeText={value => setPassword(value)}
-					onSubmitEditing={handleDeleteAccount}
-					theme={theme}
-					testID='room-info-edit-view-name'
-					secureTextEntry
-					inputStyle={{ borderWidth: 2 }}
-				/>
-				<FooterButtons
-					cancelTitle={i18n.t('Cancel')}
-					cancelAction={hideActionSheet}
-					confirmTitle={i18n.t('Delete_Account')}
-					confirmAction={handleDeleteAccount}
-					disabled={!password}
-				/>
-			</View>
-		</KeyboardAwareScrollView>
+		<View style={styles.container}>
+			<AlertHeader
+				title={i18n.t('Are_you_sure_you_want_to_delete_your_account')}
+				subTitle={i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
+			/>
+			<FormTextInput
+				value={password}
+				placeholder={i18n.t('Password')}
+				onChangeText={value => setPassword(value)}
+				onSubmitEditing={handleDeleteAccount}
+				theme={theme}
+				testID='room-info-edit-view-name'
+				secureTextEntry
+				inputStyle={{ borderWidth: 2 }}
+				bottomSheet
+			/>
+			<FooterButtons
+				cancelTitle={i18n.t('Cancel')}
+				cancelAction={hideActionSheet}
+				confirmTitle={i18n.t('Delete_Account')}
+				confirmAction={handleDeleteAccount}
+				disabled={!password}
+			/>
+		</View>
 	);
 }
 
@@ -134,7 +134,7 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 	const handleDeleteAccount = async () => {
 		hideActionSheet();
 		await deleteOwnAccount(password, true);
-		dispatch(logout());
+		dispatch(deleteAccount());
 	};
 
 	return (
@@ -147,7 +147,7 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			<FooterButtons
 				cancelTitle={i18n.t('Cancel')}
 				cancelAction={hideActionSheet}
-				confirmTitle={i18n.t('Delete_Account')}
+				confirmTitle={i18n.t('Delete_Account_confirm')}
 				confirmAction={handleDeleteAccount}
 			/>
 		</View>

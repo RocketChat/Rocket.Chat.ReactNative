@@ -485,7 +485,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		logEvent(events.DELETE_OWN_ACCOUNT);
 		this.props.showActionSheet({
 			children: <DeleteAccountActionSheetContent />,
-			headerHeight: 275
+			headerHeight: 225
 		});
 	};
 

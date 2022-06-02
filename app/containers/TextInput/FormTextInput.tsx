@@ -1,13 +1,14 @@
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextInputProps, TextInput as RNTextInput, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import sharedStyles from '../../views/Styles';
-import TextInput from './index';
 import { themes } from '../../lib/constants';
-import { CustomIcon, TIconsName } from '../CustomIcon';
-import ActivityIndicator from '../ActivityIndicator';
 import { TSupportedThemes } from '../../theme';
+import sharedStyles from '../../views/Styles';
+import ActivityIndicator from '../ActivityIndicator';
+import { CustomIcon, TIconsName } from '../CustomIcon';
+import TextInput from './index';
 
 const styles = StyleSheet.create({
 	error: {
@@ -64,6 +65,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	left?: JSX.Element;
 	onIconRightPress?(): void;
 	theme: TSupportedThemes;
+	bottomSheet?: boolean;
 }
 
 interface IRCTextInputState {
@@ -142,16 +144,18 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 			testID,
 			placeholder,
 			theme,
+			bottomSheet,
 			...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
+		const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
 					<Text style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>{label}</Text>
 				) : null}
 				<View style={styles.wrap}>
-					<TextInput
+					<Input
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
@@ -167,7 +171,8 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 							},
 							inputStyle
 						]}
-						ref={inputRef}
+						// @ts-ignore
+						ref={inputRef} // bottomSheetRef overlap default ref
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
