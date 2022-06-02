@@ -23,6 +23,10 @@ export const borderBottom: any = (theme: TSupportedThemes) => ({
 	elevation: 0
 });
 
+export const drawerStyle = {
+	width: 320
+};
+
 export const themedHeader = (theme: TSupportedThemes) => ({
 	headerStyle: {
 		...borderBottom(theme),
