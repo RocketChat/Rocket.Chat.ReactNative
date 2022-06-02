@@ -197,7 +197,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 						<List.Info info='Mark_as_unread_Info' />
 					</List.Section>
 
-					{room.hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8') ? (
+					{room.hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0') ? (
 						<List.Section>
 							<List.Separator />
 							<List.Item
