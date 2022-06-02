@@ -518,7 +518,7 @@ PODS:
     - React-Core
   - RNDeviceInfo (8.4.8):
     - React-Core
-  - RNFastImage (8.5.11):
+  - RNFastImage (8.5.12):
     - React-Core
     - SDWebImage (~> 5.12.5)
     - SDWebImageWebPCoder (~> 0.8.4)
@@ -704,7 +704,7 @@ DEPENDENCIES:
   - "RNCPicker (from `../node_modules/@react-native-community/picker`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - "RNFastImage (from `../node_modules/@rocket.chat/react-native-fast-image`)"
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
@@ -899,7 +899,7 @@ EXTERNAL SOURCES:
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
-    :path: "../node_modules/@rocket.chat/react-native-fast-image"
+    :path: "../node_modules/react-native-fast-image"
   RNFBAnalytics:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
@@ -961,7 +961,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: c9b6dfcde9b3d497793c40d4ccbfbfb05092e0df
-  FBReactNativeSpec: f41358a735632327671ea9a34346fcb01a538da3
+  FBReactNativeSpec: c39f7fc0cd6cc64f0a2a5beffc64b1aa5d42740e
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -1041,7 +1041,7 @@ SPEC CHECKSUMS:
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
-  RNFastImage: 945abf54742505d790d9024d230c69b1e866bc88
+  RNFastImage: d5510534be9cccc80e824bfec6369c116d212871
   RNFBAnalytics: dae6d7b280ba61c96e1bbdd34aca3154388f025e
   RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
   RNFBCrashlytics: 88de72c2476b5868a892d9523b89b86c527c540e
