@@ -1,4 +1,7 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
+import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
+
+jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
@@ -37,4 +40,18 @@ const mockedNavigate = jest.fn();
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
 	useNavigation: () => mockedNavigate
+}));
+
+jest.mock('react-native-notifications', () => ({
+	Notifications: {
+		getInitialNotification: jest.fn(() => Promise.resolve()),
+		registerRemoteNotifications: jest.fn(),
+		events: () => ({
+			registerRemoteNotificationsRegistered: jest.fn(),
+			registerRemoteNotificationsRegistrationFailed: jest.fn(),
+			registerNotificationReceivedForeground: jest.fn(),
+			registerNotificationReceivedBackground: jest.fn(),
+			registerNotificationOpened: jest.fn()
+		})
+	}
 }));
