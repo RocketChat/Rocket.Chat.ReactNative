@@ -25,7 +25,7 @@ const WINDOW_TIME = 1000;
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private timer: null | number;
+	private timer: ReturnType<typeof setTimeout> | null;
 	private queue: { [key: string]: IMessage };
 	private messagesBatch: {};
 	private _messagesBatch: { [key: string]: TMessageModel };
@@ -294,7 +294,6 @@ export default class RoomSubscription {
 
 	handleMessageReceived = (ddpMessage: IDDPMessage) => {
 		if (!this.timer) {
-			// @ts-ignore
 			this.timer = setTimeout(async () => {
 				// copy variables values to local and clean them
 				const _lastOpen = this.lastOpen;

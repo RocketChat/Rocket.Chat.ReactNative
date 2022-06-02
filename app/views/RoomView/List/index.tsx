@@ -69,7 +69,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	private viewabilityConfig = {
 		itemVisiblePercentThreshold: 10
 	};
-	private highlightedMessageTimeout: number | undefined | false;
+	private highlightedMessageTimeout: ReturnType<typeof setTimeout> | undefined | false;
 	private thread?: TThreadModel;
 	private messagesObservable?: Observable<TMessageModel[] | TThreadMessageModel[]>;
 	private messagesSubscription?: Subscription;
@@ -293,7 +293,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				}
 				this.setState({ highlightedMessage: messageId });
 				this.clearHighlightedMessageTimeout();
-				// @ts-ignore
 				this.highlightedMessageTimeout = setTimeout(() => {
 					this.setState({ highlightedMessage: null });
 				}, 10000);

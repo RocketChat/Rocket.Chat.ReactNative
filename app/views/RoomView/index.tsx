@@ -198,9 +198,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
-	private retryInitTimeout?: number;
+	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private retryFindCount = 0;
-	private retryFindTimeout?: number;
+	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	// Type of InteractionManager.runAfterInteractions
@@ -620,7 +620,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setState({ loading: false });
 			this.retryInit += 1;
 			if (this.retryInit <= 1) {
-				// @ts-ignore
 				this.retryInitTimeout = setTimeout(() => {
 					this.init();
 				}, 300);
@@ -669,7 +668,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				// So we retry just to make sure we have the right content
 				this.retryFindCount = this.retryFindCount + 1 || 1;
 				if (this.retryFindCount <= 3) {
-					// @ts-ignore
 					this.retryFindTimeout = setTimeout(() => {
 						this.findAndObserveRoom(rid);
 						this.init();

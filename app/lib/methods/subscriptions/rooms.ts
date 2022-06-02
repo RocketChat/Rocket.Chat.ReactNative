@@ -41,7 +41,7 @@ const removeListener = (listener: { stop: () => void }) => listener.stop();
 let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
-let subTimer: number | null | false = null;
+let subTimer: ReturnType<typeof setTimeout> | null | false = null;
 const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
@@ -241,7 +241,6 @@ const getRoomQueueId = (rid: string) => `ROOM-${rid}`;
 
 const debouncedUpdate = (subscription: ISubscription) => {
 	if (!subTimer) {
-		// @ts-ignore
 		subTimer = setTimeout(() => {
 			const batch = queue;
 			queue = {};
