@@ -28,7 +28,7 @@ const SelectUsers = ({
 		try {
 			const res = await search({ text: keyword, filterRooms: false });
 			const selectedUsers = users.filter((u: IUser) => selected.includes(u.name));
-			const filteredUsers = res.filter(r => !users.find((u: IUser) => u.name === r.name));
+			const filteredUsers = res.filter(r => !selectedUsers.find((u: IUser) => u.name === r.name));
 			const items = [...selectedUsers, ...filteredUsers];
 			setUsers(items);
 		} catch {
