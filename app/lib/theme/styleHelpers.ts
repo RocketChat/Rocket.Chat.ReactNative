@@ -29,13 +29,14 @@ const fontSizeRatio = (size: number) => {
 	if (ratio === 1 || ratio === 1.5) {
 		size -= 1;
 	}
-	if (ratio === 3 || ratio === 3.5) {
-		size += 1;
-	}
+	// if (ratio === 3 || ratio === 3.5) {
+	// 	size += 1;
+	// }
 	return size;
 };
 
 export const fontSize = {
+	// TODO recursive
 	10: fontSizeRatio(12),
 	12: fontSizeRatio(12),
 	14: fontSizeRatio(14),
