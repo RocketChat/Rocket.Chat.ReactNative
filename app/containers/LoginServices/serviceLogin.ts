@@ -8,8 +8,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { IItemService, IOpenOAuth, IServiceLogin } from './interfaces';
 import random from '../../utils/random';
 
-const LOGIN_STYPE_POPUP = 'popup';
-const LOGIN_STYPE_REDIRECT = 'redirect';
+type TLoginStyle = 'popup' | 'redirect';
 
 export const onPressFacebook = ({ service, server }: IServiceLogin) => {
 	logEvent(events.ENTER_WITH_FACEBOOK);
@@ -51,7 +50,7 @@ export const onPressGoogle = ({ service, server }: IServiceLogin) => {
 	const endpoint = 'https://accounts.google.com/o/oauth2/auth';
 	const redirect_uri = `${server}/_oauth/google?close`;
 	const scope = 'email';
-	const state = getOAuthState(LOGIN_STYPE_REDIRECT);
+	const state = getOAuthState('redirect');
 	const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
 	Linking.openURL(`${endpoint}${params}`);
 };
@@ -138,7 +137,7 @@ export const onPressAppleLogin = async () => {
 	}
 };
 
-const getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
+const getOAuthState = (loginStyle: TLoginStyle = 'popup') => {
 	const credentialToken = random(43);
 	let obj: {
 		loginStyle: string;
@@ -146,7 +145,7 @@ const getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
 		isCordova: boolean;
 		redirectUrl?: string;
 	} = { loginStyle, credentialToken, isCordova: true };
-	if (loginStyle === LOGIN_STYPE_REDIRECT) {
+	if (loginStyle === 'redirect') {
 		obj = {
 			...obj,
 			redirectUrl: 'rocketchat://auth'
