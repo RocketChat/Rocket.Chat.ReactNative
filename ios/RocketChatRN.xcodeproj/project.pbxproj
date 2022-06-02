@@ -81,12 +81,14 @@
 		1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
 		29B785412B69F334BD7E6314 /* libPods-defaults-Rocket.Chat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8254958F7FAFC2744F0BEFA2 /* libPods-defaults-Rocket.Chat.a */; };
+		658B7AC72848F45F0031A161 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3268F524F04FFE0050E241 /* custom.ttf */; };
+		658B7AC82848F4640031A161 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3268F524F04FFE0050E241 /* custom.ttf */; };
+		658B7AC92848F4670031A161 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3268F524F04FFE0050E241 /* custom.ttf */; };
+		658B7ACA2848F46B0031A161 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3268F524F04FFE0050E241 /* custom.ttf */; };
 		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */; };
 		7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */; };
 		7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
-		7A3268F624F04FFE0050E241 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3268F524F04FFE0050E241 /* custom.ttf */; };
-		7A3268F724F04FFE0050E241 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3268F524F04FFE0050E241 /* custom.ttf */; };
 		7A92213A28076D0500B2EF26 /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A92213928076D0500B2EF26 /* Inter.ttf */; };
 		7A92213B28076D0500B2EF26 /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A92213928076D0500B2EF26 /* Inter.ttf */; };
 		7A92213C28076D0500B2EF26 /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A92213928076D0500B2EF26 /* Inter.ttf */; };
@@ -735,9 +737,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				7A610CD227ECE38100B8ABDD /* custom.ttf in Resources */,
 				7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */,
 				7A92213A28076D0500B2EF26 /* Inter.ttf in Resources */,
+				658B7ACA2848F46B0031A161 /* custom.ttf in Resources */,
 				7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */,
 				7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -747,10 +749,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A610CD327ECE38100B8ABDD /* custom.ttf in Resources */,
 				1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */,
 				1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */,
 				7A92213B28076D0500B2EF26 /* Inter.ttf in Resources */,
+				658B7AC92848F4670031A161 /* custom.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,7 +762,7 @@
 			files = (
 				1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */,
 				7A92213C28076D0500B2EF26 /* Inter.ttf in Resources */,
-				7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */,
+				658B7AC82848F4640031A161 /* custom.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,10 +771,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */,
-				7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */,
 				7AAB3E42257E6A6E00707CF6 /* Images.xcassets in Resources */,
-				7AAB3E43257E6A6E00707CF6 /* custom.ttf in Resources */,
 				7A92213D28076D0500B2EF26 /* Inter.ttf in Resources */,
+				658B7AC72848F45F0031A161 /* custom.ttf in Resources */,
 				7AAB3E44257E6A6E00707CF6 /* GoogleService-Info.plist in Resources */,
 				7AAB3E45257E6A6E00707CF6 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -1582,7 +1583,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1648,7 +1649,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
