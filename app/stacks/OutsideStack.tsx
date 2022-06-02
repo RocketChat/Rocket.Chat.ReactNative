@@ -45,7 +45,8 @@ const OutsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation }}>
+		<OutsideModal.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}>
 			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false }} />
 			<OutsideModal.Screen
 				name='AuthenticationWebView'

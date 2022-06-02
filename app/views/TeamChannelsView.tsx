@@ -1,6 +1,7 @@
-import React from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { HeaderBackButton, StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
+import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
