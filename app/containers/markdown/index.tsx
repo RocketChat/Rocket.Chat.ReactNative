@@ -12,8 +12,8 @@ import MarkdownHashtag from './Hashtag';
 import MarkdownBlockQuote from './BlockQuote';
 import MarkdownEmoji from './Emoji';
 import MarkdownTable from './Table';
-import MarkdownTableRow from './TableRow';
-import MarkdownTableCell from './TableCell';
+import MarkdownTableRow, { ITableRow } from './TableRow';
+import MarkdownTableCell, { ITableCell } from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
@@ -202,7 +202,7 @@ const Markdown = ({
 
 	const renderBreak = () => <Text>{tmid ? ' ' : '\n'}</Text>;
 
-	const renderParagraph = ({ children }: any) => {
+	const renderParagraph = ({ children }: { children: React.ReactElement[] }) => {
 		if (!children || children.length === 0) {
 			return null;
 		}
@@ -213,8 +213,8 @@ const Markdown = ({
 		);
 	};
 
-	const renderLink = ({ children, href }: any) => (
-		<MarkdownLink link={href} theme={theme} onLinkPress={onLinkPress}>
+	const renderLink = ({ children, href }: { children: React.ReactElement | null; href: string }) => (
+		<MarkdownLink link={href} onLinkPress={onLinkPress}>
 			{children}
 		</MarkdownLink>
 	);
@@ -242,7 +242,6 @@ const Markdown = ({
 			baseUrl={baseUrl || ''}
 			customEmojis={customEmojis}
 			style={style}
-			theme={theme}
 		/>
 	);
 
@@ -254,7 +253,7 @@ const Markdown = ({
 		return <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} />;
 	};
 
-	const renderHeading = ({ children, level }: any) => {
+	const renderHeading = ({ children, level }: { children: React.ReactElement; level: string }) => {
 		// @ts-ignore
 		const textStyle = styles[`heading${level}Text`];
 		return (
@@ -280,19 +279,17 @@ const Markdown = ({
 		);
 	};
 
-	const renderBlockQuote = ({ children }: { children: JSX.Element }) => (
-		<MarkdownBlockQuote theme={theme}>{children}</MarkdownBlockQuote>
+	const renderBlockQuote = ({ children }: { children: React.ReactElement }) => (
+		<MarkdownBlockQuote>{children}</MarkdownBlockQuote>
 	);
 
-	const renderTable = ({ children, numColumns }: { children: JSX.Element; numColumns: number }) => (
-		<MarkdownTable numColumns={numColumns} theme={theme}>
-			{children}
-		</MarkdownTable>
+	const renderTable = ({ children, numColumns }: { children: React.ReactElement; numColumns: number }) => (
+		<MarkdownTable numColumns={numColumns}>{children}</MarkdownTable>
 	);
 
-	const renderTableRow = (args: any) => <MarkdownTableRow {...args} theme={theme} />;
+	const renderTableRow = (args: ITableRow) => <MarkdownTableRow {...args} />;
 
-	const renderTableCell = (args: any) => <MarkdownTableCell {...args} theme={theme} />;
+	const renderTableCell = (args: ITableCell) => <MarkdownTableCell {...args} />;
 
 	if (isNewMarkdown()) {
 		return (

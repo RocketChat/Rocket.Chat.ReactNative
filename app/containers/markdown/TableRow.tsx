@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, ViewStyle } from 'react-native';
 
-import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
 import styles from './styles';
 
-interface ITableRow {
+export interface ITableRow {
 	children: React.ReactElement | null;
 	isLastRow: boolean;
-	theme: TSupportedThemes;
 }
 
-const TableRow = React.memo(({ isLastRow, children: _children, theme }: ITableRow) => {
-	const rowStyle: ViewStyle[] = [styles.row, { borderColor: themes[theme].borderColor }];
+const TableRow = React.memo(({ isLastRow, children: _children }: ITableRow) => {
+	const { colors } = useTheme();
+
+	const rowStyle: ViewStyle[] = [styles.row, { borderColor: colors.borderColor }];
 	if (!isLastRow) {
 		rowStyle.push(styles.rowBottomBorder);
 	}
