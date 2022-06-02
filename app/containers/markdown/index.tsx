@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import { Image, StyleProp, Text, TextStyle } from 'react-native';
 import { Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
@@ -105,6 +105,7 @@ const Markdown = ({
 	const { theme, colors } = useTheme();
 	const renderer = useRef<any>();
 	const isMessageContainsOnlyEmoji = useRef(false);
+	const [, forceUpdate] = useReducer(x => x + 1, 0);
 
 	const isNewMarkdown = useCallback(() => !!enableMessageParser && !!md, [enableMessageParser, md]);
 	const createRenderer = useCallback(
@@ -150,6 +151,7 @@ const Markdown = ({
 	useEffect(() => {
 		if (!isNewMarkdown() && msg) {
 			renderer.current = createRenderer();
+			forceUpdate();
 		}
 	}, [createRenderer, isNewMarkdown, msg]);
 
