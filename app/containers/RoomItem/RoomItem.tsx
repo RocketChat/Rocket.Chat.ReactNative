@@ -52,7 +52,8 @@ const RoomItem = ({
 	autoJoin,
 	showAvatar,
 	displayMode,
-	sourceType
+	sourceType,
+	hideMentionStatus
 }: IRoomItemProps) => (
 	<Touchable
 		onPress={onPress}
@@ -118,6 +119,8 @@ const RoomItem = ({
 							tunread={tunread}
 							tunreadUser={tunreadUser}
 							tunreadGroup={tunreadGroup}
+							hideMentionStatus={hideMentionStatus}
+							hideUnreadStatus={hideUnreadStatus}
 						/>
 					</View>
 				</>
@@ -144,6 +147,8 @@ const RoomItem = ({
 							tunread={tunread}
 							tunreadUser={tunreadUser}
 							tunreadGroup={tunreadGroup}
+							hideMentionStatus={hideMentionStatus}
+							hideUnreadStatus={hideUnreadStatus}
 						/>
 					</View>
 				</View>

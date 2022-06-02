@@ -167,6 +167,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
+				hideMentionStatus={item.hideMentionStatus}
 				alert={alert}
 				lastMessage={item.lastMessage}
 				showLastMessage={showLastMessage}
