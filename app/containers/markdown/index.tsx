@@ -103,7 +103,7 @@ const Markdown = ({
 	style,
 	onLinkPress
 }: IMarkdownProps) => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 	const renderer = useRef<any>();
 	const isMessageContainsOnlyEmoji = useRef(false);
 	const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -280,7 +280,7 @@ const Markdown = ({
 		const level = context.filter((type: string) => type === 'list').length;
 
 		return (
-			<MarkdownListItem level={level} theme={theme} {...otherProps}>
+			<MarkdownListItem level={level} {...otherProps}>
 				{children}
 			</MarkdownListItem>
 		);
@@ -296,9 +296,15 @@ const Markdown = ({
 		</MarkdownTable>
 	);
 
-	const renderTableRow = (args: ITableRow) => <MarkdownTableRow {...args} />;
+	const renderTableRow = ({ children, isLastRow }: ITableRow) => (
+		<MarkdownTableRow isLastRow={isLastRow}>{children}</MarkdownTableRow>
+	);
 
-	const renderTableCell = (args: ITableCell) => <MarkdownTableCell {...args} />;
+	const renderTableCell = ({ align, children, isLastCell }: ITableCell) => (
+		<MarkdownTableCell align={align} isLastCell={isLastCell}>
+			{children}
+		</MarkdownTableCell>
+	);
 
 	if (isNewMarkdown()) {
 		return (
