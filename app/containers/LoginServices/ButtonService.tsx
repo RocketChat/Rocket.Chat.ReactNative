@@ -3,17 +3,9 @@ import { Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import Touch from '../../utils/touch';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon } from '../CustomIcon';
+import { IButtonService } from './interfaces';
 import styles from './styles';
-
-interface IButtonService {
-	name: string;
-	authType: string;
-	onPress: () => void;
-	backgroundColor: string;
-	buttonText: React.ReactElement;
-	icon: TIconsName;
-}
 
 const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon }: IButtonService) => {
 	const { theme, colors } = useTheme();

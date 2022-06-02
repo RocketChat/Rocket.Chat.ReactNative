@@ -5,16 +5,9 @@ import OrSeparator from '../OrSeparator';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import I18n from '../../i18n';
-import { IServices } from '../../selectors/login';
+import { IServicesSeparator } from './interfaces';
 
-interface IServicesSeparator {
-	services: IServices;
-	separator: boolean;
-	collapsed: boolean;
-	onPressButtonSeparator(): void;
-}
-
-const ServicesSeparator = ({ services, separator, collapsed, onPressButtonSeparator }: IServicesSeparator) => {
+const ServicesSeparator = ({ services, separator, collapsed, onPress }: IServicesSeparator) => {
 	const { colors, theme } = useTheme();
 
 	const { length } = Object.values(services);
@@ -25,7 +18,7 @@ const ServicesSeparator = ({ services, separator, collapsed, onPressButtonSepara
 				<Button
 					title={collapsed ? I18n.t('Onboarding_more_options') : I18n.t('Onboarding_less_options')}
 					type='secondary'
-					onPress={onPressButtonSeparator}
+					onPress={onPress}
 					style={styles.options}
 					color={colors.actionTintColor}
 				/>

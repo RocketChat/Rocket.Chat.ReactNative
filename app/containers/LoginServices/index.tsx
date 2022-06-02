@@ -4,10 +4,25 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from '
 
 import { IServices } from '../../selectors/login';
 import { useAppSelector } from '../../lib/hooks';
-import { IItemService } from './interfaces';
+import { IItemService, IServiceList } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
-import ServicesList from './ServicesList';
+import Service from './Service';
+
+const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server }: IServiceList) => (
+	<>
+		{Object.values(services).map((service: IItemService) => (
+			<Service
+				key={service._id}
+				CAS_enabled={CAS_enabled}
+				CAS_login_url={CAS_login_url}
+				Gitlab_URL={Gitlab_URL}
+				server={server}
+				service={service}
+			/>
+		))}
+	</>
+);
 
 const LoginServices = ({ separator }: { separator: boolean }): React.ReactElement => {
 	const [collapsed, setCollapsed] = useState(true);
@@ -40,43 +55,28 @@ const LoginServices = ({ separator }: { separator: boolean }): React.ReactElemen
 		return (
 			<>
 				<Animated.View style={animatedStyle}>
-					{Object.values(services).map((service: IItemService) => (
-						<ServicesList
-							key={service._id}
-							CAS_enabled={CAS_enabled}
-							CAS_login_url={CAS_login_url}
-							Gitlab_URL={Gitlab_URL}
-							server={server}
-							service={service}
-						/>
-					))}
+					<ServiceList
+						services={services}
+						CAS_enabled={CAS_enabled}
+						CAS_login_url={CAS_login_url}
+						Gitlab_URL={Gitlab_URL}
+						server={server}
+					/>
 				</Animated.View>
-				<ServicesSeparator
-					services={services}
-					separator={separator}
-					collapsed={collapsed}
-					onPressButtonSeparator={onPressButtonSeparator}
-				/>
+				<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
 			</>
 		);
 	}
 	return (
 		<>
-			{Object.values(services).map((service: IItemService) => (
-				<ServicesList
-					CAS_enabled={CAS_enabled}
-					CAS_login_url={CAS_login_url}
-					Gitlab_URL={Gitlab_URL}
-					server={server}
-					service={service}
-				/>
-			))}
-			<ServicesSeparator
+			<ServiceList
 				services={services}
-				separator={separator}
-				collapsed={collapsed}
-				onPressButtonSeparator={onPressButtonSeparator}
+				CAS_enabled={CAS_enabled}
+				CAS_login_url={CAS_login_url}
+				Gitlab_URL={Gitlab_URL}
+				server={server}
 			/>
+			<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
 		</>
 	);
 };

@@ -9,7 +9,7 @@ import styles from './styles';
 import * as ServiceLogin from './serviceLogin';
 import ButtonService from './ButtonService';
 
-const ServicesList = React.memo(
+const Service = React.memo(
 	({
 		CAS_enabled,
 		CAS_login_url,
@@ -26,9 +26,9 @@ const ServicesList = React.memo(
 	}) => {
 		const { colors } = useTheme();
 
-		let { name } = service;
-		name = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `${name}-monochromatic` as TIconsName;
+		const { name } = service;
+		let modifiedName = name === 'meteor-developer' ? 'meteor' : name;
+		const icon = `${modifiedName}-monochromatic` as TIconsName;
 		const isSaml = service.service === 'saml';
 		let onPress: any = () => {};
 
@@ -71,14 +71,14 @@ const ServicesList = React.memo(
 				break;
 		}
 
-		name = name.charAt(0).toUpperCase() + name.slice(1);
+		modifiedName = modifiedName.charAt(0).toUpperCase() + modifiedName.slice(1);
 		let buttonText;
 		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
-			buttonText = <Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{name}</Text>;
+			buttonText = <Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{modifiedName}</Text>;
 		} else {
 			buttonText = (
 				<>
-					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{name}</Text>
+					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{modifiedName}</Text>
 				</>
 			);
 		}
@@ -98,4 +98,4 @@ const ServicesList = React.memo(
 	}
 );
 
-export default ServicesList;
+export default Service;
