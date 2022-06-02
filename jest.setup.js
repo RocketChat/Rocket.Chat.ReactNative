@@ -1,4 +1,5 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
+import mockBottomSheet from '@gorhom/bottom-sheet/mock';
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
@@ -31,3 +32,8 @@ jest.mock('react-native-file-viewer', () => ({
 }));
 
 jest.mock('./app/lib/database', () => jest.fn(() => null));
+
+jest.mock('@gorhom/bottom-sheet', () => ({
+	...mockBottomSheet,
+	__esModule: true
+}));

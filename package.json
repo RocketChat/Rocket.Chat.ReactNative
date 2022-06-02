@@ -30,7 +30,7 @@
 	"dependencies": {
 		"@bugsnag/react-native": "^7.10.5",
 		"@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
-		"@gorhom/bottom-sheet": "^4",
+		"@gorhom/bottom-sheet": "^4.3.1",
 		"@nozbe/watermelondb": "0.23.0",
 		"@react-native-clipboard/clipboard": "^1.8.5",
 		"@react-native-community/art": "^1.2.0",
