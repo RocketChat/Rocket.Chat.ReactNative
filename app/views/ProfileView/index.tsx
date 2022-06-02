@@ -21,7 +21,7 @@ import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
-import { deleteAccount, setUser } from '../../actions/login';
+import { setUser } from '../../actions/login';
 import { CustomIcon } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -41,7 +41,6 @@ import {
 	IProfileParams,
 	IUser
 } from '../../definitions';
-import { deleteOwnAccount } from '../../lib/services/restApi';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 
@@ -56,7 +55,6 @@ interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileV
 	Accounts_CustomFields: string;
 	theme: TSupportedThemes;
 	Accounts_AllowDeleteOwnAccount: string;
-	Message_ErasureType: string;
 	showActionSheet: Function;
 }
 
@@ -489,18 +487,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		});
 	};
 
-	handleConfirmOwnerChange = async () => {
-		const { currentPassword } = this.state;
-		const { dispatch } = this.props;
-		try {
-			await deleteOwnAccount(sha256(currentPassword!), true);
-			dispatch(deleteAccount());
-		} catch (error) {
-			// @ts-ignore
-			EventEmitter.emit(LISTENER, { message: error.data.details });
-		}
-	};
-
 	render() {
 		const { name, username, email, newPassword, avatarUrl, customFields, avatar, saving } = this.state;
 		const {
@@ -659,8 +645,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
 	baseUrl: state.server.server,
-	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as string,
-	Message_ErasureType: state.settings.Message_ErasureType as string
+	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as string
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(ProfileView)));
