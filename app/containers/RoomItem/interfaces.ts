@@ -92,6 +92,7 @@ export interface IRoomItemContainerProps {
 	autoJoin: boolean;
 	showAvatar: boolean;
 	displayMode: string;
+	timeFormat: string;
 }
 
 export interface IRoomItemProps {

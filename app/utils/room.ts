@@ -23,10 +23,10 @@ export const capitalize = (s: string): string => {
 	return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-export const formatDate = (date: string | Date): string =>
+export const formatDate = (date: string | Date, timeFormat: string | undefined): string =>
 	moment(date).calendar(null, {
 		lastDay: `[${I18n.t('Yesterday')}]`,
-		sameDay: 'LT',
+		sameDay: timeFormat || 'LT',
 		lastWeek: 'dddd',
 		sameElse: 'L'
 	});

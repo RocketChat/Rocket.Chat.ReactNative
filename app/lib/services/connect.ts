@@ -286,7 +286,7 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
 			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true,
-			timeFormat: result.me.settings?.preferences?.clockMode ?? 0
+			timeFormat: result.me.settings?.preferences?.clockMode === 2 ? 'H:mm' : 'h:mm A'
 		};
 		return user;
 	}

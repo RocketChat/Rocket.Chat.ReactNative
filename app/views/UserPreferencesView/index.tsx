@@ -29,16 +29,19 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	interface ITimeFormats {
 		label: string;
 		value: number;
+		format: string;
 	}
 
 	const timeFormats: ITimeFormats[] = [
 		{
 			label: '12_Hour',
-			value: 1
+			value: 1,
+			format: 'h:mm A'
 		},
 		{
 			label: '24_Hour',
-			value: 2
+			value: 2,
+			format: 'H:mm'
 		}
 	];
 
@@ -70,7 +73,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	const onChangeTimeFormat = async (item: ITimeFormats) => {
 		try {
-			dispatch(setUser({ timeFormat: item.value }));
+			dispatch(setUser({ timeFormat: item.format }));
 			await Services.saveUserPreferences({ id, clockMode: item.value });
 		} catch (e) {
 			log(e);
@@ -105,13 +108,13 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					<List.Item
 						title={timeFormats[0].label}
 						onPress={() => onChangeTimeFormat(timeFormats[0])}
-						right={() => (timeFormat === timeFormats[0].value ? renderIcon() : null)}
+						right={() => (timeFormat === timeFormats[0].format ? renderIcon() : null)}
 					/>
 					<List.Separator />
 					<List.Item
 						title={timeFormats[1].label}
 						onPress={() => onChangeTimeFormat(timeFormats[1])}
-						right={() => (timeFormat === timeFormats[1].value ? renderIcon() : null)}
+						right={() => (timeFormat === timeFormats[1].format ? renderIcon() : null)}
 					/>
 					<List.Separator />
 				</List.Section>

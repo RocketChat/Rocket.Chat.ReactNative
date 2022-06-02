@@ -109,7 +109,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'users',
-					columns: [{ name: 'time_format', type: 'number', isOptional: true }]
+					columns: [{ name: 'time_format', type: 'string', isOptional: true }]
 				})
 			]
 		}

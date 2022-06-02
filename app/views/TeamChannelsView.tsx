@@ -17,7 +17,7 @@ import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
+import { IApplicationState, IBaseScreen, TSubscriptionModel, IUser } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
@@ -88,6 +88,7 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 	showActionSheet: (options: TActionSheetOptions) => void;
 	showAvatar: boolean;
 	displayMode: DisplayMode;
+	user: IUser;
 }
 class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
@@ -496,7 +497,15 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	};
 
 	renderItem = ({ item }: { item: IItem }) => {
-		const { StoreLastMessage, useRealName, theme, width, showAvatar, displayMode } = this.props;
+		const {
+			user: { timeFormat },
+			StoreLastMessage,
+			useRealName,
+			theme,
+			width,
+			showAvatar,
+			displayMode
+		} = this.props;
 		return (
 			<RoomItem
 				item={item}
@@ -513,6 +522,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				autoJoin={item.teamDefault}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
+				timeFormat={timeFormat}
 			/>
 		);
 	};

@@ -18,7 +18,7 @@ export default appSchema({
 				{ name: 'avatar_etag', type: 'string', isOptional: true },
 				{ name: 'is_from_webview', type: 'boolean', isOptional: true },
 				{ name: 'enable_message_parser_early_adoption', type: 'boolean', isOptional: true },
-				{ name: 'time_format', type: 'number', isOptional: true }
+				{ name: 'time_format', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

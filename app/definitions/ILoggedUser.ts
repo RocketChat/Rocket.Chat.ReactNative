@@ -21,7 +21,7 @@ export interface ILoggedUser {
 	showMessageInMainThread?: boolean;
 	isFromWebView?: boolean;
 	enableMessageParserEarlyAdoption: boolean;
-	timeFormat: number;
+	timeFormat: string;
 }
 
 export interface ILoggedUserResultFromServer
