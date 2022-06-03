@@ -177,7 +177,7 @@
 		"codecov": "^3.8.3",
 		"detox": "19.7.0",
 		"eslint": "^7.31.0",
-		"eslint-config-prettier": "^8.3.0",
+		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-import": "2.22.0",
 		"eslint-plugin-jest": "24.7.0",
 		"eslint-plugin-jsx-a11y": "6.3.1",
