@@ -3,10 +3,6 @@ const data = require('../../data');
 
 const testuser = data.users.regular;
 
-async function waitForToast() {
-	await sleep(300);
-}
-
 describe('Status screen', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -17,11 +13,11 @@ describe('Status screen', () => {
 		await waitFor(element(by.id('sidebar-view')))
 			.toBeVisible()
 			.withTimeout(2000);
-		await waitFor(element(by.id('sidebar-custom-status')))
+		await waitFor(element(by.id('sidebar-custom-status-online')))
 			.toBeVisible()
 			.withTimeout(2000);
 
-		await element(by.id('sidebar-custom-status')).tap();
+		await element(by.id('sidebar-custom-status-online')).tap();
 		await waitFor(element(by.id('status-view')))
 			.toBeVisible()
 			.withTimeout(2000);
@@ -40,19 +36,28 @@ describe('Status screen', () => {
 	describe('Usage', () => {
 		it('should change status', async () => {
 			await element(by.id('status-view-busy')).tap();
-			await waitFor(element(by.id('status-view-current-busy')))
-				.toExist()
+			await element(by.id('status-view-submit')).tap();
+			await sleep(3000); // Wait until the loading hide
+			await waitFor(element(by.id('rooms-list-view-sidebar')))
+				.toBeVisible()
 				.withTimeout(2000);
+			await waitFor(element(by.id('sidebar-view')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await waitFor(element(by.id('sidebar-custom-status-busy')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('sidebar-custom-status-busy')).tap();
 		});
 
 		// TODO: flaky
 		it('should change status text', async () => {
 			await element(by.id('status-view-input')).replaceText('status-text-new');
 			await element(by.id('status-view-submit')).tap();
-			await waitForToast();
-			await waitFor(element(by.label('status-text-new').withAncestor(by.id('sidebar-custom-status'))))
+			await sleep(3000); // Wait until the loading hide
+			await waitFor(element(by.label('status-text-new')))
 				.toExist()
-				.withTimeout(2000);
+				.withTimeout(5000);
 		});
 	});
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
 import Check from '../../Check';
 import * as List from '../../List';
