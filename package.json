@@ -90,7 +90,7 @@
 		"react-native-easy-grid": "^0.2.2",
 		"react-native-easy-toast": "^1.2.0",
 		"react-native-fast-image": "RocketChat/react-native-fast-image.git#bump-version",
-		"react-native-file-viewer": "^2.1.4",
+		"react-native-file-viewer": "^2.1.5",
 		"react-native-gesture-handler": "^1.10.3",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
 		"react-native-image-progress": "^1.1.1",
