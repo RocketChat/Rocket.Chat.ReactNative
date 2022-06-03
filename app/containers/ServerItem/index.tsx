@@ -1,7 +1,7 @@
 import React from 'react';
 // @ts-ignore // TODO: Remove on react-native update
 import { Pressable, Text, View } from 'react-native';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
 import { IServerInfo } from '../../definitions';
 import Check from '../Check';

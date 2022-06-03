@@ -7,7 +7,7 @@ import { themedHeader } from '../../utils/navigation';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { useTheme } from '../../theme';
 
-export const headerHeight = isIOS ? 44 : 56;
+export const headerHeight = isIOS ? 50 : 56;
 
 export const getHeaderHeight = (isLandscape: boolean): number => {
 	if (isIOS) {
@@ -34,7 +34,7 @@ export const getHeaderTitlePosition = ({
 	left: number;
 	right: number;
 } => ({
-	left: insets.left + 60,
+	left: insets.left,
 	right: insets.right + Math.max(45 * numIconsRight, 15)
 });
 

@@ -225,10 +225,14 @@ const DrawerNavigator = () => {
 		<Drawer.Navigator
 			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
-			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
-			screenOptions={{ swipeEnabled: false }}
-			drawerType='back'
-			overlayColor={`rgba(0,0,0,${themes[theme].backdropOpacity})`}>
+			useLegacyImplementation={true}
+			screenOptions={{
+				swipeEnabled: false,
+				headerShown: false,
+				drawerPosition: I18nManager.isRTL ? 'right' : 'left',
+				drawerType: 'back',
+				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`
+			}}>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
@@ -303,7 +307,8 @@ const InsideStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation }}>
+		<InsideStack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='NewMessageStackNavigator' component={NewMessageStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen

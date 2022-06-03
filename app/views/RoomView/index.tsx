@@ -43,7 +43,6 @@ import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
-import { getHeaderTitlePosition } from '../../containers/Header';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
@@ -446,7 +445,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined } = this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, insets, route } = this.props;
+		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
 			return;
@@ -496,15 +495,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		} else if (teamId && isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
 		}
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
-
+		const paddingRight = this.getPaddingLeft(numIconsRight, isMasterDetail);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: {
-				left: headerTitlePosition.left,
-				right: headerTitlePosition.right
-			},
+			headerTitleContainerStyle: { paddingRight },
 			headerLeft: () => (
 				<LeftButtons
 					tmid={tmid}
@@ -551,6 +546,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/>
 			)
 		});
+	};
+
+	getPaddingLeft = (numIcons: number, isMasterDetail: boolean) => {
+		if (numIcons === 3) {
+			return isMasterDetail ? 40 : 35;
+		}
+		return isMasterDetail ? 20 : 0;
 	};
 
 	goRoomActionsView = (screen?: keyof ModalStackParamList) => {
