@@ -122,7 +122,7 @@
 		"react-native-vector-icons": "8.1.0",
 		"react-native-webview": "10.3.2",
 		"react-redux": "8.0.1",
-		"reactotron-react-native": "5.0.0",
+		"reactotron-react-native": "5.0.2",
 		"redux": "4.2.0",
 		"redux-immutable-state-invariant": "2.1.0",
 		"redux-saga": "1.1.3",
