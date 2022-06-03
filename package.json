@@ -133,7 +133,7 @@
 		"rn-root-view": "1.0.3",
 		"semver": "7.3.5",
 		"ua-parser-js": "^0.7.24",
-		"url-parse": "1.5.6",
+		"url-parse": "1.5.10",
 		"use-deep-compare-effect": "1.6.1",
 		"xregexp": "5.0.2"
 	},
@@ -168,7 +168,7 @@
 		"@types/react-test-renderer": "^17.0.1",
 		"@types/semver": "^7.3.9",
 		"@types/ua-parser-js": "^0.7.36",
-		"@types/url-parse": "^1.4.6",
+		"@types/url-parse": "^1.4.8",
 		"@typescript-eslint/eslint-plugin": "^4.28.3",
 		"@typescript-eslint/parser": "^4.28.5",
 		"axios": "0.21.1",
