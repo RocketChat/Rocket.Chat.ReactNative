@@ -903,9 +903,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const { navigation } = this.props;
 			navigation.push('RoomView', {
 				rid: item.drid as string,
-				prid: item.rid,
+				prid: item?.subscription?.id,
 				name: item.msg,
-				t: 'p' as SubscriptionType
+				t: this.t as SubscriptionType
 			});
 		},
 		1000,
