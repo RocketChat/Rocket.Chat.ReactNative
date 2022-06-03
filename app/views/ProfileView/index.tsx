@@ -595,21 +595,20 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						/>
 						{this.renderAvatarButtons()}
 						<Button
-							title={I18n.t('Save_Changes')}
+							title={I18n.t('Reset_Changes')}
+							type='secondary'
+							onPress={this.resetForm}
+							disabled={!this.formIsChanged() || saving}
+							backgroundColor={themes[theme].chatComponentBackground}
+							color={themes[theme].dangerColor}
+						/>
+						<Button
+							title={I18n.t('Save')}
 							type='primary'
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
 							testID='profile-view-submit'
 							loading={saving}
-						/>
-						<Button
-							title={I18n.t('Reset_Changes')}
-							type='danger'
-							onPress={this.resetForm}
-							disabled={!this.formIsChanged() || saving}
-							backgroundColor={themes[theme].dangerColor}
-							color={themes[theme].previewTintColor}
-							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Logout_from_other_logged_in_locations')}
