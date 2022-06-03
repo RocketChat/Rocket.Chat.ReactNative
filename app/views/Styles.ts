@@ -84,8 +84,7 @@ export default StyleSheet.create({
 	},
 	textBold: {
 		...defaultTextStyle,
-		...fontWeight('bold'),
-		fontWeight: '100'
+		...fontWeight('bold')
 	},
 	inputLastChild: {
 		marginBottom: 15
