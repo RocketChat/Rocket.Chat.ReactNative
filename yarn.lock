@@ -4041,10 +4041,10 @@
     tiny-events "^1.0.1"
     universal-websocket-client "^1.0.2"
 
-"@rocket.chat/ui-kit@^0.31.11":
-  version "0.31.11"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.31.11.tgz#701e5bccf43abe2a9bd54cd70220a21ae83c521d"
-  integrity sha512-gPrBAZAPK64DpscKdJqIGbCNrElBOa/dUvB7Ll0KLsC5yClClPPs6tAmw29f7gs/+rKEYYXkRtj8HiyPXnlJ5Q==
+"@rocket.chat/ui-kit@^0.31.13":
+  version "0.31.13"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.31.13.tgz#bd1c8a8726a74e13d072bb6f67cb2a6d3ba66e3b"
+  integrity sha512-IWNIRca0fP8Ecka3DIvqZKF7PbjcUaS+LkWUbMa+9lkX6MeumZrpFqsf7MKUpT+ihJr0RD4lBybmEgFH2syDbw==
 
 "@sideway/address@^4.1.3":
   version "4.1.4"
