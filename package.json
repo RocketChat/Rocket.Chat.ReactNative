@@ -132,13 +132,13 @@
 		"rn-fetch-blob": "0.12.0",
 		"rn-root-view": "1.0.3",
 		"semver": "7.3.5",
-		"ua-parser-js": "^0.7.24",
+		"ua-parser-js": "^1.0.2",
 		"url-parse": "1.5.10",
 		"use-deep-compare-effect": "1.6.1",
 		"xregexp": "5.0.2"
 	},
 	"resolutions": {
-		"ua-parser-js": "^0.7.24"
+		"ua-parser-js": "^1.0.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",
