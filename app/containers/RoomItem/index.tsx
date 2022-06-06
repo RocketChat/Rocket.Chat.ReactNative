@@ -120,13 +120,14 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			swipeEnabled,
 			autoJoin,
 			showAvatar,
-			displayMode
+			displayMode,
+			timeFormat
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${name}`;
 		const avatar = getRoomAvatar(item);
 		const isRead = getIsRead(item);
-		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
+		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt, timeFormat);
 		const alert = item.alert || item.tunread?.length;
 
 		let accessibilityLabel = name;

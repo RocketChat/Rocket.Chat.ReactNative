@@ -295,6 +295,9 @@ export default function subscribeRooms() {
 			if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
 				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
 			}
+			if ((['settings.preferences.clockMode'] as any) in diff) {
+				store.dispatch(setUser({ timeFormat: diff['settings.preferences.clockMode'] === 2 ? 'H:mm' : 'h:mm A' }));
+			}
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {

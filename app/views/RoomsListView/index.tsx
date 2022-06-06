@@ -936,7 +936,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		const { item: currentItem } = this.state;
 		const {
-			user: { username },
+			user: { username, timeFormat },
 			StoreLastMessage,
 			useRealName,
 			theme,
@@ -972,6 +972,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
+				timeFormat={timeFormat}
 			/>
 		);
 	};

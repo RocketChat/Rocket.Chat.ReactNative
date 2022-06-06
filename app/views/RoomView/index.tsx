@@ -139,12 +139,11 @@ const roomAttrsUpdate = [
 ] as TRoomUpdate[];
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
-	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
+	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread' | 'timeFormat'>;
 	appState: string;
 	useRealName?: boolean;
 	isAuthenticated: boolean;
 	Message_GroupingPeriod?: number;
-	Message_TimeFormat?: string;
 	Message_Read_Receipt_Enabled?: boolean;
 	Hide_System_Messages?: string[];
 	baseUrl: string;
@@ -1185,8 +1184,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
-		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
-			this.props;
+		const { user, Message_GroupingPeriod, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -1237,7 +1235,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isSystemMessage={room.sysMes as boolean}
 					baseUrl={baseUrl}
 					Message_GroupingPeriod={Message_GroupingPeriod}
-					timeFormat={Message_TimeFormat}
+					timeFormat={user.timeFormat}
 					useRealName={useRealName}
 					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
@@ -1446,7 +1444,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
-	Message_TimeFormat: state.settings.Message_TimeFormat as string,
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	serverVersion: state.server.version,

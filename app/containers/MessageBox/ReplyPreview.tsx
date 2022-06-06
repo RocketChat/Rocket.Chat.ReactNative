@@ -46,23 +46,22 @@ const styles = StyleSheet.create({
 interface IMessageBoxReplyPreview {
 	replying: boolean;
 	message: IMessage;
-	Message_TimeFormat: string;
 	close(): void;
 	baseUrl: string;
 	username: string;
 	getCustomEmoji: Function;
 	useRealName: boolean;
+	timeFormat: string;
 }
 
 const ReplyPreview = React.memo(
-	({ message, Message_TimeFormat, replying, close, useRealName }: IMessageBoxReplyPreview) => {
+	({ message, replying, close, useRealName, timeFormat }: IMessageBoxReplyPreview) => {
 		const { theme } = useTheme();
 
 		if (!replying) {
 			return null;
 		}
-
-		const time = moment(message.ts).format(Message_TimeFormat);
+		const time = moment(message.ts).format(timeFormat);
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
 				<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
@@ -83,7 +82,6 @@ const ReplyPreview = React.memo(
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat as string,
 	baseUrl: state.server.server,
 	useRealName: state.settings.UI_Use_Real_Name as boolean
 });

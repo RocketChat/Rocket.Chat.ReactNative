@@ -1,6 +1,8 @@
 {
   "1_person_reacted": "1 person reacted",
   "1_user": "1 user",
+  "12_Hour": "12-hour clock",
+  "24_Hour": "24-hour clock",
   "error-action-not-allowed": "{{action}} is not allowed",
   "error-application-not-found": "Application not found",
   "error-archived-duplicate-name": "There's an archived channel with name {{room_name}}",
@@ -327,6 +329,7 @@
   "Message": "Message",
   "Messages": "Messages",
   "Message_Reported": "Message reported",
+  "Message_time_format": "Time format",
   "Microphone_Permission_Message": "Rocket.Chat needs access to your microphone so you can send audio message.",
   "Microphone_Permission": "Microphone Permission",
   "Mute": "Mute",
