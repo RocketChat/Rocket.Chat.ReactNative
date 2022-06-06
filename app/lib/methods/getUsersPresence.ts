@@ -10,7 +10,7 @@ import { IUser } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers/compareServerVersion';
 
-export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> } = {
+export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
 	activeUsersSubTimeout: false
 };
 

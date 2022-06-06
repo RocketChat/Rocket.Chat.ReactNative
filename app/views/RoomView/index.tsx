@@ -197,9 +197,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
-	private retryInitTimeout?: number;
+	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private retryFindCount = 0;
-	private retryFindTimeout?: number;
+	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	// Type of InteractionManager.runAfterInteractions
