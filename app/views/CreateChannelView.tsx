@@ -390,7 +390,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 								testID='create-channel-name'
 								autoCorrect={false}
 								autoCapitalize='none'
-								theme={theme}
 								underlineColorAndroid='transparent'
 							/>
 							<List.Separator />

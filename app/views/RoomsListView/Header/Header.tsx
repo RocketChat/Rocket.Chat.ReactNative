@@ -72,7 +72,6 @@ const Header = React.memo(
 						style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
 						placeholder='Search'
 						onChangeText={onSearchChangeText}
-						theme={theme}
 						testID='rooms-list-view-search-input'
 					/>
 				</View>

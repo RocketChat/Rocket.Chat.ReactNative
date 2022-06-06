@@ -39,7 +39,6 @@ const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.E
 				style={[styles.title, isLight && { color: themes[theme].headerTitleColor }, { fontSize: titleFontSize }]}
 				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
-				theme={theme}
 				testID={testID}
 			/>
 		</View>

@@ -3,7 +3,7 @@ import { I18nManager, StyleProp, StyleSheet, TextInput, TextStyle } from 'react-
 
 import { IRCTextInputProps } from './FormTextInput';
 import { themes } from '../../lib/constants';
-import { TSupportedThemes } from '../../theme';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	input: {
@@ -13,17 +13,19 @@ const styles = StyleSheet.create({
 
 export interface IThemedTextInput extends IRCTextInputProps {
 	style: StyleProp<TextStyle>;
-	theme: TSupportedThemes;
 }
 
-const ThemedTextInput = React.forwardRef<TextInput, IThemedTextInput>(({ style, theme, ...props }, ref) => (
-	<TextInput
-		ref={ref}
-		style={[{ color: themes[theme].titleText }, style, styles.input]}
-		placeholderTextColor={themes[theme].auxiliaryText}
-		keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-		{...props}
-	/>
-));
+const ThemedTextInput = React.forwardRef<TextInput, IThemedTextInput>(({ style, ...props }, ref) => {
+	const { theme } = useTheme();
+	return (
+		<TextInput
+			ref={ref}
+			style={[{ color: themes[theme].titleText }, style, styles.input]}
+			placeholderTextColor={themes[theme].auxiliaryText}
+			keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+			{...props}
+		/>
+	);
+});
 
 export default ThemedTextInput;

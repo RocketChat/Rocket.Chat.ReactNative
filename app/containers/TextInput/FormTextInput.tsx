@@ -63,121 +63,111 @@ export interface IRCTextInputProps extends TextInputProps {
 	onClearInput?: () => void;
 }
 
-const FormTextInput = React.memo(
-	({
-		label,
-		error,
-		loading,
-		containerStyle,
-		inputStyle,
-		inputRef,
-		iconLeft,
-		iconRight,
-		onClearInput,
-		value,
-		left,
-		testID,
-		secureTextEntry,
-		placeholder,
-		...inputProps
-	}: IRCTextInputProps) => {
-		const { colors, theme } = useTheme();
-		const [showPassword, setShowPassword] = useState(false);
+const FormTextInput = ({
+	label,
+	error,
+	loading,
+	containerStyle,
+	inputStyle,
+	inputRef,
+	iconLeft,
+	iconRight,
+	onClearInput,
+	value,
+	left,
+	testID,
+	secureTextEntry,
+	placeholder,
+	...inputProps
+}: IRCTextInputProps) => {
+	const { colors } = useTheme();
+	const [showPassword, setShowPassword] = useState(false);
+	const showClearInput = onClearInput && value && value.length > 0;
 
-		const showIconLeft = () =>
-			iconLeft ? (
-				<CustomIcon
-					name={iconLeft}
-					testID={testID ? `${testID}-icon-left` : undefined}
-					size={20}
-					color={colors.auxiliaryText}
-					style={[styles.iconContainer, styles.iconLeft]}
+	return (
+		<View style={[styles.inputContainer, containerStyle]}>
+			{label ? (
+				<Text style={[styles.label, { color: colors.titleText }, error?.error && { color: colors.dangerColor }]}>{label}</Text>
+			) : null}
+
+			<View style={styles.wrap}>
+				<TextInput
+					style={[
+						styles.input,
+						iconLeft && styles.inputIconLeft,
+						(secureTextEntry || iconRight) && styles.inputIconRight,
+						{
+							backgroundColor: colors.backgroundColor,
+							borderColor: colors.separatorColor,
+							color: colors.titleText
+						},
+						error?.error && {
+							color: colors.dangerColor,
+							borderColor: colors.dangerColor
+						},
+						inputStyle
+					]}
+					ref={inputRef}
+					autoCorrect={false}
+					autoCapitalize='none'
+					underlineColorAndroid='transparent'
+					secureTextEntry={secureTextEntry && !showPassword}
+					testID={testID}
+					accessibilityLabel={placeholder}
+					placeholder={placeholder}
+					value={value}
+					{...inputProps}
 				/>
-			) : null;
 
-		const showIconRight = () => {
-			if (onClearInput && value && value.length > 0) {
-				return (
+				{iconLeft ? (
+					<CustomIcon
+						name={iconLeft}
+						testID={testID ? `${testID}-icon-left` : undefined}
+						size={20}
+						color={colors.auxiliaryText}
+						style={[styles.iconContainer, styles.iconLeft]}
+					/>
+				) : null}
+
+				{showClearInput ? (
 					<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
 						<CustomIcon name='input-clear' size={20} color={colors.auxiliaryTintColor} />
 					</Touchable>
-				);
-			}
-
-			return iconRight ? (
-				<CustomIcon
-					name={iconRight}
-					testID={testID ? `${testID}-icon-right` : undefined}
-					size={20}
-					color={colors.bodyText}
-					style={[styles.iconContainer, styles.iconRight]}
-				/>
-			) : null;
-		};
-
-		const showIconPassword = () => (
-			<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>
-				<CustomIcon
-					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
-					testID={testID ? `${testID}-icon-password` : undefined}
-					size={20}
-					color={colors.auxiliaryText}
-				/>
-			</Touchable>
-		);
-
-		const showLoading = () => (
-			<ActivityIndicator
-				style={[styles.iconContainer, styles.iconRight]}
-				color={colors.bodyText}
-				testID={testID ? `${testID}-loading` : undefined}
-			/>
-		);
-
-		return (
-			<View style={[styles.inputContainer, containerStyle]}>
-				{label ? (
-					<Text style={[styles.label, { color: colors.titleText }, error?.error && { color: colors.dangerColor }]}>{label}</Text>
 				) : null}
 
-				<View style={styles.wrap}>
-					<TextInput
-						style={[
-							styles.input,
-							iconLeft && styles.inputIconLeft,
-							(secureTextEntry || iconRight) && styles.inputIconRight,
-							{
-								backgroundColor: colors.backgroundColor,
-								borderColor: colors.separatorColor,
-								color: colors.titleText
-							},
-							error?.error && {
-								color: colors.dangerColor,
-								borderColor: colors.dangerColor
-							},
-							inputStyle
-						]}
-						ref={inputRef}
-						autoCorrect={false}
-						autoCapitalize='none'
-						underlineColorAndroid='transparent'
-						secureTextEntry={secureTextEntry && !showPassword}
-						testID={testID}
-						accessibilityLabel={placeholder}
-						placeholder={placeholder}
-						theme={theme}
-						{...inputProps}
+				{iconRight && !showClearInput ? (
+					<CustomIcon
+						name={iconRight}
+						testID={testID ? `${testID}-icon-right` : undefined}
+						size={20}
+						color={colors.bodyText}
+						style={[styles.iconContainer, styles.iconRight]}
 					/>
-					{showIconLeft()}
-					{showIconRight()}
-					{secureTextEntry ? showIconPassword() : null}
-					{loading ? showLoading() : null}
-					{left}
-				</View>
-				{error && error.reason ? <Text style={[styles.error, { color: colors.dangerColor }]}>{error.reason}</Text> : null}
+				) : null}
+
+				{secureTextEntry ? (
+					<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>
+						<CustomIcon
+							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
+							testID={testID ? `${testID}-icon-password` : undefined}
+							size={20}
+							color={colors.auxiliaryText}
+						/>
+					</Touchable>
+				) : null}
+
+				{loading ? (
+					<ActivityIndicator
+						style={[styles.iconContainer, styles.iconRight]}
+						color={colors.bodyText}
+						testID={testID ? `${testID}-loading` : undefined}
+					/>
+				) : null}
+				{left}
 			</View>
-		);
-	}
-);
+			{error && error.reason ? <Text style={[styles.error, { color: colors.dangerColor }]}>{error.reason}</Text> : null}
+		</View>
+	);
+};
 
 export default FormTextInput;

@@ -80,7 +80,6 @@ const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox)
 					returnKeyType='search'
 					style={styles.input}
 					underlineColorAndroid='transparent'
-					theme={theme}
 					{...props}
 				/>
 			</View>

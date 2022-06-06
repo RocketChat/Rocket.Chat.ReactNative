@@ -1104,7 +1104,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					defaultValue=''
 					multiline
 					testID={`messagebox-input${tmid ? '-thread' : ''}`}
-					theme={theme}
 					{...isAndroidTablet}
 				/>
 				<RightButtons

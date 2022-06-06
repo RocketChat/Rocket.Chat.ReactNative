@@ -34,7 +34,6 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }: IShareListH
 					style={[styles.search, isLight && titleColorStyle]}
 					placeholder={I18n.t('Search')}
 					onChangeText={onChangeSearchText}
-					theme={theme}
 					autoFocus
 				/>
 			</View>

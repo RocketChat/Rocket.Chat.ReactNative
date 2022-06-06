@@ -18,14 +18,12 @@ const item = {
 	longText: 'https://open.rocket.chat/images/logo/android-chrome-512x512.png'
 };
 
-const theme = 'light';
-
 stories.add('Short and Long Text', () => (
 	<>
 		<View style={styles.paddingHorizontal}>
-			<FormTextInput label='Short Text' placeholder='placeholder' value={item.name} theme={theme} />
+			<FormTextInput label='Short Text' placeholder='placeholder' value={item.name} />
 
-			<FormTextInput label='Long Text' placeholder='placeholder' value={item.longText} theme={theme} />
+			<FormTextInput label='Long Text' placeholder='placeholder' value={item.longText} />
 		</View>
 	</>
 ));
