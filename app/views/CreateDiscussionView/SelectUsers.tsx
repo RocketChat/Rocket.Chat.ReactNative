@@ -40,7 +40,8 @@ const SelectUsers = ({
 		getAvatarURL({
 			text: getRoomAvatar(item),
 			type: SubscriptionType.DIRECT,
-			user: { id: userId, token },
+			userId,
+			token,
 			server,
 			avatarETag: item.avatarETag,
 			blockUnauthenticatedAccess,

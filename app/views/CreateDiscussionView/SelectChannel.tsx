@@ -36,7 +36,8 @@ const SelectChannel = ({
 		getAvatarURL({
 			text: getRoomAvatar(item),
 			type: item.t,
-			user: { id: userId, token },
+			userId,
+			token,
 			server,
 			avatarETag: item.avatarETag,
 			rid: item.rid,

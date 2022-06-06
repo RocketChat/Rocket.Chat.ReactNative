@@ -8,7 +8,6 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
-import { useTheme } from '../../theme';
 
 const Avatar = React.memo(
 	({
@@ -16,7 +15,8 @@ const Avatar = React.memo(
 		style,
 		avatar,
 		children,
-		user,
+		userId,
+		token,
 		onPress,
 		emoji,
 		getCustomEmoji,
@@ -31,8 +31,6 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		externalProviderUrl
 	}: IAvatar) => {
-		const { theme } = useTheme();
-
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
@@ -46,14 +44,7 @@ const Avatar = React.memo(
 		let image;
 		if (emoji) {
 			image = (
-				<Emoji
-					theme={theme}
-					baseUrl={server}
-					getCustomEmoji={getCustomEmoji}
-					isMessageContainsOnlyEmoji
-					literal={emoji}
-					style={avatarStyle}
-				/>
+				<Emoji baseUrl={server} getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />
 			);
 		} else {
 			let uri = avatar;
@@ -62,7 +53,8 @@ const Avatar = React.memo(
 					type,
 					text,
 					size,
-					user,
+					userId,
+					token,
 					avatar,
 					server,
 					avatarETag,
