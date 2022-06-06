@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	buttonContainer: {
-		paddingVertical: 25
+		paddingBottom: 16
 	}
 });
 

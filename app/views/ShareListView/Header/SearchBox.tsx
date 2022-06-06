@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, TextInput as RNTextInput, TextInputProps, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { themes } from '../lib/constants';
-import I18n from '../i18n';
-import { CustomIcon } from './CustomIcon';
-import TextInput from './TextInput';
-import { useTheme } from '../theme';
-import { isIOS } from '../utils/deviceInfo';
-import sharedStyles from '../views/Styles';
+import { themes } from '../../../lib/constants';
+import I18n from '../../../i18n';
+import { CustomIcon } from '../../../containers/CustomIcon';
+import TextInput from '../../../containers/TextInput';
+import { useTheme } from '../../../theme';
+import { isIOS } from '../../../utils/deviceInfo';
+import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
 	container: {
