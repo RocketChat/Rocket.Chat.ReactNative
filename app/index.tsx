@@ -5,6 +5,7 @@ import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -224,14 +225,16 @@ export default class Root extends React.Component<{}, IState> {
 									fontScale,
 									setDimensions: this.setDimensions
 								}}>
-								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
-								</ActionSheetProvider>
+								<GestureHandlerRootView style={{ flex: 1 }}>
+									<ActionSheetProvider>
+										<AppContainer />
+										<TwoFactor />
+										<ScreenLockedView />
+										<ChangePasscodeView />
+										<InAppNotification />
+										<Toast />
+									</ActionSheetProvider>
+								</GestureHandlerRootView>
 							</DimensionsContext.Provider>
 						</ThemeContext.Provider>
 					</Provider>
