@@ -86,7 +86,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			loading: false,
 			messages: [],
 			fileLoading: true,
-			total: 0
+			total: -1
 		};
 		this.setHeader();
 		this.rid = props.route.params?.rid;

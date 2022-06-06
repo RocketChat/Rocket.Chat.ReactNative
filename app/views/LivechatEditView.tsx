@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
@@ -273,7 +273,7 @@ const LivechatEditView = ({
 						}}
 						placeholder={{ text: I18n.t('Tags') }}
 						value={tagParamSelected}
-						context={BLOCK_CONTEXT.FORM}
+						context={BlockContext.FORM}
 						multiselect
 						disabled={!permissions[1]}
 						inputStyle={styles.multiSelect}

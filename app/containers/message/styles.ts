@@ -163,12 +163,8 @@ export default StyleSheet.create({
 	threadBell: {
 		marginLeft: 8
 	},
-	leftIcons: {
-		paddingLeft: 5,
-		paddingVertical: 5
-	},
-	readReceipt: {
-		lineHeight: 20
+	rightIcons: {
+		paddingLeft: 5
 	},
 	threadDetails: {
 		flex: 1,

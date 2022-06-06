@@ -256,7 +256,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	get isInfo(): string | boolean {
 		const { item } = this.props;
-		if (['e2e', 'discussion-created'].includes(item.t)) {
+		if (['e2e', 'discussion-created', 'jitsi_call_started'].includes(item.t)) {
 			return false;
 		}
 		return item.t;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
@@ -61,7 +61,7 @@ const SelectUsers = ({
 				}))}
 				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}
 				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
-				context={BLOCK_CONTEXT.FORM}
+				context={BlockContext.FORM}
 				multiselect
 			/>
 		</>

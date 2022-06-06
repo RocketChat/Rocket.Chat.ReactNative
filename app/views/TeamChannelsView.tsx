@@ -1,6 +1,7 @@
-import React from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { HeaderBackButton, StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
+import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -423,8 +424,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					// VERIFY ON PR
-					onPress: () => dispatch(deleteRoom(item._id, item))
+					onPress: () => dispatch(deleteRoom(ERoomType.c, item))
 				}
 			],
 			{ cancelable: false }

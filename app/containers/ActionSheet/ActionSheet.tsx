@@ -63,7 +63,6 @@ const ActionSheet = React.memo(
 
 		const hide = () => {
 			bottomSheetRef.current?.close();
-			toggleVisible();
 		};
 
 		const show = (options: TActionSheetOptions) => {

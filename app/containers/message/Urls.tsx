@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';

@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { ImageStyle } from '@rocket.chat/react-native-fast-image';
+import { ImageStyle } from 'react-native-fast-image';
 
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';

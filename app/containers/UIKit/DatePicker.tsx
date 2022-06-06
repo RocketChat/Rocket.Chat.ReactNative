@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 import moment from 'moment';
 
 import Button from '../Button';
@@ -58,7 +58,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 
 	let button = placeholder ? <Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} /> : null;
 
-	if (context === BLOCK_CONTEXT.FORM) {
+	if (context === BlockContext.FORM) {
 		button = (
 			<Touchable
 				onPress={() => onShow(!show)}

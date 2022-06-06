@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { HeaderBackButton, StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';

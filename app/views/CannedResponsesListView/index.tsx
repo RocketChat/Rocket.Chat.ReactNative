@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp } from '@react-navigation/native';
-import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';

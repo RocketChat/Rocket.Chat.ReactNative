@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
-import SearchBox from '../../../containers/SearchBox';
+import SearchBox from './SearchBox';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { themes } from '../../../lib/constants';
 import sharedStyles from '../../Styles';

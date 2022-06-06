@@ -37,6 +37,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: I
 	if (options) {
 		return (
 			<BottomSheetFlatList
+				testID='action-sheet'
 				data={options}
 				refreshing={false}
 				keyExtractor={item => item.title}
