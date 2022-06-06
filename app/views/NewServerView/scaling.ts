@@ -1,4 +1,4 @@
-import { isTablet } from './deviceInfo';
+import { isTablet } from '../../lib/methods/helpers';
 
 const guidelineBaseWidth = isTablet ? 600 : 375;
 const guidelineBaseHeight = isTablet ? 800 : 667;

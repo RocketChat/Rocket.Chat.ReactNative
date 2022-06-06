@@ -1,10 +1,9 @@
 import moment from 'moment';
 
-import { themes } from '../lib/constants';
-import I18n from '../i18n';
-import { IAttachment } from '../definitions/IAttachment';
-import { SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
-import { TSupportedThemes } from '../theme';
+import { themes } from '../../constants';
+import I18n from '../../../i18n';
+import { IAttachment, SubscriptionType, TSubscriptionModel } from '../../../definitions';
+import { TSupportedThemes } from '../../../theme';
 
 export const isBlocked = (room: TSubscriptionModel): boolean => {
 	if (room) {

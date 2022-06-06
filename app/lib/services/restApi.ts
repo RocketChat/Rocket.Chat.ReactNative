@@ -15,10 +15,9 @@ import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
 import { getDeviceToken } from '../notifications';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
 import sdk from './sdk';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 
 export const createChannel = ({
 	name,

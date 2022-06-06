@@ -7,7 +7,7 @@ import I18n from '../../../i18n';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import TextInput from '../../../containers/TextInput';
 import { useTheme } from '../../../theme';
-import { isIOS } from '../../../utils/deviceInfo';
+import { isIOS } from '../../../lib/methods/helpers';
 import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({

@@ -6,7 +6,7 @@ import { RadioButton } from 'react-native-ui-lib';
 import { RouteProp } from '@react-navigation/native';
 
 import { ChatsStackParamList } from '../stacks/types';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -14,7 +14,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../utils/layoutAnimation';
+import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';

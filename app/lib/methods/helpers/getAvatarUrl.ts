@@ -1,10 +1,10 @@
-import { SubscriptionType } from '../definitions/ISubscription';
-import { IAvatar } from '../containers/Avatar/interfaces';
-import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
+import { SubscriptionType } from '../../../definitions';
+import { IAvatar } from '../../../containers/Avatar/interfaces';
+import { compareServerVersion } from './compareServerVersion';
 
 const formatUrl = (url: string, size: number, query?: string) => `${url}?format=png&size=${size}${query}`;
 
-export const avatarURL = ({
+export const getAvatarURL = ({
 	type,
 	text,
 	size = 25,

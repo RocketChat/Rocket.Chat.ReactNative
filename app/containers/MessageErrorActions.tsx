@@ -5,7 +5,7 @@ import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import { TMessageModel } from '../definitions';
 import { resendMessage } from '../lib/methods';
 

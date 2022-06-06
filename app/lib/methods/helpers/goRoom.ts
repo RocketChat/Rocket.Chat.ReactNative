@@ -1,8 +1,8 @@
-import { ChatsStackParamList } from '../stacks/types';
-import Navigation from '../lib/navigation/appNavigation';
-import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../definitions';
-import { getRoomTitle, getUidDirectMessage } from '../lib/methods';
-import { Services } from '../lib/services';
+import { ChatsStackParamList } from '../../../stacks/types';
+import Navigation from '../../navigation/appNavigation';
+import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../../../definitions';
+import { getRoomTitle, getUidDirectMessage } from './helpers';
+import { Services } from '../../services';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight

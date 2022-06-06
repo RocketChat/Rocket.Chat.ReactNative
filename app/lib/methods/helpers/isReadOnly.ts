@@ -1,6 +1,6 @@
-import { store as reduxStore } from '../lib/store/auxStore';
-import { ISubscription } from '../definitions/ISubscription';
-import { hasPermission } from '../lib/methods';
+import { store as reduxStore } from '../../store/auxStore';
+import { ISubscription } from '../../../definitions';
+import { hasPermission } from './helpers';
 
 const canPostReadOnly = async ({ rid }: { rid: string }) => {
 	// TODO: this is not reactive. If this permission changes, the component won't be updated

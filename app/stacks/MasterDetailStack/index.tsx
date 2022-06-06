@@ -4,7 +4,13 @@ import { createStackNavigator, StackNavigationOptions, StackNavigationProp } fro
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
-import { FadeFromCenterModal, StackAnimation, defaultHeader, themedHeader, drawerStyle } from '../../utils/navigation';
+import {
+	FadeFromCenterModal,
+	StackAnimation,
+	defaultHeader,
+	themedHeader,
+	drawerStyle
+} from '../../lib/methods/helpers/navigation';
 // Chats Stack
 import RoomView from '../../views/RoomView';
 import RoomsListView from '../../views/RoomsListView';

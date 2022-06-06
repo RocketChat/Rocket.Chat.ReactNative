@@ -3,12 +3,12 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';
-import { showErrorAlert } from '../utils/info';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import I18n from '../i18n';
-import { events, logEvent } from '../utils/log';
-import { goRoom } from '../utils/goRoom';
+import { events, logEvent } from '../lib/methods/helpers/log';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 import { Services } from '../lib/services';
 
 const handleRequest = function* handleRequest({ data }) {

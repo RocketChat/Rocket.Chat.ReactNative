@@ -1,4 +1,4 @@
-export default function debounce(func: Function, wait?: number, immediate?: boolean) {
+export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	let timeout: ReturnType<typeof setTimeout> | null;
 	function _debounce(...args: any[]) {
 		// @ts-ignore

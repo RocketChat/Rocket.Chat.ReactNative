@@ -7,7 +7,7 @@ import { IServerInfo } from '../../definitions';
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
 export { ROW_HEIGHT };

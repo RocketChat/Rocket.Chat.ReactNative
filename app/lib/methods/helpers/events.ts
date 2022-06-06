@@ -1,5 +1,5 @@
-import { IEmitUserInteraction } from '../containers/UIKit/interfaces';
-import { ICommand } from '../definitions/ICommand';
+import { IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
+import { ICommand } from '../../../definitions/ICommand';
 import log from './log';
 
 type TEventEmitterEmmitArgs =

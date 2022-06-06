@@ -1,5 +1,5 @@
 import { ILastMessage } from '../../definitions';
-import log from '../../utils/log';
+import log from './helpers/log';
 import database from '../database';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';

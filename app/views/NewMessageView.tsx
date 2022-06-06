@@ -17,15 +17,15 @@ import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon, TIconsName } from '../containers/CustomIcon';
 import Navigation from '../lib/navigation/appNavigation';
-import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
-import { goRoom, TGoRoomItem } from '../utils/goRoom';
-import log, { events, logEvent } from '../utils/log';
-import Touch from '../utils/touch';
+import { goRoom, TGoRoomItem } from '../lib/methods/helpers/goRoom';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
+import Touch from '../lib/methods/helpers/touch';
 import sharedStyles from './Styles';
 import { NewMessageStackParamList } from '../stacks/types';
-import { hasPermission, search } from '../lib/methods';
+import { search } from '../lib/methods';
+import { hasPermission, compareServerVersion } from '../lib/methods/helpers';
 
 const QUERY_SIZE = 50;
 

@@ -5,7 +5,7 @@ import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
-import debounce from '../utils/debounce';
+import { debounce } from '../lib/methods/helpers';
 import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
 import SafeAreaView from '../containers/SafeAreaView';

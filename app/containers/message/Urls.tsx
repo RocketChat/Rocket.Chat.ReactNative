@@ -5,12 +5,12 @@ import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, useTheme, withTheme } from '../../theme';
 import { LISTENER } from '../Toast';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';

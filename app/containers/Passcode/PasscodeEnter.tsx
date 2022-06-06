@@ -8,7 +8,7 @@ import Base, { IBase } from './Base';
 import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../lib/constants';
-import { biometryAuth, resetAttempts } from '../../utils/localAuthentication';
+import { biometryAuth, resetAttempts } from '../../lib/methods/helpers/localAuthentication';
 import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import I18n from '../../i18n';
