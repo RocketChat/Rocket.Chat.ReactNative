@@ -6,7 +6,7 @@ import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { connect } from 'react-redux';
 
-import FormTextInput from '../TextInput/FormTextInput';
+import { FormTextInput } from '../TextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';

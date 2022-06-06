@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, 
 import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../../views/Styles';
-import TextInput from './index';
+import { TextInput } from './TextInput';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
@@ -63,7 +63,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	onClearInput?: () => void;
 }
 
-const FormTextInput = ({
+export const FormTextInput = ({
 	label,
 	error,
 	loading,
@@ -170,4 +170,4 @@ const FormTextInput = ({
 	);
 };
 
-export default FormTextInput;
+// export default FormTextInput;

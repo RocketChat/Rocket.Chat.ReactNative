@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 
-import FormTextInput from './FormTextInput';
+import { FormTextInput } from '.';
 
 const FormTextInputID = 'form-text-input-id';
 

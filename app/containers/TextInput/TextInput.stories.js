@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 
 import { View, StyleSheet } from 'react-native';
-import FormTextInput from './FormTextInput';
+import { FormTextInput } from '.';
 
 const styles = StyleSheet.create({
 	paddingHorizontal: {

@@ -9,7 +9,7 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { getShowLoginButton } from '../selectors/login';

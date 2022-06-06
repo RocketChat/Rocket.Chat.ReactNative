@@ -13,7 +13,7 @@ import {
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
-import FormTextInput from '../../TextInput/FormTextInput';
+import { FormTextInput } from '../../TextInput';
 import { textParser } from '../utils';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';

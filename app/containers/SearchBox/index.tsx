@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet, TextInputProps, View } from 'react-native';
 
 import I18n from '../../i18n';
-import FormTextInput from '../TextInput/FormTextInput';
+import { FormTextInput } from '../TextInput';
 
 const styles = StyleSheet.create({
 	inputContainer: {
