@@ -11,20 +11,20 @@ import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFa
 import { clearSettings } from '../actions/settings';
 import { clearUser, setUser } from '../actions/login';
 import { clearActiveUsers } from '../actions/activeUsers';
-import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import log, { logServerVersion } from '../utils/log';
+import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
-import SSLPinning from '../utils/sslPinning';
+import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
 import { Services } from '../lib/services';
+import { connect } from '../lib/services/connect';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -115,11 +115,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		if (user) {
 			yield put(clearSettings());
 			yield put(setUser(user));
-			yield RocketChat.connect({ server, logoutOnError: true });
+			yield connect({ server, logoutOnError: true });
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		} else {
 			yield put(clearUser());
-			yield RocketChat.connect({ server });
+			yield connect({ server });
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 

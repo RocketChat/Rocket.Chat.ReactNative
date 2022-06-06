@@ -10,19 +10,17 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
-import log, { logEvent, events } from '../../utils/log';
+import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import { appStart } from '../../actions/app';
-import debounce from '../../utils/debounce';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
-import { animateNextTransition } from '../../utils/layoutAnimation';
+import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import {
 	KEY_COMMAND,
 	handleCommandAddNewServer,
@@ -35,7 +33,7 @@ import {
 	IKeyCommandEvent
 } from '../../commands';
 import { getUserSelector } from '../../selectors/login';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
@@ -46,22 +44,23 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
+import { getUserPresence, RoomTypes, search } from '../../lib/methods';
 import {
 	getRoomAvatar,
 	getRoomTitle,
 	getUidDirectMessage,
-	getUserPresence,
 	hasPermission,
 	isGroupChat,
 	isRead,
-	RoomTypes,
-	search
-} from '../../lib/methods';
+	debounce,
+	isIOS,
+	isTablet
+} from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
-	[key: string]: any;
+	[key: string]: IUser | string | boolean | ISubscription[] | number | object | TEncryptionBanner;
 	user: IUser;
 	server: string;
 	searchText: string;
@@ -76,7 +75,7 @@ interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsLis
 	StoreLastMessage: boolean;
 	useRealName: boolean;
 	isMasterDetail: boolean;
-	rooms: ISubscription[];
+	rooms: string[];
 	width: number;
 	insets: {
 		left: number;
@@ -95,14 +94,14 @@ interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsLis
 }
 
 interface IRoomsListViewState {
-	searching: boolean;
-	search: ISubscription[];
-	loading: boolean;
-	chatsUpdate: string[];
-	omnichannelsUpdate: string[];
-	chats: ISubscription[];
-	item: ISubscription;
-	canCreateRoom: boolean;
+	searching?: boolean;
+	search?: IRoomItem[];
+	loading?: boolean;
+	chatsUpdate?: string[] | { rid: string; alert?: boolean }[];
+	omnichannelsUpdate?: string[];
+	chats?: IRoomItem[];
+	item?: ISubscription;
+	canCreateRoom?: boolean;
 }
 
 interface IRoomItem extends ISubscription {
@@ -183,7 +182,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			searching: false,
 			search: [],
 			loading: true,
-			chatsUpdate: [],
+			chatsUpdate: [] as TSubscriptionModel[],
 			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
@@ -353,10 +352,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.getSubscriptions();
 		}
 		// Update current item in case of another action triggers an update on rooms reducer
-		if (isMasterDetail && rooms[0] && item?.rid !== rooms[0].rid && !dequal(rooms, prevProps.rooms)) {
-			// eslint-disable-next-line react/no-did-update-set-state
-			// @ts-ignore
-			this.setState({ item: { rid: rooms[0] } });
+		if (isMasterDetail && rooms[0] && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
+			this.setState({ item: { rid: rooms[0] } as ISubscription });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
@@ -460,12 +457,19 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	// internalSetState = (...args: { chats: TSubscriptionModel; chatsUpdate: TSubscriptionModel; loading: boolean }[]) => {
-	internalSetState = (...args: any) => {
+	internalSetState = (
+		state:
+			| ((
+					prevState: Readonly<IRoomsListViewState>,
+					props: Readonly<IRoomsListViewProps>
+			  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
+			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
+		callback?: () => void
+	) => {
 		if (this.animated) {
 			animateNextTransition();
 		}
-		// @ts-ignore
-		this.setState(...args);
+		this.setState(state, callback);
 	};
 
 	addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[]) => {
@@ -570,23 +574,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				tempChats = chats;
 			}
 
-			if (this.mounted) {
-				this.internalSetState({
-					chats: tempChats,
-					chatsUpdate,
-					omnichannelsUpdate,
-					loading: false
-				});
-			} else {
-				// @ts-ignore
-				this.state.chats = tempChats;
-				// @ts-ignore
-				this.state.chatsUpdate = chatsUpdate;
-				// @ts-ignore
-				this.state.omnichannelsUpdate = omnichannelsUpdate;
-				// @ts-ignore
-				this.state.loading = false;
-			}
+			this.internalSetState({
+				chats: tempChats,
+				chatsUpdate,
+				omnichannelsUpdate,
+				loading: false
+			});
 		});
 	};
 
@@ -644,7 +637,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return;
 		}
 		this.internalSetState({
-			search: result,
+			search: result as IRoomItem[],
 			searching: true
 		});
 		this.scrollToTop();
@@ -790,7 +783,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	goRoomByIndex = (index: number) => {
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
-		const filteredChats = chats.filter(c => !c.separator);
+		const filteredChats = chats ? chats.filter(c => !c.separator) : [];
 		const room = filteredChats[index - 1];
 		if (room) {
 			this.goRoom({ item: room, isMasterDetail });
@@ -800,7 +793,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	findOtherRoom = (index: number, sign: number): ISubscription | void => {
 		const { chats } = this.state;
 		const otherIndex = index + sign;
-		const otherRoom = chats[otherIndex];
+		const otherRoom = chats?.length ? chats[otherIndex] : ({} as IRoomItem);
 		if (!otherRoom) {
 			return;
 		}
@@ -820,12 +813,17 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		// Don't run during search
 		const { search } = this.state;
-		if (search.length > 0) {
+		if (search && search?.length > 0) {
 			return;
 		}
 
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
+
+		if (!chats?.length) {
+			return;
+		}
+
 		const index = chats.findIndex(c => c.rid === item.rid);
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
@@ -908,7 +906,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { queueSize, inquiryEnabled, encryptionBanner, user } = this.props;
 		return (
 			<ListHeader
-				searching={searching}
+				searching={searching as boolean}
 				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
@@ -930,7 +928,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return <Header {...options} />;
 	};
 
-	renderItem = ({ item }: { item: ISubscription }) => {
+	renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
 		}

@@ -2,17 +2,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
+import { useAppSelector } from '../lib/hooks';
 import useServer from '../lib/methods/useServer';
 import { SettingsStackParamList } from '../stacks/types';
-import { handleLocalAuthentication } from '../utils/localAuthentication';
+import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
 import {
 	events,
 	getReportAnalyticsEventsValue,
@@ -20,7 +19,7 @@ import {
 	logEvent,
 	toggleAnalyticsEventsReport,
 	toggleCrashErrorsReport
-} from '../utils/log';
+} from '../lib/methods/helpers/log';
 
 interface ISecurityPrivacyViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
@@ -31,7 +30,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();
 
-	const e2eEnabled = useSelector((state: IApplicationState) => state.settings.E2E_Enable);
+	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
 
 	useEffect(() => {
 		navigation.setOptions({

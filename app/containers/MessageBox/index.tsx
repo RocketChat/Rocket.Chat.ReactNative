@@ -9,16 +9,15 @@ import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
-import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
+import TextInput, { IThemedTextInput } from '../TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../EmojiPicker/emojis';
-import log, { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
-import debounce from '../../utils/debounce';
 import { themes } from '../../lib/constants';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -26,9 +25,8 @@ import LeftButtons from './LeftButtons';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
-import { isAndroid, isTablet } from '../../utils/deviceInfo';
-import { canUploadFile } from '../../utils/media';
-import EventEmiter from '../../utils/events';
+import { canUploadFile } from '../../lib/methods/helpers/media';
+import EventEmiter from '../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
 import getMentionRegexp from './getMentionRegexp';
 import Mentions from './Mentions';
@@ -47,11 +45,11 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
-import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel, IMessage } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { getPermalinkMessage, hasPermission, search, sendFileMessage } from '../../lib/methods';
+import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
+import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 
@@ -730,7 +728,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFile = async () => {
 		logEvent(events.ROOM_BOX_ACTION_FILE);
 		try {
-			const res = await DocumentPicker.pick({
+			const res = await DocumentPicker.pickSingle({
 				type: [DocumentPicker.types.allFiles]
 			});
 			const file = {

@@ -1,28 +1,28 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 import { RouteProp } from '@react-navigation/core';
 
-import { IApplicationState, IMessageFromServer } from '../../definitions';
+import { IMessageFromServer } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
-import debounce from '../../utils/debounce';
+import log from '../../lib/methods/helpers/log';
+import { debounce, isIOS } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { isIOS } from '../../utils/deviceInfo';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
 import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
 import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 const API_FETCH_COUNT = 50;
 
@@ -42,8 +42,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	const rid = route.params?.rid;
 	const t = route.params?.t;
 
-	const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app?.isMasterDetail);
+	const baseUrl = useAppSelector(state => state.server?.server);
+	const isMasterDetail = useAppSelector(state => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);

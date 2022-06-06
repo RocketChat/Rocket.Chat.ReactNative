@@ -1,6 +1,6 @@
 import Model from '@nozbe/watermelondb/Model';
 import { StyleProp } from 'react-native';
-import { ImageStyle } from '@rocket.chat/react-native-fast-image';
+import { ImageStyle } from 'react-native-fast-image';
 
 export interface IEmoji {
 	content: string;

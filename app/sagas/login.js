@@ -7,14 +7,13 @@ import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
-import RocketChat from '../lib/rocketchat';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
-import { showErrorAlert } from '../utils/info';
-import { localAuthenticate } from '../utils/localAuthentication';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
@@ -30,14 +29,16 @@ import {
 	getSlashCommands,
 	getUserPresence,
 	isOmnichannelModuleAvailable,
-	subscribeSettings
+	logout,
+	subscribeSettings,
+	subscribeUsersPresence
 } from '../lib/methods';
 import { Services } from '../lib/services';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
 const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
-const logoutCall = args => RocketChat.logout(args);
+const logoutCall = args => logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
@@ -114,7 +115,7 @@ const registerPushTokenFork = function* registerPushTokenFork() {
 };
 
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
-	RocketChat.subscribeUsersPresence();
+	subscribeUsersPresence();
 };
 
 const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {

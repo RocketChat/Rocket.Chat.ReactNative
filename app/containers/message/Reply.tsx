@@ -2,21 +2,21 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { dequal } from 'dequal';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
-import { fileDownloadAndPreview } from '../../utils/fileDownload';
-import { IAttachment } from '../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { fileDownloadAndPreview } from './helpers/fileDownload';
+import { IAttachment, TGetCustomEmoji } from '../../definitions';
 import RCActivityIndicator from '../ActivityIndicator';
 import Attachments from './Attachments';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
+import messageStyles from './styles';
 
 const styles = StyleSheet.create({
 	button: {
@@ -44,14 +44,8 @@ const styles = StyleSheet.create({
 		marginBottom: 8
 	},
 	author: {
-		flex: 1,
 		fontSize: 16,
 		...sharedStyles.textMedium
-	},
-	time: {
-		fontSize: 12,
-		marginLeft: 8,
-		...sharedStyles.textRegular
 	},
 	fieldsContainer: {
 		flex: 1,
@@ -106,8 +100,8 @@ const Title = React.memo(
 				{attachment.author_name ? (
 					<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
 				) : null}
+				{time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
 				{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
-				{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text> : null}
 			</View>
 		);
 	}

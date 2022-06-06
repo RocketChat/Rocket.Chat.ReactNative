@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
 import NotifierComponent, { INotifierComponent } from './NotifierComponent';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
-import { getActiveRoute } from '../../utils/navigation';
+import { getActiveRoute } from '../../lib/methods/helpers/navigation';
 import { IApplicationState } from '../../definitions';
 import { IRoom } from '../../reducers/room';
 

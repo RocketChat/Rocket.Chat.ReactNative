@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, TextStyle } from 'react-native';
 import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { themes } from '../../lib/constants';
 import { formatText } from './formatText';
 import { useTheme } from '../../theme';

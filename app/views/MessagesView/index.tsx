@@ -10,7 +10,7 @@ import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
+import getFileUrlFromMessage from './getFileUrlFromMessage';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
@@ -86,7 +86,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			loading: false,
 			messages: [],
 			fileLoading: true,
-			total: 0
+			total: -1
 		};
 		this.setHeader();
 		this.rid = props.route.params?.rid;

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
 import { TSupportedThemes, withTheme } from '../theme';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
@@ -171,16 +171,11 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		}
 	};
 
-	cancel = async ({ closeModal }: { closeModal?: () => void }) => {
+	cancel = async () => {
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
 
-		// handle tablet case
-		if (closeModal) {
-			closeModal();
-		} else {
-			Navigation.back();
-		}
+		Navigation.back();
 
 		try {
 			await triggerCancel({

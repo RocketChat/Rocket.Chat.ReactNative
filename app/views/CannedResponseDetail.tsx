@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -10,13 +9,14 @@ import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
 import { TSupportedThemes, useTheme } from '../theme';
 import Navigation from '../lib/navigation/appNavigation';
-import { goRoom } from '../utils/goRoom';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 import { themes } from '../lib/constants';
 import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { getRoomTitle, getUidDirectMessage } from '../lib/methods';
+import { getRoomTitle, getUidDirectMessage } from '../lib/methods/helpers';
+import { useAppSelector } from '../lib/hooks';
 
 const styles = StyleSheet.create({
 	scroll: {
@@ -96,8 +96,8 @@ interface ICannedResponseDetailProps {
 const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps): JSX.Element => {
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
-	const { isMasterDetail } = useSelector((state: any) => state.app);
-	const { rooms } = useSelector((state: any) => state.room);
+	const { isMasterDetail } = useAppSelector(state => state.app);
+	const { rooms } = useAppSelector(state => state.room);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -159,13 +159,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 						</View>
 					</View>
 				</View>
-				<Button
-					title={I18n.t('Use')}
-					theme={theme}
-					style={styles.button}
-					type='primary'
-					onPress={() => navigateToRoom(cannedResponse)}
-				/>
+				<Button title={I18n.t('Use')} style={styles.button} type='primary' onPress={() => navigateToRoom(cannedResponse)} />
 			</ScrollView>
 		</SafeAreaView>
 	);

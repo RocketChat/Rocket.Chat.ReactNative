@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers';
 import I18n from '../../i18n';
 import Container from './HeaderButtonContainer';
 import Item from './HeaderButtonItem';

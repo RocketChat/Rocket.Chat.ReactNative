@@ -4,14 +4,12 @@ import EJSON from 'ejson';
 import Model from '@nozbe/watermelondb/Model';
 
 import database from '../../database';
-import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
-import log from '../../../utils/log';
-import random from '../../../utils/random';
+import log from '../helpers/log';
 import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
-import EventEmitter from '../../../utils/events';
+import EventEmitter from '../helpers/events';
 import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
@@ -34,15 +32,18 @@ import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { E2E_MESSAGE_TYPE } from '../../constants';
 import { getRoom } from '../getRoom';
-import { getRoomAvatar, getRoomTitle, getSenderName } from '../helpers';
+import { merge } from '../helpers/mergeSubscriptionsRooms';
+import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
 let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
-let subTimer: number | null | false = null;
+let subTimer: ReturnType<typeof setTimeout> | null | false = null;
 const WINDOW_TIME = 500;
+
+export let roomsSubscription: { stop: () => void } | null = null;
 
 const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
 	try {
@@ -404,6 +405,7 @@ export default function subscribeRooms() {
 			clearTimeout(subTimer);
 			subTimer = false;
 		}
+		roomsSubscription = null;
 	};
 
 	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
@@ -412,10 +414,8 @@ export default function subscribeRooms() {
 		// set the server that started this task
 		subServer = sdk.current.client.host;
 		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
-
-		return {
-			stop: () => stop()
-		};
+		roomsSubscription = { stop: () => stop() };
+		return null;
 	} catch (e) {
 		log(e);
 		return Promise.reject();

@@ -15,11 +15,9 @@ import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
 import { getDeviceToken } from '../notifications';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
-import { RoomTypes, roomTypeToApiType } from '../methods';
+import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
 import sdk from './sdk';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import RocketChat from '../rocketchat';
+import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 
 export const createChannel = ({
 	name,
@@ -752,8 +750,8 @@ export const saveAutoTranslate = ({
 export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
 	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
-export const translateMessage = (message: any, targetLanguage: string) =>
-	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
+export const translateMessage = (messageId: string, targetLanguage: string) =>
+	sdk.post('autotranslate.translateMessage', { messageId, targetLanguage });
 
 export const findOrCreateInvite = ({ rid, days, maxUses }: { rid: string; days: number; maxUses: number }): any =>
 	// RC 2.4.0
@@ -807,7 +805,7 @@ export const emitTyping = (room: IRoom, typing = true) => {
 
 export function e2eResetOwnKey(): Promise<boolean | {}> {
 	// {} when TOTP is enabled
-	RocketChat.unsubscribeRooms();
+	unsubscribeRooms();
 
 	// RC 0.72.0
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');

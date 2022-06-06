@@ -4,7 +4,13 @@ import { createStackNavigator, StackNavigationOptions, StackNavigationProp } fro
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
-import { FadeFromCenterModal, StackAnimation, defaultHeader, themedHeader } from '../../utils/navigation';
+import {
+	FadeFromCenterModal,
+	StackAnimation,
+	defaultHeader,
+	themedHeader,
+	drawerStyle
+} from '../../lib/methods/helpers/navigation';
 // Chats Stack
 import RoomView from '../../views/RoomView';
 import RoomsListView from '../../views/RoomsListView';
@@ -96,9 +102,8 @@ const ChatsStackNavigator = React.memo(() => {
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
-		// @ts-ignore
-		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}
-		drawerType='permanent'>
+		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
+		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 	</Drawer.Navigator>
 ));
@@ -129,7 +134,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					options={SearchMessagesView.navigationOptions}
 				/>
 				<ModalStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
-				<ModalStack.Screen name='InviteUsersView' component={InviteUsersView} options={InviteUsersView.navigationOptions} />
+				<ModalStack.Screen name='InviteUsersView' component={InviteUsersView} />
 				<ModalStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
 				<ModalStack.Screen
 					name='AddExistingChannelView'
@@ -148,11 +153,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={DirectoryView}
 					options={props => DirectoryView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
-				<ModalStack.Screen
-					name='QueueListView'
-					component={QueueListView}
-					options={props => QueueListView.navigationOptions!({ ...props, isMasterDetail: true })}
-				/>
+				<ModalStack.Screen name='QueueListView' component={QueueListView} />
 				<ModalStack.Screen
 					name='NotificationPrefView'
 					component={NotificationPrefView}
@@ -166,7 +167,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
-				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} options={MarkdownTableView.navigationOptions} />
+				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 				<ModalStack.Screen
 					name='ReadReceiptsView'
 					component={ReadReceiptsView}
@@ -235,8 +236,14 @@ const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<InsideStack.Navigator
-			mode='modal'
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...FadeFromCenterModal } as StackNavigationOptions}>
+			screenOptions={
+				{
+					...defaultHeader,
+					...themedHeader(theme),
+					...FadeFromCenterModal,
+					presentation: 'transparentModal'
+				} as StackNavigationOptions
+			}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />

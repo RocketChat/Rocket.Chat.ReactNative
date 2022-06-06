@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
-import debounce from '../../utils/debounce';
-import { avatarURL } from '../../utils/avatar';
+import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
-import { getRoomAvatar, getRoomTitle, search } from '../../lib/methods';
+import { search } from '../../lib/methods';
+import { getRoomAvatar, getRoomTitle, debounce } from '../../lib/methods/helpers';
 
 const SelectUsers = ({
 	server,
@@ -37,7 +37,7 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = (item: IUser) =>
-		avatarURL({
+		getAvatarURL({
 			text: getRoomAvatar(item),
 			type: SubscriptionType.DIRECT,
 			userId,
@@ -62,7 +62,7 @@ const SelectUsers = ({
 				}))}
 				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}
 				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
-				context={BLOCK_CONTEXT.FORM}
+				context={BlockContext.FORM}
 				multiselect
 			/>
 		</>

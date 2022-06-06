@@ -1,12 +1,11 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
-import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
+import { useAppSelector } from '../lib/hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
 });
 
 const AuthLoadingView = React.memo((): React.ReactElement => {
-	const text = useSelector((state: IApplicationState) => state.app.text);
+	const text = useAppSelector(state => state.app.text);
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>

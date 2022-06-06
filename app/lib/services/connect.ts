@@ -1,30 +1,27 @@
 import RNFetchBlob from 'rn-fetch-blob';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
-import log from '../../utils/log';
+import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
 import { selectServerFailure } from '../../actions/server';
-import { twoFactor } from '../../utils/twoFactor';
+import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import I18n from '../../i18n';
-import RocketChat from '../rocketchat';
-import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../definitions';
-import { isIOS } from '../../utils/deviceInfo';
+import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import { onRolesChanged } from '../methods/getRoles';
-import { getSettings } from '../methods';
+import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUser, _setUserTimer, onRolesChanged } from '../methods';
+import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -35,11 +32,15 @@ interface IServices {
 	service: string;
 }
 
-// FIXME: Remove `this` context
-function connect(
-	this: IRocketChat,
-	{ server, logoutOnError = false }: { server: string; logoutOnError: boolean }
-): Promise<void> {
+let connectingListener: any;
+let connectedListener: any;
+let closeListener: any;
+let usersListener: any;
+let notifyAllListener: any;
+let rolesListener: any;
+let notifyLoggedListener: any;
+
+function connect({ server, logoutOnError = false }: { server: string; logoutOnError: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
@@ -49,39 +50,40 @@ function connect(
 
 		store.dispatch(connectRequest());
 
-		if (this.connectTimeout) {
-			clearTimeout(this.connectTimeout);
+		// It's not called anywhere else
+		// if (this.connectTimeout) {
+		// 	clearTimeout(this.connectTimeout);
+		// }
+
+		if (connectingListener) {
+			connectingListener.then(stopListener);
 		}
 
-		if (this.connectingListener) {
-			this.connectingListener.then(stopListener);
+		if (connectedListener) {
+			connectedListener.then(stopListener);
 		}
 
-		if (this.connectedListener) {
-			this.connectedListener.then(stopListener);
+		if (closeListener) {
+			closeListener.then(stopListener);
 		}
 
-		if (this.closeListener) {
-			this.closeListener.then(stopListener);
+		if (usersListener) {
+			usersListener.then(stopListener);
 		}
 
-		if (this.usersListener) {
-			this.usersListener.then(stopListener);
+		if (notifyAllListener) {
+			notifyAllListener.then(stopListener);
 		}
 
-		if (this.notifyAllListener) {
-			this.notifyAllListener.then(stopListener);
+		if (rolesListener) {
+			rolesListener.then(stopListener);
 		}
 
-		if (this.rolesListener) {
-			this.rolesListener.then(stopListener);
+		if (notifyLoggedListener) {
+			notifyLoggedListener.then(stopListener);
 		}
 
-		if (this.notifyLoggedListener) {
-			this.notifyLoggedListener.then(stopListener);
-		}
-
-		this.unsubscribeRooms();
+		unsubscribeRooms();
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
@@ -97,11 +99,11 @@ function connect(
 				console.log('connect error', err);
 			});
 
-		this.connectingListener = sdk.current.onStreamData('connecting', () => {
+		connectingListener = sdk.current.onStreamData('connecting', () => {
 			store.dispatch(connectRequest());
 		});
 
-		this.connectedListener = sdk.current.onStreamData('connected', () => {
+		connectedListener = sdk.current.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;
@@ -113,16 +115,16 @@ function connect(
 			}
 		});
 
-		this.closeListener = sdk.current.onStreamData('close', () => {
+		closeListener = sdk.current.onStreamData('close', () => {
 			store.dispatch(disconnectAction());
 		});
 
-		this.usersListener = sdk.current.onStreamData(
+		usersListener = sdk.current.onStreamData(
 			'users',
-			protectedFunction((ddpMessage: any) => RocketChat._setUser(ddpMessage))
+			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
-		this.notifyAllListener = sdk.current.onStreamData(
+		notifyAllListener = sdk.current.onStreamData(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -150,7 +152,7 @@ function connect(
 			})
 		);
 
-		this.rolesListener = sdk.current.onStreamData(
+		rolesListener = sdk.current.onStreamData(
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
@@ -171,27 +173,29 @@ function connect(
 			}
 		});
 
-		this.notifyLoggedListener = sdk.current.onStreamData(
+		notifyLoggedListener = sdk.current.onStreamData(
 			'stream-notify-logged',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
 				const { eventName } = ddpMessage.fields;
 
 				// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
 				if (/user-status/.test(eventName)) {
-					this.activeUsers = this.activeUsers || {};
-					if (!this._setUserTimer) {
-						this._setUserTimer = setTimeout(() => {
-							const activeUsersBatch = this.activeUsers;
+					_activeUsers.activeUsers = _activeUsers.activeUsers || {};
+					if (!_setUserTimer.setUserTimer) {
+						_setUserTimer.setUserTimer = setTimeout(() => {
+							const activeUsersBatch = _activeUsers.activeUsers;
 							InteractionManager.runAfterInteractions(() => {
+								// @ts-ignore
 								store.dispatch(setActiveUsers(activeUsersBatch));
 							});
-							this._setUserTimer = null;
-							return (this.activeUsers = {});
+							_setUserTimer.setUserTimer = null;
+							_activeUsers.activeUsers = {} as IActiveUsers;
+							return null;
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
 					const [id, , status, statusText] = userStatus;
-					this.activeUsers[id] = { status: STATUSES[status], statusText };
+					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
 
 					const { user: loggedUser } = store.getState().login;
 					if (loggedUser && loggedUser.id === id) {
@@ -419,10 +423,10 @@ async function getServerInfo(server: string) {
 }
 
 async function getWebsocketInfo({ server }: { server: string }) {
-	sdk.initialize(server);
+	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
 	try {
-		await sdk.current.connect();
+		await websocketSdk.connect();
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {
@@ -432,7 +436,7 @@ async function getWebsocketInfo({ server }: { server: string }) {
 		}
 	}
 
-	sdk.disconnect();
+	websocketSdk.disconnect();
 
 	return {
 		success: true

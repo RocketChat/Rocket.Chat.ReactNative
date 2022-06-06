@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { MessageTypeLoad } from '../constants';
 import { IMessage, TMessageModel } from '../../definitions';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';

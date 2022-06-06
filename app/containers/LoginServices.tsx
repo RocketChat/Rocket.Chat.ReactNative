@@ -10,10 +10,10 @@ import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import Button from './Button';
 import OrSeparator from './OrSeparator';
-import Touch from '../utils/touch';
+import Touch from '../lib/methods/helpers/touch';
 import I18n from '../i18n';
-import random from '../utils/random';
-import { events, logEvent } from '../utils/log';
+import { random } from '../lib/methods/helpers';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { CustomIcon, TIconsName } from './CustomIcon';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
@@ -327,7 +327,6 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 						title={collapsed ? I18n.t('Onboarding_more_options') : I18n.t('Onboarding_less_options')}
 						type='secondary'
 						onPress={this.toggleServices}
-						theme={theme}
 						style={styles.options}
 						color={themes[theme].actionTintColor}
 					/>
