@@ -5,11 +5,11 @@ import { themes } from '../../lib/constants';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
-import { avatarURL } from '../../utils/avatar';
-import debounce from '../../utils/debounce';
+import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
-import { getRoomAvatar, getRoomTitle, localSearch } from '../../lib/methods';
+import { localSearch } from '../../lib/methods';
+import { getRoomAvatar, getRoomTitle, debounce } from '../../lib/methods/helpers';
 
 const SelectChannel = ({
 	server,
@@ -33,7 +33,7 @@ const SelectChannel = ({
 	}, 300);
 
 	const getAvatar = (item: ISearchLocal) =>
-		avatarURL({
+		getAvatarURL({
 			text: getRoomAvatar(item),
 			type: item.t,
 			user: { id: userId, token },

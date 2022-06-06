@@ -1,5 +1,5 @@
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { TSubscriptionModel } from '../../definitions';
 import sdk from '../services/sdk';
 

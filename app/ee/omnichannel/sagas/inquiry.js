@@ -2,7 +2,7 @@ import { put, select, takeLatest } from 'redux-saga/effects';
 
 import * as types from '../../../actions/actionsTypes';
 import { Services } from '../../../lib/services';
-import EventEmitter from '../../../utils/events';
+import EventEmitter from '../../../lib/methods/helpers/events';
 import { inquiryFailure, inquirySetEnabled, inquirySuccess } from '../actions/inquiry';
 import { getInquiriesQueued, isOmnichannelStatusAvailable } from '../lib';
 

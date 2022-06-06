@@ -4,8 +4,8 @@ import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { avatarURL } from '../../utils/avatar';
-import { SubscriptionType } from '../../definitions/ISubscription';
+import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
+import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
 import { useTheme } from '../../theme';
@@ -58,7 +58,7 @@ const Avatar = React.memo(
 		} else {
 			let uri = avatar;
 			if (!isStatic) {
-				uri = avatarURL({
+				uri = getAvatarURL({
 					type,
 					text,
 					size,

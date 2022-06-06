@@ -9,25 +9,23 @@ import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
 import MessageBox, { MessageBoxType } from '../../containers/MessageBox';
-import log, { events, logEvent } from '../../utils/log';
-import EventEmitter from '../../utils/events';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
-import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../utils/room';
-import { isReadOnly } from '../../utils/isReadOnly';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
-import { showErrorAlert } from '../../utils/info';
+import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../lib/methods/helpers/room';
+import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
 import {
 	KEY_COMMAND,
@@ -37,7 +35,7 @@ import {
 	handleCommandSearchMessages,
 	IKeyCommandEvent
 } from '../../commands';
-import { Review } from '../../utils/review';
+import { Review } from '../../lib/methods/helpers/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -45,7 +43,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
-import { goRoom, TGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
@@ -83,16 +81,21 @@ import { TListRef } from './List/List';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
-	canAutoTranslate as canAutoTranslateMethod,
-	getRoomTitle,
-	getUidDirectMessage,
-	isGroupChat,
 	loadSurroundingMessages,
 	loadThreadMessages,
 	readMessages,
 	sendMessage,
 	triggerBlockAction
 } from '../../lib/methods';
+import {
+	isGroupChat,
+	getUidDirectMessage,
+	getRoomTitle,
+	canAutoTranslate as canAutoTranslateMethod,
+	debounce,
+	isIOS,
+	isTablet
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 type TStateAttrsUpdate = keyof IRoomViewState;

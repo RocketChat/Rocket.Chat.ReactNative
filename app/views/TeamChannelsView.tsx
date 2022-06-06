@@ -27,12 +27,10 @@ import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import debounce from '../utils/debounce';
-import { isIOS } from '../utils/deviceInfo';
-import { goRoom } from '../utils/goRoom';
-import { showErrorAlert } from '../utils/info';
-import log, { events, logEvent } from '../utils/log';
-import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';
+import { goRoom } from '../lib/methods/helpers/goRoom';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
+import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;

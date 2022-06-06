@@ -8,7 +8,7 @@ import { setUser } from '../../actions/login';
 import database from '../database';
 import { IUser } from '../../definitions';
 import sdk from '../services/sdk';
-import { compareServerVersion } from './helpers/compareServerVersion';
+import { compareServerVersion } from './helpers';
 
 export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
 	activeUsersSubTimeout: false

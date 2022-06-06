@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
 import moment from 'moment';
 
-import UserPreferences from '../lib/methods/userPreferences';
-import { store } from '../lib/store/auxStore';
-import database from '../lib/database';
-import { getServerTimeSync } from '../lib/services/getServerTimeSync';
+import UserPreferences from '../userPreferences';
+import { store } from '../../store/auxStore';
+import database from '../../database';
+import { getServerTimeSync } from '../../services/getServerTimeSync';
 import {
 	ATTEMPTS_KEY,
 	BIOMETRY_ENABLED_KEY,
@@ -15,10 +15,10 @@ import {
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
-} from '../lib/constants';
-import I18n from '../i18n';
-import { setLocalAuthenticated } from '../actions/login';
-import { TServerModel } from '../definitions/IServer';
+} from '../../constants';
+import I18n from '../../../i18n';
+import { setLocalAuthenticated } from '../../../actions/login';
+import { TServerModel } from '../../../definitions';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 

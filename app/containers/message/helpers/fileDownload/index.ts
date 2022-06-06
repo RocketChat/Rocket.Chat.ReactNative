@@ -1,11 +1,11 @@
 import RNFetchBlob, { FetchBlobResponse } from 'rn-fetch-blob';
 import FileViewer from 'react-native-file-viewer';
 
-import EventEmitter from '../events';
-import { LISTENER } from '../../containers/Toast';
-import I18n from '../../i18n';
-import { DOCUMENTS_PATH, DOWNLOAD_PATH } from '../../lib/constants';
-import { IAttachment } from '../../definitions/IAttachment';
+import EventEmitter from '../../../../lib/methods/helpers/events';
+import { LISTENER } from '../../../Toast';
+import I18n from '../../../../i18n';
+import { DOCUMENTS_PATH, DOWNLOAD_PATH } from '../../../../lib/constants';
+import { IAttachment } from '../../../../definitions';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 

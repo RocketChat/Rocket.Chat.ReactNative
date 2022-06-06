@@ -16,7 +16,7 @@ import MarkdownTableRow from './TableRow';
 import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
-import { isValidURL } from '../../utils/url';
+import { isValidURL } from '../../lib/methods/helpers/url';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';

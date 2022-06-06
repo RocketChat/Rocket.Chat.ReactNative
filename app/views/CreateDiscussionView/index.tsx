@@ -5,7 +5,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -14,17 +14,17 @@ import { getUserSelector } from '../../selectors/login';
 import FormTextInput from '../../containers/TextInput/FormTextInput';
 import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom } from '../../utils/goRoom';
-import { events, logEvent } from '../../utils/log';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
 import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { getRoomTitle } from '../../lib/methods';
+import { getRoomTitle } from '../../lib/methods/helpers';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;

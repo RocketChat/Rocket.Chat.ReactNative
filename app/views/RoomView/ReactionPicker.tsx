@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 
 import EmojiPicker from '../../containers/EmojiPicker';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid } from '../../lib/methods/helpers';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import styles from './styles';

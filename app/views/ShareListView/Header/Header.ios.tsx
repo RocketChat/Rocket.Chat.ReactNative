@@ -6,7 +6,7 @@ import SearchBox from './SearchBox';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { themes } from '../../../lib/constants';
 import sharedStyles from '../../Styles';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
+import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
 import { IShareListHeaderIos } from './interface';
 
 const styles = StyleSheet.create({

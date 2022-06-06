@@ -9,7 +9,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../CustomIcon';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import { TSupportedThemes } from '../../theme';
 
 interface IMessageBoxRecordAudioProps {
