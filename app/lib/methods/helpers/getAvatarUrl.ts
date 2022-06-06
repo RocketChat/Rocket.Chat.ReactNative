@@ -6,9 +6,10 @@ const formatUrl = (url: string, size: number, query?: string) => `${url}?format=
 
 export const getAvatarURL = ({
 	type,
-	text,
+	text = '',
 	size = 25,
-	user = {},
+	userId,
+	token,
 	avatar,
 	server,
 	avatarETag,
@@ -30,10 +31,9 @@ export const getAvatarURL = ({
 		room = `@${text}`;
 	}
 
-	const { id, token } = user;
 	let query = '';
-	if (id && token && blockUnauthenticatedAccess) {
-		query += `&rc_token=${token}&rc_uid=${id}`;
+	if (userId && token && blockUnauthenticatedAccess) {
+		query += `&rc_token=${token}&rc_uid=${userId}`;
 	}
 	if (avatarETag) {
 		query += `&etag=${avatarETag}`;
