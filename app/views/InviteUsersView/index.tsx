@@ -13,8 +13,8 @@ import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
-import { events, logEvent } from '../../utils/log';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import styles from './styles';
 
 type IInviteUsersViewProps = IBaseScreen<ChatsStackParamList, 'InviteUsersView'>;

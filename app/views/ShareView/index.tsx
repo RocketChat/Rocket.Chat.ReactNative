@@ -11,8 +11,8 @@ import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { isBlocked } from '../../utils/room';
-import { isReadOnly } from '../../utils/isReadOnly';
+import { isBlocked } from '../../lib/methods/helpers/room';
+import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { TSupportedThemes, withTheme } from '../../theme';
 import FormTextInput from '../../containers/TextInput/FormTextInput';
 import MessageBox from '../../containers/MessageBox';
@@ -20,14 +20,14 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
-import { canUploadFile } from '../../utils/media';
-import { isAndroid } from '../../utils/deviceInfo';
+import { canUploadFile } from '../../lib/methods/helpers/media';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
 import { IApplicationState, IServer, IShareAttachment, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
-import { hasPermission, sendFileMessage, sendMessage } from '../../lib/methods';
+import { sendFileMessage, sendMessage } from '../../lib/methods';
+import { hasPermission, isAndroid } from '../../lib/methods/helpers';
 
 interface IShareViewState {
 	selected: IShareAttachment;

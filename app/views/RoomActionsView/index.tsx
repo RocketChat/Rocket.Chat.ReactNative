@@ -25,24 +25,23 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
-import log, { events, logEvent } from '../../utils/log';
-import Touch from '../../utils/touch';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import Touch from '../../lib/methods/helpers/touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { callJitsi, getPermalinkChannel } from '../../lib/methods';
 import {
-	callJitsi,
 	canAutoTranslate as canAutoTranslateMethod,
-	getPermalinkChannel,
 	getRoomAvatar,
 	getRoomTitle,
 	getUidDirectMessage,
 	hasPermission,
-	isGroupChat
-} from '../../lib/methods';
+	isGroupChat,
+	compareServerVersion
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 

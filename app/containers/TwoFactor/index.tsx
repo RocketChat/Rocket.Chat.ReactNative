@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import FormTextInput from '../TextInput/FormTextInput';
 import I18n from '../../i18n';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import Button from '../Button';

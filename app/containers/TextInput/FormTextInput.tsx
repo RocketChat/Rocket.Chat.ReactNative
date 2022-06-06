@@ -60,6 +60,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;
+	onClearInput?: () => void;
 }
 
 const FormTextInput = React.memo(
@@ -72,6 +73,8 @@ const FormTextInput = React.memo(
 		inputRef,
 		iconLeft,
 		iconRight,
+		onClearInput,
+		value,
 		left,
 		testID,
 		secureTextEntry,
@@ -87,13 +90,21 @@ const FormTextInput = React.memo(
 					name={iconLeft}
 					testID={testID ? `${testID}-icon-left` : undefined}
 					size={20}
-					color={colors.bodyText}
+					color={colors.auxiliaryText}
 					style={[styles.iconContainer, styles.iconLeft]}
 				/>
 			) : null;
 
-		const showIconRight = () =>
-			iconRight ? (
+		const showIconRight = () => {
+			if (onClearInput && value && value.length > 0) {
+				return (
+					<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
+						<CustomIcon name='input-clear' size={20} color={colors.auxiliaryTintColor} />
+					</Touchable>
+				);
+			}
+
+			return iconRight ? (
 				<CustomIcon
 					name={iconRight}
 					testID={testID ? `${testID}-icon-right` : undefined}
@@ -102,6 +113,7 @@ const FormTextInput = React.memo(
 					style={[styles.iconContainer, styles.iconRight]}
 				/>
 			) : null;
+		};
 
 		const showIconPassword = () => (
 			<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>

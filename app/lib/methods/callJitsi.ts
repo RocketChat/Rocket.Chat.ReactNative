@@ -1,5 +1,5 @@
 import { ISubscription } from '../../definitions';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from './helpers/log';
 import { store } from '../store/auxStore';
 import Navigation from '../navigation/appNavigation';
 import sdk from '../services/sdk';

@@ -1,4 +1,4 @@
-import log from '../../utils/log';
+import log from './helpers/log';
 import subscribeRoomsTmp, { roomsSubscription } from './subscriptions/rooms';
 
 export async function subscribeRooms(): Promise<void> {

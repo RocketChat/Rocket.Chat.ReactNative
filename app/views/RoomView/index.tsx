@@ -9,25 +9,23 @@ import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
 import MessageBox, { MessageBoxType } from '../../containers/MessageBox';
-import log, { events, logEvent } from '../../utils/log';
-import EventEmitter from '../../utils/events';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
-import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../utils/room';
-import { isReadOnly } from '../../utils/isReadOnly';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
-import { showErrorAlert } from '../../utils/info';
+import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../lib/methods/helpers/room';
+import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
 import {
 	KEY_COMMAND,
@@ -37,16 +35,15 @@ import {
 	handleCommandSearchMessages,
 	IKeyCommandEvent
 } from '../../commands';
-import { Review } from '../../utils/review';
+import { Review } from '../../lib/methods/helpers/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
-import { getHeaderTitlePosition } from '../../containers/Header';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
-import { goRoom, TGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
@@ -84,16 +81,21 @@ import { TListRef } from './List/List';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
-	canAutoTranslate as canAutoTranslateMethod,
-	getRoomTitle,
-	getUidDirectMessage,
-	isGroupChat,
 	loadSurroundingMessages,
 	loadThreadMessages,
 	readMessages,
 	sendMessage,
 	triggerBlockAction
 } from '../../lib/methods';
+import {
+	isGroupChat,
+	getUidDirectMessage,
+	getRoomTitle,
+	canAutoTranslate as canAutoTranslateMethod,
+	debounce,
+	isIOS,
+	isTablet
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
@@ -198,9 +200,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
-	private retryInitTimeout?: number;
+	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private retryFindCount = 0;
-	private retryFindTimeout?: number;
+	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	// Type of InteractionManager.runAfterInteractions
@@ -446,7 +448,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined } = this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, insets, route } = this.props;
+		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
 			return;
@@ -496,15 +498,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		} else if (teamId && isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
 		}
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
-
+		const paddingRight = this.getPaddingLeft(numIconsRight, isMasterDetail);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: {
-				left: headerTitlePosition.left,
-				right: headerTitlePosition.right
-			},
+			headerTitleContainerStyle: { paddingRight },
 			headerLeft: () => (
 				<LeftButtons
 					tmid={tmid}
@@ -551,6 +549,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/>
 			)
 		});
+	};
+
+	getPaddingLeft = (numIcons: number, isMasterDetail: boolean) => {
+		if (numIcons === 3) {
+			return isMasterDetail ? 40 : 35;
+		}
+		return isMasterDetail ? 20 : 0;
 	};
 
 	goRoomActionsView = (screen?: keyof ModalStackParamList) => {

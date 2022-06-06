@@ -17,7 +17,7 @@ import FormTextInput from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
-import { isIOS } from '../../../utils/deviceInfo';
+import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import { IText } from '../interfaces';
 import Chips from './Chips';

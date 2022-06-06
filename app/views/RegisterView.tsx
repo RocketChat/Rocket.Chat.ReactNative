@@ -15,10 +15,9 @@ import I18n from '../i18n';
 import { getShowLoginButton } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { showErrorAlert } from '../utils/info';
-import isValidEmail from '../utils/isValidEmail';
-import log, { events, logEvent } from '../utils/log';
-import openLink from '../utils/openLink';
+import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
+import openLink from '../lib/methods/helpers/openLink';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 
