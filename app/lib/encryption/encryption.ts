@@ -3,13 +3,15 @@ import SimpleCrypto from 'react-native-simple-crypto';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
 
-import RocketChat from '../rocketchat';
-import UserPreferences from '../userPreferences';
+import UserPreferences from '../methods/userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
-import Deferred from '../../utils/deferred';
-import log from '../../utils/log';
-import { store } from '../auxStore';
+import Deferred from './helpers/deferred';
+import log from '../methods/helpers/log';
+import { store } from '../store/auxStore';
+import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
+import { EncryptionRoom } from './index';
+import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -17,10 +19,8 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
-} from './constants';
-import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
-import { EncryptionRoom } from './index';
-import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+} from '../constants';
+import { Services } from '../services';
 
 class Encryption {
 	ready: boolean;
@@ -141,10 +141,10 @@ class Encryption {
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
 
 		// Send the new keys to the server
-		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 
 		// Request e2e keys of all encrypted rooms
-		await RocketChat.e2eRequestSubscriptionKeys();
+		await Services.e2eRequestSubscriptionKeys();
 	};
 
 	// Encode a private key before send it to the server
@@ -197,7 +197,7 @@ class Encryption {
 		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		// Send the new keys to the server
-		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 	};
 
 	// get a encryption room instance

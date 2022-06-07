@@ -5,7 +5,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
 import { inviteLinksCreate, inviteLinksSetParams } from '../../actions/inviteLinks';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -14,7 +14,7 @@ import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 
 const OPTIONS = {
@@ -121,7 +121,6 @@ class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any
 	};
 
 	render() {
-		const { theme } = this.props;
 		return (
 			<SafeAreaView>
 				<List.Container>
@@ -134,7 +133,7 @@ class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any
 						<List.Separator />
 					</List.Section>
 					<View style={styles.innerContainer}>
-						<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={this.createInviteLink} theme={theme} />
+						<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={this.createInviteLink} />
 					</View>
 				</List.Container>
 			</SafeAreaView>

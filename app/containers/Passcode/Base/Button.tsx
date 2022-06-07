@@ -2,19 +2,21 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../../constants/colors';
-import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
+import { themes } from '../../../lib/constants';
+import Touch from '../../../lib/methods/helpers/touch';
+import { CustomIcon, TIconsName } from '../../CustomIcon';
+import { useTheme } from '../../../theme';
 
 interface IPasscodeButton {
 	text?: string;
-	icon?: string;
-	theme: string;
+	icon?: TIconsName;
 	disabled?: boolean;
 	onPress?: Function;
 }
 
-const Button = React.memo(({ text, disabled, theme, onPress, icon }: IPasscodeButton) => {
+const Button = React.memo(({ text, disabled, onPress, icon }: IPasscodeButton) => {
+	const { theme } = useTheme();
+
 	const press = () => onPress && onPress(text);
 
 	return (

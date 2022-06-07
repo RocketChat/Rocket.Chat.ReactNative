@@ -3,11 +3,13 @@ import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
-import { CustomIcon } from '../../lib/Icons';
+import { themes } from '../../lib/constants';
+import { CustomIcon } from '../CustomIcon';
 import { textParser } from './utils';
-import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import ActivityIndicator from '../ActivityIndicator';
+import { useTheme } from '../../theme';
+import { IText, Option } from './interfaces';
 
 const styles = StyleSheet.create({
 	iosPadding: {
@@ -34,19 +36,16 @@ const styles = StyleSheet.create({
 });
 
 interface ISelect {
-	options: {
-		text: string;
-		value: string;
-	}[];
-	placeholder: string;
+	options?: Option[];
+	placeholder?: IText;
 	onChange: Function;
 	loading: boolean;
-	disabled: boolean;
+	disabled?: boolean;
 	value: [];
-	theme: string;
 }
 
-export const Select = ({ options = [], placeholder, onChange, loading, disabled, value: initialValue, theme }: ISelect) => {
+export const Select = ({ options = [], placeholder, onChange, loading, disabled, value: initialValue }: ISelect) => {
+	const { theme } = useTheme();
 	const [selected, setSelected] = useState(!Array.isArray(initialValue) && initialValue);
 	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {
@@ -80,6 +79,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			}}
 			Icon={Icon}
 			textInputProps={{
+				// style property was Omitted in lib, but can be used normally
 				// @ts-ignore
 				style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText }
 			}}

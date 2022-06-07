@@ -1,15 +1,15 @@
 import React from 'react';
-import { I18nManager, StyleSheet, Text, View } from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
-import Touch from '../../utils/touch';
-import { themes } from '../../constants/colors';
+import Touch from '../../lib/methods/helpers/touch';
+import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
-import { withDimensions } from '../../dimensions';
-import { CustomIcon } from '../../lib/Icons';
+import { useDimensions } from '../../dimensions';
+import { CustomIcon } from '../CustomIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,14 +59,15 @@ interface IListItemContent {
 	left?: () => JSX.Element | null;
 	right?: () => JSX.Element | null;
 	disabled?: boolean;
+	theme: TSupportedThemes;
 	testID?: string;
-	theme?: string;
 	color?: string;
 	translateTitle?: boolean;
 	translateSubtitle?: boolean;
 	showActionIndicator?: boolean;
-	fontScale?: number;
 	alert?: boolean;
+	heightContainer?: number;
+	styleTitle?: StyleProp<TextStyle>;
 }
 
 const Content = React.memo(
@@ -78,78 +79,89 @@ const Content = React.memo(
 		left,
 		right,
 		color,
-		theme,
-		fontScale,
 		alert,
 		translateTitle = true,
 		translateSubtitle = true,
-		showActionIndicator = false
-	}: IListItemContent) => (
-		<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale! }]} testID={testID}>
-			{left ? <View style={styles.leftContainer}>{left()}</View> : null}
-			<View style={styles.textContainer}>
-				<View style={styles.textAlertContainer}>
-					<Text style={[styles.title, { color: color || themes[theme!].titleText }]} numberOfLines={1}>
-						{translateTitle ? I18n.t(title) : title}
-					</Text>
-					{alert ? (
-						<CustomIcon style={[styles.alertIcon, { color: themes[theme!].dangerColor }]} size={ICON_SIZE} name='info' />
+		showActionIndicator = false,
+		theme,
+		heightContainer,
+		styleTitle
+	}: IListItemContent) => {
+		const { fontScale } = useDimensions();
+
+		return (
+			<View
+				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
+				testID={testID}>
+				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
+				<View style={styles.textContainer}>
+					<View style={styles.textAlertContainer}>
+						<Text style={[styles.title, styleTitle, { color: color || themes[theme].titleText }]} numberOfLines={1}>
+							{translateTitle && title ? I18n.t(title) : title}
+						</Text>
+						{alert ? (
+							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].dangerColor} style={styles.alertIcon} />
+						) : null}
+					</View>
+					{subtitle ? (
+						<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+							{translateSubtitle ? I18n.t(subtitle) : subtitle}
+						</Text>
 					) : null}
 				</View>
-				{subtitle ? (
-					<Text style={[styles.subtitle, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
-						{translateSubtitle ? I18n.t(subtitle) : subtitle}
-					</Text>
+				{right || showActionIndicator ? (
+					<View style={styles.rightContainer}>
+						{right ? right() : null}
+						{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
+					</View>
 				) : null}
 			</View>
-			{right || showActionIndicator ? (
-				<View style={styles.rightContainer}>
-					{right ? right() : null}
-					{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
-				</View>
-			) : null}
-		</View>
-	)
+		);
+	}
 );
 
-interface IListButtonPress {
-	onPress?: Function;
+interface IListButtonPress extends IListItemButton {
+	onPress: Function;
 }
 
-interface IListItemButton extends IListButtonPress {
+interface IListItemButton {
 	title?: string;
 	disabled?: boolean;
-	theme?: string;
+	theme: TSupportedThemes;
 	backgroundColor?: string;
 	underlayColor?: string;
 }
 
-const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlayColor, ...props }: IListItemButton) => (
+const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => (
 	<Touch
-		onPress={() => onPress!(props.title)}
-		style={{ backgroundColor: backgroundColor || themes[props.theme!].backgroundColor }}
+		onPress={() => onPress(props.title)}
+		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
-		theme={props.theme!}>
+		theme={props.theme}>
 		<Content {...props} />
 	</Touch>
 ));
 
-interface IListItem extends IListItemContent, IListItemButton {
+interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
 	backgroundColor?: string;
+	onPress?: Function;
 }
 
-const ListItem = React.memo<IListItem>(({ ...props }: IListItem) => {
+const ListItem = React.memo(({ ...props }: IListItem) => {
+	const { theme } = useTheme();
+
 	if (props.onPress) {
-		return <Button {...props} />;
+		const { onPress } = props;
+		return <Button {...props} theme={theme} onPress={onPress} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || themes[props.theme!].backgroundColor }}>
-			<Content {...props} />
+		<View style={{ backgroundColor: props.backgroundColor || themes[theme].backgroundColor }}>
+			<Content {...props} theme={theme} />
 		</View>
 	);
 });
 
 ListItem.displayName = 'List.Item';
 
-export default withTheme(withDimensions(ListItem));
+export default ListItem;

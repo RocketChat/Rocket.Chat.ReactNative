@@ -3,12 +3,12 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
 import { TThreadMessageModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {
 	try {
@@ -24,7 +24,7 @@ async function load({ tmid }: { tmid: string }) {
 	}
 }
 
-export default function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
+export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
 	return new Promise<void>(async (resolve, reject) => {
 		try {
 			let data = await load({ tmid });

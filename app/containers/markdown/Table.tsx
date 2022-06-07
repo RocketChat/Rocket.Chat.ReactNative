@@ -1,25 +1,28 @@
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { CELL_WIDTH } from './TableCell';
+import Navigation from '../../lib/navigation/appNavigation';
 import styles from './styles';
-import Navigation from '../../lib/Navigation';
 import I18n from '../../i18n';
-import { themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
+import { useAppSelector } from '../../lib/hooks';
 
 interface ITable {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	numColumns: number;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const MAX_HEIGHT = 300;
 
 const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 	const getTableWidth = () => numColumns * CELL_WIDTH;
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const renderRows = (drawExtraBorders = true) => {
-		const tableStyle = [styles.table, { borderColor: themes[theme].borderColor }];
+		const tableStyle: ViewStyle[] = [styles.table, { borderColor: themes[theme].borderColor }];
 		if (drawExtraBorders) {
 			tableStyle.push(styles.tableExtraBorders);
 		}
@@ -32,7 +35,16 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 		return <View style={tableStyle}>{rows}</View>;
 	};
 
-	const onPress = () => Navigation.navigate('MarkdownTableView', { renderRows, tableWidth: getTableWidth() });
+	const onPress = () => {
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', {
+				screen: 'MarkdownTableView',
+				params: { renderRows, tableWidth: getTableWidth() }
+			});
+		} else {
+			Navigation.navigate('MarkdownTableView', { renderRows, tableWidth: getTableWidth() });
+		}
+	};
 
 	return (
 		<TouchableOpacity onPress={onPress}>

@@ -1,19 +1,19 @@
 import React from 'react';
 import { ScrollView, ScrollViewProps, StyleSheet, View } from 'react-native';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
-import KeyboardView from '../presentation/KeyboardView';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
+import KeyboardView from './KeyboardView';
+import { useTheme } from '../theme';
 import StatusBar from './StatusBar';
 import AppVersion from './AppVersion';
-import { isTablet } from '../utils/deviceInfo';
+import { isTablet } from '../lib/methods/helpers';
 import SafeAreaView from './SafeAreaView';
 
 interface IFormContainer extends ScrollViewProps {
-	theme: string;
 	testID: string;
-	children: React.ReactNode;
+	children: React.ReactElement | React.ReactElement[] | null;
 }
 
 const styles = StyleSheet.create({
@@ -22,27 +22,31 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FormContainerInner = ({ children }: { children: React.ReactNode }): JSX.Element => (
+export const FormContainerInner = ({ children }: { children: (React.ReactElement | null)[] }) => (
 	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>{children}</View>
 );
 
-const FormContainer = ({ children, theme, testID, ...props }: IFormContainer): JSX.Element => (
-	<KeyboardView
-		style={{ backgroundColor: themes[theme].backgroundColor }}
-		contentContainerStyle={sharedStyles.container}
-		keyboardVerticalOffset={128}>
-		<StatusBar />
-		<ScrollView
-			style={sharedStyles.container}
-			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
-			{...scrollPersistTaps}
-			{...props}>
-			<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
-				{children}
-				<AppVersion theme={theme} />
-			</SafeAreaView>
-		</ScrollView>
-	</KeyboardView>
-);
+const FormContainer = ({ children, testID, ...props }: IFormContainer) => {
+	const { theme } = useTheme();
+
+	return (
+		<KeyboardView
+			style={{ backgroundColor: themes[theme].backgroundColor }}
+			contentContainerStyle={sharedStyles.container}
+			keyboardVerticalOffset={128}>
+			<StatusBar />
+			<ScrollView
+				style={sharedStyles.container}
+				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
+				{...scrollPersistTaps}
+				{...props}>
+				<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
+					{children}
+					<AppVersion theme={theme} />
+				</SafeAreaView>
+			</ScrollView>
+		</KeyboardView>
+	);
+};
 
 export default FormContainer;

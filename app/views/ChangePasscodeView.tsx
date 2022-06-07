@@ -7,12 +7,11 @@ import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../theme';
-import { hasNotch, isTablet } from '../utils/deviceInfo';
+import { hasNotch, isTablet } from '../lib/methods/helpers';
 import { PasscodeChoose } from '../containers/Passcode';
-import EventEmitter from '../utils/events';
-import { CustomIcon } from '../lib/Icons';
-import { CHANGE_PASSCODE_EMITTER } from '../constants/localAuthentication';
-import { themes } from '../constants/colors';
+import EventEmitter from '../lib/methods/helpers/events';
+import { CustomIcon } from '../containers/CustomIcon';
+import { CHANGE_PASSCODE_EMITTER, themes } from '../lib/constants';
 
 const styles = StyleSheet.create({
 	modal: {
@@ -80,7 +79,7 @@ const ChangePasscodeView = React.memo(() => {
 
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
-			<PasscodeChoose theme={theme} finishProcess={onSubmit} force={data?.force} />
+			<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
 			{!data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
 					<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />

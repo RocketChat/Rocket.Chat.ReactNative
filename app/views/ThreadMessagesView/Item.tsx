@@ -5,11 +5,11 @@ import Touchable from 'react-native-platform-touchable';
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { MarkdownPreview } from '../../containers/markdown';
-import { formatDateThreads, makeThreadName } from '../../utils/room';
+import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import ThreadDetails from '../../containers/ThreadDetails';
-import { TThreadModel } from '../../definitions/IThread';
+import { TThreadModel } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,18 +59,17 @@ const styles = StyleSheet.create({
 interface IItem {
 	item: TThreadModel;
 	useRealName: boolean;
-	user: any;
+	user: { id: string };
 	badgeColor?: string;
 	onPress: (item: TThreadModel) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
+const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): React.ReactElement => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
-		// @ts-ignore TODO: to be fixed after we unify our types
 		time = formatDateThreads(item.ts);
 	}
 
@@ -78,15 +77,15 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme!].backgroundColor }}>
+			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
-				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
+				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme!].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />

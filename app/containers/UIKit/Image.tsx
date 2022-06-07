@@ -1,10 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from '@rocket.chat/react-native-fast-image';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import FastImage from 'react-native-fast-image';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Image';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
+import { IThumb, IImage, IElement } from './interfaces';
+import { IAttachment } from '../../definitions';
 
 const styles = StyleSheet.create({
 	image: {
@@ -15,52 +17,32 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IThumb {
-	element: {
-		imageUrl: string;
-	};
-	size?: number;
-}
-
-interface IMedia {
-	element: {
-		imageUrl: string;
-	};
-	theme: string;
-}
-
-interface IImage {
-	element: any;
-	context: any;
-	theme: string;
-}
-
-const ThumbContext = (args: any) => (
+const ThumbContext = (args: IThumb) => (
 	<View style={styles.mediaContext}>
 		<Thumb size={20} {...args} />
 	</View>
 );
 
 export const Thumb = ({ element, size = 88 }: IThumb) => (
-	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element.imageUrl }} />
+	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
 );
 
-export const Media = ({ element, theme }: IMedia) => {
-	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
-	const { imageUrl } = element;
-	// @ts-ignore
-	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} theme={theme} />;
+export const Media = ({ element }: IImage) => {
+	const showAttachment = (attachment: IAttachment) => Navigation.navigate('AttachmentView', { attachment });
+	const imageUrl = element?.imageUrl ?? '';
+
+	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} />;
 };
 
-const genericImage = (element: any, context: any, theme: string) => {
+const genericImage = (element: IElement, context?: number) => {
 	switch (context) {
-		case BLOCK_CONTEXT.SECTION:
+		case BlockContext.SECTION:
 			return <Thumb element={element} />;
-		case BLOCK_CONTEXT.CONTEXT:
+		case BlockContext.CONTEXT:
 			return <ThumbContext element={element} />;
 		default:
-			return <Media element={element} theme={theme} />;
+			return <Media element={element} />;
 	}
 };
 
-export const Image = ({ element, context, theme }: IImage) => genericImage(element, context, theme);
+export const Image = ({ element, context }: IImage) => genericImage(element, context);

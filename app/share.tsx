@@ -5,15 +5,15 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
-import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
-import UserPreferences from './lib/userPreferences';
-import Navigation from './lib/ShareNavigation';
-import store from './lib/createStore';
-import { initStore } from './lib/auxStore';
-import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
-import RocketChat from './lib/rocketchat';
-import { ThemeContext } from './theme';
-import { localAuthenticate } from './utils/localAuthentication';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
+import UserPreferences from './lib/methods/userPreferences';
+import Navigation from './lib/navigation/shareNavigation';
+import store from './lib/store';
+import { initStore } from './lib/store/auxStore';
+import { closeShareExtension, shareExtensionInit } from './lib/methods/shareExtension';
+import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './lib/methods/helpers/navigation';
+import { ThemeContext, TSupportedThemes } from './theme';
+import { localAuthenticate } from './lib/methods/helpers/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
 import ScreenLockedView from './views/ScreenLockedView';
 // Outside Stack
@@ -22,11 +22,12 @@ import WithoutServersView from './views/WithoutServersView';
 import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
-import { setCurrentScreen } from './utils/log';
+import { setCurrentScreen } from './lib/methods/helpers/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
-import debounce from './utils/debounce';
+import { debounce } from './lib/methods/helpers';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
+import { colors, CURRENT_SERVER } from './lib/constants';
 
 initStore(store);
 
@@ -38,7 +39,7 @@ interface IDimensions {
 }
 
 interface IState {
-	theme: string;
+	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
 	root: any;
 	width: number;
@@ -90,6 +91,8 @@ export const App = ({ root }: any) => (
 );
 
 class Root extends React.Component<{}, IState> {
+	private mounted = false;
+
 	constructor(props: any) {
 		super(props);
 		const { width, height, scale, fontScale } = Dimensions.get('screen');
@@ -106,20 +109,27 @@ class Root extends React.Component<{}, IState> {
 		this.init();
 	}
 
+	componentDidMount() {
+		this.mounted = true;
+	}
+
 	componentWillUnmount(): void {
-		RocketChat.closeShareExtension();
+		closeShareExtension();
 		unsubscribeTheme();
 	}
 
 	init = async () => {
-		const currentServer = UserPreferences.getString(RocketChat.CURRENT_SERVER);
+		const currentServer = UserPreferences.getString(CURRENT_SERVER);
 
 		if (currentServer) {
 			await localAuthenticate(currentServer);
 			this.setState({ root: 'inside' });
-			await RocketChat.shareExtensionInit(currentServer);
-		} else {
+			await shareExtensionInit(currentServer);
+		} else if (this.mounted) {
 			this.setState({ root: 'outside' });
+		} else {
+			// @ts-ignore
+			this.state.root = 'outside';
 		}
 
 		const state = Navigation.navigationRef.current?.getRootState();
@@ -160,7 +170,7 @@ class Root extends React.Component<{}, IState> {
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
-					<ThemeContext.Provider value={{ theme }}>
+					<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
 						<DimensionsContext.Provider
 							value={{
 								width,

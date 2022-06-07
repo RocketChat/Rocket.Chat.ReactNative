@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers';
 import sharedStyles from '../../views/Styles';
 
 const MENTION_HEIGHT = 50;

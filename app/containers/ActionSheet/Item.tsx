@@ -1,25 +1,20 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { themes } from '../../constants/colors';
-import { CustomIcon } from '../../lib/Icons';
+import { themes } from '../../lib/constants';
+import { CustomIcon } from '../CustomIcon';
+import { useTheme } from '../../theme';
 import { Button } from './Button';
+import { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 
-interface IActionSheetItem {
-	item: {
-		title: string;
-		icon: string;
-		danger: boolean;
-		testID: string;
-		onPress(): void;
-		right: Function;
-	};
-	theme: string;
+export interface IActionSheetItem {
+	item: TActionSheetOptionsItem;
 	hide(): void;
 }
 
-export const Item = React.memo(({ item, hide, theme }: IActionSheetItem) => {
+export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
+	const { theme } = useTheme();
 	const onPress = () => {
 		hide();
 		item?.onPress();

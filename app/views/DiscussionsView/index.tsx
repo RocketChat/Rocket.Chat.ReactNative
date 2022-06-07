@@ -1,29 +1,28 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 import { RouteProp } from '@react-navigation/core';
 
-import { IApplicationState, IMessageFromServer } from '../../definitions';
+import { IMessageFromServer } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
-import debounce from '../../utils/debounce';
-import { themes } from '../../constants/colors';
+import log from '../../lib/methods/helpers/log';
+import { debounce, isIOS } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { isIOS } from '../../utils/deviceInfo';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import SearchHeader from '../../containers/SearchHeader';
 import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
+import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 const API_FETCH_COUNT = 50;
 
@@ -39,12 +38,12 @@ interface IDiscussionsViewProps {
 	item: TThreadModel;
 }
 
-const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Element => {
+const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.ReactElement => {
 	const rid = route.params?.rid;
 	const t = route.params?.t;
 
-	const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app?.isMasterDetail);
+	const baseUrl = useAppSelector(state => state.server?.server);
+	const isMasterDetail = useAppSelector(state => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
@@ -53,7 +52,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	const [total, setTotal] = useState(0);
 	const [searchTotal, setSearchTotal] = useState(0);
 
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 
 	const load = async (text = '') => {
@@ -63,7 +62,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 		setLoading(true);
 		try {
-			const result = await RocketChat.getDiscussions({
+			const result = await Services.getDiscussions({
 				roomId: rid,
 				offset: isSearching ? search.length : discussions.length,
 				count: API_FETCH_COUNT,
@@ -126,13 +125,13 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 		options = {
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={colors.headerTintColor} />
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			},
 			headerRight: () => (
 				<HeaderButton.Container>
@@ -192,13 +191,13 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item.msg}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				style={{ backgroundColor: colors.backgroundColor }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
 				onEndReached={() => (isSearching ? searchTotal : total) > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
 			/>
 		</SafeAreaView>

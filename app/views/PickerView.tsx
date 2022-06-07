@@ -1,12 +1,11 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 
+import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
-import debounce from '../utils/debounce';
+import { TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants';
+import { debounce } from '../lib/methods/helpers';
 import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -15,10 +14,6 @@ import { ChatsStackParamList } from '../stacks/types';
 import { IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
-	search: {
-		width: '100%',
-		height: 56
-	},
 	noResult: {
 		fontSize: 16,
 		paddingVertical: 56,
@@ -34,7 +29,7 @@ interface IItem {
 	item: IOptionsField;
 	selected: boolean;
 	onItemPress: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IRenderSearch {
@@ -49,11 +44,7 @@ interface IPickerViewState {
 	searchText: string;
 }
 
-interface IPickerViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'PickerView'>;
-	route: RouteProp<ChatsStackParamList, 'PickerView'>;
-	theme: string;
-}
+type IPickerViewProps = IBaseScreen<ChatsStackParamList, 'PickerView'>;
 
 const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 	<List.Item
@@ -70,9 +61,7 @@ const RenderSearch = ({ hasSearch, onChangeText }: IRenderSearch) => {
 	}
 	return (
 		<>
-			<View style={styles.search}>
-				<SearchBox onChangeText={onChangeText} />
-			</View>
+			<SearchBox onChangeText={onChangeText} />
 			<List.Separator />
 		</>
 	);

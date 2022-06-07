@@ -2,28 +2,30 @@ import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 
-import log from '../../../utils/log';
+import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
-import reduxStore from '../../createStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
-import debounce from '../../../utils/debounce';
-import RocketChat from '../../rocketchat';
+import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import sdk from '../../services/sdk';
+import { readMessages } from '../readMessages';
+import { loadMissedMessages } from '../loadMissedMessages';
 
 const WINDOW_TIME = 1000;
 
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private timer: null | number;
+	private timer: ReturnType<typeof setTimeout> | null;
 	private queue: { [key: string]: IMessage };
 	private messagesBatch: {};
 	private _messagesBatch: { [key: string]: TMessageModel };
@@ -57,12 +59,12 @@ export default class RoomSubscription {
 		if (this.promises) {
 			await this.unsubscribe();
 		}
-		this.promises = RocketChat.subscribeRoom(this.rid);
+		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
-		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
-		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
+		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
+		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
+		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
+		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
 			await this.unsubscribe();
 		}
@@ -106,7 +108,7 @@ export default class RoomSubscription {
 	handleConnection = async () => {
 		try {
 			reduxStore.dispatch(clearUserTyping());
-			await RocketChat.loadMissedMessages({ rid: this.rid });
+			await loadMissedMessages({ rid: this.rid });
 			const _lastOpen = new Date();
 			this.read(_lastOpen);
 			this.lastOpen = _lastOpen;
@@ -184,7 +186,7 @@ export default class RoomSubscription {
 	});
 
 	read = debounce((lastOpen: Date) => {
-		RocketChat.readMessages(this.rid, lastOpen);
+		readMessages(this.rid, lastOpen);
 	}, 300);
 
 	updateMessage = (message: IMessage): Promise<void> =>

@@ -2,14 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
-import RocketChat from '../../lib/rocketchat';
-import { themes } from '../../constants/colors';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
-import { makeThreadName } from '../../utils/room';
-import { ISubscription } from '../../definitions';
+import { makeThreadName } from '../../lib/methods/helpers/room';
+import { ISubscription, TThreadModel } from '../../definitions';
+import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
 
 interface IHeader {
 	room: ISubscription;
-	thread: { id?: string };
+	thread: TThreadModel;
 }
 
 const Header = React.memo(({ room, thread }: IHeader) => {
@@ -50,7 +49,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	} else {
 		type = room?.t;
 	}
-	let icon;
+	let icon: TIconsName;
 	if (type === 'discussion') {
 		icon = 'discussions';
 	} else if (type === 'thread') {
@@ -60,7 +59,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	} else if (type === 'l') {
 		icon = 'omnichannel';
 	} else if (type === 'd') {
-		if (RocketChat.isGroupChat(room)) {
+		if (isGroupChat(room)) {
 			icon = 'team';
 		} else {
 			icon = 'mention';
@@ -75,7 +74,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	if (thread?.id) {
 		title = makeThreadName(thread);
 	} else {
-		title = RocketChat.getRoomTitle(room);
+		title = getRoomTitle(room);
 	}
 
 	return (

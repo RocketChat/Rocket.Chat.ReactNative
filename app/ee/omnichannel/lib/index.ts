@@ -1,6 +1,6 @@
-import sdk from '../../../lib/rocketchat/services/sdk';
+import sdk from '../../../lib/services/sdk';
 import { IUser } from '../../../definitions';
-import EventEmitter from '../../../utils/events';
+import EventEmitter from '../../../lib/methods/helpers/events';
 import subscribeInquiry from './subscriptions/inquiry';
 
 export const isOmnichannelStatusAvailable = (user: IUser): boolean => user?.statusLivechat === 'available';
@@ -16,6 +16,9 @@ export const getInquiriesQueued = () => sdk.get('livechat/inquiries.queued');
 // and will be removed by the queue stream
 // RC 2.4.0
 export const takeInquiry = (inquiryId: string) => sdk.methodCallWrapper('livechat:takeInquiry', inquiryId);
+
+// RC 4.26
+export const takeResume = (roomId: string) => sdk.methodCallWrapper('livechat:resumeOnHold', roomId);
 
 class Omnichannel {
 	private inquirySub: { stop: () => void } | null;

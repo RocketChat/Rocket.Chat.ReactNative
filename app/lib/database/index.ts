@@ -2,9 +2,9 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
-import { isIOS } from '../../utils/deviceInfo';
-import appGroup from '../../utils/appGroup';
-import { isOfficial } from '../../constants/environment';
+import { isIOS } from '../methods/helpers';
+import appGroup from './appGroup';
+import { isOfficial } from '../constants';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
 import Message from './model/Message';
@@ -66,7 +66,7 @@ export const getDatabase = (database = ''): Database => {
 };
 
 interface IDatabases {
-	shareDB?: TAppDatabase;
+	shareDB?: TAppDatabase | null;
 	serversDB: TServerDatabase;
 	activeDB?: TAppDatabase;
 }

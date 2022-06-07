@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({

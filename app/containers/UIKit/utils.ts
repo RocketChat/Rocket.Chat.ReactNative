@@ -1,8 +1,10 @@
 /* eslint-disable no-shadow */
 import React, { useContext, useState } from 'react';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
-export const textParser = ([{ text }]: any) => text;
+import { IText } from './interfaces';
+
+export const textParser = ([{ text }]: IText[]) => text;
 
 export const defaultContext: any = {
 	action: (...args: any) => console.log(args),
@@ -13,14 +15,33 @@ export const defaultContext: any = {
 
 export const KitContext = React.createContext(defaultContext);
 
-export const useBlockContext = ({ blockId, actionId, appId, initialValue }: any, context: any) => {
+type TObjectReturn = {
+	loading: boolean;
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	error: any;
+	value: any;
+	language: any;
+};
+
+type TFunctionReturn = (value: any) => Promise<void>;
+
+type TReturn = [TObjectReturn, TFunctionReturn];
+
+interface IUseBlockContext {
+	blockId?: string;
+	actionId: string;
+	appId?: string;
+	initialValue?: string;
+}
+
+export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUseBlockContext, context: BlockContext): TReturn => {
 	const { action, appId: appIdFromContext, viewId, state, language, errors, values = {} } = useContext(KitContext);
 	const { value = initialValue } = values[actionId] || {};
 	const [loading, setLoading] = useState(false);
 
 	const error = errors && actionId && errors[actionId];
 
-	if ([BLOCK_CONTEXT.SECTION, BLOCK_CONTEXT.ACTION].includes(context)) {
+	if ([BlockContext.SECTION, BlockContext.ACTION].includes(context)) {
 		return [
 			{
 				loading,

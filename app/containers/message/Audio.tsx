@@ -1,35 +1,38 @@
 import React from 'react';
-import { Easing, StyleSheet, Text, View } from 'react-native';
-import { Audio } from 'expo-av';
+import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { Sound } from 'expo-av/build/Audio/Sound';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
-import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import { themes } from '../../lib/constants';
+import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 interface IButton {
 	loading: boolean;
 	paused: boolean;
-	theme: string;
-	onPress: Function;
+	theme: TSupportedThemes;
+	disabled?: boolean;
+	onPress: () => void;
 }
 
 interface IMessageAudioProps {
-	file: {
-		audio_url: string;
-		description: string;
-	};
-	theme: string;
+	file: IAttachment;
+	isReply?: boolean;
+	style?: StyleProp<TextStyle>[];
+	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
 }
@@ -83,22 +86,21 @@ const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const sliderAnimationConfig = {
-	duration: 250,
-	easing: Easing.linear,
-	delay: 0
-};
-
-const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
+const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButton) => (
 	<Touchable
 		style={styles.playPauseButton}
+		disabled={disabled}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
 		background={Touchable.SelectableBackgroundBorderless()}>
 		{loading ? (
-			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
+			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 		) : (
-			<CustomIcon name={paused ? 'play-filled' : 'pause-filled'} size={36} color={themes[theme].tintColor} />
+			<CustomIcon
+				name={paused ? 'play-filled' : 'pause-filled'}
+				size={36}
+				color={disabled ? themes[theme].tintDisabled : themes[theme].tintColor}
+			/>
 		)}
 	</Touchable>
 ));
@@ -108,7 +110,7 @@ Button.displayName = 'MessageAudioButton';
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
 
-	private sound: any;
+	private sound: Sound;
 
 	constructor(props: IMessageAudioProps) {
 		super(props);
@@ -128,7 +130,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
-		if (!url.startsWith('http')) {
+		if (url && !url.startsWith('http')) {
 			url = `${baseUrl}${file.audio_url}`;
 		}
 
@@ -141,7 +143,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ loading: false });
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
 		const { currentTime, duration, paused, loading } = this.state;
 		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -182,7 +184,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	}
 
-	onPlaybackStatusUpdate = (status: any) => {
+	onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
 			this.onLoad(status);
 			this.onProgress(status);
@@ -190,26 +192,32 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	onLoad = (data: any) => {
-		const duration = data.durationMillis / 1000;
-		this.setState({ duration: duration > 0 ? duration : 0 });
-	};
-
-	onProgress = (data: any) => {
-		const { duration } = this.state;
-		const currentTime = data.positionMillis / 1000;
-		if (currentTime <= duration) {
-			this.setState({ currentTime });
+	onLoad = (data: AVPlaybackStatus) => {
+		if (data.isLoaded && data.durationMillis) {
+			const duration = data.durationMillis / 1000;
+			this.setState({ duration: duration > 0 ? duration : 0 });
 		}
 	};
 
-	onEnd = async (data: any) => {
-		if (data.didJustFinish) {
-			try {
-				await this.sound.stopAsync();
-				this.setState({ paused: true, currentTime: 0 });
-			} catch {
-				// do nothing
+	onProgress = (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			const { duration } = this.state;
+			const currentTime = data.positionMillis / 1000;
+			if (currentTime <= duration) {
+				this.setState({ currentTime });
+			}
+		}
+	};
+
+	onEnd = async (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			if (data.didJustFinish) {
+				try {
+					await this.sound.stopAsync();
+					this.setState({ paused: true, currentTime: 0 });
+				} catch {
+					// do nothing
+				}
 			}
 		}
 	};
@@ -238,7 +246,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	onValueChange = async (value: any) => {
+	onValueChange = async (value: number) => {
 		try {
 			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
@@ -249,7 +257,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	render() {
 		const { loading, paused, currentTime, duration } = this.state;
-		const { file, getCustomEmoji, theme, scale } = this.props;
+		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
 
@@ -257,31 +265,43 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			return null;
 		}
 
+		let thumbColor;
+		if (isAndroid && isReply) {
+			thumbColor = themes[theme].tintDisabled;
+		} else if (isAndroid) {
+			thumbColor = themes[theme].tintColor;
+		}
+
 		return (
 			<>
+				<Markdown
+					msg={description}
+					style={[isReply && style]}
+					baseUrl={baseUrl}
+					username={user.username}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+				/>
 				<View
 					style={[
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
 					]}>
-					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
+					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
+						disabled={isReply}
 						style={styles.slider}
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
-						animateTransitions
-						animationConfig={sliderAnimationConfig}
-						thumbTintColor={isAndroid && themes[theme].tintColor}
+						thumbTintColor={thumbColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
-						/* @ts-ignore*/
-						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
+						thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
-				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);
 	}

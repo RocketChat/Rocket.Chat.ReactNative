@@ -1,13 +1,21 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKitModal } from '@rocket.chat/ui-kit';
+import {
+	UiKitParserMessage,
+	UiKitParserModal,
+	uiKitMessage,
+	uiKitModal,
+	BlockContext,
+	Markdown as IMarkdown,
+	PlainText
+} from '@rocket.chat/ui-kit';
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
-import TextInput from '../TextInput';
+import FormTextInput from '../TextInput/FormTextInput';
 import { textParser, useBlockContext } from './utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import { Divider } from './Divider';
 import { Section } from './Section';
@@ -20,6 +28,7 @@ import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
+import { IActions, IButton, IElement, IInputIndex, IParser, ISection } from './interfaces';
 
 const styles = StyleSheet.create({
 	input: {
@@ -41,24 +50,38 @@ const styles = StyleSheet.create({
 
 const plainText = ({ text } = { text: '' }) => text;
 
-class MessageParser extends UiKitParserMessage {
-	text({ text, type }: any = { text: '' }, context: any) {
-		const { theme }: any = useContext(ThemeContext);
-		if (type !== 'mrkdwn') {
-			return <Text style={[styles.text, { color: themes[theme].bodyText }]}>{text}</Text>;
-		}
-
-		const isContext = context === BLOCK_CONTEXT.CONTEXT;
-		if (isContext) {
-			return <MarkdownPreview msg={text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />;
-		}
-		return <Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
+class MessageParser extends UiKitParserMessage<React.ReactElement> {
+	get current() {
+		return this as unknown as IParser;
 	}
 
-	button(element: any, context: any) {
-		const { text, value, actionId, style } = element;
-		const [{ loading }, action]: any = useBlockContext(element, context);
+	plain_text(element: PlainText, context: BlockContext): React.ReactElement {
 		const { theme } = useContext(ThemeContext);
+
+		const isContext = context === BlockContext.CONTEXT;
+		if (isContext) {
+			return (
+				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />
+			);
+		}
+		return <Text style={[styles.text, { color: themes[theme].bodyText }]}>{element.text}</Text>;
+	}
+
+	mrkdwn(element: IMarkdown, context: BlockContext) {
+		const { theme } = useContext(ThemeContext);
+
+		const isContext = context === BlockContext.CONTEXT;
+		if (isContext) {
+			return (
+				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />
+			);
+		}
+		return <Markdown msg={element.text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
+	}
+
+	button(element: IButton, context: BlockContext) {
+		const { text, value, actionId, style } = element;
+		const [{ loading }, action] = useBlockContext(element, context);
 		return (
 			<Button
 				key={actionId}
@@ -67,41 +90,33 @@ class MessageParser extends UiKitParserMessage {
 				loading={loading}
 				onPress={() => action({ value })}
 				style={styles.button}
-				theme={theme}
 			/>
 		);
 	}
 
 	divider() {
-		const { theme }: any = useContext(ThemeContext);
-		// @ts-ignore
-		return <Divider theme={theme} />;
+		return <Divider />;
 	}
 
-	section(args: any) {
-		const { theme } = useContext(ThemeContext);
-		return <Section {...args} theme={theme} parser={this} />;
+	section(args: ISection) {
+		return <Section {...args} parser={this.current} />;
 	}
 
-	actions(args: any) {
-		const { theme } = useContext(ThemeContext);
-		return <Actions {...args} theme={theme} parser={this} />;
+	actions(args: IActions) {
+		return <Actions {...args} parser={this.current} />;
 	}
 
-	overflow(element: any, context: any) {
-		const [{ loading }, action]: any = useBlockContext(element, context);
-		const { theme }: any = useContext(ThemeContext);
-		return <Overflow element={element} context={context} loading={loading} action={action} theme={theme} parser={this} />;
+	overflow(element: IElement, context: BlockContext) {
+		const [{ loading }, action] = useBlockContext(element, context);
+		return <Overflow element={element} context={context} loading={loading} action={action} parser={this.current} />;
 	}
 
-	datePicker(element: any, context: any) {
-		const [{ loading, value, error, language }, action]: any = useBlockContext(element, context);
-		const { theme }: any = useContext(ThemeContext);
+	datePicker(element: IElement, context: BlockContext) {
+		const [{ loading, value, error, language }, action] = useBlockContext(element, context);
 		return (
 			<DatePicker
 				element={element}
 				language={language}
-				theme={theme}
 				value={value}
 				action={action}
 				context={context}
@@ -111,9 +126,8 @@ class MessageParser extends UiKitParserMessage {
 		);
 	}
 
-	image(element: any, context: any) {
-		const { theme }: any = useContext(ThemeContext);
-		return <Image element={element} theme={theme} context={context} />;
+	image(element: IElement, context: BlockContext) {
+		return <Image element={element} context={context} />;
 	}
 
 	context(args: any) {
@@ -121,41 +135,43 @@ class MessageParser extends UiKitParserMessage {
 		return <Context {...args} theme={theme} parser={this} />;
 	}
 
-	multiStaticSelect(element: any, context: any) {
-		const [{ loading, value }, action]: any = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
-		return (
-			<MultiSelect {...element} theme={theme} value={value} onChange={action} context={context} loading={loading} multiselect />
-		);
+	multiStaticSelect(element: IElement, context: BlockContext) {
+		const [{ loading, value }, action] = useBlockContext(element, context);
+		return <MultiSelect {...element} value={value} onChange={action} context={context} loading={loading} multiselect />;
 	}
 
-	staticSelect(element: any, context: any) {
-		const [{ loading, value }, action]: any = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
-		return <Select {...element} theme={theme} value={value} onChange={action} loading={loading} />;
+	staticSelect(element: IElement, context: BlockContext) {
+		const [{ loading, value }, action] = useBlockContext(element, context);
+		return <Select {...element} value={value} onChange={action} loading={loading} />;
 	}
 
-	selectInput(element: any, context: any) {
-		const [{ loading, value }, action]: any = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
-		return <MultiSelect {...element} theme={theme} value={value} onChange={action} context={context} loading={loading} />;
+	selectInput(element: IElement, context: BlockContext) {
+		const [{ loading, value }, action] = useBlockContext(element, context);
+		return <MultiSelect {...element} value={value} onChange={action} context={context} loading={loading} />;
 	}
 }
 
-class ModalParser extends UiKitParserModal {
+// plain_text and mrkdwn functions are created in MessageParser and the ModalParser's constructor use the same functions
+// @ts-ignore
+class ModalParser extends UiKitParserModal<React.ReactElement> {
 	constructor() {
 		super();
 		Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {
+			// @ts-ignore
 			ModalParser.prototype[method] = ModalParser.prototype[method] || MessageParser.prototype[method];
 		});
 	}
 
-	input({ element, blockId, appId, label, description, hint }: any, context: any) {
-		const [{ error }]: any = useBlockContext({ ...element, appId, blockId }, context);
-		const { theme }: any = useContext(ThemeContext);
+	get current() {
+		return this as unknown as IParser;
+	}
+
+	input({ element, blockId, appId, label, description, hint }: IInputIndex, context: number) {
+		const [{ error }] = useBlockContext({ ...element, appId, blockId }, context);
+		const { theme } = useContext(ThemeContext);
 		return (
 			<Input
-				parser={this}
+				parser={this.current}
 				element={{ ...element, appId, blockId }}
 				label={plainText(label)}
 				description={plainText(description)}
@@ -166,28 +182,24 @@ class ModalParser extends UiKitParserModal {
 		);
 	}
 
-	image(element: any, context: any) {
-		const { theme }: any = useContext(ThemeContext);
-		return <Image element={element} theme={theme} context={context} />;
+	image(element: IElement, context: BlockContext) {
+		return <Image element={element} context={context} />;
 	}
 
-	plainInput(element: any, context: any) {
-		const [{ loading, value, error }, action]: any = useBlockContext(element, context);
+	plainInput(element: IElement, context: BlockContext) {
+		const [{ loading, value, error }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
-			// @ts-ignore
-			<TextInput
-				id={actionId}
+			<FormTextInput
+				key={actionId}
 				placeholder={plainText(placeholder)}
-				onInput={action}
 				multiline={multiline}
 				loading={loading}
-				onChangeText={(text: any) => action({ value: text })}
+				onChangeText={text => action({ value: text })}
 				inputStyle={multiline && styles.multiline}
 				containerStyle={styles.input}
 				value={value}
-				// @ts-ignore
 				error={{ error }}
 				theme={theme}
 			/>
@@ -198,7 +210,7 @@ class ModalParser extends UiKitParserModal {
 export const messageParser = new MessageParser();
 export const modalParser = new ModalParser();
 
-export const UiKitMessage = uiKitMessage(messageParser);
-export const UiKitModal = uiKitModal(modalParser);
+export const UiKitMessage = uiKitMessage(messageParser, { engine: 'rocket.chat' }) as any;
+export const UiKitModal = uiKitModal(modalParser) as any;
 
 export const UiKitComponent = ({ render, blocks }: any) => render(blocks);

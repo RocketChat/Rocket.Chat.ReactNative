@@ -1,10 +1,10 @@
 import React from 'react';
 import { FlatList, Text, TouchableOpacity } from 'react-native';
 
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
 
 const EMOJI_SIZE = 50;
@@ -26,16 +26,17 @@ const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 	);
 };
 
-class EmojiCategory extends React.Component<Partial<IEmojiCategory>> {
-	renderItem(emoji: any) {
+class EmojiCategory extends React.Component<IEmojiCategory> {
+	renderItem(emoji: IEmoji) {
 		const { baseUrl, onEmojiSelected } = this.props;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.7}
+				// @ts-ignore
 				key={emoji && emoji.isCustom ? emoji.content : emoji}
-				onPress={() => onEmojiSelected!(emoji)}
+				onPress={() => onEmojiSelected(emoji)}
 				testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}>
-				{renderEmoji(emoji, EMOJI_SIZE, baseUrl!)}
+				{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
 			</TouchableOpacity>
 		);
 	}
@@ -51,11 +52,11 @@ class EmojiCategory extends React.Component<Partial<IEmojiCategory>> {
 		const marginHorizontal = (width - numColumns * EMOJI_SIZE) / 2;
 
 		return (
-			// @ts-ignore
 			<FlatList
 				contentContainerStyle={{ marginHorizontal }}
 				// rerender FlatList in case of width changes
 				key={`emoji-category-${width}`}
+				// @ts-ignore
 				keyExtractor={item => (item && item.isCustom && item.content) || item}
 				data={emojis}
 				extraData={this.props}

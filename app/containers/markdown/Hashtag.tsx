@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, TextStyle, StyleProp } from 'react-native';
+import { StyleProp, Text, TextStyle } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { IUserChannel } from './interfaces';
 import styles from './styles';
@@ -18,7 +18,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 
 	const handlePress = () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
-		if (index && navToRoomInfo) {
+		if (typeof index !== 'undefined' && navToRoomInfo) {
 			const navParam = {
 				t: 'c',
 				rid: channels?.[index]._id
@@ -33,7 +33,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 				style={[
 					styles.mention,
 					{
-						color: themes[theme!].mentionOtherColor
+						color: themes[theme].mentionOtherColor
 					},
 					...style
 				]}
@@ -42,7 +42,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme!].bodyText }, ...style]}>{`#${hashtag}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`#${hashtag}`}</Text>;
 });
 
 export default Hashtag;

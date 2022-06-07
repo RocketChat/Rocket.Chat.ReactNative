@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { Code as CodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import CodeLine from './CodeLine';
 
@@ -11,7 +11,7 @@ interface ICodeProps {
 	value: CodeProps['value'];
 }
 
-const Code = ({ value }: ICodeProps): JSX.Element => {
+const Code = ({ value }: ICodeProps) => {
 	const { theme } = useTheme();
 
 	return (
@@ -19,9 +19,9 @@ const Code = ({ value }: ICodeProps): JSX.Element => {
 			style={[
 				styles.codeBlock,
 				{
-					color: themes[theme!].bodyText,
-					backgroundColor: themes[theme!].bannerBackground,
-					borderColor: themes[theme!].borderColor
+					color: themes[theme].bodyText,
+					backgroundColor: themes[theme].bannerBackground,
+					borderColor: themes[theme].borderColor
 				}
 			]}>
 			{value.map(block => {

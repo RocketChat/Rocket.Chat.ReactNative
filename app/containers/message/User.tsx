@@ -2,13 +2,15 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
-import MessageError from './MessageError';
+import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
+import { MessageType, SubscriptionType } from '../../definitions';
+import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import RightIcons from './Components/RightIcons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,7 +19,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
+	actionIcons: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
 	username: {
+		flexShrink: 1,
 		fontSize: 16,
 		lineHeight: 22,
 		...sharedStyles.textMedium
@@ -39,7 +46,7 @@ const styles = StyleSheet.create({
 
 interface IMessageUser {
 	isHeader?: boolean;
-	hasError?: boolean;
+	hasError: boolean;
 	useRealName?: boolean;
 	author?: {
 		_id: string;
@@ -49,15 +56,19 @@ interface IMessageUser {
 	alias?: string;
 	ts?: Date;
 	timeFormat?: string;
-	theme: string;
-	navToRoomInfo?: Function;
-	type: string;
+	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
+	type: MessageType;
+	isEdited: boolean;
+	isReadReceiptEnabled?: boolean;
+	unread?: boolean;
 }
 
 const User = React.memo(
-	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, type, ...props }: IMessageUser) => {
-		if (isHeader || hasError) {
-			const { user } = useContext(MessageContext);
+	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, navToRoomInfo, type, isEdited, ...props }: IMessageUser) => {
+		const { user } = useContext(MessageContext);
+		const { theme } = useTheme();
+
+		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? (
 				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>
@@ -65,8 +76,8 @@ const User = React.memo(
 			const time = moment(ts).format(timeFormat);
 			const onUserPress = () => {
 				navToRoomInfo?.({
-					t: 'd',
-					rid: author?._id
+					t: SubscriptionType.DIRECT,
+					rid: author?._id || ''
 				});
 			};
 			const isDisabled = author?._id === user.id;
@@ -83,7 +94,7 @@ const User = React.memo(
 					<Text
 						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
 						onPress={onUserPress}
-						// @ts-ignore
+						// @ts-ignore // TODO - check this prop
 						disabled={isDisabled}>
 						{textContent}
 					</Text>
@@ -96,9 +107,15 @@ const User = React.memo(
 						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{textContent}
 						</Text>
+						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</TouchableOpacity>
-					<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
-					{hasError && <MessageError hasError={hasError} theme={theme} {...props} />}
+					<RightIcons
+						type={type}
+						isEdited={isEdited}
+						hasError={hasError}
+						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
+						unread={props.unread || false}
+					/>
 				</View>
 			);
 		}
@@ -108,4 +125,4 @@ const User = React.memo(
 
 User.displayName = 'MessageUser';
 
-export default withTheme(User);
+export default User;

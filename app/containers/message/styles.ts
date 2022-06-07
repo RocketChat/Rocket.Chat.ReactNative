@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet } from '../../lib/methods/helpers';
 
-export default StyleSheet.create<any>({
+export default StyleSheet.create({
 	root: {
 		flexDirection: 'row'
 	},
@@ -28,7 +28,6 @@ export default StyleSheet.create<any>({
 	},
 	flex: {
 		flexDirection: 'row'
-		// flex: 1
 	},
 	temp: { opacity: 0.3 },
 	marginTop: {
@@ -75,10 +74,6 @@ export default StyleSheet.create<any>({
 	avatarSmall: {
 		marginLeft: 16
 	},
-	errorButton: {
-		paddingLeft: 10,
-		paddingVertical: 5
-	},
 	buttonContainer: {
 		marginTop: 8,
 		flexDirection: 'row',
@@ -100,7 +95,6 @@ export default StyleSheet.create<any>({
 		...sharedStyles.textSemibold
 	},
 	imageContainer: {
-		// flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4
 	},
@@ -135,13 +129,12 @@ export default StyleSheet.create<any>({
 		...sharedStyles.textRegular
 	},
 	time: {
-		fontSize: 12,
+		fontSize: 13,
 		marginLeft: 8,
 		...sharedStyles.textRegular
 	},
 	repliedThread: {
 		flexDirection: 'row',
-		// flex: 1,
 		alignItems: 'center',
 		marginTop: 6,
 		marginBottom: 12
@@ -170,11 +163,8 @@ export default StyleSheet.create<any>({
 	threadBell: {
 		marginLeft: 8
 	},
-	readReceipt: {
-		lineHeight: 20
-	},
-	encrypted: {
-		justifyContent: 'center'
+	rightIcons: {
+		paddingLeft: 5
 	},
 	threadDetails: {
 		flex: 1,

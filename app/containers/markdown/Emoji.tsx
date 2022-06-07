@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import { themes } from '../../constants/colors';
 import styles from './styles';
+import { useTheme } from '../../theme';
 
 interface IEmoji {
 	literal: string;
@@ -13,13 +13,13 @@ interface IEmoji {
 	baseUrl: string;
 	customEmojis?: any;
 	style?: object;
-	theme: string;
 	onEmojiSelected?: Function;
 	tabEmojiStyle?: object;
 }
 
 const Emoji = React.memo(
-	({ literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {}, theme }: IEmoji) => {
+	({ literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {} }: IEmoji) => {
+		const { colors } = useTheme();
 		const emojiUnicode = shortnameToUnicode(literal);
 		const emoji: any = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
 		if (emoji && customEmojis) {
@@ -32,7 +32,7 @@ const Emoji = React.memo(
 			);
 		}
 		return (
-			<Text style={[{ color: themes[theme].bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
+			<Text style={[{ color: colors.bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
 				{emojiUnicode}
 			</Text>
 		);

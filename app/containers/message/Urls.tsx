@@ -1,17 +1,19 @@
 import React, { useContext } from 'react';
-import { Clipboard, StyleSheet, Text, View } from 'react-native';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import { StyleSheet, Text, View } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, useTheme, withTheme } from '../../theme';
 import { LISTENER } from '../Toast';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
+import { IUrl } from '../../definitions';
 
 const styles = StyleSheet.create({
 	button: {
@@ -49,35 +51,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IMessageUrlContent {
-	title: string;
-	description: string;
-	theme: string;
-}
-
-interface IMessageUrl {
-	url: {
-		ignoreParse: boolean;
-		url: string;
-		image: string;
-		title: string;
-		description: string;
-	};
-	index: number;
-	theme: string;
-}
-
-interface IMessageUrls {
-	urls?: any;
-	theme?: string;
-}
-
 const UrlImage = React.memo(
 	({ image }: { image: string }) => {
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!image) {
 			return null;
 		}
-		const { baseUrl, user } = useContext(MessageContext);
+
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 	},
@@ -85,7 +66,7 @@ const UrlImage = React.memo(
 );
 
 const UrlContent = React.memo(
-	({ title, description, theme }: IMessageUrlContent) => (
+	({ title, description, theme }: { title: string; description: string; theme: TSupportedThemes }) => (
 		<View style={styles.textContainer}>
 			{title ? (
 				<Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>
@@ -114,7 +95,7 @@ const UrlContent = React.memo(
 );
 
 const Url = React.memo(
-	({ url, index, theme }: IMessageUrl) => {
+	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
 		if (!url || url?.ignoreParse) {
 			return null;
 		}
@@ -151,14 +132,17 @@ const Url = React.memo(
 );
 
 const Urls = React.memo(
-	({ urls, theme }: IMessageUrls) => {
+	// TODO - didn't work - (React.ReactElement | null)[] | React.ReactElement | null
+	({ urls }: { urls?: IUrl[] }): any => {
+		const { theme } = useTheme();
+
 		if (!urls || urls.length === 0) {
 			return null;
 		}
 
-		return urls.map((url: any, index: number) => <Url url={url} key={url.url} index={index} theme={theme!} />);
+		return urls.map((url: IUrl, index: number) => <Url url={url} key={url.url} index={index} theme={theme} />);
 	},
-	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme
+	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls)
 );
 
 UrlImage.displayName = 'MessageUrlImage';

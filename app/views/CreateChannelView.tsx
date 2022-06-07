@@ -4,26 +4,26 @@ import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } fro
 import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
-import TextInput from '../presentation/TextInput';
+import TextInput from '../containers/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
-import KeyboardView from '../presentation/KeyboardView';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import KeyboardView from '../containers/KeyboardView';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../i18n';
-import UserItem from '../presentation/UserItem';
+import UserItem from '../containers/UserItem';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../lib/constants';
 import { withTheme } from '../theme';
-import { Review } from '../utils/review';
+import { Review } from '../lib/methods/helpers/review';
 import { getUserSelector } from '../selectors/login';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import SafeAreaView from '../containers/SafeAreaView';
-import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
-import { IApplicationState, IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import { hasPermission } from '../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -90,11 +90,7 @@ interface ICreateChannelViewProps extends IBaseScreen<ChatsStackParamList, 'Crea
 	isFetching: boolean;
 	encryptionEnabled: boolean;
 	users: IOtherUser[];
-	user: {
-		id: string;
-		token: string;
-		roles: string[];
-	};
+	user: IUser;
 	teamId: string;
 	createPublicChannelPermission: string[] | undefined;
 	createPrivateChannelPermission: string[] | undefined;
@@ -228,7 +224,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			broadcast,
 			encrypted,
 			isTeam,
-			teamId: this.teamId!
+			teamId: this.teamId
 		};
 		dispatch(createChannelRequest(data));
 		Review.pushPositiveEvent();
@@ -259,7 +255,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	handleHasPermission = async () => {
 		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
 		const permissions = [createPublicChannelPermission, createPrivateChannelPermission];
-		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const permissionsToCreate = await hasPermission(permissions);
 		this.setState({ permissions: permissionsToCreate });
 	};
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { Image as ImageProps } from '@rocket.chat/message-parser';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
-import { useTheme } from '../../../theme';
-import { themes } from '../../../constants/colors';
+import { TSupportedThemes, useTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
 import styles from '../../message/styles';
 
 interface IImageProps {
@@ -14,7 +14,7 @@ interface IImageProps {
 
 type TMessageImage = {
 	img: string;
-	theme: string;
+	theme: TSupportedThemes;
 };
 
 const ImageProgress = createImageProgress(FastImage);
@@ -31,11 +31,11 @@ const MessageImage = ({ img, theme }: TMessageImage) => (
 	/>
 );
 
-const Image = ({ value }: IImageProps): JSX.Element => {
+const Image = ({ value }: IImageProps) => {
 	const { theme } = useTheme();
 	const { src } = value;
 
-	return <MessageImage img={src.value} theme={theme!} />;
+	return <MessageImage img={src.value} theme={theme} />;
 };
 
 export default Image;

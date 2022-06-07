@@ -4,31 +4,28 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
-import log from '../../utils/log';
-import debounce from '../../utils/debounce';
+import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { isIOS } from '../../utils/deviceInfo';
-import { getBadgeColor, makeThreadName } from '../../utils/room';
+import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -37,17 +34,11 @@ import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import Dropdown from './Dropdown';
 import Item from './Item';
 import styles from './styles';
-import { IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
+import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;
-
-// interface IResultFetch {
-// 	threads: IThreadResult[];
-// 	count: number;
-// 	offset: number;
-// 	total: number;
-// 	success: boolean;
-// }
 
 interface IThreadMessagesViewState {
 	loading: boolean;
@@ -61,13 +52,11 @@ interface IThreadMessagesViewState {
 	searchText: string;
 }
 
-interface IThreadMessagesViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'ThreadMessagesView'>;
-	route: RouteProp<ChatsStackParamList, 'ThreadMessagesView'>;
-	user: any;
+interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'ThreadMessagesView'> {
+	user: { id: string };
 	baseUrl: string;
 	useRealName: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
 }
@@ -79,7 +68,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	private t: string;
 
-	private subSubscription: any;
+	private subSubscription?: Subscription;
 
 	private messagesSubscription?: Subscription;
 
@@ -159,8 +148,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Threads'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			}
 		};
 
@@ -273,9 +262,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const db = database.active;
 			const threadsCollection = db.get('threads');
 			const allThreadsRecords = await subscription.threads.fetch();
-			let threadsToCreate: any[] = [];
-			let threadsToUpdate: any[] = [];
-			let threadsToDelete: any[] = [];
+			let threadsToCreate: TThreadModel[] = [];
+			let threadsToUpdate: (TThreadModel | null | undefined)[] = [];
+			let threadsToDelete: TThreadModel[] = [];
 
 			if (remove && remove.length) {
 				threadsToDelete = allThreadsRecords.filter((i1: { id: string }) => remove.find(i2 => i1.id === i2._id));
@@ -285,7 +274,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			if (update && update.length) {
 				update = update.map(m => buildMessage(m)) as IMessage[];
 				// filter threads
-				threadsToCreate = update.filter(i1 => !allThreadsRecords.find((i2: { id: string }) => i1._id === i2.id));
+				threadsToCreate = update.filter(
+					i1 => !allThreadsRecords.find((i2: { id: string }) => i1._id === i2.id)
+				) as TThreadModel[];
 				threadsToUpdate = allThreadsRecords.filter((i1: { id: string }) => update.find(i2 => i1.id === i2._id));
 				threadsToCreate = threadsToCreate.map(thread =>
 					threadsCollection.prepareCreate(
@@ -297,10 +288,10 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					)
 				);
 				threadsToUpdate = threadsToUpdate.map(thread => {
-					const newThread = update.find(t => t._id === thread.id);
+					const newThread = update.find(t => t._id === thread?.id);
 					try {
-						return thread.prepareUpdate(
-							protectedFunction((t: any) => {
+						return thread?.prepareUpdate(
+							protectedFunction((t: TThreadModel) => {
 								Object.assign(t, newThread);
 							})
 						);
@@ -315,7 +306,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					...threadsToCreate,
 					...threadsToUpdate,
 					...threadsToDelete,
-					subscription.prepareUpdate((s: any) => {
+					subscription.prepareUpdate(s => {
 						s.lastThreadSync = lastThreadSync;
 					})
 				);
@@ -335,7 +326,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result: any = await RocketChat.getThreadsList({
+			const result = await Services.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,
@@ -359,7 +350,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.getSyncThreadsList({
+			const result = await Services.getSyncThreadsList({
 				rid: this.rid,
 				updatedSince: updatedSince.toISOString()
 			});
@@ -405,7 +396,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				tmid: item.id,
 				name: makeThreadName(item),
 				t: SubscriptionType.THREAD,
-				roomUserId: RocketChat.getUidDirectMessage(subscription)
+				roomUserId: getUidDirectMessage(subscription)
 			});
 		},
 		1000,
@@ -420,7 +411,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	// helper to query threads
 	getFilteredThreads = (messages: TThreadModel[], subscription?: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
-		// const { currentFilter } = this.state;
 		const { user } = this.props;
 		if (currentFilter === Filter.Following) {
 			return messages?.filter(item => item?.replies?.find(u => u === user.id));
@@ -450,7 +440,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
-			await RocketChat.toggleFollowMessage(tmid, !isFollowingThread);
+			await Services.toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
@@ -524,7 +514,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				removeClippedSubviews={isIOS}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={this.renderHeader}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			/>
 		);
@@ -533,23 +523,29 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { showFilterDropdown, currentFilter } = this.state;
+		const { theme } = this.props;
 
 		return (
 			<SafeAreaView testID='thread-messages-view'>
 				<StatusBar />
 				{this.renderContent()}
 				{showFilterDropdown ? (
-					<Dropdown currentFilter={currentFilter} onFilterSelected={this.onFilterSelected} onClose={this.closeFilterDropdown} />
+					<Dropdown
+						currentFilter={currentFilter}
+						onFilterSelected={this.onFilterSelected}
+						onClose={this.closeFilterDropdown}
+						theme={theme}
+					/>
 				) : null}
 			</SafeAreaView>
 		);
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name,
+	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	isMasterDetail: state.app.isMasterDetail
 });
 

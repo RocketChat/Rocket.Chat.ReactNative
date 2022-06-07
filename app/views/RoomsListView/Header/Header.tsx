@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 
-import TextInput from '../../../presentation/TextInput';
+import TextInput from '../../../containers/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
-import { isIOS, isTablet } from '../../../utils/deviceInfo';
+import { themes } from '../../../lib/constants';
+import { CustomIcon } from '../../../containers/CustomIcon';
+import { isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useOrientation } from '../../../dimensions';
+import { useTheme } from '../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	title: {
+		flexShrink: 1,
 		...sharedStyles.textSemibold
 	},
 	subtitle: {
@@ -38,7 +40,6 @@ interface IRoomHeader {
 	server: string;
 	showServerDropdown: boolean;
 	showSearchHeader: boolean;
-	theme: string;
 	onSearchChangeText: TextInputProps['onChangeText'];
 	onPress: TouchableOpacityProps['onPress'];
 }
@@ -52,10 +53,10 @@ const Header = React.memo(
 		server,
 		showServerDropdown,
 		showSearchHeader,
-		theme,
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
+		const { theme } = useTheme();
 		const titleColorStyle = { color: themes[theme].headerTitleColor };
 		const isLight = theme === 'light';
 		const { isLandscape } = useOrientation();

@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
+import { themes } from '../../../lib/constants';
+import { CustomIcon } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
-import Touch from '../../../utils/touch';
+import Touch from '../../../lib/methods/helpers/touch';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
+import { TSupportedThemes } from '../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
 
 interface IItem {
 	item: TServerHistoryModel;
-	theme: string;
+	theme: TSupportedThemes;
 	onPress(url: string): void;
 	onDelete(item: TServerHistoryModel): void;
 }

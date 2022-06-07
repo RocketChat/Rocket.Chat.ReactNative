@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
-import EventEmitter from '../utils/events';
-import { withTheme } from '../theme';
+import EventEmitter from '../lib/methods/helpers/events';
+import { TSupportedThemes, withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
 export const LISTENER = 'Toast';
 
 interface IToastProps {
-	theme?: string;
+	theme?: TSupportedThemes;
 }
 
 class Toast extends React.Component<IToastProps, any> {
-	private listener: any;
+	private listener?: Function;
 
-	private toast: any;
+	private toast: EasyToast | null | undefined;
 
 	componentDidMount() {
 		this.listener = EventEmitter.addEventListener(LISTENER, this.showToast);
@@ -43,12 +43,14 @@ class Toast extends React.Component<IToastProps, any> {
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener(LISTENER, this.listener);
+		if (this.listener) {
+			EventEmitter.removeListener(LISTENER, this.listener);
+		}
 	}
 
-	getToastRef = (toast: any) => (this.toast = toast);
+	getToastRef = (toast: EasyToast | null) => (this.toast = toast);
 
-	showToast = ({ message }: any) => {
+	showToast = ({ message }: { message: string }) => {
 		if (this.toast && this.toast.show) {
 			this.toast.show(message, 1000);
 		}

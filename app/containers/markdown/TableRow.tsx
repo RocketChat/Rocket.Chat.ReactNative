@@ -1,22 +1,23 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 
 interface ITableRow {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	isLastRow: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const TableRow = React.memo(({ isLastRow, children: _children, theme }: ITableRow) => {
-	const rowStyle = [styles.row, { borderColor: themes[theme].borderColor }];
+	const rowStyle: ViewStyle[] = [styles.row, { borderColor: themes[theme].borderColor }];
 	if (!isLastRow) {
 		rowStyle.push(styles.rowBottomBorder);
 	}
 
-	const children: any = React.Children.toArray(_children);
+	const children = React.Children.toArray(_children) as React.ReactElement[];
 	children[children.length - 1] = React.cloneElement(children[children.length - 1], {
 		isLastCell: true
 	});

@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
-import { Text, Clipboard } from 'react-native';
+import { Text } from 'react-native';
 import { Link as LinkProps } from '@rocket.chat/message-parser';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import styles from '../styles';
 import I18n from '../../../i18n';
 import { LISTENER } from '../../Toast';
 import { useTheme } from '../../../theme';
-import openLink from '../../../utils/openLink';
-import EventEmitter from '../../../utils/events';
-import { themes } from '../../../constants/colors';
+import openLink from '../../../lib/methods/helpers/openLink';
+import EventEmitter from '../../../lib/methods/helpers/events';
+import { themes } from '../../../lib/constants';
 import Strike from './Strike';
 import Italic from './Italic';
 import Bold from './Bold';
@@ -18,7 +19,7 @@ interface ILinkProps {
 	value: LinkProps['value'];
 }
 
-const Link = ({ value }: ILinkProps): JSX.Element => {
+const Link = ({ value }: ILinkProps) => {
 	const { theme } = useTheme();
 	const { onLinkPress } = useContext(MarkdownContext);
 	const { src, label } = value;
@@ -38,7 +39,7 @@ const Link = ({ value }: ILinkProps): JSX.Element => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme!].actionTintColor }]}>
+		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].actionTintColor }]}>
 			{(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':

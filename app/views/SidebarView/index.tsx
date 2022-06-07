@@ -7,27 +7,20 @@ import { dequal } from 'dequal';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import { CustomIcon } from '../../containers/CustomIcon';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
-
-interface ISeparatorProps {
-	theme: string;
-}
-
-// TODO: remove this
-const Separator = React.memo(({ theme }: ISeparatorProps) => (
-	<View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />
-));
+import { IApplicationState, IUser } from '../../definitions';
+import * as List from '../../containers/List';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -35,17 +28,11 @@ interface ISidebarState {
 
 interface ISidebarProps {
 	baseUrl: string;
-	navigation: DrawerNavigationProp<DrawerParamList>;
-	state: DrawerNavigationState<DrawerParamList>;
+	navigation?: DrawerNavigationProp<DrawerParamList>;
+	state?: DrawerNavigationState<DrawerParamList>;
 	Site_Name: string;
-	user: {
-		statusText: string;
-		status: string;
-		username: string;
-		name: string;
-		roles: string[];
-	};
-	theme?: string;
+	user: IUser;
+	theme: TSupportedThemes;
 	loadingServer: boolean;
 	useRealName: boolean;
 	allowStatusMessage: boolean;
@@ -166,7 +153,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (isMasterDetail) {
 			return;
 		}
-		navigation.closeDrawer();
+		navigation?.closeDrawer();
 	};
 
 	renderAdmin = () => {
@@ -177,13 +164,13 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
 		return (
 			<>
-				<Separator theme={theme!} />
+				<List.Separator />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate(routeName)}
 					testID='sidebar-admin'
-					theme={theme!}
+					theme={theme}
 					current={this.currentItemKey === routeName}
 				/>
 			</>
@@ -196,34 +183,34 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
-					theme={theme!}
+					theme={theme}
 					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
-					theme={theme!}
+					theme={theme}
 					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Display')}
-					left={<CustomIcon name='sort' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='sort' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
 					testID='sidebar-display'
-					theme={theme!}
+					theme={theme}
 					current={this.currentItemKey === 'DisplayPrefStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
-					theme={theme!}
+					theme={theme}
 					current={this.currentItemKey === 'SettingsStackNavigator'}
 				/>
 				{this.renderAdmin()}
@@ -237,10 +224,10 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			<SidebarItem
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status size={24} status={user?.status} />}
-				theme={theme!}
-				right={<CustomIcon name='edit' size={20} color={themes[theme!].titleText} />}
+				theme={theme}
+				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
 				onPress={() => this.sidebarNavigate('StatusView')}
-				testID='sidebar-custom-status'
+				testID={`sidebar-custom-status-${user.status}`}
 			/>
 		);
 	};
@@ -252,12 +239,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].focusedBackground }} vertical={isMasterDetail}>
+			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme].focusedBackground }} vertical={isMasterDetail}>
 				<ScrollView
 					style={[
 						styles.container,
 						{
-							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground
+							backgroundColor: isMasterDetail ? themes[theme].backgroundColor : themes[theme].focusedBackground
 						}
 					]}
 					{...scrollPersistTaps}>
@@ -266,12 +253,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].titleText }]}>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>
 										{useRealName ? user.name : user.username}
 									</Text>
 								</View>
 								<Text
-									style={[styles.currentServerText, { color: themes[theme!].titleText }]}
+									style={[styles.currentServerText, { color: themes[theme].titleText }]}
 									numberOfLines={1}
 									accessibilityLabel={`Connected to ${baseUrl}`}>
 									{Site_Name}
@@ -280,14 +267,14 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 						</View>
 					</TouchableWithoutFeedback>
 
-					<Separator theme={theme!} />
+					<List.Separator />
 
 					{allowStatusMessage ? this.renderCustomStatus() : null}
 					{!isMasterDetail ? (
 						<>
-							<Separator theme={theme!} />
+							<List.Separator />
 							{this.renderNavigation()}
-							<Separator theme={theme!} />
+							<List.Separator />
 						</>
 					) : (
 						<>{this.renderAdmin()}</>
@@ -298,18 +285,18 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	Site_Name: state.settings.Site_Name,
+const mapStateToProps = (state: IApplicationState) => ({
+	Site_Name: state.settings.Site_Name as string,
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
 	loadingServer: state.server.loading,
-	useRealName: state.settings.UI_Use_Real_Name,
-	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange,
+	useRealName: state.settings.UI_Use_Real_Name as boolean,
+	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
 	isMasterDetail: state.app.isMasterDetail,
-	viewStatisticsPermission: state.permissions['view-statistics'],
-	viewRoomAdministrationPermission: state.permissions['view-room-administration'],
-	viewUserAdministrationPermission: state.permissions['view-user-administration'],
-	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting']
+	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
+	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],
+	viewUserAdministrationPermission: state.permissions['view-user-administration'] as string[],
+	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting'] as string[]
 });
 
-export default connect(mapStateToProps)(withTheme(Sidebar)) as any;
+export default connect(mapStateToProps)(withTheme(Sidebar));

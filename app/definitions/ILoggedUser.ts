@@ -1,15 +1,15 @@
 import Model from '@nozbe/watermelondb/Model';
 
 import { IUserEmail, IUserSettings } from './IUser';
-import { UserStatus } from './UserStatus';
+import { TUserStatus } from './TUserStatus';
 
 export interface ILoggedUser {
 	id: string;
 	token: string;
 	username: string;
-	name: string;
+	name?: string;
 	language?: string;
-	status: UserStatus;
+	status: TUserStatus;
 	statusText?: string;
 	customFields?: {
 		[key: string]: any;
@@ -20,7 +20,7 @@ export interface ILoggedUser {
 	avatarETag?: string;
 	showMessageInMainThread?: boolean;
 	isFromWebView?: boolean;
-	enableMessageParserEarlyAdoption?: boolean;
+	enableMessageParserEarlyAdoption: boolean;
 }
 
 export interface ILoggedUserResultFromServer

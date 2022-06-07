@@ -2,17 +2,17 @@ import EJSON from 'ejson';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 
-import log from '../../utils/log';
+import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
-import { MessageTypeLoad } from '../../constants/messageTypeLoad';
-import sdk from '../rocketchat/services/sdk';
+import { MessageTypeLoad } from '../constants';
+import sdk from '../services/sdk';
 import { IMessage } from '../../definitions';
-import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
+import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 
-export default function loadSurroundingMessages({ messageId, rid }: { messageId: string; rid: string }) {
+export function loadSurroundingMessages({ messageId, rid }: { messageId: string; rid: string }) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);

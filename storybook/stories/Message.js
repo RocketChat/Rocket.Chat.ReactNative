@@ -3,13 +3,11 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { storiesOf } from '@storybook/react-native';
-// import moment from 'moment';
 
 import MessageComponent from '../../app/containers/message/Message';
-import messagesStatus from '../../app/constants/messagesStatus';
+import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../app/lib/constants';
 import MessageSeparator from '../../app/views/RoomView/Separator';
 import MessageContext from '../../app/containers/message/Context';
-import { themes } from '../../app/constants/colors';
 import { store } from './index';
 
 const _theme = 'light';
@@ -25,6 +23,12 @@ const author = {
 	_id: 'userid',
 	username: 'diego.mello'
 };
+
+const longNameAuthor = {
+	_id: 'userid',
+	username: 'Long name user looooong name user'
+};
+
 const baseUrl = 'https://open.rocket.chat';
 const date = new Date(2017, 10, 10, 10);
 const longText =
@@ -120,7 +124,12 @@ stories.add('With alias', () => (
 	</>
 ));
 
-stories.add('Edited', () => <Message msg='Message' edited />);
+stories.add('Edited', () => (
+	<>
+		<Message msg='Message header' isEdited />
+		<Message msg='Message without header' isEdited isHeader={false} />
+	</>
+));
 
 stories.add('Encrypted', () => (
 	<>
@@ -485,6 +494,24 @@ stories.add('Message with reply', () => (
 				}
 			]}
 		/>
+		<Message
+			msg='Looks cool!'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'What you think about this one?',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					],
+					text: ''
+				}
+			]}
+		/>
 	</>
 ));
 
@@ -841,4 +868,46 @@ stories.add('Thumbnail from server', () => (
 			}
 		]}
 	/>
+));
+
+stories.add('Long Name user', () => (
+	<>
+		<Message msg={'this is a normal message'} author={longNameAuthor} />
+		<Message msg={'Edited message'} author={longNameAuthor} isEdited />
+		<Message msg={'Encrypted message'} author={longNameAuthor} type={E2E_MESSAGE_TYPE} />
+		<Message msg={'Error message'} author={longNameAuthor} hasError />
+		<Message msg={'Message with read receipt'} author={longNameAuthor} isReadReceiptEnabled read />
+		<Message msg={'Message with read receipt'} author={longNameAuthor} isReadReceiptEnabled read type={E2E_MESSAGE_TYPE} />
+		<Message
+			msg={'Show all icons '}
+			author={longNameAuthor}
+			isEdited
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+
+		<Message
+			msg={longText}
+			author={longNameAuthor}
+			isHeader={false}
+			isEdited
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+
+		<Message
+			msg='small message'
+			author={longNameAuthor}
+			isHeader={false}
+			isEdited
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+	</>
 ));

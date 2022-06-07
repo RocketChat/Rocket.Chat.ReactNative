@@ -1,15 +1,15 @@
 import { dequal } from 'dequal';
 import React from 'react';
-import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Alert, Keyboard, StyleSheet, Text, View, TextInput as RNTextInput } from 'react-native';
 import { connect } from 'react-redux';
 
 import { loginRequest } from '../actions/login';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
@@ -64,8 +64,13 @@ interface ILoginViewProps extends IBaseScreen<OutsideParamList, 'LoginView'> {
 	inviteLinkToken: string;
 }
 
-class LoginView extends React.Component<ILoginViewProps, any> {
-	private passwordInput: any;
+interface ILoginViewState {
+	user: string;
+	password: string;
+}
+
+class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
+	private passwordInput: RNTextInput | null | undefined;
 
 	static navigationOptions = ({ route, navigation }: ILoginViewProps) => ({
 		title: route?.params?.title ?? 'Rocket.Chat',
@@ -152,7 +157,7 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 		return (
 			<>
 				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
-				<TextInput
+				<FormTextInput
 					label={I18n.t('Username_or_email')}
 					containerStyle={styles.inputContainer}
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
@@ -160,7 +165,7 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 					returnKeyType='next'
 					onChangeText={(value: string) => this.setState({ user: value })}
 					onSubmitEditing={() => {
-						this.passwordInput.focus();
+						this.passwordInput?.focus();
 					}}
 					testID='login-view-email'
 					textContentType='username'
@@ -168,7 +173,7 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 					theme={theme}
 					value={user}
 				/>
-				<TextInput
+				<FormTextInput
 					label={I18n.t('Password')}
 					containerStyle={styles.inputContainer}
 					inputRef={e => {
@@ -191,7 +196,6 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 					testID='login-view-submit'
 					loading={isFetching}
 					disabled={!this.valid()}
-					theme={theme}
 					style={styles.loginButton}
 				/>
 				{Accounts_PasswordReset && (
@@ -200,7 +204,6 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 						type='secondary'
 						onPress={this.forgotPassword}
 						testID='login-view-forgot-password'
-						theme={theme}
 						color={themes[theme].auxiliaryText}
 						fontSize={14}
 					/>
@@ -229,9 +232,9 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 	render() {
 		const { Accounts_ShowFormLogin, theme, navigation } = this.props;
 		return (
-			<FormContainer theme={theme} testID='login-view'>
+			<FormContainer testID='login-view'>
 				<FormContainerInner>
-					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} />
+					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} theme={theme} />
 					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>

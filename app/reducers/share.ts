@@ -2,17 +2,17 @@ import { TActionsShare } from '../actions/share';
 import { SHARE } from '../actions/actionsTypes';
 
 export interface IShareServer {
-	server: string;
-	version: string;
+	server?: string;
+	version?: string;
 }
 
 export type TShareSettings = Record<string, string | number | boolean>;
 
 export interface IShareUser {
-	id: string;
-	token: string;
-	username: string;
-	roles: string[];
+	id?: string;
+	token?: string;
+	username?: string;
+	roles?: string[];
 }
 
 export interface IShare {
@@ -22,8 +22,8 @@ export interface IShare {
 }
 
 export const initialState: IShare = {
-	user: {} as IShareUser,
-	server: {} as IShareServer,
+	user: {},
+	server: {},
 	settings: {}
 };
 

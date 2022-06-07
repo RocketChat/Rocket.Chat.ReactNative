@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 
 const style = StyleSheet.create({
 	container: {
@@ -18,12 +19,12 @@ const style = StyleSheet.create({
 });
 
 interface IListItem {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	bulletWidth: number;
 	level: number;
 	ordered: boolean;
 	continue: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	index: number;
 }
 

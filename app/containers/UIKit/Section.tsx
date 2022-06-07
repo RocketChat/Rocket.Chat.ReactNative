@@ -1,8 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
+import { IAccessoryComponent, IFields, ISection } from './interfaces';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	content: {
@@ -23,43 +25,27 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IAccessory {
-	blockId?: string;
-	appId?: string;
-	element: any;
-	parser: any;
-}
+const Accessory = ({ element, parser }: IAccessoryComponent) =>
+	parser.renderAccessories({ ...element }, BlockContext.SECTION, parser);
 
-interface IFields {
-	fields: any;
-	parser: any;
-	theme: string;
-}
-
-interface ISection {
-	blockId: string;
-	appId: string;
-	text: object;
-	fields: [];
-	accessory: any;
-	theme: string;
-	parser: any;
-}
-
-const Accessory = ({ blockId, appId, element, parser }: IAccessory) =>
-	parser.renderAccessories({ blockId, appId, ...element }, BLOCK_CONTEXT.SECTION, parser);
-
-const Fields = ({ fields, parser, theme }: IFields) =>
-	fields.map((field: any) => (
-		<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>{parser.text(field)}</Text>
-	));
+const Fields = ({ fields, parser, theme }: IFields) => (
+	<>
+		{fields.map(field => (
+			<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>{parser.text(field)}</Text>
+		))}
+	</>
+);
 
 const accessoriesRight = ['image', 'overflow'];
 
-export const Section = ({ blockId, appId, text, fields, accessory, parser, theme }: ISection) => (
-	<View style={[styles.content, accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column]}>
-		{text ? <View style={styles.text}>{parser.text(text)}</View> : null}
-		{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
-		{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
-	</View>
-);
+export const Section = ({ blockId, appId, text, fields, accessory, parser }: ISection) => {
+	const { theme } = useTheme();
+
+	return (
+		<View style={[styles.content, accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column]}>
+			{text ? <View style={styles.text}>{parser.text(text)}</View> : null}
+			{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
+			{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
+		</View>
+	);
+};

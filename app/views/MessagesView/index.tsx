@@ -9,19 +9,29 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
-import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import getFileUrlFromMessage from './getFileUrlFromMessage';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
-import { IEmoji } from '../../definitions/IEmoji';
+import { IRoomInfoParam } from '../SearchMessagesView';
+import {
+	IApplicationState,
+	TMessageModel,
+	IEmoji,
+	ISubscription,
+	SubscriptionType,
+	IAttachment,
+	IMessage,
+	TAnyMessageModel,
+	IUrl
+} from '../../definitions';
+import { Services } from '../../lib/services';
 
 interface IMessagesViewProps {
 	user: {
@@ -36,71 +46,47 @@ interface IMessagesViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: IEmoji };
-	theme: string;
-	showActionSheet: Function;
+	theme: TSupportedThemes;
+	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	useRealName: boolean;
 	isMasterDetail: boolean;
 }
 
-interface IRoomInfoParam {
-	room: ISubscription;
-	member: any;
-	rid: string;
-	t: SubscriptionType;
-	joined: boolean;
-}
-
 interface IMessagesViewState {
 	loading: boolean;
-	messages: [];
+	messages: IMessage[];
+	message?: IMessage;
 	fileLoading: boolean;
 	total: number;
-}
-
-interface IMessageItem {
-	u?: string;
-	user?: string;
-	editedAt?: Date;
-	attachments?: any;
-	_id: string;
-	tmid?: string;
-	ts?: Date;
-	uploadedAt?: Date;
-	name?: string;
-	description?: string;
-	msg?: string;
-	starred: boolean;
-	pinned: boolean;
-	type: string;
-	url: string;
 }
 
 interface IParams {
 	rid: string;
 	t: SubscriptionType;
 	tmid?: string;
-	message?: object;
+	message?: TMessageModel;
 	name?: string;
 	fname?: string;
 	prid?: string;
-	room: ISubscription;
+	room?: ISubscription;
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
 	roomUserId?: string;
 }
 
-class MessagesView extends React.Component<IMessagesViewProps, any> {
+class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;
-	private room: any;
+	private room?: ISubscription;
 
 	constructor(props: IMessagesViewProps) {
 		super(props);
 		this.state = {
 			loading: false,
 			messages: [],
-			fileLoading: true
+			fileLoading: true,
+			total: -1
 		};
 		this.setHeader();
 		this.rid = props.route.params?.rid;
@@ -112,7 +98,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		this.load();
 	}
 
-	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: IMessagesViewState) {
 		const { loading, messages, fileLoading } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -145,7 +131,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
-	jumpToMessage = async ({ item }: { item: IMessageItem }) => {
+	jumpToMessage = async ({ item }: { item: IMessage }) => {
 		const { navigation, isMasterDetail } = this.props;
 		let params: IParams = {
 			rid: this.rid,
@@ -173,7 +159,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 
 	defineMessagesViewContent = (name: string) => {
 		const { user, baseUrl, theme, useRealName } = this.props;
-		const renderItemCommonProps = (item: IMessageItem) => ({
+		const renderItemCommonProps = (item: TAnyMessageModel) => ({
 			item,
 			baseUrl,
 			user,
@@ -187,7 +173,8 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 			showAttachment: this.showAttachment,
 			getCustomEmoji: this.getCustomEmoji,
 			navToRoomInfo: this.navToRoomInfo,
-			onPress: () => this.jumpToMessage({ item })
+			onPress: () => this.jumpToMessage({ item }),
+			rid: this.rid
 		});
 
 		return {
@@ -196,7 +183,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Files'),
 				fetchFunc: async () => {
 					const { messages } = this.state;
-					const result = await RocketChat.getFiles(this.rid, this.t, messages.length);
+					const result = await Services.getFiles(this.rid, this.t, messages.length);
 					if (result.success) {
 						return { ...result, messages: result.files };
 					}
@@ -206,6 +193,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				renderItem: (item: any) => (
 					<Message
 						{...renderItemCommonProps(item)}
+						theme={theme}
 						item={{
 							...item,
 							u: item.user,
@@ -218,7 +206,6 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 								}
 							]
 						}}
-						theme={theme}
 					/>
 				)
 			},
@@ -227,50 +214,46 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
-				// @ts-ignore TODO: unify IMessage
-				renderItem: (item: IMessageItem) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
+				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
 			},
 			// Starred Messages Screen
 			Starred: {
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
-				renderItem: (item: IMessageItem) => (
-					// @ts-ignore TODO: unify IMessage
+				renderItem: (item: TAnyMessageModel) => (
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
 				),
-				action: (message: IMessageItem) => ({
+				action: (message: IMessage) => ({
 					title: I18n.t('Unstar'),
 					icon: message.starred ? 'star-filled' : 'star',
 					onPress: this.handleActionPress
 				}),
-				handleActionPress: (message: IMessageItem) => RocketChat.toggleStarMessage(message._id, message.starred)
+				handleActionPress: (message: IMessage) => Services.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
+					return Services.getMessages(this.rid, this.t, { pinned: true }, messages.length);
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
-				renderItem: (item: IMessageItem) => (
-					// @ts-ignore TODO: unify IMessage
+				renderItem: (item: TAnyMessageModel) => (
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
 				),
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
-				handleActionPress: (message: IMessageItem) => RocketChat.togglePinMessage(message._id, message.pinned)
+				handleActionPress: (message: IMessage) => Services.togglePinMessage(message._id, message.pinned)
 			}
-			// @ts-ignore
 		}[name];
 	};
 
@@ -285,8 +268,25 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		try {
 			const result = await this.content.fetchFunc();
 			if (result.success) {
+				const urlRenderMessages = result.messages?.map((message: any) => {
+					if (message.urls && message.urls.length > 0) {
+						message.urls = message.urls?.map((url: any, index: any) => {
+							if (url.meta) {
+								return {
+									_id: index,
+									title: url.meta.pageTitle,
+									description: url.meta.ogDescription,
+									image: url.meta.ogImage,
+									url: url.url
+								} as IUrl;
+							}
+							return {} as IUrl;
+						});
+					}
+					return message;
+				});
 				this.setState({
-					messages: [...messages, ...result.messages],
+					messages: [...messages, ...urlRenderMessages],
 					total: result.total,
 					loading: false
 				});
@@ -306,12 +306,12 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		return null;
 	};
 
-	showAttachment = (attachment: any) => {
+	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	onLongPress = (message: IMessageItem) => {
+	onLongPress = (message: IMessage) => {
 		this.setState({ message }, this.showActionSheet);
 	};
 
@@ -328,7 +328,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 			const result = await this.content.handleActionPress(message);
 			if (result.success) {
 				this.setState((prevState: IMessagesViewState) => ({
-					messages: prevState.messages.filter((item: IMessageItem) => item._id !== message._id),
+					messages: prevState.messages.filter((item: IMessage) => item._id !== message?._id),
 					total: prevState.total - 1
 				}));
 			}
@@ -350,7 +350,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		);
 	};
 
-	renderItem = ({ item }: { item: IMessageItem }) => this.content.renderItem(item);
+	renderItem = ({ item }: { item: IMessage }) => this.content.renderItem(item);
 
 	render() {
 		const { messages, loading } = this.state;
@@ -369,14 +369,14 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
-					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				/>
 			</SafeAreaView>
 		);
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	customEmojis: state.customEmojis,

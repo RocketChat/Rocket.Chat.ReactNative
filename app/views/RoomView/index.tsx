@@ -9,29 +9,23 @@ import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
-import { IReduxEmoji } from '../../definitions/IEmoji';
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
-import MessageErrorActions from '../../containers/MessageErrorActions';
-import MessageBox, { IMessageBoxProps } from '../../containers/MessageBox';
-import log, { events, logEvent } from '../../utils/log';
-import EventEmitter from '../../utils/events';
+import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
+import MessageBox, { MessageBoxType } from '../../containers/MessageBox';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../constants/messageTypeLoad';
-import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../utils/room';
-import { isReadOnly } from '../../utils/isReadOnly';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
-import { showErrorAlert } from '../../utils/info';
+import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../lib/methods/helpers/room';
+import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
 import {
 	KEY_COMMAND,
@@ -41,20 +35,18 @@ import {
 	handleCommandSearchMessages,
 	IKeyCommandEvent
 } from '../../commands';
-import { Review } from '../../utils/review';
+import { Review } from '../../lib/methods/helpers/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
-import { CONTAINER_TYPES } from '../../lib/methods/actions';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
-import { getHeaderTitlePosition } from '../../containers/Header';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
-import { takeInquiry } from '../../ee/omnichannel/lib';
+import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
-import { goRoom, TGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
@@ -62,10 +54,10 @@ import Separator from './Separator';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
 import styles from './styles';
-import JoinCode, { IJoinCodeProps } from './JoinCode';
+import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
-import List, { IListContainerProps, IListProps } from './List';
+import List, { ListContainerType } from './List';
 import { ChatsStackParamList } from '../../stacks/types';
 import {
 	IApplicationState,
@@ -73,14 +65,40 @@ import {
 	IBaseScreen,
 	ILoggedUser,
 	IMessage,
+	IOmnichannelSource,
 	ISubscription,
 	IVisitor,
 	SubscriptionType,
 	TAnyMessageModel,
+	TMessageModel,
 	TSubscriptionModel,
-	TThreadModel
+	TThreadModel,
+	IEmoji,
+	ICustomEmojis
 } from '../../definitions';
-import { ICustomEmojis } from '../../reducers/customEmojis';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
+import { TListRef } from './List/List';
+import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import {
+	callJitsi,
+	loadSurroundingMessages,
+	loadThreadMessages,
+	readMessages,
+	sendMessage,
+	triggerBlockAction
+} from '../../lib/methods';
+import {
+	isGroupChat,
+	getUidDirectMessage,
+	getRoomTitle,
+	canAutoTranslate as canAutoTranslateMethod,
+	debounce,
+	isIOS,
+	isTablet
+} from '../../lib/methods/helpers';
+import { Services } from '../../lib/services';
+
+type TStateAttrsUpdate = keyof IRoomViewState;
 
 const stateAttrsUpdate = [
 	'joined',
@@ -95,7 +113,10 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member',
 	'showingBlockingLoader'
-];
+] as TStateAttrsUpdate[];
+
+type TRoomUpdate = keyof TSubscriptionModel;
+
 const roomAttrsUpdate = [
 	'f',
 	'ro',
@@ -116,8 +137,9 @@ const roomAttrsUpdate = [
 	'visitor',
 	'joinCodeRequired',
 	'teamMain',
-	'teamId'
-] as const;
+	'teamId',
+	'onHold'
+] as TRoomUpdate[];
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
@@ -138,19 +160,19 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	insets: EdgeInsets;
 }
 
-type TRoomUpdate = typeof roomAttrsUpdate[number];
-
 interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
-	room: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean };
+	room:
+		| TSubscriptionModel
+		| { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean; sysMes?: boolean };
 	roomUpdate: {
-		[K in TRoomUpdate]?: any; // TODO: get type from TSubscriptionModel
+		[K in TRoomUpdate]?: any;
 	};
 	member: any;
 	lastOpen: Date | null;
 	reactionsModalVisible: boolean;
-	selectedMessage?: Object;
+	selectedMessage?: TAnyMessageModel;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	showingBlockingLoader: boolean;
@@ -169,23 +191,27 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	// TODO: review these refs
-	private messagebox: React.RefObject<IMessageBoxProps>;
-	private list: React.RefObject<IListContainerProps>;
-	private joinCode: React.RefObject<IJoinCodeProps>;
-	private flatList: React.RefObject<IListProps>;
+	private messagebox: React.RefObject<MessageBoxType>;
+	private list: React.RefObject<ListContainerType>;
+	private joinCode: React.RefObject<IJoinCode>;
+	private flatList: TListRef;
 	private mounted: boolean;
-	private sub?: any;
 	private offset = 0;
-	private didMountInteraction: any;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
-	private retryInitTimeout?: number;
+	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private retryFindCount = 0;
-	private retryFindTimeout?: number;
-	private messageErrorActions?: React.RefObject<any>; // TODO: type me
-	private messageActions?: React.RefObject<IMessageActions>;
+	private retryFindTimeout?: ReturnType<typeof setTimeout>;
+	private messageErrorActions?: IMessageErrorActions | null;
+	private messageActions?: IMessageActions | null;
+	// Type of InteractionManager.runAfterInteractions
+	private didMountInteraction?: {
+		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
+		done: (...args: any[]) => any;
+		cancel: () => void;
+	};
+	private sub?: RoomClass;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -212,7 +238,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		};
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
-		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
+		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
 		this.state = {
 			joined: true,
 			room,
@@ -299,6 +325,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (member.statusText !== nextState.member.statusText) {
 			return true;
 		}
+
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
 		if (stateUpdated) {
 			return true;
@@ -327,8 +354,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			// Fire List.query() just to keep observables working
 			if (this.list && this.list.current) {
-				// @ts-ignore TODO: is this working?
-				this.list.current?.query?.();
+				this.list.current?.query();
 			}
 		}
 		// If it's not direct message
@@ -366,7 +392,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const db = database.active;
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
-			// @ts-ignore
 			const { text } = this.messagebox.current;
 			let obj: TSubscriptionModel | TThreadModel | null = null;
 			if (this.tmid) {
@@ -381,9 +406,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (obj) {
 				try {
+					const object = obj;
 					await db.write(async () => {
-						// FIXME: why do I need to tell ts this is non null if we have that if condition above?
-						await obj!.update(r => {
+						await object.update(r => {
 							r.draftMessage = text;
 						});
 					});
@@ -423,22 +448,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined } = this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, insets, route } = this.props;
+		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
 			return;
 		}
 
 		const prid = room?.prid;
-		const isGroupChat = RocketChat.isGroupChat(room as ISubscription);
+		const isGroupChatConst = isGroupChat(room as ISubscription);
 		let title = route.params?.name;
 		let parentTitle = '';
 		// TODO: I think it's safe to remove this, but we need to test tablet without rooms
 		if (!tmid) {
-			title = RocketChat.getRoomTitle(room);
+			title = getRoomTitle(room);
 		}
 		if (tmid) {
-			parentTitle = RocketChat.getRoomTitle(room);
+			parentTitle = getRoomTitle(room);
 		}
 		let subtitle: string | undefined;
 		let t: string;
@@ -449,6 +474,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let token: string | undefined;
 		let avatar: string | undefined;
 		let visitor: IVisitor | undefined;
+		let sourceType: IOmnichannelSource | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
 			t = room.t;
@@ -460,21 +486,23 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			visitor = room.visitor;
 		}
 
+		if ('source' in room) {
+			t = room.t;
+			sourceType = room.source;
+			visitor = room.visitor;
+		}
+
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
 		} else if (teamId && isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
 		}
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
-
+		const paddingRight = this.getPaddingLeft(numIconsRight, isMasterDetail);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: {
-				left: headerTitlePosition.left,
-				right: headerTitlePosition.right
-			},
+			headerTitleContainerStyle: { paddingRight },
 			headerLeft: () => (
 				<LeftButtons
 					tmid={tmid}
@@ -502,9 +530,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					type={t}
 					roomUserId={roomUserId}
 					visitor={visitor}
-					isGroupChat={isGroupChat}
+					isGroupChat={isGroupChatConst}
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
+					sourceType={sourceType}
 				/>
 			),
 			headerRight: () => (
@@ -513,7 +542,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}
-					t={t}
+					t={this.t || t}
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
@@ -522,20 +551,25 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	goRoomActionsView = (screen?: string) => {
+	getPaddingLeft = (numIcons: number, isMasterDetail: boolean) => {
+		if (numIcons === 3) {
+			return isMasterDetail ? 40 : 35;
+		}
+		return isMasterDetail ? 20 : 0;
+	};
+
+	goRoomActionsView = (screen?: keyof ModalStackParamList) => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			// @ts-ignore TODO: find a way to make it work
+			// @ts-ignore
 			navigation.navigate('ModalStackNavigator', {
-				// @ts-ignore
 				screen: screen ?? 'RoomActionsView',
 				params: {
 					rid: this.rid as string,
 					t: this.t as SubscriptionType,
-					// @ts-ignore
-					room,
+					room: room as ISubscription,
 					member,
 					showCloseModal: !!screen,
 					joined
@@ -567,7 +601,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				return;
 			}
 			if (this.tmid) {
-				await RoomServices.getThreadMessages(this.tmid, this.rid);
+				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
 			} else {
 				const newLastOpen = new Date();
 				await RoomServices.getMessages(room);
@@ -579,11 +613,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					} else {
 						this.setLastOpen(null);
 					}
-					RoomServices.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+					readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
 				}
 			}
 
-			const canAutoTranslate = RocketChat.canAutoTranslate();
+			const canAutoTranslate = canAutoTranslateMethod();
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
@@ -602,12 +636,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room } = this.state;
 		const { t } = room;
 
-		if ('id' in room && t === 'd' && !RocketChat.isGroupChat(room)) {
+		if ('id' in room && t === 'd' && !isGroupChat(room)) {
 			try {
-				const roomUserId = RocketChat.getUidDirectMessage(room);
+				const roomUserId = getUidDirectMessage(room);
 				this.setState({ roomUserId }, () => this.setHeader());
 
-				const result = await RocketChat.getUserInfo(roomUserId);
+				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;
 				}
@@ -674,7 +708,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	errorActionsShow = (message: TAnyMessageModel) => {
-		// @ts-ignore
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
@@ -686,7 +719,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				id: message.subscription.id
 			},
 			msg: message?.attachments?.[0]?.description || message.msg
-		};
+		} as TMessageModel;
 		this.setState({ selectedMessage: newMessage, editing: true });
 	};
 
@@ -697,7 +730,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	onEditRequest = async (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: undefined, editing: false });
 		try {
-			await RocketChat.editMessage(message);
+			await Services.editMessage(message);
 		} catch (e) {
 			log(e);
 		}
@@ -724,7 +757,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		// @ts-ignore
 		this.messageActions?.showMessageActions(message);
 	};
 
@@ -736,7 +768,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionPress = async (shortname: string, messageId: string) => {
 		try {
-			await RocketChat.setReaction(shortname, messageId);
+			await Services.setReaction(shortname, messageId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
 		} catch (e) {
@@ -849,15 +881,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
-				 * we test if it's not from threads because we're fetching from threads currently with `getThreadMessages`
+				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
 				 */
 				if (message.fromServer && !message.tmid && this.rid) {
-					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
+					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
-				// @ts-ignore
-				await Promise.race([this.list.current.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				// @ts-ignore
-				this.list.current.cancelJumpToMessage();
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				this.list.current?.cancelJumpToMessage();
 			}
 		} catch (e) {
 			log(e);
@@ -866,7 +896,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	replyBroadcast = (message: Record<string, string>) => {
+	replyBroadcast = (message: IMessage) => {
 		const { dispatch } = this.props;
 		dispatch(replyBroadcast(message));
 	};
@@ -881,7 +911,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (rid === this.rid) {
 			Navigation.navigate('RoomsListView');
 			!this.isOmnichannel &&
-				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: RocketChat.getRoomTitle(room) }), I18n.t('Oops'));
+				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	};
 
@@ -893,22 +923,20 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState(...args);
 	};
 
-	sendMessage = (message: string, tmid?: string, tshow?: boolean) => {
+	handleSendMessage = (message: string, tmid?: string, tshow?: boolean) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
 		const { rid } = this.state.room;
 		const { user } = this.props;
-		RocketChat.sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
+		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
 			if (this.list && this.list.current) {
-				// @ts-ignore
-				this.list.current.update();
+				this.list.current?.update();
 			}
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});
 	};
 
-	// TODO: We need to unify
-	getCustomEmoji = (name: string): IReduxEmoji | null => {
+	getCustomEmoji = (name: string): Pick<IEmoji, 'name' | 'extension'> | null => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
@@ -938,12 +966,27 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				const { joinCodeRequired, rid } = room;
 				if (joinCodeRequired) {
-					// @ts-ignore
 					this.joinCode.current?.show();
 				} else {
-					await RocketChat.joinRoom(rid, null, this.t as any);
+					await Services.joinRoom(rid, null, this.t as any);
 					this.onJoin();
 				}
+			}
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	resumeRoom = async () => {
+		logEvent(events.ROOM_RESUME);
+		try {
+			const { room } = this.state;
+
+			if (this.isOmnichannel) {
+				if ('rid' in room) {
+					await takeResume(room.rid);
+				}
+				this.onJoin();
 			}
 		} catch (e) {
 			log(e);
@@ -961,7 +1004,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!threadMessageId) {
 				return;
 			}
-			await RocketChat.toggleFollowMessage(threadMessageId, !isFollowingThread);
+			await Services.toggleFollowMessage(threadMessageId, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
@@ -1047,14 +1090,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	callJitsi = () => {
+	handleCallJitsi = () => {
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
-				RocketChat.callJitsi(room);
+				callJitsi(room);
 			}
 		}
 	};
@@ -1065,17 +1108,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (handleCommandScroll(event)) {
 				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
 				this.offset += offset;
-				// @ts-ignore
-				this.flatList?.scrollToOffset({ offset: this.offset });
+				this.flatList?.current?.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
 				this.goRoomActionsView();
 			} else if (handleCommandSearchMessages(event)) {
 				this.goRoomActionsView('SearchMessagesView');
 			} else if (handleCommandReplyLatest(event)) {
 				if (this.list && this.list.current) {
-					// @ts-ignore
 					const message = this.list.current.getLastMessage();
-					this.onReplyInit(message, false);
+					if (message) {
+						this.onReplyInit(message, false);
+					}
 				}
 			}
 		}
@@ -1096,7 +1139,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		rid: string;
 		mid: string;
 	}) =>
-		RocketChat.triggerBlockAction({
+		triggerBlockAction({
 			blockId,
 			actionId,
 			value,
@@ -1104,7 +1147,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			rid,
 			appId,
 			container: {
-				type: CONTAINER_TYPES.MESSAGE,
+				type: ContainerTypes.MESSAGE,
 				id: mid
 			}
 		});
@@ -1145,7 +1188,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
-		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled } = this.props;
+		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
+			this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -1188,11 +1232,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onEncryptedPress={this.onEncryptedPress}
 					onDiscussionPress={this.onDiscussionPress}
 					onThreadPress={this.onThreadPress}
-					onAnswerButtonPress={this.sendMessage}
+					onAnswerButtonPress={this.handleSendMessage}
 					showAttachment={this.showAttachment}
 					reactionInit={this.onReactionInit}
 					replyBroadcast={this.replyBroadcast}
 					errorActionsShow={this.errorActionsShow}
+					isSystemMessage={room.sysMes as boolean}
 					baseUrl={baseUrl}
 					Message_GroupingPeriod={Message_GroupingPeriod}
 					timeFormat={Message_TimeFormat}
@@ -1202,12 +1247,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
 					getCustomEmoji={this.getCustomEmoji}
-					callJitsi={this.callJitsi}
+					callJitsi={this.handleCallJitsi}
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}
 					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
+					theme={theme}
 				/>
 			);
 		}
@@ -1232,6 +1278,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		if (!this.rid) {
 			return null;
+		}
+		if ('onHold' in room && room.onHold) {
+			return (
+				<View style={styles.joinRoomContainer} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
+					<Text accessibilityLabel={I18n.t('Chat_is_on_hold')} style={[styles.previewMode, { color: themes[theme].titleText }]}>
+						{I18n.t('Chat_is_on_hold')}
+					</Text>
+					<Touch
+						onPress={this.resumeRoom}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						enabled={!loading}
+						theme={theme}>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
+							{I18n.t('Resume')}
+						</Text>
+					</Touch>
+				</View>
+			);
 		}
 		if (!joined && !this.tmid) {
 			return (
@@ -1274,7 +1338,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<MessageBox
 				ref={this.messagebox}
-				onSubmit={this.sendMessage}
+				onSubmit={this.handleSendMessage}
 				rid={this.rid}
 				tmid={this.tmid}
 				roomType={room.t}
@@ -1303,7 +1367,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					// @ts-ignore
 					ref={ref => (this.messageActions = ref)}
 					tmid={this.tmid}
 					room={room}
@@ -1314,7 +1377,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
-				{/* @ts-ignore TODO: missing interface on MessageErrorActions */}
 				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
 			</>
 		);
@@ -1339,11 +1401,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<StatusBar />
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
-					// @ts-ignore
 					ref={this.list}
 					listRef={this.flatList}
 					rid={rid}
-					t={t}
 					tmid={this.tmid}
 					theme={theme}
 					tunread={tunread}
@@ -1374,7 +1434,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					baseUrl={baseUrl}
 					onClose={this.onCloseReactionsModal}
 					getCustomEmoji={this.getCustomEmoji}
-					theme={theme}
 				/>
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 				<Loading visible={showingBlockingLoader} />

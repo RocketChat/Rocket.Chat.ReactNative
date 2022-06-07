@@ -3,37 +3,13 @@ import { FlatList, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
-
-interface IOption {
-	option: {
-		text: string;
-		value: string;
-	};
-	onOptionPress: Function;
-	parser: any;
-	theme: string;
-}
-
-interface IOptions {
-	options: [];
-	onOptionPress: Function;
-	parser: object;
-	theme: string;
-}
-
-interface IOverflow {
-	element: any;
-	action: Function;
-	loading: boolean;
-	parser: object;
-	theme: string;
-	context: any;
-}
+import { IOption, IOptions, IOverflow } from './interfaces';
 
 const keyExtractor = (item: any) => item.value;
 
@@ -68,10 +44,12 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable = {};
+const touchable: { [key: string]: Touchable | null } = {};
 
-export const Overflow = ({ element, loading, action, parser, theme }: IOverflow) => {
-	const { options, blockId } = element;
+export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
+	const { theme } = useTheme();
+	const options = element?.options || [];
+	const blockId = element?.blockId || '';
 	const [show, onShow] = useState(false);
 
 	const onOptionPress = ({ value }: any) => {
@@ -82,7 +60,6 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 	return (
 		<>
 			<Touchable
-				/* @ts-ignore*/
 				ref={ref => (touchable[blockId] = ref)}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
@@ -91,11 +68,12 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 				{!loading ? (
 					<CustomIcon size={18} name='kebab' color={themes[theme].bodyText} />
 				) : (
-					<ActivityIndicator style={styles.loading} theme={theme} />
+					<ActivityIndicator style={styles.loading} />
 				)}
 			</Touchable>
 			<Popover
 				isVisible={show}
+				// fromView exists in Popover Component
 				/* @ts-ignore*/
 				fromView={touchable[blockId]}
 				onRequestClose={() => onShow(false)}>

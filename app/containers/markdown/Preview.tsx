@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { Text, TextStyle } from 'react-native';
 import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
-import { themes } from '../../constants/colors';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
+import { themes } from '../../lib/constants';
 import { formatText } from './formatText';
 import { useTheme } from '../../theme';
 import styles from './styles';
@@ -13,15 +13,15 @@ interface IMarkdownPreview {
 	msg?: string;
 	numberOfLines?: number;
 	testID?: string;
-	style?: StyleProp<TextStyle>[];
+	style?: TextStyle[];
 }
 
-const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview): React.ReactElement | null => {
+const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview) => {
+	const { theme } = useTheme();
+
 	if (!msg) {
 		return null;
 	}
-
-	const { theme } = useTheme();
 
 	let m = formatText(msg);
 	m = formatHyperlink(m);

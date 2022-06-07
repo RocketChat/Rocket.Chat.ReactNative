@@ -2,34 +2,31 @@ import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
-import ImagePicker, { Image, ImageOrVideo } from 'react-native-image-crop-picker';
+import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
-import TextInput from '../../presentation/TextInput';
+import TextInput, { IThemedTextInput } from '../TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
-import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
-import { emojis } from '../../emojis';
-import log, { events, logEvent } from '../../utils/log';
+import { emojis } from '../EmojiPicker/emojis';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
-import debounce from '../../utils/debounce';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import LeftButtons from './LeftButtons';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
-import { isAndroid, isTablet } from '../../utils/deviceInfo';
-import { canUploadFile } from '../../utils/media';
-import EventEmiter from '../../utils/events';
+import { canUploadFile } from '../../lib/methods/helpers/media';
+import EventEmiter from '../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
 import getMentionRegexp from './getMentionRegexp';
 import Mentions from './Mentions';
@@ -44,13 +41,17 @@ import {
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { CustomIcon } from '../../lib/Icons';
-import { IMessage } from '../../definitions/IMessage';
+import { CustomIcon } from '../CustomIcon';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IPreviewItem, IUser } from '../../definitions';
+import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel, IMessage } from '../../definitions';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
+import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
+import { Services } from '../../lib/services';
+import { TSupportedThemes } from '../../theme';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -63,18 +64,18 @@ const imagePickerConfig = {
 	forceJpg: true
 };
 
-const libraryPickerConfig = {
+const libraryPickerConfig: Options = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
 	mediaType: 'any',
 	forceJpg: true
 };
 
-const videoPickerConfig = {
+const videoPickerConfig: Options = {
 	mediaType: 'video'
 };
 
-export interface IMessageBoxProps {
+export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackParamList, any> {
 	rid: string;
 	baseUrl: string;
 	message: IMessage;
@@ -89,15 +90,14 @@ export interface IMessageBoxProps {
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
 	Message_AudioRecorderEnabled: boolean;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
 	typing: Function;
-	theme: string;
+	theme: TSupportedThemes;
 	replyCancel(): void;
 	showSend: boolean;
-	navigation: any;
 	children: JSX.Element;
 	isMasterDetail: boolean;
 	showActionSheet: Function;
@@ -118,7 +118,7 @@ interface IMessageBoxState {
 	commandPreview: IPreviewItem[];
 	showCommandPreview: boolean;
 	command: {
-		appId?: any;
+		appId?: string;
 	};
 	tshow: boolean;
 	mentionLoading: boolean;
@@ -126,23 +126,21 @@ interface IMessageBoxState {
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
-	private text: string;
+	public text: string;
 
 	private selection: { start: number; end: number };
 
 	private focused: boolean;
 
-	private options: any;
+	private imagePickerConfig: Options;
 
-	private imagePickerConfig: any;
+	private libraryPickerConfig: Options;
 
-	private libraryPickerConfig: any;
+	private videoPickerConfig: Options;
 
-	private videoPickerConfig: any;
+	private room!: TSubscriptionModel;
 
-	private room: any;
-
-	private thread: any;
+	private thread!: TThreadModel;
 
 	private unsubscribeFocus: any;
 
@@ -409,7 +407,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return;
 		}
 
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], rid);
+		const permissionToUpload = await hasPermission([uploadFilePermission], rid);
 		this.setState({ permissionToUpload: permissionToUpload[0] });
 	};
 
@@ -530,14 +528,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		try {
 			const { appId } = command;
 			const triggerId = generateTriggerId(appId);
-			RocketChat.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
+			Services.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
 			replyCancel();
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	onEmojiSelected = (keyboardId: any, params: any) => {
+	onEmojiSelected = (keyboardId: string, params: { emoji: string }) => {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
@@ -553,7 +551,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	getPermalink = async (message: any) => {
 		try {
-			return await RocketChat.getPermalinkMessage(message);
+			return await getPermalinkMessage(message);
 		} catch (error) {
 			return null;
 		}
@@ -571,13 +569,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	getUsers = debounce(async (keyword: any) => {
-		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
+		let res = await search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
 	getRooms = debounce(async (keyword = '') => {
-		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
+		const res = await search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
@@ -605,7 +603,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}, 300);
 
 	getCannedResponses = debounce(async (text?: string) => {
-		const res = await RocketChat.getListCannedResponse({ text });
+		const res = await Services.getListCannedResponse({ text });
 		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
@@ -642,7 +640,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	setCommandPreview = async (command: any, name: string, params: string) => {
 		const { rid } = this.props;
 		try {
-			const response = await RocketChat.getCommandPreview(name, rid, params);
+			const response = await Services.getCommandPreview(name, rid, params);
 			if (response.success) {
 				return this.setState({ commandPreview: response.preview?.items || [], showCommandPreview: true, command });
 			}
@@ -677,11 +675,16 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	canUploadFile = (file: any) => {
 		const { permissionToUpload } = this.state;
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const result = canUploadFile(file, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize, permissionToUpload);
+		const result = canUploadFile({
+			file,
+			allowList: FileUpload_MediaTypeWhiteList,
+			maxFileSize: FileUpload_MaxFileSize,
+			permissionToUploadFile: permissionToUpload
+		});
 		if (result.success) {
 			return true;
 		}
-		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
+		Alert.alert(I18n.t('Error_uploading'), result.error && I18n.isTranslated(result.error) ? I18n.t(result.error) : result.error);
 		return false;
 	};
 
@@ -713,7 +716,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFromLibrary = async () => {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
-			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as ImageOrVideo[];
+			// The type can be video or photo, however the lib understands that it is just one of them.
+			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as unknown as ImageOrVideo[];
 			attachments = attachments.map(att => forceJpgExtension(att));
 			this.openShareView(attachments);
 		} catch (e) {
@@ -724,7 +728,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFile = async () => {
 		logEvent(events.ROOM_BOX_ACTION_FILE);
 		try {
-			const res = await DocumentPicker.pick({
+			const res = await DocumentPicker.pickSingle({
 				type: [DocumentPicker.types.allFiles]
 			});
 			const file = {
@@ -757,12 +761,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	openShareView = (attachments: any) => {
 		const { message, replyCancel, replyWithMention } = this.props;
 		// Start a thread with an attachment
-		let { thread } = this;
+		let value: TThreadModel | IMessage = this.thread;
 		if (replyWithMention) {
-			thread = message;
+			value = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, thread, attachments });
+		Navigation.navigate('ShareView', { room: this.room, thread: value, attachments });
 	};
 
 	createDiscussion = () => {
@@ -836,7 +840,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+					await sendFileMessage(rid, fileInfo, tmid, server, user);
 				}
 			} catch (e) {
 				log(e);
@@ -888,7 +892,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					await Services.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
 					logEvent(events.COMMAND_RUN_F);
@@ -1038,7 +1042,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tmid
 		} = this.props;
 
-		const isAndroidTablet =
+		const isAndroidTablet: Partial<IThemedTextInput> =
 			isTablet && isAndroid
 				? {
 						multiline: false,
@@ -1060,7 +1064,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} loading={mentionLoading} />
+				<Mentions mentions={mentions} trackingType={trackingType} loading={mentionLoading} />
 			</>
 		) : null;
 
@@ -1071,7 +1075,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				username={user.username}
 				replying={replying}
 				getCustomEmoji={getCustomEmoji}
-				theme={theme}
 			/>
 		) : null;
 
@@ -1090,7 +1093,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				<TextInput
 					ref={component => (this.component = component)}
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
-					// @ts-ignore
 					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}
@@ -1183,4 +1185,6 @@ const dispatchToProps = {
 	typing: (rid: any, status: any) => userTypingAction(rid, status)
 };
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox)) as any;
+export type MessageBoxType = MessageBox;
+
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

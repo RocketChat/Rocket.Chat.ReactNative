@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
-import SearchBox from '../../../containers/SearchBox';
+import SearchBox from './SearchBox';
 import * as HeaderButton from '../../../containers/HeaderButton';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import sharedStyles from '../../Styles';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
+import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
 import { IShareListHeaderIos } from './interface';
 
 const styles = StyleSheet.create({

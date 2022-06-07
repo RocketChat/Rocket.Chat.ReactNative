@@ -9,27 +9,26 @@ import parse from 'url-parse';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import { themes } from '../../constants/colors';
+import { CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
-import { IBaseScreen, TServerHistoryModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import RocketChat from '../../lib/rocketchat';
-import UserPreferences from '../../lib/userPreferences';
+import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isTablet } from '../../utils/deviceInfo';
-import EventEmitter from '../../utils/events';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
-import { showConfirmationAlert } from '../../utils/info';
-import { events, logEvent } from '../../utils/log';
-import { moderateScale, verticalScale } from '../../utils/scaling';
-import SSLPinning from '../../utils/sslPinning';
+import { isTablet } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
+import { showConfirmationAlert } from '../../lib/methods/helpers/info';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import { moderateScale, verticalScale } from './scaling';
+import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
 
 interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
 	connecting: boolean;
-	previousServer: string;
+	previousServer: string | null;
 	width: number;
 	height: number;
 }
@@ -76,7 +75,7 @@ interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerVi
 interface INewServerViewState {
 	text: string;
 	connectingOpen: boolean;
-	certificate: any;
+	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
 }
 
@@ -163,7 +162,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	close = () => {
 		const { dispatch, previousServer } = this.props;
 		dispatch(inviteLinksClear());
-		dispatch(selectServerRequest(previousServer));
+		if (previousServer) {
+			dispatch(selectServerRequest(previousServer));
+		}
 	};
 
 	handleNewServerEvent = (event: { server: string }) => {
@@ -194,7 +195,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 			// Save info - SSL Pinning
 			if (certificate) {
-				UserPreferences.setString(`${RocketChat.CERTIFICATE_KEY}-${server}`, certificate);
+				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
 			}
 
 			// Save info - HTTP Basic Authentication
@@ -266,8 +267,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		showConfirmationAlert({
 			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
 			confirmationText: I18n.t('Remove'),
-			// @ts-ignore
-			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
+			onPress: () => this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	};
 
@@ -321,7 +321,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const marginTop = previousServer ? 0 : 35;
 
 		return (
-			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
+			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
 				<FormContainerInner>
 					<Image
 						style={[
@@ -374,7 +374,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
-						theme={theme}
 						testID='new-server-view-button'
 					/>
 					<OrSeparator theme={theme} />
@@ -396,7 +395,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						onPress={this.connectOpen}
 						disabled={connecting}
 						loading={connectingOpen && connecting}
-						theme={theme}
 						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
@@ -406,7 +404,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	connecting: state.server.connecting,
 	previousServer: state.server.previousServer
 });

@@ -4,9 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
-import { themes } from '../constants/colors';
-import TextInput from '../presentation/TextInput';
-import { isIOS, isTablet } from '../utils/deviceInfo';
+import { themes } from '../lib/constants';
+import TextInput from './TextInput';
+import { isIOS, isTablet } from '../lib/methods/helpers';
 import { useOrientation } from '../dimensions';
 
 const styles = StyleSheet.create({

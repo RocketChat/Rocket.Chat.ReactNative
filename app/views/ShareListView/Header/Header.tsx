@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import TextInput from '../../../presentation/TextInput';
+import TextInput from '../../../containers/TextInput';
 import I18n from '../../../i18n';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import sharedStyles from '../../Styles';
 import { IShareListHeader } from './interface';
 

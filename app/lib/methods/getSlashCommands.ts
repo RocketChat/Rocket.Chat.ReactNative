@@ -1,12 +1,12 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import protectedFunction from './helpers/protectedFunction';
 import { ISlashCommandResult, TSlashCommandModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 
-export default function getSlashCommands() {
+export function getSlashCommands() {
 	const db = database.active;
 	return new Promise<void>(async resolve => {
 		try {

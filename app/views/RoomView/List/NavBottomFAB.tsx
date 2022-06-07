@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanimated';
 
-import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
+import { themes } from '../../../lib/constants';
+import { CustomIcon } from '../../../containers/CustomIcon';
 import { useTheme } from '../../../theme';
-import Touch from '../../../utils/touch';
-import { hasNotch } from '../../../utils/deviceInfo';
+import Touch from '../../../lib/methods/helpers/touch';
+import { hasNotch } from '../../../lib/methods/helpers';
 
 const SCROLL_LIMIT = 200;
 const SEND_TO_CHANNEL_HEIGHT = 40;

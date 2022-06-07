@@ -4,8 +4,8 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../constants/colors';
-import { withActionSheet } from '../../containers/ActionSheet';
+import { themes } from '../../lib/constants';
+import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -13,23 +13,25 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
-import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TRoomModel, TUserModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import RocketChat from '../../lib/rocketchat';
-import UserItem from '../../presentation/UserItem';
+import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
-import { goRoom, TGoRoomItem } from '../../utils/goRoom';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
-import log from '../../utils/log';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
+import { TSupportedThemes, withTheme } from '../../theme';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
+import log from '../../lib/methods/helpers/log';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import { TSupportedPermissions } from '../../reducers/permissions';
+import { RoomTypes } from '../../lib/methods';
+import { getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
 import styles from './styles';
+import { Services } from '../../lib/services';
 
 const PAGE_SIZE = 25;
 
@@ -37,14 +39,14 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 	rid: string;
 	members: string[];
 	baseUrl: string;
-	room: TRoomModel;
+	room: TSubscriptionModel;
 	user: {
 		id: string;
 		token: string;
 		roles: string[];
 	};
-	showActionSheet: (params: any) => {}; // TODO: this work?
-	theme: string;
+	showActionSheet: (params: TActionSheetOptions) => {};
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	useRealName: boolean;
 	muteUserPermission: string[];
@@ -64,14 +66,14 @@ interface IRoomMembersViewState {
 	rid: string;
 	members: TUserModel[];
 	membersFiltered: TUserModel[];
-	room: TRoomModel;
+	room: TSubscriptionModel;
 	end: boolean;
 }
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
 	private mounted: boolean;
-	private permissions: any; // TODO: fix when get props from api
-	private roomObservable!: Observable<TRoomModel>;
+	private permissions: { [key in TSupportedPermissions]?: boolean };
+	private roomObservable!: Observable<TSubscriptionModel>;
 	private subscription!: Subscription;
 	private roomRoles: any;
 
@@ -88,7 +90,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			rid,
 			members: [],
 			membersFiltered: [],
-			room: room || ({} as TRoomModel),
+			room: room || ({} as TSubscriptionModel),
 			end: false
 		};
 		if (room && room.observe) {
@@ -109,8 +111,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		this.mounted = true;
 		this.fetchMembers();
 
-		// @ts-ignore - TODO: room param is wrong
-		if (RocketChat.isGroupChat(room)) {
+		if (isGroupChat(room)) {
 			return;
 		}
 
@@ -125,7 +126,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			viewAllTeamsPermission
 		} = this.props;
 
-		const result = await RocketChat.hasPermission(
+		const result = await hasPermission(
 			[
 				muteUserPermission,
 				setLeaderPermission,
@@ -200,7 +201,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				const [room] = query;
 				this.goRoom(room);
 			} else {
-				const result = await RocketChat.createDirectMessage(item.username);
+				const result = await Services.createDirectMessage(item.username);
 				if (result.success) {
 					this.goRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT });
 				}
@@ -215,7 +216,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			const { navigation } = this.props;
 			const { room } = this.state;
 
-			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
+			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
 
 			if (result.success) {
 				if (result.rooms?.length) {
@@ -255,13 +256,13 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			const { navigation } = this.props;
 
 			const userId = selectedUser._id;
-			const result = await RocketChat.removeTeamMember({
+			const result = await Services.removeTeamMember({
 				teamId: room.teamId,
 				userId,
 				...(selected && { rooms: selected })
 			});
 			if (result.success) {
-				const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
+				const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 				EventEmitter.emit(LISTENER, { message });
 				const newMembers = members.filter(member => member._id !== userId);
 				const newMembersFiltered = membersFiltered.filter(member => member._id !== userId);
@@ -285,7 +286,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		const { room } = this.state;
 		const { showActionSheet, user, theme } = this.props;
 
-		const options: {}[] = [
+		const options: TActionSheetOptionsItem[] = [
 			{
 				icon: 'message',
 				title: I18n.t('Direct_message'),
@@ -315,7 +316,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				onPress: () => {
 					showConfirmationAlert({
 						message: I18n.t(`The_user_${userIsMuted ? 'will' : 'wont'}_be_able_to_type_in_roomName`, {
-							roomName: RocketChat.getRoomTitle(room)
+							roomName: getRoomTitle(room)
 						}),
 						confirmationText: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
 						onPress: () => this.handleMute(selectedUser)
@@ -404,7 +405,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				danger: true,
 				onPress: () => {
 					showConfirmationAlert({
-						message: I18n.t('The_user_will_be_removed_from_s', { s: RocketChat.getRoomTitle(room) }),
+						message: I18n.t('The_user_will_be_removed_from_s', { s: getRoomTitle(room) }),
 						confirmationText: I18n.t('Yes_remove_user'),
 						onPress: () => this.handleRemoveUserFromRoom(selectedUser)
 					});
@@ -434,7 +435,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		try {
 			const { room } = this.state;
 			const type = room.t as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
-			const result = await RocketChat.getRoomRoles(room.rid, type);
+			const result = await Services.getRoomRoles(room.rid, type);
 			if (result?.success) {
 				this.roomRoles = result.roles;
 			}
@@ -452,7 +453,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 		this.setState({ isLoading: true });
 		try {
-			const membersResult = await RocketChat.getRoomMembers({
+			const membersResult = await Services.getRoomMembers({
 				rid,
 				roomType: t,
 				type: allUsers ? 'all' : 'online',
@@ -492,7 +493,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleMute = async (user: TUserModel) => {
 		const { rid } = this.state;
 		try {
-			await RocketChat.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
+			await Services.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
 			});
@@ -504,7 +505,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleOwner = async (selectedUser: TUserModel, isOwner: boolean) => {
 		try {
 			const { room } = this.state;
-			await RocketChat.toggleRoomOwner({
+			await Services.toggleRoomOwner({
 				roomId: room.rid,
 				t: room.t,
 				userId: selectedUser._id,
@@ -516,7 +517,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
-					room_name: RocketChat.getRoomTitle(room)
+					room_name: getRoomTitle(room)
 				})
 			});
 		} catch (e) {
@@ -528,7 +529,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleLeader = async (selectedUser: TUserModel, isLeader: boolean) => {
 		try {
 			const { room } = this.state;
-			await RocketChat.toggleRoomLeader({
+			await Services.toggleRoomLeader({
 				roomId: room.rid,
 				t: room.t,
 				userId: selectedUser._id,
@@ -540,7 +541,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
-					room_name: RocketChat.getRoomTitle(room)
+					room_name: getRoomTitle(room)
 				})
 			});
 		} catch (e) {
@@ -552,7 +553,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleModerator = async (selectedUser: TUserModel, isModerator: boolean) => {
 		try {
 			const { room } = this.state;
-			await RocketChat.toggleRoomModerator({
+			await Services.toggleRoomModerator({
 				roomId: room.rid,
 				t: room.t,
 				userId: selectedUser._id,
@@ -564,7 +565,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
-					room_name: RocketChat.getRoomTitle(room)
+					room_name: getRoomTitle(room)
 				})
 			});
 		} catch (e) {
@@ -576,7 +577,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleIgnore = async (selectedUser: TUserModel, ignore: boolean) => {
 		try {
 			const { room } = this.state;
-			await RocketChat.ignoreUser({
+			await Services.ignoreUser({
 				rid: room.rid,
 				userId: selectedUser._id,
 				ignore
@@ -593,8 +594,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
 			// TODO: interface SubscriptionType on IRoom is wrong
-			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
-			const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
+			await Services.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
+			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
 			this.setState({
 				members: members.filter(member => member._id !== userId),
@@ -636,7 +637,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
-							return <ActivityIndicator theme={theme} />;
+							return <ActivityIndicator />;
 						}
 						return null;
 					}}
@@ -666,4 +667,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewAllTeamsPermission: state.permissions['view-all-teams']
 });
 
-export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(RoomMembersView)));

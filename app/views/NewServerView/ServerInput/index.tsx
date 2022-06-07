@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
-import TextInput from '../../../containers/TextInput';
+import FormTextInput from '../../../containers/TextInput/FormTextInput';
 import * as List from '../../../containers/List';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import Item from './Item';
+import { TSupportedThemes } from '../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
 
 interface IServerInput extends TextInputProps {
 	text: string;
-	theme: string;
+	theme: TSupportedThemes;
 	serversHistory: any[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;
@@ -49,7 +50,7 @@ const ServerInput = ({
 	const [focused, setFocused] = useState(false);
 	return (
 		<View style={styles.container}>
-			<TextInput
+			<FormTextInput
 				label={I18n.t('Enter_workspace_URL')}
 				placeholder={I18n.t('Workspace_URL_Example')}
 				containerStyle={styles.inputContainer}

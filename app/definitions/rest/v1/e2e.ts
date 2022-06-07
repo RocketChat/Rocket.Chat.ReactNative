@@ -15,4 +15,7 @@ export type E2eEndpoints = {
 	'e2e.setRoomKeyID': {
 		POST: (params: { rid: string; keyID: string }) => {};
 	};
+	'e2e.fetchMyKeys': {
+		GET: () => { public_key: string; private_key: string };
+	};
 };

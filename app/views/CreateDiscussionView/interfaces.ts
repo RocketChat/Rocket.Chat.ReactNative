@@ -1,6 +1,7 @@
 import { NewMessageStackParamList } from '../../stacks/types';
-import { SubscriptionType } from '../../definitions/ISubscription';
-import { IBaseScreen } from '../../definitions';
+import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
+import { IBaseScreen, IMessage, ISearchLocal, IUser } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 export interface IResult {
 	rid: string;
@@ -13,10 +14,7 @@ export interface IError {
 }
 export interface ICreateChannelViewProps extends IBaseScreen<NewMessageStackParamList, 'CreateDiscussionView'> {
 	server: string;
-	user: {
-		id: string;
-		token: string;
-	};
+	user: IUser;
 	create: Function;
 	loading: boolean;
 	result: IResult;
@@ -28,6 +26,15 @@ export interface ICreateChannelViewProps extends IBaseScreen<NewMessageStackPara
 	encryptionEnabled: boolean;
 }
 
+export interface ICreateChannelViewState {
+	channel: ISubscription | ISearchLocal;
+	message: IMessage;
+	name?: string;
+	users: string[];
+	reply: string;
+	encrypted: boolean;
+}
+
 export interface ICreateDiscussionViewSelectChannel {
 	server: string;
 	token: string;
@@ -36,7 +43,7 @@ export interface ICreateDiscussionViewSelectChannel {
 	onChannelSelect: Function;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export interface ICreateDiscussionViewSelectUsers {
@@ -47,5 +54,5 @@ export interface ICreateDiscussionViewSelectUsers {
 	onUserSelect: Function;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
-	theme: string;
+	theme: TSupportedThemes;
 }

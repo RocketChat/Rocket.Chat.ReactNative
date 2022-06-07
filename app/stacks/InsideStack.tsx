@@ -4,7 +4,7 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
-import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../utils/navigation';
+import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import Sidebar from '../views/SidebarView';
 // Chats Stack
 import RoomView from '../views/RoomView';
@@ -30,7 +30,7 @@ import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 // Profile Stack
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
@@ -101,7 +101,7 @@ const ChatsStackNavigator = () => {
 				options={SearchMessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
-			<ChatsStack.Screen name='InviteUsersView' component={InviteUsersView} options={InviteUsersView.navigationOptions} />
+			<ChatsStack.Screen name='InviteUsersView' component={InviteUsersView} />
 			<ChatsStack.Screen
 				name='InviteUsersEditView'
 				component={InviteUsersEditView}
@@ -115,11 +115,7 @@ const ChatsStackNavigator = () => {
 				component={NotificationPrefView}
 				options={NotificationPrefView.navigationOptions}
 			/>
-			<ChatsStack.Screen
-				name='ForwardLivechatView'
-				component={ForwardLivechatView}
-				options={ForwardLivechatView.navigationOptions}
-			/>
+			<ChatsStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 			<ChatsStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 			<ChatsStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 			<ChatsStack.Screen
@@ -135,9 +131,9 @@ const ChatsStackNavigator = () => {
 				component={AddExistingChannelView}
 				options={AddExistingChannelView.navigationOptions}
 			/>
-			<ChatsStack.Screen name='MarkdownTableView' component={MarkdownTableView} options={MarkdownTableView.navigationOptions} />
+			<ChatsStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 			<ChatsStack.Screen name='ReadReceiptsView' component={ReadReceiptsView} options={ReadReceiptsView.navigationOptions} />
-			<ChatsStack.Screen name='QueueListView' component={QueueListView} options={QueueListView.navigationOptions} />
+			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
 			<ChatsStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 			<ChatsStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 		</ChatsStack.Navigator>
@@ -179,7 +175,7 @@ const SettingsStackNavigator = () => {
 				options={E2EEncryptionSecurityView.navigationOptions}
 			/>
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
-			<SettingsStack.Screen name='ThemeView' component={ThemeView} options={ThemeView.navigationOptions} />
+			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen
 				name='DefaultBrowserView'
 				component={DefaultBrowserView}
@@ -202,7 +198,7 @@ const AdminPanelStackNavigator = () => {
 	return (
 		<AdminPanelStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
-			<AdminPanelStack.Screen name='AdminPanelView' component={AdminPanelView} options={AdminPanelView.navigationOptions} />
+			<AdminPanelStack.Screen name='AdminPanelView' component={AdminPanelView} />
 		</AdminPanelStack.Navigator>
 	);
 };
@@ -227,11 +223,16 @@ const DrawerNavigator = () => {
 
 	return (
 		<Drawer.Navigator
+			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
-			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
-			screenOptions={{ swipeEnabled: false }}
-			drawerType='back'
-			overlayColor={`rgba(0,0,0,${themes[theme].backdropOpacity})`}>
+			useLegacyImplementation={true}
+			screenOptions={{
+				swipeEnabled: false,
+				headerShown: false,
+				drawerPosition: I18nManager.isRTL ? 'right' : 'left',
+				drawerType: 'back',
+				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`
+			}}>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
@@ -306,7 +307,8 @@ const InsideStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation }}>
+		<InsideStack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='NewMessageStackNavigator' component={NewMessageStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen

@@ -1,9 +1,9 @@
-import sdk from '../rocketchat/services/sdk';
-import { compareServerVersion } from '../utils';
-import { store as reduxStore } from '../auxStore';
+import sdk from '../services/sdk';
+import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
+import { compareServerVersion } from './helpers';
 
 const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
 const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';
@@ -55,11 +55,6 @@ export function getEnterpriseModules() {
 		}
 		return resolve();
 	});
-}
-
-export function hasLicense(module: string) {
-	const { enterpriseModules } = reduxStore.getState();
-	return enterpriseModules.includes(module);
 }
 
 export function isOmnichannelModuleAvailable() {

@@ -7,22 +7,22 @@ import { Q } from '@nozbe/watermelondb';
 
 import * as List from '../containers/List';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import SearchBox from '../containers/SearchBox';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
+import { themes } from '../lib/constants';
+import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import Loading from '../containers/Loading';
-import { animateNextTransition } from '../utils/layoutAnimation';
-import { goRoom } from '../utils/goRoom';
-import { showErrorAlert } from '../utils/info';
-import debounce from '../utils/debounce';
+import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
+import { goRoom } from '../lib/methods/helpers/goRoom';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../stacks/types';
-import { TSubscriptionModel, SubscriptionType } from '../definitions';
+import { TSubscriptionModel, SubscriptionType, IApplicationState } from '../definitions';
+import { getRoomTitle, hasPermission, debounce } from '../lib/methods/helpers';
+import { Services } from '../lib/services';
 
 interface IAddExistingChannelViewState {
 	search: TSubscriptionModel[];
@@ -34,9 +34,9 @@ interface IAddExistingChannelViewState {
 interface IAddExistingChannelViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 	route: RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
-	addTeamChannelPermission: string[];
+	addTeamChannelPermission?: string[];
 }
 
 const QUERY_SIZE = 50;
@@ -100,7 +100,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 						if (channel.prid) {
 							return false;
 						}
-						const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+						const permissions = await hasPermission([addTeamChannelPermission], channel.rid);
 						if (!permissions[0]) {
 							return false;
 						}
@@ -133,7 +133,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		this.setState({ loading: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await RocketChat.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
+			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
 				// @ts-ignore
@@ -181,7 +181,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		const icon = item.t === SubscriptionType.DIRECT && !item?.teamId ? 'channel-private' : 'channel-public';
 		return (
 			<List.Item
-				title={RocketChat.getRoomTitle(item)}
+				title={getRoomTitle(item)}
 				translateTitle={false}
 				onPress={() => this.toggleChannel(item.rid)}
 				testID={`add-existing-channel-view-item-${item.name}`}
@@ -221,7 +221,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	addTeamChannelPermission: state.permissions['add-team-channel']
 });

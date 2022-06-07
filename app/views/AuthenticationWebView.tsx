@@ -7,13 +7,13 @@ import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import { RouteProp } from '@react-navigation/core';
 
 import { OutsideModalParamList } from '../stacks/types';
-import RocketChat from '../lib/rocketchat';
-import { isIOS } from '../utils/deviceInfo';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { withTheme } from '../theme';
-import debounce from '../utils/debounce';
+import { TSupportedThemes, withTheme } from '../theme';
+import { debounce, isIOS } from '../lib/methods/helpers';
 import * as HeaderButton from '../containers/HeaderButton';
+import { Services } from '../lib/services';
+import { IApplicationState, ICredentials } from '../definitions';
 
 const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
@@ -52,7 +52,7 @@ interface IAuthenticationWebView extends INavigationOption {
 	server: string;
 	Accounts_Iframe_api_url: string;
 	Accounts_Iframe_api_method: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IState {
@@ -93,7 +93,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 		navigation.pop();
 	};
 
-	login = (params: any) => {
+	login = (params: ICredentials) => {
 		const { logging } = this.state;
 		if (logging) {
 			return;
@@ -102,7 +102,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 		this.setState({ logging: true });
 
 		try {
-			RocketChat.loginOAuthOrSso(params);
+			Services.loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
 		}
@@ -111,7 +111,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 	};
 
 	// Force 3s delay so the server has time to evaluate the token
-	debouncedLogin = debounce((params: any) => this.login(params), 3000);
+	debouncedLogin = debounce((params: ICredentials) => this.login(params), 3000);
 
 	tryLogin = debounce(
 		async () => {
@@ -135,7 +135,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 			const parsedUrl = parse(url, true);
 			// ticket -> cas / validate & saml_idp_credentialToken -> saml
 			if (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken) {
-				let payload;
+				let payload: ICredentials;
 				if (authType === 'saml') {
 					const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
 					const credentialToken = { credentialToken: token };
@@ -175,7 +175,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 
 	render() {
 		const { loading } = this.state;
-		const { route, theme } = this.props;
+		const { route } = this.props;
 		const { url, authType } = route.params;
 		const isIframe = authType === 'iframe';
 
@@ -196,16 +196,16 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 						this.setState({ loading: false });
 					}}
 				/>
-				{loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null}
+				{loading ? <ActivityIndicator size='large' absolute /> : null}
 			</>
 		);
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url,
-	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method
+	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url as string,
+	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method as string
 });
 
 export default connect(mapStateToProps)(withTheme(AuthenticationWebView));

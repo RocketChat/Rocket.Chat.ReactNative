@@ -4,17 +4,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer, types } from '../../presentation/ImageViewer';
-import { themes } from '../../constants/colors';
 import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid } from '../../lib/methods/helpers';
 import { allowPreview } from './utils';
 import { THUMBS_HEIGHT } from './constants';
-import { IAttachment, IUseDimensions } from './interfaces';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
+import { IShareAttachment } from '../../definitions';
 
 const MESSAGEBOX_HEIGHT = 56;
 
@@ -36,10 +37,10 @@ const styles = StyleSheet.create({
 });
 
 interface IIconPreview {
-	iconName: string;
+	iconName: TIconsName;
 	title: string;
 	description?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	width: number;
 	height: number;
 	danger?: boolean;
@@ -56,15 +57,15 @@ const IconPreview = React.memo(({ iconName, title, description, theme, width, he
 ));
 
 interface IPreview {
-	item: IAttachment;
-	theme: string;
+	item: IShareAttachment;
+	theme: TSupportedThemes;
 	isShareExtension: boolean;
 	length: number;
 }
 
 const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview) => {
 	const type = item?.mime;
-	const { width, height } = useDimensions() as IUseDimensions;
+	const { width, height } = useDimensions();
 	const { isLandscape } = useOrientation();
 	const insets = useSafeAreaInsets();
 	const headerHeight = getHeaderHeight(isLandscape);

@@ -7,9 +7,11 @@ import { CompositeNavigationProp } from '@react-navigation/core';
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
+import { IApplicationState } from '../../definitions';
+import { IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
 import { getShowLoginButton } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
@@ -19,14 +21,11 @@ interface IWorkSpaceProp {
 		StackNavigationProp<OutsideParamList, 'WorkspaceView'>,
 		StackNavigationProp<OutsideModalParamList>
 	>;
-	theme: string;
+	theme: TSupportedThemes;
 	Site_Name: string;
 	Site_Url: string;
 	server: string;
-	Assets_favicon_512: {
-		url?: string;
-		defaultUrl: string;
-	};
+	Assets_favicon_512: IAssetsFavicon512;
 	registrationForm: string;
 	registrationText: string;
 	showLoginButton: boolean;
@@ -74,7 +73,7 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 		const { theme, Site_Name, Site_Url, Assets_favicon_512, server, showLoginButton } = this.props;
 
 		return (
-			<FormContainer theme={theme} testID='workspace-view'>
+			<FormContainer testID='workspace-view'>
 				<FormContainerInner>
 					<View style={styles.alignItemsCenter}>
 						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
@@ -82,7 +81,7 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
 					</View>
 					{showLoginButton ? (
-						<Button title={I18n.t('Login')} type='primary' onPress={this.login} theme={theme} testID='workspace-view-login' />
+						<Button title={I18n.t('Login')} type='primary' onPress={this.login} testID='workspace-view-login' />
 					) : null}
 					{this.showRegistrationButton ? (
 						<Button
@@ -90,7 +89,6 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 							type='secondary'
 							backgroundColor={themes[theme].chatComponentBackground}
 							onPress={this.register}
-							theme={theme}
 							testID='workspace-view-register'
 						/>
 					) : (
@@ -102,14 +100,14 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Site_Name: state.settings.Site_Name,
-	Site_Url: state.settings.Site_Url,
-	Assets_favicon_512: state.settings.Assets_favicon_512,
-	registrationForm: state.settings.Accounts_RegistrationForm,
-	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
-	Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled,
+	Site_Name: state.settings.Site_Name as string,
+	Site_Url: state.settings.Site_Url as string,
+	Assets_favicon_512: state.settings.Assets_favicon_512 as IAssetsFavicon512,
+	registrationForm: state.settings.Accounts_RegistrationForm as string,
+	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
+	Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean,
 	showLoginButton: getShowLoginButton(state),
 	inviteLinkToken: state.inviteLinks.token
 });

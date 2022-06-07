@@ -1,38 +1,36 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
-import { Provider } from 'react-redux';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
-import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
-import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './notifications/push';
-import store from './lib/createStore';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
-import { ThemeContext } from './theme';
-import { DimensionsContext } from './dimensions';
-import RocketChat from './lib/rocketchat';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
-import { isTablet } from './utils/deviceInfo';
-import { KEY_COMMAND } from './commands';
 import AppContainer from './AppContainer';
-import TwoFactor from './containers/TwoFactor';
-import ScreenLockedView from './views/ScreenLockedView';
-import ChangePasscodeView from './views/ChangePasscodeView';
-import Toast from './containers/Toast';
-import InAppNotification from './containers/InAppNotification';
+import { KEY_COMMAND } from './commands';
 import { ActionSheetProvider } from './containers/ActionSheet';
-import debounce from './utils/debounce';
-import { isFDroidBuild } from './constants/environment';
-import { IThemePreference } from './definitions/ITheme';
+import InAppNotification from './containers/InAppNotification';
+import Toast from './containers/Toast';
+import TwoFactor from './containers/TwoFactor';
 import { ICommand } from './definitions/ICommand';
-import { initStore } from './lib/auxStore';
-import { themes } from './constants/colors';
+import { IThemePreference } from './definitions/ITheme';
+import { DimensionsContext } from './dimensions';
+import { colors, isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT, themes } from './lib/constants';
+import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
+import parseQuery from './lib/methods/helpers/parseQuery';
+import { initializePushNotifications, onNotification } from './lib/notifications';
+import store from './lib/store';
+import { initStore } from './lib/store/auxStore';
+import { ThemeContext, TSupportedThemes } from './theme';
+import { debounce, isTablet } from './lib/methods/helpers';
+import EventEmitter from './lib/methods/helpers/events';
+import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
+import ChangePasscodeView from './views/ChangePasscodeView';
+import ScreenLockedView from './views/ScreenLockedView';
 
 RNScreens.enableScreens();
 initStore(store);
@@ -45,7 +43,7 @@ interface IDimensions {
 }
 
 interface IState {
-	theme: string;
+	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
 	width: number;
 	height: number;
@@ -195,10 +193,10 @@ export default class Root extends React.Component<{}, IState> {
 	};
 
 	initCrashReport = () => {
-		RocketChat.getAllowCrashReport().then(allowCrashReport => {
+		getAllowCrashReport().then(allowCrashReport => {
 			toggleCrashErrorsReport(allowCrashReport);
 		});
-		RocketChat.getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
+		getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
 			toggleAnalyticsEventsReport(allowAnalyticsEvents);
 		});
 	};
@@ -215,7 +213,8 @@ export default class Root extends React.Component<{}, IState> {
 							value={{
 								theme,
 								themePreferences,
-								setTheme: this.setTheme
+								setTheme: this.setTheme,
+								colors: colors[theme]
 							}}>
 							<DimensionsContext.Provider
 								value={{
@@ -225,14 +224,16 @@ export default class Root extends React.Component<{}, IState> {
 									fontScale,
 									setDimensions: this.setDimensions
 								}}>
-								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
-								</ActionSheetProvider>
+								<GestureHandlerRootView style={{ flex: 1 }}>
+									<ActionSheetProvider>
+										<AppContainer />
+										<TwoFactor />
+										<ScreenLockedView />
+										<ChangePasscodeView />
+										<InAppNotification />
+										<Toast />
+									</ActionSheetProvider>
+								</GestureHandlerRootView>
 							</DimensionsContext.Provider>
 						</ThemeContext.Provider>
 					</Provider>

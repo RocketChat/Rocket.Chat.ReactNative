@@ -1,22 +1,25 @@
 import { IUser } from './IUser';
 
 export interface IAttachment {
-	ts: string | Date;
-	title: string;
-	type: string;
-	description: string;
+	ts?: string | Date;
+	title?: string;
+	type?: string;
+	description?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;
 	video_url?: string;
 	video_type?: string;
+	audio_url?: string;
 	title_link_download?: boolean;
+	attachments?: IAttachment[];
 	fields?: IAttachment[];
 	image_dimensions?: { width?: number; height?: number };
 	image_preview?: string;
 	image_size?: number;
 	author_name?: string;
 	author_icon?: string;
+	actions?: { type: string; msg: string; text: string }[];
 	message_link?: string;
 	text?: string;
 	short?: boolean;
@@ -24,6 +27,7 @@ export interface IAttachment {
 	author_link?: string;
 	color?: string;
 	thumb_url?: string;
+	collapsed?: boolean;
 }
 
 export interface IServerAttachment {
@@ -51,4 +55,15 @@ export interface IServerAttachment {
 	uploading: boolean;
 	url: string;
 	user: Pick<IUser, '_id' | 'username' | 'name'>;
+}
+
+export interface IShareAttachment {
+	filename: string;
+	description?: string;
+	size: number;
+	mime?: string;
+	path: string;
+	canUpload: boolean;
+	error?: any;
+	uri: string;
 }

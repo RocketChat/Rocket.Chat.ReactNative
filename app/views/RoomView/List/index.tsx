@@ -6,18 +6,19 @@ import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../../constants/colors';
+import { TSupportedThemes } from '../../../theme';
+import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
-import RocketChat from '../../../lib/rocketchat';
-import { compareServerVersion } from '../../../lib/utils';
-import debounce from '../../../utils/debounce';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
-import log from '../../../utils/log';
+import { compareServerVersion, debounce } from '../../../lib/methods/helpers';
+import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
+import log from '../../../lib/methods/helpers/log';
 import EmptyRoom from '../EmptyRoom';
-import List, { IListProps } from './List';
+import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
+import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
+import { Services } from '../../../lib/services';
 
 const QUERY_SIZE = 50;
 
@@ -39,9 +40,9 @@ export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
 	tmid?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	loading: boolean;
-	listRef: React.RefObject<IListProps>;
+	listRef: TListRef;
 	hideSystemMessages?: string[];
 	tunread?: string[];
 	ignored?: string[];
@@ -67,7 +68,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	private viewabilityConfig = {
 		itemVisiblePercentThreshold: 10
 	};
-	private highlightedMessageTimeout: number | undefined | false;
+	private highlightedMessageTimeout: ReturnType<typeof setTimeout> | undefined | false;
 	private thread?: TThreadModel;
 	private messagesObservable?: Observable<TMessageModel[] | TThreadMessageModel[]>;
 	private messagesSubscription?: Subscription;
@@ -218,7 +219,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 		if (tmid) {
 			try {
-				await RocketChat.readThreads(tmid);
+				await Services.readThreads(tmid);
 			} catch {
 				// Do nothing
 			}
@@ -235,9 +236,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			if (messages.length) {
 				try {
 					if (tmid) {
-						await RocketChat.loadThreadMessages({ tmid, rid });
+						await loadThreadMessages({ tmid, rid });
 					} else {
-						await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
+						await loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
 					}
 				} catch (e) {
 					log(e);
@@ -270,8 +271,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
 		const { listRef } = this.props;
-		// @ts-ignore
-		listRef.current.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+		listRef.current?.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
 
 	jumpToMessage = (messageId: string) =>
@@ -281,8 +281,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			const { listRef } = this.props;
 			const index = messages.findIndex(item => item.id === messageId);
 			if (index > -1) {
-				// @ts-ignore
-				listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				listRef.current?.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 				await new Promise(res => setTimeout(res, 300));
 				if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
 					if (!this.jumping) {
@@ -298,8 +297,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				}, 10000);
 				await setTimeout(() => resolve(), 300);
 			} else {
-				// @ts-ignore
-				listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
+				listRef.current?.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
 				if (!this.jumping) {
 					return resolve();
 				}
@@ -314,14 +312,13 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
-		// @ts-ignore
-		listRef.current.getNode().scrollToOffset({ offset: -100 });
+		listRef.current?.getNode().scrollToOffset({ offset: -100 });
 	};
 
 	renderFooter = () => {
-		const { rid, theme, loading } = this.props;
+		const { rid, loading } = this.props;
 		if (loading && rid) {
-			return <ActivityIndicator theme={theme} />;
+			return <ActivityIndicator />;
 		}
 		return null;
 	};
@@ -364,5 +361,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		);
 	}
 }
+
+export type ListContainerType = ListContainer;
 
 export default ListContainer;

@@ -2,14 +2,14 @@ import React from 'react';
 import { View } from 'react-native';
 import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 
-import { store } from '../../lib/auxStore';
+import { store } from '../../lib/store/auxStore';
 import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 
 interface IMessageBoxEmojiKeyboard {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiKeyboard, any> {
@@ -21,7 +21,7 @@ export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiK
 		this.baseUrl = state.share.server.server || state.server.server;
 	}
 
-	onEmojiSelected = (emoji: any) => {
+	onEmojiSelected = (emoji: string) => {
 		KeyboardRegistry.onItemSelected('EmojiKeyboard', { emoji });
 	};
 
@@ -31,7 +31,7 @@ export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiK
 			<View
 				style={[styles.emojiKeyboardContainer, { borderTopColor: themes[theme].borderColor }]}
 				testID='messagebox-keyboard-emoji'>
-				<EmojiPicker onEmojiSelected={this.onEmojiSelected} baseUrl={this.baseUrl} />
+				<EmojiPicker onEmojiSelected={this.onEmojiSelected} baseUrl={this.baseUrl} theme={theme} />
 			</View>
 		);
 	}

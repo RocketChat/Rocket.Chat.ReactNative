@@ -2,17 +2,18 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { CustomIcon } from '../../../lib/Icons';
-import { themes } from '../../../constants/colors';
+import { CustomIcon } from '../../CustomIcon';
+import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
+import { TSupportedThemes } from '../../../theme';
 
 interface IInput {
 	children?: JSX.Element;
-	onPress: Function;
-	theme: string;
+	onPress: () => void;
+	theme: TSupportedThemes;
 	inputStyle?: object;
-	disabled?: boolean | object;
+	disabled?: boolean | null;
 	placeholder?: string;
 	loading?: boolean;
 	innerInputStyle?: object;

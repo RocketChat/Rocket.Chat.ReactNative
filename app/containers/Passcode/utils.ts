@@ -1,14 +1,14 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
-import { LOCKED_OUT_TIMER_KEY, TIME_TO_LOCK } from '../../constants/localAuthentication';
+import { LOCKED_OUT_TIMER_KEY, TIME_TO_LOCK } from '../../lib/constants';
 
 export const getLockedUntil = async () => {
-	const t: any = await AsyncStorage.getItem(LOCKED_OUT_TIMER_KEY);
+	const t = await AsyncStorage.getItem(LOCKED_OUT_TIMER_KEY);
 	if (t) {
-		return moment(t).add(TIME_TO_LOCK);
+		return moment(t).add(TIME_TO_LOCK).toDate();
 	}
 	return null;
 };
-// @ts-ignore
-export const getDiff = t => new Date(t) - new Date();
+
+export const getDiff = (t: string | number | Date) => new Date(t).getTime() - new Date().getTime();

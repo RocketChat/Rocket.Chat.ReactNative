@@ -19,7 +19,7 @@ interface IParagraphProps {
 	value: ParagraphProps['value'];
 }
 
-const Inline = ({ value }: IParagraphProps): JSX.Element => {
+const Inline = ({ value }: IParagraphProps) => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
 		<Text style={styles.inline}>

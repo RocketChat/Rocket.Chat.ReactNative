@@ -23,7 +23,7 @@ index 602d51d..920d975 100644
      public String getName() {
          return "RNFetchBlob";
 diff --git a/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m b/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m
-index cdbe6b1..1699c6c 100644
+index cdbe6b1..c0ce9bd 100644
 --- a/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m
 +++ b/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m
 @@ -15,6 +15,9 @@
@@ -36,7 +36,7 @@ index cdbe6b1..1699c6c 100644
  
  typedef NS_ENUM(NSUInteger, ResponseFormat) {
      UTF8,
-@@ -450,16 +453,107 @@ typedef NS_ENUM(NSUInteger, ResponseFormat) {
+@@ -450,16 +453,108 @@ - (void) URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSen
      }
  }
  
@@ -106,38 +106,39 @@ index cdbe6b1..1699c6c 100644
 +  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
 +
 +  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
-+}
-+
+ }
+ 
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
 +{
 +  NSString *host = challenge.protectionSpace.host;
 +
 +  // Read the clientSSL info from MMKV
-+  __block NSDictionary *clientSSL;
++  __block NSString *clientSSL;
 +  SecureStorage *secureStorage = [[SecureStorage alloc] init];
 +
 +  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
 +  NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
 +
 +  if (key == NULL) {
-+  return;
++    return;
 +  }
 +
++  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +  NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
 +  MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
-+  clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++  clientSSL = [mmkv getStringForKey:host];
 +
-+  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-+
-+  if (clientSSL != (id)[NSNull null]) {
-+    NSString *path = [clientSSL objectForKey:@"path"];
-+    NSString *password = [clientSSL objectForKey:@"password"];
++  if ([clientSSL length] != 0) {
++    NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
++    id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
++    NSString *path = [dict objectForKey:@"path"];
++    NSString *password = [dict objectForKey:@"password"];
 +    credential = [self getUrlCredential:challenge path:path password:password];
 +  }
 +
 +  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
- }
- 
++}
++
 +// - (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credantial))completionHandler
 +// {
 +//     if ([[options valueForKey:CONFIG_TRUSTY] boolValue]) {

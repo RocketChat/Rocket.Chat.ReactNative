@@ -1,7 +1,7 @@
 import { ILastMessage } from '../../definitions';
-import log from '../../utils/log';
+import log from './helpers/log';
 import database from '../database';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 
 const getLastUpdate = async (rid: string) => {
@@ -29,7 +29,7 @@ async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen?: Date })
 	return result;
 }
 
-export default function loadMissedMessages(args: { rid: string; lastOpen?: Date }): Promise<void> {
+export function loadMissedMessages(args: { rid: string; lastOpen?: Date }): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await load({ rid: args.rid, lastOpen: args.lastOpen });

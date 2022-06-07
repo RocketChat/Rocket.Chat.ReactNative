@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import UnreadBadge from '../../presentation/UnreadBadge';
+import UnreadBadge from '../UnreadBadge';
 
 const styles = StyleSheet.create({
 	badgeContainer: {
@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Badge = ({ ...props }) => <UnreadBadge {...props} style={styles.badgeContainer} small />;
+export const Badge = ({ ...props }): React.ReactElement => <UnreadBadge {...props} style={styles.badgeContainer} small />;
 
 export default Badge;

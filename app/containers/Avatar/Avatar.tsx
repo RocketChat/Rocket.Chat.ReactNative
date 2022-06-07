@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { avatarURL } from '../../utils/avatar';
-import { SubscriptionType } from '../../definitions/ISubscription';
+import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
+import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
 
@@ -15,10 +15,10 @@ const Avatar = React.memo(
 		style,
 		avatar,
 		children,
-		user,
+		userId,
+		token,
 		onPress,
 		emoji,
-		theme,
 		getCustomEmoji,
 		avatarETag,
 		isStatic,
@@ -28,7 +28,8 @@ const Avatar = React.memo(
 		text,
 		size = 25,
 		borderRadius = 4,
-		type = SubscriptionType.DIRECT
+		type = SubscriptionType.DIRECT,
+		externalProviderUrl
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
@@ -43,29 +44,24 @@ const Avatar = React.memo(
 		let image;
 		if (emoji) {
 			image = (
-				<Emoji
-					theme={theme!}
-					baseUrl={server}
-					getCustomEmoji={getCustomEmoji}
-					isMessageContainsOnlyEmoji
-					literal={emoji}
-					style={avatarStyle}
-				/>
+				<Emoji baseUrl={server} getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />
 			);
 		} else {
 			let uri = avatar;
 			if (!isStatic) {
-				uri = avatarURL({
+				uri = getAvatarURL({
 					type,
 					text,
 					size,
-					user,
+					userId,
+					token,
 					avatar,
 					server,
 					avatarETag,
 					serverVersion,
 					rid,
-					blockUnauthenticatedAccess
+					blockUnauthenticatedAccess,
+					externalProviderUrl
 				});
 			}
 

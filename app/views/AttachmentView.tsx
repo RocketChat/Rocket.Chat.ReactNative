@@ -11,21 +11,20 @@ import { sha256 } from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';
-import { themes } from '../constants/colors';
-import { formatAttachmentUrl } from '../lib/utils';
+import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
-import { isAndroid } from '../utils/deviceInfo';
+import { isAndroid, formatAttachmentUrl } from '../lib/methods/helpers';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
-import { IAttachment } from '../definitions/IAttachment';
+import { IApplicationState, IUser, IAttachment } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,15 +40,12 @@ interface IAttachmentViewState {
 interface IAttachmentViewProps {
 	navigation: StackNavigationProp<InsideStackParamList, 'AttachmentView'>;
 	route: RouteProp<InsideStackParamList, 'AttachmentView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	baseUrl: string;
 	width: number;
 	height: number;
 	insets: { left: number; bottom: number; right: number; top: number };
-	user: {
-		id: string;
-		token: string;
-	};
+	user: IUser;
 	Allow_Save_Media_to_Gallery: boolean;
 }
 
@@ -84,7 +80,9 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		const attachment = route.params?.attachment;
 		let { title } = attachment;
 		try {
-			title = decodeURI(title);
+			if (title) {
+				title = decodeURI(title);
+			}
 		} catch {
 			// Do nothing
 		}
@@ -95,8 +93,11 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 				Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null,
 			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
 			headerTintColor: themes[theme].previewTintColor,
-			headerTitleStyle: { color: themes[theme].previewTintColor, marginHorizontal: 10 }
+			headerTitleStyle: { color: themes[theme].previewTintColor, paddingHorizontal: 20 },
+			headerTitleContainerStyle: { marginHorizontal: -20 },
+			headerTitleAlign: 'center'
 		};
+		// @ts-ignore
 		navigation.setOptions(options);
 	};
 
@@ -192,16 +193,16 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{content}
-				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
+				{loading ? <RCActivityIndicator absolute size='large' /> : null}
 			</View>
 		);
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery ?? true
+	Allow_Save_Media_to_Gallery: (state.settings.Allow_Save_Media_to_Gallery as boolean) ?? true
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));

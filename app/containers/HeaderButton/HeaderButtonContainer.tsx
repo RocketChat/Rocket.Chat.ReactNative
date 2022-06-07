@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 interface IHeaderButtonContainer {
-	children: React.ReactNode;
+	children?: React.ReactElement | (React.ReactElement | null)[] | null;
 	left?: boolean;
 }
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Container = ({ children, left = false }: IHeaderButtonContainer) => (
+const Container = ({ children, left = false }: IHeaderButtonContainer): React.ReactElement => (
 	<View style={[styles.container, left ? styles.left : styles.right]}>{children}</View>
 );
 

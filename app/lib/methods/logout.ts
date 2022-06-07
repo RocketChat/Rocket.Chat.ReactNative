@@ -2,22 +2,23 @@ import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
 
-import { getDeviceToken } from '../../notifications/push';
-import { extractHostname } from '../../utils/server';
-import { BASIC_AUTH_KEY } from '../../utils/fetch';
+import { getDeviceToken } from '../notifications';
+import { extractHostname, isSsl } from './helpers';
+import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
-import RocketChat from '../rocketchat';
-import { useSsl } from '../../utils/url';
-import log from '../../utils/log';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../encryption/constants';
-import UserPreferences from '../userPreferences';
-import { ICertificate, IRocketChat } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import log from './helpers/log';
+import { ICertificate } from '../../definitions';
+import sdk from '../services/sdk';
+import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
+import UserPreferences from './userPreferences';
+import { Services } from '../services';
+import { roomsSubscription } from './subscriptions/rooms';
+import { _activeUsersSubTimeout } from '.';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
-	UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
+	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
 	if (userId) {
-		UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${userId}`);
+		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
 	}
 	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
@@ -42,7 +43,7 @@ async function removeServerData({ server }: { server: string }) {
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		const usersCollection = serversDB.get('users');
 		if (userId) {
@@ -62,7 +63,7 @@ async function removeServerData({ server }: { server: string }) {
 }
 
 function removeCurrentServer() {
-	UserPreferences.removeItem(RocketChat.CURRENT_SERVER);
+	UserPreferences.removeItem(CURRENT_SERVER);
 }
 
 async function removeServerDatabase({ server }: { server: string }) {
@@ -76,11 +77,11 @@ async function removeServerDatabase({ server }: { server: string }) {
 
 export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		if (userId) {
-			const resume = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
+			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
-			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 			await sdk.login({ resume });
 
 			const token = getDeviceToken();
@@ -98,19 +99,18 @@ export async function removeServer({ server }: { server: string }): Promise<void
 	}
 }
 
-export default async function logout(this: IRocketChat, { server }: { server: string }): Promise<void> {
-	if (this.roomsSub) {
-		this.roomsSub.stop();
-		this.roomsSub = null;
+export async function logout({ server }: { server: string }): Promise<void> {
+	if (roomsSubscription?.stop) {
+		roomsSubscription.stop();
 	}
 
-	if (this.activeUsersSubTimeout) {
-		clearTimeout(this.activeUsersSubTimeout);
-		this.activeUsersSubTimeout = false;
+	if (_activeUsersSubTimeout.activeUsersSubTimeout) {
+		clearTimeout(_activeUsersSubTimeout.activeUsersSubTimeout as number);
+		_activeUsersSubTimeout.activeUsersSubTimeout = false;
 	}
 
 	try {
-		await this.removePushToken();
+		await Services.removePushToken();
 	} catch (e) {
 		log(e);
 	}

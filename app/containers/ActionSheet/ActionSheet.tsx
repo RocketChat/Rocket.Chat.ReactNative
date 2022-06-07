@@ -1,33 +1,21 @@
-import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard, Text } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { State, TapGestureHandler } from 'react-native-gesture-handler';
-import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
-import Animated, { Easing, Extrapolate, Value, interpolateNode } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
 import { useBackHandler } from '@react-native-community/hooks';
+import * as Haptics from 'expo-haptics';
+import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
+import { Keyboard } from 'react-native';
+import { Easing } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 
-import { Item } from './Item';
+import { useDimensions, useOrientation } from '../../dimensions';
+import { useTheme } from '../../theme';
+import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
-import { Button } from './Button';
-import { themes } from '../../constants/colors';
+import { TActionSheetOptions } from './Provider';
+import BottomSheetContent from './BottomSheetContent';
 import styles, { ITEM_HEIGHT } from './styles';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
-import * as List from '../List';
-import I18n from '../../i18n';
-import { IDimensionsContextProps, useDimensions, useOrientation } from '../../dimensions';
-
-interface IActionSheetData {
-	options: any;
-	headerHeight?: number;
-	hasCancel?: boolean;
-	customHeader: any;
-}
-
-const getItemLayout = (data: any, index: number) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
 
 const HANDLE_HEIGHT = isIOS ? 40 : 56;
-const MAX_SNAP_HEIGHT = 16;
+const MIN_SNAP_HEIGHT = 16;
 const CANCEL_HEIGHT = 64;
 
 const ANIMATION_DURATION = 250;
@@ -39,27 +27,27 @@ const ANIMATION_CONFIG = {
 };
 
 const ActionSheet = React.memo(
-	forwardRef(({ children, theme }: { children: JSX.Element; theme: string }, ref) => {
-		const bottomSheetRef: any = useRef();
-		const [data, setData] = useState<IActionSheetData>({} as IActionSheetData);
+	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+		const { colors } = useTheme();
+		const bottomSheetRef = useRef<BottomSheet>(null);
+		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
-		const { height }: Partial<IDimensionsContextProps> = useDimensions();
+		const { height } = useDimensions();
 		const { isLandscape } = useOrientation();
 		const insets = useSafeAreaInsets();
 
-		const maxSnap = Math.max(
-			height! -
-				// Items height
-				ITEM_HEIGHT * (data?.options?.length || 0) -
+		const maxSnap = Math.min(
+			// Items height
+			ITEM_HEIGHT * (data?.options?.length || 0) +
 				// Handle height
-				HANDLE_HEIGHT -
+				HANDLE_HEIGHT +
 				// Custom header height
-				(data?.headerHeight || 0) -
+				(data?.headerHeight || 0) +
 				// Insets bottom height (Notch devices)
-				insets.bottom -
+				insets.bottom +
 				// Cancel button height
 				(data?.hasCancel ? CANCEL_HEIGHT : 0),
-			MAX_SNAP_HEIGHT
+			height - MIN_SNAP_HEIGHT
 		);
 
 		/*
@@ -69,25 +57,17 @@ const ActionSheet = React.memo(
 		 * we'll provide more one snap
 		 * that point 50% of the whole screen
 		 */
-		const snaps: any = height! - maxSnap > height! * 0.6 && !isLandscape ? [maxSnap, height! * 0.5, height] : [maxSnap, height];
-		const openedSnapIndex = snaps.length > 2 ? 1 : 0;
-		const closedSnapIndex = snaps.length - 1;
+		const snaps = maxSnap > height * 0.6 && !isLandscape && !data.snaps ? [height * 0.5, maxSnap] : [maxSnap];
 
 		const toggleVisible = () => setVisible(!isVisible);
 
 		const hide = () => {
-			bottomSheetRef.current?.snapTo(closedSnapIndex);
+			bottomSheetRef.current?.close();
 		};
 
-		const show = (options: any) => {
+		const show = (options: TActionSheetOptions) => {
 			setData(options);
 			toggleVisible();
-		};
-
-		const onBackdropPressed = ({ nativeEvent }: any) => {
-			if (nativeEvent.oldState === State.ACTIVE) {
-				hide();
-			}
 		};
 
 		useBackHandler(() => {
@@ -101,7 +81,6 @@ const ActionSheet = React.memo(
 			if (isVisible) {
 				Keyboard.dismiss();
 				Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-				bottomSheetRef.current?.snapTo(openedSnapIndex);
 			}
 		}, [isVisible]);
 
@@ -117,79 +96,43 @@ const ActionSheet = React.memo(
 
 		const renderHandle = () => (
 			<>
-				<Handle theme={theme} />
+				<Handle />
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
 			</>
 		);
 
-		const renderFooter = () =>
-			data?.hasCancel ? (
-				<Button
-					onPress={hide}
-					style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]}
-					theme={theme}
-					accessibilityLabel={I18n.t('Cancel')}>
-					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{I18n.t('Cancel')}</Text>
-				</Button>
-			) : null;
+		const renderBackdrop = useCallback(
+			props => (
+				<BottomSheetBackdrop
+					{...props}
+					appearsOnIndex={0}
+					// Backdrop should be visible all the time bottom sheet is open
+					disappearsOnIndex={-1}
+					opacity={colors.backdropOpacity}
+				/>
+			),
+			[]
+		);
 
-		const renderItem = ({ item }: any) => <Item item={item} hide={hide} theme={theme} />;
-
-		const animatedPosition = React.useRef(new Value(0));
-		// TODO: Similar to https://github.com/wcandillon/react-native-redash/issues/307#issuecomment-827442320
-		const opacity = interpolateNode(animatedPosition.current, {
-			inputRange: [0, 1],
-			outputRange: [0, themes[theme].backdropOpacity],
-			extrapolate: Extrapolate.CLAMP
-		}) as any;
+		const bottomSheet = isLandscape || isTablet ? styles.bottomSheet : {};
 
 		return (
 			<>
 				{children}
 				{isVisible && (
-					<>
-						<TapGestureHandler onHandlerStateChange={onBackdropPressed}>
-							<Animated.View
-								testID='action-sheet-backdrop'
-								style={[
-									styles.backdrop,
-									{
-										backgroundColor: themes[theme].backdropColor,
-										opacity
-									}
-								]}
-							/>
-						</TapGestureHandler>
-						<ScrollBottomSheet
-							testID='action-sheet'
-							ref={bottomSheetRef}
-							componentType='FlatList'
-							snapPoints={snaps}
-							initialSnapIndex={closedSnapIndex}
-							renderHandle={renderHandle}
-							onSettle={index => index === closedSnapIndex && toggleVisible()}
-							animatedPosition={animatedPosition.current}
-							containerStyle={
-								[
-									styles.container,
-									{ backgroundColor: themes[theme].focusedBackground },
-									(isLandscape || isTablet) && styles.bottomSheet
-								] as any
-							}
-							animationConfig={ANIMATION_CONFIG}
-							// FlatList props
-							data={data?.options}
-							renderItem={renderItem}
-							keyExtractor={(item: any) => item.title}
-							style={{ backgroundColor: themes[theme].focusedBackground }}
-							contentContainerStyle={styles.content}
-							ItemSeparatorComponent={List.Separator}
-							ListHeaderComponent={List.Separator}
-							ListFooterComponent={renderFooter}
-							getItemLayout={getItemLayout}
-							removeClippedSubviews={isIOS}
-						/>
-					</>
+					<BottomSheet
+						ref={bottomSheetRef}
+						snapPoints={data?.snaps ? data.snaps : snaps}
+						animationConfigs={ANIMATION_CONFIG}
+						animateOnMount={true}
+						backdropComponent={renderBackdrop}
+						handleComponent={renderHandle}
+						enablePanDownToClose
+						style={{ ...styles.container, ...bottomSheet }}
+						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
+						onChange={index => index === -1 && toggleVisible()}>
+						<BottomSheetContent options={data?.options} hide={hide} children={data?.children} hasCancel={data?.hasCancel} />
+					</BottomSheet>
 				)}
 			</>
 		);

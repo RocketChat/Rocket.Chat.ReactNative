@@ -2,33 +2,28 @@ import React from 'react';
 import { FlatList } from 'react-native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import { Q, Model } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
-import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
-import RocketChat from '../lib/rocketchat';
+import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
+import { shareExtensionInit } from '../lib/methods/shareExtension';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import { ShareInsideStackParamList } from '../definitions/navigationTypes';
+import { IApplicationState, TServerModel } from '../definitions';
 
 const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
-const keyExtractor = (item: IServer) => item.id;
-
-interface IServer extends Model {
-	id: string;
-	iconURL: string;
-	name: string;
-}
+const keyExtractor = (item: TServerModel) => item.id;
 
 interface ISelectServerViewState {
-	servers: IServer[];
+	servers: TServerModel[];
 }
 
 interface ISelectServerViewProps {
 	navigation: StackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>;
-	server: string;
+	server?: string;
 }
 
 class SelectServerView extends React.Component<ISelectServerViewProps, ISelectServerViewState> {
@@ -36,12 +31,12 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 		title: I18n.t('Select_Server')
 	});
 
-	state = { servers: [] as IServer[] };
+	state = { servers: [] };
 
 	async componentDidMount() {
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
-		const servers = (await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch()) as IServer[];
+		const servers = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
 		this.setState({ servers });
 	}
 
@@ -50,11 +45,11 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 
 		navigation.navigate('ShareListView');
 		if (currentServer !== server) {
-			await RocketChat.shareExtensionInit(server);
+			await shareExtensionInit(server);
 		}
 	};
 
-	renderItem = ({ item }: { item: IServer }) => {
+	renderItem = ({ item }: { item: TServerModel }) => {
 		const { server } = this.props;
 		return <ServerItem onPress={() => this.select(item.id)} item={item} hasCheck={item.id === server} />;
 	};
@@ -81,7 +76,7 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 	}
 }
 
-const mapStateToProps = ({ share }: any) => ({
+const mapStateToProps = ({ share }: IApplicationState) => ({
 	server: share.server.server
 });
 

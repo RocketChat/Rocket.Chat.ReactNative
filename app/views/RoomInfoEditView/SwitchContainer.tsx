@@ -1,7 +1,8 @@
 import React from 'react';
 import { Switch, Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
+import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import styles from './styles';
 
 interface ISwitchContainer {
@@ -12,7 +13,7 @@ interface ISwitchContainer {
 	rightLabelPrimary?: string;
 	rightLabelSecondary?: string;
 	onValueChange: (value: any) => void;
-	theme: string;
+	theme: TSupportedThemes;
 	testID: string;
 	labelContainerStyle?: ViewStyle;
 	leftLabelStyle?: TextStyle;
