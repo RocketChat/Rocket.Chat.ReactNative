@@ -27,5 +27,3 @@ export const TextInput = React.forwardRef<RNTextInput, IThemedTextInput>(({ styl
 		/>
 	);
 });
-
-// export default ThemedTextInput;

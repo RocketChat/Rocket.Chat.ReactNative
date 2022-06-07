@@ -169,5 +169,3 @@ export const FormTextInput = ({
 		</View>
 	);
 };
-
-// export default FormTextInput;
