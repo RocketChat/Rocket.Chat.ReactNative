@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -25,12 +25,14 @@ const Service = React.memo(
 		storiesTestOnPress?: () => void;
 	}) => {
 		const { colors } = useTheme();
+		const onPress = useRef<any>();
+		const buttonText = useRef<React.ReactElement>();
+		const modifiedName = useRef<string>();
 
 		const { name } = service;
-		let modifiedName = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `${modifiedName}-monochromatic` as TIconsName;
+		modifiedName.current = name === 'meteor-developer' ? 'meteor' : name;
+		const icon = `${modifiedName.current}-monochromatic` as TIconsName;
 		const isSaml = service.service === 'saml';
-		let onPress: any = () => {};
 
 		const getSocialOauthProvider = (name: string) => {
 			const oauthProviders: IOauthProvider = {
@@ -48,37 +50,38 @@ const Service = React.memo(
 
 		switch (service.authType) {
 			case 'oauth': {
-				onPress = getSocialOauthProvider(service.name);
+				onPress.current = getSocialOauthProvider(service.name);
 				break;
 			}
 			case 'oauth_custom': {
-				onPress = () => ServiceLogin.onPressCustomOAuth({ loginService: service, server });
+				onPress.current = () => ServiceLogin.onPressCustomOAuth({ loginService: service, server });
 				break;
 			}
 			case 'saml': {
-				onPress = () => ServiceLogin.onPressSaml({ loginService: service, server });
+				onPress.current = () => ServiceLogin.onPressSaml({ loginService: service, server });
 				break;
 			}
 			case 'cas': {
-				onPress = () => ServiceLogin.onPressCas({ casLoginUrl: CAS_login_url, server });
+				onPress.current = () => ServiceLogin.onPressCas({ casLoginUrl: CAS_login_url, server });
 				break;
 			}
 			case 'apple': {
-				onPress = () => ServiceLogin.onPressAppleLogin();
+				onPress.current = () => ServiceLogin.onPressAppleLogin();
 				break;
 			}
 			default:
 				break;
 		}
 
-		modifiedName = modifiedName.charAt(0).toUpperCase() + modifiedName.slice(1);
-		let buttonText;
+		modifiedName.current = modifiedName.current.charAt(0).toUpperCase() + modifiedName.current.slice(1);
 		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
-			buttonText = <Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{modifiedName}</Text>;
+			buttonText.current = (
+				<Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{modifiedName.current}</Text>
+			);
 		} else {
-			buttonText = (
+			buttonText.current = (
 				<>
-					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{modifiedName}</Text>
+					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{modifiedName.current}</Text>
 				</>
 			);
 		}
@@ -87,9 +90,9 @@ const Service = React.memo(
 
 		return (
 			<ButtonService
-				onPress={onPress}
+				onPress={onPress.current}
 				backgroundColor={backgroundColor}
-				buttonText={buttonText}
+				buttonText={buttonText.current}
 				icon={icon}
 				name={service.name}
 				authType={service.authType}
