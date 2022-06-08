@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { isTablet } from '../../lib/methods/helpers';
 
+export const SLIDER_THUMB_RADIUS = 6;
+
 export default StyleSheet.create({
 	root: {
 		flexDirection: 'row'
@@ -169,5 +171,22 @@ export default StyleSheet.create({
 	threadDetails: {
 		flex: 1,
 		marginLeft: 12
+	},
+	sliderContainer: {
+		flex: 1
+	},
+	track: {
+		justifyContent: 'center'
+	},
+	activeTrack: {
+		height: 2,
+		width: 0
+	},
+	sliderThumb: {
+		height: SLIDER_THUMB_RADIUS * 2,
+		width: SLIDER_THUMB_RADIUS * 2,
+		borderRadius: SLIDER_THUMB_RADIUS,
+		position: 'absolute',
+		zIndex: 2
 	}
 });
