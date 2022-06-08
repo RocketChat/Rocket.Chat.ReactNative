@@ -27,7 +27,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import { debounce } from './lib/methods/helpers';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
-import { colors, CURRENT_SERVER } from './lib/constants';
+import { colors, CURRENT_SERVER, TOKEN_KEY } from './lib/constants';
 
 initStore(store);
 
@@ -120,8 +120,9 @@ class Root extends React.Component<{}, IState> {
 
 	init = async () => {
 		const currentServer = UserPreferences.getString(CURRENT_SERVER);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${currentServer}`);
 
-		if (currentServer) {
+		if (currentServer && userId) {
 			await localAuthenticate(currentServer);
 			this.setState({ root: 'inside' });
 			await shareExtensionInit(currentServer);
