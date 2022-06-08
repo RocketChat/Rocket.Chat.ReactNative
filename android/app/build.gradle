@@ -93,7 +93,6 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -184,6 +183,8 @@ android {
             if (!isFoss) {
                 firebaseCrashlytics {
                     nativeSymbolUploadEnabled true
+                    strippedNativeLibsDir 'build/intermediates/stripped_native_libs/release/out/lib'
+                    unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
                 }
             }
         }
@@ -278,7 +279,6 @@ android {
 }
 
 dependencies {
-    addUnimodulesDependencies()
     implementation project(':@react-native-community_viewpager')
     playImplementation project(':react-native-notifications')
     playImplementation 'com.google.firebase:firebase-core:16.0.0'

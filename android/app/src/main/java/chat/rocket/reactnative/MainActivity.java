@@ -10,7 +10,9 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactFragmentActivity;
+import com.facebook.react.ReactActivity;
+
+import expo.modules.ReactActivityDelegateWrapper;
 
 import com.zoontek.rnbootsplash.RNBootSplash;
 import com.google.gson.Gson;
@@ -27,7 +29,7 @@ class SortPreferences {
   Boolean showUnread;
 }
 
-public class MainActivity extends ReactFragmentActivity {
+public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

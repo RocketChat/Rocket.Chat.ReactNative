@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-index eacd030..f4b1b96 100644
+index 1c4e1c2..2a3c9ba 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-@@ -96,6 +96,9 @@ NSString *serviceName = nil;
+@@ -105,6 +105,9 @@ - (void) removeSecureKey:(NSString *)key
  
  - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
@@ -12,17 +12,17 @@ index eacd030..f4b1b96 100644
      if(serviceName == nil){
          serviceName = [[NSBundle mainBundle] bundleIdentifier];
      }
-@@ -107,6 +110,9 @@ NSString *serviceName = nil;
+@@ -116,6 +119,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
      [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
- 
+     
 +    NSString *keychainGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"KeychainGroup"];
 +    [searchDictionary setObject:keychainGroup forKey:(id)kSecAttrAccessGroup];
 +
      return searchDictionary;
  }
  
-@@ -208,11 +214,14 @@ NSString *serviceName = nil;
+@@ -217,11 +223,14 @@ - (void)clearSecureKeyStore
  
  - (void)handleAppUninstallation
  {

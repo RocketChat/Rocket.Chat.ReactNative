@@ -17,7 +17,8 @@
         tools:replace="android:allowBackup">
         <activity
             android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
-            android:theme="@style/BootTheme">
+            android:theme="@style/BootTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
