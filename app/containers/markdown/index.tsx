@@ -16,7 +16,7 @@ import MarkdownTableRow from './TableRow';
 import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
-import { isValidURL } from '../../utils/url';
+import { isValidURL } from '../../lib/methods/helpers/url';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
@@ -233,7 +233,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderEmoji = ({ literal }: TLiteral) => {
-		const { getCustomEmoji, baseUrl = '', customEmojis, style, theme } = this.props;
+		const { getCustomEmoji, baseUrl = '', customEmojis, style } = this.props;
 		return (
 			<MarkdownEmoji
 				literal={literal}
@@ -242,7 +242,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				baseUrl={baseUrl}
 				customEmojis={customEmojis}
 				style={style}
-				theme={theme}
 			/>
 		);
 	};

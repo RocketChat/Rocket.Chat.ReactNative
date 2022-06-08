@@ -22,6 +22,7 @@ import '../../app/containers/TextInput/TextInput.stories';
 import '../../app/containers/message/Components/CollapsibleQuote/CollapsibleQuote.stories';
 import '../../app/containers/Button/Button.stories';
 import '../../app/containers/LoginServices/LoginServices.stories';
+import '../../app/containers/SearchBox/SearchBox.stories';
 
 // Change here to see themed storybook
 export const theme = 'light';

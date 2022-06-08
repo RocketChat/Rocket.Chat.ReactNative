@@ -35,17 +35,21 @@ import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
-import log, { events, logEvent } from '../../utils/log';
-import { MessageTypeValues } from '../../utils/messageTypes';
-import random from '../../utils/random';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import EventEmitter from '../../lib/methods/helpers/events';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { MessageTypeValues } from './messageTypes';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { getRoomTitle, hasPermission } from '../../lib/methods';
+import {
+	getRoomTitle,
+	hasPermission,
+	compareServerVersion,
+	showConfirmationAlert,
+	showErrorAlert,
+	random
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {

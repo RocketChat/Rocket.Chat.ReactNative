@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text } from 'react-native';
 
 import { IEmoji } from '../../../definitions/IEmoji';
-import shortnameToUnicode from '../../../utils/shortnameToUnicode';
+import shortnameToUnicode from '../../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';
 import MessageboxContext from '../Context';
 import styles from '../styles';

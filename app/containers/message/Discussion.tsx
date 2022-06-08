@@ -9,7 +9,7 @@ import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
-import { formatDateThreads } from '../../utils/room';
+import { formatDateThreads } from '../../lib/methods/helpers/room';
 import { IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 

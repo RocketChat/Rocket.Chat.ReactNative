@@ -5,23 +5,21 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 export interface IAvatar {
 	server?: string;
 	style?: any;
-	text: string;
+	text?: string;
 	avatar?: string;
 	emoji?: string;
 	size?: number;
 	borderRadius?: number;
 	type?: string;
 	children?: React.ReactElement | null;
-	user?: {
-		id?: string;
-		token?: string;
-	};
+	userId?: string;
+	token?: string;
 	onPress?: () => void;
 	getCustomEmoji?: TGetCustomEmoji;
 	avatarETag?: string;
 	isStatic?: boolean | string;
 	rid?: string;
 	blockUnauthenticatedAccess?: boolean;
-	serverVersion: string | null;
+	serverVersion?: string | null;
 	externalProviderUrl?: string;
 }
