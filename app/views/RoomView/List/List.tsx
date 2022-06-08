@@ -1,7 +1,8 @@
-import React from 'react';
-import { FlatList, FlatListProps, StyleSheet } from 'react-native';
-import Animated from 'react-native-reanimated';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { FlatListProps, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 
 import { isIOS } from '../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
