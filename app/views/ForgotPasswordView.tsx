@@ -9,9 +9,8 @@ import { themes } from '../lib/constants';
 import { Services } from '../lib/services';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { showErrorAlert } from '../utils/info';
-import isValidEmail from '../utils/isValidEmail';
-import { events, logEvent } from '../utils/log';
+import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { IBaseScreen } from '../definitions';
 import sharedStyles from './Styles';
 
@@ -110,7 +109,6 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 						testID='forgot-password-view-submit'
 						loading={isFetching}
 						disabled={invalidEmail}
-						theme={theme}
 					/>
 				</FormContainerInner>
 			</FormContainer>

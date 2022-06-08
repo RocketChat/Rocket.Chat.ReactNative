@@ -9,21 +9,21 @@ import Loading from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../containers/KeyboardView';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../containers/UserItem';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../lib/constants';
 import { withTheme } from '../theme';
-import { Review } from '../utils/review';
+import { Review } from '../lib/methods/helpers/review';
 import { getUserSelector } from '../selectors/login';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
-import { hasPermission } from '../lib/methods';
+import { hasPermission } from '../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {

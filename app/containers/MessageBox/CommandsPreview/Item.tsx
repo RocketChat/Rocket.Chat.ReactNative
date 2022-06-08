@@ -1,4 +1,4 @@
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import React, { useContext, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 

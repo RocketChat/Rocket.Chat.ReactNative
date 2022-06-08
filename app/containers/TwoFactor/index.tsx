@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import FormTextInput from '../TextInput/FormTextInput';
 import I18n from '../../i18n';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import Button from '../Button';
@@ -139,16 +139,8 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 							backgroundColor={themes[theme].chatComponentBackground}
 							style={styles.button}
 							onPress={onCancel}
-							theme={theme}
 						/>
-						<Button
-							title={I18n.t('Send')}
-							type='primary'
-							style={styles.button}
-							onPress={onSubmit}
-							theme={theme}
-							testID='two-factor-send'
-						/>
+						<Button title={I18n.t('Send')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
 					</View>
 				</View>
 			</View>

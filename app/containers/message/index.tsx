@@ -4,10 +4,10 @@ import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
-import debounce from '../../utils/debounce';
+import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
 import { TSupportedThemes, withTheme } from '../../theme';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
@@ -256,7 +256,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	get isInfo(): string | boolean {
 		const { item } = this.props;
-		if (['e2e', 'discussion-created'].includes(item.t)) {
+		if (['e2e', 'discussion-created', 'jitsi_call_started'].includes(item.t)) {
 			return false;
 		}
 		return item.t;

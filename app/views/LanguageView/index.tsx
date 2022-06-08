@@ -15,8 +15,8 @@ import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { showErrorAlert } from '../../utils/info';
-import log, { events, logEvent } from '../../utils/log';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 
 interface ILanguageViewProps extends IBaseScreen<SettingsStackParamList, 'LanguageView'> {

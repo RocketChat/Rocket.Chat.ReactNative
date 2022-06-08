@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
@@ -11,8 +11,8 @@ import FormTextInput from '../containers/TextInput/FormTextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import EventEmitter from '../lib/methods/helpers/events';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -21,7 +21,7 @@ import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../defin
 import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { hasPermission } from '../lib/methods';
+import { hasPermission } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
@@ -273,7 +273,7 @@ const LivechatEditView = ({
 						}}
 						placeholder={{ text: I18n.t('Tags') }}
 						value={tagParamSelected}
-						context={BLOCK_CONTEXT.FORM}
+						context={BlockContext.FORM}
 						multiselect
 						disabled={!permissions[1]}
 						inputStyle={styles.multiSelect}
@@ -298,7 +298,7 @@ const LivechatEditView = ({
 						/>
 					))}
 
-					<Button title={I18n.t('Save')} onPress={submit} theme={theme} />
+					<Button title={I18n.t('Save')} onPress={submit} />
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

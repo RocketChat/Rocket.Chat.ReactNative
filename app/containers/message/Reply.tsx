@@ -2,15 +2,15 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { dequal } from 'dequal';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
-import { fileDownloadAndPreview } from '../../utils/fileDownload';
+import { fileDownloadAndPreview } from './helpers/fileDownload';
 import { IAttachment, TGetCustomEmoji } from '../../definitions';
 import RCActivityIndicator from '../ActivityIndicator';
 import Attachments from './Attachments';
@@ -100,7 +100,7 @@ const Title = React.memo(
 				{attachment.author_name ? (
 					<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
 				) : null}
-				{time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text> : null}
+				{time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
 				{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
 			</View>
 		);

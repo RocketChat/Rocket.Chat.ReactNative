@@ -3,11 +3,11 @@ import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
 
-import { IMessage } from '../../definitions';
-import Deferred from '../../utils/deferred';
-import debounce from '../../utils/debounce';
+import { IMessage, IUser } from '../../definitions';
+import Deferred from './helpers/deferred';
+import { debounce } from '../methods/helpers';
 import database from '../database';
-import log from '../../utils/log';
+import log from '../methods/helpers/log';
 import {
 	b64ToBuffer,
 	bufferToB64,
@@ -19,7 +19,6 @@ import {
 	utf8ToBuffer
 } from './utils';
 import { Encryption } from './index';
-import { IUser } from '../../definitions/IUser';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import { Services } from '../services';
 

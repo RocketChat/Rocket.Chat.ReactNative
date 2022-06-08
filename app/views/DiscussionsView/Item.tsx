@@ -7,7 +7,7 @@ import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { MarkdownPreview } from '../../containers/markdown';
-import { formatDateThreads, makeThreadName } from '../../utils/room';
+import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
 import { IMessageFromServer } from '../../definitions';
 

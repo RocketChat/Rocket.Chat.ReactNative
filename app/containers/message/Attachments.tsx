@@ -13,7 +13,7 @@ import MessageContext from './Context';
 import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
-import openLink from '../../utils/openLink';
+import openLink from '../../lib/methods/helpers/openLink';
 import { themes } from '../../lib/constants';
 
 export type TElement = {
@@ -43,7 +43,7 @@ const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 		};
 
 		if (element.type === 'button') {
-			return <Button theme={theme} onPress={onPress} title={element.text} />;
+			return <Button onPress={onPress} title={element.text} />;
 		}
 
 		return null;

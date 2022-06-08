@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 
 import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS } from '../lib/methods/helpers';
 import { useTheme } from '../theme';
 import { ChatsStackParamList } from '../stacks/types';
 import { IBaseScreen } from '../definitions';

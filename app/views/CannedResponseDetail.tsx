@@ -9,13 +9,13 @@ import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
 import { TSupportedThemes, useTheme } from '../theme';
 import Navigation from '../lib/navigation/appNavigation';
-import { goRoom } from '../utils/goRoom';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 import { themes } from '../lib/constants';
 import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { getRoomTitle, getUidDirectMessage } from '../lib/methods';
+import { getRoomTitle, getUidDirectMessage } from '../lib/methods/helpers';
 import { useAppSelector } from '../lib/hooks';
 
 const styles = StyleSheet.create({
@@ -159,13 +159,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 						</View>
 					</View>
 				</View>
-				<Button
-					title={I18n.t('Use')}
-					theme={theme}
-					style={styles.button}
-					type='primary'
-					onPress={() => navigateToRoom(cannedResponse)}
-				/>
+				<Button title={I18n.t('Use')} style={styles.button} type='primary' onPress={() => navigateToRoom(cannedResponse)} />
 			</ScrollView>
 		</SafeAreaView>
 	);

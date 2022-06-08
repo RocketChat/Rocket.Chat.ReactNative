@@ -8,13 +8,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { events, logEvent } from '../../utils/log';
-import { isTeamRoom } from '../../utils/room';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import { isTeamRoom } from '../../lib/methods/helpers/room';
 import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
 import i18n from '../../i18n';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { closeRoom } from '../../actions/room';
 import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 

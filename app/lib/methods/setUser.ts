@@ -4,7 +4,7 @@ import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import { IUser } from '../../definitions';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion } from './helpers/compareServerVersion';
+import { compareServerVersion } from './helpers';
 
 export interface IActiveUsers {
 	[key: string]: { status: string; statusText?: string } | string | boolean;

@@ -4,12 +4,12 @@ import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers';
 import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
-import { fileDownload } from '../../utils/fileDownload';
-import EventEmitter from '../../utils/events';
+import { fileDownload } from './helpers/fileDownload';
+import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
 import I18n from '../../i18n';
 import { IAttachment } from '../../definitions/IAttachment';
