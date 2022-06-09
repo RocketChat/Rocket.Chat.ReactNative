@@ -2,8 +2,7 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
-import { isIOS } from '../methods/helpers';
-import appGroup from './appGroup';
+import { appGroupPath } from './appGroup';
 import { isOfficial } from '../constants';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
@@ -26,12 +25,6 @@ import appSchema from './schema/app';
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
 import { TAppDatabase, TServerDatabase } from './interfaces';
-
-const appGroupPath = isIOS ? appGroup.path : '';
-
-if (__DEV__ && isIOS) {
-	console.log(appGroupPath);
-}
 
 const getDatabasePath = (name: string) => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
 
