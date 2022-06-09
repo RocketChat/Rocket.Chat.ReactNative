@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Observable, Subscription } from 'rxjs';
+import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -11,19 +12,33 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import { isTeamRoom } from '../../lib/methods/helpers/room';
 import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
+import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
+import i18n from '../../i18n';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { closeRoom } from '../../actions/room';
+import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 
 interface IRightButtonsProps {
 	userId?: string;
 	threadsEnabled: boolean;
-	rid?: string;
+	rid: string;
 	t: string;
 	tmid?: string;
 	teamId?: string;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
+	status?: string;
+	dispatch: Dispatch;
 	encrypted?: boolean;
+	showActionSheet: (item: TActionSheetOptions) => void;
+	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
+	omnichannelPermissions: {
+		canForwardGuest: boolean;
+		canReturnQueue: boolean;
+		canPlaceLivechatOnHold: boolean;
+	};
 }
 
 interface IRigthButtonsState {
@@ -71,11 +86,20 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId } = this.props;
+		const { teamId, status, joined, omnichannelPermissions } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
+		if (nextProps.status !== status) {
+			return true;
+		}
+		if (nextProps.joined !== joined) {
+			return true;
+		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
+			return true;
+		}
+		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
 			return true;
 		}
 		if (!dequal(nextState.tunread, tunread)) {
@@ -157,6 +181,82 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 	};
 
+	returnLivechat = () => {
+		const { rid } = this.props;
+		showConfirmationAlert({
+			message: i18n.t('Would_you_like_to_return_the_inquiry'),
+			confirmationText: i18n.t('Yes'),
+			onPress: async () => {
+				try {
+					await returnLivechat(rid);
+				} catch (e: any) {
+					showErrorAlert(e.reason, i18n.t('Oops'));
+				}
+			}
+		});
+	};
+
+	placeOnHoldLivechat = () => {
+		const { navigation, rid } = this.props;
+		showConfirmationAlert({
+			title: i18n.t('Are_you_sure_question_mark'),
+			message: i18n.t('Would_like_to_place_on_hold'),
+			confirmationText: i18n.t('Yes'),
+			onPress: async () => {
+				try {
+					await onHoldLivechat(rid);
+					navigation.navigate('RoomsListView');
+				} catch (e: any) {
+					showErrorAlert(e.data?.error, i18n.t('Oops'));
+				}
+			}
+		});
+	};
+
+	closeLivechat = () => {
+		const { dispatch, rid } = this.props;
+		dispatch(closeRoom(rid));
+	};
+
+	showMoreActions = () => {
+		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
+		const { showActionSheet, rid, navigation, omnichannelPermissions } = this.props;
+
+		const options = [] as TActionSheetOptionsItem[];
+		if (omnichannelPermissions.canPlaceLivechatOnHold) {
+			options.push({
+				title: i18n.t('Place_chat_on_hold'),
+				icon: 'pause',
+				onPress: () => this.placeOnHoldLivechat()
+			});
+		}
+
+		if (omnichannelPermissions.canForwardGuest) {
+			options.push({
+				title: i18n.t('Forward_Chat'),
+				icon: 'chat-forward',
+				onPress: () => navigation.navigate('ForwardLivechatView', { rid })
+			});
+		}
+
+		if (omnichannelPermissions.canReturnQueue) {
+			options.push({
+				title: i18n.t('Return_to_waiting_line'),
+				icon: 'move-to-the-queue',
+				onPress: () => this.returnLivechat()
+			});
+		}
+
+		options.push({
+			title: i18n.t('Close'),
+			icon: 'chat-close',
+			onPress: () => this.closeLivechat(),
+			danger: true
+		});
+
+		showActionSheet({ options });
+	};
+
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
 		const { rid, t, navigation, isMasterDetail, encrypted } = this.props;
@@ -183,10 +283,23 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 	};
 
+	isOmnichannelPreview = () => {
+		const { status } = this.props;
+		return status === 'queued';
+	};
+
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
 		const { t, tmid, threadsEnabled, teamId, joined } = this.props;
+
 		if (t === 'l') {
+			if (!this.isOmnichannelPreview()) {
+				return (
+					<HeaderButton.Container>
+						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
+					</HeaderButton.Container>
+				);
+			}
 			return null;
 		}
 		if (tmid) {
@@ -225,4 +338,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(RightButtonsContainer);
+export default connect(mapStateToProps)(withActionSheet(RightButtonsContainer));
