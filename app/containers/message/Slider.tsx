@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleProp, ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Touchable from 'react-native-platform-touchable';
@@ -6,7 +6,6 @@ import Animated, { useSharedValue, useAnimatedStyle, interpolate } from 'react-n
 
 import styles, { SLIDER_THUMB_RADIUS } from './styles';
 import { useTheme } from '../../theme';
-import { debounce } from '../../lib/methods/helpers';
 
 interface ISliderProps {
 	value: number;
@@ -33,8 +32,14 @@ const Slider = React.memo(
 	}: ISliderProps) => {
 		const { colors } = useTheme();
 		const [sliderWidth, setSliderWidth] = useState<number>(0);
-		const position = useSharedValue(value);
-		// console.log('Slider', value, maximumValue);
+		const position = useSharedValue(0);
+		const currentValue = useSharedValue(0);
+
+		useEffect(() => {
+			if (value !== currentValue.value) {
+				currentValue.value = value;
+			}
+		}, [value]);
 
 		const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
@@ -44,32 +49,32 @@ const Slider = React.memo(
 			setSliderWidth(event.nativeEvent.layout.width);
 		};
 
-		const onChangeDebounce = debounce((currentValue: number) => onValueChange(currentValue), 50);
-
 		const tapGesture = Gesture.Tap().onStart(e => {
 			position.value = clamp(e.x, 0, sliderWidth);
-			onValueChange(equivalentValue(position.value));
+			currentValue.value = equivalentValue(position.value);
+			onValueChange(currentValue.value);
 		});
 
 		const dragGesture = Gesture.Pan()
 			.onChange(e => {
 				position.value = clamp(e.x, 0, sliderWidth);
-				onChangeDebounce(equivalentValue(position.value));
+				currentValue.value = equivalentValue(position.value);
+				onValueChange(currentValue.value);
 			})
 			.onEnd(() => {
-				onValueChange(equivalentValue(position.value));
+				onValueChange(currentValue.value);
 			});
 
 		const animatedThumbStyles = useAnimatedStyle(() => ({
 			transform: [
 				{
-					translateX: interpolate(value, [0, maximumValue], [0, sliderWidth]) - SLIDER_THUMB_RADIUS
+					translateX: interpolate(currentValue.value, [0, maximumValue], [0, sliderWidth]) - SLIDER_THUMB_RADIUS
 				}
 			]
 		}));
 
 		const animatedTrackStyles = useAnimatedStyle(() => ({
-			width: interpolate(value, [0, maximumValue], [0, sliderWidth])
+			width: interpolate(currentValue.value, [0, maximumValue], [0, sliderWidth])
 		}));
 
 		const gesture = disabled ? undefined : Gesture.Simultaneous(tapGesture, dragGesture);
