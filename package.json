@@ -188,6 +188,7 @@
 		"identity-obj-proxy": "^3.0.0",
 		"jest": "^27.0.6",
 		"jest-cli": "^27.0.6",
+		"jest-expo": "^45.0.1",
 		"metro-react-native-babel-preset": "^0.64.0",
 		"mocha": "9.0.1",
 		"otp.js": "1.2.0",
@@ -207,7 +208,7 @@
 		"transformIgnorePatterns": [
 			"node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)"
 		],
-		"preset": "react-native",
+		"preset": "./jest.preset.js",
 		"coverageDirectory": "./coverage/",
 		"collectCoverage": true,
 		"moduleNameMapper": {
