@@ -1,7 +1,6 @@
 import React from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
-import prompt from 'react-native-prompt-android';
 import { sha256 } from 'js-sha256';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -41,8 +40,10 @@ import {
 	IProfileParams,
 	IUser
 } from '../../definitions';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import EnterPasswordSheet from './components/EnterPasswordSheet';
 
-interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
+interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
 	baseUrl: string;
 	Accounts_AllowEmailChange: boolean;
@@ -229,26 +230,21 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 
 		const requirePassword = !!params.email || newPassword;
+
 		if (requirePassword && !params.currentPassword) {
 			this.setState({ saving: false });
-			prompt(
-				I18n.t('Please_enter_your_password'),
-				I18n.t('For_your_security_you_must_enter_your_current_password_to_continue'),
-				[
-					{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
-					{
-						text: I18n.t('Save'),
-						onPress: (p: string) => {
+			this.props.showActionSheet({
+				children: (
+					<EnterPasswordSheet
+						onSubmit={(p: string) => {
 							this.setState({ currentPassword: p });
 							this.submit();
-						}
-					}
-				],
-				{
-					type: 'secure-text',
-					cancelable: false
-				}
-			);
+						}}
+						onCancel={this.props.hideActionSheet}
+					/>
+				),
+				headerHeight: 225
+			});
 			return;
 		}
 
@@ -623,4 +619,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server
 });
 
-export default connect(mapStateToProps)(withTheme(ProfileView));
+export default connect(mapStateToProps)(withTheme(withActionSheet(ProfileView)));
