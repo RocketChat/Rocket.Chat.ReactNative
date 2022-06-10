@@ -240,8 +240,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				children: (
 					<EnterPasswordSheet
 						onSubmit={(p: string) => {
-							this.setState({ currentPassword: p });
-							this.submit();
+							this.props.hideActionSheet();
+							this.setState({ currentPassword: p }, () => this.submit());
 						}}
 						onCancel={this.props.hideActionSheet}
 					/>

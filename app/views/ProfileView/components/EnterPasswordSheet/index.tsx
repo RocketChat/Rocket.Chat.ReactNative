@@ -47,8 +47,10 @@ const EnterPasswordSheet = ({
 			<FooterButtons
 				confirmBackgroundColor={colors.actionTintColor}
 				cancelAction={onCancel}
+				confirmAction={() => onSubmit(password)}
 				cancelTitle={i18n.t('Cancel')}
 				confirmTitle={i18n.t('Save')}
+				disabled={!password}
 			/>
 		</View>
 	);
