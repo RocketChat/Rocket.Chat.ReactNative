@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, ViewStyle } from 'react-native';
 
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';

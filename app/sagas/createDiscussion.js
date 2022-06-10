@@ -4,7 +4,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
 import { createDiscussionFailure, createDiscussionSuccess } from '../actions/createDiscussion';
 import database from '../lib/database';
-import { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { Services } from '../lib/services';
 
 const handleRequest = function* handleRequest({ data }) {

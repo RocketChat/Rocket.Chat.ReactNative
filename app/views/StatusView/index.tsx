@@ -16,8 +16,8 @@ import { showToast } from '../../lib/methods/helpers/showToast';
 import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
 import { useTheme } from '../../theme';
-import { showErrorAlert } from '../../utils/info';
-import log, { events, logEvent } from '../../utils/log';
+import { showErrorAlert } from '../../lib/methods/helpers';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 
 interface IStatus {
 	id: TUserStatus;

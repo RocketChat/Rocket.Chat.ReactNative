@@ -10,7 +10,7 @@ import styles from './styles';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 interface IHashtag {
 	hashtag: string;

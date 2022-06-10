@@ -6,7 +6,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../CustomIcon';
 import { textParser } from './utils';
-import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import ActivityIndicator from '../ActivityIndicator';
 import { useTheme } from '../../theme';
 import { IText, Option } from './interfaces';

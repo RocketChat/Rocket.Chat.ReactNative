@@ -12,7 +12,7 @@ import I18n from '../../i18n';
 import { TSupportedThemes, withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
-import log, { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import sharedStyles from '../Styles';
 import { IOptionsField, OPTIONS } from './options';
 import { ChatsStackParamList } from '../../stacks/types';

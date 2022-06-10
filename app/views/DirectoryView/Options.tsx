@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
 
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
