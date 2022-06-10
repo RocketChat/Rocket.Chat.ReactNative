@@ -77,7 +77,9 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private avatarUrl?: TextInput;
 	private newPassword?: TextInput;
 
-	static navigationOptions = ({ navigation, isMasterDetail }: IProfileViewProps) => {
+	setHeader = () => {
+		const { navigation, isMasterDetail } = this.props;
+
 		const options: StackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
@@ -87,7 +89,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		options.headerRight = () => (
 			<HeaderButton.Preferences onPress={() => navigation?.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		);
-		return options;
+		navigation.setOptions(options);
 	};
 
 	state: IProfileViewState = {
@@ -108,6 +110,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	async componentDidMount() {
 		this.init();
+		this.setHeader();
 
 		try {
 			const result = await Services.getAvatarSuggestion();
