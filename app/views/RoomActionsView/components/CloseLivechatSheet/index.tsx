@@ -20,40 +20,37 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EnterPasswordSheet = ({
+const CloseLivechatSheet = ({
 	onSubmit = () => {},
 	onCancel = () => {}
 }: {
-	onSubmit: (password: string) => void;
+	onSubmit: (comment: string) => void;
 	onCancel: () => void;
 }) => {
 	const { theme, colors } = useTheme();
-	const [password, setPassword] = useState('');
-
+	const [comment, setComment] = useState('');
 	return (
 		<View style={sharedStyles.containerScrollView}>
-			<Text style={styles.titleText}>{I18n.t('Please_enter_your_password')}</Text>
-			<Text style={styles.subtitleText}>{I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}</Text>
+			<Text style={styles.titleText}>{I18n.t('Closing_chat')}</Text>
+			<Text style={styles.subtitleText}>{I18n.t('Please_add_a_comment')}</Text>
 			<FormTextInput
-				value={password}
-				placeholder={I18n.t('Password')}
-				onChangeText={value => setPassword(value)}
-				onSubmitEditing={() => onSubmit(password)}
+				value={comment}
+				onChangeText={value => setComment(value)}
+				onSubmitEditing={() => onSubmit(comment)}
 				theme={theme}
-				testID='profile-view-enter-password-sheet'
-				secureTextEntry
+				testID='room-actions-view-close-livechat'
 				inputStyle={{ borderWidth: 2 }}
 			/>
 			<FooterButtons
 				confirmBackgroundColor={colors.actionTintColor}
 				cancelAction={onCancel}
-				confirmAction={() => onSubmit(password)}
+				confirmAction={() => onSubmit(comment)}
 				cancelTitle={I18n.t('Cancel')}
 				confirmTitle={I18n.t('Save')}
-				disabled={!password}
+				disabled={!comment}
 			/>
 		</View>
 	);
 };
 
-export default EnterPasswordSheet;
+export default CloseLivechatSheet;

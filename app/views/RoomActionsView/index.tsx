@@ -1,13 +1,14 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Switch, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
+import { CompositeNavigationProp } from '@react-navigation/native';
 
-import { closeRoom, leaveRoom } from '../../actions/room';
+import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -44,12 +45,15 @@ import {
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import CloseLivechatSheet from './components/CloseLivechatSheet';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
 }
 
-interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
+interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
 	jitsiEnabled: boolean;
 	jitsiEnableTeams: boolean;
@@ -70,6 +74,11 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
 	livechatAllowManualOnHold?: boolean;
+	livechatRequestComment?: boolean;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+		StackNavigationProp<MasterDetailInsideStackParamList>
+	>;
 }
 
 interface IRoomActionsViewState {
@@ -420,12 +429,43 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	closeLivechat = () => {
+		const { livechatRequestComment, showActionSheet, hideActionSheet } = this.props;
+
+		if (!livechatRequestComment) {
+			const comment = I18n.t('Chat_closed_by_agent');
+			return this.closeLivechatService({ comment });
+		}
+
+		showActionSheet({
+			children: (
+				<CloseLivechatSheet
+					onSubmit={(comment: string) => {
+						hideActionSheet();
+						this.closeLivechatService({ comment });
+					}}
+					onCancel={() => hideActionSheet()}
+				/>
+			),
+			headerHeight: 225
+		});
+	};
+
+	closeLivechatService = async ({ comment }: { comment?: string }) => {
 		const {
 			room: { rid }
 		} = this.state;
-		const { dispatch } = this.props;
-
-		dispatch(closeRoom(rid));
+		const { navigation, isMasterDetail } = this.props;
+		try {
+			await Services.closeLivechat(rid, comment);
+			if (isMasterDetail) {
+				navigation.navigate('DrawerNavigator');
+			} else {
+				navigation.navigate('RoomsListView');
+			}
+		} catch (e: any) {
+			showErrorAlert(I18n.isTranslated(e.error) ? I18n.t(e.error) : e.reason, I18n.t('Oops'));
+			log(e);
+		}
 	};
 
 	placeOnHoldLivechat = () => {
@@ -1382,7 +1422,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	addTeamChannelPermission: state.permissions['add-team-channel'],
 	convertTeamPermission: state.permissions['convert-team'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
-export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));
