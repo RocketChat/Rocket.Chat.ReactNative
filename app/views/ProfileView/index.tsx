@@ -53,6 +53,7 @@ interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileSta
 	Accounts_AllowUsernameChange: boolean;
 	Accounts_CustomFields: string;
 	theme: TSupportedThemes;
+	isMasterDetail: boolean;
 }
 
 interface IProfileViewState {
@@ -77,6 +78,26 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private avatarUrl?: TextInput;
 	private newPassword?: TextInput;
 
+	constructor(props: IProfileViewProps) {
+		super(props);
+		this.setHeader();
+		this.state = {
+			saving: false,
+			name: '',
+			username: '',
+			email: '',
+			newPassword: '',
+			currentPassword: '',
+			avatarUrl: '',
+			avatar: {
+				data: {},
+				url: ''
+			},
+			avatarSuggestions: {},
+			customFields: {}
+		};
+	}
+
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
 
@@ -92,25 +113,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		navigation.setOptions(options);
 	};
 
-	state: IProfileViewState = {
-		saving: false,
-		name: '',
-		username: '',
-		email: '',
-		newPassword: '',
-		currentPassword: '',
-		avatarUrl: '',
-		avatar: {
-			data: {},
-			url: ''
-		},
-		avatarSuggestions: {},
-		customFields: {}
-	};
-
 	async componentDidMount() {
 		this.init();
-		this.setHeader();
 
 		try {
 			const result = await Services.getAvatarSuggestion();
@@ -613,6 +617,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
+	isMasterDetail: state.app.isMasterDetail,
 	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange as boolean,
 	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
 	Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange as boolean,
