@@ -325,16 +325,11 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	goRoom = () => {
 		logEvent(events.RI_GO_ROOM_USER);
-		const { roomUser, room } = this.state;
-		const { name, username } = roomUser;
+		const { room } = this.state;
 		const { rooms, navigation, isMasterDetail } = this.props;
 		const params = {
 			rid: room.rid,
-			name: getRoomTitle({
-				t: room.t,
-				fname: name,
-				name: username
-			}),
+			name: getRoomTitle(room),
 			t: room.t,
 			roomUserId: getUidDirectMessage(room)
 		};
