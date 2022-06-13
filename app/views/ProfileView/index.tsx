@@ -98,7 +98,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		currentPassword: '',
 		avatarUrl: '',
 		avatar: {
-			data: {},
+			data: '',
 			url: ''
 		},
 		avatarSuggestions: {},
@@ -151,7 +151,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {
-				data: {},
+				data: '',
 				url: ''
 			},
 			customFields: customFields || {}
@@ -181,6 +181,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			!avatar.data &&
 			!customFieldsChanged
 		);
+	};
+
+	resetForm = () => {
+		this.init();
 	};
 
 	handleError = (e: any, func: string, action: string) => {
@@ -591,7 +595,15 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						/>
 						{this.renderAvatarButtons()}
 						<Button
-							title={I18n.t('Save_Changes')}
+							title={I18n.t('Reset_Changes')}
+							type='secondary'
+							onPress={this.resetForm}
+							disabled={!this.formIsChanged() || saving}
+							backgroundColor={themes[theme].chatComponentBackground}
+							color={themes[theme].dangerColor}
+						/>
+						<Button
+							title={I18n.t('Save')}
 							type='primary'
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
