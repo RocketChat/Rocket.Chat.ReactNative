@@ -624,7 +624,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerTitle: () => (
 				<RoomHeader
-					rid={rid}
 					prid={prid}
 					tmid={tmid}
 					title={title}
