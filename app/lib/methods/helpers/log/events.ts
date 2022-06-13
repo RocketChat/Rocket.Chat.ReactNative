@@ -193,6 +193,7 @@ export default {
 	ROOM_AUDIO_FINISH_F: 'room_audio_finish_f',
 	ROOM_AUDIO_CANCEL: 'room_audio_cancel',
 	ROOM_AUDIO_CANCEL_F: 'room_audio_cancel_f',
+	ROOM_SHOW_MORE_ACTIONS: 'room_show_more_actions',
 	ROOM_SHOW_BOX_ACTIONS: 'room_show_box_actions',
 	ROOM_BOX_ACTION_PHOTO: 'room_box_action_photo',
 	ROOM_BOX_ACTION_PHOTO_F: 'room_box_action_photo_f',
