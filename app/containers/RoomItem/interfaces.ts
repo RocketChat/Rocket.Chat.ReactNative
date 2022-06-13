@@ -132,6 +132,7 @@ export interface IRoomItemProps {
 	showAvatar: boolean;
 	displayMode: string;
 	sourceType: IOmnichannelSource;
+	hideMentionStatus?: boolean;
 }
 
 export interface ILastMessageProps {

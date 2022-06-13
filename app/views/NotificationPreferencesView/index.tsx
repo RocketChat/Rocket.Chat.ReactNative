@@ -3,6 +3,7 @@ import { StyleSheet, Switch, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Observable, Subscription } from 'rxjs';
+import { connect } from 'react-redux';
 
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
@@ -16,8 +17,9 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import sharedStyles from '../Styles';
 import { IOptionsField, OPTIONS } from './options';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
+import { IApplicationState, IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
 import { Services } from '../../lib/services';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -30,6 +32,7 @@ interface INotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>;
 	route: RouteProp<ChatsStackParamList, 'NotificationPrefView'>;
 	theme: TSupportedThemes;
+	serverVersion: string | null;
 }
 
 interface INotificationPreferencesViewState {
@@ -155,6 +158,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 	};
 
 	render() {
+		const { serverVersion } = this.props;
 		const { room } = this.state;
 		return (
 			<SafeAreaView testID='notification-preference-view'>
@@ -185,13 +189,26 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 					<List.Section>
 						<List.Separator />
 						<List.Item
-							title='Show_Unread_Counter'
-							testID='notification-preference-view-unread-count'
+							title='Mark_as_unread'
+							testID='notification-preference-view-mark-as-unread'
 							right={() => this.renderSwitch('hideUnreadStatus')}
 						/>
 						<List.Separator />
-						<List.Info info='Show_Unread_Counter_Info' />
+						<List.Info info='Mark_as_unread_Info' />
 					</List.Section>
+
+					{room.hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0') ? (
+						<List.Section>
+							<List.Separator />
+							<List.Item
+								title='Show_badge_for_mentions'
+								testID='notification-preference-view-badge-for-mentions'
+								right={() => this.renderSwitch('hideMentionStatus')}
+							/>
+							<List.Separator />
+							<List.Info info='Show_badge_for_mentions_Info' />
+						</List.Section>
+					) : null}
 
 					<List.Section title='In_App_And_Desktop'>
 						<List.Separator />
@@ -258,4 +275,8 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 	}
 }
 
-export default withTheme(NotificationPreferencesView);
+const mapStateToProps = (state: IApplicationState) => ({
+	serverVersion: state.server.version
+});
+
+export default connect(mapStateToProps)(withTheme(NotificationPreferencesView));
