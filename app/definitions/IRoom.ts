@@ -198,7 +198,7 @@ export interface IServerRoom extends IRocketChatRecord {
 	unread?: number;
 	alert?: boolean;
 	hideUnreadStatus?: boolean;
-
+	status?: string;
 	sysMes?: string[];
 	muted?: string[];
 	unmuted?: string[];
