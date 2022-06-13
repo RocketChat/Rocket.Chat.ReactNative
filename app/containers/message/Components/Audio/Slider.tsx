@@ -4,8 +4,8 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Touchable from 'react-native-platform-touchable';
 import Animated, { useSharedValue, useAnimatedStyle, interpolate } from 'react-native-reanimated';
 
-import styles, { SLIDER_THUMB_RADIUS } from './styles';
-import { useTheme } from '../../theme';
+import styles, { SLIDER_THUMB_RADIUS } from '../../styles';
+import { useTheme } from '../../../../theme';
 
 interface ISliderProps {
 	value: number;
