@@ -5,7 +5,7 @@ import I18n from '../../../../i18n';
 import FormTextInput from '../../../../containers/TextInput/FormTextInput';
 import FooterButtons from '../../../../containers/ActionSheet/FooterButtons';
 import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../Styles';
+import sharedStyles from '../../../../views/Styles';
 
 const styles = StyleSheet.create({
 	titleText: {

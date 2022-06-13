@@ -46,8 +46,9 @@ import {
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
-import CloseLivechatSheet from './components/CloseLivechatSheet';
+import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
@@ -371,11 +372,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	closeLivechat = () => {
-		const { livechatRequestComment, showActionSheet, hideActionSheet } = this.props;
+		const {
+			room: { rid }
+		} = this.state;
+		const { livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
 
 		if (!livechatRequestComment) {
 			const comment = I18n.t('Chat_closed_by_agent');
-			return this.closeLivechatService({ comment });
+			return closeLivechat({ rid, isMasterDetail, comment });
 		}
 
 		showActionSheet({
@@ -383,31 +387,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<CloseLivechatSheet
 					onSubmit={(comment: string) => {
 						hideActionSheet();
-						this.closeLivechatService({ comment });
+						closeLivechat({ rid, isMasterDetail, comment });
 					}}
 					onCancel={() => hideActionSheet()}
 				/>
 			),
 			headerHeight: 225
 		});
-	};
-
-	closeLivechatService = async ({ comment }: { comment?: string }) => {
-		const {
-			room: { rid }
-		} = this.state;
-		const { navigation, isMasterDetail } = this.props;
-		try {
-			await Services.closeLivechat(rid, comment);
-			if (isMasterDetail) {
-				navigation.navigate('DrawerNavigator');
-			} else {
-				navigation.navigate('RoomsListView');
-			}
-		} catch (e: any) {
-			showErrorAlert(I18n.isTranslated(e.error) ? I18n.t(e.error) : e.reason, I18n.t('Oops'));
-			log(e);
-		}
 	};
 
 	placeOnHoldLivechat = () => {

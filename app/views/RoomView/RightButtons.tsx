@@ -12,13 +12,14 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import { isTeamRoom } from '../../lib/methods/helpers/room';
 import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
-import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
+import { IActionSheetProvider, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
 import i18n from '../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
-import { closeRoom } from '../../actions/room';
 import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
+import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
+import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
 
-interface IRightButtonsProps {
+interface IRightButtonsProps extends IActionSheetProvider {
 	userId?: string;
 	threadsEnabled: boolean;
 	rid: string;
@@ -31,7 +32,6 @@ interface IRightButtonsProps {
 	status?: string;
 	dispatch: Dispatch;
 	encrypted?: boolean;
-	showActionSheet: (item: TActionSheetOptions) => void;
 	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
 	omnichannelPermissions: {
@@ -39,6 +39,7 @@ interface IRightButtonsProps {
 		canReturnQueue: boolean;
 		canPlaceLivechatOnHold: boolean;
 	};
+	livechatRequestComment: boolean;
 }
 
 interface IRigthButtonsState {
@@ -214,8 +215,29 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	closeLivechat = () => {
-		const { dispatch, rid } = this.props;
-		dispatch(closeRoom(rid));
+		const { rid, livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
+
+		hideActionSheet();
+
+		setTimeout(() => {
+			if (!livechatRequestComment) {
+				const comment = i18n.t('Chat_closed_by_agent');
+				return closeLivechatService({ rid, isMasterDetail, comment });
+			}
+
+			showActionSheet({
+				children: (
+					<CloseLivechatSheet
+						onSubmit={(comment: string) => {
+							hideActionSheet();
+							closeLivechatService({ rid, isMasterDetail, comment });
+						}}
+						onCancel={() => hideActionSheet()}
+					/>
+				),
+				headerHeight: 225
+			});
+		}, 300);
 	};
 
 	showMoreActions = () => {
@@ -335,7 +357,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled as boolean,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
 export default connect(mapStateToProps)(withActionSheet(RightButtonsContainer));
