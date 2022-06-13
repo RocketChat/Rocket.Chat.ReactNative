@@ -504,8 +504,6 @@
   "Share_Link": "Share Link",
   "Share_this_app": "Share this app",
   "Show_more": "Show more..",
-  "Show_Unread_Counter": "Show Unread Counter",
-  "Show_Unread_Counter_Info": "Unread counter is displayed as a badge on the right of the channel, in the list",
   "Sign_in_your_server": "Sign in your server",
   "Sign_Up": "Sign Up",
   "Some_field_is_invalid_or_empty": "Some field is invalid or empty",
@@ -825,5 +823,9 @@
   "Omnichannel_placed_chat_on_hold": "Chat On Hold: {{comment}}",
   "Omnichannel_on_hold_chat_resumed": "On Hold Chat Resumed: {{comment}}",
   "Omnichannel_queue": "Omnichannel queue",
-  "Empty": "Empty"
+  "Empty": "Empty",
+  "Mark_as_unread": "Mark as unread",
+  "Mark_as_unread_Info": "Display room as unread when there are unread messages",
+  "Show_badge_for_mentions": "Show badge for mentions",
+  "Show_badge_for_mentions_Info": "Display badge for direct mentions only"
 }
