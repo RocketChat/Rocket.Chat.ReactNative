@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp } from '@react-navigation/native';
-import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -13,24 +14,23 @@ import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import debounce from '../../utils/debounce';
 import Navigation from '../../lib/navigation/appNavigation';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';
-import log from '../../utils/log';
+import log from '../../lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
 import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import styles from './styles';
 import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
-import { ISubscription } from '../../definitions/ISubscription';
-import { getRoomTitle, getUidDirectMessage } from '../../lib/methods';
+import { getRoomTitle, getUidDirectMessage, debounce } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { useAppSelector } from '../../lib/hooks';
+import { ISubscription } from '../../definitions';
 
 const COUNT = 25;
 

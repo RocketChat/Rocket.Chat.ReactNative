@@ -34,6 +34,7 @@ export type ChatsStackParamList = {
 				jumpToThreadId?: string;
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
+				status?: string;
 		  }
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
@@ -42,6 +43,12 @@ export type ChatsStackParamList = {
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
+		omnichannelPermissions?: {
+			canForwardGuest: boolean;
+			canReturnQueue: boolean;
+			canViewCannedResponse: boolean;
+			canPlaceLivechatOnHold: boolean;
+		};
 	};
 	SelectListView: {
 		data?: TDataSelect[];

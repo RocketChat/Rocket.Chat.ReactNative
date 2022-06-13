@@ -67,7 +67,6 @@ const RoomItem = ({
 		hideChannel={hideChannel}
 		testID={testID}
 		type={type}
-		theme={theme}
 		isFocused={isFocused}
 		swipeEnabled={swipeEnabled}
 		displayMode={displayMode}>

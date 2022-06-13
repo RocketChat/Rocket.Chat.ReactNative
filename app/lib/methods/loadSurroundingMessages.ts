@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 
-import log from '../../utils/log';
+import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { MessageTypeLoad } from '../constants';
 import sdk from '../services/sdk';

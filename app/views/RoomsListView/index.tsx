@@ -10,19 +10,17 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
-import log, { logEvent, events } from '../../utils/log';
+import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import { appStart } from '../../actions/app';
-import debounce from '../../utils/debounce';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
-import { animateNextTransition } from '../../utils/layoutAnimation';
+import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
 import {
 	KEY_COMMAND,
 	handleCommandAddNewServer,
@@ -35,7 +33,7 @@ import {
 	IKeyCommandEvent
 } from '../../commands';
 import { getUserSelector } from '../../selectors/login';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
@@ -46,17 +44,18 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
+import { getUserPresence, RoomTypes, search } from '../../lib/methods';
 import {
 	getRoomAvatar,
 	getRoomTitle,
 	getUidDirectMessage,
-	getUserPresence,
 	hasPermission,
 	isGroupChat,
 	isRead,
-	RoomTypes,
-	search
-} from '../../lib/methods';
+	debounce,
+	isIOS,
+	isTablet
+} from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 

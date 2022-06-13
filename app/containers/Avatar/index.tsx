@@ -1,84 +1,65 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import React, { useEffect, useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
+import { IApplicationState, TSubscriptionModel, TUserModel } from '../../definitions';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { IApplicationState, TSubscriptionModel, TUserModel } from '../../definitions';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
-class AvatarContainer extends React.Component<IAvatar, any> {
-	private subscription?: Subscription;
+const AvatarContainer = ({
+	style,
+	text = '',
+	avatar,
+	emoji,
+	size,
+	borderRadius,
+	type,
+	children,
+	onPress,
+	getCustomEmoji,
+	isStatic,
+	rid
+}: IAvatar): React.ReactElement => {
+	const subscription = useRef<Subscription>();
+	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
 
-	static defaultProps = {
-		text: '',
-		type: 'd'
-	};
+	const isDirect = () => type === 'd';
 
-	constructor(props: IAvatar) {
-		super(props);
-		this.state = { avatarETag: '' };
-		this.init();
-	}
+	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
+	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
+	const { id, token } = useSelector(
+		(state: IApplicationState) => ({
+			id: getUserSelector(state).id,
+			token: getUserSelector(state).token
+		}),
+		shallowEqual
+	);
 
-	componentDidUpdate(prevProps: IAvatar) {
-		const { text, type } = this.props;
-		if (prevProps.text !== text || prevProps.type !== type) {
-			this.init();
-		}
-	}
+	const externalProviderUrl = useSelector(
+		(state: IApplicationState) => state.settings.Accounts_AvatarExternalProviderUrl as string
+	);
+	const blockUnauthenticatedAccess = useSelector(
+		(state: IApplicationState) =>
+			(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
+			state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
+			true
+	);
 
-	shouldComponentUpdate(nextProps: IAvatar, nextState: { avatarETag: string }) {
-		const { avatarETag } = this.state;
-		const { text, type, size, externalProviderUrl } = this.props;
-		if (nextProps.externalProviderUrl !== externalProviderUrl) {
-			return true;
-		}
-		if (nextState.avatarETag !== avatarETag) {
-			return true;
-		}
-		if (nextProps.text !== text) {
-			return true;
-		}
-		if (nextProps.type !== type) {
-			return true;
-		}
-		if (nextProps.size !== size) {
-			return true;
-		}
-
-		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.subscription?.unsubscribe) {
-			this.subscription.unsubscribe();
-		}
-	}
-
-	get isDirect() {
-		const { type } = this.props;
-		return type === 'd';
-	}
-
-	init = async () => {
+	const init = async () => {
 		const db = database.active;
 		const usersCollection = db.get('users');
 		const subsCollection = db.get('subscriptions');
 
 		let record;
 		try {
-			if (this.isDirect) {
-				const { text } = this.props;
+			if (isDirect()) {
 				const [user] = await usersCollection.query(Q.where('username', text)).fetch();
 				record = user;
-			} else {
-				const { rid } = this.props;
-				if (rid) {
-					record = await subsCollection.find(rid);
-				}
+			} else if (rid) {
+				record = await subsCollection.find(rid);
 			}
 		} catch {
 			// Record not found
@@ -86,28 +67,46 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 
 		if (record) {
 			const observable = record.observe() as Observable<TSubscriptionModel | TUserModel>;
-			this.subscription = observable.subscribe(r => {
-				const { avatarETag } = r;
-				this.setState({ avatarETag });
+			subscription.current = observable.subscribe(r => {
+				setAvatarETag(r.avatarETag);
 			});
 		}
 	};
 
-	render() {
-		const { avatarETag } = this.state;
-		const { serverVersion } = this.props;
-		return <Avatar {...this.props} avatarETag={avatarETag} serverVersion={serverVersion} />;
-	}
-}
+	useEffect(() => {
+		if (!avatarETag) {
+			init();
+		}
+		return () => {
+			if (subscription?.current?.unsubscribe) {
+				subscription.current.unsubscribe();
+			}
+		};
+	}, [text, type, size, avatarETag, externalProviderUrl]);
 
-const mapStateToProps = (state: IApplicationState) => ({
-	user: getUserSelector(state),
-	server: state.share.server.server || state.server.server,
-	serverVersion: state.share.server.version || state.server.version,
-	blockUnauthenticatedAccess:
-		(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
-		state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
-		true,
-	externalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string
-});
-export default connect(mapStateToProps)(AvatarContainer);
+	return (
+		<Avatar
+			server={server}
+			style={style}
+			text={text}
+			avatar={avatar}
+			emoji={emoji}
+			size={size}
+			borderRadius={borderRadius}
+			type={type}
+			children={children}
+			userId={id}
+			token={token}
+			onPress={onPress}
+			getCustomEmoji={getCustomEmoji}
+			isStatic={isStatic}
+			rid={rid}
+			blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+			externalProviderUrl={externalProviderUrl}
+			avatarETag={avatarETag}
+			serverVersion={serverVersion}
+		/>
+	);
+};
+
+export default AvatarContainer;

@@ -3,6 +3,7 @@ import React from 'react';
 import { Dimensions, ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import RoomItemComponent from '../../app/containers/RoomItem/RoomItem';
 import { longText } from '../utils';
@@ -39,6 +40,7 @@ const RoomItem = props => (
 
 const stories = storiesOf('Room Item', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
+	.addDecorator(story => <SafeAreaProvider>{story()}</SafeAreaProvider>)
 	.addDecorator(story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>);
 
 stories.add('Basic', () => <RoomItem />);

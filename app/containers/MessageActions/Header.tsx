@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../CustomIcon';
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import { Button } from '../ActionSheet';
