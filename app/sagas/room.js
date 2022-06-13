@@ -1,5 +1,4 @@
 import { Alert } from 'react-native';
-import prompt from 'react-native-prompt-android';
 import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import EventEmitter from '../lib/methods/helpers/events';
