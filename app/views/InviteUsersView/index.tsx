@@ -8,13 +8,13 @@ import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
-import { events, logEvent } from '../../utils/log';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import styles from './styles';
 
 type IInviteUsersViewProps = IBaseScreen<ChatsStackParamList, 'InviteUsersView'>;
@@ -92,11 +92,11 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 				showsVerticalScrollIndicator={false}>
 				<StatusBar />
 				<View style={styles.innerContainer}>
-					<RCTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
+					<FormTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
 					{renderExpiration()}
 					<View style={[styles.divider, { backgroundColor: colors.separatorColor }]} />
-					<Button title={I18n.t('Share_Link')} type='primary' onPress={share} theme={theme} />
-					<Button title={I18n.t('Edit_Invite')} type='secondary' onPress={edit} theme={theme} />
+					<Button title={I18n.t('Share_Link')} type='primary' onPress={share} />
+					<Button title={I18n.t('Edit_Invite')} type='secondary' onPress={edit} />
 				</View>
 			</ScrollView>
 		</SafeAreaView>

@@ -9,16 +9,15 @@ import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
-import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
+import TextInput, { IThemedTextInput } from '../TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../EmojiPicker/emojis';
-import log, { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
-import debounce from '../../utils/debounce';
 import { themes } from '../../lib/constants';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -26,9 +25,8 @@ import LeftButtons from './LeftButtons';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
-import { isAndroid, isTablet } from '../../utils/deviceInfo';
-import { canUploadFile } from '../../utils/media';
-import EventEmiter from '../../utils/events';
+import { canUploadFile } from '../../lib/methods/helpers/media';
+import EventEmiter from '../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
 import getMentionRegexp from './getMentionRegexp';
 import Mentions from './Mentions';
@@ -47,13 +45,23 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
-import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	IPreviewItem,
+	IUser,
+	TGetCustomEmoji,
+	TSubscriptionModel,
+	TThreadModel,
+	IMessage
+} from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { getPermalinkMessage, hasPermission, search, sendFileMessage } from '../../lib/methods';
+import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
+import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
+import { ChatsStackParamList } from '../../stacks/types';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -77,7 +85,7 @@ const videoPickerConfig: Options = {
 	mediaType: 'video'
 };
 
-export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackParamList, any> {
+export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & MasterDetailInsideStackParamList, any> {
 	rid: string;
 	baseUrl: string;
 	message: IMessage;
@@ -109,6 +117,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
 	serverVersion: string;
+	goToCannedResponses: () => void | null;
 }
 
 interface IMessageBoxState {
@@ -307,7 +316,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			permissionToUpload
 		} = this.state;
 
-		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission } = this.props;
+		const {
+			roomType,
+			replying,
+			editing,
+			isFocused,
+			message,
+			theme,
+			usedCannedResponse,
+			uploadFilePermission,
+			goToCannedResponses
+		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -359,12 +378,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextProps.usedCannedResponse !== usedCannedResponse) {
 			return true;
 		}
+		if (nextProps.goToCannedResponses !== goToCannedResponses) {
+			return true;
+		}
 		return false;
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission } = this.props;
-		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission)) {
+		const { uploadFilePermission, goToCannedResponses } = this.props;
+		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
 		}
 	}
@@ -730,7 +752,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFile = async () => {
 		logEvent(events.ROOM_BOX_ACTION_FILE);
 		try {
-			const res = await DocumentPicker.pick({
+			const res = await DocumentPicker.pickSingle({
 				type: [DocumentPicker.types.allFiles]
 			});
 			const file = {
@@ -785,9 +807,16 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const { permissionToUpload } = this.state;
-		const { showActionSheet } = this.props;
+		const { showActionSheet, goToCannedResponses } = this.props;
 
 		const options = [];
+		if (goToCannedResponses) {
+			options.push({
+				title: I18n.t('Canned_Responses'),
+				icon: 'canned-response',
+				onPress: () => goToCannedResponses()
+			});
+		}
 		if (permissionToUpload) {
 			options.push(
 				{
@@ -1172,7 +1201,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,

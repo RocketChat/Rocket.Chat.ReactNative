@@ -3,16 +3,16 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import EventEmitter from '../lib/methods/helpers/events';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -184,7 +184,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<Title title={visitor?.username} theme={theme} />
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Name')}
 						defaultValue={visitor?.name}
 						onChangeText={text => onChangeText('name', text)}
@@ -194,7 +194,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						theme={theme}
 						editable={!!editOmnichannelContactPermission}
 					/>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Email')}
 						inputRef={e => {
 							inputs.name = e;
@@ -207,7 +207,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						theme={theme}
 						editable={!!editOmnichannelContactPermission}
 					/>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Phone')}
 						inputRef={e => {
 							inputs.phone = e;
@@ -227,7 +227,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						editable={!!editOmnichannelContactPermission}
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
-						<TextInput
+						<FormTextInput
 							label={key}
 							defaultValue={value}
 							inputRef={e => {
@@ -245,7 +245,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						/>
 					))}
 					<Title title={I18n.t('Conversation')} theme={theme} />
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Topic')}
 						inputRef={e => {
 							inputs.topic = e;
@@ -264,14 +264,14 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						}}
 						placeholder={{ text: I18n.t('Tags') }}
 						value={tagParamSelected}
-						context={BLOCK_CONTEXT.FORM}
+						context={BlockContext.FORM}
 						multiselect
 						disabled={!editLivechatRoomCustomFieldsPermission}
 						inputStyle={styles.multiSelect}
 					/>
 
 					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array: any) => (
-						<TextInput
+						<FormTextInput
 							label={key}
 							defaultValue={value}
 							inputRef={e => {
@@ -289,7 +289,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						/>
 					))}
 
-					<Button title={I18n.t('Save')} onPress={submit} theme={theme} />
+					<Button title={I18n.t('Save')} onPress={submit} />
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

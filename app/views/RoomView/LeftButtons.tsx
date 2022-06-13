@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';

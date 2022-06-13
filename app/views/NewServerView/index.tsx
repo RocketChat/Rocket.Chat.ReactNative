@@ -22,13 +22,13 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isTablet } from '../../utils/deviceInfo';
-import EventEmitter from '../../utils/events';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
-import { showConfirmationAlert } from '../../utils/info';
-import { events, logEvent } from '../../utils/log';
-import { moderateScale, verticalScale } from '../../utils/scaling';
-import SSLPinning from '../../utils/sslPinning';
+import { isTablet } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
+import { showConfirmationAlert } from '../../lib/methods/helpers/info';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import { moderateScale, verticalScale } from './scaling';
+import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 
@@ -374,7 +374,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
-						theme={theme}
 						testID='new-server-view-button'
 					/>
 					<OrSeparator theme={theme} />
@@ -396,7 +395,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						onPress={this.connectOpen}
 						disabled={connecting}
 						loading={connectingOpen && connecting}
-						theme={theme}
 						testID='new-server-view-open'
 					/>
 				</FormContainerInner>

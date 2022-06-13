@@ -1,12 +1,11 @@
 import React from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
 import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
-import { Subscription } from 'rxjs';
 
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
@@ -14,7 +13,7 @@ import Avatar from '../../containers/Avatar';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import RCTextInput from '../../containers/TextInput';
+import FormTextInput from '../../containers/TextInput/FormTextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import {
@@ -35,17 +34,21 @@ import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
-import log, { events, logEvent } from '../../utils/log';
-import { MessageTypeValues } from '../../utils/messageTypes';
-import random from '../../utils/random';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import EventEmitter from '../../lib/methods/helpers/events';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { MessageTypeValues } from './messageTypes';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { getRoomTitle, hasPermission } from '../../lib/methods';
+import {
+	getRoomTitle,
+	hasPermission,
+	compareServerVersion,
+	showConfirmationAlert,
+	showErrorAlert,
+	random
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {
@@ -82,7 +85,6 @@ interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | Modal
 
 class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfoEditViewState> {
 	randomValue = random(15);
-	private querySubscription: Subscription | undefined;
 	private room: TSubscriptionModel;
 	private name: TextInput | null | undefined;
 	private description: TextInput | null | undefined;
@@ -119,12 +121,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		this.loadRoom();
 	}
 
-	componentWillUnmount() {
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
-	}
-
 	loadRoom = async () => {
 		const {
 			route,
@@ -143,12 +139,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		try {
 			const db = database.active;
 			const sub = await db.get('subscriptions').find(rid);
-			const observable = sub.observe();
-
-			this.querySubscription = observable.subscribe(data => {
-				this.room = data;
-				this.init(this.room);
-			});
+			this.room = sub;
+			this.init(this.room);
 
 			const result = await hasPermission(
 				[
@@ -479,7 +471,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 				onChange={({ value }: { value: boolean }) => this.setState({ systemMessages: value })}
 				placeholder={{ text: I18n.t('Hide_System_Messages') }}
 				value={systemMessages as string[]}
-				context={BLOCK_CONTEXT.FORM}
+				context={BlockContext.FORM}
 				multiselect
 			/>
 		);
@@ -585,7 +577,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								)}
 							</Avatar>
 						</TouchableOpacity>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.name = e;
 							}}
@@ -599,7 +591,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-name'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.description = e;
 							}}
@@ -612,7 +604,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-description'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.topic = e;
 							}}
@@ -625,7 +617,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-topic'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.announcement = e;
 							}}
@@ -638,7 +630,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							theme={theme}
 							testID='room-info-edit-view-announcement'
 						/>
-						<RCTextInput
+						<FormTextInput
 							inputRef={e => {
 								this.joinCode = e;
 							}}

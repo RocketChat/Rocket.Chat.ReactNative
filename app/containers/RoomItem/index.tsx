@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
-import { formatDate } from '../../utils/room';
+import { formatDate } from '../../lib/methods/helpers/room';
 import RoomItem from './RoomItem';
 import { ISubscription, TUserStatus } from '../../definitions';
 import { IRoomItemContainerProps } from './interfaces';
@@ -167,6 +167,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
+				hideMentionStatus={item.hideMentionStatus}
 				alert={alert}
 				lastMessage={item.lastMessage}
 				showLastMessage={showLastMessage}

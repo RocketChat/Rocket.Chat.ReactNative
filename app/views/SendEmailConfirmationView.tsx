@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import { OutsideParamList } from '../stacks/types';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import Button from '../containers/Button';
-import { showErrorAlert } from '../utils/info';
-import isValidEmail from '../utils/isValidEmail';
+import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
 import I18n from '../i18n';
 import { useTheme } from '../theme';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 import { IBaseScreen } from '../definitions';
 import { Services } from '../lib/services';
@@ -59,7 +58,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 	return (
 		<FormContainer testID='send-email-confirmation-view'>
 			<FormContainerInner>
-				<TextInput
+				<FormTextInput
 					autoFocus
 					placeholder={I18n.t('Email')}
 					keyboardType='email-address'
@@ -78,7 +77,6 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 					testID='send-email-confirmation-view-submit'
 					loading={isFetching}
 					disabled={invalidEmail}
-					theme={theme}
 				/>
 			</FormContainerInner>
 		</FormContainer>

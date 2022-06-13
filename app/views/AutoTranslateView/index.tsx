@@ -9,7 +9,7 @@ import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import { IBaseScreen, ISubscription } from '../../definitions';
 import { Services } from '../../lib/services';
 

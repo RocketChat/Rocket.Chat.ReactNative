@@ -1,6 +1,7 @@
-import React from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { HeaderBackButton, StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { HeaderBackButton } from '@react-navigation/elements';
+import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -26,12 +27,10 @@ import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import debounce from '../utils/debounce';
-import { isIOS } from '../utils/deviceInfo';
-import { goRoom } from '../utils/goRoom';
-import { showErrorAlert } from '../utils/info';
-import log, { events, logEvent } from '../utils/log';
-import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';
+import { goRoom } from '../lib/methods/helpers/goRoom';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
+import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
@@ -425,8 +424,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					// VERIFY ON PR
-					onPress: () => dispatch(deleteRoom(item._id, item))
+					onPress: () => dispatch(deleteRoom(ERoomType.c, item))
 				}
 			],
 			{ cancelable: false }

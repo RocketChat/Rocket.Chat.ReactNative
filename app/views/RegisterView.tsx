@@ -9,16 +9,15 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { getShowLoginButton } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { showErrorAlert } from '../utils/info';
-import isValidEmail from '../utils/isValidEmail';
-import log, { events, logEvent } from '../utils/log';
-import openLink from '../utils/openLink';
+import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
+import openLink from '../lib/methods/helpers/openLink';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 
@@ -187,7 +186,7 @@ class RegisterView extends React.Component<IProps, any> {
 										this.setState({ customFields: { ...customFields, ...newValue } });
 									}}
 									value={customFields[key]}>
-									<TextInput
+									<FormTextInput
 										inputRef={e => {
 											// @ts-ignore
 											this[key] = e;
@@ -202,7 +201,7 @@ class RegisterView extends React.Component<IProps, any> {
 						}
 
 						return (
-							<TextInput
+							<FormTextInput
 								inputRef={e => {
 									// @ts-ignore
 									this[key] = e;
@@ -243,7 +242,7 @@ class RegisterView extends React.Component<IProps, any> {
 				<FormContainerInner>
 					<LoginServices navigation={navigation} theme={theme} separator />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}
 						placeholder={I18n.t('Name')}
@@ -255,7 +254,7 @@ class RegisterView extends React.Component<IProps, any> {
 						testID='register-view-name'
 						theme={theme}
 					/>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Username')}
 						containerStyle={styles.inputContainer}
 						inputRef={e => {
@@ -270,7 +269,7 @@ class RegisterView extends React.Component<IProps, any> {
 						testID='register-view-username'
 						theme={theme}
 					/>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Email')}
 						containerStyle={styles.inputContainer}
 						inputRef={e => {
@@ -286,7 +285,7 @@ class RegisterView extends React.Component<IProps, any> {
 						testID='register-view-email'
 						theme={theme}
 					/>
-					<TextInput
+					<FormTextInput
 						label={I18n.t('Password')}
 						containerStyle={styles.inputContainer}
 						inputRef={e => {
@@ -310,7 +309,6 @@ class RegisterView extends React.Component<IProps, any> {
 						testID='register-view-submit'
 						disabled={!this.valid()}
 						loading={saving}
-						theme={theme}
 						style={styles.registerButton}
 					/>
 

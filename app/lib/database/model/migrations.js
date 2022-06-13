@@ -230,6 +230,15 @@ export default schemaMigrations({
 					columns: [{ name: 'comment', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 18,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'hide_mention_status', type: 'boolean', isOptional: true }]
+				})
+			]
 		}
 	]
 });

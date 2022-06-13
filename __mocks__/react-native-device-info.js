@@ -1,7 +1,3 @@
-export default {
-	getModel: () => '',
-	getReadableVersion: () => '',
-	getBundleId: () => '',
-	isTablet: () => false,
-	hasNotch: () => false
-};
+import mockDeviceInfo from 'react-native-device-info/jest/react-native-device-info-mock';
+
+export default mockDeviceInfo;

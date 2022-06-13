@@ -287,7 +287,7 @@ describe('Room actions screen', () => {
 			});
 
 			it('should have show unread count option', async () => {
-				await expect(element(by.id('notification-preference-view-unread-count'))).toExist();
+				await expect(element(by.id('notification-preference-view-mark-as-unread'))).toExist();
 			});
 
 			it('should have notification alert option', async () => {

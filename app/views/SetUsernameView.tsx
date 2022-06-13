@@ -11,16 +11,16 @@ import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import TextInput from '../containers/TextInput';
+import FormTextInput from '../containers/TextInput/FormTextInput';
 import { IApplicationState } from '../definitions';
 import { SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { TSupportedThemes, withTheme } from '../theme';
-import { isTablet } from '../utils/deviceInfo';
-import { showErrorAlert } from '../utils/info';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import { isTablet } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 
@@ -118,7 +118,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}>
 							{I18n.t('Set_username_subtitle')}
 						</Text>
-						<TextInput
+						<FormTextInput
 							autoFocus
 							placeholder={I18n.t('Username')}
 							returnKeyType='send'
@@ -137,7 +137,6 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 							testID='set-username-view-submit'
 							disabled={!username}
 							loading={saving}
-							theme={theme}
 						/>
 					</SafeAreaView>
 				</ScrollView>
