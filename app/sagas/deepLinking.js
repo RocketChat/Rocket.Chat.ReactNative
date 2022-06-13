@@ -6,15 +6,16 @@ import * as types from '../actions/actionsTypes';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import database from '../lib/database';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { appInit, appStart } from '../actions/app';
-import { localAuthenticate } from '../utils/localAuthentication';
-import { goRoom } from '../utils/goRoom';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { goRoom } from '../lib/methods/helpers/goRoom';
+import { getUidDirectMessage } from '../lib/methods/helpers';
 import { loginRequest } from '../actions/login';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { callJitsi, callJitsiWithoutServer, canOpenRoom, getUidDirectMessage } from '../lib/methods';
+import { callJitsi, callJitsiWithoutServer, canOpenRoom } from '../lib/methods';
 import { Services } from '../lib/services';
 
 const roomTypes = {

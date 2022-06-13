@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid } from 'react-native-easy-grid';
 
 import { themes } from '../../../lib/constants';
-import { resetAttempts } from '../../../utils/localAuthentication';
+import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
 import { TYPE } from '../constants';
 import { getDiff, getLockedUntil } from '../utils';
 import I18n from '../../../i18n';

@@ -4,27 +4,24 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
-import log from '../../utils/log';
+import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
 import { selectServerFailure } from '../../actions/server';
-import { twoFactor } from '../../utils/twoFactor';
+import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import I18n from '../../i18n';
 import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
-import { isIOS } from '../../utils/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import { onRolesChanged } from '../methods/getRoles';
-import { isSsl } from '../../utils/url';
-import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUser, _setUserTimer } from '../methods';
+import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUser, _setUserTimer, onRolesChanged } from '../methods';
+import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
 
 interface IServices {
 	[index: string]: string | boolean;

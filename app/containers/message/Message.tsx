@@ -15,18 +15,13 @@ import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
-import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
 import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
-import Edited from './Edited';
-import MessageError from './MessageError';
+import RightIcons from './Components/RightIcons';
 
 const MessageInner = React.memo((props: IMessageInner) => {
-	const { attachments } = props;
-	const isCollapsible = attachments ? attachments[0] && attachments[0].collapsed : false;
-
 	if (props.type === 'discussion-created') {
 		return (
 			<>
@@ -60,18 +55,10 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	return (
 		<>
 			<User {...props} />
-			{isCollapsible ? (
-				<>
-					<Content {...props} />
-					<Attachments {...props} />
-				</>
-			) : (
-				<>
-					<Attachments {...props} />
-					<Content {...props} />
-				</>
-			)}
-
+			<>
+				<Content {...props} />
+				<Attachments {...props} />
+			</>
 			<Urls {...props} />
 			<Thread {...props} />
 			<Reactions {...props} />
@@ -105,12 +92,15 @@ const Message = React.memo((props: IMessage) => {
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (
-					<>
-						<Edited isEdited={props.isEdited} />
-						<MessageError hasError={props.hasError} />
-					</>
+					<RightIcons
+						type={props.type}
+						msg={props.msg}
+						isEdited={props.isEdited}
+						hasError={props.hasError}
+						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
+						unread={props.unread || false}
+					/>
 				) : null}
-				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
 			</View>
 		</View>
 	);

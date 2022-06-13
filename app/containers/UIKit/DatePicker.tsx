@@ -10,7 +10,7 @@ import { textParser } from './utils';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../CustomIcon';
-import { isAndroid } from '../../utils/deviceInfo';
+import { isAndroid } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
 import { IDatePicker } from './interfaces';

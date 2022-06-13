@@ -32,6 +32,12 @@ export type ModalStackParamList = {
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
+		omnichannelPermissions?: {
+			canForwardGuest: boolean;
+			canReturnQueue: boolean;
+			canViewCannedResponse: boolean;
+			canPlaceLivechatOnHold: boolean;
+		};
 	};
 	RoomInfoView: {
 		room: ISubscription;

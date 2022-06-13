@@ -103,6 +103,8 @@ export default class Subscription extends Model {
 
 	@field('hide_unread_status') hideUnreadStatus;
 
+	@field('hide_mention_status') hideMentionStatus;
+
 	@json('sys_mes', sanitizer) sysMes;
 
 	@json('uids', sanitizer) uids;

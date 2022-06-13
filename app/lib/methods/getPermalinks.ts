@@ -1,4 +1,4 @@
-import log from '../../utils/log';
+import log from './helpers/log';
 import { TMessageModel, TSubscriptionModel } from '../../definitions';
 import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';

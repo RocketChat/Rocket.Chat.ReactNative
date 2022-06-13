@@ -14,7 +14,7 @@ import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 
 const OPTIONS = {

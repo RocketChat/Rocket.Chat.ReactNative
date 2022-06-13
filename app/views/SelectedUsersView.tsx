@@ -21,10 +21,11 @@ import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { showErrorAlert } from '../utils/info';
-import log, { events, logEvent } from '../utils/log';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { isGroupChat, search } from '../lib/methods';
+import { search } from '../lib/methods';
+import { isGroupChat } from '../lib/methods/helpers';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });

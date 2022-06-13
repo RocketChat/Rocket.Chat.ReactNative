@@ -19,6 +19,7 @@ import { VideoConferenceEndpoints } from './videoConference';
 import { CommandsEndpoints } from './commands';
 import { PushTokenEndpoints } from './pushToken';
 import { DirectoryEndpoint } from './directory';
+import { AutoTranslateEndpoints } from './autotranslate';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -40,4 +41,5 @@ export type Endpoints = ChannelsEndpoints &
 	VideoConferenceEndpoints &
 	CommandsEndpoints &
 	PushTokenEndpoints &
-	DirectoryEndpoint;
+	DirectoryEndpoint &
+	AutoTranslateEndpoints;

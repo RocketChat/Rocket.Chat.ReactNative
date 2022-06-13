@@ -38,13 +38,35 @@ export interface IUnreadBadge {
 	tunreadUser?: [];
 	tunreadGroup?: [];
 	small?: boolean;
+	hideUnreadStatus?: boolean;
+	hideMentionStatus?: boolean;
 }
 
 const UnreadBadge = React.memo(
-	({ unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small }: IUnreadBadge) => {
+	({
+		unread,
+		userMentions,
+		groupMentions,
+		style,
+		tunread,
+		tunreadUser,
+		tunreadGroup,
+		small,
+		hideMentionStatus,
+		hideUnreadStatus
+	}: IUnreadBadge) => {
 		const { theme } = useTheme();
 
 		if ((!unread || unread <= 0) && !tunread?.length) {
+			return null;
+		}
+
+		if (hideUnreadStatus && hideMentionStatus) {
+			return null;
+		}
+
+		// Return null when hideUnreadStatus is true and isn't a direct mention
+		if (hideUnreadStatus && !((userMentions && userMentions > 0) || tunreadUser?.length)) {
 			return null;
 		}
 
