@@ -5,7 +5,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import * as types from '../actions/actionsTypes';
 import { roomsFailure, roomsRefresh, roomsSuccess } from '../actions/rooms';
 import database from '../lib/database';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import { getRooms, subscribeRooms } from '../lib/methods';

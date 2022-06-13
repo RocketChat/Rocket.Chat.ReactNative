@@ -8,8 +8,8 @@ import {
 	NotificationCategory
 } from 'react-native-notifications';
 
-import { INotification } from '../../definitions/INotification';
-import { isIOS } from '../../utils/deviceInfo';
+import { INotification } from '../../definitions';
+import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
 

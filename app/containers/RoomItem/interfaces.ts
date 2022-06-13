@@ -1,12 +1,11 @@
 import React from 'react';
-import { Animated } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { TSupportedThemes } from '../../theme';
 import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource } from '../../definitions';
 
 export interface ILeftActionsProps {
-	theme: TSupportedThemes;
-	transX: Animated.AnimatedAddition | Animated.AnimatedMultiplication;
+	transX: Animated.SharedValue<number>;
 	isRead: boolean;
 	width: number;
 	onToggleReadPress(): void;
@@ -14,8 +13,7 @@ export interface ILeftActionsProps {
 }
 
 export interface IRightActionsProps {
-	theme: TSupportedThemes;
-	transX: Animated.AnimatedAddition | Animated.AnimatedMultiplication;
+	transX: Animated.SharedValue<number>;
 	favorite: boolean;
 	width: number;
 	toggleFav(): void;
@@ -159,7 +157,6 @@ export interface ITouchableProps {
 	toggleFav: Function;
 	toggleRead: Function;
 	hideChannel: Function;
-	theme: TSupportedThemes;
 	isFocused: boolean;
 	swipeEnabled: boolean;
 	displayMode: string;

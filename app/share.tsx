@@ -5,15 +5,15 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
-import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
 import UserPreferences from './lib/methods/userPreferences';
 import Navigation from './lib/navigation/shareNavigation';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { closeShareExtension, shareExtensionInit } from './lib/methods/shareExtension';
-import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
+import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './lib/methods/helpers/navigation';
 import { ThemeContext, TSupportedThemes } from './theme';
-import { localAuthenticate } from './utils/localAuthentication';
+import { localAuthenticate } from './lib/methods/helpers/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
 import ScreenLockedView from './views/ScreenLockedView';
 // Outside Stack
@@ -22,10 +22,10 @@ import WithoutServersView from './views/WithoutServersView';
 import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
-import { setCurrentScreen } from './utils/log';
+import { setCurrentScreen } from './lib/methods/helpers/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
-import debounce from './utils/debounce';
+import { debounce } from './lib/methods/helpers';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
 import { colors, CURRENT_SERVER } from './lib/constants';
 
