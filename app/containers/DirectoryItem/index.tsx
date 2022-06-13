@@ -54,7 +54,7 @@ const DirectoryItem = ({
 				<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 				<View style={styles.directoryItemTextContainer}>
 					<View style={styles.directoryItemTextTitle}>
-						<RoomTypeIcon type={type} teamMain={teamMain} />
+						{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
 						<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{title}
 						</Text>
