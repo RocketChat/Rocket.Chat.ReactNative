@@ -12,7 +12,7 @@ import Markdown from '../markdown';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
-import { isAndroid, isIOS } from '../../utils/deviceInfo';
+import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';

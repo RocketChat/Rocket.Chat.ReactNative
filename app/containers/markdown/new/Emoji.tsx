@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
-import shortnameToUnicode from '../../../utils/shortnameToUnicode';
+import shortnameToUnicode from '../../../lib/methods/helpers/shortnameToUnicode';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';

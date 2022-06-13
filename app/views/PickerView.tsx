@@ -1,11 +1,11 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 
 import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
-import debounce from '../utils/debounce';
+import { debounce } from '../lib/methods/helpers';
 import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -14,10 +14,6 @@ import { ChatsStackParamList } from '../stacks/types';
 import { IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
-	search: {
-		width: '100%',
-		height: 56
-	},
 	noResult: {
 		fontSize: 16,
 		paddingVertical: 56,
@@ -65,9 +61,7 @@ const RenderSearch = ({ hasSearch, onChangeText }: IRenderSearch) => {
 	}
 	return (
 		<>
-			<View style={styles.search}>
-				<SearchBox onChangeText={onChangeText} />
-			</View>
+			<SearchBox onChangeText={onChangeText} />
 			<List.Separator />
 		</>
 	);

@@ -3,7 +3,7 @@ import { StyleProp, Text, TextStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
 import styles from './styles';
-import { events, logEvent } from '../../utils/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import { IUserMention } from './interfaces';
 
 interface IAtMention {

@@ -4,7 +4,7 @@ import EasyToast from 'react-native-easy-toast';
 
 import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { TSupportedThemes, withTheme } from '../theme';
 
 const styles = StyleSheet.create({

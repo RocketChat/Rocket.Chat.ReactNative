@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
 
 const ImageProgress = createImageProgress(FastImage);

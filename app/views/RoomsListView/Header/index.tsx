@@ -4,10 +4,10 @@ import { Dispatch } from 'redux';
 
 import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
 import { TSupportedThemes, withTheme } from '../../../theme';
-import EventEmitter from '../../../utils/events';
+import EventEmitter from '../../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
-import { isTablet } from '../../../utils/deviceInfo';
-import { events, logEvent } from '../../../utils/log';
+import { isTablet } from '../../../lib/methods/helpers';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 import Header from './Header';
 import { IApplicationState } from '../../../definitions';
 
