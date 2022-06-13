@@ -16,7 +16,7 @@ import MarkdownTableRow, { ITableRow } from './TableRow';
 import MarkdownTableCell, { ITableCell } from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
-import { isValidURL } from '../../lib/methods/helpers/url';
+import { isValidURL } from '../../lib/methods/helpers';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
@@ -159,10 +159,6 @@ const Markdown = ({
 	if (!msg) {
 		return null;
 	}
-
-	const formattedMessage = formatHyperlink(formatText(msg));
-	const ast = mergeTextNodes(parser.parse(formattedMessage));
-	isMessageContainsOnlyEmoji.current = isOnlyEmoji(formattedMessage) && emojiCount(formattedMessage) <= 3;
 
 	const renderText = ({ context, literal }: { context: []; literal: string }) => {
 		const defaultStyle = [isMessageContainsOnlyEmoji.current ? styles.textBig : {}, ...context.map(type => styles[type])];
@@ -322,6 +318,9 @@ const Markdown = ({
 		);
 	}
 
+	const formattedMessage = formatHyperlink(formatText(msg));
+	const ast = mergeTextNodes(parser.parse(formattedMessage));
+	isMessageContainsOnlyEmoji.current = isOnlyEmoji(formattedMessage) && emojiCount(formattedMessage) <= 3;
 	return renderer?.current?.render(ast) || null;
 };
 export default Markdown;
