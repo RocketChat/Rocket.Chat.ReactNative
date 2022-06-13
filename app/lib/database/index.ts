@@ -26,6 +26,10 @@ import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
 import { TAppDatabase, TServerDatabase } from './interfaces';
 
+if (__DEV__) {
+	console.log(`📂 ${appGroupPath}`);
+}
+
 const getDatabasePath = (name: string) => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
 
 export const getDatabase = (database = ''): Database => {
