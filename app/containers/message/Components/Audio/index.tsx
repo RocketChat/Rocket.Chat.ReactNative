@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import moment from 'moment';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 import TrackPlayer, { Event, useTrackPlayerEvents, State, useProgress } from 'react-native-track-player';
 
 import Touchable from '../../Touchable';
@@ -11,8 +11,7 @@ import { CustomIcon } from '../../../CustomIcon';
 import sharedStyles from '../../../../views/Styles';
 import { themes } from '../../../../lib/constants';
 import {
-	isAndroid,
-	isIOS
+	isAndroid
 	//  isIOS
 } from '../../../../lib/methods/helpers';
 import MessageContext from '../../Context';
@@ -21,7 +20,7 @@ import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment } from '../../../../definitions';
 import { TSupportedThemes } from '../../../../theme';
 import { setupService } from './services';
-// import Slider from './Slider';
+import Slider from './Slider';
 
 interface IButton {
 	loading: boolean;
@@ -93,13 +92,25 @@ const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButto
 
 Button.displayName = 'MessageAudioButton';
 
-const MessageAudio = ({ file, isReply, style, theme, getCustomEmoji, scale }: IMessageAudioProps) => {
+const MessageAudio = ({
+	file,
+	isReply,
+	style,
+	theme,
+	getCustomEmoji
+}: // scale
+IMessageAudioProps) => {
 	const [loading, setLoading] = useState(false);
 	const [paused, setPaused] = useState(true);
+	const [currentTime, setCurrentTime] = useState(0);
 
 	const { baseUrl, user } = useContext(MessageContext);
 
 	const { position, duration } = useProgress();
+
+	useEffect(() => {
+		setCurrentTime(position);
+	}, [position]);
 
 	useEffect(() => {
 		const setup = async () => {
@@ -115,7 +126,6 @@ const MessageAudio = ({ file, isReply, style, theme, getCustomEmoji, scale }: IM
 			} catch {
 				// Do nothing
 			}
-			setLoading(false);
 		};
 		setup();
 		return () => {
@@ -133,7 +143,7 @@ const MessageAudio = ({ file, isReply, style, theme, getCustomEmoji, scale }: IM
 		} else {
 			activateKeepAwake();
 		}
-	}, [paused, position, duration, file, loading, theme]);
+	}, [paused, currentTime, duration, file, loading, theme]);
 
 	useTrackPlayerEvents([Event.PlaybackState], ({ state }) => {
 		if (state === State.Stopped) {
@@ -144,9 +154,10 @@ const MessageAudio = ({ file, isReply, style, theme, getCustomEmoji, scale }: IM
 				// do nothing
 			}
 		}
+		if (state === State.Ready) setLoading(false);
 	});
 
-	const getDuration = () => formatTime(position || duration);
+	const getDuration = () => formatTime(currentTime || duration);
 
 	const togglePlayPause = () => {
 		setPaused(!paused);
@@ -166,6 +177,7 @@ const MessageAudio = ({ file, isReply, style, theme, getCustomEmoji, scale }: IM
 
 	const onValueChange = async (value: number) => {
 		try {
+			setCurrentTime(value);
 			await TrackPlayer.seekTo(value);
 		} catch {
 			// Do nothing
@@ -201,17 +213,17 @@ const MessageAudio = ({ file, isReply, style, theme, getCustomEmoji, scale }: IM
 					{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
 				]}>
 				<Button disabled={isReply} loading={loading} paused={paused} onPress={togglePlayPause} theme={theme} />
-				{/* <Slider
+				<Slider
 					value={currentTime}
 					maximumValue={duration}
-					onValueChange={this.onValueChange}
+					onValueChange={onValueChange}
 					thumbTintColor={thumbColor}
 					minimumTrackTintColor={themes[theme].tintColor}
 					disabled={isReply}
 					maximumTrackTintColor={themes[theme].auxiliaryText}
 					// thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
-				/> */}
-				<Slider
+				/>
+				{/* <Slider
 					disabled={isReply}
 					style={styles.slider}
 					value={position}
@@ -222,7 +234,7 @@ const MessageAudio = ({ file, isReply, style, theme, getCustomEmoji, scale }: IM
 					maximumTrackTintColor={themes[theme].auxiliaryText}
 					onValueChange={onValueChange}
 					thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
-				/>
+				/> */}
 				<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{getDuration()}</Text>
 			</View>
 		</>
