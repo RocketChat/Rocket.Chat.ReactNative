@@ -100,6 +100,7 @@ export interface ISubscription {
 	separator?: boolean;
 	onHold?: boolean;
 	source?: IOmnichannelSource;
+	hideMentionStatus?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: RelationModified<TMessageModel>;
 	threads: RelationModified<TThreadModel>;
