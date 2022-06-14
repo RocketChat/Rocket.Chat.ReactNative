@@ -69,7 +69,7 @@ const Header = React.memo(
 				<View style={styles.container}>
 					<TextInput
 						autoFocus
-						style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
+						style={[styles.subtitle, isLight && titleColorStyle, { fontSize: titleFontSize }]}
 						placeholder='Search'
 						onChangeText={onSearchChangeText}
 						testID='rooms-list-view-search-input'
