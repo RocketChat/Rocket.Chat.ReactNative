@@ -40,6 +40,7 @@ const CloseLivechatSheet = ({
 				theme={theme}
 				testID='room-actions-view-close-livechat'
 				inputStyle={{ borderWidth: 2 }}
+				bottomSheet
 			/>
 			<FooterButtons
 				confirmBackgroundColor={colors.actionTintColor}

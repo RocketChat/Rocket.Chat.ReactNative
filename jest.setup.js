@@ -1,5 +1,6 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
+import mockBottomSheet from '@gorhom/bottom-sheet/mock';
 
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
@@ -58,4 +59,9 @@ jest.mock('react-native-notifications', () => ({
 			registerNotificationOpened: jest.fn()
 		})
 	}
+}));
+
+jest.mock('@gorhom/bottom-sheet', () => ({
+	...mockBottomSheet,
+	__esModule: true
 }));

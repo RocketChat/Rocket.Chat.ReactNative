@@ -43,6 +43,7 @@ const EnterPasswordSheet = ({
 				testID='profile-view-enter-password-sheet'
 				secureTextEntry
 				inputStyle={{ borderWidth: 2 }}
+				bottomSheet
 			/>
 			<FooterButtons
 				confirmBackgroundColor={colors.actionTintColor}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { StyleProp, StyleSheet, Text, TextInputProps, TextInput as RNTextInput, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -64,6 +65,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	left?: JSX.Element;
 	theme: TSupportedThemes;
 	onClearInput?: () => void;
+	bottomSheet?: boolean;
 }
 
 interface IRCTextInputState {
@@ -153,16 +155,18 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 			testID,
 			placeholder,
 			theme,
+			bottomSheet,
 			...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
+		const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
 					<Text style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>{label}</Text>
 				) : null}
 				<View style={styles.wrap}>
-					<TextInput
+					<Input
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
@@ -178,7 +182,8 @@ export default class FormTextInput extends React.PureComponent<IRCTextInputProps
 							},
 							inputStyle
 						]}
-						ref={inputRef}
+						// @ts-ignore
+						ref={inputRef} // bottomSheetRef overlap default ref
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
