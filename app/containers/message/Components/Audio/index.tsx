@@ -122,7 +122,14 @@ IMessageAudioProps) => {
 
 			setLoading(true);
 			try {
-				await TrackPlayer.add([{ url: `${url}?rc_uid=${user.id}&rc_token=${user.token}` }]);
+				await TrackPlayer.add([
+					{
+						url: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
+						title: file.title,
+						artist: file.author_name,
+						duration
+					}
+				]);
 			} catch {
 				// Do nothing
 			}
