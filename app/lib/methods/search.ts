@@ -3,12 +3,12 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, SubscriptionType } from '../../definitions';
+import { ISearch, ISearchLocal, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { isGroupChat } from './helpers';
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<(ISearch | ISearchLocal)[]> => {
+export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<TSubscriptionModel[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -28,18 +28,7 @@ export const localSearch = async ({ text = '', filterUsers = true, filterRooms =
 
 	const sliceSubscriptions = subscriptions.slice(0, 7);
 
-	const search = sliceSubscriptions.map(sub => ({
-		rid: sub.rid,
-		name: sub.name,
-		fname: sub?.fname || '',
-		avatarETag: sub?.avatarETag || '',
-		t: sub.t,
-		encrypted: sub?.encrypted || null,
-		lastMessage: sub.lastMessage,
-		...(sub.teamId && { teamId: sub.teamId })
-	})) as (ISearch | ISearchLocal)[];
-
-	return search;
+	return sliceSubscriptions;
 };
 
 export const search = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<(ISearch | ISearchLocal)[]> => {
