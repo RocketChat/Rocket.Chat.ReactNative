@@ -24,6 +24,5 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textRegular,
 		marginBottom: 10
-	},
-	footerButtonsContainer: { flexDirection: 'row', paddingTop: 16 }
+	}
 });

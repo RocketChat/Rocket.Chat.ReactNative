@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { deleteAccount } from '../../../../actions/login';
 import { useActionSheet } from '../../../../containers/ActionSheet';
-import Button from '../../../../containers/Button';
+import FooterButtons from '../../../../containers/ActionSheet/FooterButtons';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import FormTextInput from '../../../../containers/TextInput/FormTextInput';
 import i18n from '../../../../i18n';
@@ -27,33 +27,6 @@ const AlertHeader = ({ title = '', subTitle = '' }) => {
 			</View>
 			<Text style={styles.subTitleContainerText}>{subTitle}</Text>
 		</>
-	);
-};
-
-const FooterButtons = ({
-	cancelAction = () => {},
-	confirmAction = () => {},
-	cancelTitle = '',
-	confirmTitle = '',
-	disabled = false
-}) => {
-	const { colors } = useTheme();
-	return (
-		<View style={styles.footerButtonsContainer}>
-			<Button
-				style={{ flex: 1, backgroundColor: colors.passcodeButtonActive }}
-				color={colors.bodyText}
-				title={cancelTitle}
-				onPress={cancelAction}
-			/>
-			<View style={{ width: 8 }} />
-			<Button
-				style={{ flex: 1, backgroundColor: colors.dangerColor }}
-				title={confirmTitle}
-				onPress={confirmAction}
-				disabled={disabled}
-			/>
-		</View>
 	);
 };
 
