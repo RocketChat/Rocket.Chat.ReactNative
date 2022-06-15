@@ -10,10 +10,10 @@ import FooterButtons from '../../../../containers/ActionSheet/FooterButtons';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import FormTextInput from '../../../../containers/TextInput/FormTextInput';
 import i18n from '../../../../i18n';
+import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
-import { showErrorAlert } from '../../../../utils/info';
-import { events, logEvent } from '../../../../utils/log';
 import { getTranslations } from './getTranslations';
 import styles from './styles';
 

@@ -64,6 +64,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconRight?: TIconsName;
 	left?: JSX.Element;
 	theme: TSupportedThemes;
+	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }
 
