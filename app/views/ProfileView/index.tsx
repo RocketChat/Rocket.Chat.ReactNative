@@ -625,7 +625,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							onPress={this.logoutOtherLocations}
 							testID='profile-view-logout-other-locations'
 						/>
-						{Accounts_AllowDeleteOwnAccount && (
+						{Accounts_AllowDeleteOwnAccount ? (
 							<Button
 								title={I18n.t('Delete_my_account')}
 								type='primary'
@@ -633,7 +633,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								onPress={this.deleteOwnAccount}
 								testID='profile-view-delete-my-account'
 							/>
-						)}
+						) : null}
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>
