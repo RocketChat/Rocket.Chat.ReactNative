@@ -54,8 +54,8 @@ interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileV
 	Accounts_AllowUsernameChange: boolean;
 	Accounts_CustomFields: string;
 	theme: TSupportedThemes;
-	Accounts_AllowDeleteOwnAccount: string;
-	showActionSheet: Function;
+	Accounts_AllowDeleteOwnAccount: boolean;
+	showActionSheet: ({ children, headerHeight }: { children: React.ReactElement; headerHeight: number }) => void;
 }
 
 interface IProfileViewState {
@@ -619,15 +619,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							testID='profile-view-logout-other-locations'
 						/>
 						{Accounts_AllowDeleteOwnAccount && (
-							<>
-								<Button
-									title={I18n.t('Delete_my_account')}
-									type='primary'
-									backgroundColor={themes[theme].dangerColor}
-									onPress={this.deleteOwnAccount}
-									testID='profile-view-delete-my-account'
-								/>
-							</>
+							<Button
+								title={I18n.t('Delete_my_account')}
+								type='primary'
+								backgroundColor={themes[theme].dangerColor}
+								onPress={this.deleteOwnAccount}
+								testID='profile-view-delete-my-account'
+							/>
 						)}
 					</ScrollView>
 				</SafeAreaView>
@@ -645,7 +643,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
 	baseUrl: state.server.server,
-	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as string
+	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(ProfileView)));
