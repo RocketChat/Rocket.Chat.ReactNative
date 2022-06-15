@@ -8,7 +8,7 @@ import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 
 import { useDimensions, useOrientation } from '../../dimensions';
 import { useTheme } from '../../theme';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';

@@ -6,17 +6,14 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
-import { IAttachment } from '../../definitions/IAttachment';
 import FormTextInput from '../../containers/TextInput/FormTextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
-import debounce from '../../utils/debounce';
 import Message from '../../containers/message';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
+import log from '../../lib/methods/helpers/log';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
@@ -26,12 +23,20 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
-import { isIOS } from '../../utils/deviceInfo';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
-import { IEmoji } from '../../definitions/IEmoji';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { IMessageFromServer, IUser, TMessageModel, IUrl } from '../../definitions';
+import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
+import {
+	IMessageFromServer,
+	IUser,
+	TMessageModel,
+	IUrl,
+	IEmoji,
+	IAttachment,
+	ISubscription,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import { Services } from '../../lib/services';
 
 const QUERY_SIZE = 50;

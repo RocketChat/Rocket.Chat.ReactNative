@@ -18,9 +18,9 @@ import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { TSupportedThemes, withTheme } from '../theme';
-import { isTablet } from '../utils/deviceInfo';
-import { showErrorAlert } from '../utils/info';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import { isTablet } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 

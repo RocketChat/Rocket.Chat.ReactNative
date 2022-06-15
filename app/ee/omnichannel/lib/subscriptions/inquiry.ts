@@ -1,9 +1,9 @@
-import log from '../../../../utils/log';
+import log from '../../../../lib/methods/helpers/log';
 import { store } from '../../../../lib/store/auxStore';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 import sdk from '../../../../lib/services/sdk';
 import { IOmnichannelRoom } from '../../../../definitions';
-import { hasRole } from '../../../../lib/methods';
+import { hasRole } from '../../../../lib/methods/helpers';
 import { Services } from '../../../../lib/services';
 
 interface IArgsQueueOmnichannel extends IOmnichannelRoom {
