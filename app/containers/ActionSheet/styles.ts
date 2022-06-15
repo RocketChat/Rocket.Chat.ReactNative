@@ -67,5 +67,8 @@ export default StyleSheet.create({
 	footerButtonsContainer: {
 		flexDirection: 'row',
 		paddingTop: 16
+	},
+	buttonSeparator: {
+		marginRight: 8
 	}
 });
