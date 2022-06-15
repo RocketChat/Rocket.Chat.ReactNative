@@ -2312,7 +2312,7 @@
     "@babel/helper-create-regexp-features-plugin" "^7.16.7"
     "@babel/helper-plugin-utils" "^7.16.7"
 
-"@babel/preset-env@^7.12.9":
+"@babel/preset-env@^7.12.9", "@babel/preset-env@^7.18.2":
   version "7.18.2"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.18.2.tgz#f47d3000a098617926e674c945d95a28cb90977a"
   integrity sha512-PfpdxotV6afmXMU47S08F9ZKIm2bJIQ0YbAAtDfIENX7G1NUAXigLREh69CWDjtgUy7dYn7bsMzkgdtAlmS68Q==
@@ -16043,10 +16043,10 @@ react-native-mmkv-storage@0.7.5:
   resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.7.5.tgz#8cb48f550973336b39d8e901c2cb6181d29459d2"
   integrity sha512-eBw05bFXbeM5ZWHTTN9JM9td60mW8fJb0cAlRwd/5C7tuE51bqoM9HE8NLWIYdz++W/36tvda9vFAT67K8U2mw==
 
-react-native-modal@11.10.0:
-  version "11.10.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.10.0.tgz#94a6d3a2428ba5228cfb4dc174cacea79c871591"
-  integrity sha512-syRYDJYSh16bR37R5EKU9T/wC+5bEOfF17IUqf5URdhbEDd+hxyMInC++l45E8oI+MtdOaEp9yAws5xDqk8dnA==
+react-native-modal@13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-13.0.1.tgz#691f1e646abb96fa82c1788bf18a16d585da37cd"
+  integrity sha512-UB+mjmUtf+miaG/sDhOikRfBOv0gJdBU2ZE1HtFWp6UixW9jCk/bhGdHUgmZljbPpp0RaO/6YiMmQSSK3kkMaw==
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
@@ -16161,9 +16161,9 @@ react-native-scrollable-tab-view@^1.0.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
-react-native-simple-crypto@RocketChat/react-native-simple-crypto#0.5.0:
-  version "0.5.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/e4914cb4f5a2227a88e862a8f6029a2c5dd9fdc6"
+react-native-simple-crypto@RocketChat/react-native-simple-crypto#0.5.1:
+  version "0.5.1"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/dcf6eef5359c739d521371918e13a73f2ea6cb42"
   dependencies:
     base64-js "^1.3.0"
     hex-lite "^1.5.0"
@@ -16241,7 +16241,7 @@ react-native-webview@10.3.2:
 
 react-native@RocketChat/react-native#0.68.2:
   version "0.68.2"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/9e3932cc96ef54713ad734fa6c572cddd204de02"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/0773ccf85de9ca5eed551fb361fa3455bd2aade7"
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^7.0.3"
