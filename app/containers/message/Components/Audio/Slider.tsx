@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleProp, ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming, Easing } from 'react-native-reanimated';
 
 import styles, { SLIDER_THUMB_RADIUS } from '../../styles';
 import { useTheme } from '../../../../theme';
@@ -17,6 +17,7 @@ interface ISliderProps {
 	disabled?: boolean;
 	thumbImage?: { uri: string; scale: number | undefined };
 	containerStyle?: StyleProp<ViewStyle>;
+	animationConfig?: { duration: number; easing: Animated.EasingFunction };
 }
 
 const Slider = React.memo(
@@ -28,7 +29,11 @@ const Slider = React.memo(
 		minimumTrackTintColor,
 		maximumTrackTintColor,
 		disabled,
-		containerStyle
+		containerStyle,
+		animationConfig = {
+			duration: 200,
+			easing: Easing.linear
+		}
 	}: ISliderProps) => {
 		const { colors } = useTheme();
 		const [sliderWidth, setSliderWidth] = useState<number>(0);
@@ -38,7 +43,7 @@ const Slider = React.memo(
 
 		useEffect(() => {
 			if (!isSliding) {
-				currentValue.value = value;
+				currentValue.value = withTiming(value, animationConfig);
 			}
 		}, [value, isSliding]);
 
