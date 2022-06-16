@@ -120,7 +120,6 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
-              echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > ./app/$KEYSTORE_OFFICIAL
               echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
               echo -e "KEYSTORE_PASSWORD=$CHAT_ROCKET_ANDROID_STORE_PASSWORD" >> ./gradle.properties
               echo -e "KEY_ALIAS=$CHAT_ROCKET_ANDROID_KEY_ALIAS" >> ./gradle.properties
@@ -128,7 +127,6 @@ commands:
             else
               echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
-              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
               echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
               echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
               echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
