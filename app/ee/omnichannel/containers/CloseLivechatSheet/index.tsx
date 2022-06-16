@@ -36,7 +36,7 @@ const CloseLivechatSheet = ({
 			<FormTextInput
 				value={comment}
 				onChangeText={value => setComment(value)}
-				onSubmitEditing={() => onSubmit(comment)}
+				onSubmitEditing={() => (comment ? onSubmit(comment) : {})}
 				theme={theme}
 				testID='room-actions-view-close-livechat'
 				inputStyle={{ borderWidth: 2 }}
