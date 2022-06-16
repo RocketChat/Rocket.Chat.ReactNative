@@ -173,7 +173,8 @@ export default StyleSheet.create({
 		marginLeft: 12
 	},
 	sliderContainer: {
-		flex: 1
+		flex: 1,
+		paddingHorizontal: 10
 	},
 	track: {
 		justifyContent: 'center'
@@ -185,7 +186,7 @@ export default StyleSheet.create({
 	sliderThumb: {
 		height: SLIDER_THUMB_RADIUS * 2,
 		width: SLIDER_THUMB_RADIUS * 2,
-		borderRadius: SLIDER_THUMB_RADIUS,
+		borderRadius: 2 * SLIDER_THUMB_RADIUS,
 		position: 'absolute',
 		zIndex: 2
 	}

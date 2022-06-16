@@ -4,6 +4,8 @@ import moment from 'moment';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 // import Slider from '@react-native-community/slider';
 import TrackPlayer, { Event, useTrackPlayerEvents, State, useProgress } from 'react-native-track-player';
+import { Easing } from 'react-native-reanimated';
+import { useMMKVStorage } from 'react-native-mmkv-storage';
 
 import Touchable from '../../Touchable';
 import Markdown from '../../../markdown';
@@ -21,6 +23,7 @@ import { IAttachment } from '../../../../definitions';
 import { TSupportedThemes } from '../../../../theme';
 import { setupService } from './services';
 import Slider from './Slider';
+import { TracksStorage, addTrack, clearTracks, getCurrentTrack, setCurrentTrack } from './tracks';
 
 interface IButton {
 	loading: boolean;
@@ -106,39 +109,47 @@ IMessageAudioProps) => {
 
 	const { baseUrl, user } = useContext(MessageContext);
 
-	const { position, duration } = useProgress();
+	const { duration } = useProgress();
 
-	useEffect(() => {
-		setCurrentTime(position);
-	}, [position]);
+	const [tracks] = useMMKVStorage('tracks', TracksStorage);
+
+	let url = file.audio_url;
+	if (url && !url.startsWith('http')) {
+		url = `${baseUrl}${file.audio_url}`;
+	}
+
+	const track = {
+		id: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
+		url: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
+		title: file.title,
+		artist: file.author_name,
+		duration
+	};
 
 	useEffect(() => {
 		const setup = async () => {
-			setupService();
-			let url = file.audio_url;
-			if (url && !url.startsWith('http')) {
-				url = `${baseUrl}${file.audio_url}`;
-			}
-
 			setLoading(true);
-			try {
-				await TrackPlayer.add([
-					{
-						url: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-						title: file.title,
-						artist: file.author_name,
-						duration
-					}
-				]);
-			} catch {
-				// Do nothing
-			}
+			await setupService();
+			addTrack({ trackId: track.id, title: file.title, artist: file.author_name, isPlaying: false });
+			setLoading(false);
 		};
 		setup();
 		return () => {
-			TrackPlayer.stop();
+			TrackPlayer.reset();
+			clearTracks();
 		};
 	}, []);
+
+	useEffect(() => {
+		const currentTrack = getCurrentTrack();
+		if (currentTrack && currentTrack.trackId !== track.id) {
+			setPaused(true);
+		}
+	}, [tracks]);
+
+	// useEffect(() => {
+	// 	setCurrentTime(position);
+	// }, [position]);
 
 	useEffect(() => {
 		playPause();
@@ -161,7 +172,6 @@ IMessageAudioProps) => {
 				// do nothing
 			}
 		}
-		if (state === State.Ready) setLoading(false);
 	});
 
 	const getDuration = () => formatTime(currentTime || duration);
@@ -171,11 +181,19 @@ IMessageAudioProps) => {
 	};
 
 	const playPause = () => {
+		const currentPlaying = getCurrentTrack();
 		try {
 			if (paused) {
-				TrackPlayer.pause();
-			} else {
+				if (currentPlaying?.trackId === track.id) {
+					TrackPlayer.pause();
+				}
+			} else if (currentPlaying?.trackId === track.id) {
 				TrackPlayer.play();
+			} else {
+				TrackPlayer.reset();
+				TrackPlayer.add(track);
+				TrackPlayer.play();
+				setCurrentTrack(track.id);
 			}
 		} catch {
 			// Do nothing
@@ -183,9 +201,17 @@ IMessageAudioProps) => {
 	};
 
 	const onValueChange = async (value: number) => {
+		const currentTrack = getCurrentTrack();
 		try {
 			setCurrentTime(value);
-			await TrackPlayer.seekTo(value);
+			if (currentTrack && currentTrack.trackId === track.id) {
+				await TrackPlayer.seekTo(value);
+			} else {
+				TrackPlayer.reset();
+				TrackPlayer.add(track);
+				TrackPlayer.seekTo(value);
+				setCurrentTrack(track.id);
+			}
 		} catch {
 			// Do nothing
 		}
@@ -203,6 +229,11 @@ IMessageAudioProps) => {
 	} else if (isAndroid) {
 		thumbColor = themes[theme].tintColor;
 	}
+
+	const sliderAnimatedConfig = {
+		duration: 250,
+		easing: Easing.linear
+	};
 
 	return (
 		<>
@@ -228,6 +259,7 @@ IMessageAudioProps) => {
 					minimumTrackTintColor={themes[theme].tintColor}
 					disabled={isReply}
 					maximumTrackTintColor={themes[theme].auxiliaryText}
+					animationConfig={sliderAnimatedConfig}
 					// thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 				/>
 				{/* <Slider

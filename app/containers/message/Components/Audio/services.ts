@@ -50,6 +50,8 @@ export const playbackService = async () => {
 
 export const setupService = async () => {
 	try {
+		await TrackPlayer.getCurrentTrack();
+	} catch {
 		await TrackPlayer.setupPlayer();
 		await TrackPlayer.updateOptions({
 			stopWithApp: false,
@@ -66,7 +68,5 @@ export const setupService = async () => {
 				// Capability.SkipToNext
 			]
 		});
-	} catch {
-		// Do nothing
 	}
 };
