@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "709536751348",
+    "project_id": "chat-gepur-org",
+    "storage_bucket": "chat-gepur-org.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709536751348:android:c147db066085d6bb0a48a1",
+        "android_client_info": {
+          "package_name": "chat.gepur.org"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709536751348-eir0531re3vtr8v861br34ujbuba7317.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVmMBe21mNYCuTq_F72LNGI2iaPReLYNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709536751348-eir0531re3vtr8v861br34ujbuba7317.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "709536751348-1bt3qg7eovhbsqqa636s82hmkqrq9pi1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chat.gepur.org"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
