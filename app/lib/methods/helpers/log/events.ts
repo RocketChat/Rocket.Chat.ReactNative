@@ -349,5 +349,9 @@ export default {
 	TC_DELETE_ROOM: 'tc_delete_room',
 	TC_DELETE_ROOM_F: 'tc_delete_room_f',
 	TC_TOGGLE_AUTOJOIN: 'tc_toggle_autojoin',
-	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f'
+	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f',
+
+	// LIVECHAT VIDEOCONF
+	LIVECHAT_VIDEOCONF_JOIN: 'livechat_videoconf_join',
+	LIVECHAT_VIDEOCONF_TERMINATE: 'livechat_videoconf_terminate'
 };

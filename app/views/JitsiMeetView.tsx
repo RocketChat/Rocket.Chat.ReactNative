@@ -32,12 +32,14 @@ interface IJitsiMeetViewProps extends IBaseScreen<InsideStackParamList, 'JitsiMe
 class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewState> {
 	private rid: string;
 	private url: string;
+	private videoConf: boolean;
 	private jitsiTimeout: number | null;
 
 	constructor(props: IJitsiMeetViewProps) {
 		super(props);
 		this.rid = props.route.params?.rid;
 		this.url = props.route.params?.url;
+		this.videoConf = !!props.route.params?.videoConf;
 		this.jitsiTimeout = null;
 
 		const { user, baseUrl } = props;
@@ -71,7 +73,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 
 	componentWillUnmount() {
 		logEvent(events.JM_CONFERENCE_TERMINATE);
-		if (this.jitsiTimeout) {
+		if (this.jitsiTimeout && !this.videoConf) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);
 			this.jitsiTimeout = null;
 			BackgroundTimer.stopBackgroundTimer();
@@ -86,8 +88,8 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
 	onConferenceJoined = () => {
-		logEvent(events.JM_CONFERENCE_JOIN);
-		if (this.rid) {
+		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_JOIN : events.JM_CONFERENCE_JOIN);
+		if (this.rid && !this.videoConf) {
 			Services.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			if (this.jitsiTimeout) {
 				BackgroundTimer.clearInterval(this.jitsiTimeout);
@@ -101,7 +103,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	};
 
 	onConferenceTerminated = () => {
-		logEvent(events.JM_CONFERENCE_TERMINATE);
+		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
 		const { navigation } = this.props;
 		navigation.pop();
 	};

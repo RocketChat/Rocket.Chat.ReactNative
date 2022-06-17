@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { IText } from './interfaces';
+import navigation from '../../lib/navigation/appNavigation';
 
 export const textParser = ([{ text }]: IText[]) => text;
 
@@ -32,9 +33,13 @@ interface IUseBlockContext {
 	actionId: string;
 	appId?: string;
 	initialValue?: string;
+	url?: string;
 }
 
-export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUseBlockContext, context: BlockContext): TReturn => {
+export const useBlockContext = (
+	{ blockId, actionId, appId, initialValue, url }: IUseBlockContext,
+	context: BlockContext
+): TReturn => {
 	const { action, appId: appIdFromContext, viewId, state, language, errors, values = {} } = useContext(KitContext);
 	const { value = initialValue } = values[actionId] || {};
 	const [loading, setLoading] = useState(false);
@@ -53,6 +58,15 @@ export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUse
 			async ({ value }: any) => {
 				setLoading(true);
 				try {
+					if (appId === 'videoconf-core' && url) {
+						if (url.includes('meet.jit.si')) {
+							navigation.navigate('JitsiMeetView', { url, onlyAudio: true, videoConf: true });
+						} else {
+							navigation.navigate('LiveChatMeetView', { url });
+						}
+						setLoading(false);
+						return;
+					}
 					await action({
 						blockId,
 						appId: appId || appIdFromContext,

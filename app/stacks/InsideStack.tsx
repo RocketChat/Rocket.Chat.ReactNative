@@ -67,6 +67,7 @@ import AddChannelTeamView from '../views/AddChannelTeamView';
 import AddExistingChannelView from '../views/AddExistingChannelView';
 import SelectListView from '../views/SelectListView';
 import DiscussionsView from '../views/DiscussionsView';
+import LiveChatMeetView from '../views/LiveChatMeetView';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
@@ -326,6 +327,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
 			<InsideStack.Screen name='JitsiMeetView' component={JitsiMeetView} options={{ headerShown: false }} />
+			<InsideStack.Screen name='LiveChatMeetView' component={LiveChatMeetView} options={{ headerShown: false }} />
 		</InsideStack.Navigator>
 	);
 };

@@ -263,6 +263,10 @@ export type InsideStackParamList = {
 		rid: string;
 		url: string;
 		onlyAudio?: boolean;
+		videoConf?: boolean;
+	};
+	LiveChatMeetView: {
+		url: string;
 	};
 };
 
