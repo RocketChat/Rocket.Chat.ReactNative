@@ -917,3 +917,5 @@ export function getUserInfo(userId: string) {
 }
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
+
+export const videoConferenceJoin = (callId: string) => sdk.post('video-conference.join', { callId });
