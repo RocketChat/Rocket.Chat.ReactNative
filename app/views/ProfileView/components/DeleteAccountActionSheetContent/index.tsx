@@ -23,9 +23,9 @@ const AlertHeader = ({ title = '', subTitle = '' }) => {
 		<>
 			<View style={styles.titleContainer}>
 				<CustomIcon name='warning' size={32} color={colors.dangerColor} />
-				<Text style={styles.titleContainerText}>{title}</Text>
+				<Text style={[styles.titleContainerText, { color: colors.passcodePrimary }]}>{title}</Text>
 			</View>
-			<Text style={styles.subTitleContainerText}>{subTitle}</Text>
+			<Text style={[styles.subTitleContainerText, { color: colors.passcodePrimary }]}>{subTitle}</Text>
 		</>
 	);
 };

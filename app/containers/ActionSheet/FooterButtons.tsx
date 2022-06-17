@@ -18,8 +18,8 @@ const FooterButtons = ({
 	return (
 		<View style={styles.footerButtonsContainer}>
 			<Button
-				style={[styles.buttonSeparator, { flex: 1, backgroundColor: cancelBackgroundColor || colors.passcodeButtonActive }]}
-				color={colors.bodyText}
+				style={[styles.buttonSeparator, { flex: 1, backgroundColor: cancelBackgroundColor || colors.cancelButton }]}
+				color={colors.backdropColor}
 				title={cancelTitle}
 				onPress={cancelAction}
 			/>
