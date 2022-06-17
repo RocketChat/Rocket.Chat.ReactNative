@@ -1,5 +1,4 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
-import mockBottomSheet from '@gorhom/bottom-sheet/mock';
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
 
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
@@ -61,7 +60,11 @@ jest.mock('react-native-notifications', () => ({
 	}
 }));
 
-jest.mock('@gorhom/bottom-sheet', () => ({
-	...mockBottomSheet,
-	__esModule: true
-}));
+jest.mock('@gorhom/bottom-sheet', () => {
+	const react = require('react-native');
+	return {
+		__esModule: true,
+		default: react.View,
+		BottomSheetScrollView: react.ScrollView
+	};
+});

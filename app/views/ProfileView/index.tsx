@@ -41,10 +41,10 @@ import {
 	IProfileParams,
 	IUser
 } from '../../definitions';
-import { withActionSheet } from '../../containers/ActionSheet';
+import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 
-interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
+interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
 	baseUrl: string;
 	Accounts_AllowEmailChange: boolean;
@@ -55,7 +55,7 @@ interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileV
 	Accounts_CustomFields: string;
 	theme: TSupportedThemes;
 	Accounts_AllowDeleteOwnAccount: boolean;
-	showActionSheet: ({ children, headerHeight }: { children: React.ReactElement; headerHeight: number }) => void;
+	isMasterDetail: boolean;
 }
 
 interface IProfileViewState {
@@ -650,7 +650,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
 	baseUrl: state.server.server,
-	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
+	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(ProfileView)));
