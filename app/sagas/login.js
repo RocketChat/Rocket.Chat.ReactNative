@@ -274,8 +274,10 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 				}
 			}
 			// if there's no servers, go outside
+			sdk.disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {
+			sdk.disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);
 		}
