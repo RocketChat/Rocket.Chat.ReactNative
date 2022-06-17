@@ -2873,10 +2873,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codler/react-native-keyboard-aware-scroll-view@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@codler/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-1.0.1.tgz#e823cedfd064d7dc849ec71fa3f8d9f4b0558bb6"
-  integrity sha512-ACGSY+VPJ1KwdNQi/oKt74ld2PtGW+o09hJNsllHyBWcrnke0aOxXdtaS87nRLvVXwWadRawnSrYR/PDxr5QEg==
+"@codler/react-native-keyboard-aware-scroll-view@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@codler/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-2.0.1.tgz#4ca9b9431fc9a3dcbc9ea0e148e9fed4baf7c72d"
+  integrity sha512-95O4QBJQiSTYCIHvaHVfIagqR7qv3XiolKwtb+B9ZgaMsIDvPu1gUQOs+X9nnOtnihjkMDP9hsaRSmtM3sBY+A==
   dependencies:
     react-native-iphone-x-helper "^1.0.3"
 
