@@ -37,7 +37,7 @@ export const playbackService = async () => {
 export const setupService = async () => {
 	await TrackPlayer.setupPlayer();
 	await TrackPlayer.updateOptions({
-		stopWithApp: false,
+		stopWithApp: true,
 		capabilities: [Capability.Play, Capability.Pause, Capability.Stop],
 		compactCapabilities: [Capability.Play, Capability.Pause]
 	});
