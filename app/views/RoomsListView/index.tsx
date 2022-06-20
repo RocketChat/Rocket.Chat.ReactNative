@@ -38,7 +38,15 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	ISubscription,
+	IUser,
+	RootEnum,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
@@ -715,11 +723,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	hideChannel = async (rid: string, type: RoomTypes) => {
+	hideChannel = async (rid: string, type: SubscriptionType) => {
 		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await Services.hideRoom(rid, type);
+			const result = await Services.hideRoom(rid, type as RoomTypes);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
