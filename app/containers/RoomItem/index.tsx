@@ -103,12 +103,7 @@ const RoomItemContainer = React.memo(
 
 		const handleOnPress = () => onPress(item);
 
-		const handleOnLongPress = () => {
-			if (onLongPress) {
-				return onLongPress(item);
-			}
-			return null;
-		};
+		const handleOnLongPress = () => onLongPress && onLongPress(item);
 
 		return (
 			<RoomItem
