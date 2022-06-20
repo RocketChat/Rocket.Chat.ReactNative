@@ -67,7 +67,7 @@ const RoomItem = ({
 		hideChannel={hideChannel}
 		testID={testID}
 		type={type}
-		isFocused={isFocused}
+		isFocused={!!isFocused}
 		swipeEnabled={swipeEnabled}
 		displayMode={displayMode}>
 		<Wrapper
@@ -82,7 +82,7 @@ const RoomItem = ({
 			teamMain={teamMain}
 			displayMode={displayMode}
 			showAvatar={showAvatar}
-			showLastMessage={showLastMessage}
+			showLastMessage={!!showLastMessage}
 			sourceType={sourceType}>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
@@ -106,7 +106,7 @@ const RoomItem = ({
 							lastMessage={lastMessage}
 							type={type}
 							showLastMessage={showLastMessage}
-							username={username}
+							username={username || ''}
 							alert={alert && !hideUnreadStatus}
 							useRealName={useRealName}
 							theme={theme}

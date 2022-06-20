@@ -44,13 +44,12 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
-import { getUserPresence, RoomTypes, search } from '../../lib/methods';
+import { RoomTypes, search } from '../../lib/methods';
 import {
 	getRoomAvatar,
 	getRoomTitle,
 	getUidDirectMessage,
 	hasPermission,
-	isGroupChat,
 	isRead,
 	debounce,
 	isIOS,
@@ -645,8 +644,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
-	handleGetUserPresence = (uid: string) => getUserPresence(uid);
-
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
 		return showUnread || showFavorites || groupByType;
@@ -668,7 +665,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	toggleFav = async (rid: string, favorite: boolean) => {
+	toggleFav = async (rid: string, favorite: boolean): Promise<void> => {
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
@@ -938,7 +935,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			user: { username },
 			StoreLastMessage,
 			useRealName,
-			theme,
 			isMasterDetail,
 			width,
 			showAvatar,
@@ -950,9 +946,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return (
 			<RoomItem
 				item={item}
-				theme={theme}
 				id={id}
-				type={item.t}
 				username={username}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
@@ -961,12 +955,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
-				getUserPresence={this.handleGetUserPresence}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
-				getIsGroupChat={isGroupChat}
 				getIsRead={isRead}
-				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
