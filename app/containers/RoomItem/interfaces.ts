@@ -3,7 +3,6 @@ import Animated from 'react-native-reanimated';
 
 import { TSupportedThemes } from '../../theme';
 import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource } from '../../definitions';
-import { RoomTypes } from '../../lib/methods';
 
 export interface ILeftActionsProps {
 	transX: Animated.SharedValue<number>;
@@ -68,7 +67,7 @@ export interface ITypeIconProps {
 interface IRoomItemTouchables {
 	toggleFav?: (rid: string, favorite: boolean) => Promise<void>;
 	toggleRead?: (rid: string, tIsRead: boolean) => Promise<void>;
-	hideChannel?: (rid: string, type: RoomTypes) => Promise<void>;
+	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
 	onPress: (item?: any) => void;
 	onLongPress?: (item?: any) => void;
 }
