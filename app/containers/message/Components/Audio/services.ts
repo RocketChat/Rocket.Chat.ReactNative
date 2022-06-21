@@ -1,6 +1,6 @@
 import TrackPlayer, { Event, State, Capability } from 'react-native-track-player';
 
-import { clearCurrentTrack } from './tracksStorage';
+import { clearTracks } from './tracksStorage';
 
 let wasPausedByDuck = false;
 
@@ -16,7 +16,7 @@ export const playbackService = async () => {
 	});
 
 	TrackPlayer.addEventListener(Event.RemoteStop, () => {
-		clearCurrentTrack();
+		clearTracks();
 		TrackPlayer.destroy();
 	});
 

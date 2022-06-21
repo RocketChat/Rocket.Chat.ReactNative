@@ -22,7 +22,7 @@ import { IAttachment } from '../../../../definitions';
 import { TSupportedThemes } from '../../../../theme';
 import { setupService } from './services';
 import Slider from './Slider';
-import { useTracks } from './tracksStorage';
+import { addTrack, clearTracks, getTrackIndex, useTracks } from './tracksStorage';
 
 interface IButton {
 	loading: boolean;
@@ -140,6 +140,11 @@ IMessageAudioProps) => {
 				const sound = new Audio.Sound();
 				sound.setOnPlaybackStatusUpdate(updateTrackDuration);
 				await sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
+				if (!isReply) {
+					const index = await TrackPlayer.add(track);
+					// @ts-ignore
+					index >= 0 && addTrack({ trackIndex: index, trackId: track.id });
+				}
 			} catch {
 				// Do nothing
 			}
@@ -148,12 +153,13 @@ IMessageAudioProps) => {
 		setup();
 		return () => {
 			TrackPlayer.destroy();
+			clearTracks();
 			setCurrentTrackId(null);
 		};
 	}, []);
 
 	useEffect(() => {
-		if (currentTrackId && currentTrackId !== track.id) {
+		if (!currentTrackId || currentTrackId !== track.id) {
 			setCurrentPosition(0);
 			setPaused(true);
 		}
@@ -209,8 +215,9 @@ IMessageAudioProps) => {
 			} else if (currentTrackId === track.id) {
 				TrackPlayer.play();
 			} else {
-				TrackPlayer.reset();
-				await TrackPlayer.add(track);
+				const index = getTrackIndex(track.id);
+				index && TrackPlayer.skip(index);
+				if (currentPosition > 0) await TrackPlayer.seekTo(currentPosition);
 				TrackPlayer.play();
 				setCurrentTrackId(track.id);
 			}
@@ -236,15 +243,10 @@ IMessageAudioProps) => {
 		try {
 			if (currentTrackId === track.id) {
 				await TrackPlayer.seekTo(value);
-			} else {
-				TrackPlayer.reset();
-				await TrackPlayer.add(track);
-				await TrackPlayer.seekTo(value);
-				setCurrentTrackId(track.id);
-			}
-			if (paused) {
-				TrackPlayer.play();
-				setPaused(false);
+				if (paused) {
+					TrackPlayer.play();
+					setPaused(false);
+				}
 			}
 		} catch {
 			// Do nothing
