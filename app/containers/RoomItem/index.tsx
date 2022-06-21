@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 
 import I18n from '../../i18n';
@@ -25,9 +25,6 @@ const attrs = [
 	'showAvatar',
 	'displayMode'
 ];
-
-let roomSubscription: Subscription | null;
-let accessibilityLabel = '';
 
 const RoomItemContainer = React.memo(
 	({
@@ -61,16 +58,18 @@ const RoomItemContainer = React.memo(
 		const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 		const [_, forceUpdate] = useReducer(x => x + 1, 0);
 		const { theme } = useTheme();
+		const [accessibilityLabel, setAccessibilityLabel] = useState('');
+		const roomSubscription = useRef<Subscription | null>(null);
 
 		useEffect(() => {
 			const init = () => {
 				if (item?.observe) {
 					const observable = item.observe();
-					roomSubscription = observable?.subscribe?.(() => {
+					roomSubscription.current = observable?.subscribe?.(() => {
 						if (_) forceUpdate();
 					});
 				}
-				return () => roomSubscription?.unsubscribe && roomSubscription.unsubscribe();
+				return () => roomSubscription.current?.unsubscribe();
 			};
 			init();
 		}, []);
@@ -85,17 +84,15 @@ const RoomItemContainer = React.memo(
 		useEffect(() => {
 			const init = () => {
 				if (item.unread === 1) {
-					accessibilityLabel += `, ${item.unread} ${I18n.t('alert')}`;
+					setAccessibilityLabel(`, ${item.unread} ${I18n.t('alert')}`);
 				} else if (item.unread > 1) {
-					accessibilityLabel += `, ${item.unread} ${I18n.t('alerts')}`;
+					setAccessibilityLabel(`, ${item.unread} ${I18n.t('alerts')}`);
 				}
-
 				if (item.userMentions > 0) {
-					accessibilityLabel += `, ${I18n.t('you_were_mentioned')}`;
+					setAccessibilityLabel(`, ${I18n.t('you_were_mentioned')}`);
 				}
-
 				if (date) {
-					accessibilityLabel += `, ${I18n.t('last_message')} ${date}`;
+					setAccessibilityLabel(`, ${I18n.t('last_message')} ${date}`);
 				}
 			};
 			init();
