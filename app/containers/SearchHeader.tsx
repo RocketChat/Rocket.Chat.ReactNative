@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 		marginLeft: 0
 	},
 	title: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textRegular
 	}
 });
 
