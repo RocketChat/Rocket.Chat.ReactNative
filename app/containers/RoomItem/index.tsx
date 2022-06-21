@@ -6,7 +6,6 @@ import { useAppSelector } from '../../lib/hooks';
 import { getUserPresence } from '../../lib/methods';
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
-import { useTheme } from '../../theme';
 import { IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
@@ -57,7 +56,6 @@ const RoomItemContainer = React.memo(
 		const connected = useAppSelector(state => state.meteor.connected);
 		const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 		const [_, forceUpdate] = useReducer(x => x + 1, 0);
-		const { theme } = useTheme();
 		const [accessibilityLabel, setAccessibilityLabel] = useState('');
 		const roomSubscription = useRef<Subscription | null>(null);
 
@@ -142,7 +140,6 @@ const RoomItemContainer = React.memo(
 				showAvatar={showAvatar}
 				displayMode={displayMode}
 				sourceType={item.source}
-				theme={theme}
 			/>
 		);
 	},

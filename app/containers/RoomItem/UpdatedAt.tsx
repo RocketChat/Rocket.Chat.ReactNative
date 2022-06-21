@@ -2,11 +2,13 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../lib/constants';
 import { capitalize } from '../../lib/methods/helpers/room';
 import { IUpdatedAtProps } from './interfaces';
+import { useTheme } from '../../theme';
 
-const UpdatedAt = React.memo(({ date, theme, hideUnreadStatus, alert }: IUpdatedAtProps) => {
+const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
+	const { colors } = useTheme();
+
 	if (!date) {
 		return null;
 	}
@@ -15,13 +17,13 @@ const UpdatedAt = React.memo(({ date, theme, hideUnreadStatus, alert }: IUpdated
 			style={[
 				styles.date,
 				{
-					color: themes[theme].auxiliaryText
+					color: colors.auxiliaryText
 				},
 				alert &&
 					!hideUnreadStatus && [
 						styles.updateAlert,
 						{
-							color: themes[theme].tintColor
+							color: colors.tintColor
 						}
 					]
 			]}

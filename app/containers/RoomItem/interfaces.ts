@@ -23,14 +23,12 @@ export interface IRightActionsProps {
 
 export interface ITitleProps {
 	name: string;
-	theme: TSupportedThemes;
 	hideUnreadStatus: boolean;
 	alert: boolean;
 }
 
 export interface IUpdatedAtProps {
 	date: string;
-	theme: TSupportedThemes;
 	hideUnreadStatus: boolean;
 	alert: boolean;
 }
@@ -39,13 +37,12 @@ export interface IWrapperProps {
 	accessibilityLabel: string;
 	avatar: string;
 	type: string;
-	theme: TSupportedThemes;
 	rid: string;
 	children: React.ReactElement;
 	displayMode: string;
 	prid: string;
 	showLastMessage: boolean;
-	status: string;
+	status: TUserStatus;
 	isGroupChat: boolean;
 	teamMain: boolean;
 	showAvatar: boolean;
@@ -100,7 +97,6 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	avatar: string;
 	testID: string;
 	status: TUserStatus;
-	theme: TSupportedThemes;
 	isGroupChat: boolean;
 	isRead: boolean;
 	teamMain: boolean;
@@ -122,7 +118,6 @@ export interface IRoomItemProps extends IBaseRoomItem {
 }
 
 export interface ILastMessageProps {
-	theme: TSupportedThemes;
 	lastMessage: ILastMessage;
 	type: SubscriptionType;
 	showLastMessage: boolean;
@@ -142,4 +137,18 @@ export interface ITouchableProps extends IRoomItemTouchables {
 	isFocused: boolean;
 	swipeEnabled: boolean;
 	displayMode: string;
+}
+
+export interface IIconOrAvatar {
+	avatar: string;
+	type: string;
+	rid: string;
+	showAvatar: boolean;
+	displayMode: string;
+	prid: string;
+	status: TUserStatus;
+	isGroupChat: boolean;
+	teamMain: boolean;
+	showLastMessage: boolean;
+	sourceType: IOmnichannelSource;
 }
