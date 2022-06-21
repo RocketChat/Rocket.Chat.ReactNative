@@ -1,4 +1,4 @@
-export enum TotpMethod {
+export enum TwoFactorMethods {
 	TOTP = 'totp',
 	EMAIL = 'email',
 	PASSWORD = 'password'

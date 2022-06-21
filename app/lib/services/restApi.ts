@@ -917,3 +917,12 @@ export function getUserInfo(userId: string) {
 }
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
+
+export const saveUserProfileMethod = (
+	params: IProfileParams,
+	customFields = {},
+	twoFactorOptions: {
+		twoFactorCode: string;
+		twoFactorMethod: string;
+	} | null
+) => sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
