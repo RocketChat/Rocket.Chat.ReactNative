@@ -1,11 +1,5 @@
-import { NativeModules } from 'react-native';
-
-import { isIOS } from '../methods/helpers';
+import { NativeModules, Platform } from 'react-native';
 
 const { AppGroup } = NativeModules;
 
-const appGroup: { path: string } = {
-	path: isIOS ? AppGroup.path : ''
-};
-
-export default appGroup;
+export const appGroupPath: string = Platform.OS === 'ios' ? AppGroup.path : '';

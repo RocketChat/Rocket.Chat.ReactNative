@@ -8,6 +8,7 @@ import Header from '../Header';
 import { longText } from '../../../storybook/utils';
 import { ThemeContext } from '../../theme';
 import { store } from '../../../storybook/stories';
+import { colors } from '../../lib/constants';
 import RoomHeaderComponent from './RoomHeader';
 
 const stories = storiesOf('RoomHeader', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
@@ -82,7 +83,7 @@ stories.add('thread', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
 		<HeaderExample title={() => <RoomHeader subtitle='subtitle' />} />
 	</ThemeContext.Provider>
 );
