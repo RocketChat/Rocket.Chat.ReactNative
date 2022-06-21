@@ -1,10 +1,9 @@
 import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { PlatformPressable } from '@react-navigation/elements';
 
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 
 interface IHeaderButtonItem {
@@ -40,18 +39,18 @@ const styles = StyleSheet.create({
 });
 
 const Item = ({ title, iconName, onPress, testID, badge }: IHeaderButtonItem): React.ReactElement => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	return (
-		<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
+		<PlatformPressable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 			<>
 				{iconName ? (
-					<CustomIcon name={iconName} size={24} color={themes[theme].headerTintColor} />
+					<CustomIcon name={iconName} size={24} color={colors.headerTintColor} />
 				) : (
-					<Text style={[styles.title, { color: themes[theme].headerTintColor }]}>{title}</Text>
+					<Text style={[styles.title, { color: colors.headerTintColor }]}>{title}</Text>
 				)}
 				{badge ? badge() : null}
 			</>
-		</Touchable>
+		</PlatformPressable>
 	);
 };
 
