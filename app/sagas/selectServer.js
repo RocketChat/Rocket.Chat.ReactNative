@@ -110,7 +110,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
-		Services.abort();
+		// Services.abort();
 
 		if (user) {
 			yield put(clearSettings());
