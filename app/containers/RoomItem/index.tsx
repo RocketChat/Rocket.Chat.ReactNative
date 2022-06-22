@@ -12,18 +12,7 @@ import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 
-const attrs = [
-	'width',
-	'status',
-	'connected',
-	'theme',
-	'isFocused',
-	'forceUpdate',
-	'showLastMessage',
-	'autoJoin',
-	'showAvatar',
-	'displayMode'
-];
+const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
 const RoomItemContainer = React.memo(
 	({
