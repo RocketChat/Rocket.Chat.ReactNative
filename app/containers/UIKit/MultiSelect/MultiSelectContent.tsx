@@ -41,6 +41,7 @@ export const MultiSelectContent = React.memo(
 				}
 				setSelected(newSelect);
 				select(newSelect);
+				onChange({ value: newSelect });
 			} else {
 				onChange({ value });
 				setCurrentValue(text);

@@ -5,12 +5,12 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
 import { search } from '../../lib/methods';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
+import { useTheme } from '../../theme';
 
 const SelectUsers = ({
 	server,
@@ -19,10 +19,10 @@ const SelectUsers = ({
 	selected,
 	onUserSelect,
 	blockUnauthenticatedAccess,
-	serverVersion,
-	theme
+	serverVersion
 }: ICreateDiscussionViewSelectUsers): React.ReactElement => {
 	const [users, setUsers] = useState<any[]>([]);
+	const { colors } = useTheme();
 
 	const getUsers = async (keyword = '') => {
 		try {
@@ -59,7 +59,7 @@ const SelectUsers = ({
 
 	return (
 		<>
-			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Invite_users')}</Text>
+			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Invite_users')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onSearch={getUsers}

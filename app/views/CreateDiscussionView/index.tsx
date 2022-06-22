@@ -165,7 +165,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							onChannelSelect={this.selectChannel}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							serverVersion={serverVersion}
-							theme={theme}
 						/>
 						<FormTextInput
 							label={I18n.t('Discussion_name')}
@@ -184,7 +183,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							onUserSelect={this.selectUsers}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							serverVersion={serverVersion}
-							theme={theme}
 						/>
 						{this.isEncryptionEnabled ? (
 							<>

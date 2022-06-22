@@ -48,7 +48,7 @@ export const MultiSelect = React.memo(
 		innerInputStyle
 	}: IMultiSelect) => {
 		const { colors } = useTheme();
-		const [selected, select] = useState<any>(Array.isArray(values) ? values : []);
+		const [selected, select] = useState<string[]>(Array.isArray(values) ? values : []);
 		const [currentValue, setCurrentValue] = useState('');
 
 		const { showActionSheet, hideActionSheet } = useActionSheet();
@@ -79,7 +79,8 @@ export const MultiSelect = React.memo(
 						selectedItems={selected}
 					/>
 				),
-				snaps: [300]
+				snaps: [300],
+				onClose
 			});
 		};
 		const onHide = () => {

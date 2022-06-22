@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
-import { themes } from '../../lib/constants';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
@@ -10,6 +9,7 @@ import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
 import { localSearch } from '../../lib/methods';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
+import { useTheme } from '../../theme';
 
 const SelectChannel = ({
 	server,
@@ -18,10 +18,10 @@ const SelectChannel = ({
 	onChannelSelect,
 	initial,
 	blockUnauthenticatedAccess,
-	serverVersion,
-	theme
+	serverVersion
 }: ICreateDiscussionViewSelectChannel): React.ReactElement => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
+	const { colors } = useTheme();
 
 	const getChannels = async (keyword = '') => {
 		try {
@@ -56,7 +56,7 @@ const SelectChannel = ({
 
 	return (
 		<>
-			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
+			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
@@ -68,7 +68,7 @@ const SelectChannel = ({
 					text: { text: getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}
-				onClose={() => setChannels([])}
+				onClose={() => getChannels('')}
 				placeholder={{ text: `${I18n.t('Select_a_Channel')}...` }}
 			/>
 		</>
