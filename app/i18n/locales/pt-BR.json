@@ -734,5 +734,6 @@
   "sending_email_confirmation": "enviando email de confirmação",
   "Unsupported_format": "Formato não suportado",
   "Downloaded_file": "Arquivo baixado",
-  "Error_Download_file": "Erro ao baixar o arquivo"
+  "Error_Download_file": "Erro ao baixar o arquivo",
+  "error-init-video-conf": "Erro ao iniciar chamada de video"
 }
