@@ -55,9 +55,10 @@ const RoomItemContainer = React.memo(
 						if (_) forceUpdate();
 					});
 				}
-				return () => roomSubscription.current?.unsubscribe();
 			};
 			init();
+
+			return () => roomSubscription.current?.unsubscribe();
 		}, []);
 
 		useEffect(() => {
