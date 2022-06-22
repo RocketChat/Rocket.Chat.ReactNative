@@ -55,7 +55,7 @@ const RoomItemContainer = React.memo(
 		const alert = item.alert || item.tunread?.length;
 		const connected = useAppSelector(state => state.meteor.connected);
 		const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
-		const [_, forceUpdate] = useReducer(x => x + 1, 0);
+		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const [accessibilityLabel, setAccessibilityLabel] = useState('');
 		const roomSubscription = useRef<Subscription | null>(null);
 
