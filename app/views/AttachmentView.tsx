@@ -22,7 +22,7 @@ import * as HeaderButton from '../containers/HeaderButton';
 import { isAndroid, formatAttachmentUrl, isTablet } from '../lib/methods/helpers';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
-import { withHeaderHeight } from '../containers/Header';
+import { withHeaderHeight } from '../headerHeight';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
 import { IApplicationState, IUser, IAttachment } from '../definitions';

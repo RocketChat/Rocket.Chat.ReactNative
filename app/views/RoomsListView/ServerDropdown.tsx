@@ -20,7 +20,7 @@ import { isTablet } from '../../lib/methods/helpers';
 import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { headerHeight } from '../../containers/Header';
+import { headerHeight } from '../../headerHeight';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { IApplicationState, IBaseScreen, RootEnum, TServerModel } from '../../definitions';
