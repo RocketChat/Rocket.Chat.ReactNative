@@ -9,7 +9,7 @@ import ActivityIndicator from '../containers/ActivityIndicator';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { isAndroid, isIOS } from '../lib/methods/helpers';
 import { withTheme } from '../theme';
-import { InsideStackParamList } from '../stacks/types';
+import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IUser, IBaseScreen } from '../definitions';
 import { Services } from '../lib/services';
 
@@ -24,7 +24,7 @@ interface IJitsiMeetViewState {
 	loading: boolean;
 }
 
-interface IJitsiMeetViewProps extends IBaseScreen<InsideStackParamList, 'JitsiMeetView'> {
+interface IJitsiMeetViewProps extends IBaseScreen<ChatsStackParamList, 'JitsiMeetView'> {
 	baseUrl: string;
 	user: IUser;
 }
