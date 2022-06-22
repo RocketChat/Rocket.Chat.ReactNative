@@ -70,6 +70,7 @@ interface IRoomItemTouchables {
 }
 
 interface IBaseRoomItem extends IRoomItemTouchables {
+	[key: string]: any;
 	showLastMessage?: boolean;
 	useRealName: boolean;
 	isFocused?: boolean;

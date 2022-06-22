@@ -128,7 +128,6 @@ const RoomItemContainer = React.memo(
 			/>
 		);
 	},
-	// @ts-ignore
 	(props, nextProps) => attrs.every(key => props[key] === nextProps[key])
 );
 
