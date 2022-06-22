@@ -70,5 +70,8 @@ export default StyleSheet.create({
 	},
 	buttonSeparator: {
 		marginRight: 8
+	},
+	contentContainer: {
+		flex: 1
 	}
 });

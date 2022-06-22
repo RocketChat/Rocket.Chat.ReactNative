@@ -20,6 +20,7 @@ export type TActionSheetOptions = {
 	type?: string;
 	children?: React.ReactElement | null;
 	snaps?: string[] | number[];
+	backgroundColor?: string;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;

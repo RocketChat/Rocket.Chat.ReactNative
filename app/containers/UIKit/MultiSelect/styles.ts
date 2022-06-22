@@ -8,12 +8,9 @@ export default StyleSheet.create<any>({
 		alignItems: 'center',
 		justifyContent: 'flex-end'
 	},
-	modal: {
-		height: 300,
-		width: '100%',
-		borderTopRightRadius: 16,
-		borderTopLeftRadius: 16,
-		overflow: 'hidden'
+	actionSheetContainer: {
+		padding: 16,
+		flex: 1
 	},
 	content: {
 		padding: 16

@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList, Text } from 'react-native';
+import { Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import FastImage from 'react-native-fast-image';
+import { FlatList } from 'react-native-gesture-handler';
 
 import Check from '../../Check';
 import * as List from '../../List';
@@ -25,7 +26,7 @@ interface IItems {
 	theme: TSupportedThemes;
 }
 
-const keyExtractor = (item: IItemData) => item.value.toString();
+const keyExtractor = (item: IItemData) => item.value?.name || item.text.text.toLowerCase();
 
 // RectButton doesn't work on modal (Android)
 const Item = ({ item, selected, onSelect, theme }: IItem) => {
