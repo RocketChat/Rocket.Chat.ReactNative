@@ -307,8 +307,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
 		} catch (e: any) {
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
-				const code = await twoFactor({ method: e?.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-				return this.setState({ twoFactorCode: code }, () => this.submit());
+				try {
+					const code = await twoFactor({ method: e?.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
+					return this.setState({ twoFactorCode: code }, () => this.submit());
+				} catch {
+					// cancelled twoFactor modal
+				}
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
