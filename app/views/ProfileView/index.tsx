@@ -41,7 +41,6 @@ import {
 	IProfileParams,
 	IUser
 } from '../../definitions';
-import { saveUserProfileMethod } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
@@ -293,7 +292,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				  }
 				: null;
 
-			const result = await saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
