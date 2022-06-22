@@ -5,4 +5,7 @@ export type VideoConferenceEndpoints = {
 	'video-conference.join': {
 		POST: (params: { callId: string }) => { url: string };
 	};
+	'video-conference.start': {
+		POST: (params: { roomId: string }) => { url: string };
+	};
 };

@@ -32,7 +32,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { callJitsi, getPermalinkChannel } from '../../lib/methods';
+import { callJitsi, getPermalinkChannel, handleVideoConfJoin } from '../../lib/methods';
 import {
 	canAutoTranslate as canAutoTranslateMethod,
 	getRoomAvatar,
@@ -40,7 +40,8 @@ import {
 	getUidDirectMessage,
 	hasPermission,
 	isGroupChat,
-	compareServerVersion
+	compareServerVersion,
+	openLink
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
@@ -734,6 +735,37 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
+	startVideoConf = async (voice: boolean) => {
+		const { room } = this.state;
+		const { serverVersion, navigation } = this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
+			try {
+				const videoConfResponse = await Services.videoConferenceStart(room.rid);
+				if (videoConfResponse.success) {
+					const result = await Services.videoConferenceJoin(videoConfResponse.data.callId, !voice);
+					if (result.success) {
+						const { url, providerName } = result;
+						if (providerName === 'jitsi') {
+							navigation.navigate('JitsiMeetView', { url, onlyAudio: true, videoConf: true });
+						} else {
+							openLink(url);
+						}
+					}
+				} else {
+					showErrorAlert('asdoiasdashdiuhasiod');
+				}
+				console.log(
+					'🚀 ~ file: index.tsx ~ line 742 ~ RoomActionsView ~ startVideoConf=async ~ videoConfResponse',
+					videoConfResponse
+				);
+			} catch (e) {
+				log(e);
+			}
+		} else {
+			callJitsi(room, voice);
+		}
+	};
+
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
@@ -825,16 +857,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
 
 		const isVideoConfDisabledForTeams = !!room.teamMain && !videoConf_Enable_Teams;
-		console.log('🚀 ~ file: index.tsx ~ line 828 ~ RoomActionsView ~ isVideoConfDisabledForTeams', isVideoConfDisabledForTeams);
 		const isVideoConfDisabledForChannels = !room.teamMain && room.t === 'c' && !videoConf_Enable_Channels;
-		console.log(
-			'🚀 ~ file: index.tsx ~ line 830 ~ RoomActionsView ~ isVideoConfDisabledForChannels',
-			isVideoConfDisabledForChannels
-		);
 		const isVideoConfDisabledForGroups = !room.teamMain && room.t === 'p' && !videoConf_Enable_Groups;
-		console.log('🚀 ~ file: index.tsx ~ line 832 ~ RoomActionsView ~ isVideoConfDisabledForGroups', isVideoConfDisabledForGroups);
 		const isVideoConfDisabledForDirect = !room.teamMain && room.t === 'd' && !videoConf_Enable_DMs;
-		console.log('🚀 ~ file: index.tsx ~ line 834 ~ RoomActionsView ~ isVideoConfDisabledForDirect', isVideoConfDisabledForDirect);
 
 		// if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
 		if (
@@ -861,7 +886,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Voice_call'
-					onPress={() => callJitsi(room, true)}
+					onPress={() => this.startVideoConf(true)}
 					testID='room-actions-voice'
 					left={() => <List.Icon name='phone' />}
 					showActionIndicator
@@ -869,7 +894,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Video_call'
-					onPress={() => callJitsi(room)}
+					onPress={() => this.startVideoConf(false)}
 					testID='room-actions-video'
 					left={() => <List.Icon name='camera' />}
 					showActionIndicator
