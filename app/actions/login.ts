@@ -121,3 +121,9 @@ export function setLocalAuthenticated(isLocalAuthenticated: boolean): ISetLocalA
 		isLocalAuthenticated
 	};
 }
+
+export function deleteAccount(): Action {
+	return {
+		type: types.DELETE_ACCOUNT
+	};
+}

@@ -926,3 +926,7 @@ export const saveUserProfileMethod = (
 		twoFactorMethod: string;
 	} | null
 ) => sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
+
+export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
+	// RC 0.67.0
+	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });

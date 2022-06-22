@@ -44,8 +44,10 @@ import {
 import { saveUserProfileMethod } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { TwoFactorMethods } from '../../definitions/ITotp';
+import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
+import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 
-interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
+interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
 	baseUrl: string;
 	Accounts_AllowEmailChange: boolean;
@@ -55,6 +57,8 @@ interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileV
 	Accounts_AllowUsernameChange: boolean;
 	Accounts_CustomFields: string;
 	theme: TSupportedThemes;
+	Accounts_AllowDeleteOwnAccount: boolean;
+	isMasterDetail: boolean;
 }
 
 interface IProfileViewState {
@@ -83,7 +87,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private avatarUrl?: TextInput;
 	private newPassword?: TextInput;
 
-	static navigationOptions = ({ navigation, isMasterDetail }: IProfileViewProps) => {
+	setHeader = () => {
+		const { navigation, isMasterDetail } = this.props;
 		const options: StackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
@@ -93,8 +98,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		options.headerRight = () => (
 			<HeaderButton.Preferences onPress={() => navigation?.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		);
-		return options;
+
+		navigation.setOptions(options);
 	};
+
+	constructor(props: IProfileViewProps) {
+		super(props);
+		this.setHeader();
+	}
 
 	state: IProfileViewState = {
 		saving: false,
@@ -494,6 +505,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		});
 	};
 
+	deleteOwnAccount = () => {
+		logEvent(events.DELETE_OWN_ACCOUNT);
+		this.props.showActionSheet({
+			children: <DeleteAccountActionSheetContent />,
+			headerHeight: 225
+		});
+	};
+
 	render() {
 		const { name, username, email, newPassword, avatarUrl, customFields, avatar, saving } = this.state;
 		const {
@@ -504,7 +523,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			Accounts_AllowRealNameChange,
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
-			Accounts_CustomFields
+			Accounts_CustomFields,
+			Accounts_AllowDeleteOwnAccount
 		} = this.props;
 
 		return (
@@ -624,6 +644,15 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							onPress={this.logoutOtherLocations}
 							testID='profile-view-logout-other-locations'
 						/>
+						{Accounts_AllowDeleteOwnAccount ? (
+							<Button
+								title={I18n.t('Delete_my_account')}
+								type='primary'
+								backgroundColor={themes[theme].dangerColor}
+								onPress={this.deleteOwnAccount}
+								testID='profile-view-delete-my-account'
+							/>
+						) : null}
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>
@@ -639,7 +668,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange as boolean,
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean,
+	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(ProfileView));
+export default connect(mapStateToProps)(withTheme(withActionSheet(ProfileView)));
