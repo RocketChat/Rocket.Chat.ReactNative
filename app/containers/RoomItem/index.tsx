@@ -45,7 +45,6 @@ const RoomItemContainer = React.memo(
 		const connected = useAppSelector(state => state.meteor.connected);
 		const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
-		const [accessibilityLabel, setAccessibilityLabel] = useState('');
 		const roomSubscription = useRef<Subscription | null>(null);
 
 		useEffect(() => {
@@ -68,26 +67,22 @@ const RoomItemContainer = React.memo(
 			}
 		}, [connected]);
 
-		useEffect(() => {
-			const init = () => {
-				if (item.unread === 1) {
-					setAccessibilityLabel(`, ${item.unread} ${I18n.t('alert')}`);
-				} else if (item.unread > 1) {
-					setAccessibilityLabel(`, ${item.unread} ${I18n.t('alerts')}`);
-				}
-				if (item.userMentions > 0) {
-					setAccessibilityLabel(`, ${I18n.t('you_were_mentioned')}`);
-				}
-				if (date) {
-					setAccessibilityLabel(`, ${I18n.t('last_message')} ${date}`);
-				}
-			};
-			init();
-		}, [item.unread, date]);
-
 		const handleOnPress = () => onPress(item);
 
 		const handleOnLongPress = () => onLongPress && onLongPress(item);
+
+		let accessibilityLabel = '';
+		if (item.unread === 1) {
+			accessibilityLabel = `, ${item.unread} ${I18n.t('alert')}`;
+		} else if (item.unread > 1) {
+			accessibilityLabel = `, ${item.unread} ${I18n.t('alerts')}`;
+		}
+		if (item.userMentions > 0) {
+			accessibilityLabel = `, ${I18n.t('you_were_mentioned')}`;
+		}
+		if (date) {
+			accessibilityLabel = `, ${I18n.t('last_message')} ${date}`;
+		}
 
 		return (
 			<RoomItem
