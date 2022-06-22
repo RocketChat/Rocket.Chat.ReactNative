@@ -40,62 +40,68 @@ export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...pr
 		setCenterY(y + height / 2);
 	};
 
-	const translationX = useSharedValue(0);
-	const translationY = useSharedValue(0);
-	const offsetX = useSharedValue(0);
-	const offsetY = useSharedValue(0);
-	const scale = useSharedValue(1);
-	const scaleOffset = useSharedValue(1);
+	const translationX = useSharedValue<number>(0);
+	const translationY = useSharedValue<number>(0);
+	const offsetX = useSharedValue<number>(0);
+	const offsetY = useSharedValue<number>(0);
+	const scale = useSharedValue<number>(1);
+	const scaleOffset = useSharedValue<number>(1);
 
 	const style = useAnimatedStyle(() => ({
 		transform: [{ translateX: translationX.value }, { translateY: translationY.value }, { scale: scale.value }]
 	}));
 
+	const resetScaleAnimation = () => {
+		scaleOffset.value = 1;
+		offsetX.value = 0;
+		offsetY.value = 0;
+		scale.value = withSpring(1);
+		translationX.value = withSpring(0, { overshootClamping: true });
+		translationY.value = withSpring(0, { overshootClamping: true });
+	};
+
 	const clamp = (value: number, min: number, max: number) => Math.max(Math.min(value, max), min);
 
 	const pinchGesture = Gesture.Pinch()
-		.onUpdate(e => {
-			scale.value = clamp(scaleOffset.value * e.scale, 1, 2);
+		.onUpdate(event => {
+			scale.value = clamp(scaleOffset.value * (event.scale > 0 ? event.scale : 1), 1, 4);
 		})
 		.onEnd(() => {
-			scaleOffset.value = scale.value;
-			offsetX.value = 0;
-			offsetY.value = 0;
+			scaleOffset.value = scale.value > 0 ? scale.value : 1;
 		});
 
 	const panGesture = Gesture.Pan()
-		.onUpdate(e => {
+		.maxPointers(2)
+		.onStart(() => {
+			translationX.value = offsetX.value;
+			translationY.value = offsetY.value;
+		})
+		.onUpdate(event => {
 			const scaleFactor = scale.value - 1;
-			translationX.value = clamp(e.translationX + offsetX.value, -scaleFactor * centerX, scaleFactor * centerX);
-			translationY.value = clamp(e.translationY + offsetY.value, -scaleFactor * centerY, scaleFactor * centerY);
+			translationX.value = clamp(event.translationX + offsetX.value, -scaleFactor * centerX, scaleFactor * centerX);
+			translationY.value = clamp(event.translationY + offsetY.value, -scaleFactor * centerY, scaleFactor * centerY);
 		})
 		.onEnd(() => {
 			offsetX.value = translationX.value;
 			offsetY.value = translationY.value;
+			if (scale.value === 1) resetScaleAnimation();
 		});
 
 	const doubleTapGesture = Gesture.Tap()
 		.numberOfTaps(2)
-		.maxDelay(150)
-		.onEnd((event, success) => {
-			if (success) {
-				if (scale.value === 1) {
-					scale.value = withTiming(2, { duration: 200 });
-					translationX.value = withTiming(centerX - event.x, { duration: 200 });
-					offsetX.value = centerX - event.x;
-					scaleOffset.value = 2;
-				} else {
-					scale.value = withSpring(1, { overshootClamping: true });
-					scaleOffset.value = 1;
-					translationX.value = withTiming(0, { duration: 200 });
-					translationY.value = withTiming(0, { duration: 200 });
-					offsetX.value = 0;
-					offsetY.value = 0;
-				}
+		.maxDelay(120)
+		.maxDistance(70)
+		.onEnd(event => {
+			if (scaleOffset.value > 1) resetScaleAnimation();
+			else {
+				scale.value = withTiming(2, { duration: 200 });
+				translationX.value = withTiming(centerX - event.x, { duration: 200 });
+				offsetX.value = centerX - event.x;
+				scaleOffset.value = 2;
 			}
 		});
 
-	const gesture = Gesture.Simultaneous(Gesture.Simultaneous(pinchGesture, panGesture), doubleTapGesture);
+	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
 	const Component = ImageComponent(imageComponentType);
 
