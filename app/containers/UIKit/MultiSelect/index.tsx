@@ -24,7 +24,7 @@ interface IMultiSelect {
 	context?: BlockContext;
 	loading?: boolean;
 	multiselect?: boolean;
-	onSearch?: () => void;
+	onSearch?: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>;
 	onClose?: () => void;
 	inputStyle?: TextStyle;
 	value?: any[];

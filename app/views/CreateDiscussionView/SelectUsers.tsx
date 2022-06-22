@@ -10,7 +10,7 @@ import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
 import { search } from '../../lib/methods';
-import { getRoomAvatar, getRoomTitle, debounce } from '../../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 
 const SelectUsers = ({
 	server,
@@ -24,17 +24,22 @@ const SelectUsers = ({
 }: ICreateDiscussionViewSelectUsers): React.ReactElement => {
 	const [users, setUsers] = useState<any[]>([]);
 
-	const getUsers = debounce(async (keyword = '') => {
+	const getUsers = async (keyword = '') => {
 		try {
 			const res = await search({ text: keyword, filterRooms: false });
 			const selectedUsers = users.filter((u: IUser) => selected.includes(u.name));
 			const filteredUsers = res.filter(r => !selectedUsers.find((u: IUser) => u.name === r.name));
 			const items = [...selectedUsers, ...filteredUsers];
 			setUsers(items);
+			return items.map((user: IUser) => ({
+				value: user.name,
+				text: { text: getRoomTitle(user) },
+				imageUrl: getAvatar(user)
+			}));
 		} catch {
 			// do nothing
 		}
-	}, 300);
+	};
 
 	useEffect(() => {
 		getUsers('');
@@ -64,7 +69,6 @@ const SelectUsers = ({
 					text: { text: getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
-				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}
 				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
 				context={BlockContext.FORM}
 				multiselect

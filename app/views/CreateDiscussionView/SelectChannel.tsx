@@ -9,7 +9,7 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
 import { localSearch } from '../../lib/methods';
-import { getRoomAvatar, getRoomTitle, debounce } from '../../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 
 const SelectChannel = ({
 	server,
@@ -23,14 +23,19 @@ const SelectChannel = ({
 }: ICreateDiscussionViewSelectChannel): React.ReactElement => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 
-	const getChannels = debounce(async (keyword = '') => {
+	const getChannels = async (keyword = '') => {
 		try {
-			const res = (await localSearch({ text: keyword })) as ISearchLocal[];
+			const res = (await localSearch({ text: keyword, filterUsers: false })) as ISearchLocal[];
 			setChannels(res);
+			return res.map(channel => ({
+				value: channel,
+				text: { text: getRoomTitle(channel) },
+				imageUrl: getAvatar(channel)
+			}));
 		} catch {
 			// do nothing
 		}
-	}, 300);
+	};
 
 	useEffect(() => {
 		getChannels('');
