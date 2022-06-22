@@ -47,7 +47,7 @@ export const MultiSelect = React.memo(
 		inputStyle,
 		innerInputStyle
 	}: IMultiSelect) => {
-		const { theme, colors } = useTheme();
+		const { colors } = useTheme();
 		const [selected, select] = useState<any>(Array.isArray(values) ? values : []);
 		const [currentValue, setCurrentValue] = useState('');
 
@@ -71,7 +71,6 @@ export const MultiSelect = React.memo(
 					<MultiSelectContent
 						options={options}
 						onSearch={onSearch}
-						theme={theme}
 						select={select}
 						onChange={onChange}
 						setCurrentValue={setCurrentValue}
@@ -80,8 +79,7 @@ export const MultiSelect = React.memo(
 						selectedItems={selected}
 					/>
 				),
-				snaps: [300],
-				backgroundColor: colors.backgroundColor
+				snaps: [300]
 			});
 		};
 		const onHide = () => {
@@ -112,13 +110,7 @@ export const MultiSelect = React.memo(
 		let button = multiselect ? (
 			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
 		) : (
-			<Input
-				onPress={onShow}
-				theme={theme}
-				loading={loading}
-				disabled={disabled}
-				inputStyle={inputStyle}
-				innerInputStyle={innerInputStyle}>
+			<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
 				<Text style={[styles.pickerText, { color: currentValue ? colors.titleText : colors.auxiliaryText }]}>
 					{currentValue || placeholder.text}
 				</Text>
@@ -129,15 +121,9 @@ export const MultiSelect = React.memo(
 			const items: any = options.filter((option: any) => selected.includes(option.value));
 
 			button = (
-				<Input
-					onPress={onShow}
-					theme={theme}
-					loading={loading}
-					disabled={disabled}
-					inputStyle={inputStyle}
-					innerInputStyle={innerInputStyle}>
+				<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
 					{items.length ? (
-						<Chips items={items} onSelect={(item: any) => (disabled ? {} : onSelect(item))} theme={theme} />
+						<Chips items={items} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
 					) : (
 						<Text style={[styles.pickerText, { color: colors.auxiliaryText }]}>{placeholder.text}</Text>
 					)}

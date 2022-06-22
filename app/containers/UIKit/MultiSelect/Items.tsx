@@ -32,11 +32,7 @@ const keyExtractor = (item: IItemData) => item.value?.name || item.text.text.toL
 const Item = ({ item, selected, onSelect, theme }: IItem) => {
 	const itemName = item.value?.name || item.text.text.toLowerCase();
 	return (
-		<Touchable
-			testID={`multi-select-item-${itemName}`}
-			key={itemName}
-			onPress={() => onSelect(item)}
-			style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
+		<Touchable testID={`multi-select-item-${itemName}`} key={itemName} onPress={() => onSelect(item)} style={[styles.item]}>
 			<>
 				{item.imageUrl ? <FastImage style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 				<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>
@@ -49,8 +45,8 @@ const Item = ({ item, selected, onSelect, theme }: IItem) => {
 const Items = ({ items, selected, onSelect, theme }: IItems) => (
 	<FlatList
 		data={items}
-		style={[styles.items, { backgroundColor: themes[theme].backgroundColor }]}
-		contentContainerStyle={[styles.itemContent, { backgroundColor: themes[theme].backgroundColor }]}
+		style={[styles.items]}
+		contentContainerStyle={[styles.itemContent]}
 		keyboardShouldPersistTaps='always'
 		ItemSeparatorComponent={List.Separator}
 		keyExtractor={keyExtractor}
