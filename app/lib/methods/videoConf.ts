@@ -27,10 +27,9 @@ export const videoConfStartAndJoin = async (rid: string, cam: boolean) => {
 		const videoConfResponse: any = await Services.videoConferenceStart(rid);
 		if (videoConfResponse.success) {
 			videoConfJoin(videoConfResponse.data.callId, cam);
-		} else {
-			showErrorAlert(i18n.t('error-init-video-conf'));
 		}
 	} catch (e) {
+		showErrorAlert(i18n.t('error-init-video-conf'));
 		log(e);
 	}
 };
