@@ -9,6 +9,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Video } from 'expo-av';
 import { sha256 } from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Header, HeaderBackground } from '@react-navigation/elements';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../lib/methods/helpers/events';
@@ -18,10 +19,10 @@ import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
-import { isAndroid, formatAttachmentUrl } from '../lib/methods/helpers';
+import { isAndroid, formatAttachmentUrl, isTablet } from '../lib/methods/helpers';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
-import { getHeaderHeight } from '../containers/Header';
+import { withHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
 import { IApplicationState, IUser, IAttachment } from '../definitions';
@@ -44,6 +45,7 @@ interface IAttachmentViewProps {
 	baseUrl: string;
 	width: number;
 	height: number;
+	headerHeight: number;
 	insets: { left: number; bottom: number; right: number; top: number };
 	user: IUser;
 	Allow_Save_Media_to_Gallery: boolean;
@@ -87,17 +89,22 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 			// Do nothing
 		}
 		const options = {
-			title,
-			headerLeft: () => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} />,
-			headerRight: () =>
-				Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null,
-			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
-			headerTintColor: themes[theme].previewTintColor,
-			headerTitleStyle: { color: themes[theme].previewTintColor, paddingHorizontal: 20 },
-			headerTitleContainerStyle: { marginHorizontal: -20 },
-			headerTitleAlign: 'center'
+			header: () => (
+				<Header
+					title={title || ''}
+					headerTintColor={themes[theme].previewTintColor}
+					headerStatusBarHeight={isTablet ? 20 : 5}
+					headerTitleAlign='center'
+					headerLeft={() => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} />}
+					headerRight={() =>
+						Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null
+					}
+					headerBackground={() => (
+						<HeaderBackground style={{ backgroundColor: themes[theme].previewBackground, shadowOpacity: 0, elevation: 0 }} />
+					)}
+				/>
+			)
 		};
-		// @ts-ignore
 		navigation.setOptions(options);
 	};
 
@@ -146,8 +153,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 	};
 
 	renderImage = (uri: string) => {
-		const { theme, width, height, insets } = this.props;
-		const headerHeight = getHeaderHeight(width > height);
+		const { theme, width, height, insets, headerHeight } = this.props;
 		return (
 			<ImageViewer
 				uri={uri}
@@ -205,4 +211,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Allow_Save_Media_to_Gallery: (state.settings.Allow_Save_Media_to_Gallery as boolean) ?? true
 });
 
-export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));
+export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(withHeaderHeight(AttachmentView)))));
