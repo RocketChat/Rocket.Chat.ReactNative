@@ -353,5 +353,9 @@ export default {
 
 	// LIVECHAT VIDEOCONF
 	LIVECHAT_VIDEOCONF_JOIN: 'livechat_videoconf_join',
-	LIVECHAT_VIDEOCONF_TERMINATE: 'livechat_videoconf_terminate'
+	LIVECHAT_VIDEOCONF_TERMINATE: 'livechat_videoconf_terminate',
+
+	// DELETE OWN ACCOUNT ACCOUNT
+	DELETE_OWN_ACCOUNT: 'delete_own_account',
+	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f'
 };

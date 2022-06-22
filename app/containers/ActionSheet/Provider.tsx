@@ -21,7 +21,7 @@ export type TActionSheetOptions = {
 	children?: React.ReactElement | null;
 	snaps?: string[] | number[];
 };
-interface IActionSheetProvider {
+export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
 }

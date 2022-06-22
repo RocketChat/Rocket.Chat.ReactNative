@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
-import { themes } from '../lib/constants';
-import sharedStyles from '../views/Styles';
 import EventEmitter from '../lib/methods/helpers/events';
-import { TSupportedThemes, withTheme } from '../theme';
+import { useTheme } from '../theme';
+import sharedStyles from '../views/Styles';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -21,54 +20,37 @@ const styles = StyleSheet.create({
 
 export const LISTENER = 'Toast';
 
-interface IToastProps {
-	theme?: TSupportedThemes;
-}
+let listener: Function;
+let toast: EasyToast | null | undefined;
 
-class Toast extends React.Component<IToastProps, any> {
-	private listener?: Function;
+const Toast = (): React.ReactElement => {
+	const { colors } = useTheme();
 
-	private toast: EasyToast | null | undefined;
+	useEffect(() => {
+		listener = EventEmitter.addEventListener(LISTENER, showToast);
+		return () => {
+			EventEmitter.removeListener(LISTENER, listener);
+		};
+	}, []);
 
-	componentDidMount() {
-		this.listener = EventEmitter.addEventListener(LISTENER, this.showToast);
-	}
+	const getToastRef = (newToast: EasyToast | null) => (toast = newToast);
 
-	shouldComponentUpdate(nextProps: any) {
-		const { theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.listener) {
-			EventEmitter.removeListener(LISTENER, this.listener);
-		}
-	}
-
-	getToastRef = (toast: EasyToast | null) => (this.toast = toast);
-
-	showToast = ({ message }: { message: string }) => {
-		if (this.toast && this.toast.show) {
-			this.toast.show(message, 1000);
+	const showToast = ({ message }: { message: string }) => {
+		if (toast && toast.show) {
+			toast.show(message, 1000);
 		}
 	};
 
-	render() {
-		const { theme } = this.props;
-		return (
-			<EasyToast
-				ref={this.getToastRef}
-				// @ts-ignore
-				position='center'
-				style={[styles.toast, { backgroundColor: themes[theme!].toastBackground }]}
-				textStyle={[styles.text, { color: themes[theme!].buttonText }]}
-				opacity={0.9}
-			/>
-		);
-	}
-}
+	return (
+		<EasyToast
+			ref={getToastRef}
+			// @ts-ignore
+			position='center'
+			style={[styles.toast, { backgroundColor: colors.toastBackground }]}
+			textStyle={[styles.text, { color: colors.buttonText }]}
+			opacity={0.9}
+		/>
+	);
+};
 
-export default withTheme(Toast);
+export default Toast;
