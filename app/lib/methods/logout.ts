@@ -39,7 +39,7 @@ async function removeSharedCredentials({ server }: { server: string }) {
 	}
 }
 
-async function removeServerData({ server }: { server: string }) {
+export async function removeServerData({ server }: { server: string }): Promise<void> {
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
@@ -66,7 +66,7 @@ function removeCurrentServer() {
 	UserPreferences.removeItem(CURRENT_SERVER);
 }
 
-async function removeServerDatabase({ server }: { server: string }) {
+export async function removeServerDatabase({ server }: { server: string }): Promise<void> {
 	try {
 		const db = getDatabase(server);
 		await db.write(() => db.unsafeResetDatabase());
