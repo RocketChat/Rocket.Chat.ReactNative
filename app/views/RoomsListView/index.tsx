@@ -7,6 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
+import { Header } from '@react-navigation/elements';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
@@ -35,7 +36,6 @@ import {
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
@@ -410,9 +410,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = () => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, insets, theme } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
-
+		const { navigation, isMasterDetail } = this.props;
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () =>
@@ -432,11 +430,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						}
 					/>
 				),
-			headerTitle: () => <RoomsListHeaderView theme={theme} />,
-			headerTitleContainerStyle: {
-				left: headerTitlePosition.left,
-				right: headerTitlePosition.right
-			},
+			headerTitle: () => <RoomsListHeaderView />,
 			headerRight: () =>
 				searching ? null : (
 					<HeaderButton.Container>
@@ -456,7 +450,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		navigation.setOptions(options);
 	};
 
-	// internalSetState = (...args: { chats: TSubscriptionModel; chatsUpdate: TSubscriptionModel; loading: boolean }[]) => {
 	internalSetState = (
 		state:
 			| ((
@@ -925,7 +918,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		const options = this.getHeader();
-		return <Header {...options} />;
+		return <Header title='' {...options} headerTitleAlign='left' headerTitleContainerStyle={{ flex: 1, marginLeft: 0 }} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {

@@ -4,7 +4,6 @@ import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityPro
 import TextInput from '../../../containers/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import { isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useOrientation } from '../../../dimensions';
@@ -56,8 +55,9 @@ const Header = React.memo(
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
-		const { theme } = useTheme();
-		const titleColorStyle = { color: themes[theme].headerTitleColor };
+		const { theme, colors } = useTheme();
+		const titleColorStyle = { color: colors.headerTitleColor };
+		// TODO: after merge the #4256 PR, remove this
 		const isLight = theme === 'light';
 		const { isLandscape } = useOrientation();
 		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -69,7 +69,7 @@ const Header = React.memo(
 				<View style={styles.container}>
 					<TextInput
 						autoFocus
-						style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
+						style={[styles.subtitle, isLight && titleColorStyle, { fontSize: titleFontSize }]}
 						placeholder='Search'
 						onChangeText={onSearchChangeText}
 						theme={theme}
@@ -97,7 +97,7 @@ const Header = React.memo(
 						</Text>
 						<CustomIcon
 							name='chevron-down'
-							color={themes[theme].headerTintColor}
+							color={colors.headerTintColor}
 							style={[showServerDropdown && styles.upsideDown]}
 							size={18}
 						/>
@@ -105,7 +105,7 @@ const Header = React.memo(
 					{subtitle ? (
 						<Text
 							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]}
+							style={[styles.subtitle, { color: colors.auxiliaryText, fontSize: subTitleFontSize }]}
 							numberOfLines={1}>
 							{subtitle}
 						</Text>
