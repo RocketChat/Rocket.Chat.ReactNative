@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import { Subscription } from 'rxjs';
 
 import I18n from '../../i18n';
@@ -128,7 +128,7 @@ const RoomItemContainer = React.memo(
 		);
 	},
 	// @ts-ignore
-	(props, nextProps) => !attrs.every(key => props[key] === nextProps[key])
+	(props, nextProps) => attrs.every(key => props[key] === nextProps[key])
 );
 
 export default RoomItemContainer;
