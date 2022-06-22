@@ -202,11 +202,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		);
 	};
 
-	handleError = (e: any, func: string, action: string) => {
+	handleError = (e: any, _func: string, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
-		showErrorAlert(I18n.t(e.error, { action: I18n.t(action) }));
+		if (I18n.isTranslated(e.error)) {
+			return showErrorAlert(I18n.t(e.error));
+		}
+		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	};
 
 	submit = async (): Promise<void> => {
