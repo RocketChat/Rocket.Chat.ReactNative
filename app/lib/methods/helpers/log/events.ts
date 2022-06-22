@@ -193,6 +193,7 @@ export default {
 	ROOM_AUDIO_FINISH_F: 'room_audio_finish_f',
 	ROOM_AUDIO_CANCEL: 'room_audio_cancel',
 	ROOM_AUDIO_CANCEL_F: 'room_audio_cancel_f',
+	ROOM_SHOW_MORE_ACTIONS: 'room_show_more_actions',
 	ROOM_SHOW_BOX_ACTIONS: 'room_show_box_actions',
 	ROOM_BOX_ACTION_PHOTO: 'room_box_action_photo',
 	ROOM_BOX_ACTION_PHOTO_F: 'room_box_action_photo_f',
@@ -348,5 +349,9 @@ export default {
 	TC_DELETE_ROOM: 'tc_delete_room',
 	TC_DELETE_ROOM_F: 'tc_delete_room_f',
 	TC_TOGGLE_AUTOJOIN: 'tc_toggle_autojoin',
-	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f'
+	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f',
+
+	// DELETE OWN ACCOUNT ACCOUNT
+	DELETE_OWN_ACCOUNT: 'delete_own_account',
+	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f'
 };

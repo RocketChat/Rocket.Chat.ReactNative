@@ -1,8 +1,10 @@
+import { PixelRatio } from 'react-native';
+
 import { SubscriptionType } from '../../../definitions';
 import { IAvatar } from '../../../containers/Avatar/interfaces';
 import { compareServerVersion } from './compareServerVersion';
 
-const formatUrl = (url: string, size: number, query?: string) => `${url}?format=png&size=${size}${query}`;
+const formatUrl = (url: string, size: number, query?: string) => `${url}?format=png&size=${PixelRatio.get() * size}${query}`;
 
 export const getAvatarURL = ({
 	type,

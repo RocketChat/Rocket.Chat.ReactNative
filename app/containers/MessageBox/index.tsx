@@ -46,12 +46,22 @@ import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel, IMessage } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	IPreviewItem,
+	IUser,
+	TGetCustomEmoji,
+	TSubscriptionModel,
+	TThreadModel,
+	IMessage
+} from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
 import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
+import { ChatsStackParamList } from '../../stacks/types';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -75,7 +85,7 @@ const videoPickerConfig: Options = {
 	mediaType: 'video'
 };
 
-export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackParamList, any> {
+export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & MasterDetailInsideStackParamList, any> {
 	rid: string;
 	baseUrl: string;
 	message: IMessage;
@@ -107,6 +117,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
 	serverVersion: string;
+	goToCannedResponses: () => void | null;
 }
 
 interface IMessageBoxState {
@@ -305,7 +316,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			permissionToUpload
 		} = this.state;
 
-		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission } = this.props;
+		const {
+			roomType,
+			replying,
+			editing,
+			isFocused,
+			message,
+			theme,
+			usedCannedResponse,
+			uploadFilePermission,
+			goToCannedResponses
+		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -357,12 +378,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextProps.usedCannedResponse !== usedCannedResponse) {
 			return true;
 		}
+		if (nextProps.goToCannedResponses !== goToCannedResponses) {
+			return true;
+		}
 		return false;
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission } = this.props;
-		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission)) {
+		const { uploadFilePermission, goToCannedResponses } = this.props;
+		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
 		}
 	}
@@ -783,9 +807,16 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const { permissionToUpload } = this.state;
-		const { showActionSheet } = this.props;
+		const { showActionSheet, goToCannedResponses } = this.props;
 
 		const options = [];
+		if (goToCannedResponses) {
+			options.push({
+				title: I18n.t('Canned_Responses'),
+				icon: 'canned-response',
+				onPress: () => goToCannedResponses()
+			});
+		}
 		if (permissionToUpload) {
 			options.push(
 				{
@@ -1170,7 +1201,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
