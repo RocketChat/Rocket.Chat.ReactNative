@@ -349,5 +349,9 @@ export default {
 	TC_DELETE_ROOM: 'tc_delete_room',
 	TC_DELETE_ROOM_F: 'tc_delete_room_f',
 	TC_TOGGLE_AUTOJOIN: 'tc_toggle_autojoin',
-	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f'
+	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f',
+
+	// DELETE OWN ACCOUNT ACCOUNT
+	DELETE_OWN_ACCOUNT: 'delete_own_account',
+	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f'
 };
