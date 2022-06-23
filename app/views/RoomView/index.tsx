@@ -548,7 +548,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
+		const { navigation, isMasterDetail, theme, baseUrl, user, route, width, height } = this.props;
+		const isLandscape = width > height;
 		const { rid, tmid } = this;
 		if (!room.rid) {
 			return;
@@ -602,11 +603,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
-		const paddingRight = this.getPaddingLeft(numIconsRight, isMasterDetail);
+		const paddingRight = this.getPaddingRight(numIconsRight, isMasterDetail);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { paddingRight },
+			headerTitleContainerStyle: {
+				right: 20,
+				paddingRight,
+				width: isLandscape && isIOS ? width - 250 : width
+			},
 			headerLeft: () => (
 				<LeftButtons
 					tmid={tmid}
@@ -656,11 +661,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	getPaddingLeft = (numIcons: number, isMasterDetail: boolean) => {
+	getPaddingRight = (numIcons: number, isMasterDetail: boolean) => {
 		if (numIcons === 3) {
-			return isMasterDetail ? 40 : 35;
+			return isMasterDetail ? 25 : 15;
 		}
-		return isMasterDetail ? 20 : 0;
+		return 0;
 	};
 
 	goRoomActionsView = (screen?: keyof ModalStackParamList) => {
