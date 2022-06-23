@@ -39,7 +39,7 @@ async function removeSharedCredentials({ server }: { server: string }) {
 	}
 }
 
-async function removeServerData({ server }: { server: string }) {
+export async function removeServerData({ server }: { server: string }): Promise<void> {
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
@@ -66,7 +66,7 @@ function removeCurrentServer() {
 	UserPreferences.removeItem(CURRENT_SERVER);
 }
 
-async function removeServerDatabase({ server }: { server: string }) {
+export async function removeServerDatabase({ server }: { server: string }): Promise<void> {
 	try {
 		const db = getDatabase(server);
 		await db.write(() => db.unsafeResetDatabase());
@@ -81,15 +81,19 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		if (userId) {
 			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
-			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-			await sdk.login({ resume });
+			try {
+				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+				await sdk.login({ resume });
 
-			const token = getDeviceToken();
-			if (token) {
-				await sdk.del('push.token', { token });
+				const token = getDeviceToken();
+				if (token) {
+					await sdk.del('push.token', { token });
+				}
+
+				await sdk.logout();
+			} catch (e) {
+				log(e);
 			}
-
-			await sdk.logout();
 		}
 
 		await removeServerData({ server });

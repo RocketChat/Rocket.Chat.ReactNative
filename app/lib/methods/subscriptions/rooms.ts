@@ -103,7 +103,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey,
 					avatarETag: s.avatarETag,
-					onHold: s.onHold
+					onHold: s.onHold,
+					hideMentionStatus: s.hideMentionStatus
 				} as ISubscription;
 			} catch (error) {
 				try {
