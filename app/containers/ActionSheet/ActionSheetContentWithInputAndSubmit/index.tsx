@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { CustomIcon, TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
 import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
-import FormTextInput from '../../TextInput/FormTextInput';
-import FooterButtons from '../FooterButtons';
 import sharedStyles from '../../../views/Styles';
+import Button from '../../Button';
+import FormTextInput from '../../TextInput/FormTextInput';
+import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
 	titleText: {
@@ -18,32 +20,94 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textRegular,
 		marginBottom: 10
+	},
+	buttonSeparator: {
+		marginRight: 8
+	},
+	footerButtonsContainer: {
+		flexDirection: 'row',
+		paddingTop: 16
+	},
+	titleContainerText: {
+		fontSize: 16,
+		...sharedStyles.textSemibold,
+		paddingLeft: 16
+	},
+	titleContainer: {
+		paddingRight: 80,
+		marginBottom: 16,
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 });
 
+const FooterButtons = ({
+	cancelAction = () => {},
+	confirmAction = () => {},
+	cancelTitle = '',
+	confirmTitle = '',
+	disabled = false,
+	cancelBackgroundColor = '',
+	confirmBackgroundColor = ''
+}): React.ReactElement => {
+	const { colors } = useTheme();
+	return (
+		<View style={styles.footerButtonsContainer}>
+			<Button
+				style={[styles.buttonSeparator, { flex: 1, backgroundColor: cancelBackgroundColor || colors.cancelButton }]}
+				color={colors.backdropColor}
+				title={cancelTitle}
+				onPress={cancelAction}
+			/>
+			<Button
+				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.dangerColor }}
+				title={confirmTitle}
+				onPress={confirmAction}
+				disabled={disabled}
+			/>
+		</View>
+	);
+};
+
 const ActionSheetContentWithInputAndSubmit = ({
 	onSubmit = () => {},
-	onCancel = () => {},
+	onCancel,
 	title = '',
 	description = '',
 	testID = '',
 	secureTextEntry = true,
-	placeholder = ''
+	placeholder = '',
+	confirmTitle,
+	iconName,
+	iconColor,
+	customText
 }: {
 	onSubmit: (inputValue: string) => void;
-	onCancel: () => void;
+	onCancel?: () => void;
 	title: string;
 	description: string;
 	testID: string;
 	secureTextEntry?: boolean;
 	placeholder: string;
+	confirmTitle?: string;
+	iconName?: TIconsName;
+	iconColor?: string;
+	customText?: React.ReactElement;
 }): React.ReactElement => {
 	const { theme, colors } = useTheme();
 	const [inputValue, setInputValue] = useState('');
+	const { hideActionSheet } = useActionSheet();
 
 	return (
 		<View style={sharedStyles.containerScrollView}>
-			<Text style={[styles.titleText, { color: colors.titleText }]}>{title}</Text>
+			<>
+				<View style={styles.titleContainer}>
+					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor} /> : null}
+					<Text style={[styles.titleContainerText, { color: colors.passcodePrimary }]}>{title}</Text>
+				</View>
+				<Text style={[styles.titleText, { color: colors.titleText }]}>{title}</Text>
+				{customText}
+			</>
 			<Text style={[styles.subtitleText, { color: colors.titleText }]}>{description}</Text>
 			<FormTextInput
 				value={inputValue}
@@ -58,10 +122,10 @@ const ActionSheetContentWithInputAndSubmit = ({
 			/>
 			<FooterButtons
 				confirmBackgroundColor={colors.actionTintColor}
-				cancelAction={onCancel}
+				cancelAction={onCancel || hideActionSheet}
 				confirmAction={() => onSubmit(inputValue)}
 				cancelTitle={i18n.t('Cancel')}
-				confirmTitle={i18n.t('Save')}
+				confirmTitle={confirmTitle || i18n.t('Save')}
 				disabled={!inputValue}
 			/>
 		</View>
