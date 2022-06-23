@@ -6,7 +6,7 @@ import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import { ImageViewer, types } from '../../presentation/ImageViewer';
+import { ImageViewer, types } from '../../containers/ImageViewer';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
@@ -99,7 +99,6 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 						imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
 						width={width}
 						height={calculatedHeight}
-						theme={theme}
 					/>
 				);
 			}

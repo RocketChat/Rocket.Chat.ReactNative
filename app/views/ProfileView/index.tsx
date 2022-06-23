@@ -41,6 +41,8 @@ import {
 	IProfileParams,
 	IUser
 } from '../../definitions';
+import { twoFactor } from '../../lib/services/twoFactor';
+import { TwoFactorMethods } from '../../definitions/ITotp';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 
@@ -70,6 +72,10 @@ interface IProfileViewState {
 	avatarSuggestions: IAvatarSuggestion;
 	customFields: {
 		[key: string | number]: string;
+	};
+	twoFactorCode: null | {
+		twoFactorCode: string;
+		twoFactorMethod: string;
 	};
 }
 
@@ -113,7 +119,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			url: ''
 		},
 		avatarSuggestions: {},
-		customFields: {}
+		customFields: {},
+		twoFactorCode: null
 	};
 
 	async componentDidMount() {
@@ -194,14 +201,17 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		);
 	};
 
-	handleError = (e: any, func: string, action: string) => {
+	handleError = (e: any, _func: string, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
+		}
+		if (I18n.isTranslated(e.error)) {
+			return showErrorAlert(I18n.t(e.error));
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	};
 
-	submit = async () => {
+	submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
 		if (!this.formIsChanged()) {
@@ -210,7 +220,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		this.setState({ saving: true });
 
-		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
+		const { name, username, email, newPassword, currentPassword, avatar, customFields, twoFactorCode } = this.state;
 		const { user, dispatch } = this.props;
 		const params = {} as IProfileParams;
 
@@ -275,9 +285,16 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				}
 			}
 
-			const result = await Services.saveUserProfile(params, customFields);
+			const twoFactorOptions = params.currentPassword
+				? {
+						twoFactorCode: params.currentPassword,
+						twoFactorMethod: TwoFactorMethods.PASSWORD
+				  }
+				: null;
 
-			if (result.success) {
+			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+
+			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
@@ -287,10 +304,18 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
 			}
-			this.setState({ saving: false });
-		} catch (e) {
+			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
+		} catch (e: any) {
+			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
+				try {
+					const code = await twoFactor({ method: e?.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
+					return this.setState({ twoFactorCode: code }, () => this.submit());
+				} catch {
+					// cancelled twoFactor modal
+				}
+			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			this.setState({ saving: false, currentPassword: null });
+			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
 	};
