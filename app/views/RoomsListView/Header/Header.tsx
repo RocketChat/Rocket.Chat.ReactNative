@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 
-import TextInput from '../../../containers/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import { isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';
+import SearchHeader from '../../../containers/SearchHeader';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,28 +55,14 @@ const Header = React.memo(
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
-		const { theme, colors } = useTheme();
-		const titleColorStyle = { color: colors.headerTitleColor };
-		// TODO: after merge the #4256 PR, remove this
-		const isLight = theme === 'light';
+		const { colors } = useTheme();
 		const { isLandscape } = useOrientation();
 		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
 		const titleFontSize = 16 * scale;
 		const subTitleFontSize = 14 * scale;
 
 		if (showSearchHeader) {
-			return (
-				<View style={styles.container}>
-					<TextInput
-						autoFocus
-						style={[styles.subtitle, isLight && titleColorStyle, { fontSize: titleFontSize }]}
-						placeholder='Search'
-						onChangeText={onSearchChangeText}
-						theme={theme}
-						testID='rooms-list-view-search-input'
-					/>
-				</View>
-			);
+			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 		}
 		let subtitle;
 		if (connecting) {
@@ -92,7 +78,7 @@ const Header = React.memo(
 			<View style={styles.container}>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 					<View style={styles.button}>
-						<Text style={[styles.title, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>
+						<Text style={[styles.title, { fontSize: titleFontSize, color: colors.headerTitleColor }]} numberOfLines={1}>
 							{serverName}
 						</Text>
 						<CustomIcon

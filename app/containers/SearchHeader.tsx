@@ -27,6 +27,7 @@ interface ISearchHeaderProps {
 
 const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.Element => {
 	const { theme } = useTheme();
+	// TODO: after merge the #4256 PR, remove this
 	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
