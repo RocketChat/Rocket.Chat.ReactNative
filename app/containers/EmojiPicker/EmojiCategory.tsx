@@ -26,50 +26,42 @@ const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 	);
 };
 
-class EmojiCategory extends React.Component<IEmojiCategory> {
-	renderItem(emoji: IEmoji) {
-		const { baseUrl, onEmojiSelected } = this.props;
-		return (
-			<TouchableOpacity
-				activeOpacity={0.7}
-				// @ts-ignore
-				key={emoji && emoji.isCustom ? emoji.content : emoji}
-				onPress={() => onEmojiSelected(emoji)}
-				testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}
-			>
-				{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
-			</TouchableOpacity>
-		);
+const EmojiCategory = React.memo(({ baseUrl, onEmojiSelected, emojis, width, ...props }: IEmojiCategory) => {
+	const renderItem = (emoji: IEmoji) => (
+		<TouchableOpacity
+			activeOpacity={0.7}
+			// @ts-ignore
+			key={emoji && emoji.isCustom ? emoji.content : emoji}
+			onPress={() => onEmojiSelected(emoji)}
+			testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}>
+			{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
+		</TouchableOpacity>
+	);
+
+	if (!width) {
+		return null;
 	}
 
-	render() {
-		const { emojis, width } = this.props;
+	const numColumns = Math.trunc(width / EMOJI_SIZE);
+	const marginHorizontal = (width - numColumns * EMOJI_SIZE) / 2;
 
-		if (!width) {
-			return null;
-		}
-
-		const numColumns = Math.trunc(width / EMOJI_SIZE);
-		const marginHorizontal = (width - numColumns * EMOJI_SIZE) / 2;
-
-		return (
-			<FlatList
-				contentContainerStyle={{ marginHorizontal }}
-				// rerender FlatList in case of width changes
-				key={`emoji-category-${width}`}
-				// @ts-ignore
-				keyExtractor={item => (item && item.isCustom && item.content) || item}
-				data={emojis}
-				extraData={this.props}
-				renderItem={({ item }) => this.renderItem(item)}
-				numColumns={numColumns}
-				initialNumToRender={45}
-				removeClippedSubviews
-				{...scrollPersistTaps}
-				keyboardDismissMode={'none'}
-			/>
-		);
-	}
-}
+	return (
+		<FlatList
+			contentContainerStyle={{ marginHorizontal }}
+			// rerender FlatList in case of width changes
+			key={`emoji-category-${width}`}
+			// @ts-ignore
+			keyExtractor={item => (item && item.isCustom && item.content) || item}
+			data={emojis}
+			extraData={{ baseUrl, onEmojiSelected, width, ...props }}
+			renderItem={({ item }) => renderItem(item)}
+			numColumns={numColumns}
+			initialNumToRender={45}
+			removeClippedSubviews
+			{...scrollPersistTaps}
+			keyboardDismissMode={'none'}
+		/>
+	);
+});
 
 export default EmojiCategory;
