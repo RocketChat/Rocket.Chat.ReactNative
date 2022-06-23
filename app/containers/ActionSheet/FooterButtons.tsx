@@ -13,17 +13,16 @@ const FooterButtons = ({
 	disabled = false,
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = ''
-}) => {
+}): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>
 			<Button
-				style={{ flex: 1, backgroundColor: cancelBackgroundColor || colors.passcodeButtonActive }}
-				color={colors.bodyText}
+				style={[styles.buttonSeparator, { flex: 1, backgroundColor: cancelBackgroundColor || colors.cancelButton }]}
+				color={colors.backdropColor}
 				title={cancelTitle}
 				onPress={cancelAction}
 			/>
-			<View style={{ width: 8 }} />
 			<Button
 				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.dangerColor }}
 				title={confirmTitle}

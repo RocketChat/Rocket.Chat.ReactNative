@@ -1,14 +1,14 @@
-import React from 'react';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import { StyleProp, StyleSheet, Text, TextInputProps, TextInput as RNTextInput, TextStyle, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import sharedStyles from '../../views/Styles';
-import TextInput from './index';
 import { themes } from '../../lib/constants';
-import { CustomIcon, TIconsName } from '../CustomIcon';
-import ActivityIndicator from '../ActivityIndicator';
 import { TSupportedThemes } from '../../theme';
+import sharedStyles from '../../views/Styles';
+import ActivityIndicator from '../ActivityIndicator';
+import { CustomIcon, TIconsName } from '../CustomIcon';
+import TextInput from './index';
 
 const styles = StyleSheet.create({
 	error: {
@@ -64,8 +64,8 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconRight?: TIconsName;
 	left?: JSX.Element;
 	theme: TSupportedThemes;
-	onClearInput?: () => void;
 	bottomSheet?: boolean;
+	onClearInput?: () => void;
 }
 
 interface IRCTextInputState {
