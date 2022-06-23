@@ -61,4 +61,7 @@ export type UsersEndpoints = {
 			success: boolean;
 		};
 	};
+	'users.deleteOwnAccount': {
+		POST: (params: { password: string; confirmRelinquish: boolean }) => { success: boolean };
+	};
 };
