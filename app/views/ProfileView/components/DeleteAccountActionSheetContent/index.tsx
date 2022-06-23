@@ -19,6 +19,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
 	const insets = useSafeAreaInsets();
+	const { colors } = useTheme();
 
 	const handleDeleteAccount = async (password: string) => {
 		Keyboard.dismiss();
@@ -63,6 +64,9 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			onSubmit={password => handleDeleteAccount(password)}
 			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
+			iconName='warning'
+			confirmTitle={i18n.t('Delete_Account')}
+			confirmBackgroundColor={colors.dangerColor}
 		/>
 	);
 }
@@ -75,7 +79,7 @@ const AlertText = ({ text = '' }) => {
 function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
 	const { hideActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
-
+	const { colors } = useTheme();
 	const handleDeleteAccount = async () => {
 		hideActionSheet();
 		await deleteOwnAccount(password, true);
@@ -85,12 +89,14 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 	return (
 		<ActionSheetContentWithInputAndSubmit
 			title={i18n.t('Are_you_sure_question_mark')}
+			iconName='warning'
 			description={i18n.t('Deleting_a_user_will_delete_all_messages')}
 			onCancel={hideActionSheet}
 			onSubmit={handleDeleteAccount}
 			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
+			confirmBackgroundColor={colors.dangerColor}
 			customText={
 				<>
 					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} />}

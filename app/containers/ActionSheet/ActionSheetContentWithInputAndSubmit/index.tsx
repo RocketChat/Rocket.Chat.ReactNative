@@ -11,11 +11,6 @@ import FormTextInput from '../../TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
-	titleText: {
-		fontSize: 16,
-		...sharedStyles.textSemibold,
-		marginBottom: 16
-	},
 	subtitleText: {
 		fontSize: 14,
 		...sharedStyles.textRegular,
@@ -30,8 +25,7 @@ const styles = StyleSheet.create({
 	},
 	titleContainerText: {
 		fontSize: 16,
-		...sharedStyles.textSemibold,
-		paddingLeft: 16
+		...sharedStyles.textSemibold
 	},
 	titleContainer: {
 		paddingRight: 80,
@@ -80,7 +74,8 @@ const ActionSheetContentWithInputAndSubmit = ({
 	confirmTitle,
 	iconName,
 	iconColor,
-	customText
+	customText,
+	confirmBackgroundColor
 }: {
 	onSubmit: (inputValue: string) => void;
 	onCancel?: () => void;
@@ -93,6 +88,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	iconName?: TIconsName;
 	iconColor?: string;
 	customText?: React.ReactElement;
+	confirmBackgroundColor?: string;
 }): React.ReactElement => {
 	const { theme, colors } = useTheme();
 	const [inputValue, setInputValue] = useState('');
@@ -102,13 +98,14 @@ const ActionSheetContentWithInputAndSubmit = ({
 		<View style={sharedStyles.containerScrollView}>
 			<>
 				<View style={styles.titleContainer}>
-					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.passcodePrimary }]}>{title}</Text>
+					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.dangerColor} /> : null}
+					<Text style={[styles.titleContainerText, { color: colors.passcodePrimary, paddingLeft: iconName ? 16 : 0 }]}>
+						{title}
+					</Text>
 				</View>
-				<Text style={[styles.titleText, { color: colors.titleText }]}>{title}</Text>
+				<Text style={[styles.subtitleText, { color: colors.titleText }]}>{description}</Text>
 				{customText}
 			</>
-			<Text style={[styles.subtitleText, { color: colors.titleText }]}>{description}</Text>
 			<FormTextInput
 				value={inputValue}
 				placeholder={placeholder}
@@ -121,7 +118,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 				bottomSheet={isIOS}
 			/>
 			<FooterButtons
-				confirmBackgroundColor={colors.actionTintColor}
+				confirmBackgroundColor={confirmBackgroundColor || colors.actionTintColor}
 				cancelAction={onCancel || hideActionSheet}
 				confirmAction={() => onSubmit(inputValue)}
 				cancelTitle={i18n.t('Cancel')}
