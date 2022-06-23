@@ -40,9 +40,9 @@ import {
 	IProfileParams,
 	IUser
 } from '../../definitions';
-import EnterPasswordSheet from './components/EnterPasswordSheet';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 
 interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
@@ -245,7 +245,11 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			this.setState({ saving: false });
 			this.props.showActionSheet({
 				children: (
-					<EnterPasswordSheet
+					<ActionSheetContentWithInputAndSubmit
+						title={I18n.t('Please_enter_your_password')}
+						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
+						testID='profile-view-enter-password-sheet'
+						placeholder={I18n.t('Password')}
 						onSubmit={(p: string) => {
 							this.props.hideActionSheet();
 							this.setState({ currentPassword: p }, () => this.submit());
