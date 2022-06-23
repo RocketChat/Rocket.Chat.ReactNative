@@ -69,6 +69,7 @@
   "error-remove-last-owner": "Este é o último proprietário. Por favor, defina um novo proprietário antes de remover este.",
   "error-role-in-use": "Não é possível remover o papel pois ele está em uso",
   "error-role-name-required": "Nome do papel é obrigatório",
+  "error-password-same-as-current": "Senha digitada coincide com a senha atual",
   "error-the-field-is-required": "O campo {{field}} é obrigatório.",
   "error-too-many-requests": "Erro, muitas solicitações. Por favor, diminua a velocidade. Você deve esperar {{seconds}} segundos antes de tentar novamente.",
   "error-user-is-not-activated": "O usuário não está ativo",
@@ -743,5 +744,6 @@
   "sending_email_confirmation": "enviando email de confirmação",
   "Unsupported_format": "Formato não suportado",
   "Downloaded_file": "Arquivo baixado",
-  "Error_Download_file": "Erro ao baixar o arquivo"
+  "Error_Download_file": "Erro ao baixar o arquivo",
+  "totp-invalid": "Código ou senha inválida"
 }
