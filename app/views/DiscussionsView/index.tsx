@@ -101,6 +101,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		if (isSearching) {
 			options = {
 				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1 },
+				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
@@ -117,6 +119,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		options = {
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
+			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={colors.headerTintColor} />
 			),

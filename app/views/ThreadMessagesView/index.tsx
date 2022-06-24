@@ -114,6 +114,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		if (isSearching) {
 			return {
 				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1 },
+				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
@@ -129,6 +131,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		const options: StackNavigationOptions = {
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Threads'),
+			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),

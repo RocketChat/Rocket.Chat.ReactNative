@@ -197,6 +197,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		if (isSearching) {
 			const options: StackNavigationOptions = {
 				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1 },
+				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
@@ -212,6 +214,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 		const options: StackNavigationOptions = {
 			headerTitleAlign: 'left',
+			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),

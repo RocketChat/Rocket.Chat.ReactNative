@@ -411,36 +411,46 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	getHeader = () => {
 		const { searching, canCreateRoom } = this.state;
 		const { navigation, isMasterDetail } = this.props;
-		return {
-			headerTitleAlign: 'left',
-			headerLeft: () =>
-				searching ? (
+		if (searching) {
+			return {
+				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1 },
+				headerRightContainerStyle: { flexGrow: 0 },
+				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
 					</HeaderButton.Container>
-				) : (
-					<HeaderButton.Drawer
-						navigation={navigation}
-						testID='rooms-list-view-sidebar'
-						onPress={
-							isMasterDetail
-								? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-								: // @ts-ignore
-								  () => navigation.toggleDrawer()
-						}
-					/>
 				),
+				headerTitle: () => <RoomsListHeaderView />,
+				headerRight: () => null
+			};
+		}
+
+		return {
+			headerTitleAlign: 'left',
+			headerRightContainerStyle: { flexGrow: 1 },
+			headerLeft: () => (
+				<HeaderButton.Drawer
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+					onPress={
+						isMasterDetail
+							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+							: // @ts-ignore
+							  () => navigation.toggleDrawer()
+					}
+				/>
+			),
 			headerTitle: () => <RoomsListHeaderView />,
-			headerRight: () =>
-				searching ? null : (
-					<HeaderButton.Container>
-						{canCreateRoom ? (
-							<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
-						) : null}
-						<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
-						<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
-					</HeaderButton.Container>
-				)
+			headerRight: () => (
+				<HeaderButton.Container>
+					{canCreateRoom ? (
+						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
+					) : null}
+					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
+					<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
+				</HeaderButton.Container>
+			)
 		};
 	};
 
