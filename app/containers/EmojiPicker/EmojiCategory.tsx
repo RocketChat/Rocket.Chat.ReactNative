@@ -7,7 +7,7 @@ import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
 
-const EMOJI_SIZE = 50;
+const MAX_EMOJI_SIZE = 50;
 
 const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 	if (emoji && emoji.isCustom) {
@@ -26,7 +26,9 @@ const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 	);
 };
 
-const EmojiCategory = React.memo(({ baseUrl, onEmojiSelected, emojis, width, ...props }: IEmojiCategory) => {
+const EmojiCategory = React.memo(({ baseUrl, onEmojiSelected, emojis, width, tabsCount, ...props }: IEmojiCategory) => {
+	const emojiSize = width ? Math.min(width / tabsCount, MAX_EMOJI_SIZE) : MAX_EMOJI_SIZE;
+	const numColumns = Math.trunc(width ? width / emojiSize : tabsCount);
 	const renderItem = (emoji: IEmoji) => (
 		<TouchableOpacity
 			activeOpacity={0.7}
@@ -34,7 +36,7 @@ const EmojiCategory = React.memo(({ baseUrl, onEmojiSelected, emojis, width, ...
 			key={emoji && emoji.isCustom ? emoji.content : emoji}
 			onPress={() => onEmojiSelected(emoji)}
 			testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}>
-			{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
+			{renderEmoji(emoji, emojiSize, baseUrl)}
 		</TouchableOpacity>
 	);
 
@@ -42,14 +44,10 @@ const EmojiCategory = React.memo(({ baseUrl, onEmojiSelected, emojis, width, ...
 		return null;
 	}
 
-	const numColumns = Math.trunc(width / EMOJI_SIZE);
-	const marginHorizontal = (width - numColumns * EMOJI_SIZE) / 2;
-
 	return (
 		<FlatList
-			contentContainerStyle={{ marginHorizontal }}
 			// rerender FlatList in case of width changes
-			key={`emoji-category-${width}`}
+			key={`emoji-category-${numColumns}`}
 			// @ts-ignore
 			keyExtractor={item => (item && item.isCustom && item.content) || item}
 			data={emojis}
