@@ -138,7 +138,8 @@
 		"xregexp": "5.0.2"
 	},
 	"resolutions": {
-		"ua-parser-js": "^1.0.2"
+		"ua-parser-js": "^1.0.2",
+		"jpeg-js": "0.4.4"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",
