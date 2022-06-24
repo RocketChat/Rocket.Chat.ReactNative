@@ -59,6 +59,7 @@ import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersi
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
+import { EventTypes } from '../EmojiPicker/interfaces';
 
 require('./EmojiKeyboard');
 
@@ -577,18 +578,29 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onEmojiSelected = (keyboardId: string, params: { emoji: string }) => {
+	onItemSelected = (keyboardId: string, params: { eventType: EventTypes; emoji: string }) => {
+		const { eventType, emoji } = params;
 		const { text } = this;
-		const { emoji } = params;
 		let newText = '';
-
 		// if messagebox has an active cursor
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
-		const newCursor = cursor + emoji.length;
-		this.setInput(newText, { start: newCursor, end: newCursor });
-		this.setShowSend(true);
+		if (eventType === EventTypes.BACKSPACE_PRESSED) {
+			let charsToRemove = 1;
+			if (cursor > 1) {
+				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
+				const lastEmoji = text.substr(cursor - 2, cursor);
+				if (emojiRegex.test(lastEmoji)) charsToRemove = 2;
+			}
+			newText = text.substr(0, cursor - charsToRemove);
+			this.setInput(newText, { start: cursor - charsToRemove, end: cursor - charsToRemove });
+			this.setShowSend(newText !== '');
+		} else if (eventType === EventTypes.EMOJI_PRESSED) {
+			newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
+			const newCursor = cursor + emoji.length;
+			this.setInput(newText, { start: newCursor, end: newCursor });
+			this.setShowSend(true);
+		}
 	};
 
 	getPermalink = async (message: any) => {
@@ -1224,7 +1236,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
-					onItemSelected={this.onEmojiSelected}
+					onItemSelected={this.onItemSelected}
 					trackInteractive
 					requiresSameParentToManageScrollView
 					addBottomView

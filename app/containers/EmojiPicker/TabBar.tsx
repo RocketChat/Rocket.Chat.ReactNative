@@ -1,15 +1,9 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
-
-interface ITabBarProps {
-	goToPage?: (page: number) => void;
-	activeTab?: number;
-	tabs?: string[];
-	tabEmojiStyle: StyleProp<TextStyle>;
-}
+import { ITabBarProps } from './interfaces';
 
 const TabBar = React.memo(({ activeTab, tabs, goToPage, tabEmojiStyle }: ITabBarProps) => {
 	const { colors } = useTheme();
