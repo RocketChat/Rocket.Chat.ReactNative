@@ -9,7 +9,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Video } from 'expo-av';
 import { sha256 } from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Header, HeaderBackground } from '@react-navigation/elements';
+import { Header, HeaderBackground, HeaderHeightContext } from '@react-navigation/elements';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../lib/methods/helpers/events';
@@ -22,7 +22,6 @@ import * as HeaderButton from '../containers/HeaderButton';
 import { isAndroid, formatAttachmentUrl, isTablet } from '../lib/methods/helpers';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
-import { withHeaderHeight } from '../headerHeight';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
 import { IApplicationState, IUser, IAttachment } from '../definitions';
@@ -45,7 +44,6 @@ interface IAttachmentViewProps {
 	baseUrl: string;
 	width: number;
 	height: number;
-	headerHeight: number;
 	insets: { left: number; bottom: number; right: number; top: number };
 	user: IUser;
 	Allow_Save_Media_to_Gallery: boolean;
@@ -153,14 +151,21 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 	};
 
 	renderImage = (uri: string) => {
-		const { width, height, insets, headerHeight } = this.props;
+		const { width, height, insets } = this.props;
 		return (
-			<ImageViewer
-				uri={uri}
-				onLoadEnd={() => this.setState({ loading: false })}
-				width={width}
-				height={height - insets.top - insets.bottom - headerHeight}
-			/>
+			<HeaderHeightContext.Consumer>
+				{headerHeight => {
+					console.log('headerHeight ***', headerHeight);
+					return (
+						<ImageViewer
+							uri={uri}
+							onLoadEnd={() => this.setState({ loading: false })}
+							width={width}
+							height={height - insets.top - insets.bottom - (headerHeight || 0)}
+						/>
+					);
+				}}
+			</HeaderHeightContext.Consumer>
 		);
 	};
 
@@ -210,4 +215,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Allow_Save_Media_to_Gallery: (state.settings.Allow_Save_Media_to_Gallery as boolean) ?? true
 });
 
-export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(withHeaderHeight(AttachmentView)))));
+export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));
