@@ -9,7 +9,7 @@ import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
@@ -87,7 +87,6 @@ class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordView
 							testID='e2e-enter-your-password-view-password'
 							textContentType='password'
 							autoCompleteType='password'
-							theme={theme}
 						/>
 						<Button
 							onPress={this.submit}

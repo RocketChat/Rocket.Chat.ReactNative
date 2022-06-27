@@ -8,7 +8,7 @@ import { deleteAccount } from '../../../../actions/login';
 import { useActionSheet } from '../../../../containers/ActionSheet';
 import FooterButtons from '../../../../containers/ActionSheet/FooterButtons';
 import { CustomIcon } from '../../../../containers/CustomIcon';
-import FormTextInput from '../../../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../../../containers/TextInput/FormTextInput';
 import i18n from '../../../../i18n';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
@@ -32,7 +32,6 @@ const AlertHeader = ({ title = '', subTitle = '' }) => {
 
 export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const [password, setPassword] = useState('');
-	const { theme } = useTheme();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
 	const insets = useSafeAreaInsets();
@@ -82,7 +81,6 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 				placeholder={i18n.t('Password')}
 				onChangeText={value => setPassword(value)}
 				onSubmitEditing={handleDeleteAccount}
-				theme={theme}
 				testID='room-info-edit-view-name'
 				secureTextEntry
 				inputStyle={{ borderWidth: 2 }}

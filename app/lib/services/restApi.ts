@@ -918,7 +918,6 @@ export function getUserInfo(userId: string) {
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
 
-
 export const videoConferenceJoin = (callId: string, cam: boolean) =>
 	sdk.post('video-conference.join', { callId, state: { cam } });
 
@@ -936,4 +935,3 @@ export const saveUserProfileMethod = (
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0
 	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });
-

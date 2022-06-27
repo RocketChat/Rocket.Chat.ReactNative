@@ -13,7 +13,7 @@ import Avatar from '../../containers/Avatar';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import {
@@ -588,7 +588,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								this.description?.focus();
 							}}
 							error={nameError}
-							theme={theme}
 							testID='room-info-edit-view-name'
 						/>
 						<FormTextInput
@@ -601,7 +600,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.topic?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-description'
 						/>
 						<FormTextInput
@@ -614,7 +612,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.announcement?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-topic'
 						/>
 						<FormTextInput
@@ -627,7 +624,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.joinCode?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-announcement'
 						/>
 						{/* This TextInput avoid appears the password fill when typing into Announcements TextInput */}
@@ -647,7 +643,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onChangeText={value => this.setState({ joinCode: value })}
 							onSubmitEditing={this.submit}
 							secureTextEntry
-							theme={theme}
 							testID='room-info-edit-view-password'
 						/>
 						<SwitchContainer

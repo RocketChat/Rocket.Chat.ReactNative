@@ -222,7 +222,7 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	VideoConf_Enable_Teams: {
-    type: 'valueAsBoolean'
+		type: 'valueAsBoolean'
 	},
 	Accounts_AllowDeleteOwnAccount: {
 		type: 'valueAsBoolean'
