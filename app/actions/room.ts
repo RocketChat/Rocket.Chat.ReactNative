@@ -19,7 +19,6 @@ interface IBaseReturn extends Action {
 
 type TSubscribeRoom = IBaseReturn;
 type TUnsubscribeRoom = IBaseReturn;
-type TCloseRoom = IBaseReturn;
 
 type TRoom = Record<string, any>;
 
@@ -45,7 +44,7 @@ interface IUserTyping extends Action {
 	status: boolean;
 }
 
-export type TActionsRoom = TSubscribeRoom & TUnsubscribeRoom & TCloseRoom & ILeaveRoom & IDeleteRoom & IForwardRoom & IUserTyping;
+export type TActionsRoom = TSubscribeRoom & TUnsubscribeRoom & ILeaveRoom & IDeleteRoom & IForwardRoom & IUserTyping;
 
 export function subscribeRoom(rid: string): TSubscribeRoom {
 	return {
@@ -76,13 +75,6 @@ export function deleteRoom(roomType: ERoomType, room: TRoom, selected?: ISelecte
 		room,
 		roomType,
 		selected
-	};
-}
-
-export function closeRoom(rid: string): TCloseRoom {
-	return {
-		type: ROOM.CLOSE,
-		rid
 	};
 }
 

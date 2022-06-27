@@ -1,13 +1,14 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Switch, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
+import { CompositeNavigationProp } from '@react-navigation/native';
 
-import { closeRoom, leaveRoom } from '../../actions/room';
+import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -44,13 +45,17 @@ import {
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
 import { videoConfStartAndJoin } from '../../lib/methods/videoConf';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
 }
 
-interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
+interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
 	jitsiEnabled: boolean;
 	jitsiEnableTeams: boolean;
@@ -69,6 +74,12 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
+	livechatAllowManualOnHold?: boolean;
+	livechatRequestComment?: boolean;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+		StackNavigationProp<MasterDetailInsideStackParamList>
+	>;
 	videoConf_Enable_DMs: boolean;
 	videoConf_Enable_Channels: boolean;
 	videoConf_Enable_Groups: boolean;
@@ -369,9 +380,25 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const {
 			room: { rid }
 		} = this.state;
-		const { dispatch } = this.props;
+		const { livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
 
-		dispatch(closeRoom(rid));
+		if (!livechatRequestComment) {
+			const comment = I18n.t('Chat_closed_by_agent');
+			return closeLivechat({ rid, isMasterDetail, comment });
+		}
+
+		showActionSheet({
+			children: (
+				<CloseLivechatSheet
+					onSubmit={(comment: string) => {
+						hideActionSheet();
+						closeLivechat({ rid, isMasterDetail, comment });
+					}}
+					onCancel={() => hideActionSheet()}
+				/>
+			),
+			headerHeight: 225
+		});
 	};
 
 	placeOnHoldLivechat = () => {
@@ -1363,7 +1390,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
-	convertTeamPermission: state.permissions['convert-team']
+	convertTeamPermission: state.permissions['convert-team'],
+	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
-export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));

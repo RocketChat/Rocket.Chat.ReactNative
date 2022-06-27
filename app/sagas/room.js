@@ -1,5 +1,4 @@
 import { Alert } from 'react-native';
-import prompt from 'react-native-prompt-android';
 import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import EventEmitter from '../lib/methods/helpers/events';
@@ -110,44 +109,6 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 	}
 };
 
-const handleCloseRoom = function* handleCloseRoom({ rid }) {
-	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	const requestComment = yield select(state => state.settings.Livechat_request_comment_when_closing_conversation);
-
-	const closeRoom = async (comment = '') => {
-		try {
-			await Services.closeLivechat(rid, comment);
-			if (isMasterDetail) {
-				Navigation.navigate('DrawerNavigator');
-			} else {
-				Navigation.navigate('RoomsListView');
-			}
-		} catch {
-			// do nothing
-		}
-	};
-
-	if (!requestComment) {
-		const comment = I18n.t('Chat_closed_by_agent');
-		return closeRoom(comment);
-	}
-
-	prompt(
-		I18n.t('Closing_chat'),
-		I18n.t('Please_add_a_comment'),
-		[
-			{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
-			{
-				text: I18n.t('Submit'),
-				onPress: comment => closeRoom(comment)
-			}
-		],
-		{
-			cancelable: true
-		}
-	);
-};
-
 const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 	try {
 		const result = yield Services.forwardLivechat(transferData);
@@ -170,7 +131,6 @@ const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
-	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);
 	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);
 };
 export default root;

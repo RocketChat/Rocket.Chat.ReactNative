@@ -347,7 +347,7 @@ export const getTeamListRoom = ({
 	return sdk.get('teams.listRooms', params);
 };
 
-export const closeLivechat = (rid: string, comment: string) =>
+export const closeLivechat = (rid: string, comment?: string) =>
 	// RC 0.29.0
 	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
 
