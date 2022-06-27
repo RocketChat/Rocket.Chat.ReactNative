@@ -163,6 +163,12 @@ export type ChatsStackParamList = {
 		cannedResponse: ICannedResponse;
 		room: ISubscription;
 	};
+	JitsiMeetView: {
+		rid: string;
+		url: string;
+		onlyAudio?: boolean;
+		videoConf?: boolean;
+	};
 };
 
 export type ProfileStackParamList = {
@@ -258,11 +264,6 @@ export type InsideStackParamList = {
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
-	};
-	JitsiMeetView: {
-		rid: string;
-		url: string;
-		onlyAudio?: boolean;
 	};
 };
 
