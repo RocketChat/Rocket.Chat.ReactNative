@@ -157,5 +157,21 @@ export default StyleSheet.create({
 		fontSize: 12,
 		marginLeft: 4,
 		...sharedStyles.textRegular
-	}
+	},
+	searchedEmoji: {
+		backgroundColor: 'transparent',
+		color: '#ffffff'
+	},
+	emojiContainer: { justifyContent: 'center', marginHorizontal: 2 },
+	emojiListContainer: { height: 50, paddingHorizontal: 5, marginVertical: 5 },
+	emojiSearchbarContainer: {
+		flexDirection: 'row',
+		height: 50,
+		marginBottom: 10,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	openEmojiKeyboard: { marginHorizontal: 10, justifyContent: 'center' },
+	emojiSearchbar: { padding: 10, borderRadius: 5 },
+	textInputContainer: { justifyContent: 'center', marginBottom: 0, marginRight: 15 }
 });

@@ -624,9 +624,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				this.setShowSend(true);
 				break;
 			case EventTypes.SEARCH_PRESSED:
-				this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: true }, () => {
+				this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: true });
+				setTimeout(() => {
 					this.emojiSearchbarRef.current.focus();
-				});
+				}, 400);
 				break;
 			default:
 			// Do nothing
