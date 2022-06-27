@@ -110,7 +110,10 @@ const ActionSheetContentWithInputAndSubmit = ({
 				value={inputValue}
 				placeholder={placeholder}
 				onChangeText={value => setInputValue(value)}
-				onSubmitEditing={() => onSubmit(inputValue)}
+				onSubmitEditing={() => {
+					hideActionSheet();
+					if (inputValue) onSubmit(inputValue);
+				}}
 				theme={theme}
 				testID={testID}
 				secureTextEntry={secureTextEntry}
