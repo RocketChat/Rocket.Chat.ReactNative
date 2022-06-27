@@ -136,6 +136,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
 			<ChatsStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 			<ChatsStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
+			<ChatsStack.Screen name='JitsiMeetView' component={JitsiMeetView} options={{ headerShown: false }} />
 		</ChatsStack.Navigator>
 	);
 };
@@ -325,7 +326,6 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='StatusView' component={StatusView} />
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
-			<InsideStack.Screen name='JitsiMeetView' component={JitsiMeetView} options={{ headerShown: false }} />
 		</InsideStack.Navigator>
 	);
 };
