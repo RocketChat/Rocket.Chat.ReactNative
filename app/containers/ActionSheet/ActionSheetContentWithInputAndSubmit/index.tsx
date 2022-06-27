@@ -111,7 +111,10 @@ const ActionSheetContentWithInputAndSubmit = ({
 				placeholder={placeholder}
 				onChangeText={value => setInputValue(value)}
 				onSubmitEditing={() => {
-					hideActionSheet();
+					// fix android animation
+					setTimeout(() => {
+						hideActionSheet();
+					}, 100);
 					if (inputValue) onSubmit(inputValue);
 				}}
 				theme={theme}
