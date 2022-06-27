@@ -47,7 +47,7 @@ const EmojiCategory = React.memo(({ baseUrl, onEmojiSelected, emojis, width, tab
 	return (
 		<FlatList
 			// rerender FlatList in case of width changes
-			key={`emoji-category-${numColumns}`}
+			key={`emoji-category-${width}`}
 			// @ts-ignore
 			keyExtractor={item => (item && item.isCustom && item.content) || item}
 			data={emojis}
