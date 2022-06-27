@@ -10,6 +10,7 @@ import { IEmoji } from '../../definitions';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
+import styles from './styles';
 
 interface IEmojiSearchbarProps {
 	openEmoji: () => void;
@@ -21,14 +22,13 @@ interface IEmojiSearchbarProps {
 
 const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 	if (emoji.name) {
-		return <CustomEmoji style={{ height: size, width: size }} emoji={emoji} baseUrl={baseUrl} />;
+		return <CustomEmoji style={{ height: size, width: size, margin: 4 }} emoji={emoji} baseUrl={baseUrl} />;
 	}
-	return <Text style={{ fontSize: size }}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
+	return <Text style={[styles.searchedEmoji, { fontSize: size }]}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
 };
 
 const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 	({ openEmoji, onChangeText, emojis, onEmojiSelected, baseUrl }, ref) => {
-		console.log('Emojis', emojis);
 		const { colors, theme } = useTheme();
 		const [searchText, setSearchText] = useState<string>('');
 		const [frequentlyUsed, setFrequentlyUsed] = useState([]);
@@ -60,7 +60,7 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 		const renderItem = (emoji: IEmoji) => {
 			const emojiSize = 30;
 			return (
-				<View style={{ justifyContent: 'center', marginHorizontal: 2 }}>
+				<View style={[styles.emojiContainer]}>
 					<TouchableOpacity
 						activeOpacity={0.7}
 						// @ts-ignore
@@ -72,22 +72,18 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 			);
 		};
 		return (
-			<View>
-				<View style={{ height: 50, paddingHorizontal: 5 }}>
-					<FlatList horizontal data={searchText ? emojis : frequentlyUsed} renderItem={({ item }) => renderItem(item)} />
-				</View>
-				<View
-					style={{
-						flexDirection: 'row',
-						height: 50,
-						marginVertical: 10,
-						justifyContent: 'center',
-						alignItems: 'center'
-					}}>
-					<TouchableOpacity
-						style={{ marginHorizontal: 10, justifyContent: 'center', height: '100%' }}
-						activeOpacity={0.7}
-						onPress={openEmoji}>
+			<View style={{ borderTopWidth: 1, borderTopColor: colors.borderColor }}>
+				<FlatList
+					horizontal
+					data={searchText ? emojis : frequentlyUsed}
+					renderItem={({ item }) => renderItem(item)}
+					showsHorizontalScrollIndicator={false}
+					keyExtractor={item => item.name || item.content}
+					contentContainerStyle={styles.emojiListContainer}
+					keyboardShouldPersistTaps='always'
+				/>
+				<View style={styles.emojiSearchbarContainer}>
+					<TouchableOpacity style={styles.openEmojiKeyboard} activeOpacity={0.7} onPress={openEmoji}>
 						<CustomIcon name='chevron-left' size={30} color={colors.collapsibleChevron} />
 					</TouchableOpacity>
 					<View style={{ flex: 1 }}>
@@ -100,8 +96,8 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 							returnKeyType='search'
 							underlineColorAndroid='transparent'
 							onChangeText={handleTextChange}
-							style={{ backgroundColor: colors.passcodeButtonActive, padding: 10, borderRadius: 5 }}
-							containerStyle={{ height: '100%', justifyContent: 'center', marginBottom: 0, marginRight: 15 }}
+							style={[styles.emojiSearchbar, { backgroundColor: colors.passcodeButtonActive }]}
+							containerStyle={styles.textInputContainer}
 							value={searchText}
 							theme={theme}
 							onClearInput={() => handleTextChange('')}
