@@ -25,7 +25,7 @@ const SelectChannel = ({
 
 	const getChannels = debounce(async (keyword = '') => {
 		try {
-			const res = await localSearch({ text: keyword });
+			const res = (await localSearch({ text: keyword })) as ISearchLocal[];
 			setChannels(res);
 		} catch {
 			// do nothing

@@ -11,15 +11,14 @@ import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import { IApplicationState } from '../definitions';
 import { SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { TSupportedThemes, withTheme } from '../theme';
-import { isTablet } from '../lib/methods/helpers';
-import { showErrorAlert } from '../lib/methods/helpers/info';
+import { isTablet, showErrorAlert } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
@@ -128,7 +127,6 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 							testID='set-username-view-input'
 							clearButtonMode='while-editing'
 							containerStyle={sharedStyles.inputLastChild}
-							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Register')}

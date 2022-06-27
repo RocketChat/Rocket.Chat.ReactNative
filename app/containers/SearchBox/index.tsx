@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, TextInputProps, View } from 'react-native';
 
-import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import FormTextInput from '../TextInput/FormTextInput';
+import { FormTextInput } from '../TextInput';
 
 const styles = StyleSheet.create({
 	inputContainer: {
@@ -13,7 +12,6 @@ const styles = StyleSheet.create({
 });
 
 const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
-	const { theme } = useTheme();
 	const [text, setText] = useState('');
 
 	const internalOnChangeText = useCallback(value => {
@@ -34,7 +32,6 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				onChangeText={internalOnChangeText}
 				onSubmitEditing={onSubmitEditing}
 				value={text}
-				theme={theme}
 				testID={testID}
 				onClearInput={() => internalOnChangeText('')}
 				iconRight={'search'}

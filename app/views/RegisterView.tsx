@@ -9,7 +9,7 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { getShowLoginButton } from '../selectors/login';
@@ -166,7 +166,7 @@ class RegisterView extends React.Component<IProps, any> {
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
-		const { Accounts_CustomFields, theme } = this.props;
+		const { Accounts_CustomFields } = this.props;
 		if (!Accounts_CustomFields) {
 			return null;
 		}
@@ -194,7 +194,6 @@ class RegisterView extends React.Component<IProps, any> {
 										placeholder={key}
 										value={customFields[key]}
 										testID='register-view-custom-picker'
-										theme={theme}
 									/>
 								</RNPickerSelect>
 							);
@@ -223,7 +222,6 @@ class RegisterView extends React.Component<IProps, any> {
 									this.avatarUrl?.focus();
 								}}
 								containerStyle={styles.inputContainer}
-								theme={theme}
 							/>
 						);
 					})}
@@ -236,11 +234,11 @@ class RegisterView extends React.Component<IProps, any> {
 
 	render() {
 		const { saving } = this.state;
-		const { theme, showLoginButton, navigation } = this.props;
+		const { theme, showLoginButton } = this.props;
 		return (
 			<FormContainer testID='register-view'>
 				<FormContainerInner>
-					<LoginServices navigation={navigation} theme={theme} separator />
+					<LoginServices separator />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<FormTextInput
 						label={I18n.t('Name')}
@@ -252,7 +250,6 @@ class RegisterView extends React.Component<IProps, any> {
 							this.usernameInput?.focus();
 						}}
 						testID='register-view-name'
-						theme={theme}
 					/>
 					<FormTextInput
 						label={I18n.t('Username')}
@@ -267,7 +264,6 @@ class RegisterView extends React.Component<IProps, any> {
 							this.emailInput?.focus();
 						}}
 						testID='register-view-username'
-						theme={theme}
 					/>
 					<FormTextInput
 						label={I18n.t('Email')}
@@ -283,7 +279,6 @@ class RegisterView extends React.Component<IProps, any> {
 							this.passwordInput?.focus();
 						}}
 						testID='register-view-email'
-						theme={theme}
 					/>
 					<FormTextInput
 						label={I18n.t('Password')}
@@ -297,7 +292,6 @@ class RegisterView extends React.Component<IProps, any> {
 						onChangeText={(value: string) => this.setState({ password: value })}
 						onSubmitEditing={this.submit}
 						testID='register-view-password'
-						theme={theme}
 					/>
 
 					{this.renderCustomFields()}

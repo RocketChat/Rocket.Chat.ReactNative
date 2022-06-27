@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../containers/CustomIcon';
-import TextInput from '../../../containers/TextInput';
+import { TextInput } from '../../../containers/TextInput';
 import { useTheme } from '../../../theme';
 import { isIOS } from '../../../lib/methods/helpers';
 import sharedStyles from '../../Styles';
@@ -80,7 +80,6 @@ const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox)
 					returnKeyType='search'
 					style={styles.input}
 					underlineColorAndroid='transparent'
-					theme={theme}
 					{...props}
 				/>
 			</View>

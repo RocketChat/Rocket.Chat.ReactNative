@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
 import { themes } from '../lib/constants';
 import { Services } from '../lib/services';
@@ -100,7 +100,6 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 						onSubmitEditing={this.resetPassword}
 						testID='forgot-password-view-email'
 						containerStyle={sharedStyles.inputLastChild}
-						theme={theme}
 					/>
 					<Button
 						title={I18n.t('Reset_password')}

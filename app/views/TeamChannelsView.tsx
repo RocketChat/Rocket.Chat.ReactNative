@@ -494,12 +494,10 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	};
 
 	renderItem = ({ item }: { item: IItem }) => {
-		const { StoreLastMessage, useRealName, theme, width, showAvatar, displayMode } = this.props;
+		const { StoreLastMessage, useRealName, width, showAvatar, displayMode } = this.props;
 		return (
 			<RoomItem
 				item={item}
-				theme={theme}
-				type={item.t}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={width}
