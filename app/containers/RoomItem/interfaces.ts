@@ -23,14 +23,12 @@ export interface IRightActionsProps {
 
 export interface ITitleProps {
 	name: string;
-	theme: TSupportedThemes;
 	hideUnreadStatus: boolean;
 	alert: boolean;
 }
 
 export interface IUpdatedAtProps {
 	date: string;
-	theme: TSupportedThemes;
 	hideUnreadStatus: boolean;
 	alert: boolean;
 }
@@ -39,13 +37,12 @@ export interface IWrapperProps {
 	accessibilityLabel: string;
 	avatar: string;
 	type: string;
-	theme: TSupportedThemes;
 	rid: string;
 	children: React.ReactElement;
 	displayMode: string;
 	prid: string;
 	showLastMessage: boolean;
-	status: string;
+	status: TUserStatus;
 	isGroupChat: boolean;
 	teamMain: boolean;
 	showAvatar: boolean;
@@ -64,48 +61,43 @@ export interface ITypeIconProps {
 	sourceType: IOmnichannelSource;
 }
 
-export interface IRoomItemContainerProps {
-	[key: string]: string | boolean | Function | number;
-	item: any;
-	showLastMessage: boolean;
-	id: string;
-	onPress: (item: any) => void;
-	onLongPress: (item: any) => Promise<void>;
-	username: string;
-	width: number;
-	status: TUserStatus;
-	toggleFav(): void;
-	toggleRead(): void;
-	hideChannel(): void;
-	useRealName: boolean;
-	getUserPresence: (uid: string) => void;
-	connected: boolean;
-	theme: TSupportedThemes;
-	isFocused: boolean;
-	getRoomTitle: (item: any) => string;
-	getRoomAvatar: (item: any) => string;
-	getIsGroupChat: (item: any) => boolean;
-	getIsRead: (item: any) => boolean;
-	swipeEnabled: boolean;
-	autoJoin: boolean;
-	showAvatar: boolean;
-	displayMode: string;
+interface IRoomItemTouchables {
+	toggleFav?: (rid: string, favorite: boolean) => Promise<void>;
+	toggleRead?: (rid: string, tIsRead: boolean) => Promise<void>;
+	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
+	onPress: (item?: any) => void;
+	onLongPress?: (item?: any) => void;
 }
 
-export interface IRoomItemProps {
+interface IBaseRoomItem extends IRoomItemTouchables {
+	[key: string]: any;
+	showLastMessage?: boolean;
+	useRealName: boolean;
+	isFocused?: boolean;
+	displayMode: string;
+	showAvatar: boolean;
+	swipeEnabled: boolean;
+	autoJoin?: boolean;
+	width: number;
+	username?: string;
+}
+
+export interface IRoomItemContainerProps extends IBaseRoomItem {
+	item: any;
+	id?: string;
+	getRoomTitle: (item: any) => string;
+	getRoomAvatar: (item: any) => string;
+	getIsRead?: (item: any) => boolean;
+}
+
+export interface IRoomItemProps extends IBaseRoomItem {
 	rid: string;
 	type: SubscriptionType;
 	prid: string;
 	name: string;
 	avatar: string;
-	showLastMessage: boolean;
-	username: string;
 	testID: string;
-	width: number;
 	status: TUserStatus;
-	useRealName: boolean;
-	theme: TSupportedThemes;
-	isFocused: boolean;
 	isGroupChat: boolean;
 	isRead: boolean;
 	teamMain: boolean;
@@ -121,22 +113,12 @@ export interface IRoomItemProps {
 	tunread: [];
 	tunreadUser: [];
 	tunreadGroup: [];
-	swipeEnabled: boolean;
-	toggleFav(): void;
-	toggleRead(): void;
-	onPress(): void;
-	onLongPress(): void;
-	hideChannel(): void;
-	autoJoin: boolean;
 	size?: number;
-	showAvatar: boolean;
-	displayMode: string;
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
 }
 
 export interface ILastMessageProps {
-	theme: TSupportedThemes;
 	lastMessage: ILastMessage;
 	type: SubscriptionType;
 	showLastMessage: boolean;
@@ -145,20 +127,29 @@ export interface ILastMessageProps {
 	alert: boolean;
 }
 
-export interface ITouchableProps {
+export interface ITouchableProps extends IRoomItemTouchables {
 	children: JSX.Element;
-	type: string;
-	onPress(): void;
-	onLongPress(): void;
+	type: SubscriptionType;
 	testID: string;
 	width: number;
 	favorite: boolean;
 	isRead: boolean;
 	rid: string;
-	toggleFav: Function;
-	toggleRead: Function;
-	hideChannel: Function;
 	isFocused: boolean;
 	swipeEnabled: boolean;
 	displayMode: string;
+}
+
+export interface IIconOrAvatar {
+	avatar: string;
+	type: string;
+	rid: string;
+	showAvatar: boolean;
+	displayMode: string;
+	prid: string;
+	status: TUserStatus;
+	isGroupChat: boolean;
+	teamMain: boolean;
+	showLastMessage: boolean;
+	sourceType: IOmnichannelSource;
 }
