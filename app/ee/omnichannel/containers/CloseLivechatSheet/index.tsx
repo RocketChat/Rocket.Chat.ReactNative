@@ -17,6 +17,7 @@ const CloseLivechatSheet = ({
 		onSubmit={onSubmit}
 		testID='room-actions-view-close-livechat'
 		placeholder=''
+		secureTextEntry={false}
 	/>
 );
 
