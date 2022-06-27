@@ -1,4 +1,5 @@
-{ "__count__empty_rooms_will_be_removed_automatically": "{{count}} empty rooms will be deleted.",
+{
+  "__count__empty_rooms_will_be_removed_automatically": "{{count}} empty rooms will be deleted.",
   "__count__empty_room_will_be_removed_automatically": "{{count}} empty room will be deleted.",
   "1_person_reacted": "1 person reacted",
   "1_user": "1 user",
@@ -71,6 +72,7 @@
   "error-remove-last-owner": "This is the last owner. Please set a new owner before removing this one.",
   "error-role-in-use": "Cannot delete role because it's in use",
   "error-role-name-required": "Role name is required",
+  "error-password-same-as-current": "Entered password same as current password",
   "error-the-field-is-required": "The field {{field}} is required.",
   "error-too-many-requests": "Error, too many requests. Please slow down. You must wait {{seconds}} seconds before trying again.",
   "error-user-is-not-activated": "User is not activated",
@@ -110,8 +112,8 @@
   "archive": "archive",
   "are_typing": "are typing",
   "Are_you_sure_question_mark": "Are you sure?",
-  "Are_you_sure_you_want_to_delete_your_account":"Are you sure you want to delete your account?",
-  "Deleting_a_user_will_delete_all_messages":"Deleting a user will delete all messages, rooms and teams from that user as well. This cannot be undone.",
+  "Are_you_sure_you_want_to_delete_your_account": "Are you sure you want to delete your account?",
+  "Deleting_a_user_will_delete_all_messages": "Deleting a user will delete all messages, rooms and teams from that user as well. This cannot be undone.",
   "Are_you_sure_you_want_to_leave_the_room": "Are you sure you want to leave the room {{room}}?",
   "Audio": "Audio",
   "Authenticating": "Authenticating",
@@ -838,4 +840,5 @@
   "Show_badge_for_mentions": "Show badge for mentions",
   "Show_badge_for_mentions_Info": "Display badge for direct mentions only",
   "error-init-video-conf": "Error starting video call"
+  "totp-invalid": "Code or password invalid"
 }
