@@ -7,7 +7,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
@@ -191,7 +191,6 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						onSubmitEditing={() => {
 							inputs.name?.focus();
 						}}
-						theme={theme}
 						editable={!!editOmnichannelContactPermission}
 					/>
 					<FormTextInput
@@ -204,7 +203,6 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						onSubmitEditing={() => {
 							inputs.phone?.focus();
 						}}
-						theme={theme}
 						editable={!!editOmnichannelContactPermission}
 					/>
 					<FormTextInput
@@ -223,7 +221,6 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 								inputs.topic?.focus();
 							}
 						}}
-						theme={theme}
 						editable={!!editOmnichannelContactPermission}
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
@@ -240,7 +237,6 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 								}
 								inputs.topic?.focus();
 							}}
-							theme={theme}
 							editable={!!editOmnichannelContactPermission}
 						/>
 					))}
@@ -252,7 +248,6 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						}}
 						defaultValue={livechat?.topic}
 						onChangeText={text => onChangeText('topic', text)}
-						theme={theme}
 						editable={!!editLivechatRoomCustomFieldsPermission}
 					/>
 
@@ -284,7 +279,6 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 								}
 								submit();
 							}}
-							theme={theme}
 							editable={!!editLivechatRoomCustomFieldsPermission}
 						/>
 					))}

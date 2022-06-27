@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
@@ -333,7 +333,6 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						onChangeText={this.search}
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
-						theme={theme}
 					/>
 					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
 					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />

@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Avatar from '../Avatar';
 import { DisplayMode } from '../../lib/constants';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
+import { IIconOrAvatar } from './interfaces';
 
 const IconOrAvatar = ({
 	avatar,
@@ -17,10 +17,9 @@ const IconOrAvatar = ({
 	isGroupChat,
 	teamMain,
 	showLastMessage,
-	theme,
 	displayMode,
 	sourceType
-}) => {
+}: IIconOrAvatar): React.ReactElement | null => {
 	if (showAvatar) {
 		return (
 			<Avatar text={avatar} size={displayMode === DisplayMode.Condensed ? 36 : 48} type={type} style={styles.avatar} rid={rid} />
@@ -35,7 +34,6 @@ const IconOrAvatar = ({
 					prid={prid}
 					status={status}
 					isGroupChat={isGroupChat}
-					theme={theme}
 					teamMain={teamMain}
 					size={24}
 					style={{ marginRight: 12 }}
@@ -46,20 +44,6 @@ const IconOrAvatar = ({
 	}
 
 	return null;
-};
-
-IconOrAvatar.propTypes = {
-	avatar: PropTypes.string,
-	type: PropTypes.string,
-	theme: PropTypes.string,
-	rid: PropTypes.string,
-	showAvatar: PropTypes.bool,
-	displayMode: PropTypes.string,
-	prid: PropTypes.string,
-	status: PropTypes.string,
-	isGroupChat: PropTypes.bool,
-	teamMain: PropTypes.bool,
-	showLastMessage: PropTypes.bool
 };
 
 export default IconOrAvatar;

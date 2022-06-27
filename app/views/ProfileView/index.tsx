@@ -12,10 +12,10 @@ import Touch from '../../lib/methods/helpers/touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
@@ -427,7 +427,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
-		const { Accounts_CustomFields, theme } = this.props;
+		const { Accounts_CustomFields } = this.props;
 
 		if (!Accounts_CustomFields) {
 			return null;
@@ -456,7 +456,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								placeholder={key}
 								value={customFields[key]}
 								testID='settings-view-language'
-								theme={theme}
 							/>
 						</RNPickerSelect>
 					);
@@ -484,7 +483,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							}
 							this.avatarUrl?.focus();
 						}}
-						theme={theme}
 					/>
 				);
 			});
@@ -557,7 +555,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this.username?.focus();
 							}}
 							testID='profile-view-name'
-							theme={theme}
 						/>
 						<FormTextInput
 							editable={Accounts_AllowUsernameChange}
@@ -573,7 +570,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this.email?.focus();
 							}}
 							testID='profile-view-username'
-							theme={theme}
 						/>
 						<FormTextInput
 							editable={Accounts_AllowEmailChange}
@@ -591,7 +587,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this.newPassword?.focus();
 							}}
 							testID='profile-view-email'
-							theme={theme}
 						/>
 						<FormTextInput
 							editable={Accounts_AllowPasswordChange}
@@ -614,7 +609,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							}}
 							secureTextEntry
 							testID='profile-view-new-password'
-							theme={theme}
 						/>
 						{this.renderCustomFields()}
 						<FormTextInput
@@ -631,7 +625,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							onChangeText={value => this.setState({ avatarUrl: value })}
 							onSubmitEditing={this.submit}
 							testID='profile-view-avatar-url'
-							theme={theme}
 						/>
 						{this.renderAvatarButtons()}
 						<Button

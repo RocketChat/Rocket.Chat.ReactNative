@@ -7,7 +7,7 @@ import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import Button from '../../Button';
-import FormTextInput from '../../TextInput/FormTextInput';
+import { FormTextInput } from '../../TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
@@ -90,7 +90,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	customText?: React.ReactElement;
 	confirmBackgroundColor?: string;
 }): React.ReactElement => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 	const [inputValue, setInputValue] = useState('');
 	const { hideActionSheet } = useActionSheet();
 
@@ -117,7 +117,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 					}, 100);
 					if (inputValue) onSubmit(inputValue);
 				}}
-				theme={theme}
 				testID={testID}
 				secureTextEntry={secureTextEntry}
 				inputStyle={{ borderWidth: 2 }}

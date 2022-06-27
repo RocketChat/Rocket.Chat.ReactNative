@@ -839,5 +839,6 @@
   "Mark_as_unread_Info": "Display room as unread when there are unread messages",
   "Show_badge_for_mentions": "Show badge for mentions",
   "Show_badge_for_mentions_Info": "Display badge for direct mentions only",
+  "error-init-video-conf": "Error starting video call",
   "totp-invalid": "Code or password invalid"
 }
