@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import { ImageViewer, types } from '../../presentation/ImageViewer';
+import { ImageViewer, types } from '../../containers/ImageViewer';
 import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
 import sharedStyles from '../Styles';
@@ -100,7 +100,6 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 						imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
 						width={width}
 						height={calculatedHeight}
-						theme={theme}
 					/>
 				);
 			}

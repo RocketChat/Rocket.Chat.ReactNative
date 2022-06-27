@@ -14,7 +14,7 @@ import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../lib/methods/helpers/events';
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
-import { ImageViewer } from '../presentation/ImageViewer';
+import { ImageViewer } from '../containers/ImageViewer';
 import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -146,13 +146,12 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 	};
 
 	renderImage = (uri: string) => {
-		const { theme, width, height, insets } = this.props;
+		const { width, height, insets } = this.props;
 		const headerHeight = getHeaderHeight(width > height);
 		return (
 			<ImageViewer
 				uri={uri}
 				onLoadEnd={() => this.setState({ loading: false })}
-				theme={theme}
 				width={width}
 				height={height - insets.top - insets.bottom - headerHeight}
 			/>

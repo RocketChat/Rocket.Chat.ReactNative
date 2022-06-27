@@ -1,12 +1,13 @@
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import sharedStyles from '../../views/Styles';
-import { TextInput } from './TextInput';
-import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
+import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
+import { CustomIcon, TIconsName } from '../CustomIcon';
+import { TextInput } from './TextInput';
 
 const styles = StyleSheet.create({
 	error: {
@@ -60,6 +61,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;
+	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }
 
@@ -77,13 +79,14 @@ export const FormTextInput = ({
 	left,
 	testID,
 	secureTextEntry,
+	bottomSheet,
 	placeholder,
 	...inputProps
-}: IRCTextInputProps) => {
+}: IRCTextInputProps): React.ReactElement => {
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
-
+	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 	return (
 		<View style={[styles.inputContainer, containerStyle]}>
 			{label ? (
@@ -91,7 +94,7 @@ export const FormTextInput = ({
 			) : null}
 
 			<View style={styles.wrap}>
-				<TextInput
+				<Input
 					style={[
 						styles.input,
 						iconLeft && styles.inputIconLeft,
@@ -107,6 +110,7 @@ export const FormTextInput = ({
 						},
 						inputStyle
 					]}
+					// @ts-ignore ref error
 					ref={inputRef}
 					autoCorrect={false}
 					autoCapitalize='none'

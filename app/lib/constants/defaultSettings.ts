@@ -211,5 +211,20 @@ export const defaultSettings = {
 	},
 	Accounts_AvatarExternalProviderUrl: {
 		type: 'valueAsString'
+	},
+	VideoConf_Enable_DMs: {
+		type: 'valueAsBoolean'
+	},
+	VideoConf_Enable_Channels: {
+		type: 'valueAsBoolean'
+	},
+	VideoConf_Enable_Groups: {
+		type: 'valueAsBoolean'
+	},
+	VideoConf_Enable_Teams: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowDeleteOwnAccount: {
+		type: 'valueAsBoolean'
 	}
 } as const;
