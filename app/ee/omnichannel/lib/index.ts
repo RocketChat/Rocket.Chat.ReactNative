@@ -1,6 +1,6 @@
 import sdk from '../../../lib/services/sdk';
 import { IUser } from '../../../definitions';
-import EventEmitter from '../../../utils/events';
+import EventEmitter from '../../../lib/methods/helpers/events';
 import subscribeInquiry from './subscriptions/inquiry';
 
 export const isOmnichannelStatusAvailable = (user: IUser): boolean => user?.statusLivechat === 'available';

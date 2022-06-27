@@ -6,7 +6,7 @@ import { RadioButton } from 'react-native-ui-lib';
 import { RouteProp } from '@react-navigation/native';
 
 import { ChatsStackParamList } from '../stacks/types';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -14,7 +14,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../utils/layoutAnimation';
+import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
@@ -111,11 +111,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox
-					onChangeText={(text: string) => this.search(text)}
-					testID='select-list-view-search'
-					onCancelPress={() => this.setState({ isSearching: false })}
-				/>
+				<SearchBox onChangeText={(text: string) => this.search(text)} testID='select-list-view-search' />
 			</View>
 		);
 	};

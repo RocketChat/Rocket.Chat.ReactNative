@@ -11,10 +11,9 @@ import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
-import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
-import debounce from '../../../utils/debounce';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
-import log from '../../../utils/log';
+import { compareServerVersion, debounce } from '../../../lib/methods/helpers';
+import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
+import log from '../../../lib/methods/helpers/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
@@ -69,7 +68,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	private viewabilityConfig = {
 		itemVisiblePercentThreshold: 10
 	};
-	private highlightedMessageTimeout: number | undefined | false;
+	private highlightedMessageTimeout: ReturnType<typeof setTimeout> | undefined | false;
 	private thread?: TThreadModel;
 	private messagesObservable?: Observable<TMessageModel[] | TThreadMessageModel[]>;
 	private messagesSubscription?: Subscription;

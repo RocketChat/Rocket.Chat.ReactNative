@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, ViewStyle } from 'react-native';
 
-import Touch from '../../utils/touch';
+import Touch from '../../lib/methods/helpers/touch';
 import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
@@ -54,7 +54,7 @@ const DirectoryItem = ({
 				<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 				<View style={styles.directoryItemTextContainer}>
 					<View style={styles.directoryItemTextTitle}>
-						<RoomTypeIcon type={type} teamMain={teamMain} />
+						{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
 						<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{title}
 						</Text>

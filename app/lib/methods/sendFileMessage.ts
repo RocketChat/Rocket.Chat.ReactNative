@@ -3,11 +3,11 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import isEmpty from 'lodash/isEmpty';
 
-import FileUpload from '../../utils/fileUpload';
+import FileUpload from './helpers/fileUpload';
 import database from '../database';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { IUpload, IUser, TUploadModel } from '../../definitions';
-import { IFileUpload } from '../../utils/fileUpload/interfaces';
+import { IFileUpload } from './helpers/fileUpload/interfaces';
 
 const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 

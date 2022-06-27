@@ -21,6 +21,8 @@ import '../../app/views/CannedResponsesListView/CannedResponseItem.stories';
 import '../../app/containers/TextInput/TextInput.stories';
 import '../../app/containers/message/Components/CollapsibleQuote/CollapsibleQuote.stories';
 import '../../app/containers/Button/Button.stories';
+import '../../app/containers/LoginServices/LoginServices.stories';
+import '../../app/containers/SearchBox/SearchBox.stories';
 
 // Change here to see themed storybook
 export const theme = 'light';
@@ -42,6 +44,7 @@ const reducers = combineReducers({
 		settings: {}
 	}),
 	meteor: () => ({ connected: true }),
-	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
+	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } }),
+	app: () => ({ isMasterDetail: false })
 });
 export const store = createStore(reducers);

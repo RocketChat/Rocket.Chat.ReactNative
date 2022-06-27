@@ -1,3 +1,5 @@
+import { BlockContext } from '@rocket.chat/ui-kit';
+
 import { TSupportedThemes } from '../../theme';
 
 export enum ElementTypes {
@@ -20,14 +22,6 @@ export enum ElementTypes {
 	PLAIN_TEXT = 'plain_text',
 	TEXT = 'text',
 	MARKDOWN = 'mrkdwn'
-}
-
-export enum BlockContext {
-	BLOCK,
-	SECTION,
-	ACTION,
-	FORM,
-	CONTEXT
 }
 
 export enum ActionTypes {

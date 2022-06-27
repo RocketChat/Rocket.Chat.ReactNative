@@ -15,10 +15,9 @@ import I18n from '../i18n';
 import { getShowLoginButton } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { showErrorAlert } from '../utils/info';
-import isValidEmail from '../utils/isValidEmail';
-import log, { events, logEvent } from '../utils/log';
-import openLink from '../utils/openLink';
+import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
+import openLink from '../lib/methods/helpers/openLink';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 
@@ -237,11 +236,11 @@ class RegisterView extends React.Component<IProps, any> {
 
 	render() {
 		const { saving } = this.state;
-		const { theme, showLoginButton, navigation } = this.props;
+		const { theme, showLoginButton } = this.props;
 		return (
 			<FormContainer testID='register-view'>
 				<FormContainerInner>
-					<LoginServices navigation={navigation} theme={theme} separator />
+					<LoginServices separator />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<FormTextInput
 						label={I18n.t('Name')}
