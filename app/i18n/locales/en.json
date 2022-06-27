@@ -1,4 +1,5 @@
-{ "__count__empty_rooms_will_be_removed_automatically": "{{count}} empty rooms will be deleted.",
+{
+  "__count__empty_rooms_will_be_removed_automatically": "{{count}} empty rooms will be deleted.",
   "__count__empty_room_will_be_removed_automatically": "{{count}} empty room will be deleted.",
   "1_person_reacted": "1 person reacted",
   "1_user": "1 user",
@@ -111,8 +112,8 @@
   "archive": "archive",
   "are_typing": "are typing",
   "Are_you_sure_question_mark": "Are you sure?",
-  "Are_you_sure_you_want_to_delete_your_account":"Are you sure you want to delete your account?",
-  "Deleting_a_user_will_delete_all_messages":"Deleting a user will delete all messages, rooms and teams from that user as well. This cannot be undone.",
+  "Are_you_sure_you_want_to_delete_your_account": "Are you sure you want to delete your account?",
+  "Deleting_a_user_will_delete_all_messages": "Deleting a user will delete all messages, rooms and teams from that user as well. This cannot be undone.",
   "Are_you_sure_you_want_to_leave_the_room": "Are you sure you want to leave the room {{room}}?",
   "Audio": "Audio",
   "Authenticating": "Authenticating",
