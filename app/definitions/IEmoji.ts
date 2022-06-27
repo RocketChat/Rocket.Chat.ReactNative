@@ -18,6 +18,7 @@ export interface ICustomEmoji {
 	baseUrl?: string;
 	emoji: IEmoji;
 	style: StyleProp<ImageStyle>;
+	testID?: string;
 }
 
 export interface ICustomEmojiModel {
