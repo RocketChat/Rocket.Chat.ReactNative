@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
 
 const style = StyleSheet.create({
 	container: {
@@ -24,11 +23,13 @@ interface IListItem {
 	level: number;
 	ordered: boolean;
 	continue: boolean;
-	theme: TSupportedThemes;
 	index: number;
+	testID: string;
 }
 
-const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue, ordered, index, theme }: IListItem) => {
+const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue, ordered, index, testID }: IListItem) => {
+	const { colors } = useTheme();
+
 	let bullet;
 	if (_continue) {
 		bullet = '';
@@ -41,9 +42,9 @@ const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue
 	}
 
 	return (
-		<View style={style.container}>
+		<View style={style.container} testID={`${testID}-list`}>
 			<View style={[{ width: bulletWidth }, style.bullet]}>
-				<Text style={{ color: themes[theme].bodyText }}>{bullet}</Text>
+				<Text style={{ color: colors.bodyText }}>{bullet}</Text>
 			</View>
 			<View style={style.contents}>{children}</View>
 		</View>
