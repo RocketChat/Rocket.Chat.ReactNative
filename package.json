@@ -119,7 +119,7 @@
 		"react-native-svg": "^12.3.0",
 		"react-native-ui-lib": "RocketChat/react-native-ui-lib#minor-improvements",
 		"react-native-unimodules": "^0.14.8",
-		"react-native-vector-icons": "8.1.0",
+		"react-native-vector-icons": "9.1.0",
 		"react-native-webview": "10.3.2",
 		"react-redux": "8.0.1",
 		"reactotron-react-native": "5.0.2",
