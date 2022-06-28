@@ -5,7 +5,7 @@ import { TIconsName } from '../CustomIcon';
 
 export type TActionSheetOptionsItem = {
 	title: string;
-	icon: TIconsName;
+	icon: TIconsName | 'none';
 	danger?: boolean;
 	testID?: string;
 	onPress: () => void;

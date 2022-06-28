@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { Text, View } from 'react-native';
 
@@ -26,7 +27,13 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
 			testID={item.testID}>
-			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
+			{item.icon ? (
+				item.icon === 'none' ? (
+					<View style={styles.none} />
+				) : (
+					<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
+				)
+			) : null}
 			<View style={styles.titleContainer}>
 				<Text
 					numberOfLines={1}
