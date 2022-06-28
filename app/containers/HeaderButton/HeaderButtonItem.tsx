@@ -23,7 +23,7 @@ export const BUTTON_HIT_SLOP = {
 
 const styles = StyleSheet.create({
 	container: {
-		marginHorizontal: 6
+		padding: 6
 	},
 	title: {
 		...Platform.select({
