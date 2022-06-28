@@ -12,6 +12,8 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import styles from './styles';
 
+const BUTTON_HIT_SLOP = { top: 15, right: 15, bottom: 15, left: 15 };
+
 interface IEmojiSearchbarProps {
 	openEmoji: () => void;
 	onChangeText: (value: string) => void;
@@ -61,29 +63,31 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 			const emojiSize = 30;
 			return (
 				<View style={[styles.emojiContainer]}>
-					<TouchableOpacity
-						activeOpacity={0.7}
-						// @ts-ignore
-						key={emoji && emoji.isCustom ? emoji.content : emoji}
-						onPress={() => onEmojiSelected(emoji)}>
+					<TouchableOpacity activeOpacity={0.7} onPress={() => onEmojiSelected(emoji)}>
 						{renderEmoji(emoji, emojiSize, baseUrl)}
 					</TouchableOpacity>
 				</View>
 			);
 		};
 		return (
-			<View style={{ borderTopWidth: 1, borderTopColor: colors.borderColor }}>
+			<View style={{ borderTopWidth: 1, borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }}>
 				<FlatList
 					horizontal
 					data={searchText ? emojis : frequentlyUsed}
 					renderItem={({ item }) => renderItem(item)}
 					showsHorizontalScrollIndicator={false}
-					keyExtractor={item => item.name || item.content}
+					ListEmptyComponent={() => (
+						<View style={styles.listEmptyComponent}>
+							<Text style={{ color: colors.auxiliaryText }}>{I18n.t('No_results_found')}</Text>
+						</View>
+					)}
+					// @ts-ignore
+					keyExtractor={item => item.name || item}
 					contentContainerStyle={styles.emojiListContainer}
 					keyboardShouldPersistTaps='always'
 				/>
 				<View style={styles.emojiSearchbarContainer}>
-					<TouchableOpacity style={styles.openEmojiKeyboard} activeOpacity={0.7} onPress={openEmoji}>
+					<TouchableOpacity style={styles.openEmojiKeyboard} activeOpacity={0.7} onPress={openEmoji} hitSlop={BUTTON_HIT_SLOP}>
 						<CustomIcon name='chevron-left' size={30} color={colors.collapsibleChevron} />
 					</TouchableOpacity>
 					<View style={{ flex: 1 }}>
