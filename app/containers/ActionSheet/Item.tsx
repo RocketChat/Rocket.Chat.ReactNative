@@ -28,16 +28,15 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 			theme={theme}
 			testID={item.testID}>
 			{item.icon ? (
-				item.icon === 'none' ? (
-					<View style={styles.none} />
-				) : (
-					<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
-				)
+				<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 			) : null}
 			<View style={styles.titleContainer}>
 				<Text
 					numberOfLines={1}
-					style={[styles.title, { color: item.danger ? themes[theme].dangerColor : themes[theme].bodyText }]}>
+					style={[
+						styles.title,
+						{ color: item.danger ? themes[theme].dangerColor : themes[theme].bodyText, marginLeft: item.icon ? 16 : 0 }
+					]}>
 					{item.title}
 				</Text>
 			</View>

@@ -27,7 +27,6 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		marginLeft: 16,
 		...sharedStyles.textRegular
 	},
 	handle: {

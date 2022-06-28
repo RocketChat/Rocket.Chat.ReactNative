@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Text } from 'react-native';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
@@ -52,7 +53,7 @@ const RenderListPicker = React.memo(
 				onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
 				setOption(i);
 			},
-			icon: option?.value === i.value ? 'check' : 'none'
+			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
 		}));
 
 		return (
