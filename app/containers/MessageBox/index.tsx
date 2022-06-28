@@ -607,12 +607,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		switch (eventType) {
 			case EventTypes.BACKSPACE_PRESSED:
-				let charsToRemove = 1;
 				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
-				const lastEmoji = text.substr(text.length - 2, text.length);
+				let charsToRemove = 1;
+				const lastEmoji = text.substr(cursor > 0 ? cursor - 2 : text.length - 2, cursor > 0 ? cursor : text.length);
 				// Check if last character is an emoji
 				if (emojiRegex.test(lastEmoji)) charsToRemove = 2;
-				newText = text.substr(0, text.length - charsToRemove);
+				newText =
+					text.substr(0, (cursor > 0 ? cursor : text.length) - charsToRemove) + text.substr(cursor > 0 ? cursor : text.length);
 				newCursor = cursor - charsToRemove;
 				this.setInput(newText, { start: newCursor, end: newCursor });
 				this.setShowSend(newText !== '');
@@ -664,16 +665,20 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
-	getEmojis = debounce(async (keyword: any) => {
-		const db = database.active;
-		const customEmojisCollection = db.get('custom_emojis');
+	getCustomEmojis = async (keyword: any, count: number) => {
 		const likeString = sanitizeLikeString(keyword);
 		const whereClause = [];
 		if (likeString) {
 			whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
 		}
-		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
-		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const db = database.active;
+		const customEmojisCollection = db.get('custom_emojis');
+		const customEmojis = await (await customEmojisCollection.query(...whereClause).fetch()).slice(0, count);
+		return customEmojis;
+	};
+
+	getEmojis = debounce(async (keyword: any) => {
+		const customEmojis = await this.getCustomEmojis(keyword, MENTIONS_COUNT_TO_DISPLAY);
 		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		this.setState({ mentions: mergedEmojis || [], mentionLoading: false });
@@ -1126,27 +1131,21 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		);
 	};
 
-	searchEmojis = debounce(async (keyword: any) => {
-		const db = database.active;
-		const customEmojisCollection = db.get('custom_emojis');
-		const likeString = sanitizeLikeString(keyword);
-		const whereClause = [];
-		if (likeString) {
-			whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
-		}
-		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
-		customEmojis = customEmojis.slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
-		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
-		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MAX_EMOJIS_TO_DISPLAY);
-		this.setState({ searchedEmojis: mergedEmojis });
-	}, 300);
-
 	renderEmojiSearchbar = () => {
 		const { showEmojiSearchbar, searchedEmojis } = this.state;
 		const { baseUrl } = this.props;
+
+		const searchEmojis = debounce(async (keyword: any) => {
+			const customEmojis = await this.getCustomEmojis(keyword, MAX_EMOJIS_TO_DISPLAY / 2);
+			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MAX_EMOJIS_TO_DISPLAY);
+			this.setState({ searchedEmojis: mergedEmojis });
+		}, 300);
+
 		const onChangeText = (value: string) => {
-			this.searchEmojis(value);
+			searchEmojis(value);
 		};
+
 		const onEmojiSelected = (emoji: any) => {
 			let selectedEmoji;
 			if (emoji.name) {
