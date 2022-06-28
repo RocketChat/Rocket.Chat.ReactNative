@@ -548,8 +548,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, route, width, height } = this.props;
-		const isLandscape = width > height;
+		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
 			return;
@@ -595,15 +594,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
+		// position title container based to match available space and match title from RoomsListView
+		let marginLeft = 0;
+		if (isIOS) {
+			if (unreadsCount) {
+				marginLeft = 10;
+			} else {
+				marginLeft = 14;
+			}
+		}
+
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: {
 				flex: 1,
 				flexShrink: 1,
-				marginLeft: 12,
+				marginLeft,
 				marginRight: 4,
-				backgroundColor: 'red',
 				maxWidth: undefined
 			},
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },

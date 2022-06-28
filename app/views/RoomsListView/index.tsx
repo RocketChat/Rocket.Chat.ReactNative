@@ -428,7 +428,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		return {
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, flexShrink: 1, marginLeft: 4, maxWidth: undefined },
+			headerTitleContainerStyle: { flex: 1, flexShrink: 1, marginHorizontal: 4, maxWidth: undefined },
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderButton.Drawer
