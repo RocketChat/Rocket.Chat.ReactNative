@@ -19,7 +19,7 @@ import { IEmoji, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definiti
 import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
 
-const EmojiPicker = React.memo(({ onItemClicked, tabEmojiStyle }: IEmojiPickerProps) => {
+const EmojiPicker = React.memo(({ onItemClicked, tabEmojiStyle, isEmojiKeyboard = false }: IEmojiPickerProps) => {
 	const [frequentlyUsed, setFrequentlyUsed] = useState<IEmoji[]>([]);
 	const [show, setShow] = useState(false);
 	const [width, setWidth] = useState(null);
@@ -152,10 +152,12 @@ const EmojiPicker = React.memo(({ onItemClicked, tabEmojiStyle }: IEmojiPickerPr
 						: renderCategory(tab.category, i, tab.tabLabel, tabsCount)
 				)}
 			</ScrollableTabView>
-			<Footer
-				onSearchPressed={() => onItemClicked(EventTypes.SEARCH_PRESSED)}
-				onBackspacePressed={() => onItemClicked(EventTypes.BACKSPACE_PRESSED)}
-			/>
+			{isEmojiKeyboard && (
+				<Footer
+					onSearchPressed={() => onItemClicked(EventTypes.SEARCH_PRESSED)}
+					onBackspacePressed={() => onItemClicked(EventTypes.BACKSPACE_PRESSED)}
+				/>
+			)}
 		</View>
 	);
 });

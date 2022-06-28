@@ -22,7 +22,7 @@ const EmojiKeyboard = () => {
 				style={[styles.emojiKeyboardContainer, { borderTopColor: colors.borderColor }]}
 				testID='messagebox-keyboard-emoji'
 			>
-				<EmojiPicker onItemClicked={onItemClicked} />
+				<EmojiPicker onItemClicked={onItemClicked} isEmojiKeyboard={true} />
 			</View>
 		</Provider>
 	);
