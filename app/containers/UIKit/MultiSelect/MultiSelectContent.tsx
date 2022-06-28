@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import FormTextInput from '../../TextInput/FormTextInput';
+import { FormTextInput } from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
 import I18n from '../../../i18n';
 import Items from './Items';
@@ -23,7 +23,7 @@ interface IMultiSelectContentProps {
 
 export const MultiSelectContent = React.memo(
 	({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) => {
-		const { theme, colors } = useTheme();
+		const { colors } = useTheme();
 		const [selected, setSelected] = useState<string[]>(Array.isArray(selectedItems) ? selectedItems : []);
 		const [items, setItems] = useState<IItemData[] | undefined>(options);
 
@@ -67,10 +67,10 @@ export const MultiSelectContent = React.memo(
 					testID='multi-select-search'
 					onChangeText={handleSearch}
 					placeholder={I18n.t('Search')}
-					theme={theme}
 					inputStyle={{ backgroundColor: colors.focusedBackground }}
+					bottomSheet
 				/>
-				<Items items={items || []} selected={selected} onSelect={onSelect} theme={theme} />
+				<Items items={items || []} selected={selected} onSelect={onSelect} />
 			</View>
 		);
 	}
