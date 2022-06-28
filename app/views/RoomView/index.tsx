@@ -600,11 +600,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: {
 				flex: 1,
-				right: 20
+				flexShrink: 1,
+				marginLeft: 12,
+				marginRight: 4,
+				backgroundColor: 'red',
+				maxWidth: undefined
 			},
-			headerRightContainerStyle: {
-				flexGrow: isLandscape ? 0.2 : 0.3
-			},
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<LeftButtons
 					tmid={tmid}
