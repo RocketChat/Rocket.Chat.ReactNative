@@ -7,16 +7,18 @@ import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import { IFooterProps } from './interfaces';
 
+const BUTTON_HIT_SLOP = { top: 15, right: 15, bottom: 15, left: 15 };
+
 const Footer = React.memo(({ onSearchPressed, onBackspacePressed }: IFooterProps) => {
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.footerContainer, { backgroundColor: colors.bannerBackground }]}>
 			<BorderlessButton activeOpacity={0.7} onPress={onSearchPressed} style={styles.footerButtonsContainer}>
-				<CustomIcon color={colors.auxiliaryTintColor} size={24} name='search' />
+				<CustomIcon color={colors.auxiliaryTintColor} size={25} name='search' />
 			</BorderlessButton>
 
-			<TouchableOpacity activeOpacity={0.7} onPress={onBackspacePressed}>
-				<CustomIcon color={colors.auxiliaryTintColor} size={24} name='backspace' />
+			<TouchableOpacity activeOpacity={0.7} onPress={onBackspacePressed} hitSlop={BUTTON_HIT_SLOP}>
+				<CustomIcon color={colors.auxiliaryTintColor} size={25} name='backspace' />
 			</TouchableOpacity>
 		</View>
 	);
