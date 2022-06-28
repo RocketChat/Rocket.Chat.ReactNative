@@ -27,7 +27,6 @@ export const ROOM = createRequestTypes('ROOM', [
 	'LEAVE',
 	'DELETE',
 	'REMOVED',
-	'CLOSE',
 	'FORWARD',
 	'USER_TYPING'
 ]);

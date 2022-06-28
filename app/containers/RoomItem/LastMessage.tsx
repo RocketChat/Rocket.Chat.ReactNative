@@ -4,8 +4,9 @@ import { dequal } from 'dequal';
 import I18n from '../../i18n';
 import styles from './styles';
 import { MarkdownPreview } from '../markdown';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, themes } from '../../lib/constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
 import { ILastMessageProps } from './interfaces';
+import { useTheme } from '../../theme';
 
 const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }: Partial<ILastMessageProps>) => {
 	if (!showLastMessage) {
@@ -46,8 +47,9 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
-const LastMessage = React.memo(
-	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessageProps) => (
+const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
+	const { colors } = useTheme();
+	return (
 		<MarkdownPreview
 			msg={formatMsg({
 				lastMessage,
@@ -56,12 +58,11 @@ const LastMessage = React.memo(
 				username,
 				useRealName
 			})}
-			style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
+			style={[styles.markdownText, { color: alert ? colors.bodyText : colors.auxiliaryText }]}
 			numberOfLines={2}
 			testID='room-item-last-message'
 		/>
-	),
-	arePropsEqual
-);
+	);
+}, arePropsEqual);
 
 export default LastMessage;

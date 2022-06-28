@@ -9,7 +9,7 @@ import I18n from '../i18n';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
 import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
@@ -138,7 +138,6 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 						secureTextEntry
 						onSubmitEditing={this.changePassword}
 						testID='e2e-encryption-security-view-password'
-						theme={theme}
 						onChangeText={this.onChangePasswordText}
 					/>
 					<Button

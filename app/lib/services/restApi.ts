@@ -347,7 +347,7 @@ export const getTeamListRoom = ({
 	return sdk.get('teams.listRooms', params);
 };
 
-export const closeLivechat = (rid: string, comment: string) =>
+export const closeLivechat = (rid: string, comment?: string) =>
 	// RC 0.29.0
 	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
 
@@ -917,6 +917,20 @@ export function getUserInfo(userId: string) {
 }
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
+
+export const videoConferenceJoin = (callId: string, cam: boolean) =>
+	sdk.post('video-conference.join', { callId, state: { cam } });
+
+export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId });
+
+export const saveUserProfileMethod = (
+	params: IProfileParams,
+	customFields = {},
+	twoFactorOptions: {
+		twoFactorCode: string;
+		twoFactorMethod: string;
+	} | null
+) => sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
 
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0

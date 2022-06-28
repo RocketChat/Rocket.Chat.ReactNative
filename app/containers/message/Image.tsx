@@ -83,7 +83,6 @@ const ImageContainer = React.memo(
 							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
-							theme={theme}
 						/>
 						<MessageImage imgUri={img} theme={theme} />
 					</View>

@@ -63,15 +63,5 @@ export default StyleSheet.create({
 	},
 	rightContainer: {
 		paddingLeft: 12
-	},
-	footerButtonsContainer: {
-		flexDirection: 'row',
-		paddingTop: 16
-	},
-	buttonSeparator: {
-		marginRight: 8
-	},
-	contentContainer: {
-		flex: 1
 	}
 });
