@@ -415,7 +415,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1 },
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
 				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -429,7 +429,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		return {
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, flexShrink: 1, marginHorizontal: 4, maxWidth: undefined },
+			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderButton.Drawer
