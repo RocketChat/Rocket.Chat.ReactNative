@@ -247,7 +247,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		if (isSearching) {
 			return {
 				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1 },
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
 				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -266,9 +266,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 
 		const options: StackNavigationOptions = {
-			headerTitleAlign: 'center',
+			headerTitleAlign: undefined,
 			headerTitle: I18n.t('Canned_Responses'),
-			headerTitleContainerStyle: { flex: 0 },
+			headerTitleContainerStyle: { maxWidth: undefined },
 			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
