@@ -87,20 +87,17 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 			// Do nothing
 		}
 		const options = {
-			header: () => (
-				<Header
-					title={title || ''}
-					headerTintColor={themes[theme].previewTintColor}
-					headerStatusBarHeight={isTablet ? 20 : 5}
-					headerTitleAlign='center'
-					headerLeft={() => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} />}
-					headerRight={() =>
-						Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null
-					}
-					headerBackground={() => (
-						<HeaderBackground style={{ backgroundColor: themes[theme].previewBackground, shadowOpacity: 0, elevation: 0 }} />
-					)}
-				/>
+			title: title || '',
+			headerTitleStyle: { color: themes[theme].previewTintColor },
+			headerTintColor: themes[theme].previewTintColor,
+			headerTitleContainerStyle: { flex: 1, maxWidth: undefined },
+			headerLeftContainerStyle: { flexGrow: undefined, flexBasis: undefined },
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
+			headerLeft: () => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} />,
+			headerRight: () =>
+				Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null,
+			headerBackground: () => (
+				<HeaderBackground style={{ backgroundColor: themes[theme].previewBackground, shadowOpacity: 0, elevation: 0 }} />
 			)
 		};
 		navigation.setOptions(options);
