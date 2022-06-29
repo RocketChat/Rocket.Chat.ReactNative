@@ -101,7 +101,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		if (isSearching) {
 			options = {
 				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1 },
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
 				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>

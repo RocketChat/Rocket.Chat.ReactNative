@@ -13,7 +13,7 @@ import {
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
-import FormTextInput from '../TextInput/FormTextInput';
+import { FormTextInput } from '../TextInput';
 import { textParser, useBlockContext } from './utils';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
@@ -76,7 +76,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />
 			);
 		}
-		return <Markdown msg={element.text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
+		return <Markdown msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
 	}
 
 	button(element: IButton, context: BlockContext) {
@@ -188,7 +188,6 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 
 	plainInput(element: IElement, context: BlockContext) {
 		const [{ loading, value, error }, action] = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
 			<FormTextInput
@@ -201,7 +200,6 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 				containerStyle={styles.input}
 				value={value}
 				error={{ error }}
-				theme={theme}
 			/>
 		);
 	}

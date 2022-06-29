@@ -1,13 +1,14 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Switch, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
+import { CompositeNavigationProp } from '@react-navigation/native';
 
-import { closeRoom, leaveRoom } from '../../actions/room';
+import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -44,12 +45,17 @@ import {
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
+import { videoConfStartAndJoin } from '../../lib/methods/videoConf';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
 }
 
-interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
+interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
 	jitsiEnabled: boolean;
 	jitsiEnableTeams: boolean;
@@ -68,6 +74,16 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
+	livechatAllowManualOnHold?: boolean;
+	livechatRequestComment?: boolean;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+		StackNavigationProp<MasterDetailInsideStackParamList>
+	>;
+	videoConf_Enable_DMs: boolean;
+	videoConf_Enable_Channels: boolean;
+	videoConf_Enable_Groups: boolean;
+	videoConf_Enable_Teams: boolean;
 }
 
 interface IRoomActionsViewState {
@@ -364,9 +380,25 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const {
 			room: { rid }
 		} = this.state;
-		const { dispatch } = this.props;
+		const { livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
 
-		dispatch(closeRoom(rid));
+		if (!livechatRequestComment) {
+			const comment = I18n.t('Chat_closed_by_agent');
+			return closeLivechat({ rid, isMasterDetail, comment });
+		}
+
+		showActionSheet({
+			children: (
+				<CloseLivechatSheet
+					onSubmit={(comment: string) => {
+						hideActionSheet();
+						closeLivechat({ rid, isMasterDetail, comment });
+					}}
+					onCancel={() => hideActionSheet()}
+				/>
+			),
+			headerHeight: 225
+		});
 	};
 
 	placeOnHoldLivechat = () => {
@@ -734,6 +766,16 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
+	startVideoConf = ({ video }: { video: boolean }): void => {
+		const { room } = this.state;
+		const { serverVersion } = this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
+			videoConfStartAndJoin(room.rid, video);
+		} else {
+			callJitsi(room, !video);
+		}
+	};
+
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
@@ -810,12 +852,35 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	renderJitsi = () => {
 		const { room } = this.state;
-		const { jitsiEnabled, jitsiEnableTeams, jitsiEnableChannels } = this.props;
+		const {
+			jitsiEnabled,
+			jitsiEnableTeams,
+			jitsiEnableChannels,
+			serverVersion,
+			videoConf_Enable_DMs,
+			videoConf_Enable_Channels,
+			videoConf_Enable_Groups,
+			videoConf_Enable_Teams
+		} = this.props;
 
 		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
 		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
 
-		if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
+		const isVideoConfDisabledForTeams = !!room.teamMain && !videoConf_Enable_Teams;
+		const isVideoConfDisabledForChannels = !room.teamMain && room.t === 'c' && !videoConf_Enable_Channels;
+		const isVideoConfDisabledForGroups = !room.teamMain && room.t === 'p' && !videoConf_Enable_Groups;
+		const isVideoConfDisabledForDirect = !room.teamMain && room.t === 'd' && !videoConf_Enable_DMs;
+
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
+			if (
+				isVideoConfDisabledForTeams ||
+				isVideoConfDisabledForChannels ||
+				isVideoConfDisabledForGroups ||
+				isVideoConfDisabledForDirect
+			) {
+				return null;
+			}
+		} else if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
 			return null;
 		}
 
@@ -824,7 +889,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Voice_call'
-					onPress={() => callJitsi(room, true)}
+					onPress={() => this.startVideoConf({ video: false })}
 					testID='room-actions-voice'
 					left={() => <List.Icon name='phone' />}
 					showActionIndicator
@@ -832,7 +897,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Video_call'
-					onPress={() => callJitsi(room)}
+					onPress={() => this.startVideoConf({ video: true })}
 					testID='room-actions-video'
 					left={() => <List.Icon name='camera' />}
 					showActionIndicator
@@ -1309,6 +1374,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	jitsiEnabled: (state.settings.Jitsi_Enabled || false) as boolean,
 	jitsiEnableTeams: (state.settings.Jitsi_Enable_Teams || false) as boolean,
 	jitsiEnableChannels: (state.settings.Jitsi_Enable_Channels || false) as boolean,
+	videoConf_Enable_DMs: (state.settings.VideoConf_Enable_DMs ?? true) as boolean,
+	videoConf_Enable_Channels: (state.settings.VideoConf_Enable_Channels ?? true) as boolean,
+	videoConf_Enable_Groups: (state.settings.VideoConf_Enable_Groups ?? true) as boolean,
+	videoConf_Enable_Teams: (state.settings.VideoConf_Enable_Teams ?? true) as boolean,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
@@ -1321,7 +1390,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
-	convertTeamPermission: state.permissions['convert-team']
+	convertTeamPermission: state.permissions['convert-team'],
+	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
-export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));

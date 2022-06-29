@@ -131,7 +131,6 @@ const Description = React.memo(
 				baseUrl={baseUrl}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
-				theme={theme}
 			/>
 		);
 	},
@@ -184,13 +183,7 @@ const Fields = React.memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
-						<Markdown
-							msg={field?.value || ''}
-							baseUrl={baseUrl}
-							username={user.username}
-							getCustomEmoji={getCustomEmoji}
-							theme={theme}
-						/>
+						<Markdown msg={field?.value || ''} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</View>
@@ -271,13 +264,7 @@ const Reply = React.memo(
 						) : null}
 					</View>
 				</Touchable>
-				<Markdown
-					msg={attachment.description}
-					baseUrl={baseUrl}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
+				<Markdown msg={attachment.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} />
 			</>
 		);
 	},

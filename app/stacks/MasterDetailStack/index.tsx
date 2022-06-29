@@ -119,11 +119,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 		<ModalContainer navigation={navigation} theme={theme}>
 			<ModalStack.Navigator
 				screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
-				<ModalStack.Screen
-					name='RoomActionsView'
-					component={RoomActionsView}
-					options={props => RoomActionsView.navigationOptions!({ ...props, isMasterDetail: true })}
-				/>
+				<ModalStack.Screen name='RoomActionsView' component={RoomActionsView} />
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 				<ModalStack.Screen name='SelectListView' component={SelectListView} />
 				<ModalStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />

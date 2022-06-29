@@ -108,7 +108,6 @@
 		"react-native-platform-touchable": "1.1.1",
 		"react-native-popover-view": "4.0.1",
 		"react-native-progress": "5.0.0",
-		"react-native-prompt-android": "^1.1.0",
 		"react-native-reanimated": "2.2.2",
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "3.2.0",
@@ -119,7 +118,7 @@
 		"react-native-svg": "^12.3.0",
 		"react-native-ui-lib": "RocketChat/react-native-ui-lib#minor-improvements",
 		"react-native-unimodules": "^0.14.8",
-		"react-native-vector-icons": "8.1.0",
+		"react-native-vector-icons": "9.1.0",
 		"react-native-webview": "10.3.2",
 		"react-redux": "8.0.1",
 		"reactotron-react-native": "5.0.2",
@@ -138,7 +137,8 @@
 		"xregexp": "5.0.2"
 	},
 	"resolutions": {
-		"ua-parser-js": "^1.0.2"
+		"ua-parser-js": "^1.0.2",
+		"jpeg-js": "0.4.4"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",

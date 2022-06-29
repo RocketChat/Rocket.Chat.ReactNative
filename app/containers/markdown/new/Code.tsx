@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import { Code as CodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
-import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import CodeLine from './CodeLine';
 
@@ -12,16 +11,16 @@ interface ICodeProps {
 }
 
 const Code = ({ value }: ICodeProps) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	return (
 		<Text
 			style={[
 				styles.codeBlock,
 				{
-					color: themes[theme].bodyText,
-					backgroundColor: themes[theme].bannerBackground,
-					borderColor: themes[theme].borderColor
+					color: colors.bodyText,
+					backgroundColor: colors.bannerBackground,
+					borderColor: colors.borderColor
 				}
 			]}>
 			{value.map(block => {

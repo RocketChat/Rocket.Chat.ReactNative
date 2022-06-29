@@ -1,7 +1,6 @@
 import React from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
-import prompt from 'react-native-prompt-android';
 import { sha256 } from 'js-sha256';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -13,10 +12,10 @@ import Touch from '../../lib/methods/helpers/touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
@@ -45,6 +44,7 @@ import { twoFactor } from '../../lib/services/twoFactor';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 
 interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
@@ -250,26 +250,25 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 
 		const requirePassword = !!params.email || newPassword;
+
 		if (requirePassword && !params.currentPassword) {
 			this.setState({ saving: false });
-			prompt(
-				I18n.t('Please_enter_your_password'),
-				I18n.t('For_your_security_you_must_enter_your_current_password_to_continue'),
-				[
-					{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
-					{
-						text: I18n.t('Save'),
-						onPress: (p: string) => {
-							this.setState({ currentPassword: p });
-							this.submit();
-						}
-					}
-				],
-				{
-					type: 'secure-text',
-					cancelable: false
-				}
-			);
+			this.props.showActionSheet({
+				children: (
+					<ActionSheetContentWithInputAndSubmit
+						title={I18n.t('Please_enter_your_password')}
+						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
+						testID='profile-view-enter-password-sheet'
+						placeholder={I18n.t('Password')}
+						onSubmit={(p: string) => {
+							this.props.hideActionSheet();
+							this.setState({ currentPassword: p }, () => this.submit());
+						}}
+						onCancel={this.props.hideActionSheet}
+					/>
+				),
+				headerHeight: 225
+			});
 			return;
 		}
 
@@ -428,7 +427,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
-		const { Accounts_CustomFields, theme } = this.props;
+		const { Accounts_CustomFields } = this.props;
 
 		if (!Accounts_CustomFields) {
 			return null;
@@ -457,7 +456,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								placeholder={key}
 								value={customFields[key]}
 								testID='settings-view-language'
-								theme={theme}
 							/>
 						</RNPickerSelect>
 					);
@@ -485,7 +483,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							}
 							this.avatarUrl?.focus();
 						}}
-						theme={theme}
 					/>
 				);
 			});
@@ -558,7 +555,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this.username?.focus();
 							}}
 							testID='profile-view-name'
-							theme={theme}
 						/>
 						<FormTextInput
 							editable={Accounts_AllowUsernameChange}
@@ -574,7 +570,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this.email?.focus();
 							}}
 							testID='profile-view-username'
-							theme={theme}
 						/>
 						<FormTextInput
 							editable={Accounts_AllowEmailChange}
@@ -592,7 +587,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this.newPassword?.focus();
 							}}
 							testID='profile-view-email'
-							theme={theme}
 						/>
 						<FormTextInput
 							editable={Accounts_AllowPasswordChange}
@@ -615,7 +609,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							}}
 							secureTextEntry
 							testID='profile-view-new-password'
-							theme={theme}
 						/>
 						{this.renderCustomFields()}
 						<FormTextInput
@@ -632,7 +625,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							onChangeText={value => this.setState({ avatarUrl: value })}
 							onSubmitEditing={this.submit}
 							testID='profile-view-avatar-url'
-							theme={theme}
 						/>
 						{this.renderAvatarButtons()}
 						<Button
@@ -668,6 +660,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
+	isMasterDetail: state.app.isMasterDetail,
 	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange as boolean,
 	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
 	Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange as boolean,
@@ -675,8 +668,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
 	baseUrl: state.server.server,
-	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean,
-	isMasterDetail: state.app.isMasterDetail
+	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(ProfileView)));

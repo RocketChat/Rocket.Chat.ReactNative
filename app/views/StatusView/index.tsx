@@ -9,13 +9,12 @@ import * as List from '../../containers/List';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
-import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 
@@ -105,8 +104,6 @@ const StatusView = (): React.ReactElement => {
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 
-	const { theme } = useTheme();
-
 	useEffect(() => {
 		const submit = async () => {
 			logEvent(events.STATUS_DONE);
@@ -163,7 +160,6 @@ const StatusView = (): React.ReactElement => {
 				ListHeaderComponent={
 					<>
 						<FormTextInput
-							theme={theme}
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}

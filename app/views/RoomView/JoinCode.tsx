@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
 import { IApplicationState } from '../../definitions';
@@ -88,7 +88,6 @@ const JoinCode = React.memo(
 						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
-							theme={theme}
 							// TODO: find a way to type this ref
 							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 							returnKeyType='send'

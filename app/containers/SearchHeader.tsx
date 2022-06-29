@@ -5,7 +5,7 @@ import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
-import TextInput from './TextInput';
+import { TextInput } from './TextInput';
 import { isIOS, isTablet } from '../lib/methods/helpers';
 import { useOrientation } from '../dimensions';
 
@@ -27,7 +27,6 @@ interface ISearchHeaderProps {
 
 const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.Element => {
 	const { theme } = useTheme();
-	// TODO: after merge the #4256 PR, remove this
 	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -40,7 +39,6 @@ const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.E
 				style={[styles.title, isLight && { color: themes[theme].headerTitleColor }, { fontSize: titleFontSize }]}
 				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
-				theme={theme}
 				testID={testID}
 			/>
 		</View>
