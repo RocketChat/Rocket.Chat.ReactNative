@@ -594,23 +594,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
-		// position title container based to match available space and match title from RoomsListView
-		let marginLeft = 0;
-		if (isIOS) {
-			if (unreadsCount) {
-				marginLeft = 10;
-			} else {
-				marginLeft = 14;
-			}
-		}
-
 		navigation.setOptions({
-			headerShown: true,
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: {
 				flex: 1,
-				flexShrink: 1,
-				marginLeft,
+				marginLeft: 0,
 				marginRight: 4,
 				maxWidth: undefined
 			},
