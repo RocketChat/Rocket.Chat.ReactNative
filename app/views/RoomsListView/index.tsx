@@ -408,7 +408,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
-	getHeader = () => {
+	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (searching) {
@@ -457,7 +457,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	setHeader = () => {
 		const { navigation } = this.props;
-		const options = this.getHeader() as Partial<StackNavigationOptions>;
+		const options = this.getHeader();
 		navigation.setOptions(options);
 	};
 
