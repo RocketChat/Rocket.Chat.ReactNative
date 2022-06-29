@@ -9,7 +9,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Video } from 'expo-av';
 import { sha256 } from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Header, HeaderBackground, HeaderHeightContext } from '@react-navigation/elements';
+import { HeaderBackground, HeaderHeightContext } from '@react-navigation/elements';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../lib/methods/helpers/events';
@@ -19,7 +19,7 @@ import { ImageViewer } from '../containers/ImageViewer';
 import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
-import { isAndroid, formatAttachmentUrl, isTablet } from '../lib/methods/helpers';
+import { isAndroid, formatAttachmentUrl } from '../lib/methods/helpers';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import StatusBar from '../containers/StatusBar';
