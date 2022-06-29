@@ -28,6 +28,7 @@ export const drawerStyle = {
 	width: 320
 };
 
+// TODO: Remove it once we migrate dropdowns to action sheet
 export const headerHeight = isIOS ? 50 : 56;
 
 export const themedHeader = (theme: TSupportedThemes): StackNavigationOptions => ({
