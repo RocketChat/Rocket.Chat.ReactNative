@@ -595,6 +595,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
 		navigation.setOptions({
+			headerShown: true,
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: {
 				flex: 1,

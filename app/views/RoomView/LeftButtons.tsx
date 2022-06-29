@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	},
 	avatar: {
 		borderRadius: 10,
-		marginHorizontal: 16
+		marginHorizontal: 15
 	}
 });
 

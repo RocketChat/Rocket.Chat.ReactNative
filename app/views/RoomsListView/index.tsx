@@ -22,6 +22,7 @@ import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
+import { themedHeader } from '../../lib/methods/helpers/navigation';
 import {
 	KEY_COMMAND,
 	handleCommandAddNewServer,
@@ -922,14 +923,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail } = this.props;
+		const { isMasterDetail, theme } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
 		}
 
 		const options = this.getHeader();
-		return <Header title='' {...options} headerTitleAlign='left' headerTitleContainerStyle={{ flex: 1, marginLeft: 0 }} />;
+		return <Header title='' {...themedHeader(theme)} {...options} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {

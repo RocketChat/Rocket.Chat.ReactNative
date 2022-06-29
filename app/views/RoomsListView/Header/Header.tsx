@@ -12,8 +12,7 @@ import SearchHeader from '../../../containers/SearchHeader';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
-		marginLeft: isTablet ? 10 : 0
+		justifyContent: 'center'
 	},
 	button: {
 		flexDirection: 'row',

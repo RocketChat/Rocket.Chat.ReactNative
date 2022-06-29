@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
@@ -29,7 +30,7 @@ export const drawerStyle = {
 
 export const headerHeight = isIOS ? 50 : 56;
 
-export const themedHeader = (theme: TSupportedThemes) => ({
+export const themedHeader = (theme: TSupportedThemes): StackNavigationOptions => ({
 	headerStyle: {
 		...borderBottom(theme),
 		backgroundColor: themes[theme].headerBackground
