@@ -1,7 +1,7 @@
 import React from 'react';
 import { PermissionsAndroid, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import CameraRoll from '@react-native-community/cameraroll';
 import * as mime from 'react-native-mime-types';
@@ -86,16 +86,21 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		} catch {
 			// Do nothing
 		}
-		const options = {
+		const options: StackNavigationOptions = {
 			title: title || '',
+			headerTitleAlign: 'center',
 			headerTitleStyle: { color: themes[theme].previewTintColor },
 			headerTintColor: themes[theme].previewTintColor,
 			headerTitleContainerStyle: { flex: 1, maxWidth: undefined },
 			headerLeftContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
-			headerLeft: () => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} />,
+			headerLeft: () => (
+				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={themes[theme].previewTintColor} />
+			),
 			headerRight: () =>
-				Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null,
+				Allow_Save_Media_to_Gallery ? (
+					<HeaderButton.Download testID='save-image' onPress={this.handleSave} color={themes[theme].previewTintColor} />
+				) : null,
 			headerBackground: () => (
 				<HeaderBackground style={{ backgroundColor: themes[theme].previewBackground, shadowOpacity: 0, elevation: 0 }} />
 			)

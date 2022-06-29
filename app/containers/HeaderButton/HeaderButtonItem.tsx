@@ -2,16 +2,17 @@ import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import { PlatformPressable } from '@react-navigation/elements';
 
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon, ICustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 
-interface IHeaderButtonItem {
+export interface IHeaderButtonItem extends Omit<ICustomIcon, 'name' | 'size' | 'color'> {
 	title?: string;
 	iconName?: TIconsName;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
 	badge?(): void;
+	color?: string;
 }
 
 export const BUTTON_HIT_SLOP = {
@@ -38,15 +39,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ title, iconName, onPress, testID, badge }: IHeaderButtonItem): React.ReactElement => {
+const Item = ({ title, iconName, onPress, testID, badge, ...props }: IHeaderButtonItem): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<PlatformPressable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 			<>
 				{iconName ? (
-					<CustomIcon name={iconName} size={24} color={colors.headerTintColor} />
+					<CustomIcon name={iconName} size={24} color={colors.headerTintColor} {...props} />
 				) : (
-					<Text style={[styles.title, { color: colors.headerTintColor }]}>{title}</Text>
+					<Text style={[styles.title, { color: colors.headerTintColor }]} {...props}>
+						{title}
+					</Text>
 				)}
 				{badge ? badge() : null}
 			</>
