@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
-import { StackNavigationOptions } from '@react-navigation/stack';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
@@ -31,7 +30,7 @@ export const drawerStyle = {
 // TODO: Remove it once we migrate dropdowns to action sheet
 export const headerHeight = isIOS ? 50 : 56;
 
-export const themedHeader = (theme: TSupportedThemes): StackNavigationOptions => ({
+export const themedHeader = (theme: TSupportedThemes) => ({
 	headerStyle: {
 		...borderBottom(theme),
 		backgroundColor: themes[theme].headerBackground
