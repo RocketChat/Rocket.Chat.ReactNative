@@ -156,17 +156,14 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		const { width, height, insets } = this.props;
 		return (
 			<HeaderHeightContext.Consumer>
-				{headerHeight => {
-					console.log('headerHeight ***', headerHeight);
-					return (
-						<ImageViewer
-							uri={uri}
-							onLoadEnd={() => this.setState({ loading: false })}
-							width={width}
-							height={height - insets.top - insets.bottom - (headerHeight || 0)}
-						/>
-					);
-				}}
+				{headerHeight => (
+					<ImageViewer
+						uri={uri}
+						onLoadEnd={() => this.setState({ loading: false })}
+						width={width}
+						height={height - insets.top - insets.bottom - (headerHeight || 0)}
+					/>
+				)}
 			</HeaderHeightContext.Consumer>
 		);
 	};
