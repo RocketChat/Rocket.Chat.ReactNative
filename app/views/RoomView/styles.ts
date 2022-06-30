@@ -64,6 +64,7 @@ export default StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	searchbarContainer: {
+		height: 55,
 		marginBottom: 10,
 		paddingHorizontal: 15
 	},
