@@ -70,15 +70,13 @@ const Status = ({ status }: { status: IStatus }) => {
 				logEvent(events[key]);
 				if (user.status !== status.id) {
 					try {
-						const result = await Services.setUserStatus(status.id, user.statusText || '');
-						if (result.success) {
-							dispatch(setUser({ status: status.id }));
-						}
+						await Services.setUserStatus(status.id, user.statusText || '');
+						dispatch(setUser({ status: status.id }));
 					} catch (e: any) {
 						const messageError =
-							e.data && e.data.error.includes('[error-too-many-requests]')
-								? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-								: e.data.errorType;
+							e.error && e.error.includes('[error-too-many-requests]')
+								? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
+								: e.reason;
 						showErrorAlert(messageError);
 						logEvent(events.SET_STATUS_FAIL);
 						log(e);
@@ -135,9 +133,9 @@ const StatusView = (): React.ReactElement => {
 			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
 			const messageError =
-				e.data && e.data.error.includes('[error-too-many-requests]')
-					? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-					: e.data.errorType;
+				e.error && e.error.includes('[error-too-many-requests]')
+					? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
+					: e.reason;
 			logEvent(events.STATUS_CUSTOM_F);
 			showErrorAlert(messageError);
 		}
