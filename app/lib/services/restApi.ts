@@ -278,9 +278,9 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { userId, data });
 
-export const setUserStatus = ({ status, message }: { status?: string; message?: string }) =>
+export const setUserStatus = (status: string, message: string) =>
 	// RC 1.2.0
-	sdk.post('users.setStatus', { status, message });
+	sdk.methodCall('setUserStatus', status, message);
 
 export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2

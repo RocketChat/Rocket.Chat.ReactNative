@@ -70,7 +70,7 @@ const Status = ({ status }: { status: IStatus }) => {
 				logEvent(events[key]);
 				if (user.status !== status.id) {
 					try {
-						const result = await Services.setUserStatus({ status: status.id });
+						const result = await Services.setUserStatus(status.id, user.statusText || '');
 						if (result.success) {
 							dispatch(setUser({ status: status.id }));
 						}
@@ -108,7 +108,7 @@ const StatusView = (): React.ReactElement => {
 		const submit = async () => {
 			logEvent(events.STATUS_DONE);
 			if (statusText !== user.statusText) {
-				await setCustomStatus(statusText, user.status);
+				await setCustomStatus(user.status, statusText);
 			}
 			goBack();
 		};
@@ -126,18 +126,13 @@ const StatusView = (): React.ReactElement => {
 		setHeader();
 	}, [statusText, user.status]);
 
-	const setCustomStatus = async (statusText: string, status: string) => {
+	const setCustomStatus = async (status: string, statusText: string) => {
 		setLoading(true);
 		try {
-			const result = await Services.setUserStatus({ status, message: statusText });
-			if (result.success) {
-				dispatch(setUser({ statusText }));
-				logEvent(events.STATUS_CUSTOM);
-				showToast(I18n.t('Status_saved_successfully'));
-			} else {
-				logEvent(events.STATUS_CUSTOM_F);
-				showToast(I18n.t('error-could-not-change-status'));
-			}
+			await Services.setUserStatus(status, statusText);
+			dispatch(setUser({ statusText }));
+			logEvent(events.STATUS_CUSTOM);
+			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
 			const messageError =
 				e.data && e.data.error.includes('[error-too-many-requests]')
