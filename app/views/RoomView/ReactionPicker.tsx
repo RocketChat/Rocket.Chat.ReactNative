@@ -5,6 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import EmojiPicker from '../../containers/EmojiPicker';
 import { useTheme } from '../../theme';
 import styles from './styles';
+import { IEmoji } from '../../definitions';
 import { EventTypes } from '../../containers/EmojiPicker/interfaces';
 import { FormTextInput } from '../../containers/TextInput/FormTextInput';
 import I18n from '../../i18n';
@@ -27,7 +28,7 @@ const MAX_EMOJIS_TO_DISPLAY = 20;
 const ReactionPicker = React.memo(({ onEmojiSelected, message, reactionClose }: IReactionPickerProps) => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = React.useState<string>('');
-	const [searchedEmojis, setSearchedEmojis] = React.useState<any[]>([]);
+	const [searchedEmojis, setSearchedEmojis] = React.useState<(string | IEmoji)[]>([]);
 	const [searching, setSearching] = React.useState<boolean>(false);
 
 	const handleTextChange = (text: string) => {
@@ -43,8 +44,18 @@ const ReactionPicker = React.memo(({ onEmojiSelected, message, reactionClose }: 
 			whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
 		}
 		const db = database.active;
-		const customEmojisCollection = db.get('custom_emojis');
-		const customEmojis = await (await customEmojisCollection.query(...whereClause).fetch()).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+		const customEmojisCollection = await (
+			await db
+				.get('custom_emojis')
+				.query(...whereClause)
+				.fetch()
+		).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+		const customEmojis = customEmojisCollection?.map(emoji => ({
+			isCustom: true,
+			content: emoji?.name,
+			name: emoji?.name,
+			extension: emoji?.extension
+		})) as IEmoji[];
 		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
 		const mergedEmojis = [...customEmojis, ...filteredEmojis];
 		setSearchedEmojis(mergedEmojis);
