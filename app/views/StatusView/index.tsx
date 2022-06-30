@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Status = ({ status, statusText }: { status: IStatus; statusText: string }) => {
+const Status = ({ status }: { status: IStatus }) => {
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const dispatch = useDispatch();
 
@@ -70,7 +70,7 @@ const Status = ({ status, statusText }: { status: IStatus; statusText: string })
 				logEvent(events[key]);
 				if (user.status !== status.id) {
 					try {
-						const result = await Services.setUserStatus(status.id, statusText);
+						const result = await Services.setUserStatus({ status: status.id });
 						if (result.success) {
 							dispatch(setUser({ status: status.id }));
 						}
@@ -108,7 +108,7 @@ const StatusView = (): React.ReactElement => {
 		const submit = async () => {
 			logEvent(events.STATUS_DONE);
 			if (statusText !== user.statusText) {
-				await setCustomStatus(statusText);
+				await setCustomStatus(statusText, user.status);
 			}
 			goBack();
 		};
@@ -126,10 +126,10 @@ const StatusView = (): React.ReactElement => {
 		setHeader();
 	}, [statusText, user.status]);
 
-	const setCustomStatus = async (statusText: string) => {
+	const setCustomStatus = async (statusText: string, status: string) => {
 		setLoading(true);
 		try {
-			const result = await Services.setUserStatus(user.status, statusText);
+			const result = await Services.setUserStatus({ status, message: statusText });
 			if (result.success) {
 				dispatch(setUser({ statusText }));
 				logEvent(events.STATUS_CUSTOM);
@@ -156,7 +156,7 @@ const StatusView = (): React.ReactElement => {
 			<FlatList
 				data={status}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status status={item} statusText={statusText} />}
+				renderItem={({ item }) => <Status status={item} />}
 				ListHeaderComponent={
 					<>
 						<FormTextInput
