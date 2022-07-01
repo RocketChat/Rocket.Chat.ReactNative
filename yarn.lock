@@ -5201,10 +5201,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native@0.64.2":
-  version "0.64.2"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.64.2.tgz#2e344aeec0b4eb21fb9eaa0ed8973245c5601d56"
-  integrity sha512-w2y04h+GVLY+OMlFSmq4adPuS51XtEp1yUr83OvXf+moMQ4zDG1Q07HhyvYDXdc+BSS9ANHySBqVCz0hFxli9Q==
+"@types/react-native@0.68.2":
+  version "0.68.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.68.1.tgz#56eda448c13fa24f90fd57fa9c7299819e44fb54"
+  integrity sha512-S+r6VamWqVutlQ3q/vhTn4b0F/DdZj8R6AIDdgwV9xN9Ln1kRdQd7o3mo7FnfdddVdzEkWMUVlK2sbkFOJFAiQ==
   dependencies:
     "@types/react" "*"
 
@@ -16239,9 +16239,10 @@ react-native-webview@10.3.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@RocketChat/react-native#0.68.2:
+react-native@0.68.2:
   version "0.68.2"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/0773ccf85de9ca5eed551fb361fa3455bd2aade7"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.68.2.tgz#07547cd31bb9335a7fa4135cfbdc24e067142585"
+  integrity sha512-qNMz+mdIirCEmlrhapAtAG+SWVx6MAiSfCbFNhfHqiqu1xw1OKXdzIrjaBEPihRC2pcORCoCHduHGQe/Pz9Yuw==
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^7.0.3"

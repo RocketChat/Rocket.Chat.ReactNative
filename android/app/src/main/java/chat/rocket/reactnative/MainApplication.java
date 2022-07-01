@@ -21,10 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import chat.rocket.reactnative.newarchitecture.MainApplicationReactNativeHost;
-import chat.rocket.reactnative.networking.SSLPinningPackage;
+// import chat.rocket.reactnative.networking.SSLPinningPackage;
 
 public class MainApplication extends Application implements ReactApplication {
-
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(this, new ReactNativeHost(this) {
     @Override
@@ -37,7 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new RNCViewPagerPackage());
-      packages.add(new SSLPinningPackage());
+      // packages.add(new SSLPinningPackage());
       // firebase modules
       List<ReactPackage> additionalModules = new AdditionalModules().getAdditionalModules(MainApplication.this);
       packages.addAll(additionalModules);
@@ -60,14 +59,23 @@ public class MainApplication extends Application implements ReactApplication {
     }
   });
 
+  private final ReactNativeHost mNewArchitectureNativeHost =
+    new MainApplicationReactNativeHost(this);
+
   @Override
   public ReactNativeHost getReactNativeHost() {
+    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+      return mNewArchitectureNativeHost;
+    } else {
       return mReactNativeHost;
+    }
   }
 
   @Override
   public void onCreate() {
     super.onCreate();
+    // If you opted-in for the New Architecture, we enable the TurboModule system
+    ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
     ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }

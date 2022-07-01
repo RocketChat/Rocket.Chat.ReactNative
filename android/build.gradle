@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
@@ -11,6 +13,7 @@ buildscript {
         buildToolsVersion = "31.0.0"
         minSdkVersion = 23
         compileSdkVersion = 31
+        // TODO: Fix "android:exported" issue and target 31 again
         targetSdkVersion = 30
         if (System.properties['os.arch'] == "aarch64") {
             // For M1 Users we need to use the NDK 24 which added support for aarch64
@@ -44,7 +47,7 @@ buildscript {
             classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
             classpath 'com.bugsnag:bugsnag-android-gradle-plugin:7.+'
         }
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath("com.android.tools.build:gradle:7.0.4")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("de.undercouch:gradle-download-task:4.1.2")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
