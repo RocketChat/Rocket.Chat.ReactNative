@@ -156,10 +156,10 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 class ModalParser extends UiKitParserModal<React.ReactElement> {
 	constructor() {
 		super();
-		// Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {
-		// 	// @ts-ignore
-		// 	ModalParser.prototype[method] = ModalParser.prototype[method] || MessageParser.prototype[method];
-		// });
+		Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {
+			// @ts-ignore
+			ModalParser.prototype[method] = ModalParser.prototype[method] || MessageParser.prototype[method];
+		});
 	}
 
 	get current() {

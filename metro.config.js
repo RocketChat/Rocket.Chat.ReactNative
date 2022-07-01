@@ -14,7 +14,7 @@ module.exports = {
 			transform: {
 				// experimentalImportSupport: true,
 				// https://github.com/storybookjs/react-native/issues/152
-				inlineRequires: false
+				inlineRequires: true
 			}
 		})
 	},
