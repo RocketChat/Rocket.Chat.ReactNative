@@ -78,7 +78,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
 		const serversDB = database.servers;
-		UserPreferences.setString(CURRENT_SERVER, server);
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
@@ -117,6 +116,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
 			yield connect({ server });
