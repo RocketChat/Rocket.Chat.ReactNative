@@ -24,7 +24,7 @@ const Item = ({ label, content, testID }: IItem) => {
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
 				{label}
 			</Text>
-			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} />
+			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} theme={theme} />
 		</View>
 	);
 };
