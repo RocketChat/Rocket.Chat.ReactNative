@@ -4,30 +4,38 @@ import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import FastImage from 'react-native-fast-image';
 
-import { useTheme } from '../../../theme';
+import { TSupportedThemes, useTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
 import styles from '../../message/styles';
+
+interface IImageProps {
+	value: ImageProps['value'];
+}
+
+type TMessageImage = {
+	img: string;
+	theme: TSupportedThemes;
+};
 
 const ImageProgress = createImageProgress(FastImage);
 
-const MessageImage = ({ img }: { img: string }) => {
-	const { colors } = useTheme();
-	return (
-		<ImageProgress
-			style={[styles.inlineImage, { borderColor: colors.borderColor }]}
-			source={{ uri: encodeURI(img) }}
-			resizeMode={FastImage.resizeMode.cover}
-			indicator={Progress.Pie}
-			indicatorProps={{
-				color: colors.actionTintColor
-			}}
-		/>
-	);
-};
+const MessageImage = ({ img, theme }: TMessageImage) => (
+	<ImageProgress
+		style={[styles.inlineImage, { borderColor: themes[theme].borderColor }]}
+		source={{ uri: encodeURI(img) }}
+		resizeMode={FastImage.resizeMode.cover}
+		indicator={Progress.Pie}
+		indicatorProps={{
+			color: themes[theme].actionTintColor
+		}}
+	/>
+);
 
-const Image = ({ value }: { value: ImageProps['value'] }) => {
+const Image = ({ value }: IImageProps) => {
+	const { theme } = useTheme();
 	const { src } = value;
 
-	return <MessageImage img={src.value} />;
+	return <MessageImage img={src.value} theme={theme} />;
 };
 
 export default Image;

@@ -3,6 +3,7 @@ import { Text } from 'react-native';
 import { InlineCode as InlineCodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 
 interface IInlineCodeProps {
@@ -10,16 +11,16 @@ interface IInlineCodeProps {
 }
 
 const InlineCode = ({ value }: IInlineCodeProps) => {
-	const { colors } = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<Text
 			style={[
 				styles.codeInline,
 				{
-					color: colors.bodyText,
-					backgroundColor: colors.bannerBackground,
-					borderColor: colors.borderColor
+					color: themes[theme].bodyText,
+					backgroundColor: themes[theme].bannerBackground,
+					borderColor: themes[theme].borderColor
 				}
 			]}>
 			{(block => {

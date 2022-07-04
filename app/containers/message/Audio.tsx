@@ -280,6 +280,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
+					theme={theme}
 				/>
 				<View
 					style={[
