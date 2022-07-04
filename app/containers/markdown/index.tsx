@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useRef } from 'react';
+import React, { PureComponent } from 'react';
 import { Image, StyleProp, Text, TextStyle } from 'react-native';
 import { Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
@@ -12,23 +12,24 @@ import MarkdownHashtag from './Hashtag';
 import MarkdownBlockQuote from './BlockQuote';
 import MarkdownEmoji from './Emoji';
 import MarkdownTable from './Table';
-import MarkdownTableRow, { ITableRow } from './TableRow';
-import MarkdownTableCell, { ITableCell } from './TableCell';
+import MarkdownTableRow from './TableRow';
+import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
-import { isValidURL } from '../../lib/methods/helpers';
+import { isValidURL } from '../../lib/methods/helpers/url';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
-import { TGetCustomEmoji } from '../../definitions';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
-import { useTheme } from '../../theme';
-import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 
 export { default as MarkdownPreview } from './Preview';
 
-export interface IMarkdownProps {
+interface IMarkdownProps {
 	msg?: string | null;
+	theme: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
@@ -40,7 +41,8 @@ export interface IMarkdownProps {
 	useRealName?: boolean;
 	channels?: IUserChannel[];
 	enableMessageParser?: boolean;
-	navToRoomInfo?: (params: IRoomInfoParam) => void;
+	// TODO: Refactor when migrate Room
+	navToRoomInfo?: Function;
 	testID?: string;
 	style?: StyleProp<TextStyle>[];
 	onLinkPress?: TOnLinkPress;
@@ -84,243 +86,270 @@ const emojiCount = (str: string) => {
 };
 
 const parser = new Parser();
-export const markdownTestID = 'markdown';
 
-const Markdown = ({
-	msg,
-	md,
-	mentions,
-	getCustomEmoji,
-	baseUrl,
-	username,
-	tmid,
-	numberOfLines,
-	customEmojis,
-	useRealName,
-	channels,
-	enableMessageParser,
-	navToRoomInfo,
-	style,
-	onLinkPress
-}: IMarkdownProps) => {
-	const { colors } = useTheme();
-	const renderer = useRef<any>();
-	const isMessageContainsOnlyEmoji = useRef(false);
-	const [, forceUpdate] = useReducer(x => x + 1, 0);
+class Markdown extends PureComponent<IMarkdownProps, any> {
+	private renderer: any;
 
-	const isNewMarkdown = useCallback(() => !!enableMessageParser && !!md, [enableMessageParser, md]);
-	const createRenderer = useCallback(
-		() =>
-			new Renderer({
-				renderers: {
-					text: renderText,
+	private isMessageContainsOnlyEmoji!: boolean;
 
-					emph: Renderer.forwardChildren,
-					strong: Renderer.forwardChildren,
-					del: Renderer.forwardChildren,
-					code: renderCodeInline,
-					link: renderLink,
-					image: renderImage,
-					atMention: renderAtMention,
-					emoji: renderEmoji,
-					hashtag: renderHashtag,
-
-					paragraph: renderParagraph,
-					heading: renderHeading,
-					codeBlock: renderCodeBlock,
-					blockQuote: renderBlockQuote,
-
-					list: renderList,
-					item: renderListItem,
-
-					hardBreak: renderBreak,
-					thematicBreak: renderBreak,
-					softBreak: renderBreak,
-
-					htmlBlock: renderText,
-					htmlInline: renderText,
-
-					table: renderTable,
-					table_row: renderTableRow,
-					table_cell: renderTableCell
-				},
-				renderParagraphsInLists: true
-			}),
-		[]
-	);
-
-	useEffect(() => {
-		if (!isNewMarkdown() && msg) {
-			renderer.current = createRenderer();
-			forceUpdate();
+	constructor(props: IMarkdownProps) {
+		super(props);
+		if (!this.isNewMarkdown) {
+			this.renderer = this.createRenderer();
 		}
-	}, [createRenderer, isNewMarkdown, msg]);
-
-	if (!msg) {
-		return null;
 	}
 
-	const renderText = ({ context, literal }: { context: []; literal: string }) => {
-		const defaultStyle = [isMessageContainsOnlyEmoji.current ? styles.textBig : {}, ...context.map(type => styles[type])];
+	createRenderer = () =>
+		new Renderer({
+			renderers: {
+				text: this.renderText,
+
+				emph: Renderer.forwardChildren,
+				strong: Renderer.forwardChildren,
+				del: Renderer.forwardChildren,
+				code: this.renderCodeInline,
+				link: this.renderLink,
+				image: this.renderImage,
+				atMention: this.renderAtMention,
+				emoji: this.renderEmoji,
+				hashtag: this.renderHashtag,
+
+				paragraph: this.renderParagraph,
+				heading: this.renderHeading,
+				codeBlock: this.renderCodeBlock,
+				blockQuote: this.renderBlockQuote,
+
+				list: this.renderList,
+				item: this.renderListItem,
+
+				hardBreak: this.renderBreak,
+				thematicBreak: this.renderBreak,
+				softBreak: this.renderBreak,
+
+				htmlBlock: this.renderText,
+				htmlInline: this.renderText,
+
+				table: this.renderTable,
+				table_row: this.renderTableRow,
+				table_cell: this.renderTableCell
+			},
+			renderParagraphsInLists: true
+		});
+
+	get isNewMarkdown(): boolean {
+		const { md, enableMessageParser } = this.props;
+		return !!enableMessageParser && !!md;
+	}
+
+	renderText = ({ context, literal }: { context: []; literal: string }) => {
+		const { numberOfLines, style = [] } = this.props;
+		const defaultStyle = [this.isMessageContainsOnlyEmoji ? styles.textBig : {}, ...context.map(type => styles[type])];
 		return (
-			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle, ...(style || [])]} numberOfLines={numberOfLines}>
+			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle, ...style]} numberOfLines={numberOfLines}>
 				{literal}
 			</Text>
 		);
 	};
 
-	const renderCodeInline = ({ literal }: TLiteral) => (
-		<Text
-			testID={`${markdownTestID}-code-in-line`}
-			style={[
-				{
-					...styles.codeInline,
-					color: colors.bodyText,
-					backgroundColor: colors.bannerBackground,
-					borderColor: colors.bannerBackground
-				},
-				...(style || [])
-			]}>
-			{literal}
-		</Text>
-	);
+	renderCodeInline = ({ literal }: TLiteral) => {
+		const { theme, style = [] } = this.props;
+		return (
+			<Text
+				style={[
+					{
+						...styles.codeInline,
+						color: themes[theme].bodyText,
+						backgroundColor: themes[theme].bannerBackground,
+						borderColor: themes[theme].bannerBackground
+					},
+					...style
+				]}>
+				{literal}
+			</Text>
+		);
+	};
 
-	const renderCodeBlock = ({ literal }: TLiteral) => (
-		<Text
-			testID={`${markdownTestID}-code-block`}
-			style={[
-				{
-					...styles.codeBlock,
-					color: colors.bodyText,
-					backgroundColor: colors.bannerBackground,
-					borderColor: colors.bannerBackground
-				},
-				...(style || [])
-			]}>
-			{literal}
-		</Text>
-	);
+	renderCodeBlock = ({ literal }: TLiteral) => {
+		const { theme, style = [] } = this.props;
+		return (
+			<Text
+				style={[
+					{
+						...styles.codeBlock,
+						color: themes[theme].bodyText,
+						backgroundColor: themes[theme].bannerBackground,
+						borderColor: themes[theme].bannerBackground
+					},
+					...style
+				]}>
+				{literal}
+			</Text>
+		);
+	};
 
-	const renderBreak = () => <Text>{tmid ? ' ' : '\n'}</Text>;
+	renderBreak = () => {
+		const { tmid } = this.props;
+		return <Text>{tmid ? ' ' : '\n'}</Text>;
+	};
 
-	const renderParagraph = ({ children }: { children: React.ReactElement[] }) => {
+	renderParagraph = ({ children }: any) => {
+		const { numberOfLines, style, theme } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
-			<Text style={[styles.text, style, { color: colors.bodyText }]} numberOfLines={numberOfLines}>
+			<Text style={[styles.text, style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
 	};
 
-	const renderLink = ({ children, href }: { children: React.ReactElement | null; href: string }) => (
-		<MarkdownLink link={href} onLinkPress={onLinkPress} testID={markdownTestID}>
-			{children}
-		</MarkdownLink>
-	);
+	renderLink = ({ children, href }: any) => {
+		const { theme, onLinkPress } = this.props;
+		return (
+			<MarkdownLink link={href} theme={theme} onLinkPress={onLinkPress}>
+				{children}
+			</MarkdownLink>
+		);
+	};
 
-	const renderHashtag = ({ hashtag }: { hashtag: string }) => (
-		<MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} style={style} testID={markdownTestID} />
-	);
+	renderHashtag = ({ hashtag }: { hashtag: string }) => {
+		const { channels, navToRoomInfo, style } = this.props;
+		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} style={style} />;
+	};
 
-	const renderAtMention = ({ mentionName }: { mentionName: string }) => (
-		<MarkdownAtMention
-			mentions={mentions}
-			mention={mentionName}
-			useRealName={useRealName}
-			username={username}
-			navToRoomInfo={navToRoomInfo}
-			style={style}
-			testID={markdownTestID}
-		/>
-	);
+	renderAtMention = ({ mentionName }: { mentionName: string }) => {
+		const { username = '', mentions, navToRoomInfo, useRealName, style } = this.props;
+		return (
+			<MarkdownAtMention
+				mentions={mentions}
+				mention={mentionName}
+				useRealName={useRealName}
+				username={username}
+				navToRoomInfo={navToRoomInfo}
+				style={style}
+			/>
+		);
+	};
 
-	const renderEmoji = ({ literal }: TLiteral) => (
-		<MarkdownEmoji
-			literal={literal}
-			isMessageContainsOnlyEmoji={isMessageContainsOnlyEmoji.current}
-			getCustomEmoji={getCustomEmoji}
-			baseUrl={baseUrl || ''}
-			customEmojis={customEmojis}
-			style={style}
-			testID={markdownTestID}
-		/>
-	);
+	renderEmoji = ({ literal }: TLiteral) => {
+		const { getCustomEmoji, baseUrl = '', customEmojis, style } = this.props;
+		return (
+			<MarkdownEmoji
+				literal={literal}
+				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
+				getCustomEmoji={getCustomEmoji}
+				baseUrl={baseUrl}
+				customEmojis={customEmojis}
+				style={style}
+			/>
+		);
+	};
 
-	const renderImage = ({ src }: { src: string }) => {
+	renderImage = ({ src }: { src: string }) => {
 		if (!isValidURL(src)) {
 			return null;
 		}
 
-		return <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} testID={`${markdownTestID}-image`} />;
+		return <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} />;
 	};
 
-	const renderHeading = ({ children, level }: { children: React.ReactElement; level: string }) => {
+	renderHeading = ({ children, level }: any) => {
+		const { numberOfLines, theme } = this.props;
 		// @ts-ignore
 		const textStyle = styles[`heading${level}Text`];
 		return (
-			<Text testID={`${markdownTestID}-header`} numberOfLines={numberOfLines} style={[textStyle, { color: colors.bodyText }]}>
+			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>
 				{children}
 			</Text>
 		);
 	};
 
-	const renderList = ({ children, start, tight, type }: any) => (
-		<MarkdownList ordered={type !== 'bullet'} start={start} tight={tight} numberOfLines={numberOfLines}>
-			{children}
-		</MarkdownList>
-	);
+	renderList = ({ children, start, tight, type }: any) => {
+		const { numberOfLines } = this.props;
+		return (
+			<MarkdownList ordered={type !== 'bullet'} start={start} tight={tight} numberOfLines={numberOfLines}>
+				{children}
+			</MarkdownList>
+		);
+	};
 
-	const renderListItem = ({ children, context, ...otherProps }: any) => {
+	renderListItem = ({ children, context, ...otherProps }: any) => {
+		const { theme } = this.props;
 		const level = context.filter((type: string) => type === 'list').length;
 
 		return (
-			<MarkdownListItem level={level} {...otherProps}>
+			<MarkdownListItem level={level} theme={theme} {...otherProps}>
 				{children}
 			</MarkdownListItem>
 		);
 	};
 
-	const renderBlockQuote = ({ children }: { children: React.ReactElement }) => (
-		<MarkdownBlockQuote>{children}</MarkdownBlockQuote>
-	);
+	renderBlockQuote = ({ children }: { children: JSX.Element }) => {
+		const { theme } = this.props;
+		return <MarkdownBlockQuote theme={theme}>{children}</MarkdownBlockQuote>;
+	};
 
-	const renderTable = ({ children, numColumns }: { children: React.ReactElement; numColumns: number }) => (
-		<MarkdownTable numColumns={numColumns} testID={markdownTestID}>
-			{children}
-		</MarkdownTable>
-	);
-
-	const renderTableRow = ({ children, isLastRow }: ITableRow) => (
-		<MarkdownTableRow isLastRow={isLastRow}>{children}</MarkdownTableRow>
-	);
-
-	const renderTableCell = ({ align, children, isLastCell }: ITableCell) => (
-		<MarkdownTableCell align={align} isLastCell={isLastCell}>
-			{children}
-		</MarkdownTableCell>
-	);
-
-	if (isNewMarkdown()) {
+	renderTable = ({ children, numColumns }: { children: JSX.Element; numColumns: number }) => {
+		const { theme } = this.props;
 		return (
-			<NewMarkdown
-				username={username || ''}
-				baseUrl={baseUrl || ''}
-				getCustomEmoji={getCustomEmoji}
-				useRealName={useRealName}
-				tokens={md}
-				mentions={mentions}
-				channels={channels}
-				navToRoomInfo={navToRoomInfo}
-				onLinkPress={onLinkPress}
-			/>
+			<MarkdownTable numColumns={numColumns} theme={theme}>
+				{children}
+			</MarkdownTable>
 		);
-	}
+	};
 
-	const formattedMessage = formatHyperlink(formatText(msg));
-	const ast = mergeTextNodes(parser.parse(formattedMessage));
-	isMessageContainsOnlyEmoji.current = isOnlyEmoji(formattedMessage) && emojiCount(formattedMessage) <= 3;
-	return renderer?.current?.render(ast) || null;
-};
+	renderTableRow = (args: any) => {
+		const { theme } = this.props;
+		return <MarkdownTableRow {...args} theme={theme} />;
+	};
+
+	renderTableCell = (args: any) => {
+		const { theme } = this.props;
+		return <MarkdownTableCell {...args} theme={theme} />;
+	};
+
+	render() {
+		const {
+			msg,
+			md,
+			mentions,
+			channels,
+			navToRoomInfo,
+			useRealName,
+			username = '',
+			getCustomEmoji,
+			baseUrl = '',
+			onLinkPress
+		} = this.props;
+
+		if (!msg) {
+			return null;
+		}
+
+		if (this.isNewMarkdown) {
+			return (
+				<NewMarkdown
+					username={username}
+					baseUrl={baseUrl}
+					getCustomEmoji={getCustomEmoji}
+					useRealName={useRealName}
+					tokens={md}
+					mentions={mentions}
+					channels={channels}
+					navToRoomInfo={navToRoomInfo}
+					onLinkPress={onLinkPress}
+				/>
+			);
+		}
+
+		let m = formatText(msg);
+		m = formatHyperlink(m);
+		let ast = parser.parse(m);
+		ast = mergeTextNodes(ast);
+		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
+		return this.renderer.render(ast);
+	}
+}
+
 export default Markdown;
