@@ -5,7 +5,7 @@ import { BigEmoji as BigEmojiProps } from '@rocket.chat/message-parser';
 import Emoji from './Emoji';
 
 interface IBigEmojiProps {
-	block: BigEmojiProps['value'];
+	value: BigEmojiProps['value'];
 }
 
 const styles = StyleSheet.create({

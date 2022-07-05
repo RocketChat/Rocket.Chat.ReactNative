@@ -10,16 +10,15 @@ import CustomEmoji from '../../EmojiPicker/CustomEmoji';
 import MarkdownContext from './MarkdownContext';
 
 interface IEmojiProps {
-	block: EmojiProps['value'];
+	block: EmojiProps;
 	isBigEmoji?: boolean;
-	shortCode?: string;
 }
 
 const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
 	const { theme } = useTheme();
 	const { baseUrl, getCustomEmoji } = useContext(MarkdownContext);
 
-	if (block?.unicode) {
+	if ('unicode' in block) {
 		return <Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
 	}
 	const emojiUnicode = shortnameToUnicode(block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`);
