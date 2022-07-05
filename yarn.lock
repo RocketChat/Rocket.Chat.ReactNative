@@ -4140,10 +4140,10 @@
   dependencies:
     eslint-plugin-import "^2.17.2"
 
-"@rocket.chat/message-parser@0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.30.0.tgz#63a25aa7fa17724d55db80f95f7f8d6a99ae42ff"
-  integrity sha512-pI7ajaojv+GqhQBMnFiBOWerE7zIlJywWFaLzJlIC/wsJ9LgX6YaKY2wqc909nkr+E4qZY1luJ61ErXGGSF9Zw==
+"@rocket.chat/message-parser@^0.31.14":
+  version "0.31.14"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.31.14.tgz#55042be10a7cd49a7a9a969272bc38897fe1c252"
+  integrity sha512-WgaWLMCFWcmhRb7cEm1Q8GoD8lgpPuTniG27Qmfw8k86MuZfdHj+cdOfhvkmdNORxx181RhfksTO0k6IkRxh6A==
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
   version "1.3.0-mobile"
