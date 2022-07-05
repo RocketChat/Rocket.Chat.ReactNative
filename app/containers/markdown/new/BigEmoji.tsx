@@ -5,7 +5,7 @@ import { BigEmoji as BigEmojiProps } from '@rocket.chat/message-parser';
 import Emoji from './Emoji';
 
 interface IBigEmojiProps {
-	value: BigEmojiProps['value'];
+	block: BigEmojiProps['value'];
 }
 
 const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 const BigEmoji = ({ value }: IBigEmojiProps) => (
 	<View style={styles.container}>
 		{value.map(block => (
-			<Emoji value={block.value} isBigEmoji />
+			<Emoji block={block} isBigEmoji />
 		))}
 	</View>
 );

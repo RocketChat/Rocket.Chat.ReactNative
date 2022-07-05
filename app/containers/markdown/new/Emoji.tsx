@@ -10,15 +10,20 @@ import CustomEmoji from '../../EmojiPicker/CustomEmoji';
 import MarkdownContext from './MarkdownContext';
 
 interface IEmojiProps {
-	value: EmojiProps['value'];
+	block: EmojiProps['value'];
 	isBigEmoji?: boolean;
+	shortCode?: string;
 }
 
-const Emoji = ({ value, isBigEmoji }: IEmojiProps) => {
+const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
 	const { theme } = useTheme();
 	const { baseUrl, getCustomEmoji } = useContext(MarkdownContext);
-	const emojiUnicode = shortnameToUnicode(`:${value.value}:`);
-	const emoji = getCustomEmoji?.(value.value);
+
+	if (block?.unicode) {
+		return <Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
+	}
+	const emojiUnicode = shortnameToUnicode(block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`);
+	const emoji = getCustomEmoji?.(block.value?.value);
 
 	if (emoji) {
 		return <CustomEmoji baseUrl={baseUrl} style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
