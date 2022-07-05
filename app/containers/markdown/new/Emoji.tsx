@@ -21,13 +21,18 @@ const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
 	if ('unicode' in block) {
 		return <Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
 	}
-	const emojiUnicode = shortnameToUnicode(block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`);
+	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
+	const emojiUnicode = shortnameToUnicode(emojiToken);
 	const emoji = getCustomEmoji?.(block.value?.value);
 
 	if (emoji) {
 		return <CustomEmoji baseUrl={baseUrl} style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
 	}
-	return <Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{emojiUnicode}</Text>;
+	return (
+		<Text style={[{ color: themes[theme].bodyText }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text]}>
+			{emojiUnicode}
+		</Text>
+	);
 };
 
 export default Emoji;
