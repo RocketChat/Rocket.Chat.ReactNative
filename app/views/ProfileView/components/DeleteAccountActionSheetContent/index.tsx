@@ -97,6 +97,7 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
 			confirmBackgroundColor={colors.dangerColor}
+			showInput={false}
 			customText={
 				<>
 					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} />}
