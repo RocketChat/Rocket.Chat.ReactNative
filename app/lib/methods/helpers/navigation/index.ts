@@ -3,6 +3,7 @@ import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
+import { isIOS } from '../deviceInfo';
 
 export * from './animations';
 
@@ -25,6 +26,9 @@ export const borderBottom: any = (theme: TSupportedThemes) => ({
 export const drawerStyle = {
 	width: 320
 };
+
+// TODO: Remove it once we migrate dropdowns to action sheet
+export const headerHeight = isIOS ? 50 : 56;
 
 export const themedHeader = (theme: TSupportedThemes) => ({
 	headerStyle: {

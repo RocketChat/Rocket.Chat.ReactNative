@@ -97,7 +97,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	const { hideActionSheet } = useActionSheet();
 
 	return (
-		<View style={sharedStyles.containerScrollView}>
+		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<>
 				<View style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.dangerColor} /> : null}

@@ -24,7 +24,7 @@ import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../lib/methods/helpers/room';
+import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
@@ -574,7 +574,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let token: string | undefined;
 		let avatar: string | undefined;
 		let visitor: IVisitor | undefined;
-		let status: string | undefined;
 		let sourceType: IOmnichannelSource | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
@@ -585,7 +584,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			({ id: userId, token } = user);
 			avatar = room.name;
 			visitor = room.visitor;
-			status = room.status;
 		}
 
 		if ('source' in room) {
@@ -594,19 +592,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			visitor = room.visitor;
 		}
 
-		let numIconsRight = 2;
-		if (tmid || (status && joined)) {
-			numIconsRight = 1;
-		} else if (teamId && isTeamRoom({ teamId, joined })) {
-			numIconsRight = 3;
-		}
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
-		const paddingRight = this.getPaddingLeft(numIconsRight, isMasterDetail);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { paddingRight },
+			headerTitleContainerStyle: {
+				flex: 1,
+				marginLeft: 0,
+				marginRight: 4,
+				maxWidth: undefined
+			},
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<LeftButtons
 					tmid={tmid}
@@ -654,13 +651,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/>
 			)
 		});
-	};
-
-	getPaddingLeft = (numIcons: number, isMasterDetail: boolean) => {
-		if (numIcons === 3) {
-			return isMasterDetail ? 40 : 35;
-		}
-		return isMasterDetail ? 20 : 0;
 	};
 
 	goRoomActionsView = (screen?: keyof ModalStackParamList) => {

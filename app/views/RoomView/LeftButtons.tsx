@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
@@ -7,11 +7,19 @@ import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes } from '../../theme';
+import { isIOS } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
+	container: {
+		...Platform.select({
+			ios: {
+				minWidth: 60
+			}
+		})
+	},
 	avatar: {
 		borderRadius: 10,
-		marginHorizontal: 16
+		marginHorizontal: 15
 	}
 });
 
@@ -59,9 +67,11 @@ const LeftButtons = ({
 		return (
 			<HeaderBackButton
 				label={label}
+				labelVisible={isIOS}
 				onPress={onPress}
 				tintColor={themes[theme].headerTintColor}
 				labelStyle={{ fontSize, marginLeft }}
+				style={styles.container}
 			/>
 		);
 	}

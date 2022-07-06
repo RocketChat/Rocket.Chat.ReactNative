@@ -3,11 +3,11 @@ import { Video } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import prettyBytes from 'pretty-bytes';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer, types } from '../../containers/ImageViewer';
-import { useDimensions, useOrientation } from '../../dimensions';
-import { getHeaderHeight } from '../../containers/Header';
+import { useDimensions } from '../../dimensions';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import { isAndroid } from '../../lib/methods/helpers';
@@ -66,9 +66,8 @@ interface IPreview {
 const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview) => {
 	const type = item?.mime;
 	const { width, height } = useDimensions();
-	const { isLandscape } = useOrientation();
 	const insets = useSafeAreaInsets();
-	const headerHeight = getHeaderHeight(isLandscape);
+	const headerHeight = useHeaderHeight();
 	const thumbsHeight = length > 1 ? THUMBS_HEIGHT : 0;
 	const calculatedHeight = height - insets.top - insets.bottom - MESSAGEBOX_HEIGHT - thumbsHeight - headerHeight;
 
