@@ -1,7 +1,8 @@
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
 
-import ActionSheet from './ActionSheet';
 import { TIconsName } from '../CustomIcon';
+import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
 	title: string;
@@ -35,10 +36,14 @@ export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = (Component: React.ComponentType<any>): typeof Component =>
-	forwardRef((props: typeof React.Component, ref: ForwardedRef<IActionSheetProvider>) => (
+export const withActionSheet = (Component: React.ComponentType<any>): typeof Component => {
+	const WithActionSheetComponent = forwardRef((props: typeof React.Component, ref: ForwardedRef<IActionSheetProvider>) => (
 		<Consumer>{(contexts: IActionSheetProvider) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
 	));
+
+	hoistNonReactStatics(WithActionSheetComponent, Component);
+	return WithActionSheetComponent;
+};
 
 export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
 	const ref: ForwardedRef<IActionSheetProvider> = useRef(null);
