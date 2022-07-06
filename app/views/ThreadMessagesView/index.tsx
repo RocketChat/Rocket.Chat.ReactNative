@@ -3,7 +3,6 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { Observable, Subscription } from 'rxjs';
@@ -24,7 +23,6 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
-import { getHeaderTitlePosition } from '../../containers/Header';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
@@ -58,7 +56,6 @@ interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'Thr
 	useRealName: boolean;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
-	insets: EdgeInsets;
 }
 
 class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
@@ -100,13 +97,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.init();
 	}
 
-	componentDidUpdate(prevProps: IThreadMessagesViewProps) {
-		const { insets } = this.props;
-		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
-			this.setHeader();
-		}
-	}
-
 	componentWillUnmount() {
 		console.countReset(`${this.constructor.name}.render calls`);
 		if (this.subSubscription && this.subSubscription.unsubscribe) {
@@ -119,12 +109,13 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	getHeader = (): StackNavigationOptions => {
 		const { isSearching } = this.state;
-		const { navigation, isMasterDetail, insets, theme } = this.props;
+		const { navigation, isMasterDetail, theme } = this.props;
 
 		if (isSearching) {
-			const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
 			return {
 				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
@@ -133,35 +124,28 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				headerTitle: () => (
 					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='thread-messages-view-search-header' />
 				),
-				headerTitleContainerStyle: {
-					left: headerTitlePosition.left,
-					right: headerTitlePosition.right
-				},
 				headerRight: () => null
 			};
 		}
 
 		const options: StackNavigationOptions = {
+			headerTitleAlign: 'center',
+			headerTitle: I18n.t('Threads'),
+			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
-			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Threads'),
-			headerTitleContainerStyle: {
-				left: 0,
-				right: 0
-			}
+			headerRight: () => (
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+				</HeaderButton.Container>
+			)
 		};
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
 
-		options.headerRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
-			</HeaderButton.Container>
-		);
 		return options;
 	};
 
@@ -549,4 +533,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ThreadMessagesView)));
+export default connect(mapStateToProps)(withTheme(ThreadMessagesView));

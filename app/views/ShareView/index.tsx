@@ -106,13 +106,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} color={themes[theme].previewTintColor} />;
 		}
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} />
+					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].previewTintColor} />
 				</HeaderButton.Container>
 			);
 		}

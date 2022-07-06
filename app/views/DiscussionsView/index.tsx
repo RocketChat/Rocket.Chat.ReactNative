@@ -1,11 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { RouteProp } from '@react-navigation/core';
 
-import { IMessageFromServer } from '../../definitions';
+import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -16,10 +15,8 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
-import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
@@ -53,7 +50,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	const [searchTotal, setSearchTotal] = useState(0);
 
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 
 	const load = async (text = '') => {
 		if (loading) {
@@ -103,9 +99,10 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	const setHeader = () => {
 		let options: Partial<StackNavigationOptions>;
 		if (isSearching) {
-			const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
 			options = {
 				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
@@ -114,25 +111,18 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 				headerTitle: () => (
 					<SearchHeader onSearchChangeText={onSearchChangeText} testID='discussion-messages-view-search-header' />
 				),
-				headerTitleContainerStyle: {
-					left: headerTitlePosition.left,
-					right: headerTitlePosition.right
-				},
 				headerRight: () => null
 			};
 			return options;
 		}
 
 		options = {
+			headerTitleAlign: 'center',
+			headerTitle: I18n.t('Discussions'),
+			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={colors.headerTintColor} />
 			),
-			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Discussions'),
-			headerTitleContainerStyle: {
-				left: 0,
-				right: 0
-			},
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='search' onPress={onSearchPress} />

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
-import { TSupportedThemes, withTheme } from '../../../theme';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
 import { isTablet } from '../../../lib/methods/helpers';
@@ -18,7 +17,6 @@ interface IRoomsListHeaderViewProps {
 	connecting: boolean;
 	connected: boolean;
 	isFetching: boolean;
-	theme: TSupportedThemes;
 	server: string;
 	dispatch: Dispatch;
 }
@@ -87,4 +85,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server
 });
 
-export default connect(mapStateToProps)(withTheme(RoomsListHeaderView));
+export default connect(mapStateToProps)(RoomsListHeaderView);
