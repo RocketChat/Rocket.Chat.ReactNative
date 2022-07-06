@@ -63,6 +63,7 @@ const Content = React.memo(
 					navToRoomInfo={props.navToRoomInfo}
 					tmid={props.tmid}
 					useRealName={props.useRealName}
+					theme={theme}
 					onLinkPress={onLinkPress}
 				/>
 			);

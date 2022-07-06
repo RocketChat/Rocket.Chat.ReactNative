@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 import { longText } from '../../../../storybook/utils';
 import { ThemeContext } from '../../../theme';
 import { Message, MessageDecorator, StoryProvider } from '../../../../storybook/stories/Message';
-import { colors, MessageTypeLoad, themes } from '../../../lib/constants';
+import { MessageTypeLoad, themes } from '../../../lib/constants';
 import LoadMore from './index';
 
 const stories = storiesOf('LoadMore', module);
@@ -24,7 +24,7 @@ stories.add('basic', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+	<ThemeContext.Provider value={{ theme }}>
 		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<LoadMore load={load} type={MessageTypeLoad.PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />

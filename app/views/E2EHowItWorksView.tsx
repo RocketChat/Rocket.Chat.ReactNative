@@ -40,10 +40,10 @@ class E2EHowItWorksView extends React.Component<TE2EHowItWorksViewProps, any> {
 
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='e2e-how-it-works-view'>
-				<Markdown msg={I18n.t('E2E_How_It_Works_info1')} style={infoStyle} />
-				<Markdown msg={I18n.t('E2E_How_It_Works_info2')} style={infoStyle} />
-				<Markdown msg={I18n.t('E2E_How_It_Works_info3')} style={infoStyle} />
-				<Markdown msg={I18n.t('E2E_How_It_Works_info4')} style={infoStyle} />
+				<Markdown msg={I18n.t('E2E_How_It_Works_info1')} style={infoStyle} theme={theme} />
+				<Markdown msg={I18n.t('E2E_How_It_Works_info2')} style={infoStyle} theme={theme} />
+				<Markdown msg={I18n.t('E2E_How_It_Works_info3')} style={infoStyle} theme={theme} />
+				<Markdown msg={I18n.t('E2E_How_It_Works_info4')} style={infoStyle} theme={theme} />
 			</SafeAreaView>
 		);
 	}

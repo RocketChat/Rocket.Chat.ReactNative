@@ -75,7 +75,8 @@ const ActionSheetContentWithInputAndSubmit = ({
 	iconName,
 	iconColor,
 	customText,
-	confirmBackgroundColor
+	confirmBackgroundColor,
+	showInput = true
 }: {
 	onSubmit: (inputValue: string) => void;
 	onCancel?: () => void;
@@ -89,6 +90,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	iconColor?: string;
 	customText?: React.ReactElement;
 	confirmBackgroundColor?: string;
+	showInput?: boolean;
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	const [inputValue, setInputValue] = useState('');
@@ -106,29 +108,31 @@ const ActionSheetContentWithInputAndSubmit = ({
 				<Text style={[styles.subtitleText, { color: colors.titleText }]}>{description}</Text>
 				{customText}
 			</>
-			<FormTextInput
-				value={inputValue}
-				placeholder={placeholder}
-				onChangeText={value => setInputValue(value)}
-				onSubmitEditing={() => {
-					// fix android animation
-					setTimeout(() => {
-						hideActionSheet();
-					}, 100);
-					if (inputValue) onSubmit(inputValue);
-				}}
-				testID={testID}
-				secureTextEntry={secureTextEntry}
-				inputStyle={{ borderWidth: 2 }}
-				bottomSheet={isIOS}
-			/>
+			{showInput ? (
+				<FormTextInput
+					value={inputValue}
+					placeholder={placeholder}
+					onChangeText={value => setInputValue(value)}
+					onSubmitEditing={() => {
+						// fix android animation
+						setTimeout(() => {
+							hideActionSheet();
+						}, 100);
+						if (inputValue) onSubmit(inputValue);
+					}}
+					testID={testID}
+					secureTextEntry={secureTextEntry}
+					inputStyle={{ borderWidth: 2 }}
+					bottomSheet={isIOS}
+				/>
+			) : null}
 			<FooterButtons
 				confirmBackgroundColor={confirmBackgroundColor || colors.actionTintColor}
 				cancelAction={onCancel || hideActionSheet}
 				confirmAction={() => onSubmit(inputValue)}
 				cancelTitle={i18n.t('Cancel')}
 				confirmTitle={confirmTitle || i18n.t('Save')}
-				disabled={!inputValue}
+				disabled={!showInput ? false : !inputValue}
 			/>
 		</View>
 	);

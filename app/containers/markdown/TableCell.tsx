@@ -1,21 +1,21 @@
 import React from 'react';
 import { Text, View, ViewStyle } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 
-export interface ITableCell {
+interface ITableCell {
 	align: '' | 'left' | 'center' | 'right';
 	children: React.ReactElement | null;
 	isLastCell: boolean;
+	theme: TSupportedThemes;
 }
 
 export const CELL_WIDTH = 100;
 
-const TableCell = React.memo(({ isLastCell, align, children }: ITableCell) => {
-	const { colors } = useTheme();
-
-	const cellStyle: ViewStyle[] = [styles.cell, { borderColor: colors.borderColor }];
+const TableCell = React.memo(({ isLastCell, align, children, theme }: ITableCell) => {
+	const cellStyle: ViewStyle[] = [styles.cell, { borderColor: themes[theme].borderColor }];
 	if (!isLastCell) {
 		cellStyle.push(styles.cellRightBorder);
 	}
@@ -29,7 +29,7 @@ const TableCell = React.memo(({ isLastCell, align, children }: ITableCell) => {
 
 	return (
 		<View style={[...cellStyle, { width: CELL_WIDTH }]}>
-			<Text style={[textStyle, { color: colors.bodyText }]}>{children}</Text>
+			<Text style={[textStyle, { color: themes[theme].bodyText }]}>{children}</Text>
 		</View>
 	);
 });

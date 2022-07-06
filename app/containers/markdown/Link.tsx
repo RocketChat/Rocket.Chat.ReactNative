@@ -3,23 +3,22 @@ import { Text } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import styles from './styles';
+import { themes } from '../../lib/constants';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import openLink from '../../lib/methods/helpers/openLink';
 import { TOnLinkPress } from './interfaces';
-import { useTheme } from '../../theme';
+import { TSupportedThemes } from '../../theme';
 
 interface ILink {
 	children: React.ReactElement | null;
 	link: string;
+	theme: TSupportedThemes;
 	onLinkPress?: TOnLinkPress;
-	testID: string;
 }
 
-const Link = React.memo(({ children, link, onLinkPress, testID }: ILink) => {
-	const { colors, theme } = useTheme();
-
+const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {
 	const handlePress = () => {
 		if (!link) {
 			return;
@@ -38,11 +37,7 @@ const Link = React.memo(({ children, link, onLinkPress, testID }: ILink) => {
 
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
-		<Text
-			onPress={handlePress}
-			onLongPress={onLongPress}
-			style={{ ...styles.link, color: colors.actionTintColor }}
-			testID={`${testID}-link`}>
+		<Text onPress={handlePress} onLongPress={onLongPress} style={{ ...styles.link, color: themes[theme].actionTintColor }}>
 			{childLength !== 0 ? children : link}
 		</Text>
 	);

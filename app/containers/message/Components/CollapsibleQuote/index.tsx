@@ -100,6 +100,7 @@ const Fields = React.memo(
 							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
+							theme={theme}
 							style={[styles.markdownFontSize]}
 						/>
 					</View>
