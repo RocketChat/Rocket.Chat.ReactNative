@@ -146,7 +146,8 @@ const roomAttrsUpdate = [
 	'teamId',
 	'status',
 	'lastMessage',
-	'onHold'
+	'onHold',
+	't'
 ] as TRoomUpdate[];
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -392,12 +393,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.list.current?.query();
 			}
 		}
-		// If it's not direct message
-		if (this.t !== 'd') {
-			if (roomUpdate.topic !== prevState.roomUpdate.topic) {
-				this.setHeader();
-			}
-		}
 		// If it's a livechat room
 		if (this.t === 'l') {
 			if (
@@ -409,18 +404,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.updateOmnichannel();
 			}
 		}
-		if (roomUpdate.teamMain !== prevState.roomUpdate.teamMain || roomUpdate.teamId !== prevState.roomUpdate.teamId) {
-			this.setHeader();
-		}
-		if (
-			(roomUpdate.fname !== prevState.roomUpdate.fname ||
-				roomUpdate.name !== prevState.roomUpdate.name ||
-				roomUpdate.teamMain !== prevState.roomUpdate.teamMain ||
-				roomUpdate.teamId !== prevState.roomUpdate.teamId) &&
-			!this.tmid
-		) {
-			this.setHeader();
-		}
+		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
