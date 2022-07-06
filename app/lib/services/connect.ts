@@ -265,7 +265,14 @@ function stopListener(listener: any): boolean {
 async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
 	await sdk.current.login(credentials);
+	const serverVersion = store.getState().server.version;
 	const result = sdk.current.currentLogin?.result;
+
+	let enableMessageParserEarlyAdoption = true;
+	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
+		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+	}
+
 	if (result) {
 		const user: ILoggedUser = {
 			id: result.userId,
@@ -282,7 +289,7 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
-			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true
+			enableMessageParserEarlyAdoption
 		};
 		return user;
 	}
