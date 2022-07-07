@@ -225,6 +225,16 @@
 		"node": ">=8.x",
 		"npm": ">=4.x"
 	},
+	"expo": {
+		"autolinking": {
+			"exclude": [
+				"expo-application",
+				"expo-asset",
+				"expo-constants",
+				"expo-font"
+			]
+		}
+	},
 	"detox": {
 		"runner-config": "e2e/.mocharc.json",
 		"specs": "e2e/tests",
