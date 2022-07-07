@@ -50,6 +50,6 @@ post_install do |installer|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
   end
-    react_native_post_install(installer)
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  react_native_post_install(installer)
+  __apply_Xcode_12_5_M1_post_install_workaround(installer)
 end
