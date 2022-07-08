@@ -18,6 +18,7 @@ import { getDeviceToken } from '../notifications';
 import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
 import sdk from './sdk';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
+import { ILivechatTag } from '../../definitions/ILivechatTag';
 
 export const createChannel = ({
 	name,
@@ -347,9 +348,10 @@ export const getTeamListRoom = ({
 	return sdk.get('teams.listRooms', params);
 };
 
-export const closeLivechat = (rid: string, comment?: string) =>
+export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	// RC 0.29.0
-	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
+	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, tags });
+// sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...(!!tags && tags?.length > 0 && { tags }) });
 
 export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
 	// RC 0.55.0
@@ -398,13 +400,7 @@ export const getRoutingConfig = (): Promise<{
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
-export const getTagsList = (): Promise<
-	{
-		_id: string;
-		name: string;
-		departments: string[];
-	}[]
-> =>
+export const getTagsList = (): Promise<ILivechatTag[]> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 

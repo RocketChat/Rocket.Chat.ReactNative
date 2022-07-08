@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { ILivechatTag } from '../../definitions/ILivechatTag';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
@@ -18,6 +19,8 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
+import { Services } from '../../lib/services';
+import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 
 interface IRightButtonsProps extends IActionSheetProvider {
 	userId?: string;
@@ -40,6 +43,7 @@ interface IRightButtonsProps extends IActionSheetProvider {
 		canPlaceLivechatOnHold: boolean;
 	};
 	livechatRequestComment: boolean;
+	departmentId?: string;
 }
 
 interface IRigthButtonsState {
@@ -214,8 +218,22 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		});
 	};
 
-	closeLivechat = () => {
-		const { rid, livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
+	closeLivechat = async () => {
+		const { rid, livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail, departmentId } = this.props;
+
+		let departmentInfo: ILivechatDepartment | undefined;
+		let tagsList: ILivechatTag[] | undefined;
+
+		if (departmentId) {
+			const result = await Services.getDepartmentInfo(departmentId);
+			if (result.success) {
+				departmentInfo = result.department as ILivechatDepartment;
+			}
+		}
+
+		if (departmentInfo?.requestTagBeforeClosingChat) {
+			tagsList = await Services.getTagsList();
+		}
 
 		hideActionSheet();
 
@@ -228,14 +246,16 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			showActionSheet({
 				children: (
 					<CloseLivechatSheet
-						onSubmit={(comment: string) => {
+						onSubmit={(comment: string, tags?: string[]) => {
 							hideActionSheet();
-							closeLivechatService({ rid, isMasterDetail, comment });
+							closeLivechatService({ rid, isMasterDetail, comment, tags });
 						}}
 						onCancel={() => hideActionSheet()}
+						requestTagBeforeClosingChat={departmentInfo?.requestTagBeforeClosingChat}
+						tags={tagsList?.map(t => t.name)}
 					/>
 				),
-				headerHeight: 225
+				headerHeight: departmentInfo?.requestTagBeforeClosingChat ? 350 : 225
 			});
 		}, 300);
 	};

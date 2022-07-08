@@ -7,14 +7,16 @@ import log from './log';
 export const closeLivechat = async ({
 	rid,
 	comment,
-	isMasterDetail
+	isMasterDetail,
+	tags
 }: {
 	rid: string;
 	isMasterDetail: boolean;
 	comment?: string;
+	tags?: string[];
 }) => {
 	try {
-		await Services.closeLivechat(rid, comment);
+		await Services.closeLivechat(rid, comment, tags);
 		if (isMasterDetail) {
 			Navigation.navigate('DrawerNavigator');
 		} else {

@@ -5,10 +5,14 @@ import I18n from '../../../../i18n';
 
 const CloseLivechatSheet = ({
 	onSubmit = () => {},
-	onCancel = () => {}
+	onCancel = () => {},
+	requestTagBeforeClosingChat,
+	tags
 }: {
 	onSubmit: (comment: string) => void;
 	onCancel: () => void;
+	requestTagBeforeClosingChat?: boolean;
+	tags?: string[];
 }) => (
 	<ActionSheetContentWithInputAndSubmit
 		title={I18n.t('Closing_chat')}
@@ -18,6 +22,8 @@ const CloseLivechatSheet = ({
 		testID='room-actions-view-close-livechat'
 		placeholder=''
 		secureTextEntry={false}
+		selectTags={requestTagBeforeClosingChat}
+		options={tags}
 	/>
 );
 

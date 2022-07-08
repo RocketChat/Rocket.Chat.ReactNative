@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { CustomIcon, TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
@@ -9,6 +10,7 @@ import sharedStyles from '../../../views/Styles';
 import Button from '../../Button';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
+import { MultiSelect } from '../../UIKit/MultiSelect';
 
 const styles = StyleSheet.create({
 	subtitleText: {
@@ -76,9 +78,11 @@ const ActionSheetContentWithInputAndSubmit = ({
 	iconColor,
 	customText,
 	confirmBackgroundColor,
-	showInput = true
+	showInput = true,
+	selectTags,
+	options
 }: {
-	onSubmit: (inputValue: string) => void;
+	onSubmit: (inputValue: string, tags?: string[]) => void;
 	onCancel?: () => void;
 	title: string;
 	description: string;
@@ -91,10 +95,24 @@ const ActionSheetContentWithInputAndSubmit = ({
 	customText?: React.ReactElement;
 	confirmBackgroundColor?: string;
 	showInput?: boolean;
+	selectTags?: boolean;
+	options?: string[];
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	const [inputValue, setInputValue] = useState('');
+	const [tagParamSelected, setTagParamSelected] = useState<string[]>([]);
+	const [canSubmit, setCanSubmit] = useState(false);
 	const { hideActionSheet } = useActionSheet();
+
+	useEffect(() => {
+		if (!selectTags && !!inputValue) {
+			setCanSubmit(true);
+		}
+
+		if (selectTags && !!inputValue && tagParamSelected.length > 0) {
+			setCanSubmit(true);
+		}
+	}, [inputValue, tagParamSelected]);
 
 	return (
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
@@ -114,11 +132,13 @@ const ActionSheetContentWithInputAndSubmit = ({
 					placeholder={placeholder}
 					onChangeText={value => setInputValue(value)}
 					onSubmitEditing={() => {
-						// fix android animation
-						setTimeout(() => {
-							hideActionSheet();
-						}, 100);
-						if (inputValue) onSubmit(inputValue);
+						if (canSubmit) {
+							onSubmit(inputValue, tagParamSelected);
+							// fix android animation
+							setTimeout(() => {
+								hideActionSheet();
+							}, 100);
+						}
 					}}
 					testID={testID}
 					secureTextEntry={secureTextEntry}
@@ -126,13 +146,29 @@ const ActionSheetContentWithInputAndSubmit = ({
 					bottomSheet={isIOS}
 				/>
 			) : null}
+			{selectTags ? (
+				<>
+					<Text style={[styles.subtitleText, { color: colors.titleText }]}>{i18n.t('Tags')}</Text>
+					<MultiSelect
+						options={options?.map((tag: string) => ({ text: { text: tag }, value: tag }))}
+						onChange={({ value }: { value: string[] }) => {
+							setTagParamSelected([...value]);
+						}}
+						placeholder={{ text: i18n.t('Select_an_option') }}
+						value={tagParamSelected}
+						context={BlockContext.FORM}
+						multiselect
+						inputStyle={{ borderColor: colors.separatorColor, borderWidth: 2 }}
+					/>
+				</>
+			) : null}
 			<FooterButtons
 				confirmBackgroundColor={confirmBackgroundColor || colors.actionTintColor}
 				cancelAction={onCancel || hideActionSheet}
-				confirmAction={() => onSubmit(inputValue)}
+				confirmAction={() => onSubmit(inputValue, tagParamSelected)}
 				cancelTitle={i18n.t('Cancel')}
 				confirmTitle={confirmTitle || i18n.t('Save')}
-				disabled={!showInput ? false : !inputValue}
+				disabled={!showInput ? false : !canSubmit}
 			/>
 		</View>
 	);
