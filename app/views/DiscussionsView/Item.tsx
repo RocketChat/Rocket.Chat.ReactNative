@@ -69,7 +69,8 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`discussions-view-${item.msg}`}
-			style={{ backgroundColor: colors.backgroundColor }}>
+			style={{ backgroundColor: colors.backgroundColor }}
+		>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>

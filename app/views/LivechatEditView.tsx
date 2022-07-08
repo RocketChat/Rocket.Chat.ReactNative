@@ -189,7 +189,8 @@ const LivechatEditView = ({
 		<KeyboardView
 			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}>
+			keyboardVerticalOffset={128}
+		>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<Title title={visitor?.username} theme={theme} />

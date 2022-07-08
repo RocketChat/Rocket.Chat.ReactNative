@@ -55,7 +55,8 @@ const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGet
 			{username && (
 				<Text
 					testID='room-info-view-username'
-					style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}>{`@${username}`}</Text>
+					style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}
+				>{`@${username}`}</Text>
 			)}
 			{!!statusText && (
 				<View testID='room-info-view-custom-status'>

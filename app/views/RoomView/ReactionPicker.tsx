@@ -60,7 +60,8 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 				onBackButtonPress={reactionClose}
 				animationIn='fadeIn'
 				animationOut='fadeOut'
-				backdropOpacity={themes[theme].backdropOpacity}>
+				backdropOpacity={themes[theme].backdropOpacity}
+			>
 				<View
 					style={[
 						styles.reactionPickerContainer,
@@ -69,7 +70,8 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 							height: heightStyle
 						}
 					]}
-					testID='reaction-picker'>
+					testID='reaction-picker'
+				>
 					<EmojiPicker theme={theme} onEmojiSelected={this.onEmojiSelected} baseUrl={baseUrl} />
 				</View>
 			</Modal>

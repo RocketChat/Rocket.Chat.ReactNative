@@ -344,7 +344,8 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 					ref={this.pinchRef}
 					simultaneousHandlers={this.panRef}
 					onGestureEvent={this._onPinchEvent}
-					onHandlerStateChange={this._onPinchEvent}>
+					onHandlerStateChange={this._onPinchEvent}
+				>
 					<Animated.View>
 						<PanGestureHandler
 							ref={this.panRef}
@@ -352,7 +353,8 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 							avgTouches
 							simultaneousHandlers={this.pinchRef}
 							onGestureEvent={this._onPanEvent}
-							onHandlerStateChange={this._onPanEvent}>
+							onHandlerStateChange={this._onPanEvent}
+						>
 							<AnimatedImage
 								style={[
 									styles.image,

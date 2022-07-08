@@ -169,7 +169,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					}}
 					testID='login-view-email'
 					textContentType='username'
-					autoCompleteType='username'
+					// autoCompleteType='username' TODO: reevaluate
 					theme={theme}
 					value={user}
 				/>
@@ -186,7 +186,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					onChangeText={(value: string) => this.setState({ password: value })}
 					testID='login-view-password'
 					textContentType='password'
-					autoCompleteType='password'
+					// autoCompleteType='password' TODO: reevaluate
 					theme={theme}
 				/>
 				<Button
@@ -216,7 +216,8 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						<Text
 							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 							onPress={this.register}
-							testID='login-view-register'>
+							testID='login-view-register'
+						>
 							{I18n.t('Create_account')}
 						</Text>
 					</View>

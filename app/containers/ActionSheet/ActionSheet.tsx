@@ -130,7 +130,8 @@ const ActionSheet = React.memo(
 						enablePanDownToClose
 						style={{ ...styles.container, ...bottomSheet }}
 						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
-						onChange={index => index === -1 && toggleVisible()}>
+						onChange={index => index === -1 && toggleVisible()}
+					>
 						<BottomSheetContent options={data?.options} hide={hide} children={data?.children} hasCancel={data?.hasCancel} />
 					</BottomSheet>
 				)}

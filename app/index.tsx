@@ -32,7 +32,7 @@ import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
 const KeyCommandsEmitter = {
-	addListener: (event: string, cb: Function) => console.log('mock')
+	addListener: (_event: string, _cb: Function) => console.log('mock')
 };
 
 RNScreens.enableScreens();

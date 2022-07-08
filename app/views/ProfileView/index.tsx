@@ -341,7 +341,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				onPress={onPress}
 				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
 				enabled={!disabled}
-				theme={theme}>
+				theme={theme}
+			>
 				{child}
 			</Touch>
 		);
@@ -411,7 +412,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
-							value={customFields[key]}>
+							value={customFields[key]}
+						>
 							<FormTextInput
 								inputRef={e => {
 									// @ts-ignore
@@ -492,7 +494,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}>
+				keyboardVerticalOffset={128}
+			>
 				<StatusBar />
 				<SafeAreaView testID='profile-view'>
 					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>

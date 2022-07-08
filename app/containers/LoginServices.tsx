@@ -394,7 +394,8 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 				style={[styles.serviceButton, { backgroundColor }]}
 				theme={theme}
 				activeOpacity={0.5}
-				underlayColor={themes[theme].buttonText}>
+				underlayColor={themes[theme].buttonText}
+			>
 				<View style={styles.serviceButtonContainer}>
 					{service.authType === 'oauth' || service.authType === 'apple' ? (
 						<CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} />

@@ -35,7 +35,8 @@ const Item = ({ item, selected, onSelect, theme }: IItem) => {
 			testID={`multi-select-item-${itemName}`}
 			key={itemName}
 			onPress={() => onSelect(item)}
-			style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
+			style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}
+		>
 			<>
 				{item.imageUrl ? <FastImage style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 				<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>

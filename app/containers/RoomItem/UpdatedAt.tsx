@@ -26,7 +26,8 @@ const UpdatedAt = React.memo(({ date, theme, hideUnreadStatus, alert }: IUpdated
 					]
 			]}
 			ellipsizeMode='tail'
-			numberOfLines={1}>
+			numberOfLines={1}
+		>
 			{capitalize(date)}
 		</Text>
 	);

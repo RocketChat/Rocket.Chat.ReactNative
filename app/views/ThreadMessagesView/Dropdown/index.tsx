@@ -83,7 +83,8 @@ class Dropdown extends React.Component<IDropdownProps> {
 							backgroundColor: themes[theme].backgroundColor,
 							borderColor: themes[theme].separatorColor
 						}
-					]}>
+					]}
+				>
 					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
 					<List.Separator />
 					<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />

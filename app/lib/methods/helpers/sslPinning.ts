@@ -1,4 +1,4 @@
-import { Alert, NativeModules, Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import * as FileSystem from 'expo-file-system';
 
@@ -69,7 +69,7 @@ const RCSSLPinning = Platform.select({
 	},
 	android: {
 		pickCertificate: () => {}, // ,SSLPinning?.pickCertificate(),
-		setCertificate: name => {} // SSLPinning?.setCertificate(name)
+		setCertificate: () => {} // SSLPinning?.setCertificate(name)
 	}
 });
 

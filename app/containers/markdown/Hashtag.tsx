@@ -37,7 +37,8 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 					},
 					...style
 				]}
-				onPress={handlePress}>
+				onPress={handlePress}
+			>
 				{`#${hashtag}`}
 			</Text>
 		);

@@ -63,7 +63,8 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 			<Touchable
 				onPress={() => onShow(!show)}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}>
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
 				<View style={[styles.input, { borderColor: error ? themes[theme].dangerColor : themes[theme].separatorColor }]}>
 					<Text style={[styles.inputText, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>
 						{currentDate.toLocaleDateString(language)}

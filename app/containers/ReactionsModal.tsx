@@ -151,7 +151,8 @@ const ReactionsModal = React.memo(
 				onBackButtonPress={onClose}
 				backdropOpacity={0.8}
 				onSwipeComplete={onClose}
-				swipeDirection={['up', 'left', 'right', 'down']}>
+				swipeDirection={['up', 'left', 'right', 'down']}
+			>
 				<ModalContent onClose={onClose} theme={theme} {...props} />
 			</Modal>
 		);

@@ -185,7 +185,8 @@ class RegisterView extends React.Component<IProps, any> {
 										newValue[key] = value;
 										this.setState({ customFields: { ...customFields, ...newValue } });
 									}}
-									value={customFields[key]}>
+									value={customFields[key]}
+								>
 									<FormTextInput
 										inputRef={e => {
 											// @ts-ignore
@@ -317,13 +318,15 @@ class RegisterView extends React.Component<IProps, any> {
 							{`${I18n.t('Onboarding_agree_terms')}\n`}
 							<Text
 								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('terms-of-service')}>
+								onPress={() => this.openContract('terms-of-service')}
+							>
 								{I18n.t('Terms_of_Service')}
 							</Text>{' '}
 							{I18n.t('and')}
 							<Text
 								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('privacy-policy')}>
+								onPress={() => this.openContract('privacy-policy')}
+							>
 								{' '}
 								{I18n.t('Privacy_Policy')}
 							</Text>

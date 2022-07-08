@@ -23,7 +23,8 @@ const Code = ({ value }: ICodeProps) => {
 					backgroundColor: themes[theme].bannerBackground,
 					borderColor: themes[theme].borderColor
 				}
-			]}>
+			]}
+		>
 			{value.map(block => {
 				switch (block.type) {
 					case 'CODE_LINE':

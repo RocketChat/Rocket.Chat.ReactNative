@@ -67,7 +67,8 @@ const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox)
 			style={[
 				styles.container,
 				{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
-			]}>
+			]}
+		>
 			<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
 				<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
 				<TextInput

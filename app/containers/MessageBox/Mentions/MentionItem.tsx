@@ -95,7 +95,8 @@ const MentionItem = ({ item, trackingType }: IMessageBoxMentionItem) => {
 				}
 			]}
 			onPress={() => onPressMention(item)}
-			testID={testID}>
+			testID={testID}
+		>
 			<MentionItemContent item={item} trackingType={trackingType} />
 		</TouchableOpacity>
 	);

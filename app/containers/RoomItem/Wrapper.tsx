@@ -9,7 +9,8 @@ import styles from './styles';
 const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapperProps): React.ReactElement => (
 	<View
 		style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
-		accessibilityLabel={accessibilityLabel}>
+		accessibilityLabel={accessibilityLabel}
+	>
 		<IconOrAvatar theme={theme} displayMode={displayMode} {...props} />
 		<View
 			style={[
@@ -17,7 +18,8 @@ const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }:
 				{
 					borderColor: themes[theme].separatorColor
 				}
-			]}>
+			]}
+		>
 			{children}
 		</View>
 	</View>

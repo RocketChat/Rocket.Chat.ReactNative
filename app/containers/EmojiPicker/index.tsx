@@ -185,7 +185,8 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 						keyboardShouldPersistTaps: 'always',
 						keyboardDismissMode: 'none'
 					}}
-					style={{ backgroundColor: themes[theme].focusedBackground }}>
+					style={{ backgroundColor: themes[theme].focusedBackground }}
+				>
 					{categories.tabs.map((tab: any, i) =>
 						i === 0 && frequentlyUsed.length === 0
 							? null // when no frequentlyUsed don't show the tab

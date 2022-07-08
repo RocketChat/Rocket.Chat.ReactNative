@@ -388,7 +388,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					threadBadgeColor,
 					toggleFollowThread,
 					replies
-				}}>
+				}}
+			>
 				{/* @ts-ignore*/}
 				<Message
 					id={id}
