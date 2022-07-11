@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { MatchPathPattern, OperationParams, PathFor, ResultFor, Serialized } from '../../definitions/rest/helpers';
 import { showErrorAlert } from '../methods/helpers';
@@ -22,20 +22,13 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 		MatchPathPattern<TPath>
 	>
 		? void
-		: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>,
-	cache?: boolean
+		: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
 ): { result: Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined; loading: boolean; reload: Function } => {
 	const [loading, setLoading] = useState(true);
 	const [result, setResult] = useState<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined>();
-	const localCache = useRef({}) as MutableRefObject<{ [key in TPath]: Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> }>;
-	// wm cache?
 
 	const fetchData = useCallback(() => {
 		if (!endpoint) return;
-		if (cache && localCache.current[endpoint]) {
-			setResult(localCache.current[endpoint]);
-			return;
-		}
 		setLoading(true);
 		sdk
 			.get(endpoint, params)
@@ -43,7 +36,6 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 				setLoading(false);
 				if (e.success) {
 					setResult(e);
-					localCache.current[endpoint] = e;
 				} else {
 					// handle error
 				}
