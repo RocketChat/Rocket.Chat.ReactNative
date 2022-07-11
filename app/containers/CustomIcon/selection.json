@@ -4,6 +4,167 @@
 		{
 			"icon": {
 				"paths": [
+					"M478.65 672c-17.674 0-32-14.326-32-32v-32h-32c-17.674 0-32-14.326-32-32s14.326-32 32-32h32v-58.88h-32c-17.674 0-32-14.326-32-32s14.326-32 32-32h32v-37.12c0-17.674 14.326-32 32-32 17.67 0 32 14.326 32 32v37.12h58.88v-37.12c0-17.674 14.326-32 32-32s32 14.326 32 32v37.12h37.12c17.67 0 32 14.326 32 32s-14.33 32-32 32h-37.12v58.88h37.12c17.67 0 32 14.326 32 32s-14.33 32-32 32h-37.12v32c0 17.674-14.326 32-32 32s-32-14.326-32-32v-32h-58.88v32c0 17.674-14.33 32-32 32zM510.65 544h58.88v-58.88h-58.88v58.88z",
+					"M158.648 672h-32c-17.673 0-32-14.326-32-32s14.327-32 32-32h32v-192h-32c-17.673 0-32-14.326-32-32s14.327-32 32-32h32v-160c0-35.346 28.654-64 64-64h608.001c35.344 0 64 28.654 64 64v640c0 35.347-28.656 64-64 64h-608.001c-35.346 0-64-28.653-64-64v-160zM830.65 192h-608.001v160h32c17.673 0 32 14.326 32 32s-14.327 32-32 32h-32v192h32c17.673 0 32 14.326 32 32s-14.327 32-32 32h-32v160h608.001v-640z"
+				],
+				"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
+				"width": 1056,
+				"isMulticolor": false,
+				"isMulticolor2": false,
+				"grid": 0,
+				"tags": ["directory"],
+				"colorPermutations": {
+					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
+						{ "f": 2 },
+						{ "f": 2 }
+					]
+				}
+			},
+			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
+			"properties": { "order": 4, "id": 205, "name": "directory", "prevSize": 32, "code": 59648 },
+			"setIdx": 0,
+			"setId": 2,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
+					"M833.35 128c10.285 0 20 2.425 28.611 6.735-11.834 4.684-22.922 11.812-32.493 21.383l-35.882 35.882h-568.236v160h32c17.673 0 32 14.326 32 32s-14.327 32-32 32h-32v192h32c17.673 0 32 14.326 32 32s-14.327 32-32 32h-32v88.237l-64 64v-152.237h-32c-17.673 0-32-14.326-32-32s14.327-32 32-32h32v-192h-32c-17.673 0-32-14.326-32-32s14.327-32 32-32h32v-160c0-35.346 28.654-64 64-64h607.999z",
+					"M361.117 896l64-64h408.234v-408.237l64-64v472.237c0 35.347-28.653 64-64 64h-472.234z",
+					"M604.23 352c8.166 0 15.616 3.056 21.267 8.090l-53.267 53.267v-29.357c0-17.674 14.33-32 32-32z",
+					"M513.35 421.12h51.117l-115.117 115.117v-51.117h-32c-17.67 0-32-14.326-32-32s14.33-32 32-32h32v-37.12c0-17.674 14.33-32 32-32 17.674 0 32 14.326 32 32v37.12z",
+					"M391.174 594.413l50.413-50.413h-24.237c-17.67 0-32 14.326-32 32 0 6.854 2.157 13.203 5.824 18.413z",
+					"M919.978 201.372c-12.496-12.497-32.755-12.497-45.254 0l-671.999 672c-12.497 12.496-12.497 32.758 0 45.254s32.758 12.496 45.255 0l671.999-672c12.499-12.497 12.499-32.758 0-45.255z"
+				],
+				"attrs": [
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" }
+				],
+				"width": 1056,
+				"isMulticolor": false,
+				"isMulticolor2": false,
+				"grid": 0,
+				"tags": ["directory-disabled"],
+				"colorPermutations": {
+					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
+						{ "f": 2 },
+						{ "f": 2 },
+						{ "f": 2 },
+						{ "f": 2 },
+						{ "f": 2 },
+						{ "f": 2 }
+					]
+				}
+			},
+			"attrs": [
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" }
+			],
+			"properties": { "order": 6, "id": 204, "name": "directory-disabled", "prevSize": 32, "code": 59649 },
+			"setIdx": 0,
+			"setId": 2,
+			"iconIdx": 1
+		},
+		{
+			"icon": {
+				"paths": [
+					"M919.978 105.372c12.499 12.497 12.499 32.758 0 45.255l-89.373 89.372 89.373 89.373c12.499 12.496 12.499 32.758 0 45.254-12.496 12.496-32.755 12.496-45.254 0l-89.373-89.372-89.373 89.372c-12.496 12.496-32.755 12.496-45.254 0-12.496-12.496-12.496-32.758 0-45.254l89.373-89.373-89.373-89.372c-12.496-12.497-12.496-32.758 0-45.255 12.499-12.497 32.758-12.497 45.254 0l89.373 89.373 89.373-89.373c12.499-12.497 32.758-12.497 45.254 0z",
+					"M512.419 126.678c1.491 17.61-11.578 33.094-29.187 34.585-180.289 15.259-321.88 166.478-321.88 350.731 0 194.406 157.596 352 351.999 352 194.406 0 352-157.594 352-352 0-17.674 14.33-32 32-32 17.674 0 32 14.326 32 32 0 229.75-186.25 416-416 416s-415.999-186.25-415.999-416c0-217.79 167.341-396.462 380.482-414.503 17.61-1.491 33.094 11.577 34.586 29.187z",
+					"M119.219 432.47c0-17.674 14.327-32 32-32h329.037c17.67 0 32 14.326 32 32 0 17.67-14.33 32-32 32h-329.037c-17.673 0-32-14.33-32-32z",
+					"M119.233 640c0-17.674 14.327-32 32-32h724.255c17.674 0 32 14.326 32 32s-14.326 32-32 32h-724.255c-17.673 0-32-14.326-32-32z",
+					"M504.81 121.090c11.117 13.739 8.992 33.888-4.749 45.005-8.666 7.012-18.886 20.139-29.238 40.961-10.179 20.471-19.61 46.603-27.635 77.587-16.042 61.955-25.837 140.879-25.837 227.356 0 103.555 14.038 195.981 35.85 261.411 10.96 32.88 23.306 57.181 35.462 72.605 12.438 15.786 21.024 17.978 24.688 17.978 3.667 0 12.253-2.192 24.691-17.978 12.157-15.424 24.502-39.725 35.462-72.605 21.808-65.43 35.846-157.856 35.846-261.411 0-17.674 14.33-32 32-32 17.674 0 32 14.326 32 32 0 108.522-14.614 208.096-39.133 281.648-12.202 36.608-27.437 68.544-45.91 91.984-18.186 23.078-43.274 42.362-74.957 42.362-31.68 0-56.768-19.283-74.957-42.362-18.47-23.44-33.706-55.376-45.91-91.984-24.515-73.552-39.133-173.126-39.133-281.648 0-90.915 10.256-175.338 27.882-243.4 8.81-34.025 19.619-64.572 32.282-90.038 12.49-25.115 27.712-47.185 46.288-62.217 13.741-11.117 33.888-8.992 45.008 4.746z"
+				],
+				"attrs": [
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" },
+					{ "fill": "rgb(108, 114, 122)" }
+				],
+				"width": 1056,
+				"isMulticolor": false,
+				"isMulticolor2": false,
+				"grid": 0,
+				"tags": ["directory-error"],
+				"colorPermutations": {
+					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
+						{ "f": 2 },
+						{ "f": 2 },
+						{ "f": 2 },
+						{ "f": 2 },
+						{ "f": 2 }
+					]
+				}
+			},
+			"attrs": [
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" },
+				{ "fill": "rgb(108, 114, 122)" }
+			],
+			"properties": { "order": 7, "id": 203, "name": "directory-error", "prevSize": 32, "code": 59650 },
+			"setIdx": 0,
+			"setId": 2,
+			"iconIdx": 2
+		},
+		{
+			"icon": {
+				"paths": [
+					"M542.65 96c80.093 0 154.902 22.636 218.374 61.859l-46.746 46.746c-24.739-13.843-51.322-24.785-79.286-32.368 12.166 22.395 23.078 49.095 32.406 79.249l-52 51.999c-5.654-22.994-12.17-44.005-19.347-62.666-12.822-33.339-26.522-55.927-38.474-69.070-8.397-9.235-13.43-11.291-14.928-11.698-1.498 0.407-6.531 2.463-14.928 11.698-11.952 13.143-25.654 35.731-38.477 69.070-16.298 42.377-29.174 96.867-36.336 159.18h65.974l-64 64h-7.114c-0.118 2.47-0.224 4.95-0.323 7.437l-64.538 64.538c-0.173-7.933-0.259-15.926-0.259-23.974 0-16.234 0.358-32.25 1.053-48h-189.809c-2.14 15.696-3.245 31.718-3.245 48 0 33.28 4.619 65.485 13.251 96h106.984l-64 64h-17.852c2.004 3.92 4.078 7.798 6.223 11.629l-46.746 46.749c-39.223-63.475-61.859-138.282-61.859-218.378 0-229.75 186.25-416 416.001-416zM896.79 293.623l-46.746 46.748c10.56 18.87 19.43 38.816 26.413 59.629h-86.045l-64 64h164.992c2.138 15.696 3.245 31.718 3.245 48 0 33.28-4.621 65.485-13.251 96h-183.030c2.8-30.816 4.282-62.957 4.282-96 0-8.045-0.090-16.042-0.262-23.974l-64.534 64.534c-0.752 19.008-2.026 37.523-3.766 55.44h-51.674l-64 64h107.088c-7.37 42.458-17.488 80.083-29.45 111.184-12.822 33.338-26.522 55.926-38.474 69.069-8.397 9.235-13.43 11.29-14.928 11.699-1.498-0.41-6.531-2.464-14.928-11.699-11.952-13.142-25.654-35.731-38.477-69.069-7.178-18.662-13.69-39.677-19.344-62.669l-52 51.997c9.325 30.154 20.237 56.854 32.403 79.251-27.965-7.584-54.547-18.525-79.286-32.368l-46.746 46.746c63.347 39.146 137.984 61.77 217.901 61.859h0.954c229.53-0.259 415.523-186.41 415.523-416 0-80.096-22.637-154.902-61.859-218.377zM450.307 172.237c-113.552 30.788-204.312 116.98-241.467 227.763h179.675c10-93.226 32.176-173.252 61.792-227.763zM634.995 851.763c24.394-44.902 43.741-107.117 55.392-179.763h165.878c-44.653 87.35-124.723 153.584-221.27 179.763zM856.022 153.372c12.496-12.497 32.758-12.497 45.254 0s12.496 32.758 0 45.255l-672.001 672c-12.497 12.496-32.758 12.496-45.255 0s-12.497-32.758 0-45.254l672.001-672z"
+				],
+				"attrs": [{ "fill": "rgb(108, 114, 122)" }],
+				"width": 1056,
+				"isMulticolor": false,
+				"isMulticolor2": false,
+				"grid": 0,
+				"tags": ["federation-disabled"],
+				"colorPermutations": {
+					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
+						{ "f": 2 }
+					]
+				}
+			},
+			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
+			"properties": { "order": 8, "id": 201, "name": "federation-disabled", "prevSize": 32, "code": 59651 },
+			"setIdx": 0,
+			"setId": 2,
+			"iconIdx": 3
+		},
+		{
+			"icon": {
+				"paths": [
+					"M865.139 512c0 33.28-4.624 65.485-13.267 96h-183.274c2.803-30.816 4.288-62.957 4.288-96 0-16.234-0.358-32.25-1.056-48h190.061c2.141 15.696 3.248 31.718 3.248 48zM607.68 464c0.739 15.67 1.123 31.686 1.123 48 0 33.398-1.61 65.555-4.57 96h-183.117c-2.963-30.445-4.57-62.602-4.57-96 0-16.314 0.384-32.33 1.123-48h190.010zM667.014 400c-10.016-93.226-32.221-173.252-61.875-227.763 113.702 30.788 204.579 116.981 241.782 227.763h-179.907zM420.211 172.237c-29.654 54.51-51.862 134.537-61.875 227.763h-179.91c37.204-110.782 128.083-196.975 241.785-227.763zM422.816 400c7.171-62.314 20.064-116.804 36.384-159.18 12.842-33.339 26.56-55.927 38.528-69.070 8.406-9.235 13.446-11.291 14.947-11.698 1.501 0.407 6.541 2.463 14.947 11.698 11.968 13.143 25.686 35.731 38.525 69.070 16.32 42.377 29.216 96.867 36.387 159.18h-179.718zM353.52 464c-0.698 15.75-1.056 31.766-1.056 48 0 33.043 1.482 65.184 4.288 96h-183.275c-8.643-30.515-13.268-62.72-13.268-96 0-16.282 1.107-32.304 3.249-48h190.061zM364.742 672c11.667 72.646 31.040 134.861 55.466 179.763-96.678-26.179-176.854-92.413-221.565-179.763h166.1zM513.152 928c229.834-0.259 416.070-186.41 416.070-416 0-229.75-186.493-416-416.547-416s-416.55 186.25-416.55 416c0 229.59 186.237 415.741 416.070 416 0.16 0 0.32 0 0.48 0s0.32 0 0.477 0zM605.142 851.763c24.426-44.902 43.798-107.117 55.466-179.763h166.099c-44.71 87.35-124.89 153.584-221.565 179.763zM595.638 672c-7.379 42.458-17.514 80.083-29.491 111.184-12.838 33.338-26.557 55.926-38.525 69.069-8.406 9.235-13.446 11.29-14.947 11.699-1.501-0.41-6.541-2.464-14.947-11.699-11.968-13.142-25.686-35.731-38.528-69.069-11.978-31.101-22.109-68.726-29.488-111.184h165.926z"
+				],
+				"attrs": [{ "fill": "rgb(108, 114, 122)" }],
+				"width": 1056,
+				"isMulticolor": false,
+				"isMulticolor2": false,
+				"grid": 0,
+				"tags": ["federation"],
+				"colorPermutations": {
+					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
+						{ "f": 2 }
+					]
+				}
+			},
+			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
+			"properties": { "order": 5, "id": 200, "name": "federation", "prevSize": 32, "code": 59652 },
+			"setIdx": 0,
+			"setId": 2,
+			"iconIdx": 4
+		},
+		{
+			"icon": {
+				"paths": [
 					"M649.427 192c-26.454 0-52.016 10.804-71.005 30.343l-305.1 313.906c-31.48 32.387-49.322 76.506-49.322 122.694 0 46.186 17.842 90.304 49.322 122.694 31.451 32.355 73.91 50.362 117.984 50.362s86.531-18.006 117.981-50.362l305.101-313.907c12.317-12.672 32.576-12.96 45.248-0.643 12.675 12.317 12.963 32.576 0.646 45.251l-305.101 313.904c-43.302 44.554-102.23 69.757-163.875 69.757s-120.574-25.203-163.877-69.757c-43.273-44.522-67.428-104.717-67.428-167.299s24.155-122.781 67.428-167.302l305.1-313.905c30.845-31.735 72.874-49.737 116.899-49.737s86.054 18.002 116.899 49.737c30.816 31.704 47.971 74.514 47.971 118.968s-17.155 87.263-47.971 118.969l-305.43 313.904c-0.003 0.006 0.003-0.003 0 0-18.384 18.909-43.523 29.718-69.923 29.718-26.406 0-51.539-10.8-69.923-29.718-18.356-18.883-28.512-44.31-28.512-70.634 0-26.326 10.156-51.754 28.512-70.637l281.872-289.668c12.326-12.666 32.586-12.942 45.251-0.617s12.941 32.585 0.618 45.251l-281.846 289.638c-6.557 6.752-10.406 16.106-10.406 26.032 0 9.93 3.843 19.277 10.406 26.029 6.531 6.72 15.194 10.323 24.029 10.323s17.498-3.603 24.029-10.323l305.43-313.907c19.024-19.568 29.866-46.301 29.866-74.361 0-28.059-10.842-54.791-29.866-74.362-18.989-19.54-44.55-30.343-71.005-30.343z"
 				],
 				"attrs": [{ "fill": "rgb(108, 114, 122)" }],
@@ -15,13 +176,14 @@
 					]
 				},
 				"tags": ["attach"],
+				"defaultCode": 59676,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 254, "id": 0, "name": "attach", "prevSize": 32, "code": 59676 },
+			"properties": { "order": 254, "name": "attach", "prevSize": 32, "id": 0, "code": 59676 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 0
+			"setId": 2,
+			"iconIdx": 5
 		},
 		{
 			"icon": {
@@ -38,13 +200,14 @@
 					]
 				},
 				"tags": ["link"],
+				"defaultCode": 59752,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 253, "id": 1, "name": "link", "prevSize": 32, "code": 59752 },
+			"properties": { "order": 253, "name": "link", "prevSize": 32, "id": 1, "code": 59752 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 1
+			"setId": 2,
+			"iconIdx": 6
 		},
 		{
 			"icon": {
@@ -60,13 +223,14 @@
 					]
 				},
 				"tags": ["status-away"],
+				"defaultCode": 59741,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(243, 190, 8)" }],
-			"properties": { "order": 247, "id": 2, "name": "status-away", "prevSize": 32, "code": 59741 },
+			"properties": { "order": 247, "name": "status-away", "prevSize": 32, "id": 2, "code": 59741 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 2
+			"setId": 2,
+			"iconIdx": 7
 		},
 		{
 			"icon": {
@@ -82,13 +246,14 @@
 					]
 				},
 				"tags": ["status-busy"],
+				"defaultCode": 59742,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(245, 69, 92)" }],
-			"properties": { "order": 248, "id": 3, "name": "status-busy", "prevSize": 32, "code": 59742 },
+			"properties": { "order": 248, "name": "status-busy", "prevSize": 32, "id": 3, "code": 59742 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 3
+			"setId": 2,
+			"iconIdx": 8
 		},
 		{
 			"icon": {
@@ -104,13 +269,14 @@
 					]
 				},
 				"tags": ["status-loading"],
+				"defaultCode": 59743,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(158, 162, 168)" }],
-			"properties": { "order": 249, "id": 4, "name": "status-loading", "prevSize": 32, "code": 59743 },
+			"properties": { "order": 249, "name": "status-loading", "prevSize": 32, "id": 4, "code": 59743 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 4
+			"setId": 2,
+			"iconIdx": 9
 		},
 		{
 			"icon": {
@@ -126,13 +292,14 @@
 					]
 				},
 				"tags": ["status-offline"],
+				"defaultCode": 59744,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(158, 162, 168)" }],
-			"properties": { "order": 250, "id": 5, "name": "status-offline", "prevSize": 32, "code": 59744 },
+			"properties": { "order": 250, "name": "status-offline", "prevSize": 32, "id": 5, "code": 59744 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 5
+			"setId": 2,
+			"iconIdx": 10
 		},
 		{
 			"icon": {
@@ -148,13 +315,14 @@
 					]
 				},
 				"tags": ["status-online"],
+				"defaultCode": 59745,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(45, 224, 165)" }],
-			"properties": { "order": 251, "id": 6, "name": "status-online", "prevSize": 32, "code": 59745 },
+			"properties": { "order": 251, "name": "status-online", "prevSize": 32, "id": 6, "code": 59745 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 6
+			"setId": 2,
+			"iconIdx": 11
 		},
 		{
 			"icon": {
@@ -193,6 +361,7 @@
 					]
 				},
 				"tags": ["teams-private"],
+				"defaultCode": 59750,
 				"grid": 0
 			},
 			"attrs": [
@@ -205,10 +374,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 252, "id": 7, "name": "teams-private", "prevSize": 32, "code": 59750 },
+			"properties": { "order": 252, "name": "teams-private", "prevSize": 32, "id": 7, "code": 59750 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 7
+			"setId": 2,
+			"iconIdx": 12
 		},
 		{
 			"icon": {
@@ -228,13 +397,14 @@
 					]
 				},
 				"tags": ["channel-auto-join"],
+				"defaultCode": 59746,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 2, "id": 8, "name": "channel-auto-join", "prevSize": 32, "code": 59746 },
+			"properties": { "order": 2, "name": "channel-auto-join", "prevSize": 32, "id": 8, "code": 59746 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 8
+			"setId": 2,
+			"iconIdx": 13
 		},
 		{
 			"icon": {
@@ -273,6 +443,7 @@
 					]
 				},
 				"tags": ["channel-move-to-team"],
+				"defaultCode": 59747,
 				"grid": 0
 			},
 			"attrs": [
@@ -285,10 +456,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 3, "id": 9, "name": "channel-move-to-team", "prevSize": 32, "code": 59747 },
+			"properties": { "order": 3, "name": "channel-move-to-team", "prevSize": 32, "id": 9, "code": 59747 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 9
+			"setId": 2,
+			"iconIdx": 14
 		},
 		{
 			"icon": {
@@ -304,13 +475,14 @@
 					]
 				},
 				"tags": ["lock-filled"],
+				"defaultCode": 59748,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 4, "id": 10, "name": "lock-filled", "prevSize": 32, "code": 59748 },
+			"properties": { "order": 4, "name": "lock-filled", "prevSize": 32, "id": 10, "code": 59748 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 10
+			"setId": 2,
+			"iconIdx": 15
 		},
 		{
 			"icon": {
@@ -326,13 +498,14 @@
 					]
 				},
 				"tags": ["locker"],
+				"defaultCode": 59749,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 5, "id": 11, "name": "locker", "prevSize": 32, "code": 59749 },
+			"properties": { "order": 5, "name": "locker", "prevSize": 32, "id": 11, "code": 59749 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 11
+			"setId": 2,
+			"iconIdx": 16
 		},
 		{
 			"icon": {
@@ -348,13 +521,14 @@
 					]
 				},
 				"tags": ["teams"],
+				"defaultCode": 59751,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 7, "id": 12, "name": "teams", "prevSize": 32, "code": 59751 },
+			"properties": { "order": 7, "name": "teams", "prevSize": 32, "id": 12, "code": 59751 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 12
+			"setId": 2,
+			"iconIdx": 17
 		},
 		{
 			"icon": {
@@ -370,13 +544,14 @@
 					]
 				},
 				"tags": ["set-as-moderator"],
+				"defaultCode": 59661,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 245, "id": 13, "name": "shield", "prevSize": 32, "code": 59661 },
+			"properties": { "order": 245, "name": "shield", "prevSize": 32, "id": 13, "code": 59661 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 13
+			"setId": 2,
+			"iconIdx": 18
 		},
 		{
 			"icon": {
@@ -392,13 +567,14 @@
 					]
 				},
 				"tags": ["ignore"],
+				"defaultCode": 59740,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 246, "id": 14, "name": "ignore", "prevSize": 32, "code": 59740 },
+			"properties": { "order": 246, "name": "ignore", "prevSize": 32, "id": 14, "code": 59740 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 14
+			"setId": 2,
+			"iconIdx": 19
 		},
 		{
 			"icon": {
@@ -414,13 +590,14 @@
 					]
 				},
 				"tags": ["checkbox-unchecked"],
+				"defaultCode": 59648,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(203, 206, 209)" }],
-			"properties": { "order": 242, "id": 15, "name": "checkbox-unchecked", "prevSize": 32, "code": 59648 },
+			"properties": { "order": 242, "name": "checkbox-unchecked", "prevSize": 32, "id": 15, "code": 59653 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 15
+			"setId": 2,
+			"iconIdx": 20
 		},
 		{
 			"icon": {
@@ -436,13 +613,14 @@
 					]
 				},
 				"tags": ["checkbox-checked"],
+				"defaultCode": 59649,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(29, 116, 245)" }],
-			"properties": { "order": 243, "id": 16, "name": "checkbox-checked", "prevSize": 32, "code": 59649 },
+			"properties": { "order": 243, "name": "checkbox-checked", "prevSize": 32, "id": 16, "code": 59654 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 16
+			"setId": 2,
+			"iconIdx": 21
 		},
 		{
 			"icon": {
@@ -458,13 +636,14 @@
 					]
 				},
 				"tags": ["github-monochromatic"],
+				"defaultCode": 59650,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 152, "id": 17, "name": "github-monochromatic", "prevSize": 32, "code": 59650 },
+			"properties": { "order": 152, "name": "github-monochromatic", "prevSize": 32, "id": 17, "code": 59655 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 17
+			"setId": 2,
+			"iconIdx": 22
 		},
 		{
 			"icon": {
@@ -480,13 +659,14 @@
 					]
 				},
 				"tags": ["gitlab-monochromatic"],
+				"defaultCode": 59651,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 153, "id": 18, "name": "gitlab-monochromatic", "prevSize": 32, "code": 59651 },
+			"properties": { "order": 153, "name": "gitlab-monochromatic", "prevSize": 32, "id": 18, "code": 59656 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 18
+			"setId": 2,
+			"iconIdx": 23
 		},
 		{
 			"icon": {
@@ -503,13 +683,14 @@
 					]
 				},
 				"tags": ["google-monochromatic"],
+				"defaultCode": 59652,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 154, "id": 19, "name": "google-monochromatic", "prevSize": 32, "code": 59652 },
+			"properties": { "order": 154, "name": "google-monochromatic", "prevSize": 32, "id": 19, "code": 59657 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 19
+			"setId": 2,
+			"iconIdx": 24
 		},
 		{
 			"icon": {
@@ -526,13 +707,14 @@
 					]
 				},
 				"tags": ["linkedin-monochromatic"],
+				"defaultCode": 59653,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 155, "id": 20, "name": "linkedin-monochromatic", "prevSize": 32, "code": 59653 },
+			"properties": { "order": 155, "name": "linkedin-monochromatic", "prevSize": 32, "id": 20, "code": 59658 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 20
+			"setId": 2,
+			"iconIdx": 25
 		},
 		{
 			"icon": {
@@ -549,13 +731,14 @@
 					]
 				},
 				"tags": ["meteor-monochromatic"],
+				"defaultCode": 59654,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 156, "id": 21, "name": "meteor-monochromatic", "prevSize": 32, "code": 59654 },
+			"properties": { "order": 156, "name": "meteor-monochromatic", "prevSize": 32, "id": 21, "code": 59659 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 21
+			"setId": 2,
+			"iconIdx": 26
 		},
 		{
 			"icon": {
@@ -572,13 +755,14 @@
 					]
 				},
 				"tags": ["twitter-monochromatic"],
+				"defaultCode": 59655,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 157, "id": 22, "name": "twitter-monochromatic", "prevSize": 32, "code": 59655 },
+			"properties": { "order": 157, "name": "twitter-monochromatic", "prevSize": 32, "id": 22, "code": 59660 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 22
+			"setId": 2,
+			"iconIdx": 27
 		},
 		{
 			"icon": {
@@ -594,13 +778,14 @@
 					]
 				},
 				"tags": ["administration"],
+				"defaultCode": 59657,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 159, "id": 23, "name": "administration", "prevSize": 32, "code": 59657 },
+			"properties": { "order": 159, "name": "administration", "prevSize": 32, "id": 23, "code": 59662 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 23
+			"setId": 2,
+			"iconIdx": 28
 		},
 		{
 			"icon": {
@@ -617,13 +802,14 @@
 					]
 				},
 				"tags": ["adobe-reader-monochromatic"],
+				"defaultCode": 59658,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 161, "id": 24, "name": "adobe-reader-monochromatic", "prevSize": 32, "code": 59658 },
+			"properties": { "order": 161, "name": "adobe-reader-monochromatic", "prevSize": 32, "id": 24, "code": 59663 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 24
+			"setId": 2,
+			"iconIdx": 29
 		},
 		{
 			"icon": {
@@ -639,13 +825,14 @@
 					]
 				},
 				"tags": ["all-contacts-in-channels"],
+				"defaultCode": 59659,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 162, "id": 25, "name": "all-contacts-in-channels", "prevSize": 32, "code": 59659 },
+			"properties": { "order": 162, "name": "all-contacts-in-channels", "prevSize": 32, "id": 25, "code": 59664 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 25
+			"setId": 2,
+			"iconIdx": 30
 		},
 		{
 			"icon": {
@@ -661,13 +848,14 @@
 					]
 				},
 				"tags": ["all-contacts-in-queue"],
+				"defaultCode": 59660,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 163, "id": 26, "name": "all-contacts-in-queue", "prevSize": 32, "code": 59660 },
+			"properties": { "order": 163, "name": "all-contacts-in-queue", "prevSize": 32, "id": 26, "code": 59665 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 26
+			"setId": 2,
+			"iconIdx": 31
 		},
 		{
 			"icon": {
@@ -684,13 +872,14 @@
 					]
 				},
 				"tags": ["apple-monochromatic"],
+				"defaultCode": 59662,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 236, "id": 27, "name": "apple-monochromatic", "prevSize": 32, "code": 59662 },
+			"properties": { "order": 236, "name": "apple-monochromatic", "prevSize": 32, "id": 27, "code": 59666 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 27
+			"setId": 2,
+			"iconIdx": 32
 		},
 		{
 			"icon": {
@@ -706,13 +895,14 @@
 					]
 				},
 				"tags": ["apps"],
+				"defaultCode": 59663,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 166, "id": 28, "name": "apps", "prevSize": 32, "code": 59663 },
+			"properties": { "order": 166, "name": "apps", "prevSize": 32, "id": 28, "code": 59667 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 28
+			"setId": 2,
+			"iconIdx": 33
 		},
 		{
 			"icon": {
@@ -728,13 +918,14 @@
 					]
 				},
 				"tags": ["arrow-back"],
+				"defaultCode": 59664,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 167, "id": 29, "name": "arrow-back", "prevSize": 32, "code": 59664 },
+			"properties": { "order": 167, "name": "arrow-back", "prevSize": 32, "id": 29, "code": 59668 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 29
+			"setId": 2,
+			"iconIdx": 34
 		},
 		{
 			"icon": {
@@ -751,13 +942,14 @@
 					]
 				},
 				"tags": ["arrow-collapse"],
+				"defaultCode": 59665,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 168, "id": 30, "name": "arrow-collapse", "prevSize": 32, "code": 59665 },
+			"properties": { "order": 168, "name": "arrow-collapse", "prevSize": 32, "id": 30, "code": 59669 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 30
+			"setId": 2,
+			"iconIdx": 35
 		},
 		{
 			"icon": {
@@ -773,13 +965,14 @@
 					]
 				},
 				"tags": ["arrow-decrease"],
+				"defaultCode": 59666,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 169, "id": 31, "name": "arrow-decrease", "prevSize": 32, "code": 59666 },
+			"properties": { "order": 169, "name": "arrow-decrease", "prevSize": 32, "id": 31, "code": 59670 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 31
+			"setId": 2,
+			"iconIdx": 36
 		},
 		{
 			"icon": {
@@ -795,13 +988,14 @@
 					]
 				},
 				"tags": ["arrow-down-box"],
+				"defaultCode": 59667,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 170, "id": 32, "name": "arrow-down-box", "prevSize": 32, "code": 59667 },
+			"properties": { "order": 170, "name": "arrow-down-box", "prevSize": 32, "id": 32, "code": 59671 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 32
+			"setId": 2,
+			"iconIdx": 37
 		},
 		{
 			"icon": {
@@ -818,13 +1012,14 @@
 					]
 				},
 				"tags": ["arrow-down-circle"],
+				"defaultCode": 59668,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 171, "id": 33, "name": "arrow-down-circle", "prevSize": 32, "code": 59668 },
+			"properties": { "order": 171, "name": "arrow-down-circle", "prevSize": 32, "id": 33, "code": 59672 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 33
+			"setId": 2,
+			"iconIdx": 38
 		},
 		{
 			"icon": {
@@ -840,13 +1035,14 @@
 					]
 				},
 				"tags": ["arrow-down"],
+				"defaultCode": 59669,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 172, "id": 34, "name": "arrow-down", "prevSize": 32, "code": 59669 },
+			"properties": { "order": 172, "name": "arrow-down", "prevSize": 32, "id": 34, "code": 59673 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 34
+			"setId": 2,
+			"iconIdx": 39
 		},
 		{
 			"icon": {
@@ -863,13 +1059,14 @@
 					]
 				},
 				"tags": ["arrow-expand"],
+				"defaultCode": 59670,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 173, "id": 35, "name": "arrow-expand", "prevSize": 32, "code": 59670 },
+			"properties": { "order": 173, "name": "arrow-expand", "prevSize": 32, "id": 35, "code": 59674 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 35
+			"setId": 2,
+			"iconIdx": 40
 		},
 		{
 			"icon": {
@@ -885,13 +1082,14 @@
 					]
 				},
 				"tags": ["arrow-increase"],
+				"defaultCode": 59671,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 174, "id": 36, "name": "arrow-increase", "prevSize": 32, "code": 59671 },
+			"properties": { "order": 174, "name": "arrow-increase", "prevSize": 32, "id": 36, "code": 59675 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 36
+			"setId": 2,
+			"iconIdx": 41
 		},
 		{
 			"icon": {
@@ -908,13 +1106,14 @@
 					]
 				},
 				"tags": ["arrow-looping"],
+				"defaultCode": 59672,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 175, "id": 37, "name": "arrow-looping", "prevSize": 32, "code": 59672 },
+			"properties": { "order": 175, "name": "arrow-looping", "prevSize": 32, "id": 37, "code": 59677 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 37
+			"setId": 2,
+			"iconIdx": 42
 		},
 		{
 			"icon": {
@@ -930,13 +1129,14 @@
 					]
 				},
 				"tags": ["arrow-return"],
+				"defaultCode": 59673,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 176, "id": 38, "name": "arrow-return", "prevSize": 32, "code": 59673 },
+			"properties": { "order": 176, "name": "arrow-return", "prevSize": 32, "id": 38, "code": 59678 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 38
+			"setId": 2,
+			"iconIdx": 43
 		},
 		{
 			"icon": {
@@ -952,13 +1152,14 @@
 					]
 				},
 				"tags": ["arrow-up-box"],
+				"defaultCode": 59674,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 177, "id": 39, "name": "arrow-up-box", "prevSize": 32, "code": 59674 },
+			"properties": { "order": 177, "name": "arrow-up-box", "prevSize": 32, "id": 39, "code": 59679 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 39
+			"setId": 2,
+			"iconIdx": 44
 		},
 		{
 			"icon": {
@@ -974,13 +1175,14 @@
 					]
 				},
 				"tags": ["arrow-up"],
+				"defaultCode": 59675,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 178, "id": 40, "name": "arrow-up", "prevSize": 32, "code": 59675 },
+			"properties": { "order": 178, "name": "arrow-up", "prevSize": 32, "id": 40, "code": 59680 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 40
+			"setId": 2,
+			"iconIdx": 45
 		},
 		{
 			"icon": {
@@ -996,13 +1198,14 @@
 					]
 				},
 				"tags": ["audio-disabled"],
+				"defaultCode": 59677,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 180, "id": 41, "name": "audio-disabled", "prevSize": 32, "code": 59677 },
+			"properties": { "order": 180, "name": "audio-disabled", "prevSize": 32, "id": 41, "code": 59681 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 41
+			"setId": 2,
+			"iconIdx": 46
 		},
 		{
 			"icon": {
@@ -1018,13 +1221,14 @@
 					]
 				},
 				"tags": ["audio-unavailable"],
+				"defaultCode": 59678,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 181, "id": 42, "name": "audio-unavailable", "prevSize": 32, "code": 59678 },
+			"properties": { "order": 181, "name": "audio-unavailable", "prevSize": 32, "id": 42, "code": 59682 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 42
+			"setId": 2,
+			"iconIdx": 47
 		},
 		{
 			"icon": {
@@ -1040,13 +1244,14 @@
 					]
 				},
 				"tags": ["audio"],
+				"defaultCode": 59679,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 182, "id": 43, "name": "audio", "prevSize": 32, "code": 59679 },
+			"properties": { "order": 182, "name": "audio", "prevSize": 32, "id": 43, "code": 59683 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 43
+			"setId": 2,
+			"iconIdx": 48
 		},
 		{
 			"icon": {
@@ -1063,13 +1268,14 @@
 					]
 				},
 				"tags": ["auditing"],
+				"defaultCode": 59680,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 183, "id": 44, "name": "auditing", "prevSize": 32, "code": 59680 },
+			"properties": { "order": 183, "name": "auditing", "prevSize": 32, "id": 44, "code": 59684 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 44
+			"setId": 2,
+			"iconIdx": 49
 		},
 		{
 			"icon": {
@@ -1085,13 +1291,14 @@
 					]
 				},
 				"tags": ["auth"],
+				"defaultCode": 59681,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 184, "id": 45, "name": "auth", "prevSize": 32, "code": 59681 },
+			"properties": { "order": 184, "name": "auth", "prevSize": 32, "id": 45, "code": 59685 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 45
+			"setId": 2,
+			"iconIdx": 50
 		},
 		{
 			"icon": {
@@ -1110,13 +1317,14 @@
 					]
 				},
 				"tags": ["avatar"],
+				"defaultCode": 59682,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 185, "id": 46, "name": "avatar", "prevSize": 32, "code": 59682 },
+			"properties": { "order": 185, "name": "avatar", "prevSize": 32, "id": 46, "code": 59686 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 46
+			"setId": 2,
+			"iconIdx": 51
 		},
 		{
 			"icon": {
@@ -1134,13 +1342,14 @@
 					]
 				},
 				"tags": ["backspace"],
+				"defaultCode": 59683,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 186, "id": 47, "name": "backspace", "prevSize": 32, "code": 59683 },
+			"properties": { "order": 186, "name": "backspace", "prevSize": 32, "id": 47, "code": 59687 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 47
+			"setId": 2,
+			"iconIdx": 52
 		},
 		{
 			"icon": {
@@ -1156,13 +1365,14 @@
 					]
 				},
 				"tags": ["bold"],
+				"defaultCode": 59684,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 187, "id": 48, "name": "bold", "prevSize": 32, "code": 59684 },
+			"properties": { "order": 187, "name": "bold", "prevSize": 32, "id": 48, "code": 59688 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 48
+			"setId": 2,
+			"iconIdx": 53
 		},
 		{
 			"icon": {
@@ -1182,13 +1392,14 @@
 					]
 				},
 				"tags": ["book"],
+				"defaultCode": 59685,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 188, "id": 49, "name": "book", "prevSize": 32, "code": 59685 },
+			"properties": { "order": 188, "name": "book", "prevSize": 32, "id": 49, "code": 59689 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 49
+			"setId": 2,
+			"iconIdx": 54
 		},
 		{
 			"icon": {
@@ -1204,13 +1415,14 @@
 					]
 				},
 				"tags": ["business"],
+				"defaultCode": 59686,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 189, "id": 50, "name": "business", "prevSize": 32, "code": 59686 },
+			"properties": { "order": 189, "name": "business", "prevSize": 32, "id": 50, "code": 59690 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 50
+			"setId": 2,
+			"iconIdx": 55
 		},
 		{
 			"icon": {
@@ -1227,13 +1439,14 @@
 					]
 				},
 				"tags": ["calendar"],
+				"defaultCode": 59687,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 190, "id": 51, "name": "calendar", "prevSize": 32, "code": 59687 },
+			"properties": { "order": 190, "name": "calendar", "prevSize": 32, "id": 51, "code": 59691 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 51
+			"setId": 2,
+			"iconIdx": 56
 		},
 		{
 			"icon": {
@@ -1249,13 +1462,14 @@
 					]
 				},
 				"tags": ["camera-disabled"],
+				"defaultCode": 59688,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 191, "id": 52, "name": "camera-disabled", "prevSize": 32, "code": 59688 },
+			"properties": { "order": 191, "name": "camera-disabled", "prevSize": 32, "id": 52, "code": 59692 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 52
+			"setId": 2,
+			"iconIdx": 57
 		},
 		{
 			"icon": {
@@ -1273,13 +1487,14 @@
 					]
 				},
 				"tags": ["camera-filled"],
+				"defaultCode": 59689,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 192, "id": 53, "name": "camera-filled", "prevSize": 32, "code": 59689 },
+			"properties": { "order": 192, "name": "camera-filled", "prevSize": 32, "id": 53, "code": 59693 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 53
+			"setId": 2,
+			"iconIdx": 58
 		},
 		{
 			"icon": {
@@ -1300,13 +1515,14 @@
 					]
 				},
 				"tags": ["camera-photo"],
+				"defaultCode": 59690,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 193, "id": 54, "name": "camera-photo", "prevSize": 32, "code": 59690 },
+			"properties": { "order": 193, "name": "camera-photo", "prevSize": 32, "id": 54, "code": 59694 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 54
+			"setId": 2,
+			"iconIdx": 59
 		},
 		{
 			"icon": {
@@ -1326,13 +1542,14 @@
 					]
 				},
 				"tags": ["camera-unavailable"],
+				"defaultCode": 59691,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 194, "id": 55, "name": "camera-unavailable", "prevSize": 32, "code": 59691 },
+			"properties": { "order": 194, "name": "camera-unavailable", "prevSize": 32, "id": 55, "code": 59695 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 55
+			"setId": 2,
+			"iconIdx": 60
 		},
 		{
 			"icon": {
@@ -1348,13 +1565,14 @@
 					]
 				},
 				"tags": ["camera"],
+				"defaultCode": 59692,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 195, "id": 56, "name": "camera", "prevSize": 32, "code": 59692 },
+			"properties": { "order": 195, "name": "camera", "prevSize": 32, "id": 56, "code": 59696 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 56
+			"setId": 2,
+			"iconIdx": 61
 		},
 		{
 			"icon": {
@@ -1370,13 +1588,14 @@
 					]
 				},
 				"tags": ["canned-response"],
+				"defaultCode": 59693,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 196, "id": 57, "name": "canned-response", "prevSize": 32, "code": 59693 },
+			"properties": { "order": 196, "name": "canned-response", "prevSize": 32, "id": 57, "code": 59697 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 57
+			"setId": 2,
+			"iconIdx": 62
 		},
 		{
 			"icon": {
@@ -1393,13 +1612,14 @@
 					]
 				},
 				"tags": ["card"],
+				"defaultCode": 59694,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 197, "id": 58, "name": "card", "prevSize": 32, "code": 59694 },
+			"properties": { "order": 197, "name": "card", "prevSize": 32, "id": 58, "code": 59698 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 58
+			"setId": 2,
+			"iconIdx": 63
 		},
 		{
 			"icon": {
@@ -1418,13 +1638,14 @@
 					]
 				},
 				"tags": ["channel-private"],
+				"defaultCode": 59695,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 198, "id": 59, "name": "channel-private", "prevSize": 32, "code": 59695 },
+			"properties": { "order": 198, "name": "channel-private", "prevSize": 32, "id": 59, "code": 59699 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 59
+			"setId": 2,
+			"iconIdx": 64
 		},
 		{
 			"icon": {
@@ -1440,13 +1661,14 @@
 					]
 				},
 				"tags": ["channel-public"],
+				"defaultCode": 59696,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 199, "id": 60, "name": "channel-public", "prevSize": 32, "code": 59696 },
+			"properties": { "order": 199, "name": "channel-public", "prevSize": 32, "id": 60, "code": 59700 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 60
+			"setId": 2,
+			"iconIdx": 65
 		},
 		{
 			"icon": {
@@ -1462,13 +1684,14 @@
 					]
 				},
 				"tags": ["chat-close"],
+				"defaultCode": 59697,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 200, "id": 61, "name": "chat-close", "prevSize": 32, "code": 59697 },
+			"properties": { "order": 200, "name": "chat-close", "prevSize": 32, "id": 61, "code": 59701 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 61
+			"setId": 2,
+			"iconIdx": 66
 		},
 		{
 			"icon": {
@@ -1484,13 +1707,14 @@
 					]
 				},
 				"tags": ["chat-forward"],
+				"defaultCode": 59698,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 201, "id": 62, "name": "chat-forward", "prevSize": 32, "code": 59698 },
+			"properties": { "order": 201, "name": "chat-forward", "prevSize": 32, "id": 62, "code": 59702 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 62
+			"setId": 2,
+			"iconIdx": 67
 		},
 		{
 			"icon": {
@@ -1506,13 +1730,14 @@
 					]
 				},
 				"tags": ["check"],
+				"defaultCode": 59699,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 202, "id": 63, "name": "check", "prevSize": 32, "code": 59699 },
+			"properties": { "order": 202, "name": "check", "prevSize": 32, "id": 63, "code": 59703 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 63
+			"setId": 2,
+			"iconIdx": 68
 		},
 		{
 			"icon": {
@@ -1528,13 +1753,14 @@
 					]
 				},
 				"tags": ["chevron-down"],
+				"defaultCode": 59700,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 203, "id": 64, "name": "chevron-down", "prevSize": 32, "code": 59700 },
+			"properties": { "order": 203, "name": "chevron-down", "prevSize": 32, "id": 64, "code": 59704 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 64
+			"setId": 2,
+			"iconIdx": 69
 		},
 		{
 			"icon": {
@@ -1550,13 +1776,14 @@
 					]
 				},
 				"tags": ["chevron-left-big"],
+				"defaultCode": 59701,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 204, "id": 65, "name": "chevron-left-big", "prevSize": 32, "code": 59701 },
+			"properties": { "order": 204, "name": "chevron-left-big", "prevSize": 32, "id": 65, "code": 59705 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 65
+			"setId": 2,
+			"iconIdx": 70
 		},
 		{
 			"icon": {
@@ -1572,13 +1799,14 @@
 					]
 				},
 				"tags": ["chevron-left"],
+				"defaultCode": 59702,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 205, "id": 66, "name": "chevron-left", "prevSize": 32, "code": 59702 },
+			"properties": { "order": 205, "name": "chevron-left", "prevSize": 32, "id": 66, "code": 59706 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 66
+			"setId": 2,
+			"iconIdx": 71
 		},
 		{
 			"icon": {
@@ -1594,13 +1822,14 @@
 					]
 				},
 				"tags": ["chevron-right"],
+				"defaultCode": 59703,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 206, "id": 67, "name": "chevron-right", "prevSize": 32, "code": 59703 },
+			"properties": { "order": 206, "name": "chevron-right", "prevSize": 32, "id": 67, "code": 59707 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 67
+			"setId": 2,
+			"iconIdx": 72
 		},
 		{
 			"icon": {
@@ -1616,13 +1845,14 @@
 					]
 				},
 				"tags": ["chevron-up"],
+				"defaultCode": 59704,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 207, "id": 68, "name": "chevron-up", "prevSize": 32, "code": 59704 },
+			"properties": { "order": 207, "name": "chevron-up", "prevSize": 32, "id": 68, "code": 59708 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 68
+			"setId": 2,
+			"iconIdx": 73
 		},
 		{
 			"icon": {
@@ -1638,13 +1868,14 @@
 					]
 				},
 				"tags": ["circle-check"],
+				"defaultCode": 59705,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 208, "id": 69, "name": "circle-check", "prevSize": 32, "code": 59705 },
+			"properties": { "order": 208, "name": "circle-check", "prevSize": 32, "id": 69, "code": 59709 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 69
+			"setId": 2,
+			"iconIdx": 74
 		},
 		{
 			"icon": {
@@ -1660,13 +1891,14 @@
 					]
 				},
 				"tags": ["clipboard"],
+				"defaultCode": 59706,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 209, "id": 70, "name": "clipboard", "prevSize": 32, "code": 59706 },
+			"properties": { "order": 209, "name": "clipboard", "prevSize": 32, "id": 70, "code": 59710 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 70
+			"setId": 2,
+			"iconIdx": 75
 		},
 		{
 			"icon": {
@@ -1682,13 +1914,14 @@
 					]
 				},
 				"tags": ["clock"],
+				"defaultCode": 59707,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 210, "id": 71, "name": "clock", "prevSize": 32, "code": 59707 },
+			"properties": { "order": 210, "name": "clock", "prevSize": 32, "id": 71, "code": 59711 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 71
+			"setId": 2,
+			"iconIdx": 76
 		},
 		{
 			"icon": {
@@ -1704,13 +1937,14 @@
 					]
 				},
 				"tags": ["close"],
+				"defaultCode": 59708,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 211, "id": 72, "name": "close", "prevSize": 32, "code": 59708 },
+			"properties": { "order": 211, "name": "close", "prevSize": 32, "id": 72, "code": 59712 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 72
+			"setId": 2,
+			"iconIdx": 77
 		},
 		{
 			"icon": {
@@ -1726,13 +1960,14 @@
 					]
 				},
 				"tags": ["cloud-connectivity"],
+				"defaultCode": 59709,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 212, "id": 73, "name": "cloud-connectivity", "prevSize": 32, "code": 59709 },
+			"properties": { "order": 212, "name": "cloud-connectivity", "prevSize": 32, "id": 73, "code": 59713 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 73
+			"setId": 2,
+			"iconIdx": 78
 		},
 		{
 			"icon": {
@@ -1748,13 +1983,14 @@
 					]
 				},
 				"tags": ["code"],
+				"defaultCode": 59710,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 213, "id": 74, "name": "code", "prevSize": 32, "code": 59710 },
+			"properties": { "order": 213, "name": "code", "prevSize": 32, "id": 74, "code": 59714 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 74
+			"setId": 2,
+			"iconIdx": 79
 		},
 		{
 			"icon": {
@@ -1771,13 +2007,14 @@
 					]
 				},
 				"tags": ["contacts"],
+				"defaultCode": 59711,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 214, "id": 75, "name": "contacts", "prevSize": 32, "code": 59711 },
+			"properties": { "order": 214, "name": "contacts", "prevSize": 32, "id": 75, "code": 59715 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 75
+			"setId": 2,
+			"iconIdx": 80
 		},
 		{
 			"icon": {
@@ -1793,13 +2030,14 @@
 					]
 				},
 				"tags": ["copy"],
+				"defaultCode": 59712,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 215, "id": 76, "name": "copy", "prevSize": 32, "code": 59712 },
+			"properties": { "order": 215, "name": "copy", "prevSize": 32, "id": 76, "code": 59716 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 76
+			"setId": 2,
+			"iconIdx": 81
 		},
 		{
 			"icon": {
@@ -1816,13 +2054,14 @@
 					]
 				},
 				"tags": ["create"],
+				"defaultCode": 59713,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 216, "id": 77, "name": "create", "prevSize": 32, "code": 59713 },
+			"properties": { "order": 216, "name": "create", "prevSize": 32, "id": 77, "code": 59717 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 77
+			"setId": 2,
+			"iconIdx": 82
 		},
 		{
 			"icon": {
@@ -1850,6 +2089,7 @@
 					]
 				},
 				"tags": ["dashboard"],
+				"defaultCode": 59714,
 				"grid": 0
 			},
 			"attrs": [
@@ -1858,10 +2098,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 217, "id": 78, "name": "dashboard", "prevSize": 32, "code": 59714 },
+			"properties": { "order": 217, "name": "dashboard", "prevSize": 32, "id": 78, "code": 59718 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 78
+			"setId": 2,
+			"iconIdx": 83
 		},
 		{
 			"icon": {
@@ -1878,13 +2118,14 @@
 					]
 				},
 				"tags": ["delete"],
+				"defaultCode": 59715,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 218, "id": 79, "name": "delete", "prevSize": 32, "code": 59715 },
+			"properties": { "order": 218, "name": "delete", "prevSize": 32, "id": 79, "code": 59719 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 79
+			"setId": 2,
+			"iconIdx": 84
 		},
 		{
 			"icon": {
@@ -1902,13 +2143,14 @@
 					]
 				},
 				"tags": ["desktop"],
+				"defaultCode": 59716,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 219, "id": 80, "name": "desktop", "prevSize": 32, "code": 59716 },
+			"properties": { "order": 9, "name": "desktop", "prevSize": 32, "id": 80, "code": 59720 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 80
+			"setId": 2,
+			"iconIdx": 85
 		},
 		{
 			"icon": {
@@ -1925,59 +2167,14 @@
 					]
 				},
 				"tags": ["dialpad"],
+				"defaultCode": 59717,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 220, "id": 81, "name": "dialpad", "prevSize": 32, "code": 59717 },
+			"properties": { "order": 220, "name": "dialpad", "prevSize": 32, "id": 81, "code": 59721 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 81
-		},
-		{
-			"icon": {
-				"paths": [
-					"M514.704 96c80.096 0 154.906 22.636 218.378 61.859l-46.746 46.746c-24.739-13.843-51.322-24.785-79.286-32.368 12.166 22.395 23.078 49.095 32.403 79.249l-51.997 51.999c-5.654-22.994-12.17-44.005-19.347-62.666-12.822-33.339-26.522-55.927-38.474-69.070-8.4-9.235-13.43-11.291-14.928-11.698-1.501 0.407-6.531 2.463-14.931 11.698-11.949 13.143-25.651 35.731-38.474 69.070-16.298 42.377-29.174 96.867-36.339 159.18h65.974l-63.997 64h-7.117c-0.115 2.47-0.221 4.95-0.32 7.437l-64.538 64.538c-0.173-7.933-0.259-15.926-0.259-23.974 0-16.234 0.355-32.25 1.053-48h-189.81c-2.14 15.696-3.245 31.718-3.245 48 0 33.28 4.619 65.485 13.251 96h106.984l-64 64h-17.852c2.004 3.92 4.078 7.798 6.223 11.629l-46.746 46.749c-39.223-63.475-61.859-138.282-61.859-218.378 0-229.75 186.25-416 415.999-416zM868.845 293.623l-46.746 46.748c10.56 18.87 19.434 38.816 26.413 59.629h-86.045l-64 64h164.992c2.141 15.696 3.245 31.718 3.245 48 0 33.28-4.618 65.485-13.248 96h-183.030c2.8-30.816 4.282-62.957 4.282-96 0-8.045-0.090-16.042-0.262-23.974l-64.538 64.534c-0.752 19.008-2.022 37.523-3.763 55.44h-51.677l-64 64h107.091c-7.37 42.458-17.488 80.083-29.45 111.184-12.822 33.338-26.522 55.926-38.474 69.069-8.397 9.235-13.43 11.29-14.928 11.699-1.501-0.41-6.531-2.464-14.931-11.699-11.949-13.142-25.651-35.731-38.474-69.069-7.178-18.662-13.693-39.677-19.347-62.669l-52 51.997c9.328 30.154 20.24 56.854 32.406 79.251-27.965-7.584-54.547-18.525-79.286-32.368l-46.747 46.746c63.348 39.146 137.985 61.77 217.899 61.859h0.957c229.53-0.259 415.52-186.41 415.52-416 0-80.096-22.634-154.902-61.859-218.377zM422.362 172.237c-113.55 30.788-204.31 116.98-241.464 227.763h179.676c10-93.226 32.176-173.252 61.789-227.763zM607.050 851.763c24.397-44.902 43.741-107.117 55.395-179.763h165.878c-44.653 87.35-124.723 153.584-221.274 179.763zM828.077 153.372c12.499-12.497 32.758-12.497 45.254 0 12.499 12.497 12.499 32.758 0 45.255l-671.999 672c-12.497 12.496-32.758 12.496-45.255 0s-12.497-32.758 0-45.254l671.999-672z"
-				],
-				"width": 1056,
-				"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-				"isMulticolor": false,
-				"isMulticolor2": false,
-				"colorPermutations": {
-					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
-						{ "f": 2 }
-					]
-				},
-				"tags": ["directory-disabled"],
-				"grid": 0
-			},
-			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 221, "id": 82, "name": "directory-disabled", "prevSize": 32, "code": 59718 },
-			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 82
-		},
-		{
-			"icon": {
-				"paths": [
-					"M866.493 512c0 33.28-4.624 65.485-13.267 96h-183.27c2.803-30.816 4.285-62.957 4.285-96 0-16.234-0.358-32.25-1.053-48h190.058c2.141 15.696 3.248 31.718 3.248 48zM609.037 464c0.736 15.67 1.12 31.686 1.12 48 0 33.398-1.606 65.555-4.57 96h-183.117c-2.96-30.445-4.566-62.602-4.566-96 0-16.314 0.381-32.33 1.12-48h190.013zM668.368 400c-10.013-93.226-32.218-173.252-61.872-227.763 113.699 30.788 204.579 116.981 241.782 227.763h-179.91zM421.565 172.237c-29.654 54.51-51.859 134.537-61.872 227.763h-179.913c37.204-110.782 128.083-196.975 241.785-227.763zM424.17 400c7.171-62.314 20.067-116.804 36.387-159.18 12.838-33.339 26.557-55.927 38.525-69.070 8.41-9.235 13.446-11.291 14.947-11.698 1.501 0.407 6.541 2.463 14.95 11.698 11.965 13.143 25.683 35.731 38.525 69.070 16.32 42.377 29.213 96.867 36.387 159.18h-179.722zM354.874 464c-0.698 15.75-1.056 31.766-1.056 48 0 33.043 1.485 65.184 4.288 96h-183.274c-8.643-30.515-13.268-62.72-13.268-96 0-16.282 1.107-32.304 3.249-48h190.060zM366.096 672c11.667 72.646 31.040 134.861 55.466 179.763-96.675-26.179-176.853-92.413-221.565-179.763h166.099zM514.509 928c229.834-0.259 416.070-186.41 416.070-416 0-229.75-186.496-416-416.55-416s-416.549 186.25-416.549 416c0 229.59 186.237 415.741 416.073 416 0.16 0 0.317 0 0.477 0s0.32 0 0.48 0zM606.496 851.763c24.426-44.902 43.798-107.117 55.466-179.763h166.099c-44.71 87.35-124.886 153.584-221.565 179.763zM596.992 672c-7.379 42.458-17.51 80.083-29.488 111.184-12.842 33.338-26.56 55.926-38.525 69.069-8.41 9.235-13.45 11.29-14.95 11.699-1.501-0.41-6.538-2.464-14.947-11.699-11.968-13.142-25.686-35.731-38.525-69.069-11.978-31.101-22.112-68.726-29.491-111.184h165.926z"
-				],
-				"width": 1056,
-				"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-				"isMulticolor": false,
-				"isMulticolor2": false,
-				"colorPermutations": {
-					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
-						{ "f": 2 }
-					]
-				},
-				"tags": ["directory"],
-				"grid": 0
-			},
-			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 222, "id": 83, "name": "directory", "prevSize": 32, "code": 59719 },
-			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 83
+			"setId": 2,
+			"iconIdx": 86
 		},
 		{
 			"icon": {
@@ -1995,13 +2192,14 @@
 					]
 				},
 				"tags": ["discussions"],
+				"defaultCode": 59720,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 223, "id": 84, "name": "discussions", "prevSize": 32, "code": 59720 },
+			"properties": { "order": 223, "name": "discussions", "prevSize": 32, "id": 84, "code": 59722 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 84
+			"setId": 2,
+			"iconIdx": 87
 		},
 		{
 			"icon": {
@@ -2017,13 +2215,14 @@
 					]
 				},
 				"tags": ["document"],
+				"defaultCode": 59721,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 224, "id": 85, "name": "document", "prevSize": 32, "code": 59721 },
+			"properties": { "order": 224, "name": "document", "prevSize": 32, "id": 85, "code": 59723 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 85
+			"setId": 2,
+			"iconIdx": 88
 		},
 		{
 			"icon": {
@@ -2040,13 +2239,14 @@
 					]
 				},
 				"tags": ["donner"],
+				"defaultCode": 59722,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 225, "id": 86, "name": "donner", "prevSize": 32, "code": 59722 },
+			"properties": { "order": 225, "name": "donner", "prevSize": 32, "id": 86, "code": 59724 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 86
+			"setId": 2,
+			"iconIdx": 89
 		},
 		{
 			"icon": {
@@ -2062,13 +2262,14 @@
 					]
 				},
 				"tags": ["download"],
+				"defaultCode": 59723,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 226, "id": 87, "name": "download", "prevSize": 32, "code": 59723 },
+			"properties": { "order": 226, "name": "download", "prevSize": 32, "id": 87, "code": 59725 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 87
+			"setId": 2,
+			"iconIdx": 90
 		},
 		{
 			"icon": {
@@ -2085,13 +2286,14 @@
 					]
 				},
 				"tags": ["edit"],
+				"defaultCode": 59724,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 227, "id": 88, "name": "edit", "prevSize": 32, "code": 59724 },
+			"properties": { "order": 227, "name": "edit", "prevSize": 32, "id": 88, "code": 59726 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 88
+			"setId": 2,
+			"iconIdx": 91
 		},
 		{
 			"icon": {
@@ -2107,13 +2309,14 @@
 					]
 				},
 				"tags": ["emoji-bad-mood"],
+				"defaultCode": 59725,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 228, "id": 89, "name": "emoji-bad-mood", "prevSize": 32, "code": 59725 },
+			"properties": { "order": 228, "name": "emoji-bad-mood", "prevSize": 32, "id": 89, "code": 59727 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 89
+			"setId": 2,
+			"iconIdx": 92
 		},
 		{
 			"icon": {
@@ -2129,13 +2332,14 @@
 					]
 				},
 				"tags": ["emoji-neutral-mood"],
+				"defaultCode": 59726,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 229, "id": 90, "name": "emoji-neutral-mood", "prevSize": 32, "code": 59726 },
+			"properties": { "order": 229, "name": "emoji-neutral-mood", "prevSize": 32, "id": 90, "code": 59728 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 90
+			"setId": 2,
+			"iconIdx": 93
 		},
 		{
 			"icon": {
@@ -2162,6 +2366,7 @@
 					]
 				},
 				"tags": ["emoji"],
+				"defaultCode": 59727,
 				"grid": 0
 			},
 			"attrs": [
@@ -2170,10 +2375,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 230, "id": 91, "name": "emoji", "prevSize": 32, "code": 59727 },
+			"properties": { "order": 230, "name": "emoji", "prevSize": 32, "id": 91, "code": 59729 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 91
+			"setId": 2,
+			"iconIdx": 94
 		},
 		{
 			"icon": {
@@ -2190,13 +2395,14 @@
 					]
 				},
 				"tags": ["encrypted"],
+				"defaultCode": 59728,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 231, "id": 92, "name": "encrypted", "prevSize": 32, "code": 59728 },
+			"properties": { "order": 231, "name": "encrypted", "prevSize": 32, "id": 92, "code": 59730 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 92
+			"setId": 2,
+			"iconIdx": 95
 		},
 		{
 			"icon": {
@@ -2214,13 +2420,14 @@
 					]
 				},
 				"tags": ["engagement-dashboard"],
+				"defaultCode": 59729,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 232, "id": 93, "name": "engagement-dashboard", "prevSize": 32, "code": 59729 },
+			"properties": { "order": 232, "name": "engagement-dashboard", "prevSize": 32, "id": 93, "code": 59731 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 93
+			"setId": 2,
+			"iconIdx": 96
 		},
 		{
 			"icon": {
@@ -2236,13 +2443,14 @@
 					]
 				},
 				"tags": ["enterprise-feature"],
+				"defaultCode": 59730,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 233, "id": 94, "name": "enterprise-feature", "prevSize": 32, "code": 59730 },
+			"properties": { "order": 233, "name": "enterprise-feature", "prevSize": 32, "id": 94, "code": 59732 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 94
+			"setId": 2,
+			"iconIdx": 97
 		},
 		{
 			"icon": {
@@ -2259,13 +2467,14 @@
 					]
 				},
 				"tags": ["facebook-monochromatic"],
+				"defaultCode": 59731,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 30, "id": 95, "name": "facebook-monochromatic", "prevSize": 32, "code": 59731 },
+			"properties": { "order": 30, "name": "facebook-monochromatic", "prevSize": 32, "id": 95, "code": 59733 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 95
+			"setId": 2,
+			"iconIdx": 98
 		},
 		{
 			"icon": {
@@ -2285,13 +2494,14 @@
 					]
 				},
 				"tags": ["file-document"],
+				"defaultCode": 59732,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 29, "id": 96, "name": "file-document", "prevSize": 32, "code": 59732 },
+			"properties": { "order": 29, "name": "file-document", "prevSize": 32, "id": 96, "code": 59734 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 96
+			"setId": 2,
+			"iconIdx": 99
 		},
 		{
 			"icon": {
@@ -2307,13 +2517,14 @@
 					]
 				},
 				"tags": ["file-sheet"],
+				"defaultCode": 59733,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 28, "id": 97, "name": "file-sheet", "prevSize": 32, "code": 59733 },
+			"properties": { "order": 28, "name": "file-sheet", "prevSize": 32, "id": 97, "code": 59735 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 97
+			"setId": 2,
+			"iconIdx": 100
 		},
 		{
 			"icon": {
@@ -2330,13 +2541,14 @@
 					]
 				},
 				"tags": ["filter"],
+				"defaultCode": 59734,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 27, "id": 98, "name": "filter", "prevSize": 32, "code": 59734 },
+			"properties": { "order": 27, "name": "filter", "prevSize": 32, "id": 98, "code": 59736 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 98
+			"setId": 2,
+			"iconIdx": 101
 		},
 		{
 			"icon": {
@@ -2352,13 +2564,14 @@
 					]
 				},
 				"tags": ["fingerprint"],
+				"defaultCode": 59735,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 26, "id": 99, "name": "fingerprint", "prevSize": 32, "code": 59735 },
+			"properties": { "order": 26, "name": "fingerprint", "prevSize": 32, "id": 99, "code": 59737 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 99
+			"setId": 2,
+			"iconIdx": 102
 		},
 		{
 			"icon": {
@@ -2374,13 +2587,14 @@
 					]
 				},
 				"tags": ["flag"],
+				"defaultCode": 59736,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 25, "id": 100, "name": "flag", "prevSize": 32, "code": 59736 },
+			"properties": { "order": 25, "name": "flag", "prevSize": 32, "id": 100, "code": 59738 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 100
+			"setId": 2,
+			"iconIdx": 103
 		},
 		{
 			"icon": {
@@ -2397,13 +2611,14 @@
 					]
 				},
 				"tags": ["folder"],
+				"defaultCode": 59737,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 24, "id": 101, "name": "folder", "prevSize": 32, "code": 59737 },
+			"properties": { "order": 24, "name": "folder", "prevSize": 32, "id": 101, "code": 59739 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 101
+			"setId": 2,
+			"iconIdx": 104
 		},
 		{
 			"icon": {
@@ -2431,6 +2646,7 @@
 					]
 				},
 				"tags": ["game"],
+				"defaultCode": 59738,
 				"grid": 0
 			},
 			"attrs": [
@@ -2439,10 +2655,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 23, "id": 102, "name": "game", "prevSize": 32, "code": 59738 },
+			"properties": { "order": 23, "name": "game", "prevSize": 32, "id": 102, "code": 59753 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 102
+			"setId": 2,
+			"iconIdx": 105
 		},
 		{
 			"icon": {
@@ -2459,13 +2675,14 @@
 					]
 				},
 				"tags": ["giphy-monochromatic"],
+				"defaultCode": 59739,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 21, "id": 103, "name": "giphy-monochromatic", "prevSize": 32, "code": 59739 },
+			"properties": { "order": 21, "name": "giphy-monochromatic", "prevSize": 32, "id": 103, "code": 59754 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 103
+			"setId": 2,
+			"iconIdx": 106
 		},
 		{
 			"icon": {
@@ -2482,13 +2699,14 @@
 					]
 				},
 				"tags": ["google-drive-monochromatic"],
+				"defaultCode": 59756,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 19, "id": 104, "name": "google-drive-monochromatic", "prevSize": 32, "code": 59756 },
+			"properties": { "order": 19, "name": "google-drive-monochromatic", "prevSize": 32, "id": 104, "code": 59756 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 104
+			"setId": 2,
+			"iconIdx": 107
 		},
 		{
 			"icon": {
@@ -2505,13 +2723,14 @@
 					]
 				},
 				"tags": ["group-by-type"],
+				"defaultCode": 59757,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 150, "id": 105, "name": "group-by-type", "prevSize": 32, "code": 59757 },
+			"properties": { "order": 150, "name": "group-by-type", "prevSize": 32, "id": 105, "code": 59757 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 105
+			"setId": 2,
+			"iconIdx": 108
 		},
 		{
 			"icon": {
@@ -2527,13 +2746,14 @@
 					]
 				},
 				"tags": ["hamburguer"],
+				"defaultCode": 59758,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 148, "id": 106, "name": "hamburguer", "prevSize": 32, "code": 59758 },
+			"properties": { "order": 148, "name": "hamburguer", "prevSize": 32, "id": 106, "code": 59758 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 106
+			"setId": 2,
+			"iconIdx": 109
 		},
 		{
 			"icon": {
@@ -2551,13 +2771,14 @@
 					]
 				},
 				"tags": ["history"],
+				"defaultCode": 59759,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 145, "id": 107, "name": "history", "prevSize": 32, "code": 59759 },
+			"properties": { "order": 145, "name": "history", "prevSize": 32, "id": 107, "code": 59759 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 107
+			"setId": 2,
+			"iconIdx": 110
 		},
 		{
 			"icon": {
@@ -2574,13 +2795,14 @@
 					]
 				},
 				"tags": ["home"],
+				"defaultCode": 59760,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 146, "id": 108, "name": "home", "prevSize": 32, "code": 59760 },
+			"properties": { "order": 146, "name": "home", "prevSize": 32, "id": 108, "code": 59760 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 108
+			"setId": 2,
+			"iconIdx": 111
 		},
 		{
 			"icon": {
@@ -2599,13 +2821,14 @@
 					]
 				},
 				"tags": ["image"],
+				"defaultCode": 59761,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 147, "id": 109, "name": "image", "prevSize": 32, "code": 59761 },
+			"properties": { "order": 147, "name": "image", "prevSize": 32, "id": 109, "code": 59761 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 109
+			"setId": 2,
+			"iconIdx": 112
 		},
 		{
 			"icon": {
@@ -2621,13 +2844,14 @@
 					]
 				},
 				"tags": ["info"],
+				"defaultCode": 59762,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 144, "id": 110, "name": "info", "prevSize": 32, "code": 59762 },
+			"properties": { "order": 144, "name": "info", "prevSize": 32, "id": 110, "code": 59762 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 110
+			"setId": 2,
+			"iconIdx": 113
 		},
 		{
 			"icon": {
@@ -2643,13 +2867,14 @@
 					]
 				},
 				"tags": ["input-clear"],
+				"defaultCode": 59763,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 143, "id": 111, "name": "input-clear", "prevSize": 32, "code": 59763 },
+			"properties": { "order": 143, "name": "input-clear", "prevSize": 32, "id": 111, "code": 59763 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 111
+			"setId": 2,
+			"iconIdx": 114
 		},
 		{
 			"icon": {
@@ -2676,6 +2901,7 @@
 					]
 				},
 				"tags": ["instance"],
+				"defaultCode": 59764,
 				"grid": 0
 			},
 			"attrs": [
@@ -2684,10 +2910,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 18, "id": 112, "name": "instance", "prevSize": 32, "code": 59764 },
+			"properties": { "order": 18, "name": "instance", "prevSize": 32, "id": 112, "code": 59764 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 112
+			"setId": 2,
+			"iconIdx": 115
 		},
 		{
 			"icon": {
@@ -2703,13 +2929,14 @@
 					]
 				},
 				"tags": ["italic"],
+				"defaultCode": 59765,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 17, "id": 113, "name": "italic", "prevSize": 32, "code": 59765 },
+			"properties": { "order": 17, "name": "italic", "prevSize": 32, "id": 113, "code": 59765 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 113
+			"setId": 2,
+			"iconIdx": 116
 		},
 		{
 			"icon": {
@@ -2725,13 +2952,14 @@
 					]
 				},
 				"tags": ["jump-backward"],
+				"defaultCode": 59766,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 16, "id": 114, "name": "jump-backward", "prevSize": 32, "code": 59766 },
+			"properties": { "order": 16, "name": "jump-backward", "prevSize": 32, "id": 114, "code": 59766 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 114
+			"setId": 2,
+			"iconIdx": 117
 		},
 		{
 			"icon": {
@@ -2747,13 +2975,14 @@
 					]
 				},
 				"tags": ["jump-forward"],
+				"defaultCode": 59767,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 15, "id": 115, "name": "jump-forward", "prevSize": 32, "code": 59767 },
+			"properties": { "order": 15, "name": "jump-forward", "prevSize": 32, "id": 115, "code": 59767 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 115
+			"setId": 2,
+			"iconIdx": 118
 		},
 		{
 			"icon": {
@@ -2769,13 +2998,14 @@
 					]
 				},
 				"tags": ["jump-to-message"],
+				"defaultCode": 59768,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 14, "id": 116, "name": "jump-to-message", "prevSize": 32, "code": 59768 },
+			"properties": { "order": 14, "name": "jump-to-message", "prevSize": 32, "id": 116, "code": 59768 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 116
+			"setId": 2,
+			"iconIdx": 119
 		},
 		{
 			"icon": {
@@ -2795,13 +3025,14 @@
 					]
 				},
 				"tags": ["kebab"],
+				"defaultCode": 59769,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 13, "id": 117, "name": "kebab", "prevSize": 32, "code": 59769 },
+			"properties": { "order": 13, "name": "kebab", "prevSize": 32, "id": 117, "code": 59769 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 117
+			"setId": 2,
+			"iconIdx": 120
 		},
 		{
 			"icon": {
@@ -2817,13 +3048,14 @@
 					]
 				},
 				"tags": ["keyboard"],
+				"defaultCode": 59770,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 12, "id": 118, "name": "keyboard", "prevSize": 32, "code": 59770 },
+			"properties": { "order": 12, "name": "keyboard", "prevSize": 32, "id": 118, "code": 59770 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 118
+			"setId": 2,
+			"iconIdx": 121
 		},
 		{
 			"icon": {
@@ -2840,13 +3072,14 @@
 					]
 				},
 				"tags": ["language"],
+				"defaultCode": 59771,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 11, "id": 119, "name": "language", "prevSize": 32, "code": 59771 },
+			"properties": { "order": 11, "name": "language", "prevSize": 32, "id": 119, "code": 59771 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 119
+			"setId": 2,
+			"iconIdx": 122
 		},
 		{
 			"icon": {
@@ -2862,13 +3095,14 @@
 					]
 				},
 				"tags": ["live-streaming"],
+				"defaultCode": 59773,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 9, "id": 120, "name": "live-streaming", "prevSize": 32, "code": 59773 },
+			"properties": { "order": 9, "name": "live-streaming", "prevSize": 32, "id": 120, "code": 59773 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 120
+			"setId": 2,
+			"iconIdx": 123
 		},
 		{
 			"icon": {
@@ -2898,6 +3132,7 @@
 					]
 				},
 				"tags": ["live"],
+				"defaultCode": 59774,
 				"grid": 0
 			},
 			"attrs": [
@@ -2907,10 +3142,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 8, "id": 121, "name": "live", "prevSize": 32, "code": 59774 },
+			"properties": { "order": 8, "name": "live", "prevSize": 32, "id": 121, "code": 59774 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 121
+			"setId": 2,
+			"iconIdx": 124
 		},
 		{
 			"icon": {
@@ -2938,6 +3173,7 @@
 					]
 				},
 				"tags": ["livechat-monochromatic"],
+				"defaultCode": 59775,
 				"grid": 0
 			},
 			"attrs": [
@@ -2946,10 +3182,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 31, "id": 122, "name": "livechat-monochromatic", "prevSize": 32, "code": 59775 },
+			"properties": { "order": 31, "name": "livechat-monochromatic", "prevSize": 32, "id": 122, "code": 59775 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 122
+			"setId": 2,
+			"iconIdx": 125
 		},
 		{
 			"icon": {
@@ -2965,13 +3201,14 @@
 					]
 				},
 				"tags": ["log-view"],
+				"defaultCode": 59778,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 33, "id": 123, "name": "log-view", "prevSize": 32, "code": 59778 },
+			"properties": { "order": 33, "name": "log-view", "prevSize": 32, "id": 123, "code": 59778 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 123
+			"setId": 2,
+			"iconIdx": 126
 		},
 		{
 			"icon": {
@@ -2987,13 +3224,14 @@
 					]
 				},
 				"tags": ["login"],
+				"defaultCode": 59779,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 34, "id": 124, "name": "login", "prevSize": 32, "code": 59779 },
+			"properties": { "order": 34, "name": "login", "prevSize": 32, "id": 124, "code": 59779 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 124
+			"setId": 2,
+			"iconIdx": 127
 		},
 		{
 			"icon": {
@@ -3010,13 +3248,14 @@
 					]
 				},
 				"tags": ["logout"],
+				"defaultCode": 59780,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 35, "id": 125, "name": "logout", "prevSize": 32, "code": 59780 },
+			"properties": { "order": 35, "name": "logout", "prevSize": 32, "id": 125, "code": 59780 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 125
+			"setId": 2,
+			"iconIdx": 128
 		},
 		{
 			"icon": {
@@ -3032,13 +3271,14 @@
 					]
 				},
 				"tags": ["mail"],
+				"defaultCode": 59781,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 36, "id": 126, "name": "mail", "prevSize": 32, "code": 59781 },
+			"properties": { "order": 36, "name": "mail", "prevSize": 32, "id": 126, "code": 59781 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 126
+			"setId": 2,
+			"iconIdx": 129
 		},
 		{
 			"icon": {
@@ -3054,13 +3294,14 @@
 					]
 				},
 				"tags": ["marketplace"],
+				"defaultCode": 59782,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 37, "id": 127, "name": "marketplace", "prevSize": 32, "code": 59782 },
+			"properties": { "order": 37, "name": "marketplace", "prevSize": 32, "id": 127, "code": 59782 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 127
+			"setId": 2,
+			"iconIdx": 130
 		},
 		{
 			"icon": {
@@ -3080,13 +3321,14 @@
 					]
 				},
 				"tags": ["meatballs"],
+				"defaultCode": 59783,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 38, "id": 128, "name": "meatballs", "prevSize": 32, "code": 59783 },
+			"properties": { "order": 38, "name": "meatballs", "prevSize": 32, "id": 128, "code": 59783 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 128
+			"setId": 2,
+			"iconIdx": 131
 		},
 		{
 			"icon": {
@@ -3102,13 +3344,14 @@
 					]
 				},
 				"tags": ["mention"],
+				"defaultCode": 59784,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 142, "id": 129, "name": "mention", "prevSize": 32, "code": 59784 },
+			"properties": { "order": 142, "name": "mention", "prevSize": 32, "id": 129, "code": 59784 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 129
+			"setId": 2,
+			"iconIdx": 132
 		},
 		{
 			"icon": {
@@ -3124,13 +3367,14 @@
 					]
 				},
 				"tags": ["message-disabled"],
+				"defaultCode": 59785,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 57, "id": 130, "name": "message-disabled", "prevSize": 32, "code": 59785 },
+			"properties": { "order": 57, "name": "message-disabled", "prevSize": 32, "id": 130, "code": 59785 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 130
+			"setId": 2,
+			"iconIdx": 133
 		},
 		{
 			"icon": {
@@ -3146,13 +3390,14 @@
 					]
 				},
 				"tags": ["message"],
+				"defaultCode": 59786,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 58, "id": 131, "name": "message", "prevSize": 32, "code": 59786 },
+			"properties": { "order": 58, "name": "message", "prevSize": 32, "id": 131, "code": 59786 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 131
+			"setId": 2,
+			"iconIdx": 134
 		},
 		{
 			"icon": {
@@ -3168,13 +3413,14 @@
 					]
 				},
 				"tags": ["microphone-disabled"],
+				"defaultCode": 59787,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 59, "id": 132, "name": "microphone-disabled", "prevSize": 32, "code": 59787 },
+			"properties": { "order": 59, "name": "microphone-disabled", "prevSize": 32, "id": 132, "code": 59787 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 132
+			"setId": 2,
+			"iconIdx": 135
 		},
 		{
 			"icon": {
@@ -3190,13 +3436,14 @@
 					]
 				},
 				"tags": ["microphone"],
+				"defaultCode": 59788,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 60, "id": 133, "name": "microphone", "prevSize": 32, "code": 59788 },
+			"properties": { "order": 60, "name": "microphone", "prevSize": 32, "id": 133, "code": 59788 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 133
+			"setId": 2,
+			"iconIdx": 136
 		},
 		{
 			"icon": {
@@ -3212,13 +3459,14 @@
 					]
 				},
 				"tags": ["mobile"],
+				"defaultCode": 59789,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 61, "id": 134, "name": "mobile", "prevSize": 32, "code": 59789 },
+			"properties": { "order": 61, "name": "mobile", "prevSize": 32, "id": 134, "code": 59789 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 134
+			"setId": 2,
+			"iconIdx": 137
 		},
 		{
 			"icon": {
@@ -3235,13 +3483,14 @@
 					]
 				},
 				"tags": ["moon"],
+				"defaultCode": 59790,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 62, "id": 135, "name": "moon", "prevSize": 32, "code": 59790 },
+			"properties": { "order": 62, "name": "moon", "prevSize": 32, "id": 135, "code": 59790 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 135
+			"setId": 2,
+			"iconIdx": 138
 		},
 		{
 			"icon": {
@@ -3257,13 +3506,14 @@
 					]
 				},
 				"tags": ["move-to-the-queue"],
+				"defaultCode": 59791,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 63, "id": 136, "name": "move-to-the-queue", "prevSize": 32, "code": 59791 },
+			"properties": { "order": 63, "name": "move-to-the-queue", "prevSize": 32, "id": 136, "code": 59791 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 136
+			"setId": 2,
+			"iconIdx": 139
 		},
 		{
 			"icon": {
@@ -3279,13 +3529,14 @@
 					]
 				},
 				"tags": ["musical-note"],
+				"defaultCode": 59792,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 64, "id": 137, "name": "musical-note", "prevSize": 32, "code": 59792 },
+			"properties": { "order": 64, "name": "musical-note", "prevSize": 32, "id": 137, "code": 59792 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 137
+			"setId": 2,
+			"iconIdx": 140
 		},
 		{
 			"icon": {
@@ -3301,13 +3552,14 @@
 					]
 				},
 				"tags": ["new-window"],
+				"defaultCode": 59793,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 65, "id": 138, "name": "new-window", "prevSize": 32, "code": 59793 },
+			"properties": { "order": 65, "name": "new-window", "prevSize": 32, "id": 138, "code": 59793 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 138
+			"setId": 2,
+			"iconIdx": 141
 		},
 		{
 			"icon": {
@@ -3323,13 +3575,14 @@
 					]
 				},
 				"tags": ["notification-disabled"],
+				"defaultCode": 59794,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 66, "id": 139, "name": "notification-disabled", "prevSize": 32, "code": 59794 },
+			"properties": { "order": 66, "name": "notification-disabled", "prevSize": 32, "id": 139, "code": 59794 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 139
+			"setId": 2,
+			"iconIdx": 142
 		},
 		{
 			"icon": {
@@ -3345,13 +3598,14 @@
 					]
 				},
 				"tags": ["notification"],
+				"defaultCode": 59795,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 67, "id": 140, "name": "notification", "prevSize": 32, "code": 59795 },
+			"properties": { "order": 67, "name": "notification", "prevSize": 32, "id": 140, "code": 59795 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 140
+			"setId": 2,
+			"iconIdx": 143
 		},
 		{
 			"icon": {
@@ -3368,13 +3622,14 @@
 					]
 				},
 				"tags": ["omnichannel"],
+				"defaultCode": 59796,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 123, "id": 141, "name": "omnichannel", "prevSize": 32, "code": 59796 },
+			"properties": { "order": 123, "name": "omnichannel", "prevSize": 32, "id": 141, "code": 59796 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 141
+			"setId": 2,
+			"iconIdx": 144
 		},
 		{
 			"icon": {
@@ -3391,13 +3646,14 @@
 					]
 				},
 				"tags": ["order"],
+				"defaultCode": 59797,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 124, "id": 142, "name": "order", "prevSize": 32, "code": 59797 },
+			"properties": { "order": 124, "name": "order", "prevSize": 32, "id": 142, "code": 59797 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 142
+			"setId": 2,
+			"iconIdx": 145
 		},
 		{
 			"icon": {
@@ -3415,20 +3671,21 @@
 					]
 				},
 				"tags": ["ordering-ascending"],
+				"defaultCode": 59798,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(158, 162, 168)", "opacity": 0.7 }],
 			"properties": {
 				"order": 125,
-				"id": 143,
 				"name": "ordering-ascending",
 				"prevSize": 32,
-				"code": 59798,
-				"codes": [59798, 59799]
+				"codes": [59798, 59799],
+				"id": 143,
+				"code": 59798
 			},
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 143
+			"setId": 2,
+			"iconIdx": 146
 		},
 		{
 			"icon": {
@@ -3446,20 +3703,21 @@
 					]
 				},
 				"tags": ["ordering-descending"],
+				"defaultCode": 59800,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(158, 162, 168)", "opacity": 0.7 }],
 			"properties": {
 				"order": 126,
-				"id": 144,
 				"name": "ordering-descending",
 				"prevSize": 32,
-				"code": 59800,
-				"codes": [59800, 59801]
+				"codes": [59800, 59801],
+				"id": 144,
+				"code": 59800
 			},
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 144
+			"setId": 2,
+			"iconIdx": 147
 		},
 		{
 			"icon": {
@@ -3475,13 +3733,14 @@
 					]
 				},
 				"tags": ["pause-filled"],
+				"defaultCode": 59802,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 128, "id": 145, "name": "pause-filled", "prevSize": 32, "code": 59802 },
+			"properties": { "order": 128, "name": "pause-filled", "prevSize": 32, "id": 145, "code": 59802 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 145
+			"setId": 2,
+			"iconIdx": 148
 		},
 		{
 			"icon": {
@@ -3497,13 +3756,14 @@
 					]
 				},
 				"tags": ["pause"],
+				"defaultCode": 59803,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 129, "id": 146, "name": "pause", "prevSize": 32, "code": 59803 },
+			"properties": { "order": 129, "name": "pause", "prevSize": 32, "id": 146, "code": 59803 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 146
+			"setId": 2,
+			"iconIdx": 149
 		},
 		{
 			"icon": {
@@ -3519,13 +3779,14 @@
 					]
 				},
 				"tags": ["phone-disabled"],
+				"defaultCode": 59804,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 130, "id": 147, "name": "phone-disabled", "prevSize": 32, "code": 59804 },
+			"properties": { "order": 130, "name": "phone-disabled", "prevSize": 32, "id": 147, "code": 59804 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 147
+			"setId": 2,
+			"iconIdx": 150
 		},
 		{
 			"icon": {
@@ -3541,13 +3802,14 @@
 					]
 				},
 				"tags": ["phone-end"],
+				"defaultCode": 59805,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 131, "id": 148, "name": "phone-end", "prevSize": 32, "code": 59805 },
+			"properties": { "order": 131, "name": "phone-end", "prevSize": 32, "id": 148, "code": 59805 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 148
+			"setId": 2,
+			"iconIdx": 151
 		},
 		{
 			"icon": {
@@ -3563,13 +3825,14 @@
 					]
 				},
 				"tags": ["phone"],
+				"defaultCode": 59806,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 68, "id": 149, "name": "phone", "prevSize": 32, "code": 59806 },
+			"properties": { "order": 68, "name": "phone", "prevSize": 32, "id": 149, "code": 59806 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 149
+			"setId": 2,
+			"iconIdx": 152
 		},
 		{
 			"icon": {
@@ -3585,13 +3848,14 @@
 					]
 				},
 				"tags": ["pin-map"],
+				"defaultCode": 59807,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 69, "id": 150, "name": "pin-map", "prevSize": 32, "code": 59807 },
+			"properties": { "order": 69, "name": "pin-map", "prevSize": 32, "id": 150, "code": 59807 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 150
+			"setId": 2,
+			"iconIdx": 153
 		},
 		{
 			"icon": {
@@ -3608,13 +3872,14 @@
 					]
 				},
 				"tags": ["pin"],
+				"defaultCode": 59808,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 70, "id": 151, "name": "pin", "prevSize": 32, "code": 59808 },
+			"properties": { "order": 70, "name": "pin", "prevSize": 32, "id": 151, "code": 59808 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 151
+			"setId": 2,
+			"iconIdx": 154
 		},
 		{
 			"icon": {
@@ -3631,13 +3896,14 @@
 					]
 				},
 				"tags": ["Pipe"],
+				"defaultCode": 59809,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 71, "id": 152, "name": "Pipe", "prevSize": 32, "code": 59809 },
+			"properties": { "order": 71, "name": "Pipe", "prevSize": 32, "id": 152, "code": 59809 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 152
+			"setId": 2,
+			"iconIdx": 155
 		},
 		{
 			"icon": {
@@ -3653,13 +3919,14 @@
 					]
 				},
 				"tags": ["play-filled"],
+				"defaultCode": 59810,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 72, "id": 153, "name": "play-filled", "prevSize": 32, "code": 59810 },
+			"properties": { "order": 72, "name": "play-filled", "prevSize": 32, "id": 153, "code": 59810 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 153
+			"setId": 2,
+			"iconIdx": 156
 		},
 		{
 			"icon": {
@@ -3675,13 +3942,14 @@
 					]
 				},
 				"tags": ["play"],
+				"defaultCode": 59811,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 73, "id": 154, "name": "play", "prevSize": 32, "code": 59811 },
+			"properties": { "order": 73, "name": "play", "prevSize": 32, "id": 154, "code": 59811 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 154
+			"setId": 2,
+			"iconIdx": 157
 		},
 		{
 			"icon": {
@@ -3698,13 +3966,14 @@
 					]
 				},
 				"tags": ["prune"],
+				"defaultCode": 59817,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 77, "id": 155, "name": "prune", "prevSize": 32, "code": 59817 },
+			"properties": { "order": 77, "name": "prune", "prevSize": 32, "id": 155, "code": 59817 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 155
+			"setId": 2,
+			"iconIdx": 158
 		},
 		{
 			"icon": {
@@ -3720,13 +3989,14 @@
 					]
 				},
 				"tags": ["queue"],
+				"defaultCode": 59818,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 78, "id": 156, "name": "queue", "prevSize": 32, "code": 59818 },
+			"properties": { "order": 78, "name": "queue", "prevSize": 32, "id": 156, "code": 59818 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 156
+			"setId": 2,
+			"iconIdx": 159
 		},
 		{
 			"icon": {
@@ -3743,13 +4013,14 @@
 					]
 				},
 				"tags": ["quote"],
+				"defaultCode": 59819,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 79, "id": 157, "name": "quote", "prevSize": 32, "code": 59819 },
+			"properties": { "order": 79, "name": "quote", "prevSize": 32, "id": 157, "code": 59819 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 157
+			"setId": 2,
+			"iconIdx": 160
 		},
 		{
 			"icon": {
@@ -3765,13 +4036,14 @@
 					]
 				},
 				"tags": ["reaction-add"],
+				"defaultCode": 59820,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 132, "id": 158, "name": "reaction-add", "prevSize": 32, "code": 59820 },
+			"properties": { "order": 132, "name": "reaction-add", "prevSize": 32, "id": 158, "code": 59820 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 158
+			"setId": 2,
+			"iconIdx": 161
 		},
 		{
 			"icon": {
@@ -3787,13 +4059,14 @@
 					]
 				},
 				"tags": ["record"],
+				"defaultCode": 59821,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 133, "id": 159, "name": "record", "prevSize": 32, "code": 59821 },
+			"properties": { "order": 133, "name": "record", "prevSize": 32, "id": 159, "code": 59821 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 159
+			"setId": 2,
+			"iconIdx": 162
 		},
 		{
 			"icon": {
@@ -3811,13 +4084,14 @@
 					]
 				},
 				"tags": ["refresh"],
+				"defaultCode": 59822,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 134, "id": 160, "name": "refresh", "prevSize": 32, "code": 59822 },
+			"properties": { "order": 134, "name": "refresh", "prevSize": 32, "id": 160, "code": 59822 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 160
+			"setId": 2,
+			"iconIdx": 163
 		},
 		{
 			"icon": {
@@ -3834,13 +4108,14 @@
 					]
 				},
 				"tags": ["search"],
+				"defaultCode": 59823,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 136, "id": 161, "name": "search", "prevSize": 32, "code": 59823 },
+			"properties": { "order": 136, "name": "search", "prevSize": 32, "id": 161, "code": 59823 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 161
+			"setId": 2,
+			"iconIdx": 164
 		},
 		{
 			"icon": {
@@ -3856,13 +4131,14 @@
 					]
 				},
 				"tags": ["send-filled"],
+				"defaultCode": 59824,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 137, "id": 162, "name": "send-filled", "prevSize": 32, "code": 59824 },
+			"properties": { "order": 137, "name": "send-filled", "prevSize": 32, "id": 162, "code": 59824 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 162
+			"setId": 2,
+			"iconIdx": 165
 		},
 		{
 			"icon": {
@@ -3878,13 +4154,14 @@
 					]
 				},
 				"tags": ["send"],
+				"defaultCode": 59825,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 138, "id": 163, "name": "send", "prevSize": 32, "code": 59825 },
+			"properties": { "order": 138, "name": "send", "prevSize": 32, "id": 163, "code": 59825 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 163
+			"setId": 2,
+			"iconIdx": 166
 		},
 		{
 			"icon": {
@@ -3900,13 +4177,14 @@
 					]
 				},
 				"tags": ["settings"],
+				"defaultCode": 59826,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 139, "id": 164, "name": "settings", "prevSize": 32, "code": 59826 },
+			"properties": { "order": 139, "name": "settings", "prevSize": 32, "id": 164, "code": 59826 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 164
+			"setId": 2,
+			"iconIdx": 167
 		},
 		{
 			"icon": {
@@ -3924,13 +4202,14 @@
 					]
 				},
 				"tags": ["share"],
+				"defaultCode": 59827,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 244, "id": 165, "name": "share", "prevSize": 32, "code": 59827 },
+			"properties": { "order": 244, "name": "share", "prevSize": 32, "id": 165, "code": 59827 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 165
+			"setId": 2,
+			"iconIdx": 168
 		},
 		{
 			"icon": {
@@ -3948,13 +4227,14 @@
 					]
 				},
 				"tags": ["shield-check"],
+				"defaultCode": 59828,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 80, "id": 166, "name": "shield-check", "prevSize": 32, "code": 59828 },
+			"properties": { "order": 80, "name": "shield-check", "prevSize": 32, "id": 166, "code": 59828 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 166
+			"setId": 2,
+			"iconIdx": 169
 		},
 		{
 			"icon": {
@@ -3972,13 +4252,14 @@
 					]
 				},
 				"tags": ["shield"],
+				"defaultCode": 59829,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 81, "id": 167, "name": "shield-alt", "prevSize": 32, "code": 59829 },
+			"properties": { "order": 81, "name": "shield-alt", "prevSize": 32, "id": 167, "code": 59829 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 167
+			"setId": 2,
+			"iconIdx": 170
 		},
 		{
 			"icon": {
@@ -4005,6 +4286,7 @@
 					]
 				},
 				"tags": ["signal"],
+				"defaultCode": 59830,
 				"grid": 0
 			},
 			"attrs": [
@@ -4013,10 +4295,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 82, "id": 168, "name": "signal", "prevSize": 32, "code": 59830 },
+			"properties": { "order": 82, "name": "signal", "prevSize": 32, "id": 168, "code": 59830 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 168
+			"setId": 2,
+			"iconIdx": 171
 		},
 		{
 			"icon": {
@@ -4037,13 +4319,14 @@
 					]
 				},
 				"tags": ["sort-az"],
+				"defaultCode": 59831,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 83, "id": 169, "name": "sort-az", "prevSize": 32, "code": 59831 },
+			"properties": { "order": 83, "name": "sort-az", "prevSize": 32, "id": 169, "code": 59831 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 169
+			"setId": 2,
+			"iconIdx": 172
 		},
 		{
 			"icon": {
@@ -4060,13 +4343,14 @@
 					]
 				},
 				"tags": ["sort"],
+				"defaultCode": 59832,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 84, "id": 170, "name": "sort", "prevSize": 32, "code": 59832 },
+			"properties": { "order": 84, "name": "sort", "prevSize": 32, "id": 170, "code": 59832 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 170
+			"setId": 2,
+			"iconIdx": 173
 		},
 		{
 			"icon": {
@@ -4082,13 +4366,14 @@
 					]
 				},
 				"tags": ["star-filled"],
+				"defaultCode": 59833,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 85, "id": 171, "name": "star-filled", "prevSize": 32, "code": 59833 },
+			"properties": { "order": 85, "name": "star-filled", "prevSize": 32, "id": 171, "code": 59833 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 171
+			"setId": 2,
+			"iconIdx": 174
 		},
 		{
 			"icon": {
@@ -4104,13 +4389,14 @@
 					]
 				},
 				"tags": ["star"],
+				"defaultCode": 59834,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 86, "id": 172, "name": "star", "prevSize": 32, "code": 59834 },
+			"properties": { "order": 86, "name": "star", "prevSize": 32, "id": 172, "code": 59834 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 172
+			"setId": 2,
+			"iconIdx": 175
 		},
 		{
 			"icon": {
@@ -4126,13 +4412,14 @@
 					]
 				},
 				"tags": ["strike"],
+				"defaultCode": 59846,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 94, "id": 173, "name": "strike", "prevSize": 32, "code": 59846 },
+			"properties": { "order": 94, "name": "strike", "prevSize": 32, "id": 173, "code": 59846 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 173
+			"setId": 2,
+			"iconIdx": 176
 		},
 		{
 			"icon": {
@@ -4149,13 +4436,14 @@
 					]
 				},
 				"tags": ["sun"],
+				"defaultCode": 59847,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 95, "id": 174, "name": "sun", "prevSize": 32, "code": 59847 },
+			"properties": { "order": 95, "name": "sun", "prevSize": 32, "id": 174, "code": 59847 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 174
+			"setId": 2,
+			"iconIdx": 177
 		},
 		{
 			"icon": {
@@ -4172,13 +4460,14 @@
 					]
 				},
 				"tags": ["support"],
+				"defaultCode": 59848,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 96, "id": 175, "name": "support", "prevSize": 32, "code": 59848 },
+			"properties": { "order": 96, "name": "support", "prevSize": 32, "id": 175, "code": 59848 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 175
+			"setId": 2,
+			"iconIdx": 178
 		},
 		{
 			"icon": {
@@ -4194,13 +4483,14 @@
 					]
 				},
 				"tags": ["team"],
+				"defaultCode": 59849,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 97, "id": 176, "name": "team", "prevSize": 32, "code": 59849 },
+			"properties": { "order": 97, "name": "team", "prevSize": 32, "id": 176, "code": 59849 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 176
+			"setId": 2,
+			"iconIdx": 179
 		},
 		{
 			"icon": {
@@ -4216,13 +4506,14 @@
 					]
 				},
 				"tags": ["threads"],
+				"defaultCode": 59850,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 98, "id": 177, "name": "threads", "prevSize": 32, "code": 59850 },
+			"properties": { "order": 98, "name": "threads", "prevSize": 32, "id": 177, "code": 59850 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 177
+			"setId": 2,
+			"iconIdx": 180
 		},
 		{
 			"icon": {
@@ -4271,6 +4562,7 @@
 					]
 				},
 				"tags": ["total"],
+				"defaultCode": 59851,
 				"grid": 0
 			},
 			"attrs": [
@@ -4286,10 +4578,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 99, "id": 178, "name": "total", "prevSize": 32, "code": 59851 },
+			"properties": { "order": 99, "name": "total", "prevSize": 32, "id": 178, "code": 59851 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 178
+			"setId": 2,
+			"iconIdx": 181
 		},
 		{
 			"icon": {
@@ -4305,13 +4597,14 @@
 					]
 				},
 				"tags": ["transcript"],
+				"defaultCode": 59852,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 100, "id": 179, "name": "transcript", "prevSize": 32, "code": 59852 },
+			"properties": { "order": 100, "name": "transcript", "prevSize": 32, "id": 179, "code": 59852 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 179
+			"setId": 2,
+			"iconIdx": 182
 		},
 		{
 			"icon": {
@@ -4327,13 +4620,14 @@
 					]
 				},
 				"tags": ["underline"],
+				"defaultCode": 59853,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 101, "id": 180, "name": "underline", "prevSize": 32, "code": 59853 },
+			"properties": { "order": 101, "name": "underline", "prevSize": 32, "id": 180, "code": 59853 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 180
+			"setId": 2,
+			"iconIdx": 183
 		},
 		{
 			"icon": {
@@ -4349,13 +4643,14 @@
 					]
 				},
 				"tags": ["undo"],
+				"defaultCode": 59854,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 102, "id": 181, "name": "undo", "prevSize": 32, "code": 59854 },
+			"properties": { "order": 102, "name": "undo", "prevSize": 32, "id": 181, "code": 59854 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 181
+			"setId": 2,
+			"iconIdx": 184
 		},
 		{
 			"icon": {
@@ -4371,13 +4666,14 @@
 					]
 				},
 				"tags": ["Unlimited"],
+				"defaultCode": 59855,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 103, "id": 182, "name": "Unlimited", "prevSize": 32, "code": 59855 },
+			"properties": { "order": 103, "name": "Unlimited", "prevSize": 32, "id": 182, "code": 59855 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 182
+			"setId": 2,
+			"iconIdx": 185
 		},
 		{
 			"icon": {
@@ -4394,13 +4690,14 @@
 					]
 				},
 				"tags": ["unread-on-top-disabled"],
+				"defaultCode": 59856,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 104, "id": 183, "name": "unread-on-top-disabled", "prevSize": 32, "code": 59856 },
+			"properties": { "order": 104, "name": "unread-on-top-disabled", "prevSize": 32, "id": 183, "code": 59856 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 183
+			"setId": 2,
+			"iconIdx": 186
 		},
 		{
 			"icon": {
@@ -4417,13 +4714,14 @@
 					]
 				},
 				"tags": ["unread-on-top"],
+				"defaultCode": 59857,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 105, "id": 184, "name": "unread-on-top", "prevSize": 32, "code": 59857 },
+			"properties": { "order": 105, "name": "unread-on-top", "prevSize": 32, "id": 184, "code": 59857 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 184
+			"setId": 2,
+			"iconIdx": 187
 		},
 		{
 			"icon": {
@@ -4439,13 +4737,14 @@
 					]
 				},
 				"tags": ["upload"],
+				"defaultCode": 59858,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 106, "id": 185, "name": "upload", "prevSize": 32, "code": 59858 },
+			"properties": { "order": 106, "name": "upload", "prevSize": 32, "id": 185, "code": 59858 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 185
+			"setId": 2,
+			"iconIdx": 188
 		},
 		{
 			"icon": {
@@ -4465,13 +4764,14 @@
 					]
 				},
 				"tags": ["user-add"],
+				"defaultCode": 59859,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 107, "id": 186, "name": "user-add", "prevSize": 32, "code": 59859 },
+			"properties": { "order": 107, "name": "user-add", "prevSize": 32, "id": 186, "code": 59859 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 186
+			"setId": 2,
+			"iconIdx": 189
 		},
 		{
 			"icon": {
@@ -4487,13 +4787,14 @@
 					]
 				},
 				"tags": ["user-forward"],
+				"defaultCode": 59860,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 108, "id": 187, "name": "user-forward", "prevSize": 32, "code": 59860 },
+			"properties": { "order": 108, "name": "user-forward", "prevSize": 32, "id": 187, "code": 59860 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 187
+			"setId": 2,
+			"iconIdx": 190
 		},
 		{
 			"icon": {
@@ -4510,13 +4811,14 @@
 					]
 				},
 				"tags": ["user"],
+				"defaultCode": 59861,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 109, "id": 188, "name": "user", "prevSize": 32, "code": 59861 },
+			"properties": { "order": 109, "name": "user", "prevSize": 32, "id": 188, "code": 59861 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 188
+			"setId": 2,
+			"iconIdx": 191
 		},
 		{
 			"icon": {
@@ -4555,6 +4857,7 @@
 					]
 				},
 				"tags": ["view-condensed"],
+				"defaultCode": 59862,
 				"grid": 0
 			},
 			"attrs": [
@@ -4567,10 +4870,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 110, "id": 189, "name": "view-condensed", "prevSize": 32, "code": 59862 },
+			"properties": { "order": 110, "name": "view-condensed", "prevSize": 32, "id": 189, "code": 59862 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 189
+			"setId": 2,
+			"iconIdx": 192
 		},
 		{
 			"icon": {
@@ -4590,13 +4893,14 @@
 					]
 				},
 				"tags": ["view-extended"],
+				"defaultCode": 59863,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 111, "id": 190, "name": "view-extended", "prevSize": 32, "code": 59863 },
+			"properties": { "order": 111, "name": "view-extended", "prevSize": 32, "id": 190, "code": 59863 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 190
+			"setId": 2,
+			"iconIdx": 193
 		},
 		{
 			"icon": {
@@ -4629,6 +4933,7 @@
 					]
 				},
 				"tags": ["view-medium"],
+				"defaultCode": 59864,
 				"grid": 0
 			},
 			"attrs": [
@@ -4639,10 +4944,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 112, "id": 191, "name": "view-medium", "prevSize": 32, "code": 59864 },
+			"properties": { "order": 112, "name": "view-medium", "prevSize": 32, "id": 191, "code": 59864 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 191
+			"setId": 2,
+			"iconIdx": 194
 		},
 		{
 			"icon": {
@@ -4658,13 +4963,14 @@
 					]
 				},
 				"tags": ["waiting-on-me"],
+				"defaultCode": 59865,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 113, "id": 192, "name": "waiting-on-me", "prevSize": 32, "code": 59865 },
+			"properties": { "order": 113, "name": "waiting-on-me", "prevSize": 32, "id": 192, "code": 59865 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 192
+			"setId": 2,
+			"iconIdx": 195
 		},
 		{
 			"icon": {
@@ -4684,13 +4990,14 @@
 					]
 				},
 				"tags": ["warning"],
+				"defaultCode": 59866,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }, { "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 114, "id": 193, "name": "warning", "prevSize": 32, "code": 59866 },
+			"properties": { "order": 114, "name": "warning", "prevSize": 32, "id": 193, "code": 59866 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 193
+			"setId": 2,
+			"iconIdx": 196
 		},
 		{
 			"icon": {
@@ -4706,13 +5013,14 @@
 					]
 				},
 				"tags": ["whatsapp-monochromatic"],
+				"defaultCode": 59868,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 237, "id": 194, "name": "whatsapp-monochromatic", "prevSize": 32, "code": 59868 },
+			"properties": { "order": 237, "name": "whatsapp-monochromatic", "prevSize": 32, "id": 194, "code": 59868 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 194
+			"setId": 2,
+			"iconIdx": 197
 		},
 		{
 			"icon": {
@@ -4743,6 +5051,7 @@
 					]
 				},
 				"tags": ["wordpress-monochromatic"],
+				"defaultCode": 59656,
 				"grid": 0
 			},
 			"attrs": [
@@ -4752,10 +5061,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 241, "id": 195, "name": "wordpress-monochromatic", "prevSize": 32, "code": 59656 },
+			"properties": { "order": 241, "name": "wordpress-monochromatic", "prevSize": 32, "id": 195, "code": 59755 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 195
+			"setId": 2,
+			"iconIdx": 198
 		},
 		{
 			"icon": {
@@ -4772,13 +5081,14 @@
 					]
 				},
 				"tags": ["workspaces"],
+				"defaultCode": 59870,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 119, "id": 196, "name": "workspaces", "prevSize": 32, "code": 59870 },
+			"properties": { "order": 119, "name": "workspaces", "prevSize": 32, "id": 196, "code": 59870 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 196
+			"setId": 2,
+			"iconIdx": 199
 		},
 		{
 			"icon": {
@@ -4809,6 +5119,7 @@
 					]
 				},
 				"tags": ["zip"],
+				"defaultCode": 59871,
 				"grid": 0
 			},
 			"attrs": [
@@ -4818,10 +5129,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 120, "id": 197, "name": "zip", "prevSize": 32, "code": 59871 },
+			"properties": { "order": 120, "name": "zip", "prevSize": 32, "id": 197, "code": 59871 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 197
+			"setId": 2,
+			"iconIdx": 200
 		},
 		{
 			"icon": {
@@ -4837,13 +5148,14 @@
 					]
 				},
 				"tags": ["add"],
+				"defaultCode": 59872,
 				"grid": 0
 			},
 			"attrs": [{ "fill": "rgb(108, 114, 122)" }],
-			"properties": { "order": 240, "id": 198, "name": "add", "prevSize": 32, "code": 59872 },
+			"properties": { "order": 240, "name": "add", "prevSize": 32, "id": 198, "code": 59872 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 198
+			"setId": 2,
+			"iconIdx": 201
 		},
 		{
 			"icon": {
@@ -4861,8 +5173,6 @@
 				],
 				"isMulticolor": false,
 				"isMulticolor2": false,
-				"grid": 0,
-				"tags": ["sms"],
 				"colorPermutations": {
 					"1081141221158162168120320620912282312341243190812456992125519219212552552551291162451452241651699010019902101": [
 						{ "f": 2 },
@@ -4870,7 +5180,10 @@
 						{ "f": 2 },
 						{ "f": 2 }
 					]
-				}
+				},
+				"tags": ["sms"],
+				"defaultCode": 59753,
+				"grid": 0
 			},
 			"attrs": [
 				{ "fill": "rgb(108, 114, 122)" },
@@ -4878,10 +5191,10 @@
 				{ "fill": "rgb(108, 114, 122)" },
 				{ "fill": "rgb(108, 114, 122)" }
 			],
-			"properties": { "order": 3, "id": 199, "name": "sms", "prevSize": 32, "code": 59753 },
+			"properties": { "order": 3, "name": "sms", "prevSize": 32, "id": 199, "code": 59772 },
 			"setIdx": 0,
-			"setId": 5,
-			"iconIdx": 199
+			"setId": 2,
+			"iconIdx": 202
 		}
 	],
 	"height": 1024,
@@ -4895,7 +5208,8 @@
 			"prefix": "icon-",
 			"metadata": { "fontFamily": "custom", "majorVersion": 1, "minorVersion": 0 },
 			"metrics": { "emSize": 1024, "baseline": 6.25, "whitespace": 50 },
-			"embed": false
+			"embed": false,
+			"showSelector": false
 		},
 		"imagePref": {
 			"prefix": "icon-",
