@@ -47,8 +47,6 @@ const RoomItemContainer = React.memo(
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const roomSubscription = useRef<Subscription | null>(null);
 
-		console.log('🚀 ~ file: index.tsx ~ line 128 ~ item.source', item.source);
-
 		useEffect(() => {
 			const init = () => {
 				if (item?.observe) {
