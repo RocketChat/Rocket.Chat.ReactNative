@@ -4,6 +4,7 @@ import { OrderedList as OrderedListProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
 import styles from '../styles';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 
 interface IOrderedListProps {
@@ -11,12 +12,12 @@ interface IOrderedListProps {
 }
 
 const OrderedList = ({ value }: IOrderedListProps) => {
-	const { colors } = useTheme();
+	const { theme } = useTheme();
 	return (
 		<View>
 			{value.map((item, index) => (
 				<View style={styles.row}>
-					<Text style={[styles.text, { color: colors.bodyText }]}>{index + 1}. </Text>
+					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{index + 1}. </Text>
 					<Inline value={item.value} />
 				</View>
 			))}

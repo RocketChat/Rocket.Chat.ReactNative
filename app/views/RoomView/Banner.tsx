@@ -45,7 +45,7 @@ const Banner = React.memo(
 						<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
 							<Text style={[styles.bannerModalTitle, { color: themes[theme].auxiliaryText }]}>{title}</Text>
 							<ScrollView style={styles.modalScrollView}>
-								<Markdown msg={text} />
+								<Markdown msg={text} theme={theme} />
 							</ScrollView>
 						</View>
 					</Modal>

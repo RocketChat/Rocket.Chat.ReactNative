@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
+import { Subscription } from 'rxjs';
 
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
@@ -85,6 +86,7 @@ interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | Modal
 
 class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfoEditViewState> {
 	randomValue = random(15);
+	private querySubscription: Subscription | undefined;
 	private room: TSubscriptionModel;
 	private name: TextInput | null | undefined;
 	private description: TextInput | null | undefined;
@@ -121,6 +123,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		this.loadRoom();
 	}
 
+	componentWillUnmount() {
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
+		}
+	}
+
 	loadRoom = async () => {
 		const {
 			route,
@@ -139,8 +147,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		try {
 			const db = database.active;
 			const sub = await db.get('subscriptions').find(rid);
-			this.room = sub;
-			this.init(this.room);
+			const observable = sub.observe();
+
+			this.querySubscription = observable.subscribe(data => {
+				this.room = data;
+				this.init(this.room);
+			});
 
 			const result = await hasPermission(
 				[

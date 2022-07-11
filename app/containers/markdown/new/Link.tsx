@@ -9,6 +9,7 @@ import { LISTENER } from '../../Toast';
 import { useTheme } from '../../../theme';
 import openLink from '../../../lib/methods/helpers/openLink';
 import EventEmitter from '../../../lib/methods/helpers/events';
+import { themes } from '../../../lib/constants';
 import Strike from './Strike';
 import Italic from './Italic';
 import Bold from './Bold';
@@ -19,7 +20,7 @@ interface ILinkProps {
 }
 
 const Link = ({ value }: ILinkProps) => {
-	const { theme, colors } = useTheme();
+	const { theme } = useTheme();
 	const { onLinkPress } = useContext(MarkdownContext);
 	const { src, label } = value;
 	const handlePress = () => {
@@ -38,7 +39,7 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: colors.actionTintColor }]}>
+		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].actionTintColor }]}>
 			{(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':

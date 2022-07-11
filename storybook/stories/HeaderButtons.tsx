@@ -1,16 +1,31 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import { Header, HeaderBackground } from '@react-navigation/elements';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import * as HeaderButton from '../../app/containers/HeaderButton';
-import Header from '../../app/containers/Header';
-import { ThemeContext } from '../../app/theme';
+import { TColors, ThemeContext, TSupportedThemes } from '../../app/theme';
+import { colors } from '../../app/lib/constants';
 
-const stories = storiesOf('Header Buttons', module);
+const stories = storiesOf('Header Buttons', module).addDecorator(story => <SafeAreaProvider>{story()}</SafeAreaProvider>);
 
-const HeaderExample = ({ left, right }) => (
-	<Header headerLeft={left} headerTitle={() => <View style={{ flex: 1 }} />} headerRight={right} />
+interface IHeader {
+	left?: () => React.ReactElement | null;
+	right?: () => React.ReactElement;
+	title?: string;
+	colors?: TColors;
+}
+
+const HeaderExample = ({ left, right, colors, title = '' }: IHeader) => (
+	<SafeAreaView>
+		<Header
+			title={title}
+			headerLeft={left}
+			headerRight={right}
+			headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.headerBackground }} />}
+		/>
+	</SafeAreaView>
 );
 
 stories.add('title', () => (
@@ -89,8 +104,8 @@ stories.add('badge', () => (
 	</>
 ));
 
-const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme }}>
+const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
+	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
 		<HeaderExample
 			left={() => (
 				<HeaderButton.Container left>
@@ -103,6 +118,7 @@ const ThemeStory = ({ theme }) => (
 					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} />} />
 				</HeaderButton.Container>
 			)}
+			colors={colors[theme]}
 		/>
 	</ThemeContext.Provider>
 );
