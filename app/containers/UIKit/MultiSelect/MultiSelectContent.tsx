@@ -9,6 +9,8 @@ import styles from './styles';
 import { useTheme } from '../../../theme';
 import { IItemData } from '.';
 import { debounce } from '../../../lib/methods/helpers/debounce';
+import { isIOS } from '../../../lib/methods/helpers';
+import { useActionSheet } from '../../ActionSheet';
 
 interface IMultiSelectContentProps {
 	onSearch?: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>;
@@ -26,6 +28,7 @@ export const MultiSelectContent = React.memo(
 		const { colors } = useTheme();
 		const [selected, setSelected] = useState<string[]>(Array.isArray(selectedItems) ? selectedItems : []);
 		const [items, setItems] = useState<IItemData[] | undefined>(options);
+		const { hideActionSheet } = useActionSheet();
 
 		const onSelect = (item: IItemData) => {
 			const {
@@ -68,7 +71,12 @@ export const MultiSelectContent = React.memo(
 					onChangeText={handleSearch}
 					placeholder={I18n.t('Search')}
 					inputStyle={{ backgroundColor: colors.focusedBackground }}
-					bottomSheet
+					bottomSheet={isIOS}
+					onSubmitEditing={() => {
+						setTimeout(() => {
+							hideActionSheet();
+						}, 150);
+					}}
 				/>
 				<Items items={items || []} selected={selected} onSelect={onSelect} />
 			</View>
