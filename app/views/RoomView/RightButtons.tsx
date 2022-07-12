@@ -253,6 +253,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						onCancel={() => hideActionSheet()}
 						requestTagBeforeClosingChat={departmentInfo?.requestTagBeforeClosingChat}
 						tags={tagsList?.map(t => t.name)}
+						isObrigatory={!!departmentInfo?.requestTagBeforeClosingChat}
 					/>
 				),
 				headerHeight: departmentInfo?.requestTagBeforeClosingChat ? 350 : 225

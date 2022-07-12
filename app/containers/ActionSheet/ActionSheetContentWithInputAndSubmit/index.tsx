@@ -80,7 +80,8 @@ const ActionSheetContentWithInputAndSubmit = ({
 	confirmBackgroundColor,
 	showInput = true,
 	selectTags,
-	options
+	options,
+	isObrigatory = false
 }: {
 	onSubmit: (inputValue: string, tags?: string[]) => void;
 	onCancel?: () => void;
@@ -97,6 +98,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	showInput?: boolean;
 	selectTags?: boolean;
 	options?: string[];
+	isObrigatory?: boolean;
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	const [inputValue, setInputValue] = useState('');
@@ -105,7 +107,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	const { hideActionSheet } = useActionSheet();
 
 	useEffect(() => {
-		if (!selectTags && !!inputValue) {
+		if ((!selectTags && !!inputValue) || !isObrigatory) {
 			setCanSubmit(true);
 		}
 
@@ -153,7 +155,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 					<MultiSelect
 						options={options?.map((tag: string) => ({ text: { text: tag }, value: tag }))}
 						onChange={({ value }: { value: string[] }) => {
-							setTagParamSelected([...value]);
+							setTagParamSelected(value);
 						}}
 						placeholder={{ text: i18n.t('Select_an_option') }}
 						value={tagParamSelected}

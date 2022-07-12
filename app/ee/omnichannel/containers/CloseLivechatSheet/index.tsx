@@ -7,12 +7,14 @@ const CloseLivechatSheet = ({
 	onSubmit = () => {},
 	onCancel = () => {},
 	requestTagBeforeClosingChat,
-	tags
+	tags,
+	isObrigatory = false
 }: {
 	onSubmit: (comment: string) => void;
 	onCancel: () => void;
 	requestTagBeforeClosingChat?: boolean;
 	tags?: string[];
+	isObrigatory?: boolean;
 }) => (
 	<ActionSheetContentWithInputAndSubmit
 		title={I18n.t('Closing_chat')}
@@ -24,6 +26,7 @@ const CloseLivechatSheet = ({
 		secureTextEntry={false}
 		selectTags={requestTagBeforeClosingChat}
 		options={tags}
+		isObrigatory={isObrigatory}
 	/>
 );
 
