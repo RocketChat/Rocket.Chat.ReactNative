@@ -133,16 +133,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 					value={inputValue}
 					placeholder={placeholder}
 					onChangeText={value => setInputValue(value)}
-					onSubmitEditing={() => {
-						if (canSubmit) {
-							// fix android animation
-							setTimeout(() => {
-								hideActionSheet();
-							}, 100);
-
-							onSubmit(inputValue, tagParamSelected);
-						}
-					}}
 					testID={testID}
 					secureTextEntry={secureTextEntry}
 					inputStyle={{ borderWidth: 2 }}
