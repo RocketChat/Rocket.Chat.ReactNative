@@ -81,7 +81,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	showInput = true,
 	selectTags,
 	options,
-	isObrigatory = false
+	isObligatory = false
 }: {
 	onSubmit: (inputValue: string, tags?: string[]) => void;
 	onCancel?: () => void;
@@ -98,7 +98,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	showInput?: boolean;
 	selectTags?: boolean;
 	options?: string[];
-	isObrigatory?: boolean;
+	isObligatory?: boolean;
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	const [inputValue, setInputValue] = useState('');
@@ -107,7 +107,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	const { hideActionSheet } = useActionSheet();
 
 	useEffect(() => {
-		if ((!selectTags && !!inputValue) || !isObrigatory) {
+		if ((!selectTags && !!inputValue) || !isObligatory) {
 			setCanSubmit(true);
 		}
 
