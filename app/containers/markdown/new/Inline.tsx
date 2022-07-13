@@ -48,7 +48,7 @@ const Inline = ({ value }: IParagraphProps) => {
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji value={block.value} />;
+						return <Emoji block={block} />;
 					case 'MENTION_CHANNEL':
 						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':

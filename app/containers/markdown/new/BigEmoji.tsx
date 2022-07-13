@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 const BigEmoji = ({ value }: IBigEmojiProps) => (
 	<View style={styles.container}>
 		{value.map(block => (
-			<Emoji value={block.value} isBigEmoji />
+			<Emoji block={block} isBigEmoji />
 		))}
 	</View>
 );

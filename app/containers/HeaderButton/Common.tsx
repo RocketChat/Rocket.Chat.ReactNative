@@ -3,12 +3,10 @@ import React from 'react';
 import { isIOS } from '../../lib/methods/helpers';
 import I18n from '../../i18n';
 import Container from './HeaderButtonContainer';
-import Item from './HeaderButtonItem';
+import Item, { IHeaderButtonItem } from './HeaderButtonItem';
 
-interface IHeaderButtonCommon {
+interface IHeaderButtonCommon extends IHeaderButtonItem {
 	navigation?: any; // TODO: Evaluate proper type
-	onPress?: () => void;
-	testID?: string;
 }
 
 // Left
@@ -28,20 +26,20 @@ export const CloseModal = React.memo(
 	)
 );
 
-export const CancelModal = React.memo(({ onPress, testID }: Partial<IHeaderButtonCommon>) => (
+export const CancelModal = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container left>
 		{isIOS ? (
-			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
+			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} {...props} />
 		) : (
-			<Item iconName='close' onPress={onPress} testID={testID} />
+			<Item iconName='close' onPress={onPress} testID={testID} {...props} />
 		)}
 	</Container>
 ));
 
 // Right
-export const More = React.memo(({ onPress, testID }: Partial<IHeaderButtonCommon>) => (
+export const More = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container>
-		<Item iconName='kebab' onPress={onPress} testID={testID} />
+		<Item iconName='kebab' onPress={onPress} testID={testID} {...props} />
 	</Container>
 ));
 
@@ -58,7 +56,7 @@ export const Preferences = React.memo(({ onPress, testID, ...props }: IHeaderBut
 ));
 
 export const Legal = React.memo(
-	({ navigation, testID, onPress = () => navigation?.navigate('LegalView') }: IHeaderButtonCommon) => (
-		<More onPress={onPress} testID={testID} />
+	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
+		<More onPress={onPress} testID={testID} {...props} />
 	)
 );

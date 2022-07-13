@@ -3,7 +3,6 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
-import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
@@ -11,7 +10,6 @@ import { DisplayMode, themes } from '../lib/constants';
 import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
-import { getHeaderTitlePosition } from '../containers/Header';
 import * as HeaderButton from '../containers/HeaderButton';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -74,7 +72,6 @@ interface ITeamChannelsViewState {
 }
 
 interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamChannelsView'> {
-	insets: EdgeInsets;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;
@@ -190,18 +187,18 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	setHeader = () => {
 		const { isSearching, showCreate, data } = this.state;
-		const { navigation, isMasterDetail, insets, theme } = this.props;
+		const { navigation, isMasterDetail, theme } = this.props;
 
 		const { team } = this;
 		if (!team) {
 			return;
 		}
 
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 2 });
-
 		if (isSearching) {
 			const options: StackNavigationOptions = {
 				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
@@ -210,27 +207,33 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				headerTitle: () => (
 					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
 				),
-				headerTitleContainerStyle: {
-					left: headerTitlePosition.left,
-					right: headerTitlePosition.right
-				},
 				headerRight: () => null
 			};
 			return navigation.setOptions(options);
 		}
 
 		const options: StackNavigationOptions = {
-			headerShown: true,
 			headerTitleAlign: 'left',
-			headerTitleContainerStyle: {
-				left: headerTitlePosition.left,
-				right: headerTitlePosition.right
-			},
+			headerTitleContainerStyle: { flex: 1, marginLeft: 0, marginRight: 4, maxWidth: undefined },
+			headerLeftContainerStyle: { minWidth: 60 },
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
+			),
+			headerRight: () => (
+				<HeaderButton.Container>
+					{showCreate ? (
+						<HeaderButton.Item
+							iconName='create'
+							testID='team-channels-view-create'
+							onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })}
+						/>
+					) : null}
+					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
+				</HeaderButton.Container>
 			)
 		};
 
@@ -238,18 +241,6 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
 
-		options.headerRight = () => (
-			<HeaderButton.Container>
-				{showCreate ? (
-					<HeaderButton.Item
-						iconName='create'
-						testID='team-channels-view-create'
-						onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })}
-					/>
-				) : null}
-				<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
-			</HeaderButton.Container>
-		);
 		navigation.setOptions(options);
 	};
 
@@ -575,4 +566,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-export default connect(mapStateToProps)(withDimensions(withSafeAreaInsets(withTheme(withActionSheet(TeamChannelsView)))));
+export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(TeamChannelsView))));

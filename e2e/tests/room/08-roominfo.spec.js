@@ -290,10 +290,11 @@ describe('Room info screen', () => {
 					.toExist()
 					.withTimeout(5000);
 				await element(by[textMatcher]('Yes, archive it!').and(by.type(alertButtonType))).tap();
-				await waitFor(element(by.id('room-info-edit-view-unarchive')))
-					.toExist()
-					.withTimeout(60000);
-				await expect(element(by.id('room-info-edit-view-archive'))).toBeNotVisible();
+				await waitForToast();
+				// await waitFor(element(by.id('room-info-edit-view-unarchive')))
+				// 	.toExist()
+				// 	.withTimeout(60000);
+				// await expect(element(by.id('room-info-edit-view-archive'))).toBeNotVisible();
 			});
 
 			it('should delete room', async () => {
