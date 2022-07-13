@@ -1,29 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {
-	Animated,
-	Easing,
-	KeyboardAvoidingView,
-	Modal,
-	StyleSheet,
-	Text,
-	TouchableWithoutFeedback,
-	View,
-	TextStyle
-} from 'react-native';
+import { Text, TextStyle } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
-import { FormTextInput } from '../../TextInput';
-import { textParser } from '../utils';
-import { themes } from '../../../lib/constants';
-import I18n from '../../../i18n';
-import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import { IText } from '../interfaces';
 import Chips from './Chips';
-import Items from './Items';
 import Input from './Input';
 import styles from './styles';
+import { useActionSheet } from '../../ActionSheet';
+import { MultiSelectContent } from './MultiSelectContent';
 
 export interface IItemData {
 	value: any;
@@ -38,23 +24,13 @@ interface IMultiSelect {
 	context?: BlockContext;
 	loading?: boolean;
 	multiselect?: boolean;
-	onSearch?: () => void;
+	onSearch?: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>;
 	onClose?: () => void;
 	inputStyle?: TextStyle;
 	value?: any[];
 	disabled?: boolean | null;
 	innerInputStyle?: object;
 }
-
-const ANIMATION_DURATION = 200;
-const ANIMATION_PROPS = {
-	duration: ANIMATION_DURATION,
-	easing: Easing.inOut(Easing.quad),
-	useNativeDriver: true
-};
-const animatedValue = new Animated.Value(0);
-
-const behavior = isIOS ? 'padding' : null;
 
 export const MultiSelect = React.memo(
 	({
@@ -71,12 +47,11 @@ export const MultiSelect = React.memo(
 		inputStyle,
 		innerInputStyle
 	}: IMultiSelect) => {
-		const { theme } = useTheme();
-		const [selected, select] = useState<any>(Array.isArray(values) ? values : []);
-		const [open, setOpen] = useState(false);
-		const [search, onSearchChange] = useState('');
+		const { colors } = useTheme();
+		const [selected, select] = useState<string[]>(Array.isArray(values) ? values : []);
 		const [currentValue, setCurrentValue] = useState('');
-		const [showContent, setShowContent] = useState(false);
+
+		const { showActionSheet, hideActionSheet } = useActionSheet();
 
 		useEffect(() => {
 			if (Array.isArray(values)) {
@@ -85,29 +60,32 @@ export const MultiSelect = React.memo(
 		}, [values]);
 
 		useEffect(() => {
-			setOpen(showContent);
-		}, [showContent]);
-
-		useEffect(() => {
 			if (values && values.length && !multiselect) {
 				setCurrentValue(values[0].text);
 			}
 		}, []);
 
 		const onShow = () => {
-			Animated.timing(animatedValue, {
-				toValue: 1,
-				...ANIMATION_PROPS
-			}).start();
-			setShowContent(true);
+			showActionSheet({
+				children: (
+					<MultiSelectContent
+						options={options}
+						onSearch={onSearch}
+						select={select}
+						onChange={onChange}
+						setCurrentValue={setCurrentValue}
+						onHide={onHide}
+						multiselect={multiselect}
+						selectedItems={selected}
+					/>
+				),
+				onClose,
+				headerHeight: 275
+			});
 		};
-
 		const onHide = () => {
 			onClose();
-			Animated.timing(animatedValue, {
-				toValue: 0,
-				...ANIMATION_PROPS
-			}).start(() => setShowContent(false));
+			hideActionSheet();
 		};
 
 		const onSelect = (item: IItemData) => {
@@ -127,45 +105,14 @@ export const MultiSelect = React.memo(
 			} else {
 				onChange({ value });
 				setCurrentValue(text);
-				onHide();
 			}
 		};
-
-		const renderContent = () => {
-			const items: any = onSearch
-				? options
-				: options.filter((option: any) => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
-
-			return (
-				<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
-					<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
-						<FormTextInput
-							testID='multi-select-search'
-							onChangeText={onSearch || onSearchChange}
-							placeholder={I18n.t('Search')}
-						/>
-						<Items items={items} selected={selected} onSelect={onSelect} theme={theme} />
-					</View>
-				</View>
-			);
-		};
-
-		const translateY = animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [600, 0]
-		});
 
 		let button = multiselect ? (
 			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
 		) : (
-			<Input
-				onPress={onShow}
-				theme={theme}
-				loading={loading}
-				disabled={disabled}
-				inputStyle={inputStyle}
-				innerInputStyle={innerInputStyle}>
-				<Text style={[styles.pickerText, { color: currentValue ? themes[theme].titleText : themes[theme].auxiliaryText }]}>
+			<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
+				<Text style={[styles.pickerText, { color: currentValue ? colors.titleText : colors.auxiliaryText }]}>
 					{currentValue || placeholder.text}
 				</Text>
 			</Input>
@@ -173,48 +120,18 @@ export const MultiSelect = React.memo(
 
 		if (context === BlockContext.FORM) {
 			const items: any = options.filter((option: any) => selected.includes(option.value));
+
 			button = (
-				<Input
-					onPress={onShow}
-					theme={theme}
-					loading={loading}
-					disabled={disabled}
-					inputStyle={inputStyle}
-					innerInputStyle={innerInputStyle}>
+				<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
 					{items.length ? (
-						<Chips items={items} onSelect={(item: any) => (disabled ? {} : onSelect(item))} theme={theme} />
+						<Chips items={items} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
 					) : (
-						<Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>
+						<Text style={[styles.pickerText, { color: colors.auxiliaryText }]}>{placeholder.text}</Text>
 					)}
 				</Input>
 			);
 		}
 
-		return (
-			<>
-				<Modal animationType='fade' transparent visible={open} onRequestClose={onHide} onShow={onShow}>
-					<TouchableWithoutFeedback onPress={onHide}>
-						<View style={styles.container}>
-							<View
-								style={[
-									StyleSheet.absoluteFill,
-									{
-										opacity: themes[theme].backdropOpacity,
-										backgroundColor: themes[theme].backdropColor
-									}
-								]}
-							/>
-							{/* @ts-ignore*/}
-							<KeyboardAvoidingView style={styles.keyboardView} behavior={behavior}>
-								<Animated.View style={[styles.animatedContent, { transform: [{ translateY }] }]}>
-									{showContent ? renderContent() : null}
-								</Animated.View>
-							</KeyboardAvoidingView>
-						</View>
-					</TouchableWithoutFeedback>
-				</Modal>
-				{button}
-			</>
-		);
+		return <>{button}</>;
 	}
 );
