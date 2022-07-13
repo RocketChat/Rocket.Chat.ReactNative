@@ -1,24 +1,20 @@
 import React from 'react';
-import { View } from 'react-native';
 
-import { ActionsButton, CancelEditingButton } from './buttons';
-import styles from './styles';
+import { CancelEditingButton, ToggleEmojiButton } from './buttons';
 
 interface IMessageBoxLeftButtons {
-	showMessageBoxActions(): void;
+	showEmojiKeyboard: boolean;
+	openEmoji(): void;
+	closeEmoji(): void;
 	editing: boolean;
 	editCancel(): void;
-	isActionsEnabled: boolean;
 }
 
-const LeftButtons = React.memo(({ showMessageBoxActions, editing, editCancel, isActionsEnabled }: IMessageBoxLeftButtons) => {
+const LeftButtons = React.memo(({ editing, editCancel, showEmojiKeyboard, openEmoji, closeEmoji }: IMessageBoxLeftButtons) => {
 	if (editing) {
 		return <CancelEditingButton onPress={editCancel} />;
 	}
-	if (isActionsEnabled) {
-		return <ActionsButton onPress={showMessageBoxActions} />;
-	}
-	return <View style={styles.buttonsWhitespace} />;
+	return <ToggleEmojiButton show={showEmojiKeyboard} open={openEmoji} close={closeEmoji} />;
 });
 
 export default LeftButtons;

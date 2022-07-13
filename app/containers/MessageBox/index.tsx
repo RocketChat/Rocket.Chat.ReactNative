@@ -63,9 +63,7 @@ import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 
-if (isAndroid) {
-	require('./EmojiKeyboard');
-}
+require('./EmojiKeyboard');
 
 const imagePickerConfig = {
 	cropping: true,
