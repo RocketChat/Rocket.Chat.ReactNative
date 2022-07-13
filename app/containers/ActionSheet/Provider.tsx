@@ -20,7 +20,8 @@ export type TActionSheetOptions = {
 	hasCancel?: boolean;
 	type?: string;
 	children?: React.ReactElement | null;
-	snaps?: string[] | number[];
+	snaps?: (string | number)[];
+	onClose?: () => void;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;

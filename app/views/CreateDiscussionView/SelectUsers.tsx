@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
 import { search } from '../../lib/methods';
-import { getRoomAvatar, getRoomTitle, debounce } from '../../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
+import { useTheme } from '../../theme';
 
 const SelectUsers = ({
 	server,
@@ -19,22 +19,31 @@ const SelectUsers = ({
 	selected,
 	onUserSelect,
 	blockUnauthenticatedAccess,
-	serverVersion,
-	theme
+	serverVersion
 }: ICreateDiscussionViewSelectUsers): React.ReactElement => {
 	const [users, setUsers] = useState<any[]>([]);
+	const { colors } = useTheme();
 
-	const getUsers = debounce(async (keyword = '') => {
+	const getUsers = async (keyword = '') => {
 		try {
 			const res = await search({ text: keyword, filterRooms: false });
 			const selectedUsers = users.filter((u: IUser) => selected.includes(u.name));
 			const filteredUsers = res.filter(r => !selectedUsers.find((u: IUser) => u.name === r.name));
 			const items = [...selectedUsers, ...filteredUsers];
 			setUsers(items);
+			return items.map((user: IUser) => ({
+				value: user.name,
+				text: { text: getRoomTitle(user) },
+				imageUrl: getAvatar(user)
+			}));
 		} catch {
 			// do nothing
 		}
-	}, 300);
+	};
+
+	useEffect(() => {
+		getUsers('');
+	}, []);
 
 	const getAvatar = (item: IUser) =>
 		getAvatarURL({
@@ -50,7 +59,7 @@ const SelectUsers = ({
 
 	return (
 		<>
-			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Invite_users')}</Text>
+			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Invite_users')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onSearch={getUsers}
@@ -60,7 +69,6 @@ const SelectUsers = ({
 					text: { text: getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
-				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}
 				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
 				context={BlockContext.FORM}
 				multiselect
