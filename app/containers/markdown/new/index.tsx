@@ -12,6 +12,7 @@ import UnorderedList from './UnorderedList';
 import { IUserMention, IUserChannel, TOnLinkPress } from '../interfaces';
 import TaskList from './TaskList';
 import MarkdownContext from './MarkdownContext';
+import LineBreak from './LineBreak';
 
 interface IBodyProps {
 	tokens?: MarkdownAST;
@@ -35,7 +36,7 @@ const Body = ({
 	getCustomEmoji,
 	baseUrl,
 	onLinkPress
-}: IBodyProps) => {
+}: IBodyProps): React.ReactElement | null => {
 	if (isEmpty(tokens)) {
 		return null;
 	}
@@ -70,6 +71,8 @@ const Body = ({
 						return <Code value={block.value} />;
 					case 'HEADING':
 						return <Heading value={block.value} level={block.level} />;
+					case 'LINE_BREAK':
+						return <LineBreak />;
 					default:
 						return null;
 				}
