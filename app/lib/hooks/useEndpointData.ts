@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import isEqual from 'lodash/isEqual';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { MatchPathPattern, OperationParams, PathFor, ResultFor, Serialized } from '../../definitions/rest/helpers';
 import { showErrorAlert } from '../methods/helpers';
@@ -27,6 +28,12 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	const [loading, setLoading] = useState(true);
 	const [result, setResult] = useState<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined>();
 
+	const paramsRef = useRef(params);
+
+	if (!isEqual(paramsRef.current, params)) {
+		paramsRef.current = params;
+	}
+
 	const fetchData = useCallback(() => {
 		if (!endpoint) return;
 		setLoading(true);
@@ -45,7 +52,7 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 				setLoading(false);
 				showErrorAlert(e.error);
 			});
-	}, [params]);
+	}, [paramsRef.current]);
 
 	useEffect(() => {
 		fetchData();
