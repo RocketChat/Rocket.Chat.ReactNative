@@ -16,7 +16,7 @@ import { showToast } from '../../lib/methods/helpers/showToast';
 import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
 import { showErrorAlert } from '../../lib/methods/helpers';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 
 interface IStatus {
 	id: TUserStatus;
@@ -133,6 +133,7 @@ const StatusView = (): React.ReactElement => {
 					: e.reason;
 			logEvent(events.STATUS_CUSTOM_F);
 			showErrorAlert(messageError);
+			log(e);
 		}
 		setLoading(false);
 	};
