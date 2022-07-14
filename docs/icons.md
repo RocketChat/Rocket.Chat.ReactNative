@@ -8,7 +8,7 @@ After icons are already working on the app, we need to get Typescript working pr
 For that, we run a script to generate a new file containing the icons data (just like a `d.ts.`).
 
 ```sh
-yarn build-icons-name
+yarn build-icon-set
 ```
 
 It maps all icons on `selection.json` and creates `mappedIcons.js`.
