@@ -119,11 +119,11 @@ const StatusView = (): React.ReactElement => {
 		setHeader();
 	}, [statusText, status]);
 
-	const setCustomStatus = async (status: string, statusText: string) => {
+	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
 		setLoading(true);
 		try {
 			await Services.setUserStatus(status, statusText);
-			dispatch(setUser({ statusText }));
+			dispatch(setUser({ statusText, status }));
 			logEvent(events.STATUS_CUSTOM);
 			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
