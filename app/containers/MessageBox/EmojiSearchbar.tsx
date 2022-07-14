@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, FlatList } from 'react-native';
 import { orderBy } from 'lodash';
 
-import FormTextInput from '../TextInput/FormTextInput';
+import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
@@ -31,7 +31,7 @@ const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 
 const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 	({ openEmoji, onChangeText, emojis, onEmojiSelected, baseUrl }, ref) => {
-		const { colors, theme } = useTheme();
+		const { colors } = useTheme();
 		const [searchText, setSearchText] = useState<string>('');
 		const [frequentlyUsed, setFrequentlyUsed] = useState([]);
 
@@ -103,7 +103,6 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 							style={[styles.emojiSearchbar, { backgroundColor: colors.passcodeButtonActive }]}
 							containerStyle={styles.textInputContainer}
 							value={searchText}
-							theme={theme}
 							onClearInput={() => handleTextChange('')}
 							iconRight={'search'}
 						/>
