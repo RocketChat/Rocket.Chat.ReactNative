@@ -14,19 +14,11 @@ const TabBar = React.memo(({ activeTab, tabs, goToPage, tabEmojiStyle }: ITabBar
 				<TouchableOpacity
 					activeOpacity={0.7}
 					key={tab}
-					onPress={() => {
-						if (goToPage) {
-							goToPage(i);
-						}
-					}}
+					onPress={() => goToPage?.(i)}
 					style={styles.tab}
 					testID={`reaction-picker-${tab}`}>
 					<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
-					{activeTab === i ? (
-						<View style={[styles.activeTabLine, { backgroundColor: colors.tintColor }]} />
-					) : (
-						<View style={styles.tabLine} />
-					)}
+					<View style={activeTab === i ? [styles.activeTabLine, { backgroundColor: colors.tintColor }] : styles.tabLine} />
 				</TouchableOpacity>
 			))}
 		</View>

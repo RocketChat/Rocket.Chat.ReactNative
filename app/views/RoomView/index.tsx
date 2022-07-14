@@ -824,12 +824,32 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: undefined, replying: false, replyWithMention: false });
 	};
 
+	showReactionPicker = () => {
+		const { showActionSheet, width, height } = this.props;
+		const { reacting, selectedMessage } = this.state;
+		showActionSheet &&
+			showActionSheet({
+				children: (
+					<ReactionPicker
+						show={reacting}
+						message={selectedMessage}
+						onEmojiSelected={this.onReactionPress}
+						reactionClose={this.onReactionClose}
+						width={width}
+						height={height}
+					/>
+				),
+				snaps: [400, '100%']
+			});
+	};
+
 	onReactionInit = (message: TAnyMessageModel) => {
-		this.setState({ selectedMessage: message, reacting: true });
+		this.setState({ selectedMessage: message }, this.showReactionPicker);
 	};
 
 	onReactionClose = () => {
-		this.setState({ selectedMessage: undefined, reacting: false });
+		const { hideActionSheet } = this.props;
+		this.setState({ selectedMessage: undefined, reacting: false }, hideActionSheet);
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
@@ -1485,8 +1505,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, selectedMessage, loading, reacting } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
+		const { room, loading } = this.state;
+		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
 		let bannerClosed;
@@ -1518,15 +1538,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
-				<ReactionPicker
-					show={reacting}
-					message={selectedMessage}
-					onEmojiSelected={this.onReactionPress}
-					reactionClose={this.onReactionClose}
-					width={width}
-					height={height}
-					theme={theme}
-				/>
 				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 			</SafeAreaView>
