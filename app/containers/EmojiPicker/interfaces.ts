@@ -1,5 +1,6 @@
 import { StyleProp, TextStyle } from 'react-native';
 
+import { TIconsName } from '../CustomIcon';
 import { IEmoji } from '../../definitions';
 
 export enum EventTypes {
@@ -24,6 +25,6 @@ export interface IFooterProps {
 export interface ITabBarProps {
 	goToPage?: (page: number) => void;
 	activeTab?: number;
-	tabs?: string[];
+	tabs?: TIconsName[];
 	tabEmojiStyle: StyleProp<TextStyle>;
 }

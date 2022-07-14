@@ -18,7 +18,7 @@ const Footer = React.memo(({ onSearchPressed, onBackspacePressed }: IFooterProps
 			</BorderlessButton>
 
 			<Pressable onPress={onBackspacePressed} hitSlop={BUTTON_HIT_SLOP} style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}>
-				<CustomIcon color={colors.auxiliaryTintColor} size={25} name='backspace' />
+				<CustomIcon color={colors.auxiliaryTintColor} size={24} name='backspace' />
 			</Pressable>
 		</View>
 	);

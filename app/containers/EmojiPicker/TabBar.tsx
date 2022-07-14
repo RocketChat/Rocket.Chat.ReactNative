@@ -1,12 +1,13 @@
 import React from 'react';
-import { Text, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { ITabBarProps } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
+import { CustomIcon } from '../CustomIcon';
 
-const TabBar = ({ activeTab, tabs, goToPage, tabEmojiStyle }: ITabBarProps): React.ReactElement => {
+const TabBar = ({ activeTab, tabs, goToPage }: ITabBarProps): React.ReactElement => {
 	const { colors } = useTheme();
 
 	return (
@@ -23,7 +24,7 @@ const TabBar = ({ activeTab, tabs, goToPage, tabEmojiStyle }: ITabBarProps): Rea
 							backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
 						}
 					]}>
-					<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
+					<CustomIcon name={tab} size={24} color={colors.titleText} />
 					<View style={activeTab === i ? [styles.activeTabLine, { backgroundColor: colors.tintColor }] : styles.tabLine} />
 				</Pressable>
 			))}
