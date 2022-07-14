@@ -1,28 +1,34 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, Pressable, View } from 'react-native';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { ITabBarProps } from './interfaces';
+import { isIOS } from '../../lib/methods/helpers';
 
-const TabBar = React.memo(({ activeTab, tabs, goToPage, tabEmojiStyle }: ITabBarProps) => {
+const TabBar = ({ activeTab, tabs, goToPage, tabEmojiStyle }: ITabBarProps): React.ReactElement => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={styles.tabsContainer}>
 			{tabs?.map((tab, i) => (
-				<TouchableOpacity
-					activeOpacity={0.7}
+				<Pressable
 					key={tab}
 					onPress={() => goToPage?.(i)}
-					style={styles.tab}
-					testID={`reaction-picker-${tab}`}>
+					testID={`reaction-picker-${tab}`}
+					android_ripple={{ color: colors.bannerBackground }}
+					style={({ pressed }: { pressed: boolean }) => [
+						styles.tab,
+						{
+							backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
+						}
+					]}>
 					<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
 					<View style={activeTab === i ? [styles.activeTabLine, { backgroundColor: colors.tintColor }] : styles.tabLine} />
-				</TouchableOpacity>
+				</Pressable>
 			))}
 		</View>
 	);
-});
+};
 
 export default TabBar;

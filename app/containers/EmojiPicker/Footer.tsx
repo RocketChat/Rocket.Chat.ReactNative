@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
@@ -14,12 +14,12 @@ const Footer = React.memo(({ onSearchPressed, onBackspacePressed }: IFooterProps
 	return (
 		<View style={[styles.footerContainer, { backgroundColor: colors.bannerBackground }]}>
 			<BorderlessButton activeOpacity={0.7} onPress={onSearchPressed} style={styles.footerButtonsContainer}>
-				<CustomIcon color={colors.auxiliaryTintColor} size={25} name='search' />
+				<CustomIcon color={colors.auxiliaryTintColor} size={24} name='search' />
 			</BorderlessButton>
 
-			<TouchableOpacity activeOpacity={0.7} onPress={onBackspacePressed} hitSlop={BUTTON_HIT_SLOP}>
+			<Pressable onPress={onBackspacePressed} hitSlop={BUTTON_HIT_SLOP} style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}>
 				<CustomIcon color={colors.auxiliaryTintColor} size={25} name='backspace' />
-			</TouchableOpacity>
+			</Pressable>
 		</View>
 	);
 });
