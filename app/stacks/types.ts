@@ -11,6 +11,8 @@ import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
 import { ModalStackParamList } from './MasterDetailStack/types';
 import { TThreadModel } from '../definitions';
+import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
+import { ILivechatTag } from '../definitions/ILivechatTag';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
@@ -116,6 +118,9 @@ export type ChatsStackParamList = {
 	};
 	CloseLivechatView: {
 		rid: string;
+		departmentId?: string;
+		departmentInfo?: ILivechatDepartment;
+		tagsList?: ILivechatTag[];
 	};
 	LivechatEditView: {
 		room: ISubscription;

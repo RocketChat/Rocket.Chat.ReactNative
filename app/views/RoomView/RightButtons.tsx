@@ -18,7 +18,6 @@ import i18n from '../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
-import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
 import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 
@@ -219,8 +218,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	closeLivechat = async () => {
-		const { rid, livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail, departmentId } = this.props;
-
+		const { rid, departmentId } = this.props;
+		const { livechatRequestComment, isMasterDetail, navigation } = this.props;
 		let departmentInfo: ILivechatDepartment | undefined;
 		let tagsList: ILivechatTag[] | undefined;
 
@@ -235,30 +234,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			tagsList = await Services.getTagsList();
 		}
 
-		hideActionSheet();
+		if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
+			const comment = i18n.t('Chat_closed_by_agent');
+			return closeLivechatService({ rid, isMasterDetail, comment });
+		}
 
-		setTimeout(() => {
-			if (!livechatRequestComment) {
-				const comment = i18n.t('Chat_closed_by_agent');
-				return closeLivechatService({ rid, isMasterDetail, comment });
-			}
-
-			showActionSheet({
-				children: (
-					<CloseLivechatSheet
-						onSubmit={(comment: string, tags?: string[]) => {
-							hideActionSheet();
-							closeLivechatService({ rid, isMasterDetail, comment, tags });
-						}}
-						onCancel={() => hideActionSheet()}
-						requestTagBeforeClosingChat={departmentInfo?.requestTagBeforeClosingChat}
-						tags={tagsList?.map(t => t.name)}
-						isObligatory={!!departmentInfo?.requestTagBeforeClosingChat}
-					/>
-				),
-				headerHeight: departmentInfo?.requestTagBeforeClosingChat ? 350 : 225
-			});
-		}, 300);
+		navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
 	};
 
 	showMoreActions = () => {

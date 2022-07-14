@@ -1,159 +1,114 @@
-import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { StyleSheet, ScrollView, Text } from 'react-native';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
-import { forwardRoom, ITransferData } from '../actions/room';
-import OrSeparator from '../containers/OrSeparator';
-import Input from '../containers/UIKit/MultiSelect/Input';
-import { IBaseScreen, IServerRoom } from '../definitions';
+import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { ChatsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
-import { IOptionsField } from './NotificationPreferencesView/options';
-import { Services } from '../lib/services';
+import KeyboardView from '../containers/KeyboardView';
+import SafeAreaView from '../containers/SafeAreaView';
+import { FormTextInput } from '../containers/TextInput';
+import Button from '../containers/Button';
+import { useAppSelector } from '../lib/hooks';
+import sharedStyles from './Styles';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
+import { MultiSelect } from '../containers/UIKit/MultiSelect';
+import { closeLivechat } from '../lib/methods/helpers/closeLivechat';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		padding: 16
-	}
+	},
+	subtitleText: {
+		marginBottom: 10,
+		fontSize: 14,
+		...sharedStyles.textSemibold
+	},
+	buttonMarginVertical: { marginVertical: 20 }
 });
 
-interface IParsedData {
-	label: string;
-	value: string;
-}
-
-const COUNT_DEPARTMENT = 50;
-
-const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamList, 'CloseLivechatView'>) => {
-	const [departments, setDepartments] = useState<IParsedData[]>([]);
-	const [departmentId, setDepartment] = useState('');
-	const [departmentTotal, setDepartmentTotal] = useState(0);
-	const [users, setUsers] = useState<IOptionsField[]>([]);
-	const [userId, setUser] = useState();
-	const [room, setRoom] = useState({} as IServerRoom);
-	const dispatch = useDispatch();
-	const { theme, colors } = useTheme();
-
+const CloseLivechatView = ({ route }: IBaseScreen<ChatsStackParamList, 'CloseLivechatView'>) => {
 	const rid = route.params?.rid;
+	const departmentInfo = route.params?.departmentInfo;
+	const tagsList = route.params?.tagsList;
+	const requestTags = departmentInfo?.requestTagBeforeClosingChat;
 
-	const getDepartments = async (text = '', offset = 0) => {
-		try {
-			const result = await Services.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
-			if (result.success) {
-				const parsedDepartments = result.departments.map(department => ({
-					label: department.name,
-					value: department._id
-				}));
-				if (!text && !offset) {
-					setDepartments(parsedDepartments);
-					setDepartmentTotal(result?.total);
-				}
-				return { data: parsedDepartments, total: result?.total, offset: result?.offset };
-			}
-		} catch {
-			// do nothing
-		}
-	};
+	const [inputValue, setInputValue] = useState('');
+	const [tagParamSelected, setTagParamSelected] = useState<string[]>([]);
+	const [canSubmit, setCanSubmit] = useState(false);
 
-	const getUsers = async (term = '') => {
-		try {
-			const { servedBy: { _id: agentId } = {} } = room;
-			const _id = agentId && { $ne: agentId };
-			const result = await Services.usersAutoComplete({
-				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
-				term
-			});
-			if (result.success) {
-				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
-				if (!term) {
-					setUsers(parsedUsers);
-				}
-				return { data: parsedUsers };
-			}
-		} catch {
-			// do nothing
-		}
-	};
+	const { colors } = useTheme();
 
-	const getRoom = async () => {
-		try {
-			const result = await Services.getRoomInfo(rid);
-			if (result.success) {
-				setRoom(result.room as IServerRoom);
-			}
-		} catch {
-			// do nothing
+	const { isMasterDetail, livechatRequestComment } = useAppSelector(state => ({
+		isMasterDetail: state.app.isMasterDetail,
+		livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
+	}));
+
+	useEffect(() => {}, []);
+
+	useEffect(() => {
+		if (!requestTags && !livechatRequestComment) {
+			setCanSubmit(true);
+		} else if (requestTags && tagParamSelected.length > 0 && !livechatRequestComment) {
+			setCanSubmit(true);
+		} else if (livechatRequestComment && !!inputValue && !requestTags) {
+			setCanSubmit(true);
+		} else if (livechatRequestComment && requestTags && tagParamSelected.length > 0 && !!inputValue) {
+			setCanSubmit(true);
+		} else {
+			setCanSubmit(false);
 		}
-	};
+	}, [inputValue, livechatRequestComment, requestTags, tagParamSelected]);
 
 	const submit = () => {
-		const transferData: ITransferData = { roomId: rid };
-
-		if (!departmentId && !userId) {
-			return;
-		}
-
-		if (userId) {
-			transferData.userId = userId;
-		} else {
-			transferData.departmentId = departmentId;
-		}
-
-		dispatch(forwardRoom(rid, transferData));
-	};
-
-	useEffect(() => {
-		navigation.setOptions({
-			title: I18n.t('Close_Chat')
-		});
-		getRoom();
-	}, []);
-
-	useEffect(() => {
-		if (!isEmpty(room)) {
-			getUsers();
-			getDepartments();
-		}
-	}, [room]);
-
-	useEffect(() => {
-		if (departmentId || userId) {
-			submit();
-		}
-	}, [departmentId, userId]);
-
-	const onPressDepartment = () => {
-		navigation.navigate('PickerView', {
-			title: I18n.t('Forward_to_department'),
-			value: room?.departmentId,
-			data: departments,
-			onChangeValue: setDepartment,
-			onSearch: getDepartments,
-			onEndReached: getDepartments,
-			total: departmentTotal,
-			goBack: false
-		});
-	};
-
-	const onPressUser = () => {
-		navigation.navigate('PickerView', {
-			title: I18n.t('Forward_to_user'),
-			data: users,
-			onChangeValue: setUser,
-			onSearch: getUsers,
-			goBack: false
-		});
+		closeLivechat({ rid, isMasterDetail, comment: inputValue, tags: tagParamSelected });
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.auxiliaryBackground }]}>
-			<Input onPress={onPressDepartment} placeholder={I18n.t('Select_a_Department')} />
-			<OrSeparator theme={theme} />
-			<Input onPress={onPressUser} placeholder={I18n.t('Select_a_User')} />
-		</View>
+		<KeyboardView
+			style={{ backgroundColor: colors.auxiliaryBackground }}
+			contentContainerStyle={sharedStyles.container}
+			keyboardVerticalOffset={128}>
+			<ScrollView {...scrollPersistTaps} style={styles.container}>
+				<SafeAreaView>
+					<FormTextInput
+						label={I18n.t('Please_add_a_comment')}
+						defaultValue={''}
+						onChangeText={text => setInputValue(text)}
+						onSubmitEditing={() => {
+							// inputs.name?.focus();
+						}}
+					/>
+
+					{requestTags ? (
+						<>
+							<Text style={[styles.subtitleText, { color: colors.titleText }]}>{I18n.t('Tags')}</Text>
+							<MultiSelect
+								options={tagsList?.map(({ name }) => ({ text: { text: name }, value: name }))}
+								onChange={({ value }: { value: string[] }) => {
+									setTagParamSelected(value);
+								}}
+								placeholder={{ text: I18n.t('Select_tags') }}
+								value={tagParamSelected}
+								context={BlockContext.FORM}
+								multiselect
+								inputStyle={{ borderColor: colors.separatorColor, borderWidth: 2 }}
+							/>
+						</>
+					) : null}
+					<Button
+						title={I18n.t('Close')}
+						onPress={submit}
+						disabled={!canSubmit}
+						backgroundColor={colors.dangerColor}
+						type='primary'
+						style={styles.buttonMarginVertical}
+					/>
+				</SafeAreaView>
+			</ScrollView>
+		</KeyboardView>
 	);
 };
 
