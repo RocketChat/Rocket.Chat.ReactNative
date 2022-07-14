@@ -28,7 +28,7 @@ def all_pods
     :fabric_enabled => flags[:fabric_enabled],
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  use_flipper!()
+  # use_flipper!()
 end
 
 abstract_target 'defaults' do
@@ -44,12 +44,24 @@ abstract_target 'defaults' do
 end
 
 post_install do |installer|
+  # installer.pods_project.targets.each do |target|
+  #   target.build_configurations.each do |config|
+  #     config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+  #     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+  #   end
+  # end
+  react_native_post_install(installer)
+
+  # Reconfigure the pods to match the iOS version we're targetting
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      case target.name
+      when 'RCT-Folly'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+      else
+        config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
+      end
     end
   end
-  react_native_post_install(installer)
-  __apply_Xcode_12_5_M1_post_install_workaround(installer)
 end
