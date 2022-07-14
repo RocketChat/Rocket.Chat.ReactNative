@@ -130,7 +130,9 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
+  - hermes-engine (0.11.0)
   - JitsiMeetSDK (3.6.0)
+  - libevent (2.1.12)
   - libwebp (1.2.1):
     - libwebp/demux (= 1.2.1)
     - libwebp/mux (= 1.2.1)
@@ -161,6 +163,12 @@ PODS:
     - DoubleConversion
     - fmt (~> 6.2.1)
     - glog
+  - RCT-Folly/Futures (2021.06.28.00-v2):
+    - boost
+    - DoubleConversion
+    - fmt (~> 6.2.1)
+    - glog
+    - libevent
   - RCTRequired (0.68.2)
   - RCTTypeSafety (0.68.2):
     - FBLazyVector (= 0.68.2)
@@ -336,6 +344,17 @@ PODS:
     - React-logger (= 0.68.2)
     - React-perflogger (= 0.68.2)
     - React-runtimeexecutor (= 0.68.2)
+  - React-hermes (0.68.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2021.06.28.00-v2)
+    - RCT-Folly/Futures (= 2021.06.28.00-v2)
+    - React-cxxreact (= 0.68.2)
+    - React-jsi (= 0.68.2)
+    - React-jsiexecutor (= 0.68.2)
+    - React-jsinspector (= 0.68.2)
+    - React-perflogger (= 0.68.2)
   - React-jsi (0.68.2):
     - boost (= 1.76.0)
     - DoubleConversion
@@ -605,7 +624,9 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - hermes-engine (~> 0.11.0)
   - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
+  - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -617,6 +638,7 @@ DEPENDENCIES:
   - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
+  - React-hermes (from `../node_modules/react-native/ReactCommon/hermes`)
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
@@ -689,6 +711,8 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - hermes-engine
+    - libevent
     - libwebp
     - MMKV
     - MMKVCore
@@ -754,6 +778,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/CoreModules"
   React-cxxreact:
     :path: "../node_modules/react-native/ReactCommon/cxxreact"
+  React-hermes:
+    :path: "../node_modules/react-native/ReactCommon/hermes"
   React-jsi:
     :path: "../node_modules/react-native/ReactCommon/jsi"
   React-jsiexecutor:
@@ -906,7 +932,9 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 4c19f031220c72464d460c9daa1fb5d1acce958e
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
+  hermes-engine: 84e3af1ea01dd7351ac5d8689cbbea1f9903ffc3
   JitsiMeetSDK: 476329f72a866f714d2802bafe1729de6d644ccf
+  libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
   MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
   MMKVCore: 3388952ded307e41b3ed8a05892736a236ed1b8e
@@ -922,6 +950,7 @@ SPEC CHECKSUMS:
   React-Core: fdaa2916b1c893f39f02cff0476d1fb0cab1e352
   React-CoreModules: fd8705b80699ec36c2cdd635c2ce9d874b9cfdfc
   React-cxxreact: 1832d971f7b0cb2c7b943dc0ec962762c90c906e
+  React-hermes: 14e0ea3ce4b44bb3ac7663d96d0e3e28857f7b62
   React-jsi: 72af715135abe8c3f0dcf3b2548b71d048b69a7e
   React-jsiexecutor: b7b553412f2ec768fe6c8f27cd6bafdb9d8719e6
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
@@ -985,6 +1014,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
-PODFILE CHECKSUM: e377e702ad47839bf76b983b56c66537a091a54a
+PODFILE CHECKSUM: 2dbfd9e39e390698a38fde4a48870211a570e6e1
 
 COCOAPODS: 1.11.2
