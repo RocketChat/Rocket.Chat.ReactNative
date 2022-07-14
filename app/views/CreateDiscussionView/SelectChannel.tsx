@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
-import { themes } from '../../lib/constants';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
@@ -9,7 +8,8 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
 import { localSearch } from '../../lib/methods';
-import { getRoomAvatar, getRoomTitle, debounce } from '../../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
+import { useTheme } from '../../theme';
 
 const SelectChannel = ({
 	server,
@@ -18,19 +18,28 @@ const SelectChannel = ({
 	onChannelSelect,
 	initial,
 	blockUnauthenticatedAccess,
-	serverVersion,
-	theme
+	serverVersion
 }: ICreateDiscussionViewSelectChannel): React.ReactElement => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
+	const { colors } = useTheme();
 
-	const getChannels = debounce(async (keyword = '') => {
+	const getChannels = async (keyword = '') => {
 		try {
-			const res = (await localSearch({ text: keyword })) as ISearchLocal[];
+			const res = (await localSearch({ text: keyword, filterUsers: false })) as ISearchLocal[];
 			setChannels(res);
+			return res.map(channel => ({
+				value: channel,
+				text: { text: getRoomTitle(channel) },
+				imageUrl: getAvatar(channel)
+			}));
 		} catch {
 			// do nothing
 		}
-	}, 300);
+	};
+
+	useEffect(() => {
+		getChannels('');
+	}, []);
 
 	const getAvatar = (item: ISearchLocal) =>
 		getAvatarURL({
@@ -47,7 +56,7 @@ const SelectChannel = ({
 
 	return (
 		<>
-			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
+			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
@@ -59,7 +68,7 @@ const SelectChannel = ({
 					text: { text: getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}
-				onClose={() => setChannels([])}
+				onClose={() => getChannels('')}
 				placeholder={{ text: `${I18n.t('Select_a_Channel')}...` }}
 			/>
 		</>
