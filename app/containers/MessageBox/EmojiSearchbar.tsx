@@ -23,7 +23,7 @@ interface IEmojiSearchbarProps {
 }
 
 const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
-	if (emoji.name) {
+	if (emoji?.name) {
 		return <CustomEmoji style={{ height: size, width: size, margin: 4 }} emoji={emoji} baseUrl={baseUrl} />;
 	}
 	return <Text style={[styles.searchedEmoji, { fontSize: size }]}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
@@ -82,7 +82,7 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 						</View>
 					)}
 					// @ts-ignore
-					keyExtractor={item => item.name || item}
+					keyExtractor={item => item?.name || item}
 					contentContainerStyle={styles.emojiListContainer}
 					keyboardShouldPersistTaps='always'
 				/>
