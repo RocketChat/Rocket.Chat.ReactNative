@@ -37,10 +37,10 @@ const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 const QueueListView = React.memo(() => {
 	const navigation = useNavigation<TNavigation>();
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 	const { width } = useDimensions();
 
-	const { userId, token, username } = useSelector(
+	const { username } = useSelector(
 		(state: IApplicationState) => ({
 			userId: getUserSelector(state).id,
 			username: getUserSelector(state).username,
@@ -58,7 +58,6 @@ const QueueListView = React.memo(() => {
 	);
 
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
-	const server = useSelector((state: IApplicationState) => state.server.server);
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 	const queued = useSelector((state: IApplicationState) => getInquiryQueueSelector(state));
 
@@ -95,20 +94,13 @@ const QueueListView = React.memo(() => {
 		return (
 			<RoomItem
 				item={item}
-				theme={theme}
 				id={id}
-				type={item.t}
-				userId={userId}
 				username={username}
-				token={token}
-				baseUrl={server}
 				onPress={onPressItem}
-				testID={`queue-list-view-item-${item.name}`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				useRealName={useRealName}
+				useRealName={!!useRealName}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
-				visitor={item.v}
 				swipeEnabled={false}
 				showAvatar={showAvatar}
 				displayMode={displayMode}

@@ -9,7 +9,7 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
@@ -170,7 +170,6 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					testID='login-view-email'
 					textContentType='username'
 					// autoCompleteType='username' TODO: reevaluate
-					theme={theme}
 					value={user}
 				/>
 				<FormTextInput
@@ -186,8 +185,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					onChangeText={(value: string) => this.setState({ password: value })}
 					testID='login-view-password'
 					textContentType='password'
-					// autoCompleteType='password' TODO: reevaluate
-					theme={theme}
+					// autoCompleteType='username' TODO: reevaluate
 				/>
 				<Button
 					title={I18n.t('Login')}
@@ -231,11 +229,12 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 	};
 
 	render() {
-		const { Accounts_ShowFormLogin, theme, navigation } = this.props;
+		const { Accounts_ShowFormLogin } = this.props;
+
 		return (
 			<FormContainer testID='login-view'>
 				<FormContainerInner>
-					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} theme={theme} />
+					<LoginServices separator={Accounts_ShowFormLogin} />
 					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>

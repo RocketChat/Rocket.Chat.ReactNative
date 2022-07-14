@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../actions/login';
 import I18n from '../../i18n';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
+import { compareServerVersion } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
@@ -21,6 +22,7 @@ interface IUserPreferencesViewProps {
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
 	const { enableMessageParserEarlyAdoption, id } = useAppSelector(state => getUserSelector(state));
+	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -61,15 +63,17 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					/>
 					<List.Separator />
 				</List.Section>
-				<List.Section>
-					<List.Separator />
-					<List.Item
-						title='Enable_Message_Parser'
-						testID='preferences-view-enable-message-parser'
-						right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption)}
-					/>
-					<List.Separator />
-				</List.Section>
+				{compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ? (
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Enable_Message_Parser'
+							testID='preferences-view-enable-message-parser'
+							right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption)}
+						/>
+						<List.Separator />
+					</List.Section>
+				) : null}
 			</List.Container>
 		</SafeAreaView>
 	);

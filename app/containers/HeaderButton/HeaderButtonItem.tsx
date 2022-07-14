@@ -1,18 +1,18 @@
 import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { PlatformPressable } from '@react-navigation/elements';
 
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon, ICustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 
-interface IHeaderButtonItem {
+export interface IHeaderButtonItem extends Omit<ICustomIcon, 'name' | 'size' | 'color'> {
 	title?: string;
 	iconName?: TIconsName;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
 	badge?(): void;
+	color?: string;
 }
 
 export const BUTTON_HIT_SLOP = {
@@ -24,7 +24,7 @@ export const BUTTON_HIT_SLOP = {
 
 const styles = StyleSheet.create({
 	container: {
-		marginHorizontal: 6
+		padding: 6
 	},
 	title: {
 		...Platform.select({
@@ -39,19 +39,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ title, iconName, onPress, testID, badge }: IHeaderButtonItem): React.ReactElement => {
-	const { theme } = useTheme();
+const Item = ({ title, iconName, onPress, testID, badge, color, ...props }: IHeaderButtonItem): React.ReactElement => {
+	const { colors } = useTheme();
 	return (
-		<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
+		<PlatformPressable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 			<>
 				{iconName ? (
-					<CustomIcon name={iconName} size={24} color={themes[theme].headerTintColor} />
+					<CustomIcon name={iconName} size={24} color={color || colors.headerTintColor} {...props} />
 				) : (
-					<Text style={[styles.title, { color: themes[theme].headerTintColor }]}>{title}</Text>
+					<Text style={[styles.title, { color: color || colors.headerTintColor }]} {...props}>
+						{title}
+					</Text>
 				)}
 				{badge ? badge() : null}
 			</>
-		</Touchable>
+		</PlatformPressable>
 	);
 };
 

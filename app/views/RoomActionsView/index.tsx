@@ -1,13 +1,14 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Switch, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
+import { CompositeNavigationProp } from '@react-navigation/native';
 
-import { closeRoom, leaveRoom } from '../../actions/room';
+import { leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -44,12 +45,17 @@ import {
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
+import { videoConfStartAndJoin } from '../../lib/methods/videoConf';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
 }
 
-interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
+interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
 	jitsiEnabled: boolean;
 	jitsiEnableTeams: boolean;
@@ -64,12 +70,20 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	editRoomPermission?: string[];
 	toggleRoomE2EEncryptionPermission?: string[];
 	viewBroadcastMemberListPermission?: string[];
-	transferLivechatGuestPermission?: string[];
 	createTeamPermission?: string[];
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
 	livechatAllowManualOnHold?: boolean;
+	livechatRequestComment?: boolean;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+		StackNavigationProp<MasterDetailInsideStackParamList>
+	>;
+	videoConf_Enable_DMs: boolean;
+	videoConf_Enable_Channels: boolean;
+	videoConf_Enable_Groups: boolean;
+	videoConf_Enable_Teams: boolean;
 }
 
 interface IRoomActionsViewState {
@@ -81,16 +95,11 @@ interface IRoomActionsViewState {
 	canAutoTranslate: boolean;
 	canAddUser: boolean;
 	canInviteUser: boolean;
-	canForwardGuest: boolean;
-	canReturnQueue: boolean;
 	canEdit: boolean;
 	canToggleEncryption: boolean;
 	canCreateTeam: boolean;
 	canAddChannelToTeam: boolean;
 	canConvertTeam: boolean;
-	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
-	isOnHold: boolean;
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -98,6 +107,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	private rid: string;
 	private t: string;
 	private joined: boolean;
+	private omnichannelPermissions?: {
+		canForwardGuest: boolean;
+		canReturnQueue: boolean;
+		canViewCannedResponse: boolean;
+		canPlaceLivechatOnHold: boolean;
+	};
 	private roomObservable?: Observable<TSubscriptionModel>;
 	private subscription?: Subscription;
 
@@ -122,6 +137,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.joined = props.route.params?.joined;
+		this.omnichannelPermissions = props.route.params?.omnichannelPermissions;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
@@ -131,22 +147,17 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canAutoTranslate: false,
 			canAddUser: false,
 			canInviteUser: false,
-			canForwardGuest: false,
-			canReturnQueue: false,
 			canEdit: false,
 			canToggleEncryption: false,
 			canCreateTeam: false,
 			canAddChannelToTeam: false,
-			canConvertTeam: false,
-			canViewCannedResponse: false,
-			canPlaceLivechatOnHold: false,
-			isOnHold: false
+			canConvertTeam: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
-					this.setState({ room: changes, isOnHold: !!changes?.onHold });
+					this.setState({ room: changes });
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
@@ -214,28 +225,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				canAddChannelToTeam,
 				canConvertTeam
 			});
-
-			// livechat permissions
-			if (room.t === 'l') {
-				const canForwardGuest = await this.canForwardGuest();
-				const canReturnQueue = await this.canReturnQueue();
-				const canViewCannedResponse = await this.canViewCannedResponse();
-				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
-			}
-		}
-	}
-
-	componentDidUpdate(prevProps: IRoomActionsViewProps, prevState: IRoomActionsViewState) {
-		const { livechatAllowManualOnHold } = this.props;
-		const { room, isOnHold } = this.state;
-
-		if (
-			room.t === 'l' &&
-			(isOnHold !== prevState.isOnHold || prevProps.livechatAllowManualOnHold !== livechatAllowManualOnHold)
-		) {
-			const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-			this.setState({ canPlaceLivechatOnHold });
 		}
 	}
 
@@ -372,38 +361,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return result;
 	};
 
-	canForwardGuest = async () => {
-		const { room } = this.state;
-		const { transferLivechatGuestPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([transferLivechatGuestPermission], rid);
-		return permissions[0];
-	};
-
-	canViewCannedResponse = async () => {
-		const { room } = this.state;
-		const { viewCannedResponsesPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([viewCannedResponsesPermission], rid);
-		return permissions[0];
-	};
-
-	canPlaceLivechatOnHold = (): boolean => {
-		const { livechatAllowManualOnHold } = this.props;
-		const { room } = this.state;
-
-		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
-	};
-
-	canReturnQueue = async () => {
-		try {
-			const { returnQueue } = await Services.getRoutingConfig();
-			return returnQueue;
-		} catch {
-			return false;
-		}
-	};
-
 	renderEncryptedSwitch = () => {
 		const { room, canToggleEncryption, canEdit } = this.state;
 		const { encrypted } = room;
@@ -423,9 +380,25 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const {
 			room: { rid }
 		} = this.state;
-		const { dispatch } = this.props;
+		const { livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
 
-		dispatch(closeRoom(rid));
+		if (!livechatRequestComment) {
+			const comment = I18n.t('Chat_closed_by_agent');
+			return closeLivechat({ rid, isMasterDetail, comment });
+		}
+
+		showActionSheet({
+			children: (
+				<CloseLivechatSheet
+					onSubmit={(comment: string) => {
+						hideActionSheet();
+						closeLivechat({ rid, isMasterDetail, comment });
+					}}
+					onCancel={() => hideActionSheet()}
+				/>
+			),
+			headerHeight: 225
+		});
 	};
 
 	placeOnHoldLivechat = () => {
@@ -793,6 +766,16 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
+	startVideoConf = ({ video }: { video: boolean }): void => {
+		const { room } = this.state;
+		const { serverVersion } = this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
+			videoConfStartAndJoin(room.rid, video);
+		} else {
+			callJitsi(room, !video);
+		}
+	};
+
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
@@ -870,12 +853,35 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	renderJitsi = () => {
 		const { room } = this.state;
-		const { jitsiEnabled, jitsiEnableTeams, jitsiEnableChannels } = this.props;
+		const {
+			jitsiEnabled,
+			jitsiEnableTeams,
+			jitsiEnableChannels,
+			serverVersion,
+			videoConf_Enable_DMs,
+			videoConf_Enable_Channels,
+			videoConf_Enable_Groups,
+			videoConf_Enable_Teams
+		} = this.props;
 
 		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
 		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
 
-		if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
+		const isVideoConfDisabledForTeams = !!room.teamMain && !videoConf_Enable_Teams;
+		const isVideoConfDisabledForChannels = !room.teamMain && room.t === 'c' && !videoConf_Enable_Channels;
+		const isVideoConfDisabledForGroups = !room.teamMain && room.t === 'p' && !videoConf_Enable_Groups;
+		const isVideoConfDisabledForDirect = !room.teamMain && room.t === 'd' && !videoConf_Enable_DMs;
+
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
+			if (
+				isVideoConfDisabledForTeams ||
+				isVideoConfDisabledForChannels ||
+				isVideoConfDisabledForGroups ||
+				isVideoConfDisabledForDirect
+			) {
+				return null;
+			}
+		} else if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
 			return null;
 		}
 
@@ -884,7 +890,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Voice_call'
-					onPress={() => callJitsi(room, true)}
+					onPress={() => this.startVideoConf({ video: false })}
 					testID='room-actions-voice'
 					left={() => <List.Icon name='phone' />}
 					showActionIndicator
@@ -892,7 +898,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Video_call'
-					onPress={() => callJitsi(room)}
+					onPress={() => this.startVideoConf({ video: true })}
 					testID='room-actions-video'
 					left={() => <List.Icon name='camera' />}
 					showActionIndicator
@@ -1048,20 +1054,86 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		);
 	};
 
+	renderOmnichannelSection = () => {
+		const { room } = this.state;
+		const { rid, t } = room;
+		const { theme } = this.props;
+
+		if (t !== 'l' || this.isOmnichannelPreview) {
+			return null;
+		}
+
+		return (
+			<List.Section>
+				{this.omnichannelPermissions?.canForwardGuest ? (
+					<>
+						<List.Item
+							title='Forward'
+							onPress={() =>
+								this.onPressTouchable({
+									route: 'ForwardLivechatView',
+									params: { rid }
+								})
+							}
+							left={() => <List.Icon name='chat-forward' color={themes[theme].titleText} />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
+
+				{this.omnichannelPermissions?.canPlaceLivechatOnHold ? (
+					<>
+						<List.Item
+							title='Place_chat_on_hold'
+							onPress={() =>
+								this.onPressTouchable({
+									event: this.placeOnHoldLivechat
+								})
+							}
+							left={() => <List.Icon name='pause' color={themes[theme].titleText} />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
+
+				{this.omnichannelPermissions?.canReturnQueue ? (
+					<>
+						<List.Item
+							title='Return_to_waiting_line'
+							onPress={() =>
+								this.onPressTouchable({
+									event: this.returnLivechat
+								})
+							}
+							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].titleText} />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
+
+				<>
+					<List.Item
+						title='Close'
+						color={themes[theme].dangerColor}
+						onPress={() =>
+							this.onPressTouchable({
+								event: this.closeLivechat
+							})
+						}
+						left={() => <List.Icon name='chat-close' color={themes[theme].dangerColor} />}
+						showActionIndicator
+					/>
+					<List.Separator />
+				</>
+			</List.Section>
+		);
+	};
+
 	render() {
-		const {
-			room,
-			membersCount,
-			canViewMembers,
-			canAddUser,
-			canInviteUser,
-			joined,
-			canAutoTranslate,
-			canForwardGuest,
-			canReturnQueue,
-			canViewCannedResponse,
-			canPlaceLivechatOnHold
-		} = this.state;
+		const { room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate } = this.state;
 		const { rid, t, prid } = room;
 		const isGroupChatHandler = isGroupChat(room);
 
@@ -1144,6 +1216,18 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									}
 									testID='room-actions-discussions'
 									left={() => <List.Icon name='discussions' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
+
+						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions?.canViewCannedResponse ? (
+							<>
+								<List.Item
+									title='Canned_Responses'
+									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid } })}
+									left={() => <List.Icon name='canned-response' />}
 									showActionIndicator
 								/>
 								<List.Separator />
@@ -1277,85 +1361,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 						{this.teamChannelActions(t, room)}
 						{this.teamToChannelActions(t, room)}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview && canViewCannedResponse ? (
-							<>
-								<List.Item
-									title='Canned_Responses'
-									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid } })}
-									left={() => <List.Icon name='canned-response' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview ? (
-							<>
-								<List.Item
-									title='Close'
-									onPress={() =>
-										this.onPressTouchable({
-											event: this.closeLivechat
-										})
-									}
-									left={() => <List.Icon name='close' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview && canForwardGuest ? (
-							<>
-								<List.Item
-									title='Forward'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'ForwardLivechatView',
-											params: { rid }
-										})
-									}
-									left={() => <List.Icon name='user-forward' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview && canPlaceLivechatOnHold ? (
-							<>
-								<List.Item
-									title='Place_chat_on_hold'
-									onPress={() =>
-										this.onPressTouchable({
-											event: this.placeOnHoldLivechat
-										})
-									}
-									left={() => <List.Icon name='pause' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview && canReturnQueue ? (
-							<>
-								<List.Item
-									title='Return'
-									onPress={() =>
-										this.onPressTouchable({
-											event: this.returnLivechat
-										})
-									}
-									left={() => <List.Icon name='undo' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
 					</List.Section>
-
+					{this.renderOmnichannelSection()}
 					{this.renderLastSection()}
 				</List.Container>
 			</SafeAreaView>
@@ -1368,6 +1375,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	jitsiEnabled: (state.settings.Jitsi_Enabled || false) as boolean,
 	jitsiEnableTeams: (state.settings.Jitsi_Enable_Teams || false) as boolean,
 	jitsiEnableChannels: (state.settings.Jitsi_Enable_Channels || false) as boolean,
+	videoConf_Enable_DMs: (state.settings.VideoConf_Enable_DMs ?? true) as boolean,
+	videoConf_Enable_Channels: (state.settings.VideoConf_Enable_Channels ?? true) as boolean,
+	videoConf_Enable_Groups: (state.settings.VideoConf_Enable_Groups ?? true) as boolean,
+	videoConf_Enable_Teams: (state.settings.VideoConf_Enable_Teams ?? true) as boolean,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
@@ -1378,12 +1389,12 @@ const mapStateToProps = (state: IApplicationState) => ({
 	editRoomPermission: state.permissions['edit-room'],
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
-	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
 	convertTeamPermission: state.permissions['convert-team'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
-export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));

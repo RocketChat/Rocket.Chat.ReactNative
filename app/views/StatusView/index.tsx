@@ -9,13 +9,12 @@ import * as List from '../../containers/List';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
-import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Status = ({ status, statusText }: { status: IStatus; statusText: string }) => {
+const Status = ({ status }: { status: IStatus }) => {
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const dispatch = useDispatch();
 
@@ -71,15 +70,13 @@ const Status = ({ status, statusText }: { status: IStatus; statusText: string })
 				logEvent(events[key]);
 				if (user.status !== status.id) {
 					try {
-						const result = await Services.setUserStatus(status.id, statusText);
-						if (result.success) {
-							dispatch(setUser({ status: status.id }));
-						}
+						await Services.setUserStatus(status.id, user.statusText || '');
+						dispatch(setUser({ status: status.id }));
 					} catch (e: any) {
 						const messageError =
-							e.data && e.data.error.includes('[error-too-many-requests]')
-								? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-								: e.data.errorType;
+							e.error && e.error.includes('[error-too-many-requests]')
+								? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
+								: e.reason;
 						showErrorAlert(messageError);
 						logEvent(events.SET_STATUS_FAIL);
 						log(e);
@@ -105,13 +102,11 @@ const StatusView = (): React.ReactElement => {
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 
-	const { theme } = useTheme();
-
 	useEffect(() => {
 		const submit = async () => {
 			logEvent(events.STATUS_DONE);
 			if (statusText !== user.statusText) {
-				await setCustomStatus(statusText);
+				await setCustomStatus(user.status, statusText);
 			}
 			goBack();
 		};
@@ -129,23 +124,18 @@ const StatusView = (): React.ReactElement => {
 		setHeader();
 	}, [statusText, user.status]);
 
-	const setCustomStatus = async (statusText: string) => {
+	const setCustomStatus = async (status: string, statusText: string) => {
 		setLoading(true);
 		try {
-			const result = await Services.setUserStatus(user.status, statusText);
-			if (result.success) {
-				dispatch(setUser({ statusText }));
-				logEvent(events.STATUS_CUSTOM);
-				showToast(I18n.t('Status_saved_successfully'));
-			} else {
-				logEvent(events.STATUS_CUSTOM_F);
-				showToast(I18n.t('error-could-not-change-status'));
-			}
+			await Services.setUserStatus(status, statusText);
+			dispatch(setUser({ statusText }));
+			logEvent(events.STATUS_CUSTOM);
+			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
 			const messageError =
-				e.data && e.data.error.includes('[error-too-many-requests]')
-					? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-					: e.data.errorType;
+				e.error && e.error.includes('[error-too-many-requests]')
+					? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
+					: e.reason;
 			logEvent(events.STATUS_CUSTOM_F);
 			showErrorAlert(messageError);
 		}
@@ -159,11 +149,10 @@ const StatusView = (): React.ReactElement => {
 			<FlatList
 				data={status}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status status={item} statusText={statusText} />}
+				renderItem={({ item }) => <Status status={item} />}
 				ListHeaderComponent={
 					<>
 						<FormTextInput
-							theme={theme}
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}

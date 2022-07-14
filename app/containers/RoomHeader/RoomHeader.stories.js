@@ -1,23 +1,32 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types, react/destructuring-assignment */
 import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, SafeAreaView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Header, HeaderBackground } from '@react-navigation/elements';
 
-import Header from '../Header';
 import { longText } from '../../../storybook/utils';
 import { ThemeContext } from '../../theme';
 import { store } from '../../../storybook/stories';
+import { colors, themes } from '../../lib/constants';
 import RoomHeaderComponent from './RoomHeader';
 
-const stories = storiesOf('RoomHeader', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
-
-// TODO: refactor after react-navigation v6
-const HeaderExample = ({ title }) => (
-	<Header headerTitle={() => <View style={{ flex: 1, paddingHorizontal: 12 }}>{title()}</View>} />
-);
+const stories = storiesOf('RoomHeader', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
+	.addDecorator(story => <SafeAreaProvider>{story()}</SafeAreaProvider>);
 
 const { width, height } = Dimensions.get('window');
+
+const HeaderExample = ({ title, theme = 'light' }) => (
+	<SafeAreaView>
+		<Header
+			title=''
+			headerTitle={title}
+			headerTitleAlign='left'
+			headerBackground={() => <HeaderBackground style={{ backgroundColor: themes[theme].headerBackground }} />}
+		/>
+	</SafeAreaView>
+);
 
 const RoomHeader = ({ ...props }) => (
 	<RoomHeaderComponent
@@ -27,6 +36,8 @@ const RoomHeader = ({ ...props }) => (
 		type='p'
 		testID={props.title}
 		onPress={() => alert('header pressed!')}
+		status={props.status}
+		usersTyping={props.usersTyping}
 		{...props}
 	/>
 );
@@ -82,8 +93,8 @@ stories.add('thread', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme }}>
-		<HeaderExample title={() => <RoomHeader subtitle='subtitle' />} />
+	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+		<HeaderExample title={() => <RoomHeader subtitle='subtitle' />} theme={theme} />
 	</ThemeContext.Provider>
 );
 

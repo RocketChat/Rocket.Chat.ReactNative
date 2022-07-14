@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import Avatar from '../../containers/Avatar';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import {
@@ -605,7 +605,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								this.description?.focus();
 							}}
 							error={nameError}
-							theme={theme}
 							testID='room-info-edit-view-name'
 						/>
 						<FormTextInput
@@ -618,7 +617,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.topic?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-description'
 						/>
 						<FormTextInput
@@ -631,7 +629,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.announcement?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-topic'
 						/>
 						<FormTextInput
@@ -644,9 +641,16 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.joinCode?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-announcement'
 						/>
+						{/* This TextInput avoid appears the password fill when typing into Announcements TextInput */}
+						<View style={{ height: StyleSheet.hairlineWidth, overflow: 'hidden' }}>
+							<TextInput
+								style={{
+									height: StyleSheet.hairlineWidth
+								}}
+							/>
+						</View>
 						<FormTextInput
 							inputRef={e => {
 								this.joinCode = e;
@@ -656,7 +660,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onChangeText={value => this.setState({ joinCode: value })}
 							onSubmitEditing={this.submit}
 							secureTextEntry
-							theme={theme}
 							testID='room-info-edit-view-password'
 						/>
 						<SwitchContainer

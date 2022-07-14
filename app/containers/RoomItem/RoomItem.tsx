@@ -25,7 +25,6 @@ const RoomItem = ({
 	showLastMessage,
 	status = 'offline',
 	useRealName,
-	theme,
 	isFocused,
 	isGroupChat,
 	isRead,
@@ -52,7 +51,8 @@ const RoomItem = ({
 	autoJoin,
 	showAvatar,
 	displayMode,
-	sourceType
+	sourceType,
+	hideMentionStatus
 }: IRoomItemProps) => (
 	<Touchable
 		onPress={onPress}
@@ -66,7 +66,7 @@ const RoomItem = ({
 		hideChannel={hideChannel}
 		testID={testID}
 		type={type}
-		isFocused={isFocused}
+		isFocused={!!isFocused}
 		swipeEnabled={swipeEnabled}
 		displayMode={displayMode}
 	>
@@ -74,7 +74,6 @@ const RoomItem = ({
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
 			type={type}
-			theme={theme}
 			rid={rid}
 			prid={prid}
 			status={status}
@@ -82,7 +81,7 @@ const RoomItem = ({
 			teamMain={teamMain}
 			displayMode={displayMode}
 			showAvatar={showAvatar}
-			showLastMessage={showLastMessage}
+			showLastMessage={!!showLastMessage}
 			sourceType={sourceType}
 		>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
@@ -98,19 +97,18 @@ const RoomItem = ({
 								sourceType={sourceType}
 							/>
 						) : null}
-						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+						<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-						<UpdatedAt date={date} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+						<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					</View>
 					<View style={styles.row}>
 						<LastMessage
 							lastMessage={lastMessage}
 							type={type}
 							showLastMessage={showLastMessage}
-							username={username}
+							username={username || ''}
 							alert={alert && !hideUnreadStatus}
 							useRealName={useRealName}
-							theme={theme}
 						/>
 						<UnreadBadge
 							unread={unread}
@@ -119,6 +117,8 @@ const RoomItem = ({
 							tunread={tunread}
 							tunreadUser={tunreadUser}
 							tunreadGroup={tunreadGroup}
+							hideMentionStatus={hideMentionStatus}
+							hideUnreadStatus={hideUnreadStatus}
 						/>
 					</View>
 				</>
@@ -134,10 +134,10 @@ const RoomItem = ({
 						style={{ marginRight: 8 }}
 						sourceType={sourceType}
 					/>
-					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+					<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
 					<View style={styles.wrapUpdatedAndBadge}>
-						<UpdatedAt date={date} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+						<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						<UnreadBadge
 							unread={unread}
 							userMentions={userMentions}
@@ -145,6 +145,8 @@ const RoomItem = ({
 							tunread={tunread}
 							tunreadUser={tunreadUser}
 							tunreadGroup={tunreadGroup}
+							hideMentionStatus={hideMentionStatus}
+							hideUnreadStatus={hideUnreadStatus}
 						/>
 					</View>
 				</View>
