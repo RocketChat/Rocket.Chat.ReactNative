@@ -56,15 +56,15 @@ export default StyleSheet.create({
 		margin: 8
 	},
 	footerContainer: {
-		height: 45,
+		height: 44,
 		paddingHorizontal: 12,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 	footerButtonsContainer: {
-		height: 30,
-		width: 30,
+		height: 44,
+		width: 44,
 		justifyContent: 'center',
 		alignItems: 'center'
 	}

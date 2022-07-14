@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, FlatList } from 'react-native';
+import { View, Text, Pressable, TextInput, FlatList } from 'react-native';
 import { orderBy } from 'lodash';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
@@ -63,9 +63,7 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 			const emojiSize = 30;
 			return (
 				<View style={[styles.emojiContainer]}>
-					<TouchableOpacity activeOpacity={0.7} onPress={() => onEmojiSelected(emoji)}>
-						{renderEmoji(emoji, emojiSize, baseUrl)}
-					</TouchableOpacity>
+					<Pressable onPress={() => onEmojiSelected(emoji)}>{renderEmoji(emoji, emojiSize, baseUrl)}</Pressable>
 				</View>
 			);
 		};
@@ -87,9 +85,12 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 					keyboardShouldPersistTaps='always'
 				/>
 				<View style={styles.emojiSearchbarContainer}>
-					<TouchableOpacity style={styles.openEmojiKeyboard} activeOpacity={0.7} onPress={openEmoji} hitSlop={BUTTON_HIT_SLOP}>
+					<Pressable
+						style={({ pressed }: { pressed: boolean }) => [styles.openEmojiKeyboard, { opacity: pressed ? 0.7 : 1 }]}
+						onPress={openEmoji}
+						hitSlop={BUTTON_HIT_SLOP}>
 						<CustomIcon name='chevron-left' size={30} color={colors.collapsibleChevron} />
-					</TouchableOpacity>
+					</Pressable>
 					<View style={{ flex: 1 }}>
 						<FormTextInput
 							inputRef={ref}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import orderBy from 'lodash/orderBy';
@@ -19,30 +19,47 @@ import { IEmoji, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definiti
 import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
 
+const useFrequentlyUsedEmoji = () => {
+	const [frequentlyUsed, setFrequentlyUsed] = useState<IEmoji[]>([]);
+	const [loaded, setLoaded] = useState(false);
+	const getFrequentlyUsedEmojis = async () => {
+		const db = database.active;
+		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
+		const frequentlyUsedOrdered = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
+		const frequentlyUsedEmojis = frequentlyUsedOrdered.map(item => {
+			if (item.isCustom) {
+				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
+			}
+			return shortnameToUnicode(`${item.content}`);
+		}) as IEmoji[];
+		setFrequentlyUsed(frequentlyUsedEmojis);
+		setLoaded(true);
+	};
+	useEffect(() => {
+		getFrequentlyUsedEmojis();
+	}, []);
+	return { frequentlyUsed, loaded };
+};
+
 const EmojiPicker = React.memo(
 	({ onItemClicked, tabEmojiStyle, isEmojiKeyboard = false, searching = false, searchedEmojis = [] }: IEmojiPickerProps) => {
-		const [frequentlyUsed, setFrequentlyUsed] = useState<IEmoji[]>([]);
-		const [show, setShow] = useState(false);
 		const [width, setWidth] = useState(null);
 		const { colors } = useTheme();
+		const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 
 		const baseUrl = useAppSelector(state => state.server?.server);
 		const allCustomEmojis: ICustomEmojis = useAppSelector(state => state.customEmojis);
-		const customEmojis = Object.keys(allCustomEmojis)
-			.filter(item => item === allCustomEmojis[item].name)
-			.map(item => ({
-				content: allCustomEmojis[item].name,
-				extension: allCustomEmojis[item].extension,
-				isCustom: true
-			}));
-
-		useEffect(() => {
-			const init = async () => {
-				await updateFrequentlyUsed();
-				setShow(true);
-			};
-			init();
-		}, []);
+		const customEmojis = useMemo(
+			() =>
+				Object.keys(allCustomEmojis)
+					.filter(item => item === allCustomEmojis[item].name)
+					.map(item => ({
+						content: allCustomEmojis[item].name,
+						extension: allCustomEmojis[item].extension,
+						isCustom: true
+					})),
+			[allCustomEmojis]
+		);
 
 		const handleEmojiSelect = (emoji: IEmoji) => {
 			try {
@@ -91,19 +108,6 @@ const EmojiPicker = React.memo(
 			});
 		});
 
-		const updateFrequentlyUsed = async () => {
-			const db = database.active;
-			const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
-			const frequentlyUsedOrdered = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-			const frequentlyUsedEmojis = frequentlyUsedOrdered.map(item => {
-				if (item.isCustom) {
-					return { content: item.content, extension: item.extension, isCustom: item.isCustom };
-				}
-				return shortnameToUnicode(`${item.content}`);
-			}) as IEmoji[];
-			setFrequentlyUsed(frequentlyUsedEmojis);
-		};
-
 		const onLayout = ({
 			nativeEvent: {
 				layout: { width }
@@ -133,7 +137,7 @@ const EmojiPicker = React.memo(
 			);
 		};
 
-		if (!show) {
+		if (!loaded) {
 			return null;
 		}
 
