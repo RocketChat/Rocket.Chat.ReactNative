@@ -114,6 +114,9 @@ export type ChatsStackParamList = {
 	ForwardLivechatView: {
 		rid: string;
 	};
+	CloseLivechatView: {
+		rid: string;
+	};
 	LivechatEditView: {
 		room: ISubscription;
 		roomUser: any; // TODO: Change

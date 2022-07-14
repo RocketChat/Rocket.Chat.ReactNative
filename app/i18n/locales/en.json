@@ -840,5 +840,7 @@
   "Show_badge_for_mentions": "Show badge for mentions",
   "Show_badge_for_mentions_Info": "Display badge for direct mentions only",
   "error-init-video-conf": "Error starting video call",
-  "totp-invalid": "Code or password invalid"
+  "totp-invalid": "Code or password invalid",
+  "Close_Chat": "Close Chat",
+  "Select_tags": "Select tags"
 }

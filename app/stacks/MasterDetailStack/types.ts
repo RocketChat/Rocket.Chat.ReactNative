@@ -111,6 +111,9 @@ export type ModalStackParamList = {
 	ForwardLivechatView: {
 		rid: string;
 	};
+	CloseLivechatView: {
+		rid: string;
+	};
 	CannedResponsesListView: {
 		rid: string;
 	};
