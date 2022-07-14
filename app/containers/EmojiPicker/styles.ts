@@ -8,14 +8,13 @@ export default StyleSheet.create({
 	},
 	tabsContainer: {
 		height: 45,
-		flexDirection: 'row',
-		paddingTop: 5
+		flexDirection: 'row'
 	},
 	tab: {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingBottom: 10
+		paddingVertical: 10
 	},
 	tabEmoji: {
 		fontSize: 20,
