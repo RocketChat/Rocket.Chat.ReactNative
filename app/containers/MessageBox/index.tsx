@@ -19,11 +19,7 @@ import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import { themes } from '../../lib/constants';
-// @ts-ignore
-// eslint-disable-next-line import/extensions,import/no-unresolved
 import LeftButtons from './LeftButtons';
-// @ts-ignore
-// eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
 import { canUploadFile } from '../../lib/methods/helpers/media';
 import EventEmiter from '../../lib/methods/helpers/events';
@@ -1110,14 +1106,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const textInputAndButtons = !recording ? (
 			<>
 				<LeftButtons
-					theme={theme}
 					showEmojiKeyboard={showEmojiKeyboard}
 					editing={editing}
-					showMessageBoxActions={this.showMessageBoxActions}
 					editCancel={this.editCancel}
 					openEmoji={this.openEmoji}
 					closeEmoji={this.closeEmoji}
-					isActionsEnabled={isActionsEnabled}
 				/>
 				<TextInput
 					ref={component => (this.component = component)}
@@ -1136,7 +1129,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					{...isAndroidTablet}
 				/>
 				<RightButtons
-					theme={theme}
 					showSend={showSend}
 					submit={this.submit}
 					showMessageBoxActions={this.showMessageBoxActions}
