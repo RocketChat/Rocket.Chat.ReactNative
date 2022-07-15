@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { StyleSheet, ScrollView, Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 	buttonMarginVertical: { marginVertical: 20 }
 });
 
-const CloseLivechatView = ({ route }: IBaseScreen<ChatsStackParamList, 'CloseLivechatView'>) => {
+const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamList, 'CloseLivechatView'>) => {
 	const rid = route.params?.rid;
 	const departmentInfo = route.params?.departmentInfo;
 	const tagsList = route.params?.tagsList;
@@ -46,7 +46,11 @@ const CloseLivechatView = ({ route }: IBaseScreen<ChatsStackParamList, 'CloseLiv
 		livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 	}));
 
-	useEffect(() => {}, []);
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Close_Chat')
+		});
+	}, [navigation]);
 
 	useEffect(() => {
 		if (!requestTags && !livechatRequestComment) {
