@@ -28,7 +28,14 @@ import { ThemeContext, TSupportedThemes } from './theme';
 import { debounce, isTablet } from './lib/methods/helpers';
 import EventEmitter from './lib/methods/helpers/events';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
-import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
+import {
+	getTheme,
+	initialTheme,
+	newThemeState,
+	setNativeTheme,
+	subscribeTheme,
+	unsubscribeTheme
+} from './lib/methods/helpers/theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
@@ -98,6 +105,7 @@ export default class Root extends React.Component<{}, IState> {
 		if (isTablet) {
 			this.initTablet();
 		}
+		setNativeTheme(theme);
 	}
 
 	componentDidMount() {
