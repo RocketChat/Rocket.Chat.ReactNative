@@ -7,9 +7,12 @@ import { Provider } from 'react-redux';
 import NewMarkdown from '../../app/containers/markdown/new';
 import { themes } from '../../app/lib/constants';
 import { longText } from '../utils';
+import { NavigationDecorator } from '../StoryNavigator';
 import { store } from './index';
 
-const stories = storiesOf('NewMarkdown', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
+const stories = storiesOf('NewMarkdown', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
+	.addDecorator(NavigationDecorator);
 
 const theme = 'light';
 
