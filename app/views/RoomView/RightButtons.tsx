@@ -239,12 +239,19 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return closeLivechatService({ rid, isMasterDetail, comment });
 		}
 
-		navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'CloseLivechatView',
+				params: { rid, departmentId, departmentInfo, tagsList }
+			});
+		} else {
+			navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+		}
 	};
 
 	showMoreActions = () => {
 		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
-		const { showActionSheet, rid, navigation, omnichannelPermissions } = this.props;
+		const { showActionSheet, rid, navigation, omnichannelPermissions, isMasterDetail } = this.props;
 
 		const options = [] as TActionSheetOptionsItem[];
 		if (omnichannelPermissions.canPlaceLivechatOnHold) {
@@ -259,7 +266,16 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			options.push({
 				title: i18n.t('Forward_Chat'),
 				icon: 'chat-forward',
-				onPress: () => navigation.navigate('ForwardLivechatView', { rid })
+				onPress: () => {
+					if (isMasterDetail) {
+						navigation.navigate('ModalStackNavigator', {
+							screen: 'ForwardLivechatView',
+							params: { rid }
+						});
+					} else {
+						navigation.navigate('ForwardLivechatView', { rid });
+					}
+				}
 			});
 		}
 

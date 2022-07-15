@@ -78,7 +78,9 @@ const CloseLivechatView = ({ route }: IBaseScreen<ChatsStackParamList, 'CloseLiv
 						defaultValue={''}
 						onChangeText={text => setInputValue(text)}
 						onSubmitEditing={() => {
-							// inputs.name?.focus();
+							if (canSubmit) {
+								submit();
+							}
 						}}
 					/>
 
