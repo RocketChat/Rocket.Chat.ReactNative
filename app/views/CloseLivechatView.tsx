@@ -51,18 +51,21 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 		});
 	}, [navigation]);
 
-	let canSubmit = false;
-	if (!requestTags && !livechatRequestComment) {
-		canSubmit = true;
-	} else if (requestTags && tagParamSelected.length > 0 && !livechatRequestComment) {
-		canSubmit = true;
-	} else if (livechatRequestComment && !!inputValue && !requestTags) {
-		canSubmit = true;
-	} else if (livechatRequestComment && requestTags && tagParamSelected.length > 0 && !!inputValue) {
-		canSubmit = true;
-	} else {
-		canSubmit = false;
-	}
+	const canSubmit = () => {
+		if (!requestTags && !livechatRequestComment) {
+			return true;
+		}
+		if (requestTags && tagParamSelected.length > 0 && !livechatRequestComment) {
+			return true;
+		}
+		if (livechatRequestComment && !!inputValue && !requestTags) {
+			return true;
+		}
+		if (livechatRequestComment && requestTags && tagParamSelected.length > 0 && !!inputValue) {
+			return true;
+		}
+		return false;
+	};
 
 	const submit = () => {
 		closeLivechat({ rid, isMasterDetail, comment: inputValue, tags: tagParamSelected });
@@ -80,7 +83,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 						defaultValue={''}
 						onChangeText={text => setInputValue(text)}
 						onSubmitEditing={() => {
-							if (canSubmit) {
+							if (canSubmit()) {
 								submit();
 							}
 						}}
@@ -105,7 +108,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 					<Button
 						title={I18n.t('Close')}
 						onPress={submit}
-						disabled={!canSubmit}
+						disabled={!canSubmit()}
 						backgroundColor={colors.dangerColor}
 						type='primary'
 						style={styles.buttonMarginVertical}
