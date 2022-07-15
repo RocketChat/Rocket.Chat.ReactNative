@@ -351,7 +351,7 @@ export const getTeamListRoom = ({
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
 	// RC 3.2.0
 	let params;
-	if (tags && tags?.length > 0) {
+	if (tags && tags?.length) {
 		params = { tags };
 	}
 	// RC 0.29.0
