@@ -57,34 +57,28 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Status = ({ status }: { status: IStatus }) => {
-	const user = useSelector((state: IApplicationState) => getUserSelector(state));
-	const dispatch = useDispatch();
-
-	const { id, name } = status;
+const Status = ({
+	statusType,
+	status,
+	setStatus
+}: {
+	statusType: IStatus;
+	status: TUserStatus;
+	setStatus: (status: TUserStatus) => void;
+}) => {
+	const { id, name } = statusType;
 	return (
 		<List.Item
 			title={name}
-			onPress={async () => {
-				const key = `STATUS_${status.id.toUpperCase()}` as keyof typeof events;
+			onPress={() => {
+				const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
 				logEvent(events[key]);
-				if (user.status !== status.id) {
-					try {
-						await Services.setUserStatus(status.id, user.statusText || '');
-						dispatch(setUser({ status: status.id }));
-					} catch (e: any) {
-						const messageError =
-							e.error && e.error.includes('[error-too-many-requests]')
-								? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
-								: e.reason;
-						showErrorAlert(messageError);
-						logEvent(events.SET_STATUS_FAIL);
-						log(e);
-					}
+				if (status !== statusType.id) {
+					setStatus(statusType.id);
 				}
 			}}
 			testID={`status-view-${id}`}
-			left={() => <StatusIcon size={24} status={status.id} />}
+			left={() => <StatusIcon size={24} status={statusType.id} />}
 		/>
 	);
 };
@@ -98,6 +92,7 @@ const StatusView = (): React.ReactElement => {
 
 	const [statusText, setStatusText] = useState(user.statusText || '');
 	const [loading, setLoading] = useState(false);
+	const [status, setStatus] = useState(user.status);
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
@@ -105,8 +100,8 @@ const StatusView = (): React.ReactElement => {
 	useEffect(() => {
 		const submit = async () => {
 			logEvent(events.STATUS_DONE);
-			if (statusText !== user.statusText) {
-				await setCustomStatus(user.status, statusText);
+			if (statusText !== user.statusText || status !== user.status) {
+				await setCustomStatus(status, statusText);
 			}
 			goBack();
 		};
@@ -122,13 +117,13 @@ const StatusView = (): React.ReactElement => {
 			});
 		};
 		setHeader();
-	}, [statusText, user.status]);
+	}, [statusText, status]);
 
-	const setCustomStatus = async (status: string, statusText: string) => {
+	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
 		setLoading(true);
 		try {
 			await Services.setUserStatus(status, statusText);
-			dispatch(setUser({ statusText }));
+			dispatch(setUser({ statusText, status }));
 			logEvent(events.STATUS_CUSTOM);
 			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
@@ -138,32 +133,26 @@ const StatusView = (): React.ReactElement => {
 					: e.reason;
 			logEvent(events.STATUS_CUSTOM_F);
 			showErrorAlert(messageError);
+			log(e);
 		}
 		setLoading(false);
 	};
 
-	const status = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
+	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
 	return (
 		<SafeAreaView testID='status-view'>
 			<FlatList
-				data={status}
+				data={statusType}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status status={item} />}
+				renderItem={({ item }) => <Status statusType={item} status={status} setStatus={setStatus} />}
 				ListHeaderComponent={
 					<>
 						<FormTextInput
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}
-							left={
-								<StatusIcon
-									testID={`status-view-current-${user.status}`}
-									style={styles.inputLeft}
-									status={user.status}
-									size={24}
-								/>
-							}
+							left={<StatusIcon testID={`status-view-current-${status}`} style={styles.inputLeft} status={status} size={24} />}
 							inputStyle={styles.inputStyle}
 							placeholder={I18n.t('What_are_you_doing_right_now')}
 							testID='status-view-input'

@@ -7,6 +7,7 @@ import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
 import { themes } from '../../app/lib/constants';
 import { TGetCustomEmoji, IEmoji } from '../../app/definitions/IEmoji';
 import { store } from '.';
+import { NavigationDecorator } from '../StoryNavigator';
 
 const theme = 'light';
 
@@ -44,7 +45,9 @@ const getCustomEmoji: TGetCustomEmoji = content => {
 	return customEmoji;
 };
 
-const stories = storiesOf('Markdown', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
+const stories = storiesOf('Markdown', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
+	.addDecorator(NavigationDecorator);
 
 stories.add('Text', () => (
 	<View style={styles.container}>

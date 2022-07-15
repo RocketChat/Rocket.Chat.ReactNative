@@ -4,6 +4,8 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 import { IAttachment } from '../../definitions/IAttachment';
 import { IMessage } from '../../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
+import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { ILivechatTag } from '../../definitions/ILivechatTag';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -110,6 +112,12 @@ export type ModalStackParamList = {
 	};
 	ForwardLivechatView: {
 		rid: string;
+	};
+	CloseLivechatView: {
+		rid: string;
+		departmentId?: string;
+		departmentInfo?: ILivechatDepartment;
+		tagsList?: ILivechatTag[];
 	};
 	CannedResponsesListView: {
 		rid: string;
