@@ -800,10 +800,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { permissionToUpload } = this.state;
+		const { permissionToUpload, showEmojiKeyboard } = this.state;
 		const { showActionSheet, goToCannedResponses } = this.props;
 
-		const options = [];
+		const options: any[] = [];
 		if (goToCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
@@ -841,7 +841,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			icon: 'discussions',
 			onPress: this.createDiscussion
 		});
-		showActionSheet({ options });
+
+		if (showEmojiKeyboard) {
+			this.closeEmoji();
+		}
+
+		setTimeout(() => showActionSheet({ options }), showEmojiKeyboard ? 350 : 50);
 	};
 
 	editCancel = () => {
@@ -856,6 +861,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	recordingCallback = (recording: any) => {
+		const { showEmojiKeyboard } = this.state;
+		if (showEmojiKeyboard) {
+			this.closeEmoji();
+		}
 		this.setState({ recording });
 	};
 
