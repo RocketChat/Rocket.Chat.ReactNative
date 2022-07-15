@@ -46,10 +46,11 @@ import {
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
-import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
 import { videoConfStartAndJoin } from '../../lib/methods/videoConf';
+import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { ILivechatTag } from '../../definitions/ILivechatTag';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
@@ -376,29 +377,31 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		);
 	};
 
-	closeLivechat = () => {
+	closeLivechat = async () => {
 		const {
-			room: { rid }
+			room: { rid, departmentId }
 		} = this.state;
-		const { livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
+		const { livechatRequestComment, isMasterDetail, navigation } = this.props;
+		let departmentInfo: ILivechatDepartment | undefined;
+		let tagsList: ILivechatTag[] | undefined;
 
-		if (!livechatRequestComment) {
+		if (departmentId) {
+			const result = await Services.getDepartmentInfo(departmentId);
+			if (result.success) {
+				departmentInfo = result.department as ILivechatDepartment;
+			}
+		}
+
+		if (departmentInfo?.requestTagBeforeClosingChat) {
+			tagsList = await Services.getTagsList();
+		}
+
+		if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
 			const comment = I18n.t('Chat_closed_by_agent');
 			return closeLivechat({ rid, isMasterDetail, comment });
 		}
 
-		showActionSheet({
-			children: (
-				<CloseLivechatSheet
-					onSubmit={(comment: string) => {
-						hideActionSheet();
-						closeLivechat({ rid, isMasterDetail, comment });
-					}}
-					onCancel={() => hideActionSheet()}
-				/>
-			),
-			headerHeight: 225
-		});
+		navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
 	};
 
 	placeOnHoldLivechat = () => {
