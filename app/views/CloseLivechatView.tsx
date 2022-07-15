@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { StyleSheet, ScrollView, Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -37,7 +37,6 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 
 	const [inputValue, setInputValue] = useState('');
 	const [tagParamSelected, setTagParamSelected] = useState<string[]>([]);
-	const [canSubmit, setCanSubmit] = useState(false);
 
 	const { colors } = useTheme();
 
@@ -52,19 +51,18 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 		});
 	}, [navigation]);
 
-	useEffect(() => {
-		if (!requestTags && !livechatRequestComment) {
-			setCanSubmit(true);
-		} else if (requestTags && tagParamSelected.length > 0 && !livechatRequestComment) {
-			setCanSubmit(true);
-		} else if (livechatRequestComment && !!inputValue && !requestTags) {
-			setCanSubmit(true);
-		} else if (livechatRequestComment && requestTags && tagParamSelected.length > 0 && !!inputValue) {
-			setCanSubmit(true);
-		} else {
-			setCanSubmit(false);
-		}
-	}, [inputValue, livechatRequestComment, requestTags, tagParamSelected]);
+	let canSubmit = false;
+	if (!requestTags && !livechatRequestComment) {
+		canSubmit = true;
+	} else if (requestTags && tagParamSelected.length > 0 && !livechatRequestComment) {
+		canSubmit = true;
+	} else if (livechatRequestComment && !!inputValue && !requestTags) {
+		canSubmit = true;
+	} else if (livechatRequestComment && requestTags && tagParamSelected.length > 0 && !!inputValue) {
+		canSubmit = true;
+	} else {
+		canSubmit = false;
+	}
 
 	const submit = () => {
 		closeLivechat({ rid, isMasterDetail, comment: inputValue, tags: tagParamSelected });
