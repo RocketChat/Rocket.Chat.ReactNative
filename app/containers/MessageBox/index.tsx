@@ -54,7 +54,7 @@ import {
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -846,7 +846,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			this.closeEmoji();
 		}
 
-		setTimeout(() => showActionSheet({ options }), showEmojiKeyboard ? 350 : 50);
+		setTimeout(() => showActionSheet({ options }), showEmojiKeyboard && isIOS ? 350 : null);
 	};
 
 	editCancel = () => {
