@@ -350,7 +350,7 @@ export const getTeamListRoom = ({
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	// RC 0.29.0
-	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, tags });
+	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...(tags && tags?.length > 0 && { tags }) });
 
 export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
 	// RC 0.55.0
