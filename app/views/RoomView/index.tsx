@@ -781,6 +781,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	errorActionsShow = (message: TAnyMessageModel) => {
+		const showEmojiKeyboard = this.messagebox?.current?.state.showEmojiKeyboard;
+		if (showEmojiKeyboard) {
+			this.messagebox?.current?.closeEmoji();
+		}
+
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 

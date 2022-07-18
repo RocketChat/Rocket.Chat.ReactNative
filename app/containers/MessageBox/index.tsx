@@ -133,6 +133,8 @@ interface IMessageBoxState {
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	public text: string;
 
+	public shouldUpdate: boolean;
+
 	private selection: { start: number; end: number };
 
 	private focused: boolean;
@@ -187,6 +189,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
 		this.focused = false;
+		this.shouldUpdate = false;
 
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -254,6 +257,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setOptions();
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
+			if (this.shouldUpdate) {
+				this.shouldUpdate = false;
+				this.forceUpdate();
+			}
 			// didFocus
 			// We should wait pushed views be dismissed
 			this.trackingTimeout = setTimeout(() => {
@@ -264,6 +271,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			if (this.state.showEmojiKeyboard && isIOS) {
+				this.shouldUpdate = true;
+			}
 			this.component?.blur();
 		});
 	}
