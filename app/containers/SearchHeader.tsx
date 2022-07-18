@@ -5,8 +5,8 @@ import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
-import TextInput from './TextInput';
-import { isIOS, isTablet } from '../utils/deviceInfo';
+import { TextInput } from './TextInput';
+import { isIOS, isTablet } from '../lib/methods/helpers';
 import { useOrientation } from '../dimensions';
 
 const styles = StyleSheet.create({
@@ -39,7 +39,6 @@ const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.E
 				style={[styles.title, isLight && { color: themes[theme].headerTitleColor }, { fontSize: titleFontSize }]}
 				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
-				theme={theme}
 				testID={testID}
 			/>
 		</View>

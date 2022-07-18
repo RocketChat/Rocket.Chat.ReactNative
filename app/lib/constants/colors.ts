@@ -64,11 +64,12 @@ export const colors = {
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#1F2329',
-		previewTintColor: '#ffffff',
+		previewTintColor: '#f9f9f9',
 		backdropOpacity: 0.3,
 		attachmentLoadingOpacity: 0.7,
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
+		cancelButton: '#E4E7EA',
 		...mentions
 	},
 	dark: {
@@ -115,11 +116,12 @@ export const colors = {
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#030b1b',
-		previewTintColor: '#ffffff',
+		previewTintColor: '#f9f9f9',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
+		cancelButton: '#E4E7EA',
 		...mentions
 	},
 	black: {
@@ -166,11 +168,12 @@ export const colors = {
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#000000',
-		previewTintColor: '#ffffff',
+		previewTintColor: '#f9f9f9',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
+		cancelButton: '#E4E7EA',
 		...mentions
 	}
 };

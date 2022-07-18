@@ -1,6 +1,6 @@
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS } from '../../lib/methods/helpers';
 
 const regex = new RegExp(/\.[^/.]+$/); // Check from last '.' of the string
 

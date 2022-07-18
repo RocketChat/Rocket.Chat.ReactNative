@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
-import { getReadableVersion } from '../utils/deviceInfo';
+import { getReadableVersion } from '../lib/methods/helpers';
 import I18n from '../i18n';
 import { TSupportedThemes } from '../theme';
 

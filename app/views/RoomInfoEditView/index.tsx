@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import Avatar from '../../containers/Avatar';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import {
@@ -35,17 +35,21 @@ import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
-import log, { events, logEvent } from '../../utils/log';
-import { MessageTypeValues } from '../../utils/messageTypes';
-import random from '../../utils/random';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import EventEmitter from '../../lib/methods/helpers/events';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { MessageTypeValues } from './messageTypes';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { getRoomTitle, hasPermission } from '../../lib/methods';
+import {
+	getRoomTitle,
+	hasPermission,
+	compareServerVersion,
+	showConfirmationAlert,
+	showErrorAlert,
+	random
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {
@@ -596,7 +600,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								this.description?.focus();
 							}}
 							error={nameError}
-							theme={theme}
 							testID='room-info-edit-view-name'
 						/>
 						<FormTextInput
@@ -609,7 +612,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.topic?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-description'
 						/>
 						<FormTextInput
@@ -622,7 +624,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.announcement?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-topic'
 						/>
 						<FormTextInput
@@ -635,9 +636,16 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onSubmitEditing={() => {
 								this.joinCode?.focus();
 							}}
-							theme={theme}
 							testID='room-info-edit-view-announcement'
 						/>
+						{/* This TextInput avoid appears the password fill when typing into Announcements TextInput */}
+						<View style={{ height: StyleSheet.hairlineWidth, overflow: 'hidden' }}>
+							<TextInput
+								style={{
+									height: StyleSheet.hairlineWidth
+								}}
+							/>
+						</View>
 						<FormTextInput
 							inputRef={e => {
 								this.joinCode = e;
@@ -647,7 +655,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onChangeText={value => this.setState({ joinCode: value })}
 							onSubmitEditing={this.submit}
 							secureTextEntry
-							theme={theme}
 							testID='room-info-edit-view-password'
 						/>
 						<SwitchContainer

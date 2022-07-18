@@ -2,16 +2,19 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../lib/constants';
 import { ITitleProps } from './interfaces';
+import { useTheme } from '../../theme';
 
-const Title = React.memo(({ name, theme, hideUnreadStatus, alert }: ITitleProps) => (
-	<Text
-		style={[styles.title, alert && !hideUnreadStatus && styles.alert, { color: themes[theme].titleText }]}
-		ellipsizeMode='tail'
-		numberOfLines={1}>
-		{name}
-	</Text>
-));
+const Title = React.memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
+	const { colors } = useTheme();
+	return (
+		<Text
+			style={[styles.title, alert && !hideUnreadStatus && styles.alert, { color: colors.titleText }]}
+			ellipsizeMode='tail'
+			numberOfLines={1}>
+			{name}
+		</Text>
+	);
+});
 
 export default Title;

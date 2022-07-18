@@ -2,12 +2,17 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
+import { Provider } from 'react-redux';
 
 import NewMarkdown from '../../app/containers/markdown/new';
 import { themes } from '../../app/lib/constants';
 import { longText } from '../utils';
+import { NavigationDecorator } from '../StoryNavigator';
+import { store } from './index';
 
-const stories = storiesOf('NewMarkdown', module);
+const stories = storiesOf('NewMarkdown', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
+	.addDecorator(NavigationDecorator);
 
 const theme = 'light';
 
@@ -16,10 +21,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 15,
 		backgroundColor: themes[theme].backgroundColor,
 		marginVertical: 50
-	},
-	separator: {
-		marginHorizontal: 10,
-		marginVertical: 10
 	}
 });
 

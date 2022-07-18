@@ -5,26 +5,25 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
-import { showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom } from '../../utils/goRoom';
-import { events, logEvent } from '../../utils/log';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
 import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { getRoomTitle } from '../../lib/methods';
+import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;
@@ -165,7 +164,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							onChannelSelect={this.selectChannel}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							serverVersion={serverVersion}
-							theme={theme}
 						/>
 						<FormTextInput
 							label={I18n.t('Discussion_name')}
@@ -174,7 +172,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							containerStyle={styles.inputStyle}
 							defaultValue={name}
 							onChangeText={(text: string) => this.setState({ name: text })}
-							theme={theme}
 						/>
 						<SelectUsers
 							server={server}
@@ -184,7 +181,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							onUserSelect={this.selectUsers}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							serverVersion={serverVersion}
-							theme={theme}
 						/>
 						{this.isEncryptionEnabled ? (
 							<>

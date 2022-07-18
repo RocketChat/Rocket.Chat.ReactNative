@@ -11,7 +11,7 @@ import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COL
 import { useAppSelector } from '../lib/hooks';
 import useServer from '../lib/methods/useServer';
 import { SettingsStackParamList } from '../stacks/types';
-import { handleLocalAuthentication } from '../utils/localAuthentication';
+import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
 import {
 	events,
 	getReportAnalyticsEventsValue,
@@ -19,7 +19,7 @@ import {
 	logEvent,
 	toggleAnalyticsEventsReport,
 	toggleCrashErrorsReport
-} from '../utils/log';
+} from '../lib/methods/helpers/log';
 
 interface ISecurityPrivacyViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;

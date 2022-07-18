@@ -1,7 +1,7 @@
 import React from 'react';
 import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from '@codler/react-native-keyboard-aware-scroll-view';
 
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 
 interface IKeyboardViewProps extends KeyboardAwareScrollViewProps {
 	keyboardVerticalOffset?: number;

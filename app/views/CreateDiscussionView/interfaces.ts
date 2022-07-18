@@ -1,7 +1,6 @@
 import { NewMessageStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IBaseScreen, IMessage, ISearchLocal, IUser } from '../../definitions';
-import { TSupportedThemes } from '../../theme';
 
 export interface IResult {
 	rid: string;
@@ -43,7 +42,6 @@ export interface ICreateDiscussionViewSelectChannel {
 	onChannelSelect: Function;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
-	theme: TSupportedThemes;
 }
 
 export interface ICreateDiscussionViewSelectUsers {
@@ -54,5 +52,4 @@ export interface ICreateDiscussionViewSelectUsers {
 	onUserSelect: Function;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
-	theme: TSupportedThemes;
 }

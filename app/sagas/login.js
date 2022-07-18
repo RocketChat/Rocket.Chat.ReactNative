@@ -7,13 +7,13 @@ import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
-import EventEmitter from '../utils/events';
+import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
-import { showErrorAlert } from '../utils/info';
-import { localAuthenticate } from '../utils/localAuthentication';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
@@ -30,6 +30,8 @@ import {
 	getUserPresence,
 	isOmnichannelModuleAvailable,
 	logout,
+	removeServerData,
+	removeServerDatabase,
 	subscribeSettings,
 	subscribeUsersPresence
 } from '../lib/methods';
@@ -233,10 +235,46 @@ const handleSetUser = function* handleSetUser({ user }) {
 	}
 };
 
+const handleDeleteAccount = function* handleDeleteAccount() {
+	yield put(encryptionStop());
+	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Deleting_account') }));
+	const server = yield select(getServer);
+	if (server) {
+		try {
+			yield call(removeServerData, { server });
+			yield call(removeServerDatabase, { server });
+			const serversDB = database.servers;
+			// all servers
+			const serversCollection = serversDB.get('servers');
+			const servers = yield serversCollection.query().fetch();
+
+			// see if there're other logged in servers and selects first one
+			if (servers.length > 0) {
+				for (let i = 0; i < servers.length; i += 1) {
+					const newServer = servers[i].id;
+					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
+					if (token) {
+						yield put(selectServerRequest(newServer));
+						return;
+					}
+				}
+			}
+			// if there's no servers, go outside
+			sdk.disconnect();
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		} catch (e) {
+			sdk.disconnect();
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			log(e);
+		}
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
+	yield takeLatest(types.DELETE_ACCOUNT, handleDeleteAccount);
 
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);

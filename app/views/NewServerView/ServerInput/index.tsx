@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
-import FormTextInput from '../../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
-import { TServerHistoryModel } from '../../../definitions/IServerHistory';
+import { TServerHistoryModel } from '../../../definitions';
 import Item from './Item';
 import { TSupportedThemes } from '../../../theme';
 
@@ -62,7 +62,6 @@ const ServerInput = ({
 				clearButtonMode='while-editing'
 				keyboardType='url'
 				textContentType='URL'
-				theme={theme}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>

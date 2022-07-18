@@ -8,7 +8,7 @@ import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 
 import { useDimensions, useOrientation } from '../../dimensions';
 import { useTheme } from '../../theme';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
@@ -101,6 +101,11 @@ const ActionSheet = React.memo(
 			</>
 		);
 
+		const onClose = () => {
+			toggleVisible();
+			data?.onClose && data?.onClose();
+		};
+
 		const renderBackdrop = useCallback(
 			props => (
 				<BottomSheetBackdrop
@@ -116,6 +121,10 @@ const ActionSheet = React.memo(
 
 		const bottomSheet = isLandscape || isTablet ? styles.bottomSheet : {};
 
+		// Must need this prop to avoid keyboard dismiss
+		// when is android tablet and the input text is focused
+		const androidTablet: any = isTablet && isLandscape && !isIOS ? { android_keyboardInputMode: 'adjustResize' } : {};
+
 		return (
 			<>
 				{children}
@@ -130,7 +139,8 @@ const ActionSheet = React.memo(
 						enablePanDownToClose
 						style={{ ...styles.container, ...bottomSheet }}
 						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
-						onChange={index => index === -1 && toggleVisible()}>
+						onChange={index => index === -1 && onClose()}
+						{...androidTablet}>
 						<BottomSheetContent options={data?.options} hide={hide} children={data?.children} hasCancel={data?.hasCancel} />
 					</BottomSheet>
 				)}
