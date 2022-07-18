@@ -1,0 +1,50 @@
+name: Android Build 
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  android-build:
+    name: Android Build
+    runs-on: ubuntu-latest 
+
+    env:
+      JAVA_OPTS: '-Xms512m -Xmx2g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+      TERM: dumb
+
+    steps:
+      - name: Check out Git repository # 
+        uses: actions/checkout@v2
+
+      - name: Set up our JDK environment 
+        uses: actions/setup-java@v1.4.3
+        with:
+          distribution: 'zulu' 
+          java-version: '11'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Restore node_modules from cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test -w 8
+
+      - name: Codecov
+        run: yarn codecov
