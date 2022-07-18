@@ -6,21 +6,20 @@ import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
-import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import { useDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
 import StatusBar from '../../../containers/StatusBar';
-import { goRoom } from '../../../utils/goRoom';
+import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
-import { events, logEvent } from '../../../utils/log';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
 import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage } from '../../../lib/methods';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'QueueListView'>,
@@ -38,10 +37,10 @@ const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 const QueueListView = React.memo(() => {
 	const navigation = useNavigation<TNavigation>();
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 	const { width } = useDimensions();
 
-	const { userId, token, username } = useSelector(
+	const { username } = useSelector(
 		(state: IApplicationState) => ({
 			userId: getUserSelector(state).id,
 			username: getUserSelector(state).username,
@@ -59,7 +58,6 @@ const QueueListView = React.memo(() => {
 	);
 
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
-	const server = useSelector((state: IApplicationState) => state.server.server);
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 	const queued = useSelector((state: IApplicationState) => getInquiryQueueSelector(state));
 
@@ -96,20 +94,13 @@ const QueueListView = React.memo(() => {
 		return (
 			<RoomItem
 				item={item}
-				theme={theme}
 				id={id}
-				type={item.t}
-				userId={userId}
 				username={username}
-				token={token}
-				baseUrl={server}
 				onPress={onPressItem}
-				testID={`queue-list-view-item-${item.name}`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				useRealName={useRealName}
+				useRealName={!!useRealName}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
-				visitor={item.v}
 				swipeEnabled={false}
 				showAvatar={showAvatar}
 				displayMode={displayMode}

@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
-import FastImage from '@rocket.chat/react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
 
 const ImageProgress = createImageProgress(FastImage);

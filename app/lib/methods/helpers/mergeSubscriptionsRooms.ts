@@ -97,6 +97,8 @@ export const merge = (
 
 	mergedSubscription.blocker = !!mergedSubscription.blocker;
 	mergedSubscription.blocked = !!mergedSubscription.blocked;
+	mergedSubscription.hideMentionStatus = !!mergedSubscription.hideMentionStatus;
+
 	return mergedSubscription;
 };
 

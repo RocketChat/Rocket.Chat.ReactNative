@@ -5,7 +5,7 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import styles from '../styles';
 import { themes } from '../../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../../theme';
-import { headerHeight } from '../../../containers/Header';
+import { headerHeight } from '../../../lib/methods/helpers/navigation';
 import * as List from '../../../containers/List';
 import { Filter } from '../filters';
 import DropdownItemFilter from './DropdownItemFilter';

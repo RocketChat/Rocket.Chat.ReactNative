@@ -4,7 +4,7 @@ import * as RNLocalize from 'react-native-localize';
 import moment from 'moment';
 import 'moment/min/locales';
 
-import { toMomentLocale } from '../utils/moment';
+import { toMomentLocale } from './moment';
 import { isRTL } from './isRTL';
 import englishJson from './locales/en.json';
 

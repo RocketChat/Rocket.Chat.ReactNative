@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import database from '../database';
 import { getMessageById } from '../database/services/Message';
 import { getThreadById } from '../database/services/Thread';
-import log from '../../utils/log';
+import log from './helpers/log';
 import { Encryption } from '../encryption';
 import getSingleMessage from './getSingleMessage';
 import { IMessage, IThread, TThreadModel } from '../../definitions';

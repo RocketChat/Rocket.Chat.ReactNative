@@ -15,10 +15,10 @@ import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
 import { getDeviceToken } from '../notifications';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
 import sdk from './sdk';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
+import { ILivechatTag } from '../../definitions/ILivechatTag';
 
 export const createChannel = ({
 	name,
@@ -281,7 +281,7 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 
 export const setUserStatus = (status: string, message: string) =>
 	// RC 1.2.0
-	sdk.post('users.setStatus', { status, message });
+	sdk.methodCall('setUserStatus', status, message);
 
 export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
@@ -348,9 +348,15 @@ export const getTeamListRoom = ({
 	return sdk.get('teams.listRooms', params);
 };
 
-export const closeLivechat = (rid: string, comment: string) =>
+export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
+	// RC 3.2.0
+	let params;
+	if (tags && tags?.length) {
+		params = { tags };
+	}
 	// RC 0.29.0
-	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
+	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
+};
 
 export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
 	// RC 0.55.0
@@ -399,13 +405,7 @@ export const getRoutingConfig = (): Promise<{
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
-export const getTagsList = (): Promise<
-	{
-		_id: string;
-		name: string;
-		departments: string[];
-	}[]
-> =>
+export const getTagsList = (): Promise<ILivechatTag[]> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 
@@ -918,3 +918,21 @@ export function getUserInfo(userId: string) {
 }
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
+
+export const videoConferenceJoin = (callId: string, cam: boolean) =>
+	sdk.post('video-conference.join', { callId, state: { cam } });
+
+export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId });
+
+export const saveUserProfileMethod = (
+	params: IProfileParams,
+	customFields = {},
+	twoFactorOptions: {
+		twoFactorCode: string;
+		twoFactorMethod: string;
+	} | null
+) => sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
+
+export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
+	// RC 0.67.0
+	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });

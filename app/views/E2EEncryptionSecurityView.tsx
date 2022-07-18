@@ -6,20 +6,20 @@ import { connect } from 'react-redux';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import log, { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import FormTextInput from '../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
 import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
 import { themes } from '../lib/constants';
 import { Encryption } from '../lib/encryption';
 import { logout } from '../actions/login';
-import { showConfirmationAlert, showErrorAlert } from '../utils/info';
-import EventEmitter from '../utils/events';
+import { showConfirmationAlert, showErrorAlert } from '../lib/methods/helpers/info';
+import EventEmitter from '../lib/methods/helpers/events';
 import { LISTENER } from '../containers/Toast';
-import debounce from '../utils/debounce';
+import { debounce } from '../lib/methods/helpers';
 import sharedStyles from './Styles';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { Services } from '../lib/services';
@@ -138,7 +138,6 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 						secureTextEntry
 						onSubmitEditing={this.changePassword}
 						testID='e2e-encryption-security-view-password'
-						theme={theme}
 						onChangeText={this.onChangePasswordText}
 					/>
 					<Button

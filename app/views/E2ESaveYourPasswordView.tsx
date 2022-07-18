@@ -15,9 +15,9 @@ import { E2E_RANDOM_PASSWORD_KEY, themes } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import EventEmitter from '../utils/events';
-import { events, logEvent } from '../utils/log';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import EventEmitter from '../lib/methods/helpers/events';
+import { events, logEvent } from '../lib/methods/helpers/log';
+import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({

@@ -27,7 +27,6 @@ export const ROOM = createRequestTypes('ROOM', [
 	'LEAVE',
 	'DELETE',
 	'REMOVED',
-	'CLOSE',
 	'FORWARD',
 	'USER_TYPING'
 ]);
@@ -54,6 +53,7 @@ export const SERVER = createRequestTypes('SERVER', [
 ]);
 export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DISCONNECT']);
 export const LOGOUT = 'LOGOUT'; // logout is always success
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);

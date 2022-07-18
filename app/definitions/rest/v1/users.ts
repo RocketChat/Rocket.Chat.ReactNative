@@ -36,7 +36,7 @@ export type UsersEndpoints = {
 		POST: (params: { name: string; email: string; username: string; pass: string }) => { user: IUserRegistered };
 	};
 	'users.setStatus': {
-		POST: (params: { status: string; message: string }) => {};
+		POST: (params: { status?: string; message?: string }) => {};
 	};
 	'users.updateOwnBasicInfo': {
 		POST: (params: {
@@ -60,5 +60,8 @@ export type UsersEndpoints = {
 			preferences: INotificationPreferences;
 			success: boolean;
 		};
+	};
+	'users.deleteOwnAccount': {
+		POST: (params: { password: string; confirmRelinquish: boolean }) => { success: boolean };
 	};
 };

@@ -9,15 +9,14 @@ import * as List from '../../containers/List';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
-import FormTextInput from '../../containers/TextInput/FormTextInput';
+import { FormTextInput } from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
-import { useTheme } from '../../theme';
-import { showErrorAlert } from '../../utils/info';
-import log, { events, logEvent } from '../../utils/log';
+import { showErrorAlert } from '../../lib/methods/helpers';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 
 interface IStatus {
 	id: TUserStatus;
@@ -58,36 +57,28 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Status = ({ status, statusText }: { status: IStatus; statusText: string }) => {
-	const user = useSelector((state: IApplicationState) => getUserSelector(state));
-	const dispatch = useDispatch();
-
-	const { id, name } = status;
+const Status = ({
+	statusType,
+	status,
+	setStatus
+}: {
+	statusType: IStatus;
+	status: TUserStatus;
+	setStatus: (status: TUserStatus) => void;
+}) => {
+	const { id, name } = statusType;
 	return (
 		<List.Item
 			title={name}
-			onPress={async () => {
-				const key = `STATUS_${status.id.toUpperCase()}` as keyof typeof events;
+			onPress={() => {
+				const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
 				logEvent(events[key]);
-				if (user.status !== status.id) {
-					try {
-						const result = await Services.setUserStatus(status.id, statusText);
-						if (result.success) {
-							dispatch(setUser({ status: status.id }));
-						}
-					} catch (e: any) {
-						const messageError =
-							e.data && e.data.error.includes('[error-too-many-requests]')
-								? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-								: e.data.errorType;
-						showErrorAlert(messageError);
-						logEvent(events.SET_STATUS_FAIL);
-						log(e);
-					}
+				if (status !== statusType.id) {
+					setStatus(statusType.id);
 				}
 			}}
 			testID={`status-view-${id}`}
-			left={() => <StatusIcon size={24} status={status.id} />}
+			left={() => <StatusIcon size={24} status={statusType.id} />}
 		/>
 	);
 };
@@ -101,17 +92,16 @@ const StatusView = (): React.ReactElement => {
 
 	const [statusText, setStatusText] = useState(user.statusText || '');
 	const [loading, setLoading] = useState(false);
+	const [status, setStatus] = useState(user.status);
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 
-	const { theme } = useTheme();
-
 	useEffect(() => {
 		const submit = async () => {
 			logEvent(events.STATUS_DONE);
-			if (statusText !== user.statusText) {
-				await setCustomStatus(statusText);
+			if (statusText !== user.statusText || status !== user.status) {
+				await setCustomStatus(status, statusText);
 			}
 			goBack();
 		};
@@ -121,60 +111,48 @@ const StatusView = (): React.ReactElement => {
 				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={goBack} />,
 				headerRight: () => (
 					<HeaderButton.Container>
-						<HeaderButton.Item title={I18n.t('Done')} onPress={submit} testID='status-view-submit' />
+						<HeaderButton.Item title={I18n.t('Save')} onPress={submit} testID='status-view-submit' />
 					</HeaderButton.Container>
 				)
 			});
 		};
 		setHeader();
-	}, [statusText, user.status]);
+	}, [statusText, status]);
 
-	const setCustomStatus = async (statusText: string) => {
+	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
 		setLoading(true);
 		try {
-			const result = await Services.setUserStatus(user.status, statusText);
-			if (result.success) {
-				dispatch(setUser({ statusText }));
-				logEvent(events.STATUS_CUSTOM);
-				showToast(I18n.t('Status_saved_successfully'));
-			} else {
-				logEvent(events.STATUS_CUSTOM_F);
-				showToast(I18n.t('error-could-not-change-status'));
-			}
+			await Services.setUserStatus(status, statusText);
+			dispatch(setUser({ statusText, status }));
+			logEvent(events.STATUS_CUSTOM);
+			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
 			const messageError =
-				e.data && e.data.error.includes('[error-too-many-requests]')
-					? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-					: e.data.errorType;
+				e.error && e.error.includes('[error-too-many-requests]')
+					? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
+					: e.reason;
 			logEvent(events.STATUS_CUSTOM_F);
 			showErrorAlert(messageError);
+			log(e);
 		}
 		setLoading(false);
 	};
 
-	const status = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
+	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
 	return (
 		<SafeAreaView testID='status-view'>
 			<FlatList
-				data={status}
+				data={statusType}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status status={item} statusText={statusText} />}
+				renderItem={({ item }) => <Status statusType={item} status={status} setStatus={setStatus} />}
 				ListHeaderComponent={
 					<>
 						<FormTextInput
-							theme={theme}
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}
-							left={
-								<StatusIcon
-									testID={`status-view-current-${user.status}`}
-									style={styles.inputLeft}
-									status={user.status}
-									size={24}
-								/>
-							}
+							left={<StatusIcon testID={`status-view-current-${status}`} style={styles.inputLeft} status={status} size={24} />}
 							inputStyle={styles.inputStyle}
 							placeholder={I18n.t('What_are_you_doing_right_now')}
 							testID='status-view-input'

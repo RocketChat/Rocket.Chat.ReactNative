@@ -7,22 +7,22 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
+import { Header } from '@react-navigation/elements';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
-import log, { logEvent, events } from '../../utils/log';
+import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import { appStart } from '../../actions/app';
-import debounce from '../../utils/debounce';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
-import { animateNextTransition } from '../../utils/layoutAnimation';
+import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { themedHeader } from '../../lib/methods/helpers/navigation';
 import {
 	KEY_COMMAND,
 	handleCommandAddNewServer,
@@ -35,28 +35,35 @@ import {
 	IKeyCommandEvent
 } from '../../commands';
 import { getUserSelector } from '../../selectors/login';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	ISubscription,
+	IUser,
+	RootEnum,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
+import { RoomTypes, search } from '../../lib/methods';
 import {
 	getRoomAvatar,
 	getRoomTitle,
 	getUidDirectMessage,
-	getUserPresence,
 	hasPermission,
-	isGroupChat,
 	isRead,
-	RoomTypes,
-	search
-} from '../../lib/methods';
+	debounce,
+	isIOS,
+	isTablet
+} from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 
@@ -409,55 +416,59 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
-	getHeader = () => {
+	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, insets, theme } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
-
-		return {
-			headerTitleAlign: 'left',
-			headerLeft: () =>
-				searching ? (
+		const { navigation, isMasterDetail } = this.props;
+		if (searching) {
+			return {
+				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				headerRightContainerStyle: { flexGrow: 0 },
+				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
 					</HeaderButton.Container>
-				) : (
-					<HeaderButton.Drawer
-						navigation={navigation}
-						testID='rooms-list-view-sidebar'
-						onPress={
-							isMasterDetail
-								? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-								: // @ts-ignore
-								  () => navigation.toggleDrawer()
-						}
-					/>
 				),
-			headerTitle: () => <RoomsListHeaderView theme={theme} />,
-			headerTitleContainerStyle: {
-				left: headerTitlePosition.left,
-				right: headerTitlePosition.right
-			},
-			headerRight: () =>
-				searching ? null : (
-					<HeaderButton.Container>
-						{canCreateRoom ? (
-							<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
-						) : null}
-						<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
-						<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
-					</HeaderButton.Container>
-				)
+				headerTitle: () => <RoomsListHeaderView />,
+				headerRight: () => null
+			};
+		}
+
+		return {
+			headerTitleAlign: 'left',
+			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
+			headerLeft: () => (
+				<HeaderButton.Drawer
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+					onPress={
+						isMasterDetail
+							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+							: // @ts-ignore
+							  () => navigation.toggleDrawer()
+					}
+				/>
+			),
+			headerTitle: () => <RoomsListHeaderView />,
+			headerRight: () => (
+				<HeaderButton.Container>
+					{canCreateRoom ? (
+						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
+					) : null}
+					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
+					<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
+				</HeaderButton.Container>
+			)
 		};
 	};
 
 	setHeader = () => {
 		const { navigation } = this.props;
-		const options = this.getHeader() as Partial<StackNavigationOptions>;
+		const options = this.getHeader();
 		navigation.setOptions(options);
 	};
 
-	// internalSetState = (...args: { chats: TSubscriptionModel; chatsUpdate: TSubscriptionModel; loading: boolean }[]) => {
 	internalSetState = (
 		state:
 			| ((
@@ -646,8 +657,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
-	handleGetUserPresence = (uid: string) => getUserPresence(uid);
-
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
 		return showUnread || showFavorites || groupByType;
@@ -669,7 +678,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	toggleFav = async (rid: string, favorite: boolean) => {
+	toggleFav = async (rid: string, favorite: boolean): Promise<void> => {
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
@@ -719,11 +728,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	hideChannel = async (rid: string, type: RoomTypes) => {
+	hideChannel = async (rid: string, type: SubscriptionType) => {
 		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await Services.hideRoom(rid, type);
+			const result = await Services.hideRoom(rid, type as RoomTypes);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
@@ -919,14 +928,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail } = this.props;
+		const { isMasterDetail, theme } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
 		}
 
 		const options = this.getHeader();
-		return <Header {...options} />;
+		return <Header title='' {...themedHeader(theme)} {...options} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
@@ -939,7 +948,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			user: { username },
 			StoreLastMessage,
 			useRealName,
-			theme,
 			isMasterDetail,
 			width,
 			showAvatar,
@@ -951,9 +959,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return (
 			<RoomItem
 				item={item}
-				theme={theme}
 				id={id}
-				type={item.t}
 				username={username}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
@@ -962,12 +968,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
-				getUserPresence={this.handleGetUserPresence}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
-				getIsGroupChat={isGroupChat}
 				getIsRead={isRead}
-				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}

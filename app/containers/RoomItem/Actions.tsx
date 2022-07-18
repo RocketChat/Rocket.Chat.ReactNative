@@ -1,25 +1,32 @@
 import React from 'react';
-import { Animated, View } from 'react-native';
+import { View } from 'react-native';
+import Animated, {
+	useAnimatedStyle,
+	interpolate,
+	withSpring,
+	runOnJS,
+	useAnimatedReaction,
+	useSharedValue
+} from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 
-import { isRTL } from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
-import { DisplayMode, themes } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
+import { useTheme } from '../../theme';
+import I18n from '../../i18n';
 
-const reverse = new Animated.Value(isRTL() ? -1 : 1);
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
-export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
-	const translateX = Animated.multiply(
-		transX.interpolate({
-			inputRange: [0, ACTION_WIDTH],
-			outputRange: [-ACTION_WIDTH, 0]
-		}),
-		reverse
-	);
+export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
+	const { colors } = useTheme();
+
+	const animatedStyles = useAnimatedStyle(() => ({
+		transform: [{ translateX: transX.value }]
+	}));
 
 	const isCondensed = displayMode === DisplayMode.Condensed;
 	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
@@ -29,20 +36,16 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,
-					{
-						right: width - ACTION_WIDTH,
-						width,
-						transform: [{ translateX }],
-						backgroundColor: themes[theme].tintColor
-					},
-					viewHeight
+					{ width: width * 2, backgroundColor: colors.tintColor, right: '100%' },
+					viewHeight,
+					animatedStyles
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<CustomIcon
 							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 							name={isRead ? 'flag' : 'check'}
-							color={themes[theme].buttonText}
+							color={colors.buttonText}
 						/>
 					</RectButton>
 				</View>
@@ -51,64 +54,102 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 	);
 });
 
-export const RightActions = React.memo(
-	({ transX, favorite, width, toggleFav, onHidePress, theme, displayMode }: IRightActionsProps) => {
-		const translateXFav = Animated.multiply(
-			transX.interpolate({
-				inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
-				outputRange: [width / 2, width - ACTION_WIDTH * 2, width]
-			}),
-			reverse
-		);
-		const translateXHide = Animated.multiply(
-			transX.interpolate({
-				inputRange: [-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
-				outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
-			}),
-			reverse
-		);
+export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
+	const { colors } = useTheme();
 
-		const isCondensed = displayMode === DisplayMode.Condensed;
-		const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
+	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
-		return (
-			<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
-				<Animated.View
-					style={[
-						styles.actionRightButtonContainer,
-						{
-							width,
-							transform: [{ translateX: translateXFav }],
-							backgroundColor: themes[theme].hideBackground
-						},
-						viewHeight
-					]}>
-					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
-						<CustomIcon
-							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-							name={favorite ? 'star-filled' : 'star'}
-							color={themes[theme].buttonText}
-						/>
-					</RectButton>
-				</Animated.View>
-				<Animated.View
-					style={[
-						styles.actionRightButtonContainer,
-						{
-							width,
-							transform: [{ translateX: translateXHide }]
-						},
-						isCondensed && { height: ROW_HEIGHT_CONDENSED }
-					]}>
-					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
-						<CustomIcon
-							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-							name='unread-on-top-disabled'
-							color={themes[theme].buttonText}
-						/>
-					</RectButton>
-				</Animated.View>
-			</View>
-		);
-	}
-);
+	const translateXHide = useSharedValue(0);
+
+	const triggerHideAnimation = (toValue: number) => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		translateXHide.value = withSpring(toValue, { overshootClamping: true, mass: 0.7 });
+	};
+
+	useAnimatedReaction(
+		() => transX.value,
+		(currentTransX, previousTransX) => {
+			// Triggers the animation and hapticFeedback if swipe reaches/unreaches the threshold.
+			if (I18n.isRTL) {
+				if (previousTransX && currentTransX > LONG_SWIPE && previousTransX <= LONG_SWIPE) {
+					runOnJS(triggerHideAnimation)(ACTION_WIDTH);
+				} else if (previousTransX && currentTransX <= LONG_SWIPE && previousTransX > LONG_SWIPE) {
+					runOnJS(triggerHideAnimation)(0);
+				}
+			} else if (previousTransX && currentTransX < -LONG_SWIPE && previousTransX >= -LONG_SWIPE) {
+				runOnJS(triggerHideAnimation)(-ACTION_WIDTH);
+			} else if (previousTransX && currentTransX >= -LONG_SWIPE && previousTransX < -LONG_SWIPE) {
+				runOnJS(triggerHideAnimation)(0);
+			}
+		}
+	);
+
+	const animatedHideStyles = useAnimatedStyle(() => {
+		if (I18n.isRTL) {
+			if (transX.value < LONG_SWIPE && transX.value >= 2 * ACTION_WIDTH) {
+				const parallaxSwipe = interpolate(
+					transX.value,
+					[2 * ACTION_WIDTH, LONG_SWIPE],
+					[ACTION_WIDTH, ACTION_WIDTH + 0.1 * transX.value]
+				);
+				return { transform: [{ translateX: parallaxSwipe + translateXHide.value }] };
+			}
+			return { transform: [{ translateX: transX.value - ACTION_WIDTH + translateXHide.value }] };
+		}
+		if (transX.value > -LONG_SWIPE && transX.value <= -2 * ACTION_WIDTH) {
+			const parallaxSwipe = interpolate(
+				transX.value,
+				[-2 * ACTION_WIDTH, -LONG_SWIPE],
+				[-ACTION_WIDTH, -ACTION_WIDTH + 0.1 * transX.value]
+			);
+			return { transform: [{ translateX: parallaxSwipe + translateXHide.value }] };
+		}
+		return { transform: [{ translateX: transX.value + ACTION_WIDTH + translateXHide.value }] };
+	});
+
+	const isCondensed = displayMode === DisplayMode.Condensed;
+	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
+
+	return (
+		<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
+			<Animated.View
+				style={[
+					styles.actionRightButtonContainer,
+					{
+						width,
+						backgroundColor: colors.favoriteBackground,
+						left: '100%'
+					},
+					viewHeight,
+					animatedFavStyles
+				]}>
+				<RectButton style={[styles.actionButton, { backgroundColor: colors.favoriteBackground }]} onPress={toggleFav}>
+					<CustomIcon
+						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+						name={favorite ? 'star-filled' : 'star'}
+						color={colors.buttonText}
+					/>
+				</RectButton>
+			</Animated.View>
+			<Animated.View
+				style={[
+					styles.actionRightButtonContainer,
+					{
+						width: width * 2,
+						backgroundColor: colors.hideBackground,
+						left: '100%'
+					},
+					isCondensed && { height: ROW_HEIGHT_CONDENSED },
+					animatedHideStyles
+				]}>
+				<RectButton style={[styles.actionButton, { backgroundColor: colors.hideBackground }]} onPress={onHidePress}>
+					<CustomIcon
+						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+						name='unread-on-top-disabled'
+						color={colors.buttonText}
+					/>
+				</RectButton>
+			</Animated.View>
+		</View>
+	);
+});
