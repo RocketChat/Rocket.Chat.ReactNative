@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { dequal } from 'dequal';
+import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { ImageStyle } from 'react-native-fast-image';
@@ -17,13 +18,13 @@ import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import log from '../../lib/methods/helpers/log';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { IEmoji, TGetCustomEmoji, TFrequentlyUsedEmojiModel } from '../../definitions';
-import { store } from '../../lib/store/auxStore';
+import { IEmoji, TGetCustomEmoji, IApplicationState, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definitions';
 
 interface IEmojiPickerProps {
 	isMessageContainsOnlyEmoji?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
 	baseUrl: string;
+	customEmojis: ICustomEmojis;
 	style?: StyleProp<ImageStyle>;
 	theme: TSupportedThemes;
 	onEmojiSelected: (emoji: string, shortname?: string) => void;
@@ -40,14 +41,11 @@ interface IEmojiPickerState {
 class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	constructor(props: IEmojiPickerProps) {
 		super(props);
-		// At iOS this component wasn't able to access the redux store through connect, because of it,
-		// was decided to get the state from auxStore
-		const customEmojiRedux = store.getState().customEmojis;
-		const customEmojis = Object.keys(customEmojiRedux)
-			.filter(item => item === customEmojiRedux[item].name)
+		const customEmojis = Object.keys(props.customEmojis)
+			.filter(item => item === props.customEmojis[item].name)
 			.map(item => ({
-				content: customEmojiRedux[item].name,
-				extension: customEmojiRedux[item].extension,
+				content: props.customEmojis[item].name,
+				extension: props.customEmojis[item].extension,
 				isCustom: true
 			}));
 		this.state = {
@@ -199,4 +197,9 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	}
 }
 
-export default withTheme(EmojiPicker);
+const mapStateToProps = (state: IApplicationState) => ({
+	customEmojis: state.customEmojis,
+	baseUrl: state.share.server.server || state.server.server
+});
+
+export default connect(mapStateToProps)(withTheme(EmojiPicker));
