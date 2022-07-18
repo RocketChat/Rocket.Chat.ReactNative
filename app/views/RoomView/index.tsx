@@ -830,7 +830,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		this.messageActions?.showMessageActions(message);
+		const showEmojiKeyboard = this.messagebox?.current?.state.showEmojiKeyboard;
+		if (this.messagebox?.current?.state.showEmojiKeyboard) {
+			this.messagebox?.current?.closeEmoji();
+		}
+		setTimeout(() => this.messageActions?.showMessageActions(message), showEmojiKeyboard && isIOS ? 350 : null);
 	};
 
 	showAttachment = (attachment: IAttachment) => {
