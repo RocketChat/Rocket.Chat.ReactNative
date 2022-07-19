@@ -268,6 +268,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			this.closeEmoji();
 			this.component?.blur();
 		});
 	}
@@ -328,6 +329,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextProps.theme !== theme) {
 			return true;
 		}
+		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
 		if (!isFocused()) {
 			return false;
 		}
@@ -338,9 +342,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (nextProps.editing !== editing) {
-			return true;
-		}
-		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
 		if (nextState.trackingType !== trackingType) {
