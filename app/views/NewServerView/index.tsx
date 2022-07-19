@@ -22,7 +22,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isIOS, isTablet } from '../../lib/methods/helpers';
+import { isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
@@ -31,7 +31,7 @@ import { moderateScale, verticalScale } from './scaling';
 import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
-import { urlParse } from '../../lib/methods/urlParse';
+import { serializeAsciiUrl } from '../../lib/methods';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -258,12 +258,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				url = `https://${url}`;
 			}
 		}
-		let newUrl = url.replace(/\/+$/, '').replace(/\\/g, '/');
-		const ascii = /^[ -~\t\n\r]+$/;
-		if (isIOS && !ascii.test(newUrl)) {
-			newUrl = urlParse(newUrl);
-		}
-		return newUrl;
+		return serializeAsciiUrl(url.replace(/\/+$/, '').replace(/\\/g, '/'));
 	};
 
 	uriToPath = (uri: string) => uri.replace('file://', '');
