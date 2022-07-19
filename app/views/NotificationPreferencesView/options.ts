@@ -4,7 +4,7 @@ export interface IOptionsField {
 	second?: number;
 }
 export interface INotificationOptions {
-	[desktopNotifications: string]: IOptionsField[];
+	desktopNotifications: IOptionsField[];
 	audioNotifications: IOptionsField[];
 	mobilePushNotifications: IOptionsField[];
 	emailNotifications: IOptionsField[];

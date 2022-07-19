@@ -18,12 +18,16 @@ import { Services } from '../../lib/services';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { IOptionsField, OPTIONS } from './options';
+import { OPTIONS } from './options';
+
+type TOptions = keyof typeof OPTIONS;
+type TRoomNotifications = keyof IRoomNotifications;
+type TUnionOptionsRoomNotifications = TOptions | TRoomNotifications;
 
 interface IBaseParams {
-	preference: string;
+	preference: TUnionOptionsRoomNotifications;
 	room: TRoomNotificationsModel;
-	onChangeValue: (pref: string, param: { [key: string]: string }, onError: () => void) => void;
+	onChangeValue: (pref: TUnionOptionsRoomNotifications, param: { [key: string]: string }, onError: () => void) => void;
 }
 
 const RenderListPicker = React.memo(
@@ -41,12 +45,12 @@ const RenderListPicker = React.memo(
 		const { colors } = useTheme();
 
 		const pref = room[preference]
-			? OPTIONS[preference].find(option => option.value === room[preference])
-			: (OPTIONS[preference][0] as IOptionsField);
+			? OPTIONS[preference as TOptions].find(option => option.value === room[preference])
+			: OPTIONS[preference as TOptions][0];
 
 		const [option, setOption] = useState(pref);
 
-		const options: TActionSheetOptionsItem[] = OPTIONS[preference].map(i => ({
+		const options: TActionSheetOptionsItem[] = OPTIONS[preference as TOptions].map(i => ({
 			title: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
 			onPress: () => {
 				hideActionSheet();
@@ -76,7 +80,7 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 	return (
 		<Switch
 			value={switchValue}
-			testID={preference}
+			testID={preference as string}
 			trackColor={SWITCH_TRACK_COLOR}
 			onValueChange={value => {
 				onChangeValue(preference, { [preference]: switchValue ? '1' : '0' }, () => setSwitchValue(switchValue));
@@ -100,7 +104,7 @@ const NotificationPreferencesView = () => {
 	const rid = route.params?.rid ?? '';
 	const room = route.params?.room;
 
-	const saveNotificationSettings = async (key: string, params: IRoomNotifications, onError: Function) => {
+	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
 		try {
 			// @ts-ignore
 			logEvent(events[`NP_${key.toUpperCase()}`]);
