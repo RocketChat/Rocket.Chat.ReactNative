@@ -26,6 +26,7 @@ import sharedStyles from './Styles';
 import { NewMessageStackParamList } from '../stacks/types';
 import { search } from '../lib/methods';
 import { hasPermission, compareServerVersion } from '../lib/methods/helpers';
+import { PADDING_HORIZONTAL } from '../containers/List/constants';
 
 const QUERY_SIZE = 50;
 
@@ -45,6 +46,11 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		paddingBottom: 16
+	},
+	rightContainer: {
+		paddingLeft: PADDING_HORIZONTAL,
+		alignItems: 'flex-end',
+		flex: 1
 	}
 });
 
@@ -71,6 +77,7 @@ interface INewMessageViewProps extends IBaseScreen<NewMessageStackParamList, 'Ne
 	createPublicChannelPermission?: string[];
 	createPrivateChannelPermission?: string[];
 	createDiscussionPermission?: string[];
+	useRealName: boolean;
 }
 
 class NewMessageView extends React.Component<INewMessageViewProps, INewMessageViewState> {
@@ -187,8 +194,11 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 						styles.button,
 						{ borderColor: themes[theme].separatorColor }
 					]}>
-					<CustomIcon name={icon} size={24} color={themes[theme].tintColor} style={styles.buttonIcon} />
-					<Text style={[styles.buttonText, { color: themes[theme].tintColor }]}>{title}</Text>
+					<CustomIcon name={icon} size={24} color={themes[theme].bodyText} style={styles.buttonIcon} />
+					<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{title}</Text>
+					<View style={styles.rightContainer}>
+						<CustomIcon name={'chevron-right'} size={24} color={themes[theme].bodyText} style={styles.buttonIcon} />
+					</View>
 				</View>
 			</Touch>
 		);
@@ -223,54 +233,56 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		const { permissions } = this.state;
 
 		return (
-			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='new-message-view-search' />
-				<View style={styles.buttonContainer}>
-					{permissions[0] || permissions[1]
-						? this.renderButton({
-								onPress: this.createChannel,
-								title: I18n.t('Create_Channel'),
-								icon: 'channel-public',
-								testID: 'new-message-view-create-channel',
-								first: true
-						  })
-						: null}
-					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && permissions[2]
-						? this.renderButton({
-								onPress: this.createTeam,
-								title: I18n.t('Create_Team'),
-								icon: 'teams',
-								testID: 'new-message-view-create-team'
-						  })
-						: null}
-					{maxUsers > 2 && permissions[3]
-						? this.renderButton({
-								onPress: this.createGroupChat,
-								title: I18n.t('Create_Direct_Messages'),
-								icon: 'message',
-								testID: 'new-message-view-create-direct-message'
-						  })
-						: null}
-					{permissions[4]
-						? this.renderButton({
-								onPress: this.createDiscussion,
-								title: I18n.t('Create_Discussion'),
-								icon: 'discussions',
-								testID: 'new-message-view-create-discussion'
-						  })
-						: null}
+			<>
+				<View style={{ backgroundColor: themes[theme].auxiliaryBackground, paddingTop: 16 }}>
+					<View style={styles.buttonContainer}>
+						{permissions[0] || permissions[1]
+							? this.renderButton({
+									onPress: this.createChannel,
+									title: I18n.t('Create_Channel'),
+									icon: 'channel-public',
+									testID: 'new-message-view-create-channel',
+									first: true
+							  })
+							: null}
+						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && permissions[2]
+							? this.renderButton({
+									onPress: this.createTeam,
+									title: I18n.t('Create_Team'),
+									icon: 'teams',
+									testID: 'new-message-view-create-team'
+							  })
+							: null}
+						{maxUsers > 2 && permissions[3]
+							? this.renderButton({
+									onPress: this.createGroupChat,
+									title: I18n.t('Create_Direct_Messages'),
+									icon: 'message',
+									testID: 'new-message-view-create-direct-message'
+							  })
+							: null}
+						{permissions[4]
+							? this.renderButton({
+									onPress: this.createDiscussion,
+									title: I18n.t('Create_Discussion'),
+									icon: 'discussions',
+									testID: 'new-message-view-create-discussion'
+							  })
+							: null}
+					</View>
 				</View>
-			</View>
+				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='new-message-view-search' />
+			</>
 		);
 	};
 
 	renderItem = ({ item, index }: { item: ISearch | TSubscriptionModel; index: number }) => {
 		const { search, chats } = this.state;
-		const { theme } = this.props;
+		const { theme, useRealName } = this.props;
 
 		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
-			style = { ...style, ...sharedStyles.separatorTop };
+			style = { ...style };
 		}
 		if (search.length > 0 && index === search.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
@@ -284,7 +296,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 
 		return (
 			<UserItem
-				name={itemSearch.search ? itemSearch.name : itemModel.fname || ''}
+				name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
 				username={itemSearch.search ? itemSearch.username : itemModel.name}
 				onPress={() => this.goRoom(itemModel)}
 				testID={`new-message-view-item-${item.name}`}
@@ -329,7 +341,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDirectMessagePermission: state.permissions['create-d'],
 	createPublicChannelPermission: state.permissions['create-c'],
 	createPrivateChannelPermission: state.permissions['create-p'],
-	createDiscussionPermission: state.permissions['start-discussion']
+	createDiscussionPermission: state.permissions['start-discussion'],
+	useRealName: state.settings.UI_Use_Real_Name as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(NewMessageView));

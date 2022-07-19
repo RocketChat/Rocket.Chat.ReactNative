@@ -29,10 +29,6 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		...sharedStyles.textMedium
 	},
-	username: {
-		fontSize: 14,
-		...sharedStyles.textRegular
-	},
 	icon: {
 		marginHorizontal: 15,
 		alignSelf: 'center'
@@ -64,11 +60,8 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, t
 		<View style={[styles.container, styles.button, style]}>
 			<Avatar text={username} size={30} style={styles.avatar} />
 			<View style={styles.textContainer}>
-				<Text style={[styles.name, { color: themes[theme].titleText }]} numberOfLines={1}>
+				<Text style={[styles.name, { color: themes[theme].bodyText }]} numberOfLines={1}>
 					{name}
-				</Text>
-				<Text style={[styles.username, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-					@{username}
 				</Text>
 			</View>
 			{icon ? <CustomIcon name={icon} size={22} color={themes[theme].actionTintColor} style={styles.icon} /> : null}
