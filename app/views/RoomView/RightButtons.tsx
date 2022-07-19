@@ -24,7 +24,7 @@ import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 interface IRightButtonsProps {
 	userId?: string;
 	threadsEnabled: boolean;
-	rid: string;
+	rid?: string;
 	t: string;
 	tmid?: string;
 	teamId?: string;
@@ -34,7 +34,6 @@ interface IRightButtonsProps {
 	status?: string;
 	dispatch: Dispatch;
 	encrypted?: boolean;
-	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
 	omnichannelPermissions: {
 		canForwardGuest: boolean;
@@ -188,34 +187,38 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	returnLivechat = () => {
 		const { rid } = this.props;
-		showConfirmationAlert({
-			message: i18n.t('Would_you_like_to_return_the_inquiry'),
-			confirmationText: i18n.t('Yes'),
-			onPress: async () => {
-				try {
-					await returnLivechat(rid);
-				} catch (e: any) {
-					showErrorAlert(e.reason, i18n.t('Oops'));
+		if (rid) {
+			showConfirmationAlert({
+				message: i18n.t('Would_you_like_to_return_the_inquiry'),
+				confirmationText: i18n.t('Yes'),
+				onPress: async () => {
+					try {
+						await returnLivechat(rid);
+					} catch (e: any) {
+						showErrorAlert(e.reason, i18n.t('Oops'));
+					}
 				}
-			}
-		});
+			});
+		}
 	};
 
 	placeOnHoldLivechat = () => {
 		const { navigation, rid } = this.props;
-		showConfirmationAlert({
-			title: i18n.t('Are_you_sure_question_mark'),
-			message: i18n.t('Would_like_to_place_on_hold'),
-			confirmationText: i18n.t('Yes'),
-			onPress: async () => {
-				try {
-					await onHoldLivechat(rid);
-					navigation.navigate('RoomsListView');
-				} catch (e: any) {
-					showErrorAlert(e.data?.error, i18n.t('Oops'));
+		if (rid) {
+			showConfirmationAlert({
+				title: i18n.t('Are_you_sure_question_mark'),
+				message: i18n.t('Would_like_to_place_on_hold'),
+				confirmationText: i18n.t('Yes'),
+				onPress: async () => {
+					try {
+						await onHoldLivechat(rid);
+						navigation.navigate('RoomsListView');
+					} catch (e: any) {
+						showErrorAlert(e.data?.error, i18n.t('Oops'));
+					}
 				}
-			}
-		});
+			});
+		}
 	};
 
 	closeLivechat = async () => {
@@ -235,18 +238,20 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			tagsList = await Services.getTagsList();
 		}
 
-		if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
-			const comment = i18n.t('Chat_closed_by_agent');
-			return closeLivechatService({ rid, isMasterDetail, comment });
-		}
+		if (rid) {
+			if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
+				const comment = i18n.t('Chat_closed_by_agent');
+				return closeLivechatService({ rid, isMasterDetail, comment });
+			}
 
-		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', {
-				screen: 'CloseLivechatView',
-				params: { rid, departmentId, departmentInfo, tagsList }
-			});
-		} else {
-			navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+			if (isMasterDetail) {
+				navigation.navigate('ModalStackNavigator', {
+					screen: 'CloseLivechatView',
+					params: { rid, departmentId, departmentInfo, tagsList }
+				});
+			} else {
+				navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+			}
 		}
 	};
 
@@ -268,13 +273,15 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				title: i18n.t('Forward_Chat'),
 				icon: 'chat-forward',
 				onPress: () => {
-					if (isMasterDetail) {
-						navigation.navigate('ModalStackNavigator', {
-							screen: 'ForwardLivechatView',
-							params: { rid }
-						});
-					} else {
-						navigation.navigate('ForwardLivechatView', { rid });
+					if (rid) {
+						if (isMasterDetail) {
+							navigation.navigate('ModalStackNavigator', {
+								screen: 'ForwardLivechatView',
+								params: { rid }
+							});
+						} else {
+							navigation.navigate('ForwardLivechatView', { rid });
+						}
 					}
 				}
 			});

@@ -626,7 +626,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerRight: () => (
 				<RightButtons
-					rid={rid!}
+					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}
@@ -638,7 +638,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					toggleFollowThread={this.toggleFollowThread}
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
-					transferLivechatGuestPermission={false}
 				/>
 			)
 		});
