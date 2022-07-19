@@ -100,6 +100,7 @@ import {
 	hasPermission
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import { withActionSheet } from '../../containers/ActionSheet';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -170,6 +171,7 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
+	showActionSheet: Function;
 }
 
 interface IRoomViewState {
@@ -632,6 +634,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
+					showActionSheet={this.showActionSheet}
 				/>
 			)
 		});
@@ -781,12 +784,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	errorActionsShow = (message: TAnyMessageModel) => {
-		const showEmojiKeyboard = this.messagebox?.current?.state.showEmojiKeyboard;
-		if (showEmojiKeyboard) {
-			this.messagebox?.current?.closeEmoji();
-		}
+		this.messagebox?.current?.closeEmojiAndAction(this.messageErrorActions?.showMessageErrorActions, message);
+	};
 
-		this.messageErrorActions?.showMessageErrorActions(message);
+	showActionSheet = options => {
+		const { showActionSheet } = this.props;
+		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, options);
 	};
 
 	onEditInit = (message: TAnyMessageModel) => {
@@ -835,11 +838,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		const showEmojiKeyboard = this.messagebox?.current?.state.showEmojiKeyboard;
-		if (showEmojiKeyboard) {
-			this.messagebox?.current?.closeEmoji();
-		}
-		setTimeout(() => this.messageActions?.showMessageActions(message), showEmojiKeyboard && isIOS ? 350 : null);
+		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
 	};
 
 	showAttachment = (attachment: IAttachment) => {
@@ -1551,4 +1550,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
+export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(withSafeAreaInsets(RoomView)))));

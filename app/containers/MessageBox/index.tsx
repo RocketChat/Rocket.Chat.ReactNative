@@ -882,11 +882,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ showEmojiKeyboard: false });
 	};
 
-	closeEmojiAndAction = (action: Function, params?: any) => {
+	closeEmojiAndAction = (action?: Function, params?: any) => {
 		const { showEmojiKeyboard } = this.state;
 
 		this.closeEmoji();
-		setTimeout(() => action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : null);
+		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : null);
 	};
 
 	submit = async () => {

@@ -12,14 +12,14 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import { isTeamRoom } from '../../lib/methods/helpers/room';
 import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IActionSheetProvider, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
+import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
 import i18n from '../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
 
-interface IRightButtonsProps extends IActionSheetProvider {
+interface IRightButtonsProps {
 	userId?: string;
 	threadsEnabled: boolean;
 	rid: string;
@@ -40,6 +40,7 @@ interface IRightButtonsProps extends IActionSheetProvider {
 		canPlaceLivechatOnHold: boolean;
 	};
 	livechatRequestComment: boolean;
+	showActionSheet: Function;
 }
 
 interface IRigthButtonsState {
@@ -215,9 +216,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	closeLivechat = () => {
-		const { rid, livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
+		const { rid, livechatRequestComment, showActionSheet, isMasterDetail } = this.props;
 
-		hideActionSheet();
+		// hideActionSheet();
 
 		setTimeout(() => {
 			if (!livechatRequestComment) {
@@ -229,10 +230,10 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				children: (
 					<CloseLivechatSheet
 						onSubmit={(comment: string) => {
-							hideActionSheet();
+							// hideActionSheet();
 							closeLivechatService({ rid, isMasterDetail, comment });
 						}}
-						onCancel={() => hideActionSheet()}
+						// onCancel={() => hideActionSheet()}
 					/>
 				),
 				headerHeight: 225
@@ -361,4 +362,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
-export default connect(mapStateToProps)(withActionSheet(RightButtonsContainer));
+export default connect(mapStateToProps)(RightButtonsContainer);
