@@ -30,50 +30,48 @@ interface IBaseParams {
 	onChangeValue: (pref: TUnionOptionsRoomNotifications, param: { [key: string]: string }, onError: () => void) => void;
 }
 
-const RenderListPicker = React.memo(
-	({
-		preference,
-		room,
-		title,
-		testID,
-		onChangeValue
-	}: {
-		title: string;
-		testID: string;
-	} & IBaseParams) => {
-		const { showActionSheet, hideActionSheet } = useActionSheet();
-		const { colors } = useTheme();
+const RenderListPicker = ({
+	preference,
+	room,
+	title,
+	testID,
+	onChangeValue
+}: {
+	title: string;
+	testID: string;
+} & IBaseParams) => {
+	const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { colors } = useTheme();
 
-		const pref = room[preference]
-			? OPTIONS[preference as TOptions].find(option => option.value === room[preference])
-			: OPTIONS[preference as TOptions][0];
+	const pref = room[preference]
+		? OPTIONS[preference as TOptions].find(option => option.value === room[preference])
+		: OPTIONS[preference as TOptions][0];
 
-		const [option, setOption] = useState(pref);
+	const [option, setOption] = useState(pref);
 
-		const options: TActionSheetOptionsItem[] = OPTIONS[preference as TOptions].map(i => ({
-			title: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
-			onPress: () => {
-				hideActionSheet();
-				onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
-				setOption(i);
-			},
-			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
-		}));
+	const options: TActionSheetOptionsItem[] = OPTIONS[preference as TOptions].map(i => ({
+		title: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
+		onPress: () => {
+			hideActionSheet();
+			onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
+			setOption(i);
+		},
+		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+	}));
 
-		return (
-			<List.Item
-				title={title}
-				testID={testID}
-				onPress={() => showActionSheet({ options })}
-				right={() => (
-					<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.actionTintColor }]}>
-						{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
-					</Text>
-				)}
-			/>
-		);
-	}
-);
+	return (
+		<List.Item
+			title={title}
+			testID={testID}
+			onPress={() => showActionSheet({ options })}
+			right={() => (
+				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.actionTintColor }]}>
+					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
+				</Text>
+			)}
+		/>
+	);
+};
 
 const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 	const [switchValue, setSwitchValue] = useState(!room[preference]);
