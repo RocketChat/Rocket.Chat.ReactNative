@@ -33,12 +33,13 @@ import {
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
-	MENTIONS_TRACKING_TYPE_USERS
+	MENTIONS_TRACKING_TYPE_USERS,
+	TIMEOUT_CLOSE_EMOJI
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
-import { withActionSheet } from '../ActionSheet';
+import { TActionSheetOptionsItem, withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
 import { forceJpgExtension } from './forceJpgExtension';
@@ -257,10 +258,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setOptions();
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			if (this.shouldUpdate) {
-				this.shouldUpdate = false;
-				this.forceUpdate();
-			}
 			// didFocus
 			// We should wait pushed views be dismissed
 			this.trackingTimeout = setTimeout(() => {
@@ -271,9 +268,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
-			if (this.state.showEmojiKeyboard && isIOS) {
-				this.shouldUpdate = true;
-			}
 			this.component?.blur();
 		});
 	}
@@ -810,10 +804,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { permissionToUpload, showEmojiKeyboard } = this.state;
+		const { permissionToUpload } = this.state;
 		const { showActionSheet, goToCannedResponses } = this.props;
 
-		const options: any[] = [];
+		const options: TActionSheetOptionsItem[] = [];
 		if (goToCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
@@ -852,11 +846,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			onPress: this.createDiscussion
 		});
 
-		if (showEmojiKeyboard) {
-			this.closeEmoji();
-		}
-
-		setTimeout(() => showActionSheet({ options }), showEmojiKeyboard && isIOS ? 350 : null);
+		this.closeEmojiAndAction(showActionSheet, { options });
 	};
 
 	editCancel = () => {
@@ -871,10 +861,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	recordingCallback = (recording: any) => {
-		const { showEmojiKeyboard } = this.state;
-		if (showEmojiKeyboard) {
-			this.closeEmoji();
-		}
 		this.setState({ recording });
 	};
 
@@ -894,6 +880,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	closeEmoji = () => {
 		this.setState({ showEmojiKeyboard: false });
+	};
+
+	closeEmojiAndAction = (action: Function, params?: any) => {
+		const { showEmojiKeyboard } = this.state;
+
+		this.closeEmoji();
+		setTimeout(() => action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : null);
 	};
 
 	submit = async () => {
@@ -1102,6 +1095,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					recordingCallback={this.recordingCallback}
 					onFinish={this.finishAudioMessage}
 					permissionToUpload={permissionToUpload}
+					onStart={this.closeEmoji}
 				/>
 			);
 
