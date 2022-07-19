@@ -186,7 +186,7 @@ interface IRoomViewState {
 				fname?: string;
 				prid?: string;
 				joinCodeRequired?: boolean;
-				status?: boolean;
+				status?: string;
 				lastMessage?: ILastMessage;
 				sysMes?: boolean;
 				onHold?: boolean;
@@ -561,6 +561,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let avatar: string | undefined;
 		let visitor: IVisitor | undefined;
 		let sourceType: IOmnichannelSource | undefined;
+		let departmentId: string | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
 			t = room.t;
@@ -570,6 +571,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			({ id: userId, token } = user);
 			avatar = room.name;
 			visitor = room.visitor;
+			departmentId = room.departmentId;
 		}
 
 		if ('source' in room) {
@@ -624,7 +626,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerRight: () => (
 				<RightButtons
-					rid={rid}
+					rid={rid!}
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}
@@ -635,6 +637,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
 					showActionSheet={this.showActionSheet}
+					departmentId={departmentId}
+					transferLivechatGuestPermission={false}
 				/>
 			)
 		});
@@ -787,7 +791,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.messagebox?.current?.closeEmojiAndAction(this.messageErrorActions?.showMessageErrorActions, message);
 	};
 
-	showActionSheet = options => {
+	showActionSheet = (options: any) => {
 		const { showActionSheet } = this.props;
 		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, options);
 	};
