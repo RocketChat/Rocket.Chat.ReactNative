@@ -13,6 +13,7 @@ import database from '../../lib/database';
 import styles from './styles';
 
 const BUTTON_HIT_SLOP = { top: 15, right: 15, bottom: 15, left: 15 };
+const EMOJI_SIZE = 30;
 
 interface IEmojiSearchbarProps {
 	openEmoji: () => void;
@@ -22,12 +23,17 @@ interface IEmojiSearchbarProps {
 	baseUrl: string;
 }
 
-const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
+const Emoji = React.memo(({ emoji, baseUrl }: { emoji: IEmoji; baseUrl: string }) => {
+	const { colors } = useTheme();
 	if (emoji?.name) {
-		return <CustomEmoji style={{ height: size, width: size, margin: 4 }} emoji={emoji} baseUrl={baseUrl} />;
+		return <CustomEmoji style={{ height: EMOJI_SIZE, width: EMOJI_SIZE, margin: 4 }} emoji={emoji} baseUrl={baseUrl} />;
 	}
-	return <Text style={[styles.searchedEmoji, { fontSize: size }]}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
-};
+	return (
+		<Text style={[styles.searchedEmoji, { fontSize: EMOJI_SIZE, color: colors.backdropColor }]}>
+			{shortnameToUnicode(`:${emoji}:`)}
+		</Text>
+	);
+});
 
 const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 	({ openEmoji, onChangeText, emojis, onEmojiSelected, baseUrl }, ref) => {
@@ -59,14 +65,13 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 			if (!text) getFrequentlyUsedEmojis();
 		};
 
-		const renderItem = (emoji: IEmoji) => {
-			const emojiSize = 30;
-			return (
-				<View style={[styles.emojiContainer]}>
-					<Pressable onPress={() => onEmojiSelected(emoji)}>{renderEmoji(emoji, emojiSize, baseUrl)}</Pressable>
-				</View>
-			);
-		};
+		const renderItem = (emoji: IEmoji) => (
+			<View style={[styles.emojiContainer]}>
+				<Pressable onPress={() => onEmojiSelected(emoji)}>
+					<Emoji emoji={emoji} baseUrl={baseUrl} />
+				</Pressable>
+			</View>
+		);
 		return (
 			<View style={{ borderTopWidth: 1, borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }}>
 				<FlatList
