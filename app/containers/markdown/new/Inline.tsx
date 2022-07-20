@@ -14,12 +14,13 @@ import Emoji from './Emoji';
 import InlineCode from './InlineCode';
 import Image from './Image';
 import MarkdownContext from './MarkdownContext';
+// import { InlineKaTeX, KaTeX } from './Katex';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
 }
 
-const Inline = ({ value }: IParagraphProps) => {
+const Inline = ({ value }: IParagraphProps): React.ReactElement | null => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
 		<Text style={styles.inline}>
@@ -53,6 +54,9 @@ const Inline = ({ value }: IParagraphProps) => {
 						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
 						return <InlineCode value={block.value} />;
+					case 'INLINE_KATEX':
+						// return <InlineKaTeX value={block.value} />;
+						return <Text>{block.value}</Text>;
 					default:
 						return null;
 				}
