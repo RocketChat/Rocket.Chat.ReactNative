@@ -100,7 +100,7 @@ import {
 	hasPermission
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
-import { withActionSheet } from '../../containers/ActionSheet';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -151,7 +151,7 @@ const roomAttrsUpdate = [
 	't'
 ] as TRoomUpdate[];
 
-interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
+interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 	appState: string;
 	useRealName?: boolean;
@@ -171,7 +171,6 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
-	showActionSheet: Function;
 }
 
 interface IRoomViewState {
