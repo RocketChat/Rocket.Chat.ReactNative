@@ -73,7 +73,7 @@ const ReactionPicker = React.memo(({ onEmojiSelected, message, reactionClose }: 
 	};
 
 	return (
-		<View style={[styles.reactionPickerContainer]} testID='reaction-picker'>
+		<View style={styles.reactionPickerContainer} testID='reaction-picker'>
 			<View style={styles.searchbarContainer}>
 				<FormTextInput
 					autoCapitalize='none'
