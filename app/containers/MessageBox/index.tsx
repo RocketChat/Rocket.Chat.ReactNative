@@ -677,7 +677,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	setInput = (text: any, selection?: any) => {
 		this.text = text;
 		if (selection) {
-			return this.component.setTextAndSelection(text, selection);
+			this.selection = selection;
 		}
 		this.component.setNativeProps({ text });
 	};
