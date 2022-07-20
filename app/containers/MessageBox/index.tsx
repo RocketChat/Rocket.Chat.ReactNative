@@ -134,8 +134,6 @@ interface IMessageBoxState {
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	public text: string;
 
-	public shouldUpdate: boolean;
-
 	private selection: { start: number; end: number };
 
 	private focused: boolean;
@@ -190,7 +188,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
 		this.focused = false;
-		this.shouldUpdate = false;
 
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
