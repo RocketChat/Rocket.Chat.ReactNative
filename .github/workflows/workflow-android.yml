@@ -25,7 +25,7 @@ jobs:
         run: yarn install --prefer-offline
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
           java-version: 'zulu'
           distribution: '11'
