@@ -251,6 +251,8 @@ class RegisterView extends React.Component<IProps, any> {
 							this.usernameInput?.focus();
 						}}
 						testID='register-view-name'
+						textContentType='name'
+						autoComplete='name'
 					/>
 					<FormTextInput
 						label={I18n.t('Username')}
@@ -265,6 +267,8 @@ class RegisterView extends React.Component<IProps, any> {
 							this.emailInput?.focus();
 						}}
 						testID='register-view-username'
+						textContentType='username'
+						autoComplete='username'
 					/>
 					<FormTextInput
 						label={I18n.t('Email')}
@@ -274,12 +278,14 @@ class RegisterView extends React.Component<IProps, any> {
 						}}
 						placeholder={I18n.t('Email')}
 						returnKeyType='next'
-						keyboardType='email-address'
 						onChangeText={(email: string) => this.setState({ email })}
 						onSubmitEditing={() => {
 							this.passwordInput?.focus();
 						}}
 						testID='register-view-email'
+						keyboardType='email-address'
+						textContentType='emailAddress'
+						autoComplete='email'
 					/>
 					<FormTextInput
 						label={I18n.t('Password')}
@@ -293,6 +299,8 @@ class RegisterView extends React.Component<IProps, any> {
 						onChangeText={(value: string) => this.setState({ password: value })}
 						onSubmitEditing={this.submit}
 						testID='register-view-password'
+						textContentType='newPassword'
+						autoComplete='password-new'
 					/>
 
 					{this.renderCustomFields()}

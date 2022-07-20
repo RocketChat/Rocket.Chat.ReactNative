@@ -169,7 +169,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					}}
 					testID='login-view-email'
 					textContentType='username'
-					// autoCompleteType='username' TODO: reevaluate
+					autoComplete='username'
 					value={user}
 				/>
 				<FormTextInput
@@ -185,7 +185,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					onChangeText={(value: string) => this.setState({ password: value })}
 					testID='login-view-password'
 					textContentType='password'
-					// autoCompleteType='username' TODO: reevaluate
+					autoComplete='password'
 				/>
 				<Button
 					title={I18n.t('Login')}
