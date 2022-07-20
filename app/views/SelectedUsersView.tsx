@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
@@ -26,6 +26,7 @@ import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 import { search } from '../lib/methods';
 import { isGroupChat } from '../lib/methods/helpers';
+import ChipsUserSelected from '../containers/ChipsUserSelected';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
@@ -41,6 +42,7 @@ interface ISelectedUsersViewProps extends IBaseScreen<ChatsStackParamList, 'Sele
 	loading: boolean;
 	user: IUser;
 	baseUrl: string;
+	useRealName: boolean;
 }
 
 class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelectedUsersViewState> {
@@ -65,11 +67,9 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	componentDidUpdate(prevProps: ISelectedUsersViewProps) {
-		if (this.isGroupChat()) {
-			const { users } = this.props;
-			if (prevProps.users.length !== users.length) {
-				this.setHeader(users.length > 0);
-			}
+		const { users } = this.props;
+		if (prevProps.users.length !== users.length) {
+			this.setHeader(users.length > 0);
 		}
 	}
 
@@ -83,7 +83,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 
 	// showButton can be sent as route params or updated by the component
 	setHeader = (showButton?: boolean) => {
-		const { navigation, route } = this.props;
+		const { navigation, route, users } = this.props;
 		const title = route.params?.title ?? I18n.t('Select_Users');
 		const buttonText = route.params?.buttonText ?? I18n.t('Next');
 		const maxUsers = route.params?.maxUsers;
@@ -93,7 +93,11 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 			headerRight: () =>
 				(!maxUsers || showButton) && (
 					<HeaderButton.Container>
-						<HeaderButton.Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
+						<HeaderButton.Item
+							title={users.length > 0 ? buttonText : I18n.t('Skip')}
+							onPress={nextAction}
+							testID='selected-users-view-submit'
+						/>
 					</HeaderButton.Container>
 				)
 		};
@@ -193,40 +197,37 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		}
 
 		return (
-			<FlatList
-				data={users}
-				ref={this.setFlatListRef}
-				onContentSizeChange={this.onContentSizeChange}
-				getItemLayout={getItemLayout}
-				keyExtractor={item => item._id}
-				style={[sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}
-				contentContainerStyle={{ marginVertical: 5 }}
-				renderItem={this.renderSelectedItem}
-				keyboardShouldPersistTaps='always'
-				horizontal
-			/>
+			<View style={{ marginLeft: 16 }}>
+				<Text style={{ ...sharedStyles.textRegular, color: themes[theme].auxiliaryTintColor }}>
+					{I18n.t('Value_Selected_members', { members: users.length })}
+				</Text>
+				<FlatList
+					data={users}
+					ref={this.setFlatListRef}
+					onContentSizeChange={this.onContentSizeChange}
+					getItemLayout={getItemLayout}
+					keyExtractor={item => item._id}
+					renderItem={this.renderSelectedItem}
+					keyboardShouldPersistTaps='always'
+					horizontal
+				/>
+			</View>
 		);
 	};
 
 	renderSelectedItem = ({ item }: { item: ISelectedUser }) => {
-		const { theme } = this.props;
-		return (
-			<UserItem
-				name={item.fname}
-				username={item.name}
-				onPress={() => this._onPressSelectedItem(item)}
-				testID={`selected-user-${item.name}`}
-				style={{ paddingRight: 15 }}
-				theme={theme}
-			/>
-		);
+		const { useRealName } = this.props;
+		const name = useRealName && item.fname ? item.fname : item.name;
+		const username = item.search ? (item.username as string) : item.name;
+
+		return <ChipsUserSelected item={item} name={name} username={username} onPress={() => this._onPressSelectedItem(item)} />;
 	};
 
 	renderItem = ({ item, index }: { item: ISelectedUser; index: number }) => {
 		const { search, chats } = this.state;
-		const { theme } = this.props;
+		const { theme, useRealName } = this.props;
 
-		const name = item.search ? item.name : item.fname;
+		const name = useRealName && item.fname ? item.fname : item.name;
 		const username = item.search ? (item.username as string) : item.name;
 		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
@@ -244,7 +245,8 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 				username={username}
 				onPress={() => this._onPressItem(item._id, item)}
 				testID={`select-users-view-item-${item.name}`}
-				icon={this.isChecked(username) ? 'check' : null}
+				icon={this.isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
+				iconColor={this.isChecked(username) ? themes[theme].actionTintColor : themes[theme].separatorColor}
 				style={style}
 				theme={theme}
 			/>
@@ -289,7 +291,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	useRealName: state.settings.UI_Use_Real_Name as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(SelectedUsersView));

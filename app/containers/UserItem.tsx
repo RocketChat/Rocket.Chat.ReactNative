@@ -44,9 +44,10 @@ interface IUserItem {
 	style?: StyleProp<ViewStyle>;
 	icon?: TIconsName | null;
 	theme: TSupportedThemes;
+	iconColor?: string;
 }
 
-const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, theme }: IUserItem) => (
+const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, theme, iconColor }: IUserItem) => (
 	<Pressable
 		onPress={onPress}
 		onLongPress={onLongPress}
@@ -64,7 +65,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, t
 					{name}
 				</Text>
 			</View>
-			{icon ? <CustomIcon name={icon} size={22} color={themes[theme].actionTintColor} style={styles.icon} /> : null}
+			{icon ? <CustomIcon name={icon} size={22} color={iconColor || themes[theme].actionTintColor} style={styles.icon} /> : null}
 		</View>
 	</Pressable>
 );

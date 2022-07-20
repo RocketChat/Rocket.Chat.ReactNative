@@ -842,5 +842,7 @@
   "error-init-video-conf": "Error starting video call",
   "totp-invalid": "Code or password invalid",
   "Close_Chat": "Close Chat",
-  "Select_tags": "Select tags"
+  "Select_tags": "Select tags",
+  "Skip": "Skip",
+  "Value_Selected_members": "{{members}} selected"
 }
