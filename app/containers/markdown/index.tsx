@@ -138,7 +138,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	get isNewMarkdown(): boolean {
 		const { md, enableMessageParser } = this.props;
-		return !!enableMessageParser && !!md;
+		return (enableMessageParser ?? true) && !!md;
 	}
 
 	renderText = ({ context, literal }: { context: []; literal: string }) => {

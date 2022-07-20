@@ -12,6 +12,8 @@ import UnorderedList from './UnorderedList';
 import { IUserMention, IUserChannel, TOnLinkPress } from '../interfaces';
 import TaskList from './TaskList';
 import MarkdownContext from './MarkdownContext';
+import LineBreak from './LineBreak';
+import { KaTeX } from './Katex';
 
 interface IBodyProps {
 	tokens?: MarkdownAST;
@@ -35,7 +37,7 @@ const Body = ({
 	getCustomEmoji,
 	baseUrl,
 	onLinkPress
-}: IBodyProps) => {
+}: IBodyProps): React.ReactElement | null => {
 	if (isEmpty(tokens)) {
 		return null;
 	}
@@ -70,6 +72,14 @@ const Body = ({
 						return <Code value={block.value} />;
 					case 'HEADING':
 						return <Heading value={block.value} level={block.level} />;
+					case 'LINE_BREAK':
+						return <LineBreak />;
+					// This prop exists, but not even on the web it is treated, so...
+					// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
+					// case 'LIST_ITEM':
+					// 	return <View />;
+					case 'KATEX':
+						return <KaTeX value={block.value} />;
 					default:
 						return null;
 				}
