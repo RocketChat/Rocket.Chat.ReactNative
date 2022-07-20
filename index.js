@@ -16,6 +16,7 @@ if (__DEV__) {
 	console.countReset = () => {};
 	console.error = () => {};
 	console.info = () => {};
+	console.info = () => {};
 }
 
 AppRegistry.registerComponent(appName, () => require('./app/index').default);
