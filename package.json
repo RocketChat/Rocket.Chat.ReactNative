@@ -150,7 +150,7 @@
 		"@babel/runtime": "^7.12.5",
 		"@bugsnag/source-maps": "^2.2.0",
 		"@rocket.chat/eslint-config": "^0.4.0",
-		"@storybook/addon-storyshots": "5.3.21",
+		"@storybook/addon-storyshots": "6.5.9",
 		"@storybook/react-native": "5.3.25",
 		"@testing-library/jest-native": "^4.0.4",
 		"@testing-library/react-native": "^9.0.0",
