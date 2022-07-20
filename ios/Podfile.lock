@@ -9,8 +9,6 @@ PODS:
     - ExpoModulesCore
     - React-runtimeexecutor
     - ReactCommon
-  - EXErrorRecovery (3.1.0):
-    - ExpoModulesCore
   - EXFileSystem (14.0.0):
     - ExpoModulesCore
   - EXLocalAuthentication (12.2.0):
@@ -612,7 +610,6 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
-  - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - Expo (from `../node_modules/expo/ios`)
@@ -734,8 +731,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-apple-authentication/ios"
   EXAV:
     :path: "../node_modules/expo-av/ios"
-  EXErrorRecovery:
-    :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   EXLocalAuthentication:
@@ -910,7 +905,6 @@ SPEC CHECKSUMS:
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EXAppleAuthentication: 709a807fe7f48ac6986a2ceed206ee6a8baf28df
   EXAV: 88f61c5af8415715b7ee51f084c1020235b85c56
-  EXErrorRecovery: 3ce46e5d42e53c0371ff048a7f0cbc959968ef4a
   EXFileSystem: 2aa2d9289f84bca9532b9ccbd81504fa31eb1ded
   EXLocalAuthentication: 7f37b242eae73f9acf111d39bdee3f1379e68902
   Expo: b9fff0a1eac0f424fc68ea49b4347fb308e52e17
@@ -920,7 +914,7 @@ SPEC CHECKSUMS:
   ExpoWebBrowser: 4b5f9633e5f169dc948587cb6d26d2d1d1406187
   EXVideoThumbnails: 19e055dc3245b53c536da9e0ef9c618fd2118297
   FBLazyVector: a7a655862f6b09625d11c772296b01cd5164b648
-  FBReactNativeSpec: 81ce99032d5b586fddd6a38d450f8595f7e04be4
+  FBReactNativeSpec: 66b5770d86bfee27d67b850416dbc7123c4f6311
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
   FirebaseAnalytics: 7761cbadb00a717d8d0939363eb46041526474fa
   FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
