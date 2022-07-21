@@ -139,6 +139,7 @@ def reactNativeArchitectures() {
 }
 
 android {
+    ndkVersion rootProject.ext.ndkVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
@@ -385,7 +386,7 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
-    implementation "com.tencent:mmkv-static:1.2.1"
+    implementation "com.tencent:mmkv-static:1.2.10"
     // implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     // implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.0"
     androidTestImplementation('com.wix:detox:+') { transitive = true }
