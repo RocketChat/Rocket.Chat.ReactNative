@@ -855,10 +855,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionLongPress = (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: message });
-		const { showActionSheet, baseUrl } = this.props;
+		const { showActionSheet, baseUrl, width } = this.props;
 		const { selectedMessage } = this.state;
 		showActionSheet({
-			children: <ReactionsList reactions={selectedMessage?.reactions} baseUrl={baseUrl} getCustomEmoji={this.getCustomEmoji} />,
+			children: (
+				<ReactionsList
+					reactions={selectedMessage?.reactions}
+					baseUrl={baseUrl}
+					getCustomEmoji={this.getCustomEmoji}
+					width={width}
+				/>
+			),
 			snaps: ['50%']
 		});
 	};
