@@ -220,7 +220,15 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		const name = useRealName && item.fname ? item.fname : item.name;
 		const username = item.search ? (item.username as string) : item.name;
 
-		return <ChipsUserSelected item={item} name={name} username={username} onPress={() => this._onPressSelectedItem(item)} />;
+		return (
+			<ChipsUserSelected
+				item={item}
+				name={name}
+				username={username}
+				onPress={() => this._onPressSelectedItem(item)}
+				testID={`selected-user-${item.name}`}
+			/>
+		);
 	};
 
 	renderItem = ({ item, index }: { item: ISelectedUser; index: number }) => {
