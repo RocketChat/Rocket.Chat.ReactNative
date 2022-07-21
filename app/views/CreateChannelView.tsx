@@ -322,18 +322,32 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	}
 
 	renderEncrypted() {
-		const { type, encrypted } = this.state;
+		const { type, encrypted, isTeam } = this.state;
 		const { encryptionEnabled } = this.props;
 
 		if (!encryptionEnabled) {
 			return null;
 		}
 
+		let hint = '';
+		if (isTeam && type) {
+			hint = 'Team_hint_encrypted';
+		}
+		if (isTeam && !type) {
+			hint = 'Team_hint_encrypted_not_available';
+		}
+		if (!isTeam && type) {
+			hint = 'Channel_hint_encrypted';
+		}
+		if (!isTeam && !type) {
+			hint = 'Channel_hint_encrypted_not_available';
+		}
+
 		return this.renderSwitch({
 			id: 'encrypted',
 			value: encrypted,
 			label: 'Encrypted',
-			hint: 'Encrypted_hint',
+			hint,
 			onValueChange: value => {
 				logEvent(events.CR_TOGGLE_ENCRYPTED);
 				this.setState({ encrypted: value });
