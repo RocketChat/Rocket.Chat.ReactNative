@@ -199,7 +199,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		return (
 			<View style={{ marginLeft: 16 }}>
 				<Text style={{ ...sharedStyles.textRegular, color: themes[theme].auxiliaryTintColor }}>
-					{I18n.t('Value_Selected_members', { members: users.length })}
+					{I18n.t('N_Selected_members', { n: users.length })}
 				</Text>
 				<FlatList
 					data={users}

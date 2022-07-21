@@ -4,15 +4,12 @@ import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } fro
 import { dequal } from 'dequal';
 
 import SearchBox from '../containers/SearchBox';
-import * as List from '../containers/List';
-import { TextInput } from '../containers/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../containers/KeyboardView';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../i18n';
-import UserItem from '../containers/UserItem';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../lib/constants';
@@ -25,6 +22,7 @@ import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { hasPermission } from '../lib/methods/helpers';
+import ChipsUserSelected from '../containers/ChipsUserSelected';
 
 const styles = StyleSheet.create({
 	container: {
@@ -33,18 +31,18 @@ const styles = StyleSheet.create({
 	list: {
 		width: '100%'
 	},
-	input: {
-		height: 54,
-		paddingHorizontal: 18,
-		fontSize: 17,
-		...sharedStyles.textRegular
-	},
 	switchContainer: {
-		height: 54,
+		minHeight: 54,
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		paddingHorizontal: 18
+		paddingHorizontal: 18,
+		maxHeight: 80,
+		marginBottom: 8
+	},
+	switchTextContainer: {
+		flex: 1,
+		marginRight: 8
 	},
 	label: {
 		fontSize: 14,
@@ -60,11 +58,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
-	},
-	invitedTitle: {
-		fontSize: 18,
-		...sharedStyles.textSemibold,
-		lineHeight: 41
 	},
 	invitedCount: {
 		fontSize: 14,
@@ -99,6 +92,7 @@ interface ICreateChannelViewProps extends IBaseScreen<ChatsStackParamList, 'Crea
 	teamId: string;
 	createPublicChannelPermission: string[] | undefined;
 	createPrivateChannelPermission: string[] | undefined;
+	useRealName: boolean;
 }
 
 interface ISwitch extends SwitchProps {
@@ -246,7 +240,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const { theme } = this.props;
 		return (
 			<View style={[styles.switchContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<View>
+				<View style={styles.switchTextContainer}>
 					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
 					<Text style={[styles.hint, { color: themes[theme].auxiliaryText }]}>{I18n.t(hint)}</Text>
 				</View>
@@ -272,11 +266,26 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const { type, isTeam, permissions } = this.state;
 		const isDisabled = permissions.filter(r => r === true).length <= 1;
 
+		let hint = '';
+		if (isTeam && type) {
+			hint = 'Team_hint_private';
+		}
+		if (isTeam && !type) {
+			hint = 'Team_hint_public';
+		}
+		if (!isTeam && type) {
+			hint = 'Channel_hint_private';
+		}
+		if (!isTeam && !type) {
+			hint = 'Channel_hint_public';
+		}
+
 		return this.renderSwitch({
 			id: 'type',
 			value: permissions[1] ? type : false,
 			disabled: isDisabled,
 			label: 'Private',
+			hint,
 			onValueChange: (value: boolean) => {
 				logEvent(events.CR_TOGGLE_TYPE);
 				// If we set the channel as public, encrypted status should be false
@@ -288,10 +297,22 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	renderReadOnly() {
 		const { readOnly, broadcast, isTeam } = this.state;
 
+		let hint = '';
+		if (readOnly) {
+			hint = 'Read_only_hint';
+		}
+		if (isTeam && !readOnly) {
+			hint = 'Team_hint_not_read_only';
+		}
+		if (!isTeam && !readOnly) {
+			hint = 'Channel_hint_not_read_only';
+		}
+
 		return this.renderSwitch({
 			id: 'readonly',
 			value: readOnly,
-			label: isTeam ? 'Read_Only_Team' : 'Read_Only_Channel',
+			label: 'Read_Only',
+			hint,
 			onValueChange: value => {
 				logEvent(events.CR_TOGGLE_READ_ONLY);
 				this.setState({ readOnly: value });
@@ -312,6 +333,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			id: 'encrypted',
 			value: encrypted,
 			label: 'Encrypted',
+			hint: 'Encrypted_hint',
 			onValueChange: value => {
 				logEvent(events.CR_TOGGLE_ENCRYPTED);
 				this.setState({ encrypted: value });
@@ -321,12 +343,13 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	}
 
 	renderBroadcast() {
-		const { broadcast, readOnly, isTeam } = this.state;
+		const { broadcast, readOnly } = this.state;
 
 		return this.renderSwitch({
 			id: 'broadcast',
 			value: broadcast,
-			label: isTeam ? 'Broadcast_Team' : 'Broadcast_Channel',
+			label: 'Broadcast',
+			hint: 'Broadcast_hint',
 			onValueChange: value => {
 				logEvent(events.CR_TOGGLE_BROADCAST);
 				this.setState({
@@ -338,16 +361,17 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	}
 
 	renderItem = ({ item }: { item: IOtherUser }) => {
-		const { theme } = this.props;
+		const { useRealName } = this.props;
+		const name = useRealName && item.fname ? item.fname : item.name;
+		const username = item.name;
 
 		return (
-			<UserItem
-				name={item.fname}
-				username={item.name}
+			<ChipsUserSelected
+				item={item}
+				name={name}
+				username={username}
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${item.name}`}
-				icon='check'
-				theme={theme}
 			/>
 		);
 	};
@@ -362,21 +386,20 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 				keyExtractor={item => item._id}
 				style={[
 					styles.list,
-					sharedStyles.separatorVertical,
 					{
 						backgroundColor: themes[theme].focusedBackground,
 						borderColor: themes[theme].separatorColor
 					}
 				]}
 				renderItem={this.renderItem}
-				ItemSeparatorComponent={List.Separator}
 				keyboardShouldPersistTaps='always'
+				horizontal
 			/>
 		);
 	};
 
 	render() {
-		const { channelName, isTeam } = this.state;
+		const { isTeam } = this.state;
 		const { users, isFetching, theme } = this.props;
 		const userCount = users.length;
 
@@ -388,7 +411,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 				<StatusBar />
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='create-channel-view'>
 					<ScrollView {...scrollPersistTaps}>
-						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
+						<View style={{ borderColor: themes[theme].separatorColor }}>
 							<SearchBox
 								label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								onChangeText={this.onChangeText}
@@ -400,13 +423,16 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							{this.renderEncrypted()}
 							{this.renderBroadcast()}
 						</View>
-						<View style={styles.invitedHeader}>
-							<Text style={[styles.invitedTitle, { color: themes[theme].titleText }]}>{I18n.t('Invite')}</Text>
-							<Text style={[styles.invitedCount, { color: themes[theme].auxiliaryText }]}>
-								{userCount === 1 ? I18n.t('1_user') : I18n.t('N_users', { n: userCount })}
-							</Text>
-						</View>
-						{this.renderInvitedList()}
+						{userCount > 0 ? (
+							<>
+								<View style={styles.invitedHeader}>
+									<Text style={[styles.invitedCount, { color: themes[theme].auxiliaryText }]}>
+										{I18n.t('N_Selected_members', { n: userCount })}
+									</Text>
+								</View>
+								{this.renderInvitedList()}
+							</>
+						) : null}
 						<Loading visible={isFetching} />
 					</ScrollView>
 				</SafeAreaView>
@@ -422,7 +448,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	users: state.selectedUsers.users,
 	user: getUserSelector(state),
 	createPublicChannelPermission: state.permissions['create-c'],
-	createPrivateChannelPermission: state.permissions['create-p']
+	createPrivateChannelPermission: state.permissions['create-p'],
+	useRealName: state.settings.UI_Use_Real_Name as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(CreateChannelView));

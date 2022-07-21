@@ -35,17 +35,20 @@ const ChipsUserSelected = ({
 	item,
 	username,
 	name,
-	onPress
+	onPress,
+	testID
 }: {
 	username: string;
 	name: string;
 	item: ISelectedUser;
 	onPress: Function;
+	testID?: string;
 }) => {
 	const { colors } = useTheme();
 
 	return (
 		<Pressable
+			testID={testID}
 			style={({ pressed }: any) => [
 				styles.pressable,
 				{
