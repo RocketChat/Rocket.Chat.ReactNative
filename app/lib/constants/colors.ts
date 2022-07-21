@@ -70,7 +70,6 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
-		chipsBackground: '#F7F8FA',
 		...mentions
 	},
 	dark: {
@@ -123,7 +122,6 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
-		chipsBackground: '#F7F8FA',
 		...mentions
 	},
 	black: {
@@ -176,7 +174,6 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
-		chipsBackground: '#F7F8FA',
 		...mentions
 	}
 };
