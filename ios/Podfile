@@ -9,6 +9,7 @@ def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
   pod 'ReactNativeUiLib', :path => '../node_modules/react-native-ui-lib/lib'
+  $RNFirebaseAnalyticsWithoutAdIdSupport = true
   config = use_native_modules!
 
   use_expo_modules!
@@ -28,6 +29,7 @@ def all_pods
     :fabric_enabled => flags[:fabric_enabled],
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
   # use_flipper!()
 end
 
@@ -44,12 +46,6 @@ abstract_target 'defaults' do
 end
 
 post_install do |installer|
-  # installer.pods_project.targets.each do |target|
-  #   target.build_configurations.each do |config|
-  #     config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
-  #     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
-  #   end
-  # end
   react_native_post_install(installer)
 
   # Reconfigure the pods to match the iOS version we're targetting

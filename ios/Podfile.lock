@@ -34,29 +34,18 @@ PODS:
     - React-Core (= 0.68.2)
     - React-jsi (= 0.68.2)
     - ReactCommon/turbomodule/core (= 0.68.2)
-  - Firebase/Analytics (8.15.0):
-    - Firebase/Core
-  - Firebase/Core (8.15.0):
+  - Firebase/AnalyticsWithoutAdIdSupport (8.15.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 8.15.0)
+    - FirebaseAnalytics/WithoutAdIdSupport (~> 8.15.0)
   - Firebase/CoreOnly (8.15.0):
     - FirebaseCore (= 8.15.0)
   - Firebase/Crashlytics (8.15.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 8.15.0)
-  - FirebaseAnalytics (8.15.0):
-    - FirebaseAnalytics/AdIdSupport (= 8.15.0)
+  - FirebaseAnalytics/WithoutAdIdSupport (8.15.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
-    - GoogleUtilities/MethodSwizzler (~> 7.7)
-    - GoogleUtilities/Network (~> 7.7)
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
-    - nanopb (~> 2.30908.0)
-  - FirebaseAnalytics/AdIdSupport (8.15.0):
-    - FirebaseCore (~> 8.0)
-    - FirebaseInstallations (~> 8.0)
-    - GoogleAppMeasurement (= 8.15.0)
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.15.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
@@ -85,20 +74,6 @@ PODS:
     - PromisesObjC (< 3.0, >= 1.2)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - GoogleAppMeasurement (8.15.0):
-    - GoogleAppMeasurement/AdIdSupport (= 8.15.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
-    - GoogleUtilities/MethodSwizzler (~> 7.7)
-    - GoogleUtilities/Network (~> 7.7)
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
-    - nanopb (~> 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (8.15.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.15.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
-    - GoogleUtilities/MethodSwizzler (~> 7.7)
-    - GoogleUtilities/Network (~> 7.7)
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
-    - nanopb (~> 2.30908.0)
   - GoogleAppMeasurement/WithoutAdIdSupport (8.15.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
@@ -387,7 +362,7 @@ PODS:
   - react-native-jitsi-meet (3.6.0):
     - JitsiMeetSDK (= 3.6.0)
     - React
-  - react-native-mmkv-storage (0.7.5):
+  - react-native-mmkv-storage (0.7.6):
     - MMKV (= 1.2.10)
     - React-Core
   - react-native-netinfo (6.0.0):
@@ -530,7 +505,7 @@ PODS:
     - SDWebImage (~> 5.12.5)
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFBAnalytics (14.11.0):
-    - Firebase/Analytics (= 8.15.0)
+    - Firebase/AnalyticsWithoutAdIdSupport (= 8.15.0)
     - React-Core
     - RNFBApp
   - RNFBApp (14.11.0):
@@ -955,7 +930,7 @@ SPEC CHECKSUMS:
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: 5663fe4bcdb646200683a41790464d2793307ac8
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
-  react-native-mmkv-storage: dd0b03f290661455896b5f1a411196b3a14adedd
+  react-native-mmkv-storage: ba38e5e813ea3d5d37af834a9d867b1ce10aa96d
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: 3de8ef9cd800e5db0225d9aa46b228d2b94ce51e
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
@@ -989,7 +964,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
   RNFastImage: d5510534be9cccc80e824bfec6369c116d212871
-  RNFBAnalytics: c26f7580934cb1563eb2239b4997c6aa62f7ccfc
+  RNFBAnalytics: 091c8adcbb0da1e1680ce434fc6e8a0a501fe2e6
   RNFBApp: b1b5a80a676a07dea17e778bda7c1e8b69b2f5ec
   RNFBCrashlytics: 357955a1564721ca9001960e57b395c6a319f9be
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
@@ -1008,6 +983,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
-PODFILE CHECKSUM: 2dbfd9e39e390698a38fde4a48870211a570e6e1
+PODFILE CHECKSUM: e7bc5417955c67ef337dbe3d672432139b3e1ba6
 
 COCOAPODS: 1.11.2
