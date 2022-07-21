@@ -34,7 +34,6 @@ buildscript {
     repositories {
         mavenLocal()
         google()
-        jcenter()
         maven {
             url 'https://maven.fabric.io/public'
         }
@@ -80,28 +79,7 @@ allprojects {
         }
 
         google()
-        jcenter()
         maven { url 'https://maven.google.com' }
         maven { url 'https://www.jitpack.io' }
     }
 }
-
-// subprojects { subproject ->
-//     afterEvaluate {
-//         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-//             android {
-//                 compileSdkVersion 31
-//                 buildToolsVersion "31.0.0"
-//                 defaultConfig {
-//                     targetSdkVersion 31
-//                 }
-//                 variantFilter { variant ->
-//                     def names = variant.flavors*.name
-//                     if (names.contains("reactNative59")) {
-//                         setIgnore(true)
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
