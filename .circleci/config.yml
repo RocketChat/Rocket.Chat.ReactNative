@@ -86,7 +86,7 @@ commands:
       - run:
           name: Install pods libs
           command: |
-            bundle exec pod install
+            bundle exec pod install --deployment
           working_directory: ios
       - save_cache:
           name: Save pods specs and pods cache
