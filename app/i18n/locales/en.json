@@ -127,7 +127,6 @@
   "Block_user": "Block user",
   "Browser": "Browser",
   "Broadcast_channel_Description": "Only authorized users can write new messages, but the other users will be able to reply",
-  "Broadcast_Channel": "Broadcast Channel",
   "Busy": "Busy",
   "By_proceeding_you_are_agreeing": "By proceeding you are agreeing to our",
   "Cancel_editing": "Cancel editing",
@@ -421,7 +420,6 @@
   "Reactions": "Reactions",
   "Read_External_Permission_Message": "Rocket.Chat needs to access photos, media, and files on your device",
   "Read_External_Permission": "Read Media Permission",
-  "Read_Only_Channel": "Read Only Channel",
   "Read_Only": "Read Only",
   "Read_Receipt": "Read Receipt",
   "Receive_Group_Mentions": "Receive Group Mentions",
@@ -724,8 +722,6 @@
   "Team_not_found": "Team not found",
   "Create_Team": "Create Team",
   "Team_Name": "Team Name",
-  "Read_Only_Team": "Read Only Team",
-  "Broadcast_Team": "Broadcast Team",
   "creating_team": "creating team",
   "team-name-already-exists": "A team with that name already exists",
   "Add_Channel_to_Team": "Add Channel to Team",
@@ -842,5 +838,6 @@
   "Close_Chat": "Close Chat",
   "Select_tags": "Select tags",
   "Skip": "Skip",
-  "Value_Selected_members": "{{members}} selected"
+  "Value_Selected_members": "{{members}} selected",
+  "Broadcast": "Broadcast"
 }
