@@ -52,7 +52,7 @@ const ChipsUserSelected = ({
 			style={({ pressed }: any) => [
 				styles.pressable,
 				{
-					backgroundColor: pressed ? colors.bannerBackground : colors.chipsBackground
+					backgroundColor: pressed ? colors.bannerBackground : colors.auxiliaryBackground
 				}
 			]}
 			onPress={() => onPress(item)}
@@ -62,7 +62,7 @@ const ChipsUserSelected = ({
 			<View style={styles.containerView}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<Text style={styles.name} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.bodyText }]} numberOfLines={1}>
 						{name}
 					</Text>
 				</View>

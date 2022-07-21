@@ -197,8 +197,8 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		}
 
 		return (
-			<View style={{ marginLeft: 16 }}>
-				<Text style={{ ...sharedStyles.textRegular, color: themes[theme].auxiliaryTintColor }}>
+			<View>
+				<Text style={{ ...sharedStyles.textRegular, color: themes[theme].auxiliaryTintColor, marginLeft: 16 }}>
 					{I18n.t('N_Selected_members', { n: users.length })}
 				</Text>
 				<FlatList
@@ -209,6 +209,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 					keyExtractor={item => item._id}
 					renderItem={this.renderSelectedItem}
 					keyboardShouldPersistTaps='always'
+					contentContainerStyle={{ paddingLeft: 16 }}
 					horizontal
 				/>
 			</View>

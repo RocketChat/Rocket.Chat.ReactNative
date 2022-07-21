@@ -392,10 +392,11 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 				style={[
 					styles.list,
 					{
-						backgroundColor: themes[theme].focusedBackground,
+						backgroundColor: themes[theme].backgroundColor,
 						borderColor: themes[theme].separatorColor
 					}
 				]}
+				contentContainerStyle={{ paddingLeft: 16 }}
 				renderItem={this.renderItem}
 				keyboardShouldPersistTaps='always'
 				horizontal
