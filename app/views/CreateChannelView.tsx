@@ -10,7 +10,6 @@ import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../containers/KeyboardView';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../i18n';
-import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../lib/constants';
 import { withTheme } from '../theme';
@@ -23,6 +22,7 @@ import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { hasPermission } from '../lib/methods/helpers';
 import ChipsUserSelected from '../containers/ChipsUserSelected';
+import Button from '../containers/Button';
 
 const styles = StyleSheet.create({
 	container: {
@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
 	invitedCount: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	buttonCreate: {
+		marginHorizontal: 18,
+		marginTop: 24
 	}
 });
 
@@ -187,20 +191,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		});
 	};
 
-	toggleRightButton = (channelName: string) => {
-		const { navigation } = this.props;
-		navigation.setOptions({
-			headerRight: () =>
-				channelName.trim().length > 0 && (
-					<HeaderButton.Container>
-						<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-channel-submit' />
-					</HeaderButton.Container>
-				)
-		});
-	};
-
 	onChangeText = (channelName: string) => {
-		this.toggleRightButton(channelName);
 		this.setState({ channelName });
 	};
 
@@ -413,7 +404,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	};
 
 	render() {
-		const { isTeam } = this.state;
+		const { isTeam, channelName } = this.state;
 		const { users, isFetching, theme } = this.props;
 		const userCount = users.length;
 
@@ -447,6 +438,15 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 								{this.renderInvitedList()}
 							</>
 						) : null}
+						<Button
+							title={isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')}
+							type='primary'
+							onPress={this.submit}
+							disabled={!(channelName.trim().length > 0)}
+							testID='create-channel-submit'
+							loading={isFetching}
+							style={styles.buttonCreate}
+						/>
 						<Loading visible={isFetching} />
 					</ScrollView>
 				</SafeAreaView>
