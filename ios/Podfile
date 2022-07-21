@@ -30,6 +30,7 @@ def all_pods
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Enable and run pods again, if you want to use Flipper
   # use_flipper!()
 end
 
