@@ -126,7 +126,7 @@
   "Black": "Black",
   "Block_user": "Block user",
   "Browser": "Browser",
-  "Broadcast_channel_Description": "Only authorized users can write new messages, but the other users will be able to reply",
+  "Broadcast_hint": "Only authorized users can write new messages, but the other users will be able to reply",
   "Busy": "Busy",
   "By_proceeding_you_are_agreeing": "By proceeding you are agreeing to our",
   "Cancel_editing": "Cancel editing",

@@ -108,7 +108,7 @@
   "Back": "Volver",
   "Black": "Negro",
   "Block_user": "Bloquear usuario",
-  "Broadcast_channel_Description": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
+  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
   "Busy": "Ocupado",
   "By_proceeding_you_are_agreeing": "Al proceder estarás de acuerdo",
   "Cancel_editing": "Cancelar edición",

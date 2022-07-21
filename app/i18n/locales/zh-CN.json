@@ -115,7 +115,7 @@
   "Black": "黑色",
   "Block_user": "屏蔽此用户",
   "Browser": "浏览器",
-  "Broadcast_channel_Description": "只有经过授权的用户才能写新信息，但其他用户可以回复",
+  "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复",
   "Busy": "忙碌",
   "By_proceeding_you_are_agreeing": "继续操作，请同意我们的",
   "Cancel_editing": "取消编辑",

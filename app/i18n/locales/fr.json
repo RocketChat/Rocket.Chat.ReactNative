@@ -119,7 +119,7 @@
   "Black": "Noir",
   "Block_user": "Bloquer l'utilisateur",
   "Browser": "Navigateur",
-  "Broadcast_channel_Description": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre.",
+  "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre.",
   "Busy": "Occupé",
   "By_proceeding_you_are_agreeing": "En poursuivant, vous acceptez nos",
   "Cancel_editing": "Annuler la modification",
