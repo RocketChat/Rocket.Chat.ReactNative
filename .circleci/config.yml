@@ -80,9 +80,7 @@ commands:
     steps:
       - restore_cache:
           name: Restore pods
-          # TODO: CircleCI isn't caching Podfile.lock correctly, because checksum changes after install
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
-          # key: pods-v1-{{ checksum "ios/Podfile" }}
       - run:
           name: Install pods libs
           command: |
@@ -91,7 +89,6 @@ commands:
       - save_cache:
           name: Save pods specs and pods cache
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
-          # key: pods-v1-{{ checksum "ios/Podfile" }}
           paths:
             - ~/.pods
             - ios/Pods
