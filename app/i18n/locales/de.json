@@ -394,7 +394,6 @@
   "Preferences": "Einstellungen",
   "Preferences_saved": "Einstellungen gespeichert!",
   "Privacy_Policy": " Datenschutzbestimmungen",
-  "Private_Channel": "Privater Kanal",
   "Private": "Privat",
   "Processing": "Bearbeite …",
   "Profile_saved_successfully": "Profil erfolgreich gespeichert!",
@@ -705,7 +704,7 @@
   "Team_not_found": "Team nicht gefunden",
   "Create_Team": "Team erstellen",
   "Team_Name": "Team-Name",
-  "Private_Team": "Privates Team",
+  
   "Read_Only_Team": "Nur-Lesen-Team",
   "Broadcast_Team": "Broadcast-Team",
   "creating_team": "Team erstellen",

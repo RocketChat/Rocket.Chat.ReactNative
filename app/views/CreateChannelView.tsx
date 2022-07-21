@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } from 'react-native';
 import { dequal } from 'dequal';
 
+import SearchBox from '../containers/SearchBox';
 import * as List from '../containers/List';
 import { TextInput } from '../containers/TextInput';
 import Loading from '../containers/Loading';
@@ -46,8 +47,12 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 18
 	},
 	label: {
-		fontSize: 17,
+		fontSize: 14,
 		...sharedStyles.textMedium
+	},
+	hint: {
+		fontSize: 14,
+		...sharedStyles.textRegular
 	},
 	invitedHeader: {
 		marginTop: 18,
@@ -99,6 +104,7 @@ interface ICreateChannelViewProps extends IBaseScreen<ChatsStackParamList, 'Crea
 interface ISwitch extends SwitchProps {
 	id: string;
 	label: string;
+	hint: string;
 }
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
@@ -236,11 +242,14 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		dispatch(removeUser(user));
 	};
 
-	renderSwitch = ({ id, value, label, onValueChange, disabled = false }: ISwitch) => {
+	renderSwitch = ({ id, value, label, hint, onValueChange, disabled = false }: ISwitch) => {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.switchContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
+				<View>
+					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
+					<Text style={[styles.hint, { color: themes[theme].auxiliaryText }]}>{I18n.t(hint)}</Text>
+				</View>
 				<Switch
 					value={value}
 					onValueChange={onValueChange}
@@ -267,7 +276,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			id: 'type',
 			value: permissions[1] ? type : false,
 			disabled: isDisabled,
-			label: isTeam ? 'Private_Team' : 'Private_Channel',
+			label: 'Private',
 			onValueChange: (value: boolean) => {
 				logEvent(events.CR_TOGGLE_TYPE);
 				// If we set the channel as public, encrypted status should be false
@@ -373,32 +382,22 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}>
 				<StatusBar />
-				<SafeAreaView testID='create-channel-view'>
+				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='create-channel-view'>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
-							<TextInput
-								autoFocus
-								style={[styles.input, { backgroundColor: themes[theme].backgroundColor }]}
-								value={channelName}
+							<SearchBox
+								label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								onChangeText={this.onChangeText}
-								placeholder={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
-								returnKeyType='done'
 								testID='create-channel-name'
-								autoCorrect={false}
-								autoCapitalize='none'
-								underlineColorAndroid='transparent'
+								returnKeyType='done'
 							/>
-							<List.Separator />
 							{this.renderType()}
-							<List.Separator />
 							{this.renderReadOnly()}
-							<List.Separator />
 							{this.renderEncrypted()}
-							<List.Separator />
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>

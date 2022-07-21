@@ -11,7 +11,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
+interface ISearchBox extends TextInputProps {
+	label?: string;
+}
+
+const SearchBox = ({ onChangeText, onSubmitEditing, testID, label, placeholder, returnKeyType }: ISearchBox): JSX.Element => {
 	const [text, setText] = useState('');
 
 	const internalOnChangeText = useCallback(value => {
@@ -25,8 +29,8 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
-				placeholder={I18n.t('Search')}
-				returnKeyType='search'
+				placeholder={placeholder || I18n.t('Search')}
+				returnKeyType={returnKeyType || 'search'}
 				underlineColorAndroid='transparent'
 				containerStyle={styles.inputContainer}
 				onChangeText={internalOnChangeText}
@@ -35,6 +39,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				testID={testID}
 				onClearInput={() => internalOnChangeText('')}
 				iconRight={'search'}
+				label={label}
 			/>
 		</View>
 	);
