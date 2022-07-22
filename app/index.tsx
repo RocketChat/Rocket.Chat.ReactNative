@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
-// import { KeyCommandsEmitter } from 'react-native-keycommands';
+import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
@@ -30,10 +30,6 @@ import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/meth
 import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-
-const KeyCommandsEmitter = {
-	addListener: (_event: string, _cb: Function) => console.log('mock')
-};
 
 RNScreens.enableScreens();
 initStore(store);

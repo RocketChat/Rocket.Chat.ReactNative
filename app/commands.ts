@@ -1,30 +1,8 @@
 /* eslint-disable no-bitwise */
 import { NativeSyntheticEvent } from 'react-native';
-// import KeyCommands, { constants, KeyCommand } from 'react-native-keycommands';
+import KeyCommands, { constants, KeyCommand } from 'react-native-keycommands';
 
 import I18n from './i18n';
-
-const KeyCommands = {
-	setKeyCommands: (_arg: any) => console.log('mock'),
-	deleteKeyCommands: (_arg: any) => console.log('mock')
-};
-export const constants = {
-	keyModifierShift: 1,
-	keyModifierControl: 1,
-	keyModifierAlternate: 1,
-	keyModifierCommand: 1,
-	keyModifierNumericPad: 1,
-	keyInputUpArrow: 'a',
-	keyInputDownArrow: 'a',
-	keyInputLeftArrow: 'a',
-	keyInputRightArrow: 'a',
-	keyInputEscape: 'a'
-};
-export interface KeyCommand {
-	input: string;
-	keyModifier?: number;
-	discoverabilityTitle?: string;
-}
 
 const KEY_TYPING = '\t';
 const KEY_PREFERENCES = 'p';
@@ -165,7 +143,7 @@ export const deleteKeyCommands = (): void => KeyCommands.deleteKeyCommands(keyCo
 
 export const KEY_COMMAND = 'KEY_COMMAND';
 
-export interface IKeyCommandEvent extends NativeSyntheticEvent<any> {
+export interface IKeyCommandEvent extends NativeSyntheticEvent<typeof KeyCommand> {
 	input: number & string;
 	modifierFlags: string | number;
 }
