@@ -37,7 +37,6 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new RNCViewPagerPackage());
       packages.add(new SSLPinningPackage());
-      // firebase modules
       List<ReactPackage> additionalModules = new AdditionalModules().getAdditionalModules(MainApplication.this);
       packages.addAll(additionalModules);
       return packages;

@@ -13,7 +13,6 @@ module.exports = {
 		getTransformOptions: () => ({
 			transform: {
 				// experimentalImportSupport: true,
-				// https://github.com/storybookjs/react-native/issues/152
 				inlineRequires: true
 			}
 		})

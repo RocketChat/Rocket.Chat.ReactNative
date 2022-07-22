@@ -231,7 +231,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	chooseCertificate = async () => {
 		try {
-			const certificate: any = await SSLPinning?.pickCertificate();
+			const certificate = await SSLPinning?.pickCertificate();
 			this.setState({ certificate });
 		} catch {
 			// Do nothing
