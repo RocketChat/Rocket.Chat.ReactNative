@@ -1343,6 +1343,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
 					theme={theme}
+					closeEmojiAndAction={this.messagebox?.current?.closeEmojiAndAction}
 				/>
 			);
 		}
