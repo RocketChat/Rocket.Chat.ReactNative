@@ -1,4 +1,4 @@
-import { Alert, Platform } from 'react-native';
+import { Alert, NativeModules, Platform } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import * as FileSystem from 'expo-file-system';
 
@@ -7,7 +7,7 @@ import I18n from '../../../i18n';
 import { extractHostname } from './server';
 import { ICertificate } from '../../../definitions';
 
-// const { SSLPinning } = NativeModules;
+const { SSLPinning } = NativeModules;
 const { documentDirectory } = FileSystem;
 
 const extractFileScheme = (path: string) => path.replace('file://', ''); // file:// isn't allowed by obj-C
@@ -68,8 +68,8 @@ const RCSSLPinning = Platform.select({
 		}
 	},
 	android: {
-		pickCertificate: () => {}, // ,SSLPinning?.pickCertificate(),
-		setCertificate: () => {} // SSLPinning?.setCertificate(name)
+		pickCertificate: () => SSLPinning?.pickCertificate(),
+		setCertificate: name => SSLPinning?.setCertificate(name)
 	}
 });
 

@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import chat.rocket.reactnative.newarchitecture.MainApplicationReactNativeHost;
-// import chat.rocket.reactnative.networking.SSLPinningPackage;
+import chat.rocket.reactnative.networking.SSLPinningPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -36,7 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new RNCViewPagerPackage());
-      // packages.add(new SSLPinningPackage());
+      packages.add(new SSLPinningPackage());
       // firebase modules
       List<ReactPackage> additionalModules = new AdditionalModules().getAdditionalModules(MainApplication.this);
       packages.addAll(additionalModules);
