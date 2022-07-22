@@ -15,11 +15,10 @@ interface IEmoji {
 	style?: object;
 	onEmojiSelected?: Function;
 	tabEmojiStyle?: object;
-	testID: string;
 }
 
 const Emoji = React.memo(
-	({ literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, testID, customEmojis = true, style = {} }: IEmoji) => {
+	({ literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {} }: IEmoji) => {
 		const { colors } = useTheme();
 		const emojiUnicode = shortnameToUnicode(literal);
 		const emoji: any = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
@@ -29,14 +28,11 @@ const Emoji = React.memo(
 					baseUrl={baseUrl}
 					style={[isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji, style]}
 					emoji={emoji}
-					testID={`${testID}-custom-emoji`}
 				/>
 			);
 		}
 		return (
-			<Text
-				style={[{ color: colors.bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}
-				testID={`${testID}-unicode-emoji`}>
+			<Text style={[{ color: colors.bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
 				{emojiUnicode}
 			</Text>
 		);

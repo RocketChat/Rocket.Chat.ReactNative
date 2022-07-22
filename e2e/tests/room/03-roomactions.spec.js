@@ -272,6 +272,9 @@ describe('Room actions screen', () => {
 
 		describe('Notification', () => {
 			it('should navigate to notification preference view', async () => {
+				await waitFor(element(by.id('room-actions-scrollview')))
+					.toExist()
+					.withTimeout(2000);
 				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-notifications')))
 					.toExist()
@@ -307,8 +310,6 @@ describe('Room actions screen', () => {
 			});
 
 			it('should have notification sound option', async () => {
-				// Ugly hack to scroll on detox
-				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('notification-preference-view-sound')))
 					.toExist()
 					.withTimeout(4000);
@@ -338,6 +339,9 @@ describe('Room actions screen', () => {
 			const user = data.users.alternate;
 
 			it('should tap on leave channel and raise alert', async () => {
+				await waitFor(element(by.id('room-actions-scrollview')))
+					.toExist()
+					.withTimeout(2000);
 				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-leave-channel')))
 					.toExist()

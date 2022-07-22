@@ -10,7 +10,7 @@ export const IconSet = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom
 
 export type TIconsName = keyof typeof mappedIcons;
 
-interface ICustomIcon extends TextProps {
+export interface ICustomIcon extends TextProps {
 	name: TIconsName;
 	size: number;
 	color: string;

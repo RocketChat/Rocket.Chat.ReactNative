@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 import { Code as CodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
@@ -10,15 +10,14 @@ interface ICodeProps {
 	value: CodeProps['value'];
 }
 
-const Code = ({ value }: ICodeProps) => {
+const Code = ({ value }: ICodeProps): React.ReactElement => {
 	const { colors } = useTheme();
 
 	return (
-		<Text
+		<View
 			style={[
 				styles.codeBlock,
 				{
-					color: colors.bodyText,
 					backgroundColor: colors.bannerBackground,
 					borderColor: colors.borderColor
 				}
@@ -31,7 +30,7 @@ const Code = ({ value }: ICodeProps) => {
 						return null;
 				}
 			})}
-		</Text>
+		</View>
 	);
 };
 

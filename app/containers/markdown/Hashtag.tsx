@@ -3,6 +3,7 @@ import { StyleProp, Text, TextStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { IUserChannel } from './interfaces';
 import styles from './styles';
@@ -16,11 +17,10 @@ interface IHashtag {
 	navToRoomInfo?: Function;
 	style?: StyleProp<TextStyle>[];
 	channels?: IUserChannel[];
-	testID: string;
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, testID, style = [] }: IHashtag) => {
-	const { colors } = useTheme();
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+	const { theme } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'RoomView'>>();
 
@@ -46,21 +46,16 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, testID, style = 
 				style={[
 					styles.mention,
 					{
-						color: colors.mentionOtherColor
+						color: themes[theme].mentionOtherColor
 					},
 					...style
 				]}
-				onPress={handlePress}
-				testID={`${testID}-hashtag-channels`}>
+				onPress={handlePress}>
 				{`#${hashtag}`}
 			</Text>
 		);
 	}
-	return (
-		<Text
-			style={[styles.text, { color: colors.bodyText }, ...style]}
-			testID={`${testID}-hashtag-without-channels`}>{`#${hashtag}`}</Text>
-	);
+	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`#${hashtag}`}</Text>;
 });
 
 export default Hashtag;

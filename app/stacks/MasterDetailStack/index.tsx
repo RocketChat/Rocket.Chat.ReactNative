@@ -27,6 +27,7 @@ import AutoTranslateView from '../../views/AutoTranslateView';
 import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
+import CloseLivechatView from '../../views/CloseLivechatView';
 import CannedResponsesListView from '../../views/CannedResponsesListView';
 import CannedResponseDetail from '../../views/CannedResponseDetail';
 import LivechatEditView from '../../views/LivechatEditView';
@@ -152,6 +153,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='QueueListView' component={QueueListView} />
 				<ModalStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
 				<ModalStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
+				<ModalStack.Screen name='CloseLivechatView' component={CloseLivechatView} />
 				<ModalStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />

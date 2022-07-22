@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { IUserMention } from './interfaces';
@@ -13,22 +14,20 @@ interface IAtMention {
 	style?: StyleProp<TextStyle>[];
 	useRealName?: boolean;
 	mentions?: IUserMention[];
-	testID: string;
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName, testID }: IAtMention) => {
-	const { colors } = useTheme();
+const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
+	const { theme } = useTheme();
 	if (mention === 'all' || mention === 'here') {
 		return (
 			<Text
 				style={[
 					styles.mention,
 					{
-						color: colors.mentionGroupColor
+						color: themes[theme].mentionGroupColor
 					},
 					...style
-				]}
-				testID={`${testID}-mention-all-here`}>
+				]}>
 				{mention}
 			</Text>
 		);
@@ -37,11 +36,11 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	let mentionStyle = {};
 	if (mention === username) {
 		mentionStyle = {
-			color: colors.mentionMeColor
+			color: themes[theme].mentionMeColor
 		};
 	} else {
 		mentionStyle = {
-			color: colors.mentionOtherColor
+			color: themes[theme].mentionOtherColor
 		};
 	}
 
@@ -60,15 +59,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 
 	if (user) {
 		return (
-			<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress} testID={`${testID}-mention-users`}>
+			<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
 				{useRealName && user.name ? user.name : user.username}
 			</Text>
 		);
 	}
 
-	return (
-		<Text style={[styles.text, { color: colors.bodyText }, ...style]} testID={`${testID}-mention-unknown`}>{`@${mention}`}</Text>
-	);
+	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`@${mention}`}</Text>;
 });
 
 export default AtMention;

@@ -68,3 +68,13 @@ jest.mock('@gorhom/bottom-sheet', () => {
 		BottomSheetScrollView: react.ScrollView
 	};
 });
+
+// If you need to manually mock a lib use this mock pattern and set exports.
+jest.mock('react-native-math-view', () => {
+	const react = require('react-native');
+	return {
+		__esModule: true,
+		default: react.View, // Default export
+		MathText: react.View // {...} Named export
+	};
+});
