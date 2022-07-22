@@ -7,11 +7,9 @@ import store from '../../lib/store';
 import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
 import { themes } from '../../lib/constants';
-import { useTheme } from '../../theme';
+import { TSupportedThemes } from '../../theme';
 
-const EmojiKeyboard = () => {
-	const { theme } = useTheme();
-
+const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 	const onEmojiSelected = (emoji: string) => {
 		KeyboardRegistry.onItemSelected('EmojiKeyboard', { emoji });
 	};

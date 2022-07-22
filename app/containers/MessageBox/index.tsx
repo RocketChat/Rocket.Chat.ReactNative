@@ -1188,6 +1188,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onEmojiSelected}
 					trackInteractive
