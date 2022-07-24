@@ -220,7 +220,8 @@
 		},
 		"setupFilesAfterEnv": [
 			"@testing-library/jest-native/extend-expect",
-			"./jest.setup.js"
+			"./jest.setup.js",
+			"./node_modules/react-native-gesture-handler/jestSetup.js"
 		]
 	},
 	"snyk": true,

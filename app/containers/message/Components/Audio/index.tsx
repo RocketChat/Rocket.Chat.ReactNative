@@ -1,28 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import moment from 'moment';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Audio, AVPlaybackStatus } from 'expo-av';
-import TrackPlayer, { Event, useTrackPlayerEvents, State, useProgress } from 'react-native-track-player';
-import { Easing } from 'react-native-reanimated';
+import moment from 'moment';
+import { dequal } from 'dequal';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { Sound } from 'expo-av/build/Audio/Sound';
 
 import Touchable from '../../Touchable';
 import Markdown from '../../../markdown';
 import { CustomIcon } from '../../../CustomIcon';
 import sharedStyles from '../../../../views/Styles';
 import { themes } from '../../../../lib/constants';
-import {
-	isAndroid
-	//  isIOS
-} from '../../../../lib/methods/helpers';
+import { isAndroid, isIOS } from '../../../../lib/methods/helpers';
 import MessageContext from '../../Context';
 import ActivityIndicator from '../../../ActivityIndicator';
+import { withDimensions } from '../../../../dimensions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment } from '../../../../definitions';
 import { TSupportedThemes } from '../../../../theme';
-import { setupService } from './services';
 import Slider from './Slider';
-import { addTrack, clearTracks, getTrackIndex, useTracks } from './tracksStorage';
 
 interface IButton {
 	loading: boolean;
@@ -40,6 +36,23 @@ interface IMessageAudioProps {
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
 }
+
+interface IMessageAudioState {
+	loading: boolean;
+	currentTime: number;
+	duration: number;
+	paused: boolean;
+}
+
+const mode = {
+	allowsRecordingIOS: false,
+	playsInSilentModeIOS: true,
+	staysActiveInBackground: true,
+	shouldDuckAndroid: true,
+	playThroughEarpieceAndroid: false,
+	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+};
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -63,9 +76,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 12,
 		fontSize: 14,
 		...sharedStyles.textRegular
-	},
-	slider: {
-		flex: 1
 	}
 });
 
@@ -94,217 +104,206 @@ const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButto
 
 Button.displayName = 'MessageAudioButton';
 
-const MessageAudio = ({
-	file,
-	isReply,
-	style,
-	theme,
-	getCustomEmoji
-}: // scale
-IMessageAudioProps) => {
-	const { baseUrl, user } = useContext(MessageContext);
+class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
+	static contextType = MessageContext;
 
-	const [loading, setLoading] = useState(false);
-	const [paused, setPaused] = useState(true);
-	const [currentPosition, setCurrentPosition] = useState(0);
-	const [duration, setDuration] = useState(0);
-	const [isSliding, setIsSliding] = useState(false);
-	const { position } = useProgress();
+	private sound: Sound;
 
-	const [currentTrackId, setCurrentTrackId] = useTracks('currentTrackId');
+	constructor(props: IMessageAudioProps) {
+		super(props);
+		this.state = {
+			loading: false,
+			currentTime: 0,
+			duration: 0,
+			paused: true
+		};
 
-	let url = file.audio_url;
-	if (url && !url.startsWith('http')) {
-		url = `${baseUrl}${file.audio_url}`;
+		this.sound = new Audio.Sound();
+		this.sound.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate);
 	}
 
-	const track = {
-		id: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-		url: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-		title: file.title,
-		artist: file.author_name
-	};
+	async componentDidMount() {
+		const { file } = this.props;
+		const { baseUrl, user } = this.context;
 
-	const updateTrackDuration = (status: AVPlaybackStatus) => {
-		if (status.isLoaded && status.durationMillis) {
-			const trackDuration = status.durationMillis / 1000;
-			setDuration(trackDuration > 0 ? trackDuration : 0);
+		let url = file.audio_url;
+		if (url && !url.startsWith('http')) {
+			url = `${baseUrl}${file.audio_url}`;
 		}
-	};
 
-	useEffect(() => {
-		const setup = async () => {
-			setLoading(true);
-			try {
-				await setupService();
-				const sound = new Audio.Sound();
-				sound.setOnPlaybackStatusUpdate(updateTrackDuration);
-				await sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
-				if (!isReply) {
-					const index = await TrackPlayer.add(track);
-					// @ts-ignore
-					index >= 0 && addTrack({ trackIndex: index, trackId: track.id });
-				}
-			} catch {
-				// Do nothing
-			}
-			setLoading(false);
-		};
-		setup();
-		return () => {
-			TrackPlayer.destroy();
-			clearTracks();
-			setCurrentTrackId(null);
-		};
-	}, []);
-
-	useEffect(() => {
-		if (!currentTrackId || currentTrackId !== track.id) {
-			setCurrentPosition(0);
-			setPaused(true);
+		this.setState({ loading: true });
+		try {
+			await this.sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
+		} catch {
+			// Do nothing
 		}
-	}, [currentTrackId]);
+		this.setState({ loading: false });
+	}
 
-	useEffect(() => {
-		if (currentTrackId === track.id && !isSliding) {
-			setCurrentPosition(position);
+	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
+		const { currentTime, duration, paused, loading } = this.state;
+		const { file, theme } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
 		}
-	}, [position]);
+		if (nextState.currentTime !== currentTime) {
+			return true;
+		}
+		if (nextState.duration !== duration) {
+			return true;
+		}
+		if (nextState.paused !== paused) {
+			return true;
+		}
+		if (!dequal(nextProps.file, file)) {
+			return true;
+		}
+		if (nextState.loading !== loading) {
+			return true;
+		}
+		return false;
+	}
 
-	useEffect(() => {
-		playPause();
-	}, [paused]);
-
-	useEffect(() => {
+	componentDidUpdate() {
+		const { paused } = this.state;
 		if (paused) {
 			deactivateKeepAwake();
 		} else {
 			activateKeepAwake();
 		}
-	}, [paused, currentPosition, duration, file, loading, theme]);
+	}
 
-	useTrackPlayerEvents([Event.PlaybackState], ({ state }) => {
-		if (state === State.Stopped) {
-			try {
-				TrackPlayer.stop();
-				setPaused(true);
-			} catch {
-				// do nothing
-			}
+	async componentWillUnmount() {
+		try {
+			await this.sound.stopAsync();
+		} catch {
+			// Do nothing
 		}
-		if (state === State.Paused) {
-			setPaused(true);
-		}
-		if (state === State.Playing && currentTrackId?.trackId === track.id) {
-			setPaused(false);
-		}
-	});
+	}
 
-	const getDuration = () => formatTime(currentPosition || duration);
-
-	const togglePlayPause = () => {
-		setPaused(!paused);
+	onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+		if (status) {
+			this.onLoad(status);
+			this.onProgress(status);
+			this.onEnd(status);
+		}
 	};
 
-	const playPause = async () => {
+	onLoad = (data: AVPlaybackStatus) => {
+		if (data.isLoaded && data.durationMillis) {
+			const duration = data.durationMillis / 1000;
+			this.setState({ duration: duration > 0 ? duration : 0 });
+		}
+	};
+
+	onProgress = (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			const { duration } = this.state;
+			const currentTime = data.positionMillis / 1000;
+			if (currentTime <= duration) {
+				this.setState({ currentTime });
+			}
+		}
+	};
+
+	onEnd = async (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			if (data.didJustFinish) {
+				try {
+					await this.sound.stopAsync();
+					this.setState({ paused: true, currentTime: 0 });
+				} catch {
+					// do nothing
+				}
+			}
+		}
+	};
+
+	get duration() {
+		const { currentTime, duration } = this.state;
+		return formatTime(currentTime || duration);
+	}
+
+	togglePlayPause = () => {
+		const { paused } = this.state;
+		this.setState({ paused: !paused }, this.playPause);
+	};
+
+	playPause = async () => {
+		const { paused } = this.state;
 		try {
 			if (paused) {
-				if (currentTrackId === track.id) {
-					TrackPlayer.pause();
-				}
-			} else if (currentTrackId === track.id) {
-				TrackPlayer.play();
+				await this.sound.pauseAsync();
 			} else {
-				const index = getTrackIndex(track.id);
-				index && TrackPlayer.skip(index);
-				if (currentPosition > 0) await TrackPlayer.seekTo(currentPosition);
-				TrackPlayer.play();
-				setCurrentTrackId(track.id);
+				await Audio.setAudioModeAsync(mode);
+				await this.sound.playAsync();
 			}
 		} catch {
 			// Do nothing
 		}
 	};
 
-	const onValueChange = (value: number) => {
-		setCurrentPosition(value);
+	onValueChange = (value: number) => {
+		this.setState({ currentTime: value });
+	};
+
+	onSlidingEnd = async (value: number) => {
 		try {
-			if (currentTrackId === track.id && !paused && isSliding) {
-				setPaused(true);
-				TrackPlayer.pause();
-			}
+			await this.sound.setPositionAsync(value * 1000);
 		} catch {
 			// Do nothing
 		}
 	};
 
-	const onSlidingEnd = async (value: number) => {
-		setCurrentPosition(value);
-		try {
-			if (currentTrackId === track.id) {
-				await TrackPlayer.seekTo(value);
-				if (paused) {
-					TrackPlayer.play();
-					setPaused(false);
-				}
-			}
-		} catch {
-			// Do nothing
+	render() {
+		const { loading, paused, currentTime, duration } = this.state;
+		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
+		const { description } = file;
+		const { baseUrl, user } = this.context;
+
+		if (!baseUrl) {
+			return null;
 		}
-		setIsSliding(false);
-	};
 
-	const { description } = file;
+		let thumbColor;
+		if (isAndroid && isReply) {
+			thumbColor = themes[theme].tintDisabled;
+		} else if (isAndroid) {
+			thumbColor = themes[theme].tintColor;
+		}
 
-	if (!baseUrl) {
-		return null;
-	}
-
-	let thumbColor;
-	if (isAndroid && isReply) {
-		thumbColor = themes[theme].tintDisabled;
-	} else if (isAndroid) {
-		thumbColor = themes[theme].tintColor;
-	}
-
-	const sliderAnimatedConfig = {
-		duration: 250,
-		easing: Easing.linear
-	};
-
-	return (
-		<>
-			<Markdown
-				msg={description}
-				style={[isReply && style]}
-				baseUrl={baseUrl}
-				username={user.username}
-				getCustomEmoji={getCustomEmoji}
-				theme={theme}
-			/>
-			<View
-				style={[
-					styles.audioContainer,
-					{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-				]}>
-				<Button disabled={isReply} loading={loading} paused={paused} onPress={togglePlayPause} theme={theme} />
-				<Slider
-					value={currentPosition}
-					maximumValue={duration}
-					onValueChange={onValueChange}
-					thumbTintColor={thumbColor}
-					minimumTrackTintColor={themes[theme].tintColor}
-					disabled={isReply}
-					maximumTrackTintColor={themes[theme].auxiliaryText}
-					animationConfig={sliderAnimatedConfig}
-					onSlidingStart={() => setIsSliding(true)}
-					onSlidingEnd={onSlidingEnd}
-					// thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
+		return (
+			<>
+				<Markdown
+					msg={description}
+					style={[isReply && style]}
+					baseUrl={baseUrl}
+					username={user.username}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
 				/>
-				<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{getDuration()}</Text>
-			</View>
-		</>
-	);
-};
+				<View
+					style={[
+						styles.audioContainer,
+						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
+					]}>
+					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
+					<Slider
+						disabled={isReply}
+						value={currentTime}
+						maximumValue={duration}
+						thumbTintColor={thumbColor}
+						trackColor={themes[theme].auxiliaryText}
+						activeTrackColor={themes[theme].tintColor}
+						onValueChange={this.onValueChange}
+						onSlidingEnd={this.onSlidingEnd}
+						thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
+					/>
+					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
+				</View>
+			</>
+		);
+	}
+}
 
-export default MessageAudio;
+export default withDimensions(MessageAudio);

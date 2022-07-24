@@ -180,8 +180,7 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	activeTrack: {
-		height: 2,
-		width: 0
+		height: 2
 	},
 	sliderThumb: {
 		height: SLIDER_THUMB_RADIUS * 2,
