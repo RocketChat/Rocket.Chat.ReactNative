@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import moment from 'moment';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-// import Slider from '@react-native-community/slider';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import TrackPlayer, { Event, useTrackPlayerEvents, State, useProgress } from 'react-native-track-player';
 import { Easing } from 'react-native-reanimated';
-import { useMMKVStorage } from 'react-native-mmkv-storage';
 
 import Touchable from '../../Touchable';
 import Markdown from '../../../markdown';
@@ -23,7 +22,7 @@ import { IAttachment } from '../../../../definitions';
 import { TSupportedThemes } from '../../../../theme';
 import { setupService } from './services';
 import Slider from './Slider';
-import { TracksStorage, addTrack, clearTracks, getCurrentTrack, setCurrentTrack } from './tracks';
+import { useTracks } from './tracksStorage';
 
 interface IButton {
 	loading: boolean;
@@ -103,15 +102,16 @@ const MessageAudio = ({
 	getCustomEmoji
 }: // scale
 IMessageAudioProps) => {
-	const [loading, setLoading] = useState(false);
-	const [paused, setPaused] = useState(true);
-	const [currentTime, setCurrentTime] = useState(0);
-
 	const { baseUrl, user } = useContext(MessageContext);
 
-	const { duration } = useProgress();
+	const [loading, setLoading] = useState(false);
+	const [paused, setPaused] = useState(true);
+	const [currentPosition, setCurrentPosition] = useState(0);
+	const [duration, setDuration] = useState(0);
+	const [isSliding, setIsSliding] = useState(false);
+	const { position } = useProgress();
 
-	const [tracks] = useMMKVStorage('tracks', TracksStorage);
+	const [currentTrackId, setCurrentTrackId] = useTracks('currentTrackId');
 
 	let url = file.audio_url;
 	if (url && !url.startsWith('http')) {
@@ -122,34 +122,48 @@ IMessageAudioProps) => {
 		id: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
 		url: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
 		title: file.title,
-		artist: file.author_name,
-		duration
+		artist: file.author_name
+	};
+
+	const updateTrackDuration = (status: AVPlaybackStatus) => {
+		if (status.isLoaded && status.durationMillis) {
+			const trackDuration = status.durationMillis / 1000;
+			setDuration(trackDuration > 0 ? trackDuration : 0);
+		}
 	};
 
 	useEffect(() => {
 		const setup = async () => {
 			setLoading(true);
-			await setupService();
-			addTrack({ trackId: track.id, title: file.title, artist: file.author_name, isPlaying: false });
+			try {
+				await setupService();
+				const sound = new Audio.Sound();
+				sound.setOnPlaybackStatusUpdate(updateTrackDuration);
+				await sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
+			} catch {
+				// Do nothing
+			}
 			setLoading(false);
 		};
 		setup();
 		return () => {
-			TrackPlayer.reset();
-			clearTracks();
+			TrackPlayer.destroy();
+			setCurrentTrackId(null);
 		};
 	}, []);
 
 	useEffect(() => {
-		const currentTrack = getCurrentTrack();
-		if (currentTrack && currentTrack.trackId !== track.id) {
+		if (currentTrackId && currentTrackId !== track.id) {
+			setCurrentPosition(0);
 			setPaused(true);
 		}
-	}, [tracks]);
+	}, [currentTrackId]);
 
-	// useEffect(() => {
-	// 	setCurrentTime(position);
-	// }, [position]);
+	useEffect(() => {
+		if (currentTrackId === track.id && !isSliding) {
+			setCurrentPosition(position);
+		}
+	}, [position]);
 
 	useEffect(() => {
 		playPause();
@@ -161,7 +175,7 @@ IMessageAudioProps) => {
 		} else {
 			activateKeepAwake();
 		}
-	}, [paused, currentTime, duration, file, loading, theme]);
+	}, [paused, currentPosition, duration, file, loading, theme]);
 
 	useTrackPlayerEvents([Event.PlaybackState], ({ state }) => {
 		if (state === State.Stopped) {
@@ -172,49 +186,70 @@ IMessageAudioProps) => {
 				// do nothing
 			}
 		}
+		if (state === State.Paused) {
+			setPaused(true);
+		}
+		if (state === State.Playing && currentTrackId?.trackId === track.id) {
+			setPaused(false);
+		}
 	});
 
-	const getDuration = () => formatTime(currentTime || duration);
+	const getDuration = () => formatTime(currentPosition || duration);
 
 	const togglePlayPause = () => {
 		setPaused(!paused);
 	};
 
-	const playPause = () => {
-		const currentPlaying = getCurrentTrack();
+	const playPause = async () => {
 		try {
 			if (paused) {
-				if (currentPlaying?.trackId === track.id) {
+				if (currentTrackId === track.id) {
 					TrackPlayer.pause();
 				}
-			} else if (currentPlaying?.trackId === track.id) {
+			} else if (currentTrackId === track.id) {
 				TrackPlayer.play();
 			} else {
 				TrackPlayer.reset();
-				TrackPlayer.add(track);
+				await TrackPlayer.add(track);
 				TrackPlayer.play();
-				setCurrentTrack(track.id);
+				setCurrentTrackId(track.id);
 			}
 		} catch {
 			// Do nothing
 		}
 	};
 
-	const onValueChange = async (value: number) => {
-		const currentTrack = getCurrentTrack();
+	const onValueChange = (value: number) => {
+		setCurrentPosition(value);
 		try {
-			setCurrentTime(value);
-			if (currentTrack && currentTrack.trackId === track.id) {
-				await TrackPlayer.seekTo(value);
-			} else {
-				TrackPlayer.reset();
-				TrackPlayer.add(track);
-				TrackPlayer.seekTo(value);
-				setCurrentTrack(track.id);
+			if (currentTrackId === track.id && !paused && isSliding) {
+				setPaused(true);
+				TrackPlayer.pause();
 			}
 		} catch {
 			// Do nothing
 		}
+	};
+
+	const onSlidingEnd = async (value: number) => {
+		setCurrentPosition(value);
+		try {
+			if (currentTrackId === track.id) {
+				await TrackPlayer.seekTo(value);
+			} else {
+				TrackPlayer.reset();
+				await TrackPlayer.add(track);
+				await TrackPlayer.seekTo(value);
+				setCurrentTrackId(track.id);
+			}
+			if (paused) {
+				TrackPlayer.play();
+				setPaused(false);
+			}
+		} catch {
+			// Do nothing
+		}
+		setIsSliding(false);
 	};
 
 	const { description } = file;
@@ -252,7 +287,7 @@ IMessageAudioProps) => {
 				]}>
 				<Button disabled={isReply} loading={loading} paused={paused} onPress={togglePlayPause} theme={theme} />
 				<Slider
-					value={currentTime}
+					value={currentPosition}
 					maximumValue={duration}
 					onValueChange={onValueChange}
 					thumbTintColor={thumbColor}
@@ -260,20 +295,10 @@ IMessageAudioProps) => {
 					disabled={isReply}
 					maximumTrackTintColor={themes[theme].auxiliaryText}
 					animationConfig={sliderAnimatedConfig}
+					onSlidingStart={() => setIsSliding(true)}
+					onSlidingEnd={onSlidingEnd}
 					// thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 				/>
-				{/* <Slider
-					disabled={isReply}
-					style={styles.slider}
-					value={position}
-					maximumValue={duration}
-					minimumValue={0}
-					thumbTintColor={thumbColor}
-					minimumTrackTintColor={themes[theme].tintColor}
-					maximumTrackTintColor={themes[theme].auxiliaryText}
-					onValueChange={onValueChange}
-					thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
-				/> */}
 				<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{getDuration()}</Text>
 			</View>
 		</>

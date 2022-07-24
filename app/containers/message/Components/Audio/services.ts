@@ -1,5 +1,6 @@
 import TrackPlayer, { Event, State, Capability } from 'react-native-track-player';
-// import type { ProgressUpdateEvent } from 'react-native-track-player';
+
+import { clearCurrentTrack } from './tracksStorage';
 
 let wasPausedByDuck = false;
 
@@ -14,6 +15,11 @@ export const playbackService = async () => {
 		TrackPlayer.play();
 	});
 
+	TrackPlayer.addEventListener(Event.RemoteStop, () => {
+		clearCurrentTrack();
+		TrackPlayer.destroy();
+	});
+
 	TrackPlayer.addEventListener(Event.RemoteDuck, async e => {
 		if (e.permanent === true) {
 			TrackPlayer.stop();
@@ -26,47 +32,13 @@ export const playbackService = async () => {
 			wasPausedByDuck = false;
 		}
 	});
-
-	// TrackPlayer.addEventListener(Event.PlaybackQueueEnded, data => {
-	// 	console.log('Event.PlaybackQueueEnded', data);
-	// });
-
-	// TrackPlayer.addEventListener(Event.PlaybackTrackChanged, data => {
-	// 	console.log('Event.PlaybackTrackChanged', data);
-	// });
-
-	// TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, (data: ProgressUpdateEvent) => {
-	// 	console.log('Event.PlaybackProgressUpdated', data);
-	// });
-
-	// TrackPlayer.addEventListener(Event.RemoteNext, () => {
-	// 	TrackPlayer.skipToNext();
-	// });
-
-	// TrackPlayer.addEventListener(Event.RemotePrevious, () => {
-	// 	TrackPlayer.skipToPrevious();
-	// });
 };
 
 export const setupService = async () => {
-	try {
-		await TrackPlayer.getCurrentTrack();
-	} catch {
-		await TrackPlayer.setupPlayer();
-		await TrackPlayer.updateOptions({
-			stopWithApp: false,
-			capabilities: [
-				Capability.Play,
-				Capability.Pause,
-				Capability.Stop
-				// Capability.SkipToNext,
-				// Capability.SkipToPrevious
-			],
-			compactCapabilities: [
-				Capability.Play,
-				Capability.Pause
-				// Capability.SkipToNext
-			]
-		});
-	}
+	await TrackPlayer.setupPlayer();
+	await TrackPlayer.updateOptions({
+		stopWithApp: false,
+		capabilities: [Capability.Play, Capability.Pause, Capability.Stop],
+		compactCapabilities: [Capability.Play, Capability.Pause]
+	});
 };

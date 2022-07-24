@@ -8,6 +8,21 @@ jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
+jest.mock('react-native-mmkv-storage', () => ({
+	Loader: jest.fn().mockImplementation(() => ({
+		setProcessingMode: jest.fn().mockImplementation(() => ({
+			withEncryption: jest.fn().mockImplementation(() => ({
+				initialize: jest.fn()
+			}))
+		})),
+		withInstanceID: jest.fn().mockImplementation(() => ({
+			initialize: jest.fn()
+		}))
+	})),
+	create: jest.fn(),
+	MODES: { MULTI_PROCESS: '' }
+}));
+
 jest.mock('rn-fetch-blob', () => ({
 	fs: {
 		dirs: {
@@ -67,3 +82,47 @@ jest.mock('react-native-math-view', () => {
 		MathText: react.View // {...} Named export
 	};
 });
+jest.mock('react-native-track-player', () => ({
+	__esModule: true,
+	default: {
+		addEventListener: () => ({
+			remove: jest.fn()
+		}),
+		registerEventHandler: jest.fn(),
+		registerPlaybackService: jest.fn(),
+		setupPlayer: jest.fn(),
+		destroy: jest.fn(),
+		updateOptions: jest.fn(),
+		reset: jest.fn(),
+		add: jest.fn(),
+		remove: jest.fn(),
+		skip: jest.fn(),
+		skipToNext: jest.fn(),
+		skipToPrevious: jest.fn(),
+		removeUpcomingTracks: jest.fn(),
+		play: jest.fn(),
+		pause: jest.fn(),
+		stop: jest.fn(),
+		seekTo: jest.fn(),
+		setVolume: jest.fn(),
+		setRate: jest.fn(),
+		getQueue: jest.fn(),
+		getTrack: jest.fn(),
+		getCurrentTrack: jest.fn(),
+		getVolume: jest.fn(),
+		getDuration: jest.fn(),
+		getPosition: jest.fn(),
+		getBufferedPosition: jest.fn(),
+		getState: jest.fn(),
+		getRate: jest.fn()
+	},
+	useProgress: () => ({
+		position: 100
+	})
+}));
+
+jest.mock('./app/containers/message/Components/Audio/tracksStorage.ts', () => ({
+	useTracks: () => ({
+		currentTrack: ''
+	})
+}));

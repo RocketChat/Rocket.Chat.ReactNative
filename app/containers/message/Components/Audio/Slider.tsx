@@ -10,7 +10,9 @@ import { useTheme } from '../../../../theme';
 interface ISliderProps {
 	value: number;
 	maximumValue: number;
-	onValueChange: (value: number) => Promise<void>;
+	onValueChange: (value: number) => void;
+	onSlidingStart: () => void;
+	onSlidingEnd: (value: number) => void;
 	thumbTintColor?: string;
 	minimumTrackTintColor?: string;
 	maximumTrackTintColor?: string;
@@ -25,6 +27,8 @@ const Slider = React.memo(
 		value,
 		maximumValue,
 		onValueChange,
+		onSlidingStart,
+		onSlidingEnd,
 		thumbTintColor,
 		minimumTrackTintColor,
 		maximumTrackTintColor,
@@ -68,6 +72,7 @@ const Slider = React.memo(
 			.hitSlop({ horizontal: 5, vertical: 20 })
 			.onStart(() => {
 				setSliding(true);
+				onSlidingStart();
 				sliderThumbWidth.value = withTiming(3 * SLIDER_THUMB_RADIUS, { duration: 100 });
 			})
 			.onChange(e => {
@@ -78,6 +83,7 @@ const Slider = React.memo(
 				sliderThumbWidth.value = withTiming(2 * SLIDER_THUMB_RADIUS, { duration: 100 });
 				currentValue.value = equivalentValue(clamp(e.x, 0, sliderWidth));
 				onValueChange(equivalentValue(clamp(e.x, 0, sliderWidth)));
+				onSlidingEnd(equivalentValue(clamp(e.x, 0, sliderWidth)));
 				setSliding(false);
 			});
 
