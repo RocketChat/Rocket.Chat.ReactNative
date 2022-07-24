@@ -20,7 +20,7 @@ import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
 
 export const useFrequentlyUsedEmoji = () => {
-	const [frequentlyUsed, setFrequentlyUsed] = useState<IEmoji[]>([]);
+	const [frequentlyUsed, setFrequentlyUsed] = useState<(string | IEmoji)[]>([]);
 	const [loaded, setLoaded] = useState(false);
 	const getFrequentlyUsedEmojis = async () => {
 		const db = database.active;
@@ -31,7 +31,7 @@ export const useFrequentlyUsedEmoji = () => {
 				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}
 			return shortnameToUnicode(`${item.content}`);
-		}) as IEmoji[];
+		}) as (string | IEmoji)[];
 		setFrequentlyUsed(frequentlyUsedEmojis);
 		setLoaded(true);
 	};
