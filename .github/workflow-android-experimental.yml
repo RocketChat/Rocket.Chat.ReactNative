@@ -1,16 +1,19 @@
-name: Build Android Experimental
+name: Build Android
 
 on:
-  pull_request: 
-    types: ['labeled']
+  pull_request:
+    types: ["labeled"]
 
 jobs:
   build-android:
     if: contains(github.event.pull_request.labels.*.name, 'android-build')
-  
-    name: Build Android Experimental
+
+    name: Build Android
     runs-on: ubuntu-latest
     environment: EXPERIMENTAL
+    defaults:
+      run:
+        working-directory: android
 
     env:
       JAVA_OPTS: "-Xms512m -Xmx2g"
@@ -22,7 +25,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Decode Keystore
-        run: echo ${{ secrets.KEYSTORE_BASE_64 }} | base64 -d > ./android/app/key.keystore
+        run: echo ${{ secrets.KEYSTORE_BASE_64 }} | base64 -d > ./app/key.keystore
 
       - uses: c-hive/gha-yarn-cache@v2
 
@@ -37,22 +40,22 @@ jobs:
           cache: "gradle"
 
       - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
+        run: chmod +x ./gradlew
 
       - name: Set gradle.properties
         run: |
-            echo -e "" > ./android/gradle.properties
-            echo -e android.useAndroidX=true >> ./android/gradle.properties
-            echo -e android.enableJetifier=true >> ./android/gradle.properties
-            echo -e FLIPPER_VERSION=0.51.0 >> ./android/gradle.properties
-            echo -e VERSIONCODE=${{ github.run_number }} >> ./android/gradle.properties
-            echo -e APPLICATION_ID=chat.rocket.reactnative >> ./android/gradle.properties
-            echo -e BugsnagAPIKey=${{ secrets.BUGSNAG_KEY }} >> ./android/gradle.properties
-            echo -e KEYSTORE=${{ secrets.KEYSTORE }} >> ./android/gradle.properties
-            echo -e KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} >> ./android/gradle.properties
-            echo -e KEY_ALIAS=${{ secrets.KEY_ALIAS }} >> ./android/gradle.properties
-            echo -e KEY_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} >> ./android/gradle.properties     
+          echo -e "" > ./gradle.properties
+          echo -e android.useAndroidX=true >> ./gradle.properties
+          echo -e android.enableJetifier=true >> ./gradle.properties
+          echo -e FLIPPER_VERSION=0.51.0 >> ./gradle.properties
+          echo -e VERSIONCODE=${{ github.run_number }} >> ./gradle.properties
+          echo -e APPLICATION_ID=chat.rocket.reactnative >> ./gradle.properties
+          echo -e BugsnagAPIKey=${{ secrets.BUGSNAG_KEY }} >> ./gradle.properties
+          echo -e KEYSTORE=${{ secrets.KEYSTORE }} >> ./gradle.properties
+          echo -e KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} >> ./gradle.properties
+          echo -e KEY_ALIAS=${{ secrets.KEY_ALIAS }} >> ./gradle.properties
+          echo -e KEY_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} >> ./gradle.properties
 
       - name: Generate App APK
         run: |
-          cd android && ./gradlew bundleExperimentalPlayRelease --no-daemon
+          ./gradlew bundleExperimentalPlayRelease --no-daemon
