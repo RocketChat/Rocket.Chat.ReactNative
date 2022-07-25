@@ -1,4 +1,4 @@
-name: Build Android
+name: Build Android Experimental
 
 on:
   pull_request: 
@@ -8,7 +8,7 @@ jobs:
   build-android:
     if: contains(github.event.pull_request.labels.*.name, 'android-build')
   
-    name: Build Android
+    name: Build Android Experimental
     runs-on: ubuntu-latest
     environment: EXPERIMENTAL
 
