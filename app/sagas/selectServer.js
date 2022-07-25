@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
@@ -163,7 +163,8 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 
-			if (fromServerHistory) {
+			const Accounts_iframe_enabled = yield select(state => state.settings.Accounts_iframe_enabled);
+			if (fromServerHistory && !Accounts_iframe_enabled) {
 				Navigation.navigate('LoginView', { username });
 			}
 
