@@ -59,3 +59,18 @@ jobs:
       - name: Generate App APK
         run: |
           ./gradlew bundleExperimentalPlayRelease --no-daemon
+
+      - name: Upload sourcemaps to Bugsnag
+        run: |
+          npx bugsnag-source-maps upload-react-native \
+               --api-key=${{ secrets.BUGSNAG_KEY }} \
+               --app-version-code=${{ github.event.number }} \
+               --platform android \
+               --source-map=app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
+               --bundle app/build/generated/assets/react/experimentalPlay/release/app.bundle
+
+      - name: Store Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: app.bundle-${{ github.event.number }}
+          path: app/build/generated/assets/react/experimentalPlay/release/app.bundle

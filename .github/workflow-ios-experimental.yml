@@ -61,3 +61,11 @@ jobs:
 
       - name: Run fastlane
         run: fastlane ios build_experimental
+
+      - name: Store Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Rocket.Chat.${{ github.event.number }}.ipa
+          path: |
+            Rocket.Chat.ipa
+            Rocket.Chat.app.dSYM.zip
