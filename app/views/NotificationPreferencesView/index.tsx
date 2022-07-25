@@ -99,8 +99,7 @@ const NotificationPreferencesView = () => {
 		});
 	}, []);
 
-	const rid = route.params?.rid ?? '';
-	const room = route.params?.room;
+	const { rid, room } = route.params;
 
 	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
 		try {
