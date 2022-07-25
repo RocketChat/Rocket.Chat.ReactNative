@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, Pressable } from 'react-native';
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import { FlatList as GHFlatList } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import styles from './styles';
@@ -36,18 +35,10 @@ const Emoji = React.memo(({ emoji, size, baseUrl }: IEmojiProps) => {
 	);
 });
 
-const EmojiCategory = ({
-	baseUrl,
-	onEmojiSelected,
-	emojis,
-	width,
-	tabsCount,
-	isBottomSheet
-}: IEmojiCategory): React.ReactElement | null => {
+const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, width, tabsCount }: IEmojiCategory): React.ReactElement | null => {
 	const emojiSize = width ? Math.min(width / tabsCount, MAX_EMOJI_SIZE) : MAX_EMOJI_SIZE;
 	const numColumns = Math.trunc(width ? width / emojiSize : tabsCount);
 	const { colors } = useTheme();
-	const FlatList = isBottomSheet ? BottomSheetFlatList : GHFlatList;
 
 	const renderItem = (emoji: IEmoji) => (
 		<Pressable

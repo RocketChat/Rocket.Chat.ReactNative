@@ -137,7 +137,6 @@ const EmojiPicker = ({
 				baseUrl={baseUrl}
 				tabLabel={label}
 				tabsCount={tabsCount}
-				isBottomSheet={!isEmojiKeyboard}
 			/>
 		);
 	};
@@ -159,7 +158,6 @@ const EmojiPicker = ({
 					baseUrl={baseUrl}
 					tabLabel={'searching'}
 					tabsCount={tabsCount}
-					isBottomSheet={!isEmojiKeyboard}
 				/>
 			) : (
 				<ScrollableTabView
