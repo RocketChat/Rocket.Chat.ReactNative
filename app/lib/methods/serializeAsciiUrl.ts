@@ -7,6 +7,7 @@ export const serializeAsciiUrl = (url: string): string => {
 	const ascii = /^[ -~\t\n\r]+$/;
 	if (isIOS && !ascii.test(newUrl)) {
 		newUrl = uri.serialize(uri.parse(url));
+		newUrl = newUrl.charAt(newUrl.length - 1) === '/' ? newUrl.slice(0, -1) : newUrl;
 	}
 	return newUrl;
 };
