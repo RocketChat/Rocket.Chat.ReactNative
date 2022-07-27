@@ -104,6 +104,7 @@ PODS:
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
   - hermes-engine (0.11.0)
+  - iosMath (0.9.4)
   - JitsiMeetSDK (3.6.0)
   - KeyCommands (2.0.3):
     - React
@@ -532,6 +533,8 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.1.1):
     - React-Core
+  - RNMathView (1.0.0):
+    - iosMath
   - RNReanimated (2.8.0):
     - DoubleConversion
     - FBLazyVector
@@ -559,7 +562,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNRootView (2.0.0):
+  - RNRootView (1.0.3):
     - React
   - RNScreens (3.13.1):
     - React-Core
@@ -665,6 +668,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - RNMathView (from `../node_modules/react-native-math-view/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -687,6 +691,7 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - hermes-engine
+    - iosMath
     - libevent
     - libwebp
     - MMKV
@@ -857,6 +862,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNMathView:
+    :path: "../node_modules/react-native-math-view/ios"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNRootView:
@@ -907,6 +914,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   hermes-engine: 84e3af1ea01dd7351ac5d8689cbbea1f9903ffc3
+  iosMath: f7a6cbadf9d836d2149c2a84c435b1effc244cba
   JitsiMeetSDK: 476329f72a866f714d2802bafe1729de6d644ccf
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -977,8 +985,9 @@ SPEC CHECKSUMS:
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
+  RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
   RNReanimated: 64573e25e078ae6bec03b891586d50b9ec284393
-  RNRootView: beb5b23a09e126684cf04587fb44b7d43a9b8663
+  RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
