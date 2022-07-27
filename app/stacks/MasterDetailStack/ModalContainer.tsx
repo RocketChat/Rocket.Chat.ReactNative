@@ -6,6 +6,8 @@ import { NavigationContainerProps } from '@react-navigation/core';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
+import { isAndroid } from '../../lib/methods/helpers';
+import { useKeyboardHeight } from '../../lib/hooks';
 
 interface IModalContainer extends NavigationContainerProps {
 	navigation: StackNavigationProp<any>;
@@ -25,8 +27,20 @@ const styles = StyleSheet.create({
 });
 
 export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => {
+	const keyboardHeight = useKeyboardHeight();
 	const { height } = useWindowDimensions();
 	const modalHeight = sharedStyles.modalFormSheet.height;
+
+	let heightModal: number;
+
+	if (modalHeight > height) {
+		heightModal = height;
+	} else if (isAndroid && keyboardHeight > 0) {
+		heightModal = height - keyboardHeight - 32; // 32 is to force a padding
+	} else {
+		heightModal = modalHeight;
+	}
+
 	return (
 		<View style={[styles.root, { backgroundColor: `${themes[theme].backdropColor}70` }]}>
 			<TouchableWithoutFeedback onPress={() => navigation.pop()}>
@@ -35,7 +49,7 @@ export const ModalContainer = ({ navigation, children, theme }: IModalContainer)
 			<View
 				style={{
 					...sharedStyles.modalFormSheet,
-					height: modalHeight > height ? height : modalHeight
+					height: heightModal
 				}}>
 				{children}
 			</View>
