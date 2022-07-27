@@ -88,10 +88,12 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 	);
 };
 
-const NotificationPreferencesView = () => {
-	const navigation = useNavigation();
+const NotificationPreferencesView = (): React.ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
+	const { rid, room } = route.params;
+	const navigation = useNavigation();
 	const serverVersion = useAppSelector(state => state.server.version);
+	const [hideUnreadStatus, setHideUnreadStatus] = useState(room.hideUnreadStatus);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -99,7 +101,12 @@ const NotificationPreferencesView = () => {
 		});
 	}, []);
 
-	const { rid, room } = route.params;
+	useEffect(() => {
+		const observe = room.observe();
+		observe.subscribe(data => {
+			setHideUnreadStatus(data.hideUnreadStatus);
+		});
+	}, []);
 
 	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
 		try {
@@ -152,7 +159,7 @@ const NotificationPreferencesView = () => {
 					<List.Info info='Mark_as_unread_Info' />
 				</List.Section>
 
-				{room.hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0') ? (
+				{hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0') ? (
 					<List.Section>
 						<List.Separator />
 						<List.Item
