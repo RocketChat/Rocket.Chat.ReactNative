@@ -189,7 +189,6 @@
 		"jest": "^27.0.6",
 		"jest-cli": "^27.0.6",
 		"jest-expo": "^45.0.1",
-		"metro-babel-register": "^0.71.3",
 		"metro-react-native-babel-preset": "^0.67.0",
 		"mocha": "9.0.1",
 		"otp.js": "1.2.0",
@@ -215,9 +214,6 @@
 		"moduleNameMapper": {
 			".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
 			".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
-		},
-		"transform": {
-			"^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
 		},
 		"setupFilesAfterEnv": [
 			"@testing-library/jest-native/extend-expect",
