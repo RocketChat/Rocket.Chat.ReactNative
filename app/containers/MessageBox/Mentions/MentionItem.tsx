@@ -90,7 +90,7 @@ const MentionItem = ({ item, trackingType }: IMessageBoxMentionItem) => {
 			style={[
 				styles.mentionItem,
 				{
-					backgroundColor: themes[theme].auxiliaryBackground,
+					backgroundColor: themes[theme].backgroundColor,
 					borderTopColor: themes[theme].separatorColor
 				}
 			]}

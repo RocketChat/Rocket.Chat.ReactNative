@@ -78,7 +78,7 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 		<Button
 			testID={`message-actions-emoji-${emoji}`}
 			onPress={() => onReaction({ emoji: `:${emoji}:` })}
-			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+			style={[styles.headerItem, { backgroundColor: themes[theme].backgroundColor }]}
 			theme={theme}>
 			{emojiModel?.isCustom ? (
 				<CustomEmoji style={styles.customEmoji} emoji={emojiModel} baseUrl={server} />
@@ -93,7 +93,7 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Button
 		testID='add-reaction'
 		onPress={onReaction}
-		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		style={[styles.headerItem, { backgroundColor: themes[theme].backgroundColor }]}
 		theme={theme}>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
@@ -135,12 +135,12 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail }: 
 	const renderFooter = () => <HeaderFooter onReaction={onReaction} theme={theme} />;
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 			<FlatList
 				data={items}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				keyExtractor={keyExtractor}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}

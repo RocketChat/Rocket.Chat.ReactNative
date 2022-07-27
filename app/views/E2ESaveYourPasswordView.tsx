@@ -142,7 +142,7 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 							<Text style={[styles.password, { color: themes[theme].bodyText }]}>{password}</Text>
 							<Button
 								onPress={this.onCopy}
-								style={[styles.copyButton, { backgroundColor: themes[theme].auxiliaryBackground }]}
+								style={[styles.copyButton, { backgroundColor: themes[theme].backgroundColor }]}
 								title={I18n.t('Copy')}
 								type='secondary'
 								fontSize={12}
@@ -151,7 +151,7 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 						<Text style={[styles.info, { color: themes[theme].bodyText }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
 						<Button
 							onPress={this.onHowItWorks}
-							style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+							style={{ backgroundColor: themes[theme].backgroundColor }}
 							title={I18n.t('How_It_Works')}
 							type='secondary'
 							testID='e2e-save-password-view-how-it-works'

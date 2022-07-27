@@ -159,8 +159,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 					{
 						...styles.codeInline,
 						color: themes[theme].bodyText,
-						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						backgroundColor: themes[theme].buttonBackgroundSecondaryPress,
+						borderColor: themes[theme].borderColor
 					},
 					...style
 				]}>
@@ -177,8 +177,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 					{
 						...styles.codeBlock,
 						color: themes[theme].bodyText,
-						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						backgroundColor: themes[theme].buttonBackgroundSecondaryPress,
+						borderColor: themes[theme].borderColor
 					},
 					...style
 				]}>

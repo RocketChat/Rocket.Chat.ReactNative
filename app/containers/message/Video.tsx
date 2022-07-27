@@ -89,7 +89,7 @@ const Video = React.memo(
 					disabled={isReply}
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}>
+					background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}>
 					{loading ? <RCActivityIndicator /> : <CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />}
 				</Touchable>
 			</>

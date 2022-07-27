@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 const Option = ({ option: { text, value }, onOptionPress, parser, theme }: IOption) => (
 	<Touchable
 		onPress={() => onOptionPress({ value })}
-		background={Touchable.Ripple(themes[theme].bannerBackground)}
+		background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 		style={styles.option}>
 		<Text>{parser.text(text)}</Text>
 	</Touchable>
@@ -61,7 +61,7 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 		<>
 			<Touchable
 				ref={ref => (touchable[blockId] = ref)}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
+				background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
 				style={styles.menu}>

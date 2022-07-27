@@ -223,7 +223,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		const { permissions } = this.state;
 
 		return (
-			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
+			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
 					{permissions[0] || permissions[1]

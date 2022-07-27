@@ -119,10 +119,10 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 							<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].separatorColor }]} />
 							<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 								<View style={styles.globalUsersTextContainer}>
-									<Text style={[styles.dropdownItemText, { color: themes[theme].infoText }]}>
+									<Text style={[styles.dropdownItemText, { color: themes[theme].auxiliaryText }]}>
 										{I18n.t('Search_global_users')}
 									</Text>
-									<Text style={[styles.dropdownItemDescription, { color: themes[theme].infoText }]}>
+									<Text style={[styles.dropdownItemDescription, { color: themes[theme].auxiliaryText }]}>
 										{I18n.t('Search_global_users_description')}
 									</Text>
 								</View>

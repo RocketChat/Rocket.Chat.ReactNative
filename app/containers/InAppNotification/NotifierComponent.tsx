@@ -113,7 +113,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				styles.container,
 				(isMasterDetail || isLandscape) && styles.small,
 				{
-					backgroundColor: themes[theme].focusedBackground,
+					backgroundColor: themes[theme].backgroundColor,
 					borderColor: themes[theme].separatorColor,
 					marginTop: insets.top
 				}

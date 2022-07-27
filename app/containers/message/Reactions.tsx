@@ -36,7 +36,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			key='message-add-reaction'
 			testID='message-add-reaction'
 			style={[styles.reactionButton, { backgroundColor: themes[theme].backgroundColor }]}
-			background={Touchable.Ripple(themes[theme].bannerBackground)}
+			background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].borderColor }]}>
 				<CustomIcon name='reaction-add' size={21} color={themes[theme].tintColor} />
@@ -56,9 +56,9 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			testID={`message-reaction-${reaction.emoji}`}
 			style={[
 				styles.reactionButton,
-				{ backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }
+				{ backgroundColor: reacted ? themes[theme].buttonBackgroundSecondaryPress : themes[theme].backgroundColor }
 			]}
-			background={Touchable.Ripple(themes[theme].bannerBackground)}
+			background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={[styles.reactionContainer, { borderColor: reacted ? themes[theme].tintColor : themes[theme].borderColor }]}>
 				<Emoji

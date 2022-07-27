@@ -355,7 +355,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 					styles.list,
 					sharedStyles.separatorVertical,
 					{
-						backgroundColor: themes[theme].focusedBackground,
+						backgroundColor: themes[theme].backgroundColor,
 						borderColor: themes[theme].separatorColor
 					}
 				]}
@@ -373,7 +373,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}>
 				<StatusBar />

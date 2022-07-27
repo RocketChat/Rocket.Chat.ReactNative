@@ -164,6 +164,7 @@ PODS:
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
   - hermes-engine (0.7.2)
+  - iosMath (0.9.4)
   - JitsiMeetSDK (3.6.0)
   - KeyCommands (2.0.3):
     - React
@@ -549,6 +550,8 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.1.1):
     - React-Core
+  - RNMathView (1.0.0):
+    - iosMath
   - RNReanimated (2.2.2):
     - DoubleConversion
     - FBLazyVector
@@ -712,6 +715,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - RNMathView (from `../node_modules/react-native-math-view/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -747,6 +751,7 @@ SPEC REPOS:
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
     - hermes-engine
+    - iosMath
     - libevent
     - libwebp
     - MMKV
@@ -914,6 +919,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNMathView:
+    :path: "../node_modules/react-native-math-view/ios"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNRootView:
@@ -948,7 +955,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: a97b3132c1854fd7bf92350fabd505e3ebdd7829
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
+  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EXAppleAuthentication: e8c537fcbe80670dd76fde7a07acb94af70ada00
   EXAV: 67bcc1d0afeb1fab854b206c84b9f2afbd61d0cd
   EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
@@ -961,7 +968,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: c9b6dfcde9b3d497793c40d4ccbfbfb05092e0df
-  FBReactNativeSpec: c39f7fc0cd6cc64f0a2a5beffc64b1aa5d42740e
+  FBReactNativeSpec: 374adeb438e171d9ad5d228e308789d3b2b1d35d
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -975,12 +982,13 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   Flipper-RSocket: 127954abe8b162fcaf68d2134d34dc2bd7076154
   FlipperKit: 8a20b5c5fcf9436cac58551dc049867247f64b00
-  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  glog: 476ee3e89abb49e07f822b48323c51c57124b572
   GoogleAppMeasurement: 8cd1f289d60e629cf16ab03363b9e89c776b9651
   GoogleDataTransport: 9a8a16f79feffc7f42096743de2a7c4815e84020
   GoogleDataTransportCCTSupport: 489c1265d2c85b68187a83a911913d190012158d
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
+  iosMath: f7a6cbadf9d836d2149c2a84c435b1effc244cba
   JitsiMeetSDK: 476329f72a866f714d2802bafe1729de6d644ccf
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -1049,6 +1057,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
+  RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
   RNReanimated: 241c586663f44f19a53883c63375fdd041253960
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: fd535547baa4ef8aeaee1a8b1e3ffd17b8df44a4
@@ -1068,4 +1077,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9a08139598e951c19d2daf7ac39687272634d547
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2

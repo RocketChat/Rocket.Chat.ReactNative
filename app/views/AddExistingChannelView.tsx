@@ -150,7 +150,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
-			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
+			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='add-existing-channel-view-search' />
 			</View>
 		);

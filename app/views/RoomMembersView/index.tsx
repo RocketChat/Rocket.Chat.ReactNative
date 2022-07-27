@@ -339,7 +339,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 						testID={isOwner ? 'action-sheet-set-owner-checked' : 'action-sheet-set-owner-unchecked'}
 						name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'}
 						size={20}
-						color={isOwner ? themes[theme].tintActive : themes[theme].auxiliaryTintColor}
+						color={isOwner ? themes[theme].tintColor : themes[theme].auxiliaryTintColor}
 					/>
 				),
 				testID: 'action-sheet-set-owner'
@@ -359,7 +359,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 						testID={isLeader ? 'action-sheet-set-leader-checked' : 'action-sheet-set-leader-unchecked'}
 						name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'}
 						size={20}
-						color={isLeader ? themes[theme].tintActive : themes[theme].auxiliaryTintColor}
+						color={isLeader ? themes[theme].tintColor : themes[theme].auxiliaryTintColor}
 					/>
 				),
 				testID: 'action-sheet-set-leader'
@@ -379,7 +379,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 						testID={isModerator ? 'action-sheet-set-moderator-checked' : 'action-sheet-set-moderator-unchecked'}
 						name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'}
 						size={20}
-						color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor}
+						color={isModerator ? themes[theme].tintColor : themes[theme].auxiliaryTintColor}
 					/>
 				),
 				testID: 'action-sheet-set-moderator'

@@ -331,7 +331,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		return (
 			<FormTextInput
 				containerStyle={styles.inputContainer}
-				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].focusedBackground }]}
+				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].backgroundColor }]}
 				placeholder=''
 				onChangeText={this.onChangeText}
 				defaultValue=''

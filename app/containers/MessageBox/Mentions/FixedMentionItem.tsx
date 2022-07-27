@@ -20,7 +20,7 @@ const FixedMentionItem = ({ item, onPress }: IMessageBoxFixedMentionItem) => {
 			style={[
 				styles.mentionItem,
 				{
-					backgroundColor: themes[theme].auxiliaryBackground,
+					backgroundColor: themes[theme].backgroundColor,
 					borderTopColor: themes[theme].separatorColor
 				}
 			]}

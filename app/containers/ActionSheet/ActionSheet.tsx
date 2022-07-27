@@ -138,7 +138,7 @@ const ActionSheet = React.memo(
 						handleComponent={renderHandle}
 						enablePanDownToClose
 						style={{ ...styles.container, ...bottomSheet }}
-						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
+						backgroundStyle={{ backgroundColor: colors.backgroundColor }}
 						onChange={index => index === -1 && onClose()}
 						{...androidTablet}>
 						<BottomSheetContent options={data?.options} hide={hide} children={data?.children} hasCancel={data?.hasCancel} />

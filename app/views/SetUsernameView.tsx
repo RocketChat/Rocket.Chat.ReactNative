@@ -107,7 +107,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 		const { username, saving } = this.state;
 		const { theme } = this.props;
 		return (
-			<KeyboardView style={{ backgroundColor: themes[theme].auxiliaryBackground }} contentContainerStyle={sharedStyles.container}>
+			<KeyboardView style={{ backgroundColor: themes[theme].backgroundColor }} contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView testID='set-username-view'>

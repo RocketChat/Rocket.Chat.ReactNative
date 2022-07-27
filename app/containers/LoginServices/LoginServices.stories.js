@@ -87,7 +87,7 @@ stories.add('ServiceList', () => (
 				<ButtonService
 					key={service._id}
 					onPress={() => {}}
-					backgroundColor={colors[theme].chatComponentBackground}
+					backgroundColor={colors[theme].buttonBackgroundSecondaryDefault}
 					buttonText={buttonText}
 					icon={icon}
 					name={service.name}

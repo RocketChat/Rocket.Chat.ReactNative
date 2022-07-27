@@ -224,7 +224,7 @@ const Touchable = ({
 								theme={theme}
 								testID={testID}
 								style={{
-									backgroundColor: isFocused ? colors.chatComponentBackground : colors.backgroundColor
+									backgroundColor: isFocused ? colors.buttonBackgroundSecondaryDefault : colors.backgroundColor
 								}}>
 								{children}
 							</Touch>

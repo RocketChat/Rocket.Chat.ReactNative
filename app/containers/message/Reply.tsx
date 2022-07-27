@@ -245,7 +245,7 @@ const Reply = React.memo(
 							borderColor
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 					disabled={loading}>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
@@ -264,7 +264,10 @@ const Reply = React.memo(
 								<View
 									style={[
 										styles.backdrop,
-										{ backgroundColor: themes[theme].bannerBackground, opacity: themes[theme].attachmentLoadingOpacity }
+										{
+											backgroundColor: themes[theme].buttonBackgroundSecondaryPress,
+											opacity: themes[theme].attachmentLoadingOpacity
+										}
 									]}></View>
 								<RCActivityIndicator />
 							</View>

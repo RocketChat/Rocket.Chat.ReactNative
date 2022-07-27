@@ -29,8 +29,8 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 		<Touchable
 			key={item.value}
 			onPress={() => onSelect(item)}
-			style={[styles.chip, { backgroundColor: colors.auxiliaryBackground }, style]}
-			background={Touchable.Ripple(colors.bannerBackground)}>
+			style={[styles.chip, { backgroundColor: colors.backgroundColor }, style]}
+			background={Touchable.Ripple(colors.buttonBackgroundSecondaryPress)}>
 			<>
 				{item.imageUrl ? <FastImage style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
 				<Text numberOfLines={1} style={[styles.chipText, { color: colors.titleText }]}>

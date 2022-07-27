@@ -56,10 +56,10 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, t
 		onLongPress={onLongPress}
 		testID={testID}
 		android_ripple={{
-			color: themes[theme].bannerBackground
+			color: themes[theme].buttonBackgroundSecondaryPress
 		}}
 		style={({ pressed }: any) => ({
-			backgroundColor: isIOS && pressed ? themes[theme].bannerBackground : 'transparent'
+			backgroundColor: isIOS && pressed ? themes[theme].buttonBackgroundSecondaryPress : 'transparent'
 		})}>
 		<View style={[styles.container, styles.button, style]}>
 			<Avatar text={username} size={30} style={styles.avatar} />

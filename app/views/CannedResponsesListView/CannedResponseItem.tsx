@@ -39,7 +39,7 @@ const CannedResponseItem = ({
 					title={I18n.t('Use')}
 					fontSize={12}
 					color={themes[theme].titleText}
-					style={[styles.cannedUseButton, { backgroundColor: themes[theme].chatComponentBackground }]}
+					style={[styles.cannedUseButton, { backgroundColor: themes[theme].buttonBackgroundSecondaryDefault }]}
 					onPress={onPressUse}
 				/>
 			</View>

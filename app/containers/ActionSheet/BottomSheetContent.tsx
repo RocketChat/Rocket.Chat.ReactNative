@@ -24,7 +24,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: I
 		hasCancel ? (
 			<Button
 				onPress={hide}
-				style={[styles.button, { backgroundColor: colors.auxiliaryBackground }]}
+				style={[styles.button, { backgroundColor: colors.backgroundColor }]}
 				// TODO: Remove when migrate Touch
 				theme={theme}
 				accessibilityLabel={I18n.t('Cancel')}>
@@ -43,7 +43,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: I
 				keyExtractor={item => item.title}
 				bounces={true}
 				renderItem={renderItem}
-				style={{ backgroundColor: colors.focusedBackground }}
+				style={{ backgroundColor: colors.backgroundColor }}
 				keyboardDismissMode='interactive'
 				indicatorStyle='black'
 				contentContainerStyle={styles.content}

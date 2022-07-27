@@ -283,10 +283,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					theme={theme}
 				/>
 				<View
-					style={[
-						styles.audioContainer,
-						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-					]}>
+					style={[styles.audioContainer, { backgroundColor: themes[theme].surfaceTint, borderColor: themes[theme].borderColor }]}>
 					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
 						disabled={isReply}

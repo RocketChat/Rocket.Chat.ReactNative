@@ -87,7 +87,7 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 						<Button
 							title={I18n.t('Create_account')}
 							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
+							backgroundColor={themes[theme].buttonBackgroundSecondaryDefault}
 							onPress={this.register}
 							testID='workspace-view-register'
 						/>

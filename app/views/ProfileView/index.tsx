@@ -532,7 +532,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}>
 				<StatusBar />
@@ -638,7 +638,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<Button
 							title={I18n.t('Logout_from_other_logged_in_locations')}
 							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
+							backgroundColor={themes[theme].buttonBackgroundSecondaryDefault}
 							onPress={this.logoutOtherLocations}
 							testID='profile-view-logout-other-locations'
 						/>

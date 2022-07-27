@@ -30,8 +30,8 @@ class Touch extends React.Component<ITouchProps> {
 				ref={this.getRef}
 				onPress={onPress}
 				activeOpacity={1}
-				underlayColor={underlayColor || themes[theme].bannerBackground}
-				rippleColor={themes[theme].bannerBackground}
+				underlayColor={underlayColor || themes[theme].buttonBackgroundSecondaryPress}
+				rippleColor={themes[theme].buttonBackgroundSecondaryPress}
 				{...props}>
 				{children}
 			</RectButton>

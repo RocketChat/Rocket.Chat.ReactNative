@@ -21,26 +21,30 @@ const mentions = {
 
 export const colors = {
 	light: {
-		backgroundColor: '#ffffff',
-		focusedBackground: '#ffffff',
-		chatComponentBackground: '#f3f4f5',
-		auxiliaryBackground: '#efeff4',
-		bannerBackground: '#f1f2f4',
-		titleText: '#0d0e12',
-		bodyText: '#2f343d',
-		backdropColor: '#000000',
-		dangerColor: '#f5455c',
-		successColor: '#2de0a5',
-		borderColor: '#e1e5e8',
-		controlText: '#54585e',
-		auxiliaryText: '#9ca2a8',
-		infoText: '#6d6d72',
-		tintColor: '#1d74f5',
-		tintActive: '#549df9',
+		backgroundColor: '#ffffff', // surface-light
+		// focusedBackground: '#ffffff', // removed in favor of backgroundColor
+		chatComponentBackground: 'red',
+		surfaceTint: '#F7F8FA',
+		buttonBackgroundSecondaryDefault: '#E4E7EA',
+		buttonBackgroundSecondaryPress: '#9EA2A8',
+		statusBackgroundWarning: '#FFECAD',
+		// auxiliaryBackground: '#efeff4', // removed in favor of backgroundColor
+		// bannerBackground: '#f1f2f4', // removed in favor of buttonBackgroundSecondaryPress
+		titleText: '#1F2329', // fontTitleLabels
+		bodyText: '#2F343D', // fontDefault
+		auxiliaryText: '#6C727A', // fontSecondaryInfo
+		// controlText: '#54585e', // removed in favor of auxiliaryText
+		// infoText: '#6d6d72', // removed in favor of auxiliaryText
+		separatorColor: '#CBCED1', // strokeLight
+		tintColor: '#156FF5', // buttonBackgroundPrimaryDefault
+		// tintColor: '#549df9', // removed in favor of tintColor
 		tintDisabled: '#88B4F5',
 		auxiliaryTintColor: '#6C727A',
 		actionTintColor: '#1d74f5',
-		separatorColor: '#cbcbcc',
+		backdropColor: '#000000',
+		dangerColor: '#f5455c',
+		successColor: '#2de0a5',
+		borderColor: '#9EA2A8', // strokeMedium
 		navbarBackground: '#ffffff',
 		headerBorder: '#B2B2B2',
 		headerBackground: '#EEEFF1',
@@ -88,7 +92,7 @@ export const colors = {
 		auxiliaryText: '#9297a2',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
-		tintActive: '#549df9',
+		tintColor: '#549df9',
 		tintDisabled: '#88B4F5',
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1d74f5',
@@ -140,7 +144,7 @@ export const colors = {
 		auxiliaryText: '#b2b8c6',
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
-		tintActive: '#76b7fc',
+		tintColor: '#76b7fc',
 		tintDisabled: '#88B4F5', // TODO: Evaluate this with design team
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1e9bfe',

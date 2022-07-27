@@ -239,12 +239,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme].focusedBackground }} vertical={isMasterDetail}>
+			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme].backgroundColor }} vertical={isMasterDetail}>
 				<ScrollView
 					style={[
 						styles.container,
 						{
-							backgroundColor: isMasterDetail ? themes[theme].backgroundColor : themes[theme].focusedBackground
+							backgroundColor: isMasterDetail ? themes[theme].backgroundColor : themes[theme].backgroundColor
 						}
 					]}
 					{...scrollPersistTaps}>

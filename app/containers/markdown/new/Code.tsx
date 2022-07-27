@@ -18,7 +18,7 @@ const Code = ({ value }: ICodeProps): React.ReactElement => {
 			style={[
 				styles.codeBlock,
 				{
-					backgroundColor: colors.bannerBackground,
+					backgroundColor: colors.buttonBackgroundSecondaryPress,
 					borderColor: colors.borderColor
 				}
 			]}>

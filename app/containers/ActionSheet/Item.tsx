@@ -23,7 +23,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	return (
 		<Button
 			onPress={onPress}
-			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
+			style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}
 			theme={theme}
 			testID={item.testID}>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
