@@ -129,7 +129,7 @@
 		"reselect": "4.0.0",
 		"rn-extensions-share": "RocketChat/rn-extensions-share",
 		"rn-fetch-blob": "0.12.0",
-		"rn-root-view": "https://github.com/GleidsonDaniel/rn-root-view.git#update",
+		"rn-root-view": "RocketChat/rn-root-view#fix.maven",
 		"semver": "7.3.5",
 		"ua-parser-js": "^1.0.2",
 		"url-parse": "1.5.10",
