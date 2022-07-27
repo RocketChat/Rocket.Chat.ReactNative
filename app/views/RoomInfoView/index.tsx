@@ -387,8 +387,8 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 		return (
 			<BorderlessButton onPress={onActionPress} style={styles.roomButton}>
-				<CustomIcon name={iconName} size={30} color={themes[theme].actionTintColor} />
-				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+				<CustomIcon name={iconName} size={30} color={themes[theme].tintColor} />
+				<Text style={[styles.roomButtonText, { color: themes[theme].tintColor }]}>{text}</Text>
 			</BorderlessButton>
 		);
 	};

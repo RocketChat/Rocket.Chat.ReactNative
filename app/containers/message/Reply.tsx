@@ -98,7 +98,7 @@ const Title = React.memo(
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
-					<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
+					<Text style={[styles.author, { color: themes[theme].auxiliaryText }]}>{attachment.author_name}</Text>
 				) : null}
 				{time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
 				{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
@@ -127,7 +127,7 @@ const Description = React.memo(
 		return (
 			<Markdown
 				msg={text}
-				style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14 }]}
+				style={[{ color: themes[theme].auxiliaryText, fontSize: 14 }]}
 				baseUrl={baseUrl}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
@@ -253,7 +253,7 @@ const Reply = React.memo(
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
 							timeFormat={timeFormat}
-							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
+							style={[{ color: themes[theme].auxiliaryText, fontSize: 14, marginBottom: 8 }]}
 							isReply
 						/>
 						<UrlImage image={attachment.thumb_url} />

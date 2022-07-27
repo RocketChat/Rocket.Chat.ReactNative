@@ -160,7 +160,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 			<RadioButton
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
 				selected={selected.includes(item.rid)}
-				color={themes[theme].actionTintColor}
+				color={themes[theme].tintColor}
 				size={ICON_SIZE}
 			/>
 		);
@@ -169,7 +169,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				<List.Icon
 					testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
 					name={checked}
-					color={themes[theme].actionTintColor}
+					color={themes[theme].tintColor}
 				/>
 			) : null;
 

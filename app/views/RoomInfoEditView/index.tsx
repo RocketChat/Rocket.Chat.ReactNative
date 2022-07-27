@@ -740,7 +740,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
-								{ backgroundColor: themes[theme].buttonBackground },
+								{ backgroundColor: themes[theme].buttonBackgroundSecondaryDefault },
 								!this.formIsChanged() && styles.buttonContainerDisabled
 							]}
 							onPress={this.submit}

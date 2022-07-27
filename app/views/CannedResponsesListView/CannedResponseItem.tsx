@@ -32,7 +32,7 @@ const CannedResponseItem = ({
 			<View style={styles.cannedRow}>
 				<View style={styles.cannedWrapShortcutScope}>
 					<Text style={[styles.cannedShortcut, { color: themes[theme].titleText }]}>!{shortcut}</Text>
-					<Text style={[styles.cannedScope, { color: themes[theme].auxiliaryTintColor }]}>{scope}</Text>
+					<Text style={[styles.cannedScope, { color: themes[theme].auxiliaryText }]}>{scope}</Text>
 				</View>
 
 				<Button
@@ -44,14 +44,14 @@ const CannedResponseItem = ({
 				/>
 			</View>
 
-			<Text ellipsizeMode='tail' numberOfLines={2} style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>
+			<Text ellipsizeMode='tail' numberOfLines={2} style={[styles.cannedText, { color: themes[theme].auxiliaryText }]}>
 				“{text}”
 			</Text>
 			<View style={styles.cannedTagContainer}>
 				{tags?.length > 0
 					? tags.map(t => (
-							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
-								<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
+							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].buttonBackgroundSecondaryDefault }]}>
+								<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryText }]}>{t}</Text>
 							</View>
 					  ))
 					: null}

@@ -45,7 +45,7 @@ const MentionItemContent = React.memo(({ trackingType, item }: IMessageBoxMentio
 			return (
 				<>
 					<Text style={[styles.cannedItem, { color: themes[theme].titleText }]}>!{item.shortcut}</Text>
-					<Text numberOfLines={1} style={[styles.cannedMentionText, { color: themes[theme].auxiliaryTintColor }]}>
+					<Text numberOfLines={1} style={[styles.cannedMentionText, { color: themes[theme].auxiliaryText }]}>
 						{item.text}
 					</Text>
 				</>

@@ -1370,7 +1370,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					</Text>
 					<Touch
 						onPress={this.resumeRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].tintColor }]}
 						enabled={!loading}
 						theme={theme}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
@@ -1390,7 +1390,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					</Text>
 					<Touch
 						onPress={this.joinRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].tintColor }]}
 						enabled={!loading}
 						theme={theme}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>

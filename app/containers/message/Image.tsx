@@ -50,7 +50,7 @@ export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; the
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
-			color: themes[theme].actionTintColor
+			color: themes[theme].tintColor
 		}}
 	/>
 ));

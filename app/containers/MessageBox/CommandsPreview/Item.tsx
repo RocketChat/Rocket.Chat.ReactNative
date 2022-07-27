@@ -38,7 +38,7 @@ const Item = ({ item }: IMessageBoxCommandsPreviewItem) => {
 					{loading ? <ActivityIndicator /> : null}
 				</FastImage>
 			) : (
-				<CustomIcon name='attach' size={36} color={themes[theme].actionTintColor} />
+				<CustomIcon name='attach' size={36} color={themes[theme].tintColor} />
 			)}
 		</TouchableOpacity>
 	);

@@ -127,7 +127,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 				/>
 			) : null}
 			<FooterButtons
-				confirmBackgroundColor={confirmBackgroundColor || colors.actionTintColor}
+				confirmBackgroundColor={confirmBackgroundColor || colors.tintColor}
 				cancelAction={onCancel || hideActionSheet}
 				confirmAction={() => onSubmit(inputValue)}
 				cancelTitle={i18n.t('Cancel')}

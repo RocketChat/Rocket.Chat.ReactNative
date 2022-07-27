@@ -212,7 +212,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 							{I18n.t('Dont_Have_An_Account')}
 						</Text>
 						<Text
-							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+							style={[styles.bottomContainerTextBold, { color: themes[theme].tintColor }]}
 							onPress={this.register}
 							testID='login-view-register'>
 							{I18n.t('Create_account')}

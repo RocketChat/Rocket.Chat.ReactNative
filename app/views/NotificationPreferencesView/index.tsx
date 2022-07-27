@@ -139,7 +139,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 		const { theme } = this.props;
 		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : (OPTIONS[key][0] as IOptionsField);
 		return (
-			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
+			<Text style={[styles.pickerText, { color: themes[theme].tintColor }]}>
 				{text?.label ? I18n.t(text?.label, { defaultValue: text?.label, second: text?.second }) : text?.label}
 			</Text>
 		);

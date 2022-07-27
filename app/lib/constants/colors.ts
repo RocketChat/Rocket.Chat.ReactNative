@@ -23,7 +23,7 @@ export const colors = {
 	light: {
 		backgroundColor: '#ffffff', // surface-light
 		// focusedBackground: '#ffffff', // removed in favor of backgroundColor
-		chatComponentBackground: 'red',
+		// chatComponentBackground: 'red',
 		surfaceTint: '#F7F8FA',
 		buttonBackgroundSecondaryDefault: '#E4E7EA',
 		buttonBackgroundSecondaryPress: '#9EA2A8',
@@ -38,42 +38,42 @@ export const colors = {
 		separatorColor: '#CBCED1', // strokeLight
 		tintColor: '#156FF5', // buttonBackgroundPrimaryDefault
 		// tintColor: '#549df9', // removed in favor of tintColor
-		tintDisabled: '#88B4F5',
-		auxiliaryTintColor: '#6C727A',
-		actionTintColor: '#1d74f5',
+		// actionTintColor: '#1d74f5', // removed in favor of tintColor
+		tintDisabled: '#D1EBFE', // buttonBackgroundDisabled
+		// auxiliaryTintColor: '#6C727A', // removed in favor of auxiliaryText
 		backdropColor: '#000000',
-		dangerColor: '#f5455c',
-		successColor: '#2de0a5',
+		backdropOpacity: 0.7,
+		dangerColor: '#EC0D2A', // buttonBackgroundDangerDefault
+		// successColor: '#2de0a5', not used
 		borderColor: '#9EA2A8', // strokeMedium
-		navbarBackground: '#ffffff',
-		headerBorder: '#B2B2B2',
-		headerBackground: '#EEEFF1',
-		headerSecondaryBackground: '#ffffff',
-		headerTintColor: '#6C727A',
-		headerTitleColor: '#0C0D0F',
-		headerSecondaryText: '#1d74f5',
-		toastBackground: '#0C0D0F',
-		videoBackground: '#1f2329',
-		favoriteBackground: '#ffbb00',
-		hideBackground: '#54585e',
-		messageboxBackground: '#ffffff',
-		searchboxBackground: '#E6E6E7',
-		buttonBackground: '#414852',
-		buttonText: '#ffffff',
-		passcodeBackground: '#EEEFF1',
-		passcodeButtonActive: '#E4E7EA',
-		passcodeLockIcon: '#6C727A',
-		passcodePrimary: '#2F343D',
-		passcodeSecondary: '#6C727A',
-		passcodeDotEmpty: '#CBCED1',
-		passcodeDotFull: '#6C727A',
-		previewBackground: '#1F2329',
-		previewTintColor: '#f9f9f9',
-		backdropOpacity: 0.3,
-		attachmentLoadingOpacity: 0.7,
-		collapsibleQuoteBorder: '#CBCED1',
-		collapsibleChevron: '#6C727A',
-		cancelButton: '#E4E7EA',
+		navbarBackground: '#F7F8FA', // surfaceTint
+		headerBorder: '#CBCED1', // strokeLight
+		headerBackground: '#F7F8FA', // surfaceTint
+		// headerSecondaryBackground: '#ffffff', removed in favor of headerBackground
+		headerTintColor: '#6C727A', // fontSecondaryInfo
+		headerTitleColor: '#1F2329', // fontTitleLabels
+		// headerSecondaryText: '#1d74f5', not used
+		toastBackground: '#0C0D0F', // strokeExtraDark
+		videoBackground: '#0C0D0F', // strokeExtraDark
+		favoriteBackground: '#ffbb00', // tbd
+		hideBackground: '#54585e', // tbd
+		messageboxBackground: '#F7F8FA', // surfaceTint
+		// searchboxBackground: '#E6E6E7', removed in favor of buttonBackgroundSecondaryDefault
+		// buttonBackground: '#414852', buttonBackgroundSecondaryDefault
+		buttonText: '#ffffff', // buttonFontOnPrimary
+		passcodeBackground: '#F7F8FA', // surfaceTint
+		passcodeButtonActive: '#9EA2A8', // buttonBackgroundSecondaryPress
+		passcodeLockIcon: '#1F2329', // fontTitleLabels
+		passcodePrimary: '#1F2329', // fontTitleLabels
+		passcodeSecondary: '#6C727A', // fontSecondaryInfo
+		passcodeDotEmpty: '#CBCED1', // surfaceLight
+		passcodeDotFull: '#9EA2A8', // surfaceMedium
+		previewBackground: '#0C0D0F', // strokeExtraDark
+		previewTintColor: '#ffffff', // buttonFontOnPrimary change later
+		attachmentLoadingOpacity: 0.7, // tbd
+		collapsibleQuoteBorder: '#CBCED1', // strokeLight
+		collapsibleChevron: '#6C727A', // fontSecondaryInfo
+		cancelButton: '#E4E7EA', // buttonBackgroundSecondaryDefault
 		...mentions
 	},
 	dark: {
@@ -92,7 +92,7 @@ export const colors = {
 		auxiliaryText: '#9297a2',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
-		tintColor: '#549df9',
+		// tintColor: '#549df9',
 		tintDisabled: '#88B4F5',
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1d74f5',
@@ -144,7 +144,7 @@ export const colors = {
 		auxiliaryText: '#b2b8c6',
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
-		tintColor: '#76b7fc',
+		// tintColor: '#76b7fc',
 		tintDisabled: '#88B4F5', // TODO: Evaluate this with design team
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1e9bfe',

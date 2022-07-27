@@ -73,7 +73,7 @@ class UserNotificationPreferencesView extends React.Component<
 		const { theme } = this.props;
 		const text = this.findDefaultOption(key);
 		return (
-			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
+			<Text style={[styles.pickerText, { color: themes[theme].tintColor }]}>
 				{text?.label ? I18n.t(text?.label) : text?.label}
 			</Text>
 		);

@@ -107,7 +107,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 								style={[styles.dropdownItemIcon, styles.inverted]}
 								size={22}
 								name='chevron-down'
-								color={themes[theme].auxiliaryTintColor}
+								color={themes[theme].auxiliaryText}
 							/>
 						</View>
 					</Touch>

@@ -100,7 +100,7 @@ class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any
 	renderPicker = (key: 'days' | 'maxUses', first: string) => {
 		const { props } = this;
 		const { theme } = props;
-		const textInputStyle: TextInputProps = { style: { ...styles.pickerText, color: themes[theme].actionTintColor } };
+		const textInputStyle: TextInputProps = { style: { ...styles.pickerText, color: themes[theme].tintColor } };
 		const firstEl = [
 			{
 				label: I18n.t(first),
