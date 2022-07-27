@@ -8,6 +8,7 @@ import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
 import { isAndroid } from '../../lib/methods/helpers';
 import { useKeyboardHeight } from '../../lib/hooks';
+import { useOrientation } from '../../dimensions';
 
 interface IModalContainer extends NavigationContainerProps {
 	navigation: StackNavigationProp<any>;
@@ -29,13 +30,14 @@ const styles = StyleSheet.create({
 export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => {
 	const keyboardHeight = useKeyboardHeight();
 	const { height } = useWindowDimensions();
+	const { isLandscape } = useOrientation();
 	const modalHeight = sharedStyles.modalFormSheet.height;
 
 	let heightModal: number;
 
 	if (modalHeight > height) {
 		heightModal = height;
-	} else if (isAndroid && keyboardHeight > 0) {
+	} else if (isLandscape && isAndroid && keyboardHeight > 0) {
 		heightModal = height - keyboardHeight - 32; // 32 is to force a padding
 	} else {
 		heightModal = modalHeight;
