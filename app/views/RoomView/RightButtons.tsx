@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { ILivechatTag } from '../../definitions/ILivechatTag';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
@@ -17,7 +18,8 @@ import i18n from '../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
-import CloseLivechatSheet from '../../ee/omnichannel/containers/CloseLivechatSheet';
+import { Services } from '../../lib/services';
+import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 
 interface IRightButtonsProps extends IActionSheetProvider {
 	userId?: string;
@@ -40,6 +42,7 @@ interface IRightButtonsProps extends IActionSheetProvider {
 		canPlaceLivechatOnHold: boolean;
 	};
 	livechatRequestComment: boolean;
+	departmentId?: string;
 }
 
 interface IRigthButtonsState {
@@ -214,35 +217,41 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		});
 	};
 
-	closeLivechat = () => {
-		const { rid, livechatRequestComment, showActionSheet, hideActionSheet, isMasterDetail } = this.props;
+	closeLivechat = async () => {
+		const { rid, departmentId } = this.props;
+		const { livechatRequestComment, isMasterDetail, navigation } = this.props;
+		let departmentInfo: ILivechatDepartment | undefined;
+		let tagsList: ILivechatTag[] | undefined;
 
-		hideActionSheet();
-
-		setTimeout(() => {
-			if (!livechatRequestComment) {
-				const comment = i18n.t('Chat_closed_by_agent');
-				return closeLivechatService({ rid, isMasterDetail, comment });
+		if (departmentId) {
+			const result = await Services.getDepartmentInfo(departmentId);
+			if (result.success) {
+				departmentInfo = result.department as ILivechatDepartment;
 			}
+		}
 
-			showActionSheet({
-				children: (
-					<CloseLivechatSheet
-						onSubmit={(comment: string) => {
-							hideActionSheet();
-							closeLivechatService({ rid, isMasterDetail, comment });
-						}}
-						onCancel={() => hideActionSheet()}
-					/>
-				),
-				headerHeight: 225
+		if (departmentInfo?.requestTagBeforeClosingChat) {
+			tagsList = await Services.getTagsList();
+		}
+
+		if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
+			const comment = i18n.t('Chat_closed_by_agent');
+			return closeLivechatService({ rid, isMasterDetail, comment });
+		}
+
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'CloseLivechatView',
+				params: { rid, departmentId, departmentInfo, tagsList }
 			});
-		}, 300);
+		} else {
+			navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+		}
 	};
 
 	showMoreActions = () => {
 		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
-		const { showActionSheet, rid, navigation, omnichannelPermissions } = this.props;
+		const { showActionSheet, rid, navigation, omnichannelPermissions, isMasterDetail } = this.props;
 
 		const options = [] as TActionSheetOptionsItem[];
 		if (omnichannelPermissions.canPlaceLivechatOnHold) {
@@ -257,7 +266,16 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			options.push({
 				title: i18n.t('Forward_Chat'),
 				icon: 'chat-forward',
-				onPress: () => navigation.navigate('ForwardLivechatView', { rid })
+				onPress: () => {
+					if (isMasterDetail) {
+						navigation.navigate('ModalStackNavigator', {
+							screen: 'ForwardLivechatView',
+							params: { rid }
+						});
+					} else {
+						navigation.navigate('ForwardLivechatView', { rid });
+					}
+				}
 			});
 		}
 
