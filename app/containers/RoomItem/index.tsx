@@ -85,6 +85,8 @@ const RoomItemContainer = React.memo(
 			accessibilityLabel = `, ${I18n.t('last_message')} ${date}`;
 		}
 
+		const status = item.t === 'l' ? item.visitor?.status || item.v?.status : userStatus;
+
 		return (
 			<RoomItem
 				name={name}
@@ -105,7 +107,7 @@ const RoomItemContainer = React.memo(
 				type={item.t}
 				isFocused={isFocused}
 				prid={item.prid}
-				status={userStatus}
+				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
 				hideMentionStatus={item.hideMentionStatus}
 				alert={alert}

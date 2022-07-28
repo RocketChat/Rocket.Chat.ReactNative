@@ -83,12 +83,14 @@ export default StyleSheet.create({
 		paddingTop: 2
 	},
 	codeBlock: {
-		fontSize: 16,
-		...sharedStyles.textRegular,
-		...codeFontFamily,
 		borderWidth: 1,
 		borderRadius: 4,
 		padding: 4
+	},
+	codeBlockText: {
+		fontSize: 16,
+		...sharedStyles.textRegular,
+		...codeFontFamily
 	},
 	link: {
 		fontSize: 16,

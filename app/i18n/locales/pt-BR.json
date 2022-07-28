@@ -793,5 +793,7 @@
   "Mark_as_unread_Info": "Mostrar sala como não lida quando houver mensagens não lidas",
   "Show_badge_for_mentions": "Mostrar contador para menções",
   "Show_badge_for_mentions_Info": "Mostrar contador somente para menções diretas",
-  "totp-invalid": "Código ou senha inválida"
+  "totp-invalid": "Código ou senha inválida",
+  "Close_Chat": "Fechar Conversa",
+  "Select_tags": "Selecionar tag(s)"
 }
