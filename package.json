@@ -133,6 +133,7 @@
 		"rn-root-view": "1.0.3",
 		"semver": "7.3.5",
 		"ua-parser-js": "^1.0.2",
+		"uri-js": "^4.4.1",
 		"url-parse": "1.5.10",
 		"use-deep-compare-effect": "1.6.1",
 		"xregexp": "5.0.2"
