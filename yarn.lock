@@ -15396,9 +15396,9 @@ react-native-text-size@4.0.0-rc.1:
   resolved "https://registry.yarnpkg.com/react-native-text-size/-/react-native-text-size-4.0.0-rc.1.tgz#1e048d345dd6a5a8e1269e0585c1a5948c478da5"
   integrity sha512-CysqjU2jK6Yc+a+kEI222pUyTY2ywcU2HqbFqf1KHymW6OPTdvBBHqbEJKL0QiLhQaFYDbqicM+h990s9TP00g==
 
-react-native-ui-lib@RocketChat/react-native-ui-lib#6/head:
+react-native-ui-lib@RocketChat/react-native-ui-lib#improvement.bottom-view-color-to-custom-keyboard:
   version "4.2.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/5db8feb24fe7ed17f2ba896267be97ab5dd989ab"
+  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/1465b257e39ecf665ca0086b0331e74b0f3aef42"
   dependencies:
     babel-plugin-transform-inline-environment-variables "^0.0.2"
     color "^3.1.0"
