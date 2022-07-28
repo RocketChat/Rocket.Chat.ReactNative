@@ -181,6 +181,13 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						testID='notification-preference-view-alert'
 						onChangeValue={saveNotificationSettings}
 					/>
+					<RenderListPicker
+						preference='audioNotificationValue'
+						room={room}
+						title='Sound'
+						testID='notification-preference-view-sound'
+						onChangeValue={saveNotificationSettings}
+					/>
 					<List.Separator />
 					<List.Info info='In_App_and_Desktop_Alert_info' />
 				</List.Section>
@@ -195,33 +202,6 @@ const NotificationPreferencesView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Info info='Push_Notifications_Alert_Info' />
-				</List.Section>
-				<List.Section title='Desktop_Options'>
-					<List.Separator />
-					<RenderListPicker
-						preference='audioNotifications'
-						room={room}
-						title='Audio'
-						testID='notification-preference-view-audio'
-						onChangeValue={saveNotificationSettings}
-					/>
-					<List.Separator />
-					<RenderListPicker
-						preference='audioNotificationValue'
-						room={room}
-						title='Sound'
-						testID='notification-preference-view-sound'
-						onChangeValue={saveNotificationSettings}
-					/>
-					<List.Separator />
-					<RenderListPicker
-						preference='desktopNotificationDuration'
-						room={room}
-						title='Notification_Duration'
-						testID='notification-preference-view-notification-duration'
-						onChangeValue={saveNotificationSettings}
-					/>
-					<List.Separator />
 				</List.Section>
 				<List.Section title='Email'>
 					<List.Separator />
