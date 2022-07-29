@@ -1,0 +1,71 @@
+name: Build iOS
+
+on:
+  pull_request:
+    types: ['labeled']
+
+jobs:
+  build-android:
+    if: contains(github.event.pull_request.labels.*.name, 'ios-build')
+
+    name: Build iOS
+    runs-on: macos-latest
+    environment: develop
+    defaults:
+      run:
+        working-directory: ios
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - uses: c-hive/gha-yarn-cache@v2
+
+      - name: Install dependencies
+        run: yarn install --prefer-offline
+
+      - name: Setup Ruby (bundle)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+          bundler-cache: true
+      - run: bundle install
+
+      - name: Restore Pods cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install Pods
+        run: pod install --repo-update && cd ..
+
+      - name: Set version
+        run: agvtool new-version -all ${{ github.run_number }}
+
+      - name: Set Keys
+        run: |
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY }}" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY }}" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+
+      - name: Decode P8
+        run: echo ${{ secrets.APP_STORE_CONNECT_API_BASE64 }} | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+
+      - name: Run fastlane
+        run: fastlane ios build_experimental
+
+      - name: Store Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Rocket.Chat.${{ github.event.number }}.ipa
+          path: |
+            Rocket.Chat.ipa
+            Rocket.Chat.app.dSYM.zip
