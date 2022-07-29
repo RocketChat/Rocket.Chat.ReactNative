@@ -2,13 +2,15 @@ import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainerProps } from '@react-navigation/core';
+import { useKeyboard } from '@react-native-community/hooks';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
 import { isAndroid } from '../../lib/methods/helpers';
-import { useKeyboardHeight } from '../../lib/hooks';
 import { useOrientation } from '../../dimensions';
+
+const MODAL_MARGIN = 32;
 
 interface IModalContainer extends NavigationContainerProps {
 	navigation: StackNavigationProp<any>;
@@ -28,17 +30,17 @@ const styles = StyleSheet.create({
 });
 
 export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => {
-	const keyboardHeight = useKeyboardHeight();
+	const { keyboardHeight, keyboardShown } = useKeyboard();
 	const { height } = useWindowDimensions();
 	const { isLandscape } = useOrientation();
 	const modalHeight = sharedStyles.modalFormSheet.height;
 
 	let heightModal: number;
 
-	if (modalHeight > height) {
-		heightModal = height;
-	} else if (isLandscape && isAndroid && keyboardHeight > 0) {
-		heightModal = height - keyboardHeight - 32; // 32 is to force a padding
+	if (isLandscape && isAndroid && keyboardShown) {
+		heightModal = height - keyboardHeight - MODAL_MARGIN;
+	} else if (modalHeight > height) {
+		heightModal = height - MODAL_MARGIN;
 	} else {
 		heightModal = modalHeight;
 	}
