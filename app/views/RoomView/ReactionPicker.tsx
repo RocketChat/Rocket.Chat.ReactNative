@@ -25,7 +25,7 @@ interface IReactionPickerProps {
 
 const MAX_EMOJIS_TO_DISPLAY = 20;
 
-const ReactionPicker = React.memo(({ onEmojiSelected, message, reactionClose }: IReactionPickerProps) => {
+const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = React.useState<string>('');
 	const [searchedEmojis, setSearchedEmojis] = React.useState<(string | IEmoji)[]>([]);
@@ -92,6 +92,6 @@ const ReactionPicker = React.memo(({ onEmojiSelected, message, reactionClose }: 
 			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />
 		</View>
 	);
-});
+};
 
 export default ReactionPicker;

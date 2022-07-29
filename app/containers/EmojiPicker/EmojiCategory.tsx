@@ -13,25 +13,20 @@ import { isIOS } from '../../lib/methods/helpers';
 const MAX_EMOJI_SIZE = 50;
 
 interface IEmojiProps {
-	emoji: IEmoji;
+	emoji: string | IEmoji;
 	size: number;
 	baseUrl: string;
 }
 
 const Emoji = React.memo(({ emoji, size, baseUrl }: IEmojiProps) => {
-	if (emoji?.isCustom || emoji?.name) {
+	if (typeof emoji === 'string')
 		return (
-			<CustomEmoji
-				style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]}
-				emoji={emoji}
-				baseUrl={baseUrl}
-			/>
+			<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
+				{shortnameToUnicode(`:${emoji}:`)}
+			</Text>
 		);
-	}
 	return (
-		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-			{shortnameToUnicode(`:${emoji}:`)}
-		</Text>
+		<CustomEmoji style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]} emoji={emoji} baseUrl={baseUrl} />
 	);
 });
 
@@ -64,7 +59,7 @@ const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, width, tabsCount }: I
 			// rerender FlatList in case of width changes
 			key={`emoji-category-${width}`}
 			// @ts-ignore
-			keyExtractor={item => (item && item.isCustom && item.content) || item}
+			keyExtractor={item => (item?.isCustom && item.content) || item}
 			data={emojis}
 			extraData={{ baseUrl, width }}
 			renderItem={({ item }) => renderItem(item)}

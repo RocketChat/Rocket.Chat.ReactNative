@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import TabBar from './TabBar';
@@ -18,28 +17,7 @@ import { useTheme } from '../../theme';
 import { IEmoji, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
-
-export const useFrequentlyUsedEmoji = () => {
-	const [frequentlyUsed, setFrequentlyUsed] = useState<(string | IEmoji)[]>([]);
-	const [loaded, setLoaded] = useState(false);
-	const getFrequentlyUsedEmojis = async () => {
-		const db = database.active;
-		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
-		const frequentlyUsedOrdered = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-		const frequentlyUsedEmojis = frequentlyUsedOrdered.map(item => {
-			if (item.isCustom) {
-				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
-			}
-			return shortnameToUnicode(`${item.content}`);
-		}) as (string | IEmoji)[];
-		setFrequentlyUsed(frequentlyUsedEmojis);
-		setLoaded(true);
-	};
-	useEffect(() => {
-		getFrequentlyUsedEmojis();
-	}, []);
-	return { frequentlyUsed, loaded };
-};
+import useFrequentlyUsedEmoji from './frequentlyUsedEmojis';
 
 const EmojiPicker = ({
 	onItemClicked,
@@ -65,26 +43,6 @@ const EmojiPicker = ({
 				})),
 		[allCustomEmojis]
 	);
-
-	const handleEmojiSelect = (emoji: IEmoji) => {
-		try {
-			if (emoji.isCustom) {
-				_addFrequentlyUsed({
-					content: emoji.content,
-					extension: emoji.extension,
-					isCustom: true
-				});
-				onItemClicked(EventTypes.EMOJI_PRESSED, `:${emoji.content}:`);
-			} else {
-				const content = emoji;
-				_addFrequentlyUsed({ content, isCustom: false });
-				const shortname = `:${emoji}:`;
-				onItemClicked(EventTypes.EMOJI_PRESSED, shortnameToUnicode(shortname), shortname);
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
 
 	const _addFrequentlyUsed = protectedFunction(async (emoji: IEmoji) => {
 		const db = database.active;
@@ -112,6 +70,25 @@ const EmojiPicker = ({
 			}
 		});
 	});
+
+	const handleEmojiSelect = (emoji: IEmoji) => {
+		try {
+			if (emoji.isCustom) {
+				_addFrequentlyUsed({
+					content: emoji.content,
+					extension: emoji.extension,
+					isCustom: true
+				});
+				onItemClicked(EventTypes.EMOJI_PRESSED, `:${emoji.content}:`);
+			} else {
+				_addFrequentlyUsed({ content: emoji, isCustom: false });
+				const shortname = `:${emoji}:`;
+				onItemClicked(EventTypes.EMOJI_PRESSED, shortnameToUnicode(shortname), shortname);
+			}
+		} catch (e) {
+			log(e);
+		}
+	};
 
 	const onLayout = ({
 		nativeEvent: {
