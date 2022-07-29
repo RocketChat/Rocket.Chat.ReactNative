@@ -36,10 +36,10 @@ export const getTheme = (themePreferences: IThemePreference): TSupportedThemes =
 	return theme === 'dark' ? darkLevel : 'light';
 };
 
-export const newThemeState = (prevState: { themePreferences: IThemePreference }, newTheme: IThemePreference) => {
+export const newThemeState = (prevthemePreferences: IThemePreference, newTheme: IThemePreference) => {
 	// new theme preferences
 	const themePreferences = {
-		...prevState.themePreferences,
+		...prevthemePreferences,
 		...newTheme
 	};
 	// set new state of themePreferences
