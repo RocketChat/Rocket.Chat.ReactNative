@@ -97,6 +97,7 @@
 		"react-native-jitsi-meet": "RocketChat/react-native-jitsi-meet",
 		"react-native-keycommands": "2.0.3",
 		"react-native-localize": "2.1.1",
+		"react-native-math-view": "^3.9.5",
 		"react-native-mime-types": "2.3.0",
 		"react-native-mmkv-storage": "0.6.12",
 		"react-native-modal": "11.10.0",
@@ -132,6 +133,7 @@
 		"rn-root-view": "1.0.3",
 		"semver": "7.3.5",
 		"ua-parser-js": "^1.0.2",
+		"uri-js": "^4.4.1",
 		"url-parse": "1.5.10",
 		"use-deep-compare-effect": "1.6.1",
 		"xregexp": "5.0.2"
