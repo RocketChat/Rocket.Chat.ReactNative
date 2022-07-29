@@ -9,12 +9,12 @@ import { IEmoji } from '../../definitions';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import styles from './styles';
-import { useFrequentlyUsedEmoji } from '../EmojiPicker';
+import useFrequentlyUsedEmoji from '../EmojiPicker/frequentlyUsedEmojis';
 
 const BUTTON_HIT_SLOP = { top: 15, right: 15, bottom: 15, left: 15 };
 const EMOJI_SIZE = 30;
 const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
-interface IEmojiSearchbarProps {
+interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	onChangeText: (value: string) => void;
 	emojis: IEmoji[];
@@ -39,7 +39,7 @@ const Emoji = React.memo(({ emoji, baseUrl }: { emoji: IEmoji; baseUrl: string }
 	);
 });
 
-const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
+const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 	({ openEmoji, onChangeText, emojis, onEmojiSelected, baseUrl }, ref) => {
 		const { colors } = useTheme();
 		const [searchText, setSearchText] = useState<string>('');
@@ -63,13 +63,14 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 			onChangeText(text);
 		};
 
-		const renderItem = (emoji: IEmoji) => (
+		const renderItem = React.memo((emoji: IEmoji) => (
 			<View style={[styles.emojiContainer]}>
 				<Pressable onPress={() => onEmojiSelected(emoji)}>
 					<Emoji emoji={emoji} baseUrl={baseUrl} />
 				</Pressable>
 			</View>
-		);
+		));
+
 		return (
 			<View style={{ borderTopWidth: 1, borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }}>
 				<FlatList
@@ -117,4 +118,4 @@ const EmojiSearchbar = React.forwardRef<TextInput, IEmojiSearchbarProps>(
 	}
 );
 
-export default EmojiSearchbar;
+export default EmojiSearchBar;
