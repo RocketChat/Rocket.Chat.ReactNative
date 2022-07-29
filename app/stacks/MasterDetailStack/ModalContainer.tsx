@@ -8,7 +8,6 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
 import { isAndroid } from '../../lib/methods/helpers';
-import { useOrientation } from '../../dimensions';
 
 const MODAL_MARGIN = 32;
 
@@ -32,12 +31,11 @@ const styles = StyleSheet.create({
 export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => {
 	const { keyboardHeight, keyboardShown } = useKeyboard();
 	const { height } = useWindowDimensions();
-	const { isLandscape } = useOrientation();
 	const modalHeight = sharedStyles.modalFormSheet.height;
 
 	let heightModal: number;
 
-	if (isLandscape && isAndroid && keyboardShown) {
+	if (isAndroid && keyboardShown && keyboardHeight + modalHeight > height) {
 		heightModal = height - keyboardHeight - MODAL_MARGIN;
 	} else if (modalHeight > height) {
 		heightModal = height - MODAL_MARGIN;
