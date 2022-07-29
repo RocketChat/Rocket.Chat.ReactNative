@@ -12,6 +12,9 @@ describe('Group DM', () => {
 
 	describe('Create Group DM', () => {
 		before(async () => {
+			await waitFor(element(by.id('rooms-list-view-create-channel')))
+				.toExist()
+				.withTimeout(2000);
 			await element(by.id('rooms-list-view-create-channel')).tap();
 		});
 

@@ -243,7 +243,7 @@
 		"configurations": {
 			"ios.sim.debug": {
 				"binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Rocket.Chat Experimental.app",
-				"build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+				"build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -arch x86_64 -derivedDataPath ios/build",
 				"type": "ios.simulator",
 				"device": {
 					"type": "iPhone 11 Pro"
