@@ -10,7 +10,7 @@ jobs:
 
     name: Build Android
     runs-on: ubuntu-latest
-    environment: EXPERIMENTAL
+    environment: develop
     defaults:
       run:
         working-directory: android
