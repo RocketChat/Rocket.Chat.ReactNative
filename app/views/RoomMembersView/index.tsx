@@ -32,6 +32,8 @@ import { RoomTypes } from '../../lib/methods';
 import { getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
 import styles from './styles';
 import { Services } from '../../lib/services';
+import MembersSection from '../../containers/MembersSection';
+import { CheckRadioButton } from '../../containers/CheckIcon';
 
 const PAGE_SIZE = 25;
 
@@ -72,6 +74,7 @@ interface IRoomMembersViewState {
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
 	private mounted: boolean;
+	private joined: boolean;
 	private permissions: { [key in TSupportedPermissions]?: boolean };
 	private roomObservable!: Observable<TSubscriptionModel>;
 	private subscription!: Subscription;
@@ -83,6 +86,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		this.permissions = {};
 		const rid = props.route.params?.rid;
 		const room = props.route.params?.room;
+		this.joined = props.route.params?.joined as boolean;
 		this.state = {
 			isLoading: false,
 			allUsers: false,
@@ -165,15 +169,42 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 	}
 
+	toggleStatus = () => {
+		try {
+			const { allUsers } = this.state;
+			this.setState({ members: [], allUsers: !allUsers, end: false }, () => {
+				this.fetchMembers();
+				this.setHeader();
+			});
+		} catch (e) {
+			log(e);
+		}
+	};
+
 	setHeader = () => {
 		const { allUsers } = this.state;
-		const { navigation } = this.props;
-		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
+		const { navigation, showActionSheet } = this.props;
+
 		navigation.setOptions({
 			title: I18n.t('Members'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item title={toggleText} onPress={this.toggleStatus} testID='room-members-view-toggle-status' />
+					<HeaderButton.Item
+						iconName='filter'
+						onPress={() =>
+							showActionSheet({
+								options: [
+									{
+										title: I18n.t('Online'),
+										onPress: this.toggleStatus,
+										right: () => <CheckRadioButton check={!allUsers} />
+									},
+									{ title: I18n.t('All'), onPress: this.toggleStatus, right: () => <CheckRadioButton check={allUsers} /> }
+								]
+							})
+						}
+						testID='room-members-view-toggle-status'
+					/>
 				</HeaderButton.Container>
 			)
 		});
@@ -420,17 +451,6 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		});
 	};
 
-	toggleStatus = () => {
-		try {
-			const { allUsers } = this.state;
-			this.setState({ members: [], allUsers: !allUsers, end: false }, () => {
-				this.fetchMembers();
-			});
-		} catch (e) {
-			log(e);
-		}
-	};
-
 	fetchRoomMembersRoles = async () => {
 		try {
 			const { room } = this.state;
@@ -606,8 +626,6 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 	};
 
-	renderSearchBar = () => <SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />;
-
 	renderItem = ({ item }: { item: TUserModel }) => {
 		const { theme } = this.props;
 
@@ -623,7 +641,13 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	};
 
 	render() {
-		const { filtering, members, membersFiltered, isLoading } = this.state;
+		const {
+			filtering,
+			members,
+			membersFiltered,
+			isLoading,
+			room: { rid, t }
+		} = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='room-members-view'>
@@ -634,7 +658,12 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={List.Separator}
-					ListHeaderComponent={this.renderSearchBar}
+					ListHeaderComponent={() => (
+						<>
+							<MembersSection joined={this.joined} rid={rid} t={t} />
+							<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
+						</>
+					)}
 					ListFooterComponent={() => {
 						if (isLoading) {
 							return <ActivityIndicator />;
