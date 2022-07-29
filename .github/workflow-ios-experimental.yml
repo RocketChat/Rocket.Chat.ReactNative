@@ -10,7 +10,7 @@ jobs:
 
     name: Build iOS
     runs-on: macos-latest
-    environment: EXPERIMENTAL
+    environment: develop
     defaults:
       run:
         working-directory: ios
