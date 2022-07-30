@@ -141,7 +141,7 @@ class Root extends React.Component<{}, IState> {
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(
-			prevState => newThemeState(prevState, newTheme as IThemePreference),
+			prevState => newThemeState(prevState.themePreferences, newTheme as IThemePreference),
 			() => {
 				const { themePreferences } = this.state;
 				// subscribe to Appearance changes
