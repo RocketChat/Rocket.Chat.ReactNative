@@ -932,6 +932,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ showEmojiKeyboard: false });
 	};
 
+	closeEmojiKeyboardAndFocus = () => {
+		this.closeEmoji();
+		this.focus();
+	};
+
 	closeEmojiSearchbar = () => {
 		this.setState({ showEmojiSearchbar: false });
 	};
@@ -956,7 +961,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		this.clearInput();
 		this.debouncedOnChangeText.stop();
-		this.closeEmoji();
+		this.closeEmojiKeyboardAndFocus();
 		this.stopTrackingMention();
 		this.handleTyping(false);
 		if (message.trim() === '' && !showSend) {
@@ -1230,7 +1235,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					editing={editing}
 					editCancel={this.editCancel}
 					openEmoji={this.openEmoji}
-					closeEmoji={this.closeEmoji}
+					closeEmoji={this.closeEmojiKeyboardAndFocus}
 				/>
 				<TextInput
 					ref={component => (this.component = component)}
