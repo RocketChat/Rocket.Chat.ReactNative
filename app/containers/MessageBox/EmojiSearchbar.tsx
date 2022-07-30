@@ -63,7 +63,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 			onChangeText(text);
 		};
 
-		const renderItem = React.memo((emoji: IEmoji) => (
+		const ListItem = React.memo(({ emoji }: { emoji: IEmoji }) => (
 			<View style={[styles.emojiContainer]}>
 				<Pressable onPress={() => onEmojiSelected(emoji)}>
 					<Emoji emoji={emoji} baseUrl={baseUrl} />
@@ -76,7 +76,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 				<FlatList
 					horizontal
 					data={searchText ? emojis : frequentlyUsedEmojis}
-					renderItem={({ item }) => renderItem(item as IEmoji)}
+					renderItem={({ item }) => <ListItem emoji={item as IEmoji} />}
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
 						<View style={styles.listEmptyComponent}>
@@ -92,7 +92,8 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 					<Pressable
 						style={({ pressed }: { pressed: boolean }) => [styles.openEmojiKeyboard, { opacity: pressed ? 0.7 : 1 }]}
 						onPress={openEmoji}
-						hitSlop={BUTTON_HIT_SLOP}>
+						hitSlop={BUTTON_HIT_SLOP}
+					>
 						<CustomIcon name='chevron-left' size={30} color={colors.collapsibleChevron} />
 					</Pressable>
 					<View style={{ flex: 1 }}>
