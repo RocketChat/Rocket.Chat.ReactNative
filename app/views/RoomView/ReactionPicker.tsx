@@ -83,7 +83,7 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 					returnKeyType='search'
 					underlineColorAndroid='transparent'
 					onChangeText={handleTextChange}
-					style={[styles.reactionPickerSearchbar, { backgroundColor: colors.passcodeButtonActive }]}
+					style={[styles.reactionPickerSearchbar, { backgroundColor: colors.borderColor }]}
 					value={searchText}
 					onClearInput={() => handleTextChange('')}
 					iconRight={'search'}
