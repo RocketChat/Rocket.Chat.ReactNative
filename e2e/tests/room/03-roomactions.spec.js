@@ -146,9 +146,9 @@ describe('Room actions screen', () => {
 				await expect(element(by.id('room-actions-members'))).toExist();
 			});
 
-			it('should have add user', async () => {
-				await expect(element(by.id('room-actions-add-user'))).toExist();
-			});
+			// it('should have add user', async () => {
+			// 	await expect(element(by.id('room-actions-add-user'))).toExist();
+			// });
 
 			it('should have files', async () => {
 				await expect(element(by.id('room-actions-files'))).toExist();
@@ -361,6 +361,11 @@ describe('Room actions screen', () => {
 			});
 
 			it('should add users to the room', async () => {
+				await element(by.id('room-actions-members')).tap();
+				await waitFor(element(by.id('room-members-view')))
+					.toExist()
+					.withTimeout(2000);
+
 				await waitFor(element(by.id('room-actions-add-user')))
 					.toExist()
 					.withTimeout(4000);
@@ -392,11 +397,14 @@ describe('Room actions screen', () => {
 
 				await element(by.id('selected-users-view-submit')).tap();
 				await sleep(300);
-				await waitFor(element(by.id('room-actions-members')))
+				await waitFor(element(by.id('room-members-view-filter')))
 					.toExist()
 					.withTimeout(10000);
-				await element(by.id('room-actions-members')).tap();
-				await element(by.id('room-members-view-toggle-status')).tap();
+				await element(by.id('room-members-view-filter')).tap();
+				await waitFor(element(by.id('room-members-view-toggle-status-online')))
+					.toExist()
+					.withTimeout(10000);
+				await element(by.id('room-members-view-toggle-status-online')).tap();
 				await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 					.toExist()
 					.withTimeout(60000);
@@ -442,13 +450,27 @@ describe('Room actions screen', () => {
 				};
 
 				it('should show all users', async () => {
-					await element(by.id('room-members-view-toggle-status')).tap();
+					await waitFor(element(by.id('room-members-view-filter')))
+						.toExist()
+						.withTimeout(10000);
+					await element(by.id('room-members-view-filter')).tap();
+					await waitFor(element(by.id('room-members-view-toggle-status-all')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('room-members-view-toggle-status-all')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);
+					await tapBack();
 				});
 
 				it('should filter user', async () => {
+					await element(by.id('room-actions-members')).tap();
+					await element(by.id('room-members-view-filter')).tap();
+					await waitFor(element(by.id('room-members-view-toggle-status-all')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('room-members-view-toggle-status-all')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);
@@ -599,7 +621,14 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id('room-members-view')))
 						.toExist()
 						.withTimeout(2000);
-					await element(by.id('room-members-view-toggle-status')).tap();
+					await waitFor(element(by.id('room-members-view-filter')))
+						.toExist()
+						.withTimeout(10000);
+					await element(by.id('room-members-view-filter')).tap();
+					await waitFor(element(by.id('room-members-view-toggle-status-online')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('room-members-view-toggle-status-online')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);
@@ -625,6 +654,7 @@ describe('Room actions screen', () => {
 			});
 
 			it('should block/unblock user', async () => {
+				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-block-user'))).toExist();
 				await element(by.id('room-actions-block-user')).tap();
 				await waitFor(element(by[textMatcher]('Unblock user')))
