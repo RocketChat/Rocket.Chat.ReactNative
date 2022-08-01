@@ -151,11 +151,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					options={props => DirectoryView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='QueueListView' component={QueueListView} />
-				<ModalStack.Screen
-					name='NotificationPrefView'
-					component={NotificationPrefView}
-					options={NotificationPrefView.navigationOptions}
-				/>
+				<ModalStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
 				<ModalStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 				<ModalStack.Screen name='CloseLivechatView' component={CloseLivechatView} />
 				<ModalStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
