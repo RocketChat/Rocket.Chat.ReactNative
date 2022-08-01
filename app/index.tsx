@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Linking } from 'react-native';
+import { Dimensions, Linking, unstable_batchedUpdates } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -72,8 +72,9 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
+const { width: widthWindow, height: heightWindow, scale: scaleWindow, fontScale: fontScaleWindow } = Dimensions.get('window');
+
 const Root = () => {
-	const { width: widthWindow, height: heightWindow, scale: scaleWindow, fontScale: fontScaleWindow } = Dimensions.get('window');
 	const [theme, setTheme] = useState(getTheme(initialTheme()));
 	const [themePreferences, setThemePreferences] = useState(initialTheme());
 	const [width, setWidth] = useState(widthWindow);
@@ -94,9 +95,7 @@ const Root = () => {
 			initTablet();
 		}
 		setNativeTheme(theme);
-	}, []);
 
-	useEffect(() => {
 		listenerTimeout.current = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
@@ -105,7 +104,10 @@ const Root = () => {
 				}
 			});
 		}, 5000);
-		Dimensions.addEventListener('change', onDimensionsChange);
+		Dimensions.addEventListener('change', val => {
+			onDimensionsChange(val);
+			console.log('🚀 ~ file: index.tsx ~ line 109 ~ Dimensions.addEventListener ~ val', val);
+		});
 
 		return () => {
 			clearTimeout(listenerTimeout.current);
@@ -113,8 +115,8 @@ const Root = () => {
 
 			unsubscribeTheme();
 
-			if (onKeyCommands.current && onKeyCommands.current.remove) {
-				onKeyCommands.current.remove();
+			if (onKeyCommands?.current?.remove) {
+				onKeyCommands.current.remove?.();
 			}
 		};
 	}, []);
@@ -155,6 +157,12 @@ const Root = () => {
 
 	// Dimensions update fires twice
 	const onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
+		console.log('🚀 ~ file: index.tsx ~ line 160 ~ onDimensionsChange ~ { width, height, scale, fontScale }', {
+			width,
+			height,
+			scale,
+			fontScale
+		});
 		setDimensions({
 			width,
 			height,
@@ -175,10 +183,16 @@ const Root = () => {
 	};
 
 	const setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
-		setWidth(width);
-		setHeight(height);
-		setScale(scale);
-		setFontScale(fontScale);
+		// Test when migrate to React 18 https://reactjs.org/blog/2022/03/29/react-v18.html#new-feature-automatic-batching
+		// We need this batchedUpdates because we are calling this from a debounce and
+		// the React isn't able to batch multiples setState after asynchronous function
+		// https://stackoverflow.com/a/48610973
+		unstable_batchedUpdates(() => {
+			setWidth(width);
+			setHeight(height);
+			setScale(scale);
+			setFontScale(fontScale);
+		});
 	};
 
 	const initTablet = () => {
@@ -196,6 +210,8 @@ const Root = () => {
 			toggleAnalyticsEventsReport(allowAnalyticsEvents);
 		});
 	};
+
+	console.count('🤯 App/index');
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[theme].backgroundColor }}>
