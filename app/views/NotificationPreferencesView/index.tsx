@@ -1,282 +1,222 @@
-import React from 'react';
-import { StyleSheet, Switch, Text } from 'react-native';
-import { RouteProp } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Observable, Subscription } from 'rxjs';
-import { connect } from 'react-redux';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import React, { useEffect, useState } from 'react';
+import { Switch, Text } from 'react-native';
 
-import database from '../../lib/database';
-import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import StatusBar from '../../containers/StatusBar';
+import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
-import I18n from '../../i18n';
-import { TSupportedThemes, withTheme } from '../../theme';
-import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import sharedStyles from '../Styles';
-import { IOptionsField, OPTIONS } from './options';
-import { ChatsStackParamList } from '../../stacks/types';
-import { IApplicationState, IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
-import { Services } from '../../lib/services';
+import StatusBar from '../../containers/StatusBar';
+import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
+import I18n from '../../i18n';
+import { SWITCH_TRACK_COLOR } from '../../lib/constants';
+import { useAppSelector } from '../../lib/hooks';
+import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { Services } from '../../lib/services';
+import { ChatsStackParamList } from '../../stacks/types';
+import { useTheme } from '../../theme';
+import sharedStyles from '../Styles';
+import { OPTIONS } from './options';
 
-const styles = StyleSheet.create({
-	pickerText: {
-		...sharedStyles.textRegular,
-		fontSize: 16
-	}
-});
+type TOptions = keyof typeof OPTIONS;
+type TRoomNotifications = keyof IRoomNotifications;
+type TUnionOptionsRoomNotifications = TOptions | TRoomNotifications;
 
-interface INotificationPreferencesViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>;
-	route: RouteProp<ChatsStackParamList, 'NotificationPrefView'>;
-	theme: TSupportedThemes;
-	serverVersion: string | null;
-}
-
-interface INotificationPreferencesViewState {
+interface IBaseParams {
+	preference: TUnionOptionsRoomNotifications;
 	room: TRoomNotificationsModel;
+	onChangeValue: (pref: TUnionOptionsRoomNotifications, param: { [key: string]: string }, onError: () => void) => void;
 }
 
-class NotificationPreferencesView extends React.Component<INotificationPreferencesViewProps, INotificationPreferencesViewState> {
-	static navigationOptions = () => ({
-		title: I18n.t('Notification_Preferences')
-	});
+const RenderListPicker = ({
+	preference,
+	room,
+	title,
+	testID,
+	onChangeValue
+}: {
+	title: string;
+	testID: string;
+} & IBaseParams) => {
+	const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { colors } = useTheme();
 
-	private mounted: boolean;
-	private rid: string;
-	private roomObservable?: Observable<TRoomNotificationsModel>;
-	private subscription?: Subscription;
+	const pref = room[preference]
+		? OPTIONS[preference as TOptions].find(option => option.value === room[preference])
+		: OPTIONS[preference as TOptions][0];
 
-	constructor(props: INotificationPreferencesViewProps) {
-		super(props);
-		this.mounted = false;
-		this.rid = props.route.params?.rid ?? '';
-		const room = props.route.params?.room;
-		this.state = {
-			room: room || {}
-		};
-		if (room && room.observe) {
-			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable.subscribe(changes => {
-				if (this.mounted) {
-					this.setState({ room: changes });
-				} else {
-					// @ts-ignore
-					this.state.room = changes;
-				}
-			});
-		}
-	}
+	const [option, setOption] = useState(pref);
 
-	componentDidMount() {
-		this.mounted = true;
-	}
+	const options: TActionSheetOptionsItem[] = OPTIONS[preference as TOptions].map(i => ({
+		title: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
+		onPress: () => {
+			hideActionSheet();
+			onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
+			setOption(i);
+		},
+		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+	}));
 
-	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
-		}
-	}
+	return (
+		<List.Item
+			title={title}
+			testID={testID}
+			onPress={() => showActionSheet({ options })}
+			right={() => (
+				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.actionTintColor }]}>
+					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
+				</Text>
+			)}
+		/>
+	);
+};
 
-	saveNotificationSettings = async (key: string, value: string | boolean, params: IRoomNotifications) => {
-		// @ts-ignore
-		logEvent(events[`NP_${key.toUpperCase()}`]);
-		const { room } = this.state;
-		const db = database.active;
+const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
+	const [switchValue, setSwitchValue] = useState(!room[preference]);
+	return (
+		<Switch
+			value={switchValue}
+			testID={preference as string}
+			trackColor={SWITCH_TRACK_COLOR}
+			onValueChange={value => {
+				onChangeValue(preference, { [preference]: switchValue ? '1' : '0' }, () => setSwitchValue(switchValue));
+				setSwitchValue(value);
+			}}
+		/>
+	);
+};
 
+const NotificationPreferencesView = (): React.ReactElement => {
+	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
+	const { rid, room } = route.params;
+	const navigation = useNavigation();
+	const serverVersion = useAppSelector(state => state.server.version);
+	const [hideUnreadStatus, setHideUnreadStatus] = useState(room.hideUnreadStatus);
+
+	useEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Notification_Preferences')
+		});
+	}, []);
+
+	useEffect(() => {
+		const observe = room.observe();
+		observe.subscribe(data => {
+			setHideUnreadStatus(data.hideUnreadStatus);
+		});
+	}, []);
+
+	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
 		try {
-			await db.write(async () => {
-				await room.update(
-					protectedFunction((r: IRoomNotifications) => {
-						r[key] = value;
-					})
-				);
-			});
-
-			try {
-				const result = await Services.saveNotificationSettings(this.rid, params);
-				if (result.success) {
-					return;
-				}
-			} catch {
-				// do nothing
-			}
-
-			await db.write(async () => {
-				await room.update(
-					protectedFunction((r: IRoomNotifications) => {
-						r[key] = room[key];
-					})
-				);
-			});
+			// @ts-ignore
+			logEvent(events[`NP_${key.toUpperCase()}`]);
+			await Services.saveNotificationSettings(rid, params);
 		} catch (e) {
 			// @ts-ignore
 			logEvent(events[`NP_${key.toUpperCase()}_F`]);
 			log(e);
+			onError();
+			showErrorAlertWithEMessage(e);
 		}
 	};
 
-	onValueChangeSwitch = (key: string, value: string | boolean) =>
-		this.saveNotificationSettings(key, value, { [key]: value ? '1' : '0' });
+	return (
+		<SafeAreaView testID='notification-preference-view'>
+			<StatusBar />
+			<List.Container testID='notification-preference-view-list'>
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Receive_Notification'
+						testID='notification-preference-view-receive-notification'
+						right={() => <RenderSwitch preference='disableNotifications' room={room} onChangeValue={saveNotificationSettings} />}
+					/>
+					<List.Separator />
+					<List.Info info={I18n.t('Receive_notifications_from', { name: room.name })} translateInfo={false} />
+				</List.Section>
 
-	onValueChangePicker = (key: string, value: string) => this.saveNotificationSettings(key, value, { [key]: value.toString() });
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Receive_Group_Mentions'
+						testID='notification-preference-view-group-mentions'
+						right={() => <RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={saveNotificationSettings} />}
+					/>
+					<List.Separator />
+					<List.Info info='Receive_Group_Mentions_Info' />
+				</List.Section>
 
-	pickerSelection = (title: string, key: string) => {
-		const { room } = this.state;
-		const { navigation } = this.props;
-		navigation.navigate('PickerView', {
-			title,
-			data: OPTIONS[key],
-			value: room[key],
-			onChangeValue: (value: string) => this.onValueChangePicker(key, value)
-		});
-	};
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Mark_as_unread'
+						testID='notification-preference-view-mark-as-unread'
+						right={() => <RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={saveNotificationSettings} />}
+					/>
+					<List.Separator />
+					<List.Info info='Mark_as_unread_Info' />
+				</List.Section>
 
-	renderPickerOption = (key: string) => {
-		const { room } = this.state;
-		const { theme } = this.props;
-		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : (OPTIONS[key][0] as IOptionsField);
-		return (
-			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
-				{text?.label ? I18n.t(text?.label, { defaultValue: text?.label, second: text?.second }) : text?.label}
-			</Text>
-		);
-	};
-
-	renderSwitch = (key: string) => {
-		const { room } = this.state;
-		return (
-			<Switch
-				value={!room[key]}
-				testID={key}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={value => this.onValueChangeSwitch(key, !value)}
-			/>
-		);
-	};
-
-	render() {
-		const { serverVersion } = this.props;
-		const { room } = this.state;
-		return (
-			<SafeAreaView testID='notification-preference-view'>
-				<StatusBar />
-				<List.Container testID='notification-preference-view-list'>
+				{hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0') ? (
 					<List.Section>
 						<List.Separator />
 						<List.Item
-							title='Receive_Notification'
-							testID='notification-preference-view-receive-notification'
-							right={() => this.renderSwitch('disableNotifications')}
+							title='Show_badge_for_mentions'
+							testID='notification-preference-view-badge-for-mentions'
+							right={() => <RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={saveNotificationSettings} />}
 						/>
 						<List.Separator />
-						<List.Info info={I18n.t('Receive_notifications_from', { name: room.name })} translateInfo={false} />
+						<List.Info info='Show_badge_for_mentions_Info' />
 					</List.Section>
+				) : null}
 
-					<List.Section>
-						<List.Separator />
-						<List.Item
-							title='Receive_Group_Mentions'
-							testID='notification-preference-view-group-mentions'
-							right={() => this.renderSwitch('muteGroupMentions')}
-						/>
-						<List.Separator />
-						<List.Info info='Receive_Group_Mentions_Info' />
-					</List.Section>
+				<List.Section title='In_App_And_Desktop'>
+					<List.Separator />
+					<RenderListPicker
+						preference='desktopNotifications'
+						room={room}
+						title='Alert'
+						testID='notification-preference-view-alert'
+						onChangeValue={saveNotificationSettings}
+					/>
+					<RenderListPicker
+						preference='audioNotificationValue'
+						room={room}
+						title='Sound'
+						testID='notification-preference-view-sound'
+						onChangeValue={saveNotificationSettings}
+					/>
+					<List.Separator />
+					<List.Info info='In_App_and_Desktop_Alert_info' />
+				</List.Section>
+				<List.Section title='Push_Notifications'>
+					<List.Separator />
+					<RenderListPicker
+						preference='mobilePushNotifications'
+						room={room}
+						title='Alert'
+						testID='notification-preference-view-push-notification'
+						onChangeValue={saveNotificationSettings}
+					/>
+					<List.Separator />
+					<List.Info info='Push_Notifications_Alert_Info' />
+				</List.Section>
+				<List.Section title='Email'>
+					<List.Separator />
+					<RenderListPicker
+						preference='emailNotifications'
+						room={room}
+						title='Alert'
+						testID='notification-preference-view-email-alert'
+						onChangeValue={saveNotificationSettings}
+					/>
+					<List.Separator />
+				</List.Section>
+			</List.Container>
+		</SafeAreaView>
+	);
+};
 
-					<List.Section>
-						<List.Separator />
-						<List.Item
-							title='Mark_as_unread'
-							testID='notification-preference-view-mark-as-unread'
-							right={() => this.renderSwitch('hideUnreadStatus')}
-						/>
-						<List.Separator />
-						<List.Info info='Mark_as_unread_Info' />
-					</List.Section>
-
-					{room.hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0') ? (
-						<List.Section>
-							<List.Separator />
-							<List.Item
-								title='Show_badge_for_mentions'
-								testID='notification-preference-view-badge-for-mentions'
-								right={() => this.renderSwitch('hideMentionStatus')}
-							/>
-							<List.Separator />
-							<List.Info info='Show_badge_for_mentions_Info' />
-						</List.Section>
-					) : null}
-
-					<List.Section title='In_App_And_Desktop'>
-						<List.Separator />
-						<List.Item
-							title='Alert'
-							testID='notification-preference-view-alert'
-							onPress={(title: string) => this.pickerSelection(title, 'desktopNotifications')}
-							right={() => this.renderPickerOption('desktopNotifications')}
-						/>
-						<List.Separator />
-						<List.Info info='In_App_and_Desktop_Alert_info' />
-					</List.Section>
-
-					<List.Section title='Push_Notifications'>
-						<List.Separator />
-						<List.Item
-							title='Alert'
-							testID='notification-preference-view-push-notification'
-							onPress={(title: string) => this.pickerSelection(title, 'mobilePushNotifications')}
-							right={() => this.renderPickerOption('mobilePushNotifications')}
-						/>
-						<List.Separator />
-						<List.Info info='Push_Notifications_Alert_Info' />
-					</List.Section>
-
-					<List.Section title='Desktop_Options'>
-						<List.Separator />
-						<List.Item
-							title='Audio'
-							testID='notification-preference-view-audio'
-							onPress={(title: string) => this.pickerSelection(title, 'audioNotifications')}
-							right={() => this.renderPickerOption('audioNotifications')}
-						/>
-						<List.Separator />
-						<List.Item
-							title='Sound'
-							testID='notification-preference-view-sound'
-							onPress={(title: string) => this.pickerSelection(title, 'audioNotificationValue')}
-							right={() => this.renderPickerOption('audioNotificationValue')}
-						/>
-						<List.Separator />
-						<List.Item
-							title='Notification_Duration'
-							testID='notification-preference-view-notification-duration'
-							onPress={(title: string) => this.pickerSelection(title, 'desktopNotificationDuration')}
-							right={() => this.renderPickerOption('desktopNotificationDuration')}
-						/>
-						<List.Separator />
-					</List.Section>
-
-					<List.Section title='Email'>
-						<List.Separator />
-						<List.Item
-							title='Alert'
-							testID='notification-preference-view-email-alert'
-							onPress={(title: string) => this.pickerSelection(title, 'emailNotifications')}
-							right={() => this.renderPickerOption('emailNotifications')}
-						/>
-						<List.Separator />
-					</List.Section>
-				</List.Container>
-			</SafeAreaView>
-		);
-	}
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	serverVersion: state.server.version
-});
-
-export default connect(mapStateToProps)(withTheme(NotificationPreferencesView));
+export default NotificationPreferencesView;

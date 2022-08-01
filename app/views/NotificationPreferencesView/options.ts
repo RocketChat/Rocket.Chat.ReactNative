@@ -4,34 +4,14 @@ export interface IOptionsField {
 	second?: number;
 }
 export interface INotificationOptions {
-	[desktopNotifications: string]: IOptionsField[];
-	audioNotifications: IOptionsField[];
+	desktopNotifications: IOptionsField[];
 	mobilePushNotifications: IOptionsField[];
 	emailNotifications: IOptionsField[];
-	desktopNotificationDuration: IOptionsField[];
 	audioNotificationValue: IOptionsField[];
 }
 
 export const OPTIONS: INotificationOptions = {
 	desktopNotifications: [
-		{
-			label: 'Default',
-			value: 'default'
-		},
-		{
-			label: 'All_Messages',
-			value: 'all'
-		},
-		{
-			label: 'Mentions',
-			value: 'mentions'
-		},
-		{
-			label: 'Nothing',
-			value: 'nothing'
-		}
-	],
-	audioNotifications: [
 		{
 			label: 'Default',
 			value: 'default'
@@ -83,37 +63,6 @@ export const OPTIONS: INotificationOptions = {
 		{
 			label: 'Nothing',
 			value: 'nothing'
-		}
-	],
-	desktopNotificationDuration: [
-		{
-			label: 'Default',
-			value: 0
-		},
-		{
-			label: 'Seconds',
-			second: 1,
-			value: 1
-		},
-		{
-			label: 'Seconds',
-			second: 2,
-			value: 2
-		},
-		{
-			label: 'Seconds',
-			second: 3,
-			value: 3
-		},
-		{
-			label: 'Seconds',
-			second: 4,
-			value: 4
-		},
-		{
-			label: 'Seconds',
-			second: 5,
-			value: 5
 		}
 	],
 	audioNotificationValue: [

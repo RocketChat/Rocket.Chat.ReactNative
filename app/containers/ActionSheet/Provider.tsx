@@ -6,7 +6,7 @@ import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
 	title: string;
-	icon: TIconsName;
+	icon?: TIconsName;
 	danger?: boolean;
 	testID?: string;
 	onPress: () => void;
