@@ -197,13 +197,19 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 									{
 										title: I18n.t('Online'),
 										onPress: this.toggleStatus,
-										right: () => <CheckRadioButton check={!allUsers} />
+										right: () => <CheckRadioButton check={!allUsers} />,
+										testID: 'room-members-view-toggle-status-online'
 									},
-									{ title: I18n.t('All'), onPress: this.toggleStatus, right: () => <CheckRadioButton check={allUsers} /> }
+									{
+										title: I18n.t('All'),
+										onPress: this.toggleStatus,
+										right: () => <CheckRadioButton check={allUsers} />,
+										testID: 'room-members-view-toggle-status-all'
+									}
 								]
 							})
 						}
-						testID='room-members-view-toggle-status'
+						testID='room-members-view-filter'
 					/>
 				</HeaderButton.Container>
 			)
@@ -640,6 +646,13 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		);
 	};
 
+	renderHeader = (rid: string, t: SubscriptionType) => (
+		<>
+			<MembersSection joined={this.joined} rid={rid} t={t} />
+			<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
+		</>
+	);
+
 	render() {
 		const {
 			filtering,
@@ -658,12 +671,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					ItemSeparatorComponent={List.Separator}
-					ListHeaderComponent={() => (
-						<>
-							<MembersSection joined={this.joined} rid={rid} t={t} />
-							<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
-						</>
-					)}
+					ListHeaderComponent={this.renderHeader(rid, t)}
 					ListFooterComponent={() => {
 						if (isLoading) {
 							return <ActivityIndicator />;
