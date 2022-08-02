@@ -8,6 +8,11 @@ jobs:
   build-android:
     if: contains(github.event.pull_request.labels.*.name, 'ios-build')
 
+    env:
+      MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+      MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
     name: Build iOS
     runs-on: macos-latest
     environment: develop
@@ -43,7 +48,7 @@ jobs:
             ${{ runner.os }}-pods-
 
       - name: Install Pods
-        run: pod install --repo-update && cd ..
+        run: pod install
 
       - name: Set version
         run: agvtool new-version -all ${{ github.run_number }}
@@ -58,6 +63,13 @@ jobs:
 
       - name: Decode P8
         run: echo ${{ secrets.APP_STORE_CONNECT_API_BASE64 }} | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+      
+      - name: Set key ssh for git
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Run fastlane
         run: fastlane ios build_experimental
