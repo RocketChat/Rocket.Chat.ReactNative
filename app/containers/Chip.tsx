@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Chips = ({
+const Chip = ({
 	item,
 	username,
 	name,
@@ -77,4 +77,4 @@ const Chips = ({
 	);
 };
 
-export default Chips;
+export default Chip;

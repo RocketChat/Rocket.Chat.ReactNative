@@ -21,7 +21,7 @@ import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { hasPermission } from '../lib/methods/helpers';
-import Chips from '../containers/Chips';
+import Chip from '../containers/Chip';
 import Button from '../containers/Button';
 
 const styles = StyleSheet.create({
@@ -371,7 +371,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const username = item.name;
 
 		return (
-			<Chips
+			<Chip
 				item={item}
 				name={name}
 				username={username}
