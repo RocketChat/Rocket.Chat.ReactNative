@@ -82,7 +82,7 @@ const Root = () => {
 	const [scale, setScale] = useState(scaleWindow);
 	const [fontScale, setFontScale] = useState(fontScaleWindow);
 
-	const listenerTimeout = useRef<any>();
+	const listenerTimeout = useRef<ReturnType<typeof setTimeout>>();
 	const onKeyCommands = useRef<any>();
 
 	useEffect(() => {
@@ -107,7 +107,7 @@ const Root = () => {
 		Dimensions.addEventListener('change', onDimensionsChange);
 
 		return () => {
-			clearTimeout(listenerTimeout.current);
+			clearTimeout(listenerTimeout.current as ReturnType<typeof setTimeout>);
 			Dimensions.removeEventListener('change', onDimensionsChange);
 
 			unsubscribeTheme();
@@ -118,7 +118,7 @@ const Root = () => {
 		};
 	}, []);
 
-	const init = async () => {
+	const init = useCallback(async () => {
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
@@ -138,7 +138,7 @@ const Root = () => {
 
 		// Open app from app icon
 		store.dispatch(appInit());
-	};
+	}, []);
 
 	const getMasterDetail = (width: number) => {
 		if (!isTablet) {
@@ -153,37 +153,40 @@ const Root = () => {
 	};
 
 	// Dimensions update fires twice
-	const onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
-		setDimensions({
-			width,
-			height,
-			scale,
-			fontScale
-		});
-		setMasterDetail(width);
-	});
+	const onDimensionsChange = useCallback(
+		debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
+			// Test when migrate to React 18 https://reactjs.org/blog/2022/03/29/react-v18.html#new-feature-automatic-batching
+			// We need this batchedUpdates because we are calling this from a debounce and
+			// the React isn't able to batch multiples setState inside a setTimeout
+			// https://stackoverflow.com/a/48610973
+			unstable_batchedUpdates(() => {
+				setDimensions({
+					width,
+					height,
+					scale,
+					fontScale
+				});
+				setMasterDetail(width);
+			});
+		}),
+		[]
+	);
 
-	const setThemeFunction = (newThemeObject = {}) => {
+	const setNewTheme = (newThemePreference = {}) => {
 		const { theme: newTheme, themePreferences: newThemePreferences } = newThemeState(
 			themePreferences,
-			newThemeObject as IThemePreference
+			newThemePreference as IThemePreference
 		);
 		setThemePreferences(newThemePreferences);
 		setTheme(newTheme);
-		subscribeTheme(themePreferences, setThemeFunction);
+		subscribeTheme(themePreferences, setNewTheme);
 	};
 
 	const setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
-		// Test when migrate to React 18 https://reactjs.org/blog/2022/03/29/react-v18.html#new-feature-automatic-batching
-		// We need this batchedUpdates because we are calling this from a debounce and
-		// the React isn't able to batch multiples setState after asynchronous function
-		// https://stackoverflow.com/a/48610973
-		unstable_batchedUpdates(() => {
-			setWidth(width);
-			setHeight(height);
-			setScale(scale);
-			setFontScale(fontScale);
-		});
+		setWidth(width);
+		setHeight(height);
+		setScale(scale);
+		setFontScale(fontScale);
 	};
 
 	const initTablet = useCallback(() => {
@@ -210,7 +213,7 @@ const Root = () => {
 						value={{
 							theme,
 							themePreferences,
-							setTheme: setThemeFunction,
+							setTheme: setNewTheme,
 							colors: colors[theme]
 						}}>
 						<DimensionsContext.Provider
