@@ -70,6 +70,9 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           name: id_rsa
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      
+      - name: change for https to ssh [TEMP]
+        run: sed -i '' 's+https://github.com/+git@github.com:+g' fastlane/Matchfile
 
       - name: Run fastlane
         run: fastlane ios build_experimental
