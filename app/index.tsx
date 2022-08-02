@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions, Linking, unstable_batchedUpdates } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
@@ -104,10 +104,7 @@ const Root = () => {
 				}
 			});
 		}, 5000);
-		Dimensions.addEventListener('change', val => {
-			onDimensionsChange(val);
-			console.log('🚀 ~ file: index.tsx ~ line 109 ~ Dimensions.addEventListener ~ val', val);
-		});
+		Dimensions.addEventListener('change', onDimensionsChange);
 
 		return () => {
 			clearTimeout(listenerTimeout.current);
@@ -157,12 +154,6 @@ const Root = () => {
 
 	// Dimensions update fires twice
 	const onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
-		console.log('🚀 ~ file: index.tsx ~ line 160 ~ onDimensionsChange ~ { width, height, scale, fontScale }', {
-			width,
-			height,
-			scale,
-			fontScale
-		});
 		setDimensions({
 			width,
 			height,
@@ -195,23 +186,21 @@ const Root = () => {
 		});
 	};
 
-	const initTablet = () => {
-		setMasterDetail(width);
+	const initTablet = useCallback(() => {
+		setMasterDetail(widthWindow);
 		onKeyCommands.current = KeyCommandsEmitter.addListener('onKeyCommand', (command: ICommand) => {
 			EventEmitter.emit(KEY_COMMAND, { event: command });
 		});
-	};
+	}, []);
 
-	const initCrashReport = () => {
+	const initCrashReport = useCallback(() => {
 		getAllowCrashReport().then(allowCrashReport => {
 			toggleCrashErrorsReport(allowCrashReport);
 		});
 		getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
 			toggleAnalyticsEventsReport(allowAnalyticsEvents);
 		});
-	};
-
-	console.count('🤯 App/index');
+	}, []);
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[theme].backgroundColor }}>
