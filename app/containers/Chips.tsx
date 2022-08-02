@@ -8,8 +8,13 @@ import sharedStyles from '../views/Styles';
 import Avatar from './Avatar';
 
 const styles = StyleSheet.create({
-	pressable: { marginVertical: 16, paddingHorizontal: 8, marginRight: 8 },
-	containerView: {
+	pressable: {
+		marginVertical: 16,
+		paddingHorizontal: 8,
+		marginRight: 8,
+		borderRadius: 2
+	},
+	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -26,12 +31,12 @@ const styles = StyleSheet.create({
 		maxWidth: 120
 	},
 	name: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	}
 });
 
-const ChipsUserSelected = ({
+const Chips = ({
 	item,
 	username,
 	name,
@@ -49,7 +54,7 @@ const ChipsUserSelected = ({
 	return (
 		<Pressable
 			testID={testID}
-			style={({ pressed }: any) => [
+			style={({ pressed }) => [
 				styles.pressable,
 				{
 					backgroundColor: pressed ? colors.bannerBackground : colors.auxiliaryBackground
@@ -59,8 +64,8 @@ const ChipsUserSelected = ({
 			android_ripple={{
 				color: colors.bannerBackground
 			}}>
-			<View style={styles.containerView}>
-				<Avatar text={username} size={30} style={styles.avatar} />
+			<View style={styles.container}>
+				<Avatar text={username} size={28} style={styles.avatar} />
 				<View style={styles.textContainer}>
 					<Text style={[styles.name, { color: colors.bodyText }]} numberOfLines={1}>
 						{name}
@@ -72,4 +77,4 @@ const ChipsUserSelected = ({
 	);
 };
 
-export default ChipsUserSelected;
+export default Chips;

@@ -21,7 +21,7 @@ import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { hasPermission } from '../lib/methods/helpers';
-import ChipsUserSelected from '../containers/ChipsUserSelected';
+import Chips from '../containers/Chips';
 import Button from '../containers/Button';
 
 const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		paddingHorizontal: 18,
+		paddingHorizontal: 16,
 		maxHeight: 80,
 		marginBottom: 8
 	},
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	buttonCreate: {
-		marginHorizontal: 18,
+		marginHorizontal: 16,
 		marginTop: 24
 	}
 });
@@ -371,7 +371,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const username = item.name;
 
 		return (
-			<ChipsUserSelected
+			<Chips
 				item={item}
 				name={name}
 				username={username}
