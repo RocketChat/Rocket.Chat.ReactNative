@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, StyleSheet, View, PixelRatio } from 'react-native';
+import { Modal, StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
 	Extrapolate,
@@ -28,9 +28,10 @@ const styles = StyleSheet.create({
 
 interface ILoadingProps {
 	visible: boolean;
+	onPress?: () => void;
 }
 
-const Loading = ({ visible }: ILoadingProps): React.ReactElement => {
+const Loading = ({ visible, onPress }: ILoadingProps): React.ReactElement => {
 	const opacity = useSharedValue(0);
 	const scale = useSharedValue(1);
 	const { colors } = useTheme();
@@ -54,18 +55,20 @@ const Loading = ({ visible }: ILoadingProps): React.ReactElement => {
 
 	return (
 		<Modal visible={visible} transparent onRequestClose={() => {}}>
-			<View style={styles.container} testID='loading'>
-				<Animated.View
-					style={[
-						{
-							...StyleSheet.absoluteFillObject,
-							backgroundColor: colors.backdropColor
-						},
-						animatedOpacity
-					]}
-				/>
-				<Animated.Image source={require('../static/images/logo.png')} style={[styles.image, animatedScale]} />
-			</View>
+			<TouchableWithoutFeedback onPress={() => onPress?.()} testID='loading'>
+				<View style={styles.container}>
+					<Animated.View
+						style={[
+							{
+								...StyleSheet.absoluteFillObject,
+								backgroundColor: colors.backdropColor
+							},
+							animatedOpacity
+						]}
+					/>
+					<Animated.Image source={require('../static/images/logo.png')} style={[styles.image, animatedScale]} />
+				</View>
+			</TouchableWithoutFeedback>
 		</Modal>
 	);
 };

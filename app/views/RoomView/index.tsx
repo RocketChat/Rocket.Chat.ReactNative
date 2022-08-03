@@ -965,13 +965,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				this.list.current?.cancelJumpToMessage();
 			}
 		} catch (e) {
 			log(e);
 		} finally {
-			this.setState({ showingBlockingLoader: false });
+			this.cancelJumpToMessage();
 		}
+	};
+
+	cancelJumpToMessage = () => {
+		this.list.current?.cancelJumpToMessage();
+		this.setState({ showingBlockingLoader: false });
 	};
 
 	replyBroadcast = (message: IMessage) => {
@@ -1521,7 +1525,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getCustomEmoji={this.getCustomEmoji}
 				/>
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-				<Loading visible={showingBlockingLoader} />
+				<Loading visible={showingBlockingLoader} onPress={this.cancelJumpToMessage} />
 			</SafeAreaView>
 		);
 	}
