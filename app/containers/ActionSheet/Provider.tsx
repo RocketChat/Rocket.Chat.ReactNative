@@ -22,6 +22,7 @@ export type TActionSheetOptions = {
 	children?: React.ReactElement | null;
 	snaps?: (string | number)[];
 	onClose?: () => void;
+	enableContentPanningGesture?: boolean;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
