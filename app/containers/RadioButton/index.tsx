@@ -1,20 +1,12 @@
 import React from 'react';
-import { RadioButton } from 'react-native-ui-lib';
+import { RadioButton as RadioButtonUiLib } from 'react-native-ui-lib';
 
 import { useTheme } from '../../theme';
 
-export const CheckRadioButton = ({
-	check,
-	testID,
-	size
-}: {
-	check: boolean;
-	testID?: string;
-	size?: number;
-}): React.ReactElement => {
+export const RadioButton = ({ check, testID, size }: { check: boolean; testID?: string; size?: number }): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
-		<RadioButton
+		<RadioButtonUiLib
 			testID={testID}
 			selected={check}
 			size={size || 20}

@@ -33,7 +33,7 @@ import { getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/help
 import styles from './styles';
 import { Services } from '../../lib/services';
 import MembersSection from '../../containers/MembersSection';
-import { CheckRadioButton } from '../../containers/CheckIcon';
+import { RadioButton } from '../../containers/RadioButton';
 
 const PAGE_SIZE = 25;
 
@@ -197,13 +197,13 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 									{
 										title: I18n.t('Online'),
 										onPress: this.toggleStatus,
-										right: () => <CheckRadioButton check={!allUsers} />,
+										right: () => <RadioButton check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-online'
 									},
 									{
 										title: I18n.t('All'),
 										onPress: this.toggleStatus,
-										right: () => <CheckRadioButton check={allUsers} />,
+										right: () => <RadioButton check={allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
 								]
