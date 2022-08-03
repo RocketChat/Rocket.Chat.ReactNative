@@ -374,7 +374,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			<Chip
 				item={item}
 				text={name}
-				username={username}
+				avatar={username}
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${item.name}`}
 				iconName={'close'}

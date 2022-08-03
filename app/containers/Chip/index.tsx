@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 const Chip = ({
 	item,
-	username,
+	avatar,
 	text,
 	onPress = () => {},
 	testID,
@@ -45,7 +45,7 @@ const Chip = ({
 	style,
 	textStyle
 }: {
-	username?: string;
+	avatar?: string;
 	text?: string;
 	item: ISelectedUser;
 	onPress?: Function;
@@ -71,7 +71,7 @@ const Chip = ({
 				color: colors.bannerBackground
 			}}>
 			<View style={styles.container}>
-				{username ? <Avatar text={username} size={28} style={styles.avatar} /> : null}
+				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				{text ? (
 					<View style={styles.textContainer}>
 						<Text style={[styles.name, { color: colors.bodyText }, textStyle]} numberOfLines={1}>
