@@ -1,18 +1,8 @@
 import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { MatchPathPattern, OperationParams, PathFor, ResultFor, Serialized } from '../../definitions/rest/helpers';
-import { showErrorAlert } from '../methods/helpers';
+import { ErrorResult, MatchPathPattern, OperationParams, PathFor, ResultFor, Serialized } from '../../definitions/rest/helpers';
 import sdk from '../services/sdk';
-
-type TError = {
-	success: boolean;
-	error: string;
-	errorType: string;
-	details: {
-		method: string;
-	};
-};
 
 export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	endpoint: TPath,
@@ -24,9 +14,15 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	>
 		? void
 		: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
-): { result: Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined; loading: boolean; reload: Function } => {
+): {
+	result: Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined;
+	loading: boolean;
+	reload: Function;
+	error: ErrorResult | undefined;
+} => {
 	const [loading, setLoading] = useState(true);
 	const [result, setResult] = useState<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined>();
+	const [error, setError] = useState<ErrorResult | undefined>();
 
 	const paramsRef = useRef(params);
 
@@ -44,13 +40,12 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 				if (e.success) {
 					setResult(e);
 				} else {
-					// handle error
+					setError(e as ErrorResult);
 				}
 			})
-			.catch((e: TError) => {
-				// handle error
+			.catch((e: ErrorResult) => {
 				setLoading(false);
-				showErrorAlert(e.error);
+				setError(e);
 			});
 	}, [paramsRef.current]);
 
@@ -61,6 +56,7 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	return {
 		result,
 		loading,
-		reload: fetchData
+		reload: fetchData,
+		error
 	};
 };

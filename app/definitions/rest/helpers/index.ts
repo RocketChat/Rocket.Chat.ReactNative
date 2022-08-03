@@ -91,3 +91,5 @@ export type ResultFor<TMethod extends Method, TPathPattern extends PathPattern> 
 	| SuccessResult<OperationResult<TMethod, TPathPattern>>
 	| FailureResult<unknown, unknown, unknown, unknown>
 	| UnauthorizedResult<unknown>;
+
+export type ErrorResult = FailureResult<unknown, unknown, unknown, unknown>;
