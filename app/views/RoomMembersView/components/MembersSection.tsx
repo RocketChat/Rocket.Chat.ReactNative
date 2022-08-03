@@ -5,14 +5,14 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setLoading } from '../../../actions/selectedUsers';
+import * as List from '../../../containers/List';
 import { TSubscriptionModel } from '../../../definitions';
 import i18n from '../../../i18n';
-import { useUserPermissions } from '../../../lib/hooks/useUserPermissions';
+import { usePermissions } from '../../../lib/hooks';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { Services } from '../../../lib/services';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../../stacks/types';
-import * as List from '../../../containers/List';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
@@ -28,7 +28,16 @@ interface IMembersSection {
 export default function MembersSection({ rid, t, joined }: IMembersSection): React.ReactElement {
 	const { navigate, pop } = useNavigation<TNavigation>();
 	const dispatch = useDispatch();
-	const { canAddUser, canInviteUser } = useUserPermissions({ rid, t, joined });
+	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =
+		usePermissions(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room', 'create-invite-links'], rid);
+
+	const canAddUser =
+		(joined && addUserToJoinedRoomPermission) ||
+		(t === 'c' && addUserToAnyCRoomPermission) ||
+		(t === 'p' && addUserToAnyPRoomPermission) ||
+		false;
+
+	const canInviteUser = createInviteLinksPermission;
 
 	const handleOnPress = ({
 		route,
