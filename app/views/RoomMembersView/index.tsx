@@ -32,7 +32,7 @@ import { RoomTypes } from '../../lib/methods';
 import { getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
 import styles from './styles';
 import { Services } from '../../lib/services';
-import MembersSection from '../../containers/MembersSection';
+import MembersSection from './components/MembersSection';
 import { RadioButton } from '../../containers/RadioButton';
 
 const PAGE_SIZE = 25;
