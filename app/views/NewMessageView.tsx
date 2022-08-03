@@ -249,7 +249,6 @@ const Header = ({
 
 const NewMessageView = () => {
 	const [chats, setChats] = useState<TSubscriptionModel[]>([]);
-	// eslint-disable-next-line @typescript-eslint/no-extra-parens
 	const [search, setSearch] = useState<TItem[]>([]);
 
 	const { colors, theme } = useTheme();
