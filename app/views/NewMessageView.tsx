@@ -177,31 +177,31 @@ const Header = ({
 		createTeamPermission
 	]);
 
-	const createChannel = () => {
+	const createChannel = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
-	};
+	}, [navigation]);
 
-	const createTeam = () => {
+	const createTeam = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_TEAM);
 		navigation.navigate('SelectedUsersViewCreateChannel', {
 			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true })
 		});
-	};
+	}, [navigation]);
 
-	const createGroupChat = () => {
+	const createGroupChat = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
 		navigation.navigate('SelectedUsersViewCreateChannel', {
 			nextAction: () => dispatch(createChannelRequest({ group: true })),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
-	};
+	}, [dispatch, maxUsers, navigation]);
 
-	const createDiscussion = () => {
+	const createDiscussion = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
 		Navigation.navigate('CreateDiscussionView');
-	};
+	}, []);
 
 	return (
 		<>
