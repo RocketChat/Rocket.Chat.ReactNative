@@ -23,8 +23,8 @@ const stories = storiesOf('Chip', module)
 stories.add('Short and Long Chip', () => (
 	<>
 		<View style={styles.paddingHorizontal}>
-			<Chip iconName='close' username='rocket.cat' text={'Rocket.Cat'} />
-			<Chip iconName='close' username='rocket.cat' />
+			<Chip iconName='close' avatar='rocket.cat' text={'Rocket.Cat'} />
+			<Chip iconName='close' avatar='rocket.cat' />
 		</View>
 	</>
 ));
