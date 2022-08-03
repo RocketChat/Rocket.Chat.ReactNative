@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
+import { FlatListProps, InteractionManager, RefreshControl, ViewToken } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
@@ -138,6 +138,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
+	// clears previous highlighted message timeout, if exists
 	clearHighlightedMessageTimeout = () => {
 		if (this.highlightedMessageTimeout) {
 			clearTimeout(this.highlightedMessageTimeout);
@@ -280,28 +281,44 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			const { messages } = this.state;
 			const { listRef } = this.props;
 			const index = messages.findIndex(item => item.id === messageId);
+			console.log('🚀 ~ file: index.tsx ~ line 284 ~ ListContainer ~ index', index);
+			// if found message, scroll to it
 			if (index > -1) {
 				listRef.current?.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
-				await new Promise(res => setTimeout(res, 300));
-				if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
-					if (!this.jumping) {
-						return resolve();
+				// wait for scroll animation to finish
+				console.log('1111111111111111111111111111111');
+				// await new Promise(res => setTimeout(res, 300));
+				await requestAnimationFrame(() => {
+					// if message is not visible
+					if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
+						if (!this.jumping) {
+							return resolve();
+						}
+						console.log('not visible');
+						// await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+						this.jumpToMessage(messageId);
+						return;
 					}
-					await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
-					return;
-				}
-				this.setState({ highlightedMessage: messageId });
-				this.clearHighlightedMessageTimeout();
-				this.highlightedMessageTimeout = setTimeout(() => {
-					this.setState({ highlightedMessage: null });
-				}, 10000);
-				await setTimeout(() => resolve(), 300);
+					// if message is visible, highlight it
+					this.setState({ highlightedMessage: messageId });
+					this.clearHighlightedMessageTimeout();
+					// clears highlighted message after 10 seconds
+					this.highlightedMessageTimeout = setTimeout(() => {
+						this.setState({ highlightedMessage: null });
+					}, 10000);
+					// await setTimeout(() => resolve(), 300);
+					resolve();
+				});
+				console.log('2222222222222222222222222222222');
 			} else {
 				listRef.current?.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
 				if (!this.jumping) {
 					return resolve();
 				}
-				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+				// if message not found, wait for scroll to top and then jump to message
+				console.log('message not found');
+				// await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+				this.jumpToMessage(messageId);
 			}
 		});
 
