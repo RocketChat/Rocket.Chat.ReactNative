@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
@@ -12,6 +12,9 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useTheme } from '../theme';
+import EventEmitter from '../lib/methods/helpers/events';
+
+export const LOADING_EVENT = 'LOADING_EVENT';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,27 +29,67 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ILoadingProps {
-	visible: boolean;
-	onPress?: () => void;
-}
-
-const Loading = ({ visible, onPress }: ILoadingProps): React.ReactElement => {
+const Loading = (): React.ReactElement => {
+	const [visible, setVisible] = useState(false);
+	const [onCancel, setOnCancel] = useState<null | Function>(null);
 	const opacity = useSharedValue(0);
 	const scale = useSharedValue(1);
 	const { colors } = useTheme();
 
-	useEffect(() => {
-		if (visible) {
+	const onEventReceived = ({
+		visible: _visible,
+		onCancel: _onCancel = null
+	}: {
+		visible: boolean;
+		onCancel?: null | Function;
+	}) => {
+		if (_visible) {
+			// if it's already visible, ignore it
+			if (visible) {
+				return;
+			}
+			setVisible(_visible);
+
+			if (_onCancel) {
+				setOnCancel(() => () => _onCancel());
+			}
+
 			opacity.value = withTiming(1, {
 				duration: 200
 			});
 			scale.value = withRepeat(withSequence(withTiming(0, { duration: 1000 }), withTiming(1, { duration: 1000 })), -1);
+		} else {
+			setVisible(false);
 		}
-		return () => {
-			cancelAnimation(scale);
-		};
-	}, [opacity, scale, visible]);
+	};
+
+	useEffect(() => {
+		const listener = EventEmitter.addEventListener(LOADING_EVENT, onEventReceived);
+
+		return () => EventEmitter.removeListener(LOADING_EVENT, listener);
+	}, []);
+
+	useEffect(() => {
+		if (!visible) {
+			reset();
+		}
+	}, [visible]);
+
+	const reset = () => {
+		setVisible(false);
+		setOnCancel(null);
+		cancelAnimation(scale);
+		opacity.value = 0;
+		scale.value = 1;
+	};
+
+	const onCancelHandler = () => {
+		if (!onCancel) {
+			return;
+		}
+		onCancel();
+		reset();
+	};
 
 	const animatedOpacity = useAnimatedStyle(() => ({
 		opacity: interpolate(opacity.value, [0, 1], [0, colors.backdropOpacity], Extrapolate.CLAMP)
@@ -55,7 +98,7 @@ const Loading = ({ visible, onPress }: ILoadingProps): React.ReactElement => {
 
 	return (
 		<Modal visible={visible} transparent onRequestClose={() => {}}>
-			<TouchableWithoutFeedback onPress={() => onPress?.()} testID='loading'>
+			<TouchableWithoutFeedback onPress={() => onCancelHandler()} testID='loading'>
 				<View style={styles.container}>
 					<Animated.View
 						style={[
