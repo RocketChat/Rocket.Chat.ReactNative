@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 import { useEndpointData } from './useEndpointData';
+import sdk from '../services/sdk';
 
 const url = 'chat.getMessage';
 
@@ -44,7 +45,7 @@ function Render() {
 }
 
 describe('useFetch', () => {
-	it('should return data after fetch - hook', async () => {
+	it('should return data after fetch', async () => {
 		const { result, waitForNextUpdate } = renderHook(() => useEndpointData(url, { msgId: message._id }));
 		expect(result.current.loading).toEqual(true);
 		expect(result.current.result).toEqual(undefined);
@@ -53,7 +54,7 @@ describe('useFetch', () => {
 		expect(result.current.result).toEqual({ success: true, message });
 	});
 
-	it('should return data after fetch - Component', async () => {
+	it('should component load correctly', async () => {
 		const renderComponent = render(<Render />);
 		const loading = await renderComponent.findByTestId('loading');
 		expect(loading.props.children).toBe('loading');
@@ -63,5 +64,24 @@ describe('useFetch', () => {
 			},
 			{ timeout: 2000 }
 		);
+	});
+
+	it('should return error after fetch', async () => {
+		const spy = jest
+			.spyOn(sdk, 'get')
+			.mockImplementation(
+				jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: false, error: null }), 1000)))
+			);
+
+		const { result, waitForNextUpdate } = renderHook(() => useEndpointData(url, { msgId: message._id }));
+		expect(result.current.loading).toEqual(true);
+		expect(result.current.result).toEqual(undefined);
+		expect(result.current.error).toEqual(undefined);
+		await waitForNextUpdate();
+		expect(result.current.loading).toEqual(false);
+		expect(result.current.result).toEqual(undefined);
+		expect(result.current.error).toEqual({ success: false, error: null });
+
+		spy.mockRestore();
 	});
 });
