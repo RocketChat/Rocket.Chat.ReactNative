@@ -373,10 +373,11 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		return (
 			<Chip
 				item={item}
-				name={name}
+				text={name}
 				username={username}
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${item.name}`}
+				iconName={'close'}
 			/>
 		);
 	};

@@ -224,10 +224,11 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		return (
 			<Chip
 				item={item}
-				name={name}
+				text={name}
 				username={username}
 				onPress={() => this._onPressSelectedItem(item)}
 				testID={`selected-user-${item.name}`}
+				iconName={'close'}
 			/>
 		);
 	};
