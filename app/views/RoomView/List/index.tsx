@@ -285,13 +285,15 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			if (index > -1) {
 				listRef.current?.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 				// wait for scroll animation to finish
-				await requestAnimationFrame(() => {
+				await requestAnimationFrame(async () => {
 					// if message is not visible
 					if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
 						if (!this.jumping) {
 							return resolve();
 						}
-						this.jumpToMessage(messageId);
+						await requestAnimationFrame(() => {
+							this.jumpToMessage(messageId);
+						});
 						return;
 					}
 					// if message is visible, highlight it
@@ -309,7 +311,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					return resolve();
 				}
 				// if message not found, wait for scroll to top and then jump to message
-				this.jumpToMessage(messageId);
+				await requestAnimationFrame(() => {
+					this.jumpToMessage(messageId);
+				});
 			}
 		});
 
