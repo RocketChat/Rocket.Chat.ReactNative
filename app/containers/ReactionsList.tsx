@@ -9,11 +9,13 @@ import { TGetCustomEmoji } from '../definitions/IEmoji';
 import { IReaction } from '../definitions';
 import Avatar from './Avatar';
 import sharedStyles from '../views/Styles';
+import I18n from '../i18n';
 
 const MIN_TAB_WIDTH = 70;
 
 const styles = StyleSheet.create({
 	reactionsListContainer: { height: '100%', width: '100%' },
+	allReactionsContainer: { height: '100%', width: '100%', paddingTop: 5 },
 	tabBarItem: {
 		paddingHorizontal: 10,
 		paddingBottom: 10,
@@ -27,7 +29,11 @@ const styles = StyleSheet.create({
 	usernameContainer: { marginHorizontal: 10, justifyContent: 'center' },
 	usernameText: { fontSize: 17, ...sharedStyles.textMedium },
 	standardEmojiStyle: { fontSize: 20, color: '#fff' },
-	customEmojiStyle: { width: 25, height: 25 }
+	customEmojiStyle: { width: 25, height: 25 },
+	allTabStandardEmojiStyle: { fontSize: 28, color: '#fff' },
+	allTabCustomEmojiStyle: { width: 32, height: 32 },
+	allListItemContainer: { paddingHorizontal: 10, marginVertical: 5, flexDirection: 'row', alignItems: 'center' },
+	peopleReactedContainer: { marginHorizontal: 20 }
 });
 
 interface IReactionsListBase {
@@ -38,6 +44,7 @@ interface IReactionsListBase {
 interface IReactionsListProps extends IReactionsListBase {
 	reactions?: IReaction[];
 	width: number;
+	username: string;
 }
 
 interface ITabBarItem extends IReactionsListBase {
@@ -50,6 +57,17 @@ interface IReactionsTabBar extends IReactionsListBase {
 	tabs?: IReaction[];
 	goToPage?: (index: number) => void;
 	width: number;
+}
+
+interface IAllReactionsListItemProps extends IReactionsListBase {
+	item: IReaction;
+	username: string;
+}
+
+interface IAllTabProps extends IReactionsListBase {
+	tabLabel: IReaction;
+	reactions?: IReaction[];
+	username: string;
 }
 
 const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarItem) => {
@@ -65,14 +83,20 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 			})}
 		>
 			<View style={styles.tabBarItem}>
-				<Emoji
-					content={tab.emoji}
-					standardEmojiStyle={styles.standardEmojiStyle}
-					customEmojiStyle={styles.customEmojiStyle}
-					baseUrl={baseUrl}
-					getCustomEmoji={getCustomEmoji}
-				/>
-				<Text style={[styles.reactionCount, { color: colors.auxiliaryTintColor }]}>{tab.usernames.length}</Text>
+				{tab.emoji === I18n.t('All') ? (
+					<Text style={{ color: colors.auxiliaryTintColor, fontSize: 18 }}>{I18n.t('All')}</Text>
+				) : (
+					<>
+						<Emoji
+							content={tab.emoji}
+							standardEmojiStyle={styles.standardEmojiStyle}
+							customEmojiStyle={styles.customEmojiStyle}
+							baseUrl={baseUrl}
+							getCustomEmoji={getCustomEmoji}
+						/>
+						<Text style={[styles.reactionCount, { color: colors.auxiliaryTintColor }]}>{tab.usernames.length}</Text>
+					</>
+				)}
 			</View>
 		</Pressable>
 	);
@@ -127,13 +151,63 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }) => {
 	);
 };
 
-const ReactionsList = ({ reactions, baseUrl, getCustomEmoji, width }: IReactionsListProps): React.ReactElement => {
+const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllReactionsListItemProps) => {
+	const { colors } = useTheme();
+	const count = item.usernames.length;
+	let usernames = item.usernames
+		.slice(0, 3)
+		.map((otherUsername: string) => (username === otherUsername ? I18n.t('you') : otherUsername))
+		.join(', ');
+	if (count > 3) {
+		usernames = `${usernames} ${I18n.t('and_more')} ${count - 3}`;
+	} else {
+		usernames = usernames.replace(/,(?=[^,]*$)/, ` ${I18n.t('and')}`);
+	}
+	return (
+		<View style={styles.allListItemContainer}>
+			<Emoji
+				content={item.emoji}
+				standardEmojiStyle={styles.allTabStandardEmojiStyle}
+				customEmojiStyle={styles.allTabCustomEmojiStyle}
+				baseUrl={baseUrl}
+				getCustomEmoji={getCustomEmoji}
+			/>
+			<View style={styles.peopleReactedContainer}>
+				<Text style={{ color: colors.titleText }}>
+					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
+				</Text>
+				<Text style={[{ color: colors.auxiliaryTintColor }]}>{usernames}</Text>
+			</View>
+		</View>
+	);
+};
+
+const AllTab = ({ reactions, baseUrl, getCustomEmoji, username }: IAllTabProps) => (
+	<View style={styles.allReactionsContainer}>
+		<FlatList
+			data={reactions}
+			renderItem={({ item }) => (
+				<AllReactionsListItem item={item} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} username={username} />
+			)}
+			keyExtractor={item => item.emoji}
+		/>
+	</View>
+);
+
+const ReactionsList = ({ reactions, baseUrl, getCustomEmoji, width, username }: IReactionsListProps): React.ReactElement => {
 	// sorting reactions in descending order on the basic of number of users reacted
 	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
 
 	return (
 		<View style={styles.reactionsListContainer}>
 			<ScrollableTabView renderTabBar={() => <ReactionsTabBar baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} width={width} />}>
+				<AllTab
+					tabLabel={{ emoji: I18n.t('All'), usernames: [], _id: 'All' }}
+					reactions={sortedReactions}
+					baseUrl={baseUrl}
+					getCustomEmoji={getCustomEmoji}
+					username={username}
+				/>
 				{sortedReactions?.map(reaction => (
 					<UsersList tabLabel={reaction} key={reaction.emoji} />
 				))}
