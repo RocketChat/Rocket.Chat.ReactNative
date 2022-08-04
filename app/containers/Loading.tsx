@@ -43,21 +43,23 @@ const Loading = (): React.ReactElement => {
 		visible: boolean;
 		onCancel?: null | Function;
 	}) => {
+		console.log('🚀 ~ file: Loading.tsx ~ line 46 ~ visible', visible, _visible);
 		if (_visible) {
 			// if it's already visible, ignore it
-			if (visible) {
-				return;
+			if (!visible) {
+				setVisible(_visible);
+				opacity.value = 0;
+				opacity.value = withTiming(1, {
+					// 300ms doens't work on expensive navigation animations, like jump to message
+					duration: 500
+				});
+				scale.value = withRepeat(withSequence(withTiming(0, { duration: 1000 }), withTiming(1, { duration: 1000 })), -1);
 			}
-			setVisible(_visible);
 
+			// allows to override the onCancel function
 			if (_onCancel) {
 				setOnCancel(() => () => _onCancel());
 			}
-
-			opacity.value = withTiming(1, {
-				duration: 200
-			});
-			scale.value = withRepeat(withSequence(withTiming(0, { duration: 1000 }), withTiming(1, { duration: 1000 })), -1);
 		} else {
 			setVisible(false);
 		}
@@ -67,7 +69,7 @@ const Loading = (): React.ReactElement => {
 		const listener = EventEmitter.addEventListener(LOADING_EVENT, onEventReceived);
 
 		return () => EventEmitter.removeListener(LOADING_EVENT, listener);
-	}, []);
+	}, [visible]);
 
 	useEffect(() => {
 		if (!visible) {
@@ -78,6 +80,7 @@ const Loading = (): React.ReactElement => {
 	const reset = () => {
 		setVisible(false);
 		setOnCancel(null);
+		cancelAnimation(opacity);
 		cancelAnimation(scale);
 		opacity.value = 0;
 		scale.value = 1;
