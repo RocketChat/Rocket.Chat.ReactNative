@@ -1,9 +1,11 @@
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
-import React from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
-import { connect } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { addUser, removeUser, reset } from '../actions/selectedUsers';
 import { themes } from '../lib/constants';
@@ -13,296 +15,276 @@ import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen, ISearch, ISearchLocal, IUser } from '../definitions';
+import { ISearch, ISearchLocal } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import UserItem from '../containers/UserItem';
 import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { search } from '../lib/methods';
-import { isGroupChat } from '../lib/methods/helpers';
+import { search as searchMethod } from '../lib/methods';
+import { isGroupChat as isGroupChatMethod } from '../lib/methods/helpers';
 import Chip from '../containers/Chip';
+import { useAppSelector } from '../lib/hooks';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
 
-interface ISelectedUsersViewState {
-	maxUsers?: number;
-	search: (ISearch | ISearchLocal)[];
-	chats: ISelectedUser[];
-}
+type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
+type TNavigation = StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
 
-interface ISelectedUsersViewProps extends IBaseScreen<ChatsStackParamList, 'SelectedUsersView'> {
-	users: ISelectedUser[];
-	loading: boolean;
-	user: IUser;
-	baseUrl: string;
+type TSearchItem = ISearch | ISearchLocal;
+
+const RenderSelectedItem = ({
+	item,
+	useRealName,
+	onPressItem
+}: {
+	item: ISelectedUser;
 	useRealName: boolean;
-}
+	onPressItem: (userItem: ISelectedUser) => void;
+}) => {
+	const name = useRealName && item.fname ? item.fname : item.name;
+	const username = item.search ? (item.username as string) : item.name;
 
-class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelectedUsersViewState> {
-	private flatlist?: FlatList;
+	return (
+		<Chip
+			item={item}
+			text={name}
+			avatar={username}
+			onPress={() => onPressItem(item)}
+			testID={`selected-user-${item.name}`}
+			iconName={'close'}
+		/>
+	);
+};
 
-	private querySubscription?: Subscription;
+const Header = ({
+	onChangeText,
+	useRealName,
+	onPressItem
+}: {
+	useRealName: boolean;
+	onChangeText: (text: string) => void;
+	onPressItem: (userItem: ISelectedUser) => void;
+}) => {
+	const flatlist = useRef<FlatList>();
+	const { theme } = useTheme();
+	const { users } = useAppSelector(state => ({
+		users: state.selectedUsers.users
+	}));
 
-	constructor(props: ISelectedUsersViewProps) {
-		super(props);
-		this.init();
-		const maxUsers = props.route.params?.maxUsers;
-		this.state = {
-			maxUsers,
-			search: [],
-			chats: []
-		};
-		const { user, dispatch } = this.props;
-		if (this.isGroupChat()) {
-			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
-		}
-		this.setHeader(props.route.params?.showButton);
+	const onContentSizeChange = () => flatlist?.current?.scrollToEnd({ animated: true });
+
+	return (
+		<View style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
+			{users.length === 0 ? null : (
+				<View>
+					<Text style={{ ...sharedStyles.textRegular, color: themes[theme].auxiliaryTintColor, marginLeft: 16 }}>
+						{I18n.t('N_Selected_members', { n: users.length })}
+					</Text>
+					<FlatList
+						data={users}
+						ref={(ref: FlatList) => (flatlist.current = ref)}
+						onContentSizeChange={onContentSizeChange}
+						getItemLayout={getItemLayout}
+						keyExtractor={item => item._id}
+						renderItem={({ item }) => <RenderSelectedItem onPressItem={onPressItem} useRealName={useRealName} item={item} />}
+						keyboardShouldPersistTaps='always'
+						contentContainerStyle={{ paddingLeft: 16 }}
+						horizontal
+					/>
+				</View>
+			)}
+		</View>
+	);
+};
+
+const RenderItem = ({
+	item,
+	index,
+	useRealName,
+	searchLength,
+	chatsLength,
+	isChecked,
+	onPressItem
+}: {
+	item: ISelectedUser;
+	index: number;
+	useRealName: boolean;
+	searchLength: number;
+	chatsLength: number;
+	isChecked: (username: string) => boolean;
+	onPressItem: (id: string, item?: ISelectedUser) => void;
+}) => {
+	const { theme } = useTheme();
+
+	const name = useRealName && item.fname ? item.fname : item.name;
+	const username = item.search ? (item.username as string) : item.name;
+	let style = { borderColor: themes[theme].separatorColor };
+	if (index === 0) {
+		style = { ...style, ...sharedStyles.separatorTop };
 	}
-
-	componentDidUpdate(prevProps: ISelectedUsersViewProps) {
-		const { users } = this.props;
-		if (prevProps.users.length !== users.length) {
-			this.setHeader(users.length > 0);
-		}
+	if (searchLength > 0 && index === searchLength - 1) {
+		style = { ...style, ...sharedStyles.separatorBottom };
 	}
-
-	componentWillUnmount() {
-		const { dispatch } = this.props;
-		dispatch(reset());
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
+	if (searchLength === 0 && index === chatsLength - 1) {
+		style = { ...style, ...sharedStyles.separatorBottom };
 	}
+	return (
+		<UserItem
+			name={name}
+			username={username}
+			onPress={() => onPressItem(item._id, item)}
+			testID={`select-users-view-item-${item.name}`}
+			icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
+			iconColor={isChecked(username) ? themes[theme].actionTintColor : themes[theme].separatorColor}
+			style={style}
+			theme={theme}
+		/>
+	);
+};
 
-	// showButton can be sent as route params or updated by the component
-	setHeader = (showButton?: boolean) => {
-		const { navigation, route, users } = this.props;
-		const title = route.params?.title ?? I18n.t('Select_Users');
-		const buttonText = route.params?.buttonText ?? I18n.t('Next');
-		const maxUsers = route.params?.maxUsers;
-		const nextAction = route.params?.nextAction ?? (() => {});
+const SelectedUsersView = () => {
+	const [chats, setChats] = useState<ISelectedUser[]>([]);
+	const [search, setSearch] = useState<TSearchItem[]>([]);
+
+	const { maxUsers, showButton, title, buttonText, nextAction } = useRoute<TRoute>().params;
+	const navigation = useNavigation<TNavigation>();
+
+	const { theme } = useTheme();
+	const dispatch = useDispatch();
+
+	const { users, loading, useRealName, user } = useAppSelector(
+		state => ({
+			users: state.selectedUsers.users,
+			loading: state.selectedUsers.loading,
+			useRealName: state.settings.UI_Use_Real_Name as boolean,
+			user: getUserSelector(state)
+		}),
+		shallowEqual
+	);
+
+	const isChecked = useCallback((username: string) => users.findIndex(el => el.name === username) !== -1, [users]);
+
+	const isGroupChat = () => maxUsers && maxUsers > 2;
+
+	useLayoutEffect(() => {
+		const titleHeader = title ?? I18n.t('Select_Users');
+		const buttonTextHeader = buttonText ?? I18n.t('Next');
+		const nextActionHeader = nextAction ?? (() => {});
 		const options = {
-			title,
+			title: titleHeader,
 			headerRight: () =>
-				(!maxUsers || showButton) && (
+				(!maxUsers || showButton || (isGroupChat() && users.length > 1)) && (
 					<HeaderButton.Container>
 						<HeaderButton.Item
-							title={users.length > 0 ? buttonText : I18n.t('Skip')}
-							onPress={nextAction}
+							title={users.length > 0 ? buttonTextHeader : I18n.t('Skip')}
+							onPress={nextActionHeader}
 							testID='selected-users-view-submit'
 						/>
 					</HeaderButton.Container>
 				)
 		};
 		navigation.setOptions(options);
-	};
+	}, [users, maxUsers]);
 
-	// eslint-disable-next-line react/sort-comp
-	init = async () => {
-		try {
-			const db = database.active;
-			const observable = await db.get('subscriptions').query(Q.where('t', 'd')).observeWithColumns(['room_updated_at']);
-
-			this.querySubscription = observable.subscribe(data => {
-				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']) as ISelectedUser[];
-				this.setState({ chats });
-			});
-		} catch (e) {
-			log(e);
+	useEffect(() => {
+		if (isGroupChat()) {
+			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
 		}
-	};
+	}, []);
 
-	onSearchChangeText(text: string) {
-		this.handleSearch(text);
-	}
+	useEffect(() => {
+		let querySubscription: Subscription;
+		const init = async () => {
+			try {
+				const db = database.active;
+				const observable = await db.get('subscriptions').query(Q.where('t', 'd')).observeWithColumns(['room_updated_at']);
 
-	handleSearch = async (text: string) => {
-		const result = await search({ text, filterRooms: false });
-		this.setState({
-			search: result
-		});
-	};
+				querySubscription = observable.subscribe(data => {
+					const chats = orderBy(data, ['roomUpdatedAt'], ['desc']) as ISelectedUser[];
+					setChats(chats);
+				});
+			} catch (e) {
+				log(e);
+			}
+		};
+		init();
 
-	isGroupChat = () => {
-		const { maxUsers } = this.state;
-		return maxUsers && maxUsers > 2;
-	};
+		return () => {
+			dispatch(reset());
+			if (querySubscription && querySubscription.unsubscribe) {
+				querySubscription.unsubscribe();
+			}
+		};
+	}, [dispatch]);
 
-	isChecked = (username: string) => {
-		const { users } = this.props;
-		return users.findIndex(el => el.name === username) !== -1;
-	};
+	const handleSearch = useCallback(async (text: string) => {
+		const result = await searchMethod({ text, filterRooms: false });
+		setSearch(result);
+	}, []);
 
-	toggleUser = (user: ISelectedUser) => {
-		const { maxUsers } = this.state;
-		const {
-			dispatch,
-			users,
-			user: { username }
-		} = this.props;
-
+	const toggleUser = (userItem: ISelectedUser) => {
 		// Disallow removing self user from the direct message group
-		if (this.isGroupChat() && username === user.name) {
+		if (isGroupChat() && user.username === userItem.name) {
 			return;
 		}
 
-		if (!this.isChecked(user.name)) {
-			if (this.isGroupChat() && users.length === maxUsers) {
+		if (!isChecked(userItem.name)) {
+			if (isGroupChat() && users.length === maxUsers) {
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
 			}
 			logEvent(events.SELECTED_USERS_ADD_USER);
-			dispatch(addUser(user));
+			dispatch(addUser(userItem));
 		} else {
 			logEvent(events.SELECTED_USERS_REMOVE_USER);
-			dispatch(removeUser(user));
+			dispatch(removeUser(userItem));
 		}
 	};
 
-	_onPressItem = (id: string, item = {} as ISelectedUser) => {
+	const _onPressItem = (id: string, item = {} as ISelectedUser) => {
 		if (item.search) {
-			this.toggleUser({ _id: item._id, name: item.username as string, fname: item.name });
+			toggleUser({ _id: item._id, name: item.username as string, fname: item.name });
 		} else {
-			this.toggleUser({ _id: item._id, name: item.name, fname: item.fname });
+			toggleUser({ _id: item._id, name: item.name, fname: item.fname });
 		}
 	};
 
-	_onPressSelectedItem = (item: ISelectedUser) => this.toggleUser(item);
+	const searchOrChats = (search.length > 0 ? search : chats) as ISelectedUser[];
+	// filter DM between multiple users
+	const data = searchOrChats.filter(sub => !isGroupChatMethod(sub));
 
-	renderHeader = () => {
-		const { theme } = this.props;
-		return (
-			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='select-users-view-search' />
-				{this.renderSelected()}
-			</View>
-		);
-	};
-
-	setFlatListRef = (ref: FlatList) => (this.flatlist = ref);
-
-	onContentSizeChange = () => this.flatlist?.scrollToEnd({ animated: true });
-
-	renderSelected = () => {
-		const { users, theme } = this.props;
-
-		if (users.length === 0) {
-			return null;
-		}
-
-		return (
-			<View>
-				<Text style={{ ...sharedStyles.textRegular, color: themes[theme].auxiliaryTintColor, marginLeft: 16 }}>
-					{I18n.t('N_Selected_members', { n: users.length })}
-				</Text>
-				<FlatList
-					data={users}
-					ref={this.setFlatListRef}
-					onContentSizeChange={this.onContentSizeChange}
-					getItemLayout={getItemLayout}
-					keyExtractor={item => item._id}
-					renderItem={this.renderSelectedItem}
-					keyboardShouldPersistTaps='always'
-					contentContainerStyle={{ paddingLeft: 16 }}
-					horizontal
-				/>
-			</View>
-		);
-	};
-
-	renderSelectedItem = ({ item }: { item: ISelectedUser }) => {
-		const { useRealName } = this.props;
-		const name = useRealName && item.fname ? item.fname : item.name;
-		const username = item.search ? (item.username as string) : item.name;
-
-		return (
-			<Chip
-				item={item}
-				text={name}
-				avatar={username}
-				onPress={() => this._onPressSelectedItem(item)}
-				testID={`selected-user-${item.name}`}
-				iconName={'close'}
-			/>
-		);
-	};
-
-	renderItem = ({ item, index }: { item: ISelectedUser; index: number }) => {
-		const { search, chats } = this.state;
-		const { theme, useRealName } = this.props;
-
-		const name = useRealName && item.fname ? item.fname : item.name;
-		const username = item.search ? (item.username as string) : item.name;
-		let style = { borderColor: themes[theme].separatorColor };
-		if (index === 0) {
-			style = { ...style, ...sharedStyles.separatorTop };
-		}
-		if (search.length > 0 && index === search.length - 1) {
-			style = { ...style, ...sharedStyles.separatorBottom };
-		}
-		if (search.length === 0 && index === chats.length - 1) {
-			style = { ...style, ...sharedStyles.separatorBottom };
-		}
-		return (
-			<UserItem
-				name={name}
-				username={username}
-				onPress={() => this._onPressItem(item._id, item)}
-				testID={`select-users-view-item-${item.name}`}
-				icon={this.isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
-				iconColor={this.isChecked(username) ? themes[theme].actionTintColor : themes[theme].separatorColor}
-				style={style}
-				theme={theme}
-			/>
-		);
-	};
-
-	renderList = () => {
-		const { search, chats } = this.state;
-		const { theme } = this.props;
-
-		const searchOrChats = (search.length > 0 ? search : chats) as ISelectedUser[];
-		// filter DM between multiple users
-		const data = searchOrChats.filter(sub => !isGroupChat(sub));
-
-		return (
+	return (
+		<SafeAreaView testID='select-users-view'>
+			<StatusBar />
 			<FlatList
 				data={data}
-				extraData={this.props}
 				keyExtractor={item => item._id}
-				renderItem={this.renderItem}
+				renderItem={({ item, index }) => (
+					<RenderItem
+						isChecked={isChecked}
+						chatsLength={chats.length}
+						searchLength={search.length}
+						index={index}
+						item={item}
+						useRealName={useRealName}
+						onPressItem={_onPressItem}
+					/>
+				)}
 				ItemSeparatorComponent={List.Separator}
-				ListHeaderComponent={this.renderHeader}
+				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
 				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				keyboardShouldPersistTaps='always'
 			/>
-		);
-	};
+			<Loading visible={loading} />
+		</SafeAreaView>
+	);
+};
 
-	render = () => {
-		const { loading } = this.props;
-		return (
-			<SafeAreaView testID='select-users-view'>
-				<StatusBar />
-				{this.renderList()}
-				<Loading visible={loading} />
-			</SafeAreaView>
-		);
-	};
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
-	users: state.selectedUsers.users,
-	loading: state.selectedUsers.loading,
-	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name as boolean
-});
-
-export default connect(mapStateToProps)(withTheme(SelectedUsersView));
+export default SelectedUsersView;
