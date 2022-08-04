@@ -930,9 +930,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (messageId) {
 				await this.jumpToMessage(messageId);
 			}
-			EventEmitter.emit(LOADING_EVENT, { visible: false });
 		} catch (e) {
-			EventEmitter.emit(LOADING_EVENT, { visible: false });
 			log(e);
 		}
 	};
