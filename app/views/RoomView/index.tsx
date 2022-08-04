@@ -939,15 +939,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	jumpToMessage = async (messageId: string) => {
 		try {
+			EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
 			const message = await RoomServices.getMessageInfo(messageId);
 
 			if (!message) {
 				return;
-			}
-
-			// If the message is not on local database, shows loading screen
-			if (message.fromServer) {
-				EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
 			}
 
 			if (this.shouldNavigateToRoom(message)) {
@@ -1128,13 +1124,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if ('id' in item) {
 				name = item.tmsg ?? '';
 				jumpToMessageId = item.id;
-
-				// checks if message exists on local database
-				const localMessage = await RoomServices.getMessageInfo(item.id, true);
-				if (!localMessage) {
-					EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
-				}
 			}
+			EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
 			if (!name) {
 				const result = await this.getThreadName(item.tmid, jumpToMessageId);
 				// test if there isn't a thread
