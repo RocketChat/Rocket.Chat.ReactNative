@@ -25,9 +25,9 @@ import Touch from '../lib/methods/helpers/touch';
 import sharedStyles from './Styles';
 import { NewMessageStackParamList } from '../stacks/types';
 import { search as searchMethod } from '../lib/methods';
-import { hasPermission, compareServerVersion } from '../lib/methods/helpers';
+import { compareServerVersion } from '../lib/methods/helpers';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector, usePermissions } from '../lib/hooks';
 
 const QUERY_SIZE = 50;
 
@@ -133,49 +133,18 @@ const Header = ({
 	theme: TSupportedThemes;
 	onChangeText: (text: string) => void;
 }) => {
-	const [permissions, setPermissions] = useState<boolean[]>([]);
 	const navigation = useNavigation<StackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
 
-	const {
-		serverVersion,
+	const serverVersion = useAppSelector(state => state.server.version as string);
+
+	const [
+		createPublicChannelPermission,
+		createPrivateChannelPermission,
 		createTeamPermission,
 		createDirectMessagePermission,
-		createPublicChannelPermission,
-		createPrivateChannelPermission,
 		createDiscussionPermission
-	} = useAppSelector(
-		state => ({
-			serverVersion: state.server.version as string,
-			createTeamPermission: state.permissions['create-team'],
-			createDirectMessagePermission: state.permissions['create-d'],
-			createPublicChannelPermission: state.permissions['create-c'],
-			createPrivateChannelPermission: state.permissions['create-p'],
-			createDiscussionPermission: state.permissions['start-discussion']
-		}),
-		shallowEqual
-	);
-
-	useEffect(() => {
-		const getPermissions = async () => {
-			const permissionsToCreate = await hasPermission([
-				createPublicChannelPermission,
-				createPrivateChannelPermission,
-				createTeamPermission,
-				createDirectMessagePermission,
-				createDiscussionPermission
-			]);
-			setPermissions(permissionsToCreate);
-		};
-
-		getPermissions();
-	}, [
-		createDirectMessagePermission,
-		createDiscussionPermission,
-		createPrivateChannelPermission,
-		createPublicChannelPermission,
-		createTeamPermission
-	]);
+	] = usePermissions(['create-c', 'create-p', 'create-team', 'create-d', 'start-discussion']);
 
 	const createChannel = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
@@ -207,7 +176,7 @@ const Header = ({
 		<>
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground, paddingTop: 16 }}>
 				<View style={styles.buttonContainer}>
-					{permissions[0] || permissions[1] ? (
+					{createPublicChannelPermission || createPrivateChannelPermission ? (
 						<RenderButton
 							onPress={createChannel}
 							title={I18n.t('Create_Channel')}
@@ -216,7 +185,7 @@ const Header = ({
 							first={true}
 						/>
 					) : null}
-					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && permissions[2] ? (
+					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
 						<RenderButton
 							onPress={createTeam}
 							title={I18n.t('Create_Team')}
@@ -224,7 +193,7 @@ const Header = ({
 							testID={'new-message-view-create-team'}
 						/>
 					) : null}
-					{maxUsers > 2 && permissions[3] ? (
+					{maxUsers > 2 && createDirectMessagePermission ? (
 						<RenderButton
 							onPress={createGroupChat}
 							title={I18n.t('Create_Direct_Messages')}
@@ -232,7 +201,7 @@ const Header = ({
 							testID={'new-message-view-create-direct-message'}
 						/>
 					) : null}
-					{permissions[4] ? (
+					{createDiscussionPermission ? (
 						<RenderButton
 							onPress={createDiscussion}
 							title={I18n.t('Create_Discussion')}
