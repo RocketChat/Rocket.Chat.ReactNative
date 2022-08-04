@@ -43,7 +43,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
-import Loading from '../../containers/Loading';
+import { LOADING_EVENT } from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
@@ -115,7 +115,6 @@ const stateAttrsUpdate = [
 	'reacting',
 	'readOnly',
 	'member',
-	'showingBlockingLoader',
 	'canForwardGuest',
 	'canReturnQueue',
 	'canViewCannedResponse'
@@ -198,7 +197,6 @@ interface IRoomViewState {
 	selectedMessage?: TAnyMessageModel;
 	canAutoTranslate: boolean;
 	loading: boolean;
-	showingBlockingLoader: boolean;
 	editing: boolean;
 	replying: boolean;
 	replyWithMention: boolean;
@@ -273,7 +271,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			selectedMessage,
 			canAutoTranslate: false,
 			loading: true,
-			showingBlockingLoader: false,
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
@@ -928,22 +925,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return;
 		}
 		try {
-			this.setState({ showingBlockingLoader: true });
+			EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
 			const parsedUrl = parse(messageUrl, true);
 			const messageId = parsedUrl.query.msg;
 			if (messageId) {
 				await this.jumpToMessage(messageId);
 			}
-			this.setState({ showingBlockingLoader: false });
+			EventEmitter.emit(LOADING_EVENT, { visible: false });
 		} catch (e) {
-			this.setState({ showingBlockingLoader: false });
+			EventEmitter.emit(LOADING_EVENT, { visible: false });
 			log(e);
 		}
 	};
 
 	jumpToMessage = async (messageId: string) => {
 		try {
-			this.setState({ showingBlockingLoader: true });
+			// EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
 			const message = await RoomServices.getMessageInfo(messageId);
 
 			if (!message) {
@@ -975,7 +972,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	cancelJumpToMessage = () => {
 		this.list.current?.cancelJumpToMessage();
-		this.setState({ showingBlockingLoader: false });
+		EventEmitter.emit(LOADING_EVENT, { visible: false });
 	};
 
 	replyBroadcast = (message: IMessage) => {
@@ -1129,10 +1126,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				name = item.tmsg ?? '';
 				jumpToMessageId = item.id;
 			}
+			EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
 			if (!name) {
 				const result = await this.getThreadName(item.tmid, jumpToMessageId);
 				// test if there isn't a thread
 				if (!result) {
+					EventEmitter.emit(LOADING_EVENT, { visible: false });
 					return;
 				}
 				name = result;
@@ -1473,7 +1472,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
+		const { room, reactionsModalVisible, selectedMessage, loading, reacting } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1525,7 +1524,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getCustomEmoji={this.getCustomEmoji}
 				/>
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-				<Loading visible={showingBlockingLoader} onPress={this.cancelJumpToMessage} />
 			</SafeAreaView>
 		);
 	}
