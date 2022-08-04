@@ -120,13 +120,13 @@ const RenderItem = ({
 	searchLength: number;
 	chatsLength: number;
 	isChecked: (username: string) => boolean;
-	onPressItem: (id: string, item?: ISelectedUser) => void;
+	onPressItem: (item: ISelectedUser) => void;
 }) => {
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
 
 	const name = useRealName && item.fname ? item.fname : item.name;
 	const username = item.search ? (item.username as string) : item.name;
-	let style = { borderColor: themes[theme].separatorColor };
+	let style = { borderColor: colors.separatorColor };
 	if (index === 0) {
 		style = { ...style, ...sharedStyles.separatorTop };
 	}
@@ -140,10 +140,10 @@ const RenderItem = ({
 		<UserItem
 			name={name}
 			username={username}
-			onPress={() => onPressItem(item._id, item)}
+			onPress={() => onPressItem(item)}
 			testID={`select-users-view-item-${item.name}`}
 			icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
-			iconColor={isChecked(username) ? themes[theme].actionTintColor : themes[theme].separatorColor}
+			iconColor={isChecked(username) ? colors.actionTintColor : colors.separatorColor}
 			style={style}
 			theme={theme}
 		/>
@@ -157,7 +157,7 @@ const SelectedUsersView = () => {
 	const { maxUsers, showButton, title, buttonText, nextAction } = useRoute<TRoute>().params;
 	const navigation = useNavigation<TNavigation>();
 
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
 	const { users, loading, useRealName, user } = useAppSelector(
@@ -248,7 +248,7 @@ const SelectedUsersView = () => {
 		}
 	};
 
-	const _onPressItem = (id: string, item = {} as ISelectedUser) => {
+	const _onPressItem = (item = {} as ISelectedUser) => {
 		if (item.search) {
 			toggleUser({ _id: item._id, name: item.username as string, fname: item.name });
 		} else {
@@ -279,7 +279,7 @@ const SelectedUsersView = () => {
 				)}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
 				keyboardShouldPersistTaps='always'
 			/>
 			<Loading visible={loading} />
