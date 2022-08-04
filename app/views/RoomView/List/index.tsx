@@ -62,6 +62,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	private mounted = false;
 	private animated = false;
 	private jumping = false;
+	private cancelJump = false;
 	private y = new Value(0);
 	private onScroll = onScroll({ y: this.y });
 	private unsubscribeFocus: () => void;
@@ -272,59 +273,68 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
 		const { listRef } = this.props;
-		listRef.current?.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
 
 	jumpToMessage = (messageId: string) =>
 		new Promise<void>(async resolve => {
-			this.jumping = true;
 			const { messages } = this.state;
 			const { listRef } = this.props;
+
+			// if jump to message was cancelled, reset variables and stop
+			if (this.cancelJump) {
+				this.resetJumpToMessage();
+				return resolve();
+			}
+			this.jumping = true;
+
+			// look for the message on the state
 			const index = messages.findIndex(item => item.id === messageId);
+
 			// if found message, scroll to it
 			if (index > -1) {
-				listRef.current?.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+
 				// wait for scroll animation to finish
-				await requestAnimationFrame(async () => {
-					// if message is not visible
-					if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
-						if (!this.jumping) {
-							return resolve();
-						}
-						await requestAnimationFrame(() => {
-							this.jumpToMessage(messageId);
-						});
-						return;
-					}
-					// if message is visible, highlight it
-					this.setState({ highlightedMessage: messageId });
-					this.clearHighlightedMessageTimeout();
-					// clears highlighted message after 10 seconds
-					this.highlightedMessageTimeout = setTimeout(() => {
-						this.setState({ highlightedMessage: null });
-					}, 10000);
-					resolve();
-				});
-			} else {
-				listRef.current?.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
-				if (!this.jumping) {
-					return resolve();
+				await new Promise(res => setTimeout(res, 300));
+
+				// if message is not visible
+				if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
+					await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+					return;
 				}
+				// if message is visible, highlight it
+				this.setState({ highlightedMessage: messageId });
+				this.clearHighlightedMessageTimeout();
+				// clears highlighted message after some time
+				this.highlightedMessageTimeout = setTimeout(() => {
+					this.setState({ highlightedMessage: null });
+				}, 5000);
+				this.resetJumpToMessage();
+				resolve();
+			} else {
 				// if message not found, wait for scroll to top and then jump to message
-				await requestAnimationFrame(() => {
-					this.jumpToMessage(messageId);
-				});
+				listRef.current?.scrollToIndex({ index: messages.length - 1, animated: true });
+				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 			}
 		});
 
-	// this.jumping is checked in between operations to make sure we're not stuck
-	cancelJumpToMessage = () => {
+	resetJumpToMessage = () => {
+		this.cancelJump = false;
 		this.jumping = false;
+	};
+
+	cancelJumpToMessage = () => {
+		if (this.jumping) {
+			this.cancelJump = true;
+			return;
+		}
+		this.resetJumpToMessage();
 	};
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
-		listRef.current?.getNode().scrollToOffset({ offset: -100 });
+		listRef.current?.scrollToOffset({ offset: -100 });
 	};
 
 	renderFooter = () => {
