@@ -941,6 +941,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const message = await RoomServices.getMessageInfo(messageId);
 
 			if (!message) {
+				this.cancelJumpToMessage();
 				return;
 			}
 
@@ -959,10 +960,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				this.cancelJumpToMessage();
 			}
 		} catch (e) {
 			log(e);
-		} finally {
 			this.cancelJumpToMessage();
 		}
 	};
