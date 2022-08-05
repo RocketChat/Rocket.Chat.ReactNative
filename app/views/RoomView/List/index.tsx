@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, InteractionManager, RefreshControl, ViewToken } from 'react-native';
+import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
