@@ -107,8 +107,7 @@ index 0000000..214ecf5
 +o/jetified-react-native-reanimated-64-hermes-api.jar
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/0674ce792918c850f6599f93a58c111b/jetified-react-native-reanimated-64-hermes-api.jar b/node_modules/react-native-reanimated/android/build/.transforms/0674ce792918c850f6599f93a58c111b/jetified-react-native-reanimated-64-hermes-api.jar
 new file mode 100644
-index 0000000..a362ca2
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/0674ce792918c850f6599f93a58c111b/jetified-react-native-reanimated-64-hermes-api.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/0e49fb8d0588979b43d04c7c3fdd99ce.bin b/node_modules/react-native-reanimated/android/build/.transforms/0e49fb8d0588979b43d04c7c3fdd99ce.bin
 new file mode 100644
 index 0000000..c626d1b
@@ -139,8 +138,7 @@ index 0000000..575535e
 +o/jetified-react-native-reanimated-64-hermes-runtime.jar
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/32ec7705dc5a057bb6d3ba87670adf26/jetified-react-native-reanimated-64-hermes-runtime.jar b/node_modules/react-native-reanimated/android/build/.transforms/32ec7705dc5a057bb6d3ba87670adf26/jetified-react-native-reanimated-64-hermes-runtime.jar
 new file mode 100644
-index 0000000..1112558
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/32ec7705dc5a057bb6d3ba87670adf26/jetified-react-native-reanimated-64-hermes-runtime.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f.bin b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f.bin
 new file mode 100644
 index 0000000..d5e9196
@@ -1979,24 +1977,19 @@ index 0000000..b6c4867
 +int xml rn_dev_preferences 0x0
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jars/classes.jar b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jars/classes.jar
 new file mode 100644
-index 0000000..52fe1a9
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jars/classes.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/arm64-v8a/libreanimated.so b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/arm64-v8a/libreanimated.so
 new file mode 100644
-index 0000000..ae3ae27
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/arm64-v8a/libreanimated.so differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/armeabi-v7a/libreanimated.so b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/armeabi-v7a/libreanimated.so
 new file mode 100644
-index 0000000..afeaf70
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/armeabi-v7a/libreanimated.so differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/x86/libreanimated.so b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/x86/libreanimated.so
 new file mode 100644
-index 0000000..8b7e106
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/x86/libreanimated.so differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/x86_64/libreanimated.so b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/x86_64/libreanimated.so
 new file mode 100644
-index 0000000..cfb18af
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/3dc66eaffffc4a1b2013533ca5514c4f/jetified-react-native-reanimated-64-hermes/jni/x86_64/libreanimated.so differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/4f11b85642437dd25277d88e044df570.bin b/node_modules/react-native-reanimated/android/build/.transforms/4f11b85642437dd25277d88e044df570.bin
 new file mode 100644
 index 0000000..14943b4
@@ -2006,8 +1999,7 @@ index 0000000..14943b4
 +o/jetified-react-native-reanimated-64-hermes.aar
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/4f11b85642437dd25277d88e044df570/jetified-react-native-reanimated-64-hermes.aar b/node_modules/react-native-reanimated/android/build/.transforms/4f11b85642437dd25277d88e044df570/jetified-react-native-reanimated-64-hermes.aar
 new file mode 100644
-index 0000000..695759a
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/4f11b85642437dd25277d88e044df570/jetified-react-native-reanimated-64-hermes.aar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/5c2807702f3678faf4cc7573e2b611ce.bin b/node_modules/react-native-reanimated/android/build/.transforms/5c2807702f3678faf4cc7573e2b611ce.bin
 new file mode 100644
 index 0000000..5d66879
@@ -3375,11 +3367,24 @@ index 0000000..abab530
 +o/jetified-react-native-reanimated-64-hermes-runtime
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/a75698f55b2732ab4a4eb9f5a9c2bfe2/jetified-react-native-reanimated-64-hermes-runtime/classes.dex b/node_modules/react-native-reanimated/android/build/.transforms/a75698f55b2732ab4a4eb9f5a9c2bfe2/jetified-react-native-reanimated-64-hermes-runtime/classes.dex
 new file mode 100644
-index 0000000..6c6af16
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/a75698f55b2732ab4a4eb9f5a9c2bfe2/jetified-react-native-reanimated-64-hermes-runtime/classes.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/be7577e299e7cadc317864fac57e68b7.bin b/node_modules/react-native-reanimated/android/build/.transforms/be7577e299e7cadc317864fac57e68b7.bin
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/.transforms/c14b39947b717193365b5983a5474303.bin b/node_modules/react-native-reanimated/android/build/.transforms/c14b39947b717193365b5983a5474303.bin
 new file mode 100644
 index 0000000..e69de29
+diff --git a/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js b/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js
+index 2030bb0..bfbb49d 100644
+--- a/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js
++++ b/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js
+@@ -141,7 +141,8 @@ export const advanceAnimationByFrame = (count) => {
+     jest.advanceTimersByTime(frameTime);
+ };
+ export const setUpTests = (userConfig = {}) => {
+-    const expect = require('expect');
++    // https://github.com/software-mansion/react-native-reanimated/pull/3347
++    const { expect } = require('@jest/globals');
+     frameTime = Math.round(1000 / config.fps);
+     config = Object.assign(Object.assign({}, config), userConfig);
+     expect.extend({
