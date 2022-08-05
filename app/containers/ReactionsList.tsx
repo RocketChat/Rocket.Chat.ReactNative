@@ -26,14 +26,22 @@ const styles = StyleSheet.create({
 	reactionCount: { marginLeft: 5 },
 	emojiName: { margin: 10 },
 	userItemContainer: { marginHorizontal: 10, marginVertical: 5, flexDirection: 'row' },
-	usernameContainer: { marginHorizontal: 10, justifyContent: 'center' },
+	textContainer: { marginHorizontal: 10, justifyContent: 'center' },
 	usernameText: { fontSize: 17, ...sharedStyles.textMedium },
 	standardEmojiStyle: { fontSize: 20, color: '#fff' },
 	customEmojiStyle: { width: 25, height: 25 },
 	allTabStandardEmojiStyle: { fontSize: 28, color: '#fff' },
 	allTabCustomEmojiStyle: { width: 32, height: 32 },
 	allListItemContainer: { paddingHorizontal: 10, marginVertical: 5, flexDirection: 'row', alignItems: 'center' },
-	peopleReactedContainer: { marginHorizontal: 20 }
+	peopleReactedContainer: { marginHorizontal: 20 },
+	name: {
+		fontSize: 17,
+		...sharedStyles.textMedium
+	},
+	username: {
+		fontSize: 14,
+		...sharedStyles.textRegular
+	}
 });
 
 interface IReactionsListBase {
@@ -129,10 +137,14 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, w
 
 const UsersList = ({ tabLabel }: { tabLabel: IReaction }) => {
 	const { colors } = useTheme();
-	const { emoji, usernames } = tabLabel;
+	const { emoji, usernames, names } = tabLabel;
+	const users =
+		names?.length > 0
+			? usernames.map((username, index) => ({ username, name: names[index] }))
+			: usernames.map(username => ({ username, name: '' }));
 	return (
 		<FlatList
-			data={usernames}
+			data={users}
 			ListHeaderComponent={() => (
 				<View style={styles.emojiName}>
 					<Text style={{ color: colors.auxiliaryTintColor }}>{emoji}</Text>
@@ -140,13 +152,26 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }) => {
 			)}
 			renderItem={({ item }) => (
 				<View style={styles.userItemContainer}>
-					<Avatar text={item} size={36} />
-					<View style={styles.usernameContainer}>
-						<Text style={[styles.usernameText, { color: colors.titleText }]}>{item}</Text>
+					<Avatar text={item.username} size={36} />
+					<View style={styles.textContainer}>
+						{item.name ? (
+							<>
+								<Text style={[styles.name, { color: colors.titleText }]} numberOfLines={1}>
+									{item.name}
+								</Text>
+								<Text style={[styles.username, { color: colors.auxiliaryText }]} numberOfLines={1}>
+									@{item.username}
+								</Text>
+							</>
+						) : (
+							<Text style={[styles.usernameText, { color: colors.titleText }]} numberOfLines={1}>
+								{item.username}
+							</Text>
+						)}
 					</View>
 				</View>
 			)}
-			keyExtractor={item => item}
+			keyExtractor={item => item.username}
 		/>
 	);
 };
@@ -197,12 +222,12 @@ const AllTab = ({ reactions, baseUrl, getCustomEmoji, username }: IAllTabProps) 
 const ReactionsList = ({ reactions, baseUrl, getCustomEmoji, width, username }: IReactionsListProps): React.ReactElement => {
 	// sorting reactions in descending order on the basic of number of users reacted
 	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
-
+	const allTabLabel = { emoji: I18n.t('All'), usernames: [], names: [], _id: 'All' };
 	return (
 		<View style={styles.reactionsListContainer}>
 			<ScrollableTabView renderTabBar={() => <ReactionsTabBar baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} width={width} />}>
 				<AllTab
-					tabLabel={{ emoji: I18n.t('All'), usernames: [], _id: 'All' }}
+					tabLabel={allTabLabel}
 					reactions={sortedReactions}
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
