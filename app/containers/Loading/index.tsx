@@ -11,10 +11,13 @@ import Animated, {
 	withTiming
 } from 'react-native-reanimated';
 
-import { useTheme } from '../theme';
-import EventEmitter from '../lib/methods/helpers/events';
+import { useTheme } from '../../theme';
+import EventEmitter from '../../lib/methods/helpers/events';
 
 export const LOADING_EVENT = 'LOADING_EVENT';
+export const LOADING_TEST_ID = 'loading';
+export const LOADING_BUTTON_TEST_ID = 'loading-button';
+export const LOADING_IMAGE_TEST_ID = 'loading-image';
 
 const styles = StyleSheet.create({
 	container: {
@@ -100,8 +103,8 @@ const Loading = (): React.ReactElement => {
 	const animatedScale = useAnimatedStyle(() => ({ transform: [{ scale: interpolate(scale.value, [0, 0.5, 1], [1, 1.1, 1]) }] }));
 
 	return (
-		<Modal visible={visible} transparent onRequestClose={() => {}}>
-			<TouchableWithoutFeedback onPress={() => onCancelHandler()} testID='loading'>
+		<Modal visible={visible} transparent onRequestClose={() => {}} testID={LOADING_TEST_ID}>
+			<TouchableWithoutFeedback onPress={() => onCancelHandler()} testID={LOADING_BUTTON_TEST_ID}>
 				<View style={styles.container}>
 					<Animated.View
 						style={[
@@ -112,7 +115,11 @@ const Loading = (): React.ReactElement => {
 							animatedOpacity
 						]}
 					/>
-					<Animated.Image source={require('../static/images/logo.png')} style={[styles.image, animatedScale]} />
+					<Animated.Image
+						source={require('../../static/images/logo.png')}
+						style={[styles.image, animatedScale]}
+						testID={LOADING_IMAGE_TEST_ID}
+					/>
 				</View>
 			</TouchableWithoutFeedback>
 		</Modal>
