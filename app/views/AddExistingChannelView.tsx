@@ -15,8 +15,9 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import Loading from '../containers/Loading';
+import Loading, { LOADING_EVENT } from '../containers/Loading';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
+import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../stacks/types';
@@ -28,7 +29,6 @@ interface IAddExistingChannelViewState {
 	search: TSubscriptionModel[];
 	channels: TSubscriptionModel[];
 	selected: string[];
-	loading: boolean;
 }
 
 interface IAddExistingChannelViewProps {
@@ -51,8 +51,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		this.state = {
 			search: [],
 			channels: [],
-			selected: [],
-			loading: false
+			selected: []
 		};
 		this.setHeader();
 	}
@@ -130,12 +129,12 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		const { selected } = this.state;
 		const { isMasterDetail } = this.props;
 
-		this.setState({ loading: true });
+		EventEmitter.emit(LOADING_EVENT, { visible: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
 			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
-				this.setState({ loading: false });
+				EventEmitter.emit(LOADING_EVENT, { visible: false });
 				// @ts-ignore
 				// TODO: Verify goRoom interface for return of call
 				goRoom({ item: result, isMasterDetail });
@@ -143,7 +142,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
 			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
-			this.setState({ loading: false });
+			EventEmitter.emit(LOADING_EVENT, { visible: false });
 		}
 	};
 
@@ -209,13 +208,11 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 	};
 
 	render() {
-		const { loading } = this.state;
-
 		return (
 			<SafeAreaView testID='add-existing-channel-view'>
 				<StatusBar />
 				{this.renderList()}
-				<Loading visible={loading} />
+				<Loading />
 			</SafeAreaView>
 		);
 	}
