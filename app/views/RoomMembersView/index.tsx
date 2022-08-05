@@ -26,6 +26,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { Services } from '../../lib/services';
+import { TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
@@ -70,6 +71,10 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	);
 
+	const teamPermissions: TSupportedPermissions[] = state.room.teamMain
+		? ['edit-team-member', 'view-all-team-channels', 'view-all-teams']
+		: [];
+
 	const [
 		muteUserPermission,
 		setLeaderPermission,
@@ -79,19 +84,7 @@ const RoomMembersView = (): React.ReactElement => {
 		editTeamMemberPermission,
 		viewAllTeamChannelsPermission,
 		viewAllTeamsPermission
-	] = usePermissions(
-		[
-			'mute-user',
-			'set-leader',
-			'set-owner',
-			'set-moderator',
-			'remove-user',
-			'edit-team-member',
-			'view-all-team-channels',
-			'view-all-teams'
-		],
-		params.rid
-	);
+	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
 	useEffect(() => {
 		const subscription = params.room.observe().subscribe(changes => updateState({ room: changes }));
