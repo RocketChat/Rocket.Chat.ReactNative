@@ -4,7 +4,7 @@ defaults: &defaults
 macos: &macos
   macos:
     xcode: "13.3.0"
-  resource_class: large
+  resource_class: medium
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
@@ -208,7 +208,7 @@ commands:
           working_directory: ios
       - run:
           name: Fastlane Build
-          no_output_timeout: 40m
+          # no_output_timeout: 40m
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
             if [[ $CIRCLE_JOB == "ios-build-official" ]]; then

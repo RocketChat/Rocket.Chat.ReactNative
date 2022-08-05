@@ -17,8 +17,7 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    # test for github actions
-    setup_ci(force: true)
+    setup_circle_ci
     create_keychain(	
       name: ENV["MATCH_KEYCHAIN_NAME"],	
       password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
