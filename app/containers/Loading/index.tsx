@@ -46,7 +46,6 @@ const Loading = (): React.ReactElement => {
 		visible: boolean;
 		onCancel?: null | Function;
 	}) => {
-		console.log('🚀 ~ file: Loading.tsx ~ line 46 ~ visible', visible, _visible);
 		if (_visible) {
 			// if it's already visible, ignore it
 			if (!visible) {
@@ -70,14 +69,11 @@ const Loading = (): React.ReactElement => {
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(LOADING_EVENT, onEventReceived);
-
-		return () => EventEmitter.removeListener(LOADING_EVENT, listener);
-	}, [visible]);
-
-	useEffect(() => {
 		if (!visible) {
 			reset();
 		}
+
+		return () => EventEmitter.removeListener(LOADING_EVENT, listener);
 	}, [visible]);
 
 	const reset = () => {
