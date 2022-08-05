@@ -9,8 +9,10 @@ import { colors } from '../../lib/constants';
 import Chip from './index';
 
 const styles = StyleSheet.create({
-	paddingHorizontal: {
-		paddingHorizontal: 14
+	container: {
+		flex: 1,
+		alignItems: 'flex-start',
+		padding: 16
 	}
 });
 
@@ -22,9 +24,12 @@ const stories = storiesOf('Chip', module)
 
 stories.add('Short and Long Chip', () => (
 	<>
-		<View style={styles.paddingHorizontal}>
+		<View style={styles.container}>
 			<Chip iconName='close' avatar='rocket.cat' text={'Rocket.Cat'} />
-			<Chip iconName='close' avatar='rocket.cat' />
+			<Chip iconName='close' avatar='rocket.cat' text={'Short'} />
+			<Chip iconName='close' text='Without Avatar' />
+			<Chip avatar='rocket.cat' text='Without Icon' />
+			<Chip text='Without Avatar and Icon' />
 		</View>
 	</>
 ));

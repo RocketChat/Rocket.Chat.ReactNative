@@ -46,7 +46,7 @@ const Chip = ({
 	textStyle
 }: {
 	avatar?: string;
-	text?: string;
+	text: string;
 	item: ISelectedUser;
 	onPress?: Function;
 	testID?: string;
@@ -72,13 +72,11 @@ const Chip = ({
 			}}>
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
-				{text ? (
-					<View style={styles.textContainer}>
-						<Text style={[styles.name, { color: colors.bodyText }, textStyle]} numberOfLines={1}>
-							{text}
-						</Text>
-					</View>
-				) : null}
+				<View style={styles.textContainer}>
+					<Text style={[styles.name, { color: colors.bodyText }, textStyle]} numberOfLines={1}>
+						{text}
+					</Text>
+				</View>
 				{iconName ? <CustomIcon name={iconName} size={16} color={colors.auxiliaryTintColor} /> : null}
 			</View>
 		</Pressable>
