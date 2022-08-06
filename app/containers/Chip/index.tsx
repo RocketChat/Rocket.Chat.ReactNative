@@ -35,16 +35,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Chip = ({
-	item,
-	avatar,
-	text,
-	onPress = () => {},
-	testID,
-	iconName,
-	style,
-	textStyle
-}: {
+export interface IChip {
 	avatar?: string;
 	text: string;
 	item: ISelectedUser;
@@ -53,7 +44,9 @@ const Chip = ({
 	iconName?: TIconsName;
 	style?: StyleProp<ViewStyle>;
 	textStyle?: StyleProp<TextStyle>;
-}) => {
+}
+
+const Chip = ({ item, avatar, text, onPress = () => {}, testID, iconName, style, textStyle }: IChip) => {
 	const { colors } = useTheme();
 
 	return (
