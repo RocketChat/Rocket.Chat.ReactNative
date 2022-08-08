@@ -49,10 +49,10 @@ async function waitForLoading() {
 		await sleep(10000);
 		return; // FIXME: Loading indicator doesn't animate properly on android
 	}
-	await waitFor(element(by.id('loading')))
+	await waitFor(element(by.id('loading-image')))
 		.toBeVisible()
 		.withTimeout(5000);
-	await waitFor(element(by.id('loading')))
+	await waitFor(element(by.id('loading-image')))
 		.toBeNotVisible()
 		.withTimeout(10000);
 }
