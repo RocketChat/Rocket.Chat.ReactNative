@@ -208,7 +208,7 @@ commands:
           working_directory: ios
       - run:
           name: Fastlane Build
-          # no_output_timeout: 40m
+          no_output_timeout: 3h
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
             if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
