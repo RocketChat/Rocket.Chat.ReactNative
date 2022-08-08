@@ -17556,9 +17556,9 @@ rn-host-detect@1.2.0:
   resolved "https://registry.yarnpkg.com/rn-host-detect/-/rn-host-detect-1.2.0.tgz#8b0396fc05631ec60c1cb8789e5070cdb04d0da0"
   integrity sha512-btNg5kzHcjZZ7t7mvvV/4wNJ9e3MPgrWivkRgWURzXL0JJ0pwWlU4zrbmdlz3HHzHOxhBhHB4D+/dbMFfu4/4A==
 
-rn-root-view@RocketChat/rn-root-view#fix.maven:
+rn-root-view@RocketChat/rn-root-view:
   version "1.0.3"
-  resolved "https://codeload.github.com/RocketChat/rn-root-view/tar.gz/1d4147a91019ad9686e1d38a5cfa496109ec45e5"
+  resolved "https://codeload.github.com/RocketChat/rn-root-view/tar.gz/d910449d3c65889853da4f937e72b2d756895fb5"
 
 rsvp@^4.8.4:
   version "4.8.5"
