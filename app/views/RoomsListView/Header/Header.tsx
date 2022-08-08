@@ -91,7 +91,8 @@ const Header = React.memo(
 						<Text
 							testID='rooms-list-header-server-subtitle'
 							style={[styles.subtitle, { color: colors.auxiliaryText, fontSize: subTitleFontSize }]}
-							numberOfLines={1}>
+							numberOfLines={1}
+						>
 							{subtitle}
 						</Text>
 					) : null}

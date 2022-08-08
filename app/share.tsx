@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
@@ -169,36 +168,36 @@ class Root extends React.Component<{}, IState> {
 		const { theme, root, width, height, scale, fontScale } = this.state;
 		const navTheme = navigationTheme(theme);
 		return (
-			<AppearanceProvider>
-				<Provider store={store}>
-					<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
-						<DimensionsContext.Provider
-							value={{
-								width,
-								height,
-								scale,
-								fontScale,
-								setDimensions: this.setDimensions
-							}}>
-							<NavigationContainer
-								theme={navTheme}
-								ref={Navigation.navigationRef}
-								onStateChange={state => {
-									const previousRouteName = Navigation.routeNameRef.current;
-									const currentRouteName = getActiveRouteName(state);
-									if (previousRouteName !== currentRouteName) {
-										setCurrentScreen(currentRouteName);
-									}
-									Navigation.routeNameRef.current = currentRouteName;
-								}}>
-								<App root={root} />
-								<Loading />
-							</NavigationContainer>
-							<ScreenLockedView />
-						</DimensionsContext.Provider>
-					</ThemeContext.Provider>
-				</Provider>
-			</AppearanceProvider>
+			<Provider store={store}>
+				<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+					<DimensionsContext.Provider
+						value={{
+							width,
+							height,
+							scale,
+							fontScale,
+							setDimensions: this.setDimensions
+						}}
+					>
+						<NavigationContainer
+							theme={navTheme}
+							ref={Navigation.navigationRef}
+							onStateChange={state => {
+								const previousRouteName = Navigation.routeNameRef.current;
+								const currentRouteName = getActiveRouteName(state);
+								if (previousRouteName !== currentRouteName) {
+									setCurrentScreen(currentRouteName);
+								}
+								Navigation.routeNameRef.current = currentRouteName;
+							}}
+						>
+							<App root={root} />
+							<Loading />
+						</NavigationContainer>
+						<ScreenLockedView />
+					</DimensionsContext.Provider>
+				</ThemeContext.Provider>
+			</Provider>
 		);
 	}
 }

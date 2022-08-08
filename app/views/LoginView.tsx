@@ -169,7 +169,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					}}
 					testID='login-view-email'
 					textContentType='username'
-					autoCompleteType='username'
+					autoComplete='username'
 					value={user}
 				/>
 				<FormTextInput
@@ -185,7 +185,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					onChangeText={(value: string) => this.setState({ password: value })}
 					testID='login-view-password'
 					textContentType='password'
-					autoCompleteType='password'
+					autoComplete='password'
 				/>
 				<Button
 					title={I18n.t('Login')}
@@ -214,7 +214,8 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						<Text
 							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 							onPress={this.register}
-							testID='login-view-register'>
+							testID='login-view-register'
+						>
 							{I18n.t('Create_account')}
 						</Text>
 					</View>

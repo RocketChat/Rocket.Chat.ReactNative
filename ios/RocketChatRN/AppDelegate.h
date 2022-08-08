@@ -9,12 +9,10 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridgeDelegate.h>
-#import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
-#import "RocketChatRN-Swift.h"
+#import <Expo/Expo.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
+@interface AppDelegate : EXAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
 
 @end

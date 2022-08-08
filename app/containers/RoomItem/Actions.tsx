@@ -39,7 +39,8 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 					{ width: width * 2, backgroundColor: colors.tintColor, right: '100%' },
 					viewHeight,
 					animatedStyles
-				]}>
+				]}
+			>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<CustomIcon
@@ -122,7 +123,8 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					},
 					viewHeight,
 					animatedFavStyles
-				]}>
+				]}
+			>
 				<RectButton style={[styles.actionButton, { backgroundColor: colors.favoriteBackground }]} onPress={toggleFav}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
@@ -141,7 +143,8 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					},
 					isCondensed && { height: ROW_HEIGHT_CONDENSED },
 					animatedHideStyles
-				]}>
+				]}
+			>
 				<RectButton style={[styles.actionButton, { backgroundColor: colors.hideBackground }]} onPress={onHidePress}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}

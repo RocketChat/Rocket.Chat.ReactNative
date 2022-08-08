@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import { Audio, AVPlaybackStatus } from 'expo-av';
+import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import { dequal } from 'dequal';
@@ -50,8 +50,8 @@ const mode = {
 	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
 
 const styles = StyleSheet.create({
@@ -92,7 +92,8 @@ const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButto
 		disabled={disabled}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
-		background={Touchable.SelectableBackgroundBorderless()}>
+		background={Touchable.SelectableBackgroundBorderless()}
+	>
 		{loading ? (
 			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 		) : (
@@ -286,7 +287,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					style={[
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-					]}>
+					]}
+				>
 					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
 						disabled={isReply}

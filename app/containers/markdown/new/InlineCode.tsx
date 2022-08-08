@@ -22,7 +22,8 @@ const InlineCode = ({ value }: IInlineCodeProps) => {
 					backgroundColor: themes[theme].bannerBackground,
 					borderColor: themes[theme].borderColor
 				}
-			]}>
+			]}
+		>
 			{(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':
