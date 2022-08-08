@@ -50,6 +50,8 @@ const Loading = (): React.ReactElement => {
 			// if it's already visible, ignore it
 			if (!visible) {
 				setVisible(_visible);
+				opacity.value = 0;
+				scale.value = 1;
 				opacity.value = withTiming(1, {
 					// 300ms doens't work on expensive navigation animations, like jump to message
 					duration: 500
@@ -63,28 +65,21 @@ const Loading = (): React.ReactElement => {
 			}
 		} else {
 			setVisible(false);
+			reset();
 		}
 	};
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(LOADING_EVENT, onEventReceived);
-		if (!visible) {
-			reset();
-		}
 
 		return () => EventEmitter.removeListener(LOADING_EVENT, listener);
 	}, [visible]);
 
 	const reset = () => {
-		opacity.value = withTiming(0, {
-			duration: 200
-		});
+		cancelAnimation(scale);
+		cancelAnimation(opacity);
 		setVisible(false);
 		setOnCancel(null);
-		cancelAnimation(opacity);
-		cancelAnimation(scale);
-		opacity.value = 0;
-		scale.value = 1;
 	};
 
 	const onCancelHandler = () => {
