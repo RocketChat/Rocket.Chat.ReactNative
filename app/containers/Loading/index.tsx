@@ -50,7 +50,6 @@ const Loading = (): React.ReactElement => {
 			// if it's already visible, ignore it
 			if (!visible) {
 				setVisible(_visible);
-				opacity.value = 0;
 				opacity.value = withTiming(1, {
 					// 300ms doens't work on expensive navigation animations, like jump to message
 					duration: 500
@@ -77,6 +76,9 @@ const Loading = (): React.ReactElement => {
 	}, [visible]);
 
 	const reset = () => {
+		opacity.value = withTiming(0, {
+			duration: 200
+		});
 		setVisible(false);
 		setOnCancel(null);
 		cancelAnimation(opacity);
@@ -90,6 +92,7 @@ const Loading = (): React.ReactElement => {
 			return;
 		}
 		onCancel();
+		setVisible(false);
 		reset();
 	};
 
