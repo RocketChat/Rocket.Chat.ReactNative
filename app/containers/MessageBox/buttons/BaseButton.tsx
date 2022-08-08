@@ -23,7 +23,8 @@ const BaseButton = ({ accessibilityLabel, icon, color, ...props }: IBaseButton) 
 			<View
 				accessible
 				accessibilityLabel={accessibilityLabel ? i18n.t(accessibilityLabel) : accessibilityLabel}
-				accessibilityRole='button'>
+				accessibilityRole='button'
+			>
 				<CustomIcon name={icon} size={24} color={color || themes[theme].auxiliaryTintColor} />
 			</View>
 		</BorderlessButton>

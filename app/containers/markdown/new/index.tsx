@@ -53,7 +53,8 @@ const Body = ({
 				getCustomEmoji,
 				baseUrl,
 				onLinkPress
-			}}>
+			}}
+		>
 			{tokens?.map(block => {
 				switch (block.type) {
 					case 'BIG_EMOJI':

@@ -807,7 +807,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'
-					theme={theme}>
+					theme={theme}
+				>
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
 							{t === 'd' && member._id ? (

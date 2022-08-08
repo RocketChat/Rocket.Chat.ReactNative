@@ -12,7 +12,9 @@ describe('Create user screen', () => {
 
 	describe('Render', () => {
 		it('should have create user screen', async () => {
-			await expect(element(by.id('register-view'))).toBeVisible();
+			await waitFor(element(by.id('register-view')))
+				.toExist()
+				.withTimeout(2000);
 		});
 
 		it('should have name input', async () => {

@@ -117,12 +117,14 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 					borderColor: themes[theme].separatorColor,
 					marginTop: insets.top
 				}
-			]}>
+			]}
+		>
 			<Touchable
 				style={styles.content}
 				onPress={onPress}
 				hitSlop={BUTTON_HIT_SLOP}
-				background={Touchable.SelectableBackgroundBorderless()}>
+				background={Touchable.SelectableBackgroundBorderless()}
+			>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 					<View style={styles.inner}>

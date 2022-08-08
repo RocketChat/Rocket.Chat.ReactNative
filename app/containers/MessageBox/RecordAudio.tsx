@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { getInfoAsync } from 'expo-file-system';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
@@ -37,7 +37,8 @@ const RECORDING_SETTINGS = {
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
 		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate,
 		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC
-	}
+	},
+	web: {}
 };
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
@@ -45,8 +46,8 @@ const RECORDING_MODE = {
 	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
 
 const formatTime = function (time: number) {

@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
@@ -8,13 +10,21 @@ buildscript {
     def isPlay = !taskRequests.contains("foss")
 
     ext {
-        buildToolsVersion = "29.0.3"
+        buildToolsVersion = "31.0.0"
         minSdkVersion = 23
-        compileSdkVersion = 30
+        compileSdkVersion = 31
+        // TODO: Fix "android:exported" issue and target 31 again
         targetSdkVersion = 30
-        ndkVersion = "20.1.5948944"
+        if (System.properties['os.arch'] == "aarch64") {
+            // For M1 Users we need to use the NDK 24 which added support for aarch64
+            ndkVersion = "24.0.8215888"
+        } else {
+            // Otherwise we default to the side-by-side NDK version from AGP.
+            ndkVersion = "21.4.7075529"
+        }
         glideVersion = "4.11.0"
         kotlin_version = "1.6.10"
+        kotlinVersion = '1.6.10'
         supportLibVersion = "28.0.0"
         libre_build = !(isPlay.toBoolean())
         jitsi_url = isPlay ? "https://github.com/RocketChat/jitsi-maven-repository/raw/master/releases" : "https://github.com/RocketChat/jitsi-maven-repository/raw/libre/releases"
@@ -24,19 +34,21 @@ buildscript {
     repositories {
         mavenLocal()
         google()
-        jcenter()
         maven {
             url 'https://maven.fabric.io/public'
         }
+        mavenCentral()
     }
 
     dependencies {
         if (isPlay) {
-            classpath 'com.google.gms:google-services:4.2.0'
-            classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0'
-            classpath 'com.bugsnag:bugsnag-android-gradle-plugin:5.+'
+            classpath 'com.google.gms:google-services:4.3.8'
+            classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
+            classpath 'com.bugsnag:bugsnag-android-gradle-plugin:7.+'
         }
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("de.undercouch:gradle-download-task:4.1.2")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -60,30 +72,14 @@ allprojects {
         maven {
             url jitsi_url
         }
-
-        google()
-        jcenter()
-        maven { url 'https://maven.google.com' }
-        maven { url 'https://www.jitpack.io' }
-    }
-}
-
-subprojects { subproject ->
-    afterEvaluate {
-        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-            android {
-                compileSdkVersion 30
-                buildToolsVersion "29.0.3"
-                defaultConfig {
-                    targetSdkVersion 30
-                }
-                variantFilter { variant ->
-                    def names = variant.flavors*.name
-                    if (names.contains("reactNative59")) {
-                        setIgnore(true)
-                    }
-                }
+        mavenCentral {
+            content {
+                excludeGroup "com.facebook.react"
             }
         }
+
+        google()
+        maven { url 'https://maven.google.com' }
+        maven { url 'https://www.jitpack.io' }
     }
 }
