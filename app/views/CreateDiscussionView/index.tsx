@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ScrollView, Switch, Text } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
-import Loading from '../../containers/Loading';
+import { LOADING_EVENT } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
@@ -24,6 +24,7 @@ import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } fro
 import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;
@@ -52,8 +53,9 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			this.setHeader();
 		}
 
-		if (!loading && loading !== prevProps.loading) {
-			setTimeout(() => {
+		if (loading !== prevProps.loading) {
+			EventEmitter.emit(LOADING_EVENT, { visible: loading });
+			if (!loading) {
 				if (failure) {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });
 					showErrorAlert(msg);
@@ -72,7 +74,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 					};
 					goRoom({ item, isMasterDetail });
 				}
-			}, 300);
+			}
 		}
 	}
 
@@ -146,7 +148,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 	render() {
 		const { name, users, encrypted } = this.state;
-		const { server, user, loading, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
+		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
@@ -188,7 +190,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 								<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
 							</>
 						) : null}
-						<Loading visible={loading} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>
