@@ -66,6 +66,7 @@ class EmojiCategory extends React.Component<IEmojiCategory> {
 				initialNumToRender={45}
 				removeClippedSubviews
 				{...scrollPersistTaps}
+				keyboardDismissMode={'none'}
 			/>
 		);
 	}

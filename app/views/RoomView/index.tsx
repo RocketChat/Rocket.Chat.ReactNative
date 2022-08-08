@@ -3,7 +3,6 @@ import { InteractionManager, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
-import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,7 +21,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
-import ReactionsModal from '../../containers/ReactionsModal';
+import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
@@ -100,6 +99,7 @@ import {
 	hasPermission
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -150,7 +150,7 @@ const roomAttrsUpdate = [
 	't'
 ] as TRoomUpdate[];
 
-interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
+interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 	appState: string;
 	useRealName?: boolean;
@@ -184,7 +184,7 @@ interface IRoomViewState {
 				fname?: string;
 				prid?: string;
 				joinCodeRequired?: boolean;
-				status?: boolean;
+				status?: string;
 				lastMessage?: ILastMessage;
 				sysMes?: boolean;
 				onHold?: boolean;
@@ -634,6 +634,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
+					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 				/>
 			)
@@ -784,7 +785,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	errorActionsShow = (message: TAnyMessageModel) => {
-		this.messageErrorActions?.showMessageErrorActions(message);
+		this.messagebox?.current?.closeEmojiAndAction(this.messageErrorActions?.showMessageErrorActions, message);
+	};
+
+	showActionSheet = (options: any) => {
+		const { showActionSheet } = this.props;
+		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, options);
 	};
 
 	onEditInit = (message: TAnyMessageModel) => {
@@ -833,7 +839,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		this.messageActions?.showMessageActions(message);
+		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
 	};
 
 	showAttachment = (attachment: IAttachment) => {
@@ -853,12 +859,21 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionLongPress = (message: TAnyMessageModel) => {
-		this.setState({ selectedMessage: message, reactionsModalVisible: true });
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-	};
-
-	onCloseReactionsModal = () => {
-		this.setState({ selectedMessage: undefined, reactionsModalVisible: false });
+		this.setState({ selectedMessage: message });
+		const { showActionSheet, baseUrl, width } = this.props;
+		const { selectedMessage } = this.state;
+		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, {
+			children: (
+				<ReactionsList
+					reactions={selectedMessage?.reactions}
+					baseUrl={baseUrl}
+					getCustomEmoji={this.getCustomEmoji}
+					width={width}
+				/>
+			),
+			snaps: ['50%'],
+			enableContentPanningGesture: false
+		});
 	};
 
 	onEncryptedPress = () => {
@@ -1336,6 +1351,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
 					theme={theme}
+					closeEmojiAndAction={this.messagebox?.current?.closeEmojiAndAction}
 				/>
 			);
 		}
@@ -1473,7 +1489,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
+		const { room, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1516,14 +1532,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					theme={theme}
 				/>
 				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-				<ReactionsModal
-					message={selectedMessage}
-					isVisible={reactionsModalVisible}
-					user={user}
-					baseUrl={baseUrl}
-					onClose={this.onCloseReactionsModal}
-					getCustomEmoji={this.getCustomEmoji}
-				/>
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 				<Loading visible={showingBlockingLoader} />
 			</SafeAreaView>
@@ -1549,4 +1557,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
+export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
