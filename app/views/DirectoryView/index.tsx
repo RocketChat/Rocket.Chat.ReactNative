@@ -216,7 +216,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 							sharedStyles.separatorVertical,
 							styles.toggleDropdownContainer,
 							{ borderColor: themes[theme].separatorColor }
-						]}>
+						]}
+					>
 						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
 						<CustomIcon

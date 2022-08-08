@@ -26,7 +26,8 @@ const Button = React.memo(({ text, disabled, onPress, icon }: IPasscodeButton) =
 			rippleColor={themes[theme].passcodeButtonActive}
 			enabled={!disabled}
 			theme={theme}
-			onPress={press}>
+			onPress={press}
+		>
 			{icon ? (
 				<CustomIcon name={icon} size={36} color={themes[theme].passcodePrimary} />
 			) : (

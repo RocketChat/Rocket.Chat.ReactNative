@@ -18,7 +18,8 @@ const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 		<Provider store={store}>
 			<View
 				style={[styles.emojiKeyboardContainer, { borderTopColor: themes[theme].borderColor }]}
-				testID='messagebox-keyboard-emoji'>
+				testID='messagebox-keyboard-emoji'
+			>
 				<EmojiPicker onEmojiSelected={onEmojiSelected} theme={theme} />
 			</View>
 		</Provider>

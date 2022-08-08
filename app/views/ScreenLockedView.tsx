@@ -81,7 +81,8 @@ const ScreenLockedView = (): JSX.Element => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
-			animationOut='fadeOut'>
+			animationOut='fadeOut'
+		>
 			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
 			{data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
