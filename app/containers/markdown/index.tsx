@@ -22,14 +22,14 @@ import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
-import { TSupportedThemes } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
 	msg?: string | null;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
@@ -354,4 +354,4 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	}
 }
 
-export default Markdown;
+export default withTheme(Markdown);
