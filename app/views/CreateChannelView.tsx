@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
 import { TextInput } from '../containers/TextInput';
-import Loading from '../containers/Loading';
+import { LOADING_EVENT } from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../containers/KeyboardView';
@@ -24,6 +24,7 @@ import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { hasPermission } from '../lib/methods/helpers';
+import EventEmitter from '../lib/methods/helpers/events';
 
 const styles = StyleSheet.create({
 	container: {
@@ -169,12 +170,15 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	}
 
 	componentDidUpdate(prevProps: ICreateChannelViewProps) {
-		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
+		const { createPublicChannelPermission, createPrivateChannelPermission, isFetching } = this.props;
 		if (
 			!dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission) ||
 			!dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission)
 		) {
 			this.handleHasPermission();
+		}
+		if (isFetching !== prevProps.isFetching) {
+			EventEmitter.emit(LOADING_EVENT, { visible: isFetching });
 		}
 	}
 
@@ -368,7 +372,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 	render() {
 		const { channelName, isTeam } = this.state;
-		const { users, isFetching, theme } = this.props;
+		const { users, theme } = this.props;
 		const userCount = users.length;
 
 		return (
@@ -408,7 +412,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							</Text>
 						</View>
 						{this.renderInvitedList()}
-						<Loading visible={isFetching} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>

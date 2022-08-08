@@ -15,7 +15,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import Loading, { LOADING_EVENT } from '../containers/Loading';
+import { LOADING_EVENT } from '../containers/Loading';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom } from '../lib/methods/helpers/goRoom';
@@ -212,7 +212,6 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			<SafeAreaView testID='add-existing-channel-view'>
 				<StatusBar />
 				{this.renderList()}
-				<Loading />
 			</SafeAreaView>
 		);
 	}
