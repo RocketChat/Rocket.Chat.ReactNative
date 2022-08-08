@@ -57,7 +57,8 @@ export const MessageDecorator = story => (
 			onDiscussionPress: () => {},
 			onReactionLongPress: () => {},
 			threadBadgeColor: themes.light.tunreadColor
-		}}>
+		}}
+	>
 		{story()}
 	</MessageContext.Provider>
 );

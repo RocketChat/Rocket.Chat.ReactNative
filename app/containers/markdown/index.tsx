@@ -138,7 +138,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	get isNewMarkdown(): boolean {
 		const { md, enableMessageParser } = this.props;
-		return !!enableMessageParser && !!md;
+		return (enableMessageParser ?? true) && !!md;
 	}
 
 	renderText = ({ context, literal }: { context: []; literal: string }) => {
@@ -163,7 +163,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 						borderColor: themes[theme].bannerBackground
 					},
 					...style
-				]}>
+				]}
+			>
 				{literal}
 			</Text>
 		);
@@ -181,7 +182,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 						borderColor: themes[theme].bannerBackground
 					},
 					...style
-				]}>
+				]}
+			>
 				{literal}
 			</Text>
 		);

@@ -22,7 +22,8 @@ const Item = React.memo(({ left, right, text, onPress, testID, current, theme }:
 		testID={testID}
 		onPress={onPress}
 		theme={theme}
-		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}>
+		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
+	>
 		<View style={styles.itemHorizontal}>{left}</View>
 		<View style={styles.itemCenter}>
 			<Text style={[styles.itemText, { color: themes[theme].titleText }]} numberOfLines={1} accessibilityLabel={text}>
