@@ -1,17 +1,16 @@
 import React, { useLayoutEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
-import { SettingsStackParamList } from '../stacks/types';
-import I18n from '../i18n';
-import { useTheme } from '../theme';
-import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
-import { supportSystemTheme } from '../lib/methods/helpers';
 import SafeAreaView from '../containers/SafeAreaView';
-import UserPreferences from '../lib/methods/userPreferences';
+import StatusBar from '../containers/StatusBar';
+import { IThemePreference, TDarkLevel, TThemeMode } from '../definitions/ITheme';
+import I18n from '../i18n';
+import { THEME_PREFERENCES_KEY } from '../lib/constants';
+import { supportSystemTheme } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { IThemePreference, TThemeMode, TDarkLevel } from '../definitions/ITheme';
-import { THEME_PREFERENCES_KEY, themes } from '../lib/constants';
-import { IBaseScreen } from '../definitions';
+import UserPreferences from '../lib/methods/userPreferences';
+import { useTheme } from '../theme';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -58,16 +57,15 @@ interface ITheme {
 	group: string;
 }
 
-type IThemeViewProps = IBaseScreen<SettingsStackParamList, 'ThemeView'>;
-
-const ThemeView = ({ navigation }: IThemeViewProps): React.ReactElement => {
-	const { theme, themePreferences, setTheme } = useTheme();
+const ThemeView = (): React.ReactElement => {
+	const { colors, themePreferences, setTheme } = useTheme();
+	const { setOptions } = useNavigation();
 
 	useLayoutEffect(() => {
-		navigation.setOptions({
+		setOptions({
 			title: I18n.t('Theme')
 		});
-	}, [navigation]);
+	}, []);
 
 	const isSelected = (item: ITheme) => {
 		const { group } = item;
@@ -92,10 +90,10 @@ const ThemeView = ({ navigation }: IThemeViewProps): React.ReactElement => {
 			logEvent(events.THEME_SET_DARK_LEVEL, { dark_level: value });
 			changes = { darkLevel: value as TDarkLevel };
 		}
-		_setTheme(changes);
+		handleTheme(changes);
 	};
 
-	const _setTheme = (theme: Partial<IThemePreference>) => {
+	const handleTheme = (theme: Partial<IThemePreference>) => {
 		const newTheme: IThemePreference = { ...(themePreferences as IThemePreference), ...theme };
 		if (setTheme) {
 			setTheme(newTheme);
@@ -103,22 +101,17 @@ const ThemeView = ({ navigation }: IThemeViewProps): React.ReactElement => {
 		}
 	};
 
-	const renderIcon = () => <List.Icon name='check' color={themes[theme].tintColor} />;
-
-	const renderItem = ({ item }: { item: ITheme }) => {
-		const { label, value } = item;
-		return (
-			<>
-				<List.Item
-					title={label}
-					onPress={() => onClick(item)}
-					testID={`theme-view-${value}`}
-					right={() => (isSelected(item) ? renderIcon() : null)}
-				/>
-				<List.Separator />
-			</>
-		);
-	};
+	const RenderItem = React.memo(({ theme }: { theme: ITheme }) => (
+		<>
+			<List.Item
+				title={theme.label}
+				onPress={() => onClick(theme)}
+				testID={`theme-view-${theme.value}`}
+				right={() => (isSelected(theme) ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+			/>
+			<List.Separator />
+		</>
+	));
 
 	return (
 		<SafeAreaView testID='theme-view'>
@@ -126,11 +119,19 @@ const ThemeView = ({ navigation }: IThemeViewProps): React.ReactElement => {
 			<List.Container>
 				<List.Section title='Theme'>
 					<List.Separator />
-					<>{themeGroup.map(item => renderItem({ item }))}</>
+					<>
+						{themeGroup.map(theme => (
+							<RenderItem theme={theme} key={theme.label} />
+						))}
+					</>
 				</List.Section>
 				<List.Section title='Dark_level'>
 					<List.Separator />
-					<>{darkGroup.map(item => renderItem({ item }))}</>
+					<>
+						{darkGroup.map(theme => (
+							<RenderItem theme={theme} key={theme.label} />
+						))}
+					</>
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>
