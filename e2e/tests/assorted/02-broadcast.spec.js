@@ -17,6 +17,9 @@ describe('Broadcast room', () => {
 	});
 
 	it('should create broadcast room', async () => {
+		await waitFor(element(by.id('rooms-list-view-create-channel')))
+			.toExist()
+			.withTimeout(2000);
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view')))
 			.toBeVisible()

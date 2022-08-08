@@ -68,7 +68,8 @@ const RoomItem = ({
 		type={type}
 		isFocused={!!isFocused}
 		swipeEnabled={swipeEnabled}
-		displayMode={displayMode}>
+		displayMode={displayMode}
+	>
 		<Wrapper
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
@@ -81,7 +82,8 @@ const RoomItem = ({
 			displayMode={displayMode}
 			showAvatar={showAvatar}
 			showLastMessage={!!showLastMessage}
-			sourceType={sourceType}>
+			sourceType={sourceType}
+		>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
 					<View style={styles.titleContainer}>

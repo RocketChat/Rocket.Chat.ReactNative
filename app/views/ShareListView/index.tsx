@@ -437,7 +437,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				<SafeAreaView>
 					<ScrollView
 						style={{ backgroundColor: themes[theme].backgroundColor }}
-						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
+						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
+					>
 						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
 						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
 					</ScrollView>
