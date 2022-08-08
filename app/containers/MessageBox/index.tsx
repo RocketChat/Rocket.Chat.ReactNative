@@ -19,11 +19,7 @@ import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import { themes } from '../../lib/constants';
-// @ts-ignore
-// eslint-disable-next-line import/extensions,import/no-unresolved
 import LeftButtons from './LeftButtons';
-// @ts-ignore
-// eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
 import { canUploadFile } from '../../lib/methods/helpers/media';
 import EventEmiter from '../../lib/methods/helpers/events';
@@ -37,12 +33,13 @@ import {
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
-	MENTIONS_TRACKING_TYPE_USERS
+	MENTIONS_TRACKING_TYPE_USERS,
+	TIMEOUT_CLOSE_EMOJI
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
-import { withActionSheet } from '../ActionSheet';
+import { TActionSheetOptionsItem, withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
 import { forceJpgExtension } from './forceJpgExtension';
@@ -58,14 +55,12 @@ import {
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 
-if (isAndroid) {
-	require('./EmojiKeyboard');
-}
+require('./EmojiKeyboard');
 
 const imagePickerConfig = {
 	cropping: true,
@@ -270,6 +265,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			this.closeEmoji();
 			this.component?.blur();
 		});
 	}
@@ -330,6 +326,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextProps.theme !== theme) {
 			return true;
 		}
+		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
 		if (!isFocused()) {
 			return false;
 		}
@@ -340,9 +339,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (nextProps.editing !== editing) {
-			return true;
-		}
-		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
 		if (nextState.trackingType !== trackingType) {
@@ -809,7 +805,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { permissionToUpload } = this.state;
 		const { showActionSheet, goToCannedResponses } = this.props;
 
-		const options = [];
+		const options: TActionSheetOptionsItem[] = [];
 		if (goToCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
@@ -847,7 +843,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			icon: 'discussions',
 			onPress: this.createDiscussion
 		});
-		showActionSheet({ options });
+
+		this.closeEmojiAndAction(showActionSheet, { options });
 	};
 
 	editCancel = () => {
@@ -881,6 +878,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	closeEmoji = () => {
 		this.setState({ showEmojiKeyboard: false });
+	};
+
+	closeEmojiAndAction = (action?: Function, params?: any) => {
+		const { showEmojiKeyboard } = this.state;
+
+		this.closeEmoji();
+		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : null);
 	};
 
 	submit = async () => {
@@ -1089,6 +1093,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					recordingCallback={this.recordingCallback}
 					onFinish={this.finishAudioMessage}
 					permissionToUpload={permissionToUpload}
+					onStart={this.closeEmoji}
 				/>
 			);
 
@@ -1112,14 +1117,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const textInputAndButtons = !recording ? (
 			<>
 				<LeftButtons
-					theme={theme}
 					showEmojiKeyboard={showEmojiKeyboard}
 					editing={editing}
-					showMessageBoxActions={this.showMessageBoxActions}
 					editCancel={this.editCancel}
 					openEmoji={this.openEmoji}
 					closeEmoji={this.closeEmoji}
-					isActionsEnabled={isActionsEnabled}
 				/>
 				<TextInput
 					ref={component => (this.component = component)}
@@ -1138,7 +1140,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					{...isAndroidTablet}
 				/>
 				<RightButtons
-					theme={theme}
 					showSend={showSend}
 					submit={this.submit}
 					showMessageBoxActions={this.showMessageBoxActions}
@@ -1187,6 +1188,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onEmojiSelected}
 					trackInteractive

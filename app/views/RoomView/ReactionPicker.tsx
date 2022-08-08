@@ -14,7 +14,6 @@ const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
 
 interface IReactionPickerProps {
-	baseUrl: string;
 	message?: any;
 	show: boolean;
 	isMasterDetail: boolean;
@@ -42,7 +41,7 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 	};
 
 	render() {
-		const { width, height, show, baseUrl, reactionClose, isMasterDetail, theme } = this.props;
+		const { width, height, show, reactionClose, isMasterDetail, theme } = this.props;
 
 		let widthStyle = width - margin;
 		let heightStyle = Math.min(width, height) - margin * 2;
@@ -70,7 +69,7 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 						}
 					]}
 					testID='reaction-picker'>
-					<EmojiPicker theme={theme} onEmojiSelected={this.onEmojiSelected} baseUrl={baseUrl} />
+					<EmojiPicker theme={theme} onEmojiSelected={this.onEmojiSelected} />
 				</View>
 			</Modal>
 		) : null;
@@ -78,7 +77,6 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
 	isMasterDetail: state.app.isMasterDetail
 });
 
