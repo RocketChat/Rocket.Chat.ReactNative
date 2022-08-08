@@ -16688,10 +16688,13 @@ react-native-platform-touchable@1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
-react-native-popover-view@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-4.0.1.tgz#f25db84e6774d9f9edfceba8e03bfa2d9ce22a4b"
-  integrity sha512-A5M1RRPVoWXCP/+zP/JOeadanRc/crgz0VCFfH1nW3PiinmYYpWxtFoJEYAmotjwo5uKzS2FO7uapFHhJJ+zaw==
+react-native-popover-view@5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-5.1.2.tgz#eb71571b26024dcf612111161fdd382f7a1acc4e"
+  integrity sha512-c6UAaBcG7hHABNPhWPbper5RkcR2YCYgvw2GS/+YNQ248qr+kCT4xaPy8Zh/Rca4Kn/7cQMc+rr3F4ppBVV8cA==
+  dependencies:
+    deprecated-react-native-prop-types "^2.3.0"
+    prop-types "^15.8.1"
 
 react-native-progress@5.0.0:
   version "5.0.0"
