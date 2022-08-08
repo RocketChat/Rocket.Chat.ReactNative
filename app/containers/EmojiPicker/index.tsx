@@ -17,7 +17,7 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import log from '../../lib/methods/helpers/log';
 import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { TSupportedThemes } from '../../theme';
 import { IEmoji, TGetCustomEmoji, IApplicationState, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definitions';
 
 interface IEmojiPickerProps {
@@ -198,7 +198,8 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	customEmojis: state.customEmojis
+	customEmojis: state.customEmojis,
+	baseUrl: state.share.server.server || state.server.server
 });
 
-export default connect(mapStateToProps)(withTheme(EmojiPicker));
+export default connect(mapStateToProps)(EmojiPicker);

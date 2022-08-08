@@ -17,6 +17,7 @@ interface IMessageBoxRecordAudioProps {
 	permissionToUpload: boolean;
 	recordingCallback: Function;
 	onFinish: Function;
+	onStart: Function;
 }
 
 const RECORDING_EXTENSION = '.m4a';
@@ -116,6 +117,9 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 	};
 
 	startRecordingAudio = async () => {
+		const { onStart } = this.props;
+		onStart();
+
 		logEvent(events.ROOM_AUDIO_RECORD);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
