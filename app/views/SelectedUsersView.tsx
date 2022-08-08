@@ -9,7 +9,7 @@ import { addUser, removeUser, reset } from '../actions/selectedUsers';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
-import Loading from '../containers/Loading';
+import { LOADING_EVENT } from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
@@ -26,6 +26,7 @@ import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 import { search } from '../lib/methods';
 import { isGroupChat } from '../lib/methods/helpers';
+import EventEmitter from '../lib/methods/helpers/events';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
@@ -65,11 +66,14 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	componentDidUpdate(prevProps: ISelectedUsersViewProps) {
+		const { users, loading } = this.props;
 		if (this.isGroupChat()) {
-			const { users } = this.props;
 			if (prevProps.users.length !== users.length) {
 				this.setHeader(users.length > 0);
 			}
+		}
+		if (loading !== prevProps.loading) {
+			EventEmitter.emit(LOADING_EVENT, { visible: loading });
 		}
 	}
 
@@ -273,16 +277,14 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	render = () => {
-		const { loading } = this.props;
+	render() {
 		return (
 			<SafeAreaView testID='select-users-view'>
 				<StatusBar />
 				{this.renderList()}
-				<Loading visible={loading} />
 			</SafeAreaView>
 		);
-	};
+	}
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
