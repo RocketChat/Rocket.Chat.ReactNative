@@ -24,7 +24,8 @@ const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
 					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
-					testID='message-broadcast-reply'>
+					testID='message-broadcast-reply'
+				>
 					<>
 						<CustomIcon name='arrow-back' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
 						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Reply')}</Text>

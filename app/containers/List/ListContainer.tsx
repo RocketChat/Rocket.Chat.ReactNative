@@ -19,7 +19,8 @@ const ListContainer = React.memo(({ children, ...props }: IListContainer) => (
 		contentContainerStyle={styles.container}
 		scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 		{...scrollPersistTaps}
-		{...props}>
+		{...props}
+	>
 		{children}
 	</ScrollView>
 ));

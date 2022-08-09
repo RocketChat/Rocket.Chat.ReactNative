@@ -26,7 +26,8 @@ const ServerItem = ({ theme = themes.light, ...props }) => (
 				currentTheme: theme,
 				darkLevel: theme
 			}
-		}}>
+		}}
+	>
 		<ServerItemComponent item={item} hasCheck={false} {...props} />
 	</ThemeContext.Provider>
 );

@@ -295,19 +295,23 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					{
 						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
 					}
-				]}>
+				]}
+			>
 				<Text
 					style={[
 						styles.chooseCertificateTitle,
 						{ color: themes[theme].auxiliaryText, fontSize: moderateScale({ size: 13, width }) }
-					]}>
+					]}
+				>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
-					testID='new-server-choose-certificate'>
+					testID='new-server-choose-certificate'
+				>
 					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}>
+						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}
+					>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
@@ -344,7 +348,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 								fontSize: moderateScale({ size: 22, width }),
 								marginBottom: verticalScale({ size: 8, height })
 							}
-						]}>
+						]}
+					>
 						Rocket.Chat
 					</Text>
 					<Text
@@ -355,7 +360,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 								fontSize: moderateScale({ size: 16, width }),
 								marginBottom: verticalScale({ size: 30, height })
 							}
-						]}>
+						]}
+					>
 						{I18n.t('Onboarding_subtitle')}
 					</Text>
 					<ServerInput
@@ -385,7 +391,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 								fontSize: moderateScale({ size: 14, width }),
 								marginBottom: verticalScale({ size: 16, height })
 							}
-						]}>
+						]}
+					>
 						{I18n.t('Onboarding_join_open_description')}
 					</Text>
 					<Button

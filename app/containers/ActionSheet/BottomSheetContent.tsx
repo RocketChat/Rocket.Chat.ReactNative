@@ -27,7 +27,8 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: I
 				style={[styles.button, { backgroundColor: colors.auxiliaryBackground }]}
 				// TODO: Remove when migrate Touch
 				theme={theme}
-				accessibilityLabel={I18n.t('Cancel')}>
+				accessibilityLabel={I18n.t('Cancel')}
+			>
 				<Text style={[styles.text, { color: colors.bodyText }]}>{I18n.t('Cancel')}</Text>
 			</Button>
 		) : null;

@@ -23,6 +23,7 @@ DerivedData
 project.xcworkspace
 *.mobileprovision
 ios/Pods/
+/vendor/bundle/
 
 # Android/IntelliJ
 #

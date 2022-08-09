@@ -52,6 +52,8 @@ export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...pr
 	}));
 
 	const resetScaleAnimation = () => {
+		'worklet';
+
 		scaleOffset.value = 1;
 		offsetX.value = 0;
 		offsetY.value = 0;
@@ -60,7 +62,11 @@ export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...pr
 		translationY.value = withSpring(0, { overshootClamping: true });
 	};
 
-	const clamp = (value: number, min: number, max: number) => Math.max(Math.min(value, max), min);
+	const clamp = (value: number, min: number, max: number) => {
+		'worklet';
+
+		return Math.max(Math.min(value, max), min);
+	};
 
 	const pinchGesture = Gesture.Pinch()
 		.onUpdate(event => {

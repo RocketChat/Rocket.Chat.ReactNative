@@ -68,7 +68,8 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 				onPress={() => changeType(itemType)}
 				style={styles.dropdownItemButton}
 				theme={theme}
-				accessibilityLabel={I18n.t(text)}>
+				accessibilityLabel={I18n.t(text)}
+			>
 				<View style={styles.dropdownItemContainer}>
 					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
 					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
@@ -94,14 +95,16 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
 				<Animated.View
-					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}>
+					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
+				>
 					<Touch onPress={this.close} theme={theme} accessibilityLabel={I18n.t('Search_by')}>
 						<View
 							style={[
 								styles.dropdownContainerHeader,
 								styles.dropdownItemContainer,
 								{ borderColor: themes[theme].separatorColor }
-							]}>
+							]}
+						>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon
 								style={[styles.dropdownItemIcon, styles.inverted]}
