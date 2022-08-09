@@ -1,11 +1,9 @@
-import React from 'react';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, Linking } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import { SettingsStackParamList } from '../stacks/types';
-import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, useTheme } from '../theme';
 import { themes } from '../lib/constants';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
@@ -48,106 +46,95 @@ const BROWSERS: IBrowsersValues[] = [
 	}
 ];
 
-interface IDefaultBrowserViewState {
-	browser: string | null;
-	supported: IBrowsersValues[];
+interface IRenderItem extends IBrowsersValues {
+	browser: string;
+	theme: TSupportedThemes;
+	changeDefaultBrowser: (newBrowser: TValue) => void;
 }
 
-type IDefaultBrowserViewProps = IBaseScreen<SettingsStackParamList, 'DefaultBrowserView'>;
-
-class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefaultBrowserViewState> {
-	static navigationOptions = (): StackNavigationOptions => ({
-		title: I18n.t('Default_browser')
-	});
-
-	constructor(props: IDefaultBrowserViewProps) {
-		super(props);
-		this.state = {
-			browser: null,
-			supported: []
-		};
-		if (isIOS) {
-			this.init();
-		}
+const RenderItem = memo(({ title, value, browser, changeDefaultBrowser, theme }: IRenderItem) => {
+	let isSelected = false;
+	if (!browser && value === 'systemDefault:') {
+		isSelected = true;
+	} else {
+		isSelected = browser === value;
 	}
 
-	componentDidMount() {
-		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
-		this.setState({ browser });
-	}
+	return (
+		<List.Item
+			title={I18n.t(title, { defaultValue: title })}
+			onPress={() => changeDefaultBrowser(value)}
+			testID={`default-browser-view-${title}`}
+			right={() => (isSelected ? <List.Icon name='check' color={themes[theme].tintColor} /> : null)}
+			translateTitle={false}
+		/>
+	);
+});
 
-	init = () => {
-		BROWSERS.forEach(browser => {
-			const { value } = browser;
-			Linking.canOpenURL(value).then(installed => {
-				if (installed) {
-					this.setState(({ supported }) => ({ supported: [...supported, browser] }));
-				}
-			});
+const DefaultBrowserView = () => {
+	const [browser, setBrowser] = useState<string>('');
+	const [supported, setSupported] = useState<any[]>([]);
+
+	const { theme } = useTheme();
+	const navigation = useNavigation();
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Close_Chat')
 		});
-	};
+	}, [navigation]);
 
-	isSelected = (value: TValue) => {
-		const { browser } = this.state;
-		if (!browser && value === 'systemDefault:') {
-			return true;
+	useEffect(() => {
+		if (isIOS) {
+			BROWSERS.forEach(browser => {
+				const { value } = browser;
+				Linking.canOpenURL(value).then(installed => {
+					if (installed) {
+						setSupported(supported => [...supported, browser]);
+					}
+				});
+			});
 		}
-		return browser === value;
-	};
+	}, []);
 
-	changeDefaultBrowser = (newBrowser: TValue) => {
+	const changeDefaultBrowser = useCallback((newBrowser: TValue) => {
 		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
 			const browser = newBrowser || 'systemDefault:';
 			UserPreferences.setString(DEFAULT_BROWSER_KEY, browser);
-			this.setState({ browser });
+			setBrowser(browser);
 		} catch {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
-	};
+	}, []);
 
-	renderIcon = () => {
-		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme].tintColor} />;
-	};
-
-	renderItem = ({ item }: { item: IBrowsersValues }) => {
-		const { title, value } = item;
-		return (
-			<List.Item
-				title={I18n.t(title, { defaultValue: title })}
-				onPress={() => this.changeDefaultBrowser(value)}
-				testID={`default-browser-view-${title}`}
-				right={() => (this.isSelected(value) ? this.renderIcon() : null)}
-				translateTitle={false}
+	return (
+		<SafeAreaView testID='default-browser-view'>
+			<StatusBar />
+			<FlatList
+				data={DEFAULT_BROWSERS.concat(supported)}
+				keyExtractor={item => item.value}
+				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				renderItem={({ item }) => (
+					<RenderItem
+						browser={browser}
+						theme={theme}
+						changeDefaultBrowser={changeDefaultBrowser}
+						title={item.title}
+						value={item.value}
+					/>
+				)}
+				ListHeaderComponent={
+					<>
+						<List.Header title='Choose_where_you_want_links_be_opened' />
+						<List.Separator />
+					</>
+				}
+				ListFooterComponent={List.Separator}
+				ItemSeparatorComponent={List.Separator}
 			/>
-		);
-	};
-
-	renderHeader = () => (
-		<>
-			<List.Header title='Choose_where_you_want_links_be_opened' />
-			<List.Separator />
-		</>
+		</SafeAreaView>
 	);
+};
 
-	render() {
-		const { supported } = this.state;
-		return (
-			<SafeAreaView testID='default-browser-view'>
-				<StatusBar />
-				<FlatList
-					data={DEFAULT_BROWSERS.concat(supported)}
-					keyExtractor={item => item.value}
-					contentContainerStyle={List.styles.contentContainerStyleFlatList}
-					renderItem={this.renderItem}
-					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={List.Separator}
-					ItemSeparatorComponent={List.Separator}
-				/>
-			</SafeAreaView>
-		);
-	}
-}
-
-export default withTheme(DefaultBrowserView);
+export default DefaultBrowserView;
