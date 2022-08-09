@@ -73,7 +73,7 @@ const RenderItem = memo(({ title, value, browser, changeDefaultBrowser, theme }:
 
 const DefaultBrowserView = () => {
 	const [browser, setBrowser] = useState<string>('');
-	const [supported, setSupported] = useState<any[]>([]);
+	const [supported, setSupported] = useState<IBrowsersValues[]>([]);
 
 	const { theme } = useTheme();
 	const navigation = useNavigation();
