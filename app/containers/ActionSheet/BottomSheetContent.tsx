@@ -18,15 +18,13 @@ interface IBottomSheetContentProps {
 }
 
 const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: IBottomSheetContentProps) => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 
 	const renderFooter = () =>
 		hasCancel ? (
 			<Button
 				onPress={hide}
 				style={[styles.button, { backgroundColor: colors.auxiliaryBackground }]}
-				// TODO: Remove when migrate Touch
-				theme={theme}
 				accessibilityLabel={I18n.t('Cancel')}
 			>
 				<Text style={[styles.text, { color: colors.bodyText }]}>{I18n.t('Cancel')}</Text>

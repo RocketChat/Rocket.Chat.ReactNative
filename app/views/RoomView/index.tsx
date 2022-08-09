@@ -9,7 +9,7 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
@@ -1388,7 +1388,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						onPress={this.resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
 							{I18n.t('Resume')}
@@ -1410,7 +1409,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
