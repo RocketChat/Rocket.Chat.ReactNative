@@ -99,7 +99,7 @@ import {
 	hasPermission
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
-import { withActionSheet, TActionSheetOptions } from '../../containers/ActionSheet';
+import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -150,7 +150,7 @@ const roomAttrsUpdate = [
 	't'
 ] as TRoomUpdate[];
 
-interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
+interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 	appState: string;
 	useRealName?: boolean;
@@ -170,7 +170,6 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
-	showActionSheet: (options: TActionSheetOptions) => void;
 }
 
 interface IRoomViewState {
@@ -185,7 +184,7 @@ interface IRoomViewState {
 				fname?: string;
 				prid?: string;
 				joinCodeRequired?: boolean;
-				status?: boolean;
+				status?: string;
 				lastMessage?: ILastMessage;
 				sysMes?: boolean;
 				onHold?: boolean;
@@ -635,6 +634,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
+					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 				/>
 			)
@@ -785,7 +785,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	errorActionsShow = (message: TAnyMessageModel) => {
-		this.messageErrorActions?.showMessageErrorActions(message);
+		this.messagebox?.current?.closeEmojiAndAction(this.messageErrorActions?.showMessageErrorActions, message);
+	};
+
+	showActionSheet = (options: any) => {
+		const { showActionSheet } = this.props;
+		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, options);
 	};
 
 	onEditInit = (message: TAnyMessageModel) => {
@@ -834,7 +839,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		this.messageActions?.showMessageActions(message);
+		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
 	};
 
 	showAttachment = (attachment: IAttachment) => {
@@ -857,7 +862,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: message });
 		const { showActionSheet, baseUrl, width } = this.props;
 		const { selectedMessage } = this.state;
-		showActionSheet({
+		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, {
 			children: (
 				<ReactionsList
 					reactions={selectedMessage?.reactions}
@@ -1346,6 +1351,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
 					theme={theme}
+					closeEmojiAndAction={this.messagebox?.current?.closeEmojiAndAction}
 				/>
 			);
 		}
@@ -1382,7 +1388,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						onPress={this.resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}>
+						theme={theme}
+					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
 							{I18n.t('Resume')}
 						</Text>
@@ -1395,14 +1402,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text
 						accessibilityLabel={I18n.t('You_are_in_preview_mode')}
-						style={[styles.previewMode, { color: themes[theme].titleText }]}>
+						style={[styles.previewMode, { color: themes[theme].titleText }]}
+					>
 						{I18n.t('You_are_in_preview_mode')}
 					</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}>
+						theme={theme}
+					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
 						</Text>
@@ -1415,7 +1424,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<View style={styles.readOnly}>
 					<Text
 						style={[styles.previewMode, { color: themes[theme].titleText }]}
-						accessibilityLabel={I18n.t('This_room_is_read_only')}>
+						accessibilityLabel={I18n.t('This_room_is_read_only')}
+					>
 						{I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>

@@ -7,18 +7,6 @@ require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
-jest.mock('react-native-mmkv-storage', () => ({
-	Loader: jest.fn().mockImplementation(() => ({
-		setProcessingMode: jest.fn().mockImplementation(() => ({
-			withEncryption: jest.fn().mockImplementation(() => ({
-				initialize: jest.fn()
-			}))
-		}))
-	})),
-	create: jest.fn(),
-	MODES: { MULTI_PROCESS: '' }
-}));
-
 jest.mock('rn-fetch-blob', () => ({
 	fs: {
 		dirs: {

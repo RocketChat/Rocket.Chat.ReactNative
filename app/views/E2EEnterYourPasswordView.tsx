@@ -66,15 +66,18 @@ class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordView
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}>
+				keyboardVerticalOffset={128}
+			>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
 					style={sharedStyles.container}
-					contentContainerStyle={sharedStyles.containerScrollView}>
+					contentContainerStyle={sharedStyles.containerScrollView}
+				>
 					<SafeAreaView
 						style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
-						testID='e2e-enter-your-password-view'>
+						testID='e2e-enter-your-password-view'
+					>
 						<FormTextInput
 							inputRef={(e: RNTextInput) => {
 								this.passwordInput = e;
@@ -86,7 +89,6 @@ class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordView
 							onChangeText={value => this.setState({ password: value })}
 							testID='e2e-enter-your-password-view-password'
 							textContentType='password'
-							autoCompleteType='password'
 						/>
 						<Button
 							onPress={this.submit}

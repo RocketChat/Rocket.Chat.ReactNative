@@ -186,7 +186,8 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 						first ? sharedStyles.separatorVertical : sharedStyles.separatorBottom,
 						styles.button,
 						{ borderColor: themes[theme].separatorColor }
-					]}>
+					]}
+				>
 					<CustomIcon name={icon} size={24} color={themes[theme].tintColor} style={styles.buttonIcon} />
 					<Text style={[styles.buttonText, { color: themes[theme].tintColor }]}>{title}</Text>
 				</View>

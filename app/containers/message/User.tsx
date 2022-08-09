@@ -95,7 +95,8 @@ const User = React.memo(
 						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
 						onPress={onUserPress}
 						// @ts-ignore // TODO - check this prop
-						disabled={isDisabled}>
+						disabled={isDisabled}
+					>
 						{textContent}
 					</Text>
 				);
