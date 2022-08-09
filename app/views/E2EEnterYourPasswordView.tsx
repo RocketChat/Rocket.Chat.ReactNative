@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -30,15 +30,15 @@ const styles = StyleSheet.create({
 const E2EEnterYourPasswordView = (): React.ReactElement => {
 	const [password, setPassword] = useState('');
 	const { colors } = useTheme();
-	const { setOptions } = useNavigation();
+	const navigation = useNavigation();
 	const dispatch = useDispatch();
 
-	useEffect(() => {
-		setOptions({
+	useLayoutEffect(() => {
+		navigation.setOptions({
 			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
 			title: I18n.t('Enter_Your_E2E_Password')
 		});
-	}, []);
+	}, [navigation]);
 
 	const submit = () => {
 		logEvent(events.E2E_ENTER_PW_SUBMIT);
