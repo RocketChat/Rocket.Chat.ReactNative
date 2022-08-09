@@ -13,7 +13,7 @@ PODS:
     - ExpoModulesCore
   - EXLocalAuthentication (12.2.0):
     - ExpoModulesCore
-  - Expo (45.0.5):
+  - Expo (45.0.8):
     - ExpoModulesCore
   - ExpoHaptics (11.2.0):
     - ExpoModulesCore
@@ -354,7 +354,7 @@ PODS:
     - glog
   - react-native-background-timer (2.4.1):
     - React-Core
-  - react-native-blur (4.1.0):
+  - react-native-blur (4.2.0):
     - React-Core
   - react-native-cameraroll (4.1.2):
     - React-Core
@@ -507,14 +507,14 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.12.5)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFBAnalytics (14.11.0):
+  - RNFBAnalytics (14.11.1):
     - Firebase/AnalyticsWithoutAdIdSupport (= 8.15.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (14.11.0):
+  - RNFBApp (14.11.1):
     - Firebase/CoreOnly (= 8.15.0)
     - React-Core
-  - RNFBCrashlytics (14.11.0):
+  - RNFBCrashlytics (14.11.1):
     - Firebase/Crashlytics (= 8.15.0)
     - React-Core
     - RNFBApp
@@ -894,7 +894,7 @@ SPEC CHECKSUMS:
   EXAV: 88f61c5af8415715b7ee51f084c1020235b85c56
   EXFileSystem: 2aa2d9289f84bca9532b9ccbd81504fa31eb1ded
   EXLocalAuthentication: 7f37b242eae73f9acf111d39bdee3f1379e68902
-  Expo: b9fff0a1eac0f424fc68ea49b4347fb308e52e17
+  Expo: 1133eaf0e12dc265ac82a256f3815401b7570f96
   ExpoHaptics: ad58ec96a25e57579c14a47c7d71f0de0de8656a
   ExpoKeepAwake: c0c494b442ecd8122974c13b93ccfb57bd408e88
   ExpoModulesCore: e4278a668e8c13c0269ed8b8a4200989deea2973
@@ -939,7 +939,7 @@ SPEC CHECKSUMS:
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
-  react-native-blur: ba2f37268542f8a26d809f48c5162705a3261fc6
+  react-native-blur: 3e9c8e8e9f7d17fa1b94e1a0ae9fd816675f5382
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: 5663fe4bcdb646200683a41790464d2793307ac8
@@ -978,9 +978,9 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
   RNFastImage: d5510534be9cccc80e824bfec6369c116d212871
-  RNFBAnalytics: 091c8adcbb0da1e1680ce434fc6e8a0a501fe2e6
-  RNFBApp: b1b5a80a676a07dea17e778bda7c1e8b69b2f5ec
-  RNFBCrashlytics: 357955a1564721ca9001960e57b395c6a319f9be
+  RNFBAnalytics: 1147bbfd769184b10d0e27f0f7c2c261e91a385b
+  RNFBApp: 9646e09d041ea159b84584865212e4cf33acd179
+  RNFBCrashlytics: f2b5e456c4969bdec60482e83d973d873ff17f1d
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
