@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import { useNavigation } from '@react-navigation/native';
@@ -27,15 +27,15 @@ const styles = StyleSheet.create({
 });
 
 const WithoutServerView = (): React.ReactElement => {
-	const { setOptions } = useNavigation();
+	const navigation = useNavigation();
 	const { colors } = useTheme();
 
-	useEffect(() => {
-		setOptions({
+	useLayoutEffect(() => {
+		navigation.setOptions({
 			title: 'Rocket.Chat',
 			headerLeft: () => <HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
 		});
-	}, []);
+	}, [navigation]);
 
 	return (
 		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
