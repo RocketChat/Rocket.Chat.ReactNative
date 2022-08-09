@@ -35,7 +35,8 @@ class EmojiCategory extends React.Component<IEmojiCategory> {
 				// @ts-ignore
 				key={emoji && emoji.isCustom ? emoji.content : emoji}
 				onPress={() => onEmojiSelected(emoji)}
-				testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}>
+				testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}
+			>
 				{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
 			</TouchableOpacity>
 		);
@@ -65,6 +66,7 @@ class EmojiCategory extends React.Component<IEmojiCategory> {
 				initialNumToRender={45}
 				removeClippedSubviews
 				{...scrollPersistTaps}
+				keyboardDismissMode={'none'}
 			/>
 		);
 	}

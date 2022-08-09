@@ -1,4 +1,4 @@
-import { Appearance } from 'react-native-appearance';
+import { Appearance } from 'react-native';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
@@ -21,7 +21,7 @@ export const initialTheme = (): IThemePreference => {
 
 export const defaultTheme = (): TThemeMode => {
 	const systemTheme = Appearance.getColorScheme();
-	if (systemTheme && systemTheme !== 'no-preference') {
+	if (systemTheme) {
 		return systemTheme;
 	}
 	return 'light';

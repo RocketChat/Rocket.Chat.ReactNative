@@ -375,7 +375,8 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={[sharedStyles.container, styles.container]}
-				keyboardVerticalOffset={128}>
+				keyboardVerticalOffset={128}
+			>
 				<StatusBar />
 				<SafeAreaView testID='create-channel-view'>
 					<ScrollView {...scrollPersistTaps}>

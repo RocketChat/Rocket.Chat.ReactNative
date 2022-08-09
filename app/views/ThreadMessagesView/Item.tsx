@@ -77,7 +77,8 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme].backgroundColor }}>
+			style={{ backgroundColor: themes[theme].backgroundColor }}
+		>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>

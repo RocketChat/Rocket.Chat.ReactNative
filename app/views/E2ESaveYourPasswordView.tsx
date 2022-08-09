@@ -132,7 +132,8 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 				<ScrollView
 					{...scrollPersistTaps}
 					style={sharedStyles.container}
-					contentContainerStyle={sharedStyles.containerScrollView}>
+					contentContainerStyle={sharedStyles.containerScrollView}
+				>
 					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 						<Text style={[styles.warning, { color: themes[theme].dangerColor }]}>
 							{I18n.t('Save_Your_Encryption_Password_warning')}

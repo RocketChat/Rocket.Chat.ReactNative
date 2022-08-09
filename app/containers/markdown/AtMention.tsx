@@ -27,7 +27,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 						color: themes[theme].mentionGroupColor
 					},
 					...style
-				]}>
+				]}
+			>
 				{mention}
 			</Text>
 		);

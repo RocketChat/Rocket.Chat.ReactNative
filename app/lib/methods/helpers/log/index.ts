@@ -53,7 +53,7 @@ export const logEvent = (eventName: string, payload?: { [key: string]: any }): v
 
 export const setCurrentScreen = (currentScreen: string): void => {
 	if (!isFDroidBuild) {
-		analytics().setCurrentScreen(currentScreen);
+		analytics().logScreenView({ screen_class: currentScreen, screen_name: currentScreen });
 		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
 };

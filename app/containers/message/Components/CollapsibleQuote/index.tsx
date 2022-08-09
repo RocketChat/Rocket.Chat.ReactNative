@@ -163,7 +163,8 @@ const CollapsibleQuote = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					hitSlop={BUTTON_HIT_SLOP}>
+					hitSlop={BUTTON_HIT_SLOP}
+				>
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>
