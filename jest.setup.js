@@ -3,6 +3,8 @@ import mockAsyncStorage from '@react-native-community/async-storage/jest/async-s
 
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
+// https://github.com/software-mansion/react-native-reanimated/issues/3125
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
