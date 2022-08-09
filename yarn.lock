@@ -5403,10 +5403,10 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
-"@types/ejson@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@types/ejson/-/ejson-2.1.3.tgz#29a0028db4180b589b62eb2b6b9367c65b0c1864"
-  integrity sha512-Sd+XISmDWOypfDcsKeQkhykSMgYVAWJxhf7f0ySvfy2tYo+im26M/6FfqjCEiPSDAEugiuZKtA+wWeANKueWIg==
+"@types/ejson@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/ejson/-/ejson-2.2.0.tgz#4b65b41308da94deb2363a826ed3946f7020a8e2"
+  integrity sha512-8+Rn+xSfDzkCZvJiRjrOCBsecxLOuioqyFmkDba/rmQawUFI2Yxaf6TzxXnGXmH4gpWrafZbErk69qnAWgVHNw==
 
 "@types/events@*":
   version "3.0.0"
@@ -9424,10 +9424,10 @@ ejs@^2.7.4:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.7.4.tgz#48661287573dcc53e366c7a1ae52c3a120eec9ba"
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
-ejson@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/ejson/-/ejson-2.2.1.tgz#53569bdf3a60013f5dc206e0f9640b64cd674acc"
-  integrity sha512-Tah5TfXynM7dCqnI/YyyI93/vN0hwXQrimNNzXIKmhr11vGrVtXhzwZ4Gyx+AHb4FqJa0YQORoaKnJHRB1TnwQ==
+ejson@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/ejson/-/ejson-2.2.2.tgz#095bf356a57295784cada6ff19b2b2abc70e4f9d"
+  integrity sha512-Wc/PZH7WMxuM6eBpAuD9+IX98q27hlBTD8nvhh7UyGy22eB9qTRG0oAzlviicADh9VVxYp+/onTyfYZC3DhI5w==
 
 electron-to-chromium@^1.3.247:
   version "1.3.754"
