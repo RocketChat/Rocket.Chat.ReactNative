@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
-import Touch from '../touch';
+import Touch from '../Touch';
 import { CustomIcon } from '../CustomIcon';
 import { IButtonService } from './interfaces';
 import styles from './styles';

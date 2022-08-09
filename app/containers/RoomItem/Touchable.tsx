@@ -14,7 +14,7 @@ import {
 	PanGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
 
-import Touch from '../touch';
+import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';

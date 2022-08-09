@@ -21,7 +21,7 @@ import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
 import { goRoom, TGoRoomItem } from '../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import Touch from '../containers/touch';
+import Touch from '../containers/Touch';
 import sharedStyles from './Styles';
 import { NewMessageStackParamList } from '../stacks/types';
 import { search } from '../lib/methods';

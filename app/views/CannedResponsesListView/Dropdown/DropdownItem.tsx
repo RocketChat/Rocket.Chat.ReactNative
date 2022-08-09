@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
-import Touch from '../../../containers/touch';
+import Touch from '../../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
 

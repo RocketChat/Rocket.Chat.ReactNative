@@ -5,7 +5,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
-import Touch from '../../../containers/touch';
+import Touch from '../../../containers/Touch';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import { TSupportedThemes } from '../../../theme';
 

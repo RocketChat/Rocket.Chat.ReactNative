@@ -79,7 +79,6 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 			testID={`message-actions-emoji-${emoji}`}
 			onPress={() => onReaction({ emoji: `:${emoji}:` })}
 			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-			theme={theme}
 		>
 			{emojiModel?.isCustom ? (
 				<CustomEmoji style={styles.customEmoji} emoji={emojiModel} baseUrl={server} />
@@ -93,9 +92,9 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Button
 		testID='add-reaction'
-		onPress={onReaction}
+		// this is not the correct, but but we have a lot of "buttons" and a don't know what the font of truth
+		onPress={onReaction as () => void}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}
 	>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>

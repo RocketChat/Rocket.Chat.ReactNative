@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { MessageTypeLoad, themes } from '../../../lib/constants';
 import { MessageType } from '../../../definitions';
 import { useTheme } from '../../../theme';
-import Touch from '../../../containers/touch';
+import Touch from '../../../containers/Touch';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 

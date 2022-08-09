@@ -8,7 +8,7 @@ import { dequal } from 'dequal';
 import omit from 'lodash/omit';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
-import Touch from '../../containers/touch';
+import Touch from '../../containers/Touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
