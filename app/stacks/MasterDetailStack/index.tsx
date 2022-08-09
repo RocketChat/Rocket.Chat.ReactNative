@@ -177,11 +177,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} />
-				<ModalStack.Screen
-					name='DefaultBrowserView'
-					component={DefaultBrowserView}
-					options={DefaultBrowserView.navigationOptions}
-				/>
+				<ModalStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 				<ModalStack.Screen
 					name='ScreenLockConfigView'
 					component={ScreenLockConfigView}
