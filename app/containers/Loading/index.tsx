@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
 	Extrapolate,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Loading = (): React.ReactElement => {
+const Loading = (): React.ReactElement | null => {
 	const [visible, setVisible] = useState(false);
 	const [onCancel, setOnCancel] = useState<null | Function>(null);
 	const opacity = useSharedValue(0);
@@ -96,8 +96,11 @@ const Loading = (): React.ReactElement => {
 	}));
 	const animatedScale = useAnimatedStyle(() => ({ transform: [{ scale: interpolate(scale.value, [0, 0.5, 1], [1, 1.1, 1]) }] }));
 
+	if (!visible) {
+		return null;
+	}
 	return (
-		<Modal visible={visible} transparent onRequestClose={() => {}} testID={LOADING_TEST_ID}>
+		<View style={StyleSheet.absoluteFill} testID={LOADING_TEST_ID}>
 			<TouchableWithoutFeedback onPress={() => onCancelHandler()} testID={LOADING_BUTTON_TEST_ID}>
 				<View style={styles.container}>
 					<Animated.View
@@ -116,7 +119,7 @@ const Loading = (): React.ReactElement => {
 					/>
 				</View>
 			</TouchableWithoutFeedback>
-		</Modal>
+		</View>
 	);
 };
 

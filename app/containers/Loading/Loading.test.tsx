@@ -6,52 +6,48 @@ import Loading, { LOADING_BUTTON_TEST_ID, LOADING_EVENT, LOADING_IMAGE_TEST_ID, 
 
 const Render = () => <Loading />;
 
+const getByTestIdAndThrow = (fn: Function, testID: string) =>
+	expect(() => fn(testID)).toThrow(`Unable to find an element with testID: ${testID}`);
+
 describe('Loading', () => {
-	it('starts hidden and shows/hides when event is received', async () => {
+	it('starts invisible and shows/hides when event is received', async () => {
 		const { getByTestId } = render(<Render />);
-		const loading = getByTestId(LOADING_TEST_ID);
-		expect(loading).toBeTruthy();
-		expect(loading.props.visible).toBe(false);
+		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
+		// receive event and expect loading to be rendered
 		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true }));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(true);
+			expect(() => getByTestId(LOADING_TEST_ID));
 		});
-		const image = getByTestId(LOADING_IMAGE_TEST_ID);
-		expect(image).toBeTruthy();
+		expect(() => getByTestId(LOADING_IMAGE_TEST_ID));
+		// receive event and expect loading not to be rendered
 		act(() => EventEmitter.emit(LOADING_EVENT, { visible: false }));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(false);
+			getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		});
 	});
 
 	it('doesnt have onCancel and doesnt hide when pressed', async () => {
 		const { getByTestId } = render(<Render />);
-		const loading = getByTestId(LOADING_TEST_ID);
-		expect(loading).toBeTruthy();
-		expect(loading.props.visible).toBe(false);
+		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true }));
-		await waitFor(() => {
-			expect(loading.props.visible).toBe(true);
-		});
+		expect(() => getByTestId(LOADING_TEST_ID));
 		fireEvent.press(getByTestId(LOADING_BUTTON_TEST_ID));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(true);
+			expect(() => getByTestId(LOADING_TEST_ID));
 		});
 	});
 
 	it('has onCancel and hides when pressed', async () => {
 		const mockFn = jest.fn();
 		const { getByTestId } = render(<Render />);
-		const loading = getByTestId(LOADING_TEST_ID);
-		expect(loading).toBeTruthy();
-		expect(loading.props.visible).toBe(false);
+		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: mockFn }));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(true);
+			expect(() => getByTestId(LOADING_TEST_ID));
 		});
 		fireEvent.press(getByTestId(LOADING_BUTTON_TEST_ID));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(false);
+			getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		});
 		expect(mockFn).toHaveBeenCalled();
 	});
@@ -60,20 +56,18 @@ describe('Loading', () => {
 		const mockFn = jest.fn();
 		const mockFn2 = jest.fn(() => 'test');
 		const { getByTestId } = render(<Render />);
-		const loading = getByTestId(LOADING_TEST_ID);
-		expect(loading).toBeTruthy();
-		expect(loading.props.visible).toBe(false);
+		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: mockFn }));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(true);
+			expect(() => getByTestId(LOADING_TEST_ID));
 		});
 		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: mockFn2 }));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(true);
+			expect(() => getByTestId(LOADING_TEST_ID));
 		});
 		fireEvent.press(getByTestId(LOADING_BUTTON_TEST_ID));
 		await waitFor(() => {
-			expect(loading.props.visible).toBe(false);
+			getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		});
 		expect(mockFn).not.toHaveBeenCalled();
 		expect(mockFn2).toHaveBeenCalled();
