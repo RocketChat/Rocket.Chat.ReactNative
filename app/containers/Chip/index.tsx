@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 8,
 		marginRight: 8,
 		borderRadius: 2,
-		height: 40,
 		justifyContent: 'center',
 		maxWidth: 192
 	},

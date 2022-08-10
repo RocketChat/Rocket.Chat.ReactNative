@@ -51,16 +51,7 @@ const RenderSelectedItem = ({
 	const name = useRealName && item.fname ? item.fname : item.name;
 	const username = item.search ? (item.username as string) : item.name;
 
-	return (
-		<Chip
-			item={item}
-			text={name}
-			avatar={username}
-			onPress={() => onPressItem(item)}
-			testID={`selected-user-${item.name}`}
-			iconName={'close'}
-		/>
-	);
+	return <Chip text={name} avatar={username} onPress={() => onPressItem(item)} testID={`selected-user-${item.name}`} />;
 };
 
 const Header = ({

@@ -86,14 +86,7 @@ const RenderItem = memo(
 		const username = item.name;
 
 		return (
-			<Chip
-				item={item}
-				text={name}
-				avatar={username}
-				onPress={() => removeUser(item)}
-				testID={`create-channel-view-item-${item.name}`}
-				iconName={'close'}
-			/>
+			<Chip text={name} avatar={username} onPress={() => removeUser(item)} testID={`create-channel-view-item-${item.name}`} />
 		);
 	},
 	shallowEqual
