@@ -154,7 +154,6 @@ const Root = () => {
 	// Dimensions update fires twice
 	const onDimensionsChange = useCallback(
 		debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
-			// Test when migrate to React 18 https://reactjs.org/blog/2022/03/29/react-v18.html#new-feature-automatic-batching
 			// We need this batchedUpdates because we are calling this from a debounce and
 			// the React isn't able to batch multiples setState inside a setTimeout
 			// https://stackoverflow.com/a/48610973
