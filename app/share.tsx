@@ -71,10 +71,10 @@ export const App = ({ root }: any) => (
 );
 
 const { width, height, scale, fontScale } = Dimensions.get('screen');
+const theme = getTheme(initialTheme());
 
 const Root = () => {
 	const [root, setRoot] = useState('');
-	const theme = getTheme(initialTheme());
 	const navTheme = navigationTheme(theme);
 
 	useEffect(() => {
