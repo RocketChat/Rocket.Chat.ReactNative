@@ -25,9 +25,9 @@ const stories = storiesOf('Chip', module)
 stories.add('Short and Long Chip', () => (
 	<>
 		<View style={styles.container}>
-			<Chip iconName='close' avatar='rocket.cat' text={'Rocket.Cat'} />
-			<Chip iconName='close' avatar='rocket.cat' text={'Short'} />
-			<Chip iconName='close' text='Without Avatar' />
+			<Chip avatar='rocket.cat' text={'Rocket.Cat'} />
+			<Chip avatar='rocket.cat' text={'Short'} />
+			<Chip text='Without Avatar' />
 			<Chip avatar='rocket.cat' text='Without Icon' />
 			<Chip text='Without Avatar and Icon' />
 		</View>

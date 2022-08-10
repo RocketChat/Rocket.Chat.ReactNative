@@ -1,9 +1,8 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Text, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
 
-import { ISelectedUser } from '../../reducers/selectedUsers';
 import { useTheme } from '../../theme';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import Avatar from '../Avatar';
 
@@ -38,15 +37,12 @@ const styles = StyleSheet.create({
 export interface IChip {
 	avatar?: string;
 	text: string;
-	item: ISelectedUser;
 	onPress?: Function;
 	testID?: string;
-	iconName?: TIconsName;
 	style?: StyleProp<ViewStyle>;
-	textStyle?: StyleProp<TextStyle>;
 }
 
-const Chip = ({ item, avatar, text, onPress = () => {}, testID, iconName, style, textStyle }: IChip) => {
+const Chip = ({ avatar, text, onPress, testID, style }: IChip) => {
 	const { colors } = useTheme();
 
 	return (
@@ -59,18 +55,20 @@ const Chip = ({ item, avatar, text, onPress = () => {}, testID, iconName, style,
 				},
 				style
 			]}
-			onPress={() => onPress(item)}
+			disabled={!onPress}
+			onPress={() => onPress?.()}
 			android_ripple={{
 				color: colors.bannerBackground
-			}}>
+			}}
+		>
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.bodyText }, textStyle]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.bodyText }]} numberOfLines={1}>
 						{text}
 					</Text>
 				</View>
-				{iconName ? <CustomIcon name={iconName} size={16} color={colors.auxiliaryTintColor} /> : null}
+				{onPress ? <CustomIcon name='close' size={16} color={colors.auxiliaryTintColor} /> : null}
 			</View>
 		</Pressable>
 	);
