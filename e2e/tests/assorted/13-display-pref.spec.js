@@ -27,7 +27,9 @@ describe('Display prefs', () => {
 		});
 
 		it('should have room item', async () => {
-			await expect(element(by.id('rooms-list-view-item-general'))).toExist();
+			await waitFor(element(by.id('rooms-list-view-item-general')))
+				.toExist()
+				.withTimeout(2000);
 		});
 
 		// Render - Header
