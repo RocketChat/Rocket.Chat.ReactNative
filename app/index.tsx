@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions, Linking, unstable_batchedUpdates } from 'react-native';
-import { AppearanceProvider } from 'react-native-appearance';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
@@ -207,37 +206,37 @@ const Root = () => {
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[theme].backgroundColor }}>
-			<AppearanceProvider>
-				<Provider store={store}>
-					<ThemeContext.Provider
+			<Provider store={store}>
+				<ThemeContext.Provider
+					value={{
+						theme,
+						themePreferences,
+						setTheme: setNewTheme,
+						colors: colors[theme]
+					}}
+				>
+					<DimensionsContext.Provider
 						value={{
-							theme,
-							themePreferences,
-							setTheme: setNewTheme,
-							colors: colors[theme]
-						}}>
-						<DimensionsContext.Provider
-							value={{
-								width,
-								height,
-								scale,
-								fontScale,
-								setDimensions
-							}}>
-							<GestureHandlerRootView style={{ flex: 1 }}>
-								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
-								</ActionSheetProvider>
-							</GestureHandlerRootView>
-						</DimensionsContext.Provider>
-					</ThemeContext.Provider>
-				</Provider>
-			</AppearanceProvider>
+							width,
+							height,
+							scale,
+							fontScale,
+							setDimensions
+						}}
+					>
+						<GestureHandlerRootView style={{ flex: 1 }}>
+							<ActionSheetProvider>
+								<AppContainer />
+								<TwoFactor />
+								<ScreenLockedView />
+								<ChangePasscodeView />
+								<InAppNotification />
+								<Toast />
+							</ActionSheetProvider>
+						</GestureHandlerRootView>
+					</DimensionsContext.Provider>
+				</ThemeContext.Provider>
+			</Provider>
 		</SafeAreaProvider>
 	);
 };

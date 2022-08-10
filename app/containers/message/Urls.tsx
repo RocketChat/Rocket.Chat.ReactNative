@@ -120,7 +120,8 @@ const Url = React.memo(
 						borderColor: themes[theme].borderColor
 					}
 				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}>
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
 				<>
 					<UrlImage image={url.image} />
 					<UrlContent title={url.title} description={url.description} theme={theme} />

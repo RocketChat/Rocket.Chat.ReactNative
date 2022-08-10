@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { isIOS } from '../../lib/methods/helpers';
 import { ActionsButton, SendButton } from './buttons';
 import styles from './styles';
 
@@ -18,7 +19,7 @@ const RightButtons = React.memo(({ showSend, submit, showMessageBoxActions, isAc
 	if (isActionsEnabled) {
 		return <ActionsButton onPress={showMessageBoxActions} />;
 	}
-	return <View style={styles.buttonsWhitespace} />;
+	return !isIOS ? <View style={styles.buttonsWhitespace} /> : null;
 });
 
 export default RightButtons;
