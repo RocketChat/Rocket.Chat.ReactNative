@@ -35,7 +35,8 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdo
 			accessibilityLabel={m}
 			style={[styles.text, { color: themes[theme].bodyText }, ...style]}
 			numberOfLines={numberOfLines}
-			testID={testID}>
+			testID={testID}
+		>
 			{m}
 		</Text>
 	);

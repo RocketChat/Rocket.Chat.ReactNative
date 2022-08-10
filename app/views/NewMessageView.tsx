@@ -113,7 +113,8 @@ const RenderButton = ({ onPress, testID, title, icon, first }: IButton) => {
 					first ? sharedStyles.separatorVertical : sharedStyles.separatorBottom,
 					styles.button,
 					{ borderColor: themes[theme].separatorColor }
-				]}>
+				]}
+			>
 				<CustomIcon name={icon} size={24} color={themes[theme].bodyText} style={styles.buttonIcon} />
 				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{title}</Text>
 				<View style={styles.rightContainer}>

@@ -7,18 +7,6 @@ require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
-jest.mock('react-native-mmkv-storage', () => ({
-	Loader: jest.fn().mockImplementation(() => ({
-		setProcessingMode: jest.fn().mockImplementation(() => ({
-			withEncryption: jest.fn().mockImplementation(() => ({
-				initialize: jest.fn()
-			}))
-		}))
-	})),
-	create: jest.fn(),
-	MODES: { MULTI_PROCESS: '' }
-}));
-
 jest.mock('rn-fetch-blob', () => ({
 	fs: {
 		dirs: {
@@ -66,5 +54,15 @@ jest.mock('@gorhom/bottom-sheet', () => {
 		__esModule: true,
 		default: react.View,
 		BottomSheetScrollView: react.ScrollView
+	};
+});
+
+// If you need to manually mock a lib use this mock pattern and set exports.
+jest.mock('react-native-math-view', () => {
+	const react = require('react-native');
+	return {
+		__esModule: true,
+		default: react.View, // Default export
+		MathText: react.View // {...} Named export
 	};
 });

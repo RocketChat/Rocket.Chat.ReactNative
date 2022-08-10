@@ -66,7 +66,8 @@ const Button = ({
 				style
 			]}
 			accessibilityLabel={title}
-			{...otherProps}>
+			{...otherProps}
+		>
 			{loading ? (
 				<ActivityIndicator color={textColor} />
 			) : (

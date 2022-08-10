@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, checkServer, platformTypes } = require('../../helpers/app');
+const { navigateToLogin, login, checkServer, platformTypes, sleep } = require('../../helpers/app');
 
 const reopenAndCheckServer = async server => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -56,10 +56,11 @@ describe('Change server', () => {
 			.withTimeout(60000);
 		await element(by.id('workspace-view-register')).tap();
 		await waitFor(element(by.id('register-view')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(2000);
 
 		// Register new user
+		await sleep(5000);
 		await element(by.id('register-view-name')).replaceText(data.registeringUser2.username);
 		await element(by.id('register-view-username')).replaceText(data.registeringUser2.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser2.email);

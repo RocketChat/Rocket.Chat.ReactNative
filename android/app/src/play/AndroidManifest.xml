@@ -13,11 +13,11 @@
 		<receiver
 			android:name="chat.rocket.reactnative.ReplyBroadcast"
 			android:enabled="true"
-			android:exported="false" />
+			android:exported="true" />
 		<receiver
 			android:name="chat.rocket.reactnative.DismissNotification"
 			android:enabled="true"
-			android:exported="false" >
+			android:exported="true" >
 		</receiver>
 		<meta-data
 				android:name="com.bugsnag.android.API_KEY"

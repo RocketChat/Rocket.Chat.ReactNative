@@ -6,7 +6,7 @@ import { RouteProp } from '@react-navigation/native';
 import CameraRoll from '@react-native-community/cameraroll';
 import * as mime from 'react-native-mime-types';
 import RNFetchBlob from 'rn-fetch-blob';
-import { Video } from 'expo-av';
+import { Video, ResizeMode } from 'expo-av';
 import { sha256 } from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackground, HeaderHeightContext } from '@react-navigation/elements';
@@ -174,7 +174,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 			rate={1.0}
 			volume={1.0}
 			isMuted={false}
-			resizeMode={Video.RESIZE_MODE_CONTAIN}
+			resizeMode={ResizeMode.CONTAIN}
 			shouldPlay
 			isLooping={false}
 			style={styles.container}

@@ -6,7 +6,7 @@ import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
 	title: string;
-	icon: TIconsName;
+	icon?: TIconsName;
 	danger?: boolean;
 	testID?: string;
 	onPress: () => void;
@@ -22,6 +22,7 @@ export type TActionSheetOptions = {
 	children?: React.ReactElement | null;
 	snaps?: (string | number)[];
 	onClose?: () => void;
+	enableContentPanningGesture?: boolean;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
