@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
+import { useNavigation } from '@react-navigation/native';
 
 import * as HeaderButton from '../containers/HeaderButton';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
-import { themes } from '../lib/constants';
-import { TSupportedThemes, withTheme } from '../theme';
+import { useTheme } from '../theme';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,27 +26,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IWithoutServerViewProps {
-	theme: TSupportedThemes;
-}
+const WithoutServerView = (): React.ReactElement => {
+	const navigation = useNavigation();
+	const { colors } = useTheme();
 
-class WithoutServerView extends React.Component<IWithoutServerViewProps> {
-	static navigationOptions = () => ({
-		title: 'Rocket.Chat',
-		headerLeft: () => <HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
-	});
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: 'Rocket.Chat',
+			headerLeft: () => <HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
+		});
+	}, [navigation]);
 
-	render() {
-		const { theme } = this.props;
-		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Without_Servers')}</Text>
-				<Text style={[styles.content, { color: themes[theme].titleText }]}>
-					{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}
-				</Text>
-			</View>
-		);
-	}
-}
+	return (
+		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
+			<Text style={[styles.title, { color: colors.titleText }]}>{I18n.t('Without_Servers')}</Text>
+			<Text style={[styles.content, { color: colors.titleText }]}>
+				{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}
+			</Text>
+		</View>
+	);
+};
 
-export default withTheme(WithoutServerView);
+export default WithoutServerView;
