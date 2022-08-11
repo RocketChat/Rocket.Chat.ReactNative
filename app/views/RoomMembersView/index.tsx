@@ -46,6 +46,16 @@ interface IRoomMembersViewState {
 	filter: string;
 }
 
+interface IMember {
+	name: string;
+	username: string;
+	onPress: () => void;
+}
+
+const Member = ({ name, username, onPress }: IMember) => (
+	<UserItem name={name} username={username} onPress={onPress} testID={`room-members-view-item-${username}`} />
+);
+
 const RoomMembersView = (): React.ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
@@ -547,15 +557,6 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
-	const Member = React.memo(({ member }: { member: TUserModel }) => (
-		<UserItem
-			name={member.name as string}
-			username={member.username}
-			onPress={() => onPressUser(member)}
-			testID={`room-members-view-item-${member.username}`}
-		/>
-	));
-
 	const renderHeader = (rid: string, t: SubscriptionType) => (
 		<>
 			<MembersSection joined={params.joined as boolean} rid={rid} t={t} />
@@ -576,8 +577,9 @@ const RoomMembersView = (): React.ReactElement => {
 			<StatusBar />
 			<FlatList
 				data={filteredMembers || state.members}
-				// @ts-ignore
-				renderItem={({ item }) => <Member member={item} />}
+				renderItem={({ item }) => (
+					<Member name={item.name as string} username={item.username} onPress={() => onPressUser(item)} />
+				)}
 				style={[styles.list, { backgroundColor: colors.backgroundColor }]}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={List.Separator}
