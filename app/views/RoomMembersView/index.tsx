@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { NavigationProp, RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useReducer } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -30,7 +30,7 @@ import { TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
-import MembersSection from './components/MembersSection';
+import MembersSection from './components/ActionsSection';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
@@ -578,17 +578,17 @@ const RoomMembersView = (): React.ReactElement => {
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (
-					<Member name={item.name as string} username={item.username} onPress={() => onPressUser(item)} />
+					<View style={{ backgroundColor: colors.backgroundColor }}>
+						<Member name={item.name as string} username={item.username} onPress={() => onPressUser(item)} />
+					</View>
 				)}
-				style={[styles.list, { backgroundColor: colors.backgroundColor }]}
+				style={[styles.list]}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={renderHeader(state.room.rid, state.room.t)}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers(state.allUsers)}
-				maxToRenderPerBatch={5}
-				windowSize={10}
 				{...scrollPersistTaps}
 			/>
 		</SafeAreaView>

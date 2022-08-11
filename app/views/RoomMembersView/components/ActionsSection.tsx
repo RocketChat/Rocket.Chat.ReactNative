@@ -19,13 +19,13 @@ type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
-interface IMembersSection {
+interface IActionsSection {
 	rid: TSubscriptionModel['rid'];
 	t: TSubscriptionModel['t'];
 	joined: boolean;
 }
 
-export default function MembersSection({ rid, t, joined }: IMembersSection): React.ReactElement {
+export default function ActionsSection({ rid, t, joined }: IActionsSection): React.ReactElement {
 	const { navigate, pop } = useNavigation<TNavigation>();
 	const dispatch = useDispatch();
 	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =
