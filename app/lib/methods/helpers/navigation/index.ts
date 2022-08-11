@@ -36,7 +36,7 @@ export const themedHeader = (theme: TSupportedThemes) => ({
 		backgroundColor: themes[theme].headerBackground
 	},
 	headerTintColor: themes[theme].headerTintColor,
-	headerTitleStyle: { color: themes[theme].headerTitleColor }
+	headerTitleStyle: { color: themes[theme].headerTitleColor, fontFamily: 'Inter', fontSize: 16 }
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {
