@@ -22,14 +22,14 @@ import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
-import { TSupportedThemes } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
 	msg?: string | null;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
@@ -158,9 +158,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				style={[
 					{
 						...styles.codeInline,
-						color: themes[theme].bodyText,
-						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						color: themes[theme!].bodyText,
+						backgroundColor: themes[theme!].bannerBackground,
+						borderColor: themes[theme!].bannerBackground
 					},
 					...style
 				]}
@@ -177,9 +177,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				style={[
 					{
 						...styles.codeBlock,
-						color: themes[theme].bodyText,
-						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						color: themes[theme!].bodyText,
+						backgroundColor: themes[theme!].bannerBackground,
+						borderColor: themes[theme!].bannerBackground
 					},
 					...style
 				]}
@@ -200,7 +200,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return null;
 		}
 		return (
-			<Text style={[styles.text, style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
+			<Text style={[styles.text, style, { color: themes[theme!].bodyText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
@@ -209,7 +209,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderLink = ({ children, href }: any) => {
 		const { theme, onLinkPress } = this.props;
 		return (
-			<MarkdownLink link={href} theme={theme} onLinkPress={onLinkPress}>
+			<MarkdownLink link={href} theme={theme!} onLinkPress={onLinkPress}>
 				{children}
 			</MarkdownLink>
 		);
@@ -261,7 +261,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		// @ts-ignore
 		const textStyle = styles[`heading${level}Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>
+			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme!].bodyText }]}>
 				{children}
 			</Text>
 		);
@@ -289,13 +289,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	renderBlockQuote = ({ children }: { children: JSX.Element }) => {
 		const { theme } = this.props;
-		return <MarkdownBlockQuote theme={theme}>{children}</MarkdownBlockQuote>;
+		return <MarkdownBlockQuote theme={theme!}>{children}</MarkdownBlockQuote>;
 	};
 
 	renderTable = ({ children, numColumns }: { children: JSX.Element; numColumns: number }) => {
 		const { theme } = this.props;
 		return (
-			<MarkdownTable numColumns={numColumns} theme={theme}>
+			<MarkdownTable numColumns={numColumns} theme={theme!}>
 				{children}
 			</MarkdownTable>
 		);
@@ -354,4 +354,4 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	}
 }
 
-export default Markdown;
+export default withTheme(Markdown);
