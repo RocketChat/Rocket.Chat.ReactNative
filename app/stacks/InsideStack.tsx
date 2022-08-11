@@ -296,11 +296,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 		<E2EEnterYourPasswordStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
-			<E2EEnterYourPasswordStack.Screen
-				name='E2EEnterYourPasswordView'
-				component={E2EEnterYourPasswordView}
-				options={E2EEnterYourPasswordView.navigationOptions}
-			/>
+			<E2EEnterYourPasswordStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
 		</E2EEnterYourPasswordStack.Navigator>
 	);
 };
