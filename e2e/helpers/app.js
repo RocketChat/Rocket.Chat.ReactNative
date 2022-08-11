@@ -40,7 +40,6 @@ async function navigateToLogin(server) {
 	await waitFor(element(by.id('login-view')))
 		.toExist()
 		.withTimeout(2000);
-	await expect(element(by.id('login-view'))).toExist();
 }
 
 async function navigateToRegister(server) {
