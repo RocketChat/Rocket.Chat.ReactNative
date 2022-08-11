@@ -52,7 +52,8 @@ export const ModalContainer = ({ navigation, children, theme }: IModalContainer)
 				style={{
 					...sharedStyles.modalFormSheet,
 					height: heightModal
-				}}>
+				}}
+			>
 				{children}
 			</View>
 		</View>

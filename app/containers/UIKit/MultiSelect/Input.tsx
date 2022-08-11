@@ -24,7 +24,8 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 			onPress={onPress}
 			style={[{ backgroundColor: colors.backgroundColor }, inputStyle]}
 			background={Touchable.Ripple(colors.bannerBackground)}
-			disabled={disabled}>
+			disabled={disabled}
+		>
 			<View style={[styles.input, { borderColor: colors.separatorColor }, innerInputStyle]}>
 				{placeholder ? <Text style={[styles.pickerText, { color: colors.auxiliaryText }]}>{placeholder}</Text> : children}
 				{loading ? (

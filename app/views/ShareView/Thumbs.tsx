@@ -123,7 +123,8 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 				style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
 				activeOpacity={1}
 				rippleColor={themes[theme].bannerBackground}
-				onPress={() => onRemove(item)}>
+				onPress={() => onRemove(item)}
+			>
 				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
 					<CustomIcon name='close' color={themes[theme].backgroundColor} size={14} />
 				</View>

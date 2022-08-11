@@ -237,6 +237,7 @@ export interface IRoomNotifications {
 	desktopNotifications?: TNotifications;
 	mobilePushNotifications?: TNotifications;
 	emailNotifications?: TNotifications;
+	hideMentionStatus?: boolean;
 }
 
 export type TRoomNotificationsModel = IRoomNotifications & Model;

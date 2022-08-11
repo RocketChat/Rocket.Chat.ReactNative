@@ -55,7 +55,8 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 					setCurrentScreen(currentRouteName);
 				}
 				Navigation.routeNameRef.current = currentRouteName;
-			}}>
+			}}
+		>
 			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 				<>
 					{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}

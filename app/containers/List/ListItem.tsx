@@ -92,7 +92,8 @@ const Content = React.memo(
 		return (
 			<View
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
-				testID={testID}>
+				testID={testID}
+			>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
@@ -138,7 +139,8 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
-		theme={props.theme}>
+		theme={props.theme}
+	>
 		<Content {...props} />
 	</Touch>
 ));

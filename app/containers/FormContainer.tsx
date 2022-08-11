@@ -33,13 +33,15 @@ const FormContainer = ({ children, testID, ...props }: IFormContainer) => {
 		<KeyboardView
 			style={{ backgroundColor: themes[theme].backgroundColor }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}>
+			keyboardVerticalOffset={128}
+		>
 			<StatusBar />
 			<ScrollView
 				style={sharedStyles.container}
 				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
 				{...scrollPersistTaps}
-				{...props}>
+				{...props}
+			>
 				<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
 					{children}
 					<AppVersion theme={theme} />

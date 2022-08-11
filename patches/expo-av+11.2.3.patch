@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java b/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
-index 9d26d80..d019bea 100644
+index 19818bc..ae4f631 100644
 --- a/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
 +++ b/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
 @@ -16,13 +16,21 @@ import okhttp3.OkHttpClient;
