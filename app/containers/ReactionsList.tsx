@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, Pressable, View, ScrollView } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { FlatList } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 import Emoji from './message/Emoji';
 import { useTheme } from '../theme';
 import { TGetCustomEmoji } from '../definitions/IEmoji';
-import { IReaction } from '../definitions';
+import { IReaction, IApplicationState } from '../definitions';
 import Avatar from './Avatar';
 import sharedStyles from '../views/Styles';
 import I18n from '../i18n';
@@ -33,15 +34,7 @@ const styles = StyleSheet.create({
 	allTabStandardEmojiStyle: { fontSize: 28, color: '#fff' },
 	allTabCustomEmojiStyle: { width: 32, height: 32 },
 	allListItemContainer: { paddingHorizontal: 10, marginVertical: 5, flexDirection: 'row', alignItems: 'center' },
-	peopleReactedContainer: { marginHorizontal: 20 },
-	name: {
-		fontSize: 17,
-		...sharedStyles.textMedium
-	},
-	username: {
-		fontSize: 14,
-		...sharedStyles.textRegular
-	}
+	peopleReactedContainer: { marginHorizontal: 20 }
 });
 
 interface IReactionsListBase {
@@ -91,7 +84,7 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 			})}
 		>
 			<View style={styles.tabBarItem}>
-				{tab.emoji === I18n.t('All') ? (
+				{tab._id === 'All' ? (
 					<Text style={{ color: colors.auxiliaryTintColor, fontSize: 18 }}>{I18n.t('All')}</Text>
 				) : (
 					<>
@@ -142,6 +135,9 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }) => {
 		names?.length > 0
 			? usernames.map((username, index) => ({ username, name: names[index] }))
 			: usernames.map(username => ({ username, name: '' }));
+
+	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
+
 	return (
 		<FlatList
 			data={users}
@@ -154,20 +150,9 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }) => {
 				<View style={styles.userItemContainer}>
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
-						{item.name ? (
-							<>
-								<Text style={[styles.name, { color: colors.titleText }]} numberOfLines={1}>
-									{item.name}
-								</Text>
-								<Text style={[styles.username, { color: colors.auxiliaryText }]} numberOfLines={1}>
-									@{item.username}
-								</Text>
-							</>
-						) : (
-							<Text style={[styles.usernameText, { color: colors.titleText }]} numberOfLines={1}>
-								{item.username}
-							</Text>
-						)}
+						<Text style={[styles.usernameText, { color: colors.titleText }]} numberOfLines={1}>
+							{useRealName && item.name ? item.name : item.username}
+						</Text>
 					</View>
 				</View>
 			)}
