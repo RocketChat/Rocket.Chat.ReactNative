@@ -146,10 +146,6 @@ describe('Room actions screen', () => {
 				await expect(element(by.id('room-actions-members'))).toExist();
 			});
 
-			// it('should have add user', async () => {
-			// 	await expect(element(by.id('room-actions-add-user'))).toExist();
-			// });
-
 			it('should have files', async () => {
 				await expect(element(by.id('room-actions-files'))).toExist();
 			});
