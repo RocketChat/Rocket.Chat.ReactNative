@@ -194,6 +194,9 @@ const checkServer = async server => {
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('sidebar-close-drawer')).tap();
+	await waitFor(element(by.id('sidebar-close-drawer')))
+		.not.toBeVisible()
+		.withTimeout(10000);
 };
 
 function runCommand(command) {
