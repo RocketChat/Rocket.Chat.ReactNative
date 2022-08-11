@@ -80,7 +80,7 @@ interface ISwitch extends SwitchProps {
 	hint: string;
 }
 
-const RenderItem = memo(
+const Item = memo(
 	({ item, removeUser, useRealName }: { item: IOtherUser; useRealName: boolean; removeUser: (item: IOtherUser) => void }) => {
 		const name = useRealName && item.fname ? item.fname : item.name;
 		const username = item.name;
@@ -136,7 +136,7 @@ const CreateChannelView = () => {
 		shallowEqual
 	);
 
-	const permissions = usePermissions(['create-c', 'create-p']);
+	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -178,7 +178,7 @@ const CreateChannelView = () => {
 	);
 
 	const renderType = () => {
-		const isDisabled = permissions.filter(r => r === true).length <= 1;
+		const isDisabled = [createChannelPermission, createPrivateChannelPermission].filter(r => r === true).length <= 1;
 
 		let hint = '';
 		if (isTeam && type) {
@@ -197,7 +197,7 @@ const CreateChannelView = () => {
 		return (
 			<RenderSwitch
 				id={'type'}
-				value={permissions[1] ? type : false}
+				value={createPrivateChannelPermission ? type : false}
 				disabled={isDisabled}
 				label={'Private'}
 				hint={hint}
@@ -337,7 +337,7 @@ const CreateChannelView = () => {
 									}
 								]}
 								contentContainerStyle={{ paddingLeft: 16 }}
-								renderItem={({ item }) => <RenderItem removeUser={removeUser} useRealName={useRealName} item={item} />}
+								renderItem={({ item }) => <Item removeUser={removeUser} useRealName={useRealName} item={item} />}
 								keyboardShouldPersistTaps='always'
 								horizontal
 							/>
