@@ -550,8 +550,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			parentTitle = getRoomTitle(room);
 		}
 		let subtitle: string | undefined;
-		let t: string;
-		let teamMain: boolean | undefined;
 		let teamId: string | undefined;
 		let encrypted: boolean | undefined;
 		let userId: string | undefined;
@@ -562,8 +560,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let departmentId: string | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
-			t = room.t;
-			teamMain = room.teamMain;
 			teamId = room.teamId;
 			encrypted = room.encrypted;
 			({ id: userId, token } = user);
@@ -573,11 +569,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('source' in room) {
-			t = room.t;
 			sourceType = room.source;
 			visitor = room.visitor;
 		}
 
+		const t = room?.t;
+		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
 		navigation.setOptions({

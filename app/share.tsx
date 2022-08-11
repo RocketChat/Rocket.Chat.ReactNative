@@ -72,7 +72,7 @@ const OutsideStack = () => {
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<Outside.Screen name='WithoutServersView' component={WithoutServersView} options={WithoutServersView.navigationOptions} />
+			<Outside.Screen name='WithoutServersView' component={WithoutServersView} />
 		</Outside.Navigator>
 	);
 };

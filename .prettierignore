@@ -24,3 +24,5 @@ npm-debug.log
 yarn-error.log
 
 app/i18n/locales/
+app/containers/CustomIcon/mappedIcons.js
+app/containers/CustomIcon/selection.json
