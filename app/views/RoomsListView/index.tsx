@@ -530,21 +530,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			let chats = data;
 
 			let omnichannelsUpdate: string[] = [];
-			let chatsUpdate = [];
-			if (showUnread) {
-				/**
-				 * If unread on top, we trigger re-render based on order changes and sub.alert
-				 * RoomItem handles its own re-render
-				 */
-				chatsUpdate = data.map(item => ({ rid: item.rid, alert: item.alert }));
-			} else {
-				/**
-				 * Otherwise, we trigger re-render only when chats order changes
-				 * RoomItem handles its own re-render
-				 */
-				chatsUpdate = data.map(item => item.rid);
-			}
-
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
 			if (isOmnichannelAgent) {
 				const omnichannel = chats.filter(s => filterIsOmnichannel(s));
@@ -585,6 +570,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			} else {
 				tempChats = chats;
 			}
+
+			const chatsUpdate = tempChats.map(item => item.rid);
 
 			this.internalSetState({
 				chats: tempChats,

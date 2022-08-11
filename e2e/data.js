@@ -1,5 +1,5 @@
 const random = require('./helpers/random');
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved, import/extensions
 const account = require('./e2e_account');
 
 const value = random(20);

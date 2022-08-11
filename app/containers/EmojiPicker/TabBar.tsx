@@ -40,7 +40,8 @@ export default class TabBar extends React.Component<ITabBarProps> {
 							}
 						}}
 						style={styles.tab}
-						testID={`reaction-picker-${tab}`}>
+						testID={`reaction-picker-${tab}`}
+					>
 						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
 						{activeTab === i ? (
 							<View style={[styles.activeTabLine, { backgroundColor: themes[theme].tintColor }]} />

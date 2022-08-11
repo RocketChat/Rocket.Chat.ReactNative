@@ -6,7 +6,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative/badge)](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative)
 
 - **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 11+
+- **Supported iOS versions**: 12+
 - **Supported Android versions**: 6.0+
 
 ## Download
