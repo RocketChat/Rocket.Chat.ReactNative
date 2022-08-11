@@ -282,11 +282,7 @@ const E2ESaveYourPasswordStackNavigator = () => {
 				component={E2ESaveYourPasswordView}
 				options={E2ESaveYourPasswordView.navigationOptions}
 			/>
-			<E2ESaveYourPasswordStack.Screen
-				name='E2EHowItWorksView'
-				component={E2EHowItWorksView}
-				options={E2EHowItWorksView.navigationOptions}
-			/>
+			<E2ESaveYourPasswordStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 		</E2ESaveYourPasswordStack.Navigator>
 	);
 };
