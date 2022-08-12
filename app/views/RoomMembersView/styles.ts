@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import sharedStyles from '../Styles';
+
 export default StyleSheet.create({
 	list: {
 		flex: 1
@@ -16,5 +18,11 @@ export default StyleSheet.create({
 	separator: {
 		height: StyleSheet.hairlineWidth,
 		marginLeft: 60
+	},
+	noResult: {
+		fontSize: 16,
+		paddingVertical: 56,
+		...sharedStyles.textSemibold,
+		...sharedStyles.textAlignCenter
 	}
 });

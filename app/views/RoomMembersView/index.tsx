@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { NavigationProp, RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useReducer } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -589,6 +589,9 @@ const RoomMembersView = (): React.ReactElement => {
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers(state.allUsers)}
+				ListEmptyComponent={() => (
+					<Text style={[styles.noResult, { color: colors.titleText }]}>{I18n.t('No_members_found')}</Text>
+				)}
 				{...scrollPersistTaps}
 			/>
 		</SafeAreaView>
