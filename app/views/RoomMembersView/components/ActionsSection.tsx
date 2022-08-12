@@ -48,7 +48,7 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 	}) => {
 		navigate(route, params);
 		// @ts-ignore
-		logEvent(events[`RA_GO_${route.replace('View', '').toUpperCase()}`]);
+		logEvent(events[`RM_GO_${route.replace('View', '').toUpperCase()}`]);
 	};
 
 	const addUser = async () => {
