@@ -1,7 +1,9 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { connect } from 'react-redux';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
@@ -9,15 +11,15 @@ import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
-import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import { E2E_RANDOM_PASSWORD_KEY, themes } from '../lib/constants';
-import UserPreferences from '../lib/methods/userPreferences';
-import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
-import { withTheme } from '../theme';
+import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
+import { useAppSelector } from '../lib/hooks';
 import EventEmitter from '../lib/methods/helpers/events';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
+import UserPreferences from '../lib/methods/userPreferences';
+import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -54,123 +56,78 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IE2ESaveYourPasswordViewState {
-	password: string | null;
-}
+const E2ESaveYourPasswordView = () => {
+	const server = useAppSelector(state => state.server.server);
+	const navigation = useNavigation<StackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'>>();
+	const dispatch = useDispatch();
+	const [password, setPassword] = useState('');
+	const { colors } = useTheme();
 
-interface IE2ESaveYourPasswordViewProps extends IBaseScreen<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'> {
-	server: string;
-}
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Save_Your_E2E_Password'),
+			headerLeft: () => <HeaderButton.CloseModal testID='e2e-save-your-password-view-close' />
+		});
+	}, [navigation]);
 
-class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewProps, IE2ESaveYourPasswordViewState> {
-	private mounted: boolean;
-
-	static navigationOptions = ({ navigation }: Pick<IE2ESaveYourPasswordViewProps, 'navigation'>) => ({
-		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-save-your-password-view-close' />,
-		title: I18n.t('Save_Your_E2E_Password')
-	});
-
-	constructor(props: IE2ESaveYourPasswordViewProps) {
-		super(props);
-		this.mounted = false;
-		this.state = { password: '' };
-		this.init();
-	}
-
-	componentDidMount() {
-		this.mounted = true;
-	}
-
-	init = () => {
-		const { server } = this.props;
-		try {
-			// Set stored password on local state
+	useEffect(() => {
+		const init = () => {
 			const password = UserPreferences.getString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-			if (this.mounted) {
-				this.setState({ password });
-			} else {
-				// @ts-ignore
-				this.state.password = password;
-			}
-		} catch {
-			// Do nothing
-		}
-	};
+			if (password) setPassword(password);
+		};
+		init();
+	}, []);
 
-	onSaved = () => {
+	const onSaved = () => {
 		logEvent(events.E2E_SAVE_PW_SAVED);
-		const { navigation, server, dispatch } = this.props;
-		// Remove stored password
 		UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-		// Hide encryption banner
 		dispatch(encryptionSetBanner());
-		navigation.pop();
+		navigation.dispatch(StackActions.pop());
 	};
 
-	onCopy = () => {
+	const onCopy = () => {
 		logEvent(events.E2E_SAVE_PW_COPY);
-		const { password } = this.state;
 		if (password) {
 			Clipboard.setString(password);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		}
 	};
 
-	onHowItWorks = () => {
+	const onHowItWorks = () => {
 		logEvent(events.E2E_SAVE_PW_HOW_IT_WORKS);
-		const { navigation } = this.props;
 		navigation.navigate('E2EHowItWorksView');
 	};
 
-	render() {
-		const { password } = this.state;
-		const { theme } = this.props;
-
-		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='e2e-save-password-view'>
-				<StatusBar />
-				<ScrollView
-					{...scrollPersistTaps}
-					style={sharedStyles.container}
-					contentContainerStyle={sharedStyles.containerScrollView}
-				>
-					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-						<Text style={[styles.warning, { color: themes[theme].dangerColor }]}>
-							{I18n.t('Save_Your_Encryption_Password_warning')}
-						</Text>
-						<View style={styles.content}>
-							<Text style={[styles.passwordText, { color: themes[theme].bodyText }]}>{I18n.t('Your_password_is')}</Text>
-							<Text style={[styles.password, { color: themes[theme].bodyText }]}>{password}</Text>
-							<Button
-								onPress={this.onCopy}
-								style={[styles.copyButton, { backgroundColor: themes[theme].auxiliaryBackground }]}
-								title={I18n.t('Copy')}
-								type='secondary'
-								fontSize={12}
-							/>
-						</View>
-						<Text style={[styles.info, { color: themes[theme].bodyText }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
+	return (
+		<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='e2e-save-password-view'>
+			<StatusBar />
+			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
+				<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
+					<Text style={[styles.warning, { color: colors.dangerColor }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
+					<View style={styles.content}>
+						<Text style={[styles.passwordText, { color: colors.bodyText }]}>{I18n.t('Your_password_is')}</Text>
+						<Text style={[styles.password, { color: colors.bodyText }]}>{password}</Text>
 						<Button
-							onPress={this.onHowItWorks}
-							style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-							title={I18n.t('How_It_Works')}
+							onPress={onCopy}
+							style={[styles.copyButton, { backgroundColor: colors.auxiliaryBackground }]}
+							title={I18n.t('Copy')}
 							type='secondary'
-							testID='e2e-save-password-view-how-it-works'
-						/>
-						<Button
-							onPress={this.onSaved}
-							title={I18n.t('I_Saved_My_E2E_Password')}
-							testID='e2e-save-password-view-saved-password'
+							fontSize={12}
 						/>
 					</View>
-				</ScrollView>
-			</SafeAreaView>
-		);
-	}
-}
+					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
+					<Button
+						onPress={onHowItWorks}
+						style={{ backgroundColor: colors.auxiliaryBackground }}
+						title={I18n.t('How_It_Works')}
+						type='secondary'
+						testID='e2e-save-password-view-how-it-works'
+					/>
+					<Button onPress={onSaved} title={I18n.t('I_Saved_My_E2E_Password')} testID='e2e-save-password-view-saved-password' />
+				</View>
+			</ScrollView>
+		</SafeAreaView>
+	);
+};
 
-const mapStateToProps = (state: IApplicationState) => ({
-	server: state.server.server
-});
-
-export default connect(mapStateToProps)(withTheme(E2ESaveYourPasswordView));
+export default E2ESaveYourPasswordView;
