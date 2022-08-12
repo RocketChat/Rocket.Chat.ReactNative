@@ -60,7 +60,7 @@ const OutsideStack = () => {
 
 // App
 const Stack = createStackNavigator<ShareAppStackParamList>();
-export const App = ({ root }: any) => (
+export const App = ({ root }: { root: string }): React.ReactElement => (
 	<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 		<>
 			{!root ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
@@ -73,7 +73,7 @@ export const App = ({ root }: any) => (
 const { width, height, scale, fontScale } = Dimensions.get('screen');
 const theme = getTheme(initialTheme());
 
-const Root = () => {
+const Root = (): React.ReactElement => {
 	const [root, setRoot] = useState('');
 	const navTheme = navigationTheme(theme);
 
