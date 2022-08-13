@@ -706,10 +706,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	clearInput = () => {
 		const { tshow } = this.state;
-		const { alsoSendThreadToChannel } = this.props;
+		const { alsoSendThreadToChannel, serverVersion } = this.props;
 		this.setInput('');
 		this.setShowSend(false);
-		if (tshow && alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_DEFAULT) {
+		if (
+			compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ||
+			(tshow && alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_DEFAULT)
+		) {
 			this.setState({ tshow: false });
 		}
 	};
