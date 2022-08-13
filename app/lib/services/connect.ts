@@ -269,8 +269,10 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 	const result = sdk.current.currentLogin?.result;
 
 	let enableMessageParserEarlyAdoption = true;
+	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
 		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
 	if (result) {
@@ -288,7 +290,7 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
-			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
+			showMessageInMainThread,
 			enableMessageParserEarlyAdoption
 		};
 		return user;
