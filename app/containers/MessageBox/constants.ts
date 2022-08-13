@@ -6,3 +6,7 @@ export const MENTIONS_TRACKING_TYPE_CANNED = '!';
 export const MENTIONS_COUNT_TO_DISPLAY = 4;
 
 export const TIMEOUT_CLOSE_EMOJI = 300;
+
+export const ALSO_SEND_THREAD_TO_CHANNEL_DEFAULT = 'default';
+export const ALSO_SEND_THREAD_TO_CHANNEL_ALWAYS = 'always';
+export const ALSO_SEND_THREAD_TO_CHANNEL_NEVER = 'never';

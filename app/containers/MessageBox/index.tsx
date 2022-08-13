@@ -34,7 +34,10 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
 	MENTIONS_TRACKING_TYPE_USERS,
-	TIMEOUT_CLOSE_EMOJI
+	TIMEOUT_CLOSE_EMOJI,
+	ALSO_SEND_THREAD_TO_CHANNEL_ALWAYS,
+	ALSO_SEND_THREAD_TO_CHANNEL_DEFAULT,
+	ALSO_SEND_THREAD_TO_CHANNEL_NEVER
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -55,7 +58,7 @@ import {
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce, isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersion } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -111,8 +114,9 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	isActionsEnabled: boolean;
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
-	serverVersion: string;
 	goToCannedResponses: () => void | null;
+	alsoSendThreadToChannel: string;
+	serverVersion: string;
 }
 
 interface IMessageBoxState {
@@ -181,7 +185,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			tshow: false,
+			tshow: this.sendThreadToChannel,
 			mentionLoading: false,
 			permissionToUpload: true
 		};
@@ -209,6 +213,20 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			...videoPickerConfig,
 			...libPickerLabels
 		};
+	}
+
+	get sendThreadToChannel() {
+		const { alsoSendThreadToChannel, tmid, serverVersion } = this.props;
+		if (!tmid || compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
+			return false;
+		}
+		if (alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_ALWAYS) {
+			return true;
+		}
+		if (alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_NEVER) {
+			return false;
+		}
+		return true;
 	}
 
 	async componentDidMount() {
@@ -687,9 +705,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	clearInput = () => {
+		const { tshow } = this.state;
+		const { alsoSendThreadToChannel } = this.props;
 		this.setInput('');
 		this.setShowSend(false);
-		this.setState({ tshow: false });
+		if (tshow && alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_DEFAULT) {
+			this.setState({ tshow: false });
+		}
 	};
 
 	canUploadFile = (file: any) => {
@@ -1213,7 +1235,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	uploadFilePermission: state.permissions['mobile-upload-file']
+	uploadFilePermission: state.permissions['mobile-upload-file'],
+	alsoSendThreadToChannel: state.settings.Accounts_Default_User_Preferences_alsoSendThreadToChannel as string,
+	serverVersion: state.server.version
 });
 
 const dispatchToProps = {
