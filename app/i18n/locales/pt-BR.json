@@ -759,7 +759,6 @@
   "Unsupported_format": "Formato não suportado",
   "Downloaded_file": "Arquivo baixado",
   "Error_Download_file": "Erro ao baixar o arquivo",
-  "error-init-video-conf": "Erro ao iniciar chamada de video",
   "added__roomName__to_team": "#{{roomName}} adicionada a esta equipe",
   "Added__username__to_team": "@{{user_added}} adicionado a esta equipe",
   "Converted__roomName__to_team": "#{{roomName}} convertida em equipe",
@@ -793,7 +792,5 @@
   "Mark_as_unread_Info": "Mostrar sala como não lida quando houver mensagens não lidas",
   "Show_badge_for_mentions": "Mostrar contador para menções",
   "Show_badge_for_mentions_Info": "Mostrar contador somente para menções diretas",
-  "totp-invalid": "Código ou senha inválida",
-  "Close_Chat": "Fechar Conversa",
-  "Select_tags": "Selecionar tag(s)"
+  "totp-invalid": "Código ou senha inválida"
 }
