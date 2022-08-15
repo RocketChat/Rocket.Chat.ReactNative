@@ -1,5 +1,4 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 
 import Button from '.';
 
@@ -15,14 +14,17 @@ const buttonProps = {
 	}
 };
 
-const stories = storiesOf('Button', module);
+export default {
+	title: 'Button',
+	component: Button
+};
 
-stories.add('primary button', () => <Button {...buttonProps} />);
+export const PrimaryButton = () => <Button {...buttonProps} />;
 
-stories.add('secondary button', () => <Button {...buttonProps} type='secondary' />);
+export const SecondaryButton = () => <Button {...buttonProps} type='secondary' />;
 
-stories.add('loading button', () => <Button loading {...buttonProps} />);
+export const LoadingButton = () => <Button loading {...buttonProps} />;
 
-stories.add('disabled button', () => <Button disabled {...buttonProps} />);
+export const DisabledButton = () => <Button disabled {...buttonProps} />;
 
-stories.add('disabled loading button', () => <Button disabled loading {...buttonProps} />);
+export const DisabledLoadingButton = () => <Button disabled loading {...buttonProps} />;
