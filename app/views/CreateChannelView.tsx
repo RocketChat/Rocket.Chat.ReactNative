@@ -5,7 +5,6 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { useAppSelector, usePermissions } from '../lib/hooks';
-import SearchBox from '../containers/SearchBox';
 import Loading from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';
@@ -22,6 +21,7 @@ import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import Chip from '../containers/Chip';
 import Button from '../containers/Button';
+import { FormTextInput } from '../containers/TextInput';
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		paddingHorizontal: 16,
 		maxHeight: 80,
 		marginBottom: 8
 	},
@@ -306,12 +305,13 @@ const CreateChannelView = () => {
 			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
-					<View style={{ borderColor: themes[theme].separatorColor }}>
-						<SearchBox
+					<View style={{ borderColor: themes[theme].separatorColor, paddingHorizontal: 16, marginTop: 16 }}>
+						<FormTextInput
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 							onChangeText={setChannelName}
 							testID='create-channel-name'
 							returnKeyType='done'
+							containerStyle={{ marginBottom: 32 }}
 						/>
 						{renderType()}
 						{renderReadOnly()}
