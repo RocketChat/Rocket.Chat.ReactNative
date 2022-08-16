@@ -1,24 +1,30 @@
-import { AppRegistry } from 'react-native';
-import { getStorybookUI, configure } from '@storybook/react-native'; // eslint-disable-line
+// import { AppRegistry } from 'react-native';
+// import { getStorybookUI, configure } from '@storybook/react-native'; // eslint-disable-line
 
-import RNBootSplash from 'react-native-bootsplash';
-import 'react-native-gesture-handler';
+// import RNBootSplash from 'react-native-bootsplash';
+// import 'react-native-gesture-handler';
 
-RNBootSplash.hide();
+// RNBootSplash.hide();
 
-// import stories
-configure(() => {
-	require('./stories');
-}, module);
+// // import stories
+// configure(() => {
+// 	require('./stories');
+// }, module);
 
-// Refer to https://github.com/storybooks/storybook/tree/master/app/react-native#start-command-parameters
-// To find allowed options for getStorybookUI
-const StorybookUIRoot = getStorybookUI({
-	asyncStorage: null
-});
+// // Refer to https://github.com/storybooks/storybook/tree/master/app/react-native#start-command-parameters
+// // To find allowed options for getStorybookUI
+// const StorybookUIRoot = getStorybookUI({
+// 	asyncStorage: null
+// });
 
-// If you are using React Native vanilla and after installation you don't see your app name here, write it manually.
-// If you use Expo you can safely remove this line.
-AppRegistry.registerComponent('RocketChatRN', () => StorybookUIRoot);
+// // If you are using React Native vanilla and after installation you don't see your app name here, write it manually.
+// // If you use Expo you can safely remove this line.
+// AppRegistry.registerComponent('RocketChatRN', () => StorybookUIRoot);
 
+// export default StorybookUIRoot;
+
+import { getStorybookUI } from '@storybook/react-native';
+import '../.ondevice/storybook.requires';
+
+const StorybookUIRoot = getStorybookUI({});
 export default StorybookUIRoot;
