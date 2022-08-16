@@ -29,10 +29,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ISwitch extends SwitchProps {
+export interface ISwitch extends SwitchProps {
 	id: string;
 	label: string;
 	hint: string;
+	onValueChange: (value: boolean) => void;
 }
 
 export const RenderSwitch = ({ id, value, label, hint, onValueChange, disabled = false }: ISwitch) => {
