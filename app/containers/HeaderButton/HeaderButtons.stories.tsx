@@ -1,14 +1,11 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-import { SafeAreaView } from 'react-native';
+// import { SafeAreaView } from 'react-native';
 import { Header, HeaderBackground } from '@react-navigation/elements';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import * as HeaderButton from '../../app/containers/HeaderButton';
-import { TColors, ThemeContext, TSupportedThemes } from '../../app/theme';
-import { colors } from '../../app/lib/constants';
-
-const stories = storiesOf('Header Buttons', module).addDecorator(story => <SafeAreaProvider>{story()}</SafeAreaProvider>);
+import * as HeaderButton from '.';
+import { TColors, ThemeContext, TSupportedThemes } from '../../theme';
+import { colors } from '../../lib/constants';
 
 interface IHeader {
 	left?: () => React.ReactElement | null;
@@ -17,18 +14,28 @@ interface IHeader {
 	colors?: TColors;
 }
 
+export default {
+	title: 'HeaderButtons',
+	component: HeaderButton,
+	decorators: [
+		(Story: any) => (
+			<SafeAreaProvider>
+				<Story />
+			</SafeAreaProvider>
+		)
+	]
+};
+
 const HeaderExample = ({ left, right, colors, title = '' }: IHeader) => (
-	<SafeAreaView>
-		<Header
-			title={title}
-			headerLeft={left}
-			headerRight={right}
-			headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.headerBackground }} />}
-		/>
-	</SafeAreaView>
+	<Header
+		title={title}
+		headerLeft={left}
+		headerRight={right}
+		headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.headerBackground }} />}
+	/>
 );
 
-stories.add('title', () => (
+export const Title = () => (
 	<>
 		<HeaderExample
 			left={() => (
@@ -57,9 +64,9 @@ stories.add('title', () => (
 			)}
 		/>
 	</>
-));
+);
 
-stories.add('icons', () => (
+export const Icons = () => (
 	<>
 		<HeaderExample
 			left={() => (
@@ -88,9 +95,9 @@ stories.add('icons', () => (
 			)}
 		/>
 	</>
-));
+);
 
-stories.add('badge', () => (
+export const Badge = () => (
 	<>
 		<HeaderExample
 			left={() => (
@@ -102,7 +109,7 @@ stories.add('badge', () => (
 			)}
 		/>
 	</>
-));
+);
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
@@ -123,15 +130,15 @@ const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 	</ThemeContext.Provider>
 );
 
-stories.add('themes', () => (
+export const Themes = () => (
 	<>
 		<ThemeStory theme='light' />
 		<ThemeStory theme='dark' />
 		<ThemeStory theme='black' />
 	</>
-));
+);
 
-stories.add('common', () => (
+export const Common = () => (
 	<>
 		<HeaderExample left={() => <HeaderButton.Drawer />} />
 		<HeaderExample left={() => <HeaderButton.CloseModal />} />
@@ -141,4 +148,4 @@ stories.add('common', () => (
 		<HeaderExample right={() => <HeaderButton.Preferences />} />
 		<HeaderExample right={() => <HeaderButton.Legal />} />
 	</>
-));
+);

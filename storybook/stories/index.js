@@ -8,7 +8,7 @@ import './Message';
 import './UiKitMessage';
 import './UiKitModal';
 import './Markdown';
-import './HeaderButtons';
+// import '../../app/containers/HeaderButton/HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
 import '../../app/views/DiscussionsView/Item.stories.js';

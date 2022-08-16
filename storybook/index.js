@@ -26,5 +26,9 @@
 import { getStorybookUI } from '@storybook/react-native';
 import '../.ondevice/storybook.requires';
 
+import RNBootSplash from 'react-native-bootsplash';
+
+RNBootSplash.hide();
+
 const StorybookUIRoot = getStorybookUI({});
 export default StorybookUIRoot;
