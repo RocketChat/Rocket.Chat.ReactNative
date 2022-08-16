@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -20,13 +20,13 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import sharedStyles from '../Styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import Chip from '../../containers/Chip';
 import Button from '../../containers/Button';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { RenderSwitch } from './RenderSwitch';
 import { RenderType } from './RenderType';
 import { RenderReadOnly } from './RenderReadOnly';
 import { RenderEncrypted } from './RenderEncrypted';
+import { IOtherUser, UserItem } from './UserItem';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,24 +51,6 @@ const styles = StyleSheet.create({
 		marginTop: 24
 	}
 });
-
-interface IOtherUser {
-	_id: string;
-	name: string;
-	fname: string;
-}
-
-const Item = memo(
-	({ item, removeUser, useRealName }: { item: IOtherUser; useRealName: boolean; removeUser: (item: IOtherUser) => void }) => {
-		const name = useRealName && item.fname ? item.fname : item.name;
-		const username = item.name;
-
-		return (
-			<Chip text={name} avatar={username} onPress={() => removeUser(item)} testID={`create-channel-view-item-${item.name}`} />
-		);
-	},
-	shallowEqual
-);
 
 const CreateChannelView = () => {
 	const {
@@ -218,7 +200,7 @@ const CreateChannelView = () => {
 									}
 								]}
 								contentContainerStyle={{ paddingLeft: 16 }}
-								renderItem={({ item }) => <Item removeUser={removeUser} useRealName={useRealName} item={item} />}
+								renderItem={({ item }) => <UserItem removeUser={removeUser} useRealName={useRealName} item={item} />}
 								keyboardShouldPersistTaps='always'
 								horizontal
 							/>
