@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { RenderSwitch } from './RenderSwitch';
+import { SwitchItem } from './SwitchItem';
 
-export interface IRenderEncrypted {
+export interface ISwitchItemEncrypted {
 	encryptionEnabled: boolean;
 	isTeam: boolean;
 	type: boolean;
@@ -11,8 +11,8 @@ export interface IRenderEncrypted {
 	onValueChangeEncrypted: (value: boolean) => void;
 }
 
-export const RenderEncrypted = memo(
-	({ encryptionEnabled, isTeam, type, encrypted, onValueChangeEncrypted }: IRenderEncrypted) => {
+export const SwitchItemEncrypted = memo(
+	({ encryptionEnabled, isTeam, type, encrypted, onValueChangeEncrypted }: ISwitchItemEncrypted) => {
 		if (!encryptionEnabled) {
 			return null;
 		}
@@ -32,7 +32,7 @@ export const RenderEncrypted = memo(
 		}
 
 		return (
-			<RenderSwitch
+			<SwitchItem
 				id={'encrypted'}
 				value={encrypted}
 				label={'Encrypted'}

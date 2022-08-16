@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -13,20 +13,15 @@ import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { Review } from '../../lib/methods/helpers/review';
-import { events, logEvent } from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import sharedStyles from '../Styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import Button from '../../containers/Button';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { RenderSwitch } from './RenderSwitch';
-import { RenderType } from './RenderType';
-import { RenderReadOnly } from './RenderReadOnly';
-import { RenderEncrypted } from './RenderEncrypted';
 import { IOtherUser, UserItem } from './UserItem';
+import { RoomSettings } from './RoomSettings';
 
 const styles = StyleSheet.create({
 	container: {
@@ -52,29 +47,34 @@ const styles = StyleSheet.create({
 	}
 });
 
+export interface IFormData {
+	channelName: string;
+	type: boolean;
+	readOnly: boolean;
+	encrypted: boolean;
+	broadcast: boolean;
+}
+
 const CreateChannelView = () => {
 	const {
 		control,
 		handleSubmit,
-		formState: { isDirty }
-	} = useForm<{ channelName: string }>({ defaultValues: { channelName: '' } });
-
-	const [type, setType] = useState(true);
-	const [readOnly, setReadOnly] = useState(false);
-	const [encrypted, setEncrypted] = useState(false);
-	const [broadcast, setBroadcast] = useState(false);
+		formState: { isDirty },
+		setValue
+	} = useForm<IFormData>({
+		defaultValues: { channelName: '', broadcast: false, encrypted: false, readOnly: false, type: false }
+	});
 
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
 	const { params } = useRoute<RouteProp<ChatsStackParamList, 'CreateChannelView'>>();
 	const isTeam = params?.isTeam || false;
 	const teamId = params?.teamId;
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
-	const { encryptionEnabled, isFetching, useRealName, users } = useAppSelector(
+	const { isFetching, useRealName, users } = useAppSelector(
 		state => ({
 			isFetching: state.createChannel.isFetching,
-			encryptionEnabled: state.encryption.enabled,
 			users: state.selectedUsers.users,
 			useRealName: state.settings.UI_Use_Real_Name as boolean
 		}),
@@ -87,7 +87,14 @@ const CreateChannelView = () => {
 		});
 	}, [isTeam, navigation]);
 
-	const submit = ({ channelName }: { channelName: string }) => {
+	const removeUser = useCallback(
+		(user: IOtherUser) => {
+			dispatch(removeUserAction(user));
+		},
+		[dispatch]
+	);
+
+	const submit = ({ channelName, broadcast, encrypted, readOnly, type }: IFormData) => {
 		if (!channelName.trim() || isFetching) {
 			return;
 		}
@@ -108,49 +115,16 @@ const CreateChannelView = () => {
 		Review.pushPositiveEvent();
 	};
 
-	const onValueChangeType = useCallback(
-		(value: boolean) => {
-			logEvent(events.CR_TOGGLE_TYPE);
-			// If we set the channel as public, encrypted status should be false
-			setType(value);
-			setEncrypted(value && encrypted);
-		},
-		[encrypted]
-	);
-
-	const onValueChangeReadOnly = useCallback((value: boolean) => {
-		logEvent(events.CR_TOGGLE_READ_ONLY);
-		setReadOnly(value);
-	}, []);
-
-	const onValueChangeEncrypted = useCallback((value: boolean) => {
-		logEvent(events.CR_TOGGLE_ENCRYPTED);
-		setEncrypted(value);
-	}, []);
-
-	const onValueChangeBroadcast = (value: boolean) => {
-		logEvent(events.CR_TOGGLE_BROADCAST);
-		setBroadcast(value);
-		setReadOnly(value ? true : readOnly);
-	};
-
-	const removeUser = useCallback(
-		(user: IOtherUser) => {
-			dispatch(removeUserAction(user));
-		},
-		[dispatch]
-	);
-
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].backgroundColor }}
+			style={{ backgroundColor: colors.backgroundColor }}
 			contentContainerStyle={[sharedStyles.container, styles.container]}
 			keyboardVerticalOffset={128}
 		>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='create-channel-view'>
+			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
-					<View style={{ borderColor: themes[theme].separatorColor, paddingHorizontal: 16, marginTop: 16 }}>
+					<View style={{ borderColor: colors.separatorColor, paddingHorizontal: 16, marginTop: 16 }}>
 						<ControlledFormTextInput
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 							testID='create-channel-name'
@@ -159,32 +133,12 @@ const CreateChannelView = () => {
 							name={'channelName'}
 							control={control}
 						/>
-						<RenderType isTeam={isTeam} type={type} onValueChangeType={onValueChangeType} />
-						<RenderReadOnly
-							broadcast={broadcast}
-							isTeam={isTeam}
-							readOnly={readOnly}
-							onValueChangeReadOnly={onValueChangeReadOnly}
-						/>
-						<RenderEncrypted
-							encryptionEnabled={encryptionEnabled}
-							isTeam={isTeam}
-							type={type}
-							encrypted={encrypted}
-							onValueChangeEncrypted={onValueChangeEncrypted}
-						/>
-						<RenderSwitch
-							id={'broadcast'}
-							value={broadcast}
-							label={'Broadcast'}
-							hint={'Broadcast_hint'}
-							onValueChange={onValueChangeBroadcast}
-						/>
+						<RoomSettings isTeam={isTeam} setValue={setValue} />
 					</View>
 					{users.length > 0 ? (
 						<>
 							<View style={styles.invitedHeader}>
-								<Text style={[styles.invitedCount, { color: themes[theme].auxiliaryText }]}>
+								<Text style={[styles.invitedCount, { color: colors.auxiliaryText }]}>
 									{I18n.t('N_Selected_members', { n: users.length })}
 								</Text>
 							</View>
@@ -195,8 +149,8 @@ const CreateChannelView = () => {
 								style={[
 									styles.list,
 									{
-										backgroundColor: themes[theme].backgroundColor,
-										borderColor: themes[theme].separatorColor
+										backgroundColor: colors.backgroundColor,
+										borderColor: colors.separatorColor
 									}
 								]}
 								contentContainerStyle={{ paddingLeft: 16 }}

@@ -3,10 +3,10 @@ import { storiesOf } from '@storybook/react-native';
 import { View, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { store } from '../../../storybook/stories';
-import { ThemeContext } from '../../theme';
-import { colors } from '../../lib/constants';
-import { ISwitch, RenderSwitch } from './RenderSwitch';
+import { store } from '../../../../storybook/stories';
+import { ThemeContext } from '../../../theme';
+import { colors } from '../../../lib/constants';
+import { ISwitch, SwitchItem } from './SwitchItem';
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,7 +35,7 @@ const testSwitch = {
 stories.add('Switch with label and hint', () => (
 	<>
 		<View style={styles.container}>
-			<RenderSwitch
+			<SwitchItem
 				hint={testSwitch.hint}
 				id={testSwitch.id}
 				label={testSwitch.label}

@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { usePermissions } from '../../lib/hooks';
-import { RenderSwitch } from './RenderSwitch';
+import { usePermissions } from '../../../lib/hooks';
+import { SwitchItem } from './SwitchItem';
 
-export const RenderType = memo(
+export const SwitchItemType = memo(
 	({ isTeam, type, onValueChangeType }: { isTeam: boolean; type: boolean; onValueChangeType: (value: boolean) => void }) => {
 		const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
@@ -25,7 +25,7 @@ export const RenderType = memo(
 		}
 
 		return (
-			<RenderSwitch
+			<SwitchItem
 				id={'type'}
 				value={createPrivateChannelPermission ? type : false}
 				disabled={isDisabled}

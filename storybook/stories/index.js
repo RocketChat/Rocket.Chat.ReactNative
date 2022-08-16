@@ -24,7 +24,7 @@ import '../../app/containers/Button/Button.stories';
 import '../../app/containers/LoginServices/LoginServices.stories';
 import '../../app/containers/SearchBox/SearchBox.stories';
 import '../../app/containers/Chip/Chip.stories';
-import '../../app/views/CreateChannelView/RenderSwitch.stories';
+import '../../app/views/CreateChannelView/RoomSettings/SwitchItem.stories';
 
 // Change here to see themed storybook
 export const theme = 'light';

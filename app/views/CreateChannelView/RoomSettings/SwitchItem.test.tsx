@@ -2,9 +2,9 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import i18n from '../../i18n';
-import { RenderSwitch, ISwitch } from './RenderSwitch';
-import { store } from '../../../storybook/stories';
+import i18n from '../../../i18n';
+import { SwitchItem, ISwitch } from './SwitchItem';
+import { store } from '../../../../storybook/stories';
 
 const onPressMock = jest.fn((value: boolean) => value);
 
@@ -20,11 +20,11 @@ const testSwitch = {
 
 const Render = ({ hint, id, label, onValueChange, value }: ISwitch) => (
 	<Provider store={store}>
-		<RenderSwitch hint={hint} id={id} label={label} onValueChange={onValueChange} value={value} />
+		<SwitchItem hint={hint} id={id} label={label} onValueChange={onValueChange} value={value} />
 	</Provider>
 );
 
-describe('RenderEncrypted', () => {
+describe('SwitchItemEncrypted', () => {
 	it('should not render the Encrypted Switch component', async () => {
 		const { findByTestId } = render(
 			<Render

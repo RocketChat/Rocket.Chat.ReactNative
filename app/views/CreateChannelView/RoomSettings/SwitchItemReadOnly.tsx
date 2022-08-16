@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { RenderSwitch } from './RenderSwitch';
+import { SwitchItem } from './SwitchItem';
 
-export const RenderReadOnly = memo(
+export const SwitchItemReadOnly = memo(
 	({
 		readOnly,
 		isTeam,
@@ -27,7 +27,7 @@ export const RenderReadOnly = memo(
 		}
 
 		return (
-			<RenderSwitch
+			<SwitchItem
 				id={'readonly'}
 				value={readOnly}
 				label={'Read_Only'}

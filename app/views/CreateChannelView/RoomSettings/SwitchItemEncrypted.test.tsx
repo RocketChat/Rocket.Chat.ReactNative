@@ -2,9 +2,9 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { RenderEncrypted, IRenderEncrypted } from './RenderEncrypted';
-import { store } from '../../../storybook/stories';
-import i18n from '../../i18n';
+import { SwitchItemEncrypted, ISwitchItemEncrypted } from './SwitchItemEncrypted';
+import { store } from '../../../../storybook/stories';
+import i18n from '../../../i18n';
 
 const onPressMock = jest.fn((value: boolean) => value);
 
@@ -18,9 +18,9 @@ const testEncrypted = {
 	testLabelID: `create-channel-encrypted-hint`
 };
 
-const Render = ({ encrypted, encryptionEnabled, isTeam, onValueChangeEncrypted, type }: IRenderEncrypted) => (
+const Render = ({ encrypted, encryptionEnabled, isTeam, onValueChangeEncrypted, type }: ISwitchItemEncrypted) => (
 	<Provider store={store}>
-		<RenderEncrypted
+		<SwitchItemEncrypted
 			encrypted={encrypted}
 			encryptionEnabled={encryptionEnabled}
 			isTeam={isTeam}
@@ -30,7 +30,7 @@ const Render = ({ encrypted, encryptionEnabled, isTeam, onValueChangeEncrypted, 
 	</Provider>
 );
 
-describe('RenderEncrypted', () => {
+describe('SwitchItemEncrypted', () => {
 	it('should not render the Encrypted Switch component', async () => {
 		const { findByTestId } = render(
 			<Render

@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Switch, Text, View, SwitchProps } from 'react-native';
 
-import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../lib/constants';
-import { useTheme } from '../../theme';
-import sharedStyles from '../Styles';
+import I18n from '../../../i18n';
+import { SWITCH_TRACK_COLOR } from '../../../lib/constants';
+import { useTheme } from '../../../theme';
+import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
 	switchContainer: {
@@ -36,7 +36,7 @@ export interface ISwitch extends SwitchProps {
 	onValueChange: (value: boolean) => void;
 }
 
-export const RenderSwitch = ({ id, value, label, hint, onValueChange, disabled = false }: ISwitch) => {
+export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = false }: ISwitch) => {
 	const { colors } = useTheme();
 
 	return (
