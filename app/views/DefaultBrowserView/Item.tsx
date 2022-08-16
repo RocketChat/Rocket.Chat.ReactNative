@@ -1,8 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 import I18n from '../../i18n';
-import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { TSupportedThemes, useTheme } from '../../theme';
 import * as List from '../../containers/List';
 import { IBrowsersValues, TValue } from '.';
 
@@ -12,7 +11,9 @@ interface IRenderItem extends IBrowsersValues {
 	changeDefaultBrowser: (newBrowser: TValue) => void;
 }
 
-const Item = memo(({ title, value, browser, changeDefaultBrowser, theme }: IRenderItem) => {
+const Item = ({ title, value, browser, changeDefaultBrowser }: IRenderItem) => {
+	const { colors } = useTheme();
+
 	let isSelected = false;
 	if (!browser && value === 'systemDefault:') {
 		isSelected = true;
@@ -25,10 +26,10 @@ const Item = memo(({ title, value, browser, changeDefaultBrowser, theme }: IRend
 			title={I18n.t(title, { defaultValue: title })}
 			onPress={() => changeDefaultBrowser(value)}
 			testID={`default-browser-view-${title}`}
-			right={() => (isSelected ? <List.Icon name='check' color={themes[theme].tintColor} /> : null)}
+			right={() => (isSelected ? <List.Icon name='check' color={colors.tintColor} /> : null)}
 			translateTitle={false}
 		/>
 	);
-});
+};
 
 export default Item;
