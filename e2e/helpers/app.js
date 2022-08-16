@@ -1,4 +1,5 @@
 const { exec } = require('child_process');
+const { expect } = require('detox');
 const data = require('../data');
 
 const platformTypes = {
@@ -220,6 +221,15 @@ async function prepareAndroid() {
 	await runCommand('adb shell settings put global animator_duration_scale 0.0');
 }
 
+async function expectToBeVisible(id) {
+	try {
+		await expect(element(by.id(id))).toBeVisible();
+		return true;
+	} catch {
+		return false;
+	}
+}
+
 module.exports = {
 	navigateToWorkspace,
 	navigateToLogin,
@@ -236,5 +246,6 @@ module.exports = {
 	tryTapping,
 	checkServer,
 	platformTypes,
-	prepareAndroid
+	prepareAndroid,
+	expectToBeVisible
 };

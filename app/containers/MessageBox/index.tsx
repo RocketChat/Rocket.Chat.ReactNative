@@ -1069,7 +1069,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				onPress={this.onPressSendToChannel}
 				testID='messagebox-send-to-channel'
 			>
-				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
+				<CustomIcon
+					testID={tshow ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
+					name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'}
+					size={24}
+					color={themes[theme].auxiliaryText}
+				/>
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>
 					{I18n.t('Messagebox_Send_to_channel')}
 				</Text>
