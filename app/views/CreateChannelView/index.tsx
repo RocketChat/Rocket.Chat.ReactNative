@@ -159,8 +159,6 @@ const CreateChannelView = () => {
 		[dispatch]
 	);
 
-	console.count('👻 CreateChannelView');
-
 	return (
 		<KeyboardView
 			style={{ backgroundColor: themes[theme].backgroundColor }}
