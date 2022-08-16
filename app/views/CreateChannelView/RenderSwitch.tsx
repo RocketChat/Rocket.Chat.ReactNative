@@ -42,7 +42,9 @@ export const RenderSwitch = ({ id, value, label, hint, onValueChange, disabled =
 		<View style={[styles.switchContainer, { backgroundColor: colors.backgroundColor }]}>
 			<View style={styles.switchTextContainer}>
 				<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t(label)}</Text>
-				<Text style={[styles.hint, { color: colors.auxiliaryText }]}>{I18n.t(hint)}</Text>
+				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.auxiliaryText }]}>
+					{I18n.t(hint)}
+				</Text>
 			</View>
 			<Switch
 				value={value}

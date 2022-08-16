@@ -3,20 +3,16 @@ import { shallowEqual } from 'react-redux';
 
 import { RenderSwitch } from './RenderSwitch';
 
+export interface IRenderEncrypted {
+	encryptionEnabled: boolean;
+	isTeam: boolean;
+	type: boolean;
+	encrypted: boolean;
+	onValueChangeEncrypted: (value: boolean) => void;
+}
+
 export const RenderEncrypted = memo(
-	({
-		encryptionEnabled,
-		isTeam,
-		type,
-		encrypted,
-		onValueChangeEncrypted
-	}: {
-		encryptionEnabled: boolean;
-		isTeam: boolean;
-		type: boolean;
-		encrypted: boolean;
-		onValueChangeEncrypted: (value: boolean) => void;
-	}) => {
+	({ encryptionEnabled, isTeam, type, encrypted, onValueChangeEncrypted }: IRenderEncrypted) => {
 		if (!encryptionEnabled) {
 			return null;
 		}
