@@ -535,7 +535,7 @@
   "Upload_file_question_mark": "Enviar arquivo?",
   "User": "Usuário",
   "Users": "Usuários",
-  "User_added_by": "{{userBy}} adicionado",
+  "User_added_by": "{{userAdded}} adicionado",
   "User_Info": "Informações do usuário",
   "User_has_been_key": "Usuário foi {{key}}",
   "User_is_no_longer_role_by_": "{{user}} não pertence mais à {{role}} por {{userBy}}",
