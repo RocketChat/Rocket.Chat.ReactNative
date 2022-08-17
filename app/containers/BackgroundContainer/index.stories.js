@@ -1,20 +1,20 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 
 import { ThemeContext } from '../../theme';
 import { longText } from '../../../storybook/utils';
 import BackgroundContainer from '.';
 
-const stories = storiesOf('BackgroundContainer', module);
+export default {
+	title: 'BackgroundContainer'
+};
 
-stories.add('basic', () => <BackgroundContainer />);
+export const Basic = () => <BackgroundContainer />;
 
-stories.add('loading', () => <BackgroundContainer loading />);
+export const Loading = () => <BackgroundContainer loading />;
 
-stories.add('text', () => <BackgroundContainer text='Text here' />);
+export const Text = () => <BackgroundContainer text='Text here' />;
 
-stories.add('long text', () => <BackgroundContainer text={longText} />);
+export const LongText = () => <BackgroundContainer text={longText} />;
 
 const ThemeStory = ({ theme, ...props }) => (
 	<ThemeContext.Provider value={{ theme }}>
@@ -22,10 +22,10 @@ const ThemeStory = ({ theme, ...props }) => (
 	</ThemeContext.Provider>
 );
 
-stories.add('dark theme - loading', () => <ThemeStory theme='dark' loading />);
+export const DarkThemeLoading = () => <ThemeStory theme='dark' loading />;
 
-stories.add('dark theme - text', () => <ThemeStory theme='dark' text={longText} />);
+export const DarkThemeText = () => <ThemeStory theme='dark' text={longText} />;
 
-stories.add('black theme - loading', () => <ThemeStory theme='black' loading />);
+export const BlackThemeLoading = () => <ThemeStory theme='black' loading />;
 
-stories.add('black theme - text', () => <ThemeStory theme='black' text={longText} />);
+export const BlackThemeText = () => <ThemeStory theme='black' text={longText} />;
