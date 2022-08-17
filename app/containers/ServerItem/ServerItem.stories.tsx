@@ -1,10 +1,11 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 
-import ServerItemComponent from '../../app/containers/ServerItem';
-import { ThemeContext } from '../../app/theme';
+import ServerItemComponent from '.';
+import { ThemeContext } from '../../theme';
 
-const stories = storiesOf('ServerItem', module);
+export default {
+	title: 'ServerItem'
+};
 
 const themes = {
 	light: 'light',
@@ -21,18 +22,15 @@ const item = {
 const ServerItem = ({ theme = themes.light, ...props }) => (
 	<ThemeContext.Provider
 		value={{
-			theme,
-			themePreferences: {
-				currentTheme: theme,
-				darkLevel: theme
-			}
+			// @ts-ignore
+			theme
 		}}
 	>
-		<ServerItemComponent item={item} hasCheck={false} {...props} />
+		<ServerItemComponent item={item} hasCheck={false} onPress={() => alert('Press')} {...props} />
 	</ThemeContext.Provider>
 );
 
-stories.add('content', () => (
+export const Content = () => (
 	<>
 		<ServerItem hasCheck />
 		<ServerItem
@@ -48,20 +46,18 @@ stories.add('content', () => (
 			}}
 		/>
 	</>
-));
+);
 
-stories.add('touchable', () => (
+export const Touchable = () => (
 	<>
-		<ServerItem onLongPress={() => alert('Long Press')} onPress={() => alert('Press')} />
-		<ServerItem onPress={() => alert('Press')} />
 		<ServerItem onLongPress={() => alert('Long Press')} />
 	</>
-));
+);
 
-stories.add('themes', () => (
+export const Themes = () => (
 	<>
 		<ServerItem theme={themes.light} />
 		<ServerItem theme={themes.dark} />
 		<ServerItem theme={themes.black} />
 	</>
-));
+);

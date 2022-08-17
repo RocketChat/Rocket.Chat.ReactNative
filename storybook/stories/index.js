@@ -3,7 +3,7 @@ import { combineReducers, createStore } from 'redux';
 
 // import './RoomItem';
 // import '../../app/containers/List/List.stories';
-import './ServerItem';
+// import './ServerItem';
 import './Message';
 import './UiKitMessage';
 import './UiKitModal';
