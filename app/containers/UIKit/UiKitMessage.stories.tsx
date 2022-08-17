@@ -1,11 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import { storiesOf } from '@storybook/react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
-import MessageContext from '../../app/containers/message/Context';
-import { UiKitMessage } from '../../app/containers/UIKit';
-import { themes } from '../../app/lib/constants';
+import MessageContext from '../message/Context';
+import { UiKitMessage } from '.';
+import { themes } from '../../lib/constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,41 +18,39 @@ const styles = StyleSheet.create({
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
 	username: 'diego.mello',
-	token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
+	token: 'abc'
 };
 
 const baseUrl = 'https://open.rocket.chat';
 
-const messageDecorator = story => (
-	<MessageContext.Provider
-		value={{
-			user,
-			baseUrl,
-			onPress: () => {},
-			onLongPress: () => {},
-			reactionInit: () => {},
-			onErrorPress: () => {},
-			replyBroadcast: () => {},
-			onReactionPress: () => {},
-			onDiscussionPress: () => {},
-			onReactionLongPress: () => {},
-			threadBadgeColor: themes.light.tunreadColor
-		}}
-	>
-		{story()}
-	</MessageContext.Provider>
-);
+export default {
+	title: 'UIKit/UiKitMessage',
+	decorators: [
+		(Story: any) => (
+			<ScrollView style={[styles.container, styles.padding]} keyboardShouldPersistTaps='always'>
+				<MessageContext.Provider
+					value={{
+						user,
+						baseUrl,
+						onPress: () => {},
+						onLongPress: () => {},
+						reactionInit: () => {},
+						onErrorPress: () => {},
+						replyBroadcast: () => {},
+						onReactionPress: () => {},
+						onDiscussionPress: () => {},
+						onReactionLongPress: () => {},
+						threadBadgeColor: themes.light.tunreadColor
+					}}
+				>
+					<Story />
+				</MessageContext.Provider>
+			</ScrollView>
+		)
+	]
+};
 
-const stories = storiesOf('UiKitMessage', module)
-	.addDecorator(story => <SafeAreaView style={styles.container}>{story()}</SafeAreaView>)
-	.addDecorator(story => (
-		<ScrollView style={[styles.container, styles.padding]} keyboardShouldPersistTaps='always'>
-			{story()}
-		</ScrollView>
-	))
-	.addDecorator(messageDecorator);
-
-const Section = () =>
+export const Section = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -64,9 +60,8 @@ const Section = () =>
 			}
 		}
 	]);
-stories.add('Section', () => <Section />);
 
-const SectionMarkdownList = () =>
+export const SectionMarkdownList = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -76,9 +71,9 @@ const SectionMarkdownList = () =>
 			}
 		}
 	]);
-stories.add('Section + Markdown List', () => <SectionMarkdownList />);
+SectionMarkdownList.storyName = 'Section + Markdown List';
 
-const SectionOverflow = () =>
+export const SectionOverflow = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -125,9 +120,9 @@ const SectionOverflow = () =>
 			}
 		}
 	]);
-stories.add('Section + Overflow', () => <SectionOverflow />);
+SectionOverflow.storyName = 'Section + Overflow';
 
-const SectionImage = () =>
+export const SectionImage = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -142,9 +137,9 @@ const SectionImage = () =>
 			}
 		}
 	]);
-stories.add('Section + image', () => <SectionImage />);
+SectionImage.storyName = 'Section + image';
 
-const SectionButton = () =>
+export const SectionButton = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -161,9 +156,9 @@ const SectionButton = () =>
 			}
 		}
 	]);
-stories.add('Section + button', () => <SectionButton />);
+SectionButton.storyName = 'Section + button';
 
-const SectionSelect = () =>
+export const SectionSelect = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -192,9 +187,9 @@ const SectionSelect = () =>
 			}
 		}
 	]);
-stories.add('Section + Select', () => <SectionSelect />);
+SectionSelect.storyName = 'Section + Select';
 
-const SectionDatePicker = () =>
+export const SectionDatePicker = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -213,9 +208,9 @@ const SectionDatePicker = () =>
 			}
 		}
 	]);
-stories.add('Section + DatePicker', () => <SectionDatePicker />);
+SectionDatePicker.storyName = 'Section + DatePicker';
 
-const SectionMultiSelect = () =>
+export const SectionMultiSelect = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -258,9 +253,9 @@ const SectionMultiSelect = () =>
 			}
 		}
 	]);
-stories.add('Section + Multi Select', () => <SectionMultiSelect />);
+SectionMultiSelect.storyName = 'Section + Multi Select';
 
-const Image = () =>
+export const Image = () =>
 	UiKitMessage([
 		{
 			type: 'image',
@@ -273,9 +268,9 @@ const Image = () =>
 			altText: 'Example Image'
 		}
 	]);
-stories.add('Image', () => <Image />);
+Image.storyName = 'Image';
 
-const Context = () =>
+export const Context = () =>
 	UiKitMessage([
 		{
 			type: 'context',
@@ -297,9 +292,9 @@ const Context = () =>
 			]
 		}
 	]);
-stories.add('Context', () => <Context />);
+Context.storyName = 'Context';
 
-const ActionButton = () =>
+export const ActionButton = () =>
 	UiKitMessage([
 		{
 			type: 'actions',
@@ -377,9 +372,9 @@ const ActionButton = () =>
 			]
 		}
 	]);
-stories.add('Action - Buttons', () => <ActionButton />);
+ActionButton.storyName = 'Action - Buttons';
 
-const Fields = () =>
+export const Fields = () =>
 	UiKitMessage([
 		{
 			type: 'section',
@@ -412,9 +407,9 @@ const Fields = () =>
 			]
 		}
 	]);
-stories.add('Fields', () => <Fields />);
+Fields.storyName = 'Fields';
 
-const ActionSelect = () =>
+export const ActionSelect = () =>
 	UiKitMessage([
 		{
 			type: 'actions',
@@ -488,12 +483,4 @@ const ActionSelect = () =>
 			]
 		}
 	]);
-stories.add('Action - Select', () => <ActionSelect />);
-
-// stories.add('Section', () => UiKitMessage([{
-// 	type: 'section',
-// 	text: {
-// 		type: 'mrkdwn',
-// 		text: 'Section'
-// 	}
-// }]));
+ActionSelect.storyName = 'Action - Select';

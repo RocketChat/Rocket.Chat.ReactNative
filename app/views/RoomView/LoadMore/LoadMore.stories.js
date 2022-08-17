@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import { longText } from '../../../../storybook/utils';
 import { ThemeContext } from '../../../theme';
-import { Message, MessageDecorator, StoryProvider } from '../../../../storybook/stories/Message';
+import { Message, MessageDecorator, StoryProvider } from '../../../containers/message/Message.stories';
 import { MessageTypeLoad, themes } from '../../../lib/constants';
 import LoadMore from './index';
 
