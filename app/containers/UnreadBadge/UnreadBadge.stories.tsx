@@ -1,14 +1,14 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 import { View } from 'react-native';
 
-import UnreadBadge from '../../app/containers/UnreadBadge';
-import { ThemeContext } from '../../app/theme';
+import UnreadBadge from '.';
+import { ThemeContext, TSupportedThemes } from '../../theme';
 
-const stories = storiesOf('Unread Badge', module);
+export default {
+	title: 'Unread Badge'
+};
 
-const StoryTester = ({ children }) => (
+const StoryTester = ({ children }: { children: React.ReactElement | React.ReactElement[] }) => (
 	<View
 		style={{
 			flex: 1,
@@ -21,7 +21,7 @@ const StoryTester = ({ children }) => (
 	</View>
 );
 
-stories.add('all', () => (
+export const All = () => (
 	<StoryTester>
 		<UnreadBadge unread={9} small />
 		<UnreadBadge unread={999} small />
@@ -31,23 +31,23 @@ stories.add('all', () => (
 		<UnreadBadge unread={9} groupMentions={1} />
 		<UnreadBadge unread={9} tunread={[1]} />
 	</StoryTester>
-));
+);
 
-stories.add('small', () => (
+export const Small = () => (
 	<StoryTester>
 		<UnreadBadge unread={9} small />
 		<UnreadBadge unread={999} small />
 	</StoryTester>
-));
+);
 
-stories.add('normal', () => (
+export const Normal = () => (
 	<StoryTester>
 		<UnreadBadge unread={9} />
 		<UnreadBadge unread={9999} />
 	</StoryTester>
-));
+);
 
-stories.add('different mention types', () => (
+export const DifferentMentionTypes = () => (
 	<StoryTester>
 		<UnreadBadge unread={1} />
 		<UnreadBadge unread={1} userMentions={1} />
@@ -57,9 +57,10 @@ stories.add('different mention types', () => (
 		<UnreadBadge unread={1} tunreadUser={[1]} />
 		<UnreadBadge unread={1} tunreadGroup={[1]} />
 	</StoryTester>
-));
+);
 
-const ThemeStory = ({ theme }) => (
+const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
+	// @ts-ignore
 	<ThemeContext.Provider value={{ theme }}>
 		<StoryTester>
 			<UnreadBadge unread={1} />
@@ -70,10 +71,10 @@ const ThemeStory = ({ theme }) => (
 	</ThemeContext.Provider>
 );
 
-stories.add('themes', () => (
+export const Themes = () => (
 	<>
 		<ThemeStory theme='light' />
 		<ThemeStory theme='dark' />
 		<ThemeStory theme='black' />
 	</>
-));
+);

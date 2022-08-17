@@ -35,6 +35,7 @@ const getStories = () => {
     require("../app/containers/TextInput/TextInput.stories.tsx"),
     require("../app/containers/UIKit/UiKitMessage.stories.tsx"),
     require("../app/containers/UIKit/UiKitModal.stories.tsx"),
+    require("../app/containers/UnreadBadge/UnreadBadge.stories.tsx"),
   ];
 };
 
