@@ -68,6 +68,7 @@ interface IRoomMembersViewState {
 	membersFiltered: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
+	page: number;
 }
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
@@ -91,7 +92,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			members: [],
 			membersFiltered: [],
 			room: room || ({} as TSubscriptionModel),
-			end: false
+			end: false,
+			page: 0
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -423,7 +425,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	toggleStatus = () => {
 		try {
 			const { allUsers } = this.state;
-			this.setState({ members: [], allUsers: !allUsers, end: false }, () => {
+			this.setState({ members: [], allUsers: !allUsers, end: false, page: 0 }, () => {
 				this.fetchMembers();
 			});
 		} catch (e) {
@@ -445,8 +447,9 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	};
 
 	fetchMembers = async () => {
-		const { rid, members, isLoading, allUsers, end, room, filtering } = this.state;
+		const { rid, members, isLoading, allUsers, end, room, filtering, page } = this.state;
 		const { t } = room;
+
 		if (isLoading || end) {
 			return;
 		}
@@ -458,14 +461,22 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				roomType: t,
 				type: allUsers ? 'all' : 'online',
 				filter: filtering,
-				skip: members.length,
+				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
 				allUsers
 			});
+			const end = membersResult?.length < PAGE_SIZE;
+			console.log('🚀 ~ file: index.tsx ~ line 468 ~ RoomMembersView ~ fetchMembers= ~ end', end);
+			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
+			console.log(
+				'🚀 ~ file: index.tsx ~ line 469 ~ RoomMembersView ~ fetchMembers= ~ membersResultFiltered',
+				membersResultFiltered
+			);
 			this.setState({
-				members: members.concat(membersResult || []),
+				members: members.concat(membersResultFiltered || []),
 				isLoading: false,
-				end: membersResult?.length < PAGE_SIZE
+				end,
+				page: page + 1
 			});
 			this.setHeader();
 		} catch (e) {
