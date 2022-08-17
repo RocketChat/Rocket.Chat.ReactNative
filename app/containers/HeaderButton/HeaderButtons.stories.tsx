@@ -1,6 +1,6 @@
 import React from 'react';
-// import { SafeAreaView } from 'react-native';
 import { Header, HeaderBackground } from '@react-navigation/elements';
+import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import * as HeaderButton from '.';
@@ -19,9 +19,11 @@ export default {
 	component: HeaderButton,
 	decorators: [
 		(Story: any) => (
-			<SafeAreaProvider>
-				<Story />
-			</SafeAreaProvider>
+			<NavigationContainer>
+				<SafeAreaProvider>
+					<Story />
+				</SafeAreaProvider>
+			</NavigationContainer>
 		)
 	]
 };
