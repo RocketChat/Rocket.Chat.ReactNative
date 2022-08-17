@@ -1,4 +1,3 @@
-import { storiesOf } from '@storybook/react-native';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -19,9 +18,11 @@ const testAttachment = {
 	collapsed: true
 };
 
-const stories = storiesOf('Message', module);
+export default {
+	title: 'CollapsibleQuote'
+};
 
-stories.add('Item', () => (
+export const Item = () => (
 	<View style={{ padding: 10 }}>
 		<MessageContext.Provider
 			value={{
@@ -32,4 +33,4 @@ stories.add('Item', () => (
 			<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={() => {}} timeFormat='LT' />
 		</MessageContext.Provider>
 	</View>
-));
+);
