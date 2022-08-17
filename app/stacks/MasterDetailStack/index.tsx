@@ -195,11 +195,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
 				<ModalStack.Screen name='CreateChannelView' component={CreateChannelView} options={CreateChannelView.navigationOptions} />
 				<ModalStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
-				<ModalStack.Screen
-					name='E2ESaveYourPasswordView'
-					component={E2ESaveYourPasswordView}
-					options={E2ESaveYourPasswordView.navigationOptions}
-				/>
+				<ModalStack.Screen name='E2ESaveYourPasswordView' component={E2ESaveYourPasswordView} />
 				<ModalStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 				<ModalStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
