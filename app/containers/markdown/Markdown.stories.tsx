@@ -1,13 +1,10 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { storiesOf } from '@storybook/react-native';
-import { Provider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 
-import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
-import { themes } from '../../app/lib/constants';
-import { TGetCustomEmoji, IEmoji } from '../../app/definitions/IEmoji';
-import { store } from '.';
-// import { NavigationDecorator } from '../StoryNavigator';
+import Markdown, { MarkdownPreview } from '.';
+import { themes } from '../../lib/constants';
+import { TGetCustomEmoji, IEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';
 
@@ -16,10 +13,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 15,
 		backgroundColor: themes[theme].backgroundColor,
 		marginVertical: 50
-	},
-	separator: {
-		marginHorizontal: 10,
-		marginVertical: 10
 	}
 });
 
@@ -45,10 +38,18 @@ const getCustomEmoji: TGetCustomEmoji = content => {
 	return customEmoji;
 };
 
-const stories = storiesOf('Markdown', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
-// .addDecorator(NavigationDecorator);
+export default {
+	title: 'Markdown',
+	decorators: [
+		(Story: any) => (
+			<NavigationContainer>
+				<Story />
+			</NavigationContainer>
+		)
+	]
+};
 
-stories.add('Text', () => (
+export const Text = () => (
 	<View style={styles.container}>
 		<Markdown msg='This is Rocket.Chat' theme={theme} />
 		<Markdown msg={longText} theme={theme} />
@@ -56,9 +57,9 @@ stories.add('Text', () => (
 		<Markdown msg={sequentialEmptySpacesText} theme={theme} />
 		<Markdown msg='Strong emphasis, aka bold, with **asterisks** or __underscores__' theme={theme} />
 	</View>
-));
+);
 
-stories.add('Preview', () => (
+export const Preview = () => (
 	<View style={styles.container}>
 		<MarkdownPreview msg={longText} />
 		<MarkdownPreview msg={lineBreakText} />
@@ -67,9 +68,9 @@ stories.add('Preview', () => (
 		<MarkdownPreview msg='Testing: 😃 :+1: :marioparty:' />
 		<MarkdownPreview msg='Fallback from new md to old' />
 	</View>
-));
+);
 
-stories.add('Mentions', () => (
+export const Mentions = () => (
 	<ScrollView style={styles.container}>
 		<Markdown
 			msg='@rocket.cat @name1 @all @here @unknown'
@@ -95,15 +96,15 @@ stories.add('Mentions', () => (
 			useRealName
 		/>
 	</ScrollView>
-));
+);
 
-stories.add('Hashtag', () => (
+export const Hashtag = () => (
 	<View style={styles.container}>
 		<Markdown msg='#test-channel #unknown' theme={theme} channels={[{ _id: '123', name: 'test-channel' }]} />
 	</View>
-));
+);
 
-stories.add('Emoji', () => (
+export const Emoji = () => (
 	<View style={styles.container}>
 		<Markdown msg='Unicode: 😃😇👍' theme={theme} />
 		<Markdown msg='Shortnames: :joy::+1:' theme={theme} />
@@ -115,9 +116,9 @@ stories.add('Emoji', () => (
 		/>
 		<Markdown msg='😃 :+1: :marioparty:' theme={theme} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
 	</View>
-));
+);
 
-stories.add('Block quote', () => (
+export const BlockQuote = () => (
 	<View style={styles.container}>
 		<Markdown
 			msg={`> This is block quote
@@ -125,22 +126,22 @@ this is a normal line`}
 			theme={theme}
 		/>
 	</View>
-));
+);
 
-stories.add('Links', () => (
+export const Links = () => (
 	<View style={styles.container}>
 		<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' theme={theme} />
 		<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' theme={theme} />
 	</View>
-));
+);
 
-stories.add('Image', () => (
+export const Image = () => (
 	<View style={styles.container}>
 		<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' theme={theme} />
 	</View>
-));
+);
 
-stories.add('Headers', () => (
+export const Headers = () => (
 	<View style={styles.container}>
 		<Markdown msg='# Header 1' theme={theme} />
 		<Markdown msg='## Header 2' theme={theme} />
@@ -149,9 +150,9 @@ stories.add('Headers', () => (
 		<Markdown msg='##### Header 5' theme={theme} />
 		<Markdown msg='###### Header 6' theme={theme} />
 	</View>
-));
+);
 
-stories.add('Code', () => (
+export const Code = () => (
 	<View style={styles.container}>
 		<Markdown msg='This is `inline code`' theme={theme} />
 		<Markdown
@@ -162,16 +163,16 @@ Code block
 			theme={theme}
 		/>
 	</View>
-));
+);
 
-stories.add('Lists', () => (
+export const Lists = () => (
 	<View style={styles.container}>
 		<Markdown msg={'* Open Source\n* Rocket.Chat\n  - nodejs\n  - ReactNative'} theme={theme} />
 		<Markdown msg={'1. Open Source\n2. Rocket.Chat'} theme={theme} />
 	</View>
-));
+);
 
-stories.add('Table', () => (
+export const Table = () => (
 	<View style={styles.container}>
 		<Markdown
 			msg='First Header | Second Header
@@ -181,4 +182,4 @@ Content in the first column | Content in the second column'
 			theme={theme}
 		/>
 	</View>
-));
+);

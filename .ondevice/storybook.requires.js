@@ -25,6 +25,7 @@ const getStories = () => {
     require("../app/containers/HeaderButton/HeaderButtons.stories.tsx"),
     require("../app/containers/List/List.stories.tsx"),
     require("../app/containers/LoginServices/LoginServices.stories.tsx"),
+    require("../app/containers/markdown/Markdown.stories.tsx"),
     require("../app/containers/message/Components/CollapsibleQuote/CollapsibleQuote.stories.tsx"),
     require("../app/containers/message/Message.stories.tsx"),
     require("../app/containers/RoomHeader/RoomHeader.stories.tsx"),

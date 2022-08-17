@@ -7,7 +7,7 @@ import { combineReducers, createStore } from 'redux';
 // import './Message';
 // import '../../app/containers/UIKit/UiKitMessage.stories';
 // import '../../app/containers/UIKit/UiKitModal.stories';
-import './Markdown';
+// import '../../app/containers/markdown/Markdown.stories';
 // import '../../app/containers/HeaderButton/HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
