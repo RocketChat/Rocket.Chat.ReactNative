@@ -5,23 +5,25 @@ import { storiesOf } from '@storybook/react-native';
 
 import { longText } from '../../../../storybook/utils';
 import { ThemeContext } from '../../../theme';
-import { Message, MessageDecorator, StoryProvider } from '../../../containers/message/Message.stories';
+import { Message } from '../../../containers/message/Message.stories';
 import { MessageTypeLoad, themes } from '../../../lib/constants';
 import LoadMore from './index';
 
-const stories = storiesOf('LoadMore', module);
+export default {
+	title: 'RoomView/LoadMore'
+};
 
 // FIXME: for some reason, this promise never resolves on Storybook (it works on the app, so maybe the issue isn't on the component)
 const load = () => new Promise(res => setTimeout(res, 1000));
 
-stories.add('basic', () => (
+export const Basic = () => (
 	<>
 		<LoadMore load={load} />
 		<LoadMore load={load} runOnRender />
 		<LoadMore load={load} type={MessageTypeLoad.PREVIOUS_CHUNK} />
 		<LoadMore load={load} type={MessageTypeLoad.NEXT_CHUNK} />
 	</>
-));
+);
 
 const ThemeStory = ({ theme }) => (
 	<ThemeContext.Provider value={{ theme }}>
@@ -40,17 +42,8 @@ const ThemeStory = ({ theme }) => (
 	</ThemeContext.Provider>
 );
 
-stories
-	.addDecorator(StoryProvider)
-	.addDecorator(MessageDecorator)
-	.add('light theme', () => <ThemeStory theme='light' />);
+export const LightTheme = () => <ThemeStory theme='light' />;
 
-stories
-	.addDecorator(StoryProvider)
-	.addDecorator(MessageDecorator)
-	.add('dark theme', () => <ThemeStory theme='dark' />);
+export const DarkTheme = () => <ThemeStory theme='dark' />;
 
-stories
-	.addDecorator(StoryProvider)
-	.addDecorator(MessageDecorator)
-	.add('black theme', () => <ThemeStory theme='black' />);
+export const BlackTheme = () => <ThemeStory theme='black' />;

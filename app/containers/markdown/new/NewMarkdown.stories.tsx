@@ -1,17 +1,21 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { storiesOf } from '@storybook/react-native';
-import { Provider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 
-import NewMarkdown from '../../app/containers/markdown/new';
-import { themes } from '../../app/lib/constants';
-import { longText } from '../utils';
-// import { NavigationDecorator } from '../StoryNavigator';
-import { store } from './index';
+import NewMarkdown from '.';
+import { themes } from '../../../lib/constants';
+import { longText } from '../../../../storybook/utils';
 
-const stories = storiesOf('NewMarkdown', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
-// .addDecorator(NavigationDecorator);
+export default {
+	title: 'NewMarkdown',
+	decorators: [
+		(Story: any) => (
+			<NavigationContainer>
+				<Story />
+			</NavigationContainer>
+		)
+	]
+};
 
 const theme = 'light';
 
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const getCustomEmoji = content => {
+const getCustomEmoji = (content: string) => {
 	const customEmoji = {
 		marioparty: { name: content, extension: 'gif' },
 		nyan_rocket: { name: content, extension: 'png' }
@@ -108,7 +112,7 @@ const sequentialEmptySpacesMsg = [
 	}
 ];
 
-stories.add('Text', () => (
+export const Text = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={simpleTextMsg} />
 		<NewMarkdown tokens={longTextMsg} />
@@ -116,7 +120,7 @@ stories.add('Text', () => (
 		<NewMarkdown tokens={sequentialEmptySpacesMsg} />
 		<NewMarkdown tokens={[...simpleTextMsg, ...longTextMsg]} />
 	</View>
-));
+);
 
 const allMentionTokens = [
 	{
@@ -207,7 +211,7 @@ const multipleMentions = [
 	}
 ];
 
-stories.add('Mentions', () => (
+export const Mentions = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={allMentionTokens} mentions={allMentions} navToRoomInfo={() => {}} style={[]} />
 		<NewMarkdown
@@ -218,7 +222,7 @@ stories.add('Mentions', () => (
 			username='rocket.cat'
 		/>
 	</View>
-));
+);
 
 const channelTokens = [
 	{
@@ -253,11 +257,11 @@ const channelMention = [
 	}
 ];
 
-stories.add('Hashtag', () => (
+export const Hashtag = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={channelTokens} channels={channelMention} navToRoomInfo={() => {}} />
 	</View>
-));
+);
 
 const bigEmojiTokens = [
 	{
@@ -324,12 +328,12 @@ const emojiTokens = [
 	}
 ];
 
-stories.add('Emoji', () => (
+export const Emoji = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={bigEmojiTokens} />
 		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
 	</View>
-));
+);
 
 const blockQuoteTokens = [
 	{
@@ -362,11 +366,11 @@ const blockQuoteTokens = [
 	}
 ];
 
-stories.add('Block quote', () => (
+export const BlockQuote = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={blockQuoteTokens} />
 	</View>
-));
+);
 
 const rocketChatLink = [
 	{
@@ -410,14 +414,14 @@ const markdownLink = [
 	}
 ];
 
-stories.add('Links', () => (
+export const Links = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={rocketChatLink} />
 		<NewMarkdown tokens={markdownLink} />
 	</View>
-));
+);
 
-stories.add('Headers', () => (
+export const Headers = () => (
 	<View style={styles.container}>
 		<NewMarkdown
 			tokens={[
@@ -504,7 +508,7 @@ stories.add('Headers', () => (
 			]}
 		/>
 	</View>
-));
+);
 
 const inlineCodeToken = [
 	{
@@ -537,12 +541,12 @@ const multilineCodeToken = [
 	}
 ];
 
-stories.add('Code', () => (
+export const Code = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={inlineCodeToken} style={[]} />
 		<NewMarkdown tokens={multilineCodeToken} style={[]} />
 	</View>
-));
+);
 
 const items = [
 	[
@@ -684,13 +688,13 @@ const tasks = [
 	}
 ];
 
-stories.add('Lists', () => (
+export const Lists = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={unorederedListToken} mentions={listMentions} channels={listChannels} />
 		<NewMarkdown tokens={orderedListToken} mentions={listMentions} channels={listChannels} />
 		<NewMarkdown tokens={tasks} mentions={listMentions} channels={listChannels} />
 	</View>
-));
+);
 
 const katex = [
 	{
@@ -719,14 +723,14 @@ const inlineKatex = [
 	}
 ];
 
-stories.add('Katex', () => (
+export const Katex = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={katex} />
 	</View>
-));
+);
 
-stories.add('Inline Katex', () => (
+export const InlineKatex = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={inlineKatex} />
 	</View>
-));
+);
