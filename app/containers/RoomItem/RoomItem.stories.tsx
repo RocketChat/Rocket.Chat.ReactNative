@@ -1,16 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { Dimensions, ScrollView } from 'react-native';
-import { storiesOf } from '@storybook/react-native';
-import { Provider } from 'react-redux';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Dimensions } from 'react-native';
 
-import RoomItemComponent from '../../app/containers/RoomItem/RoomItem';
-import { longText } from '../utils';
-import { DisplayMode, themes } from '../../app/lib/constants';
-import { store } from './index';
+import { longText } from '../../../storybook/utils';
+import { DisplayMode } from '../../lib/constants';
+import RoomItemComponent from './RoomItem';
 
-const baseUrl = 'https://open.rocket.chat';
 const { width } = Dimensions.get('window');
 const _theme = 'light';
 const lastMessage = {
@@ -23,12 +17,11 @@ const updatedAt = {
 	date: '10:00'
 };
 
-const RoomItem = props => (
+const RoomItem = (props: any) => (
 	<RoomItemComponent
 		type='d'
 		name='rocket.cat'
 		avatar='rocket.cat'
-		baseUrl={baseUrl}
 		width={width}
 		theme={_theme}
 		showAvatar
@@ -38,23 +31,22 @@ const RoomItem = props => (
 	/>
 );
 
-const stories = storiesOf('Room Item', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.addDecorator(story => <SafeAreaProvider>{story()}</SafeAreaProvider>)
-	.addDecorator(story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>);
+export default {
+	title: 'RoomItem'
+};
 
-stories.add('Basic', () => <RoomItem />);
+export const Basic = () => <RoomItem />;
 
-stories.add('Touch', () => <RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />);
+export const Touch = () => <RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />;
 
-stories.add('User', () => (
+export const User = () => (
 	<>
 		<RoomItem name='diego.mello' avatar='diego.mello' />
 		<RoomItem name={longText} />
 	</>
-));
+);
 
-stories.add('Type', () => (
+export const Type = () => (
 	<>
 		<RoomItem type='d' />
 		<RoomItem type='c' />
@@ -64,9 +56,9 @@ stories.add('Type', () => (
 		<RoomItem type='d' isGroupChat />
 		<RoomItem type='&' />
 	</>
-));
+);
 
-stories.add('User status', () => (
+export const UserStatus = () => (
 	<>
 		<RoomItem status='online' />
 		<RoomItem status='away' />
@@ -75,9 +67,9 @@ stories.add('User status', () => (
 		<RoomItem status='loading' />
 		<RoomItem status='wrong' />
 	</>
-));
+);
 
-stories.add('Alerts', () => (
+export const Alerts = () => (
 	<>
 		<RoomItem alert />
 		<RoomItem alert name='unread' unread={1} />
@@ -91,18 +83,18 @@ stories.add('Alerts', () => (
 		<RoomItem name='group mentions priority 2' alert unread={1} groupMentions={1} tunread={[1]} />
 		<RoomItem name='thread unread priority 3' alert unread={1} tunread={[1]} />
 	</>
-));
+);
 
-stories.add('Tag', () => (
+export const Tag = () => (
 	<>
 		<RoomItem autoJoin />
 		<RoomItem showLastMessage autoJoin />
 		<RoomItem name={longText} autoJoin />
 		<RoomItem name={longText} autoJoin showLastMessage />
 	</>
-));
+);
 
-stories.add('Last Message', () => (
+export const LastMessage = () => (
 	<>
 		<RoomItem showLastMessage />
 		<RoomItem
@@ -129,18 +121,18 @@ stories.add('Last Message', () => (
 		<RoomItem showLastMessage alert unread={1000} lastMessage={lastMessage} />
 		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} />
 	</>
-));
+);
 
-stories.add('Condensed Room Item', () => (
+export const CondensedRoomItem = () => (
 	<>
 		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} displayMode={DisplayMode.Condensed} />
 		<RoomItem showLastMessage alert name='unread' unread={1000} displayMode={DisplayMode.Condensed} />
 
 		<RoomItem type='c' displayMode={DisplayMode.Condensed} autoJoin />
 	</>
-));
+);
 
-stories.add('Condensed Room Item without Avatar', () => (
+export const CondensedRoomItemWithoutAvatar = () => (
 	<>
 		<RoomItem
 			showLastMessage
@@ -153,9 +145,9 @@ stories.add('Condensed Room Item without Avatar', () => (
 		<RoomItem type='p' displayMode={DisplayMode.Condensed} showAvatar={false} />
 		<RoomItem name={longText} autoJoin displayMode={DisplayMode.Condensed} showAvatar={false} />
 	</>
-));
+);
 
-stories.add('Expanded Room Item without Avatar', () => (
+export const ExpandedRoomItemWithoutAvatar = () => (
 	<>
 		<RoomItem
 			showLastMessage
@@ -183,9 +175,9 @@ stories.add('Expanded Room Item without Avatar', () => (
 			showAvatar={false}
 		/>
 	</>
-));
+);
 
-stories.add('Omnichannel Icon', () => (
+export const OmnichannelIcon = () => (
 	<>
 		<RoomItem type='l' sourceType={{ type: 'widget' }} status='online' />
 		<RoomItem type='l' sourceType={{ type: 'widget' }} status='away' />
@@ -198,4 +190,4 @@ stories.add('Omnichannel Icon', () => (
 		<RoomItem type='l' sourceType={{ type: 'other' }} status='online' />
 		<RoomItem type='l' sourceType={{ type: 'other' }} />
 	</>
-));
+);

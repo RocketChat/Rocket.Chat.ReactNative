@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
 import { combineReducers, createStore } from 'redux';
 
-import './RoomItem';
+// import './RoomItem';
 import './List';
 import './ServerItem';
 import './Message';

@@ -2,15 +2,26 @@
 
 import { configure, addDecorator, addParameters, addArgsEnhancer } from '@storybook/react-native';
 
+import { decorators, parameters } from './preview';
+
+if (decorators) {
+	decorators.forEach(decorator => addDecorator(decorator));
+}
+
+if (parameters) {
+	addParameters(parameters);
+}
+
 const getStories = () => {
 	return [
-		require('../app/containers/Avatar/Avatar.stories.js'),
+		// require("../app/containers/Avatar/Avatar.stories.js"),
 		// require("../app/containers/BackgroundContainer/index.stories.js"),
 		// require("../app/containers/Button/Button.stories.js"),
-		require('../app/containers/HeaderButton/HeaderButtons.stories.tsx')
+		// require("../app/containers/HeaderButton/HeaderButtons.stories.tsx"),
 		// require("../app/containers/LoginServices/LoginServices.stories.js"),
 		// require("../app/containers/message/Components/CollapsibleQuote/CollapsibleQuote.stories.js"),
 		// require("../app/containers/RoomHeader/RoomHeader.stories.js"),
+		require('../app/containers/RoomItem/RoomItem.stories.tsx')
 		// require("../app/containers/SearchBox/SearchBox.stories.js"),
 		// require("../app/containers/TextInput/TextInput.stories.js"),
 	];
