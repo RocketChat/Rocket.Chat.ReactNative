@@ -56,7 +56,7 @@ const SelectServerView = () => {
 					<ServerItem onPress={() => select(item.id)} item={item} hasCheck={item.id === server} />
 				)}
 				keyExtractor={keyExtractor}
-				getItemLayout={getItemLayout}
+				getItemLayout={getItemLayout} // Refactor row_height
 				ItemSeparatorComponent={List.Separator}
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				ListHeaderComponent={List.Separator}
