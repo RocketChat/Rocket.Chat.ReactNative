@@ -1,13 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 import { ScrollView } from 'react-native';
-import { Provider } from 'react-redux';
 
 import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';
 import { ThemeContext } from '../../theme';
-import { store } from '../../../storybook/stories';
 import Item from './Item';
 
 const author = {
@@ -15,7 +11,6 @@ const author = {
 	username: 'rocket.cat',
 	name: 'Rocket Cat'
 };
-const baseUrl = 'https://open.rocket.chat';
 const date = new Date(2020, 10, 10, 10);
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
@@ -29,9 +24,21 @@ const defaultItem = {
 	attachments: []
 };
 
+export default {
+	title: 'ThreadMessagesView/Item',
+	decorators: [
+		(Story: any) => (
+			<ScrollView>
+				<List.Separator />
+				<Story />
+				<List.Separator />
+			</ScrollView>
+		)
+	]
+};
+
 const BaseItem = ({ item, ...props }) => (
 	<Item
-		baseUrl={baseUrl}
 		item={{
 			...defaultItem,
 			...item
@@ -41,19 +48,19 @@ const BaseItem = ({ item, ...props }) => (
 	/>
 );
 
-const listDecorator = story => (
-	<ScrollView>
-		<List.Separator />
-		{story()}
-		<List.Separator />
-	</ScrollView>
-);
+// const listDecorator = story => (
+// 	<ScrollView>
+// 		<List.Separator />
+// 		{story()}
+// 		<List.Separator />
+// 	</ScrollView>
+// );
 
-const stories = storiesOf('Thread Messages.Item', module)
-	.addDecorator(listDecorator)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>);
+// const stories = storiesOf('Thread Messages.Item', module)
+// 	.addDecorator(listDecorator)
+// 	.addDecorator(story => <Provider store={store}>{story()}</Provider>);
 
-stories.add('content', () => (
+export const Content = () => (
 	<>
 		<BaseItem />
 		<List.Separator />
@@ -79,9 +86,9 @@ stories.add('content', () => (
 		<List.Separator />
 		<BaseItem useRealName />
 	</>
-));
+);
 
-stories.add('badge', () => (
+export const Badge = () => (
 	<>
 		<BaseItem badgeColor={themes.light.mentionMeColor} />
 		<List.Separator />
@@ -95,7 +102,7 @@ stories.add('badge', () => (
 			badgeColor={themes.light.tunreadColor}
 		/>
 	</>
-));
+);
 
 const ThemeStory = ({ theme }) => (
 	<ThemeContext.Provider value={{ theme }}>
@@ -103,10 +110,10 @@ const ThemeStory = ({ theme }) => (
 	</ThemeContext.Provider>
 );
 
-stories.add('themes', () => (
+export const Themes = () => (
 	<>
 		<ThemeStory theme='light' />
 		<ThemeStory theme='dark' />
 		<ThemeStory theme='black' />
 	</>
-));
+);

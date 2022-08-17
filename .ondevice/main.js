@@ -1,4 +1,4 @@
 module.exports = {
-	stories: ['../app/containers/**/*.stories.?(ts|tsx|js|jsx)', '../storybook/**/*.stories.?(ts|tsx|js|jsx)'],
+	stories: ['../app/containers/**/*.stories.?(ts|tsx|js|jsx)', '../app/views/**/*.stories.?(ts|tsx|js|jsx)'],
 	addons: []
 };
