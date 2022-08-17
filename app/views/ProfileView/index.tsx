@@ -8,7 +8,7 @@ import { dequal } from 'dequal';
 import omit from 'lodash/omit';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -376,7 +376,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				onPress={onPress}
 				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
 				enabled={!disabled}
-				theme={theme}
 			>
 				{child}
 			</Touch>
