@@ -6,6 +6,7 @@ import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/url';
 import { store as reduxStore } from '../store/auxStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
+import { random } from '../methods/helpers';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
@@ -140,7 +141,8 @@ class Sdk {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
 			// @ts-ignore
 			return this.post(`${url}/${method}`, {
-				message: EJSON.stringify({ method, params })
+				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
+				// message: EJSON.stringify({ method, params })
 			});
 		}
 		const parsedParams = params.map(param => {
@@ -176,3 +178,5 @@ class Sdk {
 const sdk = new Sdk();
 
 export default sdk;
+// '{"message":"{\"method\":\"getThreadMessages\",\"params\":[{\"tmid\":\"GkKPrb4AYpj9ktHp3\"}]}"}'
+// {"message":"{\"msg\":\"method\",\"id\":\"24\",\"method\":\"getThreadMessages\",\"params\":[{\"tmid\":\"5hWnkk6Y6MFtuo7Z2\"}]}"}
