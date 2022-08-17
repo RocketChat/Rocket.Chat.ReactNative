@@ -1,12 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import { storiesOf } from '@storybook/react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
-import { UiKitComponent, UiKitModal } from '../../app/containers/UIKit';
-import { KitContext, defaultContext } from '../../app/containers/UIKit/utils';
-import MessageContext from '../../app/containers/message/Context';
-import { themes } from '../../app/lib/constants';
+import { UiKitComponent, UiKitModal } from '.';
+import { KitContext, defaultContext } from './utils';
+import MessageContext from '../message/Context';
+import { themes } from '../../lib/constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,41 +20,39 @@ const styles = StyleSheet.create({
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
 	username: 'diego.mello',
-	token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
+	token: 'abc'
 };
 
 const baseUrl = 'https://open.rocket.chat';
 
-const messageDecorator = story => (
-	<MessageContext.Provider
-		value={{
-			user,
-			baseUrl,
-			onPress: () => {},
-			onLongPress: () => {},
-			reactionInit: () => {},
-			onErrorPress: () => {},
-			replyBroadcast: () => {},
-			onReactionPress: () => {},
-			onDiscussionPress: () => {},
-			onReactionLongPress: () => {},
-			threadBadgeColor: themes.light.tunreadColor
-		}}
-	>
-		{story()}
-	</MessageContext.Provider>
-);
+export default {
+	title: 'UIKit/UiKitModal',
+	decorators: [
+		(Story: any) => (
+			<ScrollView style={[styles.container, styles.padding]} keyboardShouldPersistTaps='always'>
+				<MessageContext.Provider
+					value={{
+						user,
+						baseUrl,
+						onPress: () => {},
+						onLongPress: () => {},
+						reactionInit: () => {},
+						onErrorPress: () => {},
+						replyBroadcast: () => {},
+						onReactionPress: () => {},
+						onDiscussionPress: () => {},
+						onReactionLongPress: () => {},
+						threadBadgeColor: themes.light.tunreadColor
+					}}
+				>
+					<Story />
+				</MessageContext.Provider>
+			</ScrollView>
+		)
+	]
+};
 
-const stories = storiesOf('UiKitModal', module)
-	.addDecorator(story => <SafeAreaView style={styles.container}>{story()}</SafeAreaView>)
-	.addDecorator(story => (
-		<ScrollView style={[styles.container, styles.padding]} keyboardShouldPersistTaps='always'>
-			{story()}
-		</ScrollView>
-	))
-	.addDecorator(messageDecorator);
-
-const ModalSectionSelects = () =>
+export const ModalSectionSelects = () =>
 	UiKitModal([
 		{
 			type: 'section',
@@ -94,9 +91,9 @@ const ModalSectionSelects = () =>
 			]
 		}
 	]);
-stories.add('Modal - Section and Selects', () => <ModalSectionSelects />);
+ModalSectionSelects.storyName = 'Modal - Section and Selects';
 
-const ModalSectionAccessories = () =>
+export const ModalSectionAccessories = () =>
 	UiKitModal([
 		{
 			type: 'section',
@@ -141,9 +138,9 @@ const ModalSectionAccessories = () =>
 			}
 		}
 	]);
-stories.add('Modal - Section Accessories', () => <ModalSectionAccessories />);
+ModalSectionAccessories.storyName = 'Modal - Section and Accessories';
 
-const ModalFormInput = () =>
+export const ModalFormInput = () =>
 	UiKitModal([
 		{
 			type: 'input',
@@ -206,9 +203,9 @@ const ModalFormInput = () =>
 			}
 		}
 	]);
-stories.add('Modal - Form Input', () => <ModalFormInput />);
+ModalFormInput.storyName = 'Modal - Form Input';
 
-const ModalFormTextArea = () =>
+export const ModalFormTextArea = () =>
 	UiKitModal([
 		{
 			type: 'context',
@@ -264,9 +261,9 @@ const ModalFormTextArea = () =>
 			}
 		}
 	]);
-stories.add('Modal - Form TextArea', () => <ModalFormTextArea />);
+ModalFormTextArea.storyName = 'Modal - Form TextArea';
 
-const ModalImages = () =>
+export const ModalImages = () =>
 	UiKitModal([
 		{
 			type: 'image',
@@ -306,9 +303,9 @@ const ModalImages = () =>
 			}
 		}
 	]);
-stories.add('Modal - Images', () => <ModalImages />);
+ModalImages.storyName = 'Modal - Images';
 
-const ModalActions = () =>
+export const ModalActions = () =>
 	UiKitModal([
 		{
 			type: 'input',
@@ -434,9 +431,9 @@ const ModalActions = () =>
 			}
 		}
 	]);
-stories.add('Modal - Actions', () => <ModalActions />);
+ModalActions.storyName = 'Modal - Actions';
 
-const ModalContextsDividers = () =>
+export const ModalContextsDividers = () =>
 	UiKitModal([
 		{
 			type: 'context',
@@ -538,9 +535,9 @@ const ModalContextsDividers = () =>
 			}
 		}
 	]);
-stories.add('Modal - Contexts and Dividers', () => <ModalContextsDividers />);
+ModalContextsDividers.storyName = 'Modal - Contexts and Dividers';
 
-const ModalInputWithError = () => (
+export const ModalInputWithError = () => (
 	<KitContext.Provider value={{ ...defaultContext, errors: { 'input-test': 'error test' } }}>
 		<UiKitComponent
 			render={UiKitModal}
@@ -561,9 +558,9 @@ const ModalInputWithError = () => (
 		/>
 	</KitContext.Provider>
 );
-stories.add('Modal - Input with error', () => <ModalInputWithError />);
+ModalInputWithError.storyName = 'Modal - Input with error';
 
-const ModalMultilneWithError = () => (
+export const ModalMultilneWithError = () => (
 	<KitContext.Provider value={{ ...defaultContext, errors: { 'input-test': 'error test' } }}>
 		<UiKitComponent
 			render={UiKitModal}
@@ -585,9 +582,9 @@ const ModalMultilneWithError = () => (
 		/>
 	</KitContext.Provider>
 );
-stories.add('Modal - Multilne with error', () => <ModalMultilneWithError />);
+ModalMultilneWithError.storyName = 'Modal - Multilne with error';
 
-const ModalDatePickerWithError = () => (
+export const ModalDatePickerWithError = () => (
 	<KitContext.Provider value={{ ...defaultContext, errors: { 'input-test': 'error test' } }}>
 		<UiKitComponent
 			render={UiKitModal}
@@ -614,4 +611,4 @@ const ModalDatePickerWithError = () => (
 		/>
 	</KitContext.Provider>
 );
-stories.add('Modal - DatePicker with error', () => <ModalDatePickerWithError />);
+ModalDatePickerWithError.storyName = 'Modal - DatePicker with error';
