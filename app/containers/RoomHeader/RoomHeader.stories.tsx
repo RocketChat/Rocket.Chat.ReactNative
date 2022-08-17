@@ -1,31 +1,20 @@
 import React from 'react';
-import { Dimensions, SafeAreaView } from 'react-native';
-import { storiesOf } from '@storybook/react-native';
-import { Provider } from 'react-redux';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Header, HeaderBackground } from '@react-navigation/elements';
+import { Dimensions, View } from 'react-native';
 
 import { longText } from '../../../storybook/utils';
 import { ThemeContext } from '../../theme';
-import { store } from '../../../storybook/stories';
 import { colors, themes } from '../../lib/constants';
 import RoomHeaderComponent from './RoomHeader';
 
-const stories = storiesOf('RoomHeader', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.addDecorator(story => <SafeAreaProvider>{story()}</SafeAreaProvider>);
-
 const { width, height } = Dimensions.get('window');
 
-const HeaderExample = ({ title, theme = 'light' }) => (
-	<SafeAreaView>
-		<Header
-			title=''
-			headerTitle={title}
-			headerTitleAlign='left'
-			headerBackground={() => <HeaderBackground style={{ backgroundColor: themes[theme].headerBackground }} />}
-		/>
-	</SafeAreaView>
+export default {
+	title: 'RoomHeader'
+};
+
+const HeaderExample = ({ title, theme = 'light' }: { title: Function; theme?: string }) => (
+	// Using View directly instead of Header from react-navigation because it's easier to test.
+	<View style={{ flex: 1, maxHeight: 48, backgroundColor: themes[theme].headerBackground }}>{title()}</View>
 );
 
 const RoomHeader = ({ ...props }) => (
@@ -42,7 +31,7 @@ const RoomHeader = ({ ...props }) => (
 	/>
 );
 
-stories.add('title and subtitle', () => (
+export const TitleSubtitle = () => (
 	<>
 		<HeaderExample title={() => <RoomHeader title='title' type='p' />} />
 		<HeaderExample title={() => <RoomHeader title={longText} type='p' />} />
@@ -50,9 +39,9 @@ stories.add('title and subtitle', () => (
 		<HeaderExample title={() => <RoomHeader subtitle={longText} />} />
 		<HeaderExample title={() => <RoomHeader title={longText} subtitle={longText} />} />
 	</>
-));
+);
 
-stories.add('icons', () => (
+export const Icons = () => (
 	<>
 		<HeaderExample title={() => <RoomHeader title='private channel' type='p' />} />
 		<HeaderExample title={() => <RoomHeader title='public channel' type='c' />} />
@@ -67,30 +56,30 @@ stories.add('icons', () => (
 		<HeaderExample title={() => <RoomHeader title='loading dm' type='d' status='loading' />} />
 		<HeaderExample title={() => <RoomHeader title='offline dm' type='d' />} />
 	</>
-));
+);
 
-stories.add('typing', () => (
+export const Typing = () => (
 	<>
 		<HeaderExample title={() => <RoomHeader usersTyping={['user 1']} />} />
 		<HeaderExample title={() => <RoomHeader usersTyping={['user 1', 'user 2']} />} />
 		<HeaderExample title={() => <RoomHeader usersTyping={['user 1', 'user 2', 'user 3', 'user 4', 'user 5']} />} />
 	</>
-));
+);
 
-stories.add('landscape', () => (
+export const Landscape = () => (
 	<>
 		<HeaderExample title={() => <RoomHeader width={height} height={width} />} />
 		<HeaderExample title={() => <RoomHeader width={height} height={width} subtitle='subtitle' />} />
 		<HeaderExample title={() => <RoomHeader width={height} height={width} title={longText} subtitle={longText} />} />
 	</>
-));
+);
 
-stories.add('thread', () => (
+export const Thread = () => (
 	<>
 		<HeaderExample title={() => <RoomHeader tmid='123' parentTitle='parent title' />} />
 		<HeaderExample title={() => <RoomHeader tmid='123' title={'markdown\npreview\n#3\n4\n5'} parentTitle={longText} />} />
 	</>
-));
+);
 
 const ThemeStory = ({ theme }) => (
 	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
@@ -98,10 +87,10 @@ const ThemeStory = ({ theme }) => (
 	</ThemeContext.Provider>
 );
 
-stories.add('themes', () => (
+export const Themes = () => (
 	<>
 		<ThemeStory theme='light' />
 		<ThemeStory theme='dark' />
 		<ThemeStory theme='black' />
 	</>
-));
+);
