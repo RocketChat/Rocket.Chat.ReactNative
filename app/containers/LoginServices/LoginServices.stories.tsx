@@ -1,10 +1,6 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-import { Provider } from 'react-redux';
 import { StyleSheet, Text, ScrollView } from 'react-native';
 
-import { store } from '../../../storybook/stories';
-import { ThemeContext } from '../../theme';
 import { colors } from '../../lib/constants';
 import i18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
@@ -62,19 +58,18 @@ const services = {
 
 const theme = 'light';
 
-const stories = storiesOf('Login Services', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.addDecorator(story => <ThemeContext.Provider value={{ theme, colors: colors[theme] }}>{story()}</ThemeContext.Provider>)
-	.addDecorator(story => <ScrollView style={sharedStyles.containerScrollView}>{story()}</ScrollView>);
+export default {
+	title: 'Login Services'
+};
 
-stories.add('ServicesSeparator', () => (
+export const Separators = () => (
 	<>
 		<ServicesSeparator collapsed onPressButtonSeparator={() => {}} separator services={services} />
 		<ServicesSeparator collapsed={false} onPressButtonSeparator={() => {}} separator services={services} />
 	</>
-));
+);
 
-stories.add('ServiceList', () => (
+export const ServiceList = () => (
 	<>
 		{Object.values(services).map(service => {
 			const icon = `${service.name}-monochromatic`;
@@ -96,4 +91,4 @@ stories.add('ServiceList', () => (
 			);
 		})}
 	</>
-));
+);
