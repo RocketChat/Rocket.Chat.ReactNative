@@ -11,7 +11,7 @@ import { combineReducers, createStore } from 'redux';
 // import '../../app/containers/HeaderButton/HeaderButtons';
 // import '../../app/containers/UnreadBadge/UnreadBadge.stories';
 // import '../../app/views/ThreadMessagesView/Item.stories.js';
-import '../../app/views/DiscussionsView/Item.stories.js';
+// import '../../app/views/DiscussionsView/Item.stories.js';
 // import './Avatar.stories';
 import './NewMarkdown';
 // import '../../app/containers/BackgroundContainer/index.stories.js';

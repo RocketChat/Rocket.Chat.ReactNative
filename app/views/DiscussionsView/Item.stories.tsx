@@ -1,13 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 import { ScrollView } from 'react-native';
-import { Provider } from 'react-redux';
 
 import * as List from '../../containers/List';
 import { themes, colors } from '../../lib/constants';
 import { ThemeContext } from '../../theme';
-import { store } from '../../../storybook/stories';
 import Item from './Item';
 
 const author = {
@@ -29,6 +25,19 @@ const defaultItem = {
 	attachments: []
 };
 
+export default {
+	title: 'DiscussionsView/Item',
+	decorators: [
+		(Story: any) => (
+			<ScrollView>
+				<List.Separator />
+				<Story />
+				<List.Separator />
+			</ScrollView>
+		)
+	]
+};
+
 const BaseItem = ({ item, ...props }) => (
 	<Item
 		baseUrl={baseUrl}
@@ -41,19 +50,7 @@ const BaseItem = ({ item, ...props }) => (
 	/>
 );
 
-const listDecorator = story => (
-	<ScrollView>
-		<List.Separator />
-		{story()}
-		<List.Separator />
-	</ScrollView>
-);
-
-const stories = storiesOf('Discussions.Item', module)
-	.addDecorator(listDecorator)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>);
-
-stories.add('content', () => (
+export const Content = () => (
 	<>
 		<BaseItem />
 		<List.Separator />
@@ -79,7 +76,7 @@ stories.add('content', () => (
 		<List.Separator />
 		<BaseItem useRealName />
 	</>
-));
+);
 
 const ThemeStory = ({ theme }) => (
 	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
@@ -87,10 +84,10 @@ const ThemeStory = ({ theme }) => (
 	</ThemeContext.Provider>
 );
 
-stories.add('themes', () => (
+export const Themes = () => (
 	<>
 		<ThemeStory theme='light' />
 		<ThemeStory theme='dark' />
 		<ThemeStory theme='black' />
 	</>
-));
+);
