@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import { ThemeContext } from '../../theme';
 import { longText } from '../../../storybook/utils';
+import { themes } from '../../lib/constants';
 import BackgroundContainer from '.';
 
 const stories = storiesOf('BackgroundContainer', module);
@@ -17,7 +18,7 @@ stories.add('text', () => <BackgroundContainer text='Text here' />);
 stories.add('long text', () => <BackgroundContainer text={longText} />);
 
 const ThemeStory = ({ theme, ...props }) => (
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<BackgroundContainer {...props} />
 	</ThemeContext.Provider>
 );
