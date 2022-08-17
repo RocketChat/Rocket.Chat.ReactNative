@@ -2,7 +2,7 @@
 import { combineReducers, createStore } from 'redux';
 
 // import './RoomItem';
-import './List';
+// import '../../app/containers/List/List.stories';
 import './ServerItem';
 import './Message';
 import './UiKitMessage';
