@@ -2,20 +2,19 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../Touch';
 import { CustomIcon } from '../CustomIcon';
 import { IButtonService } from './interfaces';
 import styles from './styles';
 
 const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon }: IButtonService) => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 
 	return (
 		<Touch
 			key={name}
 			onPress={onPress}
 			style={[styles.serviceButton, { backgroundColor }]}
-			theme={theme}
 			activeOpacity={0.5}
 			underlayColor={colors.buttonText}
 		>
