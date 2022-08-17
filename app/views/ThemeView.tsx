@@ -57,8 +57,33 @@ interface ITheme {
 	group: string;
 }
 
+const Item = ({
+	onPress,
+	label,
+	value,
+	isSelected
+}: {
+	onPress: () => void;
+	label: string;
+	value: string;
+	isSelected: boolean;
+}) => {
+	const { colors } = useTheme();
+	return (
+		<>
+			<List.Item
+				title={label}
+				onPress={onPress}
+				testID={`theme-view-${value}`}
+				right={() => (isSelected ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+			/>
+			<List.Separator />
+		</>
+	);
+};
+
 const ThemeView = (): React.ReactElement => {
-	const { colors, themePreferences, setTheme } = useTheme();
+	const { themePreferences, setTheme } = useTheme();
 	const { setOptions } = useNavigation();
 
 	useLayoutEffect(() => {
@@ -107,18 +132,6 @@ const ThemeView = (): React.ReactElement => {
 		}
 	};
 
-	const RenderItem = React.memo(({ theme }: { theme: ITheme }) => (
-		<>
-			<List.Item
-				title={theme.label}
-				onPress={() => onClick(theme)}
-				testID={`theme-view-${theme.value}`}
-				right={() => (isSelected(theme) ? <List.Icon name='check' color={colors.tintColor} /> : null)}
-			/>
-			<List.Separator />
-		</>
-	));
-
 	return (
 		<SafeAreaView testID='theme-view'>
 			<StatusBar />
@@ -127,7 +140,13 @@ const ThemeView = (): React.ReactElement => {
 					<List.Separator />
 					<>
 						{themeGroup.map(theme => (
-							<RenderItem theme={theme} key={theme.label} />
+							<Item
+								onPress={() => onClick(theme)}
+								label={theme.label}
+								value={theme.value}
+								isSelected={!!isSelected(theme)}
+								key={theme.label}
+							/>
 						))}
 					</>
 				</List.Section>
@@ -135,7 +154,13 @@ const ThemeView = (): React.ReactElement => {
 					<List.Separator />
 					<>
 						{darkGroup.map(theme => (
-							<RenderItem theme={theme} key={theme.label} />
+							<Item
+								onPress={() => onClick(theme)}
+								label={theme.label}
+								value={theme.value}
+								isSelected={!!isSelected(theme)}
+								key={theme.label}
+							/>
 						))}
 					</>
 				</List.Section>
