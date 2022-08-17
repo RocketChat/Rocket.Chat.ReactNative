@@ -1,23 +1,18 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Provider } from 'react-redux';
-import { storiesOf } from '@storybook/react-native';
+import { ScrollView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
-import MessageComponent from '../../app/containers/message/Message';
-import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../app/lib/constants';
-import MessageSeparator from '../../app/views/RoomView/Separator';
-import MessageContext from '../../app/containers/message/Context';
-import { store } from './index';
+import MessageComponent from './Message';
+import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
+import MessageSeparator from '../../views/RoomView/Separator';
+import MessageContext from './Context';
 
 const _theme = 'light';
-
-const styles = StyleSheet.create({});
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
 	username: 'diego.mello',
-	token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
+	token: 'abc'
 };
 const author = {
 	_id: 'userid',
@@ -34,7 +29,7 @@ const date = new Date(2017, 10, 10, 10);
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
-const getCustomEmoji = content => {
+const getCustomEmoji = (content: string) => {
 	const customEmoji = {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
@@ -43,27 +38,36 @@ const getCustomEmoji = content => {
 	return customEmoji;
 };
 
-export const MessageDecorator = story => (
-	<MessageContext.Provider
-		value={{
-			user,
-			baseUrl,
-			onPress: () => {},
-			onLongPress: () => {},
-			reactionInit: () => {},
-			onErrorPress: () => {},
-			replyBroadcast: () => {},
-			onReactionPress: () => {},
-			onDiscussionPress: () => {},
-			onReactionLongPress: () => {},
-			threadBadgeColor: themes.light.tunreadColor
-		}}
-	>
-		{story()}
-	</MessageContext.Provider>
-);
+export default {
+	title: 'Message',
+	decorators: [
+		(Story: any) => (
+			<NavigationContainer>
+				<ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>
+					<MessageContext.Provider
+						value={{
+							user,
+							baseUrl,
+							onPress: () => {},
+							onLongPress: () => {},
+							reactionInit: () => {},
+							onErrorPress: () => {},
+							replyBroadcast: () => {},
+							onReactionPress: () => {},
+							onDiscussionPress: () => {},
+							onReactionLongPress: () => {},
+							threadBadgeColor: themes.light.tunreadColor
+						}}
+					>
+						<Story />
+					</MessageContext.Provider>
+				</ScrollView>
+			</NavigationContainer>
+		)
+	]
+};
 
-export const Message = props => (
+export const Message = (props: any) => (
 	<MessageComponent
 		baseUrl={baseUrl}
 		user={user}
@@ -77,23 +81,14 @@ export const Message = props => (
 	/>
 );
 
-export const StoryProvider = story => <Provider store={store}>{story()}</Provider>;
-
-const MessageScrollView = story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>;
-
-const stories = storiesOf('Message', module)
-	.addDecorator(StoryProvider)
-	.addDecorator(MessageScrollView)
-	.addDecorator(MessageDecorator);
-
-stories.add('Basic', () => (
+export const Basic = () => (
 	<>
 		<Message msg='Message' />
 		<Message msg={longText} />
 	</>
-));
+);
 
-stories.add('Grouped messages', () => (
+export const GroupedMessages = () => (
 	<>
 		<Message msg='...' />
 		<Message
@@ -107,11 +102,11 @@ stories.add('Grouped messages', () => (
 		<Message msg='This is the second message' isHeader={false} />
 		<Message msg='This is the first message' />
 	</>
-));
+);
 
-stories.add('Without header', () => <Message msg='Message' isHeader={false} />);
+export const WithoutHeader = () => <Message msg='Message' isHeader={false} />;
 
-stories.add('With alias', () => (
+export const WithAlias = () => (
 	<>
 		<Message msg='Message' alias='Diego Mello' />
 		<Message
@@ -123,16 +118,16 @@ stories.add('With alias', () => (
 			alias='Diego Mello'
 		/>
 	</>
-));
+);
 
-stories.add('Edited', () => (
+export const Edited = () => (
 	<>
 		<Message msg='Message header' isEdited />
 		<Message msg='Message without header' isEdited isHeader={false} />
 	</>
-));
+);
 
-stories.add('Encrypted', () => (
+export const Encrypted = () => (
 	<>
 		<Message msg='Message' type='e2e' />
 		<Message msg='Message Encrypted without Header' isHeader={false} type='e2e' />
@@ -168,29 +163,29 @@ stories.add('Encrypted', () => (
 		<Message msg='Read Receipt encrypted with Header' isReadReceiptEnabled read type='e2e' />
 		<Message msg='Read Receipt encrypted without Header' isReadReceiptEnabled read isHeader={false} type='e2e' />
 	</>
-));
+);
 
-stories.add('Block Quote', () => (
+export const BlockQuote = () => (
 	<>
 		<Message msg='> Testing block quote' />
 		<Message msg={'> Testing block quote\nTesting block quote'} />
 	</>
-));
+);
 
-stories.add('Lists', () => (
+export const Lists = () => (
 	<>
 		<Message msg={'* Dogs\n  * cats\n  - cats'} />
 		<Message msg={'1. Dogs \n 2. Cats'} />
 		<Message msg='1. Dogs' />
 		<Message msg='2. Cats' isHeader={false} />
 	</>
-));
+);
 
-stories.add('Static avatar', () => (
+export const StaticAvatar = () => (
 	<Message msg='Message' avatar='https://pbs.twimg.com/profile_images/1016397063649660929/14EIApTi_400x400.jpg' />
-));
+);
 
-stories.add('Full name', () => (
+export const FullName = () => (
 	<Message
 		msg='Message'
 		author={{
@@ -200,9 +195,9 @@ stories.add('Full name', () => (
 		}}
 		useRealName
 	/>
-));
+);
 
-stories.add('Mentions', () => (
+export const Mentions = () => (
 	<>
 		<Message
 			msg='@rocket.cat @diego.mello @all @here #general'
@@ -249,9 +244,9 @@ stories.add('Mentions', () => (
 			]}
 		/>
 	</>
-));
+);
 
-stories.add('Emojis', () => (
+export const Emojis = () => (
 	<>
 		<Message msg='👊🤙👏' />
 		<Message msg='👏' />
@@ -260,11 +255,11 @@ stories.add('Emojis', () => (
 		<Message msg='🤙:react_rocket:' />
 		<Message msg='🤙:react_rocket:🤙🤙' />
 	</>
-));
+);
 
-stories.add('Time format', () => <Message msg='Testing' timeFormat='DD MMMM YYYY' />);
+export const TimeFormat = () => <Message msg='Testing' timeFormat='DD MMMM YYYY' />;
 
-stories.add('Reactions', () => (
+export const Reactions = () => (
 	<>
 		<Message
 			msg='Reactions'
@@ -327,9 +322,9 @@ stories.add('Reactions', () => (
 			onReactionPress={() => {}}
 		/>
 	</>
-));
+);
 
-stories.add('Date and Unread separators', () => (
+export const DateAndUnreadSeparators = () => (
 	<>
 		<Message
 			msg='Fourth message'
@@ -338,9 +333,9 @@ stories.add('Date and Unread separators', () => (
 				username: 'rocket.cat'
 			}}
 		/>
-		<MessageSeparator ts={date} unread theme={_theme} />
+		<MessageSeparator ts={date} unread />
 		<Message msg='Third message' />
-		<MessageSeparator unread theme={_theme} />
+		<MessageSeparator unread ts={null} />
 		<Message
 			msg='Second message'
 			author={{
@@ -356,12 +351,12 @@ stories.add('Date and Unread separators', () => (
 				username: 'rocket.cat'
 			}}
 		/>
-		<MessageSeparator ts={date} theme={_theme} />
+		<MessageSeparator ts={date} unread={false} />
 		<Message msg='First message' />
 	</>
-));
+);
 
-stories.add('With image', () => (
+export const WithImage = () => (
 	<>
 		<Message
 			attachments={[
@@ -382,9 +377,9 @@ stories.add('With image', () => (
 			]}
 		/>
 	</>
-));
+);
 
-stories.add('With video', () => (
+export const WithVideo = () => (
 	<>
 		<Message
 			attachments={[
@@ -404,9 +399,9 @@ stories.add('With video', () => (
 			]}
 		/>
 	</>
-));
+);
 
-stories.add('With audio', () => (
+export const WithAudio = () => (
 	<>
 		<Message
 			attachments={[
@@ -447,9 +442,9 @@ stories.add('With audio', () => (
 			isHeader={false}
 		/>
 	</>
-));
+);
 
-stories.add('With file', () => (
+export const WithFile = () => (
 	<>
 		<Message
 			attachments={[
@@ -469,9 +464,9 @@ stories.add('With file', () => (
 			isHeader={false}
 		/>
 	</>
-));
+);
 
-stories.add('Message with reply', () => (
+export const MessageWithReply = () => (
 	<>
 		<Message
 			msg="I'm fine!"
@@ -514,18 +509,18 @@ stories.add('Message with reply', () => (
 			]}
 		/>
 	</>
-));
+);
 
-stories.add('Message with read receipt', () => (
+export const MessageWithReadReceipt = () => (
 	<>
 		<Message msg="I'm fine!" isReadReceiptEnabled unread />
 		<Message msg="I'm fine!" isReadReceiptEnabled unread isHeader={false} />
 		<Message msg="I'm fine!" isReadReceiptEnabled read />
 		<Message msg="I'm fine!" isReadReceiptEnabled read isHeader={false} />
 	</>
-));
+);
 
-stories.add('Message with thread', () => (
+export const MessageWithThread = () => (
 	<>
 		<Message msg='How are you?' tcount={1} tlm={date} />
 		<Message msg="I'm fine!" tmid='1' tmsg='How are you?' isThreadReply />
@@ -546,9 +541,9 @@ stories.add('Message with thread', () => (
 			isThreadReply
 		/>
 	</>
-));
+);
 
-stories.add('Sequential thread messages following thread button', () => (
+export const SequentialThreadMessagesFollowingThreadButton = () => (
 	<>
 		<Message msg='How are you?' tcount={1} tlm={date} />
 		<Message msg="I'm fine!" tmid='1' isThreadSequential />
@@ -565,9 +560,9 @@ stories.add('Sequential thread messages following thread button', () => (
 			isThreadSequential
 		/>
 	</>
-));
+);
 
-stories.add('Sequential thread messages following thread reply', () => (
+export const SequentialThreadMessagesFollowingThreadReply = () => (
 	<>
 		<Message msg="I'm fine!" tmid='1' tmsg='How are you?' isThreadReply />
 		<Message msg='Cool!' tmid='1' isThreadSequential />
@@ -584,18 +579,18 @@ stories.add('Sequential thread messages following thread reply', () => (
 			isThreadSequential
 		/>
 	</>
-));
+);
 
-stories.add('Discussion', () => (
+export const Discussion = () => (
 	<>
 		<Message type='discussion-created' drid='aisduhasidhs' dcount={null} dlm={null} msg='This is a discussion' />
 		<Message type='discussion-created' drid='aisduhasidhs' dcount={1} dlm={date} msg='This is a discussion' />
 		<Message type='discussion-created' drid='aisduhasidhs' dcount={10} dlm={date} msg={longText} />
 		<Message type='discussion-created' drid='aisduhasidhs' dcount={1000} dlm={date} msg='This is a discussion' />
 	</>
-));
+);
 
-stories.add('URL', () => (
+export const URL = () => (
 	<>
 		<Message
 			urls={[
@@ -637,9 +632,9 @@ stories.add('URL', () => (
 			isHeader={false}
 		/>
 	</>
-));
+);
 
-stories.add('Custom fields', () => (
+export const CustomFields = () => (
 	<>
 		<Message
 			msg='Message'
@@ -675,9 +670,9 @@ stories.add('Custom fields', () => (
 			]}
 		/>
 	</>
-));
+);
 
-stories.add('Two short custom fields with markdown', () => (
+export const TwoShortCustomFieldsWithMarkdown = () => (
 	<Message
 		msg='Message'
 		attachments={[
@@ -719,9 +714,9 @@ stories.add('Two short custom fields with markdown', () => (
 			}
 		]}
 	/>
-));
+);
 
-stories.add('Colored attachments', () => (
+export const ColoredAttachments = () => (
 	<Message
 		attachments={[
 			{
@@ -771,13 +766,13 @@ stories.add('Colored attachments', () => (
 			}
 		]}
 	/>
-));
+);
 
-stories.add('Broadcast', () => <Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />);
+export const Broadcast = () => <Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />;
 
-stories.add('Archived', () => <Message msg='This message is inside an archived room' archived />);
+export const Archived = () => <Message msg='This message is inside an archived room' archived />;
 
-stories.add('Error', () => (
+export const Error = () => (
 	<>
 		<Message hasError msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
 		<Message
@@ -788,13 +783,13 @@ stories.add('Error', () => (
 			isHeader={false}
 		/>
 	</>
-));
+);
 
-stories.add('Temp', () => <Message msg='Temp message' status={messagesStatus.TEMP} isTemp />);
+export const Temp = () => <Message msg='Temp message' status={messagesStatus.TEMP} isTemp />;
 
-stories.add('Editing', () => <Message msg='Message being edited' editing />);
+export const Editing = () => <Message msg='Message being edited' editing />;
 
-stories.add('System messages', () => (
+export const SystemMessages = () => (
 	<>
 		<Message type='rm' isInfo />
 		<Message type='uj' isInfo />
@@ -833,13 +828,13 @@ stories.add('System messages', () => (
 		<Message type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<Message type='user-removed-room-from-team' isInfo msg='channel-name' />
 	</>
-));
+);
 
-stories.add('Ignored', () => <Message isIgnored />);
+export const Ignored = () => <Message isIgnored />;
 
-stories.add('Custom style', () => <Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />);
+export const CustomStyle = () => <Message msg='Message' style={[{ backgroundColor: '#ddd' }]} />;
 
-stories.add('Show a button as attachment', () => (
+export const ShowButtonAsAttachment = () => (
 	<Message
 		attachments={[
 			{
@@ -855,9 +850,9 @@ stories.add('Show a button as attachment', () => (
 			}
 		]}
 	/>
-));
+);
 
-stories.add('Thumbnail from server', () => (
+export const ThumbnailFromServer = () => (
 	<Message
 		msg='this is a thumbnail'
 		attachments={[
@@ -869,9 +864,9 @@ stories.add('Thumbnail from server', () => (
 			}
 		]}
 	/>
-));
+);
 
-stories.add('Long Name user', () => (
+export const LongNameUser = () => (
 	<>
 		<Message msg={'this is a normal message'} author={longNameAuthor} />
 		<Message msg={'Edited message'} author={longNameAuthor} isEdited />
@@ -911,4 +906,4 @@ stories.add('Long Name user', () => (
 			read
 		/>
 	</>
-));
+);
