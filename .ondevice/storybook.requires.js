@@ -31,7 +31,7 @@ const getStories = () => {
 		require('../app/containers/UIKit/UiKitMessage.stories.tsx'),
 		require('../app/containers/UIKit/UiKitModal.stories.tsx'),
 		require('../app/containers/UnreadBadge/UnreadBadge.stories.tsx'),
-		// require("../app/views/CannedResponsesListView/CannedResponseItem.stories.js"),
+		require('../app/views/CannedResponsesListView/CannedResponseItem.stories.tsx'),
 		require('../app/views/DiscussionsView/Item.stories.tsx'),
 		// require("../app/views/RoomView/LoadMore/LoadMore.stories.js"),
 		require('../app/views/ThreadMessagesView/Item.stories.tsx')

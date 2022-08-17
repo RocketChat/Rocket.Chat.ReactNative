@@ -1,10 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 
 import CannedResponseItem from './CannedResponseItem';
 
-const stories = storiesOf('CannedResponseItem', module);
+export default {
+	title: 'CannedResponseItem'
+};
 
 const item = [
 	{
@@ -40,7 +40,7 @@ const item = [
 
 const theme = 'light';
 
-stories.add('Itens', () => (
+export const Itens = () => (
 	<>
 		<CannedResponseItem
 			theme={theme}
@@ -61,4 +61,4 @@ stories.add('Itens', () => (
 			onPressUse={() => alert('Back to RoomView and wrote in MessageBox')}
 		/>
 	</>
-));
+);
