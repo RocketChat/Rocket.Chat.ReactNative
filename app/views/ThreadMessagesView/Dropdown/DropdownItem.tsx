@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
-import Touch from '../../../lib/methods/helpers/touch';
+import Touch from '../../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
 
@@ -28,9 +28,9 @@ interface IDropdownItem {
 }
 
 const DropdownItem = React.memo(({ onPress, iconName, text }: IDropdownItem) => {
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 	return (
-		<Touch theme={theme} onPress={onPress} style={{ backgroundColor: colors.backgroundColor }}>
+		<Touch onPress={onPress} style={{ backgroundColor: colors.backgroundColor }}>
 			<View style={styles.container}>
 				<Text style={[styles.text, { color: colors.auxiliaryText }]}>{text}</Text>
 				{iconName ? <CustomIcon name={iconName} size={22} color={colors.auxiliaryText} /> : null}
