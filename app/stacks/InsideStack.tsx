@@ -277,11 +277,7 @@ const E2ESaveYourPasswordStackNavigator = () => {
 		<E2ESaveYourPasswordStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
-			<E2ESaveYourPasswordStack.Screen
-				name='E2ESaveYourPasswordView'
-				component={E2ESaveYourPasswordView}
-				options={E2ESaveYourPasswordView.navigationOptions}
-			/>
+			<E2ESaveYourPasswordStack.Screen name='E2ESaveYourPasswordView' component={E2ESaveYourPasswordView} />
 			<E2ESaveYourPasswordStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 		</E2ESaveYourPasswordStack.Navigator>
 	);
