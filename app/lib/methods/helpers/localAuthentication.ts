@@ -1,6 +1,6 @@
 import * as LocalAuthentication from 'expo-local-authentication';
 import RNBootSplash from 'react-native-bootsplash';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { sha256 } from 'js-sha256';
 import moment from 'moment';
 
