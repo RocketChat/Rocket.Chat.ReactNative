@@ -28,7 +28,7 @@ import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { RoomTypes } from '../../lib/methods';
-import { debounce, getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
+import { compareServerVersion, debounce, getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
 import styles from './styles';
 import { Services } from '../../lib/services';
 
@@ -56,6 +56,7 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 	editTeamMemberPermission: string[];
 	viewAllTeamChannelsPermission: string[];
 	viewAllTeamsPermission: string[];
+	serverVersion: string;
 }
 
 interface IRoomMembersViewState {
@@ -64,6 +65,7 @@ interface IRoomMembersViewState {
 	filtering: string;
 	rid: string;
 	members: TUserModel[];
+	membersFiltered: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
 	page: number;
@@ -88,6 +90,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			filtering: '',
 			rid,
 			members: [],
+			membersFiltered: [],
 			room: room || ({} as TSubscriptionModel),
 			end: false,
 			page: 0
@@ -178,8 +181,25 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		});
 	};
 
+	get isServerVersionLowerThan3_16() {
+		const { serverVersion } = this.props;
+		return compareServerVersion(serverVersion, 'lowerThan', '3.16.0');
+	}
+
 	onSearchChangeText = debounce((text: string) => {
+		const { members } = this.state;
 		text = text.trim();
+		if (this.isServerVersionLowerThan3_16) {
+			let membersFiltered: TUserModel[] = [];
+
+			if (members && members.length > 0 && text) {
+				membersFiltered = members.filter(
+					m => m.username.toLowerCase().match(text.toLowerCase()) || m.name?.toLowerCase().match(text.toLowerCase())
+				);
+			}
+			return this.setState({ filtering: text, membersFiltered });
+		}
+
 		this.setState({ filtering: text, page: 0, members: [], end: false }, () => {
 			this.fetchMembers();
 		});
@@ -245,7 +265,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 	removeFromTeam = async (selectedUser: IUser, selected?: any) => {
 		try {
-			const { members, room } = this.state;
+			const { members, membersFiltered, room } = this.state;
 			const { navigation } = this.props;
 
 			const userId = selectedUser._id;
@@ -258,8 +278,12 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 				EventEmitter.emit(LISTENER, { message });
 				const newMembers = members.filter(member => member._id !== userId);
+				const newMembersFiltered = this.isServerVersionLowerThan3_16
+					? membersFiltered.filter(member => member._id !== userId)
+					: [];
 				this.setState({
-					members: newMembers
+					members: newMembers,
+					membersFiltered: newMembersFiltered
 				});
 				// @ts-ignore - This is just to force a reload
 				navigation.navigate('RoomMembersView');
@@ -586,14 +610,15 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 	handleRemoveUserFromRoom = async (selectedUser: TUserModel) => {
 		try {
-			const { room, members } = this.state;
+			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
 			// TODO: interface SubscriptionType on IRoom is wrong
 			await Services.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
 			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
 			this.setState({
-				members: members.filter(member => member._id !== userId)
+				members: members.filter(member => member._id !== userId),
+				membersFiltered: this.isServerVersionLowerThan3_16 ? membersFiltered.filter(member => member._id !== userId) : []
 			});
 		} catch (e) {
 			log(e);
@@ -617,13 +642,13 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	};
 
 	render() {
-		const { members, isLoading } = this.state;
+		const { filtering, members, membersFiltered, isLoading } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='room-members-view'>
 				<StatusBar />
 				<FlatList
-					data={members}
+					data={!!filtering && this.isServerVersionLowerThan3_16 ? membersFiltered : members}
 					renderItem={this.renderItem}
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
@@ -658,7 +683,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	removeUserPermission: state.permissions['remove-user'],
 	editTeamMemberPermission: state.permissions['edit-team-member'],
 	viewAllTeamChannelsPermission: state.permissions['view-all-team-channels'],
-	viewAllTeamsPermission: state.permissions['view-all-teams']
+	viewAllTeamsPermission: state.permissions['view-all-teams'],
+	serverVersion: state.server.version
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(RoomMembersView)));

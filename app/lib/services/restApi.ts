@@ -888,9 +888,7 @@ export const getRoomMembers = async ({
 	}
 	// RC 0.42.0
 	const result = await sdk.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
-	if (result.success) {
-		return result?.records;
-	}
+	return result?.records;
 };
 
 export const e2eFetchMyKeys = async () => {
