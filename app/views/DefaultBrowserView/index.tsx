@@ -3,7 +3,6 @@ import { FlatList, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import I18n from '../../i18n';
-import { useTheme } from '../../theme';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { DEFAULT_BROWSER_KEY } from '../../lib/methods/helpers/openLink';
@@ -50,7 +49,6 @@ const DefaultBrowserView = () => {
 	const [browser, setBrowser] = useState<string | null>(null);
 	const [supported, setSupported] = useState<IBrowsersValues[]>([]);
 
-	const { theme } = useTheme();
 	const navigation = useNavigation();
 
 	useLayoutEffect(() => {
@@ -94,13 +92,7 @@ const DefaultBrowserView = () => {
 				keyExtractor={item => item.value}
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				renderItem={({ item }) => (
-					<Item
-						browser={browser}
-						theme={theme}
-						changeDefaultBrowser={changeDefaultBrowser}
-						title={item.title}
-						value={item.value}
-					/>
+					<Item browser={browser} changeDefaultBrowser={changeDefaultBrowser} title={item.title} value={item.value} />
 				)}
 				ListHeaderComponent={
 					<>
