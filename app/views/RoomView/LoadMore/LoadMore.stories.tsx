@@ -1,39 +1,39 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types, react/destructuring-assignment */
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { storiesOf } from '@storybook/react-native';
 
 import { longText } from '../../../../.storybook/utils';
-import { ThemeContext } from '../../../theme';
+import { ThemeContext, TSupportedThemes } from '../../../theme';
 import { Message } from '../../../containers/message/Message.stories';
 import { MessageTypeLoad, themes } from '../../../lib/constants';
-import LoadMore from './index';
+import LoadMoreComponent from '.';
 
 export default {
 	title: 'RoomView/LoadMore'
 };
 
-// FIXME: for some reason, this promise never resolves on Storybook (it works on the app, so maybe the issue isn't on the component)
 const load = () => new Promise(res => setTimeout(res, 1000));
+
+const LoadMore = ({ ...props }) => <LoadMoreComponent type={MessageTypeLoad.MORE} load={load} runOnRender={false} {...props} />;
 
 export const Basic = () => (
 	<>
-		<LoadMore load={load} />
-		<LoadMore load={load} runOnRender />
-		<LoadMore load={load} type={MessageTypeLoad.PREVIOUS_CHUNK} />
-		<LoadMore load={load} type={MessageTypeLoad.NEXT_CHUNK} />
+		<LoadMore />
+		<LoadMore runOnRender />
+		<LoadMore type={MessageTypeLoad.PREVIOUS_CHUNK} />
+		<LoadMore type={MessageTypeLoad.NEXT_CHUNK} />
 	</>
 );
 
-const ThemeStory = ({ theme }) => (
+const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
+	// @ts-ignore
 	<ThemeContext.Provider value={{ theme }}>
 		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			<LoadMore load={load} type={MessageTypeLoad.PREVIOUS_CHUNK} />
+			<LoadMore type={MessageTypeLoad.PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />
 			<Message msg={longText} theme={theme} isHeader={false} />
 			<Message msg='Older message' theme={theme} isHeader={false} />
-			<LoadMore load={load} type={MessageTypeLoad.NEXT_CHUNK} />
-			<LoadMore load={load} type={MessageTypeLoad.MORE} />
+			<LoadMore type={MessageTypeLoad.NEXT_CHUNK} />
+			<LoadMore type={MessageTypeLoad.MORE} />
 			<Message msg={longText} theme={theme} />
 			<Message msg='This is the third message' isHeader={false} theme={theme} />
 			<Message msg='This is the second message' isHeader={false} theme={theme} />
