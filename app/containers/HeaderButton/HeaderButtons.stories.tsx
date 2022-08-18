@@ -16,7 +16,6 @@ interface IHeader {
 
 export default {
 	title: 'HeaderButtons',
-	component: HeaderButton,
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>

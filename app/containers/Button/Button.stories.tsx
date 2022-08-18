@@ -10,8 +10,7 @@ const buttonProps = {
 };
 
 export default {
-	title: 'Button',
-	component: Button
+	title: 'Button'
 };
 
 export const PrimaryButton = () => <Button {...buttonProps} />;

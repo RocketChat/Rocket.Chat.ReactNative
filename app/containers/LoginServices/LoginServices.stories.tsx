@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
 import { colors } from '../../lib/constants';
 import i18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import ServicesSeparator from './ServicesSeparator';
 import ButtonService from './ButtonService';
+import { IServices } from '../../selectors/login';
+import { TIconsName } from '../CustomIcon';
 
 const styles = StyleSheet.create({
 	serviceName: {
@@ -54,7 +56,7 @@ const services = {
 		custom: false,
 		authType: 'apple'
 	}
-};
+} as unknown as IServices;
 
 const theme = 'light';
 
@@ -64,15 +66,15 @@ export default {
 
 export const Separators = () => (
 	<>
-		<ServicesSeparator collapsed onPressButtonSeparator={() => {}} separator services={services} />
-		<ServicesSeparator collapsed={false} onPressButtonSeparator={() => {}} separator services={services} />
+		<ServicesSeparator collapsed onPress={() => {}} separator services={services} />
+		<ServicesSeparator collapsed={false} onPress={() => {}} separator services={services} />
 	</>
 );
 
 export const ServiceList = () => (
 	<>
 		{Object.values(services).map(service => {
-			const icon = `${service.name}-monochromatic`;
+			const icon = `${service.name}-monochromatic` as TIconsName;
 			const buttonText = (
 				<>
 					{i18n.t('Continue_with')} <Text style={styles.serviceName}>{service.name}</Text>

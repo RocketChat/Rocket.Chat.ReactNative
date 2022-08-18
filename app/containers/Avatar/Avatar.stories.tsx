@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
 const server = 'https://open.rocket.chat';
 
 export default {
-	title: 'Avatar',
-	component: Avatar
+	title: 'Avatar'
 };
 
 export const AvatarText = () => <Avatar text='Avatar' server={server} size={56} />;
