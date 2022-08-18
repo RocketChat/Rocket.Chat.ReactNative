@@ -1,4 +1,4 @@
-const { navigateToLogin, tapBack, platformTypes } = require('../../helpers/app');
+const { navigateToLogin, tapBack, platformTypes, navigateToWorkspace, login } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Login screen', () => {
@@ -73,6 +73,14 @@ describe('Login screen', () => {
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(60000);
+		});
+
+		it('should connect, go back, connect to the same server and login', async () => {
+			await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
+			await navigateToWorkspace();
+			await tapBack();
+			await navigateToLogin();
+			await login(data.users.regular.username, data.users.regular.password);
 		});
 	});
 });

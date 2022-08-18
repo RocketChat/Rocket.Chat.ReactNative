@@ -21,7 +21,7 @@ import UserItem from '../containers/UserItem';
 import { TSupportedThemes, useTheme } from '../theme';
 import { goRoom as goRoomMethod, TGoRoomItem } from '../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import Touch from '../lib/methods/helpers/touch';
+import Touch from '../containers/Touch';
 import sharedStyles from './Styles';
 import { NewMessageStackParamList } from '../stacks/types';
 import { search as searchMethod } from '../lib/methods';
@@ -107,7 +107,7 @@ const RenderButton = ({ onPress, testID, title, icon, first }: IButton) => {
 	const { theme } = useTheme();
 
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID} theme={theme}>
+		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID}>
 			<View
 				style={[
 					first ? sharedStyles.separatorVertical : sharedStyles.separatorBottom,

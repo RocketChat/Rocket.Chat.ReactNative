@@ -4,7 +4,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
-import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
+import {
+	getTheme,
+	initialTheme,
+	newThemeState,
+	setNativeTheme,
+	subscribeTheme,
+	unsubscribeTheme
+} from './lib/methods/helpers/theme';
 import UserPreferences from './lib/methods/userPreferences';
 import Navigation from './lib/navigation/shareNavigation';
 import store from './lib/store';
@@ -72,7 +79,7 @@ const OutsideStack = () => {
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<Outside.Screen name='WithoutServersView' component={WithoutServersView} options={WithoutServersView.navigationOptions} />
+			<Outside.Screen name='WithoutServersView' component={WithoutServersView} />
 		</Outside.Navigator>
 	);
 };
@@ -106,6 +113,7 @@ class Root extends React.Component<{}, IState> {
 			fontScale
 		};
 		this.init();
+		setNativeTheme(theme);
 	}
 
 	componentDidMount() {

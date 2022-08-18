@@ -11,7 +11,7 @@ export function parseSettings(settings: any) {
 			);
 		}
 		return ret;
-	});
+	}, {});
 }
 
 export function _prepareSettings(settings: any) {
