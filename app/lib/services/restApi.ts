@@ -866,7 +866,7 @@ export const getRoomMembers = async ({
 	allUsers: boolean;
 	type: 'all' | 'online';
 	roomType: SubscriptionType;
-	filter: boolean;
+	filter: string;
 	skip: number;
 	limit: number;
 }) => {

@@ -17,7 +17,6 @@ import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TSubscriptionM
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { CustomIcon } from '../../containers/CustomIcon';
-import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -29,7 +28,7 @@ import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { RoomTypes } from '../../lib/methods';
-import { getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
+import { debounce, getRoomTitle, hasPermission, isGroupChat } from '../../lib/methods/helpers';
 import styles from './styles';
 import { Services } from '../../lib/services';
 
@@ -62,10 +61,9 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 interface IRoomMembersViewState {
 	isLoading: boolean;
 	allUsers: boolean;
-	filtering: boolean;
+	filtering: string;
 	rid: string;
 	members: TUserModel[];
-	membersFiltered: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
 	page: number;
@@ -87,10 +85,9 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		this.state = {
 			isLoading: false,
 			allUsers: false,
-			filtering: false,
+			filtering: '',
 			rid,
 			members: [],
-			membersFiltered: [],
 			room: room || ({} as TSubscriptionModel),
 			end: false,
 			page: 0
@@ -181,18 +178,12 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		});
 	};
 
-	onSearchChangeText = protectedFunction((text: string) => {
-		const { members } = this.state;
-		let membersFiltered: TUserModel[] = [];
+	onSearchChangeText = debounce((text: string) => {
 		text = text.trim();
-
-		if (members && members.length > 0 && text) {
-			membersFiltered = members.filter(
-				m => m.username.toLowerCase().match(text.toLowerCase()) || m.name?.toLowerCase().match(text.toLowerCase())
-			);
-		}
-		this.setState({ filtering: !!text, membersFiltered });
-	});
+		this.setState({ filtering: text, page: 0, members: [], end: false }, () => {
+			this.fetchMembers();
+		});
+	}, 500);
 
 	navToDirectMessage = async (item: IUser) => {
 		try {
@@ -254,7 +245,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 	removeFromTeam = async (selectedUser: IUser, selected?: any) => {
 		try {
-			const { members, membersFiltered, room } = this.state;
+			const { members, room } = this.state;
 			const { navigation } = this.props;
 
 			const userId = selectedUser._id;
@@ -267,10 +258,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 				EventEmitter.emit(LISTENER, { message });
 				const newMembers = members.filter(member => member._id !== userId);
-				const newMembersFiltered = membersFiltered.filter(member => member._id !== userId);
 				this.setState({
-					members: newMembers,
-					membersFiltered: newMembersFiltered
+					members: newMembers
 				});
 				// @ts-ignore - This is just to force a reload
 				navigation.navigate('RoomMembersView');
@@ -466,12 +455,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				allUsers
 			});
 			const end = membersResult?.length < PAGE_SIZE;
-			console.log('🚀 ~ file: index.tsx ~ line 468 ~ RoomMembersView ~ fetchMembers= ~ end', end);
 			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
-			console.log(
-				'🚀 ~ file: index.tsx ~ line 469 ~ RoomMembersView ~ fetchMembers= ~ membersResultFiltered',
-				membersResultFiltered
-			);
 			this.setState({
 				members: members.concat(membersResultFiltered || []),
 				isLoading: false,
@@ -602,15 +586,14 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 	handleRemoveUserFromRoom = async (selectedUser: TUserModel) => {
 		try {
-			const { room, members, membersFiltered } = this.state;
+			const { room, members } = this.state;
 			const userId = selectedUser._id;
 			// TODO: interface SubscriptionType on IRoom is wrong
 			await Services.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
 			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
 			this.setState({
-				members: members.filter(member => member._id !== userId),
-				membersFiltered: membersFiltered.filter(member => member._id !== userId)
+				members: members.filter(member => member._id !== userId)
 			});
 		} catch (e) {
 			log(e);
@@ -634,13 +617,13 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	};
 
 	render() {
-		const { filtering, members, membersFiltered, isLoading } = this.state;
+		const { members, isLoading } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='room-members-view'>
 				<StatusBar />
 				<FlatList
-					data={filtering ? membersFiltered : members}
+					data={members}
 					renderItem={this.renderItem}
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
