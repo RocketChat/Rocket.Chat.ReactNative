@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ThemeContext } from '../../theme';
+import { ThemeContext, TSupportedThemes } from '../../theme';
 import { longText } from '../../../.storybook/utils';
-import BackgroundContainer from '.';
+import BackgroundContainer, { IBackgroundContainer } from '.';
 
 export default {
 	title: 'BackgroundContainer'
@@ -16,7 +16,12 @@ export const Text = () => <BackgroundContainer text='Text here' />;
 
 export const LongText = () => <BackgroundContainer text={longText} />;
 
-const ThemeStory = ({ theme, ...props }) => (
+interface ThemeStoryProps extends IBackgroundContainer {
+	theme: TSupportedThemes;
+}
+
+const ThemeStory = ({ theme, ...props }: ThemeStoryProps) => (
+	// @ts-ignore
 	<ThemeContext.Provider value={{ theme }}>
 		<BackgroundContainer {...props} />
 	</ThemeContext.Provider>
