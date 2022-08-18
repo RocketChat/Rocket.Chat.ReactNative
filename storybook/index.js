@@ -1,5 +1,5 @@
 import { getStorybookUI } from '@storybook/react-native';
-import '../.ondevice/storybook.requires';
+import './storybook.requires';
 
 import RNBootSplash from 'react-native-bootsplash';
 
