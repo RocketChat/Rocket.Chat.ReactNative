@@ -33,8 +33,10 @@ export const CustomButton = () => (
 		style={{
 			padding: 10
 		}}
-		styleText={{
-			textAlign: 'left'
-		}}
+		styleText={[
+			{
+				textAlign: 'left'
+			}
+		]}
 	/>
 );

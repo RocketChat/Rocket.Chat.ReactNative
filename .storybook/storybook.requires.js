@@ -16,7 +16,7 @@ const getStories = () => {
 	return [
 		require('../app/containers/Avatar/Avatar.stories.tsx'),
 		require('../app/containers/BackgroundContainer/index.stories.tsx'),
-		require('../app/containers/Button/Button.stories.js'),
+		require('../app/containers/Button/Button.stories.tsx'),
 		require('../app/containers/HeaderButton/HeaderButtons.stories.tsx'),
 		require('../app/containers/List/List.stories.tsx'),
 		require('../app/containers/LoginServices/LoginServices.stories.tsx'),
