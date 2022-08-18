@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, View } from 'react-native';
 
 import { longText } from '../../../.storybook/utils';
-import { ThemeContext } from '../../theme';
+import { ThemeContext, TSupportedThemes } from '../../theme';
 import { colors, themes } from '../../lib/constants';
 import RoomHeaderComponent from './RoomHeader';
 
@@ -12,7 +12,7 @@ export default {
 	title: 'RoomHeader'
 };
 
-const HeaderExample = ({ title, theme = 'light' }: { title: Function; theme?: string }) => (
+const HeaderExample = ({ title, theme = 'light' }: { title: Function; theme?: TSupportedThemes }) => (
 	// Using View directly instead of Header from react-navigation because it's easier to test.
 	<View style={{ flex: 1, maxHeight: 48, backgroundColor: themes[theme].headerBackground }}>{title()}</View>
 );
@@ -81,7 +81,7 @@ export const Thread = () => (
 	</>
 );
 
-const ThemeStory = ({ theme }) => (
+const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
 		<HeaderExample title={() => <RoomHeader subtitle='subtitle' />} theme={theme} />
 	</ThemeContext.Provider>
