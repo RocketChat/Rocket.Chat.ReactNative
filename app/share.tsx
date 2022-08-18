@@ -68,7 +68,7 @@ const InsideStack = () => {
 		<Inside.Navigator screenOptions={screenOptions}>
 			<Inside.Screen name='ShareListView' component={ShareListView} />
 			<Inside.Screen name='ShareView' component={ShareView} />
-			<Inside.Screen name='SelectServerView' component={SelectServerView} options={SelectServerView.navigationOptions} />
+			<Inside.Screen name='SelectServerView' component={SelectServerView} />
 		</Inside.Navigator>
 	);
 };
