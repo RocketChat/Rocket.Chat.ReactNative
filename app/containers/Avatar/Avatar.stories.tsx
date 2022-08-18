@@ -13,8 +13,6 @@ const styles = StyleSheet.create({
 
 const server = 'https://open.rocket.chat';
 
-const _theme = 'light';
-
 export default {
 	title: 'Avatar',
 	component: Avatar
@@ -63,7 +61,7 @@ export const CustomBorderRadius = () => <Avatar text='Avatar' server={server} bo
 
 export const Children = () => (
 	<Avatar text='Avatar' server={server} size={56}>
-		<Status size={24} style={[sharedStyles.status, styles.status]} theme={_theme} />
+		<Status size={24} style={[sharedStyles.status]} status='busy' />
 	</Avatar>
 );
 
