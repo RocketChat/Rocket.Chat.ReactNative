@@ -18,7 +18,8 @@
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
 		"prepare": "husky install",
-		"build-icon-set": "node scripts/build-icon-set.js"
+		"build-icon-set": "node scripts/build-icon-set.js",
+		"update-storybook": "sb-rn-get-stories --config-path storybook"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [
