@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "react-native start",
 		"test": "jest",
-		"test-update": "jest --updateSnapshot",
+		"test-update": "sb-rn-get-stories && jest --updateSnapshot",
 		"lint": "eslint . && tsc",
 		"prettier-lint": "prettier --write . && yarn lint",
 		"ci": "npm run precommit && codecov",
@@ -18,8 +18,7 @@
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
 		"prepare": "husky install",
-		"build-icon-set": "node scripts/build-icon-set.js",
-		"update-storybook": "sb-rn-get-stories --config-path storybook"
+		"build-icon-set": "node scripts/build-icon-set.js"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [

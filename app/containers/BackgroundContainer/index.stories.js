@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ThemeContext } from '../../theme';
-import { longText } from '../../../storybook/utils';
+import { longText } from '../../../.storybook/utils';
 import BackgroundContainer from '.';
 
 export default {

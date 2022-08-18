@@ -8,7 +8,6 @@ global.Date.now = jest.fn(() => new Date('2019-10-10').getTime());
 const converter = new Stories2SnapsConverter();
 
 initStoryshots({
-	configPath: path.resolve(__dirname, '../.ondevice'),
 	test: ({ story, context }) => {
 		const snapshotFilename = converter.getSnapshotFileName(context);
 		const storyElement = story.render();

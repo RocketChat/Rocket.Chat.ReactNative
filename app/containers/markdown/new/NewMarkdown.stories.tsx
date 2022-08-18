@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import NewMarkdown from '.';
 import { themes } from '../../../lib/constants';
-import { longText } from '../../../../storybook/utils';
+import { longText } from '../../../../.storybook/utils';
 
 export default {
 	title: 'NewMarkdown',
