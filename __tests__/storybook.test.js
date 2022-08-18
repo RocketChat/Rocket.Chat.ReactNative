@@ -1,5 +1,3 @@
-import path from 'path';
-
 import initStoryshots, { Stories2SnapsConverter } from '@storybook/addon-storyshots';
 import { render } from '@testing-library/react-native';
 
