@@ -9,9 +9,9 @@ import database from '../app/lib/database';
 
 RNBootSplash.hide();
 
-store.dispatch(selectServerRequest('https://open.rocket.chat/'));
+store.dispatch(selectServerRequest('https://open.rocket.chat'));
 
-database.setActiveDB('https://open.rocket.chat/');
+database.setActiveDB('https://open.rocket.chat');
 
 const StorybookUIRoot = getStorybookUI({});
 export default StorybookUIRoot;
