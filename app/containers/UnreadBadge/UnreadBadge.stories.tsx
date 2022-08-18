@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { themes } from '../../lib/constants';
 import UnreadBadge from '.';
 import { ThemeContext, TSupportedThemes } from '../../theme';
 
@@ -60,8 +61,7 @@ export const DifferentMentionTypes = () => (
 );
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	// @ts-ignore
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<StoryTester>
 			<UnreadBadge unread={1} />
 			<UnreadBadge unread={1} userMentions={1} />

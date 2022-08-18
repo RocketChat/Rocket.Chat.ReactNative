@@ -104,8 +104,7 @@ export const Badge = () => (
 );
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	// @ts-ignore
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<BaseItem badgeColor={themes[theme].mentionMeColor} />
 	</ThemeContext.Provider>
 );

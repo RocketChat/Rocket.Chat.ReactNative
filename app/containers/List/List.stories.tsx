@@ -6,6 +6,7 @@ import SafeAreaView from '../SafeAreaView';
 import { longText } from '../../../.storybook/utils';
 import { ThemeContext, TSupportedThemes } from '../../theme';
 import { DimensionsContext } from '../../dimensions';
+import { themes } from '../../lib/constants';
 
 export default {
 	title: 'List'
@@ -176,8 +177,7 @@ const ListFull = () => (
 );
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	// @ts-ignore
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<ListFull />
 	</ThemeContext.Provider>
 );

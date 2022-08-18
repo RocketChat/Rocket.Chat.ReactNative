@@ -25,8 +25,7 @@ export const Basic = () => (
 );
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	// @ts-ignore
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<LoadMore type={MessageTypeLoad.PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />

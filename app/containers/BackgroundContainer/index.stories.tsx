@@ -3,6 +3,7 @@ import React from 'react';
 import { ThemeContext, TSupportedThemes } from '../../theme';
 import { longText } from '../../../.storybook/utils';
 import BackgroundContainer, { IBackgroundContainer } from '.';
+import { themes } from '../../lib/constants';
 
 export default {
 	title: 'BackgroundContainer'
@@ -21,8 +22,7 @@ interface ThemeStoryProps extends IBackgroundContainer {
 }
 
 const ThemeStory = ({ theme, ...props }: ThemeStoryProps) => (
-	// @ts-ignore
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<BackgroundContainer {...props} />
 	</ThemeContext.Provider>
 );
