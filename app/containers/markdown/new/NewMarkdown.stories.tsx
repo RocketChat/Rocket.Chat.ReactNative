@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import NewMarkdown from '.';
+import NewMarkdownComponent from '.';
 import { themes } from '../../../lib/constants';
 import { longText } from '../../../../.storybook/utils';
 
@@ -35,6 +35,10 @@ const getCustomEmoji = (content: string) => {
 	return customEmoji;
 };
 const baseUrl = 'https://open.rocket.chat';
+
+const NewMarkdown = ({ ...props }) => (
+	<NewMarkdownComponent baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} username='rocket.cat' {...props} />
+);
 
 const simpleTextMsg = [
 	{
@@ -167,6 +171,17 @@ const multipleMentionTokens = [
 				type: 'MENTION_USER',
 				value: {
 					type: 'PLAIN_TEXT',
+					value: 'not_a_user'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
 					value: 'here'
 				}
 			},
@@ -214,13 +229,7 @@ const multipleMentions = [
 export const Mentions = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={allMentionTokens} mentions={allMentions} navToRoomInfo={() => {}} style={[]} />
-		<NewMarkdown
-			tokens={multipleMentionTokens}
-			mentions={multipleMentions}
-			navToRoomInfo={() => {}}
-			style={[]}
-			username='rocket.cat'
-		/>
+		<NewMarkdown tokens={multipleMentionTokens} mentions={multipleMentions} navToRoomInfo={() => {}} style={[]} />
 	</View>
 );
 
