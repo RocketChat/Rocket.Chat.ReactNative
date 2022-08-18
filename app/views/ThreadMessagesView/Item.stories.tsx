@@ -3,8 +3,8 @@ import { ScrollView } from 'react-native';
 
 import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';
-import { ThemeContext } from '../../theme';
-import Item from './Item';
+import { ThemeContext, TSupportedThemes } from '../../theme';
+import Item, { IItem } from './Item';
 
 const author = {
 	_id: 'userid',
@@ -37,28 +37,27 @@ export default {
 	]
 };
 
-const BaseItem = ({ item, ...props }) => (
+const BaseItem = ({
+	item,
+	useRealName = false,
+	badgeColor
+}: {
+	item?: any;
+	useRealName?: IItem['useRealName'];
+	badgeColor?: IItem['badgeColor'];
+}) => (
 	<Item
 		item={{
 			...defaultItem,
 			...item
 		}}
+		useRealName={useRealName}
+		badgeColor={badgeColor}
+		user={{ id: 'abc' }}
+		toggleFollowThread={() => alert('toggleFollowThread')}
 		onPress={() => alert('pressed')}
-		{...props}
 	/>
 );
-
-// const listDecorator = story => (
-// 	<ScrollView>
-// 		<List.Separator />
-// 		{story()}
-// 		<List.Separator />
-// 	</ScrollView>
-// );
-
-// const stories = storiesOf('Thread Messages.Item', module)
-// 	.addDecorator(listDecorator)
-// 	.addDecorator(story => <Provider store={store}>{story()}</Provider>);
 
 export const Content = () => (
 	<>
@@ -104,7 +103,8 @@ export const Badge = () => (
 	</>
 );
 
-const ThemeStory = ({ theme }) => (
+const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
+	// @ts-ignore
 	<ThemeContext.Provider value={{ theme }}>
 		<BaseItem badgeColor={themes[theme].mentionMeColor} />
 	</ThemeContext.Provider>
