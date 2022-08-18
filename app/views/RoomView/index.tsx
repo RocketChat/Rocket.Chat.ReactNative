@@ -9,7 +9,7 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
@@ -550,8 +550,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			parentTitle = getRoomTitle(room);
 		}
 		let subtitle: string | undefined;
-		let t: string;
-		let teamMain: boolean | undefined;
 		let teamId: string | undefined;
 		let encrypted: boolean | undefined;
 		let userId: string | undefined;
@@ -562,8 +560,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let departmentId: string | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
-			t = room.t;
-			teamMain = room.teamMain;
 			teamId = room.teamId;
 			encrypted = room.encrypted;
 			({ id: userId, token } = user);
@@ -573,11 +569,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('source' in room) {
-			t = room.t;
 			sourceType = room.source;
 			visitor = room.visitor;
 		}
 
+		const t = room?.t;
+		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
 		navigation.setOptions({
@@ -1388,7 +1385,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						onPress={this.resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
 							{I18n.t('Resume')}
@@ -1410,7 +1406,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}

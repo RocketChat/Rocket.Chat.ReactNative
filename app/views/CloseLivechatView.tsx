@@ -75,7 +75,8 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 		<KeyboardView
 			style={{ backgroundColor: colors.auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}>
+			keyboardVerticalOffset={128}
+		>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<FormTextInput

@@ -1,7 +1,8 @@
 import React from 'react';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
-import { isIOS } from '../../lib/methods/helpers';
 import I18n from '../../i18n';
+import { isIOS } from '../../lib/methods/helpers';
 import Container from './HeaderButtonContainer';
 import Item, { IHeaderButtonItem } from './HeaderButtonItem';
 
@@ -18,13 +19,22 @@ export const Drawer = React.memo(
 	)
 );
 
-export const CloseModal = React.memo(
-	({ navigation, testID, onPress = () => navigation?.pop(), ...props }: IHeaderButtonCommon) => (
+export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
+	const { dispatch } = useNavigation();
+	return (
 		<Container left>
-			<Item iconName='close' onPress={onPress} testID={testID} {...props} />
+			<Item
+				iconName='close'
+				onPress={arg => {
+					if (onPress) return onPress(arg);
+					dispatch(StackActions.pop());
+				}}
+				testID={testID}
+				{...props}
+			/>
 		</Container>
-	)
-);
+	);
+});
 
 export const CancelModal = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container left>

@@ -14,7 +14,7 @@ import {
 	PanGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
 
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
@@ -38,7 +38,7 @@ const Touchable = ({
 	swipeEnabled,
 	displayMode
 }: ITouchableProps): React.ReactElement => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
@@ -221,7 +221,6 @@ const Touchable = ({
 						<Animated.View style={animatedStyles}>
 							<Touch
 								onPress={handlePress}
-								theme={theme}
 								testID={testID}
 								style={{
 									backgroundColor: isFocused ? colors.chatComponentBackground : colors.backgroundColor

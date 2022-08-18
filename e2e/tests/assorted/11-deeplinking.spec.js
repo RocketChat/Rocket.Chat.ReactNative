@@ -122,6 +122,25 @@ describe('Deep linking', () => {
 					.toExist()
 					.withTimeout(30000);
 				await tapBack();
+				await waitFor(element(by.id('rooms-list-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+			});
+
+			it('should resume from background and navigate to the room', async () => {
+				await device.sendToHome();
+				await device.launchApp({
+					permissions: { notifications: 'YES' },
+					newInstance: false,
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`)
+				});
+				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
+					.toExist()
+					.withTimeout(30000);
+				await tapBack();
+				await waitFor(element(by.id('rooms-list-view')))
+					.toBeVisible()
+					.withTimeout(2000);
 			});
 		});
 

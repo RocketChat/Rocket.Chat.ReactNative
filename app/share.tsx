@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
-import { getTheme, initialTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
+import { getTheme, setNativeTheme, initialTheme as initialThemeFunction, unsubscribeTheme } from './lib/methods/helpers/theme';
 import UserPreferences from './lib/methods/userPreferences';
 import Navigation from './lib/navigation/shareNavigation';
 import store from './lib/store';
@@ -42,7 +42,7 @@ const InsideStack = () => {
 		<Inside.Navigator screenOptions={screenOptions}>
 			<Inside.Screen name='ShareListView' component={ShareListView} />
 			<Inside.Screen name='ShareView' component={ShareView} />
-			<Inside.Screen name='SelectServerView' component={SelectServerView} options={SelectServerView.navigationOptions} />
+			<Inside.Screen name='SelectServerView' component={SelectServerView} />
 		</Inside.Navigator>
 	);
 };
@@ -53,7 +53,7 @@ const OutsideStack = () => {
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<Outside.Screen name='WithoutServersView' component={WithoutServersView} options={WithoutServersView.navigationOptions} />
+			<Outside.Screen name='WithoutServersView' component={WithoutServersView} />
 		</Outside.Navigator>
 	);
 };
@@ -71,11 +71,16 @@ export const App = ({ root }: { root: string }): React.ReactElement => (
 );
 
 const { width, height, scale, fontScale } = Dimensions.get('screen');
-const theme = getTheme(initialTheme());
+const initialTheme = initialThemeFunction();
+const theme = getTheme(initialTheme);
 
 const Root = (): React.ReactElement => {
 	const [root, setRoot] = useState('');
 	const navTheme = navigationTheme(theme);
+
+	useLayoutEffect(() => {
+		setNativeTheme(initialTheme);
+	}, []);
 
 	useEffect(() => {
 		const authenticateShare = async (currentServer: string) => {
