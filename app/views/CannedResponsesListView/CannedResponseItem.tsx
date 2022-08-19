@@ -15,7 +15,7 @@ interface ICannedResponseItem {
 	scope: string;
 	onPressUse: () => void;
 	text: string;
-	tags: string[];
+	tags?: string[];
 }
 
 const CannedResponseItem = ({
@@ -25,7 +25,7 @@ const CannedResponseItem = ({
 	scope,
 	onPressUse = () => {},
 	text,
-	tags
+	tags = []
 }: ICannedResponseItem): JSX.Element => (
 	<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].messageboxBackground }]}>
 		<>

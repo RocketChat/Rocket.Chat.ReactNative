@@ -1,11 +1,10 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
-import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
-jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
-// https://github.com/software-mansion/react-native-reanimated/issues/3125
+global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
-require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 

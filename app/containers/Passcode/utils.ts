@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 
 import { LOCKED_OUT_TIMER_KEY, TIME_TO_LOCK } from '../../lib/constants';

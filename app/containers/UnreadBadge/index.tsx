@@ -34,9 +34,9 @@ export interface IUnreadBadge {
 	userMentions?: number;
 	groupMentions?: number;
 	style?: StyleProp<ViewStyle>;
-	tunread?: [];
-	tunreadUser?: [];
-	tunreadGroup?: [];
+	tunread?: any[];
+	tunreadUser?: any[];
+	tunreadGroup?: any[];
 	small?: boolean;
 	hideUnreadStatus?: boolean;
 	hideMentionStatus?: boolean;
