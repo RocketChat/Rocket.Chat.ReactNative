@@ -42,7 +42,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
-import { LOADING_EVENT } from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
@@ -949,7 +949,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	jumpToMessage = async (messageId: string) => {
 		try {
-			EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
+			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			const message = await RoomServices.getMessageInfo(messageId);
 
 			if (!message) {
@@ -982,7 +982,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	cancelJumpToMessage = () => {
 		this.list.current?.cancelJumpToMessage();
-		EventEmitter.emit(LOADING_EVENT, { visible: false });
+		sendLoadingEvent({ visible: false });
 	};
 
 	replyBroadcast = (message: IMessage) => {
@@ -1136,12 +1136,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				name = item.tmsg ?? '';
 				jumpToMessageId = item.id;
 			}
-			EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: this.cancelJumpToMessage });
+			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			if (!name) {
 				const result = await this.getThreadName(item.tmid, jumpToMessageId);
 				// test if there isn't a thread
 				if (!result) {
-					EventEmitter.emit(LOADING_EVENT, { visible: false });
+					sendLoadingEvent({ visible: false });
 					return;
 				}
 				name = result;

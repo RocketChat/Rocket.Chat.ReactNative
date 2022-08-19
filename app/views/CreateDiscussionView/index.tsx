@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ScrollView, Switch, Text } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
-import { LOADING_EVENT } from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
@@ -24,7 +24,6 @@ import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } fro
 import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;
@@ -54,7 +53,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		}
 
 		if (loading !== prevProps.loading) {
-			EventEmitter.emit(LOADING_EVENT, { visible: loading });
+			sendLoadingEvent({ visible: loading });
 			if (!loading) {
 				if (failure) {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });

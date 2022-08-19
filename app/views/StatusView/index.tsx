@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../actions/login';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import { LOADING_EVENT } from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { FormTextInput } from '../../containers/TextInput';
@@ -17,7 +17,6 @@ import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import EventEmitter from '../../lib/methods/helpers/events';
 
 interface IStatus {
 	id: TUserStatus;
@@ -120,7 +119,7 @@ const StatusView = (): React.ReactElement => {
 	}, [statusText, status]);
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
-		EventEmitter.emit(LOADING_EVENT, { visible: true });
+		sendLoadingEvent({ visible: true });
 		try {
 			await Services.setUserStatus(status, statusText);
 			dispatch(setUser({ statusText, status }));
@@ -135,7 +134,7 @@ const StatusView = (): React.ReactElement => {
 			showErrorAlert(messageError);
 			log(e);
 		}
-		EventEmitter.emit(LOADING_EVENT, { visible: false });
+		sendLoadingEvent({ visible: false });
 	};
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');

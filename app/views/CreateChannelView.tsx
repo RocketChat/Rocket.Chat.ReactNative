@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
 import { TextInput } from '../containers/TextInput';
-import { LOADING_EVENT } from '../containers/Loading';
+import { sendLoadingEvent } from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../containers/KeyboardView';
@@ -24,7 +24,6 @@ import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { hasPermission } from '../lib/methods/helpers';
-import EventEmitter from '../lib/methods/helpers/events';
 
 const styles = StyleSheet.create({
 	container: {
@@ -178,7 +177,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			this.handleHasPermission();
 		}
 		if (isFetching !== prevProps.isFetching) {
-			EventEmitter.emit(LOADING_EVENT, { visible: isFetching });
+			sendLoadingEvent({ visible: isFetching });
 		}
 	}
 

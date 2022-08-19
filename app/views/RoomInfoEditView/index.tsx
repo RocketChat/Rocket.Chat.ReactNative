@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
-import { LOADING_EVENT } from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
@@ -267,7 +267,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			avatar
 		} = this.state;
 
-		EventEmitter.emit(LOADING_EVENT, { visible: true });
+		sendLoadingEvent({ visible: true });
 		let error = false;
 
 		if (!this.formIsChanged()) {
@@ -337,7 +337,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			log(e);
 		}
 
-		EventEmitter.emit(LOADING_EVENT, { visible: false });
+		sendLoadingEvent({ visible: false });
 		setTimeout(() => {
 			if (error) {
 				logEvent(events.RI_EDIT_SAVE_F);

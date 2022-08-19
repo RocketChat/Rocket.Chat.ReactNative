@@ -15,9 +15,8 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { LOADING_EVENT } from '../containers/Loading';
+import { sendLoadingEvent } from '../containers/Loading';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
-import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../stacks/types';
@@ -129,12 +128,12 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		const { selected } = this.state;
 		const { isMasterDetail } = this.props;
 
-		EventEmitter.emit(LOADING_EVENT, { visible: true });
+		sendLoadingEvent({ visible: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
 			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
-				EventEmitter.emit(LOADING_EVENT, { visible: false });
+				sendLoadingEvent({ visible: false });
 				// @ts-ignore
 				// TODO: Verify goRoom interface for return of call
 				goRoom({ item: result, isMasterDetail });
@@ -142,7 +141,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
 			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
-			EventEmitter.emit(LOADING_EVENT, { visible: false });
+			sendLoadingEvent({ visible: false });
 		}
 	};
 

@@ -1,8 +1,7 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
-import EventEmitter from '../../lib/methods/helpers/events';
-import Loading, { LOADING_BUTTON_TEST_ID, LOADING_EVENT, LOADING_IMAGE_TEST_ID, LOADING_TEST_ID } from '.';
+import Loading, { sendLoadingEvent, LOADING_BUTTON_TEST_ID, LOADING_IMAGE_TEST_ID, LOADING_TEST_ID } from '.';
 
 const Render = () => <Loading />;
 
@@ -14,13 +13,13 @@ describe('Loading', () => {
 		const { getByTestId } = render(<Render />);
 		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		// receive event and expect loading to be rendered
-		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true }));
+		act(() => sendLoadingEvent({ visible: true }));
 		await waitFor(() => {
 			expect(() => getByTestId(LOADING_TEST_ID));
 		});
 		expect(() => getByTestId(LOADING_IMAGE_TEST_ID));
 		// receive event and expect loading not to be rendered
-		act(() => EventEmitter.emit(LOADING_EVENT, { visible: false }));
+		act(() => sendLoadingEvent({ visible: false }));
 		await waitFor(() => {
 			getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		});
@@ -29,7 +28,7 @@ describe('Loading', () => {
 	it('doesnt have onCancel and doesnt hide when pressed', async () => {
 		const { getByTestId } = render(<Render />);
 		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
-		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true }));
+		act(() => sendLoadingEvent({ visible: true }));
 		expect(() => getByTestId(LOADING_TEST_ID));
 		fireEvent.press(getByTestId(LOADING_BUTTON_TEST_ID));
 		await waitFor(() => {
@@ -41,7 +40,7 @@ describe('Loading', () => {
 		const mockFn = jest.fn();
 		const { getByTestId } = render(<Render />);
 		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
-		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: mockFn }));
+		act(() => sendLoadingEvent({ visible: true, onCancel: mockFn }));
 		await waitFor(() => {
 			expect(() => getByTestId(LOADING_TEST_ID));
 		});
@@ -57,11 +56,11 @@ describe('Loading', () => {
 		const mockFn2 = jest.fn(() => 'test');
 		const { getByTestId } = render(<Render />);
 		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
-		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: mockFn }));
+		act(() => sendLoadingEvent({ visible: true, onCancel: mockFn }));
 		await waitFor(() => {
 			expect(() => getByTestId(LOADING_TEST_ID));
 		});
-		act(() => EventEmitter.emit(LOADING_EVENT, { visible: true, onCancel: mockFn2 }));
+		act(() => sendLoadingEvent({ visible: true, onCancel: mockFn2 }));
 		await waitFor(() => {
 			expect(() => getByTestId(LOADING_TEST_ID));
 		});

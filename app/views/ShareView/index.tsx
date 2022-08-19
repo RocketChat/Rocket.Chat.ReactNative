@@ -9,8 +9,7 @@ import { Q } from '@nozbe/watermelondb';
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { LOADING_EVENT } from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
@@ -208,7 +207,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
-			EventEmitter.emit(LOADING_EVENT, { visible: true });
+			sendLoadingEvent({ visible: true });
 
 			// if it's not share extension this can close
 		} else {
@@ -250,7 +249,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if it's share extension this should close
 		if (this.isShareExtension) {
-			EventEmitter.emit(LOADING_EVENT, { visible: false });
+			sendLoadingEvent({ visible: false });
 			ShareExtension.close();
 		}
 	};

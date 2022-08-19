@@ -14,7 +14,7 @@ import Animated, {
 import { useTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 
-export const LOADING_EVENT = 'LOADING_EVENT';
+const LOADING_EVENT = 'LOADING_EVENT';
 export const LOADING_TEST_ID = 'loading';
 export const LOADING_BUTTON_TEST_ID = 'loading-button';
 export const LOADING_IMAGE_TEST_ID = 'loading-image';
@@ -32,6 +32,14 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface ILoadingEvent {
+	visible: boolean;
+	onCancel?: null | Function;
+}
+
+export const sendLoadingEvent = ({ visible, onCancel }: ILoadingEvent): void =>
+	EventEmitter.emit(LOADING_EVENT, { visible, onCancel });
+
 const Loading = (): React.ReactElement | null => {
 	const [visible, setVisible] = useState(false);
 	const [onCancel, setOnCancel] = useState<null | Function>(null);
@@ -39,13 +47,7 @@ const Loading = (): React.ReactElement | null => {
 	const scale = useSharedValue(1);
 	const { colors } = useTheme();
 
-	const onEventReceived = ({
-		visible: _visible,
-		onCancel: _onCancel = null
-	}: {
-		visible: boolean;
-		onCancel?: null | Function;
-	}) => {
+	const onEventReceived = ({ visible: _visible, onCancel: _onCancel = null }: ILoadingEvent) => {
 		if (_visible) {
 			// if it's already visible, ignore it
 			if (!visible) {
