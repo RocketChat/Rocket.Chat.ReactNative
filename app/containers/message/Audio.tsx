@@ -19,6 +19,7 @@ import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
+import { downloadAudioFile } from '../../lib/methods/audioFile';
 
 interface IButton {
 	loading: boolean;
@@ -137,7 +138,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		this.setState({ loading: true });
 		try {
-			await this.sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
+			if (url) {
+				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url);
+				await this.sound.loadAsync({ uri: audio });
+			}
 		} catch {
 			// Do nothing
 		}
