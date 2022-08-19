@@ -290,7 +290,8 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
 			showMessageInMainThread,
-			enableMessageParserEarlyAdoption
+			enableMessageParserEarlyAdoption,
+			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel
 		};
 		return user;
 	}

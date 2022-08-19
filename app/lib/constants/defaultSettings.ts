@@ -226,8 +226,5 @@ export const defaultSettings = {
 	},
 	Accounts_AllowDeleteOwnAccount: {
 		type: 'valueAsBoolean'
-	},
-	Accounts_Default_User_Preferences_alsoSendThreadToChannel: {
-		type: 'valueAsString'
 	}
 } as const;
