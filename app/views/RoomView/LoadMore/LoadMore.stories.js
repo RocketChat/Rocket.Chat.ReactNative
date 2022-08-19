@@ -24,7 +24,7 @@ stories.add('basic', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<LoadMore load={load} type={MessageTypeLoad.PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />

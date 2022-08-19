@@ -62,7 +62,8 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 			}}
 			style={({ pressed }: { pressed: boolean }) => ({
 				opacity: pressed ? 0.7 : 1
-			})}>
+			})}
+		>
 			<View style={styles.tabBarItem}>
 				<Emoji
 					content={tab.emoji}
@@ -91,7 +92,8 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, w
 								width: tabWidth,
 								borderBottomWidth: isActiveTab ? 2 : 1,
 								borderColor: isActiveTab ? colors.tintActive : colors.separatorColor
-							}}>
+							}}
+						>
 							<TabBarItem tab={tab} index={index} goToPage={goToPage} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} />
 						</View>
 					);
