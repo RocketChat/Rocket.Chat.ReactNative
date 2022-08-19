@@ -13,7 +13,6 @@ const SelectedChipItem = memo(
 		useRealName: boolean;
 		onPressItem: (userItem: ISelectedUser) => void;
 	}) => {
-		console.count(`🧯 RenderSelectedItem ${item.name}`);
 		const name = useRealName && item.fname ? item.fname : item.name;
 		const username = item.search ? (item.username as string) : item.name;
 

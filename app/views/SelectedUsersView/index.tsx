@@ -143,8 +143,6 @@ const SelectedUsersView = () => {
 	// filter DM between multiple users
 	const data = searchOrChats.filter(sub => !isGroupChatMethod(sub));
 
-	console.count('💸 SelectedUsersView');
-
 	return (
 		<SafeAreaView testID='select-users-view'>
 			<StatusBar />
