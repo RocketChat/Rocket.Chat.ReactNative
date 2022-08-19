@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
 import { TextInput } from '../containers/TextInput';
-import Loading from '../containers/Loading';
+import { sendLoadingEvent } from '../containers/Loading';
 import { createChannelRequest } from '../actions/createChannel';
 import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../containers/KeyboardView';
@@ -169,12 +169,15 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	}
 
 	componentDidUpdate(prevProps: ICreateChannelViewProps) {
-		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
+		const { createPublicChannelPermission, createPrivateChannelPermission, isFetching } = this.props;
 		if (
 			!dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission) ||
 			!dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission)
 		) {
 			this.handleHasPermission();
+		}
+		if (isFetching !== prevProps.isFetching) {
+			sendLoadingEvent({ visible: isFetching });
 		}
 	}
 
@@ -368,7 +371,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 	render() {
 		const { channelName, isTeam } = this.state;
-		const { users, isFetching, theme } = this.props;
+		const { users, theme } = this.props;
 		const userCount = users.length;
 
 		return (
@@ -409,7 +412,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							</Text>
 						</View>
 						{this.renderInvitedList()}
-						<Loading visible={isFetching} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>

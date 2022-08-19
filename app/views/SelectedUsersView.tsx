@@ -9,7 +9,7 @@ import { addUser, removeUser, reset } from '../actions/selectedUsers';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
-import Loading from '../containers/Loading';
+import { sendLoadingEvent } from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
@@ -65,11 +65,14 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	componentDidUpdate(prevProps: ISelectedUsersViewProps) {
+		const { users, loading } = this.props;
 		if (this.isGroupChat()) {
-			const { users } = this.props;
 			if (prevProps.users.length !== users.length) {
 				this.setHeader(users.length > 0);
 			}
+		}
+		if (loading !== prevProps.loading) {
+			sendLoadingEvent({ visible: loading });
 		}
 	}
 
@@ -273,16 +276,14 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	render = () => {
-		const { loading } = this.props;
+	render() {
 		return (
 			<SafeAreaView testID='select-users-view'>
 				<StatusBar />
 				{this.renderList()}
-				<Loading visible={loading} />
 			</SafeAreaView>
 		);
-	};
+	}
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
