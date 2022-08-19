@@ -8,6 +8,7 @@ import SafeAreaView from '../../app/containers/SafeAreaView';
 import { longText } from '../utils';
 import { ThemeContext } from '../../app/theme';
 import { DimensionsContext } from '../../app/dimensions';
+import { themes } from '../../app/lib/constants';
 
 const stories = storiesOf('List', module);
 
@@ -176,7 +177,7 @@ const ListFull = () => (
 );
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<ListFull />
 	</ThemeContext.Provider>
 );
