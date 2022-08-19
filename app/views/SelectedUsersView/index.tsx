@@ -1,0 +1,180 @@
+import { Q } from '@nozbe/watermelondb';
+import orderBy from 'lodash/orderBy';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { FlatList } from 'react-native';
+import { shallowEqual, useDispatch } from 'react-redux';
+import { Subscription } from 'rxjs';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { addUser, removeUser, reset } from '../../actions/selectedUsers';
+import * as HeaderButton from '../../containers/HeaderButton';
+import * as List from '../../containers/List';
+import Loading from '../../containers/Loading';
+import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
+import { ISearch, ISearchLocal } from '../../definitions';
+import I18n from '../../i18n';
+import database from '../../lib/database';
+import UserItem from './UserItem';
+import { ISelectedUser } from '../../reducers/selectedUsers';
+import { getUserSelector } from '../../selectors/login';
+import { ChatsStackParamList } from '../../stacks/types';
+import { useTheme } from '../../theme';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { search as searchMethod } from '../../lib/methods';
+import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
+import { useAppSelector } from '../../lib/hooks';
+import Header from './Header';
+
+type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
+type TNavigation = StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
+
+type TSearchItem = ISearch | ISearchLocal;
+
+const SelectedUsersView = () => {
+	const [chats, setChats] = useState<ISelectedUser[]>([]);
+	const [search, setSearch] = useState<TSearchItem[]>([]);
+
+	const { maxUsers, showButton, title, buttonText, nextAction } = useRoute<TRoute>().params;
+	const navigation = useNavigation<TNavigation>();
+
+	const { colors } = useTheme();
+	const dispatch = useDispatch();
+
+	const { users, loading, useRealName, user } = useAppSelector(
+		state => ({
+			users: state.selectedUsers.users,
+			loading: state.selectedUsers.loading,
+			useRealName: state.settings.UI_Use_Real_Name as boolean,
+			user: getUserSelector(state)
+		}),
+		shallowEqual
+	);
+
+	const isChecked = useCallback((username: string) => users.findIndex(el => el.name === username) !== -1, [users]);
+
+	const isGroupChat = () => maxUsers && maxUsers > 2;
+
+	useLayoutEffect(() => {
+		const titleHeader = title ?? I18n.t('Select_Users');
+		const buttonTextHeader = buttonText ?? I18n.t('Next');
+		const nextActionHeader = nextAction ?? (() => {});
+		const options = {
+			title: titleHeader,
+			headerRight: () =>
+				(!maxUsers || showButton || (isGroupChat() && users.length > 1)) && (
+					<HeaderButton.Container>
+						<HeaderButton.Item
+							title={users.length > 0 ? buttonTextHeader : I18n.t('Skip')}
+							onPress={nextActionHeader}
+							testID='selected-users-view-submit'
+						/>
+					</HeaderButton.Container>
+				)
+		};
+		navigation.setOptions(options);
+	}, [users, maxUsers]);
+
+	useEffect(() => {
+		if (isGroupChat()) {
+			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
+		}
+	}, []);
+
+	useEffect(() => {
+		let querySubscription: Subscription;
+		const init = async () => {
+			try {
+				const db = database.active;
+				const observable = await db.get('subscriptions').query(Q.where('t', 'd')).observeWithColumns(['room_updated_at']);
+
+				querySubscription = observable.subscribe(data => {
+					const chats = orderBy(data, ['roomUpdatedAt'], ['desc']) as ISelectedUser[];
+					setChats(chats);
+				});
+			} catch (e) {
+				log(e);
+			}
+		};
+		init();
+
+		return () => {
+			dispatch(reset());
+			if (querySubscription && querySubscription.unsubscribe) {
+				querySubscription.unsubscribe();
+			}
+		};
+	}, [dispatch]);
+
+	const handleSearch = useCallback(async (text: string) => {
+		const result = await searchMethod({ text, filterRooms: false });
+		setSearch(result);
+	}, []);
+
+	const toggleUser = (userItem: ISelectedUser) => {
+		// Disallow removing self user from the direct message group
+		if (isGroupChat() && user.username === userItem.name) {
+			return;
+		}
+
+		if (!isChecked(userItem.name)) {
+			if (isGroupChat() && users.length === maxUsers) {
+				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
+			}
+			logEvent(events.SELECTED_USERS_ADD_USER);
+			dispatch(addUser(userItem));
+		} else {
+			logEvent(events.SELECTED_USERS_REMOVE_USER);
+			dispatch(removeUser(userItem));
+		}
+	};
+
+	const _onPressItem = (item = {} as ISelectedUser) => {
+		if (item.search) {
+			toggleUser({ _id: item._id, name: item.username as string, fname: item.name });
+		} else {
+			toggleUser({ _id: item._id, name: item.name, fname: item.fname });
+		}
+	};
+
+	const searchOrChats = (search.length > 0 ? search : chats) as ISelectedUser[];
+	// filter DM between multiple users
+	const data = searchOrChats.filter(sub => !isGroupChatMethod(sub));
+
+	console.count('💸 SelectedUsersView');
+
+	return (
+		<SafeAreaView testID='select-users-view'>
+			<StatusBar />
+			<FlatList
+				data={data}
+				keyExtractor={item => item._id}
+				renderItem={({ item, index }) => {
+					const name = useRealName && item.fname ? item.fname : item.name;
+					const username = item.search ? (item.username as string) : item.name;
+					return (
+						<UserItem
+							isChecked={isChecked(username)}
+							chatsLength={chats.length}
+							searchLength={search.length}
+							index={index}
+							item={item}
+							username={username}
+							name={name}
+							onPressItem={_onPressItem}
+						/>
+					);
+				}}
+				ItemSeparatorComponent={List.Separator}
+				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
+				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				keyboardShouldPersistTaps='always'
+			/>
+			<Loading visible={loading} />
+		</SafeAreaView>
+	);
+};
+
+export default SelectedUsersView;
