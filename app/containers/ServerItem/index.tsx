@@ -12,7 +12,7 @@ import { useTheme } from '../../theme';
 
 export { ROW_HEIGHT };
 
-interface IServerItem {
+export interface IServerItem {
 	item: IServerInfo;
 	onPress(): void;
 	onLongPress?(): void;

@@ -5,7 +5,7 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 
-interface IBackgroundContainer {
+export interface IBackgroundContainer {
 	text?: string;
 	loading?: boolean;
 }

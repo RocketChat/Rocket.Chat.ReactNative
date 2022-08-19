@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots HeaderButtons Badge 1`] = `"{\\"type\\":\\"RNCSafeAreaProvider\\",\\"props\\":{\\"style\\":[{\\"flex\\":1},null]},\\"children\\":null}"`;
+
+exports[`Storyshots HeaderButtons Common 1`] = `"{\\"type\\":\\"RNCSafeAreaProvider\\",\\"props\\":{\\"style\\":[{\\"flex\\":1},null]},\\"children\\":null}"`;
+
+exports[`Storyshots HeaderButtons Icons 1`] = `"{\\"type\\":\\"RNCSafeAreaProvider\\",\\"props\\":{\\"style\\":[{\\"flex\\":1},null]},\\"children\\":null}"`;
+
+exports[`Storyshots HeaderButtons Themes 1`] = `"{\\"type\\":\\"RNCSafeAreaProvider\\",\\"props\\":{\\"style\\":[{\\"flex\\":1},null]},\\"children\\":null}"`;
+
+exports[`Storyshots HeaderButtons Title 1`] = `"{\\"type\\":\\"RNCSafeAreaProvider\\",\\"props\\":{\\"style\\":[{\\"flex\\":1},null]},\\"children\\":null}"`;
