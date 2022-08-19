@@ -34,10 +34,7 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
 	MENTIONS_TRACKING_TYPE_USERS,
-	TIMEOUT_CLOSE_EMOJI,
-	ALSO_SEND_THREAD_TO_CHANNEL_ALWAYS,
-	ALSO_SEND_THREAD_TO_CHANNEL_DEFAULT,
-	ALSO_SEND_THREAD_TO_CHANNEL_NEVER
+	TIMEOUT_CLOSE_EMOJI
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -115,7 +112,6 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
 	goToCannedResponses: () => void | null;
-	alsoSendThreadToChannel: string;
 	serverVersion: string;
 }
 
@@ -216,14 +212,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	get sendThreadToChannel() {
-		const { alsoSendThreadToChannel, tmid, serverVersion } = this.props;
+		const { user, tmid, serverVersion } = this.props;
 		if (!tmid || compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
 			return false;
 		}
-		if (alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_ALWAYS) {
+		if (user.alsoSendThreadToChannel === 'always') {
 			return true;
 		}
-		if (alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_NEVER) {
+		if (user.alsoSendThreadToChannel === 'never') {
 			return false;
 		}
 		return true;
@@ -706,13 +702,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	clearInput = () => {
 		const { tshow } = this.state;
-		const { alsoSendThreadToChannel, serverVersion } = this.props;
+		const { user, serverVersion } = this.props;
 		this.setInput('');
 		this.setShowSend(false);
-		if (
-			compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ||
-			(tshow && alsoSendThreadToChannel === ALSO_SEND_THREAD_TO_CHANNEL_DEFAULT)
-		) {
+		if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0') || (tshow && user.alsoSendThreadToChannel === 'default')) {
 			this.setState({ tshow: false });
 		}
 	};
@@ -1244,7 +1237,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
 	uploadFilePermission: state.permissions['mobile-upload-file'],
-	alsoSendThreadToChannel: state.settings.Accounts_Default_User_Preferences_alsoSendThreadToChannel as string,
 	serverVersion: state.server.version
 });
 
