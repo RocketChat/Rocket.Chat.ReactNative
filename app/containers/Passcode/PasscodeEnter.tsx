@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useAsyncStorage } from '@react-native-community/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { sha256 } from 'js-sha256';

@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../constants';
 

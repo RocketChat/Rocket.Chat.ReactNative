@@ -1,5 +1,5 @@
 import { Alert, Linking } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import I18n from '../../../i18n';
 import { isFDroidBuild, STORE_REVIEW_LINK } from '../../constants';
