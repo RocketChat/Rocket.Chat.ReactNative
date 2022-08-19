@@ -1,28 +1,7 @@
 import * as FileSystem from 'expo-file-system';
-import { PermissionsAndroid } from 'react-native';
 
-import i18n from '../../i18n';
 import { store } from '../store/auxStore';
-import { isAndroid } from './helpers';
 import log from './helpers/log';
-
-// It should be necessary, but in my tests, even uninstalling it didn't ask for permission.
-// Maybe it could be the android version?
-// Call when entering room view.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const askForPermissionToSaveFiles = async () => {
-	if (isAndroid) {
-		const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, {
-			title: i18n.t('Write_External_Permission'),
-			message: i18n.t('Write_External_Permission'),
-			buttonPositive: 'Ok'
-		});
-		if (result !== PermissionsAndroid.RESULTS.GRANTED) {
-			return Promise.reject();
-		}
-	}
-	return Promise.resolve();
-};
 
 const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> => {
 	const info = await FileSystem.getInfoAsync(dir);
