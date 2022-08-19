@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IItem {
+export interface IItem {
 	item: TThreadModel;
 	useRealName: boolean;
 	user: { id: string };

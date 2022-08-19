@@ -15,12 +15,12 @@ interface IListSection {
 	translateTitle?: boolean;
 }
 
-const ListSection = React.memo(({ children, title, translateTitle }: IListSection) => (
+const ListSection = ({ children, title, translateTitle }: IListSection) => (
 	<View style={styles.container}>
 		{title ? <Header {...{ title, translateTitle }} /> : null}
 		{children}
 	</View>
-));
+);
 
 ListSection.displayName = 'List.Section';
 

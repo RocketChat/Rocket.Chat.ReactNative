@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots UIKit/UiKitMessage Action - Buttons 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Action - Select 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Context 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Fields 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Image 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section + DatePicker 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section + Markdown List 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section + Multi Select 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section + Overflow 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section + Select 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section + button 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section + image 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
+exports[`Storyshots UIKit/UiKitMessage Section 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
