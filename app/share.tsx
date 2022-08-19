@@ -25,6 +25,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
 import { colors, CURRENT_SERVER } from './lib/constants';
+import Loading from './containers/Loading';
 
 initStore(store);
 
@@ -131,6 +132,7 @@ const Root = (): React.ReactElement => {
 						}}
 					>
 						<App root={root} />
+						<Loading />
 					</NavigationContainer>
 					<ScreenLockedView />
 				</DimensionsContext.Provider>
