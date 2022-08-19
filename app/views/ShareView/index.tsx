@@ -9,7 +9,7 @@ import { Q } from '@nozbe/watermelondb';
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
@@ -207,6 +207,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
+			sendLoadingEvent({ visible: true });
 
 			// if it's not share extension this can close
 		} else {
@@ -248,6 +249,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if it's share extension this should close
 		if (this.isShareExtension) {
+			sendLoadingEvent({ visible: false });
 			ShareExtension.close();
 		}
 	};
@@ -346,7 +348,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { readOnly, room, loading } = this.state;
+		const { readOnly, room } = this.state;
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (
@@ -361,7 +363,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
-				<Loading visible={loading} />
 			</SafeAreaView>
 		);
 	}

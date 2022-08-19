@@ -49,10 +49,10 @@ async function waitForLoading() {
 		await sleep(10000);
 		return; // FIXME: Loading indicator doesn't animate properly on android
 	}
-	await waitFor(element(by.id('loading')))
+	await waitFor(element(by.id('loading-image')))
 		.toBeVisible()
 		.withTimeout(5000);
-	await waitFor(element(by.id('loading')))
+	await waitFor(element(by.id('loading-image')))
 		.toBeNotVisible()
 		.withTimeout(10000);
 }
@@ -67,9 +67,10 @@ describe('Room', () => {
 
 	it('should jump to an old message and load its surroundings', async () => {
 		await navigateToRoom('jumping');
-		await waitFor(element(by[textMatcher]('300')))
+		await waitFor(element(by[textMatcher]('295')))
 			.toExist()
 			.withTimeout(5000);
+		await sleep(2000);
 		await element(by[textMatcher]('1')).atIndex(0).tap();
 		await waitForLoading();
 		await waitFor(element(by[textMatcher]('1')).atIndex(0))
@@ -83,7 +84,7 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(15000);
 		await element(by.id('nav-jump-to-bottom')).tap();
-		await waitFor(element(by[textMatcher]('Quote first message')))
+		await waitFor(element(by[textMatcher]("Go to jumping-thread's thread")))
 			.toExist()
 			.withTimeout(15000);
 		await clearCache();
@@ -164,7 +165,7 @@ describe('Room', () => {
 		await waitFor(element(by[textMatcher]('50')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.5);
+		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.4);
 		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -197,8 +198,9 @@ const expectThreadMessages = async message => {
 	await waitFor(element(by.id('room-view-title-thread 1')))
 		.toExist()
 		.withTimeout(5000);
-	await waitForLoading();
-	await expect(element(by[textMatcher](message)).atIndex(0)).toExist();
+	await waitFor(element(by[textMatcher](message)).atIndex(0))
+		.toExist()
+		.withTimeout(10000);
 	await element(by[textMatcher](message)).atIndex(0).tap();
 };
 

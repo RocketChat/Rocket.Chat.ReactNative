@@ -62,6 +62,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	private mounted = false;
 	private animated = false;
 	private jumping = false;
+	private cancelJump = false;
 	private y = new Value(0);
 	private onScroll = onScroll({ y: this.y });
 	private unsubscribeFocus: () => void;
@@ -138,6 +139,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
+	// clears previous highlighted message timeout, if exists
 	clearHighlightedMessageTimeout = () => {
 		if (this.highlightedMessageTimeout) {
 			clearTimeout(this.highlightedMessageTimeout);
@@ -276,38 +278,58 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	jumpToMessage = (messageId: string) =>
 		new Promise<void>(async resolve => {
-			this.jumping = true;
 			const { messages } = this.state;
 			const { listRef } = this.props;
+
+			// if jump to message was cancelled, reset variables and stop
+			if (this.cancelJump) {
+				this.resetJumpToMessage();
+				return resolve();
+			}
+			this.jumping = true;
+
+			// look for the message on the state
 			const index = messages.findIndex(item => item.id === messageId);
+
+			// if found message, scroll to it
 			if (index > -1) {
 				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+
+				// wait for scroll animation to finish
 				await new Promise(res => setTimeout(res, 300));
+
+				// if message is not visible
 				if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
-					if (!this.jumping) {
-						return resolve();
-					}
 					await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 					return;
 				}
+				// if message is visible, highlight it
 				this.setState({ highlightedMessage: messageId });
 				this.clearHighlightedMessageTimeout();
+				// clears highlighted message after some time
 				this.highlightedMessageTimeout = setTimeout(() => {
 					this.setState({ highlightedMessage: null });
-				}, 10000);
-				await setTimeout(() => resolve(), 300);
+				}, 5000);
+				this.resetJumpToMessage();
+				resolve();
 			} else {
-				listRef.current?.scrollToIndex({ index: messages.length - 1, animated: false });
-				if (!this.jumping) {
-					return resolve();
-				}
+				// if message not found, wait for scroll to top and then jump to message
+				listRef.current?.scrollToIndex({ index: messages.length - 1, animated: true });
 				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 			}
 		});
 
-	// this.jumping is checked in between operations to make sure we're not stuck
-	cancelJumpToMessage = () => {
+	resetJumpToMessage = () => {
+		this.cancelJump = false;
 		this.jumping = false;
+	};
+
+	cancelJumpToMessage = () => {
+		if (this.jumping) {
+			this.cancelJump = true;
+			return;
+		}
+		this.resetJumpToMessage();
 	};
 
 	jumpToBottom = () => {
