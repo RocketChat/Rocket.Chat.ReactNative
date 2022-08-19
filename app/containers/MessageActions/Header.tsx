@@ -7,10 +7,10 @@ import { CustomIcon } from '../CustomIcon';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
-import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
 import { TAnyMessageModel, TFrequentlyUsedEmojiModel } from '../../definitions';
+import Touch from '../Touch';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
@@ -75,30 +75,28 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 	const emojiModel = item as TFrequentlyUsedEmojiModel;
 	const emoji = (emojiModel.id ? emojiModel.content : item) as string;
 	return (
-		<Button
+		<Touch
 			testID={`message-actions-emoji-${emoji}`}
 			onPress={() => onReaction({ emoji: `:${emoji}:` })}
 			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-			theme={theme}
 		>
 			{emojiModel?.isCustom ? (
 				<CustomEmoji style={styles.customEmoji} emoji={emojiModel} baseUrl={server} />
 			) : (
 				<Text style={styles.headerIcon}>{shortnameToUnicode(`:${emoji}:`)}</Text>
 			)}
-		</Button>
+		</Touch>
 	);
 };
 
 const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
-	<Button
+	<Touch
 		testID='add-reaction'
-		onPress={onReaction}
+		onPress={(param: any) => onReaction(param)}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}
 	>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
-	</Button>
+	</Touch>
 );
 
 const Header = React.memo(({ handleReaction, server, message, isMasterDetail }: IHeader) => {

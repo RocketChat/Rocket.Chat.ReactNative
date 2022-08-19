@@ -41,7 +41,6 @@ async function navigateToLogin(server) {
 	await waitFor(element(by.id('login-view')))
 		.toExist()
 		.withTimeout(2000);
-	await expect(element(by.id('login-view'))).toExist();
 }
 
 async function navigateToRegister(server) {
@@ -196,6 +195,9 @@ const checkServer = async server => {
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('sidebar-close-drawer')).tap();
+	await waitFor(element(by.id('sidebar-close-drawer')))
+		.not.toBeVisible()
+		.withTimeout(10000);
 };
 
 function runCommand(command) {
