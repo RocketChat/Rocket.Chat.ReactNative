@@ -31,6 +31,7 @@ import { onReviewPress } from '../../lib/methods/helpers/review';
 import SidebarView from '../SidebarView';
 import { clearCache } from '../../lib/methods';
 import { Services } from '../../lib/services';
+import { deleteAllAudioFiles } from '../../lib/methods/audioFile';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
@@ -98,6 +99,7 @@ class SettingsView extends React.Component<ISettingsViewProps> {
 					dispatch
 				} = this.props;
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
+				await deleteAllAudioFiles(server);
 				await clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
