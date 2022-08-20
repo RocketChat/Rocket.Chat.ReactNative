@@ -10,40 +10,52 @@ import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import styles from './styles';
 import useFrequentlyUsedEmoji from '../EmojiPicker/frequentlyUsedEmojis';
+import { DEFAULT_EMOJIS } from '../EmojiPicker/emojis';
 
-const BUTTON_HIT_SLOP = { top: 15, right: 15, bottom: 15, left: 15 };
+const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 const EMOJI_SIZE = 30;
-const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	onChangeText: (value: string) => void;
-	emojis: IEmoji[];
-	onEmojiSelected: (emoji: IEmoji) => void;
+	emojis: (IEmoji | string)[];
+	onEmojiSelected: (emoji: IEmoji | string) => void;
 	baseUrl: string;
 }
 
-interface ICustomEmoji {
-	name: string;
-	extension: string;
+interface IListItem {
+	emoji: IEmoji | string;
+	onEmojiSelected: (emoji: IEmoji | string) => void;
+	baseUrl: string;
 }
 
-const Emoji = React.memo(({ emoji, baseUrl }: { emoji: IEmoji; baseUrl: string }) => {
+const Emoji = ({ emoji, baseUrl }: { emoji: IEmoji | string; baseUrl: string }): React.ReactElement => {
 	const { colors } = useTheme();
-	if (emoji.isCustom || emoji.name) {
-		return <CustomEmoji style={{ height: EMOJI_SIZE, width: EMOJI_SIZE, margin: 4 }} emoji={emoji} baseUrl={baseUrl} />;
+	if (typeof emoji === 'string') {
+		return (
+			<Text style={[styles.searchedEmoji, { fontSize: EMOJI_SIZE, color: colors.backdropColor }]}>
+				{shortnameToUnicode(`:${emoji}:`)}
+			</Text>
+		);
 	}
+	return <CustomEmoji style={{ height: EMOJI_SIZE, width: EMOJI_SIZE, margin: 4 }} emoji={emoji} baseUrl={baseUrl} />;
+};
+
+const ListItem = ({ emoji, onEmojiSelected, baseUrl }: IListItem): React.ReactElement => {
+	const key = typeof emoji === 'string' ? emoji : emoji?.name || emoji?.content;
 	return (
-		<Text style={[styles.searchedEmoji, { fontSize: EMOJI_SIZE, color: colors.backdropColor }]}>
-			{shortnameToUnicode(`:${emoji}:`)}
-		</Text>
+		<View style={[styles.emojiContainer]} key={key}>
+			<Pressable onPress={() => onEmojiSelected(emoji)}>
+				<Emoji emoji={emoji} baseUrl={baseUrl} />
+			</Pressable>
+		</View>
 	);
-});
+};
 
 const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 	({ openEmoji, onChangeText, emojis, onEmojiSelected, baseUrl }, ref) => {
 		const { colors } = useTheme();
 		const [searchText, setSearchText] = useState<string>('');
-		const [frequentlyUsedEmojis, setFrequentlyUsed] = useState<(string | ICustomEmoji)[]>();
+		const [frequentlyUsedEmojis, setFrequentlyUsed] = useState<(string | IEmoji)[]>();
 		const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 
 		useEffect(() => {
@@ -63,20 +75,12 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 			onChangeText(text);
 		};
 
-		const ListItem = React.memo(({ emoji }: { emoji: IEmoji }) => (
-			<View style={[styles.emojiContainer]}>
-				<Pressable onPress={() => onEmojiSelected(emoji)}>
-					<Emoji emoji={emoji} baseUrl={baseUrl} />
-				</Pressable>
-			</View>
-		));
-
 		return (
 			<View style={{ borderTopWidth: 1, borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }}>
 				<FlatList
 					horizontal
 					data={searchText ? emojis : frequentlyUsedEmojis}
-					renderItem={({ item }) => <ListItem emoji={item as IEmoji} />}
+					renderItem={({ item }) => <ListItem emoji={item} onEmojiSelected={onEmojiSelected} baseUrl={baseUrl} />}
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
 						<View style={styles.listEmptyComponent}>
@@ -84,7 +88,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 						</View>
 					)}
 					// @ts-ignore
-					keyExtractor={item => item?.name || item}
+					keyExtractor={item => item?.content || item?.name || item}
 					contentContainerStyle={styles.emojiListContainer}
 					keyboardShouldPersistTaps='always'
 				/>

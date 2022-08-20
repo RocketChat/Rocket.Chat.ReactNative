@@ -35,12 +35,11 @@ const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, width, tabsCount }: I
 	const numColumns = Math.trunc(width ? width / emojiSize : tabsCount);
 	const { colors } = useTheme();
 
-	const renderItem = (emoji: IEmoji) => (
+	const renderItem = (emoji: IEmoji | string) => (
 		<Pressable
-			// @ts-ignore
-			key={emoji && emoji.isCustom ? emoji.content : emoji}
+			key={typeof emoji === 'string' ? emoji : emoji.content}
 			onPress={() => onEmojiSelected(emoji)}
-			testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}
+			testID={`reaction-picker-${typeof emoji === 'string' ? emoji : emoji.content}`}
 			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: emojiSize / 2 }}
 			style={({ pressed }: { pressed: boolean }) => ({
 				backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'

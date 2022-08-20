@@ -5,7 +5,7 @@ import { ImageStyle } from 'react-native-fast-image';
 export interface IEmoji {
 	content: string;
 	name: string;
-	extension: string;
+	extension?: string;
 	isCustom: boolean;
 	count?: number;
 }
@@ -30,8 +30,8 @@ export interface ICustomEmojiModel {
 
 export interface IEmojiCategory {
 	baseUrl: string;
-	emojis: IEmoji[];
-	onEmojiSelected: (emoji: IEmoji) => void;
+	emojis: (IEmoji | string)[];
+	onEmojiSelected: (emoji: IEmoji | string) => void;
 	width: number | null;
 	style: StyleProp<ImageStyle>;
 	tabLabel: string;

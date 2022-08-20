@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, NativeModules, Text, View, TextInput as RNTextInput, BackHandler } from 'react-native';
+import { Alert, Keyboard, NativeModules, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
@@ -166,7 +166,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	private typingTimeout: any;
 
-	private emojiSearchbarRef: React.RefObject<RNTextInput>;
+	private emojiSearchbarRef: any;
 
 	static defaultProps = {
 		message: {
@@ -198,7 +198,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
 		this.focused = false;
-		this.emojiSearchbarRef = React.createRef<RNTextInput>();
 
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -608,7 +607,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			case EventTypes.SEARCH_PRESSED:
 				this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: true });
 				setTimeout(() => {
-					this.emojiSearchbarRef.current?.focus();
+					if (this.emojiSearchbarRef && this.emojiSearchbarRef.focus) {
+						this.emojiSearchbarRef.focus();
+					}
 				}, 400);
 				break;
 			default:
@@ -1130,8 +1131,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		const onEmojiSelected = (emoji: any) => {
 			let selectedEmoji;
-			if (emoji.name) {
-				selectedEmoji = `:${emoji.name}:`;
+			if (emoji.name || emoji.content) {
+				selectedEmoji = `:${emoji.name || emoji.content}:`;
 			} else {
 				selectedEmoji = shortnameToUnicode(`:${emoji}:`);
 			}
@@ -1146,7 +1147,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		};
 		return showEmojiSearchbar ? (
 			<EmojiSearchbar
-				ref={this.emojiSearchbarRef}
+				ref={ref => (this.emojiSearchbarRef = ref)}
 				openEmoji={this.openEmoji}
 				onChangeText={onChangeText}
 				emojis={searchedEmojis}
