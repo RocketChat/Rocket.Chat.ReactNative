@@ -23,7 +23,7 @@ const ReactionsList = ({ reactions, baseUrl, getCustomEmoji, width, username }: 
 	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
 	const allTabLabel = { emoji: I18n.t('All'), usernames: [], names: [], _id: 'All' };
 	return (
-		<View style={styles.reactionsListContainer}>
+		<View style={styles.reactionsListContainer} testID='reactionsList'>
 			<ScrollableTabView renderTabBar={() => <ReactionsTabBar baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} width={width} />}>
 				<AllTab
 					tabLabel={allTabLabel}

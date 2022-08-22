@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { Text, View, FlatList } from 'react-native';
 
 import Emoji from '../message/Emoji';
 import { useTheme } from '../../theme';
@@ -56,7 +55,7 @@ const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllR
 };
 
 const AllTab = ({ reactions, baseUrl, getCustomEmoji, username }: IAllTabProps): React.ReactElement => (
-	<View style={styles.allReactionsContainer}>
+	<View style={styles.allReactionsContainer} testID='reactionsListAllTab'>
 		<FlatList
 			data={reactions}
 			renderItem={({ item }) => (

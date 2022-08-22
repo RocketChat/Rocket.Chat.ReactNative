@@ -35,6 +35,7 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 			style={({ pressed }: { pressed: boolean }) => ({
 				opacity: pressed ? 0.7 : 1
 			})}
+			testID={`tabBarItem-${tab.emoji}`}
 		>
 			<View style={styles.tabBarItem}>
 				{tab._id === 'All' ? (
@@ -60,7 +61,7 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, w
 	const tabWidth = tabs && Math.max(width / tabs.length, MIN_TAB_WIDTH);
 	const { colors } = useTheme();
 	return (
-		<View>
+		<View testID='reactionsTabBar'>
 			<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 				{tabs?.map((tab, index) => {
 					const isActiveTab = activeTab === index;
@@ -71,6 +72,7 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, w
 								borderBottomWidth: isActiveTab ? 2 : 1,
 								borderColor: isActiveTab ? colors.tintActive : colors.separatorColor
 							}}
+							key={tab.emoji}
 						>
 							<TabBarItem tab={tab} index={index} goToPage={goToPage} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} />
 						</View>

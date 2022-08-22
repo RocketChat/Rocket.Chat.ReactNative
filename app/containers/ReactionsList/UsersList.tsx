@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { Text, View, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { useTheme } from '../../theme';
@@ -23,11 +22,13 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 			data={users}
 			ListHeaderComponent={() => (
 				<View style={styles.emojiName}>
-					<Text style={{ color: colors.auxiliaryTintColor }}>{emoji}</Text>
+					<Text style={{ color: colors.auxiliaryTintColor }} testID='usersListEmojiName'>
+						{emoji}
+					</Text>
 				</View>
 			)}
 			renderItem={({ item }) => (
-				<View style={styles.userItemContainer}>
+				<View style={styles.userItemContainer} testID='userItem'>
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
 						<Text style={[styles.usernameText, { color: colors.titleText }]} numberOfLines={1}>
@@ -37,6 +38,7 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 				</View>
 			)}
 			keyExtractor={item => item.username}
+			testID={`usersList-${emoji}`}
 		/>
 	);
 };
