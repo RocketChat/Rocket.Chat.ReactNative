@@ -212,8 +212,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	get sendThreadToChannel() {
-		const { user, tmid, serverVersion } = this.props;
-		if (!tmid || compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
+		const { user, serverVersion } = this.props;
+		if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
 			return false;
 		}
 		if (user.alsoSendThreadToChannel === 'always') {
