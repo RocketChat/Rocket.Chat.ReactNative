@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
-import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
+import ImagePicker, { ImageOrVideo, Options } from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
@@ -59,6 +59,7 @@ import { hasPermission, debounce, isAndroid, isIOS, isTablet } from '../../lib/m
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
+import { pickImageFromCamera } from '../../lib/methods/mediaPicker';
 
 require('./EmojiKeyboard');
 
@@ -711,11 +712,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	takePhoto = async () => {
 		logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
-			let image = (await ImagePicker.openCamera(this.imagePickerConfig)) as Image;
-			image = forceJpgExtension(image);
-			if (this.canUploadFile(image)) {
-				this.openShareView([image]);
-			}
+			const image = await pickImageFromCamera();
+			console.log(image);
+			// let image = (await ImagePicker.openCamera(this.imagePickerConfig)) as Image;
+
+			// image = forceJpgExtension(image);
+			// if (this.canUploadFile(image)) {
+			// 	this.openShareView([image]);
+			// }
 		} catch (e) {
 			logEvent(events.ROOM_BOX_ACTION_PHOTO_F);
 		}
