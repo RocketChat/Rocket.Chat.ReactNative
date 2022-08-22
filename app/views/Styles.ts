@@ -5,7 +5,6 @@ import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants';
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
-	fontFamily: 'Inter',
 	color: 'red',
 	...Platform.select({
 		android: {
@@ -78,6 +77,7 @@ export default StyleSheet.create({
 		...defaultTextStyle,
 		...Platform.select({
 			ios: {
+				fontFamily: 'Inter',
 				fontWeight: '400'
 			},
 			android: {
@@ -89,6 +89,7 @@ export default StyleSheet.create({
 		...defaultTextStyle,
 		...Platform.select({
 			ios: {
+				fontFamily: 'Inter',
 				fontWeight: '500'
 			},
 			android: {
@@ -100,6 +101,7 @@ export default StyleSheet.create({
 		...defaultTextStyle,
 		...Platform.select({
 			ios: {
+				fontFamily: 'Inter',
 				fontWeight: '600'
 			},
 			android: {
@@ -111,6 +113,7 @@ export default StyleSheet.create({
 		...defaultTextStyle,
 		...Platform.select({
 			ios: {
+				fontFamily: 'Inter',
 				fontWeight: '700'
 			},
 			android: {
