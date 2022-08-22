@@ -45,15 +45,14 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		if (sdk.current?.client?.host === server) {
 			return resolve();
 		}
+
+		// Check for running requests and abort them before connecting to the server
+		abort();
+
 		disconnect();
 		database.setActiveDB(server);
 
 		store.dispatch(connectRequest());
-
-		// It's not called anywhere else
-		// if (this.connectTimeout) {
-		// 	clearTimeout(this.connectTimeout);
-		// }
 
 		if (connectingListener) {
 			connectingListener.then(stopListener);
@@ -374,7 +373,6 @@ function abort() {
 	if (sdk.current) {
 		return sdk.current.abort();
 	}
-	return new AbortController();
 }
 
 function checkAndReopen() {

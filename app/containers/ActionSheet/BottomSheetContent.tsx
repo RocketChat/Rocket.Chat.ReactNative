@@ -2,13 +2,13 @@ import { Text } from 'react-native';
 import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@gorhom/bottom-sheet';
 
-import { Button } from './Button';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { IActionSheetItem, Item } from './Item';
 import { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
+import Touch from '../Touch';
 
 interface IBottomSheetContentProps {
 	hasCancel?: boolean;
@@ -18,19 +18,17 @@ interface IBottomSheetContentProps {
 }
 
 const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: IBottomSheetContentProps) => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 
 	const renderFooter = () =>
 		hasCancel ? (
-			<Button
+			<Touch
 				onPress={hide}
 				style={[styles.button, { backgroundColor: colors.auxiliaryBackground }]}
-				// TODO: Remove when migrate Touch
-				theme={theme}
 				accessibilityLabel={I18n.t('Cancel')}
 			>
 				<Text style={[styles.text, { color: colors.bodyText }]}>{I18n.t('Cancel')}</Text>
-			</Button>
+			</Touch>
 		) : null;
 
 	const renderItem = ({ item }: { item: IActionSheetItem['item'] }) => <Item item={item} hide={hide} />;
