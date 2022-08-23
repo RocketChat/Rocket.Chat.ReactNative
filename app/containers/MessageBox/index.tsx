@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
-import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
@@ -42,7 +41,6 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { TActionSheetOptionsItem, withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
-import { forceJpgExtension } from './forceJpgExtension';
 import {
 	IApplicationState,
 	IBaseScreen,
@@ -59,26 +57,9 @@ import { hasPermission, debounce, isAndroid, isIOS, isTablet } from '../../lib/m
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
+import { pickImageAndVideoFromLibrary, pickImageFromCamera, pickVideoFromCamera } from '../../lib/methods/mediaPicker';
 
 require('./EmojiKeyboard');
-
-const imagePickerConfig = {
-	cropping: true,
-	avoidEmptySpaceAroundImage: false,
-	freeStyleCropEnabled: true,
-	forceJpg: true
-};
-
-const libraryPickerConfig: Options = {
-	multiple: true,
-	compressVideoPreset: 'Passthrough',
-	mediaType: 'any',
-	forceJpg: true
-};
-
-const videoPickerConfig: Options = {
-	mediaType: 'video'
-};
 
 export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & MasterDetailInsideStackParamList, any> {
 	rid: string;
@@ -138,12 +119,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	private focused: boolean;
 
-	private imagePickerConfig: Options;
-
-	private libraryPickerConfig: Options;
-
-	private videoPickerConfig: Options;
-
 	private room!: TSubscriptionModel;
 
 	private thread!: TThreadModel;
@@ -189,26 +164,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.selection = { start: 0, end: 0 };
 		this.focused = false;
 
-		const libPickerLabels = {
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			loadingLabelText: I18n.t('Processing')
-		};
-
-		this.imagePickerConfig = {
-			...imagePickerConfig,
-			...libPickerLabels
-		};
-
-		this.libraryPickerConfig = {
-			...libraryPickerConfig,
-			...libPickerLabels
-		};
-
-		this.videoPickerConfig = {
-			...videoPickerConfig,
-			...libPickerLabels
-		};
 	}
 
 	async componentDidMount() {
@@ -711,9 +666,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	takePhoto = async () => {
 		logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
-			let image = (await ImagePicker.openCamera(this.imagePickerConfig)) as Image;
-			image = forceJpgExtension(image);
-			if (this.canUploadFile(image)) {
+			const image = await pickImageFromCamera(true);
+			if (image && this.canUploadFile(image)) {
 				this.openShareView([image]);
 			}
 		} catch (e) {
@@ -724,8 +678,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	takeVideo = async () => {
 		logEvent(events.ROOM_BOX_ACTION_VIDEO);
 		try {
-			const video = await ImagePicker.openCamera(this.videoPickerConfig);
-			if (this.canUploadFile(video)) {
+			const video = await pickVideoFromCamera(true);
+			if (video && this.canUploadFile(video)) {
 				this.openShareView([video]);
 			}
 		} catch (e) {
@@ -736,10 +690,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFromLibrary = async () => {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
-			// The type can be video or photo, however the lib understands that it is just one of them.
-			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as unknown as ImageOrVideo[];
-			attachments = attachments.map(att => forceJpgExtension(att));
-			this.openShareView(attachments);
+			const attachments = await pickImageAndVideoFromLibrary();
+			if (attachments) {
+				this.openShareView(attachments);
+			}
 		} catch (e) {
 			logEvent(events.ROOM_BOX_ACTION_LIBRARY_F);
 		}
