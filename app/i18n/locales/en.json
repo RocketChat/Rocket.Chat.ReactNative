@@ -842,5 +842,7 @@
   "error-init-video-conf": "Error starting video call",
   "totp-invalid": "Code or password invalid",
   "Close_Chat": "Close Chat",
-  "Select_tags": "Select tags"
+  "Select_tags": "Select tags",
+  "Also_send_thread_message_to_channel_behavior": "Also send thread message to channel",
+  "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Allow users to select the Also send to channel behavior"
 }
