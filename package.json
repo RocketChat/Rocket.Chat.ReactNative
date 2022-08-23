@@ -65,6 +65,7 @@
 		"expo-av": "11.2.3",
 		"expo-file-system": "14.0.0",
 		"expo-haptics": "11.2.0",
+		"expo-image-picker": "13.1.1",
 		"expo-keep-awake": "10.1.1",
 		"expo-local-authentication": "12.2.0",
 		"expo-video-thumbnails": "6.3.0",

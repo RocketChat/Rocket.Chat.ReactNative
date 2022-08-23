@@ -11,11 +11,16 @@ PODS:
     - ReactCommon
   - EXFileSystem (14.0.0):
     - ExpoModulesCore
+  - EXImageLoader (3.2.0):
+    - ExpoModulesCore
+    - React-Core
   - EXLocalAuthentication (12.2.0):
     - ExpoModulesCore
   - Expo (45.0.5):
     - ExpoModulesCore
   - ExpoHaptics (11.2.0):
+    - ExpoModulesCore
+  - ExpoImagePicker (13.1.1):
     - ExpoModulesCore
   - ExpoKeepAwake (10.1.1):
     - ExpoModulesCore
@@ -591,9 +596,11 @@ DEPENDENCIES:
   - EXAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - Expo (from `../node_modules/expo/ios`)
   - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
+  - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
@@ -716,12 +723,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-av/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
+  EXImageLoader:
+    :path: "../node_modules/expo-image-loader/ios"
   EXLocalAuthentication:
     :path: "../node_modules/expo-local-authentication/ios"
   Expo:
     :path: "../node_modules/expo/ios"
   ExpoHaptics:
     :path: "../node_modules/expo-haptics/ios"
+  ExpoImagePicker:
+    :path: "../node_modules/expo-image-picker/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
@@ -893,9 +904,11 @@ SPEC CHECKSUMS:
   EXAppleAuthentication: 709a807fe7f48ac6986a2ceed206ee6a8baf28df
   EXAV: 88f61c5af8415715b7ee51f084c1020235b85c56
   EXFileSystem: 2aa2d9289f84bca9532b9ccbd81504fa31eb1ded
+  EXImageLoader: b88e053d760f85a82405b1db2de4abf11978fc9f
   EXLocalAuthentication: 7f37b242eae73f9acf111d39bdee3f1379e68902
   Expo: b9fff0a1eac0f424fc68ea49b4347fb308e52e17
   ExpoHaptics: ad58ec96a25e57579c14a47c7d71f0de0de8656a
+  ExpoImagePicker: d9d6b4f29db437fc7796f13cee5f133f5b4b5f7c
   ExpoKeepAwake: c0c494b442ecd8122974c13b93ccfb57bd408e88
   ExpoModulesCore: e4278a668e8c13c0269ed8b8a4200989deea2973
   ExpoWebBrowser: 4b5f9633e5f169dc948587cb6d26d2d1d1406187
