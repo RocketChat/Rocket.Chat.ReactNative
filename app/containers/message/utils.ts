@@ -145,16 +145,16 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		return I18n.t('Message_removed');
 	}
 	if (type === 'uj') {
-		return I18n.t('Has_joined_the_channel');
+		return I18n.t('User_joined_the_channel');
 	}
 	if (type === 'ujt') {
-		return I18n.t('Has_joined_the_team');
+		return I18n.t('User_joined_the_team');
 	}
 	if (type === 'ut') {
-		return I18n.t('Has_joined_the_conversation');
+		return I18n.t('User_joined_the_conversation');
 	}
 	if (type === 'r') {
-		return I18n.t('Room_name_changed', { name: msg, userBy: username });
+		return I18n.t('Room_name_changed_to', { name: msg });
 	}
 	if (type === 'message_pinned') {
 		return I18n.t('Message_pinned');
@@ -163,22 +163,22 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		return I18n.t('Started_call', { userBy: username });
 	}
 	if (type === 'ul') {
-		return I18n.t('Has_left_the_channel');
+		return I18n.t('User_left_this_channel');
 	}
 	if (type === 'ult') {
 		return I18n.t('Has_left_the_team');
 	}
 	if (type === 'ru') {
-		return I18n.t('User_removed_by', { userRemoved: msg, userBy: username });
+		return I18n.t('User_has_been_removed', { userRemoved: msg });
 	}
 	if (type === 'au') {
-		return I18n.t('User_added_by', { userAdded: msg, userBy: username });
+		return I18n.t('User_added_to', { userAdded: msg });
 	}
 	if (type === 'user-muted') {
-		return I18n.t('User_muted_by', { userMuted: msg, userBy: username });
+		return I18n.t('User_has_been_muted', { userMuted: msg });
 	}
 	if (type === 'user-unmuted') {
-		return I18n.t('User_unmuted_by', { userUnmuted: msg, userBy: username });
+		return I18n.t('User_has_been_unmuted', { userUnmuted: msg });
 	}
 	if (type === 'subscription-role-added') {
 		return `${msg} was set ${role} by ${username}`;
@@ -193,55 +193,55 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		return I18n.t('Room_changed_announcement', { announcement: msg, userBy: username });
 	}
 	if (type === 'room_changed_topic') {
-		return I18n.t('Room_changed_topic', { topic: msg, userBy: username });
+		return I18n.t('room_changed_topic_to', { topic: msg });
 	}
 	if (type === 'room_changed_privacy') {
-		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
+		return I18n.t('room_changed_type', { type: msg });
 	}
 	if (type === 'room_changed_avatar') {
-		return I18n.t('Room_changed_avatar', { userBy: username });
+		return I18n.t('room_avatar_changed');
 	}
 	if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
 	}
 	if (type === 'room_e2e_disabled') {
-		return I18n.t('This_room_encryption_has_been_disabled_by__username_', { username });
+		return I18n.t('Disabled_E2E_Encryption_for_this_room');
 	}
 	if (type === 'room_e2e_enabled') {
-		return I18n.t('This_room_encryption_has_been_enabled_by__username_', { username });
+		return I18n.t('Enabled_E2E_Encryption_for_this_room');
 	}
 	if (type === 'removed-user-from-team') {
-		return I18n.t('Removed__username__from_team', { user_removed: msg });
+		return I18n.t('Removed__username__from_the_team', { user_removed: msg });
 	}
 	if (type === 'added-user-to-team') {
-		return I18n.t('Added__username__to_team', { user_added: msg });
+		return I18n.t('Added__username__to_this_team', { user_added: msg });
 	}
 	if (type === 'user-added-room-to-team') {
-		return I18n.t('added__roomName__to_team', { roomName: msg });
+		return I18n.t('added__roomName__to_this_team', { roomName: msg });
 	}
 	if (type === 'user-converted-to-team') {
-		return I18n.t('Converted__roomName__to_team', { roomName: msg });
+		return I18n.t('Converted__roomName__to_a_team', { roomName: msg });
 	}
 	if (type === 'user-converted-to-channel') {
-		return I18n.t('Converted__roomName__to_channel', { roomName: msg });
+		return I18n.t('Converted__roomName__to_a_channel', { roomName: msg });
 	}
 	if (type === 'user-deleted-room-from-team') {
 		return I18n.t('Deleted__roomName__', { roomName: msg });
 	}
 	if (type === 'user-removed-room-from-team') {
-		return I18n.t('Removed__roomName__from_this_team', { roomName: msg });
+		return I18n.t('Removed__roomName__from_the_team', { roomName: msg });
 	}
 	if (type === 'room-disallowed-reacting') {
-		return I18n.t('Room_disallowed_reacting', { userBy: username });
+		return I18n.t('room_disallowed_reactions');
 	}
 	if (type === 'room-allowed-reacting') {
-		return I18n.t('Room_allowed_reacting', { userBy: username });
+		return I18n.t('room_allowed_reactions');
 	}
 	if (type === 'room-set-read-only') {
-		return I18n.t('Room_set_read_only', { userBy: username });
+		return I18n.t('room_set_read_only_permission');
 	}
 	if (type === 'room-removed-read-only') {
-		return I18n.t('Room_removed_read_only', { userBy: username });
+		return I18n.t('room_removed_read_only_permission');
 	}
 	if (type === 'omnichannel_placed_chat_on_hold') {
 		return I18n.t('Omnichannel_placed_chat_on_hold', { comment });
