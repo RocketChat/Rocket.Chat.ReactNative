@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import i18n from '../../../i18n';
 import { SwitchItem, ISwitch } from './SwitchItem';
-import { store } from '../../../../storybook/stories';
+import { mockedStore as store } from '../../../reducers/mockedStore';
 
 const onPressMock = jest.fn((value: boolean) => value);
 

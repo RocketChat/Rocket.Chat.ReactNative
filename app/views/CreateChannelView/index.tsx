@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useForm } from 'react-hook-form';
 
 import { useAppSelector } from '../../lib/hooks';
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import { createChannelRequest } from '../../actions/createChannel';
 import { removeUser as removeUserAction } from '../../actions/selectedUsers';
 import KeyboardView from '../../containers/KeyboardView';
@@ -80,6 +80,8 @@ const CreateChannelView = () => {
 		}),
 		shallowEqual
 	);
+
+	sendLoadingEvent({ visible: isFetching });
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -169,7 +171,6 @@ const CreateChannelView = () => {
 						loading={isFetching}
 						style={styles.buttonCreate}
 					/>
-					<Loading visible={isFetching} />
 				</ScrollView>
 			</SafeAreaView>
 		</KeyboardView>

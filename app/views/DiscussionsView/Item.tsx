@@ -46,12 +46,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IItem {
+export interface IItem {
 	item: IMessageFromServer;
-	onPress: {
-		(...args: any[]): void;
-		stop(): void;
-	};
+	onPress: Function;
 }
 
 const Item = ({ item, onPress }: IItem): React.ReactElement => {

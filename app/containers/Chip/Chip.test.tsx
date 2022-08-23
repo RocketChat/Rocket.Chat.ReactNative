@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import Chip, { IChip } from '.';
 import { ISelectedUser } from '../../reducers/selectedUsers';
-import { store } from '../../../storybook/stories';
+import { mockedStore as store } from '../../reducers/mockedStore';
 
 const onPressMock = jest.fn((item: any) => item);
 

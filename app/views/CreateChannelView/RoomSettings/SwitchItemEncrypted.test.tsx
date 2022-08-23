@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { SwitchItemEncrypted, ISwitchItemEncrypted } from './SwitchItemEncrypted';
-import { store } from '../../../../storybook/stories';
+import { mockedStore as store } from '../../../reducers/mockedStore';
 import i18n from '../../../i18n';
 
 const onPressMock = jest.fn((value: boolean) => value);

@@ -10,7 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { ISearch, ISearchLocal } from '../../definitions';
@@ -52,6 +52,8 @@ const SelectedUsersView = () => {
 		}),
 		shallowEqual
 	);
+
+	sendLoadingEvent({ visible: loading });
 
 	const isChecked = useCallback((username: string) => users.findIndex(el => el.name === username) !== -1, [users]);
 
@@ -170,7 +172,6 @@ const SelectedUsersView = () => {
 				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
 				keyboardShouldPersistTaps='always'
 			/>
-			<Loading visible={loading} />
 		</SafeAreaView>
 	);
 };

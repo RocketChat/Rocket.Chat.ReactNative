@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
@@ -62,7 +62,6 @@ interface IRoomInfoEditViewState {
 	announcement?: string;
 	joinCode: string;
 	nameError: any;
-	saving: boolean;
 	t: boolean;
 	ro: boolean;
 	reactWhenReadOnly?: boolean;
@@ -111,7 +110,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			announcement: '',
 			joinCode: '',
 			nameError: {},
-			saving: false,
 			t: false,
 			ro: false,
 			reactWhenReadOnly: false,
@@ -269,7 +267,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			avatar
 		} = this.state;
 
-		this.setState({ saving: true });
+		sendLoadingEvent({ visible: true });
 		let error = false;
 
 		if (!this.formIsChanged()) {
@@ -339,7 +337,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			log(e);
 		}
 
-		await this.setState({ saving: false });
+		sendLoadingEvent({ visible: false });
 		setTimeout(() => {
 			if (error) {
 				logEvent(events.RI_EDIT_SAVE_F);
@@ -548,7 +546,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			reactWhenReadOnly,
 			room,
 			joinCode,
-			saving,
 			permissions,
 			archived,
 			enableSysMes,
@@ -811,7 +808,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								{I18n.t('DELETE')}
 							</Text>
 						</TouchableOpacity>
-						<Loading visible={saving} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>

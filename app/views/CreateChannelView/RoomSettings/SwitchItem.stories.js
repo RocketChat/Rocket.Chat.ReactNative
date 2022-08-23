@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import { View, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { store } from '../../../../storybook/stories';
+import { mockedStore as store } from '../../../reducers/mockedStore';
 import { ThemeContext } from '../../../theme';
 import { colors } from '../../../lib/constants';
 import { ISwitch, SwitchItem } from './SwitchItem';
