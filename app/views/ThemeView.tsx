@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../containers/List';
@@ -92,37 +92,31 @@ const ThemeView = (): React.ReactElement => {
 		});
 	}, []);
 
-	const isSelected = useCallback(
-		(item: ITheme) => {
-			const { group } = item;
-			const { darkLevel, currentTheme } = themePreferences as IThemePreference;
-			if (group === THEME_GROUP) {
-				return item.value === currentTheme;
-			}
-			if (group === DARK_GROUP) {
-				return item.value === darkLevel;
-			}
-		},
-		[themePreferences?.currentTheme, themePreferences?.darkLevel]
-	);
+	const isSelected = (item: ITheme) => {
+		const { group } = item;
+		const { darkLevel, currentTheme } = themePreferences as IThemePreference;
+		if (group === THEME_GROUP) {
+			return item.value === currentTheme;
+		}
+		if (group === DARK_GROUP) {
+			return item.value === darkLevel;
+		}
+	};
 
-	const onClick = useCallback(
-		(item: ITheme) => {
-			const { darkLevel, currentTheme } = themePreferences as IThemePreference;
-			const { value, group } = item;
-			let changes: Partial<IThemePreference> = {};
-			if (group === THEME_GROUP && currentTheme !== value) {
-				logEvent(events.THEME_SET_THEME_GROUP, { theme_group: value });
-				changes = { currentTheme: value as TThemeMode };
-			}
-			if (group === DARK_GROUP && darkLevel !== value) {
-				logEvent(events.THEME_SET_DARK_LEVEL, { dark_level: value });
-				changes = { darkLevel: value as TDarkLevel };
-			}
-			handleTheme(changes);
-		},
-		[themePreferences?.currentTheme, themePreferences?.darkLevel]
-	);
+	const onClick = (item: ITheme) => {
+		const { darkLevel, currentTheme } = themePreferences as IThemePreference;
+		const { value, group } = item;
+		let changes: Partial<IThemePreference> = {};
+		if (group === THEME_GROUP && currentTheme !== value) {
+			logEvent(events.THEME_SET_THEME_GROUP, { theme_group: value });
+			changes = { currentTheme: value as TThemeMode };
+		}
+		if (group === DARK_GROUP && darkLevel !== value) {
+			logEvent(events.THEME_SET_DARK_LEVEL, { dark_level: value });
+			changes = { darkLevel: value as TDarkLevel };
+		}
+		handleTheme(changes);
+	};
 
 	const handleTheme = (theme: Partial<IThemePreference>) => {
 		const newTheme: IThemePreference = { ...(themePreferences as IThemePreference), ...theme };
