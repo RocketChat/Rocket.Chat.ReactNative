@@ -5,58 +5,40 @@ import { PermissionsAndroid } from 'react-native';
 import { isAndroid } from './helpers';
 import log from './helpers/log';
 
-export const pickImage = async (editImage = true): Promise<ImagePicker.ImagePickerResult | null> => {
-	try {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: editImage,
-			quality: 0
-		});
-		return result;
-	} catch (error) {
-		log(error);
-		return null;
-	}
-};
-
-export const pickVideo = async (editImage = true): Promise<ImagePicker.ImagePickerResult | null> => {
-	try {
-		const result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-			allowsEditing: editImage,
-			quality: 0
-		});
-		return result;
-	} catch (error) {
-		log(error);
-		return null;
-	}
-};
-
-export const pickImageFromCamera = async (allowsEditing = false): Promise<ImagePicker.ImagePickerResult | null> => {
-	try {
-		if (isAndroid) {
-			const permissions = await PermissionsAndroid.requestMultiple([
-				PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-				PermissionsAndroid.PERMISSIONS.CAMERA
-			]);
-			if (permissions['android.permission.CAMERA'] !== 'granted') {
-				return null;
-			}
-		} else {
-			const permission = await ImagePicker.requestCameraPermissionsAsync();
-			if (!permission.granted) {
-				return null;
-			}
+const handlePermission = async (): Promise<boolean> => {
+	if (isAndroid) {
+		const permissions = await PermissionsAndroid.requestMultiple([
+			PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+			PermissionsAndroid.PERMISSIONS.CAMERA
+		]);
+		if (permissions['android.permission.CAMERA'] !== 'granted') {
+			return false;
 		}
-
-		const permission = await ImagePicker.getCameraPermissionsAsync();
+	} else {
+		const permission = await ImagePicker.requestCameraPermissionsAsync();
 		if (!permission.granted) {
-			return null;
+			return false;
 		}
+	}
 
+	const permission = await ImagePicker.getCameraPermissionsAsync();
+	if (!permission.granted) {
+		return false;
+	}
+
+	return true;
+};
+
+const pickFromCamera = async (
+	allowsEditing: boolean,
+	mediaType: ImagePicker.MediaTypeOptions,
+	mime: string
+): Promise<ImagePicker.ImagePickerResult | null> => {
+	try {
+		const hasPermission = await handlePermission();
+		if (!hasPermission) return null;
 		const result = await ImagePicker.launchCameraAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			mediaTypes: mediaType,
 			quality: 1,
 			allowsEditing
 		});
@@ -68,7 +50,7 @@ export const pickImageFromCamera = async (allowsEditing = false): Promise<ImageP
 				path: result.uri,
 				filename: `${file.uri.substring(file.uri.lastIndexOf('/') + 1)}`,
 				size: file.size,
-				mime: 'image/jpeg'
+				mime
 			};
 			return data;
 		}
@@ -78,3 +60,26 @@ export const pickImageFromCamera = async (allowsEditing = false): Promise<ImageP
 		return null;
 	}
 };
+
+export const pickImageAndVideoFromLibrary = async (): Promise<ImagePicker.ImagePickerMultipleResult | null> => {
+	try {
+		const result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			quality: undefined, // to force animated gifs
+			allowsMultipleSelection: true
+		});
+		if (!result.cancelled) {
+			return result;
+		}
+		return null;
+	} catch (error) {
+		log(error);
+		return null;
+	}
+};
+
+export const pickVideoFromCamera = (allowsEditing = false): Promise<ImagePicker.ImagePickerResult | null> =>
+	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Videos, 'video/mp4');
+
+export const pickImageFromCamera = (allowsEditing = false): Promise<ImagePicker.ImagePickerResult | null> =>
+	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Images, 'image/jpeg');
