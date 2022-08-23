@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
-import Touch from '../../../lib/methods/helpers/touch';
+import Touch from '../../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
 
@@ -34,7 +34,7 @@ const DropdownItem = React.memo(({ onPress, iconName, text }: IDropdownItem) => 
 	const { theme } = useTheme();
 
 	return (
-		<Touch theme={theme} onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
 				<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{text}</Text>
 				{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme].auxiliaryText} /> : null}

@@ -28,7 +28,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
@@ -807,7 +807,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'
-					theme={theme}
 				>
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>

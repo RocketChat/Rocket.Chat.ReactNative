@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import styles from './styles';
@@ -21,7 +21,6 @@ const Item = React.memo(({ left, right, text, onPress, testID, current, theme }:
 		key={testID}
 		testID={testID}
 		onPress={onPress}
-		theme={theme}
 		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
 	>
 		<View style={styles.itemHorizontal}>{left}</View>
