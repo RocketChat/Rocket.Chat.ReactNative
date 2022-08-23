@@ -5,7 +5,6 @@ import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants';
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
-	color: 'red',
 	...Platform.select({
 		android: {
 			includeFontPadding: false
