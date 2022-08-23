@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { mockedStore as store } from '../../../reducers/mockedStore';
 import { ThemeContext } from '../../../theme';
 import { colors } from '../../../lib/constants';
-import { ISwitch, SwitchItem } from './SwitchItem';
+import { SwitchItem } from './SwitchItem';
 
 const styles = StyleSheet.create({
 	container: {
@@ -39,7 +39,7 @@ stories.add('Switch with label and hint', () => (
 				hint={testSwitch.hint}
 				id={testSwitch.id}
 				label={testSwitch.label}
-				onValueChange={value => testSwitch.onValueChange(value)}
+				onValueChange={() => testSwitch.onValueChange()}
 				value={testSwitch.value}
 			/>
 		</View>
