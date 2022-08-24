@@ -321,6 +321,15 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 
+			it('should open/close reactions list', async () => {
+				await element(by.id('message-reaction-:grinning:')).longPress();
+				await waitFor(element(by.id('reactionsList')))
+					.toExist()
+					.withTimeout(4000);
+				await element(by.id('reactionsListAllTab')).swipe('left', 'fast', 1);
+				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
+			});
+
 			it('should remove reaction', async () => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:')))
