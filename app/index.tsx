@@ -164,22 +164,17 @@ const Root = () => {
 	}, []);
 
 	// Dimensions update fires twice
-	const onDimensionsChange = useCallback(
-		debounce(({ window }: { window: IDimensions }) => {
-			setDimensions(window);
-			setMasterDetail(window.width);
-		}),
-		[]
-	);
+	const onDimensionsChange = debounce(({ window }: { window: IDimensions }) => {
+		setDimensions(window);
+		setMasterDetail(window.width);
+	});
 
-	const setNewTheme = (newThemePreference = {} as IThemePreference) => {
+	const setNewTheme = (newThemePreference?: IThemePreference) => {
 		const { theme: newTheme, themePreferences: newThemePreferences } = newThemeState(themePreferences, newThemePreference);
 		setThemePreferences(newThemePreferences);
 		setTheme(newTheme);
 		subscribeTheme(themePreferences, setNewTheme);
 	};
-
-	console.count('💸 Root');
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[theme].backgroundColor }}>
