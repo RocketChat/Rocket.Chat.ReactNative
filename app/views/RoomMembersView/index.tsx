@@ -38,23 +38,14 @@ const PAGE_SIZE = 25;
 interface IRoomMembersViewState {
 	isLoading: boolean;
 	allUsers: boolean;
-	filtering: boolean;
+	filtering: string;
 	members: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
 	roomRoles: any;
 	filter: string;
+	page: number;
 }
-
-interface IMember {
-	name: string;
-	username: string;
-	onPress: () => void;
-}
-
-const Member = ({ name, username, onPress }: IMember) => (
-	<UserItem name={name} username={username} onPress={onPress} testID={`room-members-view-item-${username}`} />
-);
 
 const RoomMembersView = (): React.ReactElement => {
 	const { showActionSheet } = useActionSheet();
@@ -72,12 +63,13 @@ const RoomMembersView = (): React.ReactElement => {
 		{
 			isLoading: false,
 			allUsers: false,
-			filtering: false,
+			filtering: '',
 			members: [],
 			room: params.room || ({} as TSubscriptionModel),
 			end: false,
 			roomRoles: null,
-			filter: ''
+			filter: '',
+			page: 0
 		}
 	);
 
@@ -529,7 +521,7 @@ const RoomMembersView = (): React.ReactElement => {
 	};
 
 	const fetchMembers = async (status: boolean) => {
-		const { members, isLoading, end, room, filtering } = state;
+		const { members, isLoading, end, room, filter, page } = state;
 		const { t } = room;
 
 		if (isLoading || end) {
@@ -542,13 +534,15 @@ const RoomMembersView = (): React.ReactElement => {
 				rid: room.rid,
 				roomType: t,
 				type: !status ? 'all' : 'online',
-				filter: filtering,
+				filter,
 				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
 				allUsers: !status
 			});
+			const end = membersResult?.length < PAGE_SIZE;
+			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
 			updateState({
-				members: [...members, ...membersResult],
+				members: [...members, ...membersResultFiltered],
 				isLoading: false,
 				end,
 				page: page + 1
@@ -558,13 +552,6 @@ const RoomMembersView = (): React.ReactElement => {
 			updateState({ isLoading: false });
 		}
 	};
-
-	const renderHeader = (rid: string, t: SubscriptionType) => (
-		<>
-			<MembersSection joined={params.joined as boolean} rid={rid} t={t} />
-			<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
-		</>
-	);
 
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
@@ -581,19 +568,29 @@ const RoomMembersView = (): React.ReactElement => {
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (
 					<View style={{ backgroundColor: colors.backgroundColor }}>
-						<Member name={item.name as string} username={item.username} onPress={() => onPressUser(item)} />
+						<UserItem
+							name={item.name as string}
+							username={item.username}
+							onPress={() => onPressUser(item)}
+							testID={`room-members-view-item-${item.name as string}`}
+						/>
 					</View>
 				)}
 				style={[styles.list]}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={List.Separator}
-				ListHeaderComponent={renderHeader(state.room.rid, state.room.t)}
+				ListHeaderComponent={
+					<>
+						<MembersSection joined={params.joined as boolean} rid={state.room.rid} t={state.room.t} />
+						<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
+					</>
+				}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers(state.allUsers)}
-				ListEmptyComponent={() => (
-					<Text style={[styles.noResult, { color: colors.titleText }]}>{I18n.t('No_members_found')}</Text>
-				)}
+				ListEmptyComponent={() =>
+					state.end ? <Text style={[styles.noResult, { color: colors.titleText }]}>{I18n.t('No_members_found')}</Text> : null
+				}
 				{...scrollPersistTaps}
 			/>
 		</SafeAreaView>
