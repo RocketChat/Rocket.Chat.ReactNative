@@ -87,6 +87,7 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 					value={searchText}
 					onClearInput={() => handleTextChange('')}
 					iconRight={'search'}
+					testID='reaction-picker-searchbar'
 				/>
 			</View>
 			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />

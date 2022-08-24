@@ -43,7 +43,7 @@ const Emoji = ({ emoji, baseUrl }: { emoji: IEmoji | string; baseUrl: string }):
 const ListItem = ({ emoji, onEmojiSelected, baseUrl }: IListItem): React.ReactElement => {
 	const key = typeof emoji === 'string' ? emoji : emoji?.name || emoji?.content;
 	return (
-		<View style={[styles.emojiContainer]} key={key}>
+		<View style={[styles.emojiContainer]} key={key} testID={`searched-emoji-${key}`}>
 			<Pressable onPress={() => onEmojiSelected(emoji)}>
 				<Emoji emoji={emoji} baseUrl={baseUrl} />
 			</Pressable>
@@ -83,7 +83,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 					renderItem={({ item }) => <ListItem emoji={item} onEmojiSelected={onEmojiSelected} baseUrl={baseUrl} />}
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
-						<View style={styles.listEmptyComponent}>
+						<View style={styles.listEmptyComponent} testID='no-results-found'>
 							<Text style={{ color: colors.auxiliaryText }}>{I18n.t('No_results_found')}</Text>
 						</View>
 					)}
@@ -97,6 +97,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 						style={({ pressed }: { pressed: boolean }) => [styles.openEmojiKeyboard, { opacity: pressed ? 0.7 : 1 }]}
 						onPress={openEmoji}
 						hitSlop={BUTTON_HIT_SLOP}
+						testID='openback-emoji-keyboard'
 					>
 						<CustomIcon name='chevron-left' size={30} color={colors.collapsibleChevron} />
 					</Pressable>
@@ -115,6 +116,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 							value={searchText}
 							onClearInput={() => handleTextChange('')}
 							iconRight={'search'}
+							testID='emoji-searchbar-input'
 						/>
 					</View>
 				</View>

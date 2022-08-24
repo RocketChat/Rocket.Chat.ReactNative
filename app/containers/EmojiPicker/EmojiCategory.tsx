@@ -39,7 +39,7 @@ const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, width, tabsCount }: I
 		<Pressable
 			key={typeof emoji === 'string' ? emoji : emoji.content}
 			onPress={() => onEmojiSelected(emoji)}
-			testID={`reaction-picker-${typeof emoji === 'string' ? emoji : emoji.content}`}
+			testID={`emoji-${typeof emoji === 'string' ? emoji : emoji.content}`}
 			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: emojiSize / 2 }}
 			style={({ pressed }: { pressed: boolean }) => ({
 				backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'

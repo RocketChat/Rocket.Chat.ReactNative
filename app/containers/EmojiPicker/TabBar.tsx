@@ -16,14 +16,15 @@ const TabBar = ({ activeTab, tabs, goToPage }: ITabBarProps): React.ReactElement
 				<Pressable
 					key={tab}
 					onPress={() => goToPage?.(i)}
-					testID={`reaction-picker-${tab}`}
+					testID={`emoji-picker-tab-${tab}`}
 					android_ripple={{ color: colors.bannerBackground }}
 					style={({ pressed }: { pressed: boolean }) => [
 						styles.tab,
 						{
 							backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
 						}
-					]}>
+					]}
+				>
 					<CustomIcon name={tab} size={24} color={activeTab === i ? colors.tintColor : colors.auxiliaryTintColor} />
 					<View style={activeTab === i ? [styles.activeTabLine, { backgroundColor: colors.tintColor }] : styles.tabLine} />
 				</Pressable>
