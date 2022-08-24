@@ -1000,7 +1000,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			// Normal message
 		} else {
 			// @ts-ignore
-			onSubmit(message, undefined, tmid && tshow);
+			onSubmit(message, undefined, tmid ? tshow : false);
 		}
 	};
 
