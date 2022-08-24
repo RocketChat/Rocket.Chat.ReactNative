@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Dimensions, Linking, unstable_batchedUpdates } from 'react-native';
+import { Dimensions, Linking } from 'react-native';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
@@ -30,7 +30,7 @@ import EventEmitter from './lib/methods/helpers/events';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import {
 	getTheme,
-	initialTheme,
+	initialTheme as getInitialTheme,
 	newThemeState,
 	setNativeTheme,
 	subscribeTheme,
@@ -49,7 +49,7 @@ interface IDimensions {
 	fontScale: number;
 }
 
-const parseDeepLinking = (url: string) => {
+const parseDeepLinking = (url: string | null) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
 		const regex = /^(room|auth|invite)\?/;
@@ -72,15 +72,31 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
+const setMasterDetail = (width: number) => {
+	const isMasterDetail = getMasterDetail(width);
+	store.dispatch(setMasterDetailAction(isMasterDetail));
+};
+
+const getMasterDetail = (width: number) => {
+	if (!isTablet) {
+		return false;
+	}
+	return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
+};
+
 const { width: widthWindow, height: heightWindow, scale: scaleWindow, fontScale: fontScaleWindow } = Dimensions.get('window');
+const initialThemePreference = getInitialTheme();
+const initialTheme = getTheme(initialThemePreference);
 
 const Root = () => {
-	const [theme, setTheme] = useState(getTheme(initialTheme()));
-	const [themePreferences, setThemePreferences] = useState(initialTheme());
-	const [width, setWidth] = useState(widthWindow);
-	const [height, setHeight] = useState(heightWindow);
-	const [scale, setScale] = useState(scaleWindow);
-	const [fontScale, setFontScale] = useState(fontScaleWindow);
+	const [theme, setTheme] = useState(initialTheme);
+	const [themePreferences, setThemePreferences] = useState(initialThemePreference);
+	const [dimensions, setDimensions] = useState<IDimensions>({
+		width: widthWindow,
+		height: heightWindow,
+		scale: scaleWindow,
+		fontScale: fontScaleWindow
+	});
 
 	const listenerTimeout = useRef<ReturnType<typeof setTimeout>>();
 	const onKeyCommands = useRef<any>();
@@ -88,13 +104,20 @@ const Root = () => {
 	useEffect(() => {
 		init();
 		if (!isFDroidBuild) {
-			initCrashReport();
+			getAllowCrashReport().then(allowCrashReport => {
+				toggleCrashErrorsReport(allowCrashReport);
+			});
+			getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
+				toggleAnalyticsEventsReport(allowAnalyticsEvents);
+			});
 		}
-		const theme = initialTheme();
 		if (isTablet) {
-			initTablet();
+			setMasterDetail(widthWindow);
+			onKeyCommands.current = KeyCommandsEmitter.addListener('onKeyCommand', (command: ICommand) => {
+				EventEmitter.emit(KEY_COMMAND, { event: command });
+			});
 		}
-		setNativeTheme(theme);
+		setNativeTheme(initialThemePreference);
 
 		listenerTimeout.current = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
@@ -104,11 +127,11 @@ const Root = () => {
 				}
 			});
 		}, 5000);
-		Dimensions.addEventListener('change', onDimensionsChange);
+		const dimensionSubscription = Dimensions.addEventListener('change', onDimensionsChange);
 
 		return () => {
 			clearTimeout(listenerTimeout.current as ReturnType<typeof setTimeout>);
-			Dimensions.removeEventListener('change', onDimensionsChange);
+			dimensionSubscription.remove();
 
 			unsubscribeTheme();
 
@@ -130,7 +153,7 @@ const Root = () => {
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
-		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
+		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		if (parsedDeepLinkingURL) {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
@@ -140,69 +163,23 @@ const Root = () => {
 		store.dispatch(appInit());
 	}, []);
 
-	const getMasterDetail = (width: number) => {
-		if (!isTablet) {
-			return false;
-		}
-		return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
-	};
-
-	const setMasterDetail = (width: number) => {
-		const isMasterDetail = getMasterDetail(width);
-		store.dispatch(setMasterDetailAction(isMasterDetail));
-	};
-
 	// Dimensions update fires twice
 	const onDimensionsChange = useCallback(
-		debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
-			// We need this batchedUpdates because we are calling this from a debounce and
-			// the React isn't able to batch multiples setState inside a setTimeout
-			// https://stackoverflow.com/a/48610973
-			unstable_batchedUpdates(() => {
-				setDimensions({
-					width,
-					height,
-					scale,
-					fontScale
-				});
-				setMasterDetail(width);
-			});
+		debounce(({ window }: { window: IDimensions }) => {
+			setDimensions(window);
+			setMasterDetail(window.width);
 		}),
 		[]
 	);
 
-	const setNewTheme = (newThemePreference = {}) => {
-		const { theme: newTheme, themePreferences: newThemePreferences } = newThemeState(
-			themePreferences,
-			newThemePreference as IThemePreference
-		);
+	const setNewTheme = (newThemePreference = {} as IThemePreference) => {
+		const { theme: newTheme, themePreferences: newThemePreferences } = newThemeState(themePreferences, newThemePreference);
 		setThemePreferences(newThemePreferences);
 		setTheme(newTheme);
 		subscribeTheme(themePreferences, setNewTheme);
 	};
 
-	const setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
-		setWidth(width);
-		setHeight(height);
-		setScale(scale);
-		setFontScale(fontScale);
-	};
-
-	const initTablet = useCallback(() => {
-		setMasterDetail(widthWindow);
-		onKeyCommands.current = KeyCommandsEmitter.addListener('onKeyCommand', (command: ICommand) => {
-			EventEmitter.emit(KEY_COMMAND, { event: command });
-		});
-	}, []);
-
-	const initCrashReport = useCallback(() => {
-		getAllowCrashReport().then(allowCrashReport => {
-			toggleCrashErrorsReport(allowCrashReport);
-		});
-		getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
-			toggleAnalyticsEventsReport(allowAnalyticsEvents);
-		});
-	}, []);
+	console.count('💸 Root');
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[theme].backgroundColor }}>
@@ -217,10 +194,7 @@ const Root = () => {
 				>
 					<DimensionsContext.Provider
 						value={{
-							width,
-							height,
-							scale,
-							fontScale,
+							...dimensions,
 							setDimensions
 						}}
 					>
