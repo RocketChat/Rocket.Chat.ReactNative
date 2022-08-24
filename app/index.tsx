@@ -14,6 +14,7 @@ import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
+import Loading from './containers/Loading';
 import { ICommand } from './definitions/ICommand';
 import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
@@ -231,6 +232,7 @@ const Root = () => {
 								<ChangePasscodeView />
 								<InAppNotification />
 								<Toast />
+								<Loading />
 							</ActionSheetProvider>
 						</GestureHandlerRootView>
 					</DimensionsContext.Provider>

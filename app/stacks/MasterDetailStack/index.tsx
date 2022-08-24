@@ -177,11 +177,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} />
-				<ModalStack.Screen
-					name='DefaultBrowserView'
-					component={DefaultBrowserView}
-					options={DefaultBrowserView.navigationOptions}
-				/>
+				<ModalStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 				<ModalStack.Screen
 					name='ScreenLockConfigView'
 					component={ScreenLockConfigView}
@@ -195,17 +191,9 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
 				<ModalStack.Screen name='CreateChannelView' component={CreateChannelView} options={CreateChannelView.navigationOptions} />
 				<ModalStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
-				<ModalStack.Screen
-					name='E2ESaveYourPasswordView'
-					component={E2ESaveYourPasswordView}
-					options={E2ESaveYourPasswordView.navigationOptions}
-				/>
-				<ModalStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} options={E2EHowItWorksView.navigationOptions} />
-				<ModalStack.Screen
-					name='E2EEnterYourPasswordView'
-					component={E2EEnterYourPasswordView}
-					options={E2EEnterYourPasswordView.navigationOptions}
-				/>
+				<ModalStack.Screen name='E2ESaveYourPasswordView' component={E2ESaveYourPasswordView} />
+				<ModalStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
+				<ModalStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 				<ModalStack.Screen
 					name='UserNotificationPrefView'

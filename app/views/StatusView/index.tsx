@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../actions/login';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { FormTextInput } from '../../containers/TextInput';
@@ -91,7 +91,6 @@ const StatusView = (): React.ReactElement => {
 	);
 
 	const [statusText, setStatusText] = useState(user.statusText || '');
-	const [loading, setLoading] = useState(false);
 	const [status, setStatus] = useState(user.status);
 
 	const dispatch = useDispatch();
@@ -120,7 +119,7 @@ const StatusView = (): React.ReactElement => {
 	}, [statusText, status]);
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
-		setLoading(true);
+		sendLoadingEvent({ visible: true });
 		try {
 			await Services.setUserStatus(status, statusText);
 			dispatch(setUser({ statusText, status }));
@@ -135,7 +134,7 @@ const StatusView = (): React.ReactElement => {
 			showErrorAlert(messageError);
 			log(e);
 		}
-		setLoading(false);
+		sendLoadingEvent({ visible: false });
 	};
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
@@ -163,7 +162,6 @@ const StatusView = (): React.ReactElement => {
 				ListFooterComponent={List.Separator}
 				ItemSeparatorComponent={List.Separator}
 			/>
-			<Loading visible={loading} />
 		</SafeAreaView>
 	);
 };

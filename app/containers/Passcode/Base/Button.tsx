@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import styles from './styles';
 import { themes } from '../../../lib/constants';
-import Touch from '../../../lib/methods/helpers/touch';
+import Touch from '../../Touch';
 import { CustomIcon, TIconsName } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 
@@ -25,7 +25,6 @@ const Button = React.memo(({ text, disabled, onPress, icon }: IPasscodeButton) =
 			underlayColor={themes[theme].passcodeButtonActive}
 			rippleColor={themes[theme].passcodeButtonActive}
 			enabled={!disabled}
-			theme={theme}
 			onPress={press}
 		>
 			{icon ? (
