@@ -813,6 +813,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
+		// The same conditional from app/containers/message/Thread.tsx, but we are testing the negative case here
+		const isThreadCreated = !(!message.tlm || message.tcount === 0 || !!this.tmid);
+		// Check if the message is a thread created before and already exists the button reply
+		if (mention && isThreadCreated) {
+			return this.onThreadPress(message);
+		}
 		this.setState({
 			selectedMessage: message,
 			replying: true,
@@ -833,6 +839,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
+		// Check if the message is from a thread and also was sent to channel
+		if (message.tmid && message.tmid !== this.tmid) {
+			return this.onThreadPress(message);
+		}
 		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
 	};
 
