@@ -178,11 +178,7 @@ const SettingsStackNavigator = () => {
 			/>
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
-			<SettingsStack.Screen
-				name='DefaultBrowserView'
-				component={DefaultBrowserView}
-				options={DefaultBrowserView.navigationOptions}
-			/>
+			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<SettingsStack.Screen
 				name='ScreenLockConfigView'
 				component={ScreenLockConfigView}
@@ -277,11 +273,7 @@ const E2ESaveYourPasswordStackNavigator = () => {
 		<E2ESaveYourPasswordStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
-			<E2ESaveYourPasswordStack.Screen
-				name='E2ESaveYourPasswordView'
-				component={E2ESaveYourPasswordView}
-				options={E2ESaveYourPasswordView.navigationOptions}
-			/>
+			<E2ESaveYourPasswordStack.Screen name='E2ESaveYourPasswordView' component={E2ESaveYourPasswordView} />
 			<E2ESaveYourPasswordStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 		</E2ESaveYourPasswordStack.Navigator>
 	);

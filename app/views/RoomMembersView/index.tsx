@@ -531,6 +531,7 @@ const RoomMembersView = (): React.ReactElement => {
 	const fetchMembers = async (status: boolean) => {
 		const { members, isLoading, end, room, filtering } = state;
 		const { t } = room;
+
 		if (isLoading || end) {
 			return;
 		}
@@ -542,14 +543,15 @@ const RoomMembersView = (): React.ReactElement => {
 				roomType: t,
 				type: !status ? 'all' : 'online',
 				filter: filtering,
-				skip: members.length,
+				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
 				allUsers: !status
 			});
 			updateState({
 				members: [...members, ...membersResult],
 				isLoading: false,
-				end: membersResult?.length < PAGE_SIZE
+				end,
+				page: page + 1
 			});
 		} catch (e) {
 			log(e);

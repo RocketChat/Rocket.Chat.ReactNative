@@ -5,7 +5,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
-import Touch from '../../../lib/methods/helpers/touch';
+import Touch from '../../../containers/Touch';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import { TSupportedThemes } from '../../../theme';
 
@@ -36,7 +36,7 @@ interface IItem {
 }
 
 const Item = ({ item, theme, onPress, onDelete }: IItem): JSX.Element => (
-	<Touch style={styles.container} onPress={() => onPress(item.url)} theme={theme} testID={`server-history-${item.url}`}>
+	<Touch style={styles.container} onPress={() => onPress(item.url)} testID={`server-history-${item.url}`}>
 		<View style={styles.content}>
 			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].bodyText }]}>
 				{item.url}

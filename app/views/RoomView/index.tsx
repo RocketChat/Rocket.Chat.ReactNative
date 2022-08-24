@@ -9,7 +9,7 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
@@ -42,7 +42,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
@@ -115,7 +115,6 @@ const stateAttrsUpdate = [
 	'reacting',
 	'readOnly',
 	'member',
-	'showingBlockingLoader',
 	'canForwardGuest',
 	'canReturnQueue',
 	'canViewCannedResponse'
@@ -198,7 +197,6 @@ interface IRoomViewState {
 	selectedMessage?: TAnyMessageModel;
 	canAutoTranslate: boolean;
 	loading: boolean;
-	showingBlockingLoader: boolean;
 	editing: boolean;
 	replying: boolean;
 	replyWithMention: boolean;
@@ -273,7 +271,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			selectedMessage,
 			canAutoTranslate: false,
 			loading: true,
-			showingBlockingLoader: false,
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
@@ -550,8 +547,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			parentTitle = getRoomTitle(room);
 		}
 		let subtitle: string | undefined;
-		let t: string;
-		let teamMain: boolean | undefined;
 		let teamId: string | undefined;
 		let encrypted: boolean | undefined;
 		let userId: string | undefined;
@@ -562,8 +557,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let departmentId: string | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
-			t = room.t;
-			teamMain = room.teamMain;
 			teamId = room.teamId;
 			encrypted = room.encrypted;
 			({ id: userId, token } = user);
@@ -573,11 +566,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('source' in room) {
-			t = room.t;
 			sourceType = room.source;
 			visitor = room.visitor;
 		}
 
+		const t = room?.t;
+		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 
 		navigation.setOptions({
@@ -943,25 +937,23 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return;
 		}
 		try {
-			this.setState({ showingBlockingLoader: true });
 			const parsedUrl = parse(messageUrl, true);
 			const messageId = parsedUrl.query.msg;
 			if (messageId) {
 				await this.jumpToMessage(messageId);
 			}
-			this.setState({ showingBlockingLoader: false });
 		} catch (e) {
-			this.setState({ showingBlockingLoader: false });
 			log(e);
 		}
 	};
 
 	jumpToMessage = async (messageId: string) => {
 		try {
-			this.setState({ showingBlockingLoader: true });
+			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			const message = await RoomServices.getMessageInfo(messageId);
 
 			if (!message) {
+				this.cancelJumpToMessage();
 				return;
 			}
 
@@ -980,13 +972,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				this.list.current?.cancelJumpToMessage();
+				this.cancelJumpToMessage();
 			}
 		} catch (e) {
 			log(e);
-		} finally {
-			this.setState({ showingBlockingLoader: false });
+			this.cancelJumpToMessage();
 		}
+	};
+
+	cancelJumpToMessage = () => {
+		this.list.current?.cancelJumpToMessage();
+		sendLoadingEvent({ visible: false });
 	};
 
 	replyBroadcast = (message: IMessage) => {
@@ -1140,10 +1136,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				name = item.tmsg ?? '';
 				jumpToMessageId = item.id;
 			}
+			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			if (!name) {
 				const result = await this.getThreadName(item.tmid, jumpToMessageId);
 				// test if there isn't a thread
 				if (!result) {
+					sendLoadingEvent({ visible: false });
 					return;
 				}
 				name = result;
@@ -1388,7 +1386,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						onPress={this.resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
 							{I18n.t('Resume')}
@@ -1410,7 +1407,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
@@ -1489,7 +1485,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
+		const { room, selectedMessage, loading, reacting } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1533,7 +1529,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/>
 				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-				<Loading visible={showingBlockingLoader} />
 			</SafeAreaView>
 		);
 	}
