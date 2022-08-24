@@ -1,5 +1,4 @@
 const { exec } = require('child_process');
-const { expect } = require('detox');
 const data = require('../data');
 
 const platformTypes = {
