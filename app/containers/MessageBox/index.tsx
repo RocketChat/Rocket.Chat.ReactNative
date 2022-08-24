@@ -398,7 +398,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission, goToCannedResponses } = this.props;
+		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled } = this.props;
+		if (prevProps.replyWithMention !== replyWithMention) {
+			if (threadsEnabled && replyWithMention) {
+				this.setState({ tshow: this.sendThreadToChannel });
+			}
+		}
 		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
 		}
@@ -995,7 +1000,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			// Normal message
 		} else {
 			// @ts-ignore
-			onSubmit(message, undefined, tshow);
+			onSubmit(message, undefined, tmid && tshow);
 		}
 	};
 

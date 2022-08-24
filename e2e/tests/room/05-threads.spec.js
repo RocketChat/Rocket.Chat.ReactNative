@@ -7,8 +7,7 @@ const {
 	sleep,
 	searchRoom,
 	platformTypes,
-	dismissReviewNag,
-	expectToBeVisible
+	dismissReviewNag
 } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
@@ -124,10 +123,6 @@ describe('Threads', () => {
 
 			it('should send message in thread only', async () => {
 				const messageText = 'threadonly';
-				const sendToChannelActivated = await expectToBeVisible('send-to-channel-checked');
-				if (sendToChannelActivated) {
-					await element(by.id('messagebox-send-to-channel')).tap();
-				}
 				await mockMessage(messageText, true);
 				await tapBack();
 				await waitFor(element(by.id(`room-view-title-${data.random}thread`)))
@@ -148,10 +143,7 @@ describe('Threads', () => {
 					.toExist()
 					.withTimeout(5000);
 				await element(by.id('messagebox-input-thread')).replaceText(messageText);
-				const sendToChannelActivated = await expectToBeVisible('send-to-channel-checked');
-				if (!sendToChannelActivated) {
-					await element(by.id('messagebox-send-to-channel')).tap();
-				}
+				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
 				await tapBack();
 				await waitFor(element(by.id(`room-view-title-${data.random}thread`)))
@@ -174,10 +166,7 @@ describe('Threads', () => {
 					.toExist()
 					.withTimeout(5000);
 				await element(by.id('messagebox-input-thread')).replaceText(messageText);
-				const sendToChannelActivated = await expectToBeVisible('send-to-channel-checked');
-				if (!sendToChannelActivated) {
-					await element(by.id('messagebox-send-to-channel')).tap();
-				}
+				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
 				await tapBack();
 				await waitFor(element(by.id(`room-view-title-${data.random}thread`)))
