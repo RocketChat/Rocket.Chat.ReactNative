@@ -49,26 +49,26 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const [option, setOption] = useState(
+		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
+	);
 
-	const pref = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
-
-	const [option, setOption] = useState(pref);
-
-	const options: TActionSheetOptionsItem[] = OPTIONS[preference as TOptions].map(i => ({
-		title: I18n.t(i.label, { defaultValue: i.label }),
-		onPress: () => {
-			hideActionSheet();
-			onChangeValue({ [preference]: i.value.toString() }, () => setOption(option));
-			setOption(i);
-		},
-		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
-	}));
+	const getOptions = (): TActionSheetOptionsItem[] =>
+		OPTIONS[preference].map(i => ({
+			title: I18n.t(i.label, { defaultValue: i.label }),
+			onPress: () => {
+				hideActionSheet();
+				onChangeValue({ [preference]: i.value.toString() }, () => setOption(option));
+				setOption(i);
+			},
+			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+		}));
 
 	return (
 		<List.Item
 			title={title}
 			testID={testID}
-			onPress={() => showActionSheet({ options })}
+			onPress={() => showActionSheet({ options: getOptions() })}
 			right={() => (
 				<Text style={[styles.title, { color: colors.actionTintColor }]}>
 					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label}
