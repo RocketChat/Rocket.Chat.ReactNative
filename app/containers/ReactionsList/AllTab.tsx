@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, View, FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import Emoji from '../message/Emoji';
 import { useTheme } from '../../theme';
-import { IReaction } from '../../definitions';
+import { IReaction, IApplicationState } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles from './styles';
@@ -25,15 +26,25 @@ interface IAllTabProps {
 
 const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllReactionsListItemProps) => {
 	const { colors } = useTheme();
+	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 	const count = item.usernames.length;
-	let usernames = item.usernames
-		.slice(0, 3)
-		.map((otherUsername: string) => (username === otherUsername ? I18n.t('you') : otherUsername))
-		.join(', ');
-	if (count > 3) {
-		usernames = `${usernames} ${I18n.t('and_more')} ${count - 3}`;
+
+	let displayNames;
+	if (useRealName && item.names) {
+		displayNames = item.names
+			.slice(0, 3)
+			.map((name, index) => (item.usernames[index] === username ? I18n.t('you') : name))
+			.join(', ');
 	} else {
-		usernames = usernames.replace(/,(?=[^,]*$)/, ` ${I18n.t('and')}`);
+		displayNames = item.usernames
+			.slice(0, 3)
+			.map((otherUsername: string) => (username === otherUsername ? I18n.t('you') : otherUsername))
+			.join(', ');
+	}
+	if (count > 3) {
+		displayNames = `${displayNames} ${I18n.t('and_more')} ${count - 3}`;
+	} else {
+		displayNames = displayNames.replace(/,(?=[^,]*$)/, ` ${I18n.t('and')}`);
 	}
 	return (
 		<View style={styles.listItemContainer}>
@@ -48,7 +59,7 @@ const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllR
 				<Text style={[styles.allListNPeopleReacted, { color: colors.bodyText }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 				</Text>
-				<Text style={[styles.allListWhoReacted, { color: colors.auxiliaryText }]}>{usernames}</Text>
+				<Text style={[styles.allListWhoReacted, { color: colors.auxiliaryText }]}>{displayNames}</Text>
 			</View>
 		</View>
 	);
