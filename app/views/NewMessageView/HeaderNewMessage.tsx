@@ -70,24 +70,19 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 					{createPublicChannelPermission || createPrivateChannelPermission ? (
 						<ButtonCreate
 							onPress={createChannel}
-							title={I18n.t('Create_Channel')}
+							title={I18n.t('Channel')}
 							icon={'channel-public'}
 							testID={'new-message-view-create-channel'}
 							first={true}
 						/>
 					) : null}
 					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
-						<ButtonCreate
-							onPress={createTeam}
-							title={I18n.t('Create_Team')}
-							icon={'teams'}
-							testID={'new-message-view-create-team'}
-						/>
+						<ButtonCreate onPress={createTeam} title={I18n.t('Team')} icon={'teams'} testID={'new-message-view-create-team'} />
 					) : null}
 					{maxUsers > 2 && createDirectMessagePermission ? (
 						<ButtonCreate
 							onPress={createGroupChat}
-							title={I18n.t('Create_Direct_Messages')}
+							title={I18n.t('Direct_message')}
 							icon={'message'}
 							testID={'new-message-view-create-direct-message'}
 						/>
@@ -95,7 +90,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 					{createDiscussionPermission ? (
 						<ButtonCreate
 							onPress={createDiscussion}
-							title={I18n.t('Create_Discussion')}
+							title={I18n.t('Discussion')}
 							icon={'discussions'}
 							testID={'new-message-view-create-discussion'}
 						/>

@@ -45,7 +45,7 @@ const NewMessageView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='new-message-view-close' />,
-			title: I18n.t('New_Message')
+			title: I18n.t('Create_New')
 		});
 	}, [navigation]);
 

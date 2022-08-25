@@ -805,5 +805,8 @@
   "Channel_hint_encrypted": "Canal criptografado de ponta a ponta. A pesquisa não funcionará com canais criptografados e as notificações podem não mostrar o conteúdo das mensagens.",
   "Channel_hint_not_read_only": "Todos usuários no canal podem enviar mensagens novas",
   "Channel_hint_encrypted_not_available": "Indisponível para canais públicos",
-  "Read_only_hint":"Somente usuários autorizados podem escrever novas mensagens"
+  "Read_only_hint":"Somente usuários autorizados podem escrever novas mensagens",
+  "Discussion": "Discussão",
+  "Channel": "Canal",
+  "Team": "Time"
 }

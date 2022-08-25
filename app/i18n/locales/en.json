@@ -850,5 +850,8 @@
   "Channel_hint_encrypted": "End to end encrypted channel. Search will not work with encrypted channels and notifications may not show the messages content.",
   "Channel_hint_not_read_only": "All users in the channel can write new messages",
   "Channel_hint_encrypted_not_available": "Not available for Public Channels",
-  "Read_only_hint":"Only authorized users can write new messages"
+  "Read_only_hint":"Only authorized users can write new messages",
+  "Discussion": "Discussion",
+  "Channel": "Channel",
+  "Team": "Team"
 }
