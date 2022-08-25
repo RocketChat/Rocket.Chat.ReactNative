@@ -813,10 +813,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
-		// The same conditional from app/containers/message/Thread.tsx, but we are testing the negative case here
-		const isThreadCreated = !(!message.tlm || message.tcount === 0 || !!this.tmid);
-		// Check if the message is a thread created before and already exists the button reply
-		if (mention && isThreadCreated) {
+		// If there's a thread already, we redirect to it
+		if (mention && !!message.tlm) {
 			return this.onThreadPress(message);
 		}
 		this.setState({
