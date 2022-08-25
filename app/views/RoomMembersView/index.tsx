@@ -1,5 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-import { NavigationProp, RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
+import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useReducer } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
@@ -12,17 +11,12 @@ import { RadioButton } from '../../containers/RadioButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
-import { LISTENER } from '../../containers/Toast';
 import UserItem from '../../containers/UserItem';
-import { IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
+import { TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
-import database from '../../lib/database';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
-import { RoomTypes } from '../../lib/methods';
 import { getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
+import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { Services } from '../../lib/services';
@@ -31,6 +25,19 @@ import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import MembersSection from './components/ActionsSection';
+import {
+	fetchRole,
+	fetchRoomMembersRoles,
+	handleIgnore,
+	handleLeader,
+	handleModerator,
+	handleMute,
+	handleOwner,
+	handleRemoveFromTeam,
+	handleRemoveUserFromRoom,
+	navToDirectMessage,
+	TRoomType
+} from './helpers';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
@@ -47,6 +54,18 @@ interface IRoomMembersViewState {
 	page: number;
 }
 
+const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
+	const { colors } = useTheme();
+	return (
+		<CustomIcon
+			testID={check ? `action-sheet-set-${label}-checked` : `action-sheet-set-${label}-unchecked`}
+			name={check ? 'checkbox-checked' : 'checkbox-unchecked'}
+			size={20}
+			color={check ? colors.tintActive : colors.auxiliaryTintColor}
+		/>
+	);
+};
+
 const RoomMembersView = (): React.ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
@@ -55,6 +74,7 @@ const RoomMembersView = (): React.ReactElement => {
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
 
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const user = useAppSelector(state => getUserSelector(state));
 
@@ -110,7 +130,7 @@ const RoomMembersView = (): React.ReactElement => {
 				viewAllTeamChannelsPermission ||
 				viewAllTeamsPermission
 			) {
-				fetchRoomMembersRoles();
+				fetchRoomMembersRoles(state.room.t as any, state.room.t, updateState);
 			}
 		};
 		fetchRoles();
@@ -124,31 +144,6 @@ const RoomMembersView = (): React.ReactElement => {
 		viewAllTeamChannelsPermission,
 		viewAllTeamsPermission
 	]);
-
-	const getUserDisplayName = (user: TUserModel) => (useRealName ? user.name : user.username) || user.username;
-
-	const handleOwner = async (selectedUser: TUserModel, isOwner: boolean) => {
-		try {
-			await Services.toggleRoomOwner({
-				roomId: state.room.rid,
-				t: state.room.t,
-				userId: selectedUser._id,
-				isOwner
-			});
-			const message = isOwner
-				? 'User__username__is_now_a_owner_of__room_name_'
-				: 'User__username__removed_from__room_name__owners';
-			EventEmitter.emit(LISTENER, {
-				message: I18n.t(message, {
-					username: getUserDisplayName(selectedUser),
-					room_name: getRoomTitle(state.room)
-				})
-			});
-		} catch (e) {
-			log(e);
-		}
-		fetchRoomMembersRoles();
-	};
 
 	const toggleStatus = (status: boolean) => {
 		try {
@@ -192,193 +187,16 @@ const RoomMembersView = (): React.ReactElement => {
 		});
 	};
 
-	const handleGoRoom = (item: TGoRoomItem) => {
-		if (isMasterDetail) {
-			// @ts-ignore
-			navigation.navigate('DrawerNavigator');
-		} else {
-			navigation.dispatch(StackActions.popToTop());
-		}
-		goRoom({ item, isMasterDetail });
-	};
-
-	const navToDirectMessage = async (item: IUser) => {
-		try {
-			const db = database.active;
-			const subsCollection = db.get('subscriptions');
-			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
-			if (query.length) {
-				const [room] = query;
-				handleGoRoom(room);
-			} else {
-				const result = await Services.createDirectMessage(item.username);
-				if (result.success) {
-					handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT });
-				}
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const removeFromTeam = async (selectedUser: IUser, selected?: any) => {
-		try {
-			const { members, room } = state;
-
-			const userId = selectedUser._id;
-			const result = await Services.removeTeamMember({
-				teamId: room.teamId,
-				userId,
-				...(selected && { rooms: selected })
-			});
-			if (result.success) {
-				const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
-				EventEmitter.emit(LISTENER, { message });
-				const newMembers = members.filter(member => member._id !== userId);
-				updateState({
-					members: newMembers
-				});
-			}
-		} catch (e: any) {
-			log(e);
-			showErrorAlert(
-				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('removing_team') }),
-				I18n.t('Cannot_remove')
-			);
-		}
-	};
-
-	const handleRemoveFromTeam = async (selectedUser: TUserModel) => {
-		try {
-			const result = await Services.teamListRoomsOfUser({ teamId: state.room.teamId as string, userId: selectedUser._id });
-
-			if (result.success) {
-				if (result.rooms?.length) {
-					const teamChannels = result.rooms.map((r: any) => ({
-						rid: r._id,
-						name: r.name,
-						teamId: r.teamId,
-						alert: r.isLastOwner
-					}));
-					navigation.navigate('SelectListView', {
-						title: 'Remove_Member',
-						infoText: 'Remove_User_Team_Channels',
-						data: teamChannels,
-						nextAction: (selected: any) => removeFromTeam(selectedUser, selected),
-						showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
-					});
-				} else {
-					showConfirmationAlert({
-						message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
-						confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-						onPress: () => removeFromTeam(selectedUser)
-					});
-				}
-			}
-		} catch (e) {
-			showConfirmationAlert({
-				message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
-				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-				onPress: () => removeFromTeam(selectedUser)
-			});
-		}
-	};
-
-	const handleLeader = async (selectedUser: TUserModel, isLeader: boolean) => {
-		try {
-			await Services.toggleRoomLeader({
-				roomId: state.room.rid,
-				t: state.room.t,
-				userId: selectedUser._id,
-				isLeader
-			});
-			const message = isLeader
-				? 'User__username__is_now_a_leader_of__room_name_'
-				: 'User__username__removed_from__room_name__leaders';
-			EventEmitter.emit(LISTENER, {
-				message: I18n.t(message, {
-					username: getUserDisplayName(selectedUser),
-					room_name: getRoomTitle(state.room)
-				})
-			});
-		} catch (e) {
-			log(e);
-		}
-		fetchRoomMembersRoles();
-	};
-
-	const handleRemoveUserFromRoom = async (selectedUser: TUserModel) => {
-		try {
-			const { room, members } = state;
-			const userId = selectedUser._id;
-			await Services.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
-			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
-			EventEmitter.emit(LISTENER, { message });
-			updateState({
-				members: members.filter(member => member._id !== userId)
-			});
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const handleIgnore = async (selectedUser: TUserModel, ignore: boolean) => {
-		try {
-			await Services.ignoreUser({
-				rid: state.room.rid,
-				userId: selectedUser._id,
-				ignore
-			});
-			const message = I18n.t(ignore ? 'User_has_been_ignored' : 'User_has_been_unignored');
-			EventEmitter.emit(LISTENER, { message });
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const handleModerator = async (selectedUser: TUserModel, isModerator: boolean) => {
-		try {
-			const { room } = state;
-			await Services.toggleRoomModerator({
-				roomId: room.rid,
-				t: room.t,
-				userId: selectedUser._id,
-				isModerator
-			});
-			const message = isModerator
-				? 'User__username__is_now_a_moderator_of__room_name_'
-				: 'User__username__removed_from__room_name__moderators';
-			EventEmitter.emit(LISTENER, {
-				message: I18n.t(message, {
-					username: getUserDisplayName(selectedUser),
-					room_name: getRoomTitle(room)
-				})
-			});
-		} catch (e) {
-			log(e);
-		}
-		fetchRoomMembersRoles();
-	};
-
-	const handleMute = async (user: TUserModel) => {
-		try {
-			await Services.toggleMuteUserInRoom(state.room.rid, user?.username, !user?.muted);
-			EventEmitter.emit(LISTENER, {
-				message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
-			});
-		} catch (e) {
-			log(e);
-		}
-	};
+	const getUserDisplayName = (user: TUserModel) => (useRealName ? user.name : user.username) || user.username;
 
 	const onPressUser = (selectedUser: TUserModel) => {
-		const { room } = state;
+		const { room, roomRoles, members } = state;
 
 		const options: TActionSheetOptionsItem[] = [
 			{
 				icon: 'message',
 				title: I18n.t('Direct_message'),
-				onPress: () => navToDirectMessage(selectedUser)
+				onPress: () => navToDirectMessage(selectedUser, isMasterDetail)
 			}
 		];
 
@@ -389,7 +207,7 @@ const RoomMembersView = (): React.ReactElement => {
 			options.push({
 				icon: 'ignore',
 				title: I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
-				onPress: () => handleIgnore(selectedUser, !isIgnored),
+				onPress: () => handleIgnore(selectedUser, !isIgnored, room.rid),
 				testID: 'action-sheet-ignore-user'
 			});
 		}
@@ -407,7 +225,7 @@ const RoomMembersView = (): React.ReactElement => {
 							roomName: getRoomTitle(room)
 						}),
 						confirmationText: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
-						onPress: () => handleMute(selectedUser)
+						onPress: () => handleMute(selectedUser, room.rid)
 					});
 				},
 				testID: 'action-sheet-mute-user'
@@ -416,60 +234,45 @@ const RoomMembersView = (): React.ReactElement => {
 
 		// Owner
 		if (setOwnerPermission) {
-			const userRoleResult = state.roomRoles.find((r: any) => r.u._id === selectedUser._id);
-			const isOwner = userRoleResult?.roles.includes('owner');
+			const isOwner = fetchRole('owner', selectedUser, roomRoles);
 			options.push({
 				icon: 'shield-check',
 				title: I18n.t('Owner'),
-				onPress: () => handleOwner(selectedUser, !isOwner),
-				right: () => (
-					<CustomIcon
-						testID={isOwner ? 'action-sheet-set-owner-checked' : 'action-sheet-set-owner-unchecked'}
-						name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'}
-						size={20}
-						color={isOwner ? colors.tintActive : colors.auxiliaryTintColor}
-					/>
-				),
+				onPress: () =>
+					handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, () =>
+						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
+					),
+				right: () => <RightIcon check={isOwner} label='owner' />,
 				testID: 'action-sheet-set-owner'
 			});
 		}
 
 		// Leader
 		if (setLeaderPermission) {
-			const userRoleResult = state.roomRoles.find((r: any) => r.u._id === selectedUser._id);
-			const isLeader = userRoleResult?.roles.includes('leader');
+			const isLeader = fetchRole('leader', selectedUser, roomRoles);
 			options.push({
 				icon: 'shield-alt',
 				title: I18n.t('Leader'),
-				onPress: () => handleLeader(selectedUser, !isLeader),
-				right: () => (
-					<CustomIcon
-						testID={isLeader ? 'action-sheet-set-leader-checked' : 'action-sheet-set-leader-unchecked'}
-						name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'}
-						size={20}
-						color={isLeader ? colors.tintActive : colors.auxiliaryTintColor}
-					/>
-				),
+				onPress: () =>
+					handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), () =>
+						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
+					),
+				right: () => <RightIcon check={isLeader} label='leader' />,
 				testID: 'action-sheet-set-leader'
 			});
 		}
 
 		// Moderator
 		if (setModeratorPermission) {
-			const userRoleResult = state.roomRoles.find((r: any) => r.u._id === selectedUser._id);
-			const isModerator = userRoleResult?.roles.includes('moderator');
+			const isModerator = fetchRole('moderator', selectedUser, roomRoles);
 			options.push({
 				icon: 'shield',
 				title: I18n.t('Moderator'),
-				onPress: () => handleModerator(selectedUser, !isModerator),
-				right: () => (
-					<CustomIcon
-						testID={isModerator ? 'action-sheet-set-moderator-checked' : 'action-sheet-set-moderator-unchecked'}
-						name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'}
-						size={20}
-						color={isModerator ? colors.tintActive : colors.auxiliaryTintColor}
-					/>
-				),
+				onPress: () =>
+					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), () =>
+						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
+					),
+				right: () => <RightIcon check={isModerator} label='moderator' />,
 				testID: 'action-sheet-set-moderator'
 			});
 		}
@@ -480,7 +283,7 @@ const RoomMembersView = (): React.ReactElement => {
 				icon: 'logout',
 				danger: true,
 				title: I18n.t('Remove_from_Team'),
-				onPress: () => handleRemoveFromTeam(selectedUser),
+				onPress: () => handleRemoveFromTeam(selectedUser, updateState, room, members),
 				testID: 'action-sheet-remove-from-team'
 			});
 		}
@@ -495,7 +298,13 @@ const RoomMembersView = (): React.ReactElement => {
 					showConfirmationAlert({
 						message: I18n.t('The_user_will_be_removed_from_s', { s: getRoomTitle(room) }),
 						confirmationText: I18n.t('Yes_remove_user'),
-						onPress: () => handleRemoveUserFromRoom(selectedUser)
+						onPress: () => {
+							handleRemoveUserFromRoom(selectedUser, room, () =>
+								updateState({
+									members: members.filter(member => member._id !== selectedUser._id)
+								})
+							);
+						}
 					});
 				},
 				testID: 'action-sheet-remove-from-room'
@@ -506,18 +315,6 @@ const RoomMembersView = (): React.ReactElement => {
 			options,
 			hasCancel: true
 		});
-	};
-
-	const fetchRoomMembersRoles = async () => {
-		try {
-			const type = state.room.t as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
-			const result = await Services.getRoomRoles(state.room.rid, type);
-			if (result?.success) {
-				updateState({ roomRoles: result.roles });
-			}
-		} catch (e) {
-			log(e);
-		}
 	};
 
 	const fetchMembers = async (status: boolean) => {
