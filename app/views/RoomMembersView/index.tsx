@@ -130,7 +130,7 @@ const RoomMembersView = (): React.ReactElement => {
 				viewAllTeamChannelsPermission ||
 				viewAllTeamsPermission
 			) {
-				fetchRoomMembersRoles(state.room.t as any, state.room.t, updateState);
+				fetchRoomMembersRoles(state.room.t as any, state.room.rid, updateState);
 			}
 		};
 		fetchRoles();
