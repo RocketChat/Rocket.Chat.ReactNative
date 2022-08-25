@@ -37,7 +37,8 @@ export default StyleSheet.create({
 	},
 	listItemContainer: {
 		marginVertical: 6,
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	textContainer: {
 		flex: 1,
@@ -57,10 +58,10 @@ export default StyleSheet.create({
 		height: 25
 	},
 	allTabStandardEmojiStyle: {
-		// fontSize: 28,
+		fontSize: 30,
 		width: 36,
-		color: '#fff',
-		backgroundColor: 'red'
+		textAlign: 'center',
+		color: '#fff'
 	},
 	allTabCustomEmojiStyle: {
 		width: 36,
