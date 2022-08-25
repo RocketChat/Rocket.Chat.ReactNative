@@ -330,7 +330,7 @@ const MessageActions = React.memo(
 				let options: TActionSheetOptionsItem[] = [];
 
 				// Reply
-				if (!isReadOnly) {
+				if (!isReadOnly && !tmid) {
 					options = [
 						{
 							title: I18n.t('Reply_in_Thread'),
