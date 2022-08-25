@@ -3,14 +3,13 @@ import { Text, Pressable } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import styles from './styles';
+import styles, { MIN_EMOJI_SIZE, MAX_EMOJI_SIZE } from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
-
-const MAX_EMOJI_SIZE = 50;
+import { useDimensions } from '../../dimensions';
 
 interface IEmojiProps {
 	emoji: string | IEmoji;
@@ -18,7 +17,7 @@ interface IEmojiProps {
 	baseUrl: string;
 }
 
-const Emoji = React.memo(({ emoji, size, baseUrl }: IEmojiProps) => {
+const Emoji = ({ emoji, size, baseUrl }: IEmojiProps): React.ReactElement => {
 	if (typeof emoji === 'string')
 		return (
 			<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
@@ -28,12 +27,14 @@ const Emoji = React.memo(({ emoji, size, baseUrl }: IEmojiProps) => {
 	return (
 		<CustomEmoji style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]} emoji={emoji} baseUrl={baseUrl} />
 	);
-});
+};
 
-const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, width, tabsCount }: IEmojiCategory): React.ReactElement | null => {
-	const emojiSize = width ? Math.min(width / tabsCount, MAX_EMOJI_SIZE) : MAX_EMOJI_SIZE;
-	const numColumns = Math.trunc(width ? width / emojiSize : tabsCount);
+const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, tabsCount }: IEmojiCategory): React.ReactElement | null => {
 	const { colors } = useTheme();
+	const { width } = useDimensions();
+	const emojiSize = Math.min(Math.max(width / tabsCount, MIN_EMOJI_SIZE), MAX_EMOJI_SIZE);
+	const numColumns = Math.trunc(width / emojiSize);
+	const marginHorizontal = (width - numColumns * emojiSize) / 2;
 
 	const renderItem = (emoji: IEmoji | string) => (
 		<Pressable
@@ -57,14 +58,14 @@ const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, width, tabsCount }: I
 		<FlatList
 			// rerender FlatList in case of width changes
 			key={`emoji-category-${width}`}
-			// @ts-ignore
-			keyExtractor={item => (item?.isCustom && item.content) || item}
+			keyExtractor={item => (typeof item === 'string' ? item : item.content)}
 			data={emojis}
 			extraData={{ baseUrl, width }}
 			renderItem={({ item }) => renderItem(item)}
 			numColumns={numColumns}
 			initialNumToRender={45}
 			removeClippedSubviews
+			contentContainerStyle={{ marginHorizontal }}
 			{...scrollPersistTaps}
 			keyboardDismissMode={'none'}
 		/>

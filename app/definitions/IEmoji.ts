@@ -32,7 +32,6 @@ export interface IEmojiCategory {
 	baseUrl: string;
 	emojis: (IEmoji | string)[];
 	onEmojiSelected: (emoji: IEmoji | string) => void;
-	width: number | null;
 	style: StyleProp<ImageStyle>;
 	tabLabel: string;
 	tabsCount: number;

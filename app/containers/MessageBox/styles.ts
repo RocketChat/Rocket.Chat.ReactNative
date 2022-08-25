@@ -163,6 +163,9 @@ export default StyleSheet.create({
 	},
 	emojiContainer: { justifyContent: 'center', marginHorizontal: 2 },
 	emojiListContainer: { height: 50, paddingHorizontal: 5, marginVertical: 5, flexGrow: 1 },
+	emojiSearchViewContainer: {
+		borderTopWidth: 1
+	},
 	emojiSearchbarContainer: {
 		flexDirection: 'row',
 		height: 50,
@@ -177,5 +180,11 @@ export default StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	emojiSearchCustomEmoji: {
+		margin: 4
+	},
+	emojiSearchInput: {
+		flex: 1
 	}
 });

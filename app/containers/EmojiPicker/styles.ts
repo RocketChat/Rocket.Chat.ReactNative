@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
+export const MAX_EMOJI_SIZE = 50;
+export const MIN_EMOJI_SIZE = 42;
+
 export default StyleSheet.create({
 	container: {
 		flex: 1
@@ -14,7 +17,8 @@ export default StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingVertical: 10
+		paddingVertical: 10,
+		width: 44
 	},
 	tabEmoji: {
 		fontSize: 20,
@@ -66,5 +70,6 @@ export default StyleSheet.create({
 		width: 44,
 		justifyContent: 'center',
 		alignItems: 'center'
-	}
+	},
+	emojiPickerContainer: { flex: 1 }
 });

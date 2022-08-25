@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { shallowEqual } from 'react-redux';
 
 import TabBar from './TabBar';
@@ -9,15 +8,14 @@ import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
 import categories from './categories';
-import database from '../../lib/database';
 import { emojisByCategory } from './emojis';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import log from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
-import { IEmoji, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definitions';
+import { IEmoji, ICustomEmojis } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
-import useFrequentlyUsedEmoji from './frequentlyUsedEmojis';
+import { useFrequentlyUsedEmoji, addFrequentlyUsed } from './frequentlyUsedEmojis';
 
 const EmojiPicker = ({
 	onItemClicked,
@@ -26,7 +24,6 @@ const EmojiPicker = ({
 	searching = false,
 	searchedEmojis = []
 }: IEmojiPickerProps): React.ReactElement | null => {
-	const [width, setWidth] = useState(null);
 	const { colors } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 
@@ -45,33 +42,6 @@ const EmojiPicker = ({
 		[allCustomEmojis]
 	);
 
-	const addFrequentlyUsed = async (emoji: IEmoji) => {
-		const db = database.active;
-		const freqEmojiCollection = db.get('frequently_used_emojis');
-		let freqEmojiRecord: TFrequentlyUsedEmojiModel;
-		try {
-			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
-		} catch (error) {
-			// Do nothing
-		}
-
-		await db.write(async () => {
-			if (freqEmojiRecord) {
-				await freqEmojiRecord.update(f => {
-					if (f.count) {
-						f.count += 1;
-					}
-				});
-			} else {
-				await freqEmojiCollection.create(f => {
-					f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
-					Object.assign(f, emoji);
-					f.count = 1;
-				});
-			}
-		});
-	};
-
 	const handleEmojiSelect = (emoji: IEmoji | string) => {
 		try {
 			if (typeof emoji === 'string') {
@@ -81,7 +51,7 @@ const EmojiPicker = ({
 			} else {
 				addFrequentlyUsed({
 					content: emoji.content,
-					name: emoji.content,
+					name: emoji.name,
 					extension: emoji.extension,
 					isCustom: true
 				});
@@ -91,12 +61,6 @@ const EmojiPicker = ({
 			log(e);
 		}
 	};
-
-	const onLayout = ({
-		nativeEvent: {
-			layout: { width }
-		}
-	}: any) => setWidth(width);
 
 	const renderCategory = (category: keyof typeof emojisByCategory, i: number, label: string, tabsCount: number) => {
 		let emojis = [];
@@ -112,7 +76,6 @@ const EmojiPicker = ({
 				emojis={emojis}
 				onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
 				style={styles.categoryContainer}
-				width={width}
 				baseUrl={baseUrl}
 				tabLabel={label}
 				tabsCount={tabsCount}
@@ -127,13 +90,12 @@ const EmojiPicker = ({
 	const tabsCount = frequentlyUsed.length === 0 ? categories.tabs.length - 1 : categories.tabs.length;
 
 	return (
-		<View onLayout={onLayout} style={{ flex: 1 }}>
+		<View style={styles.emojiPickerContainer}>
 			{searching ? (
 				<EmojiCategory
 					emojis={searchedEmojis}
 					onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
 					style={styles.categoryContainer}
-					width={width}
 					baseUrl={baseUrl}
 					tabLabel={'searching'}
 					tabsCount={tabsCount}
