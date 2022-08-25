@@ -18,8 +18,9 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { NewMessageStackParamList } from '../../stacks/types';
 import { search as searchMethod } from '../../lib/methods';
 import { useAppSelector } from '../../lib/hooks';
-import UserItem from './UserItem';
+import UserItem from '../../containers/UserItem';
 import HeaderNewMessage from './HeaderNewMessage';
+import sharedStyles from '../Styles';
 
 const QUERY_SIZE = 50;
 
@@ -90,9 +91,31 @@ const NewMessageView = () => {
 				data={search.length > 0 ? search : chats}
 				keyExtractor={item => item._id || item.rid}
 				ListHeaderComponent={<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} />}
-				renderItem={({ item, index }) => (
-					<UserItem goRoom={goRoom} chats={chats} index={index} item={item} search={search} useRealName={useRealName} />
-				)}
+				renderItem={({ item, index }) => {
+					let style = { borderColor: colors.separatorColor };
+					if (index === 0) {
+						style = { ...style };
+					}
+					if (search.length > 0 && index === search.length - 1) {
+						style = { ...style, ...sharedStyles.separatorBottom };
+					}
+					if (search.length === 0 && index === chats.length - 1) {
+						style = { ...style, ...sharedStyles.separatorBottom };
+					}
+
+					const itemSearch = item as ISearch;
+					const itemModel = item as TSubscriptionModel;
+
+					return (
+						<UserItem
+							name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
+							username={itemSearch.search ? itemSearch.username : itemModel.name}
+							onPress={() => goRoom(itemModel)}
+							testID={`new-message-view-item-${item.name}`}
+							style={style}
+						/>
+					);
+				}}
 				ItemSeparatorComponent={List.Separator}
 				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
 				keyboardShouldPersistTaps='always'
