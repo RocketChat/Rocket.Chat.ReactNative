@@ -54,9 +54,11 @@ const SelectedUsersView = () => {
 		shallowEqual
 	);
 
-	sendLoadingEvent({ visible: loading });
+	useEffect(() => {
+		sendLoadingEvent({ visible: loading });
+	}, [loading]);
 
-	const isChecked = useCallback((username: string) => users.findIndex(el => el.name === username) !== -1, [users]);
+	const isChecked = (username: string) => users.findIndex(el => el.name === username) !== -1;
 
 	const isGroupChat = () => maxUsers && maxUsers > 2;
 
@@ -78,7 +80,7 @@ const SelectedUsersView = () => {
 				)
 		};
 		navigation.setOptions(options);
-	}, [users, maxUsers]);
+	}, [users.length, maxUsers]);
 
 	useEffect(() => {
 		if (isGroupChat()) {
