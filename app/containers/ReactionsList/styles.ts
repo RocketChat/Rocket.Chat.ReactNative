@@ -5,18 +5,15 @@ import sharedStyles from '../../views/Styles';
 export const MIN_TAB_WIDTH = 70;
 
 export default StyleSheet.create({
-	reactionsListContainer: {
-		height: '100%',
-		width: '100%'
+	container: {
+		flex: 1
 	},
-	allReactionsContainer: {
-		height: '100%',
-		width: '100%',
-		paddingTop: 5
+	allTabContainer: {
+		flex: 1
 	},
 	tabBarItem: {
-		paddingHorizontal: 10,
 		paddingBottom: 10,
+		height: 40,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row'
@@ -27,7 +24,8 @@ export default StyleSheet.create({
 		paddingBottom: 30
 	},
 	reactionCount: {
-		marginLeft: 5
+		marginLeft: 4,
+		...sharedStyles.textSemibold
 	},
 	emojiNameContainer: {
 		marginVertical: 8
@@ -62,7 +60,6 @@ export default StyleSheet.create({
 		height: 24
 	},
 	allTabItem: {
-		height: 24,
 		fontSize: 16,
 		...sharedStyles.textSemibold
 	},

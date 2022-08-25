@@ -55,7 +55,7 @@ const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllR
 };
 
 const AllTab = ({ reactions, baseUrl, getCustomEmoji, username }: IAllTabProps): React.ReactElement => (
-	<View style={styles.allReactionsContainer} testID='reactionsListAllTab'>
+	<View style={styles.allTabContainer} testID='reactionsListAllTab'>
 		<FlatList
 			data={reactions}
 			contentContainerStyle={styles.listContainer}
