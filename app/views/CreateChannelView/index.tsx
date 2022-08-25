@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -81,7 +81,9 @@ const CreateChannelView = () => {
 		shallowEqual
 	);
 
-	sendLoadingEvent({ visible: isFetching });
+	useEffect(() => {
+		sendLoadingEvent({ visible: isFetching });
+	}, [isFetching]);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
