@@ -1,6 +1,7 @@
 const axios = require('axios').default;
 
 const data = require('../data');
+const random = require('./random');
 
 const TEAM_TYPE = {
 	PUBLIC: 0,
@@ -106,6 +107,8 @@ const changeChannelJoinCode = async (roomId, joinCode) => {
 	try {
 		await rocketchat.post('method.call/saveRoomSettings', {
 			message: JSON.stringify({
+				msg: 'method',
+				id: random(10),
 				method: 'saveRoomSettings',
 				params: [roomId, { joinCode }]
 			})
