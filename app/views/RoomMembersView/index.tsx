@@ -627,19 +627,14 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 	renderSearchBar = () => <SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />;
 
-	renderItem = ({ item }: { item: TUserModel }) => {
-		const { theme } = this.props;
-
-		return (
-			<UserItem
-				name={item.name as string}
-				username={item.username}
-				onPress={() => this.onPressUser(item)}
-				testID={`room-members-view-item-${item.username}`}
-				theme={theme}
-			/>
-		);
-	};
+	renderItem = ({ item }: { item: TUserModel }) => (
+		<UserItem
+			name={item.name as string}
+			username={item.username}
+			onPress={() => this.onPressUser(item)}
+			testID={`room-members-view-item-${item.username}`}
+		/>
+	);
 
 	render() {
 		const { filtering, members, membersFiltered, isLoading } = this.state;
