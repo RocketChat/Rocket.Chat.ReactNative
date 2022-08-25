@@ -21,13 +21,13 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 		<FlatList
 			data={users}
 			contentContainerStyle={styles.usersListContainer}
-			ListHeaderComponent={() => (
+			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
 					<Text style={[styles.emojiName, { color: colors.auxiliaryTintColor }]} testID='usersListEmojiName'>
 						{emoji}
 					</Text>
 				</View>
-			)}
+			}
 			renderItem={({ item }) => (
 				<View style={styles.userItemContainer} testID='userItem'>
 					<Avatar text={item.username} size={36} />
