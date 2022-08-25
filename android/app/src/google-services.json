@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "864156350825",
+    "project_id": "pnix-messenger-205e1",
+    "storage_bucket": "pnix-messenger-205e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864156350825:android:99c03576dcd3c528d8a5f8",
+        "android_client_info": {
+          "package_name": "chat.rocket.reactnative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864156350825-bqjsuf9a8vcup3bn8tbo706k7qufko4q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ6OKhZpUZq665SczJrrEoxZ8jKYGHtVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864156350825-bqjsuf9a8vcup3bn8tbo706k7qufko4q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864156350825:android:3fbccd060174b24dd8a5f8",
+        "android_client_info": {
+          "package_name": "ph.mil.navy.pnixmessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864156350825-bqjsuf9a8vcup3bn8tbo706k7qufko4q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ6OKhZpUZq665SczJrrEoxZ8jKYGHtVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864156350825-bqjsuf9a8vcup3bn8tbo706k7qufko4q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
