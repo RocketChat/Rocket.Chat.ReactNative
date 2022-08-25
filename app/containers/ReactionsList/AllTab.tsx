@@ -36,7 +36,7 @@ const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllR
 		usernames = usernames.replace(/,(?=[^,]*$)/, ` ${I18n.t('and')}`);
 	}
 	return (
-		<View style={styles.allListItemContainer}>
+		<View style={styles.listItemContainer}>
 			<Emoji
 				content={item.emoji}
 				standardEmojiStyle={styles.allTabStandardEmojiStyle}
@@ -44,11 +44,11 @@ const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllR
 				baseUrl={baseUrl}
 				getCustomEmoji={getCustomEmoji}
 			/>
-			<View style={styles.peopleReactedContainer}>
-				<Text style={{ color: colors.titleText }}>
+			<View style={styles.textContainer}>
+				<Text style={[styles.allListNPeopleReacted, { color: colors.bodyText }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 				</Text>
-				<Text style={[{ color: colors.auxiliaryTintColor }]}>{usernames}</Text>
+				<Text style={[styles.allListWhoReacted, { color: colors.auxiliaryText }]}>{usernames}</Text>
 			</View>
 		</View>
 	);
@@ -58,6 +58,7 @@ const AllTab = ({ reactions, baseUrl, getCustomEmoji, username }: IAllTabProps):
 	<View style={styles.allReactionsContainer} testID='reactionsListAllTab'>
 		<FlatList
 			data={reactions}
+			contentContainerStyle={styles.listContainer}
 			renderItem={({ item }) => (
 				<AllReactionsListItem item={item} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} username={username} />
 			)}

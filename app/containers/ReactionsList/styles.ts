@@ -21,7 +21,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
-	usersListContainer: {
+	listContainer: {
 		marginHorizontal: 12,
 		marginVertical: 8
 	},
@@ -35,12 +35,13 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
-	userItemContainer: {
+	listItemContainer: {
 		marginVertical: 6,
 		flexDirection: 'row'
 	},
 	textContainer: {
-		marginHorizontal: 10,
+		flex: 1,
+		marginLeft: 8,
 		justifyContent: 'center'
 	},
 	usernameText: {
@@ -56,20 +57,25 @@ export default StyleSheet.create({
 		height: 25
 	},
 	allTabStandardEmojiStyle: {
-		fontSize: 28,
-		color: '#fff'
+		// fontSize: 28,
+		width: 36,
+		color: '#fff',
+		backgroundColor: 'red'
 	},
 	allTabCustomEmojiStyle: {
-		width: 32,
-		height: 32
+		width: 36,
+		height: 36
 	},
 	allListItemContainer: {
-		paddingHorizontal: 10,
-		marginVertical: 5,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	peopleReactedContainer: {
-		marginHorizontal: 20
+	allListNPeopleReacted: {
+		fontSize: 14,
+		...sharedStyles.textMedium
+	},
+	allListWhoReacted: {
+		fontSize: 14,
+		...sharedStyles.textRegular
 	}
 });

@@ -20,19 +20,19 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 	return (
 		<FlatList
 			data={users}
-			contentContainerStyle={styles.usersListContainer}
+			contentContainerStyle={styles.listContainer}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
-					<Text style={[styles.emojiName, { color: colors.auxiliaryTintColor }]} testID='usersListEmojiName'>
+					<Text style={[styles.emojiName, { color: colors.auxiliaryText }]} testID='usersListEmojiName'>
 						{emoji}
 					</Text>
 				</View>
 			}
 			renderItem={({ item }) => (
-				<View style={styles.userItemContainer} testID='userItem'>
+				<View style={styles.listItemContainer} testID='userItem'>
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
-						<Text style={[styles.usernameText, { color: colors.titleText }]} numberOfLines={1}>
+						<Text style={[styles.usernameText, { color: colors.bodyText }]} numberOfLines={1}>
 							{useRealName && item.name ? item.name : item.username}
 						</Text>
 					</View>
