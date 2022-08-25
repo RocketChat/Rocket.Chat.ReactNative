@@ -16,7 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import { ISearch, ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import UserItem from './UserItem';
+import UserItem from '../../containers/UserItem';
 import { ISelectedUser } from '../../reducers/selectedUsers';
 import { getUserSelector } from '../../selectors/login';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -27,6 +27,7 @@ import { search as searchMethod } from '../../lib/methods';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks';
 import Header from './Header';
+import sharedStyles from '../Styles';
 
 type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
 type TNavigation = StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
@@ -154,16 +155,22 @@ const SelectedUsersView = () => {
 				renderItem={({ item, index }) => {
 					const name = useRealName && item.fname ? item.fname : item.name;
 					const username = item.search ? (item.username as string) : item.name;
+					let style = { borderColor: colors.separatorColor };
+					if (search.length > 0 && index === search.length - 1) {
+						style = { ...style, ...sharedStyles.separatorBottom };
+					}
+					if (search.length === 0 && index === chats.length - 1) {
+						style = { ...style, ...sharedStyles.separatorBottom };
+					}
 					return (
 						<UserItem
-							isChecked={isChecked(username)}
-							chatsLength={chats.length}
-							searchLength={search.length}
-							index={index}
-							item={item}
-							username={username}
 							name={name}
-							onPressItem={_onPressItem}
+							username={username}
+							onPress={() => _onPressItem(item)}
+							testID={`select-users-view-item-${item.name}`}
+							icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
+							iconColor={isChecked(username) ? colors.actionTintColor : colors.separatorColor}
+							style={style}
 						/>
 					);
 				}}
