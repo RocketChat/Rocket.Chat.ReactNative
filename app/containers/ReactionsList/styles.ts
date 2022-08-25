@@ -23,7 +23,8 @@ export default StyleSheet.create({
 	},
 	listContainer: {
 		marginHorizontal: 12,
-		marginVertical: 8
+		marginVertical: 8,
+		paddingBottom: 30
 	},
 	reactionCount: {
 		marginLeft: 5
