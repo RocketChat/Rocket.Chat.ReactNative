@@ -8,10 +8,7 @@ import { ISelectedUser } from '../../reducers/selectedUsers';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { useAppSelector } from '../../lib/hooks';
-import SelectedChipItem from './SelectedChipItem';
-
-const ITEM_WIDTH = 250;
-const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
+import Chip from '../../containers/Chip';
 
 const Header = ({
 	onChangeText,
@@ -42,9 +39,15 @@ const Header = ({
 						data={users}
 						ref={(ref: FlatList) => (flatlist.current = ref)}
 						onContentSizeChange={onContentSizeChange}
-						getItemLayout={getItemLayout}
 						keyExtractor={item => item._id}
-						renderItem={({ item }) => <SelectedChipItem onPressItem={onPressItem} useRealName={useRealName} item={item} />}
+						renderItem={({ item }) => {
+							const name = useRealName && item.fname ? item.fname : item.name;
+							const username = item.search ? (item.username as string) : item.name;
+
+							return (
+								<Chip text={name} avatar={username} onPress={() => onPressItem(item)} testID={`selected-user-${item.name}`} />
+							);
+						}}
 						keyboardShouldPersistTaps='always'
 						contentContainerStyle={{ paddingLeft: 16 }}
 						horizontal
