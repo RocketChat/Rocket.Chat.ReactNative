@@ -39,7 +39,7 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 		>
 			<View style={styles.tabBarItem}>
 				{tab._id === 'All' ? (
-					<Text style={{ color: colors.auxiliaryTintColor, fontSize: 18 }}>{I18n.t('All')}</Text>
+					<Text style={[styles.allTabItem, { color: colors.auxiliaryTintColor }]}>{I18n.t('All')}</Text>
 				) : (
 					<>
 						<Emoji

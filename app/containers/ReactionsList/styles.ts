@@ -51,11 +51,19 @@ export default StyleSheet.create({
 	},
 	standardEmojiStyle: {
 		fontSize: 20,
+		width: 24,
+		height: 24,
+		textAlign: 'center',
 		color: '#fff'
 	},
 	customEmojiStyle: {
-		width: 25,
-		height: 25
+		width: 24,
+		height: 24
+	},
+	allTabItem: {
+		height: 24,
+		fontSize: 16,
+		...sharedStyles.textSemibold
 	},
 	allTabStandardEmojiStyle: {
 		fontSize: 30,
