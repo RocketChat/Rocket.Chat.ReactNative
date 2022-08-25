@@ -373,7 +373,7 @@ const RoomMembersView = (): React.ReactElement => {
 						/>
 					</View>
 				)}
-				style={[styles.list]}
+				style={styles.list}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={
