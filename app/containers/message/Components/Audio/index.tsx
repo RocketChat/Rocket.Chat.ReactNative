@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import { Audio, AVPlaybackStatus } from 'expo-av';
+import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
@@ -18,6 +18,7 @@ import { withDimensions } from '../../../../dimensions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment } from '../../../../definitions';
 import { TSupportedThemes } from '../../../../theme';
+import { downloadAudioFile } from '../../../../lib/methods/audioFile';
 import Slider from './Slider';
 
 interface IButton {
@@ -50,8 +51,8 @@ const mode = {
 	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
 
 const styles = StyleSheet.create({
@@ -89,7 +90,8 @@ const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButto
 		disabled={disabled}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
-		background={Touchable.SelectableBackgroundBorderless()}>
+		background={Touchable.SelectableBackgroundBorderless()}
+	>
 		{loading ? (
 			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 		) : (
@@ -133,7 +135,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		this.setState({ loading: true });
 		try {
-			await this.sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
+			if (url) {
+				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url);
+				await this.sound.loadAsync({ uri: audio });
+			}
 		} catch {
 			// Do nothing
 		}
@@ -249,6 +254,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	onSlidingEnd = async (value: number) => {
 		try {
+			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
 		} catch {
 			// Do nothing
@@ -286,7 +292,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					style={[
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-					]}>
+					]}
+				>
 					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
 						disabled={isReply}

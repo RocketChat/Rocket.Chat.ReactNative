@@ -1,5 +1,6 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+import mockGestureHandler from 'react-native-gesture-handler/src/mocks';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -7,18 +8,6 @@ global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
-
-jest.mock('react-native-mmkv-storage', () => ({
-	Loader: jest.fn().mockImplementation(() => ({
-		setProcessingMode: jest.fn().mockImplementation(() => ({
-			withEncryption: jest.fn().mockImplementation(() => ({
-				initialize: jest.fn()
-			}))
-		}))
-	})),
-	create: jest.fn(),
-	MODES: { MULTI_PROCESS: '' }
-}));
 
 jest.mock('rn-fetch-blob', () => ({
 	fs: {
@@ -80,4 +69,27 @@ jest.mock('react-native-math-view', () => {
 	};
 });
 
-jest.mock('react-native-gesture-handler', () => jest.fn(() => null));
+jest.mock('react-native-gesture-handler', () => {
+	const react = require('react-native');
+	return {
+		...mockGestureHandler,
+		Gesture: {
+			Tap: jest.fn(() => ({
+				hitSlop: jest.fn(() => ({
+					onStart: jest.fn()
+				}))
+			})),
+			Pan: jest.fn(() => ({
+				hitSlop: jest.fn(() => ({
+					onStart: jest.fn(() => ({
+						onChange: jest.fn(() => ({
+							onEnd: jest.fn()
+						}))
+					}))
+				}))
+			})),
+			Simultaneous: jest.fn()
+		},
+		GestureDetector: react.View
+	};
+});
