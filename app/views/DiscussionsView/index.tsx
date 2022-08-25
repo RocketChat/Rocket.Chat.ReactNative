@@ -10,7 +10,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
-import { debounce, isIOS } from '../../lib/methods/helpers';
+import { isIOS, useDebounce } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -81,10 +81,10 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		}
 	};
 
-	const onSearchChangeText = debounce(async (text: string) => {
+	const onSearchChangeText = useDebounce(async (text: string) => {
 		setIsSearching(true);
 		await load(text);
-	}, 300);
+	}, 500);
 
 	const onCancelSearchPress = () => {
 		setIsSearching(false);
@@ -145,7 +145,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		navigation.setOptions(options);
 	}, [navigation, isSearching]);
 
-	const onDiscussionPress = debounce(
+	const onDiscussionPress = useDebounce(
 		(item: TThreadModel) => {
 			if (item.drid && item.t) {
 				navigation.push('RoomView', {
