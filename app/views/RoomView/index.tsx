@@ -839,8 +839,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		// Check if the message is from a thread and also was sent to channel
-		if (message.tmid && message.tmid !== this.tmid) {
+		// if it's a thread message on main room, we disable the long press
+		if (message.tmid && !this.tmid) {
 			return;
 		}
 		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
