@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	let timeout: ReturnType<typeof setTimeout> | null;
 	function _debounce(...args: any[]) {
@@ -20,4 +22,8 @@ export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	}
 	_debounce.stop = () => clearTimeout(timeout!);
 	return _debounce;
+}
+
+export function useDebounce(func: Function, wait?: number, immediate?: boolean): () => void {
+	return useCallback(debounce(func, wait, immediate), []);
 }
