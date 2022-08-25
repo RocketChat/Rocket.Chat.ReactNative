@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import orderBy from 'lodash/orderBy';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../../lib/database';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import { IEmoji } from '../../definitions';
+import { IEmoji, TFrequentlyUsedEmojiModel } from '../../definitions';
 
-const useFrequentlyUsedEmoji = (): {
+export const useFrequentlyUsedEmoji = (): {
 	frequentlyUsed: (string | IEmoji)[];
 	loaded: boolean;
 } => {
@@ -30,4 +31,29 @@ const useFrequentlyUsedEmoji = (): {
 	return { frequentlyUsed, loaded };
 };
 
-export default useFrequentlyUsedEmoji;
+export const addFrequentlyUsed = async (emoji: IEmoji) => {
+	const db = database.active;
+	const freqEmojiCollection = db.get('frequently_used_emojis');
+	let freqEmojiRecord: TFrequentlyUsedEmojiModel;
+	try {
+		freqEmojiRecord = await freqEmojiCollection.find(emoji.content || emoji.name);
+	} catch (error) {
+		// Do nothing
+	}
+
+	await db.write(async () => {
+		if (freqEmojiRecord) {
+			await freqEmojiRecord.update(f => {
+				if (f.count) {
+					f.count += 1;
+				}
+			});
+		} else {
+			await freqEmojiCollection.create(f => {
+				f._raw = sanitizedRaw({ id: emoji.content || emoji.name }, freqEmojiCollection.schema);
+				Object.assign(f, emoji);
+				f.count = 1;
+			});
+		}
+	});
+};

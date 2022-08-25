@@ -69,6 +69,7 @@ export default StyleSheet.create({
 		paddingHorizontal: 15
 	},
 	reactionPickerSearchbar: {
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		minHeight: 48
 	}
 });

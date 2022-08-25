@@ -163,6 +163,9 @@ export default StyleSheet.create({
 	},
 	emojiContainer: { justifyContent: 'center', marginHorizontal: 2 },
 	emojiListContainer: { height: 50, paddingHorizontal: 5, marginVertical: 5, flexGrow: 1 },
+	emojiSearchViewContainer: {
+		borderTopWidth: 1
+	},
 	emojiSearchbarContainer: {
 		flexDirection: 'row',
 		height: 50,
@@ -171,11 +174,17 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	openEmojiKeyboard: { marginHorizontal: 10, justifyContent: 'center' },
-	emojiSearchbar: { paddingHorizontal: 20, borderRadius: 2, fontSize: 16 },
+	emojiSearchbar: { paddingHorizontal: 20, borderRadius: 2, fontSize: 16, minHeight: 48 },
 	textInputContainer: { justifyContent: 'center', marginBottom: 0, marginRight: 15 },
 	listEmptyComponent: {
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	emojiSearchCustomEmoji: {
+		margin: 4
+	},
+	emojiSearchInput: {
+		flex: 1
 	}
 });
