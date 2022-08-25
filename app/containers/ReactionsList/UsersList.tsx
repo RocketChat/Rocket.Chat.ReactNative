@@ -9,13 +9,13 @@ import styles from './styles';
 
 const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement => {
 	const { colors } = useTheme();
+	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
+
 	const { emoji, usernames, names } = tabLabel;
 	const users =
 		names?.length > 0
 			? usernames.map((username, index) => ({ username, name: names[index] }))
 			: usernames.map(username => ({ username, name: '' }));
-
-	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 
 	return (
 		<FlatList
