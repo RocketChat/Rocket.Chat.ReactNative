@@ -369,7 +369,7 @@ const RoomMembersView = (): React.ReactElement => {
 							name={item.name as string}
 							username={item.username}
 							onPress={() => onPressUser(item)}
-							testID={`room-members-view-item-${item.name as string}`}
+							testID={`room-members-view-item-${item.username}`}
 						/>
 					</View>
 				)}

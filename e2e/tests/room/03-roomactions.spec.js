@@ -299,20 +299,8 @@ describe('Room actions screen', () => {
 					.withTimeout(4000);
 			});
 
-			it('should have notification audio option', async () => {
-				await waitFor(element(by.id('notification-preference-view-audio')))
-					.toExist()
-					.withTimeout(4000);
-			});
-
 			it('should have notification sound option', async () => {
 				await waitFor(element(by.id('notification-preference-view-sound')))
-					.toExist()
-					.withTimeout(4000);
-			});
-
-			it('should have notification duration option', async () => {
-				await waitFor(element(by.id('notification-preference-view-notification-duration')))
 					.toExist()
 					.withTimeout(4000);
 			});
@@ -357,6 +345,9 @@ describe('Room actions screen', () => {
 			});
 
 			it('should add users to the room', async () => {
+				await waitFor(element(by.id('room-actions-members')))
+					.toExist()
+					.withTimeout(2000);
 				await element(by.id('room-actions-members')).tap();
 				await waitFor(element(by.id('room-members-view')))
 					.toExist()
@@ -393,22 +384,14 @@ describe('Room actions screen', () => {
 
 				await element(by.id('selected-users-view-submit')).tap();
 				await sleep(300);
-				await waitFor(element(by.id('room-members-view-filter')))
-					.toExist()
-					.withTimeout(10000);
-				await element(by.id('room-members-view-filter')).tap();
-				await waitFor(element(by.id('room-members-view-toggle-status-online')))
-					.toExist()
-					.withTimeout(10000);
-				await element(by.id('room-members-view-toggle-status-online')).tap();
-				await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
-					.toExist()
-					.withTimeout(60000);
 				await backToActions();
 			});
 
 			describe('Room Members', () => {
 				before(async () => {
+					await waitFor(element(by.id('room-actions-members')))
+						.toExist()
+						.withTimeout(2000);
 					await element(by.id('room-actions-members')).tap();
 					await waitFor(element(by.id('room-members-view')))
 						.toExist()
@@ -461,6 +444,9 @@ describe('Room actions screen', () => {
 				});
 
 				it('should filter user', async () => {
+					await waitFor(element(by.id('room-actions-members')))
+						.toExist()
+						.withTimeout(2000);
 					await element(by.id('room-actions-members')).tap();
 					await element(by.id('room-members-view-filter')).tap();
 					await waitFor(element(by.id('room-members-view-toggle-status-all')))
@@ -613,6 +599,9 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id('room-actions-view')))
 						.toExist()
 						.withTimeout(5000);
+					await waitFor(element(by.id('room-actions-members')))
+						.toExist()
+						.withTimeout(2000);
 					await element(by.id('room-actions-members')).tap();
 					await waitFor(element(by.id('room-members-view')))
 						.toExist()
@@ -621,10 +610,10 @@ describe('Room actions screen', () => {
 						.toExist()
 						.withTimeout(10000);
 					await element(by.id('room-members-view-filter')).tap();
-					await waitFor(element(by.id('room-members-view-toggle-status-online')))
+					await waitFor(element(by.id('room-members-view-toggle-status-all')))
 						.toExist()
 						.withTimeout(2000);
-					await element(by.id('room-members-view-toggle-status-online')).tap();
+					await element(by.id('room-members-view-toggle-status-all')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);
