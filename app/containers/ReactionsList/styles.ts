@@ -21,15 +21,22 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
+	usersListContainer: {
+		marginHorizontal: 12,
+		marginVertical: 8
+	},
 	reactionCount: {
 		marginLeft: 5
 	},
+	emojiNameContainer: {
+		marginVertical: 8
+	},
 	emojiName: {
-		margin: 10
+		fontSize: 14,
+		...sharedStyles.textMedium
 	},
 	userItemContainer: {
-		marginHorizontal: 10,
-		marginVertical: 5,
+		marginVertical: 6,
 		flexDirection: 'row'
 	},
 	textContainer: {
@@ -37,8 +44,8 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	usernameText: {
-		fontSize: 17,
-		...sharedStyles.textMedium
+		fontSize: 16,
+		...sharedStyles.textSemibold
 	},
 	standardEmojiStyle: {
 		fontSize: 20,

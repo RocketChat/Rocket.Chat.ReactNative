@@ -20,9 +20,10 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 	return (
 		<FlatList
 			data={users}
+			contentContainerStyle={styles.usersListContainer}
 			ListHeaderComponent={() => (
-				<View style={styles.emojiName}>
-					<Text style={{ color: colors.auxiliaryTintColor }} testID='usersListEmojiName'>
+				<View style={styles.emojiNameContainer}>
+					<Text style={[styles.emojiName, { color: colors.auxiliaryTintColor }]} testID='usersListEmojiName'>
 						{emoji}
 					</Text>
 				</View>
