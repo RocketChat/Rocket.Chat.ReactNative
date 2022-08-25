@@ -24,7 +24,7 @@ import { TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
-import MembersSection from './components/ActionsSection';
+import ActionsSection from './components/ActionsSection';
 import {
 	fetchRole,
 	fetchRoomMembersRoles,
@@ -378,7 +378,7 @@ const RoomMembersView = (): React.ReactElement => {
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={
 					<>
-						<MembersSection joined={params.joined as boolean} rid={state.room.rid} t={state.room.t} />
+						<ActionsSection joined={params.joined as boolean} rid={state.room.rid} t={state.room.t} />
 						<View style={{ backgroundColor: colors.backgroundColor }}>
 							<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
 						</View>
