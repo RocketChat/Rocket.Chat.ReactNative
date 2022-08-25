@@ -60,7 +60,7 @@ const SelectedUsersView = () => {
 	const isGroupChat = () => maxUsers && maxUsers > 2;
 
 	useLayoutEffect(() => {
-		const titleHeader = title ?? I18n.t('Select_Users');
+		const titleHeader = title ?? I18n.t('Select_Members');
 		const buttonTextHeader = buttonText ?? I18n.t('Next');
 		const nextActionHeader = nextAction ?? (() => {});
 		const options = {

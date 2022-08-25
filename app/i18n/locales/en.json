@@ -853,5 +853,6 @@
   "Read_only_hint":"Only authorized users can write new messages",
   "Discussion": "Discussion",
   "Channel": "Channel",
-  "Team": "Team"
+  "Team": "Team",
+  "Select_Members": "Select Members"
 }

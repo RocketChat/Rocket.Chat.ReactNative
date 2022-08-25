@@ -808,5 +808,6 @@
   "Read_only_hint":"Somente usuários autorizados podem escrever novas mensagens",
   "Discussion": "Discussão",
   "Channel": "Canal",
-  "Team": "Time"
+  "Team": "Time",
+  "Select_Members": "Selecionar Membros"
 }
