@@ -24,6 +24,6 @@ export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	return _debounce;
 }
 
-export function useDebounce(func: Function, wait?: number, immediate?: boolean): () => void {
+export function useDebounce(func: Function, wait?: number, immediate?: boolean): (...args: any[]) => void {
 	return useCallback(debounce(func, wait, immediate), []);
 }
