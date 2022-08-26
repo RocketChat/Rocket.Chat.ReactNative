@@ -809,5 +809,7 @@
   "Discussion": "Discussão",
   "Channel": "Canal",
   "Team": "Time",
-  "Select_Members": "Selecionar Membros"
+  "Select_Members": "Selecionar Membros",
+  "Also_send_thread_message_to_channel_behavior": "Também enviar mensagem do tópico para o canal",
+  "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Permitir que os usuários selecionem o comportamento Também enviar para o canal"
 }
