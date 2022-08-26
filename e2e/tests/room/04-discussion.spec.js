@@ -29,7 +29,7 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('new-message-view')))
 			.toExist()
 			.withTimeout(2000);
-		await element(by[textMatcher]('Create Discussion')).atIndex(0).tap();
+		await element(by[textMatcher]('Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(60000);
