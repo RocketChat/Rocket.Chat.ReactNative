@@ -1,19 +1,9 @@
 import { TIconsName } from '../CustomIcon';
+import { IEmojiCategoryName } from '../../definitions';
 
-export type IEmojiCategory =
-	| 'frequentlyUsed'
-	| 'custom'
-	| 'people'
-	| 'nature'
-	| 'food'
-	| 'activity'
-	| 'travel'
-	| 'objects'
-	| 'symbols'
-	| 'flags';
 const tabs: {
 	key: TIconsName;
-	title: IEmojiCategory;
+	title: IEmojiCategoryName;
 }[] = [
 	{
 		key: 'clock',

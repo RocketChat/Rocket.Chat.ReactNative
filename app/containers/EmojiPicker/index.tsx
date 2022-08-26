@@ -7,16 +7,43 @@ import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
-import categories, { IEmojiCategory } from './categories';
+import categories from './categories';
 import { emojisByCategory } from './emojis';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import log from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
-import { IEmoji, ICustomEmojis } from '../../definitions';
+import { IEmoji, ICustomEmojis, IEmojiPickerCategory, IEmojiCategoryName } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
 import { useFrequentlyUsedEmoji, addFrequentlyUsed } from './frequentlyUsedEmojis';
 import { TIconsName } from '../CustomIcon';
+
+const Category = ({
+	title,
+	frequentlyUsed,
+	customEmojis,
+	handleEmojiSelect,
+	baseUrl,
+	tabsCount
+}: IEmojiPickerCategory): React.ReactElement => {
+	let emojis: (IEmoji | string)[] = [];
+	if (title === 'frequentlyUsed') {
+		emojis = frequentlyUsed;
+	} else if (title === 'custom') {
+		emojis = customEmojis;
+	} else {
+		emojis = emojisByCategory[title];
+	}
+	return (
+		<EmojiCategory
+			emojis={emojis}
+			onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
+			style={styles.categoryContainer}
+			baseUrl={baseUrl}
+			tabsCount={tabsCount}
+		/>
+	);
+};
 
 const EmojiPicker = ({
 	onItemClicked,
@@ -31,7 +58,7 @@ const EmojiPicker = ({
 
 	const baseUrl = useAppSelector(state => state.server?.server);
 	const allCustomEmojis: ICustomEmojis = useAppSelector(state => state.customEmojis, shallowEqual);
-	const customEmojis = useMemo(
+	const customEmojis: IEmoji[] = useMemo(
 		() =>
 			Object.keys(allCustomEmojis)
 				.filter(item => item === allCustomEmojis[item].name)
@@ -66,29 +93,9 @@ const EmojiPicker = ({
 
 	const tabsCount = frequentlyUsed.length === 0 ? categories.length - 1 : categories.length;
 
-	const Category = React.memo(({ title }: { title: IEmojiCategory }) => {
-		let emojis = [];
-		if (title === 'frequentlyUsed') {
-			emojis = frequentlyUsed;
-		} else if (title === 'custom') {
-			emojis = customEmojis;
-		} else {
-			emojis = emojisByCategory[title];
-		}
-		return (
-			<EmojiCategory
-				emojis={emojis}
-				onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
-				style={styles.categoryContainer}
-				baseUrl={baseUrl}
-				tabsCount={tabsCount}
-			/>
-		);
-	});
-
 	type Route = {
-		key: string;
-		title: string;
+		key: TIconsName;
+		title: IEmojiCategoryName;
 	};
 	type State = NavigationState<Route>;
 	const renderTabBar = (props: SceneRendererProps & { navigationState: State }) => (
@@ -113,14 +120,17 @@ const EmojiPicker = ({
 				<TabView
 					lazy
 					navigationState={{ index, routes }}
-					renderScene={({
-						route
-					}: {
-						route: {
-							key: TIconsName;
-							title: IEmojiCategory;
-						};
-					}) => <Category key={route.key} title={route.title} />}
+					renderScene={({ route }: { route: Route }) => (
+						<Category
+							key={route.key}
+							title={route.title}
+							frequentlyUsed={frequentlyUsed}
+							customEmojis={customEmojis}
+							handleEmojiSelect={handleEmojiSelect}
+							baseUrl={baseUrl}
+							tabsCount={tabsCount}
+						/>
+					)}
 					onIndexChange={setIndex}
 					style={{ backgroundColor: colors.focusedBackground }}
 					renderTabBar={renderTabBar}
