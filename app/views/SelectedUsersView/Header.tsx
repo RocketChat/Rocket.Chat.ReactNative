@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
 
 import { themes } from '../../lib/constants';
 import SearchBox from '../../containers/SearchBox';
@@ -9,6 +9,15 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { useAppSelector } from '../../lib/hooks';
 import Chip from '../../containers/Chip';
+
+const styles = StyleSheet.create({
+	selectedText: {
+		marginLeft: 16,
+		marginBottom: 12,
+		...sharedStyles.textRegular
+	},
+	contentContainerList: { paddingLeft: 16, marginBottom: 16 }
+});
 
 const Header = ({
 	onChangeText,
@@ -32,7 +41,7 @@ const Header = ({
 			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
 			{users.length === 0 ? null : (
 				<View>
-					<Text style={{ ...sharedStyles.textRegular, color: themes[theme].auxiliaryTintColor, marginLeft: 16 }}>
+					<Text style={[styles.selectedText, { color: themes[theme].auxiliaryTintColor }]}>
 						{I18n.t('N_Selected_members', { n: users.length })}
 					</Text>
 					<FlatList
@@ -49,7 +58,7 @@ const Header = ({
 							);
 						}}
 						keyboardShouldPersistTaps='always'
-						contentContainerStyle={{ paddingLeft: 16 }}
+						contentContainerStyle={styles.contentContainerList}
 						horizontal
 					/>
 				</View>

@@ -31,8 +31,9 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	invitedHeader: {
-		marginTop: 18,
-		marginHorizontal: 15,
+		marginTop: 16,
+		marginBottom: 12,
+		marginHorizontal: 16,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
