@@ -1,12 +1,7 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-import { View, StyleSheet } from 'react-native';
-import { Provider } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
 
-import { mockedStore as store } from '../../reducers/mockedStore';
-import { ThemeContext } from '../../theme';
-import { colors } from '../../lib/constants';
-import Chip from './index';
+import Chip, { IChip } from './index';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,20 +11,22 @@ const styles = StyleSheet.create({
 	}
 });
 
-const theme = 'light';
+export default {
+	title: 'Chip'
+};
 
-const stories = storiesOf('Chip', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.addDecorator(story => <ThemeContext.Provider value={{ theme, colors: colors[theme] }}>{story()}</ThemeContext.Provider>);
+const ChipWrapped = ({ avatar, text, onPress, testID, style }: IChip) => (
+	<View style={styles.container}>
+		<Chip avatar={avatar} text={text} onPress={onPress} testID={testID} style={style} />
+	</View>
+);
 
-stories.add('Short and Long Chip', () => (
-	<>
-		<View style={styles.container}>
-			<Chip avatar='rocket.cat' text={'Rocket.Cat'} />
-			<Chip avatar='rocket.cat' text={'Short'} />
-			<Chip text='Without Avatar' />
-			<Chip avatar='rocket.cat' text='Without Icon' />
-			<Chip text='Without Avatar and Icon' />
-		</View>
-	</>
-));
+export const ChipText = () => <ChipWrapped avatar='rocket.cat' text={'Rocket.Cat'} onPress={() => {}} />;
+
+export const ChipWithShortText = () => <ChipWrapped avatar='rocket.cat' text={'Short'} onPress={() => {}} />;
+
+export const ChipWithoutAvatar = () => <ChipWrapped text={'Without Avatar'} onPress={() => {}} />;
+
+export const ChipWithoutIcon = () => <ChipWrapped avatar='rocket.cat' text='Without Icon' />;
+
+export const ChipWithoutAvatarAndIcon = () => <ChipWrapped text='Without Avatar and Icon' />;

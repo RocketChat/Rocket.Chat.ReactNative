@@ -1,11 +1,6 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
 import { View, StyleSheet } from 'react-native';
-import { Provider } from 'react-redux';
 
-import { mockedStore as store } from '../../../reducers/mockedStore';
-import { ThemeContext } from '../../../theme';
-import { colors } from '../../../lib/constants';
 import { SwitchItem } from './SwitchItem';
 
 const styles = StyleSheet.create({
@@ -16,11 +11,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const theme = 'light';
-
-const stories = storiesOf('Chip', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.addDecorator(story => <ThemeContext.Provider value={{ theme, colors: colors[theme] }}>{story()}</ThemeContext.Provider>);
+export default {
+	title: 'SwitchItem'
+};
 
 const testSwitch = {
 	id: 'switch-id',
@@ -32,7 +25,7 @@ const testSwitch = {
 	testLabelID: 'create-channel-switch-id-hint'
 };
 
-stories.add('Switch with label and hint', () => (
+export const Switch = () => (
 	<>
 		<View style={styles.container}>
 			<SwitchItem
@@ -44,4 +37,4 @@ stories.add('Switch with label and hint', () => (
 			/>
 		</View>
 	</>
-));
+);
