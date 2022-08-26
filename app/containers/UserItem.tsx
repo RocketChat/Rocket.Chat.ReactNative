@@ -4,9 +4,8 @@ import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-n
 import Avatar from './Avatar';
 import { CustomIcon, TIconsName } from './CustomIcon';
 import sharedStyles from '../views/Styles';
-import { themes } from '../lib/constants';
 import { isIOS } from '../lib/methods/helpers';
-import { TSupportedThemes } from '../theme';
+import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -47,34 +46,36 @@ interface IUserItem {
 	onLongPress?: () => void;
 	style?: StyleProp<ViewStyle>;
 	icon?: TIconsName | null;
-	theme: TSupportedThemes;
 }
 
-const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, theme }: IUserItem) => (
-	<Pressable
-		onPress={onPress}
-		onLongPress={onLongPress}
-		testID={testID}
-		android_ripple={{
-			color: themes[theme].bannerBackground
-		}}
-		style={({ pressed }: any) => ({
-			backgroundColor: isIOS && pressed ? themes[theme].bannerBackground : 'transparent'
-		})}
-	>
-		<View style={[styles.container, styles.button, style]}>
-			<Avatar text={username} size={30} style={styles.avatar} />
-			<View style={styles.textContainer}>
-				<Text style={[styles.name, { color: themes[theme].titleText }]} numberOfLines={1}>
-					{name}
-				</Text>
-				<Text style={[styles.username, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-					@{username}
-				</Text>
+const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon }: IUserItem): React.ReactElement => {
+	const { colors } = useTheme();
+	return (
+		<Pressable
+			onPress={onPress}
+			onLongPress={onLongPress}
+			testID={testID}
+			android_ripple={{
+				color: colors.bannerBackground
+			}}
+			style={({ pressed }: any) => ({
+				backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
+			})}
+		>
+			<View style={[styles.container, styles.button, style]}>
+				<Avatar text={username} size={30} style={styles.avatar} />
+				<View style={styles.textContainer}>
+					<Text style={[styles.name, { color: colors.titleText }]} numberOfLines={1}>
+						{name}
+					</Text>
+					<Text style={[styles.username, { color: colors.auxiliaryText }]} numberOfLines={1}>
+						@{username}
+					</Text>
+				</View>
+				{icon ? <CustomIcon name={icon} size={22} color={colors.actionTintColor} style={styles.icon} /> : null}
 			</View>
-			{icon ? <CustomIcon name={icon} size={22} color={themes[theme].actionTintColor} style={styles.icon} /> : null}
-		</View>
-	</Pressable>
-);
+		</Pressable>
+	);
+};
 
 export default UserItem;

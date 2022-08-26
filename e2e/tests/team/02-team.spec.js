@@ -266,6 +266,11 @@ describe('Team', () => {
 			});
 
 			it('should add users to the team', async () => {
+				await element(by.id('room-actions-members')).tap();
+				await waitFor(element(by.id('room-members-view')))
+					.toExist()
+					.withTimeout(2000);
+
 				await waitFor(element(by.id('room-actions-add-user')))
 					.toExist()
 					.withTimeout(10000);
@@ -296,11 +301,17 @@ describe('Team', () => {
 
 				await element(by.id('selected-users-view-submit')).tap();
 				await sleep(300);
+				await tapBack();
+				await sleep(300);
 				await waitFor(element(by.id('room-actions-members')))
 					.toExist()
 					.withTimeout(10000);
 				await element(by.id('room-actions-members')).tap();
-				await element(by.id('room-members-view-toggle-status')).tap();
+				await element(by.id('room-members-view-filter')).tap();
+				await waitFor(element(by.id('room-members-view-toggle-status-all')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('room-members-view-toggle-status-all')).tap();
 				await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 					.toExist()
 					.withTimeout(60000);
@@ -358,7 +369,11 @@ describe('Team', () => {
 				});
 
 				it('should show all users', async () => {
-					await element(by.id('room-members-view-toggle-status')).tap();
+					await element(by.id('room-members-view-filter')).tap();
+					await waitFor(element(by.id('room-members-view-toggle-status-all')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('room-members-view-toggle-status-all')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);

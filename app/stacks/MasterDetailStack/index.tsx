@@ -127,7 +127,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 				<ModalStack.Screen name='SelectListView' component={SelectListView} />
 				<ModalStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
-				<ModalStack.Screen name='RoomMembersView' component={RoomMembersView} options={RoomMembersView.navigationOptions} />
+				<ModalStack.Screen name='RoomMembersView' component={RoomMembersView} />
 				<ModalStack.Screen
 					name='SearchMessagesView'
 					component={SearchMessagesView}

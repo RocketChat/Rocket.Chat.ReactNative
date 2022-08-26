@@ -64,6 +64,7 @@ export type ModalStackParamList = {
 	RoomMembersView: {
 		rid: string;
 		room: TSubscriptionModel;
+		joined?: boolean;
 	};
 	DiscussionsView: {
 		rid: string;

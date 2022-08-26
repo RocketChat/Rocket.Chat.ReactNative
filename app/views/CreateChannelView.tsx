@@ -331,20 +331,15 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		});
 	}
 
-	renderItem = ({ item }: { item: IOtherUser }) => {
-		const { theme } = this.props;
-
-		return (
-			<UserItem
-				name={item.fname}
-				username={item.name}
-				onPress={() => this.removeUser(item)}
-				testID={`create-channel-view-item-${item.name}`}
-				icon='check'
-				theme={theme}
-			/>
-		);
-	};
+	renderItem = ({ item }: { item: IOtherUser }) => (
+		<UserItem
+			name={item.fname}
+			username={item.name}
+			onPress={() => this.removeUser(item)}
+			testID={`create-channel-view-item-${item.name}`}
+			icon='check'
+		/>
+	);
 
 	renderInvitedList = () => {
 		const { users, theme } = this.props;
