@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	contentContainerList: {
-		paddingLeft: 16,
+		paddingHorizontal: 16,
 		marginBottom: 16
 	}
 });

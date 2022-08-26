@@ -48,6 +48,9 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		...sharedStyles.textRegular
 	},
+	invitedList: {
+		paddingHorizontal: 16
+	},
 	buttonCreate: {
 		marginHorizontal: 16,
 		marginTop: 24
@@ -164,7 +167,7 @@ const CreateChannelView = () => {
 										borderColor: colors.separatorColor
 									}
 								]}
-								contentContainerStyle={{ paddingLeft: 16 }}
+								contentContainerStyle={styles.invitedList}
 								renderItem={({ item }) => <UserItem removeUser={removeUser} useRealName={useRealName} item={item} />}
 								keyboardShouldPersistTaps='always'
 								horizontal

@@ -80,7 +80,7 @@ const SelectedUsersView = () => {
 				)
 		};
 		navigation.setOptions(options);
-	}, [users.length, maxUsers]);
+	}, [navigation, users.length, maxUsers]);
 
 	useEffect(() => {
 		if (isGroupChat()) {
