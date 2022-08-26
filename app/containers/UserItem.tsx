@@ -25,12 +25,8 @@ const styles = StyleSheet.create({
 		marginRight: 15
 	},
 	name: {
-		fontSize: 17,
+		fontSize: 16,
 		...sharedStyles.textMedium
-	},
-	username: {
-		fontSize: 14,
-		...sharedStyles.textRegular
 	},
 	icon: {
 		marginHorizontal: 15,
@@ -46,10 +42,12 @@ interface IUserItem {
 	onLongPress?: () => void;
 	style?: StyleProp<ViewStyle>;
 	icon?: TIconsName | null;
+	iconColor?: string;
 }
 
-const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon }: IUserItem): React.ReactElement => {
+const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, iconColor }: IUserItem) => {
 	const { colors } = useTheme();
+
 	return (
 		<Pressable
 			onPress={onPress}
@@ -65,14 +63,11 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon }:
 			<View style={[styles.container, styles.button, style]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.titleText }]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.bodyText }]} numberOfLines={1}>
 						{name}
 					</Text>
-					<Text style={[styles.username, { color: colors.auxiliaryText }]} numberOfLines={1}>
-						@{username}
-					</Text>
 				</View>
-				{icon ? <CustomIcon name={icon} size={22} color={colors.actionTintColor} style={styles.icon} /> : null}
+				{icon ? <CustomIcon name={icon} size={22} color={iconColor || colors.actionTintColor} style={styles.icon} /> : null}
 			</View>
 		</Pressable>
 	);

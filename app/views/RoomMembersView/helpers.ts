@@ -120,6 +120,7 @@ const removeFromTeam = async (
 			updateState({
 				members: newMembers
 			});
+			appNavigation.navigate('RoomMembersView', { room });
 		}
 	} catch (e: any) {
 		log(e);

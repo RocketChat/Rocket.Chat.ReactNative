@@ -123,7 +123,7 @@ const ChatsStackNavigator = () => {
 				options={ThreadMessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen name='TeamChannelsView' component={TeamChannelsView} />
-			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} options={CreateChannelView.navigationOptions} />
+			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<ChatsStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
 			<ChatsStack.Screen
 				name='AddExistingChannelView'
@@ -252,13 +252,9 @@ const NewMessageStackNavigator = () => {
 		<NewMessageStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
-			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} options={NewMessageView.navigationOptions} />
+			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} />
 			<NewMessageStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
-			<NewMessageStack.Screen
-				name='CreateChannelView'
-				component={CreateChannelView}
-				options={CreateChannelView.navigationOptions}
-			/>
+			<NewMessageStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<NewMessageStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
 		</NewMessageStack.Navigator>
 	);
