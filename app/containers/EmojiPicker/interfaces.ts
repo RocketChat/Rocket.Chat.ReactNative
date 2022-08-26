@@ -1,5 +1,3 @@
-import { StyleProp, TextStyle } from 'react-native';
-
 import { TIconsName } from '../CustomIcon';
 import { IEmoji } from '../../definitions';
 
@@ -11,7 +9,6 @@ export enum EventTypes {
 
 export interface IEmojiPickerProps {
 	onItemClicked: (event: EventTypes, emoji?: string, shortname?: string) => void;
-	tabEmojiStyle?: StyleProp<TextStyle>;
 	isEmojiKeyboard?: boolean;
 	searching?: boolean;
 	searchedEmojis?: (string | IEmoji)[];
@@ -23,8 +20,8 @@ export interface IFooterProps {
 }
 
 export interface ITabBarProps {
-	goToPage?: (page: number) => void;
 	activeTab?: number;
-	tabs?: TIconsName[];
-	tabEmojiStyle: StyleProp<TextStyle>;
+	tabs?: { key: TIconsName; title: string }[];
+	onPress: (ket: string) => void;
+	showFrequentlyUsed?: boolean;
 }
