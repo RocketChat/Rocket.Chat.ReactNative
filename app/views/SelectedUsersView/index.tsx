@@ -27,7 +27,6 @@ import { search as searchMethod } from '../../lib/methods';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks';
 import Header from './Header';
-import sharedStyles from '../Styles';
 
 type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
 type TNavigation = StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
@@ -154,16 +153,9 @@ const SelectedUsersView = () => {
 			<FlatList
 				data={data}
 				keyExtractor={item => item._id}
-				renderItem={({ item, index }) => {
+				renderItem={({ item }) => {
 					const name = useRealName && item.fname ? item.fname : item.name;
 					const username = item.search ? (item.username as string) : item.name;
-					let style = { borderColor: colors.separatorColor };
-					if (search.length > 0 && index === search.length - 1) {
-						style = { ...style, ...sharedStyles.separatorBottom };
-					}
-					if (search.length === 0 && index === chats.length - 1) {
-						style = { ...style, ...sharedStyles.separatorBottom };
-					}
 					return (
 						<UserItem
 							name={name}
@@ -172,11 +164,11 @@ const SelectedUsersView = () => {
 							testID={`select-users-view-item-${item.name}`}
 							icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
 							iconColor={isChecked(username) ? colors.actionTintColor : colors.separatorColor}
-							style={style}
 						/>
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
+				ListFooterComponent={<List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
 				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
 				keyboardShouldPersistTaps='always'
