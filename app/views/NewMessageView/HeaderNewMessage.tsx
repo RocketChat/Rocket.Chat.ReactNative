@@ -17,6 +17,9 @@ import { useAppSelector, usePermissions } from '../../lib/hooks';
 import ButtonCreate from './ButtonCreate';
 
 const styles = StyleSheet.create({
+	container: {
+		paddingTop: 16
+	},
 	buttonContainer: {
 		paddingBottom: 16
 	}
@@ -65,7 +68,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	return (
 		<>
-			<View style={{ backgroundColor: themes[theme].auxiliaryBackground, paddingTop: 16 }}>
+			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<View style={styles.buttonContainer}>
 					{createPublicChannelPermission || createPrivateChannelPermission ? (
 						<ButtonCreate
