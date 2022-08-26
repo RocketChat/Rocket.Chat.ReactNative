@@ -211,19 +211,15 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	renderSelectedItem = ({ item }: { item: ISelectedUser }) => {
-		const { theme } = this.props;
-		return (
-			<UserItem
-				name={item.fname}
-				username={item.name}
-				onPress={() => this._onPressSelectedItem(item)}
-				testID={`selected-user-${item.name}`}
-				style={{ paddingRight: 15 }}
-				theme={theme}
-			/>
-		);
-	};
+	renderSelectedItem = ({ item }: { item: ISelectedUser }) => (
+		<UserItem
+			name={item.fname}
+			username={item.name}
+			onPress={() => this._onPressSelectedItem(item)}
+			testID={`selected-user-${item.name}`}
+			style={{ paddingRight: 15 }}
+		/>
+	);
 
 	renderItem = ({ item, index }: { item: ISelectedUser; index: number }) => {
 		const { search, chats } = this.state;
@@ -249,7 +245,6 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 				testID={`select-users-view-item-${item.name}`}
 				icon={this.isChecked(username) ? 'check' : null}
 				style={style}
-				theme={theme}
 			/>
 		);
 	};
