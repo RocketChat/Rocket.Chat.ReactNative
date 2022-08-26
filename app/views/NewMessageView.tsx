@@ -290,7 +290,6 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 				onPress={() => this.goRoom(itemModel)}
 				testID={`new-message-view-item-${item.name}`}
 				style={style}
-				theme={theme}
 			/>
 		);
 	};

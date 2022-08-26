@@ -272,6 +272,10 @@ export default {
 	RA_MOVE_TO_TEAM_F: 'ra_move_to_team_f',
 	RA_SEARCH_TEAM: 'ra_search_team',
 
+	// ROOM MEMBERS ACTIONS VIEW
+	RM_GO_SELECTEDUSERS: 'rm_go_selected_users',
+	RM_GO_INVITEUSERS: 'rm_go_invite_users',
+
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',
 	RI_GO_LIVECHAT_EDIT: 'ri_go_livechat_edit',

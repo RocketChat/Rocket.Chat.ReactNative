@@ -95,7 +95,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='SelectListView' component={SelectListView} options={SelectListView.navigationOptions} />
 			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 			<ChatsStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
-			<ChatsStack.Screen name='RoomMembersView' component={RoomMembersView} options={RoomMembersView.navigationOptions} />
+			<ChatsStack.Screen name='RoomMembersView' component={RoomMembersView} />
 			<ChatsStack.Screen name='DiscussionsView' component={DiscussionsView} />
 			<ChatsStack.Screen
 				name='SearchMessagesView'

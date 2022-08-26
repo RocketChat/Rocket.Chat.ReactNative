@@ -75,6 +75,7 @@ export type ChatsStackParamList = {
 	RoomMembersView: {
 		rid: string;
 		room: ISubscription;
+		joined?: boolean;
 	};
 	DiscussionsView: {
 		rid: string;

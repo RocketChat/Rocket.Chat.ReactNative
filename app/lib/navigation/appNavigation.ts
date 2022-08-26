@@ -17,10 +17,15 @@ function replace(name: string, params: any) {
 	navigationRef.current?.dispatch(StackActions.replace(name, params));
 }
 
+function popToTop() {
+	navigationRef.current?.dispatch(StackActions.popToTop());
+}
+
 export default {
 	navigationRef,
 	routeNameRef,
 	navigate,
 	back,
-	replace
+	replace,
+	popToTop
 };
