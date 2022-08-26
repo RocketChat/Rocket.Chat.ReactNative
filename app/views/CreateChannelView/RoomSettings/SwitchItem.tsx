@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		flexDirection: 'row',
 		maxHeight: 80,
-		marginBottom: 8
+		marginBottom: 12
 	},
 	switchTextContainer: {
 		flex: 1,

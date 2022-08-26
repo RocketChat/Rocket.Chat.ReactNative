@@ -14,9 +14,13 @@ const styles = StyleSheet.create({
 	selectedText: {
 		marginLeft: 16,
 		marginBottom: 12,
+		fontSize: 12,
 		...sharedStyles.textRegular
 	},
-	contentContainerList: { paddingLeft: 16, marginBottom: 16 }
+	contentContainerList: {
+		paddingLeft: 16,
+		marginBottom: 16
+	}
 });
 
 const Header = ({

@@ -27,19 +27,25 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
+	containerTextInput: {
+		paddingHorizontal: 16,
+		marginTop: 16
+	},
+	containerStyle: {
+		marginBottom: 28
+	},
 	list: {
 		width: '100%'
 	},
 	invitedHeader: {
-		marginTop: 16,
-		marginBottom: 12,
+		marginVertical: 12,
 		marginHorizontal: 16,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 	invitedCount: {
-		fontSize: 14,
+		fontSize: 12,
 		...sharedStyles.textRegular
 	},
 	buttonCreate: {
@@ -129,12 +135,12 @@ const CreateChannelView = () => {
 			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
-					<View style={{ borderColor: colors.separatorColor, paddingHorizontal: 16, marginTop: 16 }}>
+					<View style={[styles.containerTextInput, { borderColor: colors.separatorColor }]}>
 						<ControlledFormTextInput
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 							testID='create-channel-name'
 							returnKeyType='done'
-							containerStyle={{ marginBottom: 32 }}
+							containerStyle={styles.containerStyle}
 							name={'channelName'}
 							control={control}
 						/>
