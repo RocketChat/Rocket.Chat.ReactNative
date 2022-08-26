@@ -20,8 +20,9 @@ import sharedStyles from '../Styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import Button from '../../containers/Button';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { IOtherUser, UserItem } from './UserItem';
+import Chip from '../../containers/Chip';
 import { RoomSettings } from './RoomSettings';
+import { ISelectedUser } from '../../reducers/selectedUsers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -102,7 +103,7 @@ const CreateChannelView = () => {
 	}, [isTeam, navigation]);
 
 	const removeUser = useCallback(
-		(user: IOtherUser) => {
+		(user: ISelectedUser) => {
 			dispatch(removeUserAction(user));
 		},
 		[dispatch]
@@ -168,7 +169,19 @@ const CreateChannelView = () => {
 									}
 								]}
 								contentContainerStyle={styles.invitedList}
-								renderItem={({ item }) => <UserItem removeUser={removeUser} useRealName={useRealName} item={item} />}
+								renderItem={({ item }) => {
+									const name = useRealName && item.fname ? item.fname : item.name;
+									const username = item.name;
+
+									return (
+										<Chip
+											text={name}
+											avatar={username}
+											onPress={() => removeUser(item)}
+											testID={`create-channel-view-item-${item.name}`}
+										/>
+									);
+								}}
 								keyboardShouldPersistTaps='always'
 								horizontal
 							/>
