@@ -5,7 +5,6 @@ import { detox as config } from '../../package.json';
 import { setup } from '../helpers/data_setup';
 import { prepareAndroid } from '../helpers/app';
 
-// @ts-ignore
 before(async () => {
 	// @ts-ignore
 	await Promise.all([setup(), detox.init(config, { launchApp: false })]);
@@ -25,7 +24,6 @@ afterEach(async function () {
 	await adapter.afterEach(this);
 });
 
-// @ts-ignore
 after(async () => {
 	await detox.cleanup();
 });
