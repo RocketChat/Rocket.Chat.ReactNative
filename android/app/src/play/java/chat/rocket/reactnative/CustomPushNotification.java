@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -112,6 +113,7 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
+        Log.d("Notification", "New Notification build");
         final Notification.Builder notification = new Notification.Builder(mContext);
 
         Bundle bundle = mNotificationProps.asBundle();

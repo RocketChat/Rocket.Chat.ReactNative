@@ -3,6 +3,7 @@ import { StyleSheet, TextInputProps, View } from 'react-native';
 
 import I18n from '../../i18n';
 import { FormTextInput } from '../TextInput';
+import { getChannelsByUser, getUnreadMessagesByUser, getUserInfoAndRooms } from '../../lib/services/restApi';
 
 const styles = StyleSheet.create({
 	inputContainer: {
@@ -33,7 +34,13 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				onSubmitEditing={onSubmitEditing}
 				value={text}
 				testID={testID}
-				onClearInput={() => internalOnChangeText('')}
+				onClearInput={() => {
+					internalOnChangeText('');
+					console.count('onClearInput');
+					getUserInfoAndRooms()
+						.then(data => console.log(JSON.stringify(data)))
+						.catch(err => console.log(`error: ${JSON.stringify(err)}`));
+				}}
 				iconRight={'search'}
 			/>
 		</View>

@@ -17,7 +17,7 @@ export type UsersEndpoints = {
 		POST: (params: { email: string }) => {};
 	};
 	'users.info': {
-		GET: (params: { userId: IUser['_id'] }) => {
+		GET: (params: { userId: IUser['_id']; fields?: { [key: string]: number } }) => {
 			user: IUser;
 			success: boolean;
 		};

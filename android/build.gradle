@@ -10,6 +10,7 @@ buildscript {
     def isPlay = !taskRequests.contains("foss")
 
     ext {
+        applicationId = "chat.rocket.reactnative"
         buildToolsVersion = "31.0.0"
         minSdkVersion = 23
         compileSdkVersion = 31

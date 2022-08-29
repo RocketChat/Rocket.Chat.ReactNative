@@ -8,24 +8,16 @@
 		"test-update": "sb-rn-get-stories && jest --updateSnapshot",
 		"lint": "eslint . && tsc",
 		"prettier-lint": "prettier --write . && yarn lint",
-		"ci": "npm run precommit && codecov",
 		"ios": "npx react-native run-ios",
 		"android": "npx react-native run-android --variant=experimentalPlayDebug",
 		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --variant=experimentalPlayDebug --appId",
 		"log-android": "react-native log-android",
 		"snyk-protect": "snyk protect",
-		"precommit": "lint-staged",
+		"precommit": "echo Hey!",
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
 		"prepare": "husky install",
 		"build-icon-set": "node scripts/build-icon-set.js"
-	},
-	"lint-staged": {
-		"*.{js,ts,tsx}": [
-			"prettier --write",
-			"eslint",
-			"jest --bail --findRelatedTests"
-		]
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "^7.10.5",
@@ -63,10 +55,12 @@
 		"expo": "^45.0.5",
 		"expo-apple-authentication": "4.2.1",
 		"expo-av": "11.2.3",
+		"expo-background-fetch": "~10.2.0",
 		"expo-file-system": "14.0.0",
 		"expo-haptics": "11.2.0",
 		"expo-keep-awake": "10.1.1",
 		"expo-local-authentication": "12.2.0",
+		"expo-task-manager": "~10.2.1",
 		"expo-video-thumbnails": "6.3.0",
 		"expo-web-browser": "10.2.1",
 		"hoist-non-react-statics": "3.3.2",
