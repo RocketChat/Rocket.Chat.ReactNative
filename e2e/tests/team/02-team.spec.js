@@ -1,5 +1,5 @@
-const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } = require('../../helpers/app');
+import data from '../../data';
+import { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } from '../../helpers/app';
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${roomName}`);

@@ -1,5 +1,8 @@
-const { exec } = require('child_process');
-const data = require('../data');
+import { exec } from 'child_process';
+
+import { by, expect, element } from 'detox';
+
+import data from '../data';
 
 const platformTypes = {
 	android: {
@@ -7,18 +10,20 @@ const platformTypes = {
 		alertButtonType: 'android.widget.Button',
 		scrollViewType: 'android.widget.ScrollView',
 		textInputType: 'android.widget.EditText',
-		textMatcher: 'text'
+		// eslint-disable-next-line no-undef
+		textMatcher: 'text' as keyof Pick<Detox.ByFacade, 'text'>
 	},
 	ios: {
 		// iOS types
 		alertButtonType: '_UIAlertControllerActionView',
 		scrollViewType: 'UIScrollView',
 		textInputType: '_UIAlertControllerTextField',
-		textMatcher: 'label'
+		// eslint-disable-next-line no-undef
+		textMatcher: 'label' as keyof Pick<Detox.ByFacade, 'label'>
 	}
 };
 
-function sleep(ms) {
+function sleep(ms: number) {
 	return new Promise(res => setTimeout(res, ms));
 }
 
@@ -34,7 +39,7 @@ async function navigateToWorkspace(server = data.server) {
 	await expect(element(by.id('workspace-view'))).toBeVisible();
 }
 
-async function navigateToLogin(server) {
+async function navigateToLogin(server: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-login')).tap();
 	await waitFor(element(by.id('login-view')))
@@ -42,7 +47,7 @@ async function navigateToLogin(server) {
 		.withTimeout(2000);
 }
 
-async function navigateToRegister(server) {
+async function navigateToRegister(server: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
 	await waitFor(element(by.id('register-view')))
@@ -50,7 +55,7 @@ async function navigateToRegister(server) {
 		.withTimeout(2000);
 }
 
-async function login(username, password) {
+async function login(username: string, password: string) {
 	await waitFor(element(by.id('login-view')))
 		.toExist()
 		.withTimeout(2000);
@@ -90,23 +95,22 @@ async function logout() {
 	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
-async function mockMessage(message, isThread = false) {
+async function mockMessage(message: string, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
 	await element(by.id(input)).replaceText(`${data.random}${message}`);
 	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
-	await sleep(500);
 	await waitFor(element(by[textMatcher](`${data.random}${message}`)))
 		.toExist()
-		.withTimeout(10000);
+		.withTimeout(60000);
 	await element(by[textMatcher](`${data.random}${message}`))
 		.atIndex(0)
 		.tap();
 }
 
-async function starMessage(message) {
+async function starMessage(message: string) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const messageLabel = `${data.random}${message}`;
@@ -120,7 +124,7 @@ async function starMessage(message) {
 		.withTimeout(5000);
 }
 
-async function pinMessage(message) {
+async function pinMessage(message: string) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const messageLabel = `${data.random}${message}`;
@@ -148,7 +152,7 @@ async function tapBack() {
 	await element(by.id('header-back')).atIndex(0).tap();
 }
 
-async function searchRoom(room) {
+async function searchRoom(room: string) {
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(30000);
@@ -165,7 +169,8 @@ async function searchRoom(room) {
 		.withTimeout(60000);
 }
 
-async function tryTapping(theElement, timeout, longtap = false) {
+// eslint-disable-next-line no-undef
+async function tryTapping(theElement: Detox.IndexableNativeElement, timeout: number, longtap = false) {
 	try {
 		if (longtap) {
 			await theElement.longPress();
@@ -182,7 +187,7 @@ async function tryTapping(theElement, timeout, longtap = false) {
 	}
 }
 
-const checkServer = async server => {
+const checkServer = async (server: string) => {
 	const label = `Connected to ${server}`;
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
@@ -200,9 +205,9 @@ const checkServer = async server => {
 		.withTimeout(10000);
 };
 
-function runCommand(command) {
-	return new Promise((resolve, reject) => {
-		exec(command, (error, stdout, stderr) => {
+function runCommand(command: string) {
+	return new Promise<void>((resolve, reject) => {
+		exec(command, (error, _stdout, stderr) => {
 			if (error) {
 				reject(new Error(`exec error: ${stderr}`));
 				return;
@@ -223,7 +228,7 @@ async function prepareAndroid() {
 	await runCommand('adb shell settings put global animator_duration_scale 0.0');
 }
 
-module.exports = {
+export {
 	navigateToWorkspace,
 	navigateToLogin,
 	navigateToRegister,

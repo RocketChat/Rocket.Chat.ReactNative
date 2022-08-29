@@ -3,4 +3,4 @@ const account = {
 	adminPassword: 'Change_here'
 };
 
-module.exports = account;
+export default account;

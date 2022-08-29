@@ -26,9 +26,9 @@ Or
 ### 2. Prepare test data
 
 * If you're running your own Rocket.Chat server, ensure it's started (e.g. `meteor npm start` in the server project directory).
-* Edit `e2e/data.js`:
+* Edit `e2e/data.ts`:
   * Set the `server` to the address of the server under test
-  * Create a file called `e2e_account.js`, in the same folder as `data.js`. Set the `adminUser` and `adminPassword` to an admin user on that environment (or a user with at least `create-user` and `create-c` permissions). The example of how to create this file is on `e2e/e2e_account.example.js`
+  * Create a file called `e2e_account.ts`, in the same folder as `data.ts`. Set the `adminUser` and `adminPassword` to an admin user on that environment (or a user with at least `create-user` and `create-c` permissions). The example of how to create this file is on `e2e/e2e_account.example.ts`
 * Working example configs exist in `./e2e/data/`. Setting `FORCE_DEFAULT_DOCKER_DATA` to `1` in the `runTestsInDocker.sh` script will use the example config automatically
 
 ### 3. Running tests

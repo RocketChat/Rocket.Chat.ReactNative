@@ -1,8 +1,20 @@
-const random = require('./helpers/random');
-// eslint-disable-next-line import/no-unresolved, import/extensions
-const account = require('./e2e_account');
+import random from './helpers/random';
+import { account } from './e2e_account';
 
-const value = random(20);
+export interface IUser {
+	username: string;
+	password: string;
+	email: string;
+}
+
+export type TData = typeof data;
+export type TDataKeys = keyof TData;
+export type TDataUsers = keyof typeof data.users;
+export type TDataChannels = keyof typeof data.channels;
+export type TDataGroups = keyof typeof data.groups;
+export type TDataTeams = keyof typeof data.teams;
+
+const value: string = random(20);
 const data = {
 	server: 'https://mobile.rocket.chat',
 	...account,
@@ -77,4 +89,5 @@ const data = {
 	},
 	random: value
 };
-module.exports = data;
+
+export default data;

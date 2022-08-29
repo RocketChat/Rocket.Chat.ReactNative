@@ -1,4 +1,4 @@
-function random(length) {
+function random(length: number) {
 	let text = '';
 	const possible = 'abcdefghijklmnopqrstuvwxyz';
 	for (let i = 0; i < length; i += 1) {
@@ -6,4 +6,5 @@ function random(length) {
 	}
 	return text;
 }
-module.exports = random;
+
+export default random;

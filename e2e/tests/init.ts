@@ -1,11 +1,13 @@
-const detox = require('detox');
-const adapter = require('detox/runners/mocha/adapter');
+import detox from 'detox';
+import adapter from 'detox/runners/mocha/adapter';
 
-const config = require('../../package.json').detox;
-const { setup } = require('../helpers/data_setup');
-const { prepareAndroid } = require('../helpers/app');
+import { detox as config } from '../../package.json';
+import { setup } from '../helpers/data_setup';
+import { prepareAndroid } from '../helpers/app';
 
+// @ts-ignore
 before(async () => {
+	// @ts-ignore
 	await Promise.all([setup(), detox.init(config, { launchApp: false })]);
 	await prepareAndroid(); // Make Android less flaky
 	// await dataSetup()
@@ -14,13 +16,16 @@ before(async () => {
 });
 
 beforeEach(async function () {
+	// @ts-ignore
 	await adapter.beforeEach(this);
 });
 
 afterEach(async function () {
+	// @ts-ignore
 	await adapter.afterEach(this);
 });
 
+// @ts-ignore
 after(async () => {
 	await detox.cleanup();
 });

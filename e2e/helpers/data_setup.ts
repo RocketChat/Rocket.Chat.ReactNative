@@ -1,7 +1,7 @@
-const axios = require('axios').default;
+import axios from 'axios';
 
-const data = require('../data');
-const random = require('./random');
+import data, { TDataChannels, TDataGroups, TDataTeams, TDataUsers } from '../data';
+import random from './random';
 
 const TEAM_TYPE = {
 	PUBLIC: 0,
@@ -17,7 +17,7 @@ const rocketchat = axios.create({
 	}
 });
 
-const login = async (username, password) => {
+const login = async (username: string, password: string) => {
 	console.log(`Logging in as user ${username}`);
 	const response = await rocketchat.post('login', {
 		user: username,
@@ -30,7 +30,7 @@ const login = async (username, password) => {
 	return { authToken, userId };
 };
 
-const createUser = async (username, password, name, email) => {
+const createUser = async (username: string, password: string, name: string, email: string) => {
 	console.log(`Creating user ${username}`);
 	try {
 		await rocketchat.post('users.create', {
@@ -45,7 +45,7 @@ const createUser = async (username, password, name, email) => {
 	}
 };
 
-const createChannelIfNotExists = async channelname => {
+const createChannelIfNotExists = async (channelname: string) => {
 	console.log(`Creating public channel ${channelname}`);
 	try {
 		const room = await rocketchat.post('channels.create', {
@@ -65,7 +65,7 @@ const createChannelIfNotExists = async channelname => {
 	}
 };
 
-const createTeamIfNotExists = async teamname => {
+const createTeamIfNotExists = async (teamname: string) => {
 	console.log(`Creating private team ${teamname}`);
 	try {
 		await rocketchat.post('teams.create', {
@@ -84,7 +84,7 @@ const createTeamIfNotExists = async teamname => {
 	}
 };
 
-const createGroupIfNotExists = async groupname => {
+const createGroupIfNotExists = async (groupname: string) => {
 	console.log(`Creating private group ${groupname}`);
 	try {
 		await rocketchat.post('groups.create', {
@@ -102,7 +102,7 @@ const createGroupIfNotExists = async groupname => {
 	}
 };
 
-const changeChannelJoinCode = async (roomId, joinCode) => {
+const changeChannelJoinCode = async (roomId: string, joinCode: string) => {
 	console.log(`Changing channel Join Code ${roomId}`);
 	try {
 		await rocketchat.post('method.call/saveRoomSettings', {
@@ -119,7 +119,7 @@ const changeChannelJoinCode = async (roomId, joinCode) => {
 	}
 };
 
-const sendMessage = async (user, channel, msg, tmid) => {
+const sendMessage = async (user: { username: string; password: string }, channel: string, msg: string, tmid: string) => {
 	console.log(`Sending message to ${channel}`);
 	try {
 		await login(user.username, user.password);
@@ -136,21 +136,21 @@ const setup = async () => {
 
 	for (const userKey in data.users) {
 		if (Object.prototype.hasOwnProperty.call(data.users, userKey)) {
-			const user = data.users[userKey];
+			const user = data.users[userKey as TDataUsers];
 			await createUser(user.username, user.password, user.username, user.email);
 		}
 	}
 
 	for (const channelKey in data.channels) {
 		if (Object.prototype.hasOwnProperty.call(data.channels, channelKey)) {
-			const channel = data.channels[channelKey];
+			const channel = data.channels[channelKey as TDataChannels];
 			const {
 				data: {
 					channel: { _id }
 				}
 			} = await createChannelIfNotExists(channel.name);
 
-			if (channel.joinCode) {
+			if ('joinCode' in channel) {
 				await changeChannelJoinCode(_id, channel.joinCode);
 			}
 		}
@@ -160,33 +160,27 @@ const setup = async () => {
 
 	for (const groupKey in data.groups) {
 		if (Object.prototype.hasOwnProperty.call(data.groups, groupKey)) {
-			const group = data.groups[groupKey];
+			const group = data.groups[groupKey as TDataGroups];
 			await createGroupIfNotExists(group.name);
 		}
 	}
 
 	for (const teamKey in data.teams) {
 		if (Object.prototype.hasOwnProperty.call(data.teams, teamKey)) {
-			const team = data.teams[teamKey];
+			const team = data.teams[teamKey as TDataTeams];
 			await createTeamIfNotExists(team.name);
 		}
 	}
 };
 
-const get = endpoint => {
+const get = (endpoint: string) => {
 	console.log(`GET /${endpoint}`);
 	return rocketchat.get(endpoint);
 };
 
-const post = (endpoint, body) => {
+const post = (endpoint: string, body: any) => {
 	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
 	return rocketchat.post(endpoint, body);
 };
 
-module.exports = {
-	setup,
-	sendMessage,
-	get,
-	post,
-	login
-};
+export { setup, sendMessage, get, post, login };

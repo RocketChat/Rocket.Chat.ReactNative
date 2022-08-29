@@ -161,10 +161,12 @@
 		"@testing-library/react-hooks": "^8.0.1",
 		"@testing-library/react-native": "^9.0.0",
 		"@types/bytebuffer": "^5.0.43",
+		"@types/detox": "^18.1.0",
 		"@types/ejson": "^2.1.3",
 		"@types/i18n-js": "^3.8.2",
 		"@types/jest": "^26.0.24",
 		"@types/lodash": "^4.14.171",
+		"@types/mocha": "^9.1.1",
 		"@types/react": "^17.0.14",
 		"@types/react-native": "0.68.1",
 		"@types/react-native-background-timer": "^2.0.0",
@@ -205,6 +207,7 @@
 		"react-test-renderer": "17.0.2",
 		"reactotron-redux": "3.1.3",
 		"reactotron-redux-saga": "4.2.3",
+		"ts-node": "^10.9.1",
 		"typescript": "^4.3.5"
 	},
 	"jest": {
@@ -244,6 +247,7 @@
 		}
 	},
 	"detox": {
+		"test-runner": "mocha",
 		"runner-config": "e2e/.mocharc.json",
 		"specs": "e2e/tests",
 		"configurations": {
@@ -252,7 +256,7 @@
 				"build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -arch x86_64 -derivedDataPath ios/build",
 				"type": "ios.simulator",
 				"device": {
-					"type": "iPhone 11 Pro"
+					"name": "iPhone_12_Pro_15.5"
 				}
 			},
 			"ios.sim.release": {
