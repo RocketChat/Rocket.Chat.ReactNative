@@ -118,7 +118,6 @@
   "Black": "Preto",
   "Block_user": "Bloquear utilizador",
   "Browser": "Navegador",
-  "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder",
   "Busy": "Ocupado",
   "By_proceeding_you_are_agreeing": "Ao prosseguir você concorda com o(s) nosso(s)",
   "Cancel_editing": "Cancelar edição",
@@ -504,5 +503,6 @@
   "you_were_mentioned": "você foi mencionado",
   "you": "você",
   "You": "Você",
-  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!"
+  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
+  "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder"
 }

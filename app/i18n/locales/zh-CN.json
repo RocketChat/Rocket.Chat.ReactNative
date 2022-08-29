@@ -115,7 +115,6 @@
   "Black": "黑色",
   "Block_user": "屏蔽此用户",
   "Browser": "浏览器",
-  "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复",
   "Busy": "忙碌",
   "By_proceeding_you_are_agreeing": "继续操作，请同意我们的",
   "Cancel_editing": "取消编辑",
@@ -659,5 +658,6 @@
   "No_threads": "当前没有讨论串",
   "No_threads_following": "当前没有正在追踪的讨论",
   "No_threads_unread": "当前没有未读的讨论",
-  "Messagebox_Send_to_channel": "发送至频道"
+  "Messagebox_Send_to_channel": "发送至频道",
+  "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复"
 }
