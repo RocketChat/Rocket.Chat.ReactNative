@@ -1,12 +1,25 @@
-// eslint-disable-next-line import/no-unresolved, import/extensions
-const random = require('./helpers/random');
-// eslint-disable-next-line import/no-unresolved, import/extensions
-const account = require('./e2e_account');
+/* eslint-disable import/extensions, import/no-unresolved */
+// @ts-ignore
+import random from './helpers/random';
+
+export interface IUser {
+	username: string;
+	password: string;
+	email: string;
+}
+
+export type TData = typeof data;
+export type TDataKeys = keyof TData;
+export type TDataUsers = keyof typeof data.users;
+export type TDataChannels = keyof typeof data.channels;
+export type TDataGroups = keyof typeof data.groups;
+export type TDataTeams = keyof typeof data.teams;
 
 const value = random(20);
 const data = {
-	server: 'https://mobile.rocket.chat',
-	...account,
+	server: 'http://localhost:3000',
+	adminUser: 'admin',
+	adminPassword: 'password',
 	alternateServer: 'https://stable.rocket.chat',
 	users: {
 		regular: {
@@ -43,6 +56,12 @@ const data = {
 	groups: {
 		private: {
 			name: `detox-private-${value}`
+		},
+		alternate: {
+			name: `detox-alternate-${value}`
+		},
+		alternate2: {
+			name: `detox-alternate2-${value}`
 		}
 	},
 	teams: {
@@ -72,4 +91,5 @@ const data = {
 	},
 	random: value
 };
-module.exports = data;
+
+export default data;

@@ -1,5 +1,5 @@
 import random from './helpers/random';
-import { account } from './e2e_account';
+import account from './e2e_account';
 
 export interface IUser {
 	username: string;
