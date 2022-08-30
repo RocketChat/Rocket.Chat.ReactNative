@@ -23,10 +23,16 @@
         <item name="android:windowAnimationStyle">@style/Share.Window</item>
     </style>
 
-    <style name="BootTheme" parent="AppTheme">
+    <!-- <style name="BootTheme" parent="AppTheme">
         <item name="android:background">@drawable/launch_screen</item>
         <item name="colorPrimaryDark">@color/splashBackground</item>
         <item name="android:navigationBarColor">@color/splashBackground</item>
+    </style> -->
+    <!-- BootTheme should inherit from Theme.SplashScreen -->
+    <style name="BootTheme" parent="Theme.SplashScreen">
+      <item name="windowSplashScreenBackground">@color/bootsplash_background</item>
+      <item name="windowSplashScreenAnimatedIcon">@mipmap/splash</item>
+      <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 
     <!--  https://github.com/facebook/react-native/blob/d1ab03235cb4b93304150878d2b9057ab45bba77/ReactAndroid/src/main/res/views/modal/values/themes.xml#L5  -->

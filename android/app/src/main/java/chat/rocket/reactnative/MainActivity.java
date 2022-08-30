@@ -16,9 +16,10 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RNBootSplash.init(this);
         // https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
         super.onCreate(null);
-        RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
+        // RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
     }
 
     @Override
