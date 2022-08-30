@@ -75,6 +75,20 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <service
+                android:name=".messages.NotificationsService"
+                android:enabled="true"
+                android:exported="false"
+        />
+        <service android:name=".messages.NotificationsEventService"/>
+        <receiver android:name="chat.rocket.BootUpReceiver"
+                  android:enabled="true"
+                  android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

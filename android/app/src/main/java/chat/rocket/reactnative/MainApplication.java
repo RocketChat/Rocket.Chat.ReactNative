@@ -16,6 +16,7 @@ import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import android.content.res.Configuration;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
+import chat.rocket.reactnative.messages.NotificationsPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new RNCViewPagerPackage());
       packages.add(new SSLPinningPackage());
+      packages.add(new NotificationsPackage());
       List<ReactPackage> additionalModules = new AdditionalModules().getAdditionalModules(MainApplication.this);
       packages.addAll(additionalModules);
       return packages;

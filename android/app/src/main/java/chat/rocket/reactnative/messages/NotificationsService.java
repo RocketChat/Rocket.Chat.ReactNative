@@ -23,7 +23,7 @@ public class NotificationsService extends Service {
 
     public static final int SERVICE_NOTIFICATION_ID = 12345;
     private static final String CHANNEL_ID = "NOTIFICATION";
-    private static final int EXECUTING_INTERVAL = 1000 * 60 * 5;
+    private static final int EXECUTING_INTERVAL = 1000 * 5;
 
     private Handler handler = new Handler();
     private Runnable runnableCode = new Runnable() {

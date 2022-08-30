@@ -26,7 +26,10 @@ import { DimensionsContext } from './dimensions';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
 import { colors, CURRENT_SERVER } from './lib/constants';
 import Loading from './containers/Loading';
+import NotificationBackgroundService from "./notifications/NotificationBackgroundService";
 
+console.log('NotificationBackgroundService.init()')
+NotificationBackgroundService.init();
 initStore(store);
 
 const Inside = createStackNavigator<ShareInsideStackParamList>();
@@ -84,6 +87,9 @@ const Root = (): React.ReactElement => {
 	}, []);
 
 	useEffect(() => {
+		console.log('NotificationBackgroundService.startService();')
+		NotificationBackgroundService.startService();
+
 		const authenticateShare = async (currentServer: string) => {
 			await localAuthenticate(currentServer);
 			setRoot('inside');
@@ -105,6 +111,7 @@ const Root = (): React.ReactElement => {
 		return () => {
 			closeShareExtension();
 			unsubscribeTheme();
+			NotificationBackgroundService.stopService();
 		};
 	}, []);
 

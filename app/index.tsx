@@ -42,24 +42,24 @@ import {
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
-const BACKGROUND_FETCH_TASK = 'background-fetch';
-BackgroundFetch.setMinimumIntervalAsync(60);
+// const BACKGROUND_FETCH_TASK = 'background-fetch';
+// BackgroundFetch.setMinimumIntervalAsync(60);
 
-function myTask() {
-	console.log('my task called');
-	try {
-		const now = Date.now();
-
-		console.log('BACKGROUND FETCH');
-		console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
-
-		// Be sure to return the successful result type!
-		return BackgroundFetch.BackgroundFetchResult.NewData;
-	} catch (err) {
-		console.log('my task faild');
-		return BackgroundFetch.BackgroundFetchResult.Failed;
-	}
-}
+// function myTask() {
+// 	console.log('my task called');
+// 	try {
+// 		const now = Date.now();
+//
+// 		console.log('BACKGROUND FETCH');
+// 		console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
+//
+// 		// Be sure to return the successful result type!
+// 		return BackgroundFetch.BackgroundFetchResult.NewData;
+// 	} catch (err) {
+// 		console.log('my task faild');
+// 		return BackgroundFetch.BackgroundFetchResult.Failed;
+// 	}
+// }
 
 // TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
 // 	const now = Date.now();
@@ -81,58 +81,58 @@ function myTask() {
 async function registerBackgroundFetchAsync(taskName: string) {
 	// console.log('registerBackgroundFetchAsync!!');
 	// console.log(`status: ${  await BackgroundFetch.getStatusAsync()}`);
-	console.log('BackgroundFetch: ');
-	console.log(BackgroundFetch);
+	// console.log('BackgroundFetch: ');
+	// console.log(BackgroundFetch);
+	//
+	// console.log('BackgroundFetch: ');
+	// console.log(BackgroundFetch.registerTaskAsync(taskName));
 
-	console.log('BackgroundFetch: ');
-	console.log(BackgroundFetch.registerTaskAsync(taskName));
-
-	return BackgroundFetch.registerTaskAsync(taskName, {
-		minimumInterval: 5, // 15 minutes
-		stopOnTerminate: false, // android only,
-		startOnBoot: true // android only
-	});
+	// return BackgroundFetch.registerTaskAsync(taskName, {
+	// 	minimumInterval: 5, // 15 minutes
+	// 	stopOnTerminate: false, // android only,
+	// 	startOnBoot: true // android only
+	// });
 	// return BackgroundFetch.registerTaskAsync(taskName);
 }
 
-async function initBackgroundFetch(
-	taskName: string,
-	// taskFn: () => BackgroundFetchResult,
-	interval = 5
-) {
-	try {
-		console.log('TaskManager: ');
-		console.log(TaskManager);
-
-		console.log('isTaskDefined: ');
-		console.log(TaskManager.isTaskDefined(taskName));
-
-		if (!TaskManager.isTaskDefined(taskName)) {
-			TaskManager.defineTask(taskName, () => myTask());
-		}
-
-		await registerBackgroundFetchAsync(taskName);
-	} catch (err) {
-		console.log('registerTaskAsync() failed:', err);
-	}
-}
+// async function initBackgroundFetch(
+// 	taskName: string,
+// 	// taskFn: () => BackgroundFetchResult,
+// 	interval = 5
+// ) {
+// 	try {
+// 		// console.log('TaskManager: ');
+// 		// console.log(TaskManager);
+//
+// 		// console.log('isTaskDefined: ');
+// 		// console.log(TaskManager.isTaskDefined(taskName));
+//
+// 		if (!TaskManager.isTaskDefined(taskName)) {
+// 			TaskManager.defineTask(taskName, () => myTask());
+// 		}
+//
+// 		await registerBackgroundFetchAsync(taskName);
+// 	} catch (err) {
+// 		console.log('registerTaskAsync() failed:', err);
+// 	}
+// }
 
 // 3. (Optional) Unregister tasks by specifying the task name
 // This will cancel any future background fetch calls that match the given name
 // Note: This does NOT need to be in the global scope and CAN be used in your React components!
 // eslint-disable-next-line require-await
-async function unregisterBackgroundFetchAsync() {
-	console.log('BackgroundFetch: ');
-	console.log(BackgroundFetch);
-	console.log('BackgroundFetch.getStatusAsync(): ');
-	console.log(
-		BackgroundFetch.getStatusAsync().then(sss => {
-			console.log('get status async resolved');
-		})
-	);
-	console.log(BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK));
-	return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
-}
+// async function unregisterBackgroundFetchAsync() {
+// 	console.log('BackgroundFetch: ');
+// 	console.log(BackgroundFetch);
+// 	console.log('BackgroundFetch.getStatusAsync(): ');
+// 	console.log(
+// 		BackgroundFetch.getStatusAsync().then(sss => {
+// 			console.log('get status async resolved');
+// 		})
+// 	);
+// 	console.log(BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK));
+// 	return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
+// }
 
 RNScreens.enableScreens();
 initStore(store);
@@ -204,24 +204,24 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	async toggleFetchTask() {
-		try {
-			console.log('went in try');
-			if (await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK)) {
-				console.log('did if check and true');
-				console.log('toggle: unregisterBackgroundFetchAsync');
-				await unregisterBackgroundFetchAsync();
-			} else {
-				console.log('did if check and false');
-				console.log('toggle: registerBackgroundFetchAsync');
-				await registerBackgroundFetchAsync(BACKGROUND_FETCH_TASK);
-			}
-		} catch (e) {
-			console.log(`error: ${e}`);
-		}
+		// try {
+		// 	console.log('went in try');
+		// 	if (await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK)) {
+		// 		console.log('did if check and true');
+		// 		console.log('toggle: unregisterBackgroundFetchAsync');
+		// 		await unregisterBackgroundFetchAsync();
+		// 	} else {
+		// 		console.log('did if check and false');
+		// 		console.log('toggle: registerBackgroundFetchAsync');
+		// 		await registerBackgroundFetchAsync(BACKGROUND_FETCH_TASK);
+		// 	}
+		// } catch (e) {
+		// 	console.log(`error: ${e}`);
+		// }
 	}
 
 	componentDidMount() {
-		initBackgroundFetch(BACKGROUND_FETCH_TASK);
+		// initBackgroundFetch(BACKGROUND_FETCH_TASK);
 		// this.checkStatusAsync();
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {

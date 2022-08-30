@@ -16,7 +16,12 @@ import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
+import NotificationBackgroundService from "./notifications/NotificationBackgroundService";
+import {closeShareExtension} from "./lib/methods/shareExtension";
+import {unsubscribeTheme} from "./lib/methods/helpers/theme";
 
+console.log('NotificationBackgroundService.init()/AppContainer.tsx')
+NotificationBackgroundService.init();
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();
 const SetUsernameStack = () => (
@@ -30,12 +35,21 @@ const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
 	useEffect(() => {
+		console.log('NotificationBackgroundService.startService()/appContainer.tsx')
+		NotificationBackgroundService.startService();
 		if (root) {
 			const state = Navigation.navigationRef.current?.getRootState();
 			const currentRouteName = getActiveRouteName(state);
 			Navigation.routeNameRef.current = currentRouteName;
 			setCurrentScreen(currentRouteName);
 		}
+
+		return () => {
+			closeShareExtension();
+			unsubscribeTheme();
+			console.log('NotificationBackgroundService.stopService()/appContainer.tsx')
+			NotificationBackgroundService.stopService();
+		};
 	}, [root]);
 
 	if (!root) {
