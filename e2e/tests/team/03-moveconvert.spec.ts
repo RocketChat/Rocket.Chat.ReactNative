@@ -1,5 +1,5 @@
 import data from '../../data';
-import { navigateToLogin, login, tapBack, searchRoom, platformTypes } from '../../helpers/app';
+import { navigateToLogin, login, tapBack, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
 
 const toBeConverted = `to-be-converted-${data.random}`;
 const toBeMoved = `to-be-moved-${data.random}`;
@@ -58,7 +58,7 @@ async function navigateToRoomActions(room: string) {
 
 describe('Move/Convert Team', () => {
 	let alertButtonType: string;
-	let textMatcher: keyof Pick<Detox.ByFacade, 'text' | 'label'>;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);

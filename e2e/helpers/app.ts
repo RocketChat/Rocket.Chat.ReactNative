@@ -4,22 +4,22 @@ import { by, expect, element } from 'detox';
 
 import data from '../data';
 
+export type TTextMatcher = keyof Pick<Detox.ByFacade, 'text' | 'label'>;
+
 const platformTypes = {
 	android: {
 		// Android types
 		alertButtonType: 'android.widget.Button',
 		scrollViewType: 'android.widget.ScrollView',
 		textInputType: 'android.widget.EditText',
-		// eslint-disable-next-line no-undef
-		textMatcher: 'text' as keyof Pick<Detox.ByFacade, 'text'>
+		textMatcher: 'text' as TTextMatcher
 	},
 	ios: {
 		// iOS types
 		alertButtonType: '_UIAlertControllerActionView',
 		scrollViewType: 'UIScrollView',
 		textInputType: '_UIAlertControllerTextField',
-		// eslint-disable-next-line no-undef
-		textMatcher: 'label' as keyof Pick<Detox.ByFacade, 'label'>
+		textMatcher: 'label' as TTextMatcher
 	}
 };
 

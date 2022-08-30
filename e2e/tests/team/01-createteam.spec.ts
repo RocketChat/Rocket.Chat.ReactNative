@@ -1,13 +1,13 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, platformTypes } from '../../helpers/app';
+import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
 
 const teamName = `team-${data.random}`;
 
 describe('Create team screen', () => {
 	let alertButtonType: string;
-	let textMatcher: keyof Pick<Detox.ByFacade, 'text' | 'label'>;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);

@@ -1,7 +1,7 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } from '../../helpers/app';
+import { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
 
 async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
@@ -76,7 +76,7 @@ describe('Team', () => {
 	const room = `private${data.random}-channel-team`;
 	const existingRoom = data.groups.alternate.name;
 	let alertButtonType: string;
-	let textMatcher: keyof Pick<Detox.ByFacade, 'text' | 'label'>;
+	let textMatcher: TTextMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

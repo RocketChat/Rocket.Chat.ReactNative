@@ -1,9 +1,11 @@
-const data = require('../../data');
-const { tapBack, navigateToLogin, login, tryTapping, platformTypes } = require('../../helpers/app');
+import { expect } from 'detox';
+
+import data from '../../data';
+import { tapBack, navigateToLogin, login, tryTapping, platformTypes, TTextMatcher } from '../../helpers/app';
 
 describe('Create room screen', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);

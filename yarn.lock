@@ -5949,13 +5949,6 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
-"@types/detox@^18.1.0":
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/@types/detox/-/detox-18.1.0.tgz#5d204f08c8db3a03827f9146b043fc2421327753"
-  integrity sha512-CpR+ziJgDOQhMwTt9fNciZhM9LxqyDRa49DKH0aplcSn26UU2WKSd1Tn1lNBrNCkMD8QNzFg+PYdGRFWrqK3Wg==
-  dependencies:
-    detox "*"
-
 "@types/ejson@^2.1.3":
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/@types/ejson/-/ejson-2.1.3.tgz#29a0028db4180b589b62eb2b6b9367c65b0c1864"
@@ -9623,38 +9616,6 @@ detect-port@^1.3.0:
   dependencies:
     address "^1.0.1"
     debug "^2.6.0"
-
-detox@*:
-  version "19.10.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-19.10.0.tgz#a47a1b4f5a4a08f267a86847ab5a48cbe1f9468e"
-  integrity sha512-SVJK/EPi6F2Grm4vSl+uP6xDuDT1gABwypZ3MU+/glylo8ibm3ddTHovXVBd4YDIE1rzD4eQpC8gM2lzJFvWrA==
-  dependencies:
-    ajv "^8.6.3"
-    bunyan "^1.8.12"
-    bunyan-debug-stream "^2.0.1"
-    chalk "^2.4.2"
-    child-process-promise "^2.2.0"
-    find-up "^4.1.0"
-    fs-extra "^4.0.2"
-    funpermaproxy "^1.0.1"
-    ini "^1.3.4"
-    lodash "^4.17.5"
-    minimist "^1.2.0"
-    proper-lockfile "^3.0.2"
-    resolve-from "^5.0.0"
-    sanitize-filename "^1.6.1"
-    semver "^7.0.0"
-    serialize-error "^8.0.1"
-    shell-quote "^1.7.2"
-    signal-exit "^3.0.3"
-    tail "^2.0.0"
-    telnet-client "1.2.8"
-    tempfile "^2.0.0"
-    which "^1.3.1"
-    ws "^7.0.0"
-    yargs "^16.0.3"
-    yargs-parser "^20.2.2"
-    yargs-unparser "^2.0.0"
 
 detox@19.7.0:
   version "19.7.0"
