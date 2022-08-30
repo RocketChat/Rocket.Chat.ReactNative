@@ -34,6 +34,7 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 //import chat.rocket.reactnative.R.string;
 
 import chat.rocket.reactnative.R.*;
+import chat.rocket.reactnative.R.string.*;
 import expo.modules.ReactActivityDelegateWrapper;
 
 import com.zoontek.rnbootsplash.RNBootSplash;
@@ -222,7 +223,8 @@ public class MainActivity extends ReactActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void askForBackgroundPermissions() {
-        (new AlertDialog.Builder(this))                .setTitle(R.string.location_permission_title)
+        (new AlertDialog.Builder(this))
+                .setTitle(R.string.location_permission_title)
                 .setMessage(R.string.background_location_permission_message_api30)
                 .setPositiveButton(
                         R.string.yes,

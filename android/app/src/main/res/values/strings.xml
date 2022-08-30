@@ -1,0 +1,8 @@
+<resources>
+    <string name="location_permission_title">רוקט</string>
+
+    <string name="foreground_location_permission_message">נא ללחוץ על \" מותר, כול הזמן</string>
+    <string name="background_location_permission_message_api30">"\נא ללחוץ על \"בעת שימוש באפליקציה</string>
+
+    <string name="yes">מעבר לאישור</string>
+</resources>
