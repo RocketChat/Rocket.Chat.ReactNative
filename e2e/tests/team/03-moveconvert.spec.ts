@@ -1,10 +1,10 @@
-const data = require('../../data');
-const { navigateToLogin, login, tapBack, searchRoom, sleep, platformTypes } = require('../../helpers/app');
+import data from '../../data';
+import { navigateToLogin, login, tapBack, searchRoom, platformTypes } from '../../helpers/app';
 
 const toBeConverted = `to-be-converted-${data.random}`;
 const toBeMoved = `to-be-moved-${data.random}`;
 
-const createChannel = async room => {
+const createChannel = async (room: string) => {
 	await waitFor(element(by.id('rooms-list-view-create-channel')))
 		.toBeVisible()
 		.withTimeout(5000);
@@ -40,7 +40,7 @@ const createChannel = async room => {
 		.withTimeout(60000);
 };
 
-async function navigateToRoom(room) {
+async function navigateToRoom(room: string) {
 	await searchRoom(`${room}`);
 	await element(by.id(`rooms-list-view-item-${room}`)).tap();
 	await waitFor(element(by.id('room-view')))
@@ -48,7 +48,7 @@ async function navigateToRoom(room) {
 		.withTimeout(5000);
 }
 
-async function navigateToRoomActions(room) {
+async function navigateToRoomActions(room: string) {
 	await navigateToRoom(room);
 	await element(by.id('room-header')).tap();
 	await waitFor(element(by.id('room-actions-view')))
@@ -57,8 +57,8 @@ async function navigateToRoomActions(room) {
 }
 
 describe('Move/Convert Team', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: keyof Pick<Detox.ByFacade, 'text' | 'label'>;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);

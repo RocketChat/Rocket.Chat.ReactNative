@@ -1,7 +1,9 @@
+import { expect } from 'detox';
+
 import data from '../../data';
 import { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } from '../../helpers/app';
 
-async function navigateToRoom(roomName) {
+async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
 	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 	await waitFor(element(by.id('room-view')))
@@ -9,7 +11,7 @@ async function navigateToRoom(roomName) {
 		.withTimeout(5000);
 }
 
-async function openActionSheet(username) {
+async function openActionSheet(username: string) {
 	await waitFor(element(by.id(`room-members-view-item-${username}`)))
 		.toExist()
 		.withTimeout(5000);
@@ -48,7 +50,13 @@ async function waitForToast() {
 	await sleep(1000);
 }
 
-async function swipeTillVisible(container, find, direction = 'up', delta = 0.3, speed = 'slow') {
+async function swipeTillVisible(
+	container: Detox.NativeMatcher,
+	find: Detox.NativeMatcher,
+	direction: Detox.Direction = 'up',
+	delta = 0.3,
+	speed: Detox.Speed = 'slow'
+) {
 	let found = false;
 	while (!found) {
 		try {
@@ -67,8 +75,8 @@ describe('Team', () => {
 	const user = data.users.alternate;
 	const room = `private${data.random}-channel-team`;
 	const existingRoom = data.groups.alternate.name;
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: keyof Pick<Detox.ByFacade, 'text' | 'label'>;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -388,7 +396,7 @@ describe('Team', () => {
 						.toBeNotVisible()
 						.withTimeout(60000);
 					await element(by.id('room-members-view-search')).tap();
-					await element(by.id('room-members-view-search')).clearText('');
+					await element(by.id('room-members-view-search')).clearText();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);

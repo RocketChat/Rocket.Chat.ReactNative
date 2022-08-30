@@ -39,7 +39,7 @@ async function navigateToWorkspace(server = data.server) {
 	await expect(element(by.id('workspace-view'))).toBeVisible();
 }
 
-async function navigateToLogin(server: string) {
+async function navigateToLogin(server?: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-login')).tap();
 	await waitFor(element(by.id('login-view')))
@@ -157,12 +157,12 @@ async function searchRoom(room: string) {
 		.toBeVisible()
 		.withTimeout(30000);
 	await element(by.id('rooms-list-view-search')).tap();
-	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input')))
 		.toExist()
 		.withTimeout(5000);
+	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await sleep(300);
-	await element(by.id('rooms-list-view-search-input')).replaceText(room);
+	await element(by.id('rooms-list-view-search-input')).typeText(room);
 	await sleep(300);
 	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 		.toBeVisible()
