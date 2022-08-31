@@ -1,7 +1,7 @@
-const data = require('../../data');
-const { navigateToLogin, login, checkServer, platformTypes, sleep } = require('../../helpers/app');
+import data from '../../data';
+import { navigateToLogin, login, checkServer, sleep } from '../../helpers/app';
 
-const reopenAndCheckServer = async server => {
+const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()

@@ -1,5 +1,7 @@
-const { navigateToLogin, login, sleep } = require('../../helpers/app');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { navigateToLogin, login, sleep } from '../../helpers/app';
+import data from '../../data';
 
 const testuser = data.users.regular;
 

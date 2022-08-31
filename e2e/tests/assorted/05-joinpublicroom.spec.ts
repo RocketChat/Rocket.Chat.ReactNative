@@ -1,5 +1,7 @@
-const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } = require('../../helpers/app');
+import { expect } from 'detox';
+
+import data from '../../data';
+import { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
 
 const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
@@ -20,8 +22,8 @@ async function navigateToRoomActions() {
 }
 
 describe('Join public room', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
