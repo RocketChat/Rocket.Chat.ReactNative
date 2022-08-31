@@ -1,5 +1,7 @@
-const data = require('../../data');
-const {
+import { expect } from 'detox';
+
+import data from '../../data';
+import {
 	navigateToLogin,
 	login,
 	mockMessage,
@@ -7,10 +9,11 @@ const {
 	sleep,
 	searchRoom,
 	platformTypes,
-	dismissReviewNag
-} = require('../../helpers/app');
+	dismissReviewNag,
+	TTextMatcher
+} from '../../helpers/app';
 
-async function navigateToRoom(roomName) {
+async function navigateToRoom(roomName: string) {
 	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 	await navigateToLogin();
 	await login(data.users.regular.username, data.users.regular.password);
@@ -23,7 +26,7 @@ async function navigateToRoom(roomName) {
 
 describe('Threads', () => {
 	const mainRoom = data.groups.private.name;
-	let textMatcher;
+	let textMatcher: TTextMatcher;
 
 	before(async () => {
 		({ textMatcher } = platformTypes[device.getPlatform()]);

@@ -1,9 +1,11 @@
-const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } = require('../../helpers/app');
+import { expect } from 'detox';
+
+import data from '../../data';
+import { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
 
 const privateRoomName = data.groups.private.name;
 
-async function navigateToRoomInfo(type) {
+async function navigateToRoomInfo(type: string) {
 	let room;
 	if (type === 'd') {
 		room = 'rocket.cat';
@@ -25,7 +27,7 @@ async function navigateToRoomInfo(type) {
 		.withTimeout(2000);
 }
 
-async function swipe(direction) {
+async function swipe(direction: Detox.Direction) {
 	await element(by.id('room-info-edit-view-list')).swipe(direction, 'fast', 0.8);
 }
 
@@ -34,8 +36,8 @@ async function waitForToast() {
 }
 
 describe('Room info screen', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
@@ -174,6 +176,7 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
+				await sleep(2000);
 				await element(by.id('room-info-edit-view-name')).replaceText(`${privateRoomName}`);
 				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
@@ -182,6 +185,7 @@ describe('Room info screen', () => {
 			});
 
 			it('should reset form', async () => {
+				await sleep(2000);
 				await element(by.id('room-info-edit-view-name')).replaceText('abc');
 				await element(by.id('room-info-edit-view-description')).replaceText('abc');
 				await element(by.id('room-info-edit-view-topic')).replaceText('abc');
@@ -194,6 +198,7 @@ describe('Room info screen', () => {
 				await swipe('up');
 				await element(by.id('room-info-edit-view-reset')).tap();
 				// after reset
+				await element(by.id('room-info-edit-view-list')).swipe('down', 'fast', 0.5);
 				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(privateRoomName);
 				await expect(element(by.id('room-info-edit-view-description'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-topic'))).toHaveText('');
@@ -226,6 +231,7 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
+				await sleep(2000);
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
 				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
@@ -245,6 +251,7 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
+				await sleep(2000);
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
 				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
@@ -264,6 +271,7 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-edit-view')))
 					.toExist()
 					.withTimeout(2000);
+				await sleep(2000);
 				await element(by.id('room-info-edit-view-password')).replaceText('password');
 				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();

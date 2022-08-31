@@ -1,7 +1,9 @@
-const data = require('../../data');
-const { navigateToLogin, tapBack, login, searchRoom, sleep, platformTypes } = require('../../helpers/app');
+import { expect } from 'detox';
 
-async function navigateToRoom(roomName) {
+import data from '../../data';
+import { navigateToLogin, tapBack, login, searchRoom, sleep, platformTypes, TTextMatcher } from '../../helpers/app';
+
+async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
 	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 	await waitFor(element(by.id('room-view')))
@@ -12,8 +14,8 @@ async function navigateToRoom(roomName) {
 		.withTimeout(5000);
 }
 
-let textMatcher;
-let alertButtonType;
+let textMatcher: TTextMatcher;
+let alertButtonType: string;
 
 async function clearCache() {
 	await waitFor(element(by.id('room-view')))
@@ -123,6 +125,7 @@ describe('Room', () => {
 		await waitFor(element(by[textMatcher]('30')).atIndex(1))
 			.toExist()
 			.withTimeout(30000);
+		await sleep(1000);
 		await element(by[textMatcher]('30')).atIndex(1).tap();
 		await waitForLoading();
 		await waitFor(element(by[textMatcher]('30')).atIndex(0))
@@ -194,7 +197,7 @@ describe('Room', () => {
 	});
 });
 
-const expectThreadMessages = async message => {
+const expectThreadMessages = async (message: string) => {
 	await waitFor(element(by.id('room-view-title-thread 1')))
 		.toExist()
 		.withTimeout(5000);

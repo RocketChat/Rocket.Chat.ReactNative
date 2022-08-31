@@ -119,7 +119,7 @@ const changeChannelJoinCode = async (roomId: string, joinCode: string) => {
 	}
 };
 
-const sendMessage = async (user: { username: string; password: string }, channel: string, msg: string, tmid: string) => {
+const sendMessage = async (user: { username: string; password: string }, channel: string, msg: string, tmid?: string) => {
 	console.log(`Sending message to ${channel}`);
 	try {
 		await login(user.username, user.password);

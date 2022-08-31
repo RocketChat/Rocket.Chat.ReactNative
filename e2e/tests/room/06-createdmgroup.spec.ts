@@ -1,8 +1,8 @@
-const data = require('../../data');
-const { navigateToLogin, login, platformTypes } = require('../../helpers/app');
+import data from '../../data';
+import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
 
 describe('Group DM', () => {
-	let textMatcher;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);

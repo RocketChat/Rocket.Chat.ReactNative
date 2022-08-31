@@ -1,5 +1,7 @@
-const { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } = require('../../helpers/app');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { TTextMatcher, navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } from '../../helpers/app';
+import data from '../../data';
 
 const channel = data.groups.private.name;
 
@@ -12,7 +14,7 @@ const navigateToRoom = async () => {
 };
 
 describe('Discussion', () => {
-	let textMatcher;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);

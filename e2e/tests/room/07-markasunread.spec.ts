@@ -1,8 +1,10 @@
-const data = require('../../data');
-const { navigateToLogin, login, searchRoom, sleep, platformTypes } = require('../../helpers/app');
-const { sendMessage } = require('../../helpers/data_setup');
+import { expect } from 'detox';
 
-async function navigateToRoom(user) {
+import data from '../../data';
+import { navigateToLogin, login, searchRoom, sleep, platformTypes, TTextMatcher } from '../../helpers/app';
+import { sendMessage } from '../../helpers/data_setup';
+
+async function navigateToRoom(user: string) {
 	await searchRoom(`${user}`);
 	await element(by.id(`rooms-list-view-item-${user}`)).tap();
 	await waitFor(element(by.id('room-view')))
@@ -12,7 +14,7 @@ async function navigateToRoom(user) {
 
 describe('Mark as unread', () => {
 	const user = data.users.alternate.username;
-	let textMatcher;
+	let textMatcher: TTextMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
