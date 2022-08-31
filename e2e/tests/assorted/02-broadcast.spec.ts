@@ -1,14 +1,15 @@
 // const OTP = require('otp.js');
 // const GA = OTP.googleAuthenticator;
+import { expect } from 'detox';
 
-const { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } = require('../../helpers/app');
-const data = require('../../data');
+import { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes, TTextMatcher, sleep } from '../../helpers/app';
+import data from '../../data';
 
 const testuser = data.users.regular;
 const otheruser = data.users.alternate;
 
 describe('Broadcast room', () => {
-	let textMatcher;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);
@@ -49,6 +50,7 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id(`room-view-title-broadcast${data.random}`)))
 			.toBeVisible()
 			.withTimeout(60000);
+		await sleep(500);
 		await element(by.id('room-header')).tap();
 		await waitFor(element(by.id('room-actions-view')))
 			.toBeVisible()
@@ -123,6 +125,17 @@ describe('Broadcast room', () => {
 	});
 
 	it('should reply broadcasted message', async () => {
-		await mockMessage('broadcastreply');
+		// Server is adding 2 spaces in front a reply message
+		await element(by.id('messagebox-input')).replaceText(`${data.random}broadcastreply`);
+		await sleep(300);
+		await element(by.id('messagebox-send-message')).tap();
+		await waitFor(element(by[textMatcher](`${data.random}message`)))
+			.toExist()
+			.withTimeout(10000);
+		await element(by[textMatcher](`${data.random}message`)).tap();
+		await sleep(600);
+		await waitFor(element(by.id(`room-view-title-broadcast${data.random}`)))
+			.toBeVisible()
+			.withTimeout(10000);
 	});
 });

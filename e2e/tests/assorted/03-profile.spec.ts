@@ -1,5 +1,7 @@
-const { navigateToLogin, login, sleep, platformTypes } = require('../../helpers/app');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { navigateToLogin, login, sleep, platformTypes, TTextMatcher } from '../../helpers/app';
+import data from '../../data';
 
 const profileChangeUser = data.users.profileChanges;
 
@@ -14,14 +16,12 @@ async function waitForToast() {
 }
 
 describe('Profile screen', () => {
-	let textInputType;
-	let scrollViewType;
-	let alertButtonType;
-	let textMatcher;
+	let scrollViewType: string;
+	let textMatcher: TTextMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ textInputType, scrollViewType, alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
+		({ scrollViewType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();
@@ -107,6 +107,7 @@ describe('Profile screen', () => {
 		it('should change email and password', async () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${data.random}@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${profileChangeUser.password}new`);
+			await sleep(300);
 			await element(by.id('profile-view-submit')).tap();
 			await waitFor(element(by.id('profile-view-enter-password-sheet')))
 				.toBeVisible()
