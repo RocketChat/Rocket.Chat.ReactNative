@@ -1,9 +1,9 @@
-const data = require('../../data');
-const { sleep, navigateToLogin, login, checkServer, platformTypes } = require('../../helpers/app');
+import data from '../../data';
+import { sleep, navigateToLogin, login, checkServer, platformTypes, TTextMatcher } from '../../helpers/app';
 
 describe('Delete server', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);

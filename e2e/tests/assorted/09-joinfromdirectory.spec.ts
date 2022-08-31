@@ -1,9 +1,9 @@
-const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep } = require('../../helpers/app');
+import data from '../../data';
+import { navigateToLogin, login, tapBack, sleep } from '../../helpers/app';
 
 const testuser = data.users.regular;
 
-async function navigateToRoom(search) {
+async function navigateToRoom(search: string) {
 	await element(by.id('directory-view-search')).replaceText(search);
 	await waitFor(element(by.id(`directory-view-item-${search}`)))
 		.toBeVisible()

@@ -1,31 +1,30 @@
-const data = require('../../data');
-const { tapBack, checkServer, navigateToRegister, platformTypes } = require('../../helpers/app');
-const { get, login, sendMessage } = require('../../helpers/data_setup');
+import data from '../../data';
+import { tapBack, checkServer, navigateToRegister, platformTypes, TTextMatcher } from '../../helpers/app';
+import { get, login, sendMessage } from '../../helpers/data_setup';
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 
 let amp = '&';
 
-const getDeepLink = (method, server, params) => {
+const getDeepLink = (method: string, server: string, params?: string) => {
 	const deeplink = `rocketchat://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}${amp}${params}`;
 	console.log(`Deeplinking to: ${deeplink}`);
 	return deeplink;
 };
 
 describe('Deep linking', () => {
-	let userId;
-	let authToken;
-	let scrollViewType;
-	let threadId;
-	let textMatcher;
-	let alertButtonType;
+	let userId: string;
+	let authToken: string;
+	let scrollViewType: string;
+	let threadId: string;
+	let textMatcher: TTextMatcher;
 	const threadMessage = `to-thread-${data.random}`;
 	before(async () => {
 		const loginResult = await login(data.users.regular.username, data.users.regular.password);
 		({ userId, authToken } = loginResult);
 		const deviceType = device.getPlatform();
 		amp = deviceType === 'android' ? '\\&' : '&';
-		({ scrollViewType, textMatcher, alertButtonType } = platformTypes[deviceType]);
+		({ scrollViewType, textMatcher } = platformTypes[deviceType]);
 		// create a thread with api
 		const result = await sendMessage(data.users.regular, data.groups.alternate2.name, threadMessage);
 		threadId = result.message._id;

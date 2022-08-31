@@ -1,5 +1,7 @@
-const data = require('../../data');
-const { navigateToLogin, login, mockMessage, searchRoom, sleep } = require('../../helpers/app');
+import { expect } from 'detox';
+
+import data from '../../data';
+import { navigateToLogin, login, mockMessage, searchRoom } from '../../helpers/app';
 
 const testuser = data.users.regular;
 const room = data.channels.detoxpublicprotected.name;

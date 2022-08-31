@@ -1,5 +1,7 @@
-const { login, navigateToLogin, sleep } = require('../../helpers/app');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { login, navigateToLogin } from '../../helpers/app';
+import data from '../../data';
 
 const goToDisplayPref = async () => {
 	await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();

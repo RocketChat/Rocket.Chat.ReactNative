@@ -1,9 +1,11 @@
-const { navigateToLogin, login, sleep } = require('../../helpers/app');
-const { post } = require('../../helpers/data_setup');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { navigateToLogin, login, sleep } from '../../helpers/app';
+import { post } from '../../helpers/data_setup';
+import data from '../../data';
 
 const testuser = data.users.regular;
-const defaultLaunchArgs = { permissions: { notifications: 'YES' } };
+const defaultLaunchArgs = { permissions: { notifications: 'YES' } } as Detox.DeviceLaunchAppConfig;
 
 const navToLanguage = async () => {
 	await waitFor(element(by.id('rooms-list-view')))
