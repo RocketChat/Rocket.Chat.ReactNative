@@ -115,12 +115,14 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 	}
 
-	closeEmojiAndAction = () => {
+	onPressAction = () => {
 		const { closeEmojiAndAction } = this.props;
 
 		if (closeEmojiAndAction) {
-			closeEmojiAndAction(this.onPress);
+			return closeEmojiAndAction(this.onPress);
 		}
+
+		return this.onPress();
 	};
 
 	onPress = debounce(
@@ -382,7 +384,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 				value={{
 					user,
 					baseUrl,
-					onPress: this.closeEmojiAndAction,
+					onPress: this.onPressAction,
 					onLongPress: this.onLongPress,
 					reactionInit: this.reactionInit,
 					onErrorPress: this.onErrorPress,
