@@ -1,9 +1,11 @@
-const { navigateToLogin, tapBack, platformTypes, navigateToWorkspace, login } = require('../../helpers/app');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { navigateToLogin, tapBack, platformTypes, navigateToWorkspace, login, TTextMatcher } from '../../helpers/app';
+import data from '../../data';
 
 describe('Login screen', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);

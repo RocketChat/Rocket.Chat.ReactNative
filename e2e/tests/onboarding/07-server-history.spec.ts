@@ -1,5 +1,7 @@
-const { login, navigateToLogin, logout, tapBack } = require('../../helpers/app');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { login, navigateToLogin, logout, tapBack } from '../../helpers/app';
+import data from '../../data';
 
 describe('Server history', () => {
 	before(async () => {

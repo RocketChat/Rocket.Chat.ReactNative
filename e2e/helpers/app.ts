@@ -47,7 +47,7 @@ async function navigateToLogin(server?: string) {
 		.withTimeout(2000);
 }
 
-async function navigateToRegister(server: string) {
+async function navigateToRegister(server?: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
 	await waitFor(element(by.id('register-view')))

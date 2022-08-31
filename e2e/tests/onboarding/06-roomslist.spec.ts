@@ -1,5 +1,7 @@
-const { login, navigateToLogin, logout, tapBack, searchRoom } = require('../../helpers/app');
-const data = require('../../data');
+import { expect } from 'detox';
+
+import { login, navigateToLogin, logout, tapBack, searchRoom } from '../../helpers/app';
+import data from '../../data';
 
 describe('Rooms list screen', () => {
 	before(async () => {

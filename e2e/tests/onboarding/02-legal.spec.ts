@@ -1,4 +1,6 @@
-const { navigateToRegister, navigateToLogin } = require('../../helpers/app');
+import { expect } from 'detox';
+
+import { navigateToRegister, navigateToLogin } from '../../helpers/app';
 
 describe('Legal screen', () => {
 	describe('From Login', () => {

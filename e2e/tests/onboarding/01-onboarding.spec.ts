@@ -1,9 +1,11 @@
-const data = require('../../data');
-const { platformTypes } = require('../../helpers/app');
+import { expect } from 'detox';
+
+import { TTextMatcher, platformTypes } from '../../helpers/app';
+import data from '../../data';
 
 describe('Onboarding', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
