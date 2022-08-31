@@ -1,5 +1,7 @@
-const data = require('../../data');
-const {
+import { expect } from 'detox';
+
+import data from '../../data';
+import {
 	navigateToLogin,
 	login,
 	tapBack,
@@ -8,11 +10,13 @@ const {
 	mockMessage,
 	starMessage,
 	pinMessage,
-	platformTypes
-} = require('../../helpers/app');
+	platformTypes,
+	TTextMatcher
+} from '../../helpers/app';
+
 const { sendMessage } = require('../../helpers/data_setup');
 
-async function navigateToRoomActions(type) {
+async function navigateToRoomActions(type: string) {
 	let room;
 	if (type === 'd') {
 		room = 'rocket.cat';
@@ -53,8 +57,8 @@ async function waitForToast() {
 }
 
 describe('Room actions screen', () => {
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -398,7 +402,7 @@ describe('Room actions screen', () => {
 						.withTimeout(2000);
 				});
 
-				const openActionSheet = async username => {
+				const openActionSheet = async (username: string) => {
 					await waitFor(element(by.id(`room-members-view-item-${username}`)))
 						.toExist()
 						.withTimeout(5000);
@@ -461,7 +465,7 @@ describe('Room actions screen', () => {
 						.toBeNotVisible()
 						.withTimeout(60000);
 					await element(by.id('room-members-view-search')).tap();
-					await element(by.id('room-members-view-search')).clearText('');
+					await element(by.id('room-members-view-search')).clearText();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);
@@ -484,7 +488,7 @@ describe('Room actions screen', () => {
 
 				it('should clear search', async () => {
 					await element(by.id('room-members-view-search')).tap();
-					await element(by.id('room-members-view-search')).clearText('');
+					await element(by.id('room-members-view-search')).clearText();
 					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
 						.toExist()
 						.withTimeout(60000);

@@ -1,5 +1,7 @@
-const data = require('../../data');
-const {
+import { expect } from 'detox';
+
+import data from '../../data';
+import {
 	navigateToLogin,
 	login,
 	mockMessage,
@@ -10,10 +12,11 @@ const {
 	pinMessage,
 	dismissReviewNag,
 	tryTapping,
-	platformTypes
-} = require('../../helpers/app');
+	platformTypes,
+	TTextMatcher
+} from '../../helpers/app';
 
-async function navigateToRoom(roomName) {
+async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
 	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 	await waitFor(element(by.id('room-view')))
@@ -23,8 +26,8 @@ async function navigateToRoom(roomName) {
 
 describe('Room screen', () => {
 	const mainRoom = data.groups.private.name;
-	let alertButtonType;
-	let textMatcher;
+	let alertButtonType: string;
+	let textMatcher: TTextMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
