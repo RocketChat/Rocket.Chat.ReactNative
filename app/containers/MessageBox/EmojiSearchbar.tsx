@@ -17,18 +17,18 @@ const EMOJI_SIZE = 32;
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	onChangeText: (value: string) => void;
-	emojis: (IEmoji | string)[];
-	onEmojiSelected: (emoji: IEmoji | string) => void;
+	emojis: IEmoji[];
+	onEmojiSelected: (emoji: IEmoji) => void;
 	baseUrl: string;
 }
 
 interface IListItem {
-	emoji: IEmoji | string;
-	onEmojiSelected: (emoji: IEmoji | string) => void;
+	emoji: IEmoji;
+	onEmojiSelected: (emoji: IEmoji) => void;
 	baseUrl: string;
 }
 
-const Emoji = ({ emoji, baseUrl }: { emoji: IEmoji | string; baseUrl: string }): React.ReactElement => {
+const Emoji = ({ emoji, baseUrl }: { emoji: IEmoji; baseUrl: string }): React.ReactElement => {
 	const { colors } = useTheme();
 	if (typeof emoji === 'string') {
 		return (

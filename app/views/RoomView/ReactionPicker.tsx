@@ -28,7 +28,7 @@ const MAX_EMOJIS_TO_DISPLAY = 20;
 const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = React.useState<string>('');
-	const [searchedEmojis, setSearchedEmojis] = React.useState<(string | IEmoji)[]>([]);
+	const [searchedEmojis, setSearchedEmojis] = React.useState<IEmoji[]>([]);
 	const [searching, setSearching] = React.useState<boolean>(false);
 
 	const handleTextChange = (text: string) => {

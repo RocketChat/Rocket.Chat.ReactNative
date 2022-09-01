@@ -14,7 +14,7 @@ export interface IEmojiPickerProps {
 	tabEmojiStyle?: StyleProp<TextStyle>;
 	isEmojiKeyboard?: boolean;
 	searching?: boolean;
-	searchedEmojis?: (string | IEmoji)[];
+	searchedEmojis?: IEmoji[];
 }
 
 export interface IFooterProps {

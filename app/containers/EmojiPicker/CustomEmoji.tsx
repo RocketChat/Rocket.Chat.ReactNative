@@ -1,10 +1,17 @@
 import React from 'react';
-import FastImage from 'react-native-fast-image';
+import { StyleProp } from 'react-native';
+import FastImage, { ImageStyle } from 'react-native-fast-image';
 
-import { ICustomEmoji } from '../../definitions/IEmoji';
+import { ICustomEmoji } from '../../definitions';
+
+interface ICustomEmojiProps {
+	baseUrl?: string;
+	emoji: ICustomEmoji;
+	style: StyleProp<ImageStyle>;
+}
 
 const CustomEmoji = React.memo(
-	({ baseUrl, emoji, style }: ICustomEmoji) => (
+	({ baseUrl, emoji, style }: ICustomEmojiProps) => (
 		<FastImage
 			style={style}
 			source={{

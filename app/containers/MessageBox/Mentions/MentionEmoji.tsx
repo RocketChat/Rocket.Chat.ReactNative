@@ -15,10 +15,10 @@ const MentionEmoji = ({ item }: IMessageBoxMentionEmoji) => {
 	const context = useContext(MessageboxContext);
 	const { baseUrl } = context;
 
-	if (item.name) {
-		return <CustomEmoji style={styles.mentionItemCustomEmoji} emoji={item} baseUrl={baseUrl} />;
+	if (typeof item === 'string') {
+		return <Text style={styles.mentionItemEmoji}>{shortnameToUnicode(`:${item}:`)}</Text>;
 	}
-	return <Text style={styles.mentionItemEmoji}>{shortnameToUnicode(`:${item}:`)}</Text>;
+	return <CustomEmoji style={styles.mentionItemCustomEmoji} emoji={item} baseUrl={baseUrl} />;
 };
 
 export default MentionEmoji;

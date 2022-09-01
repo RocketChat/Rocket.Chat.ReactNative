@@ -7,10 +7,10 @@ import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { IEmoji, TFrequentlyUsedEmojiModel } from '../../definitions';
 
 export const useFrequentlyUsedEmoji = (): {
-	frequentlyUsed: (string | IEmoji)[];
+	frequentlyUsed: IEmoji[];
 	loaded: boolean;
 } => {
-	const [frequentlyUsed, setFrequentlyUsed] = useState<(string | IEmoji)[]>([]);
+	const [frequentlyUsed, setFrequentlyUsed] = useState<IEmoji[]>([]);
 	const [loaded, setLoaded] = useState(false);
 	useEffect(() => {
 		const getFrequentlyUsedEmojis = async () => {
@@ -22,7 +22,7 @@ export const useFrequentlyUsedEmoji = (): {
 					return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 				}
 				return shortnameToUnicode(`${item.content}`);
-			}) as (string | IEmoji)[];
+			}) as IEmoji[];
 			setFrequentlyUsed(frequentlyUsedEmojis);
 			setLoaded(true);
 		};
@@ -36,7 +36,11 @@ export const addFrequentlyUsed = async (emoji: IEmoji) => {
 	const freqEmojiCollection = db.get('frequently_used_emojis');
 	let freqEmojiRecord: TFrequentlyUsedEmojiModel;
 	try {
-		freqEmojiRecord = await freqEmojiCollection.find(emoji.content || emoji.name);
+		if (typeof emoji === 'string') {
+			freqEmojiRecord = await freqEmojiCollection.find(emoji);
+		} else {
+			freqEmojiRecord = await freqEmojiCollection.find(emoji.content || emoji.name);
+		}
 	} catch (error) {
 		// Do nothing
 	}
@@ -50,8 +54,13 @@ export const addFrequentlyUsed = async (emoji: IEmoji) => {
 			});
 		} else {
 			await freqEmojiCollection.create(f => {
-				f._raw = sanitizedRaw({ id: emoji.content || emoji.name }, freqEmojiCollection.schema);
-				Object.assign(f, emoji);
+				if (typeof emoji === 'string') {
+					f._raw = sanitizedRaw({ id: emoji }, freqEmojiCollection.schema);
+					Object.assign(f, { content: emoji, isCustom: false });
+				} else {
+					f._raw = sanitizedRaw({ id: emoji.content || emoji.name }, freqEmojiCollection.schema);
+					Object.assign(f, emoji);
+				}
 				f.count = 1;
 			});
 		}

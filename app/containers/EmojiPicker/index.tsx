@@ -42,21 +42,15 @@ const EmojiPicker = ({
 		[allCustomEmojis]
 	);
 
-	const handleEmojiSelect = (emoji: IEmoji | string) => {
+	const handleEmojiSelect = (emoji: IEmoji) => {
 		try {
 			if (typeof emoji === 'string') {
-				addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
 				const shortname = `:${emoji}:`;
 				onItemClicked(EventTypes.EMOJI_PRESSED, shortnameToUnicode(shortname), shortname);
 			} else {
-				addFrequentlyUsed({
-					content: emoji.content,
-					name: emoji.name,
-					extension: emoji.extension,
-					isCustom: true
-				});
 				onItemClicked(EventTypes.EMOJI_PRESSED, `:${emoji.content}:`);
 			}
+			addFrequentlyUsed(emoji);
 		} catch (e) {
 			log(e);
 		}
@@ -74,7 +68,7 @@ const EmojiPicker = ({
 		return (
 			<EmojiCategory
 				emojis={emojis}
-				onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
+				onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
 				style={styles.categoryContainer}
 				baseUrl={baseUrl}
 				tabLabel={label}
@@ -94,7 +88,7 @@ const EmojiPicker = ({
 			{searching ? (
 				<EmojiCategory
 					emojis={searchedEmojis}
-					onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
+					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
 					style={styles.categoryContainer}
 					baseUrl={baseUrl}
 					tabLabel={'searching'}

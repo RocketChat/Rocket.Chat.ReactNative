@@ -2,7 +2,7 @@ import Model from '@nozbe/watermelondb/Model';
 import { StyleProp } from 'react-native';
 import { ImageStyle } from 'react-native-fast-image';
 
-export interface IEmoji {
+export interface ICustomEmoji {
 	content: string;
 	name: string;
 	extension?: string;
@@ -10,14 +10,12 @@ export interface IEmoji {
 	count?: number;
 }
 
-export interface ICustomEmojis {
-	[key: string]: Pick<IEmoji, 'name' | 'extension'>;
-}
+type TBasicEmoji = string;
 
-export interface ICustomEmoji {
-	baseUrl?: string;
-	emoji: IEmoji;
-	style: StyleProp<ImageStyle>;
+export type IEmoji = ICustomEmoji | TBasicEmoji;
+
+export interface ICustomEmojis {
+	[key: string]: Pick<ICustomEmoji, 'name' | 'extension'>;
 }
 
 export interface ICustomEmojiModel {
@@ -30,8 +28,8 @@ export interface ICustomEmojiModel {
 
 export interface IEmojiCategory {
 	baseUrl: string;
-	emojis: (IEmoji | string)[];
-	onEmojiSelected: (emoji: IEmoji | string) => void;
+	emojis: IEmoji[];
+	onEmojiSelected: (emoji: IEmoji) => void;
 	style: StyleProp<ImageStyle>;
 	tabLabel: string;
 	tabsCount: number;
@@ -39,5 +37,5 @@ export interface IEmojiCategory {
 
 export type TGetCustomEmoji = (name: string) => any;
 
-export type TFrequentlyUsedEmojiModel = IEmoji & Model;
+export type TFrequentlyUsedEmojiModel = ICustomEmoji & Model;
 export type TCustomEmojiModel = ICustomEmojiModel & Model;

@@ -12,7 +12,7 @@ import { isIOS } from '../../lib/methods/helpers';
 import { useDimensions } from '../../dimensions';
 
 interface IEmojiProps {
-	emoji: string | IEmoji;
+	emoji: IEmoji;
 	size: number;
 	baseUrl: string;
 }
@@ -36,7 +36,7 @@ const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, tabsCount }: IEmojiCa
 	const numColumns = Math.trunc(width / emojiSize);
 	const marginHorizontal = (width - numColumns * emojiSize) / 2;
 
-	const renderItem = (emoji: IEmoji | string) => (
+	const renderItem = (emoji: IEmoji) => (
 		<Pressable
 			key={typeof emoji === 'string' ? emoji : emoji.content}
 			onPress={() => onEmojiSelected(emoji)}
