@@ -13,7 +13,7 @@ import { useFrequentlyUsedEmoji, addFrequentlyUsed } from '../EmojiPicker/freque
 import { DEFAULT_EMOJIS } from '../EmojiPicker/emojis';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
-const EMOJI_SIZE = 30;
+const EMOJI_SIZE = 24;
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	onChangeText: (value: string) => void;
@@ -62,7 +62,7 @@ const ListItem = ({ emoji, onEmojiSelected, baseUrl }: IListItem): React.ReactEl
 		}
 	};
 	return (
-		<View style={[styles.emojiContainer]} key={key} testID={`searched-emoji-${key}`}>
+		<View style={styles.emojiContainer} key={key} testID={`searched-emoji-${key}`}>
 			<Pressable onPress={onPress}>
 				<Emoji emoji={emoji} baseUrl={baseUrl} />
 			</Pressable>

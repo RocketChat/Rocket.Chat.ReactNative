@@ -64,9 +64,9 @@ export default StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	searchbarContainer: {
-		height: 55,
-		marginBottom: 10,
-		paddingHorizontal: 15
+		height: 56,
+		marginBottom: 8,
+		paddingHorizontal: 12
 	},
 	reactionPickerSearchbar: {
 		paddingHorizontal: 20,

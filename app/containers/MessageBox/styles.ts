@@ -162,13 +162,13 @@ export default StyleSheet.create({
 		backgroundColor: 'transparent'
 	},
 	emojiContainer: { justifyContent: 'center', marginHorizontal: 2 },
-	emojiListContainer: { height: 50, paddingHorizontal: 5, marginVertical: 5, flexGrow: 1 },
+	emojiListContainer: { height: 40, paddingHorizontal: 5, marginVertical: 5, flexGrow: 1 },
 	emojiSearchViewContainer: {
 		borderTopWidth: 1
 	},
 	emojiSearchbarContainer: {
 		flexDirection: 'row',
-		height: 50,
+		height: 48,
 		marginBottom: 15,
 		justifyContent: 'center',
 		alignItems: 'center'

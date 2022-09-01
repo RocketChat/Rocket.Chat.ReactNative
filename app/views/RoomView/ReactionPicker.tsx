@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
@@ -37,29 +37,32 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 		searchEmojis(text);
 	};
 
-	const searchEmojis = debounce(async (keyword: string) => {
-		const likeString = sanitizeLikeString(keyword);
-		const whereClause = [];
-		if (likeString) {
-			whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
-		}
-		const db = database.active;
-		const customEmojisCollection = await (
-			await db
-				.get('custom_emojis')
-				.query(...whereClause)
-				.fetch()
-		).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
-		const customEmojis = customEmojisCollection?.map(emoji => ({
-			isCustom: true,
-			content: emoji?.name,
-			name: emoji?.name,
-			extension: emoji?.extension
-		})) as IEmoji[];
-		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
-		const mergedEmojis = [...customEmojis, ...filteredEmojis];
-		setSearchedEmojis(mergedEmojis);
-	}, 300);
+	const searchEmojis = useCallback(
+		debounce(async (keyword: string) => {
+			const likeString = sanitizeLikeString(keyword);
+			const whereClause = [];
+			if (likeString) {
+				whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
+			}
+			const db = database.active;
+			const customEmojisCollection = await (
+				await db
+					.get('custom_emojis')
+					.query(...whereClause)
+					.fetch()
+			).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+			const customEmojis = customEmojisCollection?.map(emoji => ({
+				isCustom: true,
+				content: emoji?.name,
+				name: emoji?.name,
+				extension: emoji?.extension
+			})) as IEmoji[];
+			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+			const mergedEmojis = [...customEmojis, ...filteredEmojis];
+			setSearchedEmojis(mergedEmojis);
+		}, 300),
+		[]
+	);
 
 	const handleEmojiSelect = (_eventType: EventTypes, emoji?: string, shortname?: string) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
