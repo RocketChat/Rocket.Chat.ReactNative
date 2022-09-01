@@ -1,4 +1,6 @@
+/* eslint-disable import/extensions, import/no-unresolved */
 import random from './helpers/random';
+// @ts-ignore
 import account from './e2e_account';
 
 export interface IUser {
