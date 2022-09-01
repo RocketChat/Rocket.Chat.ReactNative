@@ -13,7 +13,7 @@ import { useFrequentlyUsedEmoji, addFrequentlyUsed } from '../EmojiPicker/freque
 import { DEFAULT_EMOJIS } from '../EmojiPicker/emojis';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
-const EMOJI_SIZE = 24;
+const EMOJI_SIZE = 32;
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	onChangeText: (value: string) => void;
@@ -114,7 +114,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 						hitSlop={BUTTON_HIT_SLOP}
 						testID='openback-emoji-keyboard'
 					>
-						<CustomIcon name='chevron-left' size={30} color={colors.collapsibleChevron} />
+						<CustomIcon name='chevron-left' size={24} color={colors.collapsibleChevron} />
 					</Pressable>
 					<View style={styles.emojiSearchInput}>
 						<FormTextInput
