@@ -1,20 +1,15 @@
 package chat.rocket.reactnative;
 
 import android.os.Bundle;
-import android.content.Context;
-
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Interceptor;
-
-import com.google.gson.Gson;
-
-import java.io.IOException;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.google.gson.Gson;
+
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 class JsonResponse {
     Data data;
@@ -49,16 +44,19 @@ class JsonResponse {
 }
 
 public class LoadNotification {
-    private static int RETRY_COUNT = 0;
-    private static int[] TIMEOUT = new int[]{0, 1, 3, 5, 10};
-    private static String TOKEN_KEY = "reactnativemeteor_usertoken-";
+    private int RETRY_COUNT = 0;
+    private int[] TIMEOUT = new int[]{0, 1, 3, 5, 10};
+    private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
-    public static void load(ReactApplicationContext reactApplicationContext, final Ejson ejson, Callback callback) {
+    public void load(ReactApplicationContext reactApplicationContext, final Ejson ejson, Callback callback) {
+        Log.i("RCNOT", "public static void load");
         final OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder url = HttpUrl.parse(ejson.serverURL().concat("/api/v1/push.get")).newBuilder();
 
         final String userId = ejson.userId();
         final String userToken = ejson.token();
+
+        Log.i("RCNOT", "LOAD: user " + userId + " token " + userToken + " message " + ejson.messageId);
 
         if (userId == null || userToken == null) {
             return;
@@ -70,17 +68,19 @@ public class LoadNotification {
                 .url(url.addQueryParameter("id", ejson.messageId).build())
                 .build();
 
-        runRequest(client, request, callback);
+        runRequest(client, request, callback, ejson.messageId);
     }
 
-    private static void runRequest(OkHttpClient client, Request request, Callback callback) {
+    private void runRequest(OkHttpClient client, Request request, Callback callback, String messageId) {
         try {
+            Log.i("RCNOT", "runRequest " + messageId + " retry " + RETRY_COUNT);
             Thread.sleep(TIMEOUT[RETRY_COUNT] * 1000);
 
             Response response = client.newCall(request).execute();
             String body = response.body().string();
             if (!response.isSuccessful()) {
-                throw new Exception("Error");
+//                throw new Exception("Error");
+                throw new Exception(response.code()+body);
             }
 
             Gson gson = new Gson();
@@ -93,13 +93,18 @@ public class LoadNotification {
             bundle.putString("ejson", gson.toJson(json.data.notification.payload));
             bundle.putBoolean("notificationLoaded", true);
 
+            Log.i("RCNOT", "runRequest success " + messageId);
+
             callback.call(bundle);
 
         } catch (Exception e) {
+            Log.i("RCNOT", String.valueOf(e));
             if (RETRY_COUNT <= TIMEOUT.length) {
                 RETRY_COUNT++;
-                runRequest(client, request, callback);
+                Log.i("RCNOT", "Will retry " + messageId + " " + RETRY_COUNT);
+                runRequest(client, request, callback, messageId);
             } else {
+                Log.i("RCNOT", "Failed all tries " + messageId);
                 callback.call(null);
             }
         }

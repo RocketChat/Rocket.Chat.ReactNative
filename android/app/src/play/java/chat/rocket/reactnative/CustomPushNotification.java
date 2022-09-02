@@ -1,5 +1,7 @@
 package chat.rocket.reactnative;
 
+import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,9 +13,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -35,8 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
-
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
     final NotificationManager notificationManager;
@@ -57,6 +57,7 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
+        Log.i("RCNOT", "onReceived");
         Bundle received = mNotificationProps.asBundle();
         Ejson receivedEjson = new Gson().fromJson(received.getString("ejson", "{}"), Ejson.class);
 
@@ -95,7 +96,7 @@ public class CustomPushNotification extends PushNotification {
         bundle.putLong("time", new Date().getTime());
         bundle.putString("username", hasSender ? loadedEjson.sender.username : title);
         bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
-        bundle.putString("avatarUri", loadedEjson.getAvatarUri());
+//        bundle.putString("avatarUri", loadedEjson.getAvatarUri());
 
         notificationMessages.get(notId).add(bundle);
         postNotification(Integer.parseInt(notId));
@@ -200,9 +201,9 @@ public class CustomPushNotification extends PushNotification {
 
         notification.setSmallIcon(smallIconResId);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            notification.setLargeIcon(getAvatar(ejson.getAvatarUri()));
-        }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+//            notification.setLargeIcon(getAvatar(ejson.getAvatarUri()));
+//        }
     }
 
     private void notificationChannel(Notification.Builder notification) {
@@ -278,22 +279,22 @@ public class CustomPushNotification extends PushNotification {
                     long timestamp = data.getLong("time");
                     String message = data.getString("message");
                     String senderId = data.getString("senderId");
-                    String avatarUri = data.getString("avatarUri");
+//                    String avatarUri = data.getString("avatarUri");
                     Ejson ejson = gson.fromJson(data.getString("ejson", "{}"), Ejson.class);
                     String m = extractMessage(message, ejson);
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                         messageStyle.addMessage(m, timestamp, ejson.senderName);
                     } else {
-                        Bitmap avatar = getAvatar(avatarUri);
+//                        Bitmap avatar = getAvatar(avatarUri);
 
                         Person.Builder sender = new Person.Builder()
                                 .setKey(senderId)
                                 .setName(ejson.senderName);
 
-                        if (avatar != null) {
-                            sender.setIcon(Icon.createWithBitmap(avatar));
-                        }
+//                        if (avatar != null) {
+//                            sender.setIcon(Icon.createWithBitmap(avatar));
+//                        }
 
                         Person person = sender.build();
 
@@ -349,6 +350,7 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private void notificationLoad(Ejson ejson, Callback callback) {
-        LoadNotification.load(reactApplicationContext, ejson, callback);
+        LoadNotification loadNotification = new LoadNotification();
+        loadNotification.load(reactApplicationContext, ejson, callback);
     }
 }
