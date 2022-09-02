@@ -2,13 +2,13 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import { FormTextInput } from '../containers/TextInput';
+import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
 import { themes } from '../lib/constants';
 import { Services } from '../lib/services';
@@ -19,7 +19,7 @@ import { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 
 const schema = yup.object().shape({
-	email: yup.string().email('EMAIL INVALIDO').required('NECESSITA DE UM EMAIL')
+	email: yup.string().email().required()
 });
 
 interface ISubmit {
@@ -27,9 +27,12 @@ interface ISubmit {
 }
 
 const ForgotPasswordView = () => {
-	const { control, handleSubmit } = useForm<ISubmit>({ resolver: yupResolver(schema) });
+	const {
+		control,
+		handleSubmit,
+		formState: { isValid }
+	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema) });
 
-	const [isValid, setIsValid] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
 
 	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
@@ -41,11 +44,6 @@ const ForgotPasswordView = () => {
 			title: params?.title ?? 'Rocket.Chat'
 		});
 	}, [navigation, params?.title]);
-
-	const validateEmail = (email: string) => {
-		const valid = schema.isValidSync({ email });
-		setIsValid(valid);
-	};
 
 	const resetPassword = async ({ email }: ISubmit) => {
 		if (!isValid) {
@@ -73,26 +71,17 @@ const ForgotPasswordView = () => {
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>
 					{I18n.t('Forgot_password')}
 				</Text>
-				<Controller
+				<ControlledFormTextInput
 					name='email'
 					control={control}
-					render={({ field: { onChange, value } }) => (
-						<FormTextInput
-							onChangeText={text => {
-								onChange(text);
-								validateEmail(text);
-							}}
-							value={value}
-							autoFocus
-							placeholder={I18n.t('Email')}
-							keyboardType='email-address'
-							returnKeyType='send'
-							iconLeft='mail'
-							onSubmitEditing={handleSubmit(resetPassword)}
-							testID='forgot-password-view-email'
-							containerStyle={sharedStyles.inputLastChild}
-						/>
-					)}
+					autoFocus
+					placeholder={I18n.t('Email')}
+					keyboardType='email-address'
+					returnKeyType='send'
+					iconLeft='mail'
+					onSubmitEditing={handleSubmit(resetPassword)}
+					testID='forgot-password-view-email'
+					containerStyle={sharedStyles.inputLastChild}
 				/>
 				<Button
 					title={I18n.t('Reset_password')}
