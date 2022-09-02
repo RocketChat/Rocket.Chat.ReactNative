@@ -2,6 +2,9 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
@@ -11,13 +14,22 @@ import { themes } from '../lib/constants';
 import { Services } from '../lib/services';
 import { OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
-import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 
+const schema = yup.object().shape({
+	email: yup.string().email('EMAIL INVALIDO').required('NECESSITA DE UM EMAIL')
+});
+
+interface ISubmit {
+	email: string;
+}
+
 const ForgotPasswordView = () => {
-	const [email, setEmail] = useState('');
-	const [invalidEmail, setInvalidEmail] = useState(true);
+	const { control, handleSubmit } = useForm<ISubmit>({ resolver: yupResolver(schema) });
+
+	const [isValid, setIsValid] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
 
 	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
@@ -30,17 +42,13 @@ const ForgotPasswordView = () => {
 		});
 	}, [navigation, params?.title]);
 
-	const handleEmailChange = (email: string) => {
-		if (!isValidEmail(email)) {
-			setInvalidEmail(true);
-			return;
-		}
-		setEmail(email);
-		setInvalidEmail(false);
+	const validateEmail = (email: string) => {
+		const valid = schema.isValidSync({ email });
+		setIsValid(valid);
 	};
 
-	const resetPassword = async () => {
-		if (invalidEmail || !email) {
+	const resetPassword = async ({ email }: ISubmit) => {
+		if (!isValid) {
 			return;
 		}
 		try {
@@ -65,24 +73,34 @@ const ForgotPasswordView = () => {
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>
 					{I18n.t('Forgot_password')}
 				</Text>
-				<FormTextInput
-					autoFocus
-					placeholder={I18n.t('Email')}
-					keyboardType='email-address'
-					returnKeyType='send'
-					iconLeft='mail'
-					onChangeText={handleEmailChange}
-					onSubmitEditing={resetPassword}
-					testID='forgot-password-view-email'
-					containerStyle={sharedStyles.inputLastChild}
+				<Controller
+					name='email'
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<FormTextInput
+							onChangeText={text => {
+								onChange(text);
+								validateEmail(text);
+							}}
+							value={value}
+							autoFocus
+							placeholder={I18n.t('Email')}
+							keyboardType='email-address'
+							returnKeyType='send'
+							iconLeft='mail'
+							onSubmitEditing={handleSubmit(resetPassword)}
+							testID='forgot-password-view-email'
+							containerStyle={sharedStyles.inputLastChild}
+						/>
+					)}
 				/>
 				<Button
 					title={I18n.t('Reset_password')}
 					type='primary'
-					onPress={resetPassword}
+					onPress={handleSubmit(resetPassword)}
 					testID='forgot-password-view-submit'
 					loading={isFetching}
-					disabled={invalidEmail}
+					disabled={!isValid}
 				/>
 			</FormContainerInner>
 		</FormContainer>
