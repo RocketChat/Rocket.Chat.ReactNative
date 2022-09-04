@@ -514,7 +514,7 @@ function generateHash(targetLength: number) {
 }
 
 export const useWebsocket = () => {
-	const socket = new WebSocket('ws://open.rocket.chat/websocket'); // TODO: change to evenServer
+	const socket = new WebSocket('ws://' + store.getState().server.server.split('//')[1] + '/websocket');
 
 	// note messageCount is incremented with every message
 	// but it can works even if you didn't change it
