@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Dimensions, Linking } from 'react-native';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -39,6 +39,9 @@ import {
 } from './lib/methods/helpers/theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import subscribeRooms from './lib/methods/subscriptions/rooms';
+import sdk from './lib/services/sdk';
+import { IDDPMessage } from './definitions/IDDPMessage';
 
 RNScreens.enableScreens();
 initStore(store);
