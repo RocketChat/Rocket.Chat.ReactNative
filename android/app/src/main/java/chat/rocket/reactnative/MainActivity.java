@@ -17,8 +17,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-//import android.R;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -26,12 +24,7 @@ import androidx.core.app.ActivityCompat;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactActivity;
-
-//import com.akela.location.LocationUpdatesService;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-//import org.devio.rn.splashscreen.SplashScreen;
-//import chat.rocket.reactnative.R;
-//import chat.rocket.reactnative.R.string;
 
 import chat.rocket.reactnative.R.*;
 import chat.rocket.reactnative.R.string.*;
@@ -39,6 +32,7 @@ import expo.modules.ReactActivityDelegateWrapper;
 
 import com.zoontek.rnbootsplash.RNBootSplash;
 
+//todo: remove unused location permissions
 public class MainActivity extends ReactActivity {
 
     private static final int REQUEST_FOREGROUND_PERMISSIONS_REQUEST_CODE = 34;

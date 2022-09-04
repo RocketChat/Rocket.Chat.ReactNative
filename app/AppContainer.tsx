@@ -17,8 +17,6 @@ import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import NotificationBackgroundService from "./notifications/NotificationBackgroundService";
-import {closeShareExtension} from "./lib/methods/shareExtension";
-import {unsubscribeTheme} from "./lib/methods/helpers/theme";
 
 NotificationBackgroundService.init();
 NotificationBackgroundService.startService();
@@ -42,11 +40,6 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 			Navigation.routeNameRef.current = currentRouteName;
 			setCurrentScreen(currentRouteName);
 		}
-
-		return () => {
-			closeShareExtension();
-			unsubscribeTheme();
-		};
 	}, [root]);
 
 	if (!root) {

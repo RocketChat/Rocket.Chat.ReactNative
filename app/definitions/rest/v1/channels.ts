@@ -5,7 +5,6 @@ import type { IUser } from '../../IUser';
 import { IGetRoomRoles } from '../../IRole';
 import { IServerAttachment } from '../../IAttachment';
 import { PaginatedRequest } from '../helpers/PaginatedRequest';
-import { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type ChannelsEndpoints = {
 	'channels.files': {
@@ -57,9 +56,6 @@ export type ChannelsEndpoints = {
 	};
 	'channels.info': {
 		GET: (params: { roomId: string }) => { channel: IServerRoom };
-	};
-	'channels.list': {
-		GET: (params: { query: { [key: string]: string } }) => { channels: IServerRoom[] };
 	};
 	'channels.counters': {
 		GET: (params: { roomId: string }) => {

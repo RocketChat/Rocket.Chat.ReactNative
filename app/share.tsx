@@ -26,9 +26,7 @@ import { DimensionsContext } from './dimensions';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
 import { colors, CURRENT_SERVER } from './lib/constants';
 import Loading from './containers/Loading';
-import NotificationBackgroundService from "./notifications/NotificationBackgroundService";
 
-NotificationBackgroundService.init();
 initStore(store);
 
 const Inside = createStackNavigator<ShareInsideStackParamList>();
@@ -107,7 +105,6 @@ const Root = (): React.ReactElement => {
 		return () => {
 			closeShareExtension();
 			unsubscribeTheme();
-			NotificationBackgroundService.stopService();
 		};
 	}, []);
 

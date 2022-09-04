@@ -50,33 +50,6 @@ export const createChannel = ({
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 
-export const getChannelsByUser = async () => {
-	// const query = {"u.name": "amit_st"};
-	// const channels = await sdk.get('channels.list',{query});
-	const channels = await sdk.get('channels.list');
-
-	return channels;
-};
-
-export function getUserInfoAndRooms() {
-	// RC 0.48.0
-	return sdk.get('users.info', { userId: 'KZzi4CcBtrRyZrGCa', fields: { userRooms: 1 } });
-}
-
-export const getUnreadMessagesByUser = async () => {
-	const params = {
-		// roomName: 'general',
-		roomId: 'KZzi4CcBtrRyZrGCa',
-		unreads: true,
-		oldest: '2015-01-01',
-		count: 20
-	};
-
-	const messages = await sdk.get('channels.history', params);
-
-	return messages;
-};
-
 export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string) =>
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });

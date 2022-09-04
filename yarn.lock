@@ -10595,14 +10595,6 @@ expo-av@11.2.3:
   dependencies:
     "@expo/config-plugins" "^4.0.14"
 
-expo-background-fetch@~10.2.0:
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/expo-background-fetch/-/expo-background-fetch-10.2.0.tgz#193b5d2c81786f218257fa756b2efa8ff3fa1f21"
-  integrity sha512-UOp+AYrJy77OhbuWBoyBQ6uZDm8gYQ2fjXOJrA3bI+gnx354qUz/+z9iCitDc8tytWP8/yTf62AARGDLKMMANw==
-  dependencies:
-    "@expo/config-plugins" "^4.0.14"
-    expo-task-manager "~10.2.0"
-
 expo-constants@~13.1.1:
   version "13.1.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-13.1.1.tgz#78c26c760cc63cd5608bc4b51bd159d7339d8054"
@@ -10667,14 +10659,6 @@ expo-modules-core@0.9.2:
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
-
-expo-task-manager@~10.2.0, expo-task-manager@~10.2.1:
-  version "10.2.1"
-  resolved "https://registry.yarnpkg.com/expo-task-manager/-/expo-task-manager-10.2.1.tgz#7f57ad7118736d6f8375bd1be36c748605683a2f"
-  integrity sha512-peT1ZG7VjQkdyTLWsPFTU5/W2dZwz2Il/Q6jjLowMPNN9iIq1qHU273+65PRR3zMRt1YfWh8vQSiHEIypKkxgg==
-  dependencies:
-    "@expo/config-plugins" "^4.0.14"
-    unimodules-app-loader "~3.1.0"
 
 expo-video-thumbnails@6.3.0:
   version "6.3.0"
@@ -19858,11 +19842,6 @@ unified@9.2.0:
     is-plain-obj "^2.0.0"
     trough "^1.0.0"
     vfile "^4.0.0"
-
-unimodules-app-loader@~3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/unimodules-app-loader/-/unimodules-app-loader-3.1.0.tgz#1779d9505275e2da2e25812e142198665a14cb2d"
-  integrity sha512-ykDpkZY3ZUckNQN83YP1eY0uxLHK6cLP4WMa4RWsjx5JX38dFvcXpoE/+X2RZSbIgRcCR1fjyd7H1NHjDuXhuQ==
 
 union-value@^1.0.0:
   version "1.0.1"

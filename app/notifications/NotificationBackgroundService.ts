@@ -1,9 +1,5 @@
 import { AppRegistry, AppState, NativeModules } from "react-native";
 
-// import store from "../store";
-// import IdleOperationTaskService from "./IdleOperationTaskService";
-// import NewOperationsTaskService from "./NewOperationsTaskService";
-
 const BACKGROUND_STATE_REGEX = /inactive|background/;
 
 class NotificationsBackgroundService {

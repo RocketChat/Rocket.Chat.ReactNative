@@ -54,7 +54,6 @@ public class NotificationsService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-//         handler.postDelayed(runnableCode, EXECUTING_INTERVAL);
     }
 
     @Override
@@ -71,10 +70,10 @@ public class NotificationsService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                //.setDescription("amit")
-                .setContentTitle("amit")
-                .setContentText("amit")
-                .setContentInfo("amit")
+                //.setDescription("rocket")
+                .setContentTitle("rocket")
+                .setContentText("rocket")
+                .setContentInfo("rocket")
                 //.setSmallIcon(R.drawable.ic_launcher_prod)
                 .setContentIntent(contentIntent)
                 .setOngoing(true)
