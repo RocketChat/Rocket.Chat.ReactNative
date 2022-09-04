@@ -20,8 +20,9 @@ import NotificationBackgroundService from "./notifications/NotificationBackgroun
 import {closeShareExtension} from "./lib/methods/shareExtension";
 import {unsubscribeTheme} from "./lib/methods/helpers/theme";
 
-console.log('NotificationBackgroundService.init()/AppContainer.tsx')
 NotificationBackgroundService.init();
+NotificationBackgroundService.startService();
+
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();
 const SetUsernameStack = () => (
@@ -35,8 +36,6 @@ const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
 	useEffect(() => {
-		console.log('NotificationBackgroundService.startService()/appContainer.tsx')
-		NotificationBackgroundService.startService();
 		if (root) {
 			const state = Navigation.navigationRef.current?.getRootState();
 			const currentRouteName = getActiveRouteName(state);
@@ -47,8 +46,6 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		return () => {
 			closeShareExtension();
 			unsubscribeTheme();
-			console.log('NotificationBackgroundService.stopService()/appContainer.tsx')
-			NotificationBackgroundService.stopService();
 		};
 	}, [root]);
 

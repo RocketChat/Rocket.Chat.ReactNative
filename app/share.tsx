@@ -28,7 +28,6 @@ import { colors, CURRENT_SERVER } from './lib/constants';
 import Loading from './containers/Loading';
 import NotificationBackgroundService from "./notifications/NotificationBackgroundService";
 
-console.log('NotificationBackgroundService.init()')
 NotificationBackgroundService.init();
 initStore(store);
 
@@ -87,9 +86,6 @@ const Root = (): React.ReactElement => {
 	}, []);
 
 	useEffect(() => {
-		console.log('NotificationBackgroundService.startService();')
-		NotificationBackgroundService.startService();
-
 		const authenticateShare = async (currentServer: string) => {
 			await localAuthenticate(currentServer);
 			setRoot('inside');

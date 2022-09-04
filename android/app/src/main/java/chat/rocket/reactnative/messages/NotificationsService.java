@@ -23,7 +23,7 @@ public class NotificationsService extends Service {
 
     public static final int SERVICE_NOTIFICATION_ID = 12345;
     private static final String CHANNEL_ID = "NOTIFICATION";
-    private static final int EXECUTING_INTERVAL = 1000 * 5;
+    private static final int EXECUTING_INTERVAL = 1000 * 60 * 5;
 
     private Handler handler = new Handler();
     private Runnable runnableCode = new Runnable() {
@@ -54,6 +54,7 @@ public class NotificationsService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+//         handler.postDelayed(runnableCode, EXECUTING_INTERVAL);
     }
 
     @Override
@@ -70,8 +71,10 @@ public class NotificationsService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("רוקט צאט")
-                .setContentText("האפליקציה רצה ברקע")
+                //.setDescription("amit")
+                .setContentTitle("amit")
+                .setContentText("amit")
+                .setContentInfo("amit")
                 //.setSmallIcon(R.drawable.ic_launcher_prod)
                 .setContentIntent(contentIntent)
                 .setOngoing(true)

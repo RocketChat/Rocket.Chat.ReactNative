@@ -1,13 +1,11 @@
 import React from 'react';
 import { Button, Dimensions, Linking } from 'react-native';
-import * as BackgroundFetch from 'expo-background-fetch';
-// import {BackgroundFetchResult} from 'expo-background-fetch';
-import * as TaskManager from 'expo-task-manager';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {Notifications} from "react-native-notifications";
 
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -41,98 +39,6 @@ import {
 } from './lib/methods/helpers/theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-
-// const BACKGROUND_FETCH_TASK = 'background-fetch';
-// BackgroundFetch.setMinimumIntervalAsync(60);
-
-// function myTask() {
-// 	console.log('my task called');
-// 	try {
-// 		const now = Date.now();
-//
-// 		console.log('BACKGROUND FETCH');
-// 		console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
-//
-// 		// Be sure to return the successful result type!
-// 		return BackgroundFetch.BackgroundFetchResult.NewData;
-// 	} catch (err) {
-// 		console.log('my task faild');
-// 		return BackgroundFetch.BackgroundFetchResult.Failed;
-// 	}
-// }
-
-// TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
-// 	const now = Date.now();
-//
-// 	console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
-//
-// 	// Be sure to return the successful result type!
-// 	return myTask();
-// });
-
-// 1. Define the task by providing a name and the function that should be executed
-// Note: This needs to be called in the global scope (e.g outside of your React components)
-// TaskManager.defineTask(BACKGROUND_FETCH_TASK, myTask);
-// initBackgroundFetch(BACKGROUND_FETCH_TASK, myTask);
-
-// 2. Register the task at some point in your app by providing the same name, and some configuration options for how the background fetch should behave
-// Note: This does NOT need to be in the global scope and CAN be used in your React components!
-// eslint-disable-next-line require-await
-async function registerBackgroundFetchAsync(taskName: string) {
-	// console.log('registerBackgroundFetchAsync!!');
-	// console.log(`status: ${  await BackgroundFetch.getStatusAsync()}`);
-	// console.log('BackgroundFetch: ');
-	// console.log(BackgroundFetch);
-	//
-	// console.log('BackgroundFetch: ');
-	// console.log(BackgroundFetch.registerTaskAsync(taskName));
-
-	// return BackgroundFetch.registerTaskAsync(taskName, {
-	// 	minimumInterval: 5, // 15 minutes
-	// 	stopOnTerminate: false, // android only,
-	// 	startOnBoot: true // android only
-	// });
-	// return BackgroundFetch.registerTaskAsync(taskName);
-}
-
-// async function initBackgroundFetch(
-// 	taskName: string,
-// 	// taskFn: () => BackgroundFetchResult,
-// 	interval = 5
-// ) {
-// 	try {
-// 		// console.log('TaskManager: ');
-// 		// console.log(TaskManager);
-//
-// 		// console.log('isTaskDefined: ');
-// 		// console.log(TaskManager.isTaskDefined(taskName));
-//
-// 		if (!TaskManager.isTaskDefined(taskName)) {
-// 			TaskManager.defineTask(taskName, () => myTask());
-// 		}
-//
-// 		await registerBackgroundFetchAsync(taskName);
-// 	} catch (err) {
-// 		console.log('registerTaskAsync() failed:', err);
-// 	}
-// }
-
-// 3. (Optional) Unregister tasks by specifying the task name
-// This will cancel any future background fetch calls that match the given name
-// Note: This does NOT need to be in the global scope and CAN be used in your React components!
-// eslint-disable-next-line require-await
-// async function unregisterBackgroundFetchAsync() {
-// 	console.log('BackgroundFetch: ');
-// 	console.log(BackgroundFetch);
-// 	console.log('BackgroundFetch.getStatusAsync(): ');
-// 	console.log(
-// 		BackgroundFetch.getStatusAsync().then(sss => {
-// 			console.log('get status async resolved');
-// 		})
-// 	);
-// 	console.log(BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK));
-// 	return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
-// }
 
 RNScreens.enableScreens();
 initStore(store);
@@ -176,6 +82,99 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
+
+function generateHash(targetLength: number) {
+	let text = '';
+	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+	for (let i = 0; i < targetLength; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+	return text;
+}
+
+const startWebsocket = () => {
+	const socket = new WebSocket('ws://open.rocket.chat/websocket'); // TODO: change to evenServer
+
+	// note messageCount is incremented with every message
+	// but it can works even if you didn't change it
+	let messagesCount = 1;
+
+	// the variables chatToken and chatRoomId are very important
+	// and they are the identifier to the room(the whole chat) you are using
+	// if you want to get access to the chat again you need these two variables tokens
+	const chatToken = 't2pp8jsCO4v4v9rGiVfXD5KEzaLduSZjdWzTlaJHnSi'; // TODO: change to the user auth token
+
+	const subId = generateHash(17);
+	const notifyUserId = generateHash(17);
+
+	console.log(`subId: ${subId} notifyUserId: ${notifyUserId}`);
+
+	socket.onerror = err => {
+		console.log(`socket: ${err}`);
+	};
+	// listen to messages passed to this socket
+	socket.onmessage = function (e) {
+		const response = JSON.parse(e.data);
+
+		// you have to pong back if you need to keep the connection alive
+		// each ping from server need a 'pong' back
+		if (response.msg === 'ping') {
+			socket.send(
+				JSON.stringify({
+					msg: 'pong'
+				})
+			);
+			return;
+		}
+
+		if (response.msg === 'changed' && response.collection === 'stream-notify-user') {
+			console.log('msg received: stream-notify-user ', response?.fields?.args[0]?.text);
+			console.log(`stream-notify-user: ${JSON.stringify(response)}`);
+
+			const localNotification = Notifications.postLocalNotification({
+				title: ` \n ${response.fields.args[0].title}: ${response.fields.args[0].text}`
+			})
+		}
+	};
+
+	// 1 connect
+	const connectObject = {
+		msg: 'connect',
+		version: '1',
+		support: ['1', 'pre2', 'pre1']
+	};
+
+	setTimeout(() => {
+		socket.send(JSON.stringify(connectObject));
+	}, 1000);
+
+	// 3 loginByToken
+	const loginByToken = {
+		msg: 'method',
+		method: 'login',
+		params: [{ resume: chatToken }],
+		id: String(messagesCount++)
+	};
+
+	setTimeout(() => {
+		socket.send(JSON.stringify(loginByToken));
+	}, 2000);
+
+	const notifyUserSub = {
+		msg: 'sub',
+		id: String(notifyUserId),
+		name: 'stream-notify-user',
+		params: [
+			'KZzi4CcBtrRyZrGCa/notification', // TODO: insert userId here (right now it's shachar userId)
+			false
+		]
+	};
+
+	setTimeout(() => {
+		socket.send(JSON.stringify(notifyUserSub));
+	}, 5000);
+};
+
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
 
@@ -203,26 +202,8 @@ export default class Root extends React.Component<{}, IState> {
 		setNativeTheme(theme);
 	}
 
-	async toggleFetchTask() {
-		// try {
-		// 	console.log('went in try');
-		// 	if (await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK)) {
-		// 		console.log('did if check and true');
-		// 		console.log('toggle: unregisterBackgroundFetchAsync');
-		// 		await unregisterBackgroundFetchAsync();
-		// 	} else {
-		// 		console.log('did if check and false');
-		// 		console.log('toggle: registerBackgroundFetchAsync');
-		// 		await registerBackgroundFetchAsync(BACKGROUND_FETCH_TASK);
-		// 	}
-		// } catch (e) {
-		// 	console.log(`error: ${e}`);
-		// }
-	}
 
 	componentDidMount() {
-		// initBackgroundFetch(BACKGROUND_FETCH_TASK);
-		// this.checkStatusAsync();
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
@@ -232,6 +213,7 @@ export default class Root extends React.Component<{}, IState> {
 			});
 		}, 5000);
 		Dimensions.addEventListener('change', this.onDimensionsChange);
+		startWebsocket();
 	}
 
 	componentWillUnmount() {
@@ -351,7 +333,6 @@ export default class Root extends React.Component<{}, IState> {
 						>
 							<GestureHandlerRootView style={{ flex: 1 }}>
 								<ActionSheetProvider>
-									<Button title={'register/unregister BackgroundFetch task'} onPress={this.toggleFetchTask} />
 									<AppContainer />
 									<TwoFactor />
 									<ScreenLockedView />

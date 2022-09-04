@@ -1,6 +1,4 @@
 import { AppRegistry, AppState, NativeModules } from "react-native";
-import { offlineActionCreators } from "react-native-offline";
-import NewNotificationTaskService from "./NewNotificationTaskService";
 
 // import store from "../store";
 // import IdleOperationTaskService from "./IdleOperationTaskService";
@@ -28,21 +26,7 @@ class NotificationsBackgroundService {
 	}
 
 	private static async backgroundTasks(): Promise<void> {
-		console.log('executed background tasks')
-		if (NotificationsBackgroundService.isAppOnBackground()) {
-			// IdleOperationTaskService.handleIdleOperationTask();
-			// OperationsBackgroundService.handleOfflineQueue();
-		}
-
-		NewNotificationTaskService.checkNewNotificationsTask();
-	}
-
-	private static handleOfflineQueue(): void {
-		// const { actionQueue, isConnected } = store.getState().network;
-		// if (actionQueue.length && isConnected) {
-		// 	const { connectionChange } = offlineActionCreators;
-		// 	connectionChange(isConnected);
-		// }
+		//runs this every interval
 	}
 
 	private static isAppOnBackground(): boolean {

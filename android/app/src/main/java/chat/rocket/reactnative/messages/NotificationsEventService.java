@@ -16,7 +16,7 @@ public class NotificationsEventService extends HeadlessJsTaskService {
         return new HeadlessJsTaskConfig(
                 "Notifications",
                 extras != null ? Arguments.fromBundle(extras) : Arguments.createMap(),
-                1000,
+                10000,
                 true
         );
     }
