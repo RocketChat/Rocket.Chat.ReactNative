@@ -84,97 +84,6 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
-function generateHash(targetLength: number) {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-	for (let i = 0; i < targetLength; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-	return text;
-}
-
-const useWebsocket = () => {
-	const socket = new WebSocket('ws://open.rocket.chat/websocket'); // TODO: change to evenServer
-
-	// note messageCount is incremented with every message
-	// but it can works even if you didn't change it
-	let messagesCount = 1;
-
-	// the variables chatToken and chatRoomId are very important
-	// and they are the identifier to the room(the whole chat) you are using
-	// if you want to get access to the chat again you need these two variables tokens
-	const chatToken = 't2pp8jsCO4v4v9rGiVfXD5KEzaLduSZjdWzTlaJHnSi'; // TODO: change to the user auth token
-
-	const subId = generateHash(17);
-	const notifyUserId = generateHash(17);
-
-	console.log(`subId: ${subId} notifyUserId: ${notifyUserId}`);
-
-	socket.onerror = err => {
-		console.log(`socket: ${err}`);
-	};
-	// listen to messages passed to this socket
-	socket.onmessage = function (e) {
-		const response = JSON.parse(e.data);
-
-		// you have to pong back if you need to keep the connection alive
-		// each ping from server need a 'pong' back
-		if (response.msg === 'ping') {
-			socket.send(
-				JSON.stringify({
-					msg: 'pong'
-				})
-			);
-			return;
-		}
-
-		if (response.msg === 'changed' && response.collection === 'stream-notify-user') {
-			console.log('msg received: stream-notify-user ', response?.fields?.args[0]?.text);
-			console.log(`stream-notify-user: ${response}`);
-		}
-	};
-
-	// ////////////////////////////////////////////
-	// steps to achieve the connection to the rocket chat real time api through WebSocket
-
-	// 1 connect
-	const connectObject = {
-		msg: 'connect',
-		version: '1',
-		support: ['1', 'pre2', 'pre1']
-	};
-
-	setTimeout(() => {
-		socket.send(JSON.stringify(connectObject));
-	}, 1000);
-
-	// 3 loginByToken
-	const loginByToken = {
-		msg: 'method',
-		method: 'login',
-		params: [{ resume: chatToken }],
-		id: String(messagesCount++)
-	};
-
-	setTimeout(() => {
-		socket.send(JSON.stringify(loginByToken));
-	}, 2000);
-
-	const notifyUserSub = {
-		msg: 'sub',
-		id: String(notifyUserId),
-		name: 'stream-notify-user',
-		params: [
-			'KZzi4CcBtrRyZrGCa/notification', // TODO: insert userId here (right now it's shachar userId)
-			false
-		]
-	};
-
-	setTimeout(() => {
-		socket.send(JSON.stringify(notifyUserSub));
-	}, 5000);
-};
-
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
 
@@ -212,7 +121,6 @@ export default class Root extends React.Component<{}, IState> {
 			});
 		}, 5000);
 		Dimensions.addEventListener('change', this.onDimensionsChange);
-		useWebsocket();
 	}
 
 	componentWillUnmount() {
