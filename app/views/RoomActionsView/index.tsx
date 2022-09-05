@@ -64,10 +64,6 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	encryptionEnabled: boolean;
 	fontScale: number;
 	serverVersion: string | null;
-	addUserToJoinedRoomPermission?: string[];
-	addUserToAnyCRoomPermission?: string[];
-	addUserToAnyPRoomPermission?: string[];
-	createInviteLinksPermission?: string[];
 	editRoomPermission?: string[];
 	toggleRoomE2EEncryptionPermission?: string[];
 	viewBroadcastMemberListPermission?: string[];
@@ -94,8 +90,6 @@ interface IRoomActionsViewState {
 	joined: boolean;
 	canViewMembers: boolean;
 	canAutoTranslate: boolean;
-	canAddUser: boolean;
-	canInviteUser: boolean;
 	canEdit: boolean;
 	canToggleEncryption: boolean;
 	canCreateTeam: boolean;
@@ -147,8 +141,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			joined: !!room,
 			canViewMembers: false,
 			canAutoTranslate: false,
-			canAddUser: false,
-			canInviteUser: false,
 			canEdit: false,
 			canToggleEncryption: false,
 			canCreateTeam: false,
@@ -208,8 +200,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			}
 
 			const canAutoTranslate = canAutoTranslateMethod();
-			const canAddUser = await this.canAddUser();
-			const canInviteUser = await this.canInviteUser();
 			const canEdit = await this.canEdit();
 			const canToggleEncryption = await this.canToggleEncryption();
 			const canViewMembers = await this.canViewMembers();
@@ -219,8 +209,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			this.setState({
 				canAutoTranslate,
-				canAddUser,
-				canInviteUser,
 				canEdit,
 				canToggleEncryption,
 				canViewMembers,
@@ -261,40 +249,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		if (event) {
 			return event();
 		}
-	};
-
-	canAddUser = async () => {
-		const { room, joined } = this.state;
-		const { addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission } = this.props;
-		const { rid, t } = room;
-		let canAddUser = false;
-
-		const userInRoom = joined;
-		const permissions = await hasPermission(
-			[addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission],
-			rid
-		);
-
-		if (userInRoom && permissions[0]) {
-			canAddUser = true;
-		}
-		if (t === 'c' && permissions[1]) {
-			canAddUser = true;
-		}
-		if (t === 'p' && permissions[2]) {
-			canAddUser = true;
-		}
-		return canAddUser;
-	};
-
-	canInviteUser = async () => {
-		const { room } = this.state;
-		const { createInviteLinksPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([createInviteLinksPermission], rid);
-
-		const canInviteUser = permissions[0];
-		return canInviteUser;
 	};
 
 	canEdit = async () => {
@@ -711,7 +665,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				const data = teamRooms.map(team => ({
 					rid: team.teamId as string,
 					t: team.t,
-					name: team.name
+					name: team.name,
+					teamMain: team.teamMain
 				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
@@ -1143,7 +1098,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	render() {
-		const { room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate } = this.state;
+		const { room, membersCount, canViewMembers, joined, canAutoTranslate } = this.state;
 		const { rid, t, prid } = room;
 		const isGroupChatHandler = isGroupChat(room);
 
@@ -1162,50 +1117,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								<List.Item
 									title='Members'
 									subtitle={membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
-									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room } })}
+									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room, joined: this.joined } })}
 									testID='room-actions-members'
 									left={() => <List.Icon name='team' />}
 									showActionIndicator
 									translateSubtitle={false}
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['c', 'p'].includes(t) && canAddUser ? (
-							<>
-								<List.Item
-									title='Add_users'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'SelectedUsersView',
-											params: {
-												title: I18n.t('Add_users'),
-												nextAction: this.addUser
-											}
-										})
-									}
-									testID='room-actions-add-user'
-									left={() => <List.Icon name='add' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['c', 'p'].includes(t) && canInviteUser ? (
-							<>
-								<List.Item
-									title='Invite_users'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'InviteUsersView',
-											params: { rid }
-										})
-									}
-									testID='room-actions-invite-user'
-									left={() => <List.Icon name='user-add' />}
-									showActionIndicator
 								/>
 								<List.Separator />
 							</>
@@ -1392,10 +1308,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
-	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
-	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
-	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
-	createInviteLinksPermission: state.permissions['create-invite-links'],
 	editRoomPermission: state.permissions['edit-room'],
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],

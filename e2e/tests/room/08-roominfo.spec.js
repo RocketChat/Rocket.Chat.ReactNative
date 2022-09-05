@@ -175,7 +175,7 @@ describe('Room info screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('room-info-edit-view-name')).replaceText(`${privateRoomName}`);
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 				await swipe('down');
@@ -188,8 +188,8 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-announcement')).replaceText('abc');
 				await element(by.id('room-info-edit-view-password')).replaceText('abc');
 				await element(by.id('room-info-edit-view-t')).tap();
-				await swipe('up');
-				await element(by.id('room-info-edit-view-ro')).longPress(); // https://github.com/facebook/react-native/issues/28032
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
+				// await element(by.id('room-info-edit-view-ro')).longPress(); // https://github.com/facebook/react-native/issues/28032
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
 				await swipe('up');
 				await element(by.id('room-info-edit-view-reset')).tap();
@@ -201,14 +201,14 @@ describe('Room info screen', () => {
 				await expect(element(by.id('room-info-edit-view-password'))).toHaveText('');
 				// await swipe('down');
 				await expect(element(by.id('room-info-edit-view-t'))).toHaveToggleValue(true);
-				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(false);
-				await expect(element(by.id('room-info-edit-view-react-when-ro'))).toBeNotVisible();
+				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(true);
+				await expect(element(by.id('room-info-edit-view-react-when-ro'))).toHaveToggleValue(false);
 				await swipe('down');
 			});
 
 			it('should change room description', async () => {
 				await element(by.id('room-info-edit-view-description')).replaceText('new description');
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 				await tapBack();
@@ -227,7 +227,7 @@ describe('Room info screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 				await tapBack();
@@ -246,7 +246,7 @@ describe('Room info screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 				await tapBack();
@@ -265,7 +265,7 @@ describe('Room info screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('room-info-edit-view-password')).replaceText('password');
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 			});
@@ -273,12 +273,12 @@ describe('Room info screen', () => {
 			it('should change room type', async () => {
 				await swipe('down');
 				await element(by.id('room-info-edit-view-t')).tap();
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 				await swipe('down');
 				await element(by.id('room-info-edit-view-t')).tap();
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 			});
@@ -298,7 +298,7 @@ describe('Room info screen', () => {
 			});
 
 			it('should delete room', async () => {
-				await swipe('up');
+				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 				await element(by.id('room-info-edit-view-delete')).tap();
 				await waitFor(element(by[textMatcher]('Yes, delete it!')))
 					.toExist()
