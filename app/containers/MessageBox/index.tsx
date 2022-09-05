@@ -55,7 +55,7 @@ import {
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce, isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersion } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -111,8 +111,8 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	isActionsEnabled: boolean;
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
-	serverVersion: string;
 	goToCannedResponses: () => void | null;
+	serverVersion: string;
 }
 
 interface IMessageBoxState {
@@ -181,7 +181,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			tshow: false,
+			tshow: this.sendThreadToChannel,
 			mentionLoading: false,
 			permissionToUpload: true
 		};
@@ -209,6 +209,23 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			...videoPickerConfig,
 			...libPickerLabels
 		};
+	}
+
+	get sendThreadToChannel() {
+		const { user, serverVersion, tmid } = this.props;
+		if (tmid && compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
+			return false;
+		}
+		if (tmid && user.alsoSendThreadToChannel === 'default') {
+			return false;
+		}
+		if (user.alsoSendThreadToChannel === 'always') {
+			return true;
+		}
+		if (user.alsoSendThreadToChannel === 'never') {
+			return false;
+		}
+		return true;
 	}
 
 	async componentDidMount() {
@@ -381,7 +398,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission, goToCannedResponses } = this.props;
+		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled } = this.props;
+		if (prevProps.replyWithMention !== replyWithMention) {
+			if (threadsEnabled && replyWithMention) {
+				this.setState({ tshow: this.sendThreadToChannel });
+			}
+		}
 		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
 		}
@@ -687,9 +709,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	clearInput = () => {
+		const { tshow } = this.state;
+		const { user, serverVersion } = this.props;
 		this.setInput('');
 		this.setShowSend(false);
-		this.setState({ tshow: false });
+		if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0') || (tshow && user.alsoSendThreadToChannel === 'default')) {
+			this.setState({ tshow: false });
+		}
 	};
 
 	canUploadFile = (file: any) => {
@@ -974,7 +1000,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			// Normal message
 		} else {
 			// @ts-ignore
-			onSubmit(message, undefined, tshow);
+			onSubmit(message, undefined, tmid ? tshow : false);
 		}
 	};
 
@@ -1044,7 +1070,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				onPress={this.onPressSendToChannel}
 				testID='messagebox-send-to-channel'
 			>
-				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
+				<CustomIcon
+					testID={tshow ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
+					name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'}
+					size={24}
+					color={themes[theme].auxiliaryText}
+				/>
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>
 					{I18n.t('Messagebox_Send_to_channel')}
 				</Text>
@@ -1213,7 +1244,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	uploadFilePermission: state.permissions['mobile-upload-file']
+	uploadFilePermission: state.permissions['mobile-upload-file'],
+	serverVersion: state.server.version
 });
 
 const dispatchToProps = {

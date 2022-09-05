@@ -15,13 +15,14 @@ import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
+import ListPicker from './ListPicker';
 
 interface IUserPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const { enableMessageParserEarlyAdoption, id } = useAppSelector(state => getUserSelector(state));
+	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel } = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
 
@@ -42,6 +43,16 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 			await Services.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
 		} catch (e) {
 			log(e);
+		}
+	};
+
+	const setAlsoSendThreadToChannel = async (param: { [key: string]: string }, onError: () => void) => {
+		try {
+			await Services.saveUserPreferences(param);
+			dispatch(setUser(param));
+		} catch (e) {
+			log(e);
+			onError();
 		}
 	};
 
@@ -72,6 +83,20 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 							right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption)}
 						/>
 						<List.Separator />
+					</List.Section>
+				) : null}
+				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0') ? (
+					<List.Section title='Also_send_thread_message_to_channel_behavior'>
+						<List.Separator />
+						<ListPicker
+							onChangeValue={setAlsoSendThreadToChannel}
+							preference='alsoSendThreadToChannel'
+							value={alsoSendThreadToChannel}
+							title='Messagebox_Send_to_channel'
+							testID='preferences-view-enable-message-parser'
+						/>
+						<List.Separator />
+						<List.Info info='Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description' />
 					</List.Section>
 				) : null}
 			</List.Container>
