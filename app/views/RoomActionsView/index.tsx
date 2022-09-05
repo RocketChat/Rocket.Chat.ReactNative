@@ -659,7 +659,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				const data = teamRooms.map(team => ({
 					rid: team.teamId as string,
 					t: team.t,
-					name: team.name
+					name: team.name,
+					teamMain: team.teamMain
 				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
