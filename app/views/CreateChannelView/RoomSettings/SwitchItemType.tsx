@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { usePermissions } from '../../../lib/hooks';
 import { SwitchItem } from './SwitchItem';
@@ -30,14 +30,11 @@ export const SwitchItemType = ({
 		hint = 'Channel_hint_public';
 	}
 
+	useEffect(() => {
+		onValueChangeType(createPrivateChannelPermission ? type : false);
+	}, [createPrivateChannelPermission]);
+
 	return (
-		<SwitchItem
-			id={'type'}
-			value={createPrivateChannelPermission ? type : false}
-			disabled={isDisabled}
-			label={'Private'}
-			hint={hint}
-			onValueChange={onValueChangeType}
-		/>
+		<SwitchItem id={'type'} value={type} disabled={isDisabled} label={'Private'} hint={hint} onValueChange={onValueChangeType} />
 	);
 };
