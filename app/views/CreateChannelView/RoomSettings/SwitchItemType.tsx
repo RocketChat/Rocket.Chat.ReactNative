@@ -1,21 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { usePermissions } from '../../../lib/hooks';
 import { SwitchItem } from './SwitchItem';
 
 export const SwitchItemType = ({
 	isTeam,
 	type,
-	onValueChangeType
+	onValueChangeType,
+	isDisabled
 }: {
 	isTeam: boolean;
 	type: boolean;
 	onValueChangeType: (value: boolean) => void;
+	isDisabled: boolean;
 }) => {
-	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
-
-	const isDisabled = [createChannelPermission, createPrivateChannelPermission].filter(r => r === true).length <= 1;
-
 	let hint = '';
 	if (isTeam && type) {
 		hint = 'Team_hint_private';
@@ -29,10 +26,6 @@ export const SwitchItemType = ({
 	if (!isTeam && !type) {
 		hint = 'Channel_hint_public';
 	}
-
-	useEffect(() => {
-		onValueChangeType(createPrivateChannelPermission ? type : false);
-	}, [createPrivateChannelPermission]);
 
 	return (
 		<SwitchItem id={'type'} value={type} disabled={isDisabled} label={'Private'} hint={hint} onValueChange={onValueChangeType} />
