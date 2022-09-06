@@ -46,7 +46,7 @@ const SetUsernameView = () => {
 		formState: { isValid },
 		setValue
 	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema) });
-	const [saving, setSaving] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
@@ -75,14 +75,14 @@ const SetUsernameView = () => {
 		if (!isValid) {
 			return;
 		}
-		setSaving(true);
+		setLoading(true);
 		try {
 			await Services.saveUserProfile({ username });
 			dispatch(loginRequest({ resume: token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
 		}
-		setSaving(false);
+		setLoading(false);
 	};
 
 	return (
@@ -113,7 +113,7 @@ const SetUsernameView = () => {
 						onPress={handleSubmit(submit)}
 						testID='set-username-view-submit'
 						disabled={!isValid}
-						loading={saving}
+						loading={loading}
 					/>
 				</SafeAreaView>
 			</ScrollView>
