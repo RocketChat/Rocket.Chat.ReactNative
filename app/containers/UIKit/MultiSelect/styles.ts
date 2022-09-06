@@ -28,9 +28,9 @@ export default StyleSheet.create({
 	},
 	item: {
 		height: 48,
-		maxWidth: '85%',
 		alignItems: 'center',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		flex: 1
 	},
 	input: {
 		minHeight: 48,
@@ -83,5 +83,11 @@ export default StyleSheet.create({
 		borderRadius: 2,
 		width: 24,
 		height: 24
+	},
+	flex: {
+		flex: 1
+	},
+	flexZ: {
+		flex: 0
 	}
 });
