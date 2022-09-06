@@ -157,5 +157,34 @@ export default StyleSheet.create({
 		fontSize: 12,
 		marginLeft: 4,
 		...sharedStyles.textRegular
+	},
+	searchedEmoji: {
+		backgroundColor: 'transparent'
+	},
+	emojiContainer: { justifyContent: 'center', marginHorizontal: 2 },
+	emojiListContainer: { height: 50, paddingHorizontal: 5, marginVertical: 5, flexGrow: 1 },
+	emojiSearchViewContainer: {
+		borderTopWidth: 1
+	},
+	emojiSearchbarContainer: {
+		flexDirection: 'row',
+		height: 50,
+		marginBottom: 15,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	openEmojiKeyboard: { marginHorizontal: 10, justifyContent: 'center' },
+	emojiSearchbar: { paddingHorizontal: 20, borderRadius: 2, fontSize: 16 },
+	textInputContainer: { justifyContent: 'center', marginBottom: 0, marginRight: 15 },
+	listEmptyComponent: {
+		width: '100%',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	emojiSearchCustomEmoji: {
+		margin: 4
+	},
+	emojiSearchInput: {
+		flex: 1
 	}
 });

@@ -1,85 +1,98 @@
 import React from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
+import { Q } from '@nozbe/watermelondb';
 
 import EmojiPicker from '../../containers/EmojiPicker';
-import { isAndroid } from '../../lib/methods/helpers';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import styles from './styles';
-import { IApplicationState } from '../../definitions';
-
-const margin = isAndroid ? 40 : 20;
-const maxSize = 400;
+import { IEmoji } from '../../definitions';
+import { EventTypes } from '../../containers/EmojiPicker/interfaces';
+import { FormTextInput } from '../../containers/TextInput/FormTextInput';
+import I18n from '../../i18n';
+import { sanitizeLikeString } from '../../lib/database/utils';
+import { emojis } from '../../containers/EmojiPicker/emojis';
+import database from '../../lib/database';
+import { debounce } from '../../lib/methods/helpers/debounce';
 
 interface IReactionPickerProps {
 	message?: any;
 	show: boolean;
-	isMasterDetail: boolean;
 	reactionClose: () => void;
 	onEmojiSelected: (shortname: string, id: string) => void;
 	width: number;
 	height: number;
-	theme: TSupportedThemes;
 }
 
-class ReactionPicker extends React.Component<IReactionPickerProps> {
-	shouldComponentUpdate(nextProps: IReactionPickerProps) {
-		const { show, width, height } = this.props;
-		return nextProps.show !== show || width !== nextProps.width || height !== nextProps.height;
-	}
+const MAX_EMOJIS_TO_DISPLAY = 20;
 
-	onEmojiSelected = (emoji: string, shortname?: string) => {
+const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
+	const { colors } = useTheme();
+	const [searchText, setSearchText] = React.useState<string>('');
+	const [searchedEmojis, setSearchedEmojis] = React.useState<(string | IEmoji)[]>([]);
+	const [searching, setSearching] = React.useState<boolean>(false);
+
+	const handleTextChange = (text: string) => {
+		setSearching(text !== '');
+		setSearchText(text);
+		searchEmojis(text);
+	};
+
+	const searchEmojis = debounce(async (keyword: string) => {
+		const likeString = sanitizeLikeString(keyword);
+		const whereClause = [];
+		if (likeString) {
+			whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
+		}
+		const db = database.active;
+		const customEmojisCollection = await (
+			await db
+				.get('custom_emojis')
+				.query(...whereClause)
+				.fetch()
+		).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+		const customEmojis = customEmojisCollection?.map(emoji => ({
+			isCustom: true,
+			content: emoji?.name,
+			name: emoji?.name,
+			extension: emoji?.extension
+		})) as IEmoji[];
+		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+		const mergedEmojis = [...customEmojis, ...filteredEmojis];
+		setSearchedEmojis(mergedEmojis);
+	}, 300);
+
+	const handleEmojiSelect = (_eventType: EventTypes, emoji?: string, shortname?: string) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
-		const { onEmojiSelected, message } = this.props;
 		if (message) {
+			// @ts-ignore
 			onEmojiSelected(shortname || emoji, message.id);
 		}
+		reactionClose();
 	};
 
-	render() {
-		const { width, height, show, reactionClose, isMasterDetail, theme } = this.props;
+	return (
+		<View style={styles.reactionPickerContainer} testID='reaction-picker'>
+			<View style={styles.searchbarContainer}>
+				<FormTextInput
+					autoCapitalize='none'
+					autoCorrect={false}
+					blurOnSubmit
+					placeholder={I18n.t('Search_emoji')}
+					returnKeyType='search'
+					underlineColorAndroid='transparent'
+					onChangeText={handleTextChange}
+					style={[styles.reactionPickerSearchbar, { backgroundColor: colors.borderColor }]}
+					value={searchText}
+					onClearInput={() => handleTextChange('')}
+					iconRight={'search'}
+					testID='reaction-picker-searchbar'
+				/>
+			</View>
+			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />
+		</View>
+	);
+};
 
-		let widthStyle = width - margin;
-		let heightStyle = Math.min(width, height) - margin * 2;
-
-		if (isMasterDetail) {
-			widthStyle = maxSize;
-			heightStyle = maxSize;
-		}
-
-		return show ? (
-			<Modal
-				isVisible={show}
-				style={{ alignItems: 'center' }}
-				onBackdropPress={reactionClose}
-				onBackButtonPress={reactionClose}
-				animationIn='fadeIn'
-				animationOut='fadeOut'
-				backdropOpacity={themes[theme].backdropOpacity}
-			>
-				<View
-					style={[
-						styles.reactionPickerContainer,
-						{
-							width: widthStyle,
-							height: heightStyle
-						}
-					]}
-					testID='reaction-picker'
-				>
-					<EmojiPicker theme={theme} onEmojiSelected={this.onEmojiSelected} />
-				</View>
-			</Modal>
-		) : null;
-	}
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(withTheme(ReactionPicker));
+export default ReactionPicker;

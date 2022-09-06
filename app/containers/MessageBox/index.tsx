@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
+import { Alert, Keyboard, NativeModules, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
@@ -34,7 +34,8 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
 	MENTIONS_TRACKING_TYPE_USERS,
-	TIMEOUT_CLOSE_EMOJI
+	TIMEOUT_CLOSE_EMOJI,
+	MAX_EMOJIS_TO_DISPLAY
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -59,6 +60,9 @@ import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersi
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
+import { EventTypes } from '../EmojiPicker/interfaces';
+import EmojiSearchbar from './EmojiSearchbar';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 
 require('./EmojiKeyboard');
 
@@ -129,6 +133,8 @@ interface IMessageBoxState {
 	tshow: boolean;
 	mentionLoading: boolean;
 	permissionToUpload: boolean;
+	showEmojiSearchbar: boolean;
+	searchedEmojis: any[];
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
@@ -160,6 +166,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	private typingTimeout: any;
 
+	private emojiSearchbarRef: any;
+
 	static defaultProps = {
 		message: {
 			id: ''
@@ -183,7 +191,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			command: {},
 			tshow: this.sendThreadToChannel,
 			mentionLoading: false,
-			permissionToUpload: true
+			permissionToUpload: true,
+			showEmojiSearchbar: false,
+			searchedEmojis: []
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -209,6 +219,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			...videoPickerConfig,
 			...libPickerLabels
 		};
+
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	get sendThreadToChannel() {
@@ -326,7 +338,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tshow,
 			mentionLoading,
 			trackingType,
-			permissionToUpload
+			permissionToUpload,
+			showEmojiSearchbar,
+			searchedEmojis
 		} = this.state;
 
 		const {
@@ -394,6 +408,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextProps.goToCannedResponses !== goToCannedResponses) {
 			return true;
 		}
+		if (nextState.showEmojiSearchbar !== showEmojiSearchbar) {
+			return true;
+		}
+		if (!dequal(nextState.searchedEmojis, searchedEmojis)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -438,6 +458,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	setOptions = async () => {
@@ -577,18 +598,45 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onEmojiSelected = (keyboardId: string, params: { emoji: string }) => {
+	onKeyboardItemSelected = (keyboardId: string, params: { eventType: EventTypes; emoji: string }) => {
+		const { eventType, emoji } = params;
 		const { text } = this;
-		const { emoji } = params;
 		let newText = '';
-
 		// if messagebox has an active cursor
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
-		const newCursor = cursor + emoji.length;
-		this.setInput(newText, { start: newCursor, end: newCursor });
-		this.setShowSend(true);
+		let newCursor;
+
+		switch (eventType) {
+			case EventTypes.BACKSPACE_PRESSED:
+				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
+				let charsToRemove = 1;
+				const lastEmoji = text.substr(cursor > 0 ? cursor - 2 : text.length - 2, cursor > 0 ? cursor : text.length);
+				// Check if last character is an emoji
+				if (emojiRegex.test(lastEmoji)) charsToRemove = 2;
+				newText =
+					text.substr(0, (cursor > 0 ? cursor : text.length) - charsToRemove) + text.substr(cursor > 0 ? cursor : text.length);
+				newCursor = cursor - charsToRemove;
+				this.setInput(newText, { start: newCursor, end: newCursor });
+				this.setShowSend(newText !== '');
+				break;
+			case EventTypes.EMOJI_PRESSED:
+				newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
+				newCursor = cursor + emoji.length;
+				this.setInput(newText, { start: newCursor, end: newCursor });
+				this.setShowSend(true);
+				break;
+			case EventTypes.SEARCH_PRESSED:
+				this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: true });
+				setTimeout(() => {
+					if (this.emojiSearchbarRef && this.emojiSearchbarRef.focus) {
+						this.emojiSearchbarRef.focus();
+					}
+				}, 400);
+				break;
+			default:
+			// Do nothing
+		}
 	};
 
 	getPermalink = async (message: any) => {
@@ -621,16 +669,20 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
-	getEmojis = debounce(async (keyword: any) => {
-		const db = database.active;
-		const customEmojisCollection = db.get('custom_emojis');
+	getCustomEmojis = async (keyword: any, count: number) => {
 		const likeString = sanitizeLikeString(keyword);
 		const whereClause = [];
 		if (likeString) {
 			whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
 		}
-		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
-		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const db = database.active;
+		const customEmojisCollection = db.get('custom_emojis');
+		const customEmojis = await (await customEmojisCollection.query(...whereClause).fetch()).slice(0, count);
+		return customEmojis;
+	};
+
+	getEmojis = debounce(async (keyword: any) => {
+		const customEmojis = await this.getCustomEmojis(keyword, MENTIONS_COUNT_TO_DISPLAY);
 		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		this.setState({ mentions: mergedEmojis || [], mentionLoading: false });
@@ -881,7 +933,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	openEmoji = () => {
 		logEvent(events.ROOM_OPEN_EMOJI);
-		this.setState({ showEmojiKeyboard: true });
+		this.setState({ showEmojiKeyboard: true, showEmojiSearchbar: false });
+		this.stopTrackingMention();
 	};
 
 	recordingCallback = (recording: any) => {
@@ -906,6 +959,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ showEmojiKeyboard: false });
 	};
 
+	closeEmojiKeyboardAndFocus = () => {
+		this.closeEmoji();
+		this.focus();
+	};
+
+	closeEmojiSearchbar = () => {
+		this.setState({ showEmojiSearchbar: false });
+	};
+
 	closeEmojiAndAction = (action?: Function, params?: any) => {
 		const { showEmojiKeyboard } = this.state;
 
@@ -926,7 +988,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		this.clearInput();
 		this.debouncedOnChangeText.stop();
-		this.closeEmoji();
+		this.closeEmojiKeyboardAndFocus();
 		this.stopTrackingMention();
 		this.handleTyping(false);
 		if (message.trim() === '' && !showSend) {
@@ -1083,6 +1145,58 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		);
 	};
 
+	renderEmojiSearchbar = () => {
+		const { showEmojiSearchbar, searchedEmojis } = this.state;
+		const { baseUrl } = this.props;
+
+		const searchEmojis = debounce(async (keyword: any) => {
+			const customEmojis = await this.getCustomEmojis(keyword, MAX_EMOJIS_TO_DISPLAY / 2);
+			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
+			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MAX_EMOJIS_TO_DISPLAY);
+			this.setState({ searchedEmojis: mergedEmojis });
+		}, 300);
+
+		const onChangeText = (value: string) => {
+			searchEmojis(value);
+		};
+
+		const onEmojiSelected = (emoji: any) => {
+			let selectedEmoji;
+			if (emoji.name || emoji.content) {
+				selectedEmoji = `:${emoji.name || emoji.content}:`;
+			} else {
+				selectedEmoji = shortnameToUnicode(`:${emoji}:`);
+			}
+			const { text } = this;
+			let newText = '';
+			const { start, end } = this.selection;
+			const cursor = Math.max(start, end);
+			newText = `${text.substr(0, cursor)}${selectedEmoji}${text.substr(cursor)}`;
+			const newCursor = cursor + selectedEmoji.length;
+			this.setInput(newText, { start: newCursor, end: newCursor });
+			this.setShowSend(true);
+		};
+		return showEmojiSearchbar ? (
+			<EmojiSearchbar
+				ref={ref => (this.emojiSearchbarRef = ref)}
+				openEmoji={this.openEmoji}
+				onChangeText={onChangeText}
+				emojis={searchedEmojis}
+				baseUrl={baseUrl}
+				onEmojiSelected={onEmojiSelected}
+			/>
+		) : null;
+	};
+
+	handleBackPress = () => {
+		const { showEmojiSearchbar } = this.state;
+		if (showEmojiSearchbar) {
+			this.setState({ showEmojiSearchbar: false });
+			return true;
+		}
+		return false;
+	};
+
 	renderContent = () => {
 		const {
 			recording,
@@ -1153,7 +1267,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					editing={editing}
 					editCancel={this.editCancel}
 					openEmoji={this.openEmoji}
-					closeEmoji={this.closeEmoji}
+					closeEmoji={this.closeEmojiKeyboardAndFocus}
 				/>
 				<TextInput
 					ref={component => (this.component = component)}
@@ -1169,6 +1283,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					defaultValue=''
 					multiline
 					testID={`messagebox-input${tmid ? '-thread' : ''}`}
+					onFocus={this.closeEmojiSearchbar}
 					{...isAndroidTablet}
 				/>
 				<RightButtons
@@ -1197,6 +1312,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 						{recordAudio}
 					</View>
 					{this.renderSendToChannel()}
+					{this.renderEmojiSearchbar()}
 				</View>
 				{children}
 			</>
@@ -1224,7 +1340,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
-					onItemSelected={this.onEmojiSelected}
+					onItemSelected={this.onKeyboardItemSelected}
 					trackInteractive
 					requiresSameParentToManageScrollView
 					addBottomView

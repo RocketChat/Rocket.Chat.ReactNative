@@ -264,7 +264,8 @@ const MessageActions = React.memo(
 					// TODO: evaluate unification with IEmoji
 					onReactionPress(shortname as any, message.id);
 				} else {
-					reactionInit(message);
+					// Wait for the Action Sheet to close before opening reaction picker
+					setTimeout(() => reactionInit(message), 500);
 				}
 				// close actionSheet when click at header
 				hideActionSheet();

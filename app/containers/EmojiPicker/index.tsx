@@ -1,206 +1,149 @@
-import React, { Component } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { dequal } from 'dequal';
-import { connect } from 'react-redux';
-import orderBy from 'lodash/orderBy';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { ImageStyle } from 'react-native-fast-image';
+import React, { useMemo, useState } from 'react';
+import { View } from 'react-native';
+import { TabView, SceneRendererProps, NavigationState } from 'react-native-tab-view';
+import { shallowEqual } from 'react-redux';
 
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
+import Footer from './Footer';
 import styles from './styles';
 import categories from './categories';
-import database from '../../lib/database';
 import { emojisByCategory } from './emojis';
-import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import log from '../../lib/methods/helpers/log';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes } from '../../theme';
-import { IEmoji, TGetCustomEmoji, IApplicationState, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definitions';
+import { useTheme } from '../../theme';
+import { IEmoji, ICustomEmojis, IEmojiPickerCategory, IEmojiCategoryName } from '../../definitions';
+import { useAppSelector } from '../../lib/hooks';
+import { IEmojiPickerProps, EventTypes } from './interfaces';
+import { useFrequentlyUsedEmoji, addFrequentlyUsed } from './frequentlyUsedEmojis';
+import { TIconsName } from '../CustomIcon';
 
-interface IEmojiPickerProps {
-	isMessageContainsOnlyEmoji?: boolean;
-	getCustomEmoji?: TGetCustomEmoji;
-	baseUrl: string;
-	customEmojis: ICustomEmojis;
-	style?: StyleProp<ImageStyle>;
-	theme: TSupportedThemes;
-	onEmojiSelected: (emoji: string, shortname?: string) => void;
-	tabEmojiStyle?: StyleProp<TextStyle>;
-}
-
-interface IEmojiPickerState {
-	frequentlyUsed: (string | { content?: string; extension?: string; isCustom: boolean })[];
-	customEmojis: any;
-	show: boolean;
-	width: number | null;
-}
-
-class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
-	constructor(props: IEmojiPickerProps) {
-		super(props);
-		const customEmojis = Object.keys(props.customEmojis)
-			.filter(item => item === props.customEmojis[item].name)
-			.map(item => ({
-				content: props.customEmojis[item].name,
-				extension: props.customEmojis[item].extension,
-				isCustom: true
-			}));
-		this.state = {
-			frequentlyUsed: [],
-			customEmojis,
-			show: false,
-			width: null
-		};
+const Category = ({
+	title,
+	frequentlyUsed,
+	customEmojis,
+	handleEmojiSelect,
+	baseUrl,
+	tabsCount
+}: IEmojiPickerCategory): React.ReactElement => {
+	let emojis: (IEmoji | string)[] = [];
+	if (title === 'frequentlyUsed') {
+		emojis = frequentlyUsed;
+	} else if (title === 'custom') {
+		emojis = customEmojis;
+	} else {
+		emojis = emojisByCategory[title];
 	}
+	return (
+		<EmojiCategory
+			emojis={emojis}
+			onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
+			style={styles.categoryContainer}
+			baseUrl={baseUrl}
+			tabsCount={tabsCount}
+		/>
+	);
+};
 
-	async componentDidMount() {
-		await this.updateFrequentlyUsed();
-		this.setState({ show: true });
-	}
+const EmojiPicker = ({
+	onItemClicked,
+	isEmojiKeyboard = false,
+	searching = false,
+	searchedEmojis = []
+}: IEmojiPickerProps): React.ReactElement | null => {
+	const { colors } = useTheme();
+	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
+	const [index, setIndex] = useState(0);
+	const [routes] = useState(categories);
 
-	shouldComponentUpdate(nextProps: IEmojiPickerProps, nextState: IEmojiPickerState) {
-		const { frequentlyUsed, show, width } = this.state;
-		const { theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextState.show !== show) {
-			return true;
-		}
-		if (nextState.width !== width) {
-			return true;
-		}
-		if (!dequal(nextState.frequentlyUsed, frequentlyUsed)) {
-			return true;
-		}
-		return false;
-	}
+	const baseUrl = useAppSelector(state => state.server?.server);
+	const allCustomEmojis: ICustomEmojis = useAppSelector(state => state.customEmojis, shallowEqual);
+	const customEmojis: IEmoji[] = useMemo(
+		() =>
+			Object.keys(allCustomEmojis)
+				.filter(item => item === allCustomEmojis[item].name)
+				.map(item => ({
+					content: allCustomEmojis[item].name,
+					name: allCustomEmojis[item].name,
+					extension: allCustomEmojis[item].extension,
+					isCustom: true
+				})),
+		[allCustomEmojis]
+	);
 
-	onEmojiSelected = (emoji: IEmoji) => {
+	const handleEmojiSelect = (emoji: IEmoji | string) => {
 		try {
-			const { onEmojiSelected } = this.props;
-			if (emoji.isCustom) {
-				this._addFrequentlyUsed({
+			if (typeof emoji === 'string') {
+				addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
+				const shortname = `:${emoji}:`;
+				onItemClicked(EventTypes.EMOJI_PRESSED, shortnameToUnicode(shortname), shortname);
+			} else {
+				addFrequentlyUsed({
 					content: emoji.content,
+					name: emoji.name,
 					extension: emoji.extension,
 					isCustom: true
 				});
-				onEmojiSelected(`:${emoji.content}:`);
-			} else {
-				const content = emoji;
-				this._addFrequentlyUsed({ content, isCustom: false });
-				const shortname = `:${emoji}:`;
-				onEmojiSelected(shortnameToUnicode(shortname), shortname);
+				onItemClicked(EventTypes.EMOJI_PRESSED, `:${emoji.content}:`);
 			}
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	_addFrequentlyUsed = protectedFunction(async (emoji: IEmoji) => {
-		const db = database.active;
-		const freqEmojiCollection = db.get('frequently_used_emojis');
-		let freqEmojiRecord: TFrequentlyUsedEmojiModel;
-		try {
-			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
-		} catch (error) {
-			// Do nothing
-		}
+	const tabsCount = frequentlyUsed.length === 0 ? categories.length - 1 : categories.length;
 
-		await db.write(async () => {
-			if (freqEmojiRecord) {
-				await freqEmojiRecord.update(f => {
-					if (f.count) {
-						f.count += 1;
-					}
-				});
-			} else {
-				await freqEmojiCollection.create(f => {
-					f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
-					Object.assign(f, emoji);
-					f.count = 1;
-				});
-			}
-		});
-	});
-
-	updateFrequentlyUsed = async () => {
-		const db = database.active;
-		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
-		const frequentlyUsedOrdered = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-		const frequentlyUsed = frequentlyUsedOrdered.map(item => {
-			if (item.isCustom) {
-				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
-			}
-			return shortnameToUnicode(`${item.content}`);
-		});
-		this.setState({ frequentlyUsed });
+	type Route = {
+		key: TIconsName;
+		title: IEmojiCategoryName;
 	};
+	type State = NavigationState<Route>;
+	const renderTabBar = (props: SceneRendererProps & { navigationState: State }) => (
+		<TabBar tabs={categories} onPress={props.jumpTo} activeTab={index} showFrequentlyUsed={frequentlyUsed.length > 0} />
+	);
 
-	onLayout = ({
-		nativeEvent: {
-			layout: { width }
-		}
-	}: any) => this.setState({ width });
-
-	renderCategory(category: keyof typeof emojisByCategory, i: number, label: string) {
-		const { frequentlyUsed, customEmojis, width } = this.state;
-		const { baseUrl } = this.props;
-
-		let emojis = [];
-		if (i === 0) {
-			emojis = frequentlyUsed;
-		} else if (i === 1) {
-			emojis = customEmojis;
-		} else {
-			emojis = emojisByCategory[category];
-		}
-		return (
-			<EmojiCategory
-				emojis={emojis}
-				onEmojiSelected={(emoji: IEmoji) => this.onEmojiSelected(emoji)}
-				style={styles.categoryContainer}
-				width={width}
-				baseUrl={baseUrl}
-				tabLabel={label}
-			/>
-		);
+	if (!loaded) {
+		return null;
 	}
 
-	render() {
-		const { show, frequentlyUsed } = this.state;
-		const { tabEmojiStyle, theme } = this.props;
-
-		if (!show) {
-			return null;
-		}
-		return (
-			<View onLayout={this.onLayout} style={{ flex: 1 }}>
-				<ScrollableTabView
-					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
-					contentProps={{
-						keyboardShouldPersistTaps: 'always',
-						keyboardDismissMode: 'none'
-					}}
-					style={{ backgroundColor: themes[theme].focusedBackground }}
-				>
-					{categories.tabs.map((tab: any, i) =>
-						i === 0 && frequentlyUsed.length === 0
-							? null // when no frequentlyUsed don't show the tab
-							: this.renderCategory(tab.category, i, tab.tabLabel)
+	return (
+		<View style={styles.emojiPickerContainer}>
+			{searching ? (
+				<EmojiCategory
+					emojis={searchedEmojis}
+					onEmojiSelected={(emoji: IEmoji | string) => handleEmojiSelect(emoji)}
+					style={styles.categoryContainer}
+					baseUrl={baseUrl}
+					tabsCount={tabsCount}
+				/>
+			) : (
+				<TabView
+					lazy
+					navigationState={{ index, routes }}
+					renderScene={({ route }: { route: Route }) => (
+						<Category
+							key={route.key}
+							title={route.title}
+							frequentlyUsed={frequentlyUsed}
+							customEmojis={customEmojis}
+							handleEmojiSelect={handleEmojiSelect}
+							baseUrl={baseUrl}
+							tabsCount={tabsCount}
+						/>
 					)}
-				</ScrollableTabView>
-			</View>
-		);
-	}
-}
+					onIndexChange={setIndex}
+					style={{ backgroundColor: colors.focusedBackground }}
+					renderTabBar={renderTabBar}
+				/>
+			)}
+			{isEmojiKeyboard && (
+				<Footer
+					onSearchPressed={() => onItemClicked(EventTypes.SEARCH_PRESSED)}
+					onBackspacePressed={() => onItemClicked(EventTypes.BACKSPACE_PRESSED)}
+				/>
+			)}
+		</View>
+	);
+};
 
-const mapStateToProps = (state: IApplicationState) => ({
-	customEmojis: state.customEmojis,
-	baseUrl: state.share.server.server || state.server.server
-});
-
-export default connect(mapStateToProps)(EmojiPicker);
+export default EmojiPicker;

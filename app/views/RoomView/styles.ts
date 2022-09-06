@@ -15,9 +15,7 @@ export default StyleSheet.create({
 		marginVertical: 15
 	},
 	reactionPickerContainer: {
-		borderRadius: 4,
-		flexDirection: 'column',
-		overflow: 'hidden'
+		height: '100%'
 	},
 	bannerContainer: {
 		paddingVertical: 12,
@@ -64,5 +62,14 @@ export default StyleSheet.create({
 	previewMode: {
 		fontSize: 16,
 		...sharedStyles.textMedium
+	},
+	searchbarContainer: {
+		height: 55,
+		marginBottom: 10,
+		paddingHorizontal: 15
+	},
+	reactionPickerSearchbar: {
+		paddingHorizontal: 20,
+		minHeight: 48
 	}
 });

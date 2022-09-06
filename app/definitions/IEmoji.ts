@@ -5,7 +5,7 @@ import { ImageStyle } from 'react-native-fast-image';
 export interface IEmoji {
 	content: string;
 	name: string;
-	extension: string;
+	extension?: string;
 	isCustom: boolean;
 	count?: number;
 }
@@ -30,11 +30,31 @@ export interface ICustomEmojiModel {
 
 export interface IEmojiCategory {
 	baseUrl: string;
-	emojis: IEmoji[];
-	onEmojiSelected: (emoji: IEmoji) => void;
-	width: number | null;
+	emojis: (IEmoji | string)[];
+	onEmojiSelected: (emoji: IEmoji | string) => void;
 	style: StyleProp<ImageStyle>;
-	tabLabel: string;
+	tabsCount: number;
+}
+
+export type IEmojiCategoryName =
+	| 'frequentlyUsed'
+	| 'custom'
+	| 'people'
+	| 'nature'
+	| 'food'
+	| 'activity'
+	| 'travel'
+	| 'objects'
+	| 'symbols'
+	| 'flags';
+
+export interface IEmojiPickerCategory {
+	title: IEmojiCategoryName;
+	frequentlyUsed: (IEmoji | string)[];
+	customEmojis: IEmoji[];
+	handleEmojiSelect: (emoji: IEmoji | string) => void;
+	baseUrl: string;
+	tabsCount: number;
 }
 
 export type TGetCustomEmoji = (name: string) => any;

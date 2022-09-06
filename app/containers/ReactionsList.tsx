@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, Pressable, View, ScrollView } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { FlatList } from 'react-native-gesture-handler';
+import { TabView, SceneRendererProps, NavigationState } from 'react-native-tab-view';
 
 import Emoji from './message/Emoji';
 import { useTheme } from '../theme';
@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
 	customEmojiStyle: { width: 25, height: 25 }
 });
 
+type Route = {
+	key: string;
+	reaction: IReaction;
+};
+type State = NavigationState<Route>;
+
 interface IReactionsListBase {
 	baseUrl: string;
 	getCustomEmoji: TGetCustomEmoji;
@@ -41,24 +47,23 @@ interface IReactionsListProps extends IReactionsListBase {
 }
 
 interface ITabBarItem extends IReactionsListBase {
-	tab: IReaction;
-	index: number;
-	goToPage?: (index: number) => void;
+	tab: { key: string; reaction: IReaction };
+	jumpTo?: (key: string) => void;
 }
 interface IReactionsTabBar extends IReactionsListBase {
 	activeTab?: number;
-	tabs?: IReaction[];
-	goToPage?: (index: number) => void;
+	tabs?: { key: string; reaction: IReaction }[];
+	jumpTo?: (key: string) => void;
 	width: number;
 }
 
-const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarItem) => {
+const TabBarItem = ({ tab, jumpTo, baseUrl, getCustomEmoji }: ITabBarItem) => {
 	const { colors } = useTheme();
 	return (
 		<Pressable
-			key={tab.emoji}
+			key={tab.key}
 			onPress={() => {
-				goToPage?.(index);
+				jumpTo?.(tab.key);
 			}}
 			style={({ pressed }: { pressed: boolean }) => ({
 				opacity: pressed ? 0.7 : 1
@@ -66,19 +71,19 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 		>
 			<View style={styles.tabBarItem}>
 				<Emoji
-					content={tab.emoji}
+					content={tab.key}
 					standardEmojiStyle={styles.standardEmojiStyle}
 					customEmojiStyle={styles.customEmojiStyle}
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 				/>
-				<Text style={[styles.reactionCount, { color: colors.auxiliaryTintColor }]}>{tab.usernames.length}</Text>
+				<Text style={[styles.reactionCount, { color: colors.auxiliaryTintColor }]}>{tab.reaction.usernames.length}</Text>
 			</View>
 		</Pressable>
 	);
 };
 
-const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, width }: IReactionsTabBar) => {
+const ReactionsTabBar = ({ tabs, activeTab, jumpTo, baseUrl, getCustomEmoji, width }: IReactionsTabBar) => {
 	const tabWidth = tabs && Math.max(width / tabs.length, MIN_TAB_WIDTH);
 	const { colors } = useTheme();
 	return (
@@ -94,7 +99,7 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, w
 								borderColor: isActiveTab ? colors.tintActive : colors.separatorColor
 							}}
 						>
-							<TabBarItem tab={tab} index={index} goToPage={goToPage} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} />
+							<TabBarItem tab={tab} jumpTo={jumpTo} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} />
 						</View>
 					);
 				})}
@@ -128,16 +133,30 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }) => {
 };
 
 const ReactionsList = ({ reactions, baseUrl, getCustomEmoji, width }: IReactionsListProps): React.ReactElement => {
+	const [index, setIndex] = useState(0);
+
 	// sorting reactions in descending order on the basic of number of users reacted
 	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
+	const routes = sortedReactions ? sortedReactions?.map(reaction => ({ key: reaction.emoji, reaction })) : [];
 
 	return (
 		<View style={styles.reactionsListContainer}>
-			<ScrollableTabView renderTabBar={() => <ReactionsTabBar baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} width={width} />}>
-				{sortedReactions?.map(reaction => (
-					<UsersList tabLabel={reaction} key={reaction.emoji} />
-				))}
-			</ScrollableTabView>
+			<TabView
+				lazy
+				navigationState={{ index, routes }}
+				renderScene={({ route }) => <UsersList tabLabel={route.reaction} />}
+				onIndexChange={setIndex}
+				renderTabBar={(props: SceneRendererProps & { navigationState: State }) => (
+					<ReactionsTabBar
+						tabs={routes}
+						jumpTo={props.jumpTo}
+						width={width}
+						baseUrl={baseUrl}
+						getCustomEmoji={getCustomEmoji}
+						activeTab={index}
+					/>
+				)}
+			/>
 		</View>
 	);
 };

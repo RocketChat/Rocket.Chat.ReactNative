@@ -140,7 +140,7 @@ const ActionSheet = React.memo(
 						style={{ ...styles.container, ...bottomSheet }}
 						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
 						onChange={index => index === -1 && onClose()}
-						// We need this to allow horizontal swipe gestures inside bottom sheet like in reaction picker
+						// We need this to allow horizontal swipe gesture inside the bottom sheet like in reaction picker
 						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}
 						{...androidTablet}
 					>

@@ -1,44 +1,49 @@
-const list = ['frequentlyUsed', 'custom', 'people', 'nature', 'food', 'activity', 'travel', 'objects', 'symbols', 'flags'];
-const tabs = [
+import { TIconsName } from '../CustomIcon';
+import { IEmojiCategoryName } from '../../definitions';
+
+const tabs: {
+	key: TIconsName;
+	title: IEmojiCategoryName;
+}[] = [
 	{
-		tabLabel: '🕒',
-		category: list[0]
+		key: 'clock',
+		title: 'frequentlyUsed'
 	},
 	{
-		tabLabel: '🚀',
-		category: list[1]
+		key: 'rocket',
+		title: 'custom'
 	},
 	{
-		tabLabel: '😃',
-		category: list[2]
+		key: 'emoji',
+		title: 'people'
 	},
 	{
-		tabLabel: '🐶',
-		category: list[3]
+		key: 'leaf',
+		title: 'nature'
 	},
 	{
-		tabLabel: '🍔',
-		category: list[4]
+		key: 'burger',
+		title: 'food'
 	},
 	{
-		tabLabel: '⚽',
-		category: list[5]
+		key: 'basketball',
+		title: 'activity'
 	},
 	{
-		tabLabel: '🚌',
-		category: list[6]
+		key: 'airplane',
+		title: 'travel'
 	},
 	{
-		tabLabel: '💡',
-		category: list[7]
+		key: 'lamp-bulb',
+		title: 'objects'
 	},
 	{
-		tabLabel: '💛',
-		category: list[8]
+		key: 'percentage',
+		title: 'symbols'
 	},
 	{
-		tabLabel: '🏁',
-		category: list[9]
+		key: 'flag',
+		title: 'flags'
 	}
 ];
-export default { list, tabs };
+export default tabs;

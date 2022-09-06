@@ -11,6 +11,7 @@ import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
 import { TAnyMessageModel, TFrequentlyUsedEmojiModel } from '../../definitions';
 import Touch from '../Touch';
+import { DEFAULT_EMOJIS } from '../EmojiPicker/emojis';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
@@ -68,8 +69,6 @@ const keyExtractor = (item: TItem) => {
 	const emojiModel = item as TFrequentlyUsedEmojiModel;
 	return (emojiModel.id ? emojiModel.content : item) as string;
 };
-
-const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 
 const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 	const emojiModel = item as TFrequentlyUsedEmojiModel;

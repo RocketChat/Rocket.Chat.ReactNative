@@ -2,20 +2,23 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
+export const MAX_EMOJI_SIZE = 50;
+export const MIN_EMOJI_SIZE = 42;
+
 export default StyleSheet.create({
 	container: {
 		flex: 1
 	},
 	tabsContainer: {
 		height: 45,
-		flexDirection: 'row',
-		paddingTop: 5
+		flexDirection: 'row'
 	},
 	tab: {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingBottom: 10
+		paddingVertical: 10,
+		width: 44
 	},
 	tabEmoji: {
 		fontSize: 20,
@@ -54,5 +57,19 @@ export default StyleSheet.create({
 	},
 	customCategoryEmoji: {
 		margin: 8
-	}
+	},
+	footerContainer: {
+		height: 44,
+		paddingHorizontal: 12,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
+	footerButtonsContainer: {
+		height: 44,
+		width: 44,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	emojiPickerContainer: { flex: 1 }
 });
