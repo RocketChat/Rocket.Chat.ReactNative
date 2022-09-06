@@ -9,7 +9,6 @@ export default StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	actionSheetContainer: {
-		padding: 16,
 		flex: 1
 	},
 	content: {
@@ -46,7 +45,11 @@ export default StyleSheet.create({
 		right: 16
 	},
 	itemContent: {
+		paddingHorizontal: 16,
 		paddingBottom: 36
+	},
+	inputStyle: {
+		paddingHorizontal: 16
 	},
 	items: {
 		height: 226
