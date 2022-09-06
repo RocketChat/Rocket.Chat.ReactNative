@@ -1,7 +1,6 @@
 package chat.rocket.reactnative;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.gson.Gson;
@@ -49,14 +48,11 @@ public class LoadNotification {
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
     public void load(ReactApplicationContext reactApplicationContext, final Ejson ejson, Callback callback) {
-        Log.i("RCNOT", "public static void load");
         final OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder url = HttpUrl.parse(ejson.serverURL().concat("/api/v1/push.get")).newBuilder();
 
         final String userId = ejson.userId();
         final String userToken = ejson.token();
-
-        Log.i("RCNOT", "LOAD: user " + userId + " token " + userToken + " message " + ejson.messageId);
 
         if (userId == null || userToken == null) {
             return;
@@ -68,19 +64,17 @@ public class LoadNotification {
                 .url(url.addQueryParameter("id", ejson.messageId).build())
                 .build();
 
-        runRequest(client, request, callback, ejson.messageId);
+        runRequest(client, request, callback);
     }
 
-    private void runRequest(OkHttpClient client, Request request, Callback callback, String messageId) {
+    private void runRequest(OkHttpClient client, Request request, Callback callback) {
         try {
-            Log.i("RCNOT", "runRequest " + messageId + " retry " + RETRY_COUNT);
             Thread.sleep(TIMEOUT[RETRY_COUNT] * 1000);
 
             Response response = client.newCall(request).execute();
             String body = response.body().string();
             if (!response.isSuccessful()) {
-//                throw new Exception("Error");
-                throw new Exception(response.code()+body);
+                throw new Exception("Error");
             }
 
             Gson gson = new Gson();
@@ -93,18 +87,13 @@ public class LoadNotification {
             bundle.putString("ejson", gson.toJson(json.data.notification.payload));
             bundle.putBoolean("notificationLoaded", true);
 
-            Log.i("RCNOT", "runRequest success " + messageId);
-
             callback.call(bundle);
 
         } catch (Exception e) {
-            Log.i("RCNOT", String.valueOf(e));
             if (RETRY_COUNT <= TIMEOUT.length) {
                 RETRY_COUNT++;
-                Log.i("RCNOT", "Will retry " + messageId + " " + RETRY_COUNT);
-                runRequest(client, request, callback, messageId);
+                runRequest(client, request, callback);
             } else {
-                Log.i("RCNOT", "Failed all tries " + messageId);
                 callback.call(null);
             }
         }
