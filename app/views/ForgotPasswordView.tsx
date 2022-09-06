@@ -26,7 +26,7 @@ interface ISubmit {
 	email: string;
 }
 
-const ForgotPasswordView = () => {
+const ForgotPasswordView = (): React.ReactElement => {
 	const {
 		control,
 		handleSubmit,
