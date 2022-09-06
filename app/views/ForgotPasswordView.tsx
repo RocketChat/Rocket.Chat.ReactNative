@@ -10,7 +10,6 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
-import { themes } from '../lib/constants';
 import { Services } from '../lib/services';
 import { OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
@@ -37,7 +36,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 
 	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { params } = useRoute<RouteProp<OutsideParamList, 'ForgotPasswordView'>>();
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -68,7 +67,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 	return (
 		<FormContainer testID='forgot-password-view'>
 			<FormContainerInner>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.titleText }]}>
 					{I18n.t('Forgot_password')}
 				</Text>
 				<ControlledFormTextInput
