@@ -1,5 +1,6 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+import mockGestureHandler from 'react-native-gesture-handler/src/mocks';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -65,5 +66,30 @@ jest.mock('react-native-math-view', () => {
 		__esModule: true,
 		default: react.View, // Default export
 		MathText: react.View // {...} Named export
+	};
+});
+
+jest.mock('react-native-gesture-handler', () => {
+	const react = require('react-native');
+	return {
+		...mockGestureHandler,
+		Gesture: {
+			Tap: jest.fn(() => ({
+				hitSlop: jest.fn(() => ({
+					onStart: jest.fn()
+				}))
+			})),
+			Pan: jest.fn(() => ({
+				hitSlop: jest.fn(() => ({
+					onStart: jest.fn(() => ({
+						onChange: jest.fn(() => ({
+							onEnd: jest.fn()
+						}))
+					}))
+				}))
+			})),
+			Simultaneous: jest.fn()
+		},
+		GestureDetector: react.View
 	};
 });

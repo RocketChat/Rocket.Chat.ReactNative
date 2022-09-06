@@ -1,25 +1,25 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
 
-import Touchable from './Touchable';
-import Markdown from '../markdown';
-import { CustomIcon } from '../CustomIcon';
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
-import MessageContext from './Context';
-import ActivityIndicator from '../ActivityIndicator';
-import { withDimensions } from '../../dimensions';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment } from '../../definitions';
-import { TSupportedThemes } from '../../theme';
-import { downloadAudioFile } from '../../lib/methods/audioFile';
+import Touchable from '../../Touchable';
+import Markdown from '../../../markdown';
+import { CustomIcon } from '../../../CustomIcon';
+import sharedStyles from '../../../../views/Styles';
+import { themes } from '../../../../lib/constants';
+import { isAndroid, isIOS } from '../../../../lib/methods/helpers';
+import MessageContext from '../../Context';
+import ActivityIndicator from '../../../ActivityIndicator';
+import { withDimensions } from '../../../../dimensions';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { IAttachment } from '../../../../definitions';
+import { TSupportedThemes } from '../../../../theme';
+import { downloadAudioFile } from '../../../../lib/methods/audioFile';
+import Slider from './Slider';
 
 interface IButton {
 	loading: boolean;
@@ -72,9 +72,6 @@ const styles = StyleSheet.create({
 	},
 	audioLoading: {
 		marginHorizontal: 8
-	},
-	slider: {
-		flex: 1
 	},
 	duration: {
 		marginHorizontal: 12,
@@ -251,7 +248,11 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	onValueChange = async (value: number) => {
+	onValueChange = (value: number) => {
+		this.setState({ currentTime: value });
+	};
+
+	onSlidingEnd = async (value: number) => {
 		try {
 			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
@@ -296,14 +297,13 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
 						disabled={isReply}
-						style={styles.slider}
 						value={currentTime}
 						maximumValue={duration}
-						minimumValue={0}
 						thumbTintColor={thumbColor}
-						minimumTrackTintColor={themes[theme].tintColor}
-						maximumTrackTintColor={themes[theme].auxiliaryText}
+						trackColor={themes[theme].auxiliaryText}
+						activeTrackColor={themes[theme].tintColor}
 						onValueChange={this.onValueChange}
+						onSlidingEnd={this.onSlidingEnd}
 						thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>

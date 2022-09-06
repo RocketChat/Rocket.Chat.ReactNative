@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 
 import { IMessageAttachments } from './interfaces';
 import Image from './Image';
-import Audio from './Audio';
+import Audio from './Components/Audio';
 import Video from './Video';
 import Reply from './Reply';
 import Button from '../Button';
