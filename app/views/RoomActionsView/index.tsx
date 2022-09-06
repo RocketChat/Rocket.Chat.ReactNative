@@ -95,6 +95,7 @@ interface IRoomActionsViewState {
 	canCreateTeam: boolean;
 	canAddChannelToTeam: boolean;
 	canConvertTeam: boolean;
+	loading: boolean;
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -144,7 +145,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canToggleEncryption: false,
 			canCreateTeam: false,
 			canAddChannelToTeam: false,
-			canConvertTeam: false
+			canConvertTeam: false,
+			loading: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -512,6 +514,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
+			this.setState({ loading: true });
 			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
@@ -531,6 +534,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					this.convertTeamToChannelConfirmation();
 				}
 			}
+			this.setState({ loading: false });
 		} catch (e) {
 			this.convertTeamToChannelConfirmation();
 		}
@@ -573,6 +577,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
+			this.setState({ loading: true });
 			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
@@ -598,6 +603,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					});
 				}
 			}
+			this.setState({ loading: false });
 		} catch (e) {
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: getRoomTitle(room) }),
@@ -659,7 +665,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				const data = teamRooms.map(team => ({
 					rid: team.teamId as string,
 					t: team.t,
-					name: team.name
+					name: team.name,
+					teamMain: team.teamMain
 				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
@@ -888,7 +895,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	renderLastSection = () => {
-		const { room, joined } = this.state;
+		const { room, joined, loading } = this.state;
 		const { theme } = this.props;
 		const { t, blocker } = room;
 
@@ -922,6 +929,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Section>
 					<List.Separator />
 					<List.Item
+						disabled={loading}
 						title='Leave'
 						onPress={() =>
 							this.onPressTouchable({
@@ -986,7 +994,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	teamToChannelActions = (t: string, room: ISubscription) => {
-		const { canEdit, canConvertTeam } = this.state;
+		const { canEdit, canConvertTeam, loading } = this.state;
 		const canConvertTeamToChannel = canEdit && canConvertTeam && !!room?.teamMain;
 
 		return (
@@ -995,6 +1003,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					<>
 						<List.Item
 							title='Convert_to_Channel'
+							disabled={loading}
 							onPress={() =>
 								this.onPressTouchable({
 									event: this.convertTeamToChannel
