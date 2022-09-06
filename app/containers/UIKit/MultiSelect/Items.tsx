@@ -49,8 +49,8 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 const Items = ({ items, selected, onSelect }: IItems) => (
 	<FlatList
 		data={items}
-		style={[styles.items]}
-		contentContainerStyle={[styles.itemContent]}
+		style={styles.items}
+		contentContainerStyle={styles.itemContent}
 		keyboardShouldPersistTaps='always'
 		ItemSeparatorComponent={List.Separator}
 		keyExtractor={keyExtractor}
