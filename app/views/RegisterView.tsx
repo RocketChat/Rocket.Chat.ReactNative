@@ -127,22 +127,21 @@ class RegisterView extends React.Component<IProps, any> {
 		const { dispatch, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
 
 		try {
-			const user = await Services.register({
+			await Services.register({
 				name,
 				email,
 				pass: password,
-				username
+				username,
+				...customFields
 			});
-			if (user.success) {
-				if (Accounts_EmailVerification) {
-					await navigation.goBack();
-					showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
-				} else if (Accounts_ManuallyApproveNewUsers) {
-					await navigation.goBack();
-					showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
-				} else {
-					dispatch(loginRequest({ user: email, password }, false, false, customFields));
-				}
+			if (Accounts_EmailVerification) {
+				await navigation.goBack();
+				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
+			} else if (Accounts_ManuallyApproveNewUsers) {
+				await navigation.goBack();
+				showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
+			} else {
+				dispatch(loginRequest({ user: email, password }, false, false));
 			}
 		} catch (e: any) {
 			if (e.data?.errorType === 'username-invalid') {
