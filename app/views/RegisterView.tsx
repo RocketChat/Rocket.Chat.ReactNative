@@ -141,7 +141,7 @@ class RegisterView extends React.Component<IProps, any> {
 				await navigation.goBack();
 				showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
 			} else {
-				dispatch(loginRequest({ user: email, password }, false, false));
+				dispatch(loginRequest({ user: email, password }));
 			}
 		} catch (e: any) {
 			if (e.data?.errorType === 'username-invalid') {
