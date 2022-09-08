@@ -134,6 +134,7 @@ class RegisterView extends React.Component<IProps, any> {
 				username,
 				...customFields
 			});
+
 			if (Accounts_EmailVerification) {
 				await navigation.goBack();
 				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
