@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	input: {
 		height: 48,
 		paddingLeft: 16,
-		borderWidth: StyleSheet.hairlineWidth,
+		borderWidth: 2,
 		borderRadius: 2,
 		alignItems: 'center',
 		flexDirection: 'row'
