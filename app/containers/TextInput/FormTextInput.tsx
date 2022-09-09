@@ -97,7 +97,7 @@ export const FormTextInput = ({
 					style={[
 						styles.input,
 						iconLeft && styles.inputIconLeft,
-						(secureTextEntry || iconRight) && styles.inputIconRight,
+						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
 							backgroundColor: colors.backgroundColor,
 							borderColor: colors.separatorColor,
