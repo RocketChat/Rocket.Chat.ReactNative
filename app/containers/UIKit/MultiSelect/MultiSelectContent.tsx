@@ -65,19 +65,21 @@ export const MultiSelectContent = React.memo(
 		);
 
 		return (
-			<View style={[styles.actionSheetContainer]}>
-				<FormTextInput
-					testID='multi-select-search'
-					onChangeText={handleSearch}
-					placeholder={I18n.t('Search')}
-					inputStyle={{ backgroundColor: colors.focusedBackground }}
-					bottomSheet={isIOS}
-					onSubmitEditing={() => {
-						setTimeout(() => {
-							hideActionSheet();
-						}, 150);
-					}}
-				/>
+			<View style={styles.actionSheetContainer}>
+				<View style={styles.inputStyle}>
+					<FormTextInput
+						testID='multi-select-search'
+						onChangeText={handleSearch}
+						placeholder={I18n.t('Search')}
+						inputStyle={{ backgroundColor: colors.focusedBackground }}
+						bottomSheet={isIOS}
+						onSubmitEditing={() => {
+							setTimeout(() => {
+								hideActionSheet();
+							}, 150);
+						}}
+					/>
+				</View>
 				<Items items={items || []} selected={selected} onSelect={onSelect} />
 			</View>
 		);
