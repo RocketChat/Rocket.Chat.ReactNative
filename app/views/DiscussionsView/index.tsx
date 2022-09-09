@@ -145,20 +145,16 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		navigation.setOptions(options);
 	}, [navigation, isSearching]);
 
-	const onDiscussionPress = useDebounce(
-		(item: TThreadModel) => {
-			if (item.drid && item.t) {
-				navigation.push('RoomView', {
-					rid: item.drid,
-					prid: item.rid,
-					name: item.msg,
-					t
-				});
-			}
-		},
-		1000,
-		true
-	);
+	const onDiscussionPress = useDebounce((item: TThreadModel) => {
+		if (item.drid && item.t) {
+			navigation.push('RoomView', {
+				rid: item.drid,
+				prid: item.rid,
+				name: item.msg,
+				t
+			});
+		}
+	}, 1000);
 
 	const renderItem = ({ item }: { item: IMessageFromServer }) => (
 		<Item
