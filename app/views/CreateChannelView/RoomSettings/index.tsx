@@ -9,7 +9,17 @@ import { SwitchItemReadOnly } from './SwitchItemReadOnly';
 import { SwitchItemEncrypted } from './SwitchItemEncrypted';
 import { IFormData } from '..';
 
-export const RoomSettings = ({ isTeam, setValue }: { isTeam: boolean; setValue: UseFormSetValue<IFormData> }) => {
+export const RoomSettings = ({
+	isTeam,
+	setValue,
+	createChannelPermission,
+	createPrivateChannelPermission
+}: {
+	isTeam: boolean;
+	setValue: UseFormSetValue<IFormData>;
+	createChannelPermission: boolean;
+	createPrivateChannelPermission: boolean;
+}) => {
 	const [type, setType] = useState(true);
 	const [readOnly, setReadOnly] = useState(false);
 	const [encrypted, setEncrypted] = useState(false);
@@ -50,9 +60,17 @@ export const RoomSettings = ({ isTeam, setValue }: { isTeam: boolean; setValue: 
 		setReadOnly(value ? true : readOnly);
 		setValue('readOnly', value ? true : readOnly);
 	};
+
+	const isDisabled = [createChannelPermission, createPrivateChannelPermission].filter(r => r === true).length <= 1;
+
 	return (
 		<>
-			<SwitchItemType isTeam={isTeam} type={type} onValueChangeType={onValueChangeType} />
+			<SwitchItemType
+				isTeam={isTeam}
+				type={createPrivateChannelPermission ? type : false}
+				onValueChangeType={onValueChangeType}
+				isDisabled={isDisabled}
+			/>
 			<SwitchItemReadOnly
 				broadcast={broadcast}
 				isTeam={isTeam}
