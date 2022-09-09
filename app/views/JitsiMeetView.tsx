@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { BackHandler, StyleSheet } from 'react-native';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
@@ -69,6 +69,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 				}
 			}, 1000);
 		}
+		BackHandler.addEventListener('hardwareBackPress', this.endCall);
 	}
 
 	componentWillUnmount() {
@@ -78,8 +79,16 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 			this.jitsiTimeout = null;
 			BackgroundTimer.stopBackgroundTimer();
 		}
-		JitsiMeet.endCall();
+		BackHandler.removeEventListener('hardwareBackPress', this.endCall);
+		if (isIOS) {
+			JitsiMeet.endCall();
+		}
 	}
+
+	endCall = () => {
+		JitsiMeet.endCall();
+		return null;
+	};
 
 	onConferenceWillJoin = () => {
 		this.setState({ loading: false });
