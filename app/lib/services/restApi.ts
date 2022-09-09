@@ -688,7 +688,7 @@ export const runSlashCommand = (command: string, roomId: string, params: string,
 		roomId,
 		params,
 		triggerId,
-		tmid
+		...(tmid && { tmid })
 	});
 
 export const getCommandPreview = (command: string, roomId: string, params: string) =>
