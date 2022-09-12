@@ -95,6 +95,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>
+		<string>Inter.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

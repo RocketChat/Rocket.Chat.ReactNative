@@ -10,7 +10,7 @@ async function waitForToast() {
 	// await expect(element(by.id('toast'))).toBeVisible();
 	// await waitFor(element(by.id('toast'))).not.toBeNotVisible().withTimeout(1000);
 	// await expect(element(by.id('toast'))).not.toBeVisible();
-	await sleep(300);
+	await sleep(600);
 }
 
 describe('Profile screen', () => {

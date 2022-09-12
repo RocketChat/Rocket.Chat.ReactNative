@@ -34,7 +34,7 @@ describe('Group DM', () => {
 
 		describe('Usage', () => {
 			it('should navigate to create DM', async () => {
-				await element(by[textMatcher]('Create Direct Messages')).tap();
+				await element(by[textMatcher]('Direct message')).atIndex(0).tap();
 			});
 
 			it('should add users', async () => {
