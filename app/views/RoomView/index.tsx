@@ -813,6 +813,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
+		// If there's a thread already, we redirect to it
+		if (mention && !!message.tlm) {
+			return this.onThreadPress(message);
+		}
 		this.setState({
 			selectedMessage: message,
 			replying: true,
@@ -833,6 +837,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
+		// if it's a thread message on main room, we disable the long press
+		if (message.tmid && !this.tmid) {
+			return;
+		}
 		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
 	};
 
