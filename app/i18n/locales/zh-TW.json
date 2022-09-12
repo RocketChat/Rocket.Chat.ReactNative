@@ -116,7 +116,6 @@
   "Black": "黑色",
   "Block_user": "封鎖此用戶",
   "Browser": "瀏覽器",
-  "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆",
   "Busy": "忙碌",
   "By_proceeding_you_are_agreeing": "若要繼續操作，請同意我們的",
   "Cancel_editing": "取消編輯",
@@ -663,5 +662,6 @@
   "No_threads_unread": "當前沒有未讀的討論",
   "Messagebox_Send_to_channel": "發送至頻道",
   "Confirmation": "確認",
-  "invalid-room": "無效的房間"
+  "invalid-room": "無效的房間",
+  "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆"
 }

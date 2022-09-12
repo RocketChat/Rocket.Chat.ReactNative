@@ -108,7 +108,6 @@
   "Back": "Volver",
   "Black": "Negro",
   "Block_user": "Bloquear usuario",
-  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
   "Busy": "Ocupado",
   "By_proceeding_you_are_agreeing": "Al proceder estarás de acuerdo",
   "Cancel_editing": "Cancelar edición",
@@ -436,5 +435,6 @@
   "Server_selection": "Seleccionar servidor",
   "Server_selection_numbers": "Seleccionar servidor 1...9",
   "Add_server": "Añadir servidor",
-  "New_line": "Nueva línea"
+  "New_line": "Nueva línea",
+  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos."
 }
