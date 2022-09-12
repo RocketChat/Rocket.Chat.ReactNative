@@ -5,7 +5,7 @@ import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanima
 import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import { useTheme } from '../../../theme';
-import Touch from '../../../lib/methods/helpers/touch';
+import Touch from '../../../containers/Touch';
 import { hasNotch } from '../../../lib/methods/helpers';
 
 const SCROLL_LIMIT = 200;
@@ -63,7 +63,7 @@ const NavBottomFAB = ({
 	}
 	return (
 		<Animated.View style={[styles.container, { bottom }]} testID='nav-jump-to-bottom'>
-			<Touch onPress={handleOnPress} theme={theme} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}>
+			<Touch onPress={handleOnPress} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}>
 				<View style={[styles.content, { borderColor: themes[theme].borderColor }]}>
 					<CustomIcon name='chevron-down' color={themes[theme].auxiliaryTintColor} size={36} />
 				</View>

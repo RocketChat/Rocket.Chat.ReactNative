@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
@@ -62,7 +62,6 @@ interface IRoomInfoEditViewState {
 	announcement?: string;
 	joinCode: string;
 	nameError: any;
-	saving: boolean;
 	t: boolean;
 	ro: boolean;
 	reactWhenReadOnly?: boolean;
@@ -111,7 +110,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			announcement: '',
 			joinCode: '',
 			nameError: {},
-			saving: false,
 			t: false,
 			ro: false,
 			reactWhenReadOnly: false,
@@ -269,7 +267,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			avatar
 		} = this.state;
 
-		this.setState({ saving: true });
+		sendLoadingEvent({ visible: true });
 		let error = false;
 
 		if (!this.formIsChanged()) {
@@ -339,7 +337,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			log(e);
 		}
 
-		await this.setState({ saving: false });
+		sendLoadingEvent({ visible: false });
 		setTimeout(() => {
 			if (error) {
 				logEvent(events.RI_EDIT_SAVE_F);
@@ -548,7 +546,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			reactWhenReadOnly,
 			room,
 			joinCode,
-			saving,
 			permissions,
 			archived,
 			enableSysMes,
@@ -562,28 +559,33 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}>
+				keyboardVerticalOffset={128}
+			>
 				<StatusBar />
 				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='room-info-edit-view-list'
-						{...scrollPersistTaps}>
+						{...scrollPersistTaps}
+					>
 						<TouchableOpacity
 							style={styles.avatarContainer}
 							onPress={this.changeAvatar}
-							disabled={compareServerVersion(serverVersion || '', 'lowerThan', '3.6.0')}>
+							disabled={compareServerVersion(serverVersion || '', 'lowerThan', '3.6.0')}
+						>
 							<Avatar
 								type={room.t}
 								text={room.name}
 								avatar={avatar?.url}
 								isStatic={avatar?.url}
 								rid={isEmpty(avatar) ? room.rid : undefined}
-								size={100}>
+								size={100}
+							>
 								{serverVersion && compareServerVersion(serverVersion, 'lowerThan', '3.6.0') ? undefined : (
 									<TouchableOpacity
 										style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]}
-										onPress={this.resetAvatar}>
+										onPress={this.resetAvatar}
+									>
 										<CustomIcon name='delete' color={themes[theme].backgroundColor} size={24} />
 									</TouchableOpacity>
 								)}
@@ -703,7 +705,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						) : null}
 						{room.broadcast
 							? [
-									<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
+									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
 									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 							  ]
 							: null}
@@ -720,7 +722,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								testID='room-info-edit-switch-system-messages'
 								onValueChange={this.toggleHideSystemMessages}
 								labelContainerStyle={styles.hideSystemMessages}
-								leftLabelStyle={styles.systemMessagesLabel}>
+								leftLabelStyle={styles.systemMessagesLabel}
+							>
 								{this.renderSystemMessages()}
 							</SwitchContainer>
 						) : null}
@@ -745,7 +748,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
-							testID='room-info-edit-view-submit'>
+							testID='room-info-edit-view-submit'
+						>
 							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityRole='button'>
 								{I18n.t('SAVE')}
 							</Text>
@@ -760,10 +764,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								]}
 								onPress={this.reset}
 								disabled={!this.formIsChanged()}
-								testID='room-info-edit-view-reset'>
+								testID='room-info-edit-view-reset'
+							>
 								<Text
 									style={[styles.button, styles.button_inverted, { color: themes[theme].bodyText }]}
-									accessibilityRole='button'>
+									accessibilityRole='button'
+								>
 									{I18n.t('RESET')}
 								</Text>
 							</TouchableOpacity>
@@ -778,7 +784,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								]}
 								onPress={this.toggleArchive}
 								disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
-								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}>
+								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
+							>
 								<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]}>
 									{archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
 								</Text>
@@ -795,12 +802,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							]}
 							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
-							testID='room-info-edit-view-delete'>
+							testID='room-info-edit-view-delete'
+						>
 							<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]} accessibilityRole='button'>
 								{I18n.t('DELETE')}
 							</Text>
 						</TouchableOpacity>
-						<Loading visible={saving} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>

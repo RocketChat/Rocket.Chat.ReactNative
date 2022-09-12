@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 		flexShrink: 1,
 		fontSize: 16,
 		lineHeight: 22,
-		...sharedStyles.textMedium
+		...sharedStyles.textSemibold
 	},
 	usernameInfoMessage: {
 		fontSize: 16,
@@ -95,7 +95,8 @@ const User = React.memo(
 						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
 						onPress={onUserPress}
 						// @ts-ignore // TODO - check this prop
-						disabled={isDisabled}>
+						disabled={isDisabled}
+					>
 						{textContent}
 					</Text>
 				);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../Touch';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import { TSupportedThemes, useTheme } from '../../theme';
@@ -92,7 +92,8 @@ const Content = React.memo(
 		return (
 			<View
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
-				testID={testID}>
+				testID={testID}
+			>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
@@ -138,7 +139,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
-		theme={props.theme}>
+	>
 		<Content {...props} />
 	</Touch>
 ));

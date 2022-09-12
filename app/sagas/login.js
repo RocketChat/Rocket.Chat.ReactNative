@@ -20,7 +20,7 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
-import { TOKEN_KEY } from '../lib/constants';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import {
 	getCustomEmojis,
 	getEnterpriseModules,
@@ -44,7 +44,12 @@ const loginWithPasswordCall = args => Services.loginWithPassword(args);
 const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
 const logoutCall = args => logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
+const handleLoginRequest = function* handleLoginRequest({
+	credentials,
+	logoutOnError = false,
+	isFromWebView = false,
+	registerCustomFields
+}) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
@@ -80,6 +85,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 				}
 			});
 			yield put(loginSuccess(result));
+			if (registerCustomFields) {
+				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
+				yield put(setUser({ ...result, ...updatedUser.user }));
+			}
 		}
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
@@ -183,9 +192,9 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
-
 		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {

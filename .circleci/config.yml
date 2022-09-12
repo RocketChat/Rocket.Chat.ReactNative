@@ -80,18 +80,15 @@ commands:
     steps:
       - restore_cache:
           name: Restore pods
-          # TODO: CircleCI isn't caching Podfile.lock correctly, because checksum changes after install
-          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
-          key: pods-v1-{{ checksum "ios/Podfile" }}
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
       - run:
           name: Install pods libs
           command: |
-            bundle exec pod install
+            bundle exec pod install --deployment
           working_directory: ios
       - save_cache:
           name: Save pods specs and pods cache
-          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
-          key: pods-v1-{{ checksum "ios/Podfile" }}
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
           paths:
             - ~/.pods
             - ios/Pods
@@ -114,7 +111,8 @@ commands:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then

@@ -58,6 +58,7 @@ interface IMessageContainerProps {
 	jumpToMessage?: (link: string) => void;
 	onPress?: () => void;
 	theme: TSupportedThemes;
+	closeEmojiAndAction?: (action?: Function, params?: any) => void;
 }
 
 interface IMessageContainerState {
@@ -113,6 +114,16 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			this.subscription.unsubscribe();
 		}
 	}
+
+	onPressAction = () => {
+		const { closeEmojiAndAction } = this.props;
+
+		if (closeEmojiAndAction) {
+			return closeEmojiAndAction(this.onPress);
+		}
+
+		return this.onPress();
+	};
 
 	onPress = debounce(
 		() => {
@@ -373,7 +384,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 				value={{
 					user,
 					baseUrl,
-					onPress: this.onPress,
+					onPress: this.onPressAction,
 					onLongPress: this.onLongPress,
 					reactionInit: this.reactionInit,
 					onErrorPress: this.onErrorPress,
@@ -388,7 +399,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					threadBadgeColor,
 					toggleFollowThread,
 					replies
-				}}>
+				}}
+			>
 				{/* @ts-ignore*/}
 				<Message
 					id={id}

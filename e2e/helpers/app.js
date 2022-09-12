@@ -40,7 +40,6 @@ async function navigateToLogin(server) {
 	await waitFor(element(by.id('login-view')))
 		.toExist()
 		.withTimeout(2000);
-	await expect(element(by.id('login-view'))).toExist();
 }
 
 async function navigateToRegister(server) {
@@ -98,9 +97,10 @@ async function mockMessage(message, isThread = false) {
 	await element(by.id(input)).replaceText(`${data.random}${message}`);
 	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
+	await sleep(500);
 	await waitFor(element(by[textMatcher](`${data.random}${message}`)))
 		.toExist()
-		.withTimeout(60000);
+		.withTimeout(10000);
 	await element(by[textMatcher](`${data.random}${message}`))
 		.atIndex(0)
 		.tap();
@@ -195,6 +195,9 @@ const checkServer = async server => {
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('sidebar-close-drawer')).tap();
+	await waitFor(element(by.id('sidebar-close-drawer')))
+		.not.toBeVisible()
+		.withTimeout(10000);
 };
 
 function runCommand(command) {

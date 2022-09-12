@@ -12,6 +12,9 @@ describe('Group DM', () => {
 
 	describe('Create Group DM', () => {
 		before(async () => {
+			await waitFor(element(by.id('rooms-list-view-create-channel')))
+				.toExist()
+				.withTimeout(2000);
 			await element(by.id('rooms-list-view-create-channel')).tap();
 		});
 
@@ -31,7 +34,7 @@ describe('Group DM', () => {
 
 		describe('Usage', () => {
 			it('should navigate to create DM', async () => {
-				await element(by[textMatcher]('Create Direct Messages')).tap();
+				await element(by[textMatcher]('Direct message')).atIndex(0).tap();
 			});
 
 			it('should add users', async () => {

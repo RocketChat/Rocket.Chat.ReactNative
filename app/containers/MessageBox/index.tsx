@@ -19,11 +19,7 @@ import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import { themes } from '../../lib/constants';
-// @ts-ignore
-// eslint-disable-next-line import/extensions,import/no-unresolved
 import LeftButtons from './LeftButtons';
-// @ts-ignore
-// eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
 import { canUploadFile } from '../../lib/methods/helpers/media';
 import EventEmiter from '../../lib/methods/helpers/events';
@@ -37,12 +33,13 @@ import {
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
-	MENTIONS_TRACKING_TYPE_USERS
+	MENTIONS_TRACKING_TYPE_USERS,
+	TIMEOUT_CLOSE_EMOJI
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
-import { withActionSheet } from '../ActionSheet';
+import { TActionSheetOptionsItem, withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
 import { forceJpgExtension } from './forceJpgExtension';
@@ -58,14 +55,12 @@ import {
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce, isAndroid, isTablet } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersion } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 
-if (isAndroid) {
-	require('./EmojiKeyboard');
-}
+require('./EmojiKeyboard');
 
 const imagePickerConfig = {
 	cropping: true,
@@ -116,8 +111,8 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	isActionsEnabled: boolean;
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
-	serverVersion: string;
 	goToCannedResponses: () => void | null;
+	serverVersion: string;
 }
 
 interface IMessageBoxState {
@@ -186,7 +181,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			tshow: false,
+			tshow: this.sendThreadToChannel,
 			mentionLoading: false,
 			permissionToUpload: true
 		};
@@ -214,6 +209,23 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			...videoPickerConfig,
 			...libPickerLabels
 		};
+	}
+
+	get sendThreadToChannel() {
+		const { user, serverVersion, tmid } = this.props;
+		if (tmid && compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
+			return false;
+		}
+		if (tmid && user.alsoSendThreadToChannel === 'default') {
+			return false;
+		}
+		if (user.alsoSendThreadToChannel === 'always') {
+			return true;
+		}
+		if (user.alsoSendThreadToChannel === 'never') {
+			return false;
+		}
+		return true;
 	}
 
 	async componentDidMount() {
@@ -270,6 +282,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			this.closeEmoji();
 			this.component?.blur();
 		});
 	}
@@ -330,6 +343,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextProps.theme !== theme) {
 			return true;
 		}
+		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
 		if (!isFocused()) {
 			return false;
 		}
@@ -340,9 +356,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (nextProps.editing !== editing) {
-			return true;
-		}
-		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
 		if (nextState.trackingType !== trackingType) {
@@ -385,7 +398,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission, goToCannedResponses } = this.props;
+		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled } = this.props;
+		if (prevProps.replyWithMention !== replyWithMention) {
+			if (threadsEnabled && replyWithMention) {
+				this.setState({ tshow: this.sendThreadToChannel });
+			}
+		}
 		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
 		}
@@ -677,7 +695,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	setInput = (text: any, selection?: any) => {
 		this.text = text;
 		if (selection) {
-			return this.component.setTextAndSelection(text, selection);
+			this.selection = selection;
 		}
 		this.component.setNativeProps({ text });
 	};
@@ -691,9 +709,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	clearInput = () => {
+		const { tshow } = this.state;
+		const { user, serverVersion } = this.props;
 		this.setInput('');
 		this.setShowSend(false);
-		this.setState({ tshow: false });
+		if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0') || (tshow && user.alsoSendThreadToChannel === 'default')) {
+			this.setState({ tshow: false });
+		}
 	};
 
 	canUploadFile = (file: any) => {
@@ -809,7 +831,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { permissionToUpload } = this.state;
 		const { showActionSheet, goToCannedResponses } = this.props;
 
-		const options = [];
+		const options: TActionSheetOptionsItem[] = [];
 		if (goToCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
@@ -847,7 +869,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			icon: 'discussions',
 			onPress: this.createDiscussion
 		});
-		showActionSheet({ options });
+
+		this.closeEmojiAndAction(showActionSheet, { options });
 	};
 
 	editCancel = () => {
@@ -881,6 +904,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	closeEmoji = () => {
 		this.setState({ showEmojiKeyboard: false });
+	};
+
+	closeEmojiAndAction = (action?: Function, params?: any) => {
+		const { showEmojiKeyboard } = this.state;
+
+		this.closeEmoji();
+		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : null);
 	};
 
 	submit = async () => {
@@ -970,7 +1000,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			// Normal message
 		} else {
 			// @ts-ignore
-			onSubmit(message, undefined, tshow);
+			onSubmit(message, undefined, tmid ? tshow : false);
 		}
 	};
 
@@ -1038,8 +1068,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			<TouchableWithoutFeedback
 				style={[styles.sendToChannelButton, { backgroundColor: themes[theme].messageboxBackground }]}
 				onPress={this.onPressSendToChannel}
-				testID='messagebox-send-to-channel'>
-				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
+				testID='messagebox-send-to-channel'
+			>
+				<CustomIcon
+					testID={tshow ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
+					name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'}
+					size={24}
+					color={themes[theme].auxiliaryText}
+				/>
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>
 					{I18n.t('Messagebox_Send_to_channel')}
 				</Text>
@@ -1089,6 +1125,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					recordingCallback={this.recordingCallback}
 					onFinish={this.finishAudioMessage}
 					permissionToUpload={permissionToUpload}
+					onStart={this.closeEmoji}
 				/>
 			);
 
@@ -1112,14 +1149,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const textInputAndButtons = !recording ? (
 			<>
 				<LeftButtons
-					theme={theme}
 					showEmojiKeyboard={showEmojiKeyboard}
 					editing={editing}
-					showMessageBoxActions={this.showMessageBoxActions}
 					editCancel={this.editCancel}
 					openEmoji={this.openEmoji}
 					closeEmoji={this.closeEmoji}
-					isActionsEnabled={isActionsEnabled}
 				/>
 				<TextInput
 					ref={component => (this.component = component)}
@@ -1138,7 +1172,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					{...isAndroidTablet}
 				/>
 				<RightButtons
-					theme={theme}
 					showSend={showSend}
 					submit={this.submit}
 					showMessageBoxActions={this.showMessageBoxActions}
@@ -1158,7 +1191,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 							{ backgroundColor: themes[theme].messageboxBackground },
 							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
 						]}
-						testID='messagebox'>
+						testID='messagebox'
+					>
 						{textInputAndButtons}
 						{recordAudio}
 					</View>
@@ -1181,12 +1215,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					onPressMention: this.onPressMention,
 					onPressCommandPreview: this.onPressCommandPreview,
 					onPressNoMatchCanned: this.onPressNoMatchCanned
-				}}>
+				}}
+			>
 				<KeyboardAccessoryView
 					ref={(ref: any) => (this.tracking = ref)}
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onEmojiSelected}
 					trackInteractive
@@ -1208,7 +1244,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	uploadFilePermission: state.permissions['mobile-upload-file']
+	uploadFilePermission: state.permissions['mobile-upload-file'],
+	serverVersion: state.server.version
 });
 
 const dispatchToProps = {

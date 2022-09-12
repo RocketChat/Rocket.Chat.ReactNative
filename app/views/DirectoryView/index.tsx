@@ -7,7 +7,7 @@ import { CompositeNavigationProp } from '@react-navigation/native';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
@@ -210,13 +210,14 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		return (
 			<>
 				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
-				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown' theme={theme}>
+				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
 					<View
 						style={[
 							sharedStyles.separatorVertical,
 							styles.toggleDropdownContainer,
 							{ borderColor: themes[theme].separatorColor }
-						]}>
+						]}
+					>
 						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
 						<CustomIcon

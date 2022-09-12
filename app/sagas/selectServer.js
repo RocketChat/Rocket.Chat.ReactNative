@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
@@ -78,7 +78,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
 		const serversDB = database.servers;
-		UserPreferences.setString(CURRENT_SERVER, server);
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
@@ -109,14 +108,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
 		setBasicAuth(basicAuth);
 
-		// Check for running requests and abort them before connecting to the server
-		Services.abort();
-
 		if (user) {
 			yield put(clearSettings());
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
 			yield connect({ server });
@@ -163,7 +160,8 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 
-			if (fromServerHistory) {
+			const Accounts_iframe_enabled = yield select(state => state.settings.Accounts_iframe_enabled);
+			if (fromServerHistory && !Accounts_iframe_enabled) {
 				Navigation.navigate('LoginView', { username });
 			}
 

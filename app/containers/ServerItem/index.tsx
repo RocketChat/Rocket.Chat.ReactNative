@@ -12,7 +12,7 @@ import { useTheme } from '../../theme';
 
 export { ROW_HEIGHT };
 
-interface IServerItem {
+export interface IServerItem {
 	item: IServerInfo;
 	onPress(): void;
 	onLongPress?(): void;
@@ -31,7 +31,8 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 			android_ripple={{ color: themes[theme].bannerBackground }}
 			style={({ pressed }: { pressed: boolean }) => ({
 				backgroundColor: isIOS && pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor
-			})}>
+			})}
+		>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<FastImage

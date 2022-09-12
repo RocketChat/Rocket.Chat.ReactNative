@@ -52,8 +52,8 @@ const Header = React.memo(
 		// showServerDropdown,
 		showSearchHeader,
 		onSearchChangeText
-		// onPress
-	}: IRoomHeader) => {
+	}: // onPress
+	IRoomHeader) => {
 		const { colors } = useTheme();
 		const { isLandscape } = useOrientation();
 		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -91,7 +91,8 @@ const Header = React.memo(
 					<Text
 						testID='rooms-list-header-server-subtitle'
 						style={[styles.subtitle, { color: colors.auxiliaryText, fontSize: subTitleFontSize }]}
-						numberOfLines={1}>
+						numberOfLines={1}
+					>
 						{subtitle}
 					</Text>
 				) : null}

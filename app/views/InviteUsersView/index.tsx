@@ -89,7 +89,8 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 			<ScrollView
 				{...scrollPersistTaps}
 				style={{ backgroundColor: colors.auxiliaryBackground }}
-				showsVerticalScrollIndicator={false}>
+				showsVerticalScrollIndicator={false}
+			>
 				<StatusBar />
 				<View style={styles.innerContainer}>
 					<FormTextInput label={I18n.t('Invite_Link')} value={invite && invite.url} editable={false} />

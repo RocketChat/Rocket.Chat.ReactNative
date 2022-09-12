@@ -83,7 +83,8 @@ class Dropdown extends React.Component<IDropdownProps> {
 							backgroundColor: themes[theme!].backgroundColor,
 							borderColor: themes[theme!].separatorColor
 						}
-					]}>
+					]}
+				>
 					<DropdownItemHeader department={currentDepartment} onPress={this.close} />
 					<List.Separator />
 					<FlatList

@@ -688,7 +688,7 @@ export const runSlashCommand = (command: string, roomId: string, params: string,
 		roomId,
 		params,
 		triggerId,
-		tmid
+		...(tmid && { tmid })
 	});
 
 export const getCommandPreview = (command: string, roomId: string, params: string) =>
@@ -866,7 +866,7 @@ export const getRoomMembers = async ({
 	allUsers: boolean;
 	type: 'all' | 'online';
 	roomType: SubscriptionType;
-	filter: boolean;
+	filter: string;
 	skip: number;
 	limit: number;
 }) => {
@@ -888,9 +888,7 @@ export const getRoomMembers = async ({
 	}
 	// RC 0.42.0
 	const result = await sdk.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
-	if (result.success) {
-		return result?.records;
-	}
+	return result?.records;
 };
 
 export const e2eFetchMyKeys = async () => {

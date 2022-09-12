@@ -27,14 +27,16 @@ const Item = ({ item }: IMessageBoxCommandsPreviewItem) => {
 		<TouchableOpacity
 			style={styles.commandPreview}
 			onPress={() => onPressCommandPreview(item)}
-			testID={`command-preview-item${item.id}`}>
+			testID={`command-preview-item${item.id}`}
+		>
 			{item.type === 'image' ? (
 				<FastImage
 					style={styles.commandPreviewImage}
 					source={{ uri: item.value }}
 					resizeMode={FastImage.resizeMode.cover}
 					onLoadStart={() => setLoading(true)}
-					onLoad={() => setLoading(false)}>
+					onLoad={() => setLoading(false)}
+				>
 					{loading ? <ActivityIndicator /> : null}
 				</FastImage>
 			) : (

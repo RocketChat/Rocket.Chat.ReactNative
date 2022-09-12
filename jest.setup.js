@@ -1,23 +1,12 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
-import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
-jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
-require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
+global.__reanimatedWorkletInit = () => {};
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
-
-jest.mock('react-native-mmkv-storage', () => ({
-	Loader: jest.fn().mockImplementation(() => ({
-		setProcessingMode: jest.fn().mockImplementation(() => ({
-			withEncryption: jest.fn().mockImplementation(() => ({
-				initialize: jest.fn()
-			}))
-		}))
-	})),
-	create: jest.fn(),
-	MODES: { MULTI_PROCESS: '' }
-}));
 
 jest.mock('rn-fetch-blob', () => ({
 	fs: {
@@ -66,5 +55,15 @@ jest.mock('@gorhom/bottom-sheet', () => {
 		__esModule: true,
 		default: react.View,
 		BottomSheetScrollView: react.ScrollView
+	};
+});
+
+// If you need to manually mock a lib use this mock pattern and set exports.
+jest.mock('react-native-math-view', () => {
+	const react = require('react-native');
+	return {
+		__esModule: true,
+		default: react.View, // Default export
+		MathText: react.View // {...} Named export
 	};
 });

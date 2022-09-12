@@ -26,7 +26,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.29.0</string>
+	<string>4.30.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KeychainGroup</key>
@@ -70,6 +70,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>
+		<string>Inter.ttf</string>
 	</array>
 </dict>
 </plist>

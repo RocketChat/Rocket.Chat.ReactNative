@@ -13,13 +13,13 @@ module.exports = {
 		getTransformOptions: () => ({
 			transform: {
 				// experimentalImportSupport: true,
-				// https://github.com/storybookjs/react-native/issues/152
-				inlineRequires: false
+				inlineRequires: true
 			}
 		})
 	},
 	maxWorkers: 2,
 	resolver: {
-		blocklistRE: blocklist([/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/])
+		blocklistRE: blocklist([/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/]),
+		resolverMainFields: ['sbmodern', 'react-native', 'browser', 'main']
 	}
 };
