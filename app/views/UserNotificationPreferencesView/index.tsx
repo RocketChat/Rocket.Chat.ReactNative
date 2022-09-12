@@ -20,7 +20,7 @@ const UserNotificationPreferencesView = () => {
 	const [loading, setLoading] = useState(false);
 
 	const navigation = useNavigation<StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>>();
-	const id = useAppSelector(state => getUserSelector(state).id);
+	const userId = useAppSelector(state => getUserSelector(state).id);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -30,18 +30,22 @@ const UserNotificationPreferencesView = () => {
 
 	useEffect(() => {
 		async function getPreferences() {
-			const result = await Services.getUserPreferences(id);
-			if (result.success) {
-				setLoading(true);
-				setPreferences(result.preferences);
+			try {
+				const result = await Services.getUserPreferences(userId);
+				if (result.success) {
+					setLoading(true);
+					setPreferences(result.preferences);
+				}
+			} catch (error) {
+				log(error);
 			}
 		}
 		getPreferences();
-	}, [id]);
+	}, [userId]);
 
 	const onValueChangePicker = async (param: { [key: string]: string }, onError: () => void) => {
 		try {
-			const result = await Services.setUserPreferences(id, param);
+			const result = await Services.setUserPreferences(userId, param);
 			if (result.success) {
 				const {
 					user: { settings }
