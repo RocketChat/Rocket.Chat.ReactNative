@@ -1,16 +1,15 @@
 package chat.rocket.reactnative;
 
-import android.os.Bundle;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 
-import com.facebook.react.ReactRootView;
-import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactRootView;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 import expo.modules.ReactActivityDelegateWrapper;
-
-import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactActivity {
 
@@ -19,7 +18,6 @@ public class MainActivity extends ReactActivity {
         RNBootSplash.init(this);
         // https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
         super.onCreate(null);
-        // RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
     }
 
     @Override
