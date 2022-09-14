@@ -2,13 +2,18 @@ import { Q } from '@nozbe/watermelondb';
 
 import { sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
+import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
 import { ISearch, ISearchLocal, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { isGroupChat } from './helpers';
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<TSubscriptionModel[]> => {
+export const localSearchSubscription = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true
+}): Promise<TSubscriptionModel[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -31,22 +36,62 @@ export const localSearch = async ({ text = '', filterUsers = true, filterRooms =
 	return search;
 };
 
-export const search = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<(ISearch | ISearchLocal)[]> => {
+export const localSearchUsersMessage = async ({ text = '', rid = '' }) => {
+	const userID = reduxStore.getState().login.user.id;
+	const numberOfSuggestions = reduxStore.getState().settings.Number_of_users_autocomplete_suggestions as number;
+	const searchText = text.trim();
+	const db = database.active;
+	const likeString = sanitizeLikeString(searchText);
+	const messages = await db
+		.get('messages')
+		.query(
+			Q.and(
+				Q.where('rid', rid),
+				// The column u is a JSON object stringfied as: "{"_id":"id","username":"username","name":"name"}"
+				// So we need to use the LIKE operator to search for the username
+				// Because if we search using (`%${likeString}%`) and the text is "d" it will match with some ids
+				Q.where('u', Q.like(`%username%${likeString}%`)),
+				Q.where('u', Q.notLike(`%${userID}%`)),
+				Q.where('t', null)
+			),
+			Q.experimentalSortBy('ts', Q.desc),
+			Q.experimentalTake(50)
+		)
+		.fetch();
+
+	const users = messages.map(message => ({ ...message.u, suggestion: true }));
+	const removeDuplicatedUsers = users.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index); // Remove duplicated data from response
+	const sliceUsers = removeDuplicatedUsers.slice(0, text ? 2 : numberOfSuggestions);
+
+	return sliceUsers;
+};
+
+export const search = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	rid = ''
+}): Promise<(ISearch | ISearchLocal)[]> => {
 	const searchText = text.trim();
 
 	if (debounce) {
 		debounce('cancel');
 	}
 
-	const localSearchData = await localSearch({ text, filterUsers, filterRooms });
-	const usernames = localSearchData.map(sub => sub.name);
+	let localSearchData = [];
+	if (rid) {
+		localSearchData = await localSearchUsersMessage({ text, rid });
+	} else {
+		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });
+	}
+	const usernames = localSearchData.map(sub => sub.name as string);
 
 	const data = localSearchData as (ISearch | ISearchLocal)[];
 
 	try {
-		if (localSearchData.length < 7) {
+		if (searchText && localSearchData.length < 7) {
 			const { users, rooms } = (await Promise.race([
-				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
+				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }, rid),
 				new Promise((resolve, reject) => (debounce = reject))
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
