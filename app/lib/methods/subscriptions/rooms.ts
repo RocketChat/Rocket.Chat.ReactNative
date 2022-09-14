@@ -295,6 +295,9 @@ export default function subscribeRooms() {
 			if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
 				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
 			}
+			if ((['settings.preferences.alsoSendThreadToChannel'] as any) in diff) {
+				store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+			}
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {

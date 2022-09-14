@@ -85,7 +85,7 @@ export function hasRole(role): boolean {
 	return userRoles.indexOf(role) > -1;
 }
 
-export async function hasPermission(permissions, rid?: any): boolean[] {
+export async function hasPermission(permissions, rid?: any): Promise<boolean[]> {
 	let roomRoles = [];
 	if (rid) {
 		const db = database.active;
