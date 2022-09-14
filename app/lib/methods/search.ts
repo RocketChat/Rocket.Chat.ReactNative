@@ -36,8 +36,8 @@ export const localSearchSubscription = async ({
 	return search;
 };
 
-export const localSearchUsersMessage = async ({ text = '', rid = '' }) => {
-	const userID = reduxStore.getState().login.user.id;
+export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }) => {
+	const userId = reduxStore.getState().login.user.id;
 	const numberOfSuggestions = reduxStore.getState().settings.Number_of_users_autocomplete_suggestions as number;
 	const searchText = text.trim();
 	const db = database.active;
@@ -45,25 +45,21 @@ export const localSearchUsersMessage = async ({ text = '', rid = '' }) => {
 	const messages = await db
 		.get('messages')
 		.query(
-			Q.and(
-				Q.where('rid', rid),
-				// The column u is a JSON object stringfied as: "{"_id":"id","username":"username","name":"name"}"
-				// So we need to use the LIKE operator to search for the username
-				// Because if we search using (`%${likeString}%`) and the text is "d" it will match with some ids
-				Q.or(Q.where('u', Q.like(`%"username":%${likeString}%"name":%`)), Q.where('u', Q.like(`%"name":%${likeString}%`))),
-				Q.where('u', Q.notLike(`%${userID}%`)),
-				Q.where('t', null)
-			),
+			Q.and(Q.where('rid', rid), Q.where('u', Q.notLike(`%${userId}%`)), Q.where('t', null)),
 			Q.experimentalSortBy('ts', Q.desc),
 			Q.experimentalTake(50)
 		)
 		.fetch();
 
-	const users = messages.map(message => ({ ...message.u, suggestion: true }));
-	const removeDuplicatedUsers = users.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index); // Remove duplicated data from response
-	const sliceUsers = removeDuplicatedUsers.slice(0, text ? 2 : numberOfSuggestions);
+	const regExp = new RegExp(`${likeString}`, 'i');
+	const users = messages.map(message => message.u);
 
-	return sliceUsers;
+	const usersFromLocal = users
+		.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
+		.filter(user => user?.name?.match(regExp) || user.username?.match(regExp))
+		.slice(0, text ? 2 : numberOfSuggestions);
+
+	return usersFromLocal;
 };
 
 export const search = async ({
@@ -80,7 +76,7 @@ export const search = async ({
 
 	let localSearchData = [];
 	if (rid) {
-		localSearchData = await localSearchUsersMessage({ text, rid });
+		localSearchData = await localSearchUsersMessageByRid({ text, rid });
 	} else {
 		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });
 	}
