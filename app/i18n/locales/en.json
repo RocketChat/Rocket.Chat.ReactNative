@@ -565,6 +565,8 @@
   "Unsupported_system_message": "Unsupported system message",
   "Updating": "Updating...",
   "Uploading": "Uploading",
+  "Error_on_upload_archive": "Error on upload archive",
+  "Upload_in_progress": "Upload in progress",
   "Upload_file_question_mark": "Upload file?",
   "User": "User",
   "Users": "Users",

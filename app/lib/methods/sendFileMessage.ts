@@ -1,24 +1,28 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import isEmpty from 'lodash/isEmpty';
+import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
+import { Alert } from 'react-native';
 
-import FileUpload from './helpers/fileUpload';
-import database from '../database';
-import log from './helpers/log';
 import { IUpload, IUser, TUploadModel } from '../../definitions';
+import i18n from '../../i18n';
+import database from '../database';
+import FileUpload from './helpers/fileUpload';
 import { IFileUpload } from './helpers/fileUpload/interfaces';
+import log from './helpers/log';
 
 const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
-export function isUploadActive(path: string): boolean {
-	return !!uploadQueue[path];
+export function isUploadActive(path: string, rid: string): boolean {
+	const uploadPath = `${path}-${rid}`;
+	return !!uploadQueue[uploadPath];
 }
 
-export async function cancelUpload(item: TUploadModel): Promise<void> {
-	if (!isEmpty(uploadQueue[item.path])) {
+export async function cancelUpload(item: TUploadModel, rid: string): Promise<void> {
+	const uploadPath = `${item.path}-${rid}`;
+	if (!isEmpty(uploadQueue[uploadPath])) {
 		try {
-			await uploadQueue[item.path].cancel();
+			await uploadQueue[uploadPath].cancel();
 		} catch {
 			// Do nothing
 		}
@@ -30,7 +34,7 @@ export async function cancelUpload(item: TUploadModel): Promise<void> {
 		} catch (e) {
 			log(e);
 		}
-		delete uploadQueue[item.path];
+		delete uploadQueue[uploadPath];
 	}
 }
 
@@ -51,14 +55,18 @@ export function sendFileMessage(
 
 			const db = database.active;
 			const uploadsCollection = db.get('uploads');
+			const uploadPath = `${fileInfo.path}-${rid}`;
 			let uploadRecord: TUploadModel;
 			try {
-				uploadRecord = await uploadsCollection.find(fileInfo.path);
+				uploadRecord = await uploadsCollection.find(uploadPath);
+				if (uploadRecord?._raw?.id) {
+					return Alert.alert(i18n.t('Error_on_upload_archive'), i18n.t('Upload_in_progress'));
+				}
 			} catch (error) {
 				try {
 					await db.write(async () => {
 						uploadRecord = await uploadsCollection.create(u => {
-							u._raw = sanitizedRaw({ id: fileInfo.path }, uploadsCollection.schema);
+							u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
 							Object.assign(u, fileInfo);
 							if (u.subscription) {
 								u.subscription.id = rid;
@@ -99,9 +107,9 @@ export function sendFileMessage(
 				'X-User-Id': id
 			};
 
-			uploadQueue[fileInfo.path] = FileUpload.fetch('POST', uploadUrl, headers, formData);
+			uploadQueue[uploadPath] = FileUpload.fetch('POST', uploadUrl, headers, formData);
 
-			uploadQueue[fileInfo.path].uploadProgress(async (loaded: number, total: number) => {
+			uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
 				try {
 					await db.write(async () => {
 						await uploadRecord.update(u => {
@@ -113,7 +121,7 @@ export function sendFileMessage(
 				}
 			});
 
-			uploadQueue[fileInfo.path].then(async response => {
+			uploadQueue[uploadPath].then(async response => {
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
 					// If response is all good...
 					try {
@@ -142,7 +150,7 @@ export function sendFileMessage(
 				}
 			});
 
-			uploadQueue[fileInfo.path].catch(async error => {
+			uploadQueue[uploadPath].catch(async error => {
 				try {
 					await db.write(async () => {
 						await uploadRecord.update(u => {
