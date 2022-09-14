@@ -50,7 +50,7 @@ export const localSearchUsersMessage = async ({ text = '', rid = '' }) => {
 				// The column u is a JSON object stringfied as: "{"_id":"id","username":"username","name":"name"}"
 				// So we need to use the LIKE operator to search for the username
 				// Because if we search using (`%${likeString}%`) and the text is "d" it will match with some ids
-				Q.where('u', Q.like(`%username%${likeString}%`)),
+				Q.or(Q.where('u', Q.like(`%"username":%${likeString}%"name":%`)), Q.where('u', Q.like(`%"name":%${likeString}%`))),
 				Q.where('u', Q.notLike(`%${userID}%`)),
 				Q.where('t', null)
 			),
