@@ -1,5 +1,7 @@
 package chat.rocket.reactnative;
 
+import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -34,8 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
@@ -321,7 +321,7 @@ public class CustomPushNotification extends PushNotification {
         replyIntent.setAction(KEY_REPLY);
         replyIntent.putExtra("pushNotification", bundle);
 
-        PendingIntent replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_IMMUTABLE);
 
         RemoteInput remoteInput = new RemoteInput.Builder(KEY_REPLY)
                 .setLabel(label)
