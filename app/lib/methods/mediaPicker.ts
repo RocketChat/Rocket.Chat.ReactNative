@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { PermissionsAndroid } from 'react-native';
+import * as mime from 'react-native-mime-types';
 
 import { isAndroid } from './helpers';
 import log from './helpers/log';
@@ -31,26 +32,25 @@ const handlePermission = async (): Promise<boolean> => {
 
 const pickFromCamera = async (
 	allowsEditing: boolean,
-	mediaType: ImagePicker.MediaTypeOptions,
-	mime: string
+	mediaType: ImagePicker.MediaTypeOptions
 ): Promise<ImagePicker.ImagePickerResult | null> => {
 	try {
 		const hasPermission = await handlePermission();
 		if (!hasPermission) return null;
-		const result = await ImagePicker.launchCameraAsync({
+		const image = await ImagePicker.launchCameraAsync({
 			mediaTypes: mediaType,
 			quality: 1,
 			allowsEditing
 		});
 
-		if (!result.cancelled) {
-			const file = await FileSystem.getInfoAsync(result.uri);
+		if (!image.cancelled) {
+			const file = await FileSystem.getInfoAsync(image.uri);
 			const data = {
-				...result,
-				path: result.uri,
+				...image,
+				path: image.uri,
 				filename: `${file.uri.substring(file.uri.lastIndexOf('/') + 1)}`,
 				size: file.size,
-				mime
+				mime: mime.lookup(image.uri)
 			};
 			return data;
 		}
@@ -61,7 +61,7 @@ const pickFromCamera = async (
 	}
 };
 
-export const pickImageAndVideoFromLibrary = async (): Promise<ImagePicker.ImagePickerMultipleResult | null> => {
+export const pickImageAndVideoFromLibrary = async (): Promise<ImagePicker.ImagePickerResult[] | null> => {
 	try {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -69,7 +69,18 @@ export const pickImageAndVideoFromLibrary = async (): Promise<ImagePicker.ImageP
 			allowsMultipleSelection: true
 		});
 		if (!result.cancelled) {
-			return result;
+			const selectedFiles = result.selected.map(async file => {
+				const fileInfo = await FileSystem.getInfoAsync(file.uri);
+				return {
+					...file,
+					path: file.uri,
+					filename: `${file.uri.substring(file.uri.lastIndexOf('/') + 1)}`,
+					size: fileInfo.size,
+					mime: mime.lookup(file.uri)
+				};
+			});
+			const files = await Promise.all(selectedFiles);
+			return files;
 		}
 		return null;
 	} catch (error) {
@@ -79,7 +90,7 @@ export const pickImageAndVideoFromLibrary = async (): Promise<ImagePicker.ImageP
 };
 
 export const pickVideoFromCamera = (allowsEditing = false): Promise<ImagePicker.ImagePickerResult | null> =>
-	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Videos, 'video/mp4');
+	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Videos);
 
 export const pickImageFromCamera = (allowsEditing = false): Promise<ImagePicker.ImagePickerResult | null> =>
-	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Images, 'image/jpeg');
+	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Images);
