@@ -133,7 +133,6 @@ public class CustomPushNotification extends PushNotification {
         notificationColor(notification);
         notificationChannel(notification);
         notificationIcons(notification, bundle);
-        notificationDismiss(notification, notificationId);
 
         // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
         if (ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
@@ -337,15 +336,6 @@ public class CustomPushNotification extends PushNotification {
         notification
                 .setShowWhen(true)
                 .addAction(replyAction);
-    }
-
-    private void notificationDismiss(Notification.Builder notification, int notificationId) {
-        Intent intent = new Intent(mContext, DismissNotification.class);
-        intent.putExtra(NOTIFICATION_ID, notificationId);
-
-        PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, intent, 0);
-
-        notification.setDeleteIntent(dismissPendingIntent);
     }
 
     private void notificationLoad(Ejson ejson, Callback callback) {
