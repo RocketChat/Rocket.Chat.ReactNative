@@ -56,7 +56,7 @@ export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }) => {
 
 	const usersFromLocal = users
 		.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-		.filter(user => user?.name?.match(regExp) || user.username?.match(regExp))
+		.filter(user => user?.name?.match(regExp) || user?.username?.match(regExp))
 		.slice(0, text ? 2 : numberOfSuggestions);
 
 	return usersFromLocal;
