@@ -133,6 +133,7 @@ public class CustomPushNotification extends PushNotification {
         notificationColor(notification);
         notificationChannel(notification);
         notificationIcons(notification, bundle);
+        notificationDismiss(notification, notificationId);
 
         // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
         if (ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
@@ -321,7 +322,12 @@ public class CustomPushNotification extends PushNotification {
         replyIntent.setAction(KEY_REPLY);
         replyIntent.putExtra("pushNotification", bundle);
 
-        PendingIntent replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent replyPendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+        } else {
+            replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         RemoteInput remoteInput = new RemoteInput.Builder(KEY_REPLY)
                 .setLabel(label)
@@ -336,6 +342,15 @@ public class CustomPushNotification extends PushNotification {
         notification
                 .setShowWhen(true)
                 .addAction(replyAction);
+    }
+
+    private void notificationDismiss(Notification.Builder notification, int notificationId) {
+        Intent intent = new Intent(mContext, DismissNotification.class);
+        intent.putExtra(NOTIFICATION_ID, notificationId);
+
+        PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+
+        notification.setDeleteIntent(dismissPendingIntent);
     }
 
     private void notificationLoad(Ejson ejson, Callback callback) {
