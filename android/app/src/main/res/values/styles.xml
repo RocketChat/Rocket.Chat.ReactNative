@@ -7,20 +7,10 @@
         <!-- RN 0.68.2 -->
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item> 
     </style>
-    
-    <style name="Share.Window" parent="android:Theme">
-        <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@null</item>
-    </style>
 
-    <style name="Theme.Share.Transparent" parent="android:Theme">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@color/primary_dark</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowAnimationStyle">@style/Share.Window</item>
+    <style name="ShareTheme" parent="AppTheme">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="BootTheme" parent="Theme.SplashScreen">
