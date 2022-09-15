@@ -70,7 +70,7 @@ const pickFromCamera = async (
 	}
 };
 
-export const pickMultipleImageAndVideoFromLibrary = async (): Promise<ImagePickerFile[] | null> => {
+export const pickMultipleImageAndVideoFromLibrary = async (): Promise<ImagePickerFile | ImagePickerFile[] | null> => {
 	try {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -78,9 +78,14 @@ export const pickMultipleImageAndVideoFromLibrary = async (): Promise<ImagePicke
 			allowsMultipleSelection: true
 		});
 		if (!result.cancelled) {
-			const selectedFiles = result.selected.map(file => addAdditionalPropsToFile(file));
-			const files = await Promise.all(selectedFiles);
-			return files;
+			if (result.selected) {
+				const selectedFiles = result.selected.map(file => addAdditionalPropsToFile(file));
+				const files = await Promise.all(selectedFiles);
+				return files;
+			}
+			// @ts-ignore - The type for when returning only one file is wrong.
+			const selectedFile = await addAdditionalPropsToFile(result);
+			return [selectedFile];
 		}
 		return null;
 	} catch (error) {
@@ -92,7 +97,9 @@ export const pickMultipleImageAndVideoFromLibrary = async (): Promise<ImagePicke
 // Function Overload - https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads
 export async function pickImageFromLibrary(base64: true): Promise<(ImagePickerFile & { data: string }) | null>;
 export async function pickImageFromLibrary(base64?: false): Promise<ImagePickerFile | null>;
-export async function pickImageFromLibrary(base64?: boolean): Promise<ImagePickerFile | (ImagePickerFile & { data: string }) | null> {
+export async function pickImageFromLibrary(
+	base64?: boolean
+): Promise<ImagePickerFile | (ImagePickerFile & { data: string }) | null> {
 	try {
 		const image = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
