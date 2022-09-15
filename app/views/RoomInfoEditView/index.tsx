@@ -4,7 +4,6 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
 import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
@@ -51,6 +50,7 @@ import {
 	random
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import { pickImageFromLibrary } from '../../lib/methods/mediaPicker';
 
 interface IRoomInfoEditViewState {
 	room: ISubscription;
@@ -488,18 +488,11 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 	};
 
 	changeAvatar = async () => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
-
 		try {
-			const response: Image = await ImagePicker.openPicker(options);
-			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
+			const response = await pickImageFromLibrary(true);
+			if (response) {
+				this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
+			}
 		} catch (e) {
 			console.log(e);
 		}

@@ -2,7 +2,6 @@ import React from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
 import { sha256 } from 'js-sha256';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
 import omit from 'lodash/omit';
@@ -45,6 +44,7 @@ import { TwoFactorMethods } from '../../definitions/ITotp';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
+import { pickImageFromLibrary } from '../../lib/methods/mediaPicker';
 
 interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
@@ -343,19 +343,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			return;
 		}
 
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			freeStyleCropEnabled: true,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
 		try {
 			logEvent(events.PROFILE_PICK_AVATAR);
-			const response: Image = await ImagePicker.openPicker(options);
-			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
+			const response = await pickImageFromLibrary(true);
+			if (response) {
+				this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
+			}
 		} catch (error) {
 			logEvent(events.PROFILE_PICK_AVATAR_F);
 			console.warn(error);

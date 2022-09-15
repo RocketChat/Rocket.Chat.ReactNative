@@ -107,8 +107,6 @@ export async function pickImageFromLibrary(base64?: boolean): Promise<ImagePicke
 	}
 }
 
-export const pickImageFromLibraryC = () => pickImageFromLibrary;
-
 export const pickVideoFromCamera = (allowsEditing = false): Promise<ImagePickerFile | null> =>
 	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Videos);
 

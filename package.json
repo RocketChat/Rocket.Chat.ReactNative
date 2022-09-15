@@ -95,7 +95,6 @@
 		"react-native-fast-image": "RocketChat/react-native-fast-image.git#bump-version",
 		"react-native-file-viewer": "^2.1.4",
 		"react-native-gesture-handler": "2.4.2",
-		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
 		"react-native-image-progress": "^1.1.1",
 		"react-native-jitsi-meet": "RocketChat/react-native-jitsi-meet",
 		"react-native-keycommands": "2.0.3",

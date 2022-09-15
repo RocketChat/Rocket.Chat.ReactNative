@@ -57,7 +57,7 @@ import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersi
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
-import { pickImageAndVideoFromLibrary, pickImageFromCamera, pickVideoFromCamera } from '../../lib/methods/mediaPicker';
+import { pickMultipleImageAndVideoFromLibrary, pickImageFromCamera, pickVideoFromCamera } from '../../lib/methods/mediaPicker';
 
 require('./EmojiKeyboard');
 
@@ -716,7 +716,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFromLibrary = async () => {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
-			const attachments = await pickImageAndVideoFromLibrary();
+			const attachments = await pickMultipleImageAndVideoFromLibrary();
 			if (attachments) {
 				this.openShareView(attachments);
 			}
