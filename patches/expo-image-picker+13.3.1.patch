@@ -6,7 +6,7 @@ index 7a28702..77888fc 100644
      AsyncFunction("launchCameraAsync") Coroutine { options: ImagePickerOptions ->
        ensureTargetActivityIsAvailable(options)
 -      ensureCameraPermissionsAreGranted()
-+      // ensureCameraPermissionsAreGranted() Expo permissions are a little different, in our case it's better to keep it ourselves.
++      // ensureCameraPermissionsAreGranted()
  
        val mediaFile = createOutputFile(context.cacheDir, options.mediaTypes.toFileExtension())
        val uri = mediaFile.toContentUri(context)
