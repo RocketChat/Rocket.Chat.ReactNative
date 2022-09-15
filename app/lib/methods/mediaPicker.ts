@@ -111,8 +111,8 @@ export async function pickImageFromLibrary({ animatedGif = true }: { animatedGif
 	}
 }
 
-export const pickVideoFromCamera = (allowsEditing = false): Promise<ImagePickerFile | null> =>
+export const pickVideoFromCamera = (allowsEditing = true): Promise<ImagePickerFile | null> =>
 	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Videos);
 
-export const pickImageFromCamera = (allowsEditing = false): Promise<ImagePickerFile | null> =>
+export const pickImageFromCamera = (allowsEditing = true): Promise<ImagePickerFile | null> =>
 	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Images);

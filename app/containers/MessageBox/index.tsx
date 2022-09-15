@@ -163,7 +163,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
 		this.focused = false;
-
 	}
 
 	get sendThreadToChannel() {
@@ -692,7 +691,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	takePhoto = async () => {
 		logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
-			const image = await pickImageFromCamera(true);
+			const image = await pickImageFromCamera();
 			if (image && this.canUploadFile(image)) {
 				this.openShareView([image]);
 			}
@@ -704,7 +703,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	takeVideo = async () => {
 		logEvent(events.ROOM_BOX_ACTION_VIDEO);
 		try {
-			const video = await pickVideoFromCamera(true);
+			const video = await pickVideoFromCamera();
 			if (video && this.canUploadFile(video)) {
 				this.openShareView([video]);
 			}
