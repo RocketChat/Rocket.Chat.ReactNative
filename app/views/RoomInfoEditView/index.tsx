@@ -489,9 +489,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 	changeAvatar = async () => {
 		try {
-			const response = await pickImageFromLibrary(true);
+			const response = await pickImageFromLibrary({ animatedGif: false });
 			if (response) {
-				this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
+				this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.base64}`, service: 'upload' } });
 			}
 		} catch (e) {
 			console.log(e);

@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { PermissionsAndroid } from 'react-native';
@@ -74,7 +73,7 @@ export const pickMultipleImageAndVideoFromLibrary = async (): Promise<ImagePicke
 	try {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
-			quality: undefined, // to force animated gifs
+			quality: 1,
 			allowsMultipleSelection: true
 		});
 		if (!result.cancelled) {
@@ -94,19 +93,17 @@ export const pickMultipleImageAndVideoFromLibrary = async (): Promise<ImagePicke
 	}
 };
 
-// Function Overload - https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads
-export async function pickImageFromLibrary(base64: true): Promise<(ImagePickerFile & { data: string }) | null>;
-export async function pickImageFromLibrary(base64?: false): Promise<ImagePickerFile | null>;
-export async function pickImageFromLibrary(
-	base64?: boolean
-): Promise<ImagePickerFile | (ImagePickerFile & { data: string }) | null> {
+export async function pickImageFromLibrary({ animatedGif = true }: { animatedGif: boolean }): Promise<ImagePickerFile | null> {
 	try {
 		const image = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			quality: undefined, // to force animated gifs
-			base64
+			quality: animatedGif ? 1 : 0.9,
+			base64: true
 		});
-		if (!image.cancelled) return addAdditionalPropsToFile(image);
+		if (!image.cancelled) {
+			const selectedImage = await addAdditionalPropsToFile(image);
+			return selectedImage;
+		}
 		return null;
 	} catch (error) {
 		log(error);

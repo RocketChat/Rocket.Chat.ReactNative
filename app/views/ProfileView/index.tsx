@@ -345,9 +345,9 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		try {
 			logEvent(events.PROFILE_PICK_AVATAR);
-			const response = await pickImageFromLibrary(true);
+			const response = await pickImageFromLibrary({ animatedGif: false });
 			if (response) {
-				this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
+				this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.base64}`, service: 'upload' });
 			}
 		} catch (error) {
 			logEvent(events.PROFILE_PICK_AVATAR_F);
