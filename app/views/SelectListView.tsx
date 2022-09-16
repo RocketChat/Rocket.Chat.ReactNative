@@ -90,9 +90,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		}
 
 		options.headerRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
-			</HeaderButton.Container>
+			<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
 		);
 
 		navigation.setOptions(options);
