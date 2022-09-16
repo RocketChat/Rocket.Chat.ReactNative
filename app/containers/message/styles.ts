@@ -118,7 +118,6 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	textInfo: {
-		fontStyle: 'italic',
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
