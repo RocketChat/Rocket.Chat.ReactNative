@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FlatListProps, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatListProps, StyleSheet, FlatList } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { isIOS } from '../../../lib/methods/helpers';
+import { isAndroid, isIOS } from '../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -31,7 +30,7 @@ const List = ({ listRef, ...props }: IListProps) => (
 		keyExtractor={(item: any) => item.id}
 		contentContainerStyle={styles.contentContainer}
 		style={styles.list}
-		inverted
+		inverted={isIOS}
 		removeClippedSubviews={isIOS}
 		initialNumToRender={7}
 		onEndReachedThreshold={0.5}
