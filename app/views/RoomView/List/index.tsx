@@ -15,6 +15,7 @@ import { compareServerVersion, debounce } from '../../../lib/methods/helpers';
 import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
 import log from '../../../lib/methods/helpers/log';
 import EmptyRoom from '../EmptyRoom';
+// @ts-ignore
 import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';

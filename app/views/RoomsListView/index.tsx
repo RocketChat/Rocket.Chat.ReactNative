@@ -62,7 +62,6 @@ import {
 	hasPermission,
 	isRead,
 	debounce,
-	isIOS,
 	isTablet
 } from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
@@ -118,7 +117,6 @@ interface IRoomItem extends ISubscription {
 	outside?: boolean;
 }
 
-const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
@@ -159,11 +157,6 @@ const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', '
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data: ISubscription[] | null | undefined, index: number, height: number) => ({
-	length: height,
-	offset: height * index,
-	index
-});
 const keyExtractor = (item: ISubscription) => item.rid;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
@@ -176,7 +169,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	private shouldUpdate?: boolean;
 	private backHandler?: NativeEventSubscription;
 	private querySubscription?: Subscription;
-	private scroll?: FlatList;
+	private scroll?: any;
 	private useRealName?: boolean;
 
 	constructor(props: IRoomsListViewProps) {
@@ -897,7 +890,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: any) => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { searching } = this.state;
@@ -1012,7 +1005,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { loading, chats, search, searching } = this.state;
+		const { chats, search, searching } = this.state;
 		const { showServerDropdown, theme, navigation, displayMode, refreshing } = this.props;
 
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;

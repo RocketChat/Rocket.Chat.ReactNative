@@ -5,15 +5,11 @@ import { FlatListProps, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import Animated from 'react-native-reanimated';
 
-import { isIOS } from '../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlashList);
 
 const styles = StyleSheet.create({
-	list: {
-		flex: 1
-	},
 	contentContainer: {
 		paddingTop: 10
 	}
@@ -23,11 +19,13 @@ const styles = StyleSheet.create({
 
 export type IListProps = FlatListProps<any>;
 
+// @ts-ignore
 const List = ({ listRef, ...props }: IListProps) => (
 	<AnimatedFlatList
 		testID='room-view-messages'
 		ref={listRef}
 		keyExtractor={(item: any) => item.id}
+		// @ts-ignore
 		contentContainerStyle={styles.contentContainer}
 		// style={styles.list}
 		inverted
