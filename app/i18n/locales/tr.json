@@ -115,7 +115,6 @@
   "Black": "Koyu",
   "Block_user": "Kullanıcıyı engelle",
   "Browser": "Tarayıcı",
-  "Broadcast_hint": "Yalnızca yetkili kullanıcılar yeni ileti yazabilir, ancak diğer kullanıcılar yanıt verebilir",
   "Busy": "Meşgul",
   "By_proceeding_you_are_agreeing": "Devam ederek kabul ediyorsunuz: ",
   "Cancel_editing": "Düzenlemeyi iptal et",
@@ -680,5 +679,6 @@
   "Message_Ignored": "İleti yok sayıldı. Görüntülemek için dokunun.",
   "Enter_workspace_URL": "Çalışma alanı URL'nizi girin",
   "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat",
-  "invalid-room": "Geçersiz oda"
+  "invalid-room": "Geçersiz oda",
+  "Broadcast_hint": "Yalnızca yetkili kullanıcılar yeni ileti yazabilir, ancak diğer kullanıcılar yanıt verebilir"
 }
