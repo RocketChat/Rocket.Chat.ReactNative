@@ -91,23 +91,23 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 	}
 
-	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
-		const { isManualUnignored } = this.state;
-		const { threadBadgeColor, isIgnored, highlighted } = this.props;
-		if (nextProps.highlighted !== highlighted) {
-			return true;
-		}
-		if (nextProps.threadBadgeColor !== threadBadgeColor) {
-			return true;
-		}
-		if (nextProps.isIgnored !== isIgnored) {
-			return true;
-		}
-		if (nextState.isManualUnignored !== isManualUnignored) {
-			return true;
-		}
-		return false;
-	}
+	// shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
+	// 	const { isManualUnignored } = this.state;
+	// 	const { threadBadgeColor, isIgnored, highlighted } = this.props;
+	// 	if (nextProps.highlighted !== highlighted) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.threadBadgeColor !== threadBadgeColor) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.isIgnored !== isIgnored) {
+	// 		return true;
+	// 	}
+	// 	if (nextState.isManualUnignored !== isManualUnignored) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {

@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FlatListProps, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+// import { FlatList } from 'react-native-gesture-handler';
+import { FlashList } from '@shopify/flash-list';
 import Animated from 'react-native-reanimated';
 
 import { isIOS } from '../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+const AnimatedFlatList = Animated.createAnimatedComponent(FlashList);
 
 const styles = StyleSheet.create({
 	list: {
@@ -18,11 +19,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export type TListRef = React.RefObject<FlatList & { getNode: () => FlatList }>;
+// export type TListRef = React.RefObject<FlatList & { getNode: () => FlatList }>;
 
-export interface IListProps extends FlatListProps<any> {
-	listRef: TListRef;
-}
+export type IListProps = FlatListProps<any>;
 
 const List = ({ listRef, ...props }: IListProps) => (
 	<AnimatedFlatList
@@ -30,13 +29,14 @@ const List = ({ listRef, ...props }: IListProps) => (
 		ref={listRef}
 		keyExtractor={(item: any) => item.id}
 		contentContainerStyle={styles.contentContainer}
-		style={styles.list}
+		// style={styles.list}
 		inverted
-		removeClippedSubviews={isIOS}
-		initialNumToRender={7}
+		estimatedItemSize={150}
+		// removeClippedSubviews={isIOS}
+		// initialNumToRender={7}
 		onEndReachedThreshold={0.5}
-		maxToRenderPerBatch={5}
-		windowSize={10}
+		// maxToRenderPerBatch={5}
+		// windowSize={10}
 		{...props}
 		{...scrollPersistTaps}
 	/>
