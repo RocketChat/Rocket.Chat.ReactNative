@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
+import { BackHandler, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
 import { batch, connect } from 'react-redux';
 import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
@@ -8,6 +8,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { Header } from '@react-navigation/elements';
+import { FlashList } from '@shopify/flash-list';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
@@ -986,22 +987,23 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		return (
-			<FlatList
+			<FlashList
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
-				extraData={searching ? search : chats}
+				// extraData={searching ? search : chats}
 				keyExtractor={keyExtractor}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={(data, index) => getItemLayout(data, index, height)}
-				removeClippedSubviews={isIOS}
+				estimatedItemSize={height}
+				// getItemLayout={(data, index) => getItemLayout(data, index, height)}
+				// removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				// initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
 				}
-				windowSize={9}
+				// windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 			/>
@@ -1010,13 +1012,36 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme, navigation } = this.props;
+		const { loading, chats, search, searching } = this.state;
+		const { showServerDropdown, theme, navigation, displayMode, refreshing } = this.props;
+
+		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar />
 				{this.renderHeader()}
-				{this.renderScroll()}
+				{/* {this.renderScroll()} */}
+				<FlashList
+					ref={this.getScrollRef}
+					data={searching ? search : chats}
+					// extraData={searching ? search : chats}
+					keyExtractor={keyExtractor}
+					// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+					renderItem={this.renderItem}
+					ListHeaderComponent={this.renderListHeader}
+					estimatedItemSize={height}
+					// getItemLayout={(data, index) => getItemLayout(data, index, height)}
+					// removeClippedSubviews={isIOS}
+					keyboardShouldPersistTaps='always'
+					// initialNumToRender={INITIAL_NUM_TO_RENDER}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+					}
+					// windowSize={9}
+					onEndReached={this.onEndReached}
+					onEndReachedThreshold={0.5}
+				/>
 				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
 				{/* @ts-ignore*/}
 				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}

@@ -12,7 +12,7 @@ import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 
-const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
+// const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
 const RoomItemContainer = React.memo(
 	({
@@ -129,8 +129,8 @@ const RoomItemContainer = React.memo(
 				sourceType={item.source}
 			/>
 		);
-	},
-	(props, nextProps) => attrs.every(key => props[key] === nextProps[key])
+	}
+	// (props, nextProps) => attrs.every(key => props[key] === nextProps[key])
 );
 
 export default RoomItemContainer;
