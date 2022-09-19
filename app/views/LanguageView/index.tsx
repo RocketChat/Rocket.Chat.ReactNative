@@ -22,8 +22,11 @@ import { Services } from '../../lib/services';
 import LanguageItem from './LanguageItem';
 
 const LanguageView = () => {
-	const user = useAppSelector(state => getUserSelector(state));
-	const language = user.language || 'en';
+	const { languageDefault, id } = useAppSelector(state => ({
+		languageDefault: getUserSelector(state).language,
+		id: getUserSelector(state).id
+	}));
+	const language = languageDefault || 'en';
 
 	const dispatch = useDispatch();
 	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
@@ -35,11 +38,11 @@ const LanguageView = () => {
 	}, [navigation]);
 
 	const submit = async (language: string) => {
-		if (user.language === language) {
+		if (languageDefault === language) {
 			return;
 		}
 
-		const shouldRestart = isRTL(language) || isRTL(user.language);
+		const shouldRestart = isRTL(language) || isRTL(languageDefault);
 
 		dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Change_language_loading') }));
 
@@ -59,7 +62,7 @@ const LanguageView = () => {
 		const params: { language?: string } = {};
 
 		// language
-		if (user.language !== language) {
+		if (languageDefault !== language) {
 			params.language = language;
 		}
 
@@ -71,7 +74,7 @@ const LanguageView = () => {
 			const usersCollection = serversDB.get('users');
 			await serversDB.write(async () => {
 				try {
-					const userRecord = await usersCollection.find(user.id);
+					const userRecord = await usersCollection.find(id);
 					await userRecord.update(record => {
 						record.language = params.language;
 					});
