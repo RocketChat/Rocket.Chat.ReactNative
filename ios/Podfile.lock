@@ -520,6 +520,8 @@ PODS:
     - RNFBApp
   - RNFileViewer (2.1.5):
     - React-Core
+  - RNFlashList (1.2.2):
+    - React-Core
   - RNGestureHandler (2.4.2):
     - React-Core
   - RNImageCropPicker (0.36.3):
@@ -665,6 +667,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNFileViewer (from `../node_modules/react-native-file-viewer`)
+  - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -856,6 +859,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/crashlytics"
   RNFileViewer:
     :path: "../node_modules/react-native-file-viewer"
+  RNFlashList:
+    :path: "../node_modules/@shopify/flash-list"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -982,6 +987,7 @@ SPEC CHECKSUMS:
   RNFBApp: b1b5a80a676a07dea17e778bda7c1e8b69b2f5ec
   RNFBCrashlytics: 357955a1564721ca9001960e57b395c6a319f9be
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
+  RNFlashList: 13d14d9502661134ad3ba892f81d76bdcbd79755
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
