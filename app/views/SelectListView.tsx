@@ -20,6 +20,7 @@ import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { IApplicationState } from '../definitions';
 import { TDataSelect } from '../definitions/IDataSelect';
+import HeaderTitle from '../containers/HeaderTitle';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -82,7 +83,8 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { selected } = this.state;
 
 		const options: StackNavigationOptions = {
-			headerTitle: I18n.t(this.title)
+			headerTitle: () => <HeaderTitle title={I18n.t(this.title)} />,
+			headerRightContainerStyle: { paddingRight: 6 }
 		};
 
 		if (isMasterDetail) {
@@ -90,7 +92,12 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		}
 
 		options.headerRight = () => (
-			<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
+			<HeaderButton.Item
+				title={I18n.t('Next')}
+				onPress={() => this.nextAction(selected)}
+				testID='select-list-view-submit'
+				containerStyle={{ padding: 0 }}
+			/>
 		);
 
 		navigation.setOptions(options);

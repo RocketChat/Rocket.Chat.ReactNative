@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text } from 'react-native';
+import { Platform, StyleSheet, Text, ViewStyle } from 'react-native';
 import { PlatformPressable } from '@react-navigation/elements';
 
 import { CustomIcon, ICustomIcon, TIconsName } from '../CustomIcon';
@@ -13,6 +13,7 @@ export interface IHeaderButtonItem extends Omit<ICustomIcon, 'name' | 'size' | '
 	testID?: string;
 	badge?(): void;
 	color?: string;
+	containerStyle?: ViewStyle;
 }
 
 export const BUTTON_HIT_SLOP = {
@@ -39,10 +40,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ title, iconName, onPress, testID, badge, color, ...props }: IHeaderButtonItem): React.ReactElement => {
+const Item = ({
+	title,
+	iconName,
+	onPress,
+	testID,
+	badge,
+	color,
+	containerStyle,
+	...props
+}: IHeaderButtonItem): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
-		<PlatformPressable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
+		<PlatformPressable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={[styles.container, containerStyle]}>
 			<>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={color || colors.headerTintColor} {...props} />
