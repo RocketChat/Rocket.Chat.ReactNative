@@ -58,7 +58,7 @@ const pickFromCamera = async (
 		if (!hasPermission) return null;
 		const image = await ImagePicker.launchCameraAsync({
 			mediaTypes: mediaType,
-			quality: 1,
+			quality: 0.8,
 			allowsEditing
 		});
 		if (!image.cancelled) return addAdditionalPropsToFile(image);
@@ -97,7 +97,7 @@ export async function pickImageFromLibrary({ animatedGif = true }: { animatedGif
 	try {
 		const image = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			quality: animatedGif ? 1 : 0.9,
+			quality: animatedGif ? 1 : 0.8,
 			base64: true
 		});
 		if (!image.cancelled) {
@@ -111,8 +111,8 @@ export async function pickImageFromLibrary({ animatedGif = true }: { animatedGif
 	}
 }
 
-export const pickVideoFromCamera = (allowsEditing = true): Promise<ImagePickerFile | null> =>
+export const pickVideoFromCamera = (allowsEditing = false): Promise<ImagePickerFile | null> =>
 	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Videos);
 
-export const pickImageFromCamera = (allowsEditing = true): Promise<ImagePickerFile | null> =>
+export const pickImageFromCamera = (allowsEditing = false): Promise<ImagePickerFile | null> =>
 	pickFromCamera(allowsEditing, ImagePicker.MediaTypeOptions.Images);
