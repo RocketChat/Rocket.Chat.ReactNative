@@ -127,11 +127,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	headerRight = () => {
 		const { theme } = this.props;
-		return (
-			<HeaderButton.Container>
-				<HeaderButton.Item iconName='edit' onPress={this.cropImage} color={themes[theme].previewTintColor} />
-			</HeaderButton.Container>
-		);
+		if (!this.isShareExtension)
+			return (
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='edit' onPress={this.cropImage} color={themes[theme].previewTintColor} />
+				</HeaderButton.Container>
+			);
+		return null;
 	};
 
 	setHeader = () => {
