@@ -11,7 +11,7 @@ import { allowPreview } from './utils';
 import { TSupportedThemes } from '../../theme';
 import { IShareAttachment } from '../../definitions';
 
-export const THUMB_SIZE = 64;
+const THUMB_SIZE = 64;
 
 const styles = StyleSheet.create({
 	list: {
@@ -139,21 +139,23 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 const Thumbs = ({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
 	if (attachments?.length > 1) {
 		return (
-			<FlatList
-				horizontal
-				data={attachments}
-				keyExtractor={item => item.path}
-				renderItem={({ item }) => (
-					<Thumb
-						item={item}
-						theme={theme}
-						isShareExtension={isShareExtension}
-						onPress={() => onPress(item)}
-						onRemove={() => onRemove(item)}
-					/>
-				)}
-				style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
-			/>
+			<View style={{ height: THUMB_SIZE }}>
+				<FlatList
+					horizontal
+					data={attachments}
+					keyExtractor={item => item.path}
+					renderItem={({ item }) => (
+						<Thumb
+							item={item}
+							theme={theme}
+							isShareExtension={isShareExtension}
+							onPress={() => onPress(item)}
+							onRemove={() => onRemove(item)}
+						/>
+					)}
+					style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
+				/>
+			</View>
 		);
 	}
 	return null;

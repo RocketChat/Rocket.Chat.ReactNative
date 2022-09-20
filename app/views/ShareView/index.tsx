@@ -5,6 +5,7 @@ import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
 
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
@@ -62,6 +63,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
+	private canEdit: boolean;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -69,6 +71,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
+		this.canEdit = props.route.params?.canEdit;
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -94,6 +97,43 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		console.countReset(`${this.constructor.name}.render calls`);
 	};
 
+	cropImage = () => {
+		const { attachments, selected } = this.state;
+		ImagePicker.openCropper({
+			path: this.state.selected.path,
+			mediaType: 'photo',
+			writeTempFile: true,
+			includeExif: true
+		})
+			.then((image: Image) => {
+				let editedAttachment: undefined | IShareAttachment;
+				const newAttachments = attachments.map(attachment => {
+					if (attachment.filename === selected.filename) {
+						const editedImage = {
+							...attachment,
+							...image,
+							uri: image.path,
+							filename: `${image.path.substring(image.path.lastIndexOf('/') + 1)}`
+						};
+						editedAttachment = editedImage;
+						return editedImage;
+					}
+					return attachment;
+				});
+				this.setState({ attachments: newAttachments, selected: editedAttachment! });
+			})
+			.catch(() => {});
+	};
+
+	headerRight = () => {
+		const { theme } = this.props;
+		return (
+			<HeaderButton.Container>
+				<HeaderButton.Item iconName='edit' onPress={this.cropImage} color={themes[theme].previewTintColor} />
+			</HeaderButton.Container>
+		);
+	};
+
 	setHeader = () => {
 		const { room, thread, readOnly, attachments } = this.state;
 		const { navigation, theme } = this.props;
@@ -109,7 +149,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} color={themes[theme].previewTintColor} />;
 		}
 
-		if (!attachments.length && !readOnly) {
+		if (this.canEdit && this.state.selected.mime === 'image/jpeg') {
+			options.headerRight = this.headerRight;
+		} else if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].previewTintColor} />
@@ -256,6 +298,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	selectFile = (item: IShareAttachment) => {
 		const { attachments, selected } = this.state;
+		const { navigation } = this.props;
+
 		if (attachments.length > 0) {
 			const text = this.messagebox.current?.text;
 			const newAttachments = attachments.map(att => {
@@ -264,7 +308,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				}
 				return att;
 			});
-			return this.setState({ attachments: newAttachments, selected: item });
+
+			return this.setState({ attachments: newAttachments, selected: item }, () => {
+				if (item.mime === 'image/jpeg') {
+					navigation.setOptions({ headerRight: this.headerRight });
+				} else {
+					navigation.setOptions({ headerRight: undefined });
+				}
+			});
 		}
 	};
 
@@ -293,7 +344,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	renderContent = () => {
 		const { attachments, selected, room, text } = this.state;
 		const { theme, navigation } = this.props;
-
 		if (attachments.length) {
 			return (
 				<View style={styles.container}>
@@ -318,15 +368,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						isFocused={navigation.isFocused}
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
 						isActionsEnabled={false}
-					>
-						<Thumbs
-							attachments={attachments}
-							theme={theme}
-							isShareExtension={this.isShareExtension}
-							onPress={this.selectFile}
-							onRemove={this.removeFile}
-						/>
-					</MessageBox>
+					/>
+					<Thumbs
+						attachments={attachments}
+						theme={theme}
+						isShareExtension={this.isShareExtension}
+						onPress={this.selectFile}
+						onRemove={this.removeFile}
+					/>
 				</View>
 			);
 		}
