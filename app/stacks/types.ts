@@ -270,6 +270,7 @@ export type InsideStackParamList = {
 		text: string;
 		room: TSubscriptionModel;
 		thread: TThreadModel;
+		canEdit: boolean;
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
