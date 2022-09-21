@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridgeDelegate.h>
 #import <Expo/Expo.h>
+#import "RocketChatRN-Swift.h"
 
 @interface AppDelegate : EXAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate>
 
