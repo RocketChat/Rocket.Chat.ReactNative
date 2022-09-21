@@ -154,7 +154,7 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		return I18n.t('User_joined_the_conversation');
 	}
 	if (type === 'r') {
-		return I18n.t('Room_name_changed_to', { name: msg });
+		return I18n.t('Room_name_changed_to', { name: msg, username });
 	}
 	if (type === 'message_pinned') {
 		return I18n.t('Message_pinned');
@@ -169,13 +169,13 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		return I18n.t('Has_left_the_team');
 	}
 	if (type === 'ru') {
-		return I18n.t('User_has_been_removed', { userRemoved: msg });
+		return I18n.t('User_has_been_removed', { userRemoved: msg, username });
 	}
 	if (type === 'au') {
-		return I18n.t('User_added_to', { userAdded: msg });
+		return I18n.t('User_added_to', { userAdded: msg, username });
 	}
 	if (type === 'user-muted') {
-		return I18n.t('User_has_been_muted', { userMuted: msg });
+		return I18n.t('User_has_been_muted', { userMuted: msg, username });
 	}
 	if (type === 'user-unmuted') {
 		return I18n.t('User_has_been_unmuted', { userUnmuted: msg });
@@ -193,55 +193,55 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		return I18n.t('Room_changed_announcement', { announcement: msg, userBy: username });
 	}
 	if (type === 'room_changed_topic') {
-		return I18n.t('room_changed_topic_to', { topic: msg });
+		return I18n.t('room_changed_topic_to', { topic: msg, username });
 	}
 	if (type === 'room_changed_privacy') {
-		return I18n.t('room_changed_type', { type: msg });
+		return I18n.t('room_changed_type', { type: msg, username });
 	}
 	if (type === 'room_changed_avatar') {
-		return I18n.t('room_avatar_changed');
+		return I18n.t('room_avatar_changed', { username });
 	}
 	if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
 	}
 	if (type === 'room_e2e_disabled') {
-		return I18n.t('Disabled_E2E_Encryption_for_this_room');
+		return I18n.t('Disabled_E2E_Encryption_for_this_room', { username });
 	}
 	if (type === 'room_e2e_enabled') {
-		return I18n.t('Enabled_E2E_Encryption_for_this_room');
+		return I18n.t('Enabled_E2E_Encryption_for_this_room', { username });
 	}
 	if (type === 'removed-user-from-team') {
-		return I18n.t('Removed__username__from_the_team', { user_removed: msg });
+		return I18n.t('Removed__username__from_the_team', { userRemoved: msg, username });
 	}
 	if (type === 'added-user-to-team') {
-		return I18n.t('Added__username__to_this_team', { user_added: msg });
+		return I18n.t('Added__username__to_this_team', { user_added: msg, username });
 	}
 	if (type === 'user-added-room-to-team') {
-		return I18n.t('added__roomName__to_this_team', { roomName: msg });
+		return I18n.t('added__roomName__to_this_team', { roomName: msg, username });
 	}
 	if (type === 'user-converted-to-team') {
-		return I18n.t('Converted__roomName__to_a_team', { roomName: msg });
+		return I18n.t('Converted__roomName__to_a_team', { roomName: msg, username });
 	}
 	if (type === 'user-converted-to-channel') {
-		return I18n.t('Converted__roomName__to_a_channel', { roomName: msg });
+		return I18n.t('Converted__roomName__to_a_channel', { roomName: msg, username });
 	}
 	if (type === 'user-deleted-room-from-team') {
 		return I18n.t('Deleted__roomName__', { roomName: msg });
 	}
 	if (type === 'user-removed-room-from-team') {
-		return I18n.t('Removed__roomName__from_the_team', { roomName: msg });
+		return I18n.t('Removed__roomName__from_the_team', { roomName: msg, username });
 	}
 	if (type === 'room-disallowed-reacting') {
-		return I18n.t('room_disallowed_reactions');
+		return I18n.t('room_disallowed_reactions', { username });
 	}
 	if (type === 'room-allowed-reacting') {
-		return I18n.t('room_allowed_reactions');
+		return I18n.t('room_allowed_reactions', { username });
 	}
 	if (type === 'room-set-read-only') {
-		return I18n.t('room_set_read_only_permission');
+		return I18n.t('room_set_read_only_permission', { username });
 	}
 	if (type === 'room-removed-read-only') {
-		return I18n.t('room_removed_read_only_permission');
+		return I18n.t('room_removed_read_only_permission', { username });
 	}
 	if (type === 'omnichannel_placed_chat_on_hold') {
 		return I18n.t('Omnichannel_placed_chat_on_hold', { comment });
