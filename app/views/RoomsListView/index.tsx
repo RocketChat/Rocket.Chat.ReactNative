@@ -46,7 +46,6 @@ import {
 	IUser,
 	RootEnum,
 	SubscriptionType,
-	TSubscription,
 	TSubscriptionModel
 } from '../../definitions';
 import styles from './styles';
@@ -104,19 +103,19 @@ interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsLis
 
 interface IRoomsListViewState {
 	searching?: boolean;
-	search?: TRoomItem[];
+	search?: IRoomItem[];
 	loading?: boolean;
 	chatsUpdate?: string[] | { rid: string; alert?: boolean }[];
 	omnichannelsUpdate?: string[];
-	chats?: TRoomItem[];
+	chats?: IRoomItem[];
 	item?: ISubscription;
 	canCreateRoom?: boolean;
 }
 
-type TRoomItem = TSubscription & {
+interface IRoomItem extends ISubscription {
 	search?: boolean;
 	outside?: boolean;
-};
+}
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -312,9 +311,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (nextProps.width !== width) {
 			return true;
 		}
-		const nextSearchRaw = nextState.search?.map(item => ('_raw' in item ? item._raw : item));
-		const searchRaw = search?.map(item => ('_raw' in item ? item._raw : item));
-		if (!dequal(nextSearchRaw, searchRaw)) {
+		if (!dequal(nextState.search, search)) {
 			return true;
 		}
 		if (!dequal(nextProps.rooms, rooms)) {
@@ -639,13 +636,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return;
 		}
 		this.internalSetState({
-			search: result as TRoomItem[],
+			search: result as IRoomItem[],
 			searching: true
 		});
 		this.scrollToTop();
 	}, 300);
 
-	isSwipeEnabled = (item: TRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
+	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -793,7 +790,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	findOtherRoom = (index: number, sign: number): ISubscription | void => {
 		const { chats } = this.state;
 		const otherIndex = index + sign;
-		const otherRoom = chats?.length ? chats[otherIndex] : ({} as TRoomItem);
+		const otherRoom = chats?.length ? chats[otherIndex] : ({} as IRoomItem);
 		if (!otherRoom) {
 			return;
 		}
@@ -928,7 +925,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return <Header title='' {...themedHeader(theme)} {...options} />;
 	};
 
-	renderItem = ({ item }: { item: TRoomItem }) => {
+	renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
 		}
