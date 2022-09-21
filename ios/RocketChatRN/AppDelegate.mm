@@ -60,10 +60,13 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNNotifications startMonitorNotifications];
+  // [ReplyNotification configure];
+  // [super application:application didFinishLaunchingWithOptions:launchOptions];
   // AppGroup MMKV
   NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
   [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+  // [RNNotifications startMonitorNotifications];
 
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
 
