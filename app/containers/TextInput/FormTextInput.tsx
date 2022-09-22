@@ -24,10 +24,9 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		...sharedStyles.textRegular,
-		height: 48,
 		fontSize: 16,
 		padding: 14,
-		borderWidth: StyleSheet.hairlineWidth,
+		borderWidth: 2,
 		borderRadius: 2
 	},
 	inputIconLeft: {
@@ -37,11 +36,11 @@ const styles = StyleSheet.create({
 		paddingRight: 45
 	},
 	wrap: {
-		position: 'relative'
+		position: 'relative',
+		justifyContent: 'center'
 	},
 	iconContainer: {
-		position: 'absolute',
-		top: 14
+		position: 'absolute'
 	},
 	iconLeft: {
 		left: 15
@@ -98,7 +97,7 @@ export const FormTextInput = ({
 					style={[
 						styles.input,
 						iconLeft && styles.inputIconLeft,
-						(secureTextEntry || iconRight) && styles.inputIconRight,
+						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
 							backgroundColor: colors.backgroundColor,
 							borderColor: colors.separatorColor,

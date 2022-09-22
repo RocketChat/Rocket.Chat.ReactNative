@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
 	},
 	inputLeft: {
 		position: 'absolute',
-		top: 12,
 		left: 12
 	},
 	inputStyle: {
