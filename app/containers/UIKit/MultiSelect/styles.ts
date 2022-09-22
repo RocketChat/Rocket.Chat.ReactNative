@@ -35,7 +35,7 @@ export default StyleSheet.create({
 		minHeight: 48,
 		paddingHorizontal: 8,
 		paddingBottom: 0,
-		borderWidth: StyleSheet.hairlineWidth,
+		borderWidth: 2,
 		borderRadius: 2,
 		alignItems: 'center',
 		flexDirection: 'row'
