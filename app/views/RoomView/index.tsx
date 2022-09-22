@@ -1365,8 +1365,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (showUnreadSeparator || dateSeparator) {
 			return (
 				<>
-					{content}
 					<Separator ts={dateSeparator} unread={showUnreadSeparator} />
+					{content}
 				</>
 			);
 		}
@@ -1514,7 +1514,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					listRef={this.flatList}
 					rid={rid}
 					tmid={this.tmid}
-					theme={theme}
 					tunread={tunread}
 					ignored={ignored}
 					renderRow={this.renderItem}
