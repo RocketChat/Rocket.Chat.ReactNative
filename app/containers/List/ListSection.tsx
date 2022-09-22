@@ -5,7 +5,7 @@ import { Header } from '.';
 
 const styles = StyleSheet.create({
 	container: {
-		marginVertical: 16
+		marginBottom: 8
 	}
 });
 
