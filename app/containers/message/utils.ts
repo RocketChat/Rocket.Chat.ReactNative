@@ -261,6 +261,12 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 	if (type === 'livechat_transfer_history') {
 		return I18n.t('New_chat_transfer', { agent: username });
 	}
+	if (type === 'room_archived') {
+		return I18n.t('room_archived');
+	}
+	if (type === 'room_unarchived') {
+		return I18n.t('room_unarchived');
+	}
 	return I18n.t('Unsupported_system_message');
 };
 
