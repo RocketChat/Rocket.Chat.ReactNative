@@ -195,11 +195,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 				<ModalStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
-				<ModalStack.Screen
-					name='UserNotificationPrefView'
-					component={UserNotificationPrefView}
-					options={UserNotificationPrefView.navigationOptions}
-				/>
+				<ModalStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 				<ModalStack.Screen
 					name='E2EEncryptionSecurityView'

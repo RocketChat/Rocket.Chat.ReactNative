@@ -150,11 +150,7 @@ const ProfileStackNavigator = () => {
 		>
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
-			<ProfileStack.Screen
-				name='UserNotificationPrefView'
-				component={UserNotificationPrefView}
-				options={UserNotificationPrefView.navigationOptions}
-			/>
+			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<ProfileStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 		</ProfileStack.Navigator>
 	);
