@@ -114,7 +114,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
+			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} messageId={id} />;
 		});
 		return <>{attachmentsElements}</>;
 	},
