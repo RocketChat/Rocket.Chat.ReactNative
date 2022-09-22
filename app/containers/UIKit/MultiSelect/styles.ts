@@ -9,7 +9,6 @@ export default StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	actionSheetContainer: {
-		padding: 16,
 		flex: 1
 	},
 	content: {
@@ -28,9 +27,9 @@ export default StyleSheet.create({
 	},
 	item: {
 		height: 48,
-		maxWidth: '85%',
 		alignItems: 'center',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		flex: 1
 	},
 	input: {
 		minHeight: 48,
@@ -46,7 +45,11 @@ export default StyleSheet.create({
 		right: 16
 	},
 	itemContent: {
+		paddingHorizontal: 16,
 		paddingBottom: 36
+	},
+	inputStyle: {
+		paddingHorizontal: 16
 	},
 	items: {
 		height: 226
@@ -83,5 +86,11 @@ export default StyleSheet.create({
 		borderRadius: 2,
 		width: 24,
 		height: 24
+	},
+	flex: {
+		flex: 1
+	},
+	flexZ: {
+		flex: 0
 	}
 });
