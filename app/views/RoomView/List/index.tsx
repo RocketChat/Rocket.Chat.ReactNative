@@ -2,12 +2,10 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
+import { FlatListProps, View, ViewToken, StyleSheet, Platform } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
-import { TSupportedThemes } from '../../../theme';
-import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
@@ -19,8 +17,19 @@ import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
+import RefreshControl from './RefreshControl';
 
 const QUERY_SIZE = 50;
+
+const styles = StyleSheet.create({
+	inverted: {
+		...Platform.select({
+			android: {
+				scaleY: -1
+			}
+		})
+	}
+});
 
 const onScroll = ({ y }: { y: Value<number> }) =>
 	event(
@@ -40,7 +49,6 @@ export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
 	tmid?: string;
-	theme: TSupportedThemes;
 	loading: boolean;
 	listRef: TListRef;
 	hideSystemMessages?: string[];
@@ -98,10 +106,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
-		const { hideSystemMessages, theme, tunread, ignored, loading } = this.props;
-		if (theme !== nextProps.theme) {
-			return true;
-		}
+		const { hideSystemMessages, tunread, ignored, loading } = this.props;
 		if (loading !== nextProps.loading) {
 			return true;
 		}
@@ -348,7 +353,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
-		return renderRow(item, messages[index + 1], highlightedMessage);
+		return <View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessage)}</View>;
 	};
 
 	onViewableItemsChanged: FlatListProps<any>['onViewableItemsChanged'] = ({ viewableItems }) => {
@@ -359,25 +364,23 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.count(`${this.constructor.name}.render calls`);
 		const { rid, tmid, listRef } = this.props;
 		const { messages, refreshing } = this.state;
-		const { theme } = this.props;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
-				<List
-					onScroll={this.onScroll}
-					scrollEventThrottle={16}
-					listRef={listRef}
-					data={messages}
-					renderItem={this.renderItem}
-					onEndReached={this.onEndReached}
-					ListFooterComponent={this.renderFooter}
-					onScrollToIndexFailed={this.handleScrollToIndexFailed}
-					onViewableItemsChanged={this.onViewableItemsChanged}
-					viewabilityConfig={this.viewabilityConfig}
-					refreshControl={
-						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
-					}
-				/>
+				<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh}>
+					<List
+						onScroll={this.onScroll}
+						scrollEventThrottle={16}
+						listRef={listRef}
+						data={messages}
+						renderItem={this.renderItem}
+						onEndReached={this.onEndReached}
+						ListFooterComponent={this.renderFooter}
+						onScrollToIndexFailed={this.handleScrollToIndexFailed}
+						onViewableItemsChanged={this.onViewableItemsChanged}
+						viewabilityConfig={this.viewabilityConfig}
+					/>
+				</RefreshControl>
 				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>
 		);
