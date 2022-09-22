@@ -31,7 +31,6 @@ export const downloadAudioFile = async (url: string, fileUrl: string, messageId:
 		const filePath = `${folderPath}/${filename}`;
 		await ensureDirAsync(folderPath);
 		const file = await FileSystem.getInfoAsync(filePath);
-		console.log(file);
 		if (!file.exists) {
 			const downloadedFile = await FileSystem.downloadAsync(url, filePath);
 			path = downloadedFile.uri;
