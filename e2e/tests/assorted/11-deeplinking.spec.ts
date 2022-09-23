@@ -1,3 +1,5 @@
+import EJSON from 'ejson';
+
 import data from '../../data';
 import { tapBack, checkServer, navigateToRegister, platformTypes, TTextMatcher } from '../../helpers/app';
 import { get, login, sendMessage } from '../../helpers/data_setup';
@@ -132,6 +134,41 @@ describe('Deep linking', () => {
 					permissions: { notifications: 'YES' },
 					newInstance: false,
 					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`)
+				});
+				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
+					.toExist()
+					.withTimeout(30000);
+				await tapBack();
+				await waitFor(element(by.id('rooms-list-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+			});
+
+			it('should simulate a tap on a push notification and navigate to the room', async () => {
+				/**
+				 * Ideally, we would repeat this test to simulate a resume from background,
+				 * but for some reason it was not working as expected
+				 * This was always turning to false right before running the logic https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/18f359a8ef9691144970c0c1fad990f82096b024/app/lib/notifications/push.ts#L58
+				 */
+				// await device.sendToHome();
+				await device.launchApp({
+					newInstance: true,
+					userNotification: {
+						trigger: {
+							type: 'push'
+						},
+						title: 'From push',
+						body: 'Body',
+						badge: 1,
+						payload: {
+							ejson: EJSON.stringify({
+								rid: null,
+								host: data.server,
+								name: data.groups.private.name,
+								type: 'p'
+							})
+						}
+					}
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
