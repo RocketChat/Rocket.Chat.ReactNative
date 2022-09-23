@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
@@ -24,7 +24,7 @@ import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import styles from './styles';
 import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
-import { getRoomTitle, getUidDirectMessage, debounce } from '../../lib/methods/helpers';
+import { getRoomTitle, getUidDirectMessage, useDebounce } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { useAppSelector } from '../../lib/hooks';
@@ -88,7 +88,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	const getDepartments = debounce(async () => {
+	const getDepartments = useDebounce(async () => {
 		try {
 			const res = await Services.getDepartments();
 			if (res.success) {
@@ -187,12 +187,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	}, [departments, cannedResponses]);
 
-	const searchCallback = useCallback(
-		debounce(async (text = '', department = '', depId = '') => {
-			await getListCannedResponse({ text, department, depId, debounced: true });
-		}, 1000),
-		[]
-	); // use debounce with useCallback https://stackoverflow.com/a/58594890
+	const searchCallback = useDebounce(async (text = '', department = '', depId = '') => {
+		await getListCannedResponse({ text, department, depId, debounced: true });
+	}, 1000);
 
 	useEffect(() => {
 		getRoomFromDb();

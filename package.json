@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.30.0",
+	"version": "4.31.0",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -61,7 +61,7 @@
 		"commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
 		"dequal": "^2.0.2",
 		"ejson": "2.2.1",
-		"expo": "^45.0.5",
+		"expo": "^46.0.9",
 		"expo-apple-authentication": "4.2.1",
 		"expo-av": "11.2.3",
 		"expo-file-system": "14.0.0",
@@ -137,6 +137,7 @@
 		"ua-parser-js": "^1.0.2",
 		"uri-js": "^4.4.1",
 		"url-parse": "1.5.10",
+		"use-debounce": "^8.0.4",
 		"use-deep-compare-effect": "1.6.1",
 		"xregexp": "5.0.2",
 		"yup": "^0.32.11"
