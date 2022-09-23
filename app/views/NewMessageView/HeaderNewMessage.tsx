@@ -18,10 +18,10 @@ import ButtonCreate from './ButtonCreate';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 8
+		paddingTop: 16
 	},
 	buttonContainer: {
-		paddingBottom: 8
+		paddingBottom: 16
 	}
 });
 

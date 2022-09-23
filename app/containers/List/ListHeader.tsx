@@ -9,7 +9,7 @@ import { PADDING_HORIZONTAL } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingVertical: 8,
+		paddingVertical: 16,
 		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	title: {
