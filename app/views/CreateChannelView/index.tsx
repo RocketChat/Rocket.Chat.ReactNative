@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		marginTop: 16
 	},
 	containerStyle: {
-		marginBottom: 28
+		marginBottom: 16
 	},
 	list: {
 		width: '100%'
@@ -53,8 +53,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16
 	},
 	buttonCreate: {
-		marginHorizontal: 16,
-		marginTop: 24
+		margin: 16
 	}
 });
 
