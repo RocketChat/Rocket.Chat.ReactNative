@@ -36,6 +36,7 @@ interface IMessageAudioProps {
 	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
+	messageId: string;
 }
 
 interface IMessageAudioState {
@@ -128,7 +129,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	async componentDidMount() {
-		const { file } = this.props;
+		const { file, messageId } = this.props;
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
@@ -139,7 +140,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ loading: true });
 		try {
 			if (url) {
-				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url);
+				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url, messageId);
 				await this.sound.loadAsync({ uri: audio });
 			}
 		} catch {
