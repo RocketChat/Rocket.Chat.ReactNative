@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingVertical: 4,
+		paddingTop: 8,
 		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	text: {
