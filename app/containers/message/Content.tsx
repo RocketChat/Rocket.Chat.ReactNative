@@ -6,7 +6,7 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
-import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
+import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
@@ -26,8 +26,8 @@ const Content = React.memo(
 					{infoMessage}
 				</Text>
 			);
-
-			if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(props.type)) {
+			// @ts-ignore - what?
+			if (messageHaveAuthorName(props.type)) {
 				return (
 					<Text>
 						<User {...props} /> {renderMessageContent}
