@@ -107,14 +107,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		);
 	};
 
-	renderSearch = () => {
-		const { theme } = this.props;
-		return (
-			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox onChangeText={(text: string) => this.search(text)} testID='select-list-view-search' />
-			</View>
-		);
-	};
+	renderSearch = () => <SearchBox onChangeText={(text: string) => this.search(text)} testID='select-list-view-search' />;
 
 	search = async (text: string) => {
 		try {
