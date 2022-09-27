@@ -161,7 +161,12 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	};
 
 	close = () => {
-		const { dispatch, previousServer } = this.props;
+		const { dispatch, previousServer, connecting } = this.props;
+
+		if (connecting) {
+			return;
+		}
+
 		dispatch(inviteLinksClear());
 		if (previousServer) {
 			dispatch(selectServerRequest(previousServer));
