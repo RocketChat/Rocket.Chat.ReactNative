@@ -379,9 +379,7 @@ const RoomMembersView = (): React.ReactElement => {
 				ListHeaderComponent={
 					<>
 						<ActionsSection joined={params.joined as boolean} rid={state.room.rid} t={state.room.t} />
-						<View style={{ backgroundColor: colors.backgroundColor }}>
-							<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
-						</View>
+						<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
 					</>
 				}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}

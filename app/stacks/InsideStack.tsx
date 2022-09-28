@@ -150,11 +150,7 @@ const ProfileStackNavigator = () => {
 		>
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
-			<ProfileStack.Screen
-				name='UserNotificationPrefView'
-				component={UserNotificationPrefView}
-				options={UserNotificationPrefView.navigationOptions}
-			/>
+			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<ProfileStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 		</ProfileStack.Navigator>
 	);
@@ -176,7 +172,7 @@ const SettingsStackNavigator = () => {
 				component={E2EEncryptionSecurityView}
 				options={E2EEncryptionSecurityView.navigationOptions}
 			/>
-			<SettingsStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
+			<SettingsStack.Screen name='LanguageView' component={LanguageView} />
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<SettingsStack.Screen

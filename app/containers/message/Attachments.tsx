@@ -57,7 +57,7 @@ const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 };
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, id }: IMessageAttachments) => {
 		const { theme } = useTheme();
 
 		if (!attachments || attachments.length === 0) {
@@ -80,7 +80,15 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 
 			if (file && file.audio_url) {
 				return (
-					<Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} isReply={isReply} style={style} theme={theme} />
+					<Audio
+						key={file.audio_url}
+						file={file}
+						getCustomEmoji={getCustomEmoji}
+						isReply={isReply}
+						style={style}
+						theme={theme}
+						messageId={id}
+					/>
 				);
 			}
 
@@ -106,7 +114,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
+			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} messageId={id} />;
 		});
 		return <>{attachmentsElements}</>;
 	},

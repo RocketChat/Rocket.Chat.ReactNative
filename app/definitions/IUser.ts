@@ -110,7 +110,7 @@ export interface INotificationPreferences {
 	enableMessageParserEarlyAdoption: boolean;
 	desktopNotifications: TNotifications;
 	pushNotifications: TNotifications;
-	emailNotificationMode?: 'mentions' | 'nothing';
+	emailNotificationMode: 'mentions' | 'nothing';
 	language?: string;
 }
 
