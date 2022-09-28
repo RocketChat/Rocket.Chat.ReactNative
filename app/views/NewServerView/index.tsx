@@ -116,12 +116,21 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		}
 	}
 
+	componentDidUpdate(prevProps: Readonly<INewServerViewProps>) {
+		if (prevProps.connecting !== this.props.connecting) {
+			this.setHeader();
+		}
+	}
+
 	setHeader = () => {
-		const { previousServer, navigation } = this.props;
+		const { previousServer, navigation, connecting } = this.props;
 		if (previousServer) {
 			return navigation.setOptions({
 				headerTitle: I18n.t('Workspaces'),
-				headerLeft: () => <HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+				headerLeft: () =>
+					!connecting ? (
+						<HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+					) : null
 			});
 		}
 
@@ -161,11 +170,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	};
 
 	close = () => {
-		const { dispatch, previousServer, connecting } = this.props;
-
-		if (connecting) {
-			return;
-		}
+		const { dispatch, previousServer } = this.props;
 
 		dispatch(inviteLinksClear());
 		if (previousServer) {
