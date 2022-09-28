@@ -105,9 +105,9 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 			return I18n.t('User_added_to', { userAdded: msg });
 		case 'user-muted':
 			return I18n.t('User_has_been_muted', { userMuted: msg });
-		case 'room_changed_description': // CHECK
+		case 'room_changed_description':
 			return I18n.t('Room_changed_description', { description: msg });
-		case 'room_changed_announcement': // CHECK
+		case 'room_changed_announcement':
 			return I18n.t('Room_changed_announcement', { announcement: msg });
 		case 'room_changed_topic':
 			return I18n.t('room_changed_topic_to', { topic: msg });
@@ -137,6 +137,8 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 			return I18n.t('Removed__roomName__from_the_team', { roomName: msg });
 		case 'room-disallowed-reacting':
 			return I18n.t('room_disallowed_reactions');
+		case 'room-allowed-reacting':
+			return I18n.t('room_allowed_reactions');
 		case 'room-set-read-only':
 			return I18n.t('room_set_read_only_permission');
 		case 'room-removed-read-only':
@@ -151,14 +153,14 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 			return I18n.t('Defined_user_as_role', { user: msg, role });
 		case 'subscription-role-removed':
 			return I18n.t('Removed_user_as_role', { user: msg, role });
+		case 'message_pinned':
+			return I18n.t('Message_pinned');
 
 		// without author name
 		case 'ul':
 			return I18n.t('User_left_this_channel');
 		case 'ult':
 			return I18n.t('Has_left_the_team');
-		case 'message_pinned':
-			return I18n.t('Message_pinned');
 		case 'jitsi_call_started':
 			return I18n.t('Started_call', { userBy: username });
 		case 'omnichannel_placed_chat_on_hold':

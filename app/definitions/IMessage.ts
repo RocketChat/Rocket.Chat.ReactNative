@@ -195,8 +195,6 @@ type OtrSystemMessages = 'user_joined_otr' | 'user_requested_otr_key_refresh' | 
 
 export type MessageTypesValues =
 	| 'e2e'
-	| 'otr'
-	| 'otr-ack'
 	| 'uj'
 	| 'ul'
 	| 'ru'
