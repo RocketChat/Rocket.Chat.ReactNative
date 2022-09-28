@@ -350,7 +350,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		let ast = parser.parse(m);
 		ast = mergeTextNodes(ast);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
-		return this.renderer.render(ast);
+		return this.renderer?.render(ast) || null;
 	}
 }
 
