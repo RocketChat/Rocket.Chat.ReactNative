@@ -41,7 +41,7 @@ const SettingsView = (): React.ReactElement => {
 	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const { id: userId } = useAppSelector(state => getUserSelector(state));
+	const userId = useAppSelector(state => getUserSelector(state).id);
 	const { server, version } = useAppSelector(state => state.server);
 
 	useLayoutEffect(() => {
