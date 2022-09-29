@@ -429,6 +429,8 @@
   "Room_changed_announcement": "O anúncio da sala foi alterado para: {{announcement}} por {{userBy}}",
   "room_avatar_changed": "alterou avatar da sala",
   "Room_changed_description": "A descrição da sala foi alterada para: {{description}} por {{userBy}}",
+  "changed_room_description": "alterou a descrição da sala para: {{description}}",
+  "changed_room_announcement": "alterou o anúncio da sala para: {{announcement}}",
   "room_changed_type": "mudou sala para {{type}}",
   "room_changed_topic_to": "mudou tópico da sala para {{topic}}",
   "Room_Files": "Arquivos",

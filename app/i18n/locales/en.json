@@ -452,6 +452,8 @@
   "Room_changed_announcement": "Room announcement changed to: {{announcement}} by {{userBy}}",
   "room_avatar_changed": "changed room avatar",
   "Room_changed_description": "Room description changed to: {{description}} by {{userBy}}",
+  "changed_room_description": "changed room description to: {{description}}",
+  "changed_room_announcement": "changed room announcement to: {{announcement}}",
   "room_changed_type": "changed room to {{type}}",
   "room_changed_topic_to": "changed room topic to {{topic}}",
   "Room_Files": "Room Files",

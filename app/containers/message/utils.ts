@@ -106,9 +106,9 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		case 'user-muted':
 			return I18n.t('User_has_been_muted', { userMuted: msg });
 		case 'room_changed_description':
-			return I18n.t('Room_changed_description', { description: msg });
+			return I18n.t('changed_room_description', { description: msg });
 		case 'room_changed_announcement':
-			return I18n.t('Room_changed_announcement', { announcement: msg });
+			return I18n.t('changed_room_announcement', { announcement: msg });
 		case 'room_changed_topic':
 			return I18n.t('room_changed_topic_to', { topic: msg });
 		case 'room_changed_privacy':
