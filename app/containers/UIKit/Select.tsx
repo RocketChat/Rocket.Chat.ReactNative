@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	viewContainer: {
 		marginBottom: 16,
 		paddingHorizontal: 16,
-		borderWidth: StyleSheet.hairlineWidth,
+		borderWidth: 2,
 		borderRadius: 2,
 		justifyContent: 'center'
 	},
