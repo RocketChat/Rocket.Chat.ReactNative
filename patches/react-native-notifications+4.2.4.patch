@@ -41,3 +41,61 @@ index f9c858b..94ea188 100644
  
  public abstract class NotificationManagerCompatFacade {
      public static NotificationManagerCompat from(@NonNull Context context) {
+diff --git a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h b/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
+index 8b2c269..8667351 100644
+--- a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
++++ b/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
+@@ -1,5 +1,5 @@
+ #import <React/RCTConvert.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ 
+ @interface RCTConvert (UIMutableUserNotificationAction)
+ + (UIMutableUserNotificationAction *)UIMutableUserNotificationAction:(id)json;
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h
+index 4bc5292..4839d55 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h
+@@ -4,7 +4,7 @@ typedef void (^RCTPromiseResolveBlock)(id result);
+ typedef void (^RCTResponseSenderBlock)(NSArray *response);
+ typedef void (^RCTPromiseRejectBlock)(NSString *code, NSString *message, NSError *error);
+ 
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ 
+ @interface RNNotificationCenter : NSObject
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h b/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h
+index a07c6e9..8e3ca6a 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h
+@@ -1,5 +1,5 @@
+ #import <Foundation/Foundation.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ #import "RNNotificationsStore.h"
+ #import "RNEventEmitter.h"
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h
+index 7aa2bfb..c1c019c 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h
+@@ -1,5 +1,5 @@
+ #import <Foundation/Foundation.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ 
+ @interface RNNotificationParser : NSObject
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h b/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
+index 4f8a171..7e4f9ca 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
+@@ -1,6 +1,6 @@
+ #import <Foundation/Foundation.h>
+ #import <UIKit/UIKit.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ 
+ @interface RNNotificationsStore : NSObject
+ 
