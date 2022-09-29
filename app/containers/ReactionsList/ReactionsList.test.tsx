@@ -6,7 +6,6 @@ import ReactionsList from '.';
 import { mockedStore } from '../../reducers/mockedStore';
 
 const getCustomEmoji = jest.fn();
-const width = 500;
 const username = 'rocket.cat';
 const reactions = [
 	{
@@ -37,7 +36,7 @@ const reactions = [
 
 const Render = () => (
 	<Provider store={mockedStore}>
-		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} width={width} username={username} />
+		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} username={username} />
 	</Provider>
 );
 

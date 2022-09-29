@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 
 import { TGetCustomEmoji, IEmoji } from '../../definitions';
 import ReactionsList from '.';
@@ -13,7 +13,6 @@ const getCustomEmoji: TGetCustomEmoji = content => {
 	return customEmoji;
 };
 
-const { width } = Dimensions.get('window');
 const username = 'rocket.cat';
 const reactions = [
 	{
@@ -50,7 +49,7 @@ const reactions = [
 
 export const ReactionsListStory = () => (
 	<View style={{ paddingVertical: 10, flex: 1 }}>
-		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} width={width} username={username} />
+		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} username={username} />
 	</View>
 );
 

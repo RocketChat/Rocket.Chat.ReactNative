@@ -7,7 +7,7 @@ import { IReaction } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles, { MIN_TAB_WIDTH } from './styles';
-import { useOrientation } from '../../dimensions';
+import { useDimensions, useOrientation } from '../../dimensions';
 import { useAppSelector } from '../../lib/hooks';
 
 interface ITabBarItem {
@@ -21,7 +21,6 @@ interface IReactionsTabBar {
 	activeTab?: number;
 	tabs?: IReaction[];
 	goToPage?: (index: number) => void;
-	width: number;
 }
 
 const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
@@ -58,8 +57,9 @@ const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 	);
 };
 
-const ReactionsTabBar = ({ tabs, activeTab, goToPage, getCustomEmoji, width }: IReactionsTabBar): React.ReactElement => {
+const ReactionsTabBar = ({ tabs, activeTab, goToPage, getCustomEmoji }: IReactionsTabBar): React.ReactElement => {
 	const { isLandscape } = useOrientation();
+	const { width } = useDimensions();
 	const reactionsListWidth = isLandscape ? width / 2 : width;
 	const tabWidth = tabs && Math.max(reactionsListWidth / tabs.length, MIN_TAB_WIDTH);
 	const { colors } = useTheme();
