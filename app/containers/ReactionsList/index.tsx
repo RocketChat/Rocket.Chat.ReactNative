@@ -11,27 +11,20 @@ import UsersList from './UsersList';
 import ReactionsTabBar from './ReactionsTabBar';
 
 interface IReactionsListProps {
-	baseUrl: string;
 	getCustomEmoji: TGetCustomEmoji;
 	reactions?: IReaction[];
 	width: number;
 	username: string;
 }
 
-const ReactionsList = ({ reactions, baseUrl, getCustomEmoji, width, username }: IReactionsListProps): React.ReactElement => {
+const ReactionsList = ({ reactions, getCustomEmoji, width, username }: IReactionsListProps): React.ReactElement => {
 	// sorting reactions in descending order on the basic of number of users reacted
 	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
 	const allTabLabel = { emoji: I18n.t('All'), usernames: [], names: [], _id: 'All' };
 	return (
 		<View style={styles.container} testID='reactionsList'>
-			<ScrollableTabView renderTabBar={() => <ReactionsTabBar baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} width={width} />}>
-				<AllTab
-					tabLabel={allTabLabel}
-					reactions={sortedReactions}
-					baseUrl={baseUrl}
-					getCustomEmoji={getCustomEmoji}
-					username={username}
-				/>
+			<ScrollableTabView renderTabBar={() => <ReactionsTabBar getCustomEmoji={getCustomEmoji} width={width} />}>
+				<AllTab tabLabel={allTabLabel} reactions={sortedReactions} getCustomEmoji={getCustomEmoji} username={username} />
 				{sortedReactions?.map(reaction => (
 					<UsersList tabLabel={reaction} key={reaction.emoji} />
 				))}

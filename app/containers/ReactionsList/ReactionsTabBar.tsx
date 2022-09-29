@@ -8,16 +8,15 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles, { MIN_TAB_WIDTH } from './styles';
 import { useOrientation } from '../../dimensions';
+import { useAppSelector } from '../../lib/hooks';
 
 interface ITabBarItem {
-	baseUrl: string;
 	getCustomEmoji: TGetCustomEmoji;
 	tab: IReaction;
 	index: number;
 	goToPage?: (index: number) => void;
 }
 interface IReactionsTabBar {
-	baseUrl: string;
 	getCustomEmoji: TGetCustomEmoji;
 	activeTab?: number;
 	tabs?: IReaction[];
@@ -25,8 +24,9 @@ interface IReactionsTabBar {
 	width: number;
 }
 
-const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarItem) => {
+const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 	const { colors } = useTheme();
+	const server = useAppSelector(state => state.server.server);
 	return (
 		<Pressable
 			key={tab.emoji}
@@ -47,7 +47,7 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 							content={tab.emoji}
 							standardEmojiStyle={styles.standardEmojiStyle}
 							customEmojiStyle={styles.customEmojiStyle}
-							baseUrl={baseUrl}
+							baseUrl={server}
 							getCustomEmoji={getCustomEmoji}
 						/>
 						<Text style={[styles.reactionCount, { color: colors.auxiliaryTintColor }]}>{tab.usernames.length}</Text>
@@ -58,7 +58,7 @@ const TabBarItem = ({ tab, index, goToPage, baseUrl, getCustomEmoji }: ITabBarIt
 	);
 };
 
-const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, width }: IReactionsTabBar): React.ReactElement => {
+const ReactionsTabBar = ({ tabs, activeTab, goToPage, getCustomEmoji, width }: IReactionsTabBar): React.ReactElement => {
 	const { isLandscape } = useOrientation();
 	const reactionsListWidth = isLandscape ? width / 2 : width;
 	const tabWidth = tabs && Math.max(reactionsListWidth / tabs.length, MIN_TAB_WIDTH);
@@ -77,7 +77,7 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, baseUrl, getCustomEmoji, w
 							}}
 							key={tab.emoji}
 						>
-							<TabBarItem tab={tab} index={index} goToPage={goToPage} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} />
+							<TabBarItem tab={tab} index={index} goToPage={goToPage} getCustomEmoji={getCustomEmoji} />
 						</View>
 					);
 				})}

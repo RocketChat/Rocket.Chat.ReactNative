@@ -13,7 +13,6 @@ const getCustomEmoji: TGetCustomEmoji = content => {
 	return customEmoji;
 };
 
-const baseUrl = 'https://open.rocket.chat';
 const { width } = Dimensions.get('window');
 const username = 'rocket.cat';
 const reactions = [
@@ -51,7 +50,7 @@ const reactions = [
 
 export const ReactionsListStory = () => (
 	<View style={{ paddingVertical: 10, flex: 1 }}>
-		<ReactionsList baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} reactions={reactions} width={width} username={username} />
+		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} width={width} username={username} />
 	</View>
 );
 

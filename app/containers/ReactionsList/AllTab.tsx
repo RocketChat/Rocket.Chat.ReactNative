@@ -1,32 +1,31 @@
 import React from 'react';
 import { Text, View, FlatList } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import Emoji from '../message/Emoji';
 import { useTheme } from '../../theme';
-import { IReaction, IApplicationState } from '../../definitions';
+import { IReaction } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles from './styles';
+import { useAppSelector } from '../../lib/hooks';
 
 interface IAllReactionsListItemProps {
-	baseUrl: string;
 	getCustomEmoji: TGetCustomEmoji;
 	item: IReaction;
 	username: string;
 }
 
 interface IAllTabProps {
-	baseUrl: string;
 	getCustomEmoji: TGetCustomEmoji;
 	tabLabel: IReaction;
 	reactions?: IReaction[];
 	username: string;
 }
 
-const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllReactionsListItemProps) => {
+const AllReactionsListItem = ({ item, getCustomEmoji, username }: IAllReactionsListItemProps) => {
 	const { colors } = useTheme();
-	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
+	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
+	const server = useAppSelector(state => state.server.server);
 	const count = item.usernames.length;
 
 	let displayNames;
@@ -52,7 +51,7 @@ const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllR
 				content={item.emoji}
 				standardEmojiStyle={styles.allTabStandardEmojiStyle}
 				customEmojiStyle={styles.allTabCustomEmojiStyle}
-				baseUrl={baseUrl}
+				baseUrl={server}
 				getCustomEmoji={getCustomEmoji}
 			/>
 			<View style={styles.textContainer}>
@@ -65,14 +64,12 @@ const AllReactionsListItem = ({ item, baseUrl, getCustomEmoji, username }: IAllR
 	);
 };
 
-const AllTab = ({ reactions, baseUrl, getCustomEmoji, username }: IAllTabProps): React.ReactElement => (
+const AllTab = ({ reactions, getCustomEmoji, username }: IAllTabProps): React.ReactElement => (
 	<View style={styles.allTabContainer} testID='reactionsListAllTab'>
 		<FlatList
 			data={reactions}
 			contentContainerStyle={styles.listContainer}
-			renderItem={({ item }) => (
-				<AllReactionsListItem item={item} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} username={username} />
-			)}
+			renderItem={({ item }) => <AllReactionsListItem item={item} getCustomEmoji={getCustomEmoji} username={username} />}
 			keyExtractor={item => item.emoji}
 		/>
 	</View>
