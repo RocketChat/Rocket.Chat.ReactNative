@@ -52,6 +52,7 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 		const { theme } = useTheme();
 		const { height } = useDimensions();
 
+		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
 		const dinamicHeight = (height - 206) / 4;
 		const heightButtonRow = dinamicHeight > 102 ? 102 : dinamicHeight;
 
@@ -124,37 +125,37 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 					</Row>
 					<Row style={[styles.row, { height: heightButtonRow }]}>
 						{range(1, 4).map(i => (
-							<Col key={i} style={styles.colButton}>
+							<Col key={i} style={[styles.colButton, { height: heightButtonRow }]}>
 								<Button style={{ height: heightButtonRow }} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
 					<Row style={[styles.row, { height: heightButtonRow }]}>
 						{range(4, 7).map(i => (
-							<Col key={i} style={styles.colButton}>
+							<Col key={i} style={[styles.colButton, { height: heightButtonRow }]}>
 								<Button style={{ height: heightButtonRow }} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
 					<Row style={[styles.row, { height: heightButtonRow }]}>
 						{range(7, 10).map(i => (
-							<Col key={i} style={styles.colButton}>
+							<Col key={i} style={[styles.colButton, { height: heightButtonRow }]}>
 								<Button style={{ height: heightButtonRow }} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
 					<Row style={[styles.row, { height: heightButtonRow }]}>
 						{showBiometry ? (
-							<Col style={styles.colButton}>
+							<Col style={[styles.colButton, { height: heightButtonRow }]}>
 								<Button style={{ height: heightButtonRow }} icon='fingerprint' onPress={onBiometryPress} />
 							</Col>
 						) : (
-							<Col style={styles.colButton} />
+							<Col style={[styles.colButton, { height: heightButtonRow }]} />
 						)}
-						<Col style={styles.colButton}>
+						<Col style={[styles.colButton, { height: heightButtonRow }]}>
 							<Button style={{ height: heightButtonRow }} text='0' onPress={onPressNumber} />
 						</Col>
-						<Col style={styles.colButton}>
+						<Col style={[styles.colButton, { height: heightButtonRow }]}>
 							<Button style={{ height: heightButtonRow }} icon='backspace' onPress={onPressDelete} />
 						</Col>
 					</Row>
