@@ -181,6 +181,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						testID='notification-preference-view-alert'
 						onChangeValue={saveNotificationSettings}
 					/>
+					<List.Separator />
 					<RenderListPicker
 						preference='audioNotificationValue'
 						room={room}

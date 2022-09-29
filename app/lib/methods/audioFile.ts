@@ -1,7 +1,16 @@
 import * as FileSystem from 'expo-file-system';
 
+import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
+
+const sanitizeString = (value: string) => sanitizeLikeString(value.substring(value.lastIndexOf('/') + 1));
+
+const parseFilename = (value: string) => {
+	const extension = value.substring(value.lastIndexOf('.') + 1);
+	const filename = sanitizeString(value.substring(value.lastIndexOf('/') + 1).split('.')[0]);
+	return `${filename}.${extension}`;
+};
 
 const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> => {
 	const info = await FileSystem.getInfoAsync(dir);
@@ -12,13 +21,14 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	return ensureDirAsync(dir, intermediates);
 };
 
-export const downloadAudioFile = async (url: string, fileUrl: string): Promise<string> => {
+export const downloadAudioFile = async (url: string, fileUrl: string, messageId: string): Promise<string> => {
 	let path = '';
 	try {
 		const serverUrl = store.getState().server.server;
-		const serverUrlParsed = serverUrl.substring(serverUrl.lastIndexOf('/') + 1);
+		const serverUrlParsed = sanitizeString(serverUrl);
 		const folderPath = `${FileSystem.documentDirectory}audios/${serverUrlParsed}`;
-		const filePath = `${folderPath}/${fileUrl.substring(fileUrl.lastIndexOf('/') + 1)}`;
+		const filename = `${messageId}_${parseFilename(fileUrl)}`;
+		const filePath = `${folderPath}/${filename}`;
 		await ensureDirAsync(folderPath);
 		const file = await FileSystem.getInfoAsync(filePath);
 		if (!file.exists) {
@@ -35,7 +45,7 @@ export const downloadAudioFile = async (url: string, fileUrl: string): Promise<s
 
 export const deleteAllAudioFiles = async (serverUrl: string): Promise<void> => {
 	try {
-		const serverUrlParsed = serverUrl.substring(serverUrl.lastIndexOf('/') + 1);
+		const serverUrlParsed = sanitizeString(serverUrl);
 		const path = `${FileSystem.documentDirectory}audios/${serverUrlParsed}`;
 		await FileSystem.deleteAsync(path);
 	} catch (error) {
