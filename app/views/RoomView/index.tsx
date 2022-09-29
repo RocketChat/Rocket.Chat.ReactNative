@@ -868,7 +868,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			children: (
 				<ReactionsList reactions={selectedMessage?.reactions} getCustomEmoji={this.getCustomEmoji} username={user.username} />
 			),
-			snaps: ['50%'],
+			snaps: ['50%', '80%'],
 			enableContentPanningGesture: false
 		});
 	};
