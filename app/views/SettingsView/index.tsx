@@ -54,7 +54,7 @@ const SettingsView = (): React.ReactElement => {
 				),
 			title: I18n.t('Settings')
 		});
-	}, [navigation]);
+	}, [navigation, isMasterDetail]);
 
 	const checkCookiesAndLogout = async () => {
 		const db = database.servers;
