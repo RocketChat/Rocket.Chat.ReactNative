@@ -862,17 +862,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionLongPress = (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: message });
-		const { showActionSheet, baseUrl, width, user } = this.props;
+		const { showActionSheet, user } = this.props;
 		const { selectedMessage } = this.state;
 		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, {
 			children: (
-				<ReactionsList
-					reactions={selectedMessage?.reactions}
-					baseUrl={baseUrl}
-					getCustomEmoji={this.getCustomEmoji}
-					width={width}
-					username={user.username}
-				/>
+				<ReactionsList reactions={selectedMessage?.reactions} getCustomEmoji={this.getCustomEmoji} username={user.username} />
 			),
 			snaps: ['50%'],
 			enableContentPanningGesture: false
