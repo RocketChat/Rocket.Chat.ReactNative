@@ -6,25 +6,24 @@ import ReactionsList from '.';
 import { mockedStore } from '../../reducers/mockedStore';
 
 const getCustomEmoji = jest.fn();
-const username = 'rocket.cat';
 const reactions = [
 	{
 		emoji: 'marioparty',
 		_id: 'marioparty',
 		usernames: ['rocket.cat', 'diego.mello'],
-		names: ['Rocket.cat', 'Diego Mello']
+		names: ['Rocket Cat', 'Diego Mello']
 	},
 	{
 		emoji: 'react_rocket',
 		_id: 'react_rocket',
 		usernames: ['rocket.cat', 'diego.mello'],
-		names: ['Rocket.cat', 'Diego Mello']
+		names: ['Rocket Cat', 'Diego Mello']
 	},
 	{
 		emoji: 'nyan_rocket',
 		_id: 'nyan_rocket',
 		usernames: ['rocket.cat'],
-		names: ['Rocket.cat']
+		names: ['Rocket Cat']
 	},
 	{
 		emoji: 'grinning',
@@ -36,7 +35,7 @@ const reactions = [
 
 const Render = () => (
 	<Provider store={mockedStore}>
-		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} username={username} />
+		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} />
 	</Provider>
 );
 

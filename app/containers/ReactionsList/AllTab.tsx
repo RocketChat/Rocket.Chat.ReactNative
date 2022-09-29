@@ -12,20 +12,19 @@ import { useAppSelector } from '../../lib/hooks';
 interface IAllReactionsListItemProps {
 	getCustomEmoji: TGetCustomEmoji;
 	item: IReaction;
-	username: string;
 }
 
 interface IAllTabProps {
 	getCustomEmoji: TGetCustomEmoji;
 	tabLabel: IReaction;
 	reactions?: IReaction[];
-	username: string;
 }
 
-const AllReactionsListItem = ({ item, getCustomEmoji, username }: IAllReactionsListItemProps) => {
+const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemProps) => {
 	const { colors } = useTheme();
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server.server);
+	const username = useAppSelector(state => state.login.user.username);
 	const count = item.usernames.length;
 
 	let displayNames;
@@ -64,12 +63,12 @@ const AllReactionsListItem = ({ item, getCustomEmoji, username }: IAllReactionsL
 	);
 };
 
-const AllTab = ({ reactions, getCustomEmoji, username }: IAllTabProps): React.ReactElement => (
+const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps): React.ReactElement => (
 	<View style={styles.allTabContainer} testID='reactionsListAllTab'>
 		<FlatList
 			data={reactions}
 			contentContainerStyle={styles.listContainer}
-			renderItem={({ item }) => <AllReactionsListItem item={item} getCustomEmoji={getCustomEmoji} username={username} />}
+			renderItem={({ item }) => <AllReactionsListItem item={item} getCustomEmoji={getCustomEmoji} />}
 			keyExtractor={item => item.emoji}
 		/>
 	</View>
