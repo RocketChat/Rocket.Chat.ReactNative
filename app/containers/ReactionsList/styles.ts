@@ -12,8 +12,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	tabBarItem: {
-		paddingBottom: 10,
-		height: 40,
+		paddingBottom: 4,
+		height: 44,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row'
