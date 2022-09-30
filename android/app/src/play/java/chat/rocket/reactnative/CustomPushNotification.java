@@ -1,5 +1,7 @@
 package chat.rocket.reactnative;
 
+import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -34,8 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
@@ -322,7 +322,12 @@ public class CustomPushNotification extends PushNotification {
         replyIntent.setAction(KEY_REPLY);
         replyIntent.putExtra("pushNotification", bundle);
 
-        PendingIntent replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent replyPendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+        } else {
+            replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         RemoteInput remoteInput = new RemoteInput.Builder(KEY_REPLY)
                 .setLabel(label)
@@ -343,7 +348,7 @@ public class CustomPushNotification extends PushNotification {
         Intent intent = new Intent(mContext, DismissNotification.class);
         intent.putExtra(NOTIFICATION_ID, notificationId);
 
-        PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, intent, 0);
+        PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
         notification.setDeleteIntent(dismissPendingIntent);
     }

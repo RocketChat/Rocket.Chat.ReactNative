@@ -1,7 +1,8 @@
 import React from 'react';
 
 export interface IProfileParams {
-	name: string;
+	realname?: string;
+	name?: string;
 	username: string;
 	email: string | null;
 	newPassword: string;

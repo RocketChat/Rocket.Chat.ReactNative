@@ -5,7 +5,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useForm } from 'react-hook-form';
 
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { createChannelRequest } from '../../actions/createChannel';
 import { removeUser as removeUserAction } from '../../actions/selectedUsers';
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		marginTop: 16
 	},
 	containerStyle: {
-		marginBottom: 28
+		marginBottom: 16
 	},
 	list: {
 		width: '100%'
@@ -53,8 +53,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16
 	},
 	buttonCreate: {
-		marginHorizontal: 16,
-		marginTop: 24
+		margin: 16
 	}
 });
 
@@ -67,13 +66,15 @@ export interface IFormData {
 }
 
 const CreateChannelView = () => {
+	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
+
 	const {
 		control,
 		handleSubmit,
 		formState: { isDirty },
 		setValue
 	} = useForm<IFormData>({
-		defaultValues: { channelName: '', broadcast: false, encrypted: false, readOnly: false, type: false }
+		defaultValues: { channelName: '', broadcast: false, encrypted: false, readOnly: false, type: createPrivateChannelPermission }
 	});
 
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
@@ -148,7 +149,12 @@ const CreateChannelView = () => {
 							name={'channelName'}
 							control={control}
 						/>
-						<RoomSettings isTeam={isTeam} setValue={setValue} />
+						<RoomSettings
+							createChannelPermission={createChannelPermission}
+							createPrivateChannelPermission={createPrivateChannelPermission}
+							isTeam={isTeam}
+							setValue={setValue}
+						/>
 					</View>
 					{users.length > 0 ? (
 						<>

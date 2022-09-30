@@ -90,6 +90,7 @@ interface IMessageReply {
 	timeFormat?: string;
 	index: number;
 	getCustomEmoji: TGetCustomEmoji;
+	messageId: string;
 }
 
 const Title = React.memo(
@@ -201,7 +202,7 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
+	({ attachment, timeFormat, index, getCustomEmoji, messageId }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
@@ -256,6 +257,7 @@ const Reply = React.memo(
 							timeFormat={timeFormat}
 							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
 							isReply
+							id={messageId}
 						/>
 						<UrlImage image={attachment.thumb_url} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
