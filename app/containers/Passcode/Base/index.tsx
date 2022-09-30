@@ -53,8 +53,8 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 		const { height } = useDimensions();
 
 		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
-		// 54 is a fixed number to decrease the height of button numbers.
-		const dinamicHeight = (height - 206 - 54) / 4;
+		// 56 is a fixed number to decrease the height of button numbers.
+		const dinamicHeight = (height - 206 - 56) / 4;
 		const heightButtonRow = dinamicHeight > 102 ? 102 : dinamicHeight;
 
 		const rootRef = useRef<Animatable.View & View>(null);
