@@ -93,11 +93,13 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const serversCollection = serversDB.get('servers');
 		try {
 			this.serverRecord = await serversCollection.find(server);
-			this.hasBiometry();
-			this.setState({
-				autoLock: this.serverRecord?.autoLock,
-				autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime
-			});
+			this.setState(
+				{
+					autoLock: this.serverRecord?.autoLock,
+					autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime
+				},
+				() => this.hasBiometry()
+			);
 		} catch (error) {
 			// Do nothing
 		}
