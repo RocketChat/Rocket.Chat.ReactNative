@@ -14,7 +14,7 @@ index f9c858b..94ea188 100644
  public abstract class NotificationManagerCompatFacade {
      public static NotificationManagerCompat from(@NonNull Context context) {
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java
-index db9eaba..587966f 100644
+index 90969b2..4c00e69 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java
 +++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java
 @@ -63,7 +63,7 @@ public class RNNotificationsModule extends ReactContextBaseJavaModule implements
@@ -66,7 +66,7 @@ index 41b4824..4285ac5 100644
  
      public static boolean cannotHandleTrampolineActivity(Context appContext) {
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
-index b93f762..c2b736a 100644
+index 54a5fb8..06bbfb9 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
 +++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
 @@ -28,7 +28,7 @@ public class PushNotification implements IPushNotification {
