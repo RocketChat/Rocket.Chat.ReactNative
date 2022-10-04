@@ -4,7 +4,7 @@ import { sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, SubscriptionType } from '../../definitions';
+import { ISearch, ISearchLocal, IUserMessage, SubscriptionType } from '../../definitions';
 import { isGroupChat } from './helpers';
 
 let debounce: null | ((reason: string) => void) = null;
@@ -98,9 +98,10 @@ export const search = async ({
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
 			if (filterUsers) {
+				const dataUsers = data as IUserMessage[]; // make TS happy
 				users
 					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-					.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+					.filter(user => !dataUsers.some(sub => user.username === sub.username)) // Make sure to remove users already on local database
 					.forEach(user => {
 						data.push({
 							...user,
