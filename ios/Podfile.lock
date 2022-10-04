@@ -527,6 +527,15 @@ PODS:
     - React-Core
   - RNGestureHandler (2.4.2):
     - React-Core
+  - RNImageCropPicker (0.38.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.38.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.38.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNLocalize (2.1.1):
     - React-Core
   - RNMathView (1.0.0):
@@ -574,6 +583,7 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - simdjson (0.9.6-fix2)
+  - TOCropViewController (2.6.1)
   - WatermelonDB (0.23.0):
     - React
     - React-jsi
@@ -663,6 +673,7 @@ DEPENDENCIES:
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNMathView (from `../node_modules/react-native-math-view/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -697,6 +708,7 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
     - SDWebImageWebPCoder
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   boost:
@@ -857,6 +869,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-file-viewer"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNMathView:
@@ -982,6 +996,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: 357955a1564721ca9001960e57b395c6a319f9be
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
+  RNImageCropPicker: ffbba608264885c241cbf3a8f78eb7aeeb978241
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
   RNReanimated: 64573e25e078ae6bec03b891586d50b9ec284393
@@ -992,6 +1007,7 @@ SPEC CHECKSUMS:
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   simdjson: 85016870cd17207312b718ef6652eb6a1cd6a2b0
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
