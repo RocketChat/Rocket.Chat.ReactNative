@@ -134,7 +134,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 		// Make sure splash screen has been hidden
 		try {
-			await RNBootSplash.hide();
+			await RNBootSplash.hide({ fade: true });
 		} catch {
 			// Do nothing
 		}

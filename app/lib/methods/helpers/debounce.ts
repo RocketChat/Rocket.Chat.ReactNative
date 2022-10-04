@@ -1,3 +1,5 @@
+import { useDebouncedCallback } from 'use-debounce';
+
 export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	let timeout: ReturnType<typeof setTimeout> | null;
 	function _debounce(...args: any[]) {
@@ -20,4 +22,8 @@ export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	}
 	_debounce.stop = () => clearTimeout(timeout!);
 	return _debounce;
+}
+
+export function useDebounce(func: (...args: any) => any, wait?: number): (...args: any[]) => void {
+	return useDebouncedCallback(func, wait || 1000);
 }

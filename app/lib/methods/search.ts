@@ -4,16 +4,12 @@ import { sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { ISearch, ISearchLocal, SubscriptionType } from '../../definitions';
 import { isGroupChat } from './helpers';
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearchSubscription = async ({
-	text = '',
-	filterUsers = true,
-	filterRooms = true
-}): Promise<TSubscriptionModel[]> => {
+export const localSearchSubscription = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -31,7 +27,17 @@ export const localSearchSubscription = async ({
 		subscriptions = subscriptions.filter(item => item.t !== 'd' || isGroupChat(item));
 	}
 
-	const search = subscriptions.slice(0, 7);
+	const search = subscriptions.slice(0, 7).map(item => ({
+		_id: item._id,
+		rid: item.rid,
+		name: item.name,
+		fname: item.fname,
+		avatarETag: item.avatarETag,
+		t: item.t,
+		encrypted: item.encrypted,
+		lastMessage: item.lastMessage,
+		status: item.status
+	})) as ISearchLocal[];
 
 	return search;
 };

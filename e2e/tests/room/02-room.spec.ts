@@ -306,7 +306,7 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 
-			it('should show reaction picker on add reaction button pressed and have frequently used emoji, and dismiss review nag', async () => {
+			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async () => {
 				await element(by.id('message-add-reaction')).tap();
 				await waitFor(element(by.id('reaction-picker')))
 					.toExist()
@@ -324,15 +324,24 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 
+			it('should ask for review', async () => {
+				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
+			});
+
+			it('should open/close reactions list', async () => {
+				await element(by.id('message-reaction-:grinning:')).longPress();
+				await waitFor(element(by.id('reactionsList')))
+					.toExist()
+					.withTimeout(4000);
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
+			});
+
 			it('should remove reaction', async () => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:')))
 					.toBeNotVisible()
 					.withTimeout(60000);
-			});
-
-			it('should ask for review', async () => {
-				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			});
 
 			it('should edit message', async () => {
