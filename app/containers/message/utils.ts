@@ -74,7 +74,7 @@ const messagesWithAuthorName: MessageTypesValues[] = [
 	'subscription-role-removed'
 ];
 
-export const messageHaveAuthorName = (type: MessageTypesValues): boolean => messagesWithAutorName.includes(type);
+export const messageHaveAuthorName = (type: MessageTypesValues): boolean => messagesWithAuthorName.includes(type);
 
 type TInfoMessage = {
 	type: MessageTypesValues;
@@ -182,14 +182,14 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 	}
 };
 
-export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string) => {
+export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string): string | null => {
 	if (!autoTranslateLanguage) {
 		return null;
 	}
 	const { translations } = message;
 	if (translations) {
 		const translation = translations.find((trans: any) => trans.language === autoTranslateLanguage);
-		return translation && translation.value;
+		return translation?.value || null;
 	}
 	return null;
 };
