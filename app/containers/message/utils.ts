@@ -26,7 +26,7 @@ export const BUTTON_HIT_SLOP = {
 	left: 4
 };
 
-const messagesWithAutorName: MessageTypesValues[] = [
+const messagesWithAuthorName: MessageTypesValues[] = [
 	'r',
 	'ru',
 	'au',
