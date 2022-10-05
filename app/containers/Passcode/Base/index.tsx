@@ -55,7 +55,7 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
 		// 56 is a fixed number to decrease the height of button numbers.
 		const dinamicHeight = (height - 206 - 56) / 4;
-		const heightButtonRow = dinamicHeight > 102 ? 102 : dinamicHeight;
+		const heightButtonRow = { height: dinamicHeight > 102 ? 102 : dinamicHeight };
 
 		const rootRef = useRef<Animatable.View & View>(null);
 		const dotsRef = useRef<Animatable.View & View>(null);
@@ -124,40 +124,40 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 							<Dots passcode={passcode} length={PASSCODE_LENGTH} />
 						</Animatable.View>
 					</Row>
-					<Row style={[styles.row, { height: heightButtonRow }]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{range(1, 4).map(i => (
-							<Col key={i} style={[styles.colButton, { height: heightButtonRow }]}>
-								<Button style={{ height: heightButtonRow }} text={i.toString()} onPress={onPressNumber} />
+							<Col key={i} style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
-					<Row style={[styles.row, { height: heightButtonRow }]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{range(4, 7).map(i => (
-							<Col key={i} style={[styles.colButton, { height: heightButtonRow }]}>
-								<Button style={{ height: heightButtonRow }} text={i.toString()} onPress={onPressNumber} />
+							<Col key={i} style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
-					<Row style={[styles.row, { height: heightButtonRow }]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{range(7, 10).map(i => (
-							<Col key={i} style={[styles.colButton, { height: heightButtonRow }]}>
-								<Button style={{ height: heightButtonRow }} text={i.toString()} onPress={onPressNumber} />
+							<Col key={i} style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
-					<Row style={[styles.row, { height: heightButtonRow }]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{showBiometry ? (
-							<Col style={[styles.colButton, { height: heightButtonRow }]}>
-								<Button style={{ height: heightButtonRow }} icon='fingerprint' onPress={onBiometryPress} />
+							<Col style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} icon='fingerprint' onPress={onBiometryPress} />
 							</Col>
 						) : (
-							<Col style={[styles.colButton, { height: heightButtonRow }]} />
+							<Col style={[styles.colButton, heightButtonRow]} />
 						)}
-						<Col style={[styles.colButton, { height: heightButtonRow }]}>
-							<Button style={{ height: heightButtonRow }} text='0' onPress={onPressNumber} />
+						<Col style={[styles.colButton, heightButtonRow]}>
+							<Button style={heightButtonRow} text='0' onPress={onPressNumber} />
 						</Col>
-						<Col style={[styles.colButton, { height: heightButtonRow }]}>
-							<Button style={{ height: heightButtonRow }} icon='backspace' onPress={onPressDelete} />
+						<Col style={[styles.colButton, heightButtonRow]}>
+							<Button style={heightButtonRow} icon='backspace' onPress={onPressDelete} />
 						</Col>
 					</Row>
 				</Grid>
