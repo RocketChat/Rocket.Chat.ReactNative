@@ -11,6 +11,7 @@ import MessageContext from './Context';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
+import { MessageTypesValues } from '../../definitions';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
@@ -26,8 +27,7 @@ const Content = React.memo(
 					{infoMessage}
 				</Text>
 			);
-			// @ts-ignore - what?
-			if (messageHaveAuthorName(props.type)) {
+			if (messageHaveAuthorName(props.type as MessageTypesValues)) {
 				return (
 					<Text>
 						<User {...props} /> {renderMessageContent}

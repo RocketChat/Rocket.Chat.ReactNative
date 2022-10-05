@@ -8,7 +8,7 @@ import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
-import { MessageType, SubscriptionType } from '../../definitions';
+import { MessageType, MessageTypesValues, SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import RightIcons from './Components/RightIcons';
 
@@ -88,8 +88,7 @@ const User = React.memo(
 					{aliasUsername}
 				</>
 			);
-			// @ts-ignore - what?
-			if (messageHaveAuthorName(type)) {
+			if (messageHaveAuthorName(type as MessageTypesValues)) {
 				return (
 					<Text
 						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
