@@ -42,7 +42,7 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 	return search;
 };
 
-export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }) => {
+export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }): Promise<IUserMessage[]> => {
 	const userId = reduxStore.getState().login.user.id;
 	const numberOfSuggestions = reduxStore.getState().settings.Number_of_users_autocomplete_suggestions as number;
 	const searchText = text.trim();
@@ -73,7 +73,7 @@ export const search = async ({
 	filterUsers = true,
 	filterRooms = true,
 	rid = ''
-}): Promise<(ISearch | ISearchLocal)[]> => {
+}): Promise<(ISearchLocal | IUserMessage | ISearch)[]> => {
 	const searchText = text.trim();
 
 	if (debounce) {
@@ -88,7 +88,7 @@ export const search = async ({
 	}
 	const usernames = localSearchData.map(sub => sub.name as string);
 
-	const data = localSearchData as (ISearch | ISearchLocal)[];
+	const data: (ISearchLocal | IUserMessage | ISearch)[] = localSearchData;
 
 	try {
 		if (searchText && localSearchData.length < 7) {
@@ -98,10 +98,9 @@ export const search = async ({
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
 			if (filterUsers) {
-				const dataUsers = data as IUserMessage[]; // make TS happy
 				users
 					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-					.filter(user => !dataUsers.some(sub => user.username === sub.username)) // Make sure to remove users already on local database
+					.filter(user => !data.some(sub => 'username' in sub && user.username === sub.username)) // Make sure to remove users already on local database
 					.forEach(user => {
 						data.push({
 							...user,
@@ -115,7 +114,7 @@ export const search = async ({
 			if (filterRooms) {
 				rooms.forEach(room => {
 					// Check if it exists on local database
-					const index = data.findIndex(item => item.rid === room._id);
+					const index = data.findIndex(item => 'rid' in item && item.rid === room._id);
 					if (index === -1) {
 						data.push({
 							...room,
