@@ -7,6 +7,8 @@ import { spotlight } from '../services/restApi';
 import { ISearch, ISearchLocal, IUserMessage, SubscriptionType } from '../../definitions';
 import { isGroupChat } from './helpers';
 
+export type TSearch = ISearchLocal | IUserMessage | ISearch;
+
 let debounce: null | ((reason: string) => void) = null;
 
 export const localSearchSubscription = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
@@ -68,12 +70,7 @@ export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }): Pro
 	return usersFromLocal;
 };
 
-export const search = async ({
-	text = '',
-	filterUsers = true,
-	filterRooms = true,
-	rid = ''
-}): Promise<(ISearchLocal | IUserMessage | ISearch)[]> => {
+export const search = async ({ text = '', filterUsers = true, filterRooms = true, rid = '' }): Promise<TSearch[]> => {
 	const searchText = text.trim();
 
 	if (debounce) {
@@ -88,7 +85,7 @@ export const search = async ({
 	}
 	const usernames = localSearchData.map(sub => sub.name as string);
 
-	const data: (ISearchLocal | IUserMessage | ISearch)[] = localSearchData;
+	const data: TSearch[] = localSearchData;
 
 	try {
 		if (searchText && localSearchData.length < 7) {
