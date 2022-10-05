@@ -165,7 +165,7 @@ const SettingsStackNavigator = () => {
 		<SettingsStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
-			<SettingsStack.Screen name='SettingsView' component={SettingsView} options={SettingsView.navigationOptions} />
+			<SettingsStack.Screen name='SettingsView' component={SettingsView} />
 			<SettingsStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 			<SettingsStack.Screen
 				name='E2EEncryptionSecurityView'
