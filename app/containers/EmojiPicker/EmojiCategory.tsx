@@ -6,7 +6,7 @@ import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import styles, { EMOJI_BUTTON_SIZE } from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
+import { IEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
 import { useDimensions } from '../../dimensions';
@@ -16,6 +16,12 @@ interface IEmojiProps {
 	baseUrl: string;
 }
 
+interface IEmojiCategoryProps {
+	baseUrl: string;
+	emojis: IEmoji[];
+	onEmojiSelected: (emoji: IEmoji) => void;
+}
+
 const Emoji = ({ emoji, baseUrl }: IEmojiProps): React.ReactElement => {
 	if (typeof emoji === 'string') {
 		return <Text style={styles.categoryEmoji}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
@@ -23,7 +29,7 @@ const Emoji = ({ emoji, baseUrl }: IEmojiProps): React.ReactElement => {
 	return <CustomEmoji style={styles.customCategoryEmoji} emoji={emoji} baseUrl={baseUrl} />;
 };
 
-const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis }: IEmojiCategory): React.ReactElement | null => {
+const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis }: IEmojiCategoryProps): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const { width } = useDimensions();
 

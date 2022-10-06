@@ -26,14 +26,6 @@ export interface ICustomEmojiModel {
 	_updatedAt: Date;
 }
 
-export interface IEmojiCategory {
-	baseUrl: string;
-	emojis: IEmoji[];
-	onEmojiSelected: (emoji: IEmoji) => void;
-	style: StyleProp<ImageStyle>;
-	tabLabel: string;
-}
-
 export type TGetCustomEmoji = (name: string) => any;
 
 export type TFrequentlyUsedEmojiModel = ICustomEmoji & Model;
