@@ -3,12 +3,12 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { ISearch, ISearchLocal, SubscriptionType } from '../../definitions';
 import { isGroupChat } from './helpers';
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<TSubscriptionModel[]> => {
+export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -26,7 +26,17 @@ export const localSearch = async ({ text = '', filterUsers = true, filterRooms =
 		subscriptions = subscriptions.filter(item => item.t !== 'd' || isGroupChat(item));
 	}
 
-	const search = subscriptions.slice(0, 7);
+	const search = subscriptions.slice(0, 7).map(item => ({
+		_id: item._id,
+		rid: item.rid,
+		name: item.name,
+		fname: item.fname,
+		avatarETag: item.avatarETag,
+		t: item.t,
+		encrypted: item.encrypted,
+		lastMessage: item.lastMessage,
+		status: item.status
+	})) as ISearchLocal[];
 
 	return search;
 };

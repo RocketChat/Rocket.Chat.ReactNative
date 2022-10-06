@@ -14,6 +14,7 @@ export interface IMessageAttachments {
 	isReply?: boolean;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
+	id: string;
 }
 
 export interface IMessageAvatar {

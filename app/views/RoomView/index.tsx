@@ -813,6 +813,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
+		// If there's a thread already, we redirect to it
+		if (mention && !!message.tlm) {
+			return this.onThreadPress(message);
+		}
 		this.setState({
 			selectedMessage: message,
 			replying: true,
@@ -853,6 +857,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
+		// if it's a thread message on main room, we disable the long press
+		if (message.tmid && !this.tmid) {
+			return;
+		}
 		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
 	};
 
@@ -874,18 +882,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionLongPress = (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: message });
-		const { showActionSheet, baseUrl, width } = this.props;
+		const { showActionSheet } = this.props;
 		const { selectedMessage } = this.state;
 		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, {
-			children: (
-				<ReactionsList
-					reactions={selectedMessage?.reactions}
-					baseUrl={baseUrl}
-					getCustomEmoji={this.getCustomEmoji}
-					width={width}
-				/>
-			),
-			snaps: ['50%'],
+			children: <ReactionsList reactions={selectedMessage?.reactions} getCustomEmoji={this.getCustomEmoji} />,
+			snaps: ['50%', '80%'],
 			enableContentPanningGesture: false
 		});
 	};
@@ -1377,8 +1378,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (showUnreadSeparator || dateSeparator) {
 			return (
 				<>
-					{content}
 					<Separator ts={dateSeparator} unread={showUnreadSeparator} />
+					{content}
 				</>
 			);
 		}
@@ -1526,7 +1527,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					listRef={this.flatList}
 					rid={rid}
 					tmid={this.tmid}
-					theme={theme}
 					tunread={tunread}
 					ignored={ignored}
 					renderRow={this.renderItem}

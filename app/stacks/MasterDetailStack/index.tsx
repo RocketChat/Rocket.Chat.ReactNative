@@ -127,7 +127,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 				<ModalStack.Screen name='SelectListView' component={SelectListView} />
 				<ModalStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
-				<ModalStack.Screen name='RoomMembersView' component={RoomMembersView} options={RoomMembersView.navigationOptions} />
+				<ModalStack.Screen name='RoomMembersView' component={RoomMembersView} />
 				<ModalStack.Screen
 					name='SearchMessagesView'
 					component={SearchMessagesView}
@@ -170,12 +170,8 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={ReadReceiptsView}
 					options={props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
-				<ModalStack.Screen
-					name='SettingsView'
-					component={SettingsView}
-					options={props => SettingsView.navigationOptions!({ ...props, isMasterDetail: true })}
-				/>
-				<ModalStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
+				<ModalStack.Screen name='SettingsView' component={SettingsView} />
+				<ModalStack.Screen name='LanguageView' component={LanguageView} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} />
 				<ModalStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 				<ModalStack.Screen
@@ -187,19 +183,15 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='ProfileView' component={ProfileView} />
 				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen name='AdminPanelView' component={AdminPanelView} />
-				<ModalStack.Screen name='NewMessageView' component={NewMessageView} options={NewMessageView.navigationOptions} />
+				<ModalStack.Screen name='NewMessageView' component={NewMessageView} />
 				<ModalStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
-				<ModalStack.Screen name='CreateChannelView' component={CreateChannelView} options={CreateChannelView.navigationOptions} />
+				<ModalStack.Screen name='CreateChannelView' component={CreateChannelView} />
 				<ModalStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
 				<ModalStack.Screen name='E2ESaveYourPasswordView' component={E2ESaveYourPasswordView} />
 				<ModalStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 				<ModalStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
-				<ModalStack.Screen
-					name='UserNotificationPrefView'
-					component={UserNotificationPrefView}
-					options={UserNotificationPrefView.navigationOptions}
-				/>
+				<ModalStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 				<ModalStack.Screen
 					name='E2EEncryptionSecurityView'
