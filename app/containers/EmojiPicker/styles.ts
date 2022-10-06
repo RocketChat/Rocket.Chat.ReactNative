@@ -2,9 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const MAX_EMOJI_SIZE = 50;
-export const MIN_EMOJI_SIZE = 42;
-
 export default StyleSheet.create({
 	container: {
 		flex: 1

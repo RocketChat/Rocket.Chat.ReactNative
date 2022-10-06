@@ -32,7 +32,6 @@ export interface IEmojiCategory {
 	onEmojiSelected: (emoji: IEmoji) => void;
 	style: StyleProp<ImageStyle>;
 	tabLabel: string;
-	tabsCount: number;
 }
 
 export type TGetCustomEmoji = (name: string) => any;

@@ -3,7 +3,7 @@ import { Text, Pressable } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import styles, { MIN_EMOJI_SIZE, MAX_EMOJI_SIZE } from './styles';
+import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
@@ -17,6 +17,8 @@ interface IEmojiProps {
 	baseUrl: string;
 }
 
+const EMOJI_SIZE = 44;
+
 const Emoji = ({ emoji, size, baseUrl }: IEmojiProps): React.ReactElement => {
 	if (typeof emoji === 'string')
 		return (
@@ -29,24 +31,24 @@ const Emoji = ({ emoji, size, baseUrl }: IEmojiProps): React.ReactElement => {
 	);
 };
 
-const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis, tabsCount }: IEmojiCategory): React.ReactElement | null => {
+const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis }: IEmojiCategory): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const { width } = useDimensions();
-	const emojiSize = Math.min(Math.max(width / tabsCount, MIN_EMOJI_SIZE), MAX_EMOJI_SIZE);
-	const numColumns = Math.trunc(width / emojiSize);
-	const marginHorizontal = (width - numColumns * emojiSize) / 2;
+
+	const numColumns = Math.trunc(width / EMOJI_SIZE);
+	const marginHorizontal = (width % EMOJI_SIZE) / 2;
 
 	const renderItem = (emoji: IEmoji) => (
 		<Pressable
 			key={typeof emoji === 'string' ? emoji : emoji.content}
 			onPress={() => onEmojiSelected(emoji)}
 			testID={`emoji-${typeof emoji === 'string' ? emoji : emoji.content}`}
-			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: emojiSize / 2 }}
+			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: EMOJI_SIZE / 2 }}
 			style={({ pressed }: { pressed: boolean }) => ({
 				backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
 			})}
 		>
-			<Emoji emoji={emoji} size={emojiSize} baseUrl={baseUrl} />
+			<Emoji emoji={emoji} size={EMOJI_SIZE} baseUrl={baseUrl} />
 		</Pressable>
 	);
 
