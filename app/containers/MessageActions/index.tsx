@@ -37,7 +37,6 @@ export interface IMessageActionsProps {
 	Message_AllowPinning?: boolean;
 	Message_AllowStarring?: boolean;
 	Message_Read_Receipt_Store_Users?: boolean;
-	server: string;
 	editMessagePermission?: string[];
 	deleteMessagePermission?: string[];
 	forceDeleteMessagePermission?: string[];
@@ -60,7 +59,6 @@ const MessageActions = React.memo(
 				onReactionPress,
 				replyInit,
 				isReadOnly,
-				server,
 				Message_AllowDeleting,
 				Message_AllowDeleting_BlockDeleteInMinutes,
 				Message_AllowEditing,
@@ -461,7 +459,7 @@ const MessageActions = React.memo(
 					headerHeight: HEADER_HEIGHT,
 					customHeader:
 						!isReadOnly || room.reactWhenReadOnly ? (
-							<Header server={server} handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
+							<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 						) : null
 				});
 			};

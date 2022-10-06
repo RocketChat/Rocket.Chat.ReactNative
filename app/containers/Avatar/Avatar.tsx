@@ -11,7 +11,6 @@ import { IAvatar } from './interfaces';
 
 const Avatar = React.memo(
 	({
-		server,
 		style,
 		avatar,
 		children,
@@ -31,7 +30,7 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		externalProviderUrl
 	}: IAvatar) => {
-		if ((!text && !avatar && !emoji && !rid) || !server) {
+		if (!text && !avatar && !emoji && !rid) {
 			return null;
 		}
 
@@ -43,9 +42,7 @@ const Avatar = React.memo(
 
 		let image;
 		if (emoji) {
-			image = (
-				<Emoji baseUrl={server} getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />
-			);
+			image = <Emoji getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />;
 		} else {
 			let uri = avatar;
 			if (!isStatic) {
@@ -56,7 +53,6 @@ const Avatar = React.memo(
 					userId,
 					token,
 					avatar,
-					server,
 					avatarETag,
 					serverVersion,
 					rid,

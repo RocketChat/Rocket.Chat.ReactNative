@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const baseUrl = 'https://open.rocket.chat';
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 const lineBreakText = `a
@@ -108,13 +107,8 @@ export const Emoji = () => (
 	<View style={styles.container}>
 		<Markdown msg='Unicode: 😃😇👍' theme={theme} />
 		<Markdown msg='Shortnames: :joy::+1:' theme={theme} />
-		<Markdown
-			msg='Custom emojis: :react_rocket: :nyan_rocket: :marioparty:'
-			theme={theme}
-			getCustomEmoji={getCustomEmoji}
-			baseUrl={baseUrl}
-		/>
-		<Markdown msg='😃 :+1: :marioparty:' theme={theme} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
+		<Markdown msg='Custom emojis: :react_rocket: :nyan_rocket: :marioparty:' theme={theme} getCustomEmoji={getCustomEmoji} />
+		<Markdown msg='😃 :+1: :marioparty:' theme={theme} getCustomEmoji={getCustomEmoji} />
 	</View>
 );
 

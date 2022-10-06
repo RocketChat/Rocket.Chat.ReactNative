@@ -19,16 +19,14 @@ interface IEmojiSearchBarProps {
 	onChangeText: (value: string) => void;
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
-	baseUrl: string;
 }
 
 interface IListItem {
 	emoji: IEmoji;
 	onEmojiSelected: (emoji: IEmoji) => void;
-	baseUrl: string;
 }
 
-const Emoji = ({ emoji, baseUrl }: { emoji: IEmoji; baseUrl: string }): React.ReactElement => {
+const Emoji = ({ emoji }: { emoji: IEmoji }): React.ReactElement => {
 	const { colors } = useTheme();
 	if (typeof emoji === 'string') {
 		return (
@@ -37,16 +35,10 @@ const Emoji = ({ emoji, baseUrl }: { emoji: IEmoji; baseUrl: string }): React.Re
 			</Text>
 		);
 	}
-	return (
-		<CustomEmoji
-			style={[styles.emojiSearchCustomEmoji, { height: EMOJI_SIZE, width: EMOJI_SIZE }]}
-			emoji={emoji}
-			baseUrl={baseUrl}
-		/>
-	);
+	return <CustomEmoji style={[styles.emojiSearchCustomEmoji, { height: EMOJI_SIZE, width: EMOJI_SIZE }]} emoji={emoji} />;
 };
 
-const ListItem = ({ emoji, onEmojiSelected, baseUrl }: IListItem): React.ReactElement => {
+const ListItem = ({ emoji, onEmojiSelected }: IListItem): React.ReactElement => {
 	const key = typeof emoji === 'string' ? emoji : emoji?.name || emoji?.content;
 	const onPress = () => {
 		onEmojiSelected(emoji);
@@ -64,14 +56,14 @@ const ListItem = ({ emoji, onEmojiSelected, baseUrl }: IListItem): React.ReactEl
 	return (
 		<View style={styles.emojiContainer} key={key} testID={`searched-emoji-${key}`}>
 			<Pressable onPress={onPress}>
-				<Emoji emoji={emoji} baseUrl={baseUrl} />
+				<Emoji emoji={emoji} />
 			</Pressable>
 		</View>
 	);
 };
 
 const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
-	({ openEmoji, onChangeText, emojis, onEmojiSelected, baseUrl }, ref) => {
+	({ openEmoji, onChangeText, emojis, onEmojiSelected }, ref) => {
 		const { colors } = useTheme();
 		const [searchText, setSearchText] = useState<string>('');
 		const { frequentlyUsed } = useFrequentlyUsedEmoji();
@@ -95,7 +87,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 				<FlatList
 					horizontal
 					data={searchText ? emojis : frequentlyUsedWithDefaultEmojis}
-					renderItem={({ item }) => <ListItem emoji={item} onEmojiSelected={onEmojiSelected} baseUrl={baseUrl} />}
+					renderItem={({ item }) => <ListItem emoji={item} onEmojiSelected={onEmojiSelected} />}
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
 						<View style={styles.listEmptyComponent} testID='no-results-found'>

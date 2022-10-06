@@ -15,7 +15,7 @@ import { themes } from '../../lib/constants';
 const Content = React.memo(
 	(props: IMessageContent) => {
 		const { theme } = useTheme();
-		const { baseUrl, user, onLinkPress } = useContext(MessageContext);
+		const { user, onLinkPress } = useContext(MessageContext);
 
 		if (props.isInfo) {
 			// @ts-ignore
@@ -54,7 +54,6 @@ const Content = React.memo(
 				<Markdown
 					msg={props.msg}
 					md={props.md}
-					baseUrl={baseUrl}
 					getCustomEmoji={props.getCustomEmoji}
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}

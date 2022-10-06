@@ -1,6 +1,4 @@
 import Model from '@nozbe/watermelondb/Model';
-import { StyleProp } from 'react-native';
-import { ImageStyle } from 'react-native-fast-image';
 
 export interface ICustomEmoji {
 	content: string;

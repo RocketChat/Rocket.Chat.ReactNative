@@ -3,6 +3,7 @@ import { PixelRatio } from 'react-native';
 import { SubscriptionType } from '../../../definitions';
 import { IAvatar } from '../../../containers/Avatar/interfaces';
 import { compareServerVersion } from './compareServerVersion';
+import { store as reduxStore } from '../../store/auxStore';
 
 const formatUrl = (url: string, size: number, query?: string) => `${url}?format=png&size=${PixelRatio.get() * size}${query}`;
 
@@ -13,13 +14,13 @@ export const getAvatarURL = ({
 	userId,
 	token,
 	avatar,
-	server,
 	avatarETag,
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion,
 	externalProviderUrl
 }: IAvatar): string => {
+	const server = reduxStore.getState().share.server.server || reduxStore.getState().server.server;
 	let room;
 	if (type === SubscriptionType.DIRECT) {
 		room = text;

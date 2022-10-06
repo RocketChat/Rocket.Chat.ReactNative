@@ -1149,7 +1149,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	renderEmojiSearchbar = () => {
 		const { showEmojiSearchbar, searchedEmojis } = this.state;
-		const { baseUrl } = this.props;
 
 		const searchEmojis = debounce(async (keyword: any) => {
 			const customEmojis = await this.getCustomEmojis(keyword, MAX_EMOJIS_TO_DISPLAY / 2);
@@ -1184,7 +1183,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				openEmoji={this.openEmoji}
 				onChangeText={onChangeText}
 				emojis={searchedEmojis}
-				baseUrl={baseUrl}
 				onEmojiSelected={onEmojiSelected}
 			/>
 		) : null;

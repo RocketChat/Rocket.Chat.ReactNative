@@ -16,7 +16,7 @@ interface IEmojiProps {
 
 const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
 	const { theme } = useTheme();
-	const { baseUrl, getCustomEmoji } = useContext(MarkdownContext);
+	const { getCustomEmoji } = useContext(MarkdownContext);
 
 	if ('unicode' in block) {
 		return <Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
@@ -26,7 +26,7 @@ const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
 	const emoji = getCustomEmoji?.(block.value?.value);
 
 	if (emoji) {
-		return <CustomEmoji baseUrl={baseUrl} style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
+		return <CustomEmoji style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
 	}
 	return (
 		<Text style={[{ color: themes[theme].bodyText }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text]}>

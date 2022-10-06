@@ -13,23 +13,21 @@ import { useDimensions } from '../../dimensions';
 
 interface IEmojiProps {
 	emoji: IEmoji;
-	baseUrl: string;
 }
 
 interface IEmojiCategoryProps {
-	baseUrl: string;
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
 }
 
-const Emoji = ({ emoji, baseUrl }: IEmojiProps): React.ReactElement => {
+const Emoji = ({ emoji }: IEmojiProps): React.ReactElement => {
 	if (typeof emoji === 'string') {
 		return <Text style={styles.categoryEmoji}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
 	}
-	return <CustomEmoji style={styles.customCategoryEmoji} emoji={emoji} baseUrl={baseUrl} />;
+	return <CustomEmoji style={styles.customCategoryEmoji} emoji={emoji} />;
 };
 
-const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis }: IEmojiCategoryProps): React.ReactElement | null => {
+const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const { width } = useDimensions();
 
@@ -49,7 +47,7 @@ const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis }: IEmojiCategoryProps
 				}
 			]}
 		>
-			<Emoji emoji={emoji} baseUrl={baseUrl} />
+			<Emoji emoji={emoji} />
 		</Pressable>
 	);
 
@@ -63,7 +61,7 @@ const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis }: IEmojiCategoryProps
 			key={`emoji-category-${width}`}
 			keyExtractor={item => (typeof item === 'string' ? item : item.content)}
 			data={emojis}
-			extraData={{ baseUrl, width }}
+			extraData={{ width }}
 			renderItem={({ item }) => renderItem(item)}
 			numColumns={numColumns}
 			initialNumToRender={45}

@@ -17,7 +17,6 @@ type TItem = TFrequentlyUsedEmojiModel | string;
 
 export interface IHeader {
 	handleReaction: (emoji: TItem, message: TAnyMessageModel) => void;
-	server: string;
 	message: TAnyMessageModel;
 	isMasterDetail: boolean;
 }
@@ -27,7 +26,6 @@ type TOnReaction = ({ emoji }: { emoji: TItem }) => void;
 interface THeaderItem {
 	item: TItem;
 	onReaction: TOnReaction;
-	server: string;
 	theme: TSupportedThemes;
 }
 
@@ -70,7 +68,7 @@ const keyExtractor = (item: TItem) => {
 	return (emojiModel.id ? emojiModel.content : item) as string;
 };
 
-const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
+const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 	const emojiModel = item as TFrequentlyUsedEmojiModel;
 	const emoji = (emojiModel.id ? emojiModel.content : item) as string;
 	return (
@@ -80,7 +78,7 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
 		>
 			{emojiModel?.isCustom ? (
-				<CustomEmoji style={styles.customEmoji} emoji={emojiModel} baseUrl={server} />
+				<CustomEmoji style={styles.customEmoji} emoji={emojiModel} />
 			) : (
 				<Text style={styles.headerIcon}>{shortnameToUnicode(`:${emoji}:`)}</Text>
 			)}
@@ -98,7 +96,7 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	</Touch>
 );
 
-const Header = React.memo(({ handleReaction, server, message, isMasterDetail }: IHeader) => {
+const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
 	const [items, setItems] = useState<TItem[]>([]);
 	const { width, height } = useDimensions();
 	const { theme } = useTheme();
@@ -127,9 +125,7 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail }: 
 
 	const onReaction: TOnReaction = ({ emoji }) => handleReaction(emoji, message);
 
-	const renderItem = ({ item }: { item: TItem }) => (
-		<HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />
-	);
+	const renderItem = ({ item }: { item: TItem }) => <HeaderItem item={item} onReaction={onReaction} theme={theme} />;
 
 	const renderFooter = () => <HeaderFooter onReaction={onReaction} theme={theme} />;
 

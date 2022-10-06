@@ -27,7 +27,6 @@ const EmojiPicker = ({
 	const { colors } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 
-	const baseUrl = useAppSelector(state => state.server?.server);
 	const allCustomEmojis: ICustomEmojis = useAppSelector(state => state.customEmojis, shallowEqual);
 	const customEmojis = useMemo(
 		() =>
@@ -65,7 +64,7 @@ const EmojiPicker = ({
 		} else {
 			emojis = emojisByCategory[category];
 		}
-		return <EmojiCategory emojis={emojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} baseUrl={baseUrl} />;
+		return <EmojiCategory emojis={emojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} />;
 	};
 
 	if (!loaded) {
@@ -75,7 +74,7 @@ const EmojiPicker = ({
 	return (
 		<View style={styles.emojiPickerContainer}>
 			{searching ? (
-				<EmojiCategory emojis={searchedEmojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} baseUrl={baseUrl} />
+				<EmojiCategory emojis={searchedEmojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} />
 			) : (
 				<ScrollableTabView
 					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
