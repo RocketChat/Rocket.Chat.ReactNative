@@ -3,7 +3,7 @@ import { Text, Pressable } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import styles from './styles';
+import styles, { EMOJI_BUTTON_SIZE } from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
@@ -13,42 +13,37 @@ import { useDimensions } from '../../dimensions';
 
 interface IEmojiProps {
 	emoji: IEmoji;
-	size: number;
 	baseUrl: string;
 }
 
-const EMOJI_SIZE = 44;
-
-const Emoji = ({ emoji, size, baseUrl }: IEmojiProps): React.ReactElement => {
-	if (typeof emoji === 'string')
-		return (
-			<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-				{shortnameToUnicode(`:${emoji}:`)}
-			</Text>
-		);
-	return (
-		<CustomEmoji style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]} emoji={emoji} baseUrl={baseUrl} />
-	);
+const Emoji = ({ emoji, baseUrl }: IEmojiProps): React.ReactElement => {
+	if (typeof emoji === 'string') {
+		return <Text style={styles.categoryEmoji}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
+	}
+	return <CustomEmoji style={styles.customCategoryEmoji} emoji={emoji} baseUrl={baseUrl} />;
 };
 
 const EmojiCategory = ({ baseUrl, onEmojiSelected, emojis }: IEmojiCategory): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const { width } = useDimensions();
 
-	const numColumns = Math.trunc(width / EMOJI_SIZE);
-	const marginHorizontal = (width % EMOJI_SIZE) / 2;
+	const numColumns = Math.trunc(width / EMOJI_BUTTON_SIZE);
+	const marginHorizontal = (width % EMOJI_BUTTON_SIZE) / 2;
 
 	const renderItem = (emoji: IEmoji) => (
 		<Pressable
 			key={typeof emoji === 'string' ? emoji : emoji.content}
 			onPress={() => onEmojiSelected(emoji)}
 			testID={`emoji-${typeof emoji === 'string' ? emoji : emoji.content}`}
-			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: EMOJI_SIZE / 2 }}
-			style={({ pressed }: { pressed: boolean }) => ({
-				backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
-			})}
+			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: EMOJI_BUTTON_SIZE / 2 }}
+			style={({ pressed }: { pressed: boolean }) => [
+				styles.emojiButton,
+				{
+					backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
+				}
+			]}
 		>
-			<Emoji emoji={emoji} size={EMOJI_SIZE} baseUrl={baseUrl} />
+			<Emoji emoji={emoji} baseUrl={baseUrl} />
 		</Pressable>
 	);
 

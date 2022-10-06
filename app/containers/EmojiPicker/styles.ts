@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
+export const EMOJI_BUTTON_SIZE = 44;
+const EMOJI_SIZE = EMOJI_BUTTON_SIZE - 16;
+
 export default StyleSheet.create({
 	container: {
 		flex: 1
@@ -49,11 +52,20 @@ export default StyleSheet.create({
 	},
 	categoryEmoji: {
 		...sharedStyles.textAlignCenter,
+		textAlignVertical: 'center',
+		fontSize: EMOJI_SIZE,
 		backgroundColor: 'transparent',
 		color: '#ffffff'
 	},
 	customCategoryEmoji: {
-		margin: 8
+		height: EMOJI_SIZE,
+		width: EMOJI_SIZE
+	},
+	emojiButton: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		height: EMOJI_BUTTON_SIZE,
+		width: EMOJI_BUTTON_SIZE
 	},
 	footerContainer: {
 		height: 44,
