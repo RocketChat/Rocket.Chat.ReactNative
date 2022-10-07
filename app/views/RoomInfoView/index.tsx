@@ -128,7 +128,6 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	constructor(props: IRoomInfoViewProps) {
 		super(props);
-		console.log('🚀 ~ file: index.tsx ~ line 127 ~ RoomInfoView ~ constructor ~ props.route.params', props.route.params);
 		const room = props.route.params?.room;
 		const roomUser = props.route.params?.member;
 		this.rid = props.route.params?.rid;
