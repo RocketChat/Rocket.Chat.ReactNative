@@ -37,6 +37,7 @@ import { callJitsi } from '../../lib/methods';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 
 interface IGetRoomTitle {
 	room: ISubscription;
@@ -178,17 +179,17 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			title: t === SubscriptionType.DIRECT ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
-					<HeaderButton.Container>
-						<HeaderButton.Item
-							iconName='edit'
-							onPress={() => {
-								const isLivechat = t === SubscriptionType.OMNICHANNEL;
-								logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
-							}}
-							testID='room-info-view-edit-button'
-						/>
-					</HeaderButton.Container>
+						<HeaderButton.Container>
+							<HeaderButton.Item
+								iconName='edit'
+								onPress={() => {
+									const isLivechat = t === SubscriptionType.OMNICHANNEL;
+									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
+								}}
+								testID='room-info-view-edit-button'
+							/>
+						</HeaderButton.Container>
 				  )
 				: undefined
 		});
@@ -276,15 +277,12 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	loadRoomFrom = async () => {
 		if (this.fromRid) {
-			console.log('🚀 ~ file: index.tsx ~ line 279 ~ RoomInfoView ~ loadRoomFrom= ~ this.fromRid', this.fromRid);
 			try {
 				const sub = await getSubscriptionByRoomId(this.fromRid);
-				console.log('🚀 ~ file: index.tsx ~ line 282 ~ RoomInfoView ~ loadRoomFrom= ~ sub', sub);
 				sub?.observe().subscribe(roomFrom => {
 					this.setState({ roomFrom });
 				});
 			} catch (e) {
-				console.log('🚀 ~ file: index.tsx ~ line 285 ~ RoomInfoView ~ loadRoomFrom= ~ e', e);
 				// do nothing
 			}
 		}
@@ -419,15 +417,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	};
 
 	renderButtons = () => {
-		const {roomFrom, roomUser} = this.state;
+		const { roomFrom, roomUser } = this.state;
 		const { jitsiEnabled } = this.props;
 
-		const isFromDm = this.fromRid ? new RegExp(this.rid).test(this.fromRid) : false;
+		const isFromDm = roomFrom?.rid ? new RegExp(roomUser._id).test(roomFrom.rid) : false;
 		const isDirectFromSaved = this.isDirect && this.fromRid && roomFrom; // OUtro nome
 
 		const ignored = roomFrom?.ignored;
 		const isIgnored = ignored?.includes?.(roomUser._id);
-
 
 		return (
 			<View style={styles.roomButtonsContainer}>
@@ -436,7 +433,12 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 					? this.renderButton(() => this.handleCreateDirectMessage(this.videoCall), 'camera', I18n.t('Video_call'))
 					: null}
 				{isDirectFromSaved && !isFromDm
-					? this.renderButton(() => {}, 'ignore', I18n.t(isIgnored ? 'Unignore' : 'Ignore'), 'dangerColor')
+					? this.renderButton(
+							() => handleIgnore(roomUser._id, !isIgnored, roomFrom.rid),
+							'ignore',
+							I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
+							'dangerColor'
+					  )
 					: null}
 				{/* {isDirectFromSaved && isFromDm
 					? this.renderButton(() => {}, 'block', I18n.t(false ? 'Unignore' : 'Ignore'), 'dangerColor')

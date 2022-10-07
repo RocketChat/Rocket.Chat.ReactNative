@@ -207,7 +207,7 @@ const RoomMembersView = (): React.ReactElement => {
 			options.push({
 				icon: 'ignore',
 				title: I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
-				onPress: () => handleIgnore(selectedUser, !isIgnored, room.rid),
+				onPress: () => handleIgnore(selectedUser._id, !isIgnored, room.rid),
 				testID: 'action-sheet-ignore-user'
 			});
 		}
