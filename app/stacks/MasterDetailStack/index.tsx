@@ -170,11 +170,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={ReadReceiptsView}
 					options={props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
-				<ModalStack.Screen
-					name='SettingsView'
-					component={SettingsView}
-					options={props => SettingsView.navigationOptions!({ ...props, isMasterDetail: true })}
-				/>
+				<ModalStack.Screen name='SettingsView' component={SettingsView} />
 				<ModalStack.Screen name='LanguageView' component={LanguageView} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} />
 				<ModalStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
