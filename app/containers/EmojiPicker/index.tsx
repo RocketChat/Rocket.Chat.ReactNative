@@ -74,11 +74,7 @@ const EmojiPicker = ({
 	return (
 		<View style={styles.emojiPickerContainer}>
 			{searching ? (
-				<EmojiCategory
-					emojis={searchedEmojis}
-					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
-					tabLabel='searching'
-				/>
+				<EmojiCategory emojis={searchedEmojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} />
 			) : (
 				<ScrollableTabView
 					renderTabBar={() => <TabBar />}
