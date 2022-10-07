@@ -27,7 +27,10 @@ const EmojiPicker = ({
 	const { colors } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 
-	const allCustomEmojis: ICustomEmojis = useAppSelector(state => state.customEmojis, shallowEqual);
+	const allCustomEmojis: ICustomEmojis = useAppSelector(
+		state => state.customEmojis,
+		() => true
+	);
 	const customEmojis = useMemo(
 		() =>
 			Object.keys(allCustomEmojis)
