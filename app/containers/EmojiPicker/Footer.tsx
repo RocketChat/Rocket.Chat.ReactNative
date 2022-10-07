@@ -24,7 +24,7 @@ const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): React.Re
 			<Pressable
 				onPress={onBackspacePressed}
 				hitSlop={BUTTON_HIT_SLOP}
-				style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+				style={({ pressed }) => [styles.footerButtonsContainer, { opacity: pressed ? 0.7 : 1 }]}
 				testID='emoji-picker-backspace'
 			>
 				<CustomIcon color={colors.auxiliaryTintColor} size={24} name='backspace' />
