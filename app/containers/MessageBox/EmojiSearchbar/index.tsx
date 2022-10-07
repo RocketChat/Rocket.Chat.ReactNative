@@ -9,6 +9,7 @@ import { IEmoji } from '../../../definitions';
 import styles from '../styles';
 import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
 import { ListItem } from './ListItem';
+import log from '../../../lib/methods/helpers/log';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
@@ -31,16 +32,20 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 		};
 
 		const handleEmojiSelected = (emoji: IEmoji) => {
-			onEmojiSelected(emoji);
-			if (typeof emoji === 'string') {
-				addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
-			} else {
-				addFrequentlyUsed({
-					content: emoji?.content || emoji?.name,
-					name: emoji?.name,
-					extension: emoji.extension,
-					isCustom: true
-				});
+			try {
+				onEmojiSelected(emoji);
+				if (typeof emoji === 'string') {
+					addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
+				} else {
+					addFrequentlyUsed({
+						content: emoji?.content || emoji?.name,
+						name: emoji?.name,
+						extension: emoji.extension,
+						isCustom: true
+					});
+				}
+			} catch (e) {
+				log(e);
 			}
 		};
 
