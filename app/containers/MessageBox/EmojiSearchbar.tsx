@@ -10,7 +10,7 @@ import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import styles from './styles';
 import { useFrequentlyUsedEmoji, addFrequentlyUsed } from '../EmojiPicker/frequentlyUsedEmojis';
-import { DEFAULT_EMOJIS } from '../EmojiPicker/emojis';
+import { DEFAULT_EMOJIS } from '../EmojiPicker/data';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 const EMOJI_SIZE = 32;

@@ -41,4 +41,4 @@ const tabs = [
 		category: list[9]
 	}
 ];
-export default { list, tabs };
+export const categories = { list, tabs };

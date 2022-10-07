@@ -10,7 +10,7 @@ import { EventTypes } from '../../containers/EmojiPicker/interfaces';
 import { FormTextInput } from '../../containers/TextInput/FormTextInput';
 import I18n from '../../i18n';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { emojis } from '../../containers/EmojiPicker/emojis';
+import { emojis } from '../../containers/EmojiPicker/data';
 import database from '../../lib/database';
 import { debounce } from '../../lib/methods/helpers/debounce';
 

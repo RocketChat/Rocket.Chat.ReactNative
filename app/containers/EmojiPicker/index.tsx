@@ -1,14 +1,12 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { shallowEqual } from 'react-redux';
 
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
-import categories from './categories';
-import { emojisByCategory } from './emojis';
+import { categories, emojisByCategory } from './data';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import log from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';

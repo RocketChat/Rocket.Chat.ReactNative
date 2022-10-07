@@ -11,7 +11,7 @@ import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
 import { TAnyMessageModel, TFrequentlyUsedEmojiModel } from '../../definitions';
 import Touch from '../Touch';
-import { DEFAULT_EMOJIS } from '../EmojiPicker/emojis';
+import { DEFAULT_EMOJIS } from '../EmojiPicker/data';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 

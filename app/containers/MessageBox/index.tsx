@@ -13,7 +13,7 @@ import { TextInput, IThemedTextInput } from '../TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import styles from './styles';
 import database from '../../lib/database';
-import { emojis } from '../EmojiPicker/emojis';
+import { emojis } from '../EmojiPicker/data';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
