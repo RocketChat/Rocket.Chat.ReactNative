@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Pressable } from 'react-native';
+import { Text, Pressable, useWindowDimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -9,7 +9,6 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
-import { useDimensions } from '../../dimensions';
 
 interface IEmojiProps {
 	emoji: IEmoji;
@@ -30,7 +29,7 @@ const Emoji = ({ emoji }: IEmojiProps): React.ReactElement => {
 
 const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.ReactElement | null => {
 	const { colors } = useTheme();
-	const { width } = useDimensions();
+	const { width } = useWindowDimensions();
 
 	const numColumns = Math.trunc(width / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (width % EMOJI_BUTTON_SIZE) / 2;
@@ -62,7 +61,6 @@ const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.
 			key={`emoji-category-${width}`}
 			keyExtractor={item => (typeof item === 'string' ? item : item.content)}
 			data={emojis}
-			extraData={{ width }}
 			renderItem={({ item }) => renderItem(item)}
 			numColumns={numColumns}
 			initialNumToRender={45}
