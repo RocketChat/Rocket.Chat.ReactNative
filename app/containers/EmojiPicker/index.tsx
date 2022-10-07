@@ -17,7 +17,6 @@ import { useFrequentlyUsedEmoji, addFrequentlyUsed } from './frequentlyUsedEmoji
 
 const EmojiPicker = ({
 	onItemClicked,
-	tabEmojiStyle,
 	isEmojiKeyboard = false,
 	searching = false,
 	searchedEmojis = []
@@ -82,7 +81,7 @@ const EmojiPicker = ({
 				/>
 			) : (
 				<ScrollableTabView
-					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
+					renderTabBar={() => <TabBar />}
 					contentProps={{
 						keyboardShouldPersistTaps: 'always',
 						keyboardDismissMode: 'none'
