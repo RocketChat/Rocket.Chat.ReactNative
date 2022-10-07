@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { unstable_batchedUpdates } from 'react-native';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
@@ -23,8 +24,11 @@ export const useFrequentlyUsedEmoji = (): {
 				}
 				return shortnameToUnicode(`${item.content}`);
 			}) as IEmoji[];
-			setFrequentlyUsed(frequentlyUsedEmojis);
-			setLoaded(true);
+			// TODO: remove once we update to React 18
+			unstable_batchedUpdates(() => {
+				setFrequentlyUsed(frequentlyUsedEmojis);
+				setLoaded(true);
+			});
 		};
 		getFrequentlyUsedEmojis();
 	}, []);
