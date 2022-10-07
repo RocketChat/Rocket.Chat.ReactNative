@@ -18,7 +18,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { TSupportedThemes, TColors, withTheme } from '../../theme';
 import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -121,12 +121,16 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	private roomObservable?: Observable<TSubscriptionModel>;
 
+	private fromRid?: string;
+
 	constructor(props: IRoomInfoViewProps) {
 		super(props);
+		console.log('🚀 ~ file: index.tsx ~ line 127 ~ RoomInfoView ~ constructor ~ props.route.params', props.route.params);
 		const room = props.route.params?.room;
 		const roomUser = props.route.params?.member;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
+		this.fromRid = props.route.params?.fromRid;
 		this.state = {
 			room: (room || { rid: this.rid, t: this.t }) as any,
 			roomUser: roomUser || {},
@@ -351,6 +355,19 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		}
 	};
 
+	handleCreateDirectMessage = async (onPress: () => void) => {
+		try {
+			if (this.isDirect) {
+				await this.createDirect();
+			}
+			onPress();
+		} catch {
+			EventEmitter.emit(LISTENER, {
+				message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
+			});
+		}
+	};
+
 	videoCall = () => {
 		const { room } = this.state;
 		callJitsi(room);
@@ -370,36 +387,34 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		);
 	};
 
-	renderButton = (onPress: () => void, iconName: TIconsName, text: string) => {
+	renderButton = (onPress: () => void, iconName: TIconsName, text: string, colorName?: keyof TColors) => {
 		const { theme } = this.props;
-
-		const onActionPress = async () => {
-			try {
-				if (this.isDirect) {
-					await this.createDirect();
-				}
-				onPress();
-			} catch {
-				EventEmitter.emit(LISTENER, {
-					message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
-				});
-			}
-		};
-
+		const color = colorName ? (themes[theme][colorName] as string) : themes[theme].actionTintColor;
 		return (
-			<BorderlessButton onPress={onActionPress} style={styles.roomButton}>
-				<CustomIcon name={iconName} size={30} color={themes[theme].actionTintColor} />
-				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+			<BorderlessButton onPress={onPress} style={styles.roomButton}>
+				<CustomIcon name={iconName} size={30} color={color} />
+				<Text style={[styles.roomButtonText, { color }]}>{text}</Text>
 			</BorderlessButton>
 		);
 	};
 
 	renderButtons = () => {
 		const { jitsiEnabled } = this.props;
+
+		const isFromDm = this.fromRid ? new RegExp(this.rid).test(this.fromRid) : false;
+
 		return (
 			<View style={styles.roomButtonsContainer}>
-				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-				{jitsiEnabled && this.isDirect ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
+				{this.renderButton(() => this.handleCreateDirectMessage(this.goRoom), 'message', I18n.t('Message'))}
+				{jitsiEnabled && this.isDirect
+					? this.renderButton(() => this.handleCreateDirectMessage(this.videoCall), 'camera', I18n.t('Video_call'))
+					: null}
+				{this.isDirect && this.fromRid && !isFromDm
+					? this.renderButton(() => {}, 'ignore', I18n.t(false ? 'Unignore' : 'Ignore'), 'dangerColor')
+					: null}
+				{/* {this.isDirect && this.fromRid && isFromDm
+					? this.renderButton(() => {}, 'block', I18n.t(false ? 'Unignore' : 'Ignore'), 'dangerColor')
+					: null} */}
 			</View>
 		);
 	};
