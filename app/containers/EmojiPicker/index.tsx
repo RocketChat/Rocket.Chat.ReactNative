@@ -55,7 +55,7 @@ const EmojiPicker = ({
 		}
 	};
 
-	const renderCategory = (category: keyof typeof emojisByCategory, i: number) => {
+	const renderCategory = (category: keyof typeof emojisByCategory, i: number, label: string) => {
 		let emojis = [];
 		if (i === 0) {
 			emojis = frequentlyUsed;
@@ -64,7 +64,7 @@ const EmojiPicker = ({
 		} else {
 			emojis = emojisByCategory[category];
 		}
-		return <EmojiCategory emojis={emojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} />;
+		return <EmojiCategory emojis={emojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} tabLabel={label} />;
 	};
 
 	if (!loaded) {
@@ -74,7 +74,11 @@ const EmojiPicker = ({
 	return (
 		<View style={styles.emojiPickerContainer}>
 			{searching ? (
-				<EmojiCategory emojis={searchedEmojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} />
+				<EmojiCategory
+					emojis={searchedEmojis}
+					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
+					tabLabel='searching'
+				/>
 			) : (
 				<ScrollableTabView
 					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} />}
@@ -87,7 +91,7 @@ const EmojiPicker = ({
 					{categories.tabs.map((tab: any, i) =>
 						i === 0 && frequentlyUsed.length === 0
 							? null // when no frequentlyUsed don't show the tab
-							: renderCategory(tab.category, i)
+							: renderCategory(tab.category, i, tab.tabLabel)
 					)}
 				</ScrollableTabView>
 			)}

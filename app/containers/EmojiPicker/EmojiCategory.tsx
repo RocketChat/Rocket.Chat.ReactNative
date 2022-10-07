@@ -18,6 +18,7 @@ interface IEmojiProps {
 interface IEmojiCategoryProps {
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
+	tabLabel: string; // needed for react-native-scrollable-tab-view only
 }
 
 const Emoji = ({ emoji }: IEmojiProps): React.ReactElement => {
