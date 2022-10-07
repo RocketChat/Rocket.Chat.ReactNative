@@ -38,6 +38,8 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 			onChangeText(text);
 		};
 
+		const renderItem = ({ item }: { item: IEmoji }) => <ListItem emoji={item} onEmojiSelected={onEmojiSelected} />;
+
 		return (
 			<View
 				style={[styles.emojiSearchViewContainer, { borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }]}
@@ -45,7 +47,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 				<FlatList
 					horizontal
 					data={searchText ? emojis : frequentlyUsedWithDefaultEmojis}
-					renderItem={({ item }) => <ListItem emoji={item} onEmojiSelected={onEmojiSelected} />}
+					renderItem={renderItem}
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
 						<View style={styles.listEmptyComponent} testID='no-results-found'>
