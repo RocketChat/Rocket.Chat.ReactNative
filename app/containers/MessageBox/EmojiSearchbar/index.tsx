@@ -8,7 +8,6 @@ import { CustomIcon } from '../../CustomIcon';
 import { IEmoji } from '../../../definitions';
 import styles from '../styles';
 import { useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
-import { DEFAULT_EMOJIS } from '../../EmojiPicker/data';
 import { ListItem } from './ListItem';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
@@ -24,14 +23,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 	({ openEmoji, onChangeText, emojis, onEmojiSelected }, ref) => {
 		const { colors } = useTheme();
 		const [searchText, setSearchText] = useState<string>('');
-		const { frequentlyUsed } = useFrequentlyUsedEmoji();
-
-		const frequentlyUsedWithDefaultEmojis = frequentlyUsed
-			.filter(emoji => {
-				if (typeof emoji === 'string') return !DEFAULT_EMOJIS.includes(emoji);
-				return !DEFAULT_EMOJIS.includes(emoji.name);
-			})
-			.concat(DEFAULT_EMOJIS);
+		const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
 
 		const handleTextChange = (text: string) => {
 			setSearchText(text);
@@ -46,7 +38,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 			>
 				<FlatList
 					horizontal
-					data={searchText ? emojis : frequentlyUsedWithDefaultEmojis}
+					data={searchText ? emojis : frequentlyUsed}
 					renderItem={renderItem}
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
