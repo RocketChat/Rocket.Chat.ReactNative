@@ -36,6 +36,7 @@ import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
 import { callJitsi } from '../../lib/methods';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IGetRoomTitle {
 	room: ISubscription;
@@ -108,6 +109,7 @@ interface IRoomInfoViewState {
 	room: ISubscription;
 	roomUser: IUserParsed | ILivechatVisitorModified;
 	showEdit: boolean;
+	roomFrom?: TSubscriptionModel;
 }
 
 class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewState> {
@@ -134,13 +136,15 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		this.state = {
 			room: (room || { rid: this.rid, t: this.t }) as any,
 			roomUser: roomUser || {},
-			showEdit: false
+			showEdit: false,
+			roomFrom: undefined
 		};
 	}
 
 	componentDidMount() {
 		if (this.isDirect) {
 			this.loadUser();
+			this.loadRoomFrom();
 		} else {
 			this.loadRoom();
 		}
@@ -174,17 +178,17 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			title: t === SubscriptionType.DIRECT ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item
-								iconName='edit'
-								onPress={() => {
-									const isLivechat = t === SubscriptionType.OMNICHANNEL;
-									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
-								}}
-								testID='room-info-view-edit-button'
-							/>
-						</HeaderButton.Container>
+					<HeaderButton.Container>
+						<HeaderButton.Item
+							iconName='edit'
+							onPress={() => {
+								const isLivechat = t === SubscriptionType.OMNICHANNEL;
+								logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
+							}}
+							testID='room-info-view-edit-button'
+						/>
+					</HeaderButton.Container>
 				  )
 				: undefined
 		});
@@ -265,6 +269,22 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 					this.setState({ roomUser });
 				}
 			} catch (e) {
+				// do nothing
+			}
+		}
+	};
+
+	loadRoomFrom = async () => {
+		if (this.fromRid) {
+			console.log('🚀 ~ file: index.tsx ~ line 279 ~ RoomInfoView ~ loadRoomFrom= ~ this.fromRid', this.fromRid);
+			try {
+				const sub = await getSubscriptionByRoomId(this.fromRid);
+				console.log('🚀 ~ file: index.tsx ~ line 282 ~ RoomInfoView ~ loadRoomFrom= ~ sub', sub);
+				sub?.observe().subscribe(roomFrom => {
+					this.setState({ roomFrom });
+				});
+			} catch (e) {
+				console.log('🚀 ~ file: index.tsx ~ line 285 ~ RoomInfoView ~ loadRoomFrom= ~ e', e);
 				// do nothing
 			}
 		}
@@ -399,9 +419,15 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	};
 
 	renderButtons = () => {
+		const {roomFrom, roomUser} = this.state;
 		const { jitsiEnabled } = this.props;
 
 		const isFromDm = this.fromRid ? new RegExp(this.rid).test(this.fromRid) : false;
+		const isDirectFromSaved = this.isDirect && this.fromRid && roomFrom; // OUtro nome
+
+		const ignored = roomFrom?.ignored;
+		const isIgnored = ignored?.includes?.(roomUser._id);
+
 
 		return (
 			<View style={styles.roomButtonsContainer}>
@@ -409,10 +435,10 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				{jitsiEnabled && this.isDirect
 					? this.renderButton(() => this.handleCreateDirectMessage(this.videoCall), 'camera', I18n.t('Video_call'))
 					: null}
-				{this.isDirect && this.fromRid && !isFromDm
-					? this.renderButton(() => {}, 'ignore', I18n.t(false ? 'Unignore' : 'Ignore'), 'dangerColor')
+				{isDirectFromSaved && !isFromDm
+					? this.renderButton(() => {}, 'ignore', I18n.t(isIgnored ? 'Unignore' : 'Ignore'), 'dangerColor')
 					: null}
-				{/* {this.isDirect && this.fromRid && isFromDm
+				{/* {isDirectFromSaved && isFromDm
 					? this.renderButton(() => {}, 'block', I18n.t(false ? 'Unignore' : 'Ignore'), 'dangerColor')
 					: null} */}
 			</View>
