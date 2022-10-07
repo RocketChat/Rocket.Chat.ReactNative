@@ -1,66 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, TextInput, FlatList } from 'react-native';
 
-import { FormTextInput } from '../TextInput/FormTextInput';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
-import { CustomIcon } from '../CustomIcon';
-import { IEmoji } from '../../definitions';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import styles from './styles';
-import { useFrequentlyUsedEmoji, addFrequentlyUsed } from '../EmojiPicker/frequentlyUsedEmojis';
-import { DEFAULT_EMOJIS } from '../EmojiPicker/data';
+import { FormTextInput } from '../../TextInput/FormTextInput';
+import { useTheme } from '../../../theme';
+import I18n from '../../../i18n';
+import { CustomIcon } from '../../CustomIcon';
+import { IEmoji } from '../../../definitions';
+import styles from '../styles';
+import { useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
+import { DEFAULT_EMOJIS } from '../../EmojiPicker/data';
+import { ListItem } from './ListItem';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
-const EMOJI_SIZE = 32;
+
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	onChangeText: (value: string) => void;
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
 }
-
-interface IListItem {
-	emoji: IEmoji;
-	onEmojiSelected: (emoji: IEmoji) => void;
-}
-
-const Emoji = ({ emoji }: { emoji: IEmoji }): React.ReactElement => {
-	const { colors } = useTheme();
-	if (typeof emoji === 'string') {
-		return (
-			<Text style={[styles.searchedEmoji, { fontSize: EMOJI_SIZE, color: colors.backdropColor }]}>
-				{shortnameToUnicode(`:${emoji}:`)}
-			</Text>
-		);
-	}
-	return <CustomEmoji style={[styles.emojiSearchCustomEmoji, { height: EMOJI_SIZE, width: EMOJI_SIZE }]} emoji={emoji} />;
-};
-
-const ListItem = ({ emoji, onEmojiSelected }: IListItem): React.ReactElement => {
-	const key = typeof emoji === 'string' ? emoji : emoji?.name || emoji?.content;
-	const onPress = () => {
-		onEmojiSelected(emoji);
-		if (typeof emoji === 'string') {
-			addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
-		} else {
-			addFrequentlyUsed({
-				content: emoji?.content || emoji?.name,
-				name: emoji?.name,
-				extension: emoji.extension,
-				isCustom: true
-			});
-		}
-	};
-	return (
-		<View style={styles.emojiContainer} key={key} testID={`searched-emoji-${key}`}>
-			<Pressable onPress={onPress}>
-				<Emoji emoji={emoji} />
-			</Pressable>
-		</View>
-	);
-};
 
 const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 	({ openEmoji, onChangeText, emojis, onEmojiSelected }, ref) => {
