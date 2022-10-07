@@ -1,17 +1,41 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, TextInput, FlatList } from 'react-native';
+import { View, Text, Pressable, TextInput, FlatList, StyleSheet } from 'react-native';
 
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
 import { IEmoji } from '../../../definitions';
-import styles from '../styles';
 import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
 import { ListItem } from './ListItem';
 import log from '../../../lib/methods/helpers/log';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
+
+const styles = StyleSheet.create({
+	emojiListContainer: { height: 40, paddingHorizontal: 5, marginVertical: 5, flexGrow: 1 },
+	emojiSearchViewContainer: {
+		borderTopWidth: 1
+	},
+	emojiSearchbarContainer: {
+		flexDirection: 'row',
+		height: 48,
+		marginBottom: 15,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	openEmojiKeyboard: { marginHorizontal: 10, justifyContent: 'center' },
+	emojiSearchbar: { paddingHorizontal: 20, borderRadius: 2, fontSize: 16, minHeight: 48 },
+	textInputContainer: { justifyContent: 'center', marginBottom: 0, marginRight: 15 },
+	listEmptyComponent: {
+		width: '100%',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	emojiSearchInput: {
+		flex: 1
+	}
+});
 
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
