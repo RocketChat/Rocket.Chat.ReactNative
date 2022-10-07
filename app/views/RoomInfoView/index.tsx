@@ -391,6 +391,15 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		callJitsi(room);
 	};
 
+	handleBlockUser = async (rid: string, blocked: string, block: boolean) => {
+		logEvent(events.RI_TOGGLE_BLOCK_USER);
+		try {
+			await Services.toggleBlockUser(rid, blocked, block);
+		} catch (e) {
+			logEvent(events.RI_TOGGLE_BLOCK_USER_F);
+			log(e);
+		}
+	};
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
 		const { theme } = this.props;
 
@@ -426,6 +435,8 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const ignored = roomFrom?.ignored;
 		const isIgnored = ignored?.includes?.(roomUser._id);
 
+		const blocker = roomFrom?.blocker;
+
 		return (
 			<View style={styles.roomButtonsContainer}>
 				{this.renderButton(() => this.handleCreateDirectMessage(this.goRoom), 'message', I18n.t('Message'))}
@@ -440,9 +451,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 							'dangerColor'
 					  )
 					: null}
-				{/* {isDirectFromSaved && isFromDm
-					? this.renderButton(() => {}, 'block', I18n.t(false ? 'Unignore' : 'Ignore'), 'dangerColor')
-					: null} */}
+				{isDirectFromSaved && isFromDm
+					? this.renderButton(
+							() => this.handleBlockUser(roomFrom.rid, roomUser._id, !blocker),
+							'ignore',
+							I18n.t(`${blocker ? 'Unblock' : 'Block'}_user`),
+							'dangerColor'
+					  )
+					: null}
 			</View>
 		);
 	};
