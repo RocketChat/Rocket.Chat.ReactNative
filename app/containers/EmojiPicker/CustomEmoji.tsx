@@ -24,12 +24,7 @@ const CustomEmoji = React.memo(
 			/>
 		);
 	},
-
-	(prevProps, nextProps) => {
-		const prevEmoji = prevProps.emoji.content || prevProps.emoji.name;
-		const nextEmoji = nextProps.emoji.content || nextProps.emoji.name;
-		return prevEmoji === nextEmoji;
-	}
+	() => true
 );
 
 export default CustomEmoji;
