@@ -9,28 +9,49 @@ import { IEmoji } from '../../../definitions';
 import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
 import { ListItem } from './ListItem';
 import log from '../../../lib/methods/helpers/log';
+import sharedStyles from '../../../views/Styles';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
 const styles = StyleSheet.create({
-	emojiListContainer: { height: 40, paddingHorizontal: 5, marginVertical: 5, flexGrow: 1 },
+	emojiListContainer: {
+		height: 40,
+		margin: 8,
+		flexGrow: 1
+	},
 	emojiSearchViewContainer: {
 		borderTopWidth: 1
 	},
 	emojiSearchbarContainer: {
 		flexDirection: 'row',
-		height: 48,
-		marginBottom: 15,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight: 12,
+		marginBottom: 12
+	},
+	openEmojiKeyboard: {
+		width: 32,
+		height: 32,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	openEmojiKeyboard: { marginHorizontal: 10, justifyContent: 'center' },
-	emojiSearchbar: { paddingHorizontal: 20, borderRadius: 2, fontSize: 16, minHeight: 48 },
-	textInputContainer: { justifyContent: 'center', marginBottom: 0, marginRight: 15 },
+	emojiSearchbar: {
+		height: 32,
+		borderWidth: 0,
+		paddingVertical: 0,
+		borderRadius: 4
+	},
+	textInputContainer: {
+		marginBottom: 0
+	},
 	listEmptyComponent: {
-		width: '100%',
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	emptyText: {
+		...sharedStyles.textRegular,
+		fontSize: 16
 	},
 	emojiSearchInput: {
 		flex: 1
@@ -86,7 +107,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
 						<View style={styles.listEmptyComponent} testID='no-results-found'>
-							<Text style={{ color: colors.auxiliaryText }}>{I18n.t('No_results_found')}</Text>
+							<Text style={[styles.emptyText, { color: colors.auxiliaryText }]}>{I18n.t('No_results_found')}</Text>
 						</View>
 					)}
 					// @ts-ignore
@@ -113,7 +134,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 							returnKeyType='search'
 							underlineColorAndroid='transparent'
 							onChangeText={handleTextChange}
-							style={[styles.emojiSearchbar, { backgroundColor: colors.passcodeButtonActive }]}
+							inputStyle={[styles.emojiSearchbar, { backgroundColor: colors.textInputSecondaryBackground }]}
 							containerStyle={styles.textInputContainer}
 							value={searchText}
 							onClearInput={() => handleTextChange('')}
