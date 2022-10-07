@@ -7,7 +7,7 @@ import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
 import { IEmoji } from '../../../definitions';
 import styles from '../styles';
-import { useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
+import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
 import { ListItem } from './ListItem';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
@@ -30,7 +30,21 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 			onChangeText(text);
 		};
 
-		const renderItem = ({ item }: { item: IEmoji }) => <ListItem emoji={item} onEmojiSelected={onEmojiSelected} />;
+		const handleEmojiSelected = (emoji: IEmoji) => {
+			onEmojiSelected(emoji);
+			if (typeof emoji === 'string') {
+				addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
+			} else {
+				addFrequentlyUsed({
+					content: emoji?.content || emoji?.name,
+					name: emoji?.name,
+					extension: emoji.extension,
+					isCustom: true
+				});
+			}
+		};
+
+		const renderItem = ({ item }: { item: IEmoji }) => <ListItem emoji={item} onEmojiSelected={handleEmojiSelected} />;
 
 		return (
 			<View
