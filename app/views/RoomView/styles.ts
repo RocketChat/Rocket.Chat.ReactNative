@@ -14,8 +14,13 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		marginVertical: 15
 	},
+	reactionSearchContainer: {
+		marginHorizontal: 12,
+		marginBottom: 8
+	},
 	reactionPickerContainer: {
-		height: '100%'
+		flex: 1,
+		flexDirection: 'column'
 	},
 	bannerContainer: {
 		paddingVertical: 12,

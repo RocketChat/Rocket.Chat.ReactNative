@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, TextInput, FlatList, StyleSheet } from 'react-native';
 
-import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
@@ -10,6 +9,7 @@ import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../EmojiPicker/freque
 import log from '../../lib/methods/helpers/log';
 import sharedStyles from '../../views/Styles';
 import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
+import { EmojiSearch } from '../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
@@ -36,15 +36,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderRadius: 10
-	},
-	input: {
-		height: 32,
-		borderWidth: 0,
-		paddingVertical: 0,
-		borderRadius: 4
-	},
-	textInputContainer: {
-		marginBottom: 0
 	},
 	emptyContainer: {
 		flex: 1,
@@ -126,25 +117,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 						<CustomIcon name='chevron-left' size={24} color={colors.collapsibleChevron} />
 					</Pressable>
 					<View style={styles.inputContainer}>
-						<FormTextInput
-							inputRef={ref}
-							autoCapitalize='none'
-							autoCorrect={false}
-							autoComplete='off'
-							returnKeyType='search'
-							textContentType='none'
-							blurOnSubmit
-							placeholder={I18n.t('Search_emoji')}
-							underlineColorAndroid='transparent'
-							onChangeText={handleTextChange}
-							inputStyle={[styles.input, { backgroundColor: colors.textInputSecondaryBackground }]}
-							containerStyle={styles.textInputContainer}
-							value={searchText}
-							onClearInput={() => handleTextChange('')}
-							onBlur={closeEmoji}
-							iconRight={'search'}
-							testID='emoji-searchbar-input'
-						/>
+						<EmojiSearch ref={ref} onBlur={closeEmoji} onChangeText={handleTextChange} />
 					</View>
 				</View>
 			</View>

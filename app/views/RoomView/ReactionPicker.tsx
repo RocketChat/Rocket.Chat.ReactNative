@@ -3,16 +3,14 @@ import { View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import EmojiPicker from '../../containers/EmojiPicker';
-import { useTheme } from '../../theme';
 import styles from './styles';
 import { IEmoji } from '../../definitions';
 import { EventTypes } from '../../containers/EmojiPicker/interfaces';
-import { FormTextInput } from '../../containers/TextInput/FormTextInput';
-import I18n from '../../i18n';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { emojis } from '../../containers/EmojiPicker/data';
 import database from '../../lib/database';
 import { debounce } from '../../lib/methods/helpers/debounce';
+import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
 
 interface IReactionPickerProps {
 	message?: any;
@@ -26,14 +24,11 @@ interface IReactionPickerProps {
 const MAX_EMOJIS_TO_DISPLAY = 20;
 
 const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
-	const { colors } = useTheme();
-	const [searchText, setSearchText] = React.useState<string>('');
 	const [searchedEmojis, setSearchedEmojis] = React.useState<IEmoji[]>([]);
 	const [searching, setSearching] = React.useState<boolean>(false);
 
 	const handleTextChange = (text: string) => {
 		setSearching(text !== '');
-		setSearchText(text);
 		searchEmojis(text);
 	};
 
@@ -77,21 +72,8 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 
 	return (
 		<View style={styles.reactionPickerContainer} testID='reaction-picker'>
-			<View style={styles.searchbarContainer}>
-				<FormTextInput
-					autoCapitalize='none'
-					autoCorrect={false}
-					blurOnSubmit
-					placeholder={I18n.t('Search_emoji')}
-					returnKeyType='search'
-					underlineColorAndroid='transparent'
-					onChangeText={handleTextChange}
-					style={[styles.reactionPickerSearchbar, { backgroundColor: colors.borderColor }]}
-					value={searchText}
-					onClearInput={() => handleTextChange('')}
-					iconRight={'search'}
-					testID='reaction-picker-searchbar'
-				/>
+			<View style={styles.reactionSearchContainer}>
+				<EmojiSearch onChangeText={handleTextChange} />
 			</View>
 			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />
 		</View>
