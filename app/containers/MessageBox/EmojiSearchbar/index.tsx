@@ -7,35 +7,37 @@ import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
 import { IEmoji } from '../../../definitions';
 import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
-import { ListItem } from './ListItem';
 import log from '../../../lib/methods/helpers/log';
 import sharedStyles from '../../../views/Styles';
+import { PressableEmoji } from '../../EmojiPicker/PressableEmoji';
+import { EMOJI_BUTTON_SIZE } from '../../EmojiPicker/styles';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
 const styles = StyleSheet.create({
-	emojiListContainer: {
-		height: 40,
+	listContainer: {
+		height: EMOJI_BUTTON_SIZE,
 		margin: 8,
 		flexGrow: 1
 	},
-	emojiSearchViewContainer: {
+	container: {
 		borderTopWidth: 1
 	},
-	emojiSearchbarContainer: {
+	searchContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginRight: 12,
 		marginBottom: 12
 	},
-	openEmojiKeyboard: {
+	emojiButton: {
 		width: 32,
 		height: 32,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		borderRadius: 10
 	},
-	emojiSearchbar: {
+	input: {
 		height: 32,
 		borderWidth: 0,
 		paddingVertical: 0,
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
 	textInputContainer: {
 		marginBottom: 0
 	},
-	listEmptyComponent: {
+	emptyContainer: {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		fontSize: 16
 	},
-	emojiSearchInput: {
+	inputContainer: {
 		flex: 1
 	}
 });
@@ -94,37 +96,35 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 			}
 		};
 
-		const renderItem = ({ item }: { item: IEmoji }) => <ListItem emoji={item} onEmojiSelected={handleEmojiSelected} />;
+		const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;
 
 		return (
-			<View
-				style={[styles.emojiSearchViewContainer, { borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }]}
-			>
+			<View style={[styles.container, { borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }]}>
 				<FlatList
 					horizontal
 					data={searchText ? emojis : frequentlyUsed}
 					renderItem={renderItem}
 					showsHorizontalScrollIndicator={false}
 					ListEmptyComponent={() => (
-						<View style={styles.listEmptyComponent} testID='no-results-found'>
+						<View style={styles.emptyContainer} testID='no-results-found'>
 							<Text style={[styles.emptyText, { color: colors.auxiliaryText }]}>{I18n.t('No_results_found')}</Text>
 						</View>
 					)}
 					// @ts-ignore
 					keyExtractor={item => item?.content || item?.name || item}
-					contentContainerStyle={styles.emojiListContainer}
+					contentContainerStyle={styles.listContainer}
 					keyboardShouldPersistTaps='always'
 				/>
-				<View style={styles.emojiSearchbarContainer}>
+				<View style={styles.searchContainer}>
 					<Pressable
-						style={({ pressed }: { pressed: boolean }) => [styles.openEmojiKeyboard, { opacity: pressed ? 0.7 : 1 }]}
+						style={({ pressed }: { pressed: boolean }) => [styles.emojiButton, { opacity: pressed ? 0.7 : 1 }]}
 						onPress={openEmoji}
 						hitSlop={BUTTON_HIT_SLOP}
 						testID='openback-emoji-keyboard'
 					>
 						<CustomIcon name='chevron-left' size={24} color={colors.collapsibleChevron} />
 					</Pressable>
-					<View style={styles.emojiSearchInput}>
+					<View style={styles.inputContainer}>
 						<FormTextInput
 							inputRef={ref}
 							autoCapitalize='none'
@@ -134,7 +134,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 							returnKeyType='search'
 							underlineColorAndroid='transparent'
 							onChangeText={handleTextChange}
-							inputStyle={[styles.emojiSearchbar, { backgroundColor: colors.textInputSecondaryBackground }]}
+							inputStyle={[styles.input, { backgroundColor: colors.textInputSecondaryBackground }]}
 							containerStyle={styles.textInputContainer}
 							value={searchText}
 							onClearInput={() => handleTextChange('')}
