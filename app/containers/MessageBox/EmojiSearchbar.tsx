@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, TextInput, FlatList, StyleSheet } from 'react-native';
 
-import { FormTextInput } from '../../TextInput/FormTextInput';
-import { useTheme } from '../../../theme';
-import I18n from '../../../i18n';
-import { CustomIcon } from '../../CustomIcon';
-import { IEmoji } from '../../../definitions';
-import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../../EmojiPicker/frequentlyUsedEmojis';
-import log from '../../../lib/methods/helpers/log';
-import sharedStyles from '../../../views/Styles';
-import { PressableEmoji } from '../../EmojiPicker/PressableEmoji';
-import { EMOJI_BUTTON_SIZE } from '../../EmojiPicker/styles';
+import { FormTextInput } from '../TextInput/FormTextInput';
+import { useTheme } from '../../theme';
+import I18n from '../../i18n';
+import { CustomIcon } from '../CustomIcon';
+import { IEmoji } from '../../definitions';
+import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../EmojiPicker/frequentlyUsedEmojis';
+import log from '../../lib/methods/helpers/log';
+import sharedStyles from '../../views/Styles';
+import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
+import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 		marginRight: 12,
 		marginBottom: 12
 	},
-	emojiButton: {
+	backButton: {
 		width: 32,
 		height: 32,
 		justifyContent: 'center',
@@ -117,7 +117,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 				/>
 				<View style={styles.searchContainer}>
 					<Pressable
-						style={({ pressed }: { pressed: boolean }) => [styles.emojiButton, { opacity: pressed ? 0.7 : 1 }]}
+						style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
 						onPress={openEmoji}
 						hitSlop={BUTTON_HIT_SLOP}
 						testID='openback-emoji-keyboard'
