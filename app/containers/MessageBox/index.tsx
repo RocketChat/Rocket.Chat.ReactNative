@@ -361,6 +361,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
+		if (nextState.showEmojiSearchbar !== showEmojiSearchbar) {
+			return true;
+		}
 		if (!isFocused()) {
 			return false;
 		}
@@ -409,16 +412,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextProps.goToCannedResponses !== goToCannedResponses) {
 			return true;
 		}
-		if (nextState.showEmojiSearchbar !== showEmojiSearchbar) {
-			return true;
-		}
 		if (!dequal(nextState.searchedEmojis, searchedEmojis)) {
 			return true;
 		}
 		return false;
 	}
 
-	componentDidUpdate(prevProps: IMessageBoxProps) {
+	componentDidUpdate(prevProps: IMessageBoxProps, prevState: IMessageBoxState) {
+		const { showEmojiSearchbar } = this.state;
 		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled } = this.props;
 		if (prevProps.replyWithMention !== replyWithMention) {
 			if (threadsEnabled && replyWithMention) {
@@ -427,6 +428,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
+		}
+		if (showEmojiSearchbar && prevState.showEmojiSearchbar !== showEmojiSearchbar) {
+			if (this.emojiSearchbarRef && this.emojiSearchbarRef.focus) {
+				this.emojiSearchbarRef.focus();
+			}
 		}
 	}
 
@@ -628,13 +634,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				this.setShowSend(true);
 				break;
 			case EventTypes.SEARCH_PRESSED:
-				this.setState({ showEmojiKeyboard: false });
-				setTimeout(() => {
-					this.setState({ showEmojiSearchbar: true });
-					if (this.emojiSearchbarRef && this.emojiSearchbarRef.focus) {
-						this.emojiSearchbarRef.focus();
-					}
-				}, 200);
+				this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: true });
 				break;
 			default:
 			// Do nothing
@@ -958,7 +958,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	closeEmoji = () => {
-		this.setState({ showEmojiKeyboard: false });
+		this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: false });
 	};
 
 	closeEmojiKeyboardAndFocus = () => {
@@ -1181,6 +1181,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			<EmojiSearchbar
 				ref={ref => (this.emojiSearchbarRef = ref)}
 				openEmoji={this.openEmoji}
+				closeEmoji={this.closeEmoji}
 				onChangeText={onChangeText}
 				emojis={searchedEmojis}
 				onEmojiSelected={onEmojiSelected}
@@ -1201,6 +1202,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const {
 			recording,
 			showEmojiKeyboard,
+			showEmojiSearchbar,
 			showSend,
 			mentions,
 			trackingType,
@@ -1263,7 +1265,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const textInputAndButtons = !recording ? (
 			<>
 				<LeftButtons
-					showEmojiKeyboard={showEmojiKeyboard}
+					showEmojiKeyboard={showEmojiKeyboard || showEmojiSearchbar}
 					editing={editing}
 					editCancel={this.editCancel}
 					openEmoji={this.openEmoji}
@@ -1283,7 +1285,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					defaultValue=''
 					multiline
 					testID={`messagebox-input${tmid ? '-thread' : ''}`}
-					onFocus={this.closeEmojiSearchbar}
 					{...isAndroidTablet}
 				/>
 				<RightButtons

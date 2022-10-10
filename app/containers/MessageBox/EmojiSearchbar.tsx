@@ -62,13 +62,14 @@ const styles = StyleSheet.create({
 
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
+	closeEmoji: () => void;
 	onChangeText: (value: string) => void;
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
 }
 
 const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
-	({ openEmoji, onChangeText, emojis, onEmojiSelected }, ref) => {
+	({ openEmoji, closeEmoji, onChangeText, emojis, onEmojiSelected }, ref) => {
 		const { colors } = useTheme();
 		const [searchText, setSearchText] = useState<string>('');
 		const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
@@ -140,6 +141,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 							containerStyle={styles.textInputContainer}
 							value={searchText}
 							onClearInput={() => handleTextChange('')}
+							onBlur={closeEmoji}
 							iconRight={'search'}
 							testID='emoji-searchbar-input'
 						/>
