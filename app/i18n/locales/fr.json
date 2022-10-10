@@ -119,7 +119,6 @@
   "Black": "Noir",
   "Block_user": "Bloquer l'utilisateur",
   "Browser": "Navigateur",
-  "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre.",
   "Busy": "Occupé",
   "By_proceeding_you_are_agreeing": "En poursuivant, vous acceptez nos",
   "Cancel_editing": "Annuler la modification",
@@ -816,5 +815,6 @@
   "Omnichannel_placed_chat_on_hold": "Chat en attente : {{comment}}",
   "Omnichannel_on_hold_chat_resumed": "Le chat en attente a repris : {{comment}}",
   "Omnichannel_queue": "File d'attente omnicanale",
-  "Empty": "Vide"
+  "Empty": "Vide",
+  "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre."
 }

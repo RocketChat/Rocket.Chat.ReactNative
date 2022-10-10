@@ -119,7 +119,6 @@
   "Black": "ブラック",
   "Block_user": "ブロックしたユーザー",
   "Browser": "ブラウザ",
-  "Broadcast_hint": "許可されたユーザーのみが新しいメッセージを書き込めます。他のユーザーは返信することができます",
   "Busy": "取り込み中",
   "By_proceeding_you_are_agreeing": "続行することにより、私達を承認します",
   "Cancel_editing": "編集をキャンセル",
@@ -561,5 +560,6 @@
   "You_will_be_logged_out_of_this_application": "アプリからログアウトします。",
   "Clear": "クリア",
   "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
-  "invalid-room": "無効なルーム"
+  "invalid-room": "無効なルーム",
+  "Broadcast_hint": "許可されたユーザーのみが新しいメッセージを書き込めます。他のユーザーは返信することができます"
 }
