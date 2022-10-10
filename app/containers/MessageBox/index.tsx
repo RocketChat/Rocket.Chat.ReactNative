@@ -1143,29 +1143,21 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	renderEmojiSearchbar = () => {
 		const { showEmojiSearchbar } = this.state;
 
-		const onEmojiSelected = (emoji: any) => {
-			let selectedEmoji;
-			if (emoji.name || emoji.content) {
-				selectedEmoji = `:${emoji.name || emoji.content}:`;
-			} else {
-				selectedEmoji = shortnameToUnicode(`:${emoji}:`);
-			}
-			const { text } = this;
-			let newText = '';
-			const { start, end } = this.selection;
-			const cursor = Math.max(start, end);
-			newText = `${text.substr(0, cursor)}${selectedEmoji}${text.substr(cursor)}`;
-			const newCursor = cursor + selectedEmoji.length;
-			this.setInput(newText, { start: newCursor, end: newCursor });
-			this.setShowSend(true);
-		};
-
 		return showEmojiSearchbar ? (
 			<EmojiSearchbar
 				ref={ref => (this.emojiSearchbarRef = ref)}
 				openEmoji={this.openEmoji}
 				closeEmoji={this.closeEmoji}
-				onEmojiSelected={onEmojiSelected}
+				// TODO: type me
+				onEmojiSelected={(emoji: any) => {
+					let selectedEmoji;
+					if (emoji.name || emoji.content) {
+						selectedEmoji = `:${emoji.name || emoji.content}:`;
+					} else {
+						selectedEmoji = shortnameToUnicode(`:${emoji}:`);
+					}
+					this.onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji: selectedEmoji });
+				}}
 			/>
 		) : null;
 	};
