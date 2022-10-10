@@ -129,9 +129,11 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
 							inputRef={ref}
 							autoCapitalize='none'
 							autoCorrect={false}
+							autoComplete='off'
+							returnKeyType='search'
+							textContentType='none'
 							blurOnSubmit
 							placeholder={I18n.t('Search_emoji')}
-							returnKeyType='search'
 							underlineColorAndroid='transparent'
 							onChangeText={handleTextChange}
 							inputStyle={[styles.input, { backgroundColor: colors.textInputSecondaryBackground }]}
