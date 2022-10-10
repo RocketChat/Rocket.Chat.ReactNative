@@ -7,10 +7,12 @@ import { CustomIcon } from '../CustomIcon';
 import { IEmoji } from '../../definitions';
 import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../EmojiPicker/frequentlyUsedEmojis';
 import log from '../../lib/methods/helpers/log';
+import { useDebounce } from '../../lib/methods/helpers';
 import sharedStyles from '../../views/Styles';
 import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
 import { EmojiSearch } from '../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
+import { searchEmojis } from '../EmojiPicker/helpers';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
@@ -54,75 +56,73 @@ const styles = StyleSheet.create({
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	closeEmoji: () => void;
-	onChangeText: (value: string) => void;
-	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
 }
 
-const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(
-	({ openEmoji, closeEmoji, onChangeText, emojis, onEmojiSelected }, ref) => {
-		const { colors } = useTheme();
-		const [searchText, setSearchText] = useState<string>('');
-		const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
+const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ openEmoji, closeEmoji, onEmojiSelected }, ref) => {
+	const { colors } = useTheme();
+	const [searchText, setSearchText] = useState<string>('');
+	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
+	const [emojis, setEmojis] = useState<IEmoji[]>([]);
 
-		const handleTextChange = (text: string) => {
-			setSearchText(text);
-			onChangeText(text);
-		};
+	const handleTextChange = useDebounce(async (text: string) => {
+		setSearchText(text);
+		const result = await searchEmojis(text);
+		setEmojis(result);
+	}, 300);
 
-		const handleEmojiSelected = (emoji: IEmoji) => {
-			try {
-				onEmojiSelected(emoji);
-				if (typeof emoji === 'string') {
-					addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
-				} else {
-					addFrequentlyUsed({
-						content: emoji?.content || emoji?.name,
-						name: emoji?.name,
-						extension: emoji.extension,
-						isCustom: true
-					});
-				}
-			} catch (e) {
-				log(e);
+	const handleEmojiSelected = (emoji: IEmoji) => {
+		try {
+			onEmojiSelected(emoji);
+			if (typeof emoji === 'string') {
+				addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
+			} else {
+				addFrequentlyUsed({
+					content: emoji?.content || emoji?.name,
+					name: emoji?.name,
+					extension: emoji.extension,
+					isCustom: true
+				});
 			}
-		};
+		} catch (e) {
+			log(e);
+		}
+	};
 
-		const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;
+	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;
 
-		return (
-			<View style={[styles.container, { borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }]}>
-				<FlatList
-					horizontal
-					data={searchText ? emojis : frequentlyUsed}
-					renderItem={renderItem}
-					showsHorizontalScrollIndicator={false}
-					ListEmptyComponent={() => (
-						<View style={styles.emptyContainer} testID='no-results-found'>
-							<Text style={[styles.emptyText, { color: colors.auxiliaryText }]}>{I18n.t('No_results_found')}</Text>
-						</View>
-					)}
-					// @ts-ignore
-					keyExtractor={item => item?.content || item?.name || item}
-					contentContainerStyle={styles.listContainer}
-					keyboardShouldPersistTaps='always'
-				/>
-				<View style={styles.searchContainer}>
-					<Pressable
-						style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
-						onPress={openEmoji}
-						hitSlop={BUTTON_HIT_SLOP}
-						testID='openback-emoji-keyboard'
-					>
-						<CustomIcon name='chevron-left' size={24} color={colors.collapsibleChevron} />
-					</Pressable>
-					<View style={styles.inputContainer}>
-						<EmojiSearch ref={ref} onBlur={closeEmoji} onChangeText={handleTextChange} />
+	return (
+		<View style={[styles.container, { borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }]}>
+			<FlatList
+				horizontal
+				data={searchText ? emojis : frequentlyUsed}
+				renderItem={renderItem}
+				showsHorizontalScrollIndicator={false}
+				ListEmptyComponent={() => (
+					<View style={styles.emptyContainer} testID='no-results-found'>
+						<Text style={[styles.emptyText, { color: colors.auxiliaryText }]}>{I18n.t('No_results_found')}</Text>
 					</View>
+				)}
+				// @ts-ignore
+				keyExtractor={item => item?.content || item?.name || item}
+				contentContainerStyle={styles.listContainer}
+				keyboardShouldPersistTaps='always'
+			/>
+			<View style={styles.searchContainer}>
+				<Pressable
+					style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
+					onPress={openEmoji}
+					hitSlop={BUTTON_HIT_SLOP}
+					testID='openback-emoji-keyboard'
+				>
+					<CustomIcon name='chevron-left' size={24} color={colors.collapsibleChevron} />
+				</Pressable>
+				<View style={styles.inputContainer}>
+					<EmojiSearch ref={ref} onBlur={closeEmoji} onChangeText={handleTextChange} />
 				</View>
 			</View>
-		);
-	}
-);
+		</View>
+	);
+});
 
 export default EmojiSearchBar;

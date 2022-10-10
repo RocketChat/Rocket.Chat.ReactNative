@@ -34,8 +34,7 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
 	MENTIONS_TRACKING_TYPE_USERS,
-	TIMEOUT_CLOSE_EMOJI,
-	MAX_EMOJIS_TO_DISPLAY
+	TIMEOUT_CLOSE_EMOJI
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -134,7 +133,6 @@ interface IMessageBoxState {
 	mentionLoading: boolean;
 	permissionToUpload: boolean;
 	showEmojiSearchbar: boolean;
-	searchedEmojis: any[];
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
@@ -192,8 +190,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tshow: this.sendThreadToChannel,
 			mentionLoading: false,
 			permissionToUpload: true,
-			showEmojiSearchbar: false,
-			searchedEmojis: []
+			showEmojiSearchbar: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -340,8 +337,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			mentionLoading,
 			trackingType,
 			permissionToUpload,
-			showEmojiSearchbar,
-			searchedEmojis
+			showEmojiSearchbar
 		} = this.state;
 
 		const {
@@ -410,9 +406,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (nextProps.goToCannedResponses !== goToCannedResponses) {
-			return true;
-		}
-		if (!dequal(nextState.searchedEmojis, searchedEmojis)) {
 			return true;
 		}
 		return false;
@@ -1148,18 +1141,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	renderEmojiSearchbar = () => {
-		const { showEmojiSearchbar, searchedEmojis } = this.state;
-
-		const searchEmojis = debounce(async (keyword: any) => {
-			const customEmojis = await this.getCustomEmojis(keyword, MAX_EMOJIS_TO_DISPLAY / 2);
-			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MAX_EMOJIS_TO_DISPLAY / 2);
-			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MAX_EMOJIS_TO_DISPLAY);
-			this.setState({ searchedEmojis: mergedEmojis });
-		}, 300);
-
-		const onChangeText = (value: string) => {
-			searchEmojis(value);
-		};
+		const { showEmojiSearchbar } = this.state;
 
 		const onEmojiSelected = (emoji: any) => {
 			let selectedEmoji;
@@ -1177,13 +1159,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			this.setInput(newText, { start: newCursor, end: newCursor });
 			this.setShowSend(true);
 		};
+
 		return showEmojiSearchbar ? (
 			<EmojiSearchbar
 				ref={ref => (this.emojiSearchbarRef = ref)}
 				openEmoji={this.openEmoji}
 				closeEmoji={this.closeEmoji}
-				onChangeText={onChangeText}
-				emojis={searchedEmojis}
 				onEmojiSelected={onEmojiSelected}
 			/>
 		) : null;
