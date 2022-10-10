@@ -11,7 +11,7 @@ const BUTTON_HIT_SLOP = { top: 15, right: 15, bottom: 15, left: 15 };
 const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
-		<View style={[styles.footerContainer, { backgroundColor: colors.bannerBackground }]}>
+		<View style={[styles.footerContainer, { borderTopColor: colors.borderColor }]}>
 			<Pressable
 				onPress={onSearchPressed}
 				hitSlop={BUTTON_HIT_SLOP}

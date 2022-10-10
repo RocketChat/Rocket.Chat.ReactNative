@@ -26,7 +26,13 @@ const TabBar = ({ activeTab, tabs, goToPage }: ITabBarProps): React.ReactElement
 					]}
 				>
 					<CustomIcon name={tab} size={24} color={activeTab === i ? colors.tintColor : colors.auxiliaryTintColor} />
-					<View style={activeTab === i ? [styles.activeTabLine, { backgroundColor: colors.tintColor }] : styles.tabLine} />
+					<View
+						style={
+							activeTab === i
+								? [styles.activeTabLine, { backgroundColor: colors.tintColor }]
+								: [styles.tabLine, { backgroundColor: colors.borderColor }]
+						}
+					/>
 				</Pressable>
 			))}
 		</View>

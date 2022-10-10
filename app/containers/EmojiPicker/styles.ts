@@ -36,7 +36,6 @@ export default StyleSheet.create({
 		left: 0,
 		right: 0,
 		height: 2,
-		backgroundColor: 'rgba(0,0,0,0.05)',
 		bottom: 0
 	},
 	categoryContainer: {
@@ -72,7 +71,8 @@ export default StyleSheet.create({
 		paddingHorizontal: 12,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
+		borderTopWidth: 1
 	},
 	footerButtonsContainer: {
 		height: 44,
