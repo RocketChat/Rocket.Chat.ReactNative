@@ -126,6 +126,8 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	private fromRid?: string;
 
+	private subscriptionFrom?: Subscription;
+
 	constructor(props: IRoomInfoViewProps) {
 		super(props);
 		const room = props.route.params?.room;
@@ -161,6 +163,9 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+		if (this.subscriptionFrom && this.subscriptionFrom.unsubscribe) {
+			this.subscriptionFrom.unsubscribe();
 		}
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
@@ -278,7 +283,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		if (this.fromRid) {
 			try {
 				const sub = await getSubscriptionByRoomId(this.fromRid);
-				sub?.observe().subscribe(roomFrom => {
+				this.subscriptionFrom = sub?.observe().subscribe(roomFrom => {
 					this.setState({ roomFrom });
 				});
 			} catch (e) {
