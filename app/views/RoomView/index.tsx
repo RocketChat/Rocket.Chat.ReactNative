@@ -112,7 +112,6 @@ const stateAttrsUpdate = [
 	'loading',
 	'editing',
 	'replying',
-	'reacting',
 	'readOnly',
 	'member',
 	'canForwardGuest',
@@ -164,7 +163,6 @@ interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackPar
 	isMasterDetail: boolean;
 	replyBroadcast: Function;
 	width: number;
-	height: number;
 	insets: EdgeInsets;
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
@@ -200,7 +198,6 @@ interface IRoomViewState {
 	editing: boolean;
 	replying: boolean;
 	replyWithMention: boolean;
-	reacting: boolean;
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
@@ -274,7 +271,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
-			reacting: false,
 			readOnly: false,
 			unreadsCount: null,
 			roomUserId,
@@ -829,20 +825,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	showReactionPicker = () => {
-		const { showActionSheet, width, height } = this.props;
-		const { reacting, selectedMessage } = this.state;
+		const { showActionSheet } = this.props;
+		const { selectedMessage } = this.state;
 		showActionSheet({
 			children: (
-				<ReactionPicker
-					show={reacting}
-					message={selectedMessage}
-					onEmojiSelected={this.onReactionPress}
-					reactionClose={this.onReactionClose}
-					width={width}
-					height={height}
-				/>
+				<ReactionPicker message={selectedMessage} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
 			),
-			snaps: [400, '100%'],
+			snaps: [400],
 			enableContentPanningGesture: false
 		});
 	};
@@ -853,7 +842,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionClose = () => {
 		const { hideActionSheet } = this.props;
-		this.setState({ selectedMessage: undefined, reacting: false }, hideActionSheet);
+		this.setState({ selectedMessage: undefined }, hideActionSheet);
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {

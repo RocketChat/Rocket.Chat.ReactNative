@@ -11,11 +11,8 @@ import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
 
 interface IReactionPickerProps {
 	message?: any;
-	show: boolean;
 	reactionClose: () => void;
 	onEmojiSelected: (shortname: string, id: string) => void;
-	width: number;
-	height: number;
 }
 
 const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
@@ -46,7 +43,7 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 	return (
 		<View style={styles.reactionPickerContainer} testID='reaction-picker'>
 			<View style={styles.reactionSearchContainer}>
-				<EmojiSearch onChangeText={handleTextChange} />
+				<EmojiSearch onChangeText={handleTextChange} bottomSheet />
 			</View>
 			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />
 		</View>
