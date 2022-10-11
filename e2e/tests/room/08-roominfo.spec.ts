@@ -53,29 +53,11 @@ describe('Room info screen', () => {
 		it('should navigate to room info', async () => {
 			await expect(element(by.id('room-info-view'))).toExist();
 			await expect(element(by.id('room-info-view-name'))).toExist();
-			await expect(element(by.id('room-info-view-message'))).toExist();
-			await expect(element(by.id('room-info-view-ignore'))).toExist();
-			await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user')))).toExist();
 		});
 
-		it('should block user', async () => {
-			await element(by.id('room-info-view-ignore')).tap();
-			await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unblock user'))))
-				.toExist()
-				.withTimeout(2000);
+		after(async () => {
 			await tapBack();
 			await tapBack();
-			await expect(element(by[textMatcher]('This room is blocked'))).toExist();
-		});
-
-		it('should unblock user', async () => {
-			await element(by.id('room-header')).tap();
-			await element(by.id('room-actions-info')).tap();
-			await element(by.id('room-info-view-ignore')).tap();
-			await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user')))).toExist();
-			await tapBack();
-			await tapBack();
-			await expect(element(by.id('messagebox'))).toBeVisible();
 			await tapBack();
 		});
 	});
