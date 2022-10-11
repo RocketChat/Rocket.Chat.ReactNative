@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
 interface IEmojiSearchBarProps {
 	onBlur?: TextInputProps['onBlur'];
 	onChangeText: TextInputProps['onChangeText'];
+	bottomSheet?: boolean;
 }
 
-export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ onBlur, onChangeText }, ref) => {
+export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ onBlur, onChangeText, bottomSheet }, ref) => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 
@@ -56,6 +57,7 @@ export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ 
 			onBlur={onBlur}
 			iconRight={'search'}
 			testID='emoji-searchbar-input'
+			bottomSheet={bottomSheet}
 		/>
 	);
 });
