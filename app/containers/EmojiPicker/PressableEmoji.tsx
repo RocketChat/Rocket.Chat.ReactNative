@@ -11,9 +11,9 @@ export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (em
 	const { colors } = useTheme();
 	return (
 		<Pressable
-			key={typeof emoji === 'string' ? emoji : emoji.content}
+			key={typeof emoji === 'string' ? emoji : emoji.name}
 			onPress={() => onPress(emoji)}
-			testID={`emoji-${typeof emoji === 'string' ? emoji : emoji.content}`}
+			testID={`emoji-${typeof emoji === 'string' ? emoji : emoji.name}`}
 			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: EMOJI_BUTTON_SIZE / 2 }}
 			style={({ pressed }: { pressed: boolean }) => [
 				styles.emojiButton,

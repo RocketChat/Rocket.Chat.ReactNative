@@ -29,7 +29,7 @@ const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.
 		<FlatList
 			// rerender FlatList in case of width changes
 			key={`emoji-category-${width}`}
-			keyExtractor={item => (typeof item === 'string' ? item : item.content)}
+			keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 			data={emojis}
 			renderItem={({ item }) => renderItem(item)}
 			numColumns={numColumns}

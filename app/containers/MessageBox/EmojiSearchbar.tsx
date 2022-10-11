@@ -12,7 +12,7 @@ import sharedStyles from '../../views/Styles';
 import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
 import { EmojiSearch } from '../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
-import { searchEmojis } from '../EmojiPicker/helpers';
+import { getEmojiText, searchEmojis } from '../EmojiPicker/helpers';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	closeEmoji: () => void;
-	onEmojiSelected: (emoji: IEmoji) => void;
+	onEmojiSelected: (emoji: string) => void;
 }
 
 const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ openEmoji, closeEmoji, onEmojiSelected }, ref) => {
@@ -73,7 +73,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ open
 
 	const handleEmojiSelected = (emoji: IEmoji) => {
 		try {
-			onEmojiSelected(emoji);
+			onEmojiSelected(getEmojiText(emoji));
 			if (typeof emoji === 'string') {
 				addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
 			} else {

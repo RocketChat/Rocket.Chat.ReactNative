@@ -1148,15 +1148,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				ref={ref => (this.emojiSearchbarRef = ref)}
 				openEmoji={this.openEmoji}
 				closeEmoji={this.closeEmoji}
-				// TODO: type me
-				onEmojiSelected={(emoji: any) => {
-					let selectedEmoji;
-					if (emoji.name || emoji.content) {
-						selectedEmoji = `:${emoji.name || emoji.content}:`;
-					} else {
-						selectedEmoji = shortnameToUnicode(`:${emoji}:`);
-					}
-					this.onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji: selectedEmoji });
+				onEmojiSelected={(emoji: string) => {
+					this.onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 				}}
 			/>
 		) : null;

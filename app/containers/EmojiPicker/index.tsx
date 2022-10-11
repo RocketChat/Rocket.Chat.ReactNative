@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
@@ -7,13 +7,13 @@ import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
 import { categories, emojisByCategory } from './data';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import log from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import { IEmoji, ICustomEmojis } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
 import { useFrequentlyUsedEmoji, addFrequentlyUsed } from './frequentlyUsedEmojis';
+import { getEmojiText } from './helpers';
 
 const EmojiPicker = ({
 	onItemClicked,
@@ -28,27 +28,17 @@ const EmojiPicker = ({
 		state => state.customEmojis,
 		() => true
 	);
-	const customEmojis = useMemo(
-		() =>
-			Object.keys(allCustomEmojis)
-				.filter(item => item === allCustomEmojis[item].name)
-				.map(item => ({
-					content: allCustomEmojis[item].name,
-					name: allCustomEmojis[item].name,
-					extension: allCustomEmojis[item].extension,
-					isCustom: true
-				})),
-		[allCustomEmojis]
-	);
+	const customEmojis = Object.keys(allCustomEmojis)
+		.filter(item => item === allCustomEmojis[item].name)
+		.map(item => ({
+			name: allCustomEmojis[item].name,
+			extension: allCustomEmojis[item].extension
+		}));
 
 	const handleEmojiSelect = (emoji: IEmoji) => {
+		console.log('🚀 ~ file: index.tsx ~ line 45 ~ handleEmojiSelect ~ emoji', emoji);
 		try {
-			if (typeof emoji === 'string') {
-				const shortname = `:${emoji}:`;
-				onItemClicked(EventTypes.EMOJI_PRESSED, shortnameToUnicode(shortname), shortname);
-			} else {
-				onItemClicked(EventTypes.EMOJI_PRESSED, `:${emoji.content}:`);
-			}
+			onItemClicked(EventTypes.EMOJI_PRESSED, getEmojiText(emoji));
 			addFrequentlyUsed(emoji);
 		} catch (e) {
 			log(e);
