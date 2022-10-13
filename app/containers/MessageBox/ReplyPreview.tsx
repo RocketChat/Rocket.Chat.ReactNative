@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
 	},
 	username: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		flexShrink: 1
 	},
 	time: {
 		fontSize: 12,
@@ -67,7 +68,7 @@ const ReplyPreview = React.memo(
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
 				<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
 					<View style={styles.header}>
-						<Text style={[styles.username, { color: themes[theme].tintColor }]}>
+						<Text numberOfLines={1} style={[styles.username, { color: themes[theme].tintColor }]}>
 							{useRealName ? message.u?.name : message.u?.username}
 						</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
