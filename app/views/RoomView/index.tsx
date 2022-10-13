@@ -1109,10 +1109,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	navToRoomInfo = (navParam: any) => {
 		const { navigation, user, isMasterDetail } = this.props;
+		const { room } = this.state;
+
 		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
 		if (navParam.rid === user.id) {
 			return;
 		}
+		navParam.fromRid = room.rid;
 		if (isMasterDetail) {
 			navParam.showCloseModal = true;
 			// @ts-ignore
