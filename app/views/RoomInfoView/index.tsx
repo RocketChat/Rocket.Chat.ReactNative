@@ -18,7 +18,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { themes } from '../../lib/constants';
-import { TSupportedThemes, TColors, withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -400,7 +400,6 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		try {
 			await Services.toggleBlockUser(rid, blocked, block);
 		} catch (e) {
-			logEvent(events.RI_TOGGLE_BLOCK_USER_F);
 			log(e);
 		}
 	};
@@ -418,9 +417,9 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		);
 	};
 
-	renderButton = (onPress: () => void, iconName: TIconsName, text: string, colorName?: keyof TColors) => {
+	renderButton = (onPress: () => void, iconName: TIconsName, text: string, danger?: boolean) => {
 		const { theme } = this.props;
-		const color = colorName ? (themes[theme][colorName] as string) : themes[theme].actionTintColor;
+		const color = danger ? themes[theme].dangerColor : themes[theme].actionTintColor;
 		return (
 			<BorderlessButton testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
@@ -434,7 +433,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { jitsiEnabled } = this.props;
 
 		const isFromDm = roomFrom?.rid ? new RegExp(roomUser._id).test(roomFrom.rid) : false;
-		const isDirectFromSaved = this.isDirect && this.fromRid && roomFrom; // OUtro nome
+		const isDirectFromSaved = this.isDirect && this.fromRid && roomFrom;
 
 		const ignored = roomFrom?.ignored;
 		const isIgnored = ignored?.includes?.(roomUser._id);
@@ -452,7 +451,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 							() => handleIgnore(roomUser._id, !isIgnored, roomFrom.rid),
 							'ignore',
 							I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
-							'dangerColor'
+							true
 					  )
 					: null}
 				{isDirectFromSaved && isFromDm
@@ -460,7 +459,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 							() => this.handleBlockUser(roomFrom.rid, roomUser._id, !blocker),
 							'ignore',
 							I18n.t(`${blocker ? 'Unblock' : 'Block'}_user`),
-							'dangerColor'
+							true
 					  )
 					: null}
 			</View>
