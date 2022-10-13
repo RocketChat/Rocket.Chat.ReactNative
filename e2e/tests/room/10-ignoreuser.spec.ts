@@ -47,6 +47,9 @@ describe('Ignore/Block User', () => {
 					.toExist()
 					.withTimeout(2000);
 				await tapBack();
+				await waitFor(element(by.id('room-actions-view')))
+					.toBeVisible()
+					.withTimeout(5000);
 				await tapBack();
 				await expect(element(by[textMatcher]('This room is blocked'))).toExist();
 			});
@@ -56,6 +59,9 @@ describe('Ignore/Block User', () => {
 				await element(by.id('room-info-view-ignore')).tap();
 				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user')))).toExist();
 				await tapBack();
+				await waitFor(element(by.id('room-actions-view')))
+					.toBeVisible()
+					.withTimeout(5000);
 				await tapBack();
 				await expect(element(by.id('messagebox'))).toBeVisible();
 				await tapBack();
