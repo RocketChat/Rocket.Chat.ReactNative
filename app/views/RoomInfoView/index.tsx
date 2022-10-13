@@ -110,7 +110,7 @@ interface IRoomInfoViewState {
 	room: ISubscription;
 	roomUser: IUserParsed | ILivechatVisitorModified;
 	showEdit: boolean;
-	roomFrom?: TSubscriptionModel;
+	roomFromRid?: TSubscriptionModel;
 }
 
 class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewState> {
@@ -126,7 +126,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	private fromRid?: string;
 
-	private subscriptionFrom?: Subscription;
+	private subscriptionRoomFromRid?: Subscription;
 
 	constructor(props: IRoomInfoViewProps) {
 		super(props);
@@ -139,14 +139,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			room: (room || { rid: this.rid, t: this.t }) as any,
 			roomUser: roomUser || {},
 			showEdit: false,
-			roomFrom: undefined
+			roomFromRid: undefined
 		};
 	}
 
 	componentDidMount() {
 		if (this.isDirect) {
 			this.loadUser();
-			this.loadRoomFrom();
+			this.loadRoomFromRid();
 		} else {
 			this.loadRoom();
 		}
@@ -164,8 +164,8 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
-		if (this.subscriptionFrom && this.subscriptionFrom.unsubscribe) {
-			this.subscriptionFrom.unsubscribe();
+		if (this.subscriptionRoomFromRid && this.subscriptionRoomFromRid.unsubscribe) {
+			this.subscriptionRoomFromRid.unsubscribe();
 		}
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
@@ -279,12 +279,12 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		}
 	};
 
-	loadRoomFrom = async () => {
+	loadRoomFromRid = async () => {
 		if (this.fromRid) {
 			try {
 				const sub = await getSubscriptionByRoomId(this.fromRid);
-				this.subscriptionFrom = sub?.observe().subscribe(roomFrom => {
-					this.setState({ roomFrom });
+				this.subscriptionRoomFromRid = sub?.observe().subscribe(roomFromRid => {
+					this.setState({ roomFromRid });
 				});
 			} catch (e) {
 				// do nothing
@@ -429,16 +429,19 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	};
 
 	renderButtons = () => {
-		const { roomFrom, roomUser } = this.state;
+		const { roomFromRid, roomUser } = this.state;
 		const { jitsiEnabled } = this.props;
 
-		const isFromDm = roomFrom?.rid ? new RegExp(roomUser._id).test(roomFrom.rid) : false;
-		const isDirectFromSaved = this.isDirect && this.fromRid && roomFrom;
+		const isFromDm = roomFromRid?.rid ? new RegExp(roomUser._id).test(roomFromRid.rid) : false;
+		const isDirectFromSaved = this.isDirect && this.fromRid && roomFromRid;
 
-		const ignored = roomFrom?.ignored;
+		// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
+		const isDmWithMyself = roomFromRid?.uids && roomFromRid.uids?.filter(uid => uid !== roomUser._id).length === 0;
+
+		const ignored = roomFromRid?.ignored;
 		const isIgnored = ignored?.includes?.(roomUser._id);
 
-		const blocker = roomFrom?.blocker;
+		const blocker = roomFromRid?.blocker;
 
 		return (
 			<View style={styles.roomButtonsContainer}>
@@ -446,9 +449,9 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				{jitsiEnabled && this.isDirect
 					? this.renderButton(() => this.handleCreateDirectMessage(this.videoCall), 'camera', I18n.t('Video_call'))
 					: null}
-				{isDirectFromSaved && !isFromDm
+				{isDirectFromSaved && !isFromDm && !isDmWithMyself
 					? this.renderButton(
-							() => handleIgnore(roomUser._id, !isIgnored, roomFrom.rid),
+							() => handleIgnore(roomUser._id, !isIgnored, roomFromRid.rid),
 							'ignore',
 							I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
 							true
@@ -456,7 +459,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 					: null}
 				{isDirectFromSaved && isFromDm
 					? this.renderButton(
-							() => this.handleBlockUser(roomFrom.rid, roomUser._id, !blocker),
+							() => this.handleBlockUser(roomFromRid.rid, roomUser._id, !blocker),
 							'ignore',
 							I18n.t(`${blocker ? 'Unblock' : 'Block'}_user`),
 							true
