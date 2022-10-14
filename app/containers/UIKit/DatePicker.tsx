@@ -50,13 +50,13 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 	const onChange = ({ nativeEvent: { timestamp } }: Event, date?: Date) => {
 		if (date || timestamp) {
 			const newDate = date || new Date(timestamp);
-			action({ value: moment(newDate).format('YYYY-MM-DD') });
 			unstable_batchedUpdates(() => {
 				onChangeDate(newDate);
 				if (isAndroid) {
 					onShow(false);
 				}
 			});
+			action({ value: moment(newDate).format('YYYY-MM-DD') });
 		}
 	};
 
