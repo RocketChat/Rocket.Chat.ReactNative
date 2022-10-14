@@ -11,7 +11,7 @@ import sharedStyles from '../../views/Styles';
 import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
 import { EmojiSearch } from '../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
-import { getEmojiText, searchEmojis } from '../EmojiPicker/helpers';
+import { searchEmojis } from '../EmojiPicker/helpers';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 

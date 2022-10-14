@@ -12,7 +12,6 @@ import { IEmoji, ICustomEmojis } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
 import { useFrequentlyUsedEmoji, addFrequentlyUsed } from './frequentlyUsedEmojis';
-import { getEmojiText } from './helpers';
 
 const EmojiPicker = ({
 	onItemClicked,

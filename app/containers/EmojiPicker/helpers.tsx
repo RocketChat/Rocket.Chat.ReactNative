@@ -4,7 +4,6 @@ import { IEmoji } from '../../definitions';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { emojis } from './data';
 import database from '../../lib/database';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 
 export const searchEmojis = async (keyword: string): Promise<IEmoji[]> => {
 	const likeString = sanitizeLikeString(keyword);
@@ -25,12 +24,4 @@ export const searchEmojis = async (keyword: string): Promise<IEmoji[]> => {
 	}));
 	const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1);
 	return [...customEmojis, ...filteredEmojis];
-};
-
-export const getEmojiText = (emoji: IEmoji): string => {
-	if (typeof emoji === 'string') {
-		const shortname = `:${emoji}:`;
-		return shortnameToUnicode(shortname);
-	}
-	return `:${emoji.name}:`;
 };

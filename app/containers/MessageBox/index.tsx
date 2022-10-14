@@ -62,7 +62,7 @@ import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import EmojiSearchbar from './EmojiSearchbar';
-import { getEmojiText } from '../EmojiPicker/helpers';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 
 require('./EmojiKeyboard');
 
@@ -622,7 +622,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				this.setShowSend(newText !== '');
 				break;
 			case EventTypes.EMOJI_PRESSED:
-				const emojiText = getEmojiText(emoji);
+				let emojiText = '';
+				if (typeof emoji === 'string') {
+					const shortname = `:${emoji}:`;
+					emojiText = shortnameToUnicode(shortname);
+				} else {
+					emojiText = `:${emoji.name}:`;
+				}
 				newText = `${text.substr(0, cursor)}${emojiText}${text.substr(cursor)}`;
 				newCursor = cursor + emojiText.length;
 				this.setInput(newText, { start: newCursor, end: newCursor });
