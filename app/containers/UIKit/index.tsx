@@ -152,7 +152,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 	}
 
 	video_conf(element: IElement & { callId: string }) {
-		return <VideoConferenceBlock callId={element.callId} />;
+		return <VideoConferenceBlock callId={element.callId} blockId={element.blockId} />;
 	}
 }
 
