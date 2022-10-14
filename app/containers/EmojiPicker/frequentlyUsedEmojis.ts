@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-native';
-import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
 import { IEmoji, TFrequentlyUsedEmojiModel } from '../../definitions';
@@ -19,23 +19,16 @@ export const useFrequentlyUsedEmoji = (
 	useEffect(() => {
 		const getFrequentlyUsedEmojis = async () => {
 			const db = database.active;
-			const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
-			const frequentlyUsedOrdered = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-			let frequentlyUsedEmojis = frequentlyUsedOrdered.map(item => {
+			const frequentlyUsedRecords = await db.get('frequently_used_emojis').query(Q.experimentalSortBy('count', Q.desc)).fetch();
+			let frequentlyUsedEmojis = frequentlyUsedRecords.map(item => {
 				if (item.isCustom) {
 					return { name: item.content, extension: item.extension! }; // if isCustom is true, extension is not null
 				}
 				return item.content;
 			});
 
-			// TODO: it might be losing order here because of the concat
-			if (withDefaultEmojis) {
-				frequentlyUsedEmojis = frequentlyUsedEmojis
-					.filter(emoji => {
-						if (typeof emoji === 'string') return !DEFAULT_EMOJIS.includes(emoji);
-						return !DEFAULT_EMOJIS.includes(emoji.name);
-					})
-					.concat(DEFAULT_EMOJIS);
+			if (withDefaultEmojis && frequentlyUsedEmojis.length < DEFAULT_EMOJIS.length) {
+				frequentlyUsedEmojis = frequentlyUsedEmojis.concat(DEFAULT_EMOJIS).slice(0, DEFAULT_EMOJIS.length);
 			}
 
 			// TODO: remove once we update to React 18
