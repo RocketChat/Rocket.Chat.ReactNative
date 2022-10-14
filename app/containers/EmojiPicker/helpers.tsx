@@ -6,7 +6,7 @@ import { emojis } from './data';
 import database from '../../lib/database';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 
-export const searchEmojis = async (keyword: string) => {
+export const searchEmojis = async (keyword: string): Promise<IEmoji[]> => {
 	const likeString = sanitizeLikeString(keyword);
 	const whereClause = [];
 	if (likeString) {
@@ -18,11 +18,11 @@ export const searchEmojis = async (keyword: string) => {
 		.query(...whereClause)
 		.fetch();
 	const customEmojis = customEmojisCollection?.map(emoji => ({
-		isCustom: true,
-		content: emoji?.name,
+		// isCustom: true,
+		// content: emoji?.name,
 		name: emoji?.name,
 		extension: emoji?.extension
-	})) as IEmoji[];
+	}));
 	const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1);
 	return [...customEmojis, ...filteredEmojis];
 };
