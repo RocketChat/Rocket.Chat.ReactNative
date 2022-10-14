@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 interface IEmojiSearchBarProps {
 	openEmoji: () => void;
 	closeEmoji: () => void;
-	onEmojiSelected: (emoji: string) => void;
+	onEmojiSelected: (emoji: IEmoji) => void;
 }
 
 const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ openEmoji, closeEmoji, onEmojiSelected }, ref) => {
@@ -71,7 +71,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ open
 	}, 300);
 
 	const handleEmojiSelected = (emoji: IEmoji) => {
-		onEmojiSelected(getEmojiText(emoji));
+		onEmojiSelected(emoji);
 		addFrequentlyUsed(emoji);
 	};
 

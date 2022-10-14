@@ -51,7 +51,8 @@ import {
 	TGetCustomEmoji,
 	TSubscriptionModel,
 	TThreadModel,
-	IMessage
+	IMessage,
+	IEmoji
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
@@ -61,7 +62,7 @@ import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import EmojiSearchbar from './EmojiSearchbar';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
+import { getEmojiText } from '../EmojiPicker/helpers';
 
 require('./EmojiKeyboard');
 
@@ -598,7 +599,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onKeyboardItemSelected = (keyboardId: string, params: { eventType: EventTypes; emoji: string }) => {
+	onKeyboardItemSelected = (keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
 		const { eventType, emoji } = params;
 		const { text } = this;
 		let newText = '';
@@ -621,8 +622,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				this.setShowSend(newText !== '');
 				break;
 			case EventTypes.EMOJI_PRESSED:
-				newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
-				newCursor = cursor + emoji.length;
+				const emojiText = getEmojiText(emoji);
+				newText = `${text.substr(0, cursor)}${emojiText}${text.substr(cursor)}`;
+				newCursor = cursor + emojiText.length;
 				this.setInput(newText, { start: newCursor, end: newCursor });
 				this.setShowSend(true);
 				break;
@@ -1148,7 +1150,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				ref={ref => (this.emojiSearchbarRef = ref)}
 				openEmoji={this.openEmoji}
 				closeEmoji={this.closeEmoji}
-				onEmojiSelected={(emoji: string) => {
+				onEmojiSelected={(emoji: IEmoji) => {
 					this.onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 				}}
 			/>

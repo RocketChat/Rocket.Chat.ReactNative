@@ -12,7 +12,7 @@ import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
 interface IReactionPickerProps {
 	message?: any;
 	reactionClose: () => void;
-	onEmojiSelected: (shortname: string, id: string) => void;
+	onEmojiSelected: (emoji: IEmoji, id: string) => void;
 }
 
 const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
@@ -29,13 +29,9 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 		setSearchedEmojis(emojis);
 	};
 
-	const handleEmojiSelect = (_eventType: EventTypes, emoji?: string, shortname?: string) => {
-		// standard emojis: `emoji` is unicode and `shortname` is :joy:
-		// custom emojis: only `emoji` is returned with shortname type (:joy:)
-		// to set reactions, we need shortname type
-		if (message) {
-			// @ts-ignore
-			onEmojiSelected(shortname || emoji, message.id);
+	const handleEmojiSelect = (_eventType: EventTypes, emoji?: IEmoji) => {
+		if (message && emoji) {
+			onEmojiSelected(emoji, message.id);
 		}
 		reactionClose();
 	};

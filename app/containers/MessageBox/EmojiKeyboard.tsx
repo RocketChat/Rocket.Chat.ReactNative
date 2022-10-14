@@ -8,11 +8,12 @@ import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
+import { IEmoji } from '../../definitions';
 
 const EmojiKeyboard = () => {
 	const { colors } = useTheme();
 
-	const onItemClicked = (eventType: EventTypes, emoji: string | undefined) => {
+	const onItemClicked = (eventType: EventTypes, emoji?: IEmoji) => {
 		KeyboardRegistry.onItemSelected('EmojiKeyboard', { eventType, emoji });
 	};
 

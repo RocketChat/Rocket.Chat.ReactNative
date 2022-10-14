@@ -35,7 +35,7 @@ const EmojiPicker = ({
 		}));
 
 	const handleEmojiSelect = (emoji: IEmoji) => {
-		onItemClicked(EventTypes.EMOJI_PRESSED, getEmojiText(emoji));
+		onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
 		addFrequentlyUsed(emoji);
 	};
 

@@ -8,7 +8,7 @@ export enum EventTypes {
 }
 
 export interface IEmojiPickerProps {
-	onItemClicked: (event: EventTypes, emoji?: string, shortname?: string) => void;
+	onItemClicked: (event: EventTypes, emoji?: IEmoji) => void;
 	isEmojiKeyboard?: boolean;
 	searching?: boolean;
 	searchedEmojis?: IEmoji[];
