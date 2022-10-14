@@ -7,7 +7,6 @@ import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
 import { categories, emojisByCategory } from './data';
-import log from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import { IEmoji, ICustomEmojis } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks';
@@ -36,13 +35,8 @@ const EmojiPicker = ({
 		}));
 
 	const handleEmojiSelect = (emoji: IEmoji) => {
-		console.log('🚀 ~ file: index.tsx ~ line 45 ~ handleEmojiSelect ~ emoji', emoji);
-		try {
-			onItemClicked(EventTypes.EMOJI_PRESSED, getEmojiText(emoji));
-			addFrequentlyUsed(emoji);
-		} catch (e) {
-			log(e);
-		}
+		onItemClicked(EventTypes.EMOJI_PRESSED, getEmojiText(emoji));
+		addFrequentlyUsed(emoji);
 	};
 
 	const renderCategory = (category: keyof typeof emojisByCategory, i: number, label: string) => {

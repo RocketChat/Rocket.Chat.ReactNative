@@ -2814,4 +2814,4 @@ export const emojis = [
 	'flag_mf'
 ];
 
-export const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
+export const DEFAULT_EMOJIS = ['clap', 'thumbsup', 'heart_eyes', 'grinning', 'thinking', 'smiley'];

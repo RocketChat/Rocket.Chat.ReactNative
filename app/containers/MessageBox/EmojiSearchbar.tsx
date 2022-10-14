@@ -6,7 +6,6 @@ import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { IEmoji } from '../../definitions';
 import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../EmojiPicker/frequentlyUsedEmojis';
-import log from '../../lib/methods/helpers/log';
 import { useDebounce } from '../../lib/methods/helpers';
 import sharedStyles from '../../views/Styles';
 import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
@@ -72,21 +71,8 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ open
 	}, 300);
 
 	const handleEmojiSelected = (emoji: IEmoji) => {
-		try {
-			onEmojiSelected(getEmojiText(emoji));
-			if (typeof emoji === 'string') {
-				addFrequentlyUsed({ content: emoji, name: emoji, isCustom: false });
-			} else {
-				addFrequentlyUsed({
-					content: emoji?.content || emoji?.name,
-					name: emoji?.name,
-					extension: emoji.extension,
-					isCustom: true
-				});
-			}
-		} catch (e) {
-			log(e);
-		}
+		onEmojiSelected(getEmojiText(emoji));
+		addFrequentlyUsed(emoji);
 	};
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;

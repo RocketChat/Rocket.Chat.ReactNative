@@ -27,10 +27,13 @@ export interface ICustomEmojis {
 export type TGetCustomEmoji = (name: string) => any;
 
 export type TFrequentlyUsedEmojiModel = IFrequentlyUsedEmoji & Model;
-export type TCustomEmojiModel = {
+
+export interface ICustomEmojiModel {
 	_id: string;
 	name: string;
 	aliases?: string[];
 	extension: string;
 	_updatedAt: Date;
-} & Model;
+}
+
+export type TCustomEmojiModel = ICustomEmojiModel & Model;

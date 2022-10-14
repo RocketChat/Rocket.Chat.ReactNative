@@ -8,21 +8,17 @@ import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import { IEmoji, TAnyMessageModel, TFrequentlyUsedEmojiModel } from '../../definitions';
+import { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
 import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../EmojiPicker/frequentlyUsedEmojis';
-import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
-import { getEmojiText } from '../EmojiPicker/helpers';
-
-type TItem = TFrequentlyUsedEmojiModel | string;
 
 export interface IHeader {
-	handleReaction: (emoji: TItem, message: TAnyMessageModel) => void;
+	handleReaction: (emoji: IEmoji, message: TAnyMessageModel) => void;
 	message: TAnyMessageModel;
 	isMasterDetail: boolean;
 }
 
-type TOnReaction = ({ emoji }: { emoji: TItem }) => void;
+type TOnReaction = ({ emoji }: { emoji: IEmoji }) => void;
 
 interface THeaderItem {
 	item: IEmoji;
@@ -64,35 +60,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-const keyExtractor = (item: IEmoji) => {
-	const emojiModel = item as TFrequentlyUsedEmojiModel;
-	return (emojiModel.id ? emojiModel.content : item) as string;
-};
-
-const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
-	console.log('🚀 ~ file: Header.tsx ~ line 72 ~ HeaderItem ~ item', item);
-
-	// return <PressableEmoji emoji={item} onPress={() => onReaction(getEmojiText(item))} />;
-	// const emojiModel = item;
-	// const emoji = ('id' in emojiModel ? emojiModel.content : item) as string;
-	// if (typeof emoji === 'string') {
-	// 	return <Text style={styles.categoryEmoji}>{shortnameToUnicode(`:${emoji}:`)}</Text>;
-	// }
-	// return <CustomEmoji style={styles.customCategoryEmoji} emoji={emoji} />;
-	return (
-		<Touch
-			testID={`message-actions-emoji-${item}`}
-			onPress={() => onReaction({ emoji: `:${item}:` })}
-			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		>
-			{typeof item === 'string' ? (
-				<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item}:`)}</Text>
-			) : (
-				<CustomEmoji style={styles.customEmoji} emoji={item} />
-			)}
-		</Touch>
-	);
-};
+const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => (
+	<Touch
+		testID={`message-actions-emoji-${item}`}
+		onPress={() => onReaction({ emoji: item })}
+		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+	>
+		{typeof item === 'string' ? (
+			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item}:`)}</Text>
+		) : (
+			<CustomEmoji style={styles.customEmoji} emoji={item} />
+		)}
+	</Touch>
+);
 
 const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Touch
@@ -113,8 +93,8 @@ const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader)
 	const quantity = Math.trunc(size / (ITEM_SIZE + ITEM_MARGIN * 2) - 1);
 
 	const onReaction: TOnReaction = ({ emoji }) => {
-		addFrequentlyUsed(emoji);
 		handleReaction(emoji, message);
+		addFrequentlyUsed(emoji);
 	};
 
 	const renderItem = ({ item }: { item: IEmoji }) => <HeaderItem item={item} onReaction={onReaction} theme={theme} />;
@@ -132,7 +112,7 @@ const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader)
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
 				style={{ backgroundColor: themes[theme].focusedBackground }}
-				keyExtractor={keyExtractor}
+				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}
 				horizontal

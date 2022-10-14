@@ -75,7 +75,8 @@ import {
 	TSubscriptionModel,
 	TThreadModel,
 	ICustomEmoji,
-	ICustomEmojis
+	ICustomEmojis,
+	IEmoji
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 import { TListRef } from './List/List';
@@ -859,8 +860,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	onReactionPress = async (shortname: string, messageId: string) => {
+	onReactionPress = async (emoji: IEmoji, messageId: string) => {
 		try {
+			let shortname = '';
+			if (typeof emoji === 'string') {
+				shortname = emoji;
+			} else {
+				shortname = emoji.name;
+			}
 			await Services.setReaction(shortname, messageId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();

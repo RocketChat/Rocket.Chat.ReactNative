@@ -32,5 +32,5 @@ export const getEmojiText = (emoji: IEmoji): string => {
 		const shortname = `:${emoji}:`;
 		return shortnameToUnicode(shortname);
 	}
-	return `:${emoji.content}:`;
+	return `:${emoji.name}:`;
 };
