@@ -5,6 +5,9 @@ import Touchable from 'react-native-platform-touchable';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
+import { useSnaps } from '../../../lib/hooks/useSnaps';
+import { useActionSheet } from '../../ActionSheet';
+import CallAgainActionSheet from './CallAgainActionSheet';
 import { CallParticipants } from './CallParticipants';
 import { useVideoConf } from './hooks';
 import useStyle from './styles';
@@ -15,8 +18,11 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 	const style = useStyle();
 	const { joinCall } = useVideoConf();
 	const username = useAppSelector(state => state.login.user.username);
+	const { showActionSheet } = useActionSheet();
 
 	const { loading, result } = useEndpointData('video-conference.info', { callId });
+
+	const snaps = useSnaps([1250]);
 
 	if (loading) return <VideoConferenceSkeletonLoading />;
 
@@ -29,7 +35,15 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 				<VideoConferenceBaseContainer variant='ended'>
 					{type === 'direct' ? (
 						<>
-							<Touchable style={style.callToActionCallBack}>
+							<Touchable
+								style={style.callToActionCallBack}
+								onPress={() =>
+									showActionSheet({
+										children: <CallAgainActionSheet rid={result.rid} />,
+										snaps
+									})
+								}
+							>
 								<Text style={style.callToActionCallBackText}>
 									{createdBy.username === username ? i18n.t('Call_back') : i18n.t('Call_again')}
 								</Text>
