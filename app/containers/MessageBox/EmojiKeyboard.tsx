@@ -6,22 +6,31 @@ import { Provider } from 'react-redux';
 import store from '../../lib/store';
 import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { ThemeContext, TSupportedThemes } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
+import { colors } from '../../lib/constants';
 
-const EmojiKeyboard = () => {
-	const { colors } = useTheme();
-
+const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 	const onItemClicked = (eventType: EventTypes, emoji?: IEmoji) => {
 		KeyboardRegistry.onItemSelected('EmojiKeyboard', { eventType, emoji });
 	};
 
 	return (
 		<Provider store={store}>
-			<View style={[styles.emojiKeyboardContainer, { borderTopColor: colors.borderColor }]} testID='messagebox-keyboard-emoji'>
-				<EmojiPicker onItemClicked={onItemClicked} isEmojiKeyboard={true} />
-			</View>
+			<ThemeContext.Provider
+				value={{
+					theme,
+					colors: colors[theme]
+				}}
+			>
+				<View
+					style={[styles.emojiKeyboardContainer, { borderTopColor: colors[theme].borderColor }]}
+					testID='messagebox-keyboard-emoji'
+				>
+					<EmojiPicker onItemClicked={onItemClicked} isEmojiKeyboard={true} />
+				</View>
+			</ThemeContext.Provider>
 		</Provider>
 	);
 };
