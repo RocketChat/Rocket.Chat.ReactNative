@@ -82,6 +82,9 @@ export const colors = {
 		conferenceCallPlusUsersText: '#6C727A',
 		conferenceCallCallBackButton: '#EEEFF1',
 		conferenceCallCallBackText: '#1F2329',
+		conferenceCallDisabledIcon: '#6C727A',
+		conferenceCallEnabledIcon: '#FFFFFF',
+		conferenceCallEnabledIconBackground: '#156FF5',
 		...mentions
 	},
 	dark: {
@@ -146,6 +149,9 @@ export const colors = {
 		conferenceCallPlusUsersText: '#9EA2A8',
 		conferenceCallCallBackButton: '#E4E7EA',
 		conferenceCallCallBackText: '#FFFFFF',
+		conferenceCallDisabledIcon: '#6C727A',
+		conferenceCallEnabledIcon: '#FFFFFF',
+		conferenceCallEnabledIconBackground: '#156FF5',
 		...mentions
 	},
 	black: {
@@ -210,6 +216,9 @@ export const colors = {
 		conferenceCallPlusUsersText: '#9EA2A8',
 		conferenceCallCallBackButton: '#E4E7EA',
 		conferenceCallCallBackText: '#FFFFFF',
+		conferenceCallDisabledIcon: '#6C727A',
+		conferenceCallEnabledIcon: '#FFFFFF',
+		conferenceCallEnabledIconBackground: '#156FF5',
 		...mentions
 	}
 };
