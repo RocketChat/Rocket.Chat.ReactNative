@@ -123,7 +123,7 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
-		textInputSecondaryBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#030b1b', // backgroundColor
 		...mentions
 	},
 	black: {
@@ -176,7 +176,7 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
-		textInputSecondaryBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#000000', // backgroundColor
 		...mentions
 	}
 };

@@ -65,7 +65,7 @@ const EmojiPicker = ({
 						keyboardShouldPersistTaps: 'always',
 						keyboardDismissMode: 'none'
 					}}
-					style={{ backgroundColor: colors.focusedBackground }}
+					style={{ backgroundColor: colors.messageboxBackground }}
 				>
 					{categories.tabs.map((tab: any, i) =>
 						i === 0 && frequentlyUsed.length === 0

@@ -78,7 +78,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ open
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;
 
 	return (
-		<View style={[styles.container, { borderTopColor: colors.borderColor, backgroundColor: colors.backgroundColor }]}>
+		<View style={[styles.container, { borderTopColor: colors.borderColor, backgroundColor: colors.messageboxBackground }]}>
 			<FlatList
 				horizontal
 				data={searchText ? emojis : frequentlyUsed}
@@ -101,7 +101,7 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ open
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='openback-emoji-keyboard'
 				>
-					<CustomIcon name='chevron-left' size={24} color={colors.collapsibleChevron} />
+					<CustomIcon name='chevron-left' size={24} color={colors.auxiliaryTintColor} />
 				</Pressable>
 				<View style={styles.inputContainer}>
 					<EmojiSearch ref={ref} onBlur={closeEmoji} onChangeText={handleTextChange} />
