@@ -862,18 +862,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionLongPress = (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: message });
-		const { showActionSheet, baseUrl, width } = this.props;
+		const { showActionSheet } = this.props;
 		const { selectedMessage } = this.state;
 		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, {
-			children: (
-				<ReactionsList
-					reactions={selectedMessage?.reactions}
-					baseUrl={baseUrl}
-					getCustomEmoji={this.getCustomEmoji}
-					width={width}
-				/>
-			),
-			snaps: ['50%'],
+			children: <ReactionsList reactions={selectedMessage?.reactions} getCustomEmoji={this.getCustomEmoji} />,
+			snaps: ['50%', '80%'],
 			enableContentPanningGesture: false
 		});
 	};
@@ -1116,10 +1109,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	navToRoomInfo = (navParam: any) => {
 		const { navigation, user, isMasterDetail } = this.props;
+		const { room } = this.state;
+
 		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
 		if (navParam.rid === user.id) {
 			return;
 		}
+		navParam.fromRid = room.rid;
 		if (isMasterDetail) {
 			navParam.showCloseModal = true;
 			// @ts-ignore
