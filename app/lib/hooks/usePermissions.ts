@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { dequal } from 'dequal';
 import { Subscription } from 'rxjs';
 import { createSelector } from 'reselect';
@@ -18,6 +18,9 @@ const getPermissionsSelector = createSelector(
 const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 	const [subscriptionRoles, setSubscriptionRoles] = useState<TSubscriptionModel['roles']>([]);
 
+	// subscription role as string and using it within array dependency
+	const subscriptionRoleRef = useRef('[]');
+
 	useEffect(() => {
 		if (!rid) {
 			return;
@@ -29,16 +32,19 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 			}
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
-				if (!dequal(subscriptionRoles, s.roles)) {
+				if (!dequal(JSON.parse(subscriptionRoleRef.current), s.roles?.sort())) {
 					setSubscriptionRoles(s.roles);
+					subscriptionRoleRef.current = JSON.stringify(s.roles?.sort());
 				}
 			});
 		});
 
 		return () => {
-			if (subSubscription && subSubscription?.unsubscribe) subSubscription.unsubscribe();
+			if (subSubscription && subSubscription?.unsubscribe) {
+				subSubscription.unsubscribe();
+			}
 		};
-	}, [subscriptionRoles]);
+	}, [subscriptionRoleRef.current]);
 
 	return subscriptionRoles;
 };
