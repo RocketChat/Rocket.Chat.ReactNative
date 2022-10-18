@@ -865,5 +865,7 @@
   "Call_again": "Call Again",
   "Call_ongoing": "Call Ongoing",
   "Joined": "Joined",
-  "Calling": "Calling..."
+  "Calling": "Calling...",
+  "Start_a_call": "Start a call",
+  "Call": "Call"
 }

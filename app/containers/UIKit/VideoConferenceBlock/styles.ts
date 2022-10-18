@@ -87,6 +87,40 @@ export default function useStyle() {
 			fontSize: 12,
 			...sharedStyles.textRegular,
 			color: colors.passcodeSecondary
+		},
+		actionSheetContainer: {
+			paddingHorizontal: 24,
+			flex: 1
+		},
+		actionSheetHeaderTitle: {
+			fontSize: 14,
+			...sharedStyles.textBold,
+			color: colors.passcodePrimary
+		},
+		actionSheetUsername: {
+			fontSize: 16,
+			...sharedStyles.textBold,
+			color: colors.passcodePrimary
+		},
+		enabledBackground: {
+			backgroundColor: colors.conferenceCallEnabledIconBackground
+		},
+		iconCallContainer: {
+			padding: 6,
+			borderRadius: 2
+		},
+		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
+		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
+		actionSheetUsernameContainer: { flexDirection: 'row', paddingTop: 8, alignItems: 'center' },
+		actionSheetPhotoContainer: {
+			height: 220,
+			width: 148,
+			backgroundColor: colors.conferenceCallPhotoBackground,
+			borderRadius: 8,
+			margin: 24,
+			alignSelf: 'center',
+			justifyContent: 'center',
+			alignItems: 'center'
 		}
 	});
 }
