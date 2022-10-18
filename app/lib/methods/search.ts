@@ -27,18 +27,15 @@ export const localSearch = async ({ text = '', filterUsers = true, filterRooms =
 	}
 
 	const search = subscriptions.slice(0, 7).map(item => ({
-		avatarETag: item.avatarETag,
+		_id: item._id,
 		rid: item.rid,
 		name: item.name,
-		t: item.t,
 		fname: item.fname,
+		avatarETag: item.avatarETag,
+		t: item.t,
 		encrypted: item.encrypted,
 		lastMessage: item.lastMessage,
-		_id: item._id,
-		status: item.status,
-		username: item.usernames,
-		outside: false,
-		search: true
+		status: item.status
 	})) as ISearchLocal[];
 
 	return search;
