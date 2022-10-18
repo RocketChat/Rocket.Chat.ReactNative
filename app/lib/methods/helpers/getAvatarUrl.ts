@@ -13,10 +13,10 @@ export const getAvatarURL = ({
 	userId,
 	token,
 	avatar,
+	server,
 	avatarETag,
 	rid,
 	blockUnauthenticatedAccess,
-	server,
 	serverVersion,
 	externalProviderUrl
 }: IAvatar): string => {
