@@ -4,6 +4,7 @@ import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
+import { isIOS } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	input: {
@@ -57,8 +58,8 @@ export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ 
 			onBlur={onBlur}
 			iconRight={'search'}
 			testID='emoji-searchbar-input'
-			bottomSheet={bottomSheet}
-			autoFocus
+			bottomSheet={bottomSheet && isIOS}
+			autoFocus={!bottomSheet} // focus on input when not in reaction picker
 		/>
 	);
 });
