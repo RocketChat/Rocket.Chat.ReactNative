@@ -17,8 +17,6 @@ export const searchEmojis = async (keyword: string): Promise<IEmoji[]> => {
 		.query(...whereClause)
 		.fetch();
 	const customEmojis = customEmojisCollection?.map(emoji => ({
-		// isCustom: true,
-		// content: emoji?.name,
 		name: emoji?.name,
 		extension: emoji?.extension
 	}));
