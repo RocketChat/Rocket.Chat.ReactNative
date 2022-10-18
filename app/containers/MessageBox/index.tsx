@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, NativeModules, Text, View, BackHandler, TextInput as RNTextInput } from 'react-native';
+import { Alert, Keyboard, NativeModules, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
@@ -165,8 +165,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	private typingTimeout: any;
 
-	private emojiSearchbarRef: RNTextInput | null;
-
 	static defaultProps = {
 		message: {
 			id: ''
@@ -196,7 +194,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
 		this.focused = false;
-		this.emojiSearchbarRef = null;
 
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -1146,7 +1143,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		return showEmojiSearchbar ? (
 			<EmojiSearchbar
-				ref={ref => (this.emojiSearchbarRef = ref)}
 				openEmoji={this.openEmoji}
 				closeEmoji={this.closeEmoji}
 				onEmojiSelected={(emoji: IEmoji) => {

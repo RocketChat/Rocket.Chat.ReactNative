@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, StyleSheet, TextInputProps } from 'react-native';
+import { StyleSheet, TextInputProps } from 'react-native';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
@@ -15,10 +15,6 @@ const styles = StyleSheet.create({
 	},
 	textInputContainer: {
 		marginBottom: 0
-	},
-	inputContainer: {
-		flex: 1,
-		height: 32
 	}
 });
 
@@ -28,7 +24,7 @@ interface IEmojiSearchBarProps {
 	bottomSheet?: boolean;
 }
 
-export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ onBlur, onChangeText, bottomSheet }, ref) => {
+export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): React.ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 
@@ -62,4 +58,4 @@ export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ 
 			autoFocus={!bottomSheet} // focus on input when not in reaction picker
 		/>
 	);
-});
+};

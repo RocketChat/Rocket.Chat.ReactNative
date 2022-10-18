@@ -58,7 +58,7 @@ interface IEmojiSearchBarProps {
 	onEmojiSelected: (emoji: IEmoji) => void;
 }
 
-const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ openEmoji, closeEmoji, onEmojiSelected }, ref) => {
+const EmojiSearchBar = ({ openEmoji, closeEmoji, onEmojiSelected }: IEmojiSearchBarProps) => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
@@ -104,11 +104,11 @@ const EmojiSearchBar = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ open
 					<CustomIcon name='chevron-left' size={24} color={colors.auxiliaryTintColor} />
 				</Pressable>
 				<View style={styles.inputContainer}>
-					<EmojiSearch ref={ref} onBlur={closeEmoji} onChangeText={handleTextChange} />
+					<EmojiSearch onBlur={closeEmoji} onChangeText={handleTextChange} />
 				</View>
 			</View>
 		</View>
 	);
-});
+};
 
 export default EmojiSearchBar;
