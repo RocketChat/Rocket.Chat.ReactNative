@@ -40,7 +40,6 @@ export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ 
 
 	return (
 		<FormTextInput
-			inputRef={ref}
 			autoCapitalize='none'
 			autoCorrect={false}
 			autoComplete='off'
@@ -59,6 +58,7 @@ export const EmojiSearch = React.forwardRef<TextInput, IEmojiSearchBarProps>(({ 
 			iconRight={'search'}
 			testID='emoji-searchbar-input'
 			bottomSheet={bottomSheet}
+			autoFocus
 		/>
 	);
 });

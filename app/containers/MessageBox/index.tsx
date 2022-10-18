@@ -412,8 +412,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		return false;
 	}
 
-	componentDidUpdate(prevProps: IMessageBoxProps, prevState: IMessageBoxState) {
-		const { showEmojiSearchbar } = this.state;
+	componentDidUpdate(prevProps: IMessageBoxProps) {
 		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled } = this.props;
 		if (prevProps.replyWithMention !== replyWithMention) {
 			if (threadsEnabled && replyWithMention) {
@@ -422,11 +421,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
-		}
-		if (showEmojiSearchbar && prevState.showEmojiSearchbar !== showEmojiSearchbar) {
-			if (this.emojiSearchbarRef && this.emojiSearchbarRef.focus) {
-				this.emojiSearchbarRef.focus();
-			}
 		}
 	}
 
@@ -541,7 +535,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}, 100);
 
 	onKeyboardResigned = () => {
-		this.closeEmoji();
+		const { showEmojiSearchbar } = this.state;
+		if (!showEmojiSearchbar) {
+			this.closeEmoji();
+		}
 	};
 
 	onPressMention = (item: any) => {
@@ -965,10 +962,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	closeEmojiKeyboardAndFocus = () => {
 		this.closeEmoji();
 		this.focus();
-	};
-
-	closeEmojiSearchbar = () => {
-		this.setState({ showEmojiSearchbar: false });
 	};
 
 	closeEmojiAndAction = (action?: Function, params?: any) => {
