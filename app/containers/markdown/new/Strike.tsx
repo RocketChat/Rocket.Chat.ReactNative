@@ -9,6 +9,7 @@ import Link from './Link';
 
 interface IStrikeProps {
 	value: StrikeProps['value'];
+	isLink?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -17,14 +18,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Strike = ({ value }: IStrikeProps) => (
+const Strike = ({ value, isLink }: IStrikeProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':
 					return <Link value={block.value} />;
 				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
+					return <Plain value={block.value} isLink={isLink} />;
 				case 'BOLD':
 					return <Bold value={block.value} />;
 				case 'ITALIC':

@@ -10,6 +10,7 @@ import Link from './Link';
 
 interface IBoldProps {
 	value: BoldProps['value'];
+	isLink?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -18,14 +19,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Bold = ({ value }: IBoldProps) => (
+const Bold = ({ value, isLink = false }: IBoldProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':
 					return <Link value={block.value} />;
 				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
+					return <Plain value={block.value} isLink={isLink} />;
 				case 'STRIKE':
 					return <Strike value={block.value} />;
 				case 'ITALIC':

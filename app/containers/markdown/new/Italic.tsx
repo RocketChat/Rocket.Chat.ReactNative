@@ -9,6 +9,7 @@ import Link from './Link';
 
 interface IItalicProps {
 	value: ItalicProps['value'];
+	isLink?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -17,14 +18,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic = ({ value }: IItalicProps) => (
+const Italic = ({ value, isLink }: IItalicProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':
 					return <Link value={block.value} />;
 				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
+					return <Plain value={block.value} isLink={isLink} />;
 				case 'STRIKE':
 					return <Strike value={block.value} />;
 				case 'BOLD':
