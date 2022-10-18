@@ -11,6 +11,7 @@ import { IAvatar } from './interfaces';
 
 const Avatar = React.memo(
 	({
+		server,
 		style,
 		avatar,
 		children,
@@ -23,7 +24,6 @@ const Avatar = React.memo(
 		isStatic,
 		rid,
 		blockUnauthenticatedAccess,
-		server,
 		serverVersion,
 		text,
 		size = 25,
@@ -31,7 +31,7 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		externalProviderUrl
 	}: IAvatar) => {
-		if (!text && !avatar && !emoji && !rid) {
+		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
 
@@ -54,8 +54,8 @@ const Avatar = React.memo(
 					userId,
 					token,
 					avatar,
-					avatarETag,
 					server,
+					avatarETag,
 					serverVersion,
 					rid,
 					blockUnauthenticatedAccess,
