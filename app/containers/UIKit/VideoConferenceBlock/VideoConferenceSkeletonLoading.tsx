@@ -8,11 +8,10 @@ export default function VideoConferenceSkeletonLoading(): React.ReactElement {
 
 	return (
 		<SkeletonPlaceholder backgroundColor={colors.conferenceCallBackground}>
-			{/* Typo: I opened a PR to remove these empty styles https://github.com/chramos/react-native-skeleton-placeholder/pull/89 */}
-			<SkeletonPlaceholder.Item style={{}} borderWidth={1} borderRadius={4} marginTop={8}>
-				<SkeletonPlaceholder.Item style={{}} alignItems={'center'} flexDirection='row' marginTop={16} marginLeft={16}>
-					<SkeletonPlaceholder.Item style={{}} width={28} height={28} />
-					<SkeletonPlaceholder.Item style={{}} width={75} height={16} marginLeft={8} borderRadius={0} />
+			<SkeletonPlaceholder.Item borderWidth={1} borderRadius={4} marginTop={8}>
+				<SkeletonPlaceholder.Item alignItems={'center'} flexDirection='row' marginTop={16} marginLeft={16}>
+					<SkeletonPlaceholder.Item width={28} height={28} />
+					<SkeletonPlaceholder.Item width={75} height={16} marginLeft={8} borderRadius={0} />
 				</SkeletonPlaceholder.Item>
 				<SkeletonPlaceholder.Item
 					width={'100%'}
@@ -22,7 +21,6 @@ export default function VideoConferenceSkeletonLoading(): React.ReactElement {
 					borderBottomRightRadius={4}
 					borderTopLeftRadius={0}
 					borderTopRightRadius={0}
-					style={{}}
 				/>
 			</SkeletonPlaceholder.Item>
 		</SkeletonPlaceholder>

@@ -4969,11 +4969,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.6.0.tgz#dd5f19601eb3684c6bcdd3df3d0c04cf44c24cff"
   integrity sha512-emBGKvhJ0h++lLJQ5ejsj+od9G67nEaihjvfSx7/JWvNrQGAhP9U0OZqgb9dkKzor9Ufaj9SGt8RNY97cGzttw==
 
-"@react-native-community/masked-view@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
-  integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
-
 "@react-native-community/netinfo@6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.0.tgz#2a4d7190b508dd0c2293656c9c1aa068f6f60a71"
@@ -5022,6 +5017,11 @@
   dependencies:
     "@expo/config-plugins" "^4.1.5"
     stacktrace-js "^2.0.0"
+
+"@react-native-masked-view/masked-view@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.8.tgz#34405a4361882dae7c81b1b771fe9f5fbd545a97"
+  integrity sha512-+1holBPDF1yi/y0uc1WB6lA5tSNHhM7PpTMapT3ypvSnKQ9+C6sy/zfjxNxRA/llBQ1Ci6f94EaK56UCKs5lTA==
 
 "@react-native-picker/picker@^1.8.3":
   version "1.16.1"
@@ -17337,10 +17337,10 @@ react-native-simple-crypto@RocketChat/react-native-simple-crypto#0.5.1:
     base64-js "^1.3.0"
     hex-lite "^1.5.0"
 
-react-native-skeleton-placeholder@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-5.2.0.tgz#eace7e6ec1a2637e0e19d20210e4d36466c0af4d"
-  integrity sha512-Usy3nvWeyODHkhV+kpsZGnXE/7gyxazk2sKhr7CgFgm3VGl549TPeLBZ1YK8AM46/uFxLd+CJhQ6saJDVhPUmQ==
+react-native-skeleton-placeholder@^5.2.3:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-5.2.3.tgz#2dddf1f84d43110b90c22f715b2dbbe2c54732e1"
+  integrity sha512-nikmTfex3oydnZ4prV62KxibMvcu2l2NegsHGtXhsWwFIX5QaKneBohP7etinUq/c2PkSr3ZlfqooDG2yIHRdg==
 
 react-native-slider@^0.11.0:
   version "0.11.0"
