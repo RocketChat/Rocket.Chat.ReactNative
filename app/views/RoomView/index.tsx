@@ -838,7 +838,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionInit = (message: TAnyMessageModel) => {
-		this.setState({ selectedMessage: message }, this.showReactionPicker);
+		this.messagebox?.current?.closeEmojiAndAction(() => {
+			this.setState({ selectedMessage: message }, this.showReactionPicker);
+		});
 	};
 
 	onReactionClose = () => {
