@@ -280,6 +280,7 @@ export default {
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',
 	RI_GO_LIVECHAT_EDIT: 'ri_go_livechat_edit',
 	RI_GO_ROOM_USER: 'ri_go_room_user',
+	RI_TOGGLE_BLOCK_USER: 'ri_toggle_block_user',
 
 	// ROOM INFO EDIT VIEW
 	RI_EDIT_TOGGLE_ROOM_TYPE: 'ri_edit_toggle_room_type',
