@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, TextInput, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
@@ -12,6 +12,7 @@ import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
 import { EmojiSearch } from '../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
 import { searchEmojis } from '../EmojiPicker/helpers';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
@@ -65,12 +66,14 @@ const EmojiSearchBar = ({ openEmoji, closeEmoji, onEmojiSelected }: IEmojiSearch
 	const [emojis, setEmojis] = useState<IEmoji[]>([]);
 
 	const handleTextChange = useDebounce(async (text: string) => {
+		logEvent(events.MB_SB_EMOJI_SEARCH);
 		setSearchText(text);
 		const result = await searchEmojis(text);
 		setEmojis(result);
 	}, 300);
 
 	const handleEmojiSelected = (emoji: IEmoji) => {
+		logEvent(events.MB_SB_EMOJI_SELECTED);
 		onEmojiSelected(emoji);
 		addFrequentlyUsed(emoji);
 	};

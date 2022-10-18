@@ -604,6 +604,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		switch (eventType) {
 			case EventTypes.BACKSPACE_PRESSED:
+				logEvent(events.MB_BACKSPACE);
 				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
 				let charsToRemove = 1;
 				const lastEmoji = text.substr(cursor > 0 ? cursor - 2 : text.length - 2, cursor > 0 ? cursor : text.length);
@@ -616,6 +617,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				this.setShowSend(newText !== '');
 				break;
 			case EventTypes.EMOJI_PRESSED:
+				logEvent(events.MB_EMOJI_SELECTED);
 				let emojiText = '';
 				if (typeof emoji === 'string') {
 					const shortname = `:${emoji}:`;
@@ -629,6 +631,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				this.setShowSend(true);
 				break;
 			case EventTypes.SEARCH_PRESSED:
+				logEvent(events.MB_EMOJI_SEARCH_PRESSED);
 				this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: true });
 				break;
 			default:
@@ -957,6 +960,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	closeEmojiKeyboardAndFocus = () => {
+		logEvent(events.ROOM_CLOSE_EMOJI);
 		this.closeEmoji();
 		this.focus();
 	};

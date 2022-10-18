@@ -8,6 +8,7 @@ import { EventTypes } from '../../containers/EmojiPicker/interfaces';
 import { searchEmojis } from '../../containers/EmojiPicker/helpers';
 import { useDebounce } from '../../lib/methods/helpers/debounce';
 import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 
 interface IReactionPickerProps {
 	message?: any;
@@ -25,11 +26,13 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 	}, 300);
 
 	const handleSearchEmojis = async (text: string) => {
+		logEvent(events.REACTION_PICKER_SEARCH_EMOJIS);
 		const emojis = await searchEmojis(text);
 		setSearchedEmojis(emojis);
 	};
 
 	const handleEmojiSelect = (_eventType: EventTypes, emoji?: IEmoji) => {
+		logEvent(events.REACTION_PICKER_EMOJI_SELECTED);
 		if (message && emoji) {
 			onEmojiSelected(emoji, message.id);
 		}
