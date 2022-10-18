@@ -32,9 +32,9 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 			}
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
-				if (!dequal(JSON.parse(subscriptionRoleRef.current), s.roles?.sort())) {
+				if (!dequal(JSON.parse(subscriptionRoleRef.current), s.roles)) {
 					setSubscriptionRoles(s.roles);
-					subscriptionRoleRef.current = JSON.stringify(s.roles?.sort());
+					subscriptionRoleRef.current = JSON.stringify(s.roles);
 				}
 			});
 		});
