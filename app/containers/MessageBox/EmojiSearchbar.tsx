@@ -59,7 +59,7 @@ interface IEmojiSearchBarProps {
 	onEmojiSelected: (emoji: IEmoji) => void;
 }
 
-const EmojiSearchBar = ({ openEmoji, closeEmoji, onEmojiSelected }: IEmojiSearchBarProps) => {
+const EmojiSearchBar = ({ openEmoji, closeEmoji, onEmojiSelected }: IEmojiSearchBarProps): React.ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
@@ -92,8 +92,7 @@ const EmojiSearchBar = ({ openEmoji, closeEmoji, onEmojiSelected }: IEmojiSearch
 						<Text style={[styles.emptyText, { color: colors.auxiliaryText }]}>{I18n.t('No_results_found')}</Text>
 					</View>
 				)}
-				// @ts-ignore
-				keyExtractor={item => item?.content || item?.name || item}
+				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 				contentContainerStyle={styles.listContainer}
 				keyboardShouldPersistTaps='always'
 			/>
