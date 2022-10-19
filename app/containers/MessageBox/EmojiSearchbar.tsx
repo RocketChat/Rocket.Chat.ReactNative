@@ -5,13 +5,13 @@ import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { IEmoji } from '../../definitions';
-import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../EmojiPicker/frequentlyUsedEmojis';
+import { useFrequentlyUsedEmoji } from '../../lib/hooks';
+import { addFrequentlyUsed, searchEmojis } from '../../lib/methods';
 import { useDebounce } from '../../lib/methods/helpers';
 import sharedStyles from '../../views/Styles';
 import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
 import { EmojiSearch } from '../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
-import { searchEmojis } from '../EmojiPicker/helpers';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };

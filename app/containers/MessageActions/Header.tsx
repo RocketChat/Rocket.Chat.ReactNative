@@ -5,12 +5,13 @@ import { TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../CustomIcon';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
+import { addFrequentlyUsed } from '../../lib/methods';
+import { useFrequentlyUsedEmoji } from '../../lib/hooks';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
 import { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
-import { addFrequentlyUsed, useFrequentlyUsedEmoji } from '../EmojiPicker/frequentlyUsedEmojis';
 
 export interface IHeader {
 	handleReaction: (emoji: IEmoji, message: TAnyMessageModel) => void;
