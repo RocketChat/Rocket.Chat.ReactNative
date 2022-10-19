@@ -20,11 +20,9 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 	const username = useAppSelector(state => state.login.user.username);
 	const { showActionSheet } = useActionSheet();
 
-	const { loading, result } = useEndpointData('video-conference.info', { callId });
+	const { result } = useEndpointData('video-conference.info', { callId });
 
 	const snaps = useSnaps([1250]);
-
-	if (loading) return <VideoConferenceSkeletonLoading />;
 
 	if (result?.success) {
 		const { users, type, status, createdBy } = result;
