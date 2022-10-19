@@ -113,8 +113,8 @@ const User = React.memo(
 						type={type}
 						isEdited={isEdited}
 						hasError={hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
-						unread={props.unread || false}
+						isReadReceiptEnabled={props.isReadReceiptEnabled}
+						unread={props.unread}
 					/>
 				</View>
 			);
