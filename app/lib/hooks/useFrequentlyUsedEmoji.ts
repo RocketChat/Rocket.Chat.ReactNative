@@ -26,7 +26,9 @@ export const useFrequentlyUsedEmoji = (
 			});
 
 			if (withDefaultEmojis && frequentlyUsedEmojis.length < DEFAULT_EMOJIS.length) {
-				frequentlyUsedEmojis = frequentlyUsedEmojis.concat(DEFAULT_EMOJIS).slice(0, DEFAULT_EMOJIS.length);
+				frequentlyUsedEmojis = frequentlyUsedEmojis
+					.concat(DEFAULT_EMOJIS.filter(de => !frequentlyUsedEmojis.find(fue => typeof fue === 'string' && fue === de)))
+					.slice(0, DEFAULT_EMOJIS.length);
 			}
 
 			// TODO: remove once we update to React 18
