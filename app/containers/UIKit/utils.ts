@@ -2,8 +2,8 @@
 import { BlockContext } from '@rocket.chat/ui-kit';
 import React, { useContext, useState } from 'react';
 
+import { useVideoConf } from '../../lib/hooks/useVideoConf';
 import { IText } from './interfaces';
-import { useVideoConf } from './VideoConferenceBlock/hooks';
 
 export const textParser = ([{ text }]: IText[]) => text;
 

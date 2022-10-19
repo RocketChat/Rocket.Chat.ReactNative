@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import i18n from '../../../i18n';
-import { videoConfJoin } from '../../../lib/methods/videoConf';
-import { TActionSheetOptionsItem, useActionSheet } from '../../ActionSheet';
+import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import i18n from '../../i18n';
+import { videoConfJoin } from '../methods/videoConf';
 
 export const useVideoConf = (): { joinCall: (blockId: string) => void } => {
 	const { showActionSheet } = useActionSheet();
