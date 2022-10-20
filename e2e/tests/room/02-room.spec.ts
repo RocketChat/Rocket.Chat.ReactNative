@@ -87,73 +87,106 @@ describe('Room screen', () => {
 				await expect(element(by[textMatcher](`${data.random}message`)).atIndex(0)).toExist();
 			});
 
-			it('should show/hide emoji keyboard', async () => {
-				await element(by.id('messagebox-open-emoji')).tap();
-				await waitFor(element(by.id('messagebox-keyboard-emoji')))
-					.toExist()
-					.withTimeout(10000);
-				await expect(element(by.id('messagebox-close-emoji'))).toExist();
-				await expect(element(by.id('messagebox-open-emoji'))).toBeNotVisible();
-				await element(by.id('messagebox-close-emoji')).tap();
-				await waitFor(element(by.id('messagebox-keyboard-emoji')))
-					.not.toBeVisible()
-					.withTimeout(10000);
-				await expect(element(by.id('messagebox-close-emoji'))).toBeNotVisible();
-				await expect(element(by.id('messagebox-open-emoji'))).toExist();
-			});
+			describe('Emoji Keyboard', () => {
+				it('should open emoji keyboard, select an emoji and send it', async () => {
+					await element(by.id('messagebox-open-emoji')).tap();
+					await waitFor(element(by.id('messagebox-keyboard-emoji')))
+						.toExist()
+						.withTimeout(10000);
+					await expect(element(by.id('emoji-picker-tab-emoji'))).toExist();
+					await element(by.id('emoji-picker-tab-emoji')).tap();
+					await expect(element(by.id('emoji-blush'))).toExist();
+					await element(by.id('emoji-blush')).tap();
+					await expect(element(by.id('messagebox-input'))).toHaveText('😊');
+					await element(by.id('messagebox-send-message')).tap();
+					await waitFor(element(by[textMatcher]('😊')))
+						.toExist()
+						.withTimeout(60000);
+					await element(by[textMatcher]('😊')).atIndex(0).tap();
+				});
 
-			it('should clear the emoji', async () => {
-				await element(by.id('messagebox-open-emoji')).tap();
-				await waitFor(element(by.id('messagebox-keyboard-emoji')))
-					.toExist()
-					.withTimeout(10000);
-				await expect(element(by.id('emoji-picker-tab-emoji'))).toExist();
-				await element(by.id('emoji-picker-tab-emoji')).tap();
-				await expect(element(by.id('emoji-smiley'))).toExist();
-				await element(by.id('emoji-smiley')).tap();
-				await waitFor(element(by.id('emoji-picker-backspace')))
-					.toExist()
-					.withTimeout(4000);
-				await expect(element(by.id('messagebox-input'))).toHaveText('😃');
-				await expect(element(by.id('emoji-picker-backspace'))).toExist();
-				await element(by.id('emoji-picker-backspace')).tap();
-				await expect(element(by.id('messagebox-input'))).toHaveText('');
-				await element(by.id('messagebox-close-emoji')).tap();
-				await waitFor(element(by.id('messagebox-keyboard-emoji')))
-					.not.toBeVisible()
-					.withTimeout(10000);
-			});
+				it('should open emoji keyboard, select an emoji and delete it using emoji keyboards backspace', async () => {
+					await element(by.id('messagebox-open-emoji')).tap();
+					await waitFor(element(by.id('messagebox-keyboard-emoji')))
+						.toExist()
+						.withTimeout(10000);
+					await expect(element(by.id('emoji-picker-tab-emoji'))).toExist();
+					await element(by.id('emoji-picker-tab-emoji')).tap();
+					await expect(element(by.id('emoji-upside_down'))).toExist();
+					await element(by.id('emoji-upside_down')).tap();
+					await expect(element(by.id('messagebox-input'))).toHaveText('🙃');
+					await waitFor(element(by.id('emoji-picker-backspace')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('emoji-picker-backspace')).tap();
+					await expect(element(by.id('messagebox-input'))).toHaveText('');
+					await element(by.id('messagebox-close-emoji')).tap();
+					await waitFor(element(by.id('messagebox-keyboard-emoji')))
+						.not.toBeVisible()
+						.withTimeout(10000);
+				});
 
-			it('should search emojis, go back to EmojiKeyboard and then close the EmojiKeyboard', async () => {
-				await element(by.id('messagebox-open-emoji')).tap();
-				await waitFor(element(by.id('emoji-picker-search')))
-					.toExist()
-					.withTimeout(4000);
-				await element(by.id('emoji-picker-search')).tap();
-				await waitFor(element(by.id('emoji-searchbar-input')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('emoji-searchbar-input')).replaceText('smiley');
-				await waitFor(element(by.id('emoji-smiley')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('emoji-smiley')).tap();
-				await expect(element(by.id('messagebox-input'))).toHaveText('😃');
-				await element(by.id('emoji-searchbar-input')).replaceText('random-text');
-				await waitFor(element(by.id('no-results-found')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('emoji-searchbar-input')).clearText();
-				await expect(element(by.id('openback-emoji-keyboard'))).toExist();
-				await element(by.id('openback-emoji-keyboard')).tap();
-				await waitFor(element(by.id('emoji-searchbar-input')))
-					.not.toBeVisible()
-					.withTimeout(2000);
-				await expect(element(by.id('messagebox-close-emoji'))).toExist();
-				await element(by.id('messagebox-close-emoji')).tap();
-				await waitFor(element(by.id('messagebox-keyboard-emoji')))
-					.not.toBeVisible()
-					.withTimeout(10000);
+				it('should search emoji and send it', async () => {
+					await element(by.id('messagebox-open-emoji')).tap();
+					await waitFor(element(by.id('emoji-picker-search')))
+						.toExist()
+						.withTimeout(4000);
+					await element(by.id('emoji-picker-search')).tap();
+					await waitFor(element(by.id('emoji-searchbar-input')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('emoji-searchbar-input')).replaceText('no_mouth');
+					await waitFor(element(by.id('emoji-no_mouth')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('emoji-no_mouth')).tap();
+					await expect(element(by.id('messagebox-input'))).toHaveText('😶');
+					await element(by.id('messagebox-send-message')).tap();
+					await waitFor(element(by[textMatcher]('😶')))
+						.toExist()
+						.withTimeout(60000);
+					await element(by[textMatcher]('😶')).atIndex(0).tap();
+				});
+
+				it('should search emojis, go back to Emoji keyboard and then close the Emoji keyboard', async () => {
+					await element(by.id('messagebox-open-emoji')).tap();
+					await waitFor(element(by.id('emoji-picker-search')))
+						.toExist()
+						.withTimeout(4000);
+					await element(by.id('emoji-picker-search')).tap();
+					await waitFor(element(by.id('emoji-searchbar-input')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by.id('openback-emoji-keyboard')).tap();
+					await waitFor(element(by.id('emoji-searchbar-input')))
+						.not.toBeVisible()
+						.withTimeout(2000);
+					await expect(element(by.id('messagebox-close-emoji'))).toExist();
+					await element(by.id('messagebox-close-emoji')).tap();
+					await waitFor(element(by.id('messagebox-keyboard-emoji')))
+						.not.toBeVisible()
+						.withTimeout(10000);
+				});
+
+				it('frequently used emojis should contain the recently used emojis', async () => {
+					await element(by.id('messagebox-open-emoji')).tap();
+					await waitFor(element(by.id('emoji-picker-tab-clock')));
+					await element(by.id('emoji-picker-tab-clock')).tap();
+					await waitFor(element(by.id('emoji-blush')))
+						.toExist()
+						.withTimeout(2000);
+					await waitFor(element(by.id('emoji-upside_down')))
+						.toExist()
+						.withTimeout(2000);
+					await waitFor(element(by.id('emoji-no_mouth')))
+						.toExist()
+						.withTimeout(2000);
+					await expect(element(by.id('messagebox-close-emoji'))).toExist();
+					await element(by.id('messagebox-close-emoji')).tap();
+					await waitFor(element(by.id('messagebox-keyboard-emoji')))
+						.not.toBeVisible()
+						.withTimeout(10000);
+				});
 			});
 
 			it('should show/hide emoji autocomplete', async () => {
@@ -318,6 +351,11 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(60000);
 			});
+
+			it('should ask for review', async () => {
+				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
+			});
+
 			it('should search emojis in the reaction picker and react', async () => {
 				await element(by[textMatcher](`${data.random}message`))
 					.atIndex(0)
@@ -331,15 +369,16 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('emoji-searchbar-input')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.id('emoji-searchbar-input')).typeText('smile');
-				await waitFor(element(by.id('emoji-smile')))
+				await element(by.id('emoji-searchbar-input')).typeText('laughing');
+				await waitFor(element(by.id('emoji-laughing')))
 					.toExist()
 					.withTimeout(4000);
-				await element(by.id('emoji-smile')).tap();
-				await waitFor(element(by.id('message-reaction-:smile:')))
+				await element(by.id('emoji-laughing')).tap();
+				await waitFor(element(by.id('message-reaction-:laughing:')))
 					.toExist()
 					.withTimeout(60000);
 			});
+
 			it('should react to message with frequently used emoji', async () => {
 				await element(by[textMatcher](`${data.random}message`))
 					.atIndex(0)
@@ -349,17 +388,13 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by.id('message-actions-emoji-thumbsup')))
+				await waitFor(element(by.id('message-actions-emoji-upside_down')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('message-actions-emoji-thumbsup')).tap();
-				await waitFor(element(by.id('message-reaction-:thumbsup:')))
+				await element(by.id('message-actions-emoji-upside_down')).tap();
+				await waitFor(element(by.id('message-reaction-:upside_down:')))
 					.toBeVisible()
 					.withTimeout(60000);
-			});
-
-			it('should ask for review', async () => {
-				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			});
 
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async () => {
@@ -369,7 +404,7 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 1);
-				await waitFor(element(by.id('emoji-grinning')))
+				await waitFor(element(by.id('emoji-upside_down')))
 					.toExist()
 					.withTimeout(4000);
 				await waitFor(element(by.id('emoji-picker-tab-emoji')))
@@ -395,8 +430,8 @@ describe('Room screen', () => {
 			});
 
 			it('should remove reaction', async () => {
-				await element(by.id('message-reaction-:smile:')).tap();
-				await waitFor(element(by.id('message-reaction-:smile:')))
+				await element(by.id('message-reaction-:grinning:')).tap();
+				await waitFor(element(by.id('message-reaction-:grinning:')))
 					.not.toExist()
 					.withTimeout(60000);
 			});
