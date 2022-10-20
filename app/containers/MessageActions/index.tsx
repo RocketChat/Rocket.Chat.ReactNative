@@ -15,7 +15,7 @@ import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
-import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
 import { hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
@@ -26,7 +26,7 @@ export interface IMessageActionsProps {
 	user: Pick<ILoggedUser, 'id'>;
 	editInit: (message: TAnyMessageModel) => void;
 	reactionInit: (message: TAnyMessageModel) => void;
-	onReactionPress: (shortname: string, messageId: string) => void;
+	onReactionPress: (shortname: IEmoji, messageId: string) => void;
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
@@ -259,8 +259,7 @@ const MessageActions = React.memo(
 			const handleReaction: IHeader['handleReaction'] = (shortname, message) => {
 				logEvent(events.ROOM_MSG_ACTION_REACTION);
 				if (shortname) {
-					// TODO: evaluate unification with IEmoji
-					onReactionPress(shortname as any, message.id);
+					onReactionPress(shortname, message.id);
 				} else {
 					// Wait for the Action Sheet to close before opening reaction picker
 					setTimeout(() => reactionInit(message), 500);
