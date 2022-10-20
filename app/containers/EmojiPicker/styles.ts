@@ -10,7 +10,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	tabsContainer: {
-		height: 45,
+		height: EMOJI_BUTTON_SIZE,
 		flexDirection: 'row'
 	},
 	tab: {
@@ -18,7 +18,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 10,
-		width: 44
+		width: EMOJI_BUTTON_SIZE
 	},
 	tabEmoji: {
 		fontSize: 20,
@@ -67,7 +67,7 @@ export default StyleSheet.create({
 		width: EMOJI_BUTTON_SIZE
 	},
 	footerContainer: {
-		height: 44,
+		height: EMOJI_BUTTON_SIZE,
 		paddingHorizontal: 12,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -75,8 +75,8 @@ export default StyleSheet.create({
 		borderTopWidth: 1
 	},
 	footerButtonsContainer: {
-		height: 44,
-		width: 44,
+		height: EMOJI_BUTTON_SIZE,
+		width: EMOJI_BUTTON_SIZE,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
