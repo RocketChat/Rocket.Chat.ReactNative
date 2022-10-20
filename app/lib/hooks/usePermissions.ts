@@ -3,6 +3,7 @@ import { dequal } from 'dequal';
 import { Subscription } from 'rxjs';
 import { createSelector } from 'reselect';
 import { shallowEqual } from 'react-redux';
+import { orderBy } from 'lodash';
 
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { IApplicationState, TSubscriptionModel } from '../../definitions';
@@ -17,9 +18,7 @@ const getPermissionsSelector = createSelector(
 
 const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 	const [subscriptionRoles, setSubscriptionRoles] = useState<TSubscriptionModel['roles']>([]);
-
-	// subscription role as string and using it within array dependency
-	const subscriptionRoleRef = useRef('[]');
+	const subscriptionRoleRef = useRef<TSubscriptionModel['roles']>([]);
 
 	useEffect(() => {
 		if (!rid) {
@@ -32,9 +31,10 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 			}
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
-				if (!dequal(JSON.parse(subscriptionRoleRef.current), s.roles)) {
-					setSubscriptionRoles(s.roles);
-					subscriptionRoleRef.current = JSON.stringify(s.roles);
+				const newRoles = orderBy(s.roles);
+				if (!dequal(subscriptionRoleRef.current, newRoles)) {
+					subscriptionRoleRef.current = newRoles;
+					setSubscriptionRoles(newRoles);
 				}
 			});
 		});
@@ -44,7 +44,7 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 				subSubscription.unsubscribe();
 			}
 		};
-	}, [subscriptionRoleRef.current]);
+	}, []);
 
 	return subscriptionRoles;
 };
