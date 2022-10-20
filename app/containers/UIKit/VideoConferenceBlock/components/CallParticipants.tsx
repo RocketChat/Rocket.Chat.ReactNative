@@ -1,17 +1,15 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import i18n from '../../../i18n';
+import i18n from '../../../../i18n';
 import useStyle from './styles';
-import AvatarContainer from '../../Avatar';
+import AvatarContainer from '../../../Avatar';
 
 const MAX_USERS = 3;
 
-export const CallParticipants = ({
-	users
-}: {
-	users: { _id: string; username: string; name: string; avatarETag: string }[];
-}): React.ReactElement => {
+export type TCallUsers = { _id: string; username: string; name: string; avatarETag: string }[];
+
+export const CallParticipants = ({ users }: { users: TCallUsers }): React.ReactElement => {
 	const style = useStyle();
 	return (
 		<>

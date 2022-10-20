@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import i18n from '../../../i18n';
-import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
-import { useAppSelector } from '../../../lib/hooks';
-import { getRoomAvatar, getUidDirectMessage } from '../../../lib/methods/helpers';
-import { videoConfStartAndJoin } from '../../../lib/methods/videoConf';
-import { useTheme } from '../../../theme';
-import { useActionSheet } from '../../ActionSheet';
-import AvatarContainer from '../../Avatar';
-import Button from '../../Button';
-import { CustomIcon } from '../../CustomIcon';
-import { BUTTON_HIT_SLOP } from '../../message/utils';
-import StatusContainer from '../../Status';
+import i18n from '../../../../i18n';
+import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
+import { useAppSelector } from '../../../../lib/hooks';
+import { getRoomAvatar, getUidDirectMessage } from '../../../../lib/methods/helpers';
+import { videoConfStartAndJoin } from '../../../../lib/methods/videoConf';
+import { useTheme } from '../../../../theme';
+import { useActionSheet } from '../../../ActionSheet';
+import AvatarContainer from '../../../Avatar';
+import Button from '../../../Button';
+import { CustomIcon } from '../../../CustomIcon';
+import { BUTTON_HIT_SLOP } from '../../../message/utils';
+import StatusContainer from '../../../Status';
 import useStyle from './styles';
 
 export default function CallAgainActionSheet({ rid }: { rid: string }): React.ReactElement {

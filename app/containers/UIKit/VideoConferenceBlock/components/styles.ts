@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
+import { useTheme } from '../../../../theme';
+import sharedStyles from '../../../../views/Styles';
 
 export default function useStyle() {
 	const { colors } = useTheme();
