@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		...sharedStyles.textRegular,
-		height: 48,
 		fontSize: 16,
-		padding: 14,
+		paddingHorizontal: 16,
+		paddingVertical: 10,
 		borderWidth: 2,
 		borderRadius: 2
 	},
