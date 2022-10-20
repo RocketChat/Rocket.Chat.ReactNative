@@ -44,10 +44,10 @@ const styles = StyleSheet.create({
 		position: 'absolute'
 	},
 	iconLeft: {
-		left: 15
+		left: 12
 	},
 	iconRight: {
-		right: 15
+		right: 12
 	}
 });
 
