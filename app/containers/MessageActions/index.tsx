@@ -12,7 +12,7 @@ import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
+import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
@@ -261,10 +261,8 @@ const MessageActions = React.memo(
 				if (shortname) {
 					onReactionPress(shortname, message.id);
 				} else {
-					// Wait for the Action Sheet to close before opening reaction picker
-					setTimeout(() => reactionInit(message), 500);
+					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
 				}
-				// close actionSheet when click at header
 				hideActionSheet();
 			};
 
