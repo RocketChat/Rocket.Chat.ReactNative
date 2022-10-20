@@ -133,14 +133,13 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('emoji-searchbar-input')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.id('emoji-searchbar-input')).typeText('smiley');
-				await waitFor(element(by.id('searched-emoji-smiley')))
+				await element(by.id('emoji-searchbar-input')).replaceText('smiley');
+				await waitFor(element(by.id('emoji-smiley')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.id('searched-emoji-smiley')).tap();
+				await element(by.id('emoji-smiley')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText('😃');
-				await element(by.id('emoji-searchbar-input')).clearText();
-				await element(by.id('emoji-searchbar-input')).typeText('random-text');
+				await element(by.id('emoji-searchbar-input')).replaceText('random-text');
 				await waitFor(element(by.id('no-results-found')))
 					.toExist()
 					.withTimeout(2000);
@@ -289,22 +288,7 @@ describe('Room screen', () => {
 				await element(by[textMatcher]('Copy')).atIndex(0).tap();
 				// TODO: test clipboard
 			});
-			it('should star message', async () => {
-				await starMessage('message');
-				await sleep(1000); // https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
-				await element(by[textMatcher](`${data.random}message`))
-					.atIndex(0)
-					.longPress();
-				await waitFor(element(by.id('action-sheet')))
-					.toExist()
-					.withTimeout(2000);
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'slow', 0.5);
-				await waitFor(element(by[textMatcher]('Unstar')).atIndex(0))
-					.toExist()
-					.withTimeout(6000);
-				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.8);
-			});
+
 			it('should react to message', async () => {
 				await waitFor(element(by[textMatcher](`${data.random}message`)))
 					.toExist()
@@ -344,10 +328,10 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.id('add-reaction')).tap();
-				await waitFor(element(by.id('reaction-picker-searchbar')))
+				await waitFor(element(by.id('emoji-searchbar-input')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.id('reaction-picker-searchbar')).typeText('smile');
+				await element(by.id('emoji-searchbar-input')).typeText('smile');
 				await waitFor(element(by.id('emoji-smile')))
 					.toExist()
 					.withTimeout(4000);
@@ -365,13 +349,17 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by.id('message-actions-emoji-+1')))
+				await waitFor(element(by.id('message-actions-emoji-thumbsup')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('message-actions-emoji-+1')).tap();
-				await waitFor(element(by.id('message-reaction-:+1:')))
+				await element(by.id('message-actions-emoji-thumbsup')).tap();
+				await waitFor(element(by.id('message-reaction-:thumbsup:')))
 					.toBeVisible()
 					.withTimeout(60000);
+			});
+
+			it('should ask for review', async () => {
+				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			});
 
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async () => {
@@ -395,10 +383,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('message-reaction-:wink:')))
 					.toExist()
 					.withTimeout(60000);
-			});
-
-			it('should ask for review', async () => {
-				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			});
 
 			it('should open/close reactions list', async () => {
@@ -455,28 +439,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-send-message')).tap();
 				// TODO: test if quote was sent
 			});
-			it('should pin message', async () => {
-				await mockMessage('pin');
-				await pinMessage('pin');
-				await waitFor(element(by[textMatcher](`${data.random}pin`)).atIndex(0))
-					.toExist()
-					.withTimeout(5000);
-				await waitFor(element(by[textMatcher](`${data.users.regular.username} Message pinned`)).atIndex(0))
-					.toExist()
-					.withTimeout(5000);
-				await element(by[textMatcher](`${data.random}pin`))
-					.atIndex(0)
-					.longPress();
-				await waitFor(element(by.id('action-sheet')))
-					.toExist()
-					.withTimeout(1000);
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by[textMatcher]('Unpin')).atIndex(0))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.8);
-			});
+
 			it('should delete message', async () => {
 				await mockMessage('delete');
 				await waitFor(element(by[textMatcher](`${data.random}delete`)).atIndex(0)).toBeVisible();
