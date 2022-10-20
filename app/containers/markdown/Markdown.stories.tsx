@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
 import { themes } from '../../lib/constants';
-import { TGetCustomEmoji, IEmoji } from '../../definitions/IEmoji';
+import { TGetCustomEmoji, ICustomEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';
 
@@ -33,7 +33,7 @@ const getCustomEmoji: TGetCustomEmoji = content => {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
 		nyan_rocket: { name: content, extension: 'png' }
-	}[content] as IEmoji;
+	}[content] as ICustomEmoji;
 	return customEmoji;
 };
 

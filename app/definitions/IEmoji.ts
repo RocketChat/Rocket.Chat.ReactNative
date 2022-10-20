@@ -17,10 +17,10 @@ export interface ICustomEmoji {
 export type IEmoji = ICustomEmoji | TBasicEmoji;
 
 export interface ICustomEmojis {
-	[key: string]: Pick<ICustomEmoji, 'name' | 'extension'>;
+	[key: string]: ICustomEmoji;
 }
 
-export type TGetCustomEmoji = (name: string) => any;
+export type TGetCustomEmoji = (name: string) => ICustomEmoji | null;
 
 export type TFrequentlyUsedEmojiModel = IFrequentlyUsedEmoji & Model;
 

@@ -31,11 +31,12 @@ import {
 	IUser,
 	TMessageModel,
 	IUrl,
-	IEmoji,
 	IAttachment,
 	ISubscription,
 	SubscriptionType,
-	TSubscriptionModel
+	TSubscriptionModel,
+	TGetCustomEmoji,
+	ICustomEmoji
 } from '../../definitions';
 import { Services } from '../../lib/services';
 
@@ -68,7 +69,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {
-		[key: string]: IEmoji;
+		[key: string]: ICustomEmoji;
 	};
 	theme: TSupportedThemes;
 	useRealName: boolean;
@@ -201,7 +202,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		await this.getMessages(searchText, true);
 	}, 1000);
 
-	getCustomEmoji = (name: string) => {
+	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {

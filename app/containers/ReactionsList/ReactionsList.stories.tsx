@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { TGetCustomEmoji, IEmoji } from '../../definitions';
+import { TGetCustomEmoji, ICustomEmoji } from '../../definitions';
 import ReactionsList from '.';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { updateSettings } from '../../actions/settings';
@@ -11,7 +11,7 @@ const getCustomEmoji: TGetCustomEmoji = content => {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
 		nyan_rocket: { name: content, extension: 'png' }
-	}[content] as IEmoji;
+	}[content] as ICustomEmoji;
 	return customEmoji;
 };
 

@@ -74,9 +74,9 @@ import {
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadModel,
-	ICustomEmoji,
 	ICustomEmojis,
-	IEmoji
+	IEmoji,
+	TGetCustomEmoji
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 import { TListRef } from './List/List';
@@ -1044,7 +1044,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	getCustomEmoji = (name: string): Pick<ICustomEmoji, 'name' | 'extension'> | null => {
+	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
