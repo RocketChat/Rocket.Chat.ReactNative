@@ -8,8 +8,6 @@ import {
 	tapBack,
 	sleep,
 	searchRoom,
-	starMessage,
-	pinMessage,
 	dismissReviewNag,
 	tryTapping,
 	platformTypes,
