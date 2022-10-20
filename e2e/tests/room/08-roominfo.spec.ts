@@ -192,8 +192,8 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-announcement')).replaceText('abc');
 				await element(by.id('room-info-edit-view-password')).replaceText('abc');
 				await element(by.id('room-info-edit-view-t')).tap();
-				await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
-				// await element(by.id('room-info-edit-view-ro')).longPress(); // https://github.com/facebook/react-native/issues/28032
+				await swipe('up');
+				await element(by.id('room-info-edit-view-ro')).longPress(); // https://github.com/facebook/react-native/issues/28032
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
 				await swipe('up');
 				await element(by.id('room-info-edit-view-reset')).tap();
@@ -206,8 +206,8 @@ describe('Room info screen', () => {
 				await expect(element(by.id('room-info-edit-view-password'))).toHaveText('');
 				// await swipe('down');
 				await expect(element(by.id('room-info-edit-view-t'))).toHaveToggleValue(true);
-				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(true);
-				await expect(element(by.id('room-info-edit-view-react-when-ro'))).toHaveToggleValue(false);
+				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(false);
+				await expect(element(by.id('room-info-edit-view-react-when-ro'))).toBeNotVisible();
 				await swipe('down');
 			});
 
