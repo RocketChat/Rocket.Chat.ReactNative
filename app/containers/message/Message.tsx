@@ -97,8 +97,8 @@ const Message = React.memo((props: IMessage) => {
 						msg={props.msg}
 						isEdited={props.isEdited}
 						hasError={props.hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
-						unread={props.unread || false}
+						isReadReceiptEnabled={props.isReadReceiptEnabled}
+						unread={props.unread}
 					/>
 				) : null}
 			</View>
