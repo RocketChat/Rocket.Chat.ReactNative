@@ -41,7 +41,7 @@ const Link = ({ value }: ILinkProps) => {
 	return (
 		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].actionTintColor }]}>
 			{(block => {
-				const blockArray = Array.isArray(block) ? block : [block]; // RC 5.4.0
+				const blockArray = Array.isArray(block) ? block : [block];
 				return blockArray.map(blockInArray => {
 					switch (blockInArray.type) {
 						case 'PLAIN_TEXT':

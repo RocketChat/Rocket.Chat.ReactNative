@@ -9,7 +9,7 @@ interface IPlainProps {
 }
 
 const Plain = ({ value }: IPlainProps) => (
-	<Text accessibilityLabel={value} style={[styles.plainText]}>
+	<Text accessibilityLabel={value} style={styles.plainText}>
 		{value}
 	</Text>
 );
