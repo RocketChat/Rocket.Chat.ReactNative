@@ -47,11 +47,11 @@ const Link = ({ value }: ILinkProps) => {
 						case 'PLAIN_TEXT':
 							return blockInArray.value;
 						case 'STRIKE':
-							return <Strike value={blockInArray.value} isLink />;
+							return <Strike value={blockInArray.value} />;
 						case 'ITALIC':
-							return <Italic value={blockInArray.value} isLink />;
+							return <Italic value={blockInArray.value} />;
 						case 'BOLD':
-							return <Bold value={blockInArray.value} isLink />;
+							return <Bold value={blockInArray.value} />;
 						default:
 							return null;
 					}

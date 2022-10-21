@@ -423,7 +423,7 @@ const markdownLink = [
 	}
 ];
 
-const markdownLinkEmphatic = [
+const markdownLinkWithEmphasis = [
 	{
 		type: 'PARAGRAPH',
 		value: [
@@ -489,7 +489,7 @@ export const Links = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={rocketChatLink} />
 		<NewMarkdown tokens={markdownLink} />
-		<NewMarkdown tokens={markdownLinkEmphatic} />
+		<NewMarkdown tokens={markdownLinkWithEmphasis} />
 	</View>
 );
 
