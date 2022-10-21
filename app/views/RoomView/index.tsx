@@ -74,8 +74,9 @@ import {
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadModel,
+	ICustomEmojis,
 	IEmoji,
-	ICustomEmojis
+	TGetCustomEmoji
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 import { TListRef } from './List/List';
@@ -112,7 +113,6 @@ const stateAttrsUpdate = [
 	'loading',
 	'editing',
 	'replying',
-	'reacting',
 	'readOnly',
 	'member',
 	'canForwardGuest',
@@ -164,7 +164,6 @@ interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackPar
 	isMasterDetail: boolean;
 	replyBroadcast: Function;
 	width: number;
-	height: number;
 	insets: EdgeInsets;
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
@@ -200,7 +199,6 @@ interface IRoomViewState {
 	editing: boolean;
 	replying: boolean;
 	replyWithMention: boolean;
-	reacting: boolean;
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
@@ -274,7 +272,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
-			reacting: false,
 			readOnly: false,
 			unreadsCount: null,
 			roomUserId,
@@ -828,12 +825,27 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: undefined, replying: false, replyWithMention: false });
 	};
 
+	showReactionPicker = () => {
+		const { showActionSheet } = this.props;
+		const { selectedMessage } = this.state;
+		showActionSheet({
+			children: (
+				<ReactionPicker message={selectedMessage} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
+			),
+			snaps: [400],
+			enableContentPanningGesture: false
+		});
+	};
+
 	onReactionInit = (message: TAnyMessageModel) => {
-		this.setState({ selectedMessage: message, reacting: true });
+		this.messagebox?.current?.closeEmojiAndAction(() => {
+			this.setState({ selectedMessage: message }, this.showReactionPicker);
+		});
 	};
 
 	onReactionClose = () => {
-		this.setState({ selectedMessage: undefined, reacting: false });
+		const { hideActionSheet } = this.props;
+		this.setState({ selectedMessage: undefined }, hideActionSheet);
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
@@ -850,8 +862,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	onReactionPress = async (shortname: string, messageId: string) => {
+	onReactionPress = async (emoji: IEmoji, messageId: string) => {
 		try {
+			let shortname = '';
+			if (typeof emoji === 'string') {
+				shortname = emoji;
+			} else {
+				shortname = emoji.name;
+			}
 			await Services.setReaction(shortname, messageId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
@@ -1026,7 +1044,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	getCustomEmoji = (name: string): Pick<IEmoji, 'name' | 'extension'> | null => {
+	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
@@ -1489,8 +1507,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, selectedMessage, loading, reacting } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
+		const { room, loading } = this.state;
+		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
 		let bannerClosed;
@@ -1521,15 +1539,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
-				<ReactionPicker
-					show={reacting}
-					message={selectedMessage}
-					onEmojiSelected={this.onReactionPress}
-					reactionClose={this.onReactionClose}
-					width={width}
-					height={height}
-					theme={theme}
-				/>
 				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 			</SafeAreaView>
