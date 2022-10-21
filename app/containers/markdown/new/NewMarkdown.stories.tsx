@@ -3,21 +3,24 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import NewMarkdownComponent from '.';
-import { themes } from '../../../lib/constants';
+import { colors, themes } from '../../../lib/constants';
 import { longText } from '../../../../.storybook/utils';
+import { ThemeContext } from '../../../theme';
+
+const theme = 'light';
 
 export default {
 	title: 'NewMarkdown',
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<Story />
+				<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+					<Story />
+				</ThemeContext.Provider>
 			</NavigationContainer>
 		)
 	]
 };
-
-const theme = 'light';
 
 const styles = StyleSheet.create({
 	container: {
