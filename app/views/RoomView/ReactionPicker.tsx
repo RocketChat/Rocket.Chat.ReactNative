@@ -1,85 +1,52 @@
 import React from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
-import Modal from 'react-native-modal';
 
 import EmojiPicker from '../../containers/EmojiPicker';
-import { isAndroid } from '../../lib/methods/helpers';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
 import styles from './styles';
-import { IApplicationState } from '../../definitions';
-
-const margin = isAndroid ? 40 : 20;
-const maxSize = 400;
+import { IEmoji } from '../../definitions';
+import { EventTypes } from '../../containers/EmojiPicker/interfaces';
+import { searchEmojis } from '../../lib/methods';
+import { useDebounce } from '../../lib/methods/helpers/debounce';
+import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 
 interface IReactionPickerProps {
 	message?: any;
-	show: boolean;
-	isMasterDetail: boolean;
 	reactionClose: () => void;
-	onEmojiSelected: (shortname: string, id: string) => void;
-	width: number;
-	height: number;
-	theme: TSupportedThemes;
+	onEmojiSelected: (emoji: IEmoji, id: string) => void;
 }
 
-class ReactionPicker extends React.Component<IReactionPickerProps> {
-	shouldComponentUpdate(nextProps: IReactionPickerProps) {
-		const { show, width, height } = this.props;
-		return nextProps.show !== show || width !== nextProps.width || height !== nextProps.height;
-	}
+const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
+	const [searchedEmojis, setSearchedEmojis] = React.useState<IEmoji[]>([]);
+	const [searching, setSearching] = React.useState<boolean>(false);
 
-	onEmojiSelected = (emoji: string, shortname?: string) => {
-		// standard emojis: `emoji` is unicode and `shortname` is :joy:
-		// custom emojis: only `emoji` is returned with shortname type (:joy:)
-		// to set reactions, we need shortname type
-		const { onEmojiSelected, message } = this.props;
-		if (message) {
-			onEmojiSelected(shortname || emoji, message.id);
-		}
+	const handleTextChange = useDebounce((text: string) => {
+		setSearching(text !== '');
+		handleSearchEmojis(text);
+	}, 300);
+
+	const handleSearchEmojis = async (text: string) => {
+		logEvent(events.REACTION_PICKER_SEARCH_EMOJIS);
+		const emojis = await searchEmojis(text);
+		setSearchedEmojis(emojis);
 	};
 
-	render() {
-		const { width, height, show, reactionClose, isMasterDetail, theme } = this.props;
-
-		let widthStyle = width - margin;
-		let heightStyle = Math.min(width, height) - margin * 2;
-
-		if (isMasterDetail) {
-			widthStyle = maxSize;
-			heightStyle = maxSize;
+	const handleEmojiSelect = (_eventType: EventTypes, emoji?: IEmoji) => {
+		logEvent(events.REACTION_PICKER_EMOJI_SELECTED);
+		if (message && emoji) {
+			onEmojiSelected(emoji, message.id);
 		}
+		reactionClose();
+	};
 
-		return show ? (
-			<Modal
-				isVisible={show}
-				style={{ alignItems: 'center' }}
-				onBackdropPress={reactionClose}
-				onBackButtonPress={reactionClose}
-				animationIn='fadeIn'
-				animationOut='fadeOut'
-				backdropOpacity={themes[theme].backdropOpacity}
-			>
-				<View
-					style={[
-						styles.reactionPickerContainer,
-						{
-							width: widthStyle,
-							height: heightStyle
-						}
-					]}
-					testID='reaction-picker'
-				>
-					<EmojiPicker theme={theme} onEmojiSelected={this.onEmojiSelected} />
-				</View>
-			</Modal>
-		) : null;
-	}
-}
+	return (
+		<View style={styles.reactionPickerContainer} testID='reaction-picker'>
+			<View style={styles.reactionSearchContainer}>
+				<EmojiSearch onChangeText={handleTextChange} bottomSheet />
+			</View>
+			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />
+		</View>
+	);
+};
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(withTheme(ReactionPicker));
+export default ReactionPicker;

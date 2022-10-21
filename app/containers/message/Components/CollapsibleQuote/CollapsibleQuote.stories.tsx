@@ -30,7 +30,7 @@ export const Item = () => (
 				user: { username: 'Marcos' }
 			}}
 		>
-			<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={() => {}} timeFormat='LT' />
+			<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={() => null} timeFormat='LT' />
 		</MessageContext.Provider>
 	</View>
 );
