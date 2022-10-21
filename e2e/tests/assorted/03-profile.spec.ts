@@ -107,7 +107,9 @@ describe('Profile screen', () => {
 		it('should change email and password', async () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${data.random}@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${profileChangeUser.password}new`);
-			await sleep(300);
+			await waitFor(element(by.id('profile-view-submit')))
+				.toExist()
+				.withTimeout(2000);
 			await element(by.id('profile-view-submit')).tap();
 			await waitFor(element(by.id('profile-view-enter-password-sheet')))
 				.toBeVisible()

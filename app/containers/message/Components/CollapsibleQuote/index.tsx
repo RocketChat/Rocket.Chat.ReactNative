@@ -82,7 +82,7 @@ interface IMessageReply {
 const Fields = React.memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
 		const { theme } = useTheme();
-		const { baseUrl, user } = useContext(MessageContext);
+		const { user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
 			return null;
@@ -97,7 +97,6 @@ const Fields = React.memo(
 						</Text>
 						<Markdown
 							msg={field?.value || ''}
-							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
