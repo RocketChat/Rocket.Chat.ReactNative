@@ -19,7 +19,7 @@ const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.
 	const numColumns = Math.trunc(width / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (width % EMOJI_BUTTON_SIZE) / 2;
 
-	const renderItem = (emoji: IEmoji) => <PressableEmoji emoji={emoji} onPress={onEmojiSelected} />;
+	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 
 	if (!width) {
 		return null;
@@ -31,7 +31,7 @@ const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.
 			key={`emoji-category-${width}`}
 			keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 			data={emojis}
-			renderItem={({ item }) => renderItem(item)}
+			renderItem={renderItem}
 			numColumns={numColumns}
 			initialNumToRender={45}
 			removeClippedSubviews
