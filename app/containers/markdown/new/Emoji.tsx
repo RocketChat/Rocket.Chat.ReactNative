@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import shortnameToUnicode from '../../../lib/methods/helpers/shortnameToUnicode';
-import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';
@@ -15,11 +14,11 @@ interface IEmojiProps {
 }
 
 const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 
 	if ('unicode' in block) {
-		return <Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
+		return <Text style={[{ color: colors.bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
 	}
 	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
 	const emojiUnicode = shortnameToUnicode(emojiToken);
@@ -29,7 +28,7 @@ const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
 		return <CustomEmoji style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
 	}
 	return (
-		<Text style={[{ color: themes[theme].bodyText }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text]}>
+		<Text style={[{ color: colors.bodyText }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text]}>
 			{emojiUnicode}
 		</Text>
 	);
