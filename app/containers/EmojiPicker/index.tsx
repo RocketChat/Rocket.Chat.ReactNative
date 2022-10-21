@@ -47,6 +47,9 @@ const EmojiPicker = ({
 		} else {
 			emojis = emojisByCategory[category];
 		}
+		if (!emojis.length) {
+			return null;
+		}
 		return <EmojiCategory emojis={emojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} tabLabel={label} />;
 	};
 
@@ -67,11 +70,7 @@ const EmojiPicker = ({
 					}}
 					style={{ backgroundColor: colors.messageboxBackground }}
 				>
-					{categories.tabs.map((tab: any, i) =>
-						i === 0 && frequentlyUsed.length === 0
-							? null // when no frequentlyUsed don't show the tab
-							: renderCategory(tab.category, i, tab.tabLabel)
-					)}
+					{categories.tabs.map((tab: any, i) => renderCategory(tab.category, i, tab.tabLabel))}
 				</ScrollableTabView>
 			)}
 			{isEmojiKeyboard && (
