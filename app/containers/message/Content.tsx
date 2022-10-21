@@ -6,11 +6,12 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
-import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
+import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
+import { MessageTypesValues } from '../../definitions';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
@@ -26,8 +27,7 @@ const Content = React.memo(
 					{infoMessage}
 				</Text>
 			);
-
-			if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(props.type)) {
+			if (messageHaveAuthorName(props.type as MessageTypesValues)) {
 				return (
 					<Text>
 						<User {...props} /> {renderMessageContent}
