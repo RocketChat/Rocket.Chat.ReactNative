@@ -23,7 +23,6 @@ interface IAllTabProps {
 const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemProps) => {
 	const { colors } = useTheme();
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
-	const server = useAppSelector(state => state.server.server);
 	const username = useAppSelector(state => state.login.user.username);
 	const count = item.usernames.length;
 
@@ -50,7 +49,6 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 				content={item.emoji}
 				standardEmojiStyle={styles.allTabStandardEmojiStyle}
 				customEmojiStyle={styles.allTabCustomEmojiStyle}
-				baseUrl={server}
 				getCustomEmoji={getCustomEmoji}
 			/>
 			<View style={styles.textContainer}>

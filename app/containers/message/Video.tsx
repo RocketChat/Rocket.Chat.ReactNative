@@ -79,7 +79,6 @@ const Video = React.memo(
 			<>
 				<Markdown
 					msg={file.description}
-					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
 					style={[isReply && style]}
