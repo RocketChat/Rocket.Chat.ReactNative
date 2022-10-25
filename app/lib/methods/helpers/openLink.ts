@@ -36,10 +36,17 @@ const appSchemeURL = (url: string, browser: string): string => {
 	return schemeUrl;
 };
 
+const addProtocol = (url: string): string => {
+	if (!url.toLowerCase().startsWith('http')) {
+		return `https://${url}`;
+	}
+	return url;
+};
+
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
 	try {
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
-
+		url = addProtocol(url);
 		if (browser === 'inApp') {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].headerBackground,
