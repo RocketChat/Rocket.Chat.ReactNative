@@ -3,6 +3,7 @@ export * from './callJitsi';
 export * from './canOpenRoom';
 export * from './clearCache';
 export * from './enterpriseModules';
+export * from './emojis';
 export * from './getCustomEmojis';
 export * from './getPermalinks';
 export * from './getPermissions';

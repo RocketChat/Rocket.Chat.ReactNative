@@ -67,7 +67,6 @@ export interface IMessageContent {
 
 export interface IMessageEmoji {
 	content: string;
-	baseUrl: string;
 	standardEmojiStyle: { fontSize: number };
 	customEmojiStyle: StyleProp<ImageStyle>;
 	getCustomEmoji: TGetCustomEmoji;
