@@ -283,7 +283,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				<Markdown
 					msg={description}
 					style={[isReply && style]}
-					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
