@@ -60,7 +60,11 @@ const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGet
 			)}
 			{!!statusText && (
 				<View testID='room-info-view-custom-status'>
-					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} />
+					<MarkdownPreview
+						msg={statusText}
+						numberOfLines={0}
+						style={[styles.userInfoStatus, { color: themes[theme].auxiliaryText }]}
+					/>
 				</View>
 			)}
 		</>
