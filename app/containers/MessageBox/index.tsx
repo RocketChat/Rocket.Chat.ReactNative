@@ -658,7 +658,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	getUsers = debounce(async (keyword: any) => {
-		let res = await search({ text: keyword, filterRooms: false, filterUsers: true });
+		const { rid } = this.props;
+		let res = await search({ text: keyword, filterRooms: false, filterUsers: true, rid });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
