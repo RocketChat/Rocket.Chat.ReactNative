@@ -1,5 +1,6 @@
 export * from './colors';
 export * from './constantDisplayMode';
+export * from './emojis';
 export * from './environment';
 export * from './keys';
 export * from './links';

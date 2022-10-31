@@ -24,7 +24,7 @@ export type TeamsEndpoints = {
 	'teams.create': {
 		POST: (params: {
 			name: string;
-			users: string[];
+			members: string[];
 			type: TEAM_TYPE;
 			room: { readOnly: boolean; extraData: { broadcast: boolean; encrypted: boolean } };
 		}) => { team: ITeam };

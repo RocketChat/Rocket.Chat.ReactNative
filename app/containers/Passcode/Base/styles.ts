@@ -18,16 +18,12 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	buttonRow: {
-		height: 102
-	},
 	colButton: {
 		flex: 0,
 		marginLeft: 12,
 		marginRight: 12,
 		alignItems: 'center',
-		width: 78,
-		height: 78
+		width: 78
 	},
 	buttonText: {
 		fontSize: 28,
@@ -37,7 +33,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: 78,
-		height: 78,
 		borderRadius: 4
 	},
 	textTitle: {

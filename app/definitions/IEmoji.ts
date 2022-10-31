@@ -1,43 +1,35 @@
 import Model from '@nozbe/watermelondb/Model';
-import { StyleProp } from 'react-native';
-import { ImageStyle } from 'react-native-fast-image';
 
-export interface IEmoji {
+export interface IFrequentlyUsedEmoji {
 	content: string;
-	name: string;
-	extension: string;
+	extension?: string;
 	isCustom: boolean;
 	count?: number;
 }
 
-export interface ICustomEmojis {
-	[key: string]: Pick<IEmoji, 'name' | 'extension'>;
-}
+type TBasicEmoji = string;
 
 export interface ICustomEmoji {
-	baseUrl?: string;
-	emoji: IEmoji;
-	style: StyleProp<ImageStyle>;
+	name: string;
+	extension: string;
 }
+
+export type IEmoji = ICustomEmoji | TBasicEmoji;
+
+export interface ICustomEmojis {
+	[key: string]: ICustomEmoji;
+}
+
+export type TGetCustomEmoji = (name: string) => ICustomEmoji | null;
+
+export type TFrequentlyUsedEmojiModel = IFrequentlyUsedEmoji & Model;
 
 export interface ICustomEmojiModel {
 	_id: string;
-	name?: string;
+	name: string;
 	aliases?: string[];
 	extension: string;
 	_updatedAt: Date;
 }
 
-export interface IEmojiCategory {
-	baseUrl: string;
-	emojis: IEmoji[];
-	onEmojiSelected: (emoji: IEmoji) => void;
-	width: number | null;
-	style: StyleProp<ImageStyle>;
-	tabLabel: string;
-}
-
-export type TGetCustomEmoji = (name: string) => any;
-
-export type TFrequentlyUsedEmojiModel = IEmoji & Model;
 export type TCustomEmojiModel = ICustomEmojiModel & Model;
