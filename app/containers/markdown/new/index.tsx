@@ -24,7 +24,6 @@ interface IBodyProps {
 	navToRoomInfo?: Function;
 	useRealName?: boolean;
 	username: string;
-	baseUrl: string;
 }
 
 const Body = ({
@@ -35,7 +34,6 @@ const Body = ({
 	username,
 	navToRoomInfo,
 	getCustomEmoji,
-	baseUrl,
 	onLinkPress
 }: IBodyProps): React.ReactElement | null => {
 	if (isEmpty(tokens)) {
@@ -51,7 +49,6 @@ const Body = ({
 				username,
 				navToRoomInfo,
 				getCustomEmoji,
-				baseUrl,
 				onLinkPress
 			}}
 		>
