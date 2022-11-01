@@ -16,6 +16,7 @@ import { TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
+import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -28,7 +29,6 @@ import ActionsSection from './components/ActionsSection';
 import {
 	fetchRole,
 	fetchRoomMembersRoles,
-	handleIgnore,
 	handleLeader,
 	handleModerator,
 	handleMute,
@@ -207,7 +207,7 @@ const RoomMembersView = (): React.ReactElement => {
 			options.push({
 				icon: 'ignore',
 				title: I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
-				onPress: () => handleIgnore(selectedUser, !isIgnored, room.rid),
+				onPress: () => handleIgnore(selectedUser._id, !isIgnored, room.rid),
 				testID: 'action-sheet-ignore-user'
 			});
 		}

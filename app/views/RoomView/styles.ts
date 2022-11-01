@@ -14,10 +14,13 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		marginVertical: 15
 	},
+	reactionSearchContainer: {
+		marginHorizontal: 12,
+		marginBottom: 8
+	},
 	reactionPickerContainer: {
-		borderRadius: 4,
-		flexDirection: 'column',
-		overflow: 'hidden'
+		flex: 1,
+		flexDirection: 'column'
 	},
 	bannerContainer: {
 		paddingVertical: 12,
@@ -64,5 +67,14 @@ export default StyleSheet.create({
 	previewMode: {
 		fontSize: 16,
 		...sharedStyles.textMedium
+	},
+	searchbarContainer: {
+		height: 56,
+		marginBottom: 8,
+		paddingHorizontal: 12
+	},
+	reactionPickerSearchbar: {
+		paddingHorizontal: 20,
+		minHeight: 48
 	}
 });

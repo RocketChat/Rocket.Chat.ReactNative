@@ -1,75 +1,45 @@
 import React from 'react';
-import { FlatList, Text, TouchableOpacity } from 'react-native';
+import { useWindowDimensions } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import styles from './styles';
-import CustomEmoji from './CustomEmoji';
+import { EMOJI_BUTTON_SIZE } from './styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
+import { IEmoji } from '../../definitions/IEmoji';
+import { PressableEmoji } from './PressableEmoji';
 
-const EMOJI_SIZE = 50;
+interface IEmojiCategoryProps {
+	emojis: IEmoji[];
+	onEmojiSelected: (emoji: IEmoji) => void;
+	tabLabel?: string; // needed for react-native-scrollable-tab-view only
+}
 
-const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
-	if (emoji && emoji.isCustom) {
-		return (
-			<CustomEmoji
-				style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]}
-				emoji={emoji}
-				baseUrl={baseUrl}
-			/>
-		);
+const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.ReactElement | null => {
+	const { width } = useWindowDimensions();
+
+	const numColumns = Math.trunc(width / EMOJI_BUTTON_SIZE);
+	const marginHorizontal = (width % EMOJI_BUTTON_SIZE) / 2;
+
+	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
+
+	if (!width) {
+		return null;
 	}
+
 	return (
-		<Text style={[styles.categoryEmoji, { height: size, width: size, fontSize: size - 14 }]}>
-			{shortnameToUnicode(`:${emoji}:`)}
-		</Text>
+		<FlatList
+			// needed to update the numColumns when the width changes
+			key={`emoji-category-${width}`}
+			keyExtractor={item => (typeof item === 'string' ? item : item.name)}
+			data={emojis}
+			renderItem={renderItem}
+			numColumns={numColumns}
+			initialNumToRender={45}
+			removeClippedSubviews
+			contentContainerStyle={{ marginHorizontal }}
+			{...scrollPersistTaps}
+			keyboardDismissMode={'none'}
+		/>
 	);
 };
-
-class EmojiCategory extends React.Component<IEmojiCategory> {
-	renderItem(emoji: IEmoji) {
-		const { baseUrl, onEmojiSelected } = this.props;
-		return (
-			<TouchableOpacity
-				activeOpacity={0.7}
-				// @ts-ignore
-				key={emoji && emoji.isCustom ? emoji.content : emoji}
-				onPress={() => onEmojiSelected(emoji)}
-				testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}
-			>
-				{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
-			</TouchableOpacity>
-		);
-	}
-
-	render() {
-		const { emojis, width } = this.props;
-
-		if (!width) {
-			return null;
-		}
-
-		const numColumns = Math.trunc(width / EMOJI_SIZE);
-		const marginHorizontal = (width - numColumns * EMOJI_SIZE) / 2;
-
-		return (
-			<FlatList
-				contentContainerStyle={{ marginHorizontal }}
-				// rerender FlatList in case of width changes
-				key={`emoji-category-${width}`}
-				// @ts-ignore
-				keyExtractor={item => (item && item.isCustom && item.content) || item}
-				data={emojis}
-				extraData={this.props}
-				renderItem={({ item }) => this.renderItem(item)}
-				numColumns={numColumns}
-				initialNumToRender={45}
-				removeClippedSubviews
-				{...scrollPersistTaps}
-				keyboardDismissMode={'none'}
-			/>
-		);
-	}
-}
 
 export default EmojiCategory;
