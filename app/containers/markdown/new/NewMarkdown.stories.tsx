@@ -37,11 +37,8 @@ const getCustomEmoji = (content: string) => {
 	}[content];
 	return customEmoji;
 };
-const baseUrl = 'https://open.rocket.chat';
 
-const NewMarkdown = ({ ...props }) => (
-	<NewMarkdownComponent baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} username='rocket.cat' {...props} />
-);
+const NewMarkdown = ({ ...props }) => <NewMarkdownComponent getCustomEmoji={getCustomEmoji} username='rocket.cat' {...props} />;
 
 const simpleTextMsg = [
 	{
@@ -343,7 +340,7 @@ const emojiTokens = [
 export const Emoji = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={bigEmojiTokens} />
-		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
+		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} />
 	</View>
 );
 

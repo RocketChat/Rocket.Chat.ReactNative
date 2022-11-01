@@ -2813,3 +2813,5 @@ export const emojis = [
 	'flag_tc',
 	'flag_mf'
 ];
+
+export const DEFAULT_EMOJIS = ['clap', 'thumbsup', 'heart_eyes', 'grinning', 'thinking', 'smiley'];
