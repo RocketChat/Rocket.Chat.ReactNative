@@ -2,13 +2,16 @@ import { Q } from '@nozbe/watermelondb';
 
 import { sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
+import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, SubscriptionType } from '../../definitions';
+import { ISearch, ISearchLocal, IUserMessage, SubscriptionType } from '../../definitions';
 import { isGroupChat } from './helpers';
+
+export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
+export const localSearchSubscription = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -41,29 +44,60 @@ export const localSearch = async ({ text = '', filterUsers = true, filterRooms =
 	return search;
 };
 
-export const search = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<(ISearch | ISearchLocal)[]> => {
+export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }): Promise<IUserMessage[]> => {
+	const userId = reduxStore.getState().login.user.id;
+	const numberOfSuggestions = reduxStore.getState().settings.Number_of_users_autocomplete_suggestions as number;
+	const searchText = text.trim();
+	const db = database.active;
+	const likeString = sanitizeLikeString(searchText);
+	const messages = await db
+		.get('messages')
+		.query(
+			Q.and(Q.where('rid', rid), Q.where('u', Q.notLike(`%${userId}%`)), Q.where('t', null)),
+			Q.experimentalSortBy('ts', Q.desc),
+			Q.experimentalTake(50)
+		)
+		.fetch();
+
+	const regExp = new RegExp(`${likeString}`, 'i');
+	const users = messages.map(message => message.u);
+
+	const usersFromLocal = users
+		.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
+		.filter(user => user?.name?.match(regExp) || user?.username?.match(regExp))
+		.slice(0, text ? 2 : numberOfSuggestions);
+
+	return usersFromLocal;
+};
+
+export const search = async ({ text = '', filterUsers = true, filterRooms = true, rid = '' }): Promise<TSearch[]> => {
 	const searchText = text.trim();
 
 	if (debounce) {
 		debounce('cancel');
 	}
 
-	const localSearchData = await localSearch({ text, filterUsers, filterRooms });
-	const usernames = localSearchData.map(sub => sub.name);
+	let localSearchData = [];
+	if (rid) {
+		localSearchData = await localSearchUsersMessageByRid({ text, rid });
+	} else {
+		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });
+	}
+	const usernames = localSearchData.map(sub => sub.name as string);
 
-	const data = localSearchData as (ISearch | ISearchLocal)[];
+	const data: TSearch[] = localSearchData;
 
 	try {
-		if (localSearchData.length < 7) {
+		if (searchText && localSearchData.length < 7) {
 			const { users, rooms } = (await Promise.race([
-				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
+				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }, rid),
 				new Promise((resolve, reject) => (debounce = reject))
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
 			if (filterUsers) {
 				users
 					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-					.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+					.filter(user => !data.some(sub => 'username' in sub && user.username === sub.username)) // Make sure to remove users already on local database
 					.forEach(user => {
 						data.push({
 							...user,
@@ -77,7 +111,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 			if (filterRooms) {
 				rooms.forEach(room => {
 					// Check if it exists on local database
-					const index = data.findIndex(item => item.rid === room._id);
+					const index = data.findIndex(item => 'rid' in item && item.rid === room._id);
 					if (index === -1) {
 						data.push({
 							...room,

@@ -7,7 +7,6 @@ interface IMarkdownContext {
 	channels?: IUserChannel[];
 	useRealName?: boolean;
 	username?: string;
-	baseUrl?: string;
 	navToRoomInfo?: Function;
 	getCustomEmoji?: Function;
 	onLinkPress?: Function;
@@ -18,7 +17,6 @@ const defaultState = {
 	channels: [],
 	useRealName: false,
 	username: '',
-	baseUrl: '',
 	navToRoomInfo: () => {}
 };
 
