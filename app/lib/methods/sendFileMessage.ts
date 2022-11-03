@@ -26,6 +26,9 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 		} catch {
 			// Do nothing
 		}
+		delete uploadQueue[uploadPath];
+	}
+	if (item._raw) {
 		try {
 			const db = database.active;
 			await db.write(async () => {
@@ -34,7 +37,6 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 		} catch (e) {
 			log(e);
 		}
-		delete uploadQueue[uploadPath];
 	}
 }
 
