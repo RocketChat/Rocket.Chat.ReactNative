@@ -27,7 +27,7 @@ index 90969b2..4c00e69 100644
              if (notification != null) {
                  notification.onOpened();
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
-index eadf41e..a3f71dd 100644
+index c090247..4e78d75 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
 +++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
 @@ -96,8 +96,7 @@ public class RNNotificationsPackage implements ReactPackage, AppLifecycleFacade.
