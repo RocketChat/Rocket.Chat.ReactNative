@@ -81,7 +81,6 @@ const ImageContainer = React.memo(
 						<Markdown
 							msg={file.description}
 							style={[isReply && style]}
-							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
