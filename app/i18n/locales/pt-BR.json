@@ -817,6 +817,7 @@
   "Select_Members": "Selecionar Membros",
   "Also_send_thread_message_to_channel_behavior": "Também enviar mensagem do tópico para o canal",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Permitir que os usuários selecionem o comportamento Também enviar para o canal",
+  "Reply_in_direct_message": "Responder por mensagem direta",
   "room_archived": "{{username}} arquivou a sala",
   "room_unarchived": "{{username}} desarquivou a sala"
 }

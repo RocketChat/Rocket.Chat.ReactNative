@@ -51,9 +51,11 @@ const data = {
 		detoxpublicprotected: {
 			name: 'detox-public-protected',
 			joinCode: '123'
-		},
-		detoxpublicignore: {
-			name: `detox-public-ignore-${value}`
+		}
+	},
+	userRegularChannels: {
+		detoxpublic: {
+			name: `detox-public-${value}`
 		}
 	},
 	groups: {
