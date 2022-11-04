@@ -13,13 +13,14 @@ import log from './helpers/log';
 
 const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
+const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
+
 export function isUploadActive(path: string, rid: string): boolean {
-	const uploadPath = `${path}-${rid}`;
-	return !!uploadQueue[uploadPath];
+	return !!uploadQueue[getUploadPath(path, rid)];
 }
 
 export async function cancelUpload(item: TUploadModel, rid: string): Promise<void> {
-	const uploadPath = `${item.path}-${rid}`;
+	const uploadPath = getUploadPath(item.path, rid);
 	if (!isEmpty(uploadQueue[uploadPath])) {
 		try {
 			await uploadQueue[uploadPath].cancel();
@@ -28,7 +29,7 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 		}
 		delete uploadQueue[uploadPath];
 	}
-	if (item._raw) {
+	if (item.id) {
 		try {
 			const db = database.active;
 			await db.write(async () => {
@@ -57,11 +58,11 @@ export function sendFileMessage(
 
 			const db = database.active;
 			const uploadsCollection = db.get('uploads');
-			const uploadPath = `${fileInfo.path}-${rid}`;
+			const uploadPath = getUploadPath(fileInfo.path, rid);
 			let uploadRecord: TUploadModel;
 			try {
 				uploadRecord = await uploadsCollection.find(uploadPath);
-				if (uploadRecord?._raw?.id) {
+				if (uploadRecord.id) {
 					return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
 				}
 			} catch (error) {
