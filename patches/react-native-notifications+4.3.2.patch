@@ -27,10 +27,32 @@ index 90969b2..4c00e69 100644
              if (notification != null) {
                  notification.onOpened();
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
-index eadf41e..a3f71dd 100644
+index c090247..494aae8 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
 +++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
-@@ -96,8 +96,7 @@ public class RNNotificationsPackage implements ReactPackage, AppLifecycleFacade.
+@@ -20,6 +20,7 @@ import com.wix.reactnativenotifications.core.notification.PushNotification;
+ import com.wix.reactnativenotifications.core.notification.PushNotificationProps;
+ import com.wix.reactnativenotifications.core.notificationdrawer.IPushNotificationsDrawer;
+ import com.wix.reactnativenotifications.core.notificationdrawer.PushNotificationsDrawer;
++import com.wix.reactnativenotifications.core.ReactAppLifecycleFacade;
+ 
+ import java.util.Arrays;
+ import java.util.Collections;
+@@ -67,7 +68,12 @@ public class RNNotificationsPackage implements ReactPackage, AppLifecycleFacade.
+ 
+     @Override
+     public void onActivityStarted(Activity activity) {
+-        if (InitialNotificationHolder.getInstance().get() != null) {
++        boolean isReactInitialized = false;
++        if (AppLifecycleFacadeHolder.get() instanceof ReactAppLifecycleFacade) {
++            isReactInitialized = AppLifecycleFacadeHolder.get().isReactInitialized();
++        }
++
++        if (InitialNotificationHolder.getInstance().get() == null && !isReactInitialized) {
+             callOnOpenedIfNeed(activity);
+         }
+     }
+@@ -96,8 +102,7 @@ public class RNNotificationsPackage implements ReactPackage, AppLifecycleFacade.
          Intent intent = activity.getIntent();
          if (NotificationIntentAdapter.canHandleIntent(intent)) {
              Context appContext = mApplication.getApplicationContext();
