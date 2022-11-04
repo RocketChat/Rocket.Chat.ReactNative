@@ -53,6 +53,11 @@ const data = {
 			joinCode: '123'
 		}
 	},
+	userRegularChannels: {
+		detoxpublic: {
+			name: `detox-public-${value}`
+		}
+	},
 	groups: {
 		private: {
 			name: `detox-private-${value}`
