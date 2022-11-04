@@ -103,6 +103,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	private rid: string;
 	private t: string;
 	private joined: boolean;
+	private focusListener: any;
 	private omnichannelPermissions?: {
 		canForwardGuest: boolean;
 		canReturnQueue: boolean;
@@ -188,10 +189,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (room && room.t !== 'd' && (await this.canViewMembers())) {
 				try {
-					const counters = await Services.getRoomCounters(room.rid, room.t as any);
-					if (counters.success) {
-						this.setState({ membersCount: counters.members, joined: counters.joined });
-					}
+					this.focusListener = this.props.navigation.addListener('focus', async () => {
+						const counters = await Services.getRoomCounters(room.rid, room.t as any);
+						if (counters.success) {
+							this.setState({ membersCount: counters.members, joined: counters.joined });
+						}
+					});
 				} catch (e) {
 					log(e);
 				}
@@ -222,6 +225,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+		if (this.focusListener !== undefined) {
+			this.props.navigation.removeListener('focus', this.focusListener);
 		}
 	}
 
