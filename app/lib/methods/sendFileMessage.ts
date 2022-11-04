@@ -62,7 +62,7 @@ export function sendFileMessage(
 			try {
 				uploadRecord = await uploadsCollection.find(uploadPath);
 				if (uploadRecord?._raw?.id) {
-					return Alert.alert(i18n.t('Error_on_upload_archive'), i18n.t('Upload_in_progress'));
+					return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
 				}
 			} catch (error) {
 				try {
