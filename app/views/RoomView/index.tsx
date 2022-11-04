@@ -225,6 +225,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
+	private replyInDM?: TAnyMessageModel;
 	// Type of InteractionManager.runAfterInteractions
 	private didMountInteraction?: {
 		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
@@ -259,6 +260,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
+		this.replyInDM = props.route.params?.replyInDM;
 		this.state = {
 			joined: true,
 			room,
@@ -331,6 +333,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
+			}
+			if (this.replyInDM) {
+				this.onReplyInit(this.replyInDM, false);
 			}
 		});
 		if (isTablet) {

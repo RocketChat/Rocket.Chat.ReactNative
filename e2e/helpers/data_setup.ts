@@ -158,6 +158,21 @@ const setup = async () => {
 
 	await login(data.users.regular.username, data.users.regular.password);
 
+	for (const channelKey in data.userRegularChannels) {
+		if (Object.prototype.hasOwnProperty.call(data.userRegularChannels, channelKey)) {
+			const channel = data.userRegularChannels[channelKey as TDataChannels];
+			const {
+				data: {
+					channel: { _id }
+				}
+			} = await createChannelIfNotExists(channel.name);
+
+			if ('joinCode' in channel) {
+				await changeChannelJoinCode(_id, channel.joinCode);
+			}
+		}
+	}
+
 	for (const groupKey in data.groups) {
 		if (Object.prototype.hasOwnProperty.call(data.groups, groupKey)) {
 			const group = data.groups[groupKey as TDataGroups];
