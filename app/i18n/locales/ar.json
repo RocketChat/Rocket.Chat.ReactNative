@@ -117,7 +117,6 @@
   "Black": "أسود",
   "Block_user": "حظر المستخدم",
   "Browser": "المتصفح",
-  "Broadcast_hint": "يمكن فقط للمستخدمين المصرح لهم كتابة رسائل جديدة، ولكن سيتمكن المستخدمون الآخرون من الرد",
   "Busy": "مشغول",
   "By_proceeding_you_are_agreeing": "من خلال المتابعة، أنت توافق على",
   "Cancel_editing": "إلغاء التعديل",
@@ -307,7 +306,6 @@
   "Message_accessibility": "الرسالة من {{user}} في {{time}}: {{message}}",
   "Message_actions": "إجراءات الرسالة",
   "Message_pinned": "الرسالة مثبتة",
-  "Message_removed": "الرسالة حذفت",
   "Message_starred": "الرسالة مميزة",
   "Message_unstarred": "الرسالة غير مميزة",
   "message": "رسالة",
@@ -537,8 +535,6 @@
   "User_has_been_key": "تمت {{key}} المستخدم!",
   "User_is_no_longer_role_by_": "تم إزالة الدور {{role}} عن المستخدم {{user}} من قبل {{userBy}}",
   "User_sent_an_attachment": "{{user}} أرسل مرفقًا",
-  "User_unmuted_by": "ألغى {{userBy}} الكتم عن {{userUnmuted}}",
-  "User_was_set_role_by_": "أضيف دور {{role}} للمستخدم {{user}} من قبل {{userBy}}",
   "Username_is_empty": "اسم المستخدم فارغ",
   "Username": "اسم المستخدم",
   "Username_or_email": "اسم المستخدم أو البريد الالكتروني",
@@ -638,5 +634,6 @@
   "Logged_out_of_other_clients_successfully": "تم تسجيل الخروج من الأماكن الأخرى بنجاح",
   "Logout_failed": "فشل تسجيل الخروج!",
   "Log_analytics_events": "تحليلات سجل الأحداث",
-  "invalid-room": "غرفة غير صالحة"
+  "invalid-room": "غرفة غير صالحة",
+  "Broadcast_hint": "يمكن فقط للمستخدمين المصرح لهم كتابة رسائل جديدة، ولكن سيتمكن المستخدمون الآخرون من الرد"
 }

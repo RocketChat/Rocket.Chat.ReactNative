@@ -118,7 +118,6 @@
   "Black": "Preto",
   "Block_user": "Bloquear utilizador",
   "Browser": "Navegador",
-  "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder",
   "Busy": "Ocupado",
   "By_proceeding_you_are_agreeing": "Ao prosseguir você concorda com o(s) nosso(s)",
   "Cancel_editing": "Cancelar edição",
@@ -308,7 +307,6 @@
   "Message_accessibility": "Mensagem de {{user}} às {{time}}: {{message}}",
   "Message_actions": "Acções de mensagem",
   "Message_pinned": "Mensagem afixada",
-  "Message_removed": "Mensagem removida",
   "Message_starred": "Mensagem estrelada",
   "Message_unstarred": "Mensagem não estrelada",
   "message": "mensagem",
@@ -476,8 +474,6 @@
   "User_has_been_key": "Utilizador foi {{key}}",
   "User_is_no_longer_role_by_": "{{userBy}} removeu o estatuto de {{role}} de {{user}}",
   "User_sent_an_attachment": "{{user}} enviou um ficheiro",
-  "User_unmuted_by": "{{userBy}} retirou o silêncio a {{userUnmuted}}",
-  "User_was_set_role_by_": "{{userBy}} deu estatuto de {{role}} a {{user}}",
   "Username_is_empty": "O nome de utilizador está vazio",
   "Username": "Nome de utilizador",
   "Username_or_email": "Nome de utilizador ou e-mail",
@@ -495,5 +491,6 @@
   "you_were_mentioned": "você foi mencionado",
   "you": "você",
   "You": "Você",
-  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!"
+  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
+  "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder"
 }
