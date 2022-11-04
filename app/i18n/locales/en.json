@@ -862,6 +862,7 @@
   "Select_Members": "Select Members",
   "Also_send_thread_message_to_channel_behavior": "Also send thread message to channel",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Allow users to select the Also send to channel behavior",
+  "Reply_in_direct_message": "Reply in Direct Message",
   "room_archived": "archived room",
   "room_unarchived": "unarchived room"
 }
