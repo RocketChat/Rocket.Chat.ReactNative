@@ -115,7 +115,6 @@
   "Black": "黑色",
   "Block_user": "屏蔽此用户",
   "Browser": "浏览器",
-  "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复",
   "Busy": "忙碌",
   "By_proceeding_you_are_agreeing": "继续操作，请同意我们的",
   "Cancel_editing": "取消编辑",
@@ -300,7 +299,6 @@
   "Message_accessibility": "{{time}}来自{{user}}的消息: {{message}}",
   "Message_actions": "信息操作",
   "Message_pinned": "信息被钉选",
-  "Message_removed": "信息被删除",
   "Message_starred": "信息被标注",
   "Message_unstarred": "信息被取消标注",
   "message": "信息",
@@ -529,8 +527,6 @@
   "User_has_been_key": "用户已被{{key}}",
   "User_is_no_longer_role_by_": "{{userBy}}将角色 {{role}} 从用户 {{user}} 身上移除",
   "User_sent_an_attachment": "{{user}} 寄送了一个附件",
-  "User_unmuted_by": "用户 {{userUnmuted}} 被 {{userBy}} 取消静音",
-  "User_was_set_role_by_": "用户 {{user}} 被 {{userBy}} 设置角色 {{role}}",
   "Username_is_empty": "用户名是空的",
   "Username": "用户名",
   "Username_or_email": "用户名或邮箱",
@@ -649,5 +645,6 @@
   "No_threads": "当前没有讨论串",
   "No_threads_following": "当前没有正在追踪的讨论",
   "No_threads_unread": "当前没有未读的讨论",
-  "Messagebox_Send_to_channel": "发送至频道"
+  "Messagebox_Send_to_channel": "发送至频道",
+  "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复"
 }
