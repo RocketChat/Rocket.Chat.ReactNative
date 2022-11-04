@@ -37,6 +37,20 @@ describe('Join room from directory', () => {
 			await navigateToRoom(data.channels.detoxpublic.name);
 		});
 
+		it('should navigate to messages thread view', async () => {
+			await waitFor(element(by.id('room-view-header-threads')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('room-view-header-threads')).tap();
+			await waitFor(element(by.id('thread-messages-view-search-icon')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await tapBack();
+			await waitFor(element(by.id('room-view-header-threads')))
+				.toBeVisible()
+				.withTimeout(2000);
+		});
+
 		it('should search user and navigate', async () => {
 			await tapBack();
 			await element(by.id('rooms-list-view-directory')).tap();

@@ -142,7 +142,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
 				</HeaderButton.Container>
 			)
 		};
