@@ -760,7 +760,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								rid,
 								t,
 								room,
-								member
+								member,
+								fromRid: room.rid
 							}
 						})
 					}

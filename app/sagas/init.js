@@ -77,7 +77,7 @@ const restore = function* restore() {
 };
 
 const start = function* start() {
-	yield RNBootSplash.hide();
+	yield RNBootSplash.hide({ fade: true });
 };
 
 const root = function* root() {

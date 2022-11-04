@@ -8,7 +8,6 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles, { MIN_TAB_WIDTH } from './styles';
 import { useDimensions, useOrientation } from '../../dimensions';
-import { useAppSelector } from '../../lib/hooks';
 
 interface ITabBarItem {
 	getCustomEmoji: TGetCustomEmoji;
@@ -25,7 +24,6 @@ interface IReactionsTabBar {
 
 const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 	const { colors } = useTheme();
-	const server = useAppSelector(state => state.server.server);
 	return (
 		<Pressable
 			key={tab.emoji}
@@ -46,7 +44,6 @@ const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 							content={tab.emoji}
 							standardEmojiStyle={styles.standardEmojiStyle}
 							customEmojiStyle={styles.customEmojiStyle}
-							baseUrl={server}
 							getCustomEmoji={getCustomEmoji}
 						/>
 						<Text style={[styles.reactionCount, { color: colors.auxiliaryTintColor }]}>{tab.usernames.length}</Text>

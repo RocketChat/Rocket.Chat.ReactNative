@@ -12,10 +12,10 @@ import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
+import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
-import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
 import { hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
@@ -26,7 +26,7 @@ export interface IMessageActionsProps {
 	user: Pick<ILoggedUser, 'id'>;
 	editInit: (message: TAnyMessageModel) => void;
 	reactionInit: (message: TAnyMessageModel) => void;
-	onReactionPress: (shortname: string, messageId: string) => void;
+	onReactionPress: (shortname: IEmoji, messageId: string) => void;
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
@@ -37,7 +37,6 @@ export interface IMessageActionsProps {
 	Message_AllowPinning?: boolean;
 	Message_AllowStarring?: boolean;
 	Message_Read_Receipt_Store_Users?: boolean;
-	server: string;
 	editMessagePermission?: string[];
 	deleteMessagePermission?: string[];
 	forceDeleteMessagePermission?: string[];
@@ -60,7 +59,6 @@ const MessageActions = React.memo(
 				onReactionPress,
 				replyInit,
 				isReadOnly,
-				server,
 				Message_AllowDeleting,
 				Message_AllowDeleting_BlockDeleteInMinutes,
 				Message_AllowEditing,
@@ -261,12 +259,10 @@ const MessageActions = React.memo(
 			const handleReaction: IHeader['handleReaction'] = (shortname, message) => {
 				logEvent(events.ROOM_MSG_ACTION_REACTION);
 				if (shortname) {
-					// TODO: evaluate unification with IEmoji
-					onReactionPress(shortname as any, message.id);
+					onReactionPress(shortname, message.id);
 				} else {
-					reactionInit(message);
+					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
 				}
-				// close actionSheet when click at header
 				hideActionSheet();
 			};
 
@@ -460,7 +456,7 @@ const MessageActions = React.memo(
 					headerHeight: HEADER_HEIGHT,
 					customHeader:
 						!isReadOnly || room.reactWhenReadOnly ? (
-							<Header server={server} handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
+							<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 						) : null
 				});
 			};
