@@ -92,7 +92,9 @@ describe('Room screen', () => {
 					await waitFor(element(by.id('messagebox-keyboard-emoji')))
 						.toExist()
 						.withTimeout(10000);
-					await expect(element(by.id('emoji-picker-tab-emoji'))).toExist();
+					await waitFor(element(by.id('emoji-picker-tab-emoji')))
+						.toExist()
+						.withTimeout(10000);
 					await element(by.id('emoji-picker-tab-emoji')).tap();
 					await expect(element(by.id('emoji-blush'))).toExist();
 					await element(by.id('emoji-blush')).tap();
