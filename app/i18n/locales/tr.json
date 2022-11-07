@@ -115,7 +115,6 @@
   "Black": "Koyu",
   "Block_user": "Kullanıcıyı engelle",
   "Browser": "Tarayıcı",
-  "Broadcast_hint": "Yalnızca yetkili kullanıcılar yeni ileti yazabilir, ancak diğer kullanıcılar yanıt verebilir",
   "Busy": "Meşgul",
   "By_proceeding_you_are_agreeing": "Devam ederek kabul ediyorsunuz: ",
   "Cancel_editing": "Düzenlemeyi iptal et",
@@ -303,7 +302,6 @@
   "Message_accessibility": "{{user}} tarafından {{time}} itibarıyla ileti: {{message}}",
   "Message_actions": "İleti işlemleri",
   "Message_pinned": "İleti sabitlendi",
-  "Message_removed": "İleti kaldırıldı",
   "Message_starred": "İletia yıldız eklendi",
   "Message_unstarred": "İletiın yıldızı kaldırıldı",
   "message": "ileti",
@@ -532,8 +530,6 @@
   "User_has_been_key": "Kullanıcı {{key}} olmuştur",
   "User_is_no_longer_role_by_": "{{user}} artık {{role}} değil ({{userBy}} tarafından)",
   "User_sent_an_attachment": "{{user}} bir ek gönderdi",
-  "User_unmuted_by": "{{userUnmuted}} kullanıcısının sesi {{userBy}} tarafından açıldı",
-  "User_was_set_role_by_": "{{user}}, {{userBy}} tarafından {{role}} ayarlandı",
   "Username_is_empty": "Kullanıcı adı boş!",
   "Username": "Kullanıcı adı",
   "Username_or_email": "Kullanıcı adı ya da e-posta",
@@ -671,5 +667,6 @@
   "Message_Ignored": "İleti yok sayıldı. Görüntülemek için dokunun.",
   "Enter_workspace_URL": "Çalışma alanı URL'nizi girin",
   "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat",
-  "invalid-room": "Geçersiz oda"
+  "invalid-room": "Geçersiz oda",
+  "Broadcast_hint": "Yalnızca yetkili kullanıcılar yeni ileti yazabilir, ancak diğer kullanıcılar yanıt verebilir"
 }

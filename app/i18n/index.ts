@@ -88,6 +88,11 @@ export const LANGUAGES: ILanguage[] = [
 		label: 'Türkçe',
 		value: 'tr',
 		file: () => require('./locales/tr.json')
+	},
+	{
+		label: 'Slovenian (Slovenia)',
+		value: 'sl-SI',
+		file: () => require('./locales/sl-SI.json')
 	}
 ];
 
