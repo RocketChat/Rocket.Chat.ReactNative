@@ -116,7 +116,6 @@
   "Black": "黑色",
   "Block_user": "封鎖此用戶",
   "Browser": "瀏覽器",
-  "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆",
   "Busy": "忙碌",
   "By_proceeding_you_are_agreeing": "若要繼續操作，請同意我們的",
   "Cancel_editing": "取消編輯",
@@ -302,7 +301,6 @@
   "Message_accessibility": "{{time}}來自{{user}}的訊息: {{message}}",
   "Message_actions": "訊息操作",
   "Message_pinned": "訊息被釘選",
-  "Message_removed": "訊息被刪除",
   "Message_starred": "訊息被標註",
   "Message_unstarred": "訊息被取消標註",
   "message": "訊息",
@@ -531,8 +529,6 @@
   "User_has_been_key": "使用者已被{{key}}",
   "User_is_no_longer_role_by_": "{{userBy}}將角色 {{role}} 從使用者 {{user}} 身上移除",
   "User_sent_an_attachment": "{{user}} 寄送了一個附件",
-  "User_unmuted_by": "使用者 {{userUnmuted}} 被 {{userBy}} 取消靜音",
-  "User_was_set_role_by_": "使用者 {{user}} 被 {{userBy}} 設置角色 {{role}}",
   "Username_is_empty": "使用者名稱是空的",
   "Username": "使用者名稱",
   "Username_or_email": "使用者名稱或電子郵件",
@@ -653,5 +649,6 @@
   "No_threads_unread": "當前沒有未讀的討論",
   "Messagebox_Send_to_channel": "發送至頻道",
   "Confirmation": "確認",
-  "invalid-room": "無效的房間"
+  "invalid-room": "無效的房間",
+  "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆"
 }

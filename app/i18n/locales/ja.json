@@ -119,7 +119,6 @@
   "Black": "ブラック",
   "Block_user": "ブロックしたユーザー",
   "Browser": "ブラウザ",
-  "Broadcast_hint": "許可されたユーザーのみが新しいメッセージを書き込めます。他のユーザーは返信することができます",
   "Busy": "取り込み中",
   "By_proceeding_you_are_agreeing": "続行することにより、私達を承認します",
   "Cancel_editing": "編集をキャンセル",
@@ -310,7 +309,6 @@
   "Message_accessibility": "{{user}} から {{time}} にメッセージ: {{message}}",
   "Message_actions": "メッセージアクション",
   "Message_pinned": "メッセージをピン留め",
-  "Message_removed": "メッセージを除く",
   "message": "メッセージ",
   "messages": "メッセージ",
   "Message": "メッセージ",
@@ -495,8 +493,6 @@
   "User_has_been_key": "ユーザーは{{key}}",
   "User_is_no_longer_role_by_": "{{userBy}} は {{user}} のロール {{role}} を削除しました。",
   "User_sent_an_attachment": "{{user}}は添付ファイルを送信しました",
-  "User_unmuted_by": "{{userUnmuted}} は {{userBy}} にミュート解除されました。",
-  "User_was_set_role_by_": "{{user}} was set {{role}} by {{userBy}}",
   "Username_is_empty": "ユーザー名が空です。",
   "Username": "ユーザー名",
   "Username_or_email": "ユーザー名かメールアドレス",
@@ -551,5 +547,6 @@
   "You_will_be_logged_out_of_this_application": "アプリからログアウトします。",
   "Clear": "クリア",
   "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
-  "invalid-room": "無効なルーム"
+  "invalid-room": "無効なルーム",
+  "Broadcast_hint": "許可されたユーザーのみが新しいメッセージを書き込めます。他のユーザーは返信することができます"
 }

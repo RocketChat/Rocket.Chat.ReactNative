@@ -108,7 +108,6 @@
   "Back": "Volver",
   "Black": "Negro",
   "Block_user": "Bloquear usuario",
-  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
   "Busy": "Ocupado",
   "By_proceeding_you_are_agreeing": "Al proceder estarás de acuerdo",
   "Cancel_editing": "Cancelar edición",
@@ -216,7 +215,6 @@
   "Message_accessibility": "Mensaje de {{user}} a las {{time}}: {{message}}",
   "Message_actions": "Acciones de mensaje",
   "Message_pinned": "Mensaje fijado",
-  "Message_removed": "Mensaje eliminado",
   "message": "mensaje",
   "messages": "mensajes",
   "Messages": "Mensajes",
@@ -386,8 +384,6 @@
   "User_has_been_key": "El usuario ha sido {{key}}",
   "User_is_no_longer_role_by_": "{{user}} ha dejado de ser {{role}} por {{userBy}}",
   "User_sent_an_attachment": "{{user}} envío un adjunto",
-  "User_unmuted_by": "Usuario {{userUnmuted}} desmuteado por {{userBy}}",
-  "User_was_set_role_by_": "{{user}} ha comenzado a ser {{role}} por {{userBy}}",
   "Username_is_empty": "Nombre de usuario está vacío",
   "Username": "Nombre de usuario",
   "Username_or_email": "Nombre de usuario o email",
@@ -427,5 +423,6 @@
   "Server_selection": "Seleccionar servidor",
   "Server_selection_numbers": "Seleccionar servidor 1...9",
   "Add_server": "Añadir servidor",
-  "New_line": "Nueva línea"
+  "New_line": "Nueva línea",
+  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos."
 }
