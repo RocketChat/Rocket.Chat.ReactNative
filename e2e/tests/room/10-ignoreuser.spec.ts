@@ -69,9 +69,8 @@ describe('Ignore/Block User', () => {
 		});
 		describe('Ignore user from Message', () => {
 			it('should ignore user from message', async () => {
-				const channelName = data.channels.detoxpublicignore.name;
+				const channelName = data.userRegularChannels.detoxpublic.name;
 				await navigateToRoom(channelName);
-				await element(by.id('room-view-join-button')).tap();
 				await sleep(300);
 				await sendMessage(data.users.alternate, channelName, 'message-01');
 				await sendMessage(data.users.alternate, channelName, 'message-02');
