@@ -4,13 +4,11 @@ import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { getInfoAsync } from 'expo-file-system';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import * as FileSystem from 'expo-file-system';
-import { FFmpegKit, ReturnCode } from 'ffmpeg-kit-react-native';
 
 import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
-import { parseFilename, sanitizeString } from '../../lib/methods/audioFile';
+import { encodeAudio } from '../../lib/methods/audioFile';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { TSupportedThemes } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
@@ -160,28 +158,17 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 				await this.recording.stopAndUnloadAsync();
 
 				const fileURI = this.recording.getURI();
-				const fileName = sanitizeString(fileURI!.substring(fileURI!.lastIndexOf('/') + 1).split('.')[0]);
-				const newFilePath = `${FileSystem.cacheDirectory}/${fileName}.mp3`;
-				const ffmpegCommand = `-hide_banner -y -i ${fileURI} -c:a libmp3lame -qscale:a 2 ${newFilePath}`;
-
-				FFmpegKit.execute(ffmpegCommand).then(async session => {
-					const returnCode = await session.getReturnCode();
-					if (ReturnCode.isSuccess(returnCode)) {
-						const fileData = await getInfoAsync(newFilePath);
-						console.log(fileData)
-						const fileInfo = {
-							name: parseFilename(fileData.uri),
-							mime: 'audio/mpeg',
-							type: 'audio/mpeg',
-							store: 'Uploads',
-							path: newFilePath,
-							size: fileData.size
-						};
-						onFinish(fileInfo);
-					} else {
-						console.log('error');
-					}
-				});
+				const audioEncodedPath = await encodeAudio(fileURI!);
+				const fileData = await getInfoAsync(audioEncodedPath);
+				const fileInfo = {
+					name: `${Date.now()}.mp3`,
+					mime: 'audio/mpeg',
+					type: 'audio/mpeg',
+					store: 'Uploads',
+					path: fileData.uri,
+					size: fileData.size
+				};
+				onFinish(fileInfo);
 			} catch (error) {
 				logEvent(events.ROOM_AUDIO_FINISH_F);
 			}
