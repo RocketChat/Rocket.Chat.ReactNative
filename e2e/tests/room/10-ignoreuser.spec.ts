@@ -41,7 +41,9 @@ describe('Ignore/Block User', () => {
 				await navigateToInfoView();
 			});
 			it('should block user', async () => {
-				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user')))).toExist();
+				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user'))))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('room-info-view-ignore')).tap();
 				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unblock user'))))
 					.toExist()
