@@ -4,9 +4,9 @@ import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
 
-const sanitizeString = (value: string) => sanitizeLikeString(value.substring(value.lastIndexOf('/') + 1));
+export const sanitizeString = (value: string) => sanitizeLikeString(value.substring(value.lastIndexOf('/') + 1));
 
-const parseFilename = (value: string) => {
+export const parseFilename = (value: string) => {
 	const extension = value.substring(value.lastIndexOf('.') + 1);
 	const filename = sanitizeString(value.substring(value.lastIndexOf('/') + 1).split('.')[0]);
 	return `${filename}.${extension}`;

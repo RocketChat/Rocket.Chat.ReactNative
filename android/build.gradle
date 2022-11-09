@@ -11,7 +11,7 @@ buildscript {
 
     ext {
         buildToolsVersion = "31.0.0"
-        minSdkVersion = 23
+        minSdkVersion = 24
         compileSdkVersion = 31
         targetSdkVersion = 31
         if (System.properties['os.arch'] == "aarch64") {
@@ -28,6 +28,7 @@ buildscript {
         libre_build = !(isPlay.toBoolean())
         jitsi_url = "https://github.com/RocketChat/jitsi-maven-repository/raw/master/releases"
         jitsi_version = "3.7.0"
+        ffmpegKitPackage = "audio"
     }
 
     repositories {

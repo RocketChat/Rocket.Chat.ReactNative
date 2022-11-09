@@ -14,6 +14,11 @@ module.exports = {
 			platforms: {
 				android: null
 			}
+		},
+		'ffmpeg-kit-react-native': {
+			platforms: {
+				ios: null
+			}
 		}
 	}
 };

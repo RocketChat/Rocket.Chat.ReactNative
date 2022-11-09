@@ -34,6 +34,10 @@ PODS:
     - React-Core (= 0.68.2)
     - React-jsi (= 0.68.2)
     - ReactCommon/turbomodule/core (= 0.68.2)
+  - ffmpeg-kit-ios-audio (5.1)
+  - ffmpeg-kit-react-native/audio (5.1.0):
+    - ffmpeg-kit-ios-audio (= 5.1)
+    - React-Core
   - Firebase/AnalyticsWithoutAdIdSupport (8.15.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics/WithoutAdIdSupport (~> 8.15.0)
@@ -600,6 +604,7 @@ DEPENDENCIES:
   - EXVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
+  - ffmpeg-kit-react-native/audio (from `../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (~> 0.11.0)
   - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
@@ -680,6 +685,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - ffmpeg-kit-ios-audio
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -734,6 +740,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
+  ffmpeg-kit-react-native:
+    :podspec: "../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   JitsiMeetSDK:
@@ -902,6 +910,8 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 19e055dc3245b53c536da9e0ef9c618fd2118297
   FBLazyVector: a7a655862f6b09625d11c772296b01cd5164b648
   FBReactNativeSpec: 66b5770d86bfee27d67b850416dbc7123c4f6311
+  ffmpeg-kit-ios-audio: 6eaf5a3c4249b767328502747a08bfd901a86d3d
+  ffmpeg-kit-react-native: 5950b8015ff2c4fa7c00372d5ce598123902d23d
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
   FirebaseAnalytics: 7761cbadb00a717d8d0939363eb46041526474fa
   FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
@@ -998,6 +1008,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
-PODFILE CHECKSUM: 052cbf741847405abc3b902c9e107c1ebb48b252
+PODFILE CHECKSUM: fa943eef52304cbca92070cf5ab4be1008650d23
 
 COCOAPODS: 1.11.3
