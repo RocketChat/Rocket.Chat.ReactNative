@@ -13,7 +13,7 @@ const ImageProgress = createImageProgress(FastImage);
 
 const SIZE = 96;
 const MARGIN_TOP = isTablet ? 0 : 64;
-const BORDER_RADIUS = 6;
+const BORDER_RADIUS = 8;
 
 const styles = StyleSheet.create({
 	container: {
