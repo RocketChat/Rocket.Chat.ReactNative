@@ -137,7 +137,6 @@
   "Continue_with": "Continuar con",
   "Copied_to_clipboard": "¡Copiado al portapapeles!",
   "Copy": "Copiar",
-  "Permalink": "Enlace permanente",
   "Certificate_password": "Contraseña del certificado",
   "Whats_the_password_for_your_certificate": "¿Cuál es la contraseña de tu certificado?",
   "Create_account": "Crear una cuenta",
@@ -424,5 +423,6 @@
   "Server_selection_numbers": "Seleccionar servidor 1...9",
   "Add_server": "Añadir servidor",
   "New_line": "Nueva línea",
-  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos."
+  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
+  "Get_link": "Obtener enlace"
 }

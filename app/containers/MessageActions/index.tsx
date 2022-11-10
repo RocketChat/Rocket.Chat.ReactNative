@@ -380,7 +380,7 @@ const MessageActions = React.memo(
 
 				// Permalink
 				options.push({
-					title: I18n.t('Permalink'),
+					title: I18n.t('Get_link'),
 					icon: 'link',
 					onPress: () => handlePermalink(message)
 				});
