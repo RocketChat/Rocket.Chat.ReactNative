@@ -97,7 +97,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 			if (filterUsers) {
 				users
 					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-					.filter(user => !data.some(sub => 'username' in sub && user.username === sub.username)) // Make sure to remove users already on local database
+					.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
 					.forEach(user => {
 						data.push({
 							...user,
