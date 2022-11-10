@@ -38,7 +38,7 @@ export default StyleSheet.create({
 		minHeight: 48,
 		paddingHorizontal: 8,
 		paddingBottom: 0,
-		borderWidth: 2,
+		borderWidth: 1,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
