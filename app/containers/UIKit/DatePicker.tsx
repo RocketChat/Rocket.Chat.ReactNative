@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BlockContext } from '@rocket.chat/ui-kit';
@@ -48,11 +48,15 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 	// timestamp as number exists in Event
 	// @ts-ignore
 	const onChange = ({ nativeEvent: { timestamp } }: Event, date?: Date) => {
-		const newDate = date || new Date(timestamp);
-		onChangeDate(newDate);
-		action({ value: moment(newDate).format('YYYY-MM-DD') });
-		if (isAndroid) {
-			onShow(false);
+		if (date || timestamp) {
+			const newDate = date || new Date(timestamp);
+			unstable_batchedUpdates(() => {
+				onChangeDate(newDate);
+				if (isAndroid) {
+					onShow(false);
+				}
+			});
+			action({ value: moment(newDate).format('YYYY-MM-DD') });
 		}
 	};
 
@@ -85,7 +89,13 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 	}
 
 	const content = show ? (
-		<DateTimePicker mode='date' display='default' value={currentDate} onChange={onChange} textColor={themes[theme].titleText} />
+		<DateTimePicker
+			mode='date'
+			display={isAndroid ? 'default' : 'inline'}
+			value={currentDate}
+			onChange={onChange}
+			textColor={themes[theme].titleText}
+		/>
 	) : null;
 
 	return (

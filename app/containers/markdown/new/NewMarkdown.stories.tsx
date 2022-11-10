@@ -3,21 +3,24 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import NewMarkdownComponent from '.';
-import { themes } from '../../../lib/constants';
+import { colors, themes } from '../../../lib/constants';
 import { longText } from '../../../../.storybook/utils';
+import { ThemeContext } from '../../../theme';
+
+const theme = 'light';
 
 export default {
 	title: 'NewMarkdown',
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<Story />
+				<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+					<Story />
+				</ThemeContext.Provider>
 			</NavigationContainer>
 		)
 	]
 };
-
-const theme = 'light';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,11 +37,8 @@ const getCustomEmoji = (content: string) => {
 	}[content];
 	return customEmoji;
 };
-const baseUrl = 'https://open.rocket.chat';
 
-const NewMarkdown = ({ ...props }) => (
-	<NewMarkdownComponent baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} username='rocket.cat' {...props} />
-);
+const NewMarkdown = ({ ...props }) => <NewMarkdownComponent getCustomEmoji={getCustomEmoji} username='rocket.cat' {...props} />;
 
 const simpleTextMsg = [
 	{
@@ -340,7 +340,7 @@ const emojiTokens = [
 export const Emoji = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={bigEmojiTokens} />
-		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
+		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} />
 	</View>
 );
 
@@ -423,10 +423,73 @@ const markdownLink = [
 	}
 ];
 
+const markdownLinkWithEmphasis = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'LINK',
+				value: {
+					src: {
+						type: 'PLAIN_TEXT',
+						value: 'https://rocket.chat/'
+					},
+					label: [
+						{
+							type: 'PLAIN_TEXT',
+							value: 'Normal Link - '
+						},
+						{
+							type: 'BOLD',
+							value: [
+								{
+									type: 'PLAIN_TEXT',
+									value: 'Bold'
+								}
+							]
+						},
+						{
+							type: 'PLAIN_TEXT',
+							value: ' '
+						},
+						{
+							type: 'STRIKE',
+							value: [
+								{
+									type: 'PLAIN_TEXT',
+									value: 'strike'
+								}
+							]
+						},
+						{
+							type: 'PLAIN_TEXT',
+							value: ' and '
+						},
+						{
+							type: 'ITALIC',
+							value: [
+								{
+									type: 'PLAIN_TEXT',
+									value: 'Italic'
+								}
+							]
+						},
+						{
+							type: 'PLAIN_TEXT',
+							value: ' Styles'
+						}
+					]
+				}
+			}
+		]
+	}
+];
+
 export const Links = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={rocketChatLink} />
 		<NewMarkdown tokens={markdownLink} />
+		<NewMarkdown tokens={markdownLinkWithEmphasis} />
 	</View>
 );
 

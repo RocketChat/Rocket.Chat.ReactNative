@@ -1,44 +1,44 @@
 const list = ['frequentlyUsed', 'custom', 'people', 'nature', 'food', 'activity', 'travel', 'objects', 'symbols', 'flags'];
 const tabs = [
 	{
-		tabLabel: '🕒',
+		tabLabel: 'clock',
 		category: list[0]
 	},
 	{
-		tabLabel: '🚀',
+		tabLabel: 'rocket',
 		category: list[1]
 	},
 	{
-		tabLabel: '😃',
+		tabLabel: 'emoji',
 		category: list[2]
 	},
 	{
-		tabLabel: '🐶',
+		tabLabel: 'leaf',
 		category: list[3]
 	},
 	{
-		tabLabel: '🍔',
+		tabLabel: 'burger',
 		category: list[4]
 	},
 	{
-		tabLabel: '⚽',
+		tabLabel: 'basketball',
 		category: list[5]
 	},
 	{
-		tabLabel: '🚌',
+		tabLabel: 'airplane',
 		category: list[6]
 	},
 	{
-		tabLabel: '💡',
+		tabLabel: 'lamp-bulb',
 		category: list[7]
 	},
 	{
-		tabLabel: '💛',
+		tabLabel: 'percentage',
 		category: list[8]
 	},
 	{
-		tabLabel: '🏁',
+		tabLabel: 'flag',
 		category: list[9]
 	}
 ];
-export default { list, tabs };
+export const categories = { list, tabs };

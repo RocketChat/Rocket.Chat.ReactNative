@@ -33,7 +33,6 @@ interface IMarkdownProps {
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
-	baseUrl?: string;
 	username?: string;
 	tmid?: string;
 	numberOfLines?: number;
@@ -235,13 +234,12 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderEmoji = ({ literal }: TLiteral) => {
-		const { getCustomEmoji, baseUrl = '', customEmojis, style } = this.props;
+		const { getCustomEmoji, customEmojis, style } = this.props;
 		return (
 			<MarkdownEmoji
 				literal={literal}
 				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}
-				baseUrl={baseUrl}
 				customEmojis={customEmojis}
 				style={style}
 			/>
@@ -312,18 +310,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	render() {
-		const {
-			msg,
-			md,
-			mentions,
-			channels,
-			navToRoomInfo,
-			useRealName,
-			username = '',
-			getCustomEmoji,
-			baseUrl = '',
-			onLinkPress
-		} = this.props;
+		const { msg, md, mentions, channels, navToRoomInfo, useRealName, username = '', getCustomEmoji, onLinkPress } = this.props;
 
 		if (!msg) {
 			return null;
@@ -333,7 +320,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return (
 				<NewMarkdown
 					username={username}
-					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 					useRealName={useRealName}
 					tokens={md}
