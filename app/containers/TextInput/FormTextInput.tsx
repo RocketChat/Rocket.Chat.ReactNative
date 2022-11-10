@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		paddingHorizontal: 16,
 		paddingVertical: 10,
-		borderWidth: 2,
-		borderRadius: 2
+		borderWidth: 1,
+		borderRadius: 4
 	},
 	inputIconLeft: {
 		paddingLeft: 45
