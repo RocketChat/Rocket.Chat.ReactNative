@@ -298,7 +298,7 @@ describe('Room screen', () => {
 		});
 
 		describe('Message', () => {
-			it('should copy permalink', async () => {
+			it('should copy link', async () => {
 				await element(by[textMatcher](`${data.random}message`))
 					.atIndex(0)
 					.longPress();
@@ -307,7 +307,7 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Permalink')).atIndex(0).tap();
+				await element(by[textMatcher]('Get Link')).atIndex(0).tap();
 				// TODO: test clipboard
 			});
 			it('should copy message', async () => {
