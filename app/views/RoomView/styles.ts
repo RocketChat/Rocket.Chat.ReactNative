@@ -58,7 +58,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 2
+		borderRadius: 4
 	},
 	joinRoomText: {
 		fontSize: 14,
