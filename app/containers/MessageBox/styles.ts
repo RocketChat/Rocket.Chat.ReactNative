@@ -112,7 +112,8 @@ export default StyleSheet.create({
 		width: 30,
 		padding: 5,
 		paddingHorizontal: 12,
-		marginHorizontal: 10
+		marginHorizontal: 10,
+		borderRadius: 4
 	},
 	commandPreviewImage: {
 		justifyContent: 'center',
