@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import { themes } from '../../../lib/constants';
 import { IEmoji } from '../../../definitions/IEmoji';
@@ -37,7 +37,9 @@ const MentionItemContent = React.memo(({ trackingType, item }: IMessageBoxMentio
 		case MENTIONS_TRACKING_TYPE_COMMANDS:
 			return (
 				<>
-					<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor, color: themes[theme].tintColor }]}>/</Text>
+					<View style={[styles.slash, { backgroundColor: themes[theme].borderColor }]}>
+						<Text style={{ color: themes[theme].tintColor }}>/</Text>
+					</View>
 					<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.id}</Text>
 				</>
 			);
