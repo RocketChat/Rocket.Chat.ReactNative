@@ -8,7 +8,7 @@ export default StyleSheet.create({
 		...sharedStyles.textAlignCenter
 	},
 	buttonInverted: {
-		borderWidth: 2,
+		borderWidth: 1,
 		borderRadius: 4
 	},
 	buttonContainerDisabled: {
@@ -30,7 +30,7 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	buttonDanger: {
-		borderWidth: 2,
+		borderWidth: 1,
 		borderRadius: 4
 	},
 	switchContainer: {

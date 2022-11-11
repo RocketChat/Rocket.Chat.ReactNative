@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
 	input: {
 		height: 48,
 		paddingLeft: 16,
-		borderWidth: 2,
-		borderRadius: 2,
+		borderWidth: 1,
+		borderRadius: 4,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
