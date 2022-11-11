@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 	pressable: {
 		paddingHorizontal: 8,
 		marginRight: 8,
-		borderRadius: 2,
+		borderRadius: 4,
 		justifyContent: 'center',
 		maxWidth: 192
 	},

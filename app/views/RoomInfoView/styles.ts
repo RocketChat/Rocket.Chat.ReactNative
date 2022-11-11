@@ -63,7 +63,7 @@ export default StyleSheet.create({
 	},
 	roleBadge: {
 		padding: 6,
-		borderRadius: 2,
+		borderRadius: 4,
 		marginRight: 6,
 		marginBottom: 6
 	},
