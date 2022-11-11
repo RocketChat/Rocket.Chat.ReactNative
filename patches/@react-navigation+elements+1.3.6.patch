@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
-index 39a39b2..7a60a15 100644
+index 3977e85..34e8ebb 100644
 --- a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
 +++ b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
 @@ -30,7 +30,7 @@ export default function HeaderBackButton({
