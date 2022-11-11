@@ -40,6 +40,7 @@ export interface IMessageActionsProps {
 	editMessagePermission?: string[];
 	deleteMessagePermission?: string[];
 	forceDeleteMessagePermission?: string[];
+	deleteOwnMessagePermission?: string[];
 	pinMessagePermission?: string[];
 	createDirectMessagePermission?: string[];
 }
@@ -71,6 +72,7 @@ const MessageActions = React.memo(
 				editMessagePermission,
 				deleteMessagePermission,
 				forceDeleteMessagePermission,
+				deleteOwnMessagePermission,
 				pinMessagePermission,
 				createDirectMessagePermission
 			},
@@ -80,19 +82,27 @@ const MessageActions = React.memo(
 				hasEditPermission: false,
 				hasDeletePermission: false,
 				hasForceDeletePermission: false,
-				hasPinPermission: false
+				hasPinPermission: false,
+				hasDeleteOwnPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
 
 			const getPermissions = async () => {
 				try {
-					const permission = [editMessagePermission, deleteMessagePermission, forceDeleteMessagePermission, pinMessagePermission];
+					const permission = [
+						editMessagePermission,
+						deleteMessagePermission,
+						forceDeleteMessagePermission,
+						pinMessagePermission,
+						deleteOwnMessagePermission
+					];
 					const result = await hasPermission(permission, room.rid);
 					permissions = {
 						hasEditPermission: result[0],
 						hasDeletePermission: result[1],
 						hasForceDeletePermission: result[2],
-						hasPinPermission: result[3]
+						hasPinPermission: result[3],
+						hasDeleteOwnPermission: result[4]
 					};
 				} catch {
 					// Do nothing
@@ -134,7 +144,7 @@ const MessageActions = React.memo(
 				if (tmid === message.id) {
 					return false;
 				}
-				const deleteOwn = isOwn(message);
+				const deleteOwn = isOwn(message) && permissions.hasDeleteOwnPermission;
 				if (!(permissions.hasDeletePermission || (Message_AllowDeleting && deleteOwn) || permissions.hasForceDeletePermission)) {
 					return false;
 				}
@@ -505,6 +515,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
+	deleteOwnMessagePermission: state.permissions['delete-own-message'],
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
 	pinMessagePermission: state.permissions['pin-message'],
 	createDirectMessagePermission: state.permissions['create-d']
