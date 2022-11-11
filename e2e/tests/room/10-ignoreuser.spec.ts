@@ -41,7 +41,9 @@ describe('Ignore/Block User', () => {
 				await navigateToInfoView();
 			});
 			it('should block user', async () => {
-				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user')))).toExist();
+				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user'))))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('room-info-view-ignore')).tap();
 				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unblock user'))))
 					.toExist()
@@ -69,9 +71,8 @@ describe('Ignore/Block User', () => {
 		});
 		describe('Ignore user from Message', () => {
 			it('should ignore user from message', async () => {
-				const channelName = data.channels.detoxpublicignore.name;
+				const channelName = data.userRegularChannels.detoxpublic.name;
 				await navigateToRoom(channelName);
-				await element(by.id('room-view-join-button')).tap();
 				await sleep(300);
 				await sendMessage(data.users.alternate, channelName, 'message-01');
 				await sendMessage(data.users.alternate, channelName, 'message-02');

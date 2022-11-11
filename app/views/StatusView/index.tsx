@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
 		left: 12
 	},
 	inputStyle: {
-		paddingLeft: 48
+		paddingLeft: 48,
+		borderRadius: 0
 	}
 });
 

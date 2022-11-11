@@ -17,7 +17,7 @@ import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
-import { hasPermission } from '../../lib/methods/helpers';
+import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 export interface IMessageActionsProps {
@@ -41,6 +41,7 @@ export interface IMessageActionsProps {
 	deleteMessagePermission?: string[];
 	forceDeleteMessagePermission?: string[];
 	pinMessagePermission?: string[];
+	createDirectMessagePermission?: string[];
 }
 
 export interface IMessageActions {
@@ -70,7 +71,8 @@ const MessageActions = React.memo(
 				editMessagePermission,
 				deleteMessagePermission,
 				forceDeleteMessagePermission,
-				pinMessagePermission
+				pinMessagePermission,
+				createDirectMessagePermission
 			},
 			ref
 		) => {
@@ -235,6 +237,23 @@ const MessageActions = React.memo(
 				replyInit(message, false);
 			};
 
+			const handleReplyInDM = async (message: TAnyMessageModel) => {
+				if (message?.u?.username) {
+					const result = await Services.createDirectMessage(message.u.username);
+					if (result.success) {
+						const { room } = result;
+						const params = {
+							rid: room.rid,
+							name: getRoomTitle(room),
+							t: room.t,
+							roomUserId: getUidDirectMessage(room),
+							replyInDM: message
+						};
+						Navigation.replace('RoomView', params);
+					}
+				}
+			};
+
 			const handleStar = async (message: TAnyMessageModel) => {
 				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
@@ -323,18 +342,7 @@ const MessageActions = React.memo(
 			};
 
 			const getOptions = (message: TAnyMessageModel) => {
-				let options: TActionSheetOptionsItem[] = [];
-
-				// Reply
-				if (!isReadOnly && !tmid) {
-					options = [
-						{
-							title: I18n.t('Reply_in_Thread'),
-							icon: 'threads',
-							onPress: () => handleReply(message)
-						}
-					];
-				}
+				const options: TActionSheetOptionsItem[] = [];
 
 				// Quote
 				if (!isReadOnly) {
@@ -345,21 +353,23 @@ const MessageActions = React.memo(
 					});
 				}
 
-				// Edit
-				if (allowEdit(message)) {
+				// Reply
+				if (!isReadOnly && !tmid) {
 					options.push({
-						title: I18n.t('Edit'),
-						icon: 'edit',
-						onPress: () => handleEdit(message)
+						title: I18n.t('Reply_in_Thread'),
+						icon: 'threads',
+						onPress: () => handleReply(message)
 					});
 				}
 
-				// Permalink
-				options.push({
-					title: I18n.t('Permalink'),
-					icon: 'link',
-					onPress: () => handlePermalink(message)
-				});
+				// Reply in DM
+				if (room.t !== 'd' && room.t !== 'l' && createDirectMessagePermission) {
+					options.push({
+						title: I18n.t('Reply_in_direct_message'),
+						icon: 'arrow-back',
+						onPress: () => handleReplyInDM(message)
+					});
+				}
 
 				// Create Discussion
 				options.push({
@@ -368,14 +378,12 @@ const MessageActions = React.memo(
 					onPress: () => handleCreateDiscussion(message)
 				});
 
-				// Mark as unread
-				if (message.u && message.u._id !== user.id) {
-					options.push({
-						title: I18n.t('Mark_unread'),
-						icon: 'flag',
-						onPress: () => handleUnread(message)
-					});
-				}
+				// Permalink
+				options.push({
+					title: I18n.t('Get_link'),
+					icon: 'link',
+					onPress: () => handlePermalink(message)
+				});
 
 				// Copy
 				options.push({
@@ -391,12 +399,12 @@ const MessageActions = React.memo(
 					onPress: () => handleShare(message)
 				});
 
-				// Star
-				if (Message_AllowStarring) {
+				// Edit
+				if (allowEdit(message)) {
 					options.push({
-						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
-						icon: message.starred ? 'star-filled' : 'star',
-						onPress: () => handleStar(message)
+						title: I18n.t('Edit'),
+						icon: 'edit',
+						onPress: () => handleEdit(message)
 					});
 				}
 
@@ -406,6 +414,24 @@ const MessageActions = React.memo(
 						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
 						onPress: () => handlePin(message)
+					});
+				}
+
+				// Star
+				if (Message_AllowStarring) {
+					options.push({
+						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
+						icon: message.starred ? 'star-filled' : 'star',
+						onPress: () => handleStar(message)
+					});
+				}
+
+				// Mark as unread
+				if (message.u && message.u._id !== user.id) {
+					options.push({
+						title: I18n.t('Mark_unread'),
+						icon: 'flag',
+						onPress: () => handleUnread(message)
 					});
 				}
 
@@ -480,7 +506,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
-	pinMessagePermission: state.permissions['pin-message']
+	pinMessagePermission: state.permissions['pin-message'],
+	createDirectMessagePermission: state.permissions['create-d']
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);

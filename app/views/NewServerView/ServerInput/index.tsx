@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 		position: 'absolute',
 		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 2,
+		borderRadius: 4,
 		borderTopWidth: 0
 	}
 });
