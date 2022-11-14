@@ -45,6 +45,7 @@ interface IMarkdownProps {
 	testID?: string;
 	style?: StyleProp<TextStyle>[];
 	onLinkPress?: TOnLinkPress;
+	isTranslated?: boolean;
 }
 
 type TLiteral = {
@@ -93,9 +94,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	constructor(props: IMarkdownProps) {
 		super(props);
-		if (!this.isNewMarkdown) {
-			this.renderer = this.createRenderer();
-		}
+		this.renderer = this.createRenderer();
 	}
 
 	createRenderer = () =>
@@ -310,13 +309,24 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	render() {
-		const { msg, md, mentions, channels, navToRoomInfo, useRealName, username = '', getCustomEmoji, onLinkPress } = this.props;
+		const {
+			msg,
+			md,
+			mentions,
+			channels,
+			navToRoomInfo,
+			useRealName,
+			username = '',
+			getCustomEmoji,
+			onLinkPress,
+			isTranslated
+		} = this.props;
 
 		if (!msg) {
 			return null;
 		}
 
-		if (this.isNewMarkdown) {
+		if (this.isNewMarkdown && !isTranslated) {
 			return (
 				<NewMarkdown
 					username={username}

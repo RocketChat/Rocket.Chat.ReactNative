@@ -64,6 +64,7 @@ const Content = React.memo(
 					useRealName={props.useRealName}
 					theme={theme}
 					onLinkPress={onLinkPress}
+					isTranslated={props.isTranslated}
 				/>
 			);
 		}

@@ -63,6 +63,7 @@ export interface IMessageContent {
 	comment?: string;
 	hasError: boolean;
 	isHeader: boolean;
+	isTranslated: boolean;
 }
 
 export interface IMessageEmoji {
