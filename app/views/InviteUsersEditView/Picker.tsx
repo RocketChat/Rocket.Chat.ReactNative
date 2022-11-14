@@ -59,7 +59,7 @@ const OPTIONS = {
 
 const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }): JSX.Element => {
 	const { colors } = useTheme();
-	const reduxValue = useAppSelector(state => state.inviteLinks[param]);
+	const inviteLinkParam = useAppSelector(state => state.inviteLinks[param]);
 	const dispatch = useDispatch();
 
 	const onValueChangePicker = (value: number) => {
@@ -80,7 +80,7 @@ const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }):
 	return (
 		<RNPickerSelect
 			style={{ viewContainer: styles.viewContainer }}
-			value={reduxValue}
+			value={inviteLinkParam}
 			textInputProps={textInputStyle}
 			useNativeAndroidPickerStyle={false}
 			onValueChange={value => onValueChangePicker(value)}
