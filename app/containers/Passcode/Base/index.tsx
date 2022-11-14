@@ -1,9 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import range from 'lodash/range';
 import { View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
+import Orientation from 'react-native-orientation-locker';
 
 import styles from './styles';
 import Button from './Button';
@@ -14,6 +15,8 @@ import { useTheme } from '../../../theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
+import { useDimensions } from '../../../dimensions';
+import { isTablet } from '../../../lib/methods/helpers';
 
 interface IPasscodeBase {
 	type: string;
@@ -34,7 +37,25 @@ export interface IBase {
 
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
+		useLayoutEffect(() => {
+			if (!isTablet) {
+				Orientation.lockToPortrait();
+			}
+
+			return () => {
+				if (!isTablet) {
+					Orientation.unlockAllOrientations();
+				}
+			};
+		}, []);
+
 		const { theme } = useTheme();
+		const { height } = useDimensions();
+
+		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
+		// 56 is a fixed number to decrease the height of button numbers.
+		const dinamicHeight = (height - 206 - 56) / 4;
+		const heightButtonRow = { height: dinamicHeight > 102 ? 102 : dinamicHeight };
 
 		const rootRef = useRef<Animatable.View & View>(null);
 		const dotsRef = useRef<Animatable.View & View>(null);
@@ -103,40 +124,40 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 							<Dots passcode={passcode} length={PASSCODE_LENGTH} />
 						</Animatable.View>
 					</Row>
-					<Row style={[styles.row, styles.buttonRow]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{range(1, 4).map(i => (
-							<Col key={i} style={styles.colButton}>
-								<Button text={i.toString()} onPress={onPressNumber} />
+							<Col key={i} style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
-					<Row style={[styles.row, styles.buttonRow]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{range(4, 7).map(i => (
-							<Col key={i} style={styles.colButton}>
-								<Button text={i.toString()} onPress={onPressNumber} />
+							<Col key={i} style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
-					<Row style={[styles.row, styles.buttonRow]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{range(7, 10).map(i => (
-							<Col key={i} style={styles.colButton}>
-								<Button text={i.toString()} onPress={onPressNumber} />
+							<Col key={i} style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
-					<Row style={[styles.row, styles.buttonRow]}>
+					<Row style={[styles.row, heightButtonRow]}>
 						{showBiometry ? (
-							<Col style={styles.colButton}>
-								<Button icon='fingerprint' onPress={onBiometryPress} />
+							<Col style={[styles.colButton, heightButtonRow]}>
+								<Button style={heightButtonRow} icon='fingerprint' onPress={onBiometryPress} />
 							</Col>
 						) : (
-							<Col style={styles.colButton} />
+							<Col style={[styles.colButton, heightButtonRow]} />
 						)}
-						<Col style={styles.colButton}>
-							<Button text='0' onPress={onPressNumber} />
+						<Col style={[styles.colButton, heightButtonRow]}>
+							<Button style={heightButtonRow} text='0' onPress={onPressNumber} />
 						</Col>
-						<Col style={styles.colButton}>
-							<Button icon='backspace' onPress={onPressDelete} />
+						<Col style={[styles.colButton, heightButtonRow]}>
+							<Button style={heightButtonRow} icon='backspace' onPress={onPressDelete} />
 						</Col>
 					</Row>
 				</Grid>

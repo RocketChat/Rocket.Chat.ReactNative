@@ -36,6 +36,8 @@ import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
 import { callJitsi } from '../../lib/methods';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 
 interface IGetRoomTitle {
 	room: ISubscription;
@@ -108,6 +110,7 @@ interface IRoomInfoViewState {
 	room: ISubscription;
 	roomUser: IUserParsed | ILivechatVisitorModified;
 	showEdit: boolean;
+	roomFromRid?: TSubscriptionModel;
 }
 
 class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewState> {
@@ -121,22 +124,29 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	private roomObservable?: Observable<TSubscriptionModel>;
 
+	private fromRid?: string;
+
+	private subscriptionRoomFromRid?: Subscription;
+
 	constructor(props: IRoomInfoViewProps) {
 		super(props);
 		const room = props.route.params?.room;
 		const roomUser = props.route.params?.member;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
+		this.fromRid = props.route.params?.fromRid;
 		this.state = {
 			room: (room || { rid: this.rid, t: this.t }) as any,
 			roomUser: roomUser || {},
-			showEdit: false
+			showEdit: false,
+			roomFromRid: undefined
 		};
 	}
 
 	componentDidMount() {
 		if (this.isDirect) {
 			this.loadUser();
+			this.loadRoomFromRid();
 		} else {
 			this.loadRoom();
 		}
@@ -153,6 +163,9 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+		if (this.subscriptionRoomFromRid && this.subscriptionRoomFromRid.unsubscribe) {
+			this.subscriptionRoomFromRid.unsubscribe();
 		}
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
@@ -266,6 +279,19 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		}
 	};
 
+	loadRoomFromRid = async () => {
+		if (this.fromRid) {
+			try {
+				const sub = await getSubscriptionByRoomId(this.fromRid);
+				this.subscriptionRoomFromRid = sub?.observe().subscribe(roomFromRid => {
+					this.setState({ roomFromRid });
+				});
+			} catch (e) {
+				// do nothing
+			}
+		}
+	};
+
 	loadRoom = async () => {
 		const { room: roomState } = this.state;
 		const { route, editRoomPermission, editOmnichannelContact, editLivechatRoomCustomfields } = this.props;
@@ -351,11 +377,32 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		}
 	};
 
+	handleCreateDirectMessage = async (onPress: () => void) => {
+		try {
+			if (this.isDirect) {
+				await this.createDirect();
+			}
+			onPress();
+		} catch {
+			EventEmitter.emit(LISTENER, {
+				message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
+			});
+		}
+	};
+
 	videoCall = () => {
 		const { room } = this.state;
 		callJitsi(room);
 	};
 
+	handleBlockUser = async (rid: string, blocked: string, block: boolean) => {
+		logEvent(events.RI_TOGGLE_BLOCK_USER);
+		try {
+			await Services.toggleBlockUser(rid, blocked, block);
+		} catch (e) {
+			log(e);
+		}
+	};
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
 		const { theme } = this.props;
 
@@ -370,36 +417,54 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		);
 	};
 
-	renderButton = (onPress: () => void, iconName: TIconsName, text: string) => {
+	renderButton = (onPress: () => void, iconName: TIconsName, text: string, danger?: boolean) => {
 		const { theme } = this.props;
-
-		const onActionPress = async () => {
-			try {
-				if (this.isDirect) {
-					await this.createDirect();
-				}
-				onPress();
-			} catch {
-				EventEmitter.emit(LISTENER, {
-					message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
-				});
-			}
-		};
-
+		const color = danger ? themes[theme].dangerColor : themes[theme].actionTintColor;
 		return (
-			<BorderlessButton onPress={onActionPress} style={styles.roomButton}>
-				<CustomIcon name={iconName} size={30} color={themes[theme].actionTintColor} />
-				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+			<BorderlessButton testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
+				<CustomIcon name={iconName} size={30} color={color} />
+				<Text style={[styles.roomButtonText, { color }]}>{text}</Text>
 			</BorderlessButton>
 		);
 	};
 
 	renderButtons = () => {
+		const { roomFromRid, roomUser } = this.state;
 		const { jitsiEnabled } = this.props;
+
+		const isFromDm = roomFromRid?.rid ? new RegExp(roomUser._id).test(roomFromRid.rid) : false;
+		const isDirectFromSaved = this.isDirect && this.fromRid && roomFromRid;
+
+		// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
+		const isDmWithMyself = roomFromRid?.uids && roomFromRid.uids?.filter(uid => uid !== roomUser._id).length === 0;
+
+		const ignored = roomFromRid?.ignored;
+		const isIgnored = ignored?.includes?.(roomUser._id);
+
+		const blocker = roomFromRid?.blocker;
+
 		return (
 			<View style={styles.roomButtonsContainer}>
-				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-				{jitsiEnabled && this.isDirect ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
+				{this.renderButton(() => this.handleCreateDirectMessage(this.goRoom), 'message', I18n.t('Message'))}
+				{jitsiEnabled && this.isDirect
+					? this.renderButton(() => this.handleCreateDirectMessage(this.videoCall), 'camera', I18n.t('Video_call'))
+					: null}
+				{isDirectFromSaved && !isFromDm && !isDmWithMyself
+					? this.renderButton(
+							() => handleIgnore(roomUser._id, !isIgnored, roomFromRid.rid),
+							'ignore',
+							I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
+							true
+					  )
+					: null}
+				{isDirectFromSaved && isFromDm
+					? this.renderButton(
+							() => this.handleBlockUser(roomFromRid.rid, roomUser._id, !blocker),
+							'ignore',
+							I18n.t(`${blocker ? 'Unblock' : 'Block'}_user`),
+							true
+					  )
+					: null}
 			</View>
 		);
 	};

@@ -41,13 +41,13 @@ export default StyleSheet.create({
 	reactionButton: {
 		marginRight: 8,
 		marginBottom: 8,
-		borderRadius: 2
+		borderRadius: 4
 	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: 2,
+		borderRadius: 4,
 		borderWidth: 1,
 		height: 28,
 		minWidth: 46.3
@@ -85,7 +85,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 2
+		borderRadius: 4
 	},
 	buttonIcon: {
 		marginRight: 8

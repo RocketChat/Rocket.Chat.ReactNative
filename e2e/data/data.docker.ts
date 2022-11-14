@@ -12,6 +12,7 @@ export type TData = typeof data;
 export type TDataKeys = keyof TData;
 export type TDataUsers = keyof typeof data.users;
 export type TDataChannels = keyof typeof data.channels;
+export type TUserRegularChannels = keyof typeof data.userRegularChannels;
 export type TDataGroups = keyof typeof data.groups;
 export type TDataTeams = keyof typeof data.teams;
 
@@ -51,6 +52,11 @@ const data = {
 		detoxpublicprotected: {
 			name: 'detox-public-protected',
 			joinCode: '123'
+		}
+	},
+	userRegularChannels: {
+		detoxpublic: {
+			name: `detox-public-${value}`
 		}
 	},
 	groups: {

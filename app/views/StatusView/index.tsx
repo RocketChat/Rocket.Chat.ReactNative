@@ -44,16 +44,16 @@ const STATUS: IStatus[] = [
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		marginTop: 32,
-		marginBottom: 32
+		marginTop: 16,
+		marginBottom: 16
 	},
 	inputLeft: {
 		position: 'absolute',
-		top: 12,
 		left: 12
 	},
 	inputStyle: {
-		paddingLeft: 48
+		paddingLeft: 48,
+		borderRadius: 0
 	}
 });
 

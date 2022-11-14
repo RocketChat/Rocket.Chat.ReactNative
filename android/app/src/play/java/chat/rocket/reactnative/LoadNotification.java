@@ -1,20 +1,14 @@
 package chat.rocket.reactnative;
 
 import android.os.Bundle;
-import android.content.Context;
-
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Interceptor;
-
-import com.google.gson.Gson;
-
-import java.io.IOException;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.google.gson.Gson;
+
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 class JsonResponse {
     Data data;
@@ -49,11 +43,11 @@ class JsonResponse {
 }
 
 public class LoadNotification {
-    private static int RETRY_COUNT = 0;
-    private static int[] TIMEOUT = new int[]{0, 1, 3, 5, 10};
-    private static String TOKEN_KEY = "reactnativemeteor_usertoken-";
+    private int RETRY_COUNT = 0;
+    private int[] TIMEOUT = new int[]{0, 1, 3, 5, 10};
+    private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
-    public static void load(ReactApplicationContext reactApplicationContext, final Ejson ejson, Callback callback) {
+    public void load(ReactApplicationContext reactApplicationContext, final Ejson ejson, Callback callback) {
         final OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder url = HttpUrl.parse(ejson.serverURL().concat("/api/v1/push.get")).newBuilder();
 
@@ -73,7 +67,7 @@ public class LoadNotification {
         runRequest(client, request, callback);
     }
 
-    private static void runRequest(OkHttpClient client, Request request, Callback callback) {
+    private void runRequest(OkHttpClient client, Request request, Callback callback) {
         try {
             Thread.sleep(TIMEOUT[RETRY_COUNT] * 1000);
 
