@@ -17,10 +17,8 @@ import Picker from './Picker';
 
 const InviteUsersEditView = () => {
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>>();
-	const { params } = useRoute<RouteProp<ChatsStackParamList, 'InviteUsersEditView'>>();
+	const { rid } = useRoute<RouteProp<ChatsStackParamList, 'InviteUsersEditView'>>().params;
 	const dispatch = useDispatch();
-
-	const { rid } = params;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({

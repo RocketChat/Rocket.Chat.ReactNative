@@ -83,7 +83,6 @@ const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }):
 			value={reduxValue}
 			textInputProps={textInputStyle}
 			useNativeAndroidPickerStyle={false}
-			placeholder={{}}
 			onValueChange={value => onValueChangePicker(value)}
 			items={firstEl.concat(OPTIONS[param])}
 		/>
