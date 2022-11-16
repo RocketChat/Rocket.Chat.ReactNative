@@ -370,7 +370,7 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
-  - react-native-notifications (4.3.2):
+  - react-native-notifications (4.3.3):
     - React-Core
   - react-native-orientation-locker (1.1.8):
     - React
@@ -946,7 +946,7 @@ SPEC CHECKSUMS:
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
   react-native-mmkv-storage: ba38e5e813ea3d5d37af834a9d867b1ce10aa96d
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
-  react-native-notifications: f3215821dfd74234f8f3910e2fe37e19fa8673b0
+  react-native-notifications: 83b4fd4a127a6c918fc846cae90da60f84819e44
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
