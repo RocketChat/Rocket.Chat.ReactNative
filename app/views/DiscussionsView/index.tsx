@@ -121,7 +121,12 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 			headerTitle: I18n.t('Discussions'),
 			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={colors.headerTintColor} />
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={colors.headerTintColor}
+					testID='header-back'
+				/>
 			),
 			headerRight: () => (
 				<HeaderButton.Container>
