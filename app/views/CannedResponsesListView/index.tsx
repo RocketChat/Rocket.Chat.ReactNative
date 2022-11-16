@@ -268,7 +268,12 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			headerTitleContainerStyle: { maxWidth: undefined },
 			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={themes[theme].headerTintColor}
+					testID='header-back'
+				/>
 			),
 			headerRight: () => (
 				<HeaderButton.Container>
