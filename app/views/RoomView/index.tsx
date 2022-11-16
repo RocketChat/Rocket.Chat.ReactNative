@@ -7,6 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
+import { CommonActions } from '@react-navigation/native';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
@@ -1198,13 +1199,40 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	navToRoom = async (message: TAnyMessageModel) => {
+		console.log('🚀 ~ file: index.tsx ~ line 1201 ~ RoomView ~ navToRoom= ~ message', message);
 		const { navigation, isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
-		return goRoom({
-			item: roomInfo as TGoRoomItem,
-			isMasterDetail,
-			navigationMethod: navigation.push,
-			jumpToMessageId: message.id
+		// return goRoom({
+		// 	item: roomInfo as TGoRoomItem,
+		// 	isMasterDetail,
+		// 	navigationMethod: navigation.replace,
+		// 	jumpToMessageId: message.id
+		// });
+
+		return navigation.dispatch(state => {
+			const routes = state.routes.filter(r => r.name !== 'RoomView');
+
+			console.log('🚀 ~ file: index.tsx ~ line 1216 ~ RoomView ~ navToRoom= ~ routes', routes);
+			return CommonActions.reset({
+				...state,
+				routes: [
+					...routes,
+					{
+						name: 'RoomView',
+						params: {
+							rid: roomInfo?.rid,
+							name: getRoomTitle(roomInfo),
+							t: roomInfo?.t,
+							prid: roomInfo?.prid,
+							room: roomInfo,
+							visitor: roomInfo?.visitor,
+							roomUserId: getUidDirectMessage(roomInfo),
+							jumpToMessageId: message?.id
+						}
+					}
+				],
+				index: routes.length
+			});
 		});
 	};
 
