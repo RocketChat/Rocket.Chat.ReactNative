@@ -44,7 +44,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import { sendLoadingEvent } from '../../containers/Loading';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
@@ -1199,20 +1198,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	navToRoom = async (message: TAnyMessageModel) => {
-		console.log('🚀 ~ file: index.tsx ~ line 1201 ~ RoomView ~ navToRoom= ~ message', message);
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
-		// return goRoom({
-		// 	item: roomInfo as TGoRoomItem,
-		// 	isMasterDetail,
-		// 	navigationMethod: navigation.replace,
-		// 	jumpToMessageId: message.id
-		// });
 
 		return navigation.dispatch(state => {
 			const routes = state.routes.filter(r => r.name !== 'RoomView');
-
-			console.log('🚀 ~ file: index.tsx ~ line 1216 ~ RoomView ~ navToRoom= ~ routes', routes);
 			return CommonActions.reset({
 				...state,
 				routes: [
