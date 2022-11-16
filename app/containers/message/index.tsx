@@ -376,10 +376,13 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		} = item;
 
 		let message = msg;
+		let isTranslated = false;
 		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
 		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
 		if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage) {
-			message = getMessageTranslation(item, autoTranslateLanguage) || message;
+			const messageTranslated = getMessageTranslation(item, autoTranslateLanguage);
+			isTranslated = !!messageTranslated;
+			message = messageTranslated || message;
 		}
 
 		return (
@@ -455,6 +458,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					blockAction={blockAction}
 					highlighted={highlighted}
 					comment={comment}
+					isTranslated={isTranslated}
 				/>
 			</MessageContext.Provider>
 		);

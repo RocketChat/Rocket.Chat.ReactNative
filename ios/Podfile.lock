@@ -360,7 +360,7 @@ PODS:
     - React-Core
   - react-native-cookies (6.2.1):
     - React-Core
-  - react-native-document-picker (8.1.0):
+  - react-native-document-picker (8.1.2):
     - React-Core
   - react-native-jitsi-meet (3.6.0):
     - JitsiMeetSDK (= 3.6.0)
@@ -487,9 +487,9 @@ PODS:
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNBootSplash (4.3.2):
+  - RNBootSplash (4.3.3):
     - React-Core
-  - RNCAsyncStorage (1.17.9):
+  - RNCAsyncStorage (1.17.11):
     - React-Core
   - RNCClipboard (1.8.5):
     - React-Core
@@ -942,7 +942,7 @@ SPEC CHECKSUMS:
   react-native-blur: ba2f37268542f8a26d809f48c5162705a3261fc6
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
-  react-native-document-picker: 5663fe4bcdb646200683a41790464d2793307ac8
+  react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
   react-native-mmkv-storage: ba38e5e813ea3d5d37af834a9d867b1ce10aa96d
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
@@ -969,8 +969,8 @@ SPEC CHECKSUMS:
   ReactNativeUiLib: cde7263a7d308b60161cd286f95c9433e79f2f7d
   rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNBootSplash: 5f346163977573d6b2aeba1b25df9d2245c0d73c
-  RNCAsyncStorage: b2489b49e38c85e10ed45a888d13a2a4c7b32ea1
+  RNBootSplash: 7e91ea56c7010aae487489789dbe212e8c905a0c
+  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
