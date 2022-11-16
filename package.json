@@ -104,7 +104,7 @@
 		"react-native-mmkv-storage": "^0.7.6",
 		"react-native-modal": "13.0.1",
 		"react-native-navigation-bar-color": "2.0.1",
-		"react-native-notifications": "^4.3.2",
+		"react-native-notifications": "^4.3.3",
 		"react-native-notifier": "1.6.1",
 		"react-native-orientation-locker": "1.1.8",
 		"react-native-picker-select": "^8.0.4",
