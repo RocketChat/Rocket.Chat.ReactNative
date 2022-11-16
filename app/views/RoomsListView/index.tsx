@@ -8,6 +8,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { Header } from '@react-navigation/elements';
+import { CommonActions } from '@react-navigation/native';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
@@ -656,6 +657,38 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		this.cancelSearch();
+		if (isMasterDetail) {
+			return navigation.dispatch(state => {
+				const routes = state.routes.filter(r => r.name === 'ChatsStackNavigator');
+
+				console.log('🚀 ~ file: index.tsx ~ line 690 ~ RoomsListView ~ state', state, routes);
+				return CommonActions.reset({
+					index: 0,
+					routes: [
+						{
+							...routes[0],
+							state: {
+								routes: [
+									{
+										name: 'RoomView',
+										params: {
+											rid: item.rid,
+											name: getRoomTitle(item),
+											t: item.t,
+											prid: item.prid,
+											room: item,
+											visitor: item.visitor,
+											roomUserId: getUidDirectMessage(item)
+											// ...props
+										}
+									}
+								]
+							}
+						}
+					]
+				});
+			});
+		}
 		this.goRoom({ item, isMasterDetail });
 	};
 
