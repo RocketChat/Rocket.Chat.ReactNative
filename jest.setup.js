@@ -28,6 +28,8 @@ jest.mock('expo-haptics', () => jest.fn(() => null));
 
 jest.mock('./app/lib/database', () => jest.fn(() => null));
 
+jest.mock('./app/lib/database/appGroup', () => '');
+
 const mockedNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
