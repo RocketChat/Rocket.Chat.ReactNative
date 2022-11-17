@@ -6,9 +6,10 @@ import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '@react-navigation/elements';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, CompositeNavigationProp, RouteProp } from '@react-navigation/native';
+import { Dispatch } from 'redux';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
@@ -21,7 +22,7 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { themedHeader } from '../../lib/methods/helpers/navigation';
 import {
@@ -40,20 +41,12 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import {
-	IApplicationState,
-	IBaseScreen,
-	ISubscription,
-	IUser,
-	RootEnum,
-	SubscriptionType,
-	TSubscriptionModel
-} from '../../definitions';
+import { IApplicationState, ISubscription, IUser, RootEnum, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
-import { ChatsStackParamList } from '../../stacks/types';
+import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
 import { RoomTypes, search } from '../../lib/methods';
 import {
 	getRoomAvatar,
@@ -68,7 +61,16 @@ import {
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 
-interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
+type TNavigation = CompositeNavigationProp<
+	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+>;
+
+interface IRoomsListViewProps {
+	navigation: TNavigation;
+	route: RouteProp<ChatsStackParamList, 'RoomsListView'>;
+	theme: TSupportedThemes;
+	dispatch: Dispatch;
 	[key: string]: IUser | string | boolean | ISubscription[] | number | object | TEncryptionBanner;
 	user: IUser;
 	server: string;
