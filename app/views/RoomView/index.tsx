@@ -1213,9 +1213,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 							rid: roomInfo?.rid,
 							name: getRoomTitle(roomInfo),
 							t: roomInfo?.t,
-							prid: roomInfo?.prid,
 							room: roomInfo,
-							visitor: roomInfo?.visitor,
 							roomUserId: getUidDirectMessage(roomInfo),
 							jumpToMessageId: message?.id
 						}
