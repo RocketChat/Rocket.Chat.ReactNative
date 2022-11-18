@@ -218,7 +218,12 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			headerLeftContainerStyle: { minWidth: 60 },
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={themes[theme].headerTintColor}
+					testID='header-back'
+				/>
 			),
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
