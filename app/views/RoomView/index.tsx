@@ -987,6 +987,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				} else {
 					this.navToThread(message);
 				}
+			} else if (!message.tmid && message.rid === this.rid && this.t === 'thread' && !message.replies) {
+				/**
+				 * if the user is within a thread and the message that he is trying to jump to,
+				 * is a message in the main room
+				 */
+				return this.navToRoom(message);
 			} else {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
