@@ -17203,10 +17203,10 @@ react-native-mime-types@2.3.0:
   dependencies:
     mime-db "~1.37.0"
 
-react-native-mmkv-storage@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.7.6.tgz#c4b2d6d342efda91f69edb6ba4b9c0ff6c34d70c"
-  integrity sha512-Uxc8U3vRJMAeLIu9Dr8VpbaaCUlMd4vJfkEme2sXh2GGCYrbXqrE3XPLjtuA/fSd2VBKZNFBkJhyf4RzU9VX3A==
+react-native-mmkv-storage@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.8.0.tgz#2ece5f441a6a818224a85315c68e105e0d6446b5"
+  integrity sha512-L782Le5IuDYlDLGXF/qimbnzvkbYsSmV5PiDleo1DSS8Kr8Q31UK8YWtUICrDGQ9Fm7Xx4PxP9ffe2XzGeWaHQ==
 
 react-native-modal@13.0.1:
   version "13.0.1"
