@@ -18,6 +18,7 @@ interface IGoRoomItem {
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
 const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
+	console.log('🚀 ~ file: goRoom.ts ~ line 21 ~ navigate ~ item', item, props);
 	const routeParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
@@ -67,7 +68,9 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	}
 
 	return Navigation.reset((state: any) => {
+		console.log('🚀 ~ file: goRoom.ts ~ line 71 ~ returnNavigation.reset ~ state', state);
 		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
+		console.log('🚀 ~ file: goRoom.ts ~ line 73 ~ returnNavigation.reset ~ routesRoomsListView', routesRoomsListView);
 		return CommonActions.reset({
 			...state,
 			routes: [

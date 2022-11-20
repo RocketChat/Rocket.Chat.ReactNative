@@ -15,7 +15,6 @@ import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { getRoomTitle, getUidDirectMessage } from '../lib/methods/helpers';
 import { useAppSelector } from '../lib/hooks';
 
 const styles = StyleSheet.create({
@@ -97,7 +96,6 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => state.app);
-	const { rooms } = useAppSelector(state => state.room);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -107,31 +105,13 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		const { room } = route.params;
-		const { name } = room;
-		const params = {
-			rid: room.rid,
-			name: getRoomTitle({
-				t: room.t,
-				fname: name
-			}),
-			t: room.t,
-			roomUserId: getUidDirectMessage(room),
-			usedCannedResponse: item.text
-		};
 
 		if (room.rid) {
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail });
-			} else {
-				let navigate = navigation.push;
-				// if this is a room focused
-				if (rooms.includes(room.rid)) {
-					({ navigate } = navigation);
-				}
-				navigate('RoomView', params);
 			}
+			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
 		}
 	};
 
