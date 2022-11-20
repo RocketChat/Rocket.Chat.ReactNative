@@ -7,12 +7,14 @@ export interface IRoom {
 	rid: string;
 	isDeleting: boolean;
 	rooms: IRoomRecord;
+	subscribed: string;
 }
 
 export const initialState: IRoom = {
 	rid: '',
 	isDeleting: false,
-	rooms: []
+	rooms: [],
+	subscribed: ''
 };
 
 export default function (state = initialState, action: TActionsRoom): IRoom {
@@ -20,12 +22,14 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 		case ROOM.SUBSCRIBE:
 			return {
 				...state,
-				rooms: [action.rid, ...state.rooms]
+				rooms: [action.rid, ...state.rooms],
+				subscribed: action.rid
 			};
 		case ROOM.UNSUBSCRIBE:
 			return {
 				...state,
-				rooms: state.rooms.filter(rid => rid !== action.rid)
+				rooms: state.rooms.filter(rid => rid !== action.rid),
+				subscribed: state.subscribed === action.rid ? '' : state.subscribed
 			};
 		case ROOM.LEAVE:
 			return {

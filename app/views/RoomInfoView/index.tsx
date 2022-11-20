@@ -88,6 +88,7 @@ interface IRoomInfoViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 	rooms: string[];
+	roomSubscribed: string;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
@@ -353,7 +354,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	goRoom = () => {
 		logEvent(events.RI_GO_ROOM_USER);
 		const { room } = this.state;
-		const { rooms, navigation, isMasterDetail } = this.props;
+		const { rooms, navigation, isMasterDetail, roomSubscribed } = this.props;
 		const params = {
 			rid: room.rid,
 			name: getRoomTitle(room),
@@ -365,7 +366,9 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail });
+				if (room.rid !== roomSubscribed) {
+					goRoom({ item: params, isMasterDetail });
+				}
 			} else {
 				let navigate = navigation.push;
 				// if this is a room focused
@@ -514,6 +517,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 const mapStateToProps = (state: IApplicationState) => ({
 	rooms: state.room.rooms,
+	roomSubscribed: state.room.subscribed,
 	isMasterDetail: state.app.isMasterDetail,
 	jitsiEnabled: (state.settings.Jitsi_Enabled as boolean) || false,
 	editRoomPermission: state.permissions['edit-room'],

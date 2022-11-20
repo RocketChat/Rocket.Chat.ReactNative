@@ -7,7 +7,6 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { CommonActions } from '@react-navigation/native';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
@@ -101,6 +100,7 @@ import {
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -1204,29 +1204,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	navToRoom = async (message: TAnyMessageModel) => {
-		const { navigation } = this.props;
+		const { isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
 
-		return navigation.dispatch(state => {
-			const routes = state.routes.filter(r => r.name !== 'RoomView');
-			return CommonActions.reset({
-				...state,
-				routes: [
-					...routes,
-					{
-						name: 'RoomView',
-						params: {
-							rid: roomInfo?.rid,
-							name: getRoomTitle(roomInfo),
-							t: roomInfo?.t,
-							room: roomInfo,
-							roomUserId: getUidDirectMessage(roomInfo),
-							jumpToMessageId: message?.id
-						}
-					}
-				],
-				index: routes.length
-			});
+		return goRoom({
+			item: roomInfo as TGoRoomItem,
+			isMasterDetail,
+			jumpToMessageId: message.id
 		});
 	};
 

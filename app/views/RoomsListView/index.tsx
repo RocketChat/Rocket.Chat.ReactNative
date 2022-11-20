@@ -8,7 +8,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '@react-navigation/elements';
-import { CommonActions, CompositeNavigationProp, RouteProp } from '@react-navigation/native';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
 import database from '../../lib/database';
@@ -62,8 +62,8 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from 
 import { Services } from '../../lib/services';
 
 type TNavigation = CompositeNavigationProp<
-StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
 >;
 
 interface IRoomsListViewProps {
@@ -474,11 +474,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	internalSetState = (
 		state:
-		| ((
-			prevState: Readonly<IRoomsListViewState>,
-			props: Readonly<IRoomsListViewProps>
+			| ((
+					prevState: Readonly<IRoomsListViewState>,
+					props: Readonly<IRoomsListViewProps>
 			  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
-		| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
+			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
 		callback?: () => void
 	) => {
 		if (this.animated) {
@@ -768,7 +768,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	goRoom = ({ item, isMasterDetail }: { item: ISubscription; isMasterDetail: boolean }) => {
 		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
-		const { rooms, navigation } = this.props;
+		const { rooms } = this.props;
 
 		// @ts-ignore
 		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
@@ -776,34 +776,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 		// Only mark room as focused when in master detail layout
 		if (isMasterDetail) {
-			navigation.dispatch(state => {
-				const routes = state.routes.filter(r => r.name === 'ChatsStackNavigator');
-				return CommonActions.reset({
-					index: 0,
-					routes: [
-						{
-							...routes[0],
-							state: {
-								routes: [
-									{
-										name: 'RoomView',
-										params: {
-											rid: item.rid,
-											name: getRoomTitle(item),
-											t: item.t,
-											prid: item.prid,
-											room: item,
-											visitor: item.visitor,
-											roomUserId: getUidDirectMessage(item)
-										}
-									}
-								]
-							}
-						}
-					]
-				});
-			});
-			return this.setState({ item });
+			this.setState({ item });
 		}
 		goRoom({ item, isMasterDetail });
 	};
@@ -927,7 +900,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => this.scroll = ref;
+	getScrollRef = (ref: FlatList) => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { searching } = this.state;

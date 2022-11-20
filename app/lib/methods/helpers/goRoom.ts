@@ -1,4 +1,5 @@
-import { ChatsStackParamList } from '../../../stacks/types';
+import { CommonActions } from '@react-navigation/native';
+
 import Navigation from '../../navigation/appNavigation';
 import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../../../definitions';
 import { getRoomTitle, getUidDirectMessage } from './helpers';
@@ -16,22 +17,8 @@ interface IGoRoomItem {
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
-const navigate = ({
-	item,
-	isMasterDetail,
-	...props
-}: {
-	item: TGoRoomItem;
-	isMasterDetail: boolean;
-	navigationMethod?: () => ChatsStackParamList;
-}) => {
-	let navigationMethod = props.navigationMethod ?? Navigation.navigate;
-
-	if (isMasterDetail) {
-		navigationMethod = Navigation.replace;
-	}
-
-	navigationMethod('RoomView', {
+const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
+	const routeParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
 		t: item.t,
@@ -40,6 +27,58 @@ const navigate = ({
 		visitor: item.visitor,
 		roomUserId: getUidDirectMessage(item),
 		...props
+	};
+
+	if (isMasterDetail) {
+		return Navigation.reset((state: any) => {
+			const routesChatsStackNavigator = state.routes.filter((r: any) => r.name === 'ChatsStackNavigator');
+			if (routesChatsStackNavigator.length > 0) {
+				return CommonActions.reset({
+					index: 0,
+					routes: [
+						{
+							...routesChatsStackNavigator[0],
+							state: {
+								routes: [
+									{
+										name: 'RoomView',
+										params: routeParams
+									}
+								]
+							}
+						}
+					]
+				});
+			}
+
+			const routesRoomView = state.routes.filter((r: any) => r.name !== 'RoomView');
+			return CommonActions.reset({
+				...state,
+				routes: [
+					...routesRoomView,
+					{
+						name: 'RoomView',
+						params: routeParams
+					}
+				],
+				index: routesRoomView.length
+			});
+		});
+	}
+
+	return Navigation.reset((state: any) => {
+		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
+		return CommonActions.reset({
+			...state,
+			routes: [
+				...routesRoomsListView,
+				{
+					name: 'RoomView',
+					params: routeParams
+				}
+			],
+			index: routesRoomsListView.length
+		});
 	});
 };
 
@@ -55,7 +94,6 @@ export const goRoom = async ({
 }: {
 	item: TGoRoomItem;
 	isMasterDetail: boolean;
-	navigationMethod?: any;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {

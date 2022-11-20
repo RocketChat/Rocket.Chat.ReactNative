@@ -338,7 +338,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				if (isMasterDetail) {
 					navigation.pop();
 				}
-				goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
+				goRoom({ item: params, isMasterDetail });
 			} catch (e: any) {
 				if (e.data.error === 'not-allowed') {
 					showErrorAlert(I18n.t('error-not-allowed'));
