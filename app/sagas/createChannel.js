@@ -81,6 +81,7 @@ const handleSuccess = function* handleSuccess({ data }) {
 	if (isMasterDetail) {
 		Navigation.navigate('DrawerNavigator');
 	}
+	Navigation.navigate('RoomsListView');
 	goRoom({ item: data, isMasterDetail });
 };
 
