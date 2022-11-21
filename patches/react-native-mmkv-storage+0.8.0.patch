@@ -1,55 +1,8 @@
-diff --git a/node_modules/react-native-mmkv-storage/ios/MMKVNative.h b/node_modules/react-native-mmkv-storage/ios/MMKVNative.h
-index 60a2a03..ca6fdfd 100644
---- a/node_modules/react-native-mmkv-storage/ios/MMKVNative.h
-+++ b/node_modules/react-native-mmkv-storage/ios/MMKVNative.h
-@@ -1,6 +1,6 @@
- 
--#if __has_include("RCTBridgeModule.h")
--#import "RCTBridgeModule.h"
-+#if __has_include(<React/RCTBridgeModule.h>)
-+#import <React/RCTBridgeModule.h>
- #else
- #import <React/RCTBridgeModule.h>
- #import <React/RCTEventEmitter.h>
-diff --git a/node_modules/react-native-mmkv-storage/ios/MMKVStorage.h b/node_modules/react-native-mmkv-storage/ios/MMKVStorage.h
-index b5f5823..62e2afa 100644
---- a/node_modules/react-native-mmkv-storage/ios/MMKVStorage.h
-+++ b/node_modules/react-native-mmkv-storage/ios/MMKVStorage.h
-@@ -1,6 +1,6 @@
- 
--#if __has_include("RCTBridgeModule.h")
--#import "RCTBridgeModule.h"
-+#if __has_include(<React/RCTBridgeModule.h>)
-+#import <React/RCTBridgeModule.h>
- #else
- #import <React/RCTBridgeModule.h>
- #import <React/RCTEventEmitter.h>
-diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.h b/node_modules/react-native-mmkv-storage/ios/SecureStorage.h
-index b804a64..291cc7e 100644
---- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.h
-+++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.h
-@@ -1,6 +1,6 @@
- 
--#if __has_include("RCTBridgeModule.h")
--#import "RCTBridgeModule.h"
-+#if __has_include(<React/RCTBridgeModule.h>)
-+#import <React/RCTBridgeModule.h>
- #else
- #import <React/RCTBridgeModule.h>
- #endif
 diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-index 1c4e1c2..fd6ef68 100644
+index dbea26b..7b2083c 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-@@ -1,5 +1,5 @@
--#if __has_include("RCTBridgeModule.h")
--#import "RCTBridgeModule.h"
-+#if __has_include(<React/RCTBridgeModule.h>)
-+#import <React/RCTBridgeModule.h>
- #else
- #import <React/RCTBridgeModule.h>
- #endif
-@@ -45,14 +45,14 @@ - (NSString *) getSecureKey:(NSString *)key
+@@ -40,14 +40,14 @@ - (NSString *) getSecureKey:(NSString *)key
      @try {
          [self handleAppUninstallation];
          NSString *value = [self searchKeychainCopyMatching:key];
@@ -72,7 +25,7 @@ index 1c4e1c2..fd6ef68 100644
          if (value == nil) {
              NSString* errorMessage = @"key does not present";
            
-@@ -105,6 +105,9 @@ - (void) removeSecureKey:(NSString *)key
+@@ -100,6 +100,9 @@ - (void) removeSecureKey:(NSString *)key
  
  - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
@@ -82,17 +35,17 @@ index 1c4e1c2..fd6ef68 100644
      if(serviceName == nil){
          serviceName = [[NSBundle mainBundle] bundleIdentifier];
      }
-@@ -116,6 +119,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+@@ -111,6 +114,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
      [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
-     
+ 
 +    NSString *keychainGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"KeychainGroup"];
 +    [searchDictionary setObject:keychainGroup forKey:(id)kSecAttrAccessGroup];
-+
++    
      return searchDictionary;
  }
  
-@@ -217,11 +223,14 @@ - (void)clearSecureKeyStore
+@@ -212,11 +218,14 @@ - (void)clearSecureKeyStore
  
  - (void)handleAppUninstallation
  {
