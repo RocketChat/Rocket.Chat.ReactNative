@@ -17,7 +17,7 @@ import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { sendLoadingEvent } from '../containers/Loading';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
-import { goRoom } from '../lib/methods/helpers/goRoom';
+import { goRoom, TGoRoomItem } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSubscriptionModel, SubscriptionType, IApplicationState } from '../definitions';
@@ -134,9 +134,11 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				sendLoadingEvent({ visible: false });
-				// @ts-ignore
-				// TODO: Verify goRoom interface for return of call
-				goRoom({ item: result, isMasterDetail });
+				const item = {
+					rid: result.rooms?.[0]._id,
+					...result.rooms?.[0]
+				} as TGoRoomItem;
+				goRoom({ item, isMasterDetail });
 			}
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
