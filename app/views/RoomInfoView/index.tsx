@@ -87,7 +87,6 @@ interface IRoomInfoViewProps {
 		StackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
-	rooms: string[];
 	roomSubscribed: string;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
@@ -513,7 +512,6 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	rooms: state.room.rooms,
 	roomSubscribed: state.room.subscribed,
 	isMasterDetail: state.app.isMasterDetail,
 	jitsiEnabled: (state.settings.Jitsi_Enabled as boolean) || false,
