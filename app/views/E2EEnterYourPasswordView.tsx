@@ -18,7 +18,7 @@ import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	info: {
-		fontSize: 14,
+		fontSize: 16,
 		marginVertical: 4,
 		...sharedStyles.textRegular
 	}

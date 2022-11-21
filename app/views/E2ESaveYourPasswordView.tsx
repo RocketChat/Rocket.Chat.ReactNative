@@ -32,11 +32,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	warning: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textMedium,
 		textAlign: 'center'
 	},
 	passwordText: {
+		fontSize: 14,
 		marginBottom: 8,
 		...sharedStyles.textAlignCenter
 	},
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
 		height: 32
 	},
 	info: {
-		fontSize: 14,
+		fontSize: 16,
 		marginBottom: 64,
 		...sharedStyles.textRegular,
 		textAlign: 'center'
@@ -113,7 +114,7 @@ const E2ESaveYourPasswordView = () => {
 							style={[styles.copyButton, { backgroundColor: colors.auxiliaryBackground }]}
 							title={I18n.t('Copy')}
 							type='secondary'
-							fontSize={12}
+							fontSize={14}
 						/>
 					</View>
 					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
