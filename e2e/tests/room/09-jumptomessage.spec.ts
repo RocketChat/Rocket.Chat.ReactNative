@@ -41,9 +41,6 @@ async function clearCache() {
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(5000);
-	await waitFor(element(by.id('rooms-list-view-item-jumping')))
-		.toExist()
-		.withTimeout(10000);
 }
 
 async function waitForLoading() {
@@ -200,7 +197,7 @@ describe('Room', () => {
 const expectThreadMessages = async (message: string) => {
 	await waitFor(element(by.id('room-view-title-thread 1')))
 		.toExist()
-		.withTimeout(5000);
+		.withTimeout(10000);
 	await waitFor(element(by[textMatcher](message)).atIndex(0))
 		.toExist()
 		.withTimeout(10000);
