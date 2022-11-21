@@ -423,6 +423,5 @@
   "Server_selection_numbers": "Seleccionar servidor 1...9",
   "Add_server": "Añadir servidor",
   "New_line": "Nueva línea",
-  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
-  "Get_link": "Obtener enlace"
+  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos."
 }
