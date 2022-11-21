@@ -25,7 +25,6 @@ import sharedStyles from './Styles';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 44,
 		paddingTop: 32
 	},
 	content: {
@@ -34,7 +33,8 @@ const styles = StyleSheet.create({
 	},
 	warning: {
 		fontSize: 14,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		textAlign: 'center'
 	},
 	passwordText: {
 		marginBottom: 8,
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
 	info: {
 		fontSize: 14,
 		marginBottom: 64,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		textAlign: 'center'
 	}
 });
 

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	},
 	info: {
 		fontSize: 14,
-		marginVertical: 8
+		marginBottom: 16
 	}
 });
 
