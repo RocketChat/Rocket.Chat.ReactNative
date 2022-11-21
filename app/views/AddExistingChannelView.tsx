@@ -17,7 +17,6 @@ import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { sendLoadingEvent } from '../containers/Loading';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
-import { goRoom, TGoRoomItem } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSubscriptionModel, SubscriptionType, IApplicationState } from '../definitions';
@@ -126,7 +125,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 
 	submit = async () => {
 		const { selected } = this.state;
-		const { isMasterDetail } = this.props;
+		const { navigation } = this.props;
 
 		sendLoadingEvent({ visible: true });
 		try {
@@ -134,11 +133,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				sendLoadingEvent({ visible: false });
-				const item = {
-					rid: result.rooms?.[0]._id,
-					...result.rooms?.[0]
-				} as TGoRoomItem;
-				goRoom({ item, isMasterDetail });
+				navigation.navigate('RoomView', {});
 			}
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
