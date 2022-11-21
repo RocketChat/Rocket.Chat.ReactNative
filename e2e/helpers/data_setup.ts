@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import data, { TDataChannels, TDataGroups, TDataTeams, TDataUsers } from '../data';
+import data, { TDataChannels, TDataGroups, TDataTeams, TDataUsers, TUserRegularChannels } from '../data';
 import random from './random';
 
 const TEAM_TYPE = {
@@ -157,6 +157,13 @@ const setup = async () => {
 	}
 
 	await login(data.users.regular.username, data.users.regular.password);
+
+	for (const channelKey in data.userRegularChannels) {
+		if (Object.prototype.hasOwnProperty.call(data.userRegularChannels, channelKey)) {
+			const channel = data.userRegularChannels[channelKey as TUserRegularChannels];
+			await createChannelIfNotExists(channel.name);
+		}
+	}
 
 	for (const groupKey in data.groups) {
 		if (Object.prototype.hasOwnProperty.call(data.groups, groupKey)) {

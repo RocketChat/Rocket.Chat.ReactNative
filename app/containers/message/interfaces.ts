@@ -14,6 +14,7 @@ export interface IMessageAttachments {
 	isReply?: boolean;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
+	id: string;
 }
 
 export interface IMessageAvatar {
@@ -62,11 +63,11 @@ export interface IMessageContent {
 	comment?: string;
 	hasError: boolean;
 	isHeader: boolean;
+	isTranslated: boolean;
 }
 
 export interface IMessageEmoji {
 	content: string;
-	baseUrl: string;
 	standardEmojiStyle: { fontSize: number };
 	customEmojiStyle: StyleProp<ImageStyle>;
 	getCustomEmoji: TGetCustomEmoji;

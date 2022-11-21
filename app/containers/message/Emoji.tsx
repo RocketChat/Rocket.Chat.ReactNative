@@ -6,11 +6,11 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { IMessageEmoji } from './interfaces';
 
 const Emoji = React.memo(
-	({ content, baseUrl, standardEmojiStyle, customEmojiStyle, getCustomEmoji }: IMessageEmoji) => {
+	({ content, standardEmojiStyle, customEmojiStyle, getCustomEmoji }: IMessageEmoji) => {
 		const parsedContent = content.replace(/^:|:$/g, '');
 		const emoji = getCustomEmoji(parsedContent);
 		if (emoji) {
-			return <CustomEmoji key={content} baseUrl={baseUrl} style={customEmojiStyle} emoji={emoji} />;
+			return <CustomEmoji key={content} style={customEmojiStyle} emoji={emoji} />;
 		}
 		return <Text style={standardEmojiStyle}>{shortnameToUnicode(content)}</Text>;
 	},

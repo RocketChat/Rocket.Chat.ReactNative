@@ -43,9 +43,7 @@ const Avatar = React.memo(
 
 		let image;
 		if (emoji) {
-			image = (
-				<Emoji baseUrl={server} getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />
-			);
+			image = <Emoji getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />;
 		} else {
 			let uri = avatar;
 			if (!isStatic) {

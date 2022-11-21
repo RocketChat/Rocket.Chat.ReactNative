@@ -8,7 +8,7 @@ import { TThreadMessageModel } from './IThreadMessage';
 import { TThreadModel } from './IThread';
 import { IUrl, IUrlFromServer } from './IUrl';
 
-export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad;
+export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad | MessageTypesValues;
 
 export interface IUserMessage {
 	_id: string;
@@ -153,3 +153,81 @@ export interface IReadReceipts {
 	ts: string;
 	user?: IUserMessage;
 }
+
+// from Rocket.Chat codebase
+type VoipMessageTypesValues =
+	| 'voip-call-started'
+	| 'voip-call-declined'
+	| 'voip-call-on-hold'
+	| 'voip-call-unhold'
+	| 'voip-call-ended'
+	| 'voip-call-duration'
+	| 'voip-call-wrapup'
+	| 'voip-call-ended-unexpectedly';
+
+type TeamMessageTypes =
+	| 'removed-user-from-team'
+	| 'added-user-to-team'
+	| 'ult'
+	| 'user-converted-to-team'
+	| 'user-converted-to-channel'
+	| 'user-removed-room-from-team'
+	| 'user-deleted-room-from-team'
+	| 'user-added-room-to-team'
+	| 'ujt';
+
+type LivechatMessageTypes =
+	| 'livechat_navigation_history'
+	| 'livechat_transfer_history'
+	| 'livechat_transcript_history'
+	| 'livechat_video_call'
+	| 'livechat_webrtc_video_call'
+	| 'livechat-started';
+
+type OmnichannelTypesValues =
+	| 'livechat_transfer_history_fallback'
+	| 'livechat-close'
+	| 'omnichannel_placed_chat_on_hold'
+	| 'omnichannel_on_hold_chat_resumed';
+
+type OtrMessageTypeValues = 'otr' | 'otr-ack';
+type OtrSystemMessages = 'user_joined_otr' | 'user_requested_otr_key_refresh' | 'user_key_refreshed_successfully';
+
+export type MessageTypesValues =
+	| 'e2e'
+	| 'uj'
+	| 'ul'
+	| 'ru'
+	| 'au'
+	| 'mute_unmute'
+	| 'r'
+	| 'ut'
+	| 'wm'
+	| 'rm'
+	| 'subscription-role-added'
+	| 'subscription-role-removed'
+	| 'room-archived'
+	| 'room-unarchived'
+	| 'room_changed_privacy'
+	| 'room_changed_description'
+	| 'room_changed_announcement'
+	| 'room_changed_avatar'
+	| 'room_changed_topic'
+	| 'room_e2e_enabled'
+	| 'room_e2e_disabled'
+	| 'user-muted'
+	| 'user-unmuted'
+	| 'room-removed-read-only'
+	| 'room-set-read-only'
+	| 'room-allowed-reacting'
+	| 'room-disallowed-reacting'
+	| 'command'
+	| LivechatMessageTypes
+	| TeamMessageTypes
+	| VoipMessageTypesValues
+	| OmnichannelTypesValues
+	| OtrMessageTypeValues
+	| OtrSystemMessages
+	| 'message_pinned'
+	| 'message_snippeted'
+	| 'jitsi_call_started';

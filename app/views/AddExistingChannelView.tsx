@@ -1,7 +1,7 @@
 import React from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 
@@ -145,14 +145,9 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		}
 	};
 
-	renderHeader = () => {
-		const { theme } = this.props;
-		return (
-			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='add-existing-channel-view-search' />
-			</View>
-		);
-	};
+	renderHeader = () => (
+		<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='add-existing-channel-view-search' />
+	);
 
 	isChecked = (rid: string) => {
 		const { selected } = this.state;

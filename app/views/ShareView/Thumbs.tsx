@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 	thumb: {
 		width: THUMB_SIZE,
 		height: THUMB_SIZE,
-		borderRadius: 2,
+		borderRadius: 4,
 		marginRight: 16,
 		overflow: 'hidden',
 		alignItems: 'center',

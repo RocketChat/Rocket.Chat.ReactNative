@@ -52,7 +52,11 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children }: I
 			/>
 		);
 	}
-	return <BottomSheetView style={styles.contentContainer}>{children}</BottomSheetView>;
+	return (
+		<BottomSheetView testID='action-sheet' style={styles.contentContainer}>
+			{children}
+		</BottomSheetView>
+	);
 });
 
 export default BottomSheetContent;

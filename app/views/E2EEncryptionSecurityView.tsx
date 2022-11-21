@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
 	},
 	changePasswordButton: {
 		marginBottom: 4
+	},
+	separator: {
+		marginBottom: 16
 	}
 });
 
@@ -148,8 +151,7 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 						testID='e2e-encryption-security-view-change-password'
 					/>
 				</List.Section>
-
-				<List.Separator />
+				<List.Separator style={styles.separator} />
 			</>
 		);
 	};

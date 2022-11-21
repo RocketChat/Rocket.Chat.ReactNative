@@ -20,6 +20,8 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
 import { downloadAudioFile } from '../../lib/methods/audioFile';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { PAUSE_AUDIO } from './constants';
 
 interface IButton {
 	loading: boolean;
@@ -36,6 +38,7 @@ interface IMessageAudioProps {
 	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
+	messageId: string;
 }
 
 interface IMessageAudioState {
@@ -127,8 +130,13 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.sound.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate);
 	}
 
+	pauseSound = () => {
+		EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
+		this.togglePlayPause();
+	};
+
 	async componentDidMount() {
-		const { file } = this.props;
+		const { file, messageId } = this.props;
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
@@ -139,7 +147,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ loading: true });
 		try {
 			if (url) {
-				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url);
+				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url, messageId);
 				await this.sound.loadAsync({ uri: audio });
 			}
 		} catch {
@@ -182,6 +190,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	async componentWillUnmount() {
+		EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
 		try {
 			await this.sound.stopAsync();
 		} catch {
@@ -220,6 +229,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				try {
 					await this.sound.stopAsync();
 					this.setState({ paused: true, currentTime: 0 });
+					EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
 				} catch {
 					// do nothing
 				}
@@ -242,7 +252,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		try {
 			if (paused) {
 				await this.sound.pauseAsync();
+				EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
 			} else {
+				EventEmitter.emit(PAUSE_AUDIO);
+				EventEmitter.addEventListener(PAUSE_AUDIO, this.pauseSound);
 				await Audio.setAudioModeAsync(mode);
 				await this.sound.playAsync();
 			}
@@ -282,7 +295,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				<Markdown
 					msg={description}
 					style={[isReply && style]}
-					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
