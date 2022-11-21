@@ -354,7 +354,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	goRoom = () => {
 		logEvent(events.RI_GO_ROOM_USER);
 		const { room } = this.state;
-		const { rooms, navigation, isMasterDetail, roomSubscribed } = this.props;
+		const { navigation, isMasterDetail, roomSubscribed } = this.props;
 		const params = {
 			rid: room.rid,
 			name: getRoomTitle(room),
@@ -366,17 +366,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				if (room.rid !== roomSubscribed) {
-					goRoom({ item: params, isMasterDetail });
-				}
-			} else {
-				let navigate = navigation.push;
-				// if this is a room focused
-				if (rooms.includes(room.rid)) {
-					({ navigate } = navigation);
-				}
-				navigate('RoomView', params);
 			}
+			if (room.rid === roomSubscribed) {
+				if (isMasterDetail) {
+					return;
+				}
+				return navigation.goBack();
+			}
+			goRoom({ item: params, isMasterDetail });
 		}
 	};
 
