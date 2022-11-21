@@ -73,7 +73,7 @@ export const pickMultipleImageAndVideoFromLibrary = async (): Promise<ImagePicke
 	try {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
-			quality: 1,
+			quality: isAndroid ? 1 : undefined, // TODO - Apply fix for iOS processing error
 			allowsMultipleSelection: true
 		});
 		if (!result.cancelled) {
