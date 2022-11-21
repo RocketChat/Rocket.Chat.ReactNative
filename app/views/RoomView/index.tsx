@@ -910,15 +910,19 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onDiscussionPress = debounce(
 		async (item: TAnyMessageModel) => {
-			const { navigation } = this.props;
+			const { isMasterDetail } = this.props;
 			if (!item.drid) return;
 			const sub = await getRoomInfo(item.drid);
-			navigation.push('RoomView', {
-				rid: item.drid as string,
-				prid: item?.subscription?.id,
-				name: item.msg,
-				t: (sub?.t as SubscriptionType) || (this.t as SubscriptionType)
+			goRoom({
+				item: {
+					rid: item.drid as string,
+					prid: item?.subscription?.id,
+					name: item.msg,
+					t: (sub?.t as SubscriptionType) || (this.t as SubscriptionType)
+				},
+				isMasterDetail
 			});
+			
 		},
 		1000,
 		true
