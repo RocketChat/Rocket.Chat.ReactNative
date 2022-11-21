@@ -8,12 +8,11 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getActiveRoute } from '../../lib/methods/helpers/navigation';
 import { IApplicationState } from '../../definitions';
-import { IRoom } from '../../reducers/room';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
 const InAppNotification = memo(
-	({ rooms, appState }: { rooms: IRoom['rooms']; appState: string }) => {
+	({ appState, roomSubscribed }: { appState: string; roomSubscribed: string }) => {
 		const show = (notification: INotifierComponent['notification']) => {
 			if (appState !== 'foreground') {
 				return;
@@ -23,7 +22,7 @@ const InAppNotification = memo(
 			const state = Navigation.navigationRef.current?.getRootState();
 			const route = getActiveRoute(state);
 			if (payload.rid) {
-				if (rooms.includes(payload.rid) || route?.name === 'JitsiMeetView') {
+				if (payload.rid === roomSubscribed || route?.name === 'JitsiMeetView') {
 					return;
 				}
 				Notifier.showNotification({
@@ -41,15 +40,15 @@ const InAppNotification = memo(
 			return () => {
 				EventEmitter.removeListener(INAPP_NOTIFICATION_EMITTER, listener);
 			};
-		}, [rooms]);
+		}, [roomSubscribed]);
 
 		return <NotifierRoot />;
 	},
-	(prevProps, nextProps) => dequal(prevProps.rooms, nextProps.rooms)
+	(prevProps, nextProps) => dequal(prevProps.roomSubscribed, nextProps.roomSubscribed)
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	rooms: state.room.rooms,
+	roomSubscribed: state.room.subscribed,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 });
 

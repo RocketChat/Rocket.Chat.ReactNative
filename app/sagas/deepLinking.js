@@ -65,22 +65,16 @@ const navigate = function* navigate({ params }) {
 				};
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
-				const focusedRooms = yield select(state => state.room.rooms);
+				const focusedRooms = yield select(state => state.room.subscribed);
 				const jumpToMessageId = params.messageId;
 
-				if (focusedRooms.includes(room.rid)) {
-					// if there's one room on the list or last room is the one
-					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						if (jumpToThreadId) {
-							// With this conditional when there is a jumpToThreadId we can avoid the thread open again
-							// above other thread and the room could call again the thread
-							popToRoot({ isMasterDetail });
-						}
-						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
-					} else {
+				if (focusedRooms === room.rid) {
+					if (jumpToThreadId) {
+						// With this conditional when there is a jumpToThreadId we can avoid the thread open again
+						// above other thread and the room could call again the thread
 						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 					}
+					yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 				} else {
 					popToRoot({ isMasterDetail });
 					yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
