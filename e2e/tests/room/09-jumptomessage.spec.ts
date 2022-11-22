@@ -41,6 +41,9 @@ async function clearCache() {
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(5000);
+	await waitFor(element(by.id('rooms-list-view-item-jumping')))
+		.toExist()
+		.withTimeout(10000);
 }
 
 async function waitForLoading() {
