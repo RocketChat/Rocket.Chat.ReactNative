@@ -1,16 +1,20 @@
 import React, { memo, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
-import { connect } from 'react-redux';
 
 import NotifierComponent, { INotifierComponent } from './NotifierComponent';
 import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getActiveRoute } from '../../lib/methods/helpers/navigation';
-import { IApplicationState } from '../../definitions';
+import { useAppSelector } from '../../lib/hooks';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-const InAppNotification = memo(({ appState, subscribedRoom }: { appState: string; subscribedRoom: string }) => {
+const InAppNotification = memo(() => {
+	const { appState, subscribedRoom } = useAppSelector(state => ({
+		subscribedRoom: state.room.subscribedRoom,
+		appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
+	}));
+
 	const show = (notification: INotifierComponent['notification']) => {
 		if (appState !== 'foreground') {
 			return;
@@ -43,9 +47,4 @@ const InAppNotification = memo(({ appState, subscribedRoom }: { appState: string
 	return <NotifierRoot />;
 });
 
-const mapStateToProps = (state: IApplicationState) => ({
-	subscribedRoom: state.room.subscribedRoom,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
-});
-
-export default connect(mapStateToProps)(InAppNotification);
+export default InAppNotification;
