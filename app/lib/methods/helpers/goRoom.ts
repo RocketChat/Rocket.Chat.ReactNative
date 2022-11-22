@@ -30,27 +30,7 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	};
 
 	if (isMasterDetail) {
-		return Navigation.reset((state: any) => {
-			const routesChatsStackNavigator = state.routes.filter((r: any) => r.name === 'ChatsStackNavigator');
-			if (routesChatsStackNavigator.length > 0) {
-				return CommonActions.reset({
-					index: 0,
-					routes: [
-						{
-							...routesChatsStackNavigator[0],
-							state: {
-								routes: [
-									{
-										name: 'RoomView',
-										params: routeParams
-									}
-								]
-							}
-						}
-					]
-				});
-			}
-
+		return Navigation.dispatch((state: any) => {
 			const routesRoomView = state.routes.filter((r: any) => r.name !== 'RoomView');
 			return CommonActions.reset({
 				...state,
@@ -66,7 +46,7 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		});
 	}
 
-	return Navigation.reset((state: any) => {
+	return Navigation.dispatch((state: any) => {
 		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
 		return CommonActions.reset({
 			...state,

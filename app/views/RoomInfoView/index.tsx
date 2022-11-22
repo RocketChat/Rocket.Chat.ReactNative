@@ -87,7 +87,7 @@ interface IRoomInfoViewProps {
 		StackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
-	roomSubscribed: string;
+	subscribedRoom: string;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
@@ -353,7 +353,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	goRoom = () => {
 		logEvent(events.RI_GO_ROOM_USER);
 		const { room } = this.state;
-		const { navigation, isMasterDetail, roomSubscribed } = this.props;
+		const { navigation, isMasterDetail, subscribedRoom } = this.props;
 		const params = {
 			rid: room.rid,
 			name: getRoomTitle(room),
@@ -366,7 +366,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
 			}
-			if (room.rid === roomSubscribed) {
+			if (room.rid === subscribedRoom) {
 				if (isMasterDetail) {
 					return;
 				}
@@ -512,7 +512,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	roomSubscribed: state.room.subscribed,
+	subscribedRoom: state.room.subscribedRoom,
 	isMasterDetail: state.app.isMasterDetail,
 	jitsiEnabled: (state.settings.Jitsi_Enabled as boolean) || false,
 	editRoomPermission: state.permissions['edit-room'],

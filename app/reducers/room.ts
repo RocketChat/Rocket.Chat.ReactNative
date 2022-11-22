@@ -6,13 +6,13 @@ export type IRoomRecord = string[];
 export interface IRoom {
 	rid: string;
 	isDeleting: boolean;
-	subscribed: string;
+	subscribedRoom: string;
 }
 
 export const initialState: IRoom = {
 	rid: '',
 	isDeleting: false,
-	subscribed: ''
+	subscribedRoom: ''
 };
 
 export default function (state = initialState, action: TActionsRoom): IRoom {
@@ -20,12 +20,12 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 		case ROOM.SUBSCRIBE:
 			return {
 				...state,
-				subscribed: action.rid
+				subscribedRoom: action.rid
 			};
 		case ROOM.UNSUBSCRIBE:
 			return {
 				...state,
-				subscribed: state.subscribed === action.rid ? '' : state.subscribed
+				subscribedRoom: state.subscribedRoom === action.rid ? '' : state.subscribedRoom
 			};
 		case ROOM.LEAVE:
 			return {

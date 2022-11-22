@@ -86,7 +86,7 @@ interface IRoomsListViewProps {
 	StoreLastMessage: boolean;
 	useRealName: boolean;
 	isMasterDetail: boolean;
-	roomSubscribed: string;
+	subscribedRoom: string;
 	width: number;
 	insets: {
 		left: number;
@@ -307,7 +307,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		const { loading, search } = this.state;
-		const { width, insets, roomSubscribed } = this.props;
+		const { width, insets, subscribedRoom } = this.props;
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -317,7 +317,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (!dequal(nextState.search, search)) {
 			return true;
 		}
-		if (!dequal(nextProps.roomSubscribed, roomSubscribed)) {
+		if (nextProps.subscribedRoom !== subscribedRoom) {
 			return true;
 		}
 		if (!dequal(nextProps.insets, insets)) {
@@ -337,7 +337,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			groupByType,
 			showFavorites,
 			showUnread,
-			roomSubscribed,
+			subscribedRoom,
 			isMasterDetail,
 			insets,
 			createTeamPermission,
@@ -363,8 +363,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.getSubscriptions();
 		}
 		// Update current item in case of another action triggers an update on room subscribed reducer
-		if (isMasterDetail && roomSubscribed && item?.rid !== roomSubscribed && roomSubscribed !== prevProps.roomSubscribed) {
-			this.setState({ item: { rid: roomSubscribed } as ISubscription });
+		if (isMasterDetail && subscribedRoom && item?.rid !== subscribedRoom && subscribedRoom !== prevProps.subscribedRoom) {
+			this.setState({ item: { rid: subscribedRoom } as ISubscription });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
@@ -768,9 +768,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	goRoom = ({ item, isMasterDetail }: { item: ISubscription; isMasterDetail: boolean }) => {
 		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
-		const { roomSubscribed } = this.props;
+		const { subscribedRoom } = this.props;
 
-		if (currentItem?.rid === item.rid || roomSubscribed === item.rid) {
+		if (currentItem?.rid === item.rid || subscribedRoom === item.rid) {
 			return;
 		}
 		// Only mark room as focused when in master detail layout
@@ -1043,7 +1043,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
 	StoreLastMessage: state.settings.Store_Last_Message,
-	roomSubscribed: state.room.subscribed,
+	subscribedRoom: state.room.subscribedRoom,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
 	encryptionBanner: state.encryption.banner,

@@ -125,8 +125,8 @@ export default class RoomSubscription {
 		if (ev === 'typing') {
 			const { user } = reduxStore.getState().login;
 			const { UI_Use_Real_Name } = reduxStore.getState().settings;
-			const { subscribed } = reduxStore.getState().room;
-			if (subscribed !== _rid) {
+			const { subscribedRoom } = reduxStore.getState().room;
+			if (subscribedRoom !== _rid) {
 				return;
 			}
 			const [name, typing] = ddpMessage.fields.args;

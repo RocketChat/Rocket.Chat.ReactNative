@@ -58,7 +58,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
 			const subsToDelete = existingSubs.filter(i1 => !subscriptions.find(i2 => i1._id === i2._id));
 
-			const subscribedRoom = yield select(state => state.room.subscribed);
+			const subscribedRoom = yield select(state => state.room.subscribedRoom);
 			const lastMessages = subscriptions
 				/** Checks for opened rooms and filter them out.
 				 * It prevents this process to try persisting the same last message on the room messages fetch.

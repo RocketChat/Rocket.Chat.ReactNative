@@ -913,16 +913,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const { isMasterDetail } = this.props;
 			if (!item.drid) return;
 			const sub = await getRoomInfo(item.drid);
-			goRoom({
-				item: {
-					rid: item.drid as string,
-					prid: item?.subscription?.id,
-					name: item.msg,
-					t: (sub?.t as SubscriptionType) || (this.t as SubscriptionType)
-				},
-				isMasterDetail
-			});
-			
+			if (sub) {
+				goRoom({
+					item: sub as TGoRoomItem,
+					isMasterDetail
+				});
+			}
 		},
 		1000,
 		true
@@ -993,8 +989,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 			} else if (!message.tmid && message.rid === this.rid && this.t === 'thread' && !message.replies) {
 				/**
-				 * if the user is within a thread and the message that he is trying to jump to,
-				 * is a message in the main room
+				 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
 				 */
 				return this.navToRoom(message);
 			} else {

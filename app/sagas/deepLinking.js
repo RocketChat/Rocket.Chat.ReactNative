@@ -65,10 +65,10 @@ const navigate = function* navigate({ params }) {
 				};
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
-				const focusedRooms = yield select(state => state.room.subscribed);
+				const subscribedRoom = yield select(state => state.room.subscribedRoom);
 				const jumpToMessageId = params.messageId;
 
-				if (focusedRooms === room.rid) {
+				if (subscribedRoom === room.rid) {
 					if (jumpToThreadId) {
 						// With this conditional when there is a jumpToThreadId we can avoid the thread open again
 						// above other thread and the room could call again the thread

@@ -21,8 +21,8 @@ function popToTop() {
 	navigationRef.current?.dispatch(StackActions.popToTop());
 }
 
-function reset(resetParams: any) {
-	navigationRef.current?.dispatch(resetParams);
+function dispatch(params: any) {
+	navigationRef.current?.dispatch(params);
 }
 
 export default {
@@ -32,5 +32,5 @@ export default {
 	back,
 	replace,
 	popToTop,
-	reset
+	dispatch
 };
