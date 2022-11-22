@@ -4,7 +4,7 @@ import sharedStyles from '../../views/Styles';
 
 export const BUTTON_HEIGHT = 48;
 export const SERVICE_HEIGHT = 58;
-export const BORDER_RADIUS = 2;
+export const BORDER_RADIUS = 4;
 export const SERVICES_COLLAPSED_HEIGHT = 174;
 
 export default StyleSheet.create({

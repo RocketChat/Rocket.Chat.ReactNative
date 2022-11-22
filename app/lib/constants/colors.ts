@@ -86,6 +86,7 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#E4E7EA',
 		...mentions
 	},
 	dark: {
@@ -154,6 +155,7 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#030b1b', // backgroundColor
 		...mentions
 	},
 	black: {
@@ -222,6 +224,7 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#000000', // backgroundColor
 		...mentions
 	}
 };

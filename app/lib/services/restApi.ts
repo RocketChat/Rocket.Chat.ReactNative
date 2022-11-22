@@ -89,9 +89,16 @@ export const forgotPassword = (email: string) =>
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
 	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
-export const spotlight = (search: string, usernames: string[], type: { users: boolean; rooms: boolean }): Promise<ISpotlight> =>
+export const spotlight = (
+	search: string,
+	usernames: string[],
+	type: { users: boolean; rooms: boolean },
+	rid?: string
+): Promise<ISpotlight> =>
 	// RC 0.51.0
-	sdk.methodCallWrapper('spotlight', search, usernames, type);
+	rid
+		? sdk.methodCallWrapper('spotlight', search, usernames, type, rid)
+		: sdk.methodCallWrapper('spotlight', search, usernames, type);
 
 export const createDirectMessage = (username: string) =>
 	// RC 0.59.0
@@ -160,7 +167,7 @@ export const createTeam = ({
 }) => {
 	const params = {
 		name,
-		users,
+		members: users,
 		type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
 		room: {
 			readOnly,

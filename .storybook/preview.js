@@ -3,7 +3,13 @@ import { Provider } from 'react-redux';
 
 import { themes } from '../app/lib/constants';
 import MessageContext from '../app/containers/message/Context';
+import { selectServerRequest } from '../app/actions/server';
 import { mockedStore as store } from '../app/reducers/mockedStore';
+import { setUser } from '../app/actions/login';
+
+const baseUrl = 'https://open.rocket.chat';
+store.dispatch(selectServerRequest(baseUrl));
+store.dispatch(setUser({ id: 'abc', username: 'rocket.cat', name: 'Rocket Cat' }));
 
 export const decorators = [
 	Story => (
@@ -15,7 +21,7 @@ export const decorators = [
 						username: 'diego.mello',
 						token: 'abc'
 					},
-					baseUrl: 'https://open.rocket.chat',
+					baseUrl,
 					onPress: () => {},
 					onLongPress: () => {},
 					reactionInit: () => {},
