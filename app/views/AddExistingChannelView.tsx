@@ -133,6 +133,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				sendLoadingEvent({ visible: false });
+				// Expect that after you add an existing channel to a team, the user should move back to the team
 				navigation.navigate('RoomView');
 			}
 		} catch (e: any) {
