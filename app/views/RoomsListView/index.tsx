@@ -363,7 +363,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.getSubscriptions();
 		}
 		// Update current item in case of another action triggers an update on room subscribed reducer
-		if (isMasterDetail && subscribedRoom && item?.rid !== subscribedRoom && subscribedRoom !== prevProps.subscribedRoom) {
+		if (isMasterDetail && item?.rid !== subscribedRoom && subscribedRoom !== prevProps.subscribedRoom) {
 			this.setState({ item: { rid: subscribedRoom } as ISubscription });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
