@@ -12,7 +12,6 @@ import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import Navigation from '../../lib/navigation/appNavigation';
 import { useOrientation } from '../../dimensions';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 
@@ -98,12 +97,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			prid
 		};
 
-		if (isMasterDetail) {
-			Navigation.navigate('DrawerNavigator');
-		} else {
-			Navigation.navigate('RoomsListView');
-		}
-		goRoom({ item, isMasterDetail, jumpToMessageId: _id });
+		goRoom({ item, isMasterDetail, jumpToMessageId: _id, popToRoot: true });
 		hideNotification();
 	};
 

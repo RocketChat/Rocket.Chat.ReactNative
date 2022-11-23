@@ -16,18 +16,13 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
 
 		const isMasterDetail = yield select(state => state.app.isMasterDetail);
-		if (isMasterDetail) {
-			Navigation.navigate('DrawerNavigator');
-		} else {
-			Navigation.navigate('RoomsListView');
-		}
 
 		if (subscriptions.length) {
-			goRoom({ item: subscriptions[0], isMasterDetail, message });
+			goRoom({ item: subscriptions[0], isMasterDetail, popToRoot: true, message });
 		} else {
 			const result = yield Services.createDirectMessage(username);
 			if (result?.success) {
-				goRoom({ item: result?.room, isMasterDetail, message });
+				goRoom({ item: result?.room, isMasterDetail, popToRoot: true, message });
 			}
 		}
 	} catch (e) {

@@ -8,7 +8,6 @@ import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
 import { TSupportedThemes, useTheme } from '../theme';
-import Navigation from '../lib/navigation/appNavigation';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { themes } from '../lib/constants';
 import Markdown from '../containers/markdown';
@@ -107,11 +106,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 		const { room } = route.params;
 
 		if (room.rid) {
-			// if it's on master detail layout, we close the modal and replace RoomView
-			if (isMasterDetail) {
-				Navigation.navigate('DrawerNavigator');
-			}
-			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
+			goRoom({ item: room, isMasterDetail, popToRoot: true, usedCannedResponse: item.text });
 		}
 	};
 

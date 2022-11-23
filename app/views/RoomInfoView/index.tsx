@@ -362,17 +362,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		};
 
 		if (room.rid) {
-			// if it's on master detail layout, we close the modal and replace RoomView
-			if (isMasterDetail) {
-				Navigation.navigate('DrawerNavigator');
-			}
 			if (room.rid === subscribedRoom) {
 				if (isMasterDetail) {
-					return;
+					return Navigation.navigate('DrawerNavigator');
 				}
 				return navigation.goBack();
 			}
-			goRoom({ item: params, isMasterDetail });
+			// if it's on master detail layout, we close the modal and replace RoomView
+			goRoom({ item: params, isMasterDetail, popToRoot: true });
 		}
 	};
 

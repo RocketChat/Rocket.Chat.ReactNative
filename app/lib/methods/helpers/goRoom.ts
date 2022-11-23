@@ -92,7 +92,7 @@ export const goRoom = async ({
 	isMasterDetail: boolean;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
-	popToRoot: boolean;
+	popToRoot?: boolean;
 }): Promise<void> => {
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room

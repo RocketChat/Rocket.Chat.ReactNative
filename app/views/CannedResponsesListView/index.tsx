@@ -12,7 +12,6 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
-import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -107,11 +106,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		if (room?.rid) {
-			// if it's on master detail layout, we close the modal and replace RoomView
-			if (isMasterDetail) {
-				Navigation.navigate('DrawerNavigator');
-			}
-			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
+			goRoom({ item: room, isMasterDetail, popToRoot: true, usedCannedResponse: item.text });
 		}
 	};
 
