@@ -6,7 +6,7 @@ import sharedStyles from '../../../../views/Styles';
 export default function useStyle() {
 	const { colors } = useTheme();
 	return StyleSheet.create({
-		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 2, marginTop: 8, borderColor: colors.conferenceCallBorder },
+		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 4, marginTop: 8, borderColor: colors.conferenceCallBorder },
 		callInfoContainer: { flex: 1, alignItems: 'center', paddingLeft: 16, flexDirection: 'row' },
 		infoContainerText: {
 			fontSize: 12,
@@ -107,7 +107,7 @@ export default function useStyle() {
 		},
 		iconCallContainer: {
 			padding: 6,
-			borderRadius: 2
+			borderRadius: 4
 		},
 		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
 		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
