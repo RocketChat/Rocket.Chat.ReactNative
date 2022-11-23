@@ -1,7 +1,6 @@
 import { select, takeLatest } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 
-import Navigation from '../lib/navigation/appNavigation';
 import { MESSAGES } from '../actions/actionsTypes';
 import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
