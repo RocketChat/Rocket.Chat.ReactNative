@@ -1,4 +1,5 @@
 export const mappedIcons = {
+	'lamp-bulb': 59836,
 	'phone-in': 59835,
 	'basketball': 59776,
 	'percentage': 59777,
