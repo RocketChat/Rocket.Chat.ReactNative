@@ -36,14 +36,6 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 	}
 };
 
-const popToRoot = function popToRoot({ isMasterDetail }) {
-	if (isMasterDetail) {
-		Navigation.navigate('DrawerNavigator');
-	} else {
-		Navigation.navigate('RoomsListView');
-	}
-};
-
 const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
@@ -65,21 +57,9 @@ const navigate = function* navigate({ params }) {
 				};
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
-				const subscribedRoom = yield select(state => state.room.subscribedRoom);
 				const jumpToMessageId = params.messageId;
 
-				if (subscribedRoom === room.rid) {
-					if (jumpToThreadId) {
-						// With this conditional when there is a jumpToThreadId we can avoid the thread open again
-						// above other thread and the room could call again the thread
-						popToRoot({ isMasterDetail });
-					}
-					yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
-				} else {
-					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
-				}
-
+				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
 				if (params.isCall) {
 					callJitsi(item);
 				}
