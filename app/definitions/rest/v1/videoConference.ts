@@ -1,3 +1,5 @@
+import { VideoConference } from '../../IVideoConference';
+
 export type VideoConferenceEndpoints = {
 	'video-conference/jitsi.update-timeout': {
 		POST: (params: { roomId: string }) => void;
@@ -7,5 +9,19 @@ export type VideoConferenceEndpoints = {
 	};
 	'video-conference.start': {
 		POST: (params: { roomId: string }) => { url: string };
+	};
+
+	'video-conference.cancel': {
+		POST: (params: { callId: string }) => void;
+	};
+
+	'video-conference.info': {
+		GET: (params: { callId: string }) => VideoConference & {
+			capabilities: {
+				mic?: boolean;
+				cam?: boolean;
+				title?: boolean;
+			};
+		};
 	};
 };
