@@ -19,18 +19,18 @@ interface IRefreshControl extends RefreshControlProps {
 
 const RefreshControl = ({ children, onRefresh, refreshing }: IRefreshControl): React.ReactElement => {
 	const { colors } = useTheme();
-	if (isAndroid) {
-		return (
-			<RNRefreshControl
-				onRefresh={onRefresh}
-				refreshing={refreshing}
-				tintColor={colors.auxiliaryText}
-				style={[style.container, style.inverted]}
-			>
-				{children}
-			</RNRefreshControl>
-		);
-	}
+	// if (isAndroid) {
+	// 	return (
+	// 		<RNRefreshControl
+	// 			onRefresh={onRefresh}
+	// 			refreshing={refreshing}
+	// 			tintColor={colors.auxiliaryText}
+	// 			style={[style.container, style.inverted]}
+	// 		>
+	// 			{children}
+	// 		</RNRefreshControl>
+	// 	);
+	// }
 
 	const refreshControl = <RNRefreshControl onRefresh={onRefresh} refreshing={refreshing} tintColor={colors.auxiliaryText} />;
 

@@ -23,13 +23,13 @@ import RefreshControl from './RefreshControl';
 const QUERY_SIZE = 50;
 
 const styles = StyleSheet.create({
-	inverted: {
-		...Platform.select({
-			android: {
-				scaleY: -1
-			}
-		})
-	}
+	// inverted: {
+	// 	...Platform.select({
+	// 		android: {
+	// 			scaleY: -1
+	// 		}
+	// 	})
+	// }
 });
 
 const onScroll = ({ y }: { y: Value<number> }) =>
