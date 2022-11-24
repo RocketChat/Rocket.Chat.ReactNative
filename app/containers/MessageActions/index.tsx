@@ -353,7 +353,7 @@ const MessageActions = React.memo(
 
 			const getOptions = (message: TAnyMessageModel) => {
 				const options: TActionSheetOptionsItem[] = [];
-				const videoConfBlock = !!(message?.blocks && message?.blocks[0]?.type === 'video_conf');
+				const videoConfBlock = message.t === 'videoconf';
 
 				// Quote
 				if (!isReadOnly && !videoConfBlock) {
