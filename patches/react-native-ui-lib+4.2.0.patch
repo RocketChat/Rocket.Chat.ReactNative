@@ -1,0 +1,180 @@
+diff --git a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
+index cfe1d35..7ce5105 100644
+--- a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
++++ b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
+@@ -123,7 +123,13 @@ class KeyboardAccessoryView extends Component {
+      * Whether or not to handle SafeArea
+      * default: true
+      */
+-    useSafeArea: PropTypes.bool
++    useSafeArea: PropTypes.bool,
++
++    /**
++     * iOS only.
++     * Scroll view to track
++     */
++    scrollViewNativeID: PropTypes.string
+   };
+ 
+   static iosScrollBehaviors = IOS_SCROLL_BEHAVIORS;
+@@ -256,7 +262,8 @@ class KeyboardAccessoryView extends Component {
+       kbComponent,
+       onItemSelected,
+       onRequestShowKeyboard,
+-      useSafeArea
++      useSafeArea,
++      scrollViewNativeID
+     } = this.props;
+ 
+     return (
+@@ -271,6 +278,7 @@ class KeyboardAccessoryView extends Component {
+         addBottomView={addBottomView}
+         bottomViewColor={this.props.bottomViewColor}
+         allowHitsOutsideBounds={allowHitsOutsideBounds}
++        scrollViewNativeID={scrollViewNativeID}
+       >
+         {renderContent && renderContent()}
+         <CustomKeyboardView
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
+index b3864d0..e78322f 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
+@@ -8,7 +8,7 @@
+ #if __has_include(<React/RCTEventEmitter.h>)
+ #import <React/RCTEventEmitter.h>
+ #else
+-#import "RCTEventEmitter.h"
++#import <React/RCTEventEmitter.h>
+ #endif
+ 
+ @interface RCTCustomInputControllerTemp : RCTEventEmitter
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h
+index 4344724..2786051 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h
+@@ -10,7 +10,7 @@
+ #if __has_include(<React/RCTRootView.h>)
+ #import <React/RCTRootView.h>
+ #else
+-#import "RCTRootView.h"
++#import <React/RCTRootView.h>
+ #endif
+ 
+ @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+index 8f8446e..fb6bb2c 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+@@ -54,6 +54,7 @@ @interface KeyboardTrackingViewTemp : UIView
+ @property (nonatomic) BOOL useSafeArea;
+ @property (nonatomic) BOOL scrollToFocusedInput;
+ @property (nonatomic) BOOL allowHitsOutsideBounds;
++@property (nonatomic) NSString* scrollViewNativeID;
+ 
+ @end
+ 
+@@ -84,6 +85,7 @@ -(instancetype)init
+         self.addBottomView = NO;
+         self.bottomViewColor = nil;
+         self.scrollToFocusedInput = NO;
++        self.scrollIsInverted = YES;
+         
+         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rctContentDidAppearNotification:) name:RCTContentDidAppearNotification object:nil];
+     }
+@@ -170,7 +172,6 @@ -(void)layoutSubviews
+ - (void)initializeAccessoryViewsAndHandleInsets
+ {
+     NSArray<UIView*>* allSubviews = [self getBreadthFirstSubviewsForView:[self getRootView]];
+-    NSMutableArray<RCTScrollView*>* rctScrollViewsArray = [NSMutableArray array];
+     
+     for (UIView* subview in allSubviews)
+     {
+@@ -179,24 +180,13 @@ - (void)initializeAccessoryViewsAndHandleInsets
+         {
+             if(_scrollViewToManage == nil)
+             {
+-                if(_requiresSameParentToManageScrollView && [subview isKindOfClass:[RCTScrollView class]] && subview.superview == self.superview)
++                if([subview isKindOfClass:[RCTScrollView class]])
+                 {
+-                    _scrollViewToManage = ((RCTScrollView*)subview).scrollView;
++                    RCTScrollView *scrollView = (RCTScrollView*)subview;
++                    if (subview.nativeID && [subview.nativeID isEqualToString:self.scrollViewNativeID]) {
++                        _scrollViewToManage = scrollView.scrollView;
++                    }
+                 }
+-                else if(!_requiresSameParentToManageScrollView && [subview isKindOfClass:[UIScrollView class]])
+-                {
+-                    _scrollViewToManage = (UIScrollView*)subview;
+-                }
+-                
+-                if(_scrollViewToManage != nil)
+-                {
+-                    _scrollIsInverted = CGAffineTransformEqualToTransform(_scrollViewToManage.superview.transform, CGAffineTransformMakeScale(1, -1));
+-                }
+-            }
+-            
+-            if([subview isKindOfClass:[RCTScrollView class]])
+-            {
+-                [rctScrollViewsArray addObject:(RCTScrollView*)subview];
+             }
+         }
+         
+@@ -246,15 +236,15 @@ - (void)initializeAccessoryViewsAndHandleInsets
+         }
+     }
+     
+-    for (RCTScrollView *scrollView in rctScrollViewsArray)
+-    {
+-        if(scrollView.scrollView == _scrollViewToManage)
+-        {
+-            [scrollView removeScrollListener:self];
+-            [scrollView addScrollListener:self];
+-            break;
+-        }
+-    }
++//    for (RCTScrollView *scrollView in [_rctScrollViewsArray allValues])
++//    {
++//        if(scrollView.scrollView == _scrollViewToManage)
++//        {
++//            [scrollView removeScrollListener:self];
++//            [scrollView addScrollListener:self];
++//            break;
++//        }
++//    }
+     
+ #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
+     if (@available(iOS 11.0, *)) {
+@@ -363,7 +353,7 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
+ 
+ - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
+ {
+-    _bottomViewHeight = kBottomViewHeightTemp;
++    _bottomViewHeight = [self getBottomSafeArea];
+     [self updateBottomViewFrame];
+ }
+ 
+@@ -468,7 +458,6 @@ -(void)addBottomViewIfNecessary
+     if (self.addBottomView && _bottomView == nil)
+     {
+         _bottomView = [UIView new];
+-        // _bottomView.backgroundColor = [UIColor whiteColor];
+         if (self.bottomViewColor)
+         {
+             _bottomView.backgroundColor = [self colorFromHexString:self.bottomViewColor];
+@@ -538,7 +527,7 @@ -(void)updateTransformAndInsets
+     CGFloat accessoryTranslation = MIN(-bottomSafeArea, -_ObservingInputAccessoryViewTemp.keyboardHeight);
+     
+     if (_ObservingInputAccessoryViewTemp.keyboardHeight <= bottomSafeArea) {
+-        _bottomViewHeight = kBottomViewHeightTemp;
++        _bottomViewHeight = [self getBottomSafeArea];
+     } else if (_ObservingInputAccessoryViewTemp.keyboardState != KeyboardStateWillHide) {
+         _bottomViewHeight = 0;
+     }
+@@ -664,6 +653,7 @@ @implementation KeyboardTrackingViewTempManager
+ RCT_REMAP_VIEW_PROPERTY(useSafeArea, useSafeArea, BOOL)
+ RCT_REMAP_VIEW_PROPERTY(scrollToFocusedInput, scrollToFocusedInput, BOOL)
+ RCT_REMAP_VIEW_PROPERTY(allowHitsOutsideBounds, allowHitsOutsideBounds, BOOL)
++RCT_EXPORT_VIEW_PROPERTY(scrollViewNativeID, NSString)
+ 
+ + (BOOL)requiresMainQueueSetup
+ {

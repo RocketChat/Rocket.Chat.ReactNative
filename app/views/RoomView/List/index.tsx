@@ -380,6 +380,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 						onScrollToIndexFailed={this.handleScrollToIndexFailed}
 						onViewableItemsChanged={this.onViewableItemsChanged}
 						viewabilityConfig={this.viewabilityConfig}
+						nativeID={tmid || rid}
 					/>
 				</RefreshControl>
 				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />

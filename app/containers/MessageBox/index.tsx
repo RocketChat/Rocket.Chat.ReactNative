@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
+// import { KeyboardTrackingView } from 'react-native-keyboard-tracking-view';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
@@ -1290,7 +1291,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { showEmojiKeyboard } = this.state;
-		const { user, baseUrl, theme, iOSScrollBehavior } = this.props;
+		const { user, baseUrl, theme, iOSScrollBehavior, tmid, rid } = this.props;
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -1310,10 +1311,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onKeyboardItemSelected}
 					trackInteractive
-					requiresSameParentToManageScrollView
 					addBottomView
 					bottomViewColor={themes[theme].messageboxBackground}
 					iOSScrollBehavior={iOSScrollBehavior}
+					scrollViewNativeID={tmid || rid}
 				/>
 			</MessageboxContext.Provider>
 		);
