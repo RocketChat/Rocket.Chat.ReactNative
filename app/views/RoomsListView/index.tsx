@@ -1005,36 +1005,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { chats, search, searching } = this.state;
-		const { showServerDropdown, theme, navigation, displayMode, refreshing } = this.props;
-
-		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
+		const { showServerDropdown, theme, navigation } = this.props;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar />
 				{this.renderHeader()}
-				{/* {this.renderScroll()} */}
-				<FlashList
-					ref={this.getScrollRef}
-					data={searching ? search : chats}
-					// extraData={searching ? search : chats}
-					keyExtractor={keyExtractor}
-					// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
-					renderItem={this.renderItem}
-					ListHeaderComponent={this.renderListHeader}
-					estimatedItemSize={height}
-					// getItemLayout={(data, index) => getItemLayout(data, index, height)}
-					// removeClippedSubviews={isIOS}
-					keyboardShouldPersistTaps='always'
-					// initialNumToRender={INITIAL_NUM_TO_RENDER}
-					refreshControl={
-						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
-					}
-					// windowSize={9}
-					onEndReached={this.onEndReached}
-					onEndReachedThreshold={0.5}
-				/>
+				{this.renderScroll()}
 				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
 				{/* @ts-ignore*/}
 				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
