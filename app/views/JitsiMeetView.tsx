@@ -2,9 +2,10 @@ import React from 'react';
 import { BackHandler, NativeEventSubscription, StyleSheet } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
-import { connect } from 'react-redux';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
+import { connect } from 'react-redux';
+import { isAppInstalled, openAppWithData } from 'react-native-send-intent';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
@@ -14,6 +15,9 @@ import { Services } from '../lib/services';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
+
+
+const JITSI_INTENT = 'org.jitsi.meet';
 
 const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
 	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
@@ -59,8 +63,19 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	}
 
 	componentDidMount() {
-		const { route } = this.props;
+		const { route, navigation } = this.props;
 		const { userInfo } = this.state;
+		(() => {
+			if (isAndroid) {
+				isAppInstalled(JITSI_INTENT).then(function (isInstalled) {
+					if (!isInstalled) {
+						return;
+					}
+					navigation.pop();
+					openAppWithData(JITSI_INTENT, route.params?.url);
+				});
+			}
+		})();
 
 		setTimeout(() => {
 			this.setState({ loading: false });
