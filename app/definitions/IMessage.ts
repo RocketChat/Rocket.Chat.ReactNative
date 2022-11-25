@@ -8,7 +8,15 @@ import { TThreadMessageModel } from './IThreadMessage';
 import { TThreadModel } from './IThread';
 import { IUrl, IUrlFromServer } from './IUrl';
 
-export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad | MessageTypesValues;
+export type MessageType =
+	| 'jitsi_call_started'
+	| 'discussion-created'
+	| 'e2e'
+	| 'load_more'
+	| 'rm'
+	| 'uj'
+	| MessageTypeLoad
+	| MessageTypesValues;
 
 export interface IUserMessage {
 	_id: string;

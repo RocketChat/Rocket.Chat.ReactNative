@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, View, ViewToken, StyleSheet, Platform } from 'react-native';
+import { FlatListProps, ViewToken, RefreshControl } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
@@ -18,19 +18,10 @@ import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
-import RefreshControl from './RefreshControl';
+import { TSupportedThemes, withTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
 
 const QUERY_SIZE = 50;
-
-const styles = StyleSheet.create({
-	// inverted: {
-	// 	...Platform.select({
-	// 		android: {
-	// 			scaleY: -1
-	// 		}
-	// 	})
-	// }
-});
 
 const onScroll = ({ y }: { y: Value<number> }) =>
 	event(
@@ -58,6 +49,7 @@ export interface IListContainerProps {
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
+	theme?: TSupportedThemes;
 }
 
 interface IListContainerState {
@@ -354,7 +346,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
-		return <View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessage)}</View>;
+		return renderRow(item, messages[index + 1], highlightedMessage);
 	};
 
 	onViewableItemsChanged: FlatListProps<any>['onViewableItemsChanged'] = ({ viewableItems }) => {
@@ -363,26 +355,27 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { rid, tmid, listRef } = this.props;
+		const { rid, tmid, listRef, theme } = this.props;
 		const { messages, refreshing } = this.state;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
-				<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh}>
-					<List
-						onScroll={this.onScroll}
-						scrollEventThrottle={16}
-						listRef={listRef}
-						data={messages}
-						renderItem={this.renderItem}
-						onEndReached={this.onEndReached}
-						ListFooterComponent={this.renderFooter}
-						onScrollToIndexFailed={this.handleScrollToIndexFailed}
-						onViewableItemsChanged={this.onViewableItemsChanged}
-						viewabilityConfig={this.viewabilityConfig}
-						nativeID={tmid || rid}
-					/>
-				</RefreshControl>
+				<List
+					onScroll={this.onScroll}
+					scrollEventThrottle={16}
+					listRef={listRef}
+					data={messages}
+					renderItem={this.renderItem}
+					onEndReached={this.onEndReached}
+					ListFooterComponent={this.renderFooter}
+					onScrollToIndexFailed={this.handleScrollToIndexFailed}
+					onViewableItemsChanged={this.onViewableItemsChanged}
+					viewabilityConfig={this.viewabilityConfig}
+					nativeID={tmid || rid}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme!].auxiliaryText} />
+					}
+				/>
 				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>
 		);
@@ -391,4 +384,4 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 export type ListContainerType = ListContainer;
 
-export default ListContainer;
+export default withTheme(ListContainer);
