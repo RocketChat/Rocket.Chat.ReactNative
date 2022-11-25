@@ -53,7 +53,6 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}
 			onLongPress={onReactionLongPress}
-			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
 			style={[
 				styles.reactionButton,
@@ -83,8 +82,8 @@ const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) 
 	}
 	return (
 		<View style={styles.reactionsContainer}>
-			{reactions.map(reaction => (
-				<Reaction key={reaction.emoji} reaction={reaction} getCustomEmoji={getCustomEmoji} theme={theme} />
+			{reactions.map((reaction, index) => (
+				<Reaction key={index} reaction={reaction} getCustomEmoji={getCustomEmoji} theme={theme} />
 			))}
 			<AddReaction theme={theme} />
 		</View>

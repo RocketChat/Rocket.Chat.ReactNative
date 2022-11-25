@@ -90,8 +90,8 @@ const Fields = React.memo(
 
 		return (
 			<>
-				{attachment.fields.map(field => (
-					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
+				{attachment.fields.map((field, index) => (
+					<View key={index} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>
 							{field.title}
 						</Text>

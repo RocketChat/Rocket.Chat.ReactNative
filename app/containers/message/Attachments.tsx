@@ -68,7 +68,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			if (file && file.image_url) {
 				return (
 					<Image
-						key={file.image_url}
+						key={index}
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
@@ -81,7 +81,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			if (file && file.audio_url) {
 				return (
 					<Audio
-						key={file.audio_url}
+						key={index}
 						file={file}
 						getCustomEmoji={getCustomEmoji}
 						isReply={isReply}
@@ -95,7 +95,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			if (file.video_url) {
 				return (
 					<Video
-						key={file.video_url}
+						key={index}
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}

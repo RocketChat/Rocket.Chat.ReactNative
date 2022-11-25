@@ -141,7 +141,7 @@ const Urls = React.memo(
 			return null;
 		}
 
-		return urls.map((url: IUrl, index: number) => <Url url={url} key={url.url} index={index} theme={theme} />);
+		return urls.map((url: IUrl, index: number) => <Url url={url} key={index} index={index} theme={theme} />);
 	},
 	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls)
 );

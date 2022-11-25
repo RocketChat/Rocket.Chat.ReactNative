@@ -81,15 +81,21 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	private subscription?: Subscription;
 
-	componentDidMount() {
-		const { item } = this.props;
-		if (item && item.observe) {
-			const observable = item.observe();
-			this.subscription = observable.subscribe(() => {
-				this.forceUpdate();
-			});
-		}
-	}
+	// componentDidMount() {
+	// 	const { item } = this.props;
+	// 	console.log(`did mount ${item.id}`);
+	// 	let isFirstRender = true;
+	// 	if (item && item.observe) {
+	// 		const observable = item.observe();
+	// 		this.subscription = observable.subscribe(msg => {
+	// 			// console.log('🚀 ~ file: index.tsx ~ line 90 ~ MessageContainer ~ componentDidMount ~ msg', msg);
+	// 			if (!isFirstRender) {
+	// 				this.forceUpdate();
+	// 			}
+	// 			isFirstRender = false;
+	// 		});
+	// 	}
+	// }
 
 	// shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 	// 	const { isManualUnignored } = this.state;
@@ -112,11 +118,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	// 	return false;
 	// }
 
-	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
-		}
-	}
+	// componentWillUnmount() {
+	// 	if (this.subscription && this.subscription.unsubscribe) {
+	// 		this.subscription.unsubscribe();
+	// 	}
+	// }
 
 	onPressAction = () => {
 		const { closeEmojiAndAction } = this.props;

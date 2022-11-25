@@ -97,29 +97,29 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
-	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
-		const { refreshing, highlightedMessage } = this.state;
-		const { hideSystemMessages, tunread, ignored, loading } = this.props;
-		if (loading !== nextProps.loading) {
-			return true;
-		}
-		if (highlightedMessage !== nextState.highlightedMessage) {
-			return true;
-		}
-		if (refreshing !== nextState.refreshing) {
-			return true;
-		}
-		if (!dequal(hideSystemMessages, nextProps.hideSystemMessages)) {
-			return true;
-		}
-		if (!dequal(tunread, nextProps.tunread)) {
-			return true;
-		}
-		if (!dequal(ignored, nextProps.ignored)) {
-			return true;
-		}
-		return false;
-	}
+	// shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
+	// 	const { refreshing, highlightedMessage } = this.state;
+	// 	const { hideSystemMessages, tunread, ignored, loading } = this.props;
+	// 	if (loading !== nextProps.loading) {
+	// 		return true;
+	// 	}
+	// 	if (highlightedMessage !== nextState.highlightedMessage) {
+	// 		return true;
+	// 	}
+	// 	if (refreshing !== nextState.refreshing) {
+	// 		return true;
+	// 	}
+	// 	if (!dequal(hideSystemMessages, nextProps.hideSystemMessages)) {
+	// 		return true;
+	// 	}
+	// 	if (!dequal(tunread, nextProps.tunread)) {
+	// 		return true;
+	// 	}
+	// 	if (!dequal(ignored, nextProps.ignored)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps: IListContainerProps) {
 		const { hideSystemMessages } = this.props;
@@ -165,7 +165,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			this.messagesObservable = db
 				.get('thread_messages')
 				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
-				.observe();
+				.observeWithColumns(['_updated_at']);
 		} else if (rid) {
 			const whereClause = [
 				Q.where('rid', rid),
@@ -179,12 +179,44 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			this.messagesObservable = db
 				.get('messages')
 				.query(...whereClause)
-				.observe();
+				.observeWithColumns(['_updated_at', 'status']);
 		}
 
 		if (rid) {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable?.subscribe(messages => {
+				// @ts-ignore is this enough cols?
+				messages = messages.map(m => ({
+					id: m.id,
+					msg: m.msg,
+					ts: m.ts,
+					status: m.status,
+					attachments: m.attachments,
+					urls: m.urls,
+					reactions: m.reactions,
+					t: m.t,
+					avatar: m.avatar,
+					emoji: m.emoji,
+					u: m.u,
+					alias: m.alias,
+					editedBy: m.editedBy,
+					role: m.role,
+					drid: m.drid,
+					dcount: m.dcount,
+					dlm: m.dlm,
+					tmid: m.tmid,
+					tcount: m.tcount,
+					tlm: m.tlm,
+					tmsg: m.tmsg,
+					mentions: m.mentions,
+					channels: m.channels,
+					unread: m.unread,
+					blocks: m.blocks,
+					autoTranslate: m.autoTranslate,
+					replies: m.replies,
+					md: m.md,
+					comment: m.comment
+				}));
 				if (tmid && this.thread) {
 					messages = [...messages, this.thread];
 				}
@@ -198,7 +230,11 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				}
 
 				if (this.mounted) {
-					this.setState({ messages }, () => this.update());
+					// if (this.animated) {
+					// 	animateNextTransition();
+					// }
+					// this.setState({ messages }, () => this.update());
+					this.setState({ messages });
 				} else {
 					// @ts-ignore
 					this.state.messages = messages;
@@ -252,7 +288,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		if (this.animated) {
 			animateNextTransition();
 		}
-		this.forceUpdate();
+		// this.forceUpdate();
 	};
 
 	unsubscribeMessages = () => {

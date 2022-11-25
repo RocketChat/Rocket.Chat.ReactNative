@@ -10,7 +10,7 @@ const Emoji = React.memo(
 		const parsedContent = content.replace(/^:|:$/g, '');
 		const emoji = getCustomEmoji(parsedContent);
 		if (emoji) {
-			return <CustomEmoji key={content} style={customEmojiStyle} emoji={emoji} />;
+			return <CustomEmoji style={customEmojiStyle} emoji={emoji} />;
 		}
 		return <Text style={standardEmojiStyle}>{shortnameToUnicode(content)}</Text>;
 	},
