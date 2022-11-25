@@ -128,34 +128,34 @@ const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
 
-const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
-const filterIsFavorite = (s: TSubscriptionModel) => s.f;
-const filterIsOmnichannel = (s: TSubscriptionModel) => s.t === 'l';
-const filterIsTeam = (s: TSubscriptionModel) => s.teamMain;
-const filterIsDiscussion = (s: TSubscriptionModel) => s.prid;
+const filterIsUnread = (s: any) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsFavorite = (s: any) => s.f;
+const filterIsOmnichannel = (s: any) => s.t === 'l';
+const filterIsTeam = (s: any) => s.teamMain;
+const filterIsDiscussion = (s: any) => s.prid;
 
-const shouldUpdateProps = [
-	'searchText',
-	'loadingServer',
-	'showServerDropdown',
-	'useRealName',
-	'StoreLastMessage',
-	'theme',
-	'isMasterDetail',
-	'refreshing',
-	'queueSize',
-	'inquiryEnabled',
-	'encryptionBanner',
-	'createTeamPermission',
-	'createDirectMessagePermission',
-	'createPublicChannelPermission',
-	'createPrivateChannelPermission',
-	'createDiscussionPermission'
-];
+// const shouldUpdateProps = [
+// 	'searchText',
+// 	'loadingServer',
+// 	'showServerDropdown',
+// 	'useRealName',
+// 	'StoreLastMessage',
+// 	'theme',
+// 	'isMasterDetail',
+// 	'refreshing',
+// 	'queueSize',
+// 	'inquiryEnabled',
+// 	'encryptionBanner',
+// 	'createTeamPermission',
+// 	'createDirectMessagePermission',
+// 	'createPublicChannelPermission',
+// 	'createPrivateChannelPermission',
+// 	'createDiscussionPermission'
+// ];
 
-const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
+// const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
 
-const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
+// const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
 const keyExtractor = (item: ISubscription) => item.rid;
 
@@ -244,83 +244,83 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	}
 
-	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
-		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
-		// eslint-disable-next-line react/destructuring-assignment
-		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
-		if (propsUpdated) {
-			return true;
-		}
+	// shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
+	// 	const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
+	// 	if (propsUpdated) {
+	// 		return true;
+	// 	}
 
-		// check if some display props are changed to force update when focus this view again
-		// eslint-disable-next-line react/destructuring-assignment
-		const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
-		if (displayUpdated) {
-			this.shouldUpdate = true;
-		}
+	// 	// check if some display props are changed to force update when focus this view again
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
+	// 	if (displayUpdated) {
+	// 		this.shouldUpdate = true;
+	// 	}
 
-		// check if some sort preferences are changed to getSubscription() when focus this view again
-		// eslint-disable-next-line react/destructuring-assignment
-		const sortPreferencesUpdate = sortPreferencesShouldUpdate.some(key => nextProps[key] !== this.props[key]);
-		if (sortPreferencesUpdate) {
-			this.sortPreferencesChanged = true;
-		}
+	// 	// check if some sort preferences are changed to getSubscription() when focus this view again
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	const sortPreferencesUpdate = sortPreferencesShouldUpdate.some(key => nextProps[key] !== this.props[key]);
+	// 	if (sortPreferencesUpdate) {
+	// 		this.sortPreferencesChanged = true;
+	// 	}
 
-		// Compare changes only once
-		const chatsNotEqual = !dequal(nextState.chatsUpdate, chatsUpdate);
+	// 	// Compare changes only once
+	// 	const chatsNotEqual = !dequal(nextState.chatsUpdate, chatsUpdate);
 
-		// If they aren't equal, set to update if focused
-		if (chatsNotEqual) {
-			this.shouldUpdate = true;
-		}
+	// 	// If they aren't equal, set to update if focused
+	// 	if (chatsNotEqual) {
+	// 		this.shouldUpdate = true;
+	// 	}
 
-		const omnichannelsNotEqual = !dequal(nextState.omnichannelsUpdate, omnichannelsUpdate);
+	// 	const omnichannelsNotEqual = !dequal(nextState.omnichannelsUpdate, omnichannelsUpdate);
 
-		if (omnichannelsNotEqual) {
-			this.shouldUpdate = true;
-		}
+	// 	if (omnichannelsNotEqual) {
+	// 		this.shouldUpdate = true;
+	// 	}
 
-		if (nextState.searching !== searching) {
-			return true;
-		}
+	// 	if (nextState.searching !== searching) {
+	// 		return true;
+	// 	}
 
-		if (nextState.canCreateRoom !== canCreateRoom) {
-			return true;
-		}
+	// 	if (nextState.canCreateRoom !== canCreateRoom) {
+	// 		return true;
+	// 	}
 
-		if (nextState.item?.rid !== item?.rid) {
-			return true;
-		}
+	// 	if (nextState.item?.rid !== item?.rid) {
+	// 		return true;
+	// 	}
 
-		// Abort if it's not focused
-		if (!nextProps.navigation.isFocused()) {
-			return false;
-		}
+	// 	// Abort if it's not focused
+	// 	if (!nextProps.navigation.isFocused()) {
+	// 		return false;
+	// 	}
 
-		const { loading, search } = this.state;
-		const { rooms, width, insets } = this.props;
-		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextProps.width !== width) {
-			return true;
-		}
-		if (!dequal(nextState.search, search)) {
-			return true;
-		}
-		if (!dequal(nextProps.rooms, rooms)) {
-			return true;
-		}
-		if (!dequal(nextProps.insets, insets)) {
-			return true;
-		}
-		// If it's focused and there are changes, update
-		if (chatsNotEqual || omnichannelsNotEqual) {
-			this.shouldUpdate = false;
-			return true;
-		}
-		return false;
-	}
+	// 	const { loading, search } = this.state;
+	// 	const { rooms, width, insets } = this.props;
+	// 	if (nextState.loading !== loading) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.width !== width) {
+	// 		return true;
+	// 	}
+	// 	if (!dequal(nextState.search, search)) {
+	// 		return true;
+	// 	}
+	// 	if (!dequal(nextProps.rooms, rooms)) {
+	// 		return true;
+	// 	}
+	// 	if (!dequal(nextProps.insets, insets)) {
+	// 		return true;
+	// 	}
+	// 	// If it's focused and there are changes, update
+	// 	if (chatsNotEqual || omnichannelsNotEqual) {
+	// 		this.shouldUpdate = false;
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentDidUpdate(prevProps: IRoomsListViewProps) {
 		const {
@@ -478,7 +478,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState(state, callback);
 	};
 
-	addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[]) => {
+	addRoomsGroup = (data: TSubscriptionModel[] | any, header: string, allData: TSubscriptionModel[]) => {
 		if (data.length > 0) {
 			if (header) {
 				allData.push({ rid: header, separator: true } as TSubscriptionModel);
@@ -509,19 +509,49 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['alert', 'on_hold']);
+				.observeWithColumns(['alert', 'on_hold', 'room_updated_at']);
 			// When we're NOT grouping
 		} else {
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
-				.observeWithColumns(['on_hold']);
+				.observeWithColumns(['on_hold', 'room_updated_at']);
 		}
 
 		this.querySubscription = observable.subscribe(data => {
 			let tempChats = [] as TSubscriptionModel[];
-			let chats = data;
+			let chats = data.map(item => ({
+				rid: item.rid,
+				t: item.t,
+				prid: item.prid,
+				name: item.name,
+				fname: item.fname,
+				usernames: item.usernames,
+				// avatar: item.avatar,
+				// testID: item.testID,
+				status: item.status,
+				// isGroupChat: item.isGroupChat,
+				// isRead: item.isRead,
+				teamMain: item.teamMain,
+				roomUpdatedAt: item.roomUpdatedAt,
+				// date: item.date,
+				// accessibilityLabel: item.accessibilityLabel,
+				lastMessage: item.lastMessage,
+				favorite: item.f,
+				alert: item.alert,
+				hideUnreadStatus: item.hideUnreadStatus,
+				unread: item.unread,
+				userMentions: item.userMentions,
+				groupMentions: item.groupMentions,
+				tunread: item.tunread,
+				tunreadUser: item.tunreadUser,
+				tunreadGroup: item.tunreadGroup,
+				// size: item.size,
+				// sourceType: item.sourceType,
+				hideMentionStatus: item.hideMentionStatus,
+				onHold: item.onHold
+			}));
 
 			let omnichannelsUpdate: string[] = [];
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
@@ -562,14 +592,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
+				// @ts-ignore
 				tempChats = chats;
 			}
 
-			const chatsUpdate = tempChats.map(item => item.rid);
+			// const chatsUpdate = tempChats.map(item => item.rid);
 
 			this.internalSetState({
 				chats: tempChats,
-				chatsUpdate,
+				// chatsUpdate,
 				omnichannelsUpdate,
 				loading: false
 			});
@@ -983,20 +1014,17 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			<FlashList
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
-				// extraData={searching ? search : chats}
+				extraData={theme || refreshing || displayMode}
 				keyExtractor={keyExtractor}
-				// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				// @ts-ignore
+				contentContainerStyle={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
 				estimatedItemSize={height}
-				// getItemLayout={(data, index) => getItemLayout(data, index, height)}
-				// removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				// initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
 				}
-				// windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 			/>

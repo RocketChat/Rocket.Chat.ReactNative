@@ -1,5 +1,5 @@
-import React, { useEffect, useReducer, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import React, { useEffect } from 'react';
+// import { Subscription } from 'rxjs';
 
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks';
@@ -44,22 +44,22 @@ const RoomItemContainer = React.memo(
 		const alert = item.alert || item.tunread?.length;
 		const connected = useAppSelector(state => state.meteor.connected);
 		const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
-		const [_, forceUpdate] = useReducer(x => x + 1, 1);
-		const roomSubscription = useRef<Subscription | null>(null);
+		// const [_, forceUpdate] = useReducer(x => x + 1, 1);
+		// const roomSubscription = useRef<Subscription | null>(null);
 
-		useEffect(() => {
-			const init = () => {
-				if (item?.observe) {
-					const observable = item.observe();
-					roomSubscription.current = observable?.subscribe?.(() => {
-						if (_) forceUpdate();
-					});
-				}
-			};
-			init();
+		// useEffect(() => {
+		// 	const init = () => {
+		// 		if (item?.observe) {
+		// 			const observable = item.observe();
+		// 			roomSubscription.current = observable?.subscribe?.(() => {
+		// 				if (_) forceUpdate();
+		// 			});
+		// 		}
+		// 	};
+		// 	init();
 
-			return () => roomSubscription.current?.unsubscribe();
-		}, []);
+		// 	return () => roomSubscription.current?.unsubscribe();
+		// }, []);
 
 		useEffect(() => {
 			const isDirect = !!(item.t === 'd' && id && !isGroupChat(item));

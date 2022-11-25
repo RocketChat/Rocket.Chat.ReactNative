@@ -1,5 +1,4 @@
 import React from 'react';
-import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
 import styles from './styles';
@@ -45,9 +44,7 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 	return `${prefix}${lastMessage.msg}`;
 };
 
-const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
-
-const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
+const LastMessage = ({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
 	const { colors } = useTheme();
 	return (
 		<MarkdownPreview
@@ -63,6 +60,6 @@ const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, 
 			testID='room-item-last-message'
 		/>
 	);
-}, arePropsEqual);
+};
 
 export default LastMessage;
