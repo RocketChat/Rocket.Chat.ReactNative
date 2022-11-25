@@ -7,7 +7,7 @@ import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
-import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { MessageType, TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { compareServerVersion, debounce } from '../../../lib/methods/helpers';
 import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
@@ -187,7 +187,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			this.messagesSubscription = this.messagesObservable?.subscribe(messages => {
 				// @ts-ignore is this enough cols?
 				messages = messages.map(m => {
-					if (MESSAGE_TYPE_ANY_LOAD.includes(m.t)) {
+					if ((MESSAGE_TYPE_ANY_LOAD as MessageType[]).includes(m.t)) {
 						return m;
 					}
 

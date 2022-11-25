@@ -1041,9 +1041,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { rid } = this.state.room;
 		const { user } = this.props;
 		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
-			if (this.list && this.list.current) {
-				this.list.current?.update();
-			}
+			// if (this.list && this.list.current) {
+			// 	this.list.current?.update();
+			// }
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});
