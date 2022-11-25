@@ -12,7 +12,6 @@ export type MessageType =
 	| 'jitsi_call_started'
 	| 'discussion-created'
 	| 'e2e'
-	| 'load_more'
 	| 'rm'
 	| 'uj'
 	| MessageTypeLoad

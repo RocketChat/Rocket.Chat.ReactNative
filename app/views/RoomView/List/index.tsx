@@ -19,7 +19,7 @@ import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
 import { TSupportedThemes, withTheme } from '../../../theme';
-import { themes } from '../../../lib/constants';
+import { MESSAGE_TYPE_ANY_LOAD, themes } from '../../../lib/constants';
 
 const QUERY_SIZE = 50;
 
@@ -186,37 +186,44 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable?.subscribe(messages => {
 				// @ts-ignore is this enough cols?
-				messages = messages.map(m => ({
-					id: m.id,
-					msg: m.msg,
-					ts: m.ts,
-					status: m.status,
-					attachments: m.attachments,
-					urls: m.urls,
-					reactions: m.reactions,
-					t: m.t,
-					avatar: m.avatar,
-					emoji: m.emoji,
-					u: m.u,
-					alias: m.alias,
-					editedBy: m.editedBy,
-					role: m.role,
-					drid: m.drid,
-					dcount: m.dcount,
-					dlm: m.dlm,
-					tmid: m.tmid,
-					tcount: m.tcount,
-					tlm: m.tlm,
-					tmsg: m.tmsg,
-					mentions: m.mentions,
-					channels: m.channels,
-					unread: m.unread,
-					blocks: m.blocks,
-					autoTranslate: m.autoTranslate,
-					replies: m.replies,
-					md: m.md,
-					comment: m.comment
-				}));
+				messages = messages.map(m => {
+					if (MESSAGE_TYPE_ANY_LOAD.includes(m.t)) {
+						return m;
+					}
+
+					return {
+						id: m.id,
+						_id: m._id,
+						msg: m.msg,
+						ts: m.ts,
+						status: m.status,
+						attachments: m.attachments,
+						urls: m.urls,
+						reactions: m.reactions,
+						t: m.t,
+						avatar: m.avatar,
+						emoji: m.emoji,
+						u: m.u,
+						alias: m.alias,
+						editedBy: m.editedBy,
+						role: m.role,
+						drid: m.drid,
+						dcount: m.dcount,
+						dlm: m.dlm,
+						tmid: m.tmid,
+						tcount: m.tcount,
+						tlm: m.tlm,
+						tmsg: m.tmsg,
+						mentions: m.mentions,
+						channels: m.channels,
+						unread: m.unread,
+						blocks: m.blocks,
+						autoTranslate: m.autoTranslate,
+						replies: m.replies,
+						md: m.md,
+						comment: m.comment
+					};
+				});
 				if (tmid && this.thread) {
 					messages = [...messages, this.thread];
 				}
@@ -233,7 +240,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					// if (this.animated) {
 					// 	animateNextTransition();
 					// }
-					// this.setState({ messages }, () => this.update());
 					this.setState({ messages });
 				} else {
 					// @ts-ignore
@@ -283,13 +289,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 			this.setState({ refreshing: false });
 		});
-
-	update = () => {
-		if (this.animated) {
-			animateNextTransition();
-		}
-		// this.forceUpdate();
-	};
 
 	unsubscribeMessages = () => {
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
