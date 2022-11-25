@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackHandler, StyleSheet } from 'react-native';
+import { BackHandler, NativeEventSubscription, StyleSheet } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import { connect } from 'react-redux';
@@ -36,6 +36,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	private url: string;
 	private videoConf: boolean;
 	private jitsiTimeout: number | null;
+	private backHandler!: NativeEventSubscription;
 
 	constructor(props: IJitsiMeetViewProps) {
 		super(props);
@@ -75,7 +76,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 				}
 			}, 1000);
 		}
-		BackHandler.addEventListener('hardwareBackPress', () => true);
+		this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
 	}
 
 	componentWillUnmount() {
@@ -85,7 +86,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 			this.jitsiTimeout = null;
 			BackgroundTimer.stopBackgroundTimer();
 		}
-		BackHandler.removeEventListener('hardwareBackPress', () => true);
+		this.backHandler.remove();
 		if (isIOS) {
 			JitsiMeet.endCall();
 		}
@@ -135,6 +136,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 		const { route } = this.props;
 		const onlyAudio = route.params?.onlyAudio ?? false;
 		const options = isAndroid ? { url: this.url, userInfo, audioOnly: onlyAudio } : null;
+
 		return (
 			<>
 				{isIOS ? (
@@ -151,6 +153,9 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 						onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
 						onNavigationStateChange={this.onNavigationStateChange}
 						style={{ flex: loading ? 0 : 1 }}
+						mediaPlaybackRequiresUserAction={false}
+						javaScriptEnabled
+						domStorageEnabled
 					/>
 				)}
 				{loading ? <ActivityIndicator /> : null}
