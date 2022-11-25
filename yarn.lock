@@ -4969,11 +4969,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.6.0.tgz#dd5f19601eb3684c6bcdd3df3d0c04cf44c24cff"
   integrity sha512-emBGKvhJ0h++lLJQ5ejsj+od9G67nEaihjvfSx7/JWvNrQGAhP9U0OZqgb9dkKzor9Ufaj9SGt8RNY97cGzttw==
 
-"@react-native-community/masked-view@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
-  integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
-
 "@react-native-community/netinfo@6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.0.tgz#2a4d7190b508dd0c2293656c9c1aa068f6f60a71"
@@ -5022,6 +5017,11 @@
   dependencies:
     "@expo/config-plugins" "^4.1.5"
     stacktrace-js "^2.0.0"
+
+"@react-native-masked-view/masked-view@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.8.tgz#34405a4361882dae7c81b1b771fe9f5fbd545a97"
+  integrity sha512-+1holBPDF1yi/y0uc1WB6lA5tSNHhM7PpTMapT3ypvSnKQ9+C6sy/zfjxNxRA/llBQ1Ci6f94EaK56UCKs5lTA==
 
 "@react-native-picker/picker@^1.8.3":
   version "1.16.1"
@@ -5165,10 +5165,10 @@
     tiny-events "^1.0.1"
     universal-websocket-client "^1.0.2"
 
-"@rocket.chat/ui-kit@^0.31.13":
-  version "0.31.13"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.31.13.tgz#bd1c8a8726a74e13d072bb6f67cb2a6d3ba66e3b"
-  integrity sha512-IWNIRca0fP8Ecka3DIvqZKF7PbjcUaS+LkWUbMa+9lkX6MeumZrpFqsf7MKUpT+ihJr0RD4lBybmEgFH2syDbw==
+"@rocket.chat/ui-kit@^0.31.19":
+  version "0.31.19"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.31.19.tgz#737103123bc7e635382217eef75965b7e0f44703"
+  integrity sha512-8zRKQ5CoC4hIuYHVheO0d7etX9oizmM18fu99r5s/deciL/0MRWocdb4H/QsmbsNrkKCO6Z6wr7f9zzJCNTRHg==
 
 "@segment/loosely-validate-event@^2.0.0":
   version "2.0.0"
@@ -17181,6 +17181,11 @@ react-native-keycommands@2.0.3:
   resolved "https://registry.yarnpkg.com/react-native-keycommands/-/react-native-keycommands-2.0.3.tgz#09b799c1f70832e5cd9fbdb712ddaa3ee683f70e"
   integrity sha512-s03K8JvCnfLhBg10Y2aRH3Bp9Uw9QOEr0uzuIj9OkgjjTB8/b+T4K5LSCxGuIAD30IxsEZvGZKjP1DzEMxaRhQ==
 
+react-native-linear-gradient@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz#56598a76832724b2afa7889747635b5c80948f38"
+  integrity sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ==
+
 react-native-localize@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.1.tgz#da8f8776991d2b748708c408db05152602cefb38"
@@ -17331,6 +17336,11 @@ react-native-simple-crypto@RocketChat/react-native-simple-crypto#0.5.1:
   dependencies:
     base64-js "^1.3.0"
     hex-lite "^1.5.0"
+
+react-native-skeleton-placeholder@^5.2.3:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-5.2.3.tgz#2dddf1f84d43110b90c22f715b2dbbe2c54732e1"
+  integrity sha512-nikmTfex3oydnZ4prV62KxibMvcu2l2NegsHGtXhsWwFIX5QaKneBohP7etinUq/c2PkSr3ZlfqooDG2yIHRdg==
 
 react-native-slider@^0.11.0:
   version "0.11.0"

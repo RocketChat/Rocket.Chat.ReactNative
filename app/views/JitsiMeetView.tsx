@@ -59,6 +59,10 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 		const { route } = this.props;
 		const { userInfo } = this.state;
 
+		setTimeout(() => {
+			this.setState({ loading: false });
+		}, 1000);
+
 		if (isIOS) {
 			setTimeout(() => {
 				const onlyAudio = route.params?.onlyAudio ?? false;
@@ -69,7 +73,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 				}
 			}, 1000);
 		}
-		BackHandler.addEventListener('hardwareBackPress', this.endCall);
+		BackHandler.addEventListener('hardwareBackPress', () => null);
 	}
 
 	componentWillUnmount() {
@@ -79,7 +83,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 			this.jitsiTimeout = null;
 			BackgroundTimer.stopBackgroundTimer();
 		}
-		BackHandler.removeEventListener('hardwareBackPress', this.endCall);
+		BackHandler.removeEventListener('hardwareBackPress', () => null);
 		if (isIOS) {
 			JitsiMeet.endCall();
 		}
@@ -98,6 +102,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	// call is not ended and is available to web users.
 	onConferenceJoined = () => {
 		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_JOIN : events.JM_CONFERENCE_JOIN);
+		this.setState({ loading: false });
 		if (this.rid && !this.videoConf) {
 			Services.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			if (this.jitsiTimeout) {
@@ -114,7 +119,11 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	onConferenceTerminated = () => {
 		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
 		const { navigation } = this.props;
-		navigation.pop();
+		// fix to go back when the call ends
+		setTimeout(() => {
+			JitsiMeet.endCall();
+			navigation.pop();
+		}, 200);
 	};
 
 	render() {
