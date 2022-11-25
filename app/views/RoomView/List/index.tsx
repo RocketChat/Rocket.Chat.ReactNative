@@ -390,7 +390,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { rid, tmid, listRef, theme } = this.props;
+		const { rid, tmid, listRef, theme, loading } = this.props;
 		const { messages, refreshing } = this.state;
 		return (
 			<>
@@ -400,6 +400,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					scrollEventThrottle={16}
 					listRef={listRef}
 					data={messages}
+					extraData={loading}
 					renderItem={this.renderItem}
 					onEndReached={this.onEndReached}
 					ListFooterComponent={this.renderFooter}
