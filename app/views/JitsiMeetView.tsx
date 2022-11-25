@@ -1,17 +1,19 @@
 import React from 'react';
 import { BackHandler, StyleSheet } from 'react-native';
-import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import BackgroundTimer from 'react-native-background-timer';
+import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import { connect } from 'react-redux';
+import WebView from 'react-native-webview';
+import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 
-import { getUserSelector } from '../selectors/login';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { events, logEvent } from '../lib/methods/helpers/log';
+import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { isAndroid, isIOS } from '../lib/methods/helpers';
-import { withTheme } from '../theme';
-import { ChatsStackParamList } from '../stacks/types';
-import { IApplicationState, IUser, IBaseScreen } from '../definitions';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { Services } from '../lib/services';
+import { getUserSelector } from '../selectors/login';
+import { ChatsStackParamList } from '../stacks/types';
+import { withTheme } from '../theme';
 
 const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
 	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
@@ -73,7 +75,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 				}
 			}, 1000);
 		}
-		BackHandler.addEventListener('hardwareBackPress', () => null);
+		BackHandler.addEventListener('hardwareBackPress', () => true);
 	}
 
 	componentWillUnmount() {
@@ -83,16 +85,11 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 			this.jitsiTimeout = null;
 			BackgroundTimer.stopBackgroundTimer();
 		}
-		BackHandler.removeEventListener('hardwareBackPress', () => null);
+		BackHandler.removeEventListener('hardwareBackPress', () => true);
 		if (isIOS) {
 			JitsiMeet.endCall();
 		}
 	}
-
-	endCall = () => {
-		JitsiMeet.endCall();
-		return null;
-	};
 
 	onConferenceWillJoin = () => {
 		this.setState({ loading: false });
@@ -126,6 +123,13 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 		}, 200);
 	};
 
+	onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
+		const { navigation } = this.props;
+		if (!isIOS && webViewState.url.includes('close')) {
+			navigation.pop();
+		}
+	};
+
 	render() {
 		const { userInfo, loading } = this.state;
 		const { route } = this.props;
@@ -133,13 +137,22 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 		const options = isAndroid ? { url: this.url, userInfo, audioOnly: onlyAudio } : null;
 		return (
 			<>
-				<RNJitsiMeetView
-					onConferenceWillJoin={this.onConferenceWillJoin}
-					onConferenceTerminated={this.onConferenceTerminated}
-					onConferenceJoined={this.onConferenceJoined}
-					style={StyleSheet.absoluteFill}
-					options={options}
-				/>
+				{isIOS ? (
+					<RNJitsiMeetView
+						onConferenceWillJoin={this.onConferenceWillJoin}
+						onConferenceTerminated={this.onConferenceTerminated}
+						onConferenceJoined={this.onConferenceJoined}
+						style={StyleSheet.absoluteFill}
+						options={options}
+					/>
+				) : (
+					<WebView
+						source={{ uri: `${this.url}&config.disableDeepLinking=true` }}
+						onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
+						onNavigationStateChange={this.onNavigationStateChange}
+						style={{ flex: loading ? 0 : 1 }}
+					/>
+				)}
 				{loading ? <ActivityIndicator /> : null}
 			</>
 		);
