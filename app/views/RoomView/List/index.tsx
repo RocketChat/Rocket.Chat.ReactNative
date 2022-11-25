@@ -237,9 +237,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				}
 
 				if (this.mounted) {
-					// if (this.animated) {
-					// 	animateNextTransition();
-					// }
+					if (this.animated) {
+						animateNextTransition();
+					}
 					this.setState({ messages });
 				} else {
 					// @ts-ignore
