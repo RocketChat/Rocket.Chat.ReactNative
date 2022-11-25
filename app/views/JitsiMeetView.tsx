@@ -1,13 +1,13 @@
 import React from 'react';
-import { BackHandler, NativeEventSubscription, StyleSheet } from 'react-native';
+import { BackHandler, NativeEventSubscription, PermissionsAndroid, StyleSheet } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
+import { isAppInstalled, openAppWithData } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
-import { isAppInstalled, openAppWithData } from 'react-native-send-intent';
 
-import ActivityIndicator from '../containers/ActivityIndicator';
+import RCActivityIndicator from '../containers/ActivityIndicator';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { isAndroid, isIOS } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -15,7 +15,6 @@ import { Services } from '../lib/services';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-
 
 const JITSI_INTENT = 'org.jitsi.meet';
 
@@ -69,6 +68,10 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 			if (isAndroid) {
 				isAppInstalled(JITSI_INTENT).then(function (isInstalled) {
 					if (!isInstalled) {
+						PermissionsAndroid.requestMultiple([
+							PermissionsAndroid.PERMISSIONS.CAMERA,
+							PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+						]);
 						return;
 					}
 					navigation.pop();
@@ -173,7 +176,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 						domStorageEnabled
 					/>
 				)}
-				{loading ? <ActivityIndicator /> : null}
+				{loading ? <RCActivityIndicator absolute size='large' /> : null}
 			</>
 		);
 	}
