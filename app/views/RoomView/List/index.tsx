@@ -402,6 +402,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					listRef={listRef}
 					data={messages}
 					extraData={loading}
+					// @ts-ignore
 					renderItem={this.renderItem}
 					onEndReached={this.onEndReached}
 					ListFooterComponent={this.renderFooter}
