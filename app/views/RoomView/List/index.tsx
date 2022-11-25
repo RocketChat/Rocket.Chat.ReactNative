@@ -147,7 +147,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	query = async () => {
 		this.count += QUERY_SIZE;
-		const { rid, tmid, showMessageInMainThread, serverVersion } = this.props;
+		const { rid, tmid, showMessageInMainThread, serverVersion, listRef } = this.props;
 		const db = database.active;
 
 		// handle servers with version < 3.0.0
@@ -238,6 +238,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 				if (this.mounted) {
 					if (this.animated) {
+						listRef.current?.prepareForLayoutAnimationRender();
 						animateNextTransition();
 					}
 					this.setState({ messages });
