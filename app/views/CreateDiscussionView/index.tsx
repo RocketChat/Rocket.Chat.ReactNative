@@ -12,7 +12,6 @@ import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { FormTextInput } from '../../containers/TextInput';
-import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
@@ -60,18 +59,13 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 					showErrorAlert(msg);
 				} else {
 					const { rid, t, prid } = result;
-					if (isMasterDetail) {
-						Navigation.navigate('DrawerNavigator');
-					} else {
-						Navigation.navigate('RoomsListView');
-					}
 					const item = {
 						rid,
 						name: getRoomTitle(result),
 						t,
 						prid
 					};
-					goRoom({ item, isMasterDetail });
+					goRoom({ item, isMasterDetail, popToRoot: true });
 				}
 			}
 		}
