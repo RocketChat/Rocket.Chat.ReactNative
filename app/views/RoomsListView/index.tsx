@@ -516,10 +516,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
-				.observeWithColumns(['on_hold', 'room_updated_at']);
+				.observeWithColumns(['alert', 'on_hold', 'room_updated_at']);
 		}
 
 		this.querySubscription = observable.subscribe(data => {
+			console.log('update query');
 			let tempChats = [] as TSubscriptionModel[];
 			let chats = data.map(item => ({
 				rid: item.rid,
@@ -538,7 +539,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				// date: item.date,
 				// accessibilityLabel: item.accessibilityLabel,
 				lastMessage: item.lastMessage,
-				favorite: item.f,
+				f: item.f,
 				alert: item.alert,
 				hideUnreadStatus: item.hideUnreadStatus,
 				unread: item.unread,
@@ -550,7 +551,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				// size: item.size,
 				// sourceType: item.sourceType,
 				hideMentionStatus: item.hideMentionStatus,
-				onHold: item.onHold
+				onHold: item.onHold,
+				v: item.v,
+				visitor: item.visitor,
+				archived: item.archived,
+				open: item.open
 			}));
 
 			let omnichannelsUpdate: string[] = [];
