@@ -522,41 +522,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.querySubscription = observable.subscribe(data => {
 			console.log('update query');
 			let tempChats = [] as TSubscriptionModel[];
-			let chats = data.map(item => ({
-				rid: item.rid,
-				t: item.t,
-				prid: item.prid,
-				name: item.name,
-				fname: item.fname,
-				usernames: item.usernames,
-				// avatar: item.avatar,
-				// testID: item.testID,
-				status: item.status,
-				// isGroupChat: item.isGroupChat,
-				// isRead: item.isRead,
-				teamMain: item.teamMain,
-				roomUpdatedAt: item.roomUpdatedAt,
-				// date: item.date,
-				// accessibilityLabel: item.accessibilityLabel,
-				lastMessage: item.lastMessage,
-				f: item.f,
-				alert: item.alert,
-				hideUnreadStatus: item.hideUnreadStatus,
-				unread: item.unread,
-				userMentions: item.userMentions,
-				groupMentions: item.groupMentions,
-				tunread: item.tunread,
-				tunreadUser: item.tunreadUser,
-				tunreadGroup: item.tunreadGroup,
-				// size: item.size,
-				// sourceType: item.sourceType,
-				hideMentionStatus: item.hideMentionStatus,
-				onHold: item.onHold,
-				v: item.v,
-				visitor: item.visitor,
-				archived: item.archived,
-				open: item.open
-			}));
+			let chats = data.map(item => item.asPlain());
 
 			let omnichannelsUpdate: string[] = [];
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
