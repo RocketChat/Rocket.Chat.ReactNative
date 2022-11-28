@@ -322,7 +322,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	onPressItem = debounce(
 		async (item: IItem) => {
 			logEvent(events.TC_GO_ROOM);
-			const { navigation, isMasterDetail } = this.props;
+			const { isMasterDetail } = this.props;
 			try {
 				let params = {};
 				const result = await Services.getRoomInfo(item._id);
@@ -335,10 +335,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						teamId: result.room.teamId
 					};
 				}
-				if (isMasterDetail) {
-					navigation.pop();
-				}
-				goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
+				goRoom({ item: params, isMasterDetail, popToRoot: !!isMasterDetail });
 			} catch (e: any) {
 				if (e.data.error === 'not-allowed') {
 					showErrorAlert(I18n.t('error-not-allowed'));
