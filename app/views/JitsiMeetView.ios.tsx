@@ -102,7 +102,12 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	};
 
 	onConferenceTerminated = () => {
+		const { navigation } = this.props;
 		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
+		setTimeout(() => {
+			JitsiMeet.endCall();
+			navigation.pop();
+		}, 200);
 	};
 
 	render() {
