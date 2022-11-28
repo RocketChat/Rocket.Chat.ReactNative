@@ -105,7 +105,6 @@ interface IRoomsListViewState {
 	searching?: boolean;
 	search?: IRoomItem[];
 	loading?: boolean;
-	omnichannelsUpdate?: string[];
 	chats?: IRoomItem[];
 	item?: ISubscription;
 	canCreateRoom?: boolean;
@@ -158,7 +157,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			searching: false,
 			search: [],
 			loading: true,
-			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
 			canCreateRoom: false
@@ -372,7 +370,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState(state, callback);
 	};
 
-	addRoomsGroup = (data: TSubscriptionModel[] | any, header: string, allData: TSubscriptionModel[]) => {
+	addRoomsGroup = (data: ISubscription[], header: string, allData: ISubscription[]) => {
 		if (data.length > 0) {
 			if (header) {
 				allData.push({ rid: header, separator: true } as TSubscriptionModel);
@@ -414,18 +412,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		this.querySubscription = observable.subscribe(data => {
-			console.log('update query');
-			let tempChats = [] as TSubscriptionModel[];
+			let tempChats: ISubscription[] = [];
 			let chats = data.map(item => item.asPlain());
 
-			let omnichannelsUpdate: string[] = [];
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
 			if (isOmnichannelAgent) {
 				const omnichannel = chats.filter(s => filterIsOmnichannel(s));
 				const omnichannelInProgress = omnichannel.filter(s => !s.onHold);
 				const omnichannelOnHold = omnichannel.filter(s => s.onHold);
 				chats = chats.filter(s => !filterIsOmnichannel(s));
-				omnichannelsUpdate = omnichannelInProgress.map(s => s.rid);
 				tempChats = this.addRoomsGroup(omnichannelInProgress, OMNICHANNEL_HEADER_IN_PROGRESS, tempChats);
 				tempChats = this.addRoomsGroup(omnichannelOnHold, OMNICHANNEL_HEADER_ON_HOLD, tempChats);
 			}
@@ -457,13 +452,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
-				// @ts-ignore
 				tempChats = chats;
 			}
 
 			this.internalSetState({
 				chats: tempChats,
-				omnichannelsUpdate,
 				loading: false
 			});
 		});
