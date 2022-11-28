@@ -10,7 +10,7 @@ const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 const styles = StyleSheet.create({
 	contentContainer: {
-		paddingTop: 4
+		paddingTop: 8
 	}
 });
 
