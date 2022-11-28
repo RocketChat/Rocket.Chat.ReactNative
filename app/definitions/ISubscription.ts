@@ -96,7 +96,6 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
-	unsubscribe: () => Promise<any>;
 	separator?: boolean;
 	onHold?: boolean;
 	source?: IOmnichannelSource;
@@ -108,7 +107,11 @@ export interface ISubscription {
 	uploads: RelationModified<TUploadModel>;
 }
 
-export type TSubscriptionModel = ISubscription & Model;
+export type TSubscriptionModel = ISubscription &
+	Model & {
+		unsubscribe: () => Promise<any>;
+		asPlain: () => ISubscription;
+	};
 export type TSubscription = TSubscriptionModel | ISubscription;
 
 // https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
