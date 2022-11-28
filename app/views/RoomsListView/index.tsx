@@ -133,34 +133,10 @@ const filterIsOmnichannel = (s: any) => s.t === 'l';
 const filterIsTeam = (s: any) => s.teamMain;
 const filterIsDiscussion = (s: any) => s.prid;
 
-// const shouldUpdateProps = [
-// 	'searchText',
-// 	'loadingServer',
-// 	'showServerDropdown',
-// 	'useRealName',
-// 	'StoreLastMessage',
-// 	'theme',
-// 	'isMasterDetail',
-// 	'refreshing',
-// 	'queueSize',
-// 	'inquiryEnabled',
-// 	'encryptionBanner',
-// 	'createTeamPermission',
-// 	'createDirectMessagePermission',
-// 	'createPublicChannelPermission',
-// 	'createPrivateChannelPermission',
-// 	'createDiscussionPermission'
-// ];
-
-// const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
-
-// const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
-
 const keyExtractor = (item: ISubscription) => item.rid;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
 	private animated: boolean;
-	private mounted: boolean;
 	private count: number;
 	private unsubscribeFocus?: () => void;
 	private unsubscribeBlur?: () => void;
@@ -177,7 +153,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		console.time(`${this.constructor.name} mount`);
 
 		this.animated = false;
-		this.mounted = false;
 		this.count = 0;
 		this.state = {
 			searching: false,
@@ -195,7 +170,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	componentDidMount() {
 		const { navigation, dispatch } = this.props;
 		this.handleHasPermission();
-		this.mounted = true;
 
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
@@ -241,84 +215,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.handleSearch(nextProps.searchText);
 		}
 	}
-
-	// shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
-	// 	const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
-	// 	if (propsUpdated) {
-	// 		return true;
-	// 	}
-
-	// 	// check if some display props are changed to force update when focus this view again
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
-	// 	if (displayUpdated) {
-	// 		this.shouldUpdate = true;
-	// 	}
-
-	// 	// check if some sort preferences are changed to getSubscription() when focus this view again
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	const sortPreferencesUpdate = sortPreferencesShouldUpdate.some(key => nextProps[key] !== this.props[key]);
-	// 	if (sortPreferencesUpdate) {
-	// 		this.sortPreferencesChanged = true;
-	// 	}
-
-	// 	// Compare changes only once
-	// 	const chatsNotEqual = !dequal(nextState.chatsUpdate, chatsUpdate);
-
-	// 	// If they aren't equal, set to update if focused
-	// 	if (chatsNotEqual) {
-	// 		this.shouldUpdate = true;
-	// 	}
-
-	// 	const omnichannelsNotEqual = !dequal(nextState.omnichannelsUpdate, omnichannelsUpdate);
-
-	// 	if (omnichannelsNotEqual) {
-	// 		this.shouldUpdate = true;
-	// 	}
-
-	// 	if (nextState.searching !== searching) {
-	// 		return true;
-	// 	}
-
-	// 	if (nextState.canCreateRoom !== canCreateRoom) {
-	// 		return true;
-	// 	}
-
-	// 	if (nextState.item?.rid !== item?.rid) {
-	// 		return true;
-	// 	}
-
-	// 	// Abort if it's not focused
-	// 	if (!nextProps.navigation.isFocused()) {
-	// 		return false;
-	// 	}
-
-	// 	const { loading, search } = this.state;
-	// 	const { rooms, width, insets } = this.props;
-	// 	if (nextState.loading !== loading) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.width !== width) {
-	// 		return true;
-	// 	}
-	// 	if (!dequal(nextState.search, search)) {
-	// 		return true;
-	// 	}
-	// 	if (!dequal(nextProps.rooms, rooms)) {
-	// 		return true;
-	// 	}
-	// 	if (!dequal(nextProps.insets, insets)) {
-	// 		return true;
-	// 	}
-	// 	// If it's focused and there are changes, update
-	// 	if (chatsNotEqual || omnichannelsNotEqual) {
-	// 		this.shouldUpdate = false;
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 
 	componentDidUpdate(prevProps: IRoomsListViewProps) {
 		const {
