@@ -286,7 +286,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		this.setHeader();
 
-		if ('id' in room) {
+		// TODO: Since we won't be using observables directly anymore, should we remove this?
+		if ('observe' in room) {
 			// @ts-ignore TODO: type guard isn't helping here :(
 			this.observeRoom(room);
 		} else if (this.rid) {
