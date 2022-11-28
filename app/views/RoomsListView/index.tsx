@@ -105,7 +105,6 @@ interface IRoomsListViewState {
 	searching?: boolean;
 	search?: IRoomItem[];
 	loading?: boolean;
-	chatsUpdate?: string[] | { rid: string; alert?: boolean }[];
 	omnichannelsUpdate?: string[];
 	chats?: IRoomItem[];
 	item?: ISubscription;
@@ -184,7 +183,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			searching: false,
 			search: [],
 			loading: true,
-			chatsUpdate: [] as TSubscriptionModel[],
 			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
@@ -567,11 +565,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				tempChats = chats;
 			}
 
-			// const chatsUpdate = tempChats.map(item => item.rid);
-
 			this.internalSetState({
 				chats: tempChats,
-				// chatsUpdate,
 				omnichannelsUpdate,
 				loading: false
 			});
