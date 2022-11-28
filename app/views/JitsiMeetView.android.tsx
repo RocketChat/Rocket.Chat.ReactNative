@@ -1,7 +1,6 @@
 import React from 'react';
-import { BackHandler, NativeEventSubscription, PermissionsAndroid, StyleSheet } from 'react-native';
+import { BackHandler, NativeEventSubscription, PermissionsAndroid } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
-import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import { isAppInstalled, openAppWithData } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
@@ -9,7 +8,7 @@ import { connect } from 'react-redux';
 
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
-import { isAndroid, isIOS } from '../lib/methods/helpers';
+import { isIOS } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { Services } from '../lib/services';
 import { getUserSelector } from '../selectors/login';
@@ -63,56 +62,36 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 
 	componentDidMount() {
 		const { route, navigation } = this.props;
-		const { userInfo } = this.state;
 		(() => {
-			if (isAndroid) {
-				isAppInstalled(JITSI_INTENT).then(function (isInstalled) {
-					if (!isInstalled) {
-						PermissionsAndroid.requestMultiple([
-							PermissionsAndroid.PERMISSIONS.CAMERA,
-							PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
-						]);
-						return;
-					}
-					navigation.pop();
-					openAppWithData(JITSI_INTENT, route.params?.url);
-				});
-			}
+			isAppInstalled(JITSI_INTENT).then(function (isInstalled) {
+				if (!isInstalled) {
+					PermissionsAndroid.requestMultiple([
+						PermissionsAndroid.PERMISSIONS.CAMERA,
+						PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+					]);
+					return;
+				}
+				navigation.pop();
+				openAppWithData(JITSI_INTENT, route.params?.url);
+			});
 		})();
 
 		setTimeout(() => {
 			this.setState({ loading: false });
 		}, 1000);
-
-		if (isIOS) {
-			setTimeout(() => {
-				const onlyAudio = route.params?.onlyAudio ?? false;
-				if (onlyAudio) {
-					JitsiMeet.audioCall(this.url, userInfo);
-				} else {
-					JitsiMeet.call(this.url, userInfo);
-				}
-			}, 1000);
-		}
+		this.onConferenceJoined();
 		this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
 	}
 
 	componentWillUnmount() {
-		logEvent(events.JM_CONFERENCE_TERMINATE);
+		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
 		if (this.jitsiTimeout && !this.videoConf) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);
 			this.jitsiTimeout = null;
 			BackgroundTimer.stopBackgroundTimer();
 		}
 		this.backHandler.remove();
-		if (isIOS) {
-			JitsiMeet.endCall();
-		}
 	}
-
-	onConferenceWillJoin = () => {
-		this.setState({ loading: false });
-	};
 
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
@@ -132,16 +111,6 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 		}
 	};
 
-	onConferenceTerminated = () => {
-		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
-		const { navigation } = this.props;
-		// fix to go back when the call ends
-		setTimeout(() => {
-			JitsiMeet.endCall();
-			navigation.pop();
-		}, 200);
-	};
-
 	onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const { navigation } = this.props;
 		if (!isIOS && webViewState.url.includes('close')) {
@@ -150,32 +119,17 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	};
 
 	render() {
-		const { userInfo, loading } = this.state;
-		const { route } = this.props;
-		const onlyAudio = route.params?.onlyAudio ?? false;
-		const options = isAndroid ? { url: this.url, userInfo, audioOnly: onlyAudio } : null;
-
+		const { loading } = this.state;
 		return (
 			<>
-				{isIOS ? (
-					<RNJitsiMeetView
-						onConferenceWillJoin={this.onConferenceWillJoin}
-						onConferenceTerminated={this.onConferenceTerminated}
-						onConferenceJoined={this.onConferenceJoined}
-						style={StyleSheet.absoluteFill}
-						options={options}
-					/>
-				) : (
-					<WebView
-						source={{ uri: `${this.url}&config.disableDeepLinking=true` }}
-						onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
-						onNavigationStateChange={this.onNavigationStateChange}
-						style={{ flex: loading ? 0 : 1 }}
-						mediaPlaybackRequiresUserAction={false}
-						javaScriptEnabled
-						domStorageEnabled
-					/>
-				)}
+				<WebView
+					source={{ uri: `${this.url}&config.disableDeepLinking=true` }}
+					onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
+					onNavigationStateChange={this.onNavigationStateChange}
+					style={{ flex: loading ? 0 : 1 }}
+					javaScriptEnabled
+					domStorageEnabled
+				/>
 				{loading ? <RCActivityIndicator absolute size='large' /> : null}
 			</>
 		);
