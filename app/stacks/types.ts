@@ -23,23 +23,23 @@ export type ChatsStackParamList = {
 	NewMessageStack: undefined;
 	RoomsListView: undefined;
 	RoomView:
-		| {
-				rid: string;
-				t: SubscriptionType;
-				tmid?: string;
-				message?: TMessageModel;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
-				jumpToMessageId?: string;
-				jumpToThreadId?: string;
-				roomUserId?: string | null;
-				usedCannedResponse?: string;
-				status?: string;
-				replyInDM?: TAnyMessageModel;
+	| {
+		rid: string;
+		t: SubscriptionType;
+		tmid?: string;
+		message?: TMessageModel;
+		name?: string;
+		fname?: string;
+		prid?: string;
+		room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
+		jumpToMessageId?: string;
+		jumpToThreadId?: string;
+		roomUserId?: string | null;
+		usedCannedResponse?: string;
+		status?: string;
+		replyInDM?: TAnyMessageModel;
 		  }
-		| undefined; // Navigates back to RoomView already on stack
+	| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
 		room: TSubscriptionModel;
 		member?: any;
@@ -272,6 +272,9 @@ export type InsideStackParamList = {
 		text: string;
 		room: TSubscriptionModel;
 		thread: TThreadModel;
+		replying?: boolean;
+		replyingMessage?: IMessage;
+		closeReply?: Function
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
