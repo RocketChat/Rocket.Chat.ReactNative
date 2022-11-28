@@ -6,9 +6,11 @@ import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '@react-navigation/elements';
 import { FlashList } from '@shopify/flash-list';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
+import { Dispatch } from 'redux';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
@@ -21,7 +23,7 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { themedHeader } from '../../lib/methods/helpers/navigation';
 import {
@@ -40,20 +42,12 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import {
-	IApplicationState,
-	IBaseScreen,
-	ISubscription,
-	IUser,
-	RootEnum,
-	SubscriptionType,
-	TSubscriptionModel
-} from '../../definitions';
+import { IApplicationState, ISubscription, IUser, RootEnum, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
-import { ChatsStackParamList } from '../../stacks/types';
+import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
 import { RoomTypes, search } from '../../lib/methods';
 import {
 	getRoomAvatar,
@@ -67,7 +61,16 @@ import {
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 
-interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
+type TNavigation = CompositeNavigationProp<
+	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+>;
+
+interface IRoomsListViewProps {
+	navigation: TNavigation;
+	route: RouteProp<ChatsStackParamList, 'RoomsListView'>;
+	theme: TSupportedThemes;
+	dispatch: Dispatch;
 	[key: string]: IUser | string | boolean | ISubscription[] | number | object | TEncryptionBanner;
 	user: IUser;
 	server: string;
@@ -83,7 +86,7 @@ interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsLis
 	StoreLastMessage: boolean;
 	useRealName: boolean;
 	isMasterDetail: boolean;
-	rooms: string[];
+	subscribedRoom: string;
 	width: number;
 	insets: {
 		left: number;
@@ -220,7 +223,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			groupByType,
 			showFavorites,
 			showUnread,
-			rooms,
+			subscribedRoom,
 			isMasterDetail,
 			insets,
 			createTeamPermission,
@@ -245,9 +248,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		) {
 			this.getSubscriptions();
 		}
-		// Update current item in case of another action triggers an update on rooms reducer
-		if (isMasterDetail && rooms[0] && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
-			this.setState({ item: { rid: rooms[0] } as ISubscription });
+		// Update current item in case of another action triggers an update on room subscribed reducer
+		if (isMasterDetail && item?.rid !== subscribedRoom && subscribedRoom !== prevProps.subscribedRoom) {
+			this.setState({ item: { rid: subscribedRoom } as ISubscription });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
@@ -645,9 +648,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	goRoom = ({ item, isMasterDetail }: { item: ISubscription; isMasterDetail: boolean }) => {
 		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
-		const { rooms } = this.props;
-		// @ts-ignore
-		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
+		const { subscribedRoom } = this.props;
+
+		if (currentItem?.rid === item.rid || subscribedRoom === item.rid) {
 			return;
 		}
 		// Only mark room as focused when in master detail layout
@@ -918,7 +921,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
 	StoreLastMessage: state.settings.Store_Last_Message,
-	rooms: state.room.rooms,
+	subscribedRoom: state.room.subscribedRoom,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
 	encryptionBanner: state.encryption.banner,

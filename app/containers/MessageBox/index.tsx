@@ -238,7 +238,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail } = this.props;
+		const { rid, tmid, navigation, sharing, usedCannedResponse } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.get('threads');
@@ -273,7 +273,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
-		if (isMasterDetail && usedCannedResponse) {
+		if (usedCannedResponse) {
 			this.onChangeText(usedCannedResponse);
 		}
 

@@ -229,6 +229,7 @@ export type MessageTypesValues =
 	| 'room-allowed-reacting'
 	| 'room-disallowed-reacting'
 	| 'command'
+	| 'videoconf'
 	| LivechatMessageTypes
 	| TeamMessageTypes
 	| VoipMessageTypesValues
