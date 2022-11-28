@@ -12,6 +12,7 @@ export interface IUpload {
 	progress?: number;
 	error?: boolean;
 	subscription?: { id: string };
+	msg?: string
 }
 
 export type TUploadModel = IUpload & Model;
