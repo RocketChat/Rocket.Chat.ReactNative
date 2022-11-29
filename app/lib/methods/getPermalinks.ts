@@ -1,16 +1,15 @@
 import log from './helpers/log';
-import { TMessageModel, TSubscriptionModel } from '../../definitions';
+import { IMessage, TSubscriptionModel } from '../../definitions';
 import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';
 import { getRoom } from './getRoom';
 
 type TRoomType = 'p' | 'c' | 'd';
 
-export async function getPermalinkMessage(message: TMessageModel): Promise<string | null> {
-	if (!message.subscription) return null;
+export async function getPermalinkMessage(message: IMessage): Promise<string | null> {
 	let room: TSubscriptionModel;
 	try {
-		room = await getRoom(message.subscription.id);
+		room = await getRoom(message.rid);
 	} catch (e) {
 		log(e);
 		return null;

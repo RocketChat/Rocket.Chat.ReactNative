@@ -80,6 +80,7 @@ export default class ThreadMessage extends Model {
 
 	asPlain() {
 		return {
+			id: this.id,
 			msg: this.msg,
 			t: this.t,
 			ts: this.ts,

@@ -88,6 +88,8 @@ export default class Message extends Model {
 
 	asPlain() {
 		return {
+			id: this.id,
+			rid: this.subscription.id,
 			msg: this.msg,
 			t: this.t,
 			ts: this.ts,
