@@ -74,12 +74,11 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        <queries>
-            <package android:name="org.jitsi.meet" />
-                <intent>
-                    <action android:name="android.intent.action.SEND" />
-                </intent>
-        </queries>
     </application>
-
+    <queries>
+        <package android:name="org.jitsi.meet" />
+            <intent>
+                <action android:name="android.intent.action.SEND" />
+            </intent>
+    </queries>
 </manifest>
