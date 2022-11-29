@@ -4,8 +4,8 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { MessageTypeLoad } from '../lib/constants';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
-import { IThreadMessage, TThreadMessageModel } from './IThreadMessage';
-import { IThread, TThreadModel } from './IThread';
+import { IThreadMessage } from './IThreadMessage';
+import { IThread } from './IThread';
 import { IUrl, IUrlFromServer } from './IUrl';
 
 export type MessageType =
