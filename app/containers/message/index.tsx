@@ -1,6 +1,5 @@
 import React from 'react';
 import { Keyboard } from 'react-native';
-import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -25,51 +24,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, TAnyMessa
 	};
 
 	state = { isManualUnignored: false };
-
-	private subscription?: Subscription;
-
-	// componentDidMount() {
-	// 	const { item } = this.props;
-	// 	console.log(`did mount ${item.id}`);
-	// 	let isFirstRender = true;
-	// 	if (item && item.observe) {
-	// 		const observable = item.observe();
-	// 		this.subscription = observable.subscribe(msg => {
-	// 			// console.log('🚀 ~ file: index.tsx ~ line 90 ~ MessageContainer ~ componentDidMount ~ msg', msg);
-	// 			if (!isFirstRender) {
-	// 				this.forceUpdate();
-	// 			}
-	// 			isFirstRender = false;
-	// 		});
-	// 	}
-	// }
-
-	// shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: TAnyMessageContainerState) {
-	// 	const { isManualUnignored } = this.state;
-	// 	const { threadBadgeColor, isIgnored, highlighted, previousItem } = this.props;
-	// 	if (nextProps.highlighted !== highlighted) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.threadBadgeColor !== threadBadgeColor) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.isIgnored !== isIgnored) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.isManualUnignored !== isManualUnignored) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.previousItem?._id !== previousItem?._id) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
-	// componentWillUnmount() {
-	// 	if (this.subscription && this.subscription.unsubscribe) {
-	// 		this.subscription.unsubscribe();
-	// 	}
-	// }
 
 	onPressAction = () => {
 		const { closeEmojiAndAction } = this.props;
