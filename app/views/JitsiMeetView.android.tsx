@@ -62,8 +62,9 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 
 	componentDidMount() {
 		const { route, navigation } = this.props;
-		(() => {
-			isAppInstalled(JITSI_INTENT).then(function (isInstalled) {
+
+		isAppInstalled(JITSI_INTENT)
+			.then(function (isInstalled) {
 				if (!isInstalled) {
 					PermissionsAndroid.requestMultiple([
 						PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -73,8 +74,8 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 				}
 				navigation.pop();
 				openAppWithData(JITSI_INTENT, route.params?.url);
-			});
-		})();
+			})
+			.catch(() => {});
 
 		setTimeout(() => {
 			this.setState({ loading: false });
