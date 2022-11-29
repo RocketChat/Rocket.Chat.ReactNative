@@ -65,7 +65,7 @@ interface IShareViewProps {
 interface IMessageBoxShareView {
 	text: string;
 	forceUpdate(): void;
-	formatReplyMessage:(replyingMessage: IMessage, message?: any) => Promise<string>
+	formatReplyMessage: (replyingMessage: IMessage, message?: any) => Promise<string>;
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
@@ -73,8 +73,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
-	private replying?: boolean 
-	private replyingMessage?: IMessage 
+	private replying?: boolean;
+	private replyingMessage?: IMessage;
 	private closeReply?: Function;
 
 	constructor(props: IShareViewProps) {
@@ -83,9 +83,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
-		this.replying = props.route.params?.replying
-		this.replyingMessage = props.route.params?.replyingMessage
-		this.closeReply = props.route.params?.closeReply
+		this.replying = props.route.params?.replying;
+		this.replyingMessage = props.route.params?.replyingMessage;
+		this.closeReply = props.route.params?.closeReply;
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -231,11 +231,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			navigation.pop();
 		}
 
-		let msg: string | undefined
-		if(this.replying && this.replyingMessage){
-			msg = await this.messagebox.current?.formatReplyMessage(this.replyingMessage)
-			if(this.closeReply) {
-				this.closeReply()
+		let msg: string | undefined;
+		if (this.replying && this.replyingMessage) {
+			msg = await this.messagebox.current?.formatReplyMessage(this.replyingMessage);
+			// close reply from the RoomView
+			if (this.closeReply) {
+				this.closeReply();
 			}
 		}
 
@@ -318,7 +319,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	renderContent = () => {
 		const { attachments, selected, room, text } = this.state;
-		const { theme, navigation} = this.props;
+		const { theme, navigation } = this.props;
 
 		if (attachments.length) {
 			return (

@@ -85,11 +85,11 @@ export function sendFileMessage(
 				});
 			}
 
-			if(fileInfo.msg) {
+			if (fileInfo.msg) {
 				formData.push({
-					name:"msg",
+					name: 'msg',
 					data: fileInfo.msg
-				})
+				});
 			}
 
 			if (tmid) {
