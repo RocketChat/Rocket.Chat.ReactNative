@@ -104,6 +104,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewS
 					style={{ flex: loading ? 0 : 1 }}
 					javaScriptEnabled
 					domStorageEnabled
+					mediaPlaybackRequiresUserAction={false}
 				/>
 				{loading ? <RCActivityIndicator absolute size='large' /> : null}
 			</>
