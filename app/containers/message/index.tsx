@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, ViewStyle } from 'react-native';
+import { Keyboard } from 'react-native';
 import { Subscription } from 'rxjs';
 
 import Message from './Message';
@@ -8,64 +8,11 @@ import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
 import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
-import { IAttachment, TAnyMessage, TGetCustomEmoji } from '../../definitions';
-import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { IAttachment } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
+import { IMessageContainerProps, TAnyMessageContainerState } from './interfaces';
 
-interface TAnyMessageContainerProps {
-	item: TAnyMessage;
-	user: {
-		id: string;
-		username: string;
-		token: string;
-	};
-	msg?: string;
-	rid: string;
-	timeFormat?: string;
-	style?: ViewStyle;
-	archived?: boolean;
-	broadcast?: boolean;
-	previousItem?: TAnyMessage;
-	baseUrl: string;
-	Message_GroupingPeriod?: number;
-	isReadReceiptEnabled?: boolean;
-	isThreadRoom: boolean;
-	isSystemMessage?: boolean;
-	useRealName?: boolean;
-	autoTranslateRoom?: boolean;
-	autoTranslateLanguage?: string;
-	status?: number;
-	isIgnored?: boolean;
-	highlighted?: boolean;
-	getCustomEmoji: TGetCustomEmoji;
-	onLongPress?: (item: TAnyMessage) => void;
-	onReactionPress?: (emoji: string, id: string) => void;
-	onEncryptedPress?: () => void;
-	onDiscussionPress?: (item: TAnyMessage) => void;
-	onThreadPress?: (item: TAnyMessage) => void;
-	errorActionsShow?: (item: TAnyMessage) => void;
-	replyBroadcast?: (item: TAnyMessage) => void;
-	reactionInit?: (item: TAnyMessage) => void;
-	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
-	showAttachment: (file: IAttachment) => void;
-	onReactionLongPress?: (item: TAnyMessage) => void;
-	navToRoomInfo: (navParam: IRoomInfoParam) => void;
-	callJitsi?: () => void;
-	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
-	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
-	threadBadgeColor?: string;
-	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
-	jumpToMessage?: (link: string) => void;
-	onPress?: () => void;
-	theme: TSupportedThemes;
-	closeEmojiAndAction?: (action?: Function, params?: any) => void;
-}
-
-interface TAnyMessageContainerState {
-	isManualUnignored: boolean;
-}
-
-class MessageContainer extends React.Component<TAnyMessageContainerProps, TAnyMessageContainerState> {
+class MessageContainer extends React.Component<IMessageContainerProps, TAnyMessageContainerState> {
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
@@ -97,7 +44,7 @@ class MessageContainer extends React.Component<TAnyMessageContainerProps, TAnyMe
 	// 	}
 	// }
 
-	// shouldComponentUpdate(nextProps: TAnyMessageContainerProps, nextState: TAnyMessageContainerState) {
+	// shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: TAnyMessageContainerState) {
 	// 	const { isManualUnignored } = this.state;
 	// 	const { threadBadgeColor, isIgnored, highlighted, previousItem } = this.props;
 	// 	if (nextProps.highlighted !== highlighted) {
