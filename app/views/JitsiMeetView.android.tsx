@@ -4,57 +4,37 @@ import BackgroundTimer from 'react-native-background-timer';
 import { isAppInstalled, openAppWithData } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
-import { connect } from 'react-redux';
 
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import { IBaseScreen } from '../definitions';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { Services } from '../lib/services';
-import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 
 const JITSI_INTENT = 'org.jitsi.meet';
 
-const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
-	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
-
 interface IJitsiMeetViewState {
-	userInfo: {
-		displayName: string;
-		avatar: string;
-	};
 	loading: boolean;
 }
 
-interface IJitsiMeetViewProps extends IBaseScreen<ChatsStackParamList, 'JitsiMeetView'> {
-	baseUrl: string;
-	user: IUser;
-}
+type TJitsiMeetViewProps = IBaseScreen<ChatsStackParamList, 'JitsiMeetView'>;
 
-class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewState> {
+class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewState> {
 	private rid: string;
 	private url: string;
 	private videoConf: boolean;
 	private jitsiTimeout: number | null;
 	private backHandler!: NativeEventSubscription;
 
-	constructor(props: IJitsiMeetViewProps) {
+	constructor(props: TJitsiMeetViewProps) {
 		super(props);
 		this.rid = props.route.params?.rid;
 		this.url = props.route.params?.url;
 		this.videoConf = !!props.route.params?.videoConf;
 		this.jitsiTimeout = null;
 
-		const { user, baseUrl } = props;
-		const { name, id: userId, token, username } = user;
-		const avatarAuthURLFragment = `&rc_token=${token}&rc_uid=${userId}`;
-		const avatar = formatUrl(username, baseUrl, 100, avatarAuthURLFragment);
 		this.state = {
-			userInfo: {
-				displayName: name as string,
-				avatar
-			},
 			loading: true
 		};
 	}
@@ -136,9 +116,4 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	user: getUserSelector(state),
-	baseUrl: state.server.server
-});
-
-export default connect(mapStateToProps)(withTheme(JitsiMeetView));
+export default withTheme(JitsiMeetView);
