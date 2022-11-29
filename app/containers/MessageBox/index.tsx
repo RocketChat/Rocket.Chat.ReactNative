@@ -864,7 +864,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			value = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, thread: value, attachments, replying, replyingMessage: message, closeReply: replyCancel });
+		Navigation.navigate('ShareView', {
+			room: this.room,
+			thread: value,
+			attachments,
+			replying,
+			replyingMessage: message,
+			closeReply: replyCancel
+		});
 	};
 
 	createDiscussion = () => {
@@ -1054,7 +1061,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	formatReplyMessage = async (replyingMessage: IMessage, message?: any) => {
+	formatReplyMessage = async (replyingMessage: IMessage, message = '') => {
 		const { user, roomType, replyWithMention } = this.props;
 		const permalink = await this.getPermalink(replyingMessage);
 		let msg = `[ ](${permalink}) `;
@@ -1064,7 +1071,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			msg += `@${replyingMessage?.u?.username} `;
 		}
 
-		return msg = `${msg} ${message || ''}`;
+		return (msg = `${msg} ${message}`);
 	};
 
 	updateMentions = (keyword: any, type: string) => {
@@ -1131,8 +1138,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			<TouchableWithoutFeedback
 				style={[styles.sendToChannelButton, { backgroundColor: themes[theme].messageboxBackground }]}
 				onPress={this.onPressSendToChannel}
-				testID='messagebox-send-to-channel'
-			>
+				testID='messagebox-send-to-channel'>
 				<CustomIcon
 					testID={tshow ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
 					name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'}
@@ -1199,9 +1205,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const isAndroidTablet: Partial<IThemedTextInput> =
 			isTablet && isAndroid
 				? {
-					multiline: false,
-					onSubmitEditing: this.submit,
-					returnKeyType: 'send'
+						multiline: false,
+						onSubmitEditing: this.submit,
+						returnKeyType: 'send'
 				  }
 				: {};
 
@@ -1243,7 +1249,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					closeEmoji={this.closeEmojiKeyboardAndFocus}
 				/>
 				<TextInput
-					ref={component => this.component = component}
+					ref={component => (this.component = component)}
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
 					returnKeyType='default'
 					keyboardType='twitter'
@@ -1278,8 +1284,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 							{ backgroundColor: themes[theme].messageboxBackground },
 							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
 						]}
-						testID='messagebox'
-					>
+						testID='messagebox'>
 						{textInputAndButtons}
 						{recordAudio}
 					</View>
@@ -1303,10 +1308,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					onPressMention: this.onPressMention,
 					onPressCommandPreview: this.onPressCommandPreview,
 					onPressNoMatchCanned: this.onPressNoMatchCanned
-				}}
-			>
+				}}>
 				<KeyboardAccessoryView
-					ref={(ref: any) => this.tracking = ref}
+					ref={(ref: any) => (this.tracking = ref)}
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
