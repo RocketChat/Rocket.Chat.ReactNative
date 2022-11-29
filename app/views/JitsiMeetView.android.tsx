@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import { IApplicationState, IBaseScreen, IUser } from '../definitions';
-import { isIOS } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { Services } from '../lib/services';
 import { getUserSelector } from '../selectors/login';
@@ -114,7 +113,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 
 	onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const { navigation } = this.props;
-		if (!isIOS && webViewState.url.includes('close')) {
+		if (webViewState.url.includes('close')) {
 			navigation.pop();
 		}
 	};
