@@ -133,6 +133,8 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			hideSystemMessages = [];
 		}
 
+		const columnsToObserve = ['_updated_at', 'status'];
+
 		if (tmid) {
 			try {
 				this.thread = await db.get('threads').find(tmid);
@@ -142,7 +144,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			this.messagesObservable = db
 				.get('thread_messages')
 				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
-				.observeWithColumns(['_updated_at']);
+				.observeWithColumns(columnsToObserve);
 		} else if (rid) {
 			const whereClause = [
 				Q.where('rid', rid),
@@ -156,7 +158,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			this.messagesObservable = db
 				.get('messages')
 				.query(...whereClause)
-				.observeWithColumns(['_updated_at', 'status']);
+				.observeWithColumns(columnsToObserve);
 		}
 
 		if (rid) {
@@ -171,7 +173,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				});
 
 				if (tmid && this.thread) {
-					data = [...messages, this.thread];
+					data = [...messages, this.thread.asPlain()];
 				}
 
 				/**
@@ -347,7 +349,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					scrollEventThrottle={16}
 					listRef={listRef}
 					data={messages}
-					extraData={loading}
+					extraData={loading || messages}
 					// @ts-ignore
 					renderItem={this.renderItem}
 					onEndReached={this.onEndReached}

@@ -393,7 +393,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		let observable;
 
 		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
-		const observeColumns = ['alert', 'f', 'on_hold', 'room_updated_at'];
+		const columnsToObserve = ['alert', 'f', 'on_hold', 'room_updated_at'];
 
 		if (sortBy === SortBy.Alphabetical) {
 			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
@@ -406,14 +406,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(observeColumns);
+				.observeWithColumns(columnsToObserve);
 			// When we're NOT grouping
 		} else {
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
-				.observeWithColumns(observeColumns);
+				.observeWithColumns(columnsToObserve);
 		}
 
 		this.querySubscription = observable.subscribe(data => {
