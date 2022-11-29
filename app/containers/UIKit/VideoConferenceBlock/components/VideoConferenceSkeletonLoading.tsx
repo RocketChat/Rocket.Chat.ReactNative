@@ -8,9 +8,9 @@ export default function VideoConferenceSkeletonLoading(): React.ReactElement {
 
 	return (
 		<SkeletonPlaceholder backgroundColor={colors.conferenceCallBackground}>
-			<SkeletonPlaceholder.Item borderWidth={1} borderRadius={4} marginTop={8}>
+			<SkeletonPlaceholder.Item borderWidth={1} borderColor={colors.conferenceCallBorder} borderRadius={4} marginTop={8}>
 				<SkeletonPlaceholder.Item alignItems={'center'} flexDirection='row' marginTop={16} marginLeft={16}>
-					<SkeletonPlaceholder.Item width={28} height={28} />
+					<SkeletonPlaceholder.Item width={28} height={26} />
 					<SkeletonPlaceholder.Item width={75} height={16} marginLeft={8} borderRadius={0} />
 				</SkeletonPlaceholder.Item>
 				<SkeletonPlaceholder.Item
