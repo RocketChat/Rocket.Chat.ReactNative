@@ -14,7 +14,7 @@ import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actio
 import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
-import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
@@ -33,7 +33,7 @@ export default class RoomSubscription {
 	private _threadsBatch: { [key: string]: TThreadModel };
 	private threadMessagesBatch: {};
 	private _threadMessagesBatch: { [key: string]: TThreadMessageModel };
-	private promises?: Promise<TSubscriptionModel[]>;
+	private promises?: Promise<any>;
 	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
@@ -79,7 +79,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach((sub: any) => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}

@@ -69,7 +69,7 @@ import {
 	ISubscription,
 	IVisitor,
 	SubscriptionType,
-	TAnyMessageModel,
+	TAnyMessage,
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadModel,
@@ -101,6 +101,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { TMessage } from './definitions';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -193,7 +194,7 @@ interface IRoomViewState {
 	member: any;
 	lastOpen: Date | null;
 	reactionsModalVisible: boolean;
-	selectedMessage?: TAnyMessageModel;
+	selectedMessage?: TAnyMessage;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	editing: boolean;
@@ -225,7 +226,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
-	private replyInDM?: TAnyMessageModel;
+	private replyInDM?: TAnyMessage;
 	// Type of InteractionManager.runAfterInteractions
 	private didMountInteraction?: {
 		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
@@ -781,7 +782,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	errorActionsShow = (message: TAnyMessageModel) => {
+	errorActionsShow = (message: TAnyMessage) => {
 		this.messagebox?.current?.closeEmojiAndAction(this.messageErrorActions?.showMessageErrorActions, message);
 	};
 
@@ -790,7 +791,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, options);
 	};
 
-	onEditInit = (message: TAnyMessageModel) => {
+	onEditInit = (message: TAnyMessage) => {
 		const newMessage = {
 			id: message.id,
 			subscription: {
@@ -806,7 +807,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: undefined, editing: false });
 	};
 
-	onEditRequest = async (message: TAnyMessageModel) => {
+	onEditRequest = async (message: TAnyMessage) => {
 		this.setState({ selectedMessage: undefined, editing: false });
 		try {
 			await Services.editMessage(message);
@@ -815,7 +816,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
+	onReplyInit = (message: TAnyMessage, mention: boolean) => {
 		// If there's a thread already, we redirect to it
 		if (mention && !!message.tlm) {
 			return this.onThreadPress(message);
@@ -843,7 +844,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	onReactionInit = (message: TAnyMessageModel) => {
+	onReactionInit = (message: TAnyMessage) => {
 		this.messagebox?.current?.closeEmojiAndAction(() => {
 			this.setState({ selectedMessage: message }, this.showReactionPicker);
 		});
@@ -854,7 +855,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: undefined }, hideActionSheet);
 	};
 
-	onMessageLongPress = (message: TAnyMessageModel) => {
+	onMessageLongPress = (message: TAnyMessage) => {
 		// if it's a thread message on main room, we disable the long press
 		if (message.tmid && !this.tmid) {
 			return;
@@ -884,7 +885,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	onReactionLongPress = (message: TAnyMessageModel) => {
+	onReactionLongPress = (message: TAnyMessage) => {
 		this.setState({ selectedMessage: message });
 		const { showActionSheet } = this.props;
 		const { selectedMessage } = this.state;
@@ -910,7 +911,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onDiscussionPress = debounce(
-		async (item: TAnyMessageModel) => {
+		async (item: TAnyMessage) => {
 			const { isMasterDetail } = this.props;
 			if (!item.drid) return;
 			const sub = await getRoomInfo(item.drid);
@@ -945,7 +946,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	onThreadPress = debounce((item: TAnyMessageModel) => this.navToThread(item), 1000, true);
+	onThreadPress = debounce((item: TAnyMessage) => this.navToThread(item), 1000, true);
 
 	shouldNavigateToRoom = (message: IMessage) => {
 		if (message.tmid && message.tmid === this.tmid) {
@@ -1154,7 +1155,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToThread = async (item: TAnyMessageModel | { tmid: string }) => {
+	navToThread = async (item: TAnyMessage | { tmid: string }) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 
@@ -1203,7 +1204,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToRoom = async (message: TAnyMessageModel) => {
+	navToRoom = async (message: TAnyMessage) => {
 		const { isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
 
@@ -1292,7 +1293,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	isIgnored = (message: TAnyMessageModel): boolean => {
+	isIgnored = (message: TAnyMessage): boolean => {
 		const { room } = this.state;
 		if ('id' in room) {
 			return room?.ignored?.includes?.(message?.u?._id) ?? false;
@@ -1300,7 +1301,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return false;
 	};
 
-	onLoadMoreMessages = (loaderItem: TAnyMessageModel) => {
+	onLoadMoreMessages = (loaderItem: TMessageModel) => {
 		const { room } = this.state;
 		return RoomServices.getMoreMessages({
 			rid: room.rid,
@@ -1315,7 +1316,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
 	};
 
-	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
+	renderItem = (item: TMessage, previousItem: TMessage, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
@@ -1336,7 +1337,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			content = (
 				<LoadMore
-					load={() => this.onLoadMoreMessages(item)}
+					load={() => this.onLoadMoreMessages(item as TMessageModel)}
 					type={item.t}
 					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}
 				/>

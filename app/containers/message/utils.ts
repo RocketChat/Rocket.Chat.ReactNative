@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { MessageTypesValues, TMessageModel } from '../../definitions/IMessage';
+import { MessageTypesValues, TAnyMessage } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
 
@@ -182,7 +182,7 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 	}
 };
 
-export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string): string | null => {
+export const getMessageTranslation = (message: TAnyMessage, autoTranslateLanguage: string): string | null => {
 	if (!autoTranslateLanguage) {
 		return null;
 	}

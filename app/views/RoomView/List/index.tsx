@@ -7,7 +7,7 @@ import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
-import { MessageType, TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { MessageType, TAnyMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { compareServerVersion, debounce } from '../../../lib/methods/helpers';
 import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
@@ -20,6 +20,7 @@ import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
 import { TSupportedThemes, withTheme } from '../../../theme';
 import { MESSAGE_TYPE_ANY_LOAD, themes } from '../../../lib/constants';
+import { TMessage } from '../definitions';
 
 const QUERY_SIZE = 50;
 
@@ -53,7 +54,7 @@ export interface IListContainerProps {
 }
 
 interface IListContainerState {
-	messages: TAnyMessageModel[];
+	messages: TMessage[];
 	refreshing: boolean;
 	highlightedMessage: string | null;
 }
@@ -185,47 +186,16 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		if (rid) {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable?.subscribe(messages => {
-				// @ts-ignore is this enough cols?
-				messages = messages.map(m => {
+				let data = messages.map(m => {
 					if ((MESSAGE_TYPE_ANY_LOAD as MessageType[]).includes(m.t)) {
 						return m;
 					}
 
-					return {
-						id: m.id,
-						_id: m._id,
-						msg: m.msg,
-						ts: m.ts,
-						status: m.status,
-						attachments: m.attachments,
-						urls: m.urls,
-						reactions: m.reactions,
-						t: m.t,
-						avatar: m.avatar,
-						emoji: m.emoji,
-						u: m.u,
-						alias: m.alias,
-						editedBy: m.editedBy,
-						role: m.role,
-						drid: m.drid,
-						dcount: m.dcount,
-						dlm: m.dlm,
-						tmid: m.tmid,
-						tcount: m.tcount,
-						tlm: m.tlm,
-						tmsg: m.tmsg,
-						mentions: m.mentions,
-						channels: m.channels,
-						unread: m.unread,
-						blocks: m.blocks,
-						autoTranslate: m.autoTranslate,
-						replies: m.replies,
-						md: m.md,
-						comment: m.comment
-					};
+					return m.asPlain();
 				});
+
 				if (tmid && this.thread) {
-					messages = [...messages, this.thread];
+					data = [...messages, this.thread];
 				}
 
 				/**
@@ -233,7 +203,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				 * hide system message is enabled
 				 */
 				if (compareServerVersion(serverVersion, 'lowerThan', '3.16.0') || hideSystemMessages.length) {
-					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+					data = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 				}
 
 				if (this.mounted) {
@@ -241,10 +211,10 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 						listRef.current?.prepareForLayoutAnimationRender();
 						animateNextTransition();
 					}
-					this.setState({ messages });
+					this.setState({ messages: data });
 				} else {
 					// @ts-ignore
-					this.state.messages = messages;
+					this.state.messages = data;
 				}
 				// TODO: move it away from here
 				this.readThreads();
@@ -297,7 +267,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		}
 	};
 
-	getLastMessage = (): TMessageModel | TThreadMessageModel | null => {
+	getLastMessage = (): TAnyMessage | null => {
 		const { messages } = this.state;
 		if (messages.length > 0) {
 			return messages[0];

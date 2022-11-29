@@ -109,7 +109,6 @@ export interface ISubscription {
 
 export type TSubscriptionModel = ISubscription &
 	Model & {
-		unsubscribe: () => Promise<any>;
 		asPlain: () => ISubscription;
 	};
 export type TSubscription = TSubscriptionModel | ISubscription;

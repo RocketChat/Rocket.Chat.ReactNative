@@ -8,12 +8,12 @@ import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
 import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
-import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
+import { IAttachment, TAnyMessage, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
-interface IMessageContainerProps {
-	item: TAnyMessageModel;
+interface TAnyMessageContainerProps {
+	item: TAnyMessage;
 	user: {
 		id: string;
 		username: string;
@@ -25,7 +25,7 @@ interface IMessageContainerProps {
 	style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
-	previousItem?: TAnyMessageModel;
+	previousItem?: TAnyMessage;
 	baseUrl: string;
 	Message_GroupingPeriod?: number;
 	isReadReceiptEnabled?: boolean;
@@ -38,17 +38,17 @@ interface IMessageContainerProps {
 	isIgnored?: boolean;
 	highlighted?: boolean;
 	getCustomEmoji: TGetCustomEmoji;
-	onLongPress?: (item: TAnyMessageModel) => void;
+	onLongPress?: (item: TAnyMessage) => void;
 	onReactionPress?: (emoji: string, id: string) => void;
 	onEncryptedPress?: () => void;
-	onDiscussionPress?: (item: TAnyMessageModel) => void;
-	onThreadPress?: (item: TAnyMessageModel) => void;
-	errorActionsShow?: (item: TAnyMessageModel) => void;
-	replyBroadcast?: (item: TAnyMessageModel) => void;
-	reactionInit?: (item: TAnyMessageModel) => void;
+	onDiscussionPress?: (item: TAnyMessage) => void;
+	onThreadPress?: (item: TAnyMessage) => void;
+	errorActionsShow?: (item: TAnyMessage) => void;
+	replyBroadcast?: (item: TAnyMessage) => void;
+	reactionInit?: (item: TAnyMessage) => void;
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	showAttachment: (file: IAttachment) => void;
-	onReactionLongPress?: (item: TAnyMessageModel) => void;
+	onReactionLongPress?: (item: TAnyMessage) => void;
 	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	callJitsi?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
@@ -61,11 +61,11 @@ interface IMessageContainerProps {
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
 }
 
-interface IMessageContainerState {
+interface TAnyMessageContainerState {
 	isManualUnignored: boolean;
 }
 
-class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> {
+class MessageContainer extends React.Component<TAnyMessageContainerProps, TAnyMessageContainerState> {
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
@@ -97,7 +97,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	// 	}
 	// }
 
-	// shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
+	// shouldComponentUpdate(nextProps: TAnyMessageContainerProps, nextState: TAnyMessageContainerState) {
 	// 	const { isManualUnignored } = this.state;
 	// 	const { threadBadgeColor, isIgnored, highlighted, previousItem } = this.props;
 	// 	if (nextProps.highlighted !== highlighted) {
@@ -233,11 +233,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		try {
 			if (
 				previousItem &&
-				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+				// @ts-ignore TODO: TAnyMessage vs TAnyMessageFromServer non-sense
 				previousItem.ts.toDateString() === item.ts.toDateString() &&
 				previousItem.u.username === item.u.username &&
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
-				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+				// @ts-ignore TODO: TAnyMessage vs TAnyMessageFromServer non-sense
 				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
 				previousItem.tmid === item.tmid
 			) {

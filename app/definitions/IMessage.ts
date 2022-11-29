@@ -4,8 +4,8 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { MessageTypeLoad } from '../lib/constants';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
-import { TThreadMessageModel } from './IThreadMessage';
-import { TThreadModel } from './IThread';
+import { IThreadMessage, TThreadMessageModel } from './IThreadMessage';
+import { IThread, TThreadModel } from './IThread';
 import { IUrl, IUrlFromServer } from './IUrl';
 
 export type MessageType =
@@ -146,9 +146,13 @@ export interface IMessage extends IMessageFromServer {
 	editedAt?: string | Date;
 }
 
-export type TMessageModel = IMessage & Model;
+export type TMessageModel = IMessage &
+	Model & {
+		asPlain: () => IMessage;
+	};
 
 export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
+export type TAnyMessage = IMessage | IThread | IThreadMessage;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
 
 // Read receipts to ReadReceiptView and chat.getMessageReadReceipts
