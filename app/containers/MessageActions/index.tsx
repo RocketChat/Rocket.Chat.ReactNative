@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import database from '../../lib/database';
+import { getMessageById } from '../../lib/database/services/Message';
 import I18n from '../../i18n';
 import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -15,7 +16,7 @@ import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
-import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, IEmoji, ILoggedUser, TAnyMessage, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
@@ -24,10 +25,10 @@ export interface IMessageActionsProps {
 	room: TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
-	editInit: (message: TAnyMessageModel) => void;
-	reactionInit: (message: TAnyMessageModel) => void;
+	editInit: (message: TAnyMessage) => void;
+	reactionInit: (message: TAnyMessage) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
-	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
+	replyInit: (message: TAnyMessage, mention: boolean) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
 	Message_AllowDeleting?: boolean;
@@ -46,7 +47,7 @@ export interface IMessageActionsProps {
 }
 
 export interface IMessageActions {
-	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
+	showMessageActions: (message: TAnyMessage) => Promise<void>;
 }
 
 const MessageActions = React.memo(
@@ -109,9 +110,9 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const isOwn = (message: TAnyMessageModel) => message.u && message.u._id === user.id;
+			const isOwn = (message: TAnyMessage) => message.u && message.u._id === user.id;
 
-			const allowEdit = (message: TAnyMessageModel) => {
+			const allowEdit = (message: TAnyMessage) => {
 				if (isReadOnly) {
 					return false;
 				}
@@ -135,7 +136,7 @@ const MessageActions = React.memo(
 				return true;
 			};
 
-			const allowDelete = (message: TAnyMessageModel) => {
+			const allowDelete = (message: TAnyMessage) => {
 				if (isReadOnly) {
 					return false;
 				}
@@ -166,19 +167,19 @@ const MessageActions = React.memo(
 				return true;
 			};
 
-			const getPermalink = (message: TAnyMessageModel) => getPermalinkMessage(message);
+			const getPermalink = (message: TAnyMessage) => getPermalinkMessage(message);
 
-			const handleReply = (message: TAnyMessageModel) => {
+			const handleReply = (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_REPLY);
 				replyInit(message, true);
 			};
 
-			const handleEdit = (message: TAnyMessageModel) => {
+			const handleEdit = (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_EDIT);
 				editInit(message);
 			};
 
-			const handleCreateDiscussion = (message: TAnyMessageModel) => {
+			const handleCreateDiscussion = (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_DISCUSSION);
 				const params = { message, channel: room, showCloseModal: true };
 				if (isMasterDetail) {
@@ -188,7 +189,7 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleUnread = async (message: TAnyMessageModel) => {
+			const handleUnread = async (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_UNREAD);
 				const { id: messageId, ts } = message;
 				const { rid } = room;
@@ -213,7 +214,7 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handlePermalink = async (message: TAnyMessageModel) => {
+			const handlePermalink = async (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_PERMALINK);
 				try {
 					const permalink = await getPermalink(message);
@@ -224,13 +225,13 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleCopy = async (message: TAnyMessageModel) => {
+			const handleCopy = async (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_COPY);
 				await Clipboard.setString((message?.attachments?.[0]?.description || message.msg) ?? '');
 				EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 			};
 
-			const handleShare = async (message: TAnyMessageModel) => {
+			const handleShare = async (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_SHARE);
 				try {
 					const permalink = await getPermalink(message);
@@ -242,12 +243,12 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleQuote = (message: TAnyMessageModel) => {
+			const handleQuote = (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_QUOTE);
 				replyInit(message, false);
 			};
 
-			const handleReplyInDM = async (message: TAnyMessageModel) => {
+			const handleReplyInDM = async (message: TAnyMessage) => {
 				if (message?.u?.username) {
 					const result = await Services.createDirectMessage(message.u.username);
 					if (result.success) {
@@ -264,7 +265,7 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleStar = async (message: TAnyMessageModel) => {
+			const handleStar = async (message: TAnyMessage) => {
 				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
 					await Services.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
@@ -275,7 +276,7 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handlePin = async (message: TAnyMessageModel) => {
+			const handlePin = async (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_PIN);
 				try {
 					await Services.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
@@ -295,7 +296,7 @@ const MessageActions = React.memo(
 				hideActionSheet();
 			};
 
-			const handleReadReceipt = (message: TAnyMessageModel) => {
+			const handleReadReceipt = (message: TAnyMessage) => {
 				if (isMasterDetail) {
 					Navigation.navigate('ModalStackNavigator', { screen: 'ReadReceiptsView', params: { messageId: message.id } });
 				} else {
@@ -303,14 +304,18 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleToggleTranslation = async (message: TAnyMessageModel) => {
+			const handleToggleTranslation = async (message: TAnyMessage) => {
 				try {
 					if (!room.autoTranslateLanguage) {
 						return;
 					}
 					const db = database.active;
+					const messageRecord = await getMessageById(message.id);
+					if (!messageRecord) {
+						return;
+					}
 					await db.write(async () => {
-						await message.update(m => {
+						await messageRecord.update(m => {
 							m.autoTranslate = !m.autoTranslate;
 							m._updatedAt = new Date();
 						});
@@ -324,7 +329,7 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleReport = async (message: TAnyMessageModel) => {
+			const handleReport = async (message: TAnyMessage) => {
 				logEvent(events.ROOM_MSG_ACTION_REPORT);
 				try {
 					await Services.reportMessage(message.id);
@@ -335,7 +340,7 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleDelete = (message: TAnyMessageModel) => {
+			const handleDelete = (message: TAnyMessage) => {
 				showConfirmationAlert({
 					message: I18n.t('You_will_not_be_able_to_recover_this_message'),
 					confirmationText: I18n.t('Delete'),
@@ -351,7 +356,7 @@ const MessageActions = React.memo(
 				});
 			};
 
-			const getOptions = (message: TAnyMessageModel) => {
+			const getOptions = (message: TAnyMessage) => {
 				const options: TActionSheetOptionsItem[] = [];
 				const videoConfBlock = message.t === 'videoconf';
 
@@ -487,7 +492,7 @@ const MessageActions = React.memo(
 				return options;
 			};
 
-			const showMessageActions = async (message: TAnyMessageModel) => {
+			const showMessageActions = async (message: TAnyMessage) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
 				showActionSheet({

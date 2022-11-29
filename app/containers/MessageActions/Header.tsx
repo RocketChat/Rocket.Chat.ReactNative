@@ -10,12 +10,12 @@ import { useFrequentlyUsedEmoji } from '../../lib/hooks';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import { IEmoji, TAnyMessageModel } from '../../definitions';
+import { IEmoji, TAnyMessage } from '../../definitions';
 import Touch from '../Touch';
 
 export interface IHeader {
-	handleReaction: (emoji: IEmoji, message: TAnyMessageModel) => void;
-	message: TAnyMessageModel;
+	handleReaction: (emoji: IEmoji, message: TAnyMessage) => void;
+	message: TAnyMessage;
 	isMasterDetail: boolean;
 }
 
