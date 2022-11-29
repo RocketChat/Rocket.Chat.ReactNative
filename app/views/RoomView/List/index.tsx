@@ -98,30 +98,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
-	// shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
-	// 	const { refreshing, highlightedMessage } = this.state;
-	// 	const { hideSystemMessages, tunread, ignored, loading } = this.props;
-	// 	if (loading !== nextProps.loading) {
-	// 		return true;
-	// 	}
-	// 	if (highlightedMessage !== nextState.highlightedMessage) {
-	// 		return true;
-	// 	}
-	// 	if (refreshing !== nextState.refreshing) {
-	// 		return true;
-	// 	}
-	// 	if (!dequal(hideSystemMessages, nextProps.hideSystemMessages)) {
-	// 		return true;
-	// 	}
-	// 	if (!dequal(tunread, nextProps.tunread)) {
-	// 		return true;
-	// 	}
-	// 	if (!dequal(ignored, nextProps.ignored)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
 	componentDidUpdate(prevProps: IListContainerProps) {
 		const { hideSystemMessages } = this.props;
 		if (!dequal(hideSystemMessages, prevProps.hideSystemMessages)) {
