@@ -883,8 +883,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
 						)
 					}
-					onEndReached={this.isGrouping ? this.onEndReached : undefined}
-					onEndReachedThreshold={this.isGrouping ? 0.5 : undefined}
+					onEndReached={this.isGrouping ? undefined : this.onEndReached}
+					onEndReachedThreshold={this.isGrouping ? undefined : 0.5}
 				/>
 			</View>
 		);
