@@ -360,7 +360,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, TAnyMessa
 					replies
 				}}
 			>
-				{/* @ts-ignore*/}
 				<Message
 					id={id}
 					msg={message}

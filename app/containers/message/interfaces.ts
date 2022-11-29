@@ -98,7 +98,6 @@ export interface IMessageCallButton {
 }
 
 export interface IMessageContent {
-	_id: string;
 	isTemp: boolean;
 	isInfo: string | boolean;
 	tmid?: string;
