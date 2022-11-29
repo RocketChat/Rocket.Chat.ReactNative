@@ -1,6 +1,8 @@
 import { forwardRef, useImperativeHandle } from 'react';
 import Model from '@nozbe/watermelondb/Model';
 
+import { getMessageById } from '../lib/database/services/Message';
+import { getThreadMessageById } from '../lib/database/services/ThreadMessage';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';
@@ -27,16 +29,16 @@ const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(
 			const msgCollection = db.get('messages');
 			const threadCollection = db.get('threads');
 
-			// Delete the object (it can be Message or ThreadMessage instance)
-			deleteBatch.push(message.prepareDestroyPermanently());
+			const msg = await getMessageById(message.id);
+			if (msg) {
+				deleteBatch.push(msg.prepareDestroyPermanently());
+			}
 
 			// If it's a thread, we find and delete the whole tree, if necessary
 			if (tmid) {
-				try {
-					const msg = await msgCollection.find(message.id);
+				const msg = await getThreadMessageById(message.id);
+				if (msg) {
 					deleteBatch.push(msg.prepareDestroyPermanently());
-				} catch {
-					// Do nothing: message not found
 				}
 
 				try {

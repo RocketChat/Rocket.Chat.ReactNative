@@ -347,7 +347,7 @@ const MessageActions = React.memo(
 					onPress: async () => {
 						try {
 							logEvent(events.ROOM_MSG_ACTION_DELETE);
-							await Services.deleteMessage(message.id, message.subscription ? message.subscription.id : '');
+							await Services.deleteMessage(message.id, message.rid);
 						} catch (e) {
 							logEvent(events.ROOM_MSG_ACTION_DELETE_F);
 							log(e);

@@ -795,8 +795,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const newMessage = {
 			id: message.id,
 			subscription: {
-				// @ts-ignore TODO: we can remove this after we merge a PR separating IMessage vs IMessageFromServer
-				id: message.subscription.id
+				id: message.rid
 			},
 			msg: message?.attachments?.[0]?.description || message.msg
 		} as TMessageModel;

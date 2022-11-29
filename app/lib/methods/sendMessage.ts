@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Model } from '@nozbe/watermelondb';
 
+import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
@@ -66,14 +67,17 @@ async function sendMessageCall(message: any) {
 export async function resendMessage(message: TMessageModel, tmid?: string) {
 	const db = database.active;
 	try {
-		await db.write(async () => {
-			await message.update(m => {
-				m.status = messagesStatus.TEMP;
+		const messageRecord = await getMessageById(message.id);
+		if (messageRecord) {
+			await db.write(async () => {
+				await messageRecord.update(m => {
+					m.status = messagesStatus.TEMP;
+				});
 			});
-		});
+		}
 		const m = await Encryption.encryptMessage({
 			_id: message.id,
-			rid: message.subscription ? message.subscription.id : '',
+			rid: message.rid,
 			msg: message.msg,
 			...(tmid && { tmid })
 		} as IMessage);
