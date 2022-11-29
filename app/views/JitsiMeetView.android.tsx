@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackHandler, NativeEventSubscription, PermissionsAndroid } from 'react-native';
+import { BackHandler, NativeEventSubscription } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import { isAppInstalled, openAppWithData } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
@@ -44,15 +44,10 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewS
 
 		isAppInstalled(JITSI_INTENT)
 			.then(function (isInstalled) {
-				if (!isInstalled) {
-					PermissionsAndroid.requestMultiple([
-						PermissionsAndroid.PERMISSIONS.CAMERA,
-						PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
-					]);
-					return;
+				if (isInstalled) {
+					navigation.pop();
+					openAppWithData(JITSI_INTENT, route.params?.url);
 				}
-				navigation.pop();
-				openAppWithData(JITSI_INTENT, route.params?.url);
 			})
 			.catch(() => {});
 
