@@ -1071,7 +1071,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			msg += `@${replyingMessage?.u?.username} `;
 		}
 
-		return (msg = `${msg} ${message}`);
+		return `${msg} ${message}`;
 	};
 
 	updateMentions = (keyword: any, type: string) => {
