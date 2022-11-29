@@ -22,7 +22,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
+// import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { themedHeader } from '../../lib/methods/helpers/navigation';
@@ -367,10 +367,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
 		callback?: () => void
 	) => {
-		if (this.animated) {
-			this.scroll?.prepareForLayoutAnimationRender();
-			animateNextTransition();
-		}
+		// if (this.animated) {
+		// 	this.scroll?.prepareForLayoutAnimationRender();
+		// 	animateNextTransition();
+		// }
 		this.setState(state, callback);
 	};
 
