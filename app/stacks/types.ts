@@ -5,7 +5,7 @@ import { IItem } from '../views/TeamChannelsView';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
-import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
+import { IMessage, TAnyMessage, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
@@ -37,7 +37,7 @@ export type ChatsStackParamList = {
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
 				status?: string;
-				replyInDM?: TAnyMessageModel;
+				replyInDM?: TAnyMessage;
 		  }
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {

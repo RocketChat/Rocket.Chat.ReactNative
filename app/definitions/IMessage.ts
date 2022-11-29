@@ -151,7 +151,6 @@ export type TMessageModel = IMessage &
 		asPlain: () => IMessage;
 	};
 
-export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
 export type TAnyMessage = IMessage | IThread | IThreadMessage;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
 

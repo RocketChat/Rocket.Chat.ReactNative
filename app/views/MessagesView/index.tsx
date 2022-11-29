@@ -27,7 +27,7 @@ import {
 	SubscriptionType,
 	IAttachment,
 	IMessage,
-	TAnyMessageModel,
+	TAnyMessage,
 	IUrl,
 	TGetCustomEmoji,
 	ICustomEmoji
@@ -160,7 +160,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 	defineMessagesViewContent = (name: string) => {
 		const { user, baseUrl, theme, useRealName } = this.props;
-		const renderItemCommonProps = (item: TAnyMessageModel) => ({
+		const renderItemCommonProps = (item: TAnyMessage) => ({
 			item,
 			baseUrl,
 			user,
@@ -219,7 +219,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
-				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
+				renderItem: (item: TAnyMessage) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
 			},
 			// Starred Messages Screen
 			Starred: {
@@ -230,7 +230,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
-				renderItem: (item: TAnyMessageModel) => (
+				renderItem: (item: TAnyMessage) => (
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
 				),
 				action: (message: IMessage) => ({
@@ -249,7 +249,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
-				renderItem: (item: TAnyMessageModel) => (
+				renderItem: (item: TAnyMessage) => (
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
 				),
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
