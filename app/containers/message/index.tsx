@@ -186,7 +186,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, TAnyMessa
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
 				// @ts-ignore TODO: TAnyMessage vs TAnyMessageFromServer non-sense
 				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
-				previousItem.tmid === item.tmid
+				previousItem.tmid === item.tmid &&
+				item.t !== 'rm' &&
+				previousItem.t !== 'rm'
 			) {
 				return false;
 			}
