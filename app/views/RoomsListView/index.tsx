@@ -368,6 +368,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		callback?: () => void
 	) => {
 		if (this.animated) {
+			this.scroll?.prepareForLayoutAnimationRender();
 			animateNextTransition();
 		}
 		this.setState(state, callback);
@@ -774,10 +775,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	onEndReached = () => {
-		// Run only when we're not grouping by anything
-		if (!this.isGrouping) {
-			this.getSubscriptions();
-		}
+		this.getSubscriptions();
 	};
 
 	getScrollRef = (ref: any) => (this.scroll = ref);
@@ -870,23 +868,25 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		return (
-			<FlashList
-				ref={this.getScrollRef}
-				data={searching ? search : chats}
-				extraData={theme || refreshing || displayMode}
-				keyExtractor={keyExtractor}
-				// @ts-ignore
-				contentContainerStyle={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
-				renderItem={this.renderItem}
-				ListHeaderComponent={this.renderListHeader}
-				estimatedItemSize={height}
-				keyboardShouldPersistTaps='always'
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
-				}
-				onEndReached={this.onEndReached}
-				onEndReachedThreshold={0.5}
-			/>
+			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+				<FlashList
+					ref={this.getScrollRef}
+					data={searching ? search : chats}
+					extraData={theme || refreshing || displayMode}
+					keyExtractor={keyExtractor}
+					renderItem={this.renderItem}
+					ListHeaderComponent={this.renderListHeader}
+					estimatedItemSize={height}
+					keyboardShouldPersistTaps='always'
+					refreshControl={
+						searching ? undefined : (
+							<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+						)
+					}
+					onEndReached={this.isGrouping ? this.onEndReached : undefined}
+					onEndReachedThreshold={this.isGrouping ? 0.5 : undefined}
+				/>
+			</View>
 		);
 	};
 

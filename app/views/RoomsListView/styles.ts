@@ -6,9 +6,6 @@ export default StyleSheet.create({
 	container: {
 		flex: 1
 	},
-	list: {
-		width: '100%'
-	},
 	dropdownContainerHeader: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,
