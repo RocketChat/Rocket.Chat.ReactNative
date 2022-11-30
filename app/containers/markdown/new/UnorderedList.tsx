@@ -18,7 +18,9 @@ const UnorderedList = ({ value }: IUnorderedListProps) => {
 			{value.map(item => (
 				<View style={styles.row}>
 					<Text style={[styles.text, { color: themes[theme].bodyText }]}>- </Text>
-					<Inline value={item.value} />
+					<Text style={{ color: themes[theme].bodyText }}>
+						<Inline value={item.value} />
+					</Text>
 				</View>
 			))}
 		</View>
