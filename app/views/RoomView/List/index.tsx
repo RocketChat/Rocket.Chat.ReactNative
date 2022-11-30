@@ -10,7 +10,7 @@ import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { MessageType, TAnyMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { compareServerVersion, debounce } from '../../../lib/methods/helpers';
-// import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
+import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
 import log from '../../../lib/methods/helpers/log';
 import EmptyRoom from '../EmptyRoom';
 // @ts-ignore
@@ -124,7 +124,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	query = async () => {
 		this.count += QUERY_SIZE;
-		const { rid, tmid, showMessageInMainThread, serverVersion } = this.props;
+		const { rid, tmid, showMessageInMainThread, serverVersion, listRef } = this.props;
 		const db = database.active;
 
 		// handle servers with version < 3.0.0
@@ -185,11 +185,11 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				}
 
 				if (this.mounted) {
-					// if (this.animated) {
-					// 	listRef.current?.prepareForLayoutAnimationRender();
-					// 	animateNextTransition();
-					// }
 					this.setState({ messages: data });
+					if (this.animated) {
+						listRef.current?.prepareForLayoutAnimationRender();
+						animateNextTransition();
+					}
 				} else {
 					// @ts-ignore
 					this.state.messages = data;
