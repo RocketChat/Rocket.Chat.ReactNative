@@ -65,7 +65,6 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		} else {
 			onNotification(notification);
 		}
-		console.log('🚀 ~ file: push.ts:64 ~ Notifications.events ~ notification', notification);
 		completion();
 	});
 
