@@ -217,6 +217,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	}
 
+	shouldComponentUpdate(nextProps: Readonly<IRoomsListViewProps>): boolean {
+		// TODO: This COULD work, because when we pop from RoomView, we're going to update the sub
+		// But we need to check if it's really working
+		if (nextProps.navigation.isFocused()) {
+			return true;
+		}
+		return false;
+	}
+
 	componentDidUpdate(prevProps: IRoomsListViewProps) {
 		const {
 			sortBy,
