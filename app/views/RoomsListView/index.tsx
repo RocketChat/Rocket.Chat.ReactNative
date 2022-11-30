@@ -217,15 +217,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	}
 
-	shouldComponentUpdate(nextProps: Readonly<IRoomsListViewProps>): boolean {
-		// TODO: This COULD work, because when we pop from RoomView, we're going to update the sub
-		// But we need to check if it's really working
-		if (nextProps.navigation.isFocused()) {
-			return true;
-		}
-		return false;
-	}
-
 	componentDidUpdate(prevProps: IRoomsListViewProps) {
 		const {
 			sortBy,
@@ -394,6 +385,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	getSubscriptions = async () => {
+		console.log('🚀 ~ file: index.tsx ~ line 408 ~ RoomsListView ~ getSubscriptions');
 		this.unsubscribeQuery();
 
 		const { sortBy, showUnread, showFavorites, groupByType, user } = this.props;
@@ -884,7 +876,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						<FlashList
 							ref={this.getScrollRef}
 							data={searching ? search : chats}
-							extraData={this.props}
+							extraData={theme}
 							keyExtractor={keyExtractor}
 							renderItem={this.renderItem}
 							getItemType={item => (item.separator ? 'section' : 'item')}
