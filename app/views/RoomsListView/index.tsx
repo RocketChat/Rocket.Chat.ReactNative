@@ -866,48 +866,41 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		);
 	};
 
-	renderScroll = () => {
-		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode } = this.props;
-
-		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
-
-		if (loading) {
-			return <ActivityIndicator />;
-		}
-
-		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-				<FlashList
-					ref={this.getScrollRef}
-					data={searching ? search : chats}
-					extraData={theme || refreshing || displayMode}
-					keyExtractor={keyExtractor}
-					renderItem={this.renderItem}
-					ListHeaderComponent={this.renderListHeader}
-					estimatedItemSize={height}
-					keyboardShouldPersistTaps='always'
-					refreshControl={
-						searching ? undefined : (
-							<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
-						)
-					}
-					onEndReached={this.isGrouping ? undefined : this.onEndReached}
-					onEndReachedThreshold={this.isGrouping ? undefined : 0.5}
-				/>
-			</View>
-		);
-	};
-
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme, navigation } = this.props;
+		const { showServerDropdown, theme, navigation, refreshing, displayMode } = this.props;
+		const { loading, chats, search, searching } = this.state;
+
+		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar />
 				{this.renderHeader()}
-				{this.renderScroll()}
+				{loading ? (
+					<ActivityIndicator />
+				) : (
+					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+						<FlashList
+							ref={this.getScrollRef}
+							data={searching ? search : chats}
+							extraData={this.props}
+							keyExtractor={keyExtractor}
+							renderItem={this.renderItem}
+							getItemType={item => (item.separator ? 'section' : 'item')}
+							ListHeaderComponent={this.renderListHeader}
+							estimatedItemSize={height}
+							keyboardShouldPersistTaps='always'
+							refreshControl={
+								searching ? undefined : (
+									<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+								)
+							}
+							onEndReached={this.isGrouping ? undefined : this.onEndReached}
+							onEndReachedThreshold={this.isGrouping ? undefined : 0.5}
+						/>
+					</View>
+				)}
 				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
 				{/* @ts-ignore*/}
 				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
