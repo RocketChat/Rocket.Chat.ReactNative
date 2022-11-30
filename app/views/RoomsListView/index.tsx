@@ -71,7 +71,6 @@ interface IRoomsListViewProps {
 	route: RouteProp<ChatsStackParamList, 'RoomsListView'>;
 	theme: TSupportedThemes;
 	dispatch: Dispatch;
-	[key: string]: IUser | string | boolean | ISubscription[] | number | object | TEncryptionBanner;
 	user: IUser;
 	server: string;
 	searchText: string;
@@ -88,20 +87,17 @@ interface IRoomsListViewProps {
 	isMasterDetail: boolean;
 	subscribedRoom: string;
 	width: number;
-	insets: {
-		left: number;
-		right: number;
-	};
+	insets: { left: number; bottom: number; right: number; top: number };
 	queueSize: number;
 	inquiryEnabled: boolean;
-	encryptionBanner: TEncryptionBanner;
+	encryptionBanner: string;
 	showAvatar: boolean;
 	displayMode: string;
-	createTeamPermission: [];
-	createDirectMessagePermission: [];
-	createPublicChannelPermission: [];
-	createPrivateChannelPermission: [];
-	createDiscussionPermission: [];
+	createTeamPermission?: string[];
+	createDirectMessagePermission?: string[];
+	createPublicChannelPermission?: string[];
+	createPrivateChannelPermission?: string[];
+	createDiscussionPermission?: string[];
 }
 
 interface IRoomsListViewState {
@@ -791,7 +787,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}
-				encryptionBanner={encryptionBanner}
+				encryptionBanner={encryptionBanner as TEncryptionBanner}
 				user={user}
 			/>
 		);
@@ -914,8 +910,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	groupByType: state.sortPreferences.groupByType,
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
-	useRealName: state.settings.UI_Use_Real_Name,
-	StoreLastMessage: state.settings.Store_Last_Message,
+	useRealName: state.settings.UI_Use_Real_Name as boolean,
+	StoreLastMessage: state.settings.Store_Last_Message as boolean,
 	subscribedRoom: state.room.subscribedRoom,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
