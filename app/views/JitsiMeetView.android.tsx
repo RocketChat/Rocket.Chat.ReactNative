@@ -74,8 +74,12 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	};
 
 	onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
-		const { navigation } = this.props;
-		if (webViewState.url.includes('close')) {
+		const { navigation, route } = this.props;
+		const jitsiRoomId = route.params.url
+			?.split(/^https?:\/\//)[1]
+			?.split('#')[0]
+			?.split('/')[1];
+		if ((jitsiRoomId && !webViewState.url.includes(jitsiRoomId)) || webViewState.url.includes('close')) {
 			navigation.pop();
 		}
 	};
