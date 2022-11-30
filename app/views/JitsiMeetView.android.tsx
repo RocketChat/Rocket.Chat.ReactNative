@@ -5,7 +5,6 @@ import { isAppInstalled, openAppWithUri } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 
-import RCActivityIndicator from '../containers/ActivityIndicator';
 import { IBaseScreen } from '../definitions';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { Services } from '../lib/services';
@@ -14,13 +13,9 @@ import { withTheme } from '../theme';
 
 const JITSI_INTENT = 'org.jitsi.meet';
 
-interface IJitsiMeetViewState {
-	loading: boolean;
-}
-
 type TJitsiMeetViewProps = IBaseScreen<ChatsStackParamList, 'JitsiMeetView'>;
 
-class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewState> {
+class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	private rid: string;
 	private url: string;
 	private videoConf: boolean;
@@ -33,10 +28,6 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewS
 		this.url = props.route.params?.url;
 		this.videoConf = !!props.route.params?.videoConf;
 		this.jitsiTimeout = null;
-
-		this.state = {
-			loading: true
-		};
 	}
 
 	componentDidMount() {
@@ -51,10 +42,6 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewS
 				}
 			})
 			.catch(() => {});
-
-		setTimeout(() => {
-			this.setState({ loading: false });
-		}, 1000);
 		this.onConferenceJoined();
 		this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
 	}
@@ -73,7 +60,6 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewS
 	// call is not ended and is available to web users.
 	onConferenceJoined = () => {
 		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_JOIN : events.JM_CONFERENCE_JOIN);
-		this.setState({ loading: false });
 		if (this.rid && !this.videoConf) {
 			Services.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			if (this.jitsiTimeout) {
@@ -95,20 +81,16 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewS
 	};
 
 	render() {
-		const { loading } = this.state;
 		return (
-			<>
-				<WebView
-					source={{ uri: `${this.url}&config.disableDeepLinking=true` }}
-					onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
-					onNavigationStateChange={this.onNavigationStateChange}
-					style={{ flex: loading ? 0 : 1 }}
-					javaScriptEnabled
-					domStorageEnabled
-					mediaPlaybackRequiresUserAction={false}
-				/>
-				{loading ? <RCActivityIndicator absolute size='large' /> : null}
-			</>
+			<WebView
+				source={{ uri: `${this.url}&config.disableDeepLinking=true` }}
+				onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
+				onNavigationStateChange={this.onNavigationStateChange}
+				style={{ flex: 1 }}
+				javaScriptEnabled
+				domStorageEnabled
+				mediaPlaybackRequiresUserAction={false}
+			/>
 		);
 	}
 }
