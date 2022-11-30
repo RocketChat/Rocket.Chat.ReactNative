@@ -1,7 +1,7 @@
 import React from 'react';
 import { BackHandler, NativeEventSubscription } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
-import { isAppInstalled, openAppWithData } from 'react-native-send-intent';
+import { isAppInstalled, openAppWithUri } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 
@@ -41,12 +41,13 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps, IJitsiMeetViewS
 
 	componentDidMount() {
 		const { route, navigation } = this.props;
-
 		isAppInstalled(JITSI_INTENT)
 			.then(function (isInstalled) {
 				if (isInstalled) {
-					navigation.pop();
-					openAppWithData(JITSI_INTENT, route.params?.url);
+					const callUrl = route.params.url.replace(/^https?:\/\//, '').split('#')[0];
+					openAppWithUri(`intent://${callUrl}#Intent;scheme=${JITSI_INTENT};package=${JITSI_INTENT};end`)
+						.then(() => navigation.pop())
+						.catch(() => {});
 				}
 			})
 			.catch(() => {});
