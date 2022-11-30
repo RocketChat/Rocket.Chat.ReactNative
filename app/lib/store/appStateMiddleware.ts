@@ -1,6 +1,7 @@
 // https://github.com/bamlab/redux-enhancer-react-native-appstate
 import { AppState } from 'react-native';
 
+import { removeAllNotifications } from '../notifications/push';
 import { APP_STATE } from '../../actions/actionsTypes';
 
 export default () =>
@@ -16,6 +17,7 @@ export default () =>
 					let type;
 					if (nextAppState === 'active') {
 						type = APP_STATE.FOREGROUND;
+						removeAllNotifications();
 					} else if (nextAppState === 'background') {
 						type = APP_STATE.BACKGROUND;
 					}

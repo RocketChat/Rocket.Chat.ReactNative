@@ -21,6 +21,10 @@ export const setNotificationsBadgeCount = (count = 0): void => {
 	}
 };
 
+export const removeAllNotifications = (): void => {
+	Notifications.removeAllDeliveredNotifications();
+};
+
 export const pushNotificationConfigure = (onNotification: (notification: INotification) => void): Promise<any> => {
 	if (isIOS) {
 		// init
@@ -61,6 +65,7 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		} else {
 			onNotification(notification);
 		}
+		console.log('🚀 ~ file: push.ts:64 ~ Notifications.events ~ notification', notification);
 		completion();
 	});
 
