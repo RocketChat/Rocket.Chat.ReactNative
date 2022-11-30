@@ -12,7 +12,6 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
-import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -24,7 +23,7 @@ import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import styles from './styles';
 import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
-import { getRoomTitle, getUidDirectMessage, useDebounce } from '../../lib/methods/helpers';
+import { useDebounce } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { useAppSelector } from '../../lib/hooks';
@@ -73,7 +72,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const { theme } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const rooms = useAppSelector(state => state.room.rooms);
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -107,34 +105,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	};
 
 	const navigateToRoom = (item: ICannedResponse) => {
-		if (!room) {
-			return;
-		}
-		const { name } = room;
-		const params = {
-			rid: room.rid,
-			name: getRoomTitle({
-				t: room.t,
-				fname: name
-			}),
-			t: room.t,
-			roomUserId: getUidDirectMessage(room),
-			usedCannedResponse: item.text
-		};
-
-		if (room.rid) {
-			// if it's on master detail layout, we close the modal and replace RoomView
-			if (isMasterDetail) {
-				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail });
-			} else {
-				let navigate = navigation.push;
-				// if this is a room focused
-				if (rooms.includes(room.rid)) {
-					({ navigate } = navigation);
-				}
-				navigate('RoomView', params);
-			}
+		if (room?.rid) {
+			goRoom({ item: room, isMasterDetail, popToRoot: true, usedCannedResponse: item.text });
 		}
 	};
 

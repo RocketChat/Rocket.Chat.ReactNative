@@ -4,7 +4,6 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import I18n from '../i18n';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -78,10 +77,7 @@ const handleRequest = function* handleRequest({ data }) {
 
 const handleSuccess = function* handleSuccess({ data }) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	if (isMasterDetail) {
-		Navigation.navigate('DrawerNavigator');
-	}
-	goRoom({ item: data, isMasterDetail });
+	goRoom({ item: data, isMasterDetail, popToRoot: true });
 };
 
 const handleFailure = function handleFailure({ err, isTeam }) {

@@ -21,11 +21,16 @@ function popToTop() {
 	navigationRef.current?.dispatch(StackActions.popToTop());
 }
 
+function dispatch(params: any) {
+	navigationRef.current?.dispatch(params);
+}
+
 export default {
 	navigationRef,
 	routeNameRef,
 	navigate,
 	back,
 	replace,
-	popToTop
+	popToTop,
+	dispatch
 };

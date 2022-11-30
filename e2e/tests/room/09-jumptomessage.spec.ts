@@ -200,7 +200,7 @@ describe('Room', () => {
 const expectThreadMessages = async (message: string) => {
 	await waitFor(element(by.id('room-view-title-thread 1')))
 		.toExist()
-		.withTimeout(5000);
+		.withTimeout(10000);
 	await waitFor(element(by[textMatcher](message)).atIndex(0))
 		.toExist()
 		.withTimeout(10000);
