@@ -48,7 +48,10 @@ export const onNotification = (push: INotification): void => {
 };
 
 export const getDeviceToken = (): string => deviceToken;
-export const setBadgeCount = (count?: number): void => setNotificationsBadgeCount(count);
+export const setBadgeCount = (count?: number): void => {
+	console.log('🚀 ~ file: index.ts:52 ~ count', count);
+};
+export const setBadgeCount2 = (count?: number): void => setNotificationsBadgeCount(count);
 export const initializePushNotifications = (): Promise<INotification> | undefined => {
 	if (!isFDroidBuild) {
 		setBadgeCount();
