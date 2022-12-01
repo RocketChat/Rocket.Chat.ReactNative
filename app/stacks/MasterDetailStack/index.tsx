@@ -73,6 +73,7 @@ import {
 	MasterDetailInsideStackParamList,
 	ModalStackParamList
 } from './types';
+import { isIOS } from '../../lib/methods/helpers';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -222,7 +223,11 @@ const InsideStackNavigator = React.memo(() => {
 			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
-			<InsideStack.Screen name='JitsiMeetView' component={JitsiMeetView} options={{ headerShown: false }} />
+			<InsideStack.Screen
+				name='JitsiMeetView'
+				component={JitsiMeetView}
+				options={{ headerShown: false, animationEnabled: isIOS }}
+			/>
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 		</InsideStack.Navigator>
 	);

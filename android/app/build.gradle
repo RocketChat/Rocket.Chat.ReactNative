@@ -357,9 +357,6 @@ dependencies {
     playImplementation project(':@react-native-firebase_app')
     playImplementation project(':@react-native-firebase_analytics')
     playImplementation project(':@react-native-firebase_crashlytics')
-    implementation(project(':react-native-jitsi-meet')) { // https://github.com/skrafft/react-native-jitsi-meet#side-note
-      exclude group: 'com.facebook.react',module:'react-native-svg'
-    }
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     //noinspection GradleDynamicVersion
