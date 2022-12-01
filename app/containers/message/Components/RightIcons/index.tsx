@@ -17,8 +17,8 @@ interface IRightIcons {
 	type: MessageType;
 	msg?: string;
 	isEdited: boolean;
-	isReadReceiptEnabled: boolean;
-	unread: boolean;
+	isReadReceiptEnabled?: boolean;
+	unread?: boolean;
 	hasError: boolean;
 }
 
@@ -27,7 +27,7 @@ const RightIcons = ({ type, msg, isEdited, hasError, isReadReceiptEnabled, unrea
 		<Encrypted type={type} />
 		<Edited testID={`${msg}-edited`} isEdited={isEdited} />
 		<MessageError hasError={hasError} />
-		<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread || false} />
+		<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread} />
 	</View>
 );
 

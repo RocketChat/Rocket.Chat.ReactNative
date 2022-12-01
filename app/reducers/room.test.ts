@@ -12,13 +12,13 @@ describe('test room reducer', () => {
 	it('should return modified store after subscribeRoom', () => {
 		mockedStore.dispatch(subscribeRoom('GENERAL'));
 		const state = mockedStore.getState().room;
-		expect(state.rooms).toEqual(['GENERAL']);
+		expect(state.subscribedRoom).toEqual('GENERAL');
 	});
 
 	it('should return empty store after remove unsubscribeRoom', () => {
 		mockedStore.dispatch(unsubscribeRoom('GENERAL'));
 		const state = mockedStore.getState().room;
-		expect(state.rooms).toEqual([]);
+		expect(state.subscribedRoom).toEqual('');
 	});
 
 	it('should return initial state after leaveRoom', () => {

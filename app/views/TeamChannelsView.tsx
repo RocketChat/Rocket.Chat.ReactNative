@@ -218,7 +218,12 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			headerLeftContainerStyle: { minWidth: 60 },
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={themes[theme].headerTintColor}
+					testID='header-back'
+				/>
 			),
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
@@ -317,7 +322,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	onPressItem = debounce(
 		async (item: IItem) => {
 			logEvent(events.TC_GO_ROOM);
-			const { navigation, isMasterDetail } = this.props;
+			const { isMasterDetail } = this.props;
 			try {
 				let params = {};
 				const result = await Services.getRoomInfo(item._id);
@@ -330,10 +335,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						teamId: result.room.teamId
 					};
 				}
-				if (isMasterDetail) {
-					navigation.pop();
-				}
-				goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
+				goRoom({ item: params, isMasterDetail, popToRoot: !!isMasterDetail });
 			} catch (e: any) {
 				if (e.data.error === 'not-allowed') {
 					showErrorAlert(I18n.t('error-not-allowed'));

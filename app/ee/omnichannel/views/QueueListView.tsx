@@ -73,19 +73,14 @@ const QueueListView = React.memo(() => {
 
 	const onPressItem = (item = {} as IOmnichannelRoom) => {
 		logEvent(events.QL_GO_ROOM);
-		if (isMasterDetail) {
-			navigation.navigate('DrawerNavigator');
-		} else {
-			navigation.navigate('RoomsListView');
-		}
-
 		goRoom({
 			item: {
 				...item,
 				// we're calling v as visitor on our mergeSubscriptionsRooms
 				visitor: item.v
 			},
-			isMasterDetail
+			isMasterDetail,
+			popToRoot: true
 		});
 	};
 

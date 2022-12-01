@@ -47,7 +47,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 });
 
 const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
-	const { onReactionPress, onReactionLongPress, baseUrl, user } = useContext(MessageContext);
+	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
 	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
 	return (
 		<Touchable
@@ -67,7 +67,6 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 					content={reaction.emoji}
 					standardEmojiStyle={styles.reactionEmoji}
 					customEmojiStyle={styles.reactionCustomEmoji}
-					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 				/>
 				<Text style={[styles.reactionCount, { color: themes[theme].tintColor }]}>{reaction.usernames.length}</Text>

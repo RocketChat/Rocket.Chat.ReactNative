@@ -1,14 +1,22 @@
-import navigation from '../navigation/appNavigation';
-import openLink from './helpers/openLink';
-import { Services } from '../services';
-import log from './helpers/log';
-import { showErrorAlert } from './helpers';
+import { PermissionsAndroid } from 'react-native';
+
 import i18n from '../../i18n';
+import navigation from '../navigation/appNavigation';
+import { Services } from '../services';
+import { isAndroid, showErrorAlert } from './helpers';
+import log from './helpers/log';
+import openLink from './helpers/openLink';
 
 export const videoConfJoin = async (callId: string, cam: boolean) => {
 	try {
 		const result = await Services.videoConferenceJoin(callId, cam);
 		if (result.success) {
+			if (isAndroid) {
+				await PermissionsAndroid.requestMultiple([
+					PermissionsAndroid.PERMISSIONS.CAMERA,
+					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+				]);
+			}
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
