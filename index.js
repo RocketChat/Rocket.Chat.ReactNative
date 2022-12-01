@@ -1,11 +1,16 @@
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry } from 'react-native';
+import { connectToDevTools } from 'react-devtools-core';
 
 import { name as appName, share as shareName } from './app.json';
 
 if (__DEV__) {
 	require('./app/ReactotronConfig');
+	connectToDevTools({
+		host: 'localhost',
+		port: 8097
+	});
 } else {
 	console.log = () => {};
 	console.time = () => {};
