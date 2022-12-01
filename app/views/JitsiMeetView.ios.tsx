@@ -1,17 +1,16 @@
 import React from 'react';
-import { BackHandler, StyleSheet } from 'react-native';
-import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
+import { StyleSheet } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
+import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import { connect } from 'react-redux';
 
-import { getUserSelector } from '../selectors/login';
-import ActivityIndicator from '../containers/ActivityIndicator';
+import RCActivityIndicator from '../containers/ActivityIndicator';
+import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { isAndroid, isIOS } from '../lib/methods/helpers';
-import { withTheme } from '../theme';
-import { ChatsStackParamList } from '../stacks/types';
-import { IApplicationState, IUser, IBaseScreen } from '../definitions';
 import { Services } from '../lib/services';
+import { getUserSelector } from '../selectors/login';
+import { ChatsStackParamList } from '../stacks/types';
+import { withTheme } from '../theme';
 
 const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
 	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
@@ -60,20 +59,14 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 		const { userInfo } = this.state;
 
 		setTimeout(() => {
+			const onlyAudio = route.params?.onlyAudio ?? false;
+			if (onlyAudio) {
+				JitsiMeet.audioCall(this.url, userInfo);
+			} else {
+				JitsiMeet.call(this.url, userInfo);
+			}
 			this.setState({ loading: false });
 		}, 1000);
-
-		if (isIOS) {
-			setTimeout(() => {
-				const onlyAudio = route.params?.onlyAudio ?? false;
-				if (onlyAudio) {
-					JitsiMeet.audioCall(this.url, userInfo);
-				} else {
-					JitsiMeet.call(this.url, userInfo);
-				}
-			}, 1000);
-		}
-		BackHandler.addEventListener('hardwareBackPress', () => null);
 	}
 
 	componentWillUnmount() {
@@ -83,16 +76,8 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 			this.jitsiTimeout = null;
 			BackgroundTimer.stopBackgroundTimer();
 		}
-		BackHandler.removeEventListener('hardwareBackPress', () => null);
-		if (isIOS) {
-			JitsiMeet.endCall();
-		}
-	}
-
-	endCall = () => {
 		JitsiMeet.endCall();
-		return null;
-	};
+	}
 
 	onConferenceWillJoin = () => {
 		this.setState({ loading: false });
@@ -117,8 +102,8 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	};
 
 	onConferenceTerminated = () => {
-		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
 		const { navigation } = this.props;
+		logEvent(this.videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
 		// fix to go back when the call ends
 		setTimeout(() => {
 			JitsiMeet.endCall();
@@ -127,10 +112,8 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	};
 
 	render() {
-		const { userInfo, loading } = this.state;
-		const { route } = this.props;
-		const onlyAudio = route.params?.onlyAudio ?? false;
-		const options = isAndroid ? { url: this.url, userInfo, audioOnly: onlyAudio } : null;
+		const { loading } = this.state;
+
 		return (
 			<>
 				<RNJitsiMeetView
@@ -138,9 +121,9 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 					onConferenceTerminated={this.onConferenceTerminated}
 					onConferenceJoined={this.onConferenceJoined}
 					style={StyleSheet.absoluteFill}
-					options={options}
+					options={null}
 				/>
-				{loading ? <ActivityIndicator /> : null}
+				{loading ? <RCActivityIndicator absolute size='large' /> : null}
 			</>
 		);
 	}
