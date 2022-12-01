@@ -14,6 +14,11 @@ module.exports = {
 			platforms: {
 				android: null
 			}
+		},
+		'react-native-jitsi-meet': {
+			platforms: {
+				android: null
+			}
 		}
 	}
 };
