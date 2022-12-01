@@ -94,6 +94,11 @@ const UrlContent = React.memo(
 	}
 );
 
+const isImage = (url: string) => {
+	const regExpUrlImage = new RegExp(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/);
+	return regExpUrlImage.test(url);
+};
+
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
 		if (!url || url?.ignoreParse) {
@@ -106,6 +111,14 @@ const Url = React.memo(
 			Clipboard.setString(url.url);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		};
+
+		let imageUrl;
+
+		if (url.image) {
+			imageUrl = url.image;
+		} else {
+			imageUrl = isImage(url.url) ? url.url : '';
+		}
 
 		return (
 			<Touchable
@@ -123,8 +136,8 @@ const Url = React.memo(
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<>
-					<UrlImage image={url.image} />
-					<UrlContent title={url.title} description={url.description} theme={theme} />
+					<UrlImage image={imageUrl} />
+					{url.title || url.description ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
 				</>
 			</Touchable>
 		);
