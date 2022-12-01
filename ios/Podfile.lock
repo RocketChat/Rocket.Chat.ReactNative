@@ -11,23 +11,23 @@ PODS:
     - ReactCommon
   - EXFileSystem (14.1.0):
     - ExpoModulesCore
-  - EXImageLoader (3.2.0):
+  - EXImageLoader (4.0.0):
     - ExpoModulesCore
     - React-Core
   - EXLocalAuthentication (12.2.0):
     - ExpoModulesCore
-  - Expo (46.0.9):
+  - Expo (47.0.8):
     - ExpoModulesCore
-  - ExpoHaptics (11.2.0):
+  - ExpoHaptics (12.0.1):
     - ExpoModulesCore
-  - ExpoImagePicker (13.3.1):
+  - ExpoImagePicker (14.0.2):
     - ExpoModulesCore
-  - ExpoKeepAwake (10.1.1):
+  - ExpoKeepAwake (11.0.1):
     - ExpoModulesCore
-  - ExpoModulesCore (0.11.4):
+  - ExpoModulesCore (1.0.3):
     - React-Core
     - ReactCommon/turbomodule/core
-  - ExpoWebBrowser (10.2.1):
+  - ExpoWebBrowser (12.0.0):
     - ExpoModulesCore
   - EXVideoThumbnails (6.3.0):
     - ExpoModulesCore
@@ -602,7 +602,7 @@ DEPENDENCIES:
   - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
   - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
-  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - EXVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -736,7 +736,7 @@ EXTERNAL SOURCES:
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
-    :path: "../node_modules/expo-modules-core/ios"
+    :path: "../node_modules/expo-modules-core"
   ExpoWebBrowser:
     :path: "../node_modules/expo-web-browser/ios"
   EXVideoThumbnails:
@@ -904,14 +904,14 @@ SPEC CHECKSUMS:
   EXAppleAuthentication: 709a807fe7f48ac6986a2ceed206ee6a8baf28df
   EXAV: 88f61c5af8415715b7ee51f084c1020235b85c56
   EXFileSystem: 927e0a8885aa9c49e50fc38eaba2c2389f2f1019
-  EXImageLoader: b88e053d760f85a82405b1db2de4abf11978fc9f
+  EXImageLoader: 84b65e6bd9d3345d6fbb3ab936a546c54496a64d
   EXLocalAuthentication: 7f37b242eae73f9acf111d39bdee3f1379e68902
-  Expo: 73412414e62f5cbc6e713def821de70b92cd3ad6
-  ExpoHaptics: ad58ec96a25e57579c14a47c7d71f0de0de8656a
-  ExpoImagePicker: ca4207f2952a78e6dac2d7852d7e170dd2eaf1d0
-  ExpoKeepAwake: c0c494b442ecd8122974c13b93ccfb57bd408e88
-  ExpoModulesCore: e281bb7b78ea47e227dd5af94d04b24d8b2e1255
-  ExpoWebBrowser: 4b5f9633e5f169dc948587cb6d26d2d1d1406187
+  Expo: 36b5f625d36728adbdd1934d4d57182f319ab832
+  ExpoHaptics: 5a56d30a87ea213dd00b09566dc4b441a4dff97f
+  ExpoImagePicker: d2a1cea4023008ae2fb0d95f33422b80772cc76e
+  ExpoKeepAwake: 69b59d0a8d2b24de9f82759c39b3821fec030318
+  ExpoModulesCore: b5d21c8880afda6fb6ee95469f9ac2ec9b98e995
+  ExpoWebBrowser: 073e50f16669d498fb49063b9b7fe780b24f7fda
   EXVideoThumbnails: 19e055dc3245b53c536da9e0ef9c618fd2118297
   FBLazyVector: a7a655862f6b09625d11c772296b01cd5164b648
   FBReactNativeSpec: 66b5770d86bfee27d67b850416dbc7123c4f6311
@@ -1011,6 +1011,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
-PODFILE CHECKSUM: 052cbf741847405abc3b902c9e107c1ebb48b252
+PODFILE CHECKSUM: 8d2226713e77a455feba9d2ee3b2222cb6193697
 
 COCOAPODS: 1.11.3
