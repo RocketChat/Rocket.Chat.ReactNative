@@ -199,6 +199,14 @@ describe('Team', () => {
 			});
 
 			it('should add existing channel to team', async () => {
+				await navigateToRoom(team);
+				await waitFor(element(by.id('room-view-header-team-channels')))
+					.toExist()
+					.withTimeout(5000);
+				await element(by.id('room-view-header-team-channels')).tap();
+				await waitFor(element(by.id('team-channels-view')))
+					.toExist()
+					.withTimeout(5000);
 				await element(by.id('team-channels-view-create')).tap();
 				await waitFor(element(by.id('add-channel-team-view')))
 					.toExist()
