@@ -348,7 +348,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					scrollEventThrottle={16}
 					listRef={listRef}
 					data={messages}
-					extraData={loading || messages || highlightedMessage}
+					extraData={{ loading, highlightedMessage }}
 					// @ts-ignore
 					renderItem={this.renderItem}
 					onEndReached={this.onEndReached}
