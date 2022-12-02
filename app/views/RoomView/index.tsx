@@ -1535,7 +1535,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<StatusBar />
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
-					// @ts-ignore
 					ref={this.list}
 					listRef={this.flatList}
 					rid={rid}

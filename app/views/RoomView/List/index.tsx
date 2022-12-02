@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, ViewToken, RefreshControl } from 'react-native';
+import { FlatListProps, ViewToken } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
@@ -18,9 +18,9 @@ import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
-import { TSupportedThemes, withTheme } from '../../../theme';
-import { MESSAGE_TYPE_ANY_LOAD, themes } from '../../../lib/constants';
+import { MESSAGE_TYPE_ANY_LOAD } from '../../../lib/constants';
 import { TMessage } from '../definitions';
+import { RefreshControl } from './RefreshControl';
 
 const QUERY_SIZE = 50;
 
@@ -50,7 +50,6 @@ export interface IListContainerProps {
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
-	theme?: TSupportedThemes;
 }
 
 interface IListContainerState {
@@ -339,8 +338,8 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { rid, tmid, listRef, theme, loading } = this.props;
-		const { messages, refreshing } = this.state;
+		const { rid, tmid, listRef, loading } = this.props;
+		const { messages, refreshing, highlightedMessage } = this.state;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
@@ -349,7 +348,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					scrollEventThrottle={16}
 					listRef={listRef}
 					data={messages}
-					extraData={loading || messages}
+					extraData={loading || messages || highlightedMessage}
 					// @ts-ignore
 					renderItem={this.renderItem}
 					onEndReached={this.onEndReached}
@@ -358,9 +357,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					onViewableItemsChanged={this.onViewableItemsChanged}
 					viewabilityConfig={this.viewabilityConfig}
 					nativeID={tmid || rid}
-					refreshControl={
-						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme!].auxiliaryText} />
-					}
+					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
 				/>
 				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>
@@ -370,4 +367,4 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 export type ListContainerType = ListContainer;
 
-export default withTheme(ListContainer);
+export default ListContainer;
