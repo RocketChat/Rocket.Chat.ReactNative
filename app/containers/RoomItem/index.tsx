@@ -40,13 +40,24 @@ const RoomItemContainer = ({
 	const alert = item.alert || item.tunread?.length;
 	const connected = useAppSelector(state => state.meteor.connected);
 	const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
+	const isDirect = !!(item.t === 'd' && id && !isGroupChat(item));
 
+	// When app reconnects, we need to fetch the rendered user's presence
 	useEffect(() => {
-		const isDirect = !!(item.t === 'd' && id && !isGroupChat(item));
 		if (connected && isDirect) {
 			getUserPresence(id);
 		}
 	}, [connected]);
+
+	/**
+	 * The component can be recycled by FlashList.
+	 * When rid changes and there's no user's status, we need to fetch it
+	 */
+	useEffect(() => {
+		if (!userStatus && isDirect) {
+			getUserPresence(id);
+		}
+	}, [item.rid]);
 
 	const handleOnPress = () => onPress(item);
 
