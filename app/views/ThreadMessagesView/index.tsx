@@ -142,7 +142,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
 				</HeaderButton.Container>
 			)
 		};
@@ -242,7 +242,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		const { subscription } = this.state;
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
-		if (!subscription) {
+		if (!subscription._id) {
 			this.setState(({ messages }) => ({ messages: [...messages, ...update] }));
 			return;
 		}
