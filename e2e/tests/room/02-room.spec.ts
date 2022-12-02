@@ -13,6 +13,7 @@ import {
 	platformTypes,
 	TTextMatcher
 } from '../../helpers/app';
+import { sendMessage } from '../../helpers/data_setup';
 
 async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
@@ -91,7 +92,9 @@ describe('Room screen', () => {
 					await waitFor(element(by.id('messagebox-keyboard-emoji')))
 						.toExist()
 						.withTimeout(10000);
-					await expect(element(by.id('emoji-picker-tab-emoji'))).toExist();
+					await waitFor(element(by.id('emoji-picker-tab-emoji')))
+						.toExist()
+						.withTimeout(10000);
 					await element(by.id('emoji-picker-tab-emoji')).tap();
 					await expect(element(by.id('emoji-blush'))).toExist();
 					await element(by.id('emoji-blush')).tap();
@@ -295,7 +298,7 @@ describe('Room screen', () => {
 		});
 
 		describe('Message', () => {
-			it('should copy permalink', async () => {
+			it('should copy link', async () => {
 				await element(by[textMatcher](`${data.random}message`))
 					.atIndex(0)
 					.longPress();
@@ -304,7 +307,7 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Permalink')).atIndex(0).tap();
+				await element(by[textMatcher]('Get Link')).atIndex(0).tap();
 				// TODO: test clipboard
 			});
 			it('should copy message', async () => {
@@ -496,6 +499,37 @@ describe('Room screen', () => {
 				await waitFor(element(by[textMatcher](`${data.random}delete`)).atIndex(0))
 					.toNotExist()
 					.withTimeout(2000);
+				await tapBack();
+			});
+
+			it('should reply in DM to another user', async () => {
+				const channelName = data.userRegularChannels.detoxpublic.name;
+				const stringToReply = 'Message to reply in DM';
+				await waitFor(element(by.id('rooms-list-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await navigateToRoom(channelName);
+				await sendMessage(data.users.alternate, channelName, stringToReply);
+				await waitFor(element(by[textMatcher](stringToReply)).atIndex(0))
+					.toBeVisible()
+					.withTimeout(3000);
+				await element(by[textMatcher](stringToReply)).atIndex(0).longPress();
+				await waitFor(element(by.id('action-sheet')))
+					.toExist()
+					.withTimeout(2000);
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
+					.toExist()
+					.withTimeout(6000);
+				await element(by[textMatcher]('Reply in Direct Message')).atIndex(0).tap();
+				await waitFor(element(by.id(`room-view-title-${data.users.alternate.username}`)))
+					.toExist()
+					.withTimeout(6000);
+				await element(by.id('messagebox-input')).replaceText(`${data.random} replied in dm`);
+				await waitFor(element(by.id('messagebox-send-message')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('messagebox-send-message')).tap();
 			});
 		});
 	});

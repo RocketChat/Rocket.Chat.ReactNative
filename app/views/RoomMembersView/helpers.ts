@@ -15,12 +15,7 @@ import { RoomTypes } from '../../lib/methods';
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
-	if (isMasterDetail) {
-		appNavigation.navigate('DrawerNavigator');
-	} else {
-		appNavigation.popToTop();
-	}
-	goRoom({ item, isMasterDetail });
+	goRoom({ item, isMasterDetail, popToRoot: true });
 };
 
 export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles: any): boolean => {

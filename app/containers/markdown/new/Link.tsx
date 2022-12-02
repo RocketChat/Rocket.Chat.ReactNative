@@ -41,18 +41,21 @@ const Link = ({ value }: ILinkProps) => {
 	return (
 		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].actionTintColor }]}>
 			{(block => {
-				switch (block.type) {
-					case 'PLAIN_TEXT':
-						return block.value;
-					case 'STRIKE':
-						return <Strike value={block.value} />;
-					case 'ITALIC':
-						return <Italic value={block.value} />;
-					case 'BOLD':
-						return <Bold value={block.value} />;
-					default:
-						return null;
-				}
+				const blockArray = Array.isArray(block) ? block : [block];
+				return blockArray.map(blockInArray => {
+					switch (blockInArray.type) {
+						case 'PLAIN_TEXT':
+							return blockInArray.value;
+						case 'STRIKE':
+							return <Strike value={blockInArray.value} />;
+						case 'ITALIC':
+							return <Italic value={blockInArray.value} />;
+						case 'BOLD':
+							return <Bold value={blockInArray.value} />;
+						default:
+							return null;
+					}
+				});
 			})(label)}
 		</Text>
 	);

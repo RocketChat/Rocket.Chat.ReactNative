@@ -31,12 +31,14 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		flex: 1
 	},
+	inputBorder: {
+		borderRadius: 4
+	},
 	input: {
 		minHeight: 48,
 		paddingHorizontal: 8,
 		paddingBottom: 0,
-		borderWidth: 2,
-		borderRadius: 2,
+		borderWidth: 1,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},

@@ -43,7 +43,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import { sendLoadingEvent } from '../../containers/Loading';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
@@ -101,6 +100,7 @@ import {
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -225,6 +225,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
+	private replyInDM?: TAnyMessageModel;
 	// Type of InteractionManager.runAfterInteractions
 	private didMountInteraction?: {
 		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
@@ -259,6 +260,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
+		this.replyInDM = props.route.params?.replyInDM;
 		this.state = {
 			joined: true,
 			room,
@@ -331,6 +333,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
+			}
+			if (this.replyInDM) {
+				this.onReplyInit(this.replyInDM, false);
 			}
 		});
 		if (isTablet) {
@@ -905,15 +910,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onDiscussionPress = debounce(
 		async (item: TAnyMessageModel) => {
-			const { navigation } = this.props;
+			const { isMasterDetail } = this.props;
 			if (!item.drid) return;
 			const sub = await getRoomInfo(item.drid);
-			navigation.push('RoomView', {
-				rid: item.drid as string,
-				prid: item?.subscription?.id,
-				name: item.msg,
-				t: (sub?.t as SubscriptionType) || (this.t as SubscriptionType)
-			});
+			if (sub) {
+				goRoom({
+					item: sub as TGoRoomItem,
+					isMasterDetail
+				});
+			}
 		},
 		1000,
 		true
@@ -982,6 +987,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				} else {
 					this.navToThread(message);
 				}
+			} else if (!message.tmid && message.rid === this.rid && this.t === 'thread' && !message.replies) {
+				/**
+				 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
+				 */
+				return this.navToRoom(message);
 			} else {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
@@ -1193,12 +1203,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	navToRoom = async (message: TAnyMessageModel) => {
-		const { navigation, isMasterDetail } = this.props;
+		const { isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
+
 		return goRoom({
 			item: roomInfo as TGoRoomItem,
 			isMasterDetail,
-			navigationMethod: navigation.push,
 			jumpToMessageId: message.id
 		});
 	};

@@ -17,12 +17,9 @@ import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
-	container: {
-		padding: 28
-	},
 	info: {
-		fontSize: 14,
-		marginVertical: 8,
+		fontSize: 16,
+		marginVertical: 4,
 		...sharedStyles.textRegular
 	}
 });
@@ -53,10 +50,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 		>
 			<StatusBar />
 			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
-				<SafeAreaView
-					style={[styles.container, { backgroundColor: colors.backgroundColor }]}
-					testID='e2e-enter-your-password-view'
-				>
+				<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='e2e-enter-your-password-view'>
 					<FormTextInput
 						placeholder={I18n.t('Password')}
 						returnKeyType='send'

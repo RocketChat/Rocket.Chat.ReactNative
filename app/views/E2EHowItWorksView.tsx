@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
 		padding: 16
 	},
 	info: {
-		fontSize: 14,
-		marginVertical: 8
+		fontSize: 16,
+		marginBottom: 16
 	}
 });
 
