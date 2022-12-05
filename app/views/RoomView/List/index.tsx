@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, ViewToken } from 'react-native';
+import { FlatListProps, ViewToken, RefreshControl } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
@@ -18,9 +18,9 @@ import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
-import { MESSAGE_TYPE_ANY_LOAD } from '../../../lib/constants';
+import { MESSAGE_TYPE_ANY_LOAD, themes } from '../../../lib/constants';
 import { TMessage } from '../definitions';
-import { RefreshControl } from './RefreshControl';
+import { ThemeContext } from '../../../theme';
 
 const QUERY_SIZE = 50;
 
@@ -341,26 +341,33 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		const { rid, tmid, listRef, loading } = this.props;
 		const { messages, refreshing, highlightedMessage } = this.state;
 		return (
-			<>
-				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
-				<List
-					onScroll={this.onScroll}
-					scrollEventThrottle={16}
-					listRef={listRef}
-					data={messages}
-					extraData={{ loading, highlightedMessage }}
-					// @ts-ignore
-					renderItem={this.renderItem}
-					onEndReached={this.onEndReached}
-					ListFooterComponent={this.renderFooter}
-					onScrollToIndexFailed={this.handleScrollToIndexFailed}
-					onViewableItemsChanged={this.onViewableItemsChanged}
-					viewabilityConfig={this.viewabilityConfig}
-					nativeID={tmid || rid}
-					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
-				/>
-				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
-			</>
+			// FIXME: added context directly so we don't have to touch on withTheme's ref
+			<ThemeContext.Consumer>
+				{({ theme }) => (
+					<>
+						<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
+						<List
+							onScroll={this.onScroll}
+							scrollEventThrottle={16}
+							listRef={listRef}
+							data={messages}
+							extraData={{ loading, highlightedMessage }}
+							// @ts-ignore
+							renderItem={this.renderItem}
+							onEndReached={this.onEndReached}
+							ListFooterComponent={this.renderFooter}
+							onScrollToIndexFailed={this.handleScrollToIndexFailed}
+							onViewableItemsChanged={this.onViewableItemsChanged}
+							viewabilityConfig={this.viewabilityConfig}
+							nativeID={tmid || rid}
+							refreshControl={
+								<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme!].auxiliaryText} />
+							}
+						/>
+						<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
+					</>
+				)}
+			</ThemeContext.Consumer>
 		);
 	}
 }
