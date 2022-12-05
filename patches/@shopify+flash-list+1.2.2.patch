@@ -1,0 +1,16 @@
+diff --git a/node_modules/@shopify/flash-list/ios/Sources/AutoLayoutView.swift b/node_modules/@shopify/flash-list/ios/Sources/AutoLayoutView.swift
+index c2146c5..5ce7900 100644
+--- a/node_modules/@shopify/flash-list/ios/Sources/AutoLayoutView.swift
++++ b/node_modules/@shopify/flash-list/ios/Sources/AutoLayoutView.swift
+@@ -231,7 +231,10 @@ import UIKit
+ 
+     /// Fixes footer position along with rest of the items
+     private func fixFooter() {
+-        guard !disableAutoLayout, let parentScrollView = getScrollView() else {
++        guard !disableAutoLayout,
++              // Fixing layout during animation can interfere with it.
++              layer.animationKeys()?.isEmpty ?? true,
++              let parentScrollView = getScrollView() else {
+             return
+         }
+ 
