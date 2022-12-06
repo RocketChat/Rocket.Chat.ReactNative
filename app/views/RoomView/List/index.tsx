@@ -216,7 +216,13 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		}
 	}, 300);
 
-	onEndReached = () => this.query();
+	onEndReached = () => {
+		const { messages } = this.state;
+		if (messages.length < this.count) {
+			return;
+		}
+		this.query();
+	};
 
 	onRefresh = () =>
 		this.setState({ refreshing: true }, async () => {
