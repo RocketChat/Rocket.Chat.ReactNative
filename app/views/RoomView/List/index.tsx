@@ -10,7 +10,7 @@ import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { MessageType, TAnyMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { compareServerVersion, debounce } from '../../../lib/methods/helpers';
-import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
+// import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimation';
 import log from '../../../lib/methods/helpers/log';
 import EmptyRoom from '../EmptyRoom';
 // @ts-ignore
@@ -110,7 +110,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			this.unsubscribeFocus();
 		}
 		this.clearHighlightedMessageTimeout();
-		console.countReset(`${this.constructor.name}.render calls`);
+		console.countReset(`${this.constructor.name}.render: ${this.props.tmid || this.props.rid} calls`);
 	}
 
 	// clears previous highlighted message timeout, if exists
@@ -123,7 +123,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	query = async () => {
 		this.count += QUERY_SIZE;
-		const { rid, tmid, showMessageInMainThread, serverVersion, listRef } = this.props;
+		const { rid, tmid, showMessageInMainThread, serverVersion } = this.props;
 		const db = database.active;
 
 		// handle servers with version < 3.0.0
@@ -185,10 +185,10 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 				if (this.mounted) {
 					this.setState({ messages: data });
-					if (this.animated) {
-						listRef.current?.prepareForLayoutAnimationRender();
-						animateNextTransition();
-					}
+					// if (this.animated) {
+					// 	listRef.current?.prepareForLayoutAnimationRender();
+					// 	animateNextTransition();
+					// }
 				} else {
 					// @ts-ignore
 					this.state.messages = data;
@@ -337,9 +337,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	};
 
 	render() {
-		console.count(`${this.constructor.name}.render calls`);
 		const { rid, tmid, listRef, loading } = this.props;
 		const { messages, refreshing, highlightedMessage } = this.state;
+		console.count(`${this.constructor.name}.render: ${tmid || rid} calls`);
 		return (
 			// FIXME: added context directly so we don't have to touch on withTheme's ref
 			<ThemeContext.Consumer>
