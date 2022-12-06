@@ -409,7 +409,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
-		this.setReadOnly();
+		if (
+			!dequal(prevState.roomUpdate.muted, roomUpdate.muted) ||
+			prevState.roomUpdate.archived !== roomUpdate.archived ||
+			prevState.roomUpdate.ro !== roomUpdate.ro
+		) {
+			this.setReadOnly();
+		}
 	}
 
 	updateOmnichannel = async () => {
