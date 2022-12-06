@@ -205,6 +205,12 @@ interface IRoomViewState {
 	roomUserId?: string | null;
 }
 
+const fetchRoomUpdate = (room: any) =>
+	roomAttrsUpdate?.reduce((ret: any, attr) => {
+		ret[attr] = room[attr];
+		return ret;
+	}, {});
+
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
@@ -265,7 +271,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.state = {
 			joined: true,
 			room,
-			roomUpdate: {},
+			roomUpdate: fetchRoomUpdate(room),
 			member: {},
 			lastOpen: null,
 			reactionsModalVisible: false,
@@ -773,10 +779,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	observeRoom = (room: TSubscriptionModel) => {
 		const observable = room.observe();
 		this.subSubscription = observable.subscribe(changes => {
-			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
-				ret[attr] = changes[attr];
-				return ret;
-			}, {});
+			const roomUpdate = fetchRoomUpdate(changes);
 			if (this.mounted) {
 				this.internalSetState({ room: changes, roomUpdate, isOnHold: !!changes?.onHold });
 			} else {
