@@ -18,7 +18,8 @@
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
 		"prepare": "husky install",
-		"build-icon-set": "node scripts/build-icon-set.js"
+		"build-icon-set": "node scripts/build-icon-set.js",
+		"devtools": "react-devtools"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [
@@ -206,7 +207,8 @@
 		"otp.js": "1.2.0",
 		"patch-package": "6.4.7",
 		"prettier": "^2.3.2",
-		"react-devtools-core": "^4.27.0",
+		"react-devtools": "4.27.0",
+		"react-devtools-core": "4.27.0",
 		"react-dom": "17.0.1",
 		"react-native-flipper-performance-plugin": "^0.3.1",
 		"react-test-renderer": "17.0.2",
