@@ -186,7 +186,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				if (this.mounted) {
 					this.setState({ messages: data });
 
-					if (this.animated && this.viewableItems?.[0].index === 0) {
+					if (this.animated && this.viewableItems?.[0]?.index === 0) {
 						listRef.current?.prepareForLayoutAnimationRender();
 						animateNextTransition();
 					}
