@@ -40,7 +40,6 @@ import {
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { IApplicationState, ISubscription, IUser, RootEnum, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
@@ -58,7 +57,7 @@ import {
 	debounce,
 	isTablet
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
+import { E2E_BANNER_TYPE, DisplayMode, SortBy, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 
 type TNavigation = CompositeNavigationProp<
@@ -86,7 +85,6 @@ interface IRoomsListViewProps {
 	useRealName: boolean;
 	isMasterDetail: boolean;
 	subscribedRoom: string;
-	width: number;
 	insets: { left: number; bottom: number; right: number; top: number };
 	queueSize: number;
 	inquiryEnabled: boolean;
@@ -814,8 +812,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			user: { username },
 			StoreLastMessage,
 			useRealName,
-			isMasterDetail,
-			width,
 			showAvatar,
 			displayMode
 		} = this.props;
@@ -829,7 +825,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				username={username}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
-				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
@@ -925,4 +920,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDiscussionPermission: state.permissions['start-discussion']
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(RoomsListView)));

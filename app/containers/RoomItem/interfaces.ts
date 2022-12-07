@@ -78,7 +78,6 @@ interface IBaseRoomItem extends IRoomItemTouchables {
 	showAvatar: boolean;
 	swipeEnabled: boolean;
 	autoJoin?: boolean;
-	width: number;
 	username?: string;
 }
 
@@ -131,7 +130,6 @@ export interface ITouchableProps extends IRoomItemTouchables {
 	children: JSX.Element;
 	type: SubscriptionType;
 	testID: string;
-	width: number;
 	favorite: boolean;
 	isRead: boolean;
 	rid: string;

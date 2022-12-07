@@ -13,6 +13,7 @@ import {
 	HandlerStateChangeEventPayload,
 	PanGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
+import { useWindowDimensions } from 'react-native';
 
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
@@ -20,6 +21,8 @@ import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
+import { MAX_SIDEBAR_WIDTH } from '../../lib/constants';
+import { useAppSelector } from '../../lib/hooks';
 
 const Touchable = ({
 	children,
@@ -27,7 +30,6 @@ const Touchable = ({
 	onPress,
 	onLongPress,
 	testID,
-	width,
 	favorite,
 	isRead,
 	rid,
@@ -39,6 +41,9 @@ const Touchable = ({
 	displayMode
 }: ITouchableProps): React.ReactElement => {
 	const { colors } = useTheme();
+	const { width: deviceWidth } = useWindowDimensions();
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const width = isMasterDetail ? MAX_SIDEBAR_WIDTH : deviceWidth;
 
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);

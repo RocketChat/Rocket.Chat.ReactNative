@@ -16,7 +16,6 @@ const RoomItemContainer = ({
 	id,
 	onPress,
 	onLongPress,
-	width,
 	toggleFav,
 	toggleRead,
 	hideChannel,
@@ -88,7 +87,6 @@ const RoomItemContainer = ({
 			onLongPress={handleOnLongPress}
 			date={date}
 			accessibilityLabel={accessibilityLabel}
-			width={width}
 			favorite={item.f}
 			rid={item.rid}
 			toggleFav={toggleFav}
