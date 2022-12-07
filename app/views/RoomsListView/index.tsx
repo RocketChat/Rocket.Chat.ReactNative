@@ -197,6 +197,52 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	}
 
+	shouldComponentUpdate(nextProps: Readonly<IRoomsListViewProps>, nextState: Readonly<IRoomsListViewState>): boolean {
+		const {
+			createTeamPermission,
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		} = this.props;
+		if (
+			!dequal(createTeamPermission, nextProps.createTeamPermission) ||
+			!dequal(createPublicChannelPermission, nextProps.createPublicChannelPermission) ||
+			!dequal(createPrivateChannelPermission, nextProps.createPrivateChannelPermission) ||
+			!dequal(createDirectMessagePermission, nextProps.createDirectMessagePermission) ||
+			!dequal(createDiscussionPermission, nextProps.createDiscussionPermission)
+		) {
+			return true;
+		}
+
+		const { chats, search } = this.state;
+		if (!dequal(chats, nextState.chats) || !dequal(search, nextState.search)) {
+			return true;
+		}
+
+		const { sortBy, groupByType, showFavorites, showUnread, subscribedRoom, isMasterDetail, showAvatar, displayMode } =
+			this.props;
+		if (
+			sortBy !== nextProps.sortBy ||
+			groupByType !== nextProps.groupByType ||
+			showFavorites !== nextProps.showFavorites ||
+			showUnread !== nextProps.showUnread ||
+			showAvatar !== nextProps.showAvatar ||
+			displayMode !== nextProps.displayMode ||
+			subscribedRoom !== nextProps.subscribedRoom ||
+			isMasterDetail !== nextProps.isMasterDetail
+		) {
+			return true;
+		}
+
+		const { searching, loading, canCreateRoom } = this.state;
+		if (searching !== nextState.searching || loading !== nextState.loading || canCreateRoom !== nextState.canCreateRoom) {
+			return true;
+		}
+
+		return false;
+	}
+
 	componentDidUpdate(prevProps: IRoomsListViewProps) {
 		const {
 			sortBy,
