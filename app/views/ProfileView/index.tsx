@@ -69,7 +69,7 @@ interface IProfileViewState {
 	currentPassword: string | null;
 	avatarUrl: string | null;
 	avatar: IAvatar;
-	avatarSuggestions: IAvatarSuggestion;
+	avatarSuggestions: { [service: string]: IAvatarSuggestion };
 	customFields: {
 		[key: string | number]: string;
 	};
@@ -415,6 +415,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				})}
 				{Object.keys(avatarSuggestions).map(service => {
 					const { url, blob, contentType } = avatarSuggestions[service];
+					console.log('🚀 ~ file: index.tsx:418 ~ ProfileView ~ {Object.keys ~ url', url);
 					return this.renderAvatarButton({
 						disabled: !Accounts_AllowUserAvatarChange,
 						key: `profile-view-avatar-${service}`,

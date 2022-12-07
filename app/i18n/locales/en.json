@@ -878,5 +878,6 @@
   "room_archived": "archived room",
   "room_unarchived": "unarchived room",
   "Upload_image": "Upload image",
-  "Delete_image": "Delete image"
+  "Delete_image": "Delete image",
+  "Images_uploaded": "Images uploaded"
 }

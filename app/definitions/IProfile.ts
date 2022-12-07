@@ -24,9 +24,7 @@ export interface IAvatar {
 }
 
 export interface IAvatarSuggestion {
-	[service: string]: {
-		url: string;
-		blob: string;
-		contentType: string;
-	};
+	url: string;
+	blob: string;
+	contentType: string;
 }

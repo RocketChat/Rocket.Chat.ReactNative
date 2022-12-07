@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
@@ -15,10 +17,44 @@ import Avatar from '../../containers/Avatar';
 import AvatarUrl from './AvatarUrl';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
+import { ChatsStackParamList } from '../../stacks/types';
+import { IAvatar } from '../../definitions';
+import { Services } from '../../lib/services';
+import AvatarSuggestion from './AvatarSuggestion';
 
 const ChangeAvatarView = () => {
 	const [avatarUrl, setAvatarUrl] = useState('');
+	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
 	const { colors } = useTheme();
+
+	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
+	const { fromUser, titleHeader } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
+
+	useLayoutEffect(() => {
+		if (titleHeader) {
+			navigation.setOptions({ title: titleHeader });
+		}
+	}, [titleHeader, navigation]);
+
+	const getAvatarSuggestion = async () => {
+		const result = await Services.getAvatarSuggestion();
+		const suggestions = Object.keys(result).map(service => {
+			const { url, blob, contentType } = result[service];
+			return {
+				url,
+				data: blob,
+				service,
+				contentType
+			};
+		});
+		setAvatarSuggestions(suggestions);
+	};
+
+	useEffect(() => {
+		if (fromUser) {
+			getAvatarSuggestion();
+		}
+	}, [fromUser]);
 
 	const user = useAppSelector(state => getUserSelector(state));
 
@@ -40,6 +76,7 @@ const ChangeAvatarView = () => {
 					</View>
 					<AvatarUrl onSubmit={(value: string) => setAvatarUrl(value)} />
 					<List.Separator style={styles.separator} />
+					{fromUser && avatarSuggestions ? <AvatarSuggestion avatarSuggestions={avatarSuggestions} /> : null}
 
 					<Button
 						title={I18n.t('Upload_image')}
