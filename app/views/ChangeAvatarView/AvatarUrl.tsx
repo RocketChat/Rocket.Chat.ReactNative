@@ -17,7 +17,7 @@ const AvatarUrl = ({ submit }: { submit: (value: string) => void }) => {
 	return (
 		<FormTextInput
 			label={I18n.t('Avatar_Url')}
-			placeholder={I18n.t('Avatar_Url')}
+			placeholder={I18n.t('insert_Avatar_URL')}
 			onChangeText={handleChangeText}
 			testID='change-avatar-view-avatar-url'
 			containerStyle={{ marginBottom: 0 }}
