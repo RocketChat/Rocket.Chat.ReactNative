@@ -369,6 +369,11 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	};
 
+	handleEditAvatar = () => {
+		const { navigation } = this.props;
+		navigation.navigate('ChangeAvatarView', { fromUser: true });
+	};
+
 	renderAvatarButton = ({ key, child, onPress, disabled = false }: IAvatarButton) => {
 		const { theme } = this.props;
 		return (
@@ -543,7 +548,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				<SafeAreaView testID='profile-view'>
 					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
-							<Avatar text={user.username} avatar={avatar?.url} isStatic={avatar?.url} size={100} />
+							<Avatar
+								text={user.username}
+								avatar={avatar?.url}
+								isStatic={avatar?.url}
+								size={100}
+								handleEdit={Accounts_AllowUserAvatarChange ? this.handleEditAvatar : undefined}
+							/>
 						</View>
 						<FormTextInput
 							editable={Accounts_AllowRealNameChange}

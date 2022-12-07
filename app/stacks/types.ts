@@ -180,6 +180,10 @@ export type ChatsStackParamList = {
 		onlyAudio?: boolean;
 		videoConf?: boolean;
 	};
+	ChangeAvatarView: {
+		fromUser?: boolean;
+		titleHeader?: string;
+	};
 };
 
 export type ProfileStackParamList = {
@@ -193,6 +197,10 @@ export type ProfileStackParamList = {
 		onChangeText?: TextInputProps['onChangeText'];
 		goBack?: Function;
 		onChangeValue: Function;
+	};
+	ChangeAvatarView: {
+		fromUser?: boolean;
+		titleHeader?: string;
 	};
 };
 

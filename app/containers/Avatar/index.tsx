@@ -3,11 +3,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
+import Button from '../Button';
 import { IApplicationState, TSubscriptionModel, TUserModel } from '../../definitions';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
+import I18n from '../../i18n';
+import { useTheme } from '../../theme';
+import styles from './styles';
 
 const AvatarContainer = ({
 	style,
@@ -21,10 +25,12 @@ const AvatarContainer = ({
 	onPress,
 	getCustomEmoji,
 	isStatic,
-	rid
-}: IAvatar): React.ReactElement => {
+	rid,
+	handleEdit
+}: IAvatar & { handleEdit?: () => void }): React.ReactElement => {
 	const subscription = useRef<Subscription>();
 	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
+	const { colors } = useTheme();
 
 	const isDirect = () => type === 'd';
 
@@ -85,27 +91,39 @@ const AvatarContainer = ({
 	}, [text, type, size, avatarETag, externalProviderUrl]);
 
 	return (
-		<Avatar
-			server={server}
-			style={style}
-			text={text}
-			avatar={avatar}
-			emoji={emoji}
-			size={size}
-			borderRadius={borderRadius}
-			type={type}
-			children={children}
-			userId={id}
-			token={token}
-			onPress={onPress}
-			getCustomEmoji={getCustomEmoji}
-			isStatic={isStatic}
-			rid={rid}
-			blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-			externalProviderUrl={externalProviderUrl}
-			avatarETag={avatarETag}
-			serverVersion={serverVersion}
-		/>
+		<>
+			<Avatar
+				server={server}
+				style={style}
+				text={text}
+				avatar={avatar}
+				emoji={emoji}
+				size={size}
+				borderRadius={borderRadius}
+				type={type}
+				children={children}
+				userId={id}
+				token={token}
+				onPress={onPress}
+				getCustomEmoji={getCustomEmoji}
+				isStatic={isStatic}
+				rid={rid}
+				blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+				externalProviderUrl={externalProviderUrl}
+				avatarETag={avatarETag}
+				serverVersion={serverVersion}
+			/>
+			{handleEdit ? (
+				<Button
+					title={I18n.t('Edit')}
+					type='secondary'
+					backgroundColor={colors.passcodeButtonActive}
+					onPress={handleEdit}
+					testID='avatar-edit-button'
+					style={styles.editAvatarButton}
+				/>
+			) : null}
+		</>
 	);
 };
 
