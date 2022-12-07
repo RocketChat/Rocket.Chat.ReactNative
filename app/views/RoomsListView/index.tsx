@@ -220,8 +220,17 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return true;
 		}
 
-		const { sortBy, groupByType, showFavorites, showUnread, subscribedRoom, isMasterDetail, showAvatar, displayMode } =
-			this.props;
+		const {
+			sortBy,
+			groupByType,
+			showFavorites,
+			showUnread,
+			subscribedRoom,
+			isMasterDetail,
+			showAvatar,
+			displayMode,
+			encryptionBanner
+		} = this.props;
 		if (
 			sortBy !== nextProps.sortBy ||
 			groupByType !== nextProps.groupByType ||
@@ -230,7 +239,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showAvatar !== nextProps.showAvatar ||
 			displayMode !== nextProps.displayMode ||
 			subscribedRoom !== nextProps.subscribedRoom ||
-			isMasterDetail !== nextProps.isMasterDetail
+			isMasterDetail !== nextProps.isMasterDetail ||
+			encryptionBanner !== nextProps.encryptionBanner
 		) {
 			return true;
 		}
@@ -883,7 +893,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme, navigation, refreshing, displayMode } = this.props;
+		const { showServerDropdown, theme, navigation, refreshing, displayMode, queueSize, inquiryEnabled, encryptionBanner } =
+			this.props;
 		const { loading, chats, search, searching } = this.state;
 
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
@@ -899,7 +910,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						<FlashList
 							ref={this.getScrollRef}
 							data={searching ? search : chats}
-							extraData={theme}
+							extraData={{ theme, queueSize, inquiryEnabled, encryptionBanner }}
 							keyExtractor={keyExtractor}
 							renderItem={this.renderItem}
 							getItemType={item => (item.separator ? 'section' : 'item')}
