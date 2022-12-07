@@ -31,9 +31,7 @@ const ChangeAvatarView = () => {
 	const { fromUser, titleHeader } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 
 	useLayoutEffect(() => {
-		if (titleHeader) {
-			navigation.setOptions({ title: titleHeader });
-		}
+		titleHeader ? navigation.setOptions({ title: titleHeader }) : navigation.setOptions({ title: I18n.t('Avatar') });
 	}, [titleHeader, navigation]);
 
 	const getAvatarSuggestion = async () => {
@@ -74,9 +72,9 @@ const ChangeAvatarView = () => {
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
 						<Avatar text={user.username} avatar={avatarUrl} isStatic={avatarUrl} size={100} />
 					</View>
-					<AvatarUrl onSubmit={(value: string) => setAvatarUrl(value)} />
+					<AvatarUrl submit={setAvatarUrl} />
 					<List.Separator style={styles.separator} />
-					{fromUser && avatarSuggestions ? <AvatarSuggestion avatarSuggestions={avatarSuggestions} /> : null}
+					{fromUser && avatarSuggestions.length ? <AvatarSuggestion avatarSuggestions={avatarSuggestions} /> : null}
 
 					<Button
 						title={I18n.t('Upload_image')}
@@ -92,14 +90,7 @@ const ChangeAvatarView = () => {
 						onPress={() => {}}
 						testID='change-avatar-view-delete-my-account'
 					/>
-					<Button
-						title={I18n.t('Save')}
-						type='primary'
-						onPress={() => {}}
-						// disabled={!this.formIsChanged()}
-						testID='change-avatar-view-submit'
-						// loading={saving}
-					/>
+					<Button title={I18n.t('Save')} type='primary' onPress={() => {}} testID='change-avatar-view-submit' />
 				</ScrollView>
 			</SafeAreaView>
 		</KeyboardView>

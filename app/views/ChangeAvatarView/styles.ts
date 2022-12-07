@@ -15,9 +15,9 @@ export default StyleSheet.create({
 		marginVertical: 16
 	},
 	itemLabel: {
-		marginBottom: 10,
+		marginBottom: 12,
 		fontSize: 14,
-		...sharedStyles.textMedium
+		...sharedStyles.textSemibold
 	},
 	avatarButton: {
 		width: 64,
