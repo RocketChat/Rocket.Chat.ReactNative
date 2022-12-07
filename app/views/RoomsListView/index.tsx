@@ -4,7 +4,6 @@ import { batch, connect } from 'react-redux';
 import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '@react-navigation/elements';
@@ -85,7 +84,6 @@ interface IRoomsListViewProps {
 	useRealName: boolean;
 	isMasterDetail: boolean;
 	subscribedRoom: string;
-	insets: { left: number; bottom: number; right: number; top: number };
 	queueSize: number;
 	inquiryEnabled: boolean;
 	encryptionBanner: string;
@@ -207,7 +205,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showUnread,
 			subscribedRoom,
 			isMasterDetail,
-			insets,
 			createTeamPermission,
 			createPublicChannelPermission,
 			createPrivateChannelPermission,
@@ -233,9 +230,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		// Update current item in case of another action triggers an update on room subscribed reducer
 		if (isMasterDetail && item?.rid !== subscribedRoom && subscribedRoom !== prevProps.subscribedRoom) {
 			this.setState({ item: { rid: subscribedRoom } as ISubscription });
-		}
-		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
-			this.setHeader();
 		}
 
 		if (
@@ -908,4 +902,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDiscussionPermission: state.permissions['start-discussion']
 });
 
-export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(RoomsListView)));
+export default connect(mapStateToProps)(withTheme(RoomsListView));
