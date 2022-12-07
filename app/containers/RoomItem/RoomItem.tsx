@@ -57,7 +57,6 @@ const RoomItem = ({
 	<Touchable
 		onPress={onPress}
 		onLongPress={onLongPress}
-		width={width}
 		favorite={favorite}
 		toggleFav={toggleFav}
 		isRead={isRead}
