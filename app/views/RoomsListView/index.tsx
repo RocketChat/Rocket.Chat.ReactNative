@@ -798,6 +798,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	onEndReached = () => {
+		const { searching } = this.state;
+		if (searching) {
+			return;
+		}
 		this.getSubscriptions();
 	};
 
