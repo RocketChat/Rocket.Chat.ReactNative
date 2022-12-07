@@ -20,7 +20,6 @@ const RoomItem = ({
 	prid,
 	name,
 	avatar,
-	width,
 	username,
 	showLastMessage,
 	status = 'offline',
