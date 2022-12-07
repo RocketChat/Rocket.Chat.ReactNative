@@ -136,8 +136,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	private count: number;
 	private unsubscribeFocus?: () => void;
 	private unsubscribeBlur?: () => void;
-	private sortPreferencesChanged?: boolean;
-	private shouldUpdate?: boolean;
 	private backHandler?: NativeEventSubscription;
 	private querySubscription?: Subscription;
 	private scroll?: any;
@@ -172,16 +170,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			Orientation.unlockAllOrientations();
 			this.animated = true;
-			// Check if there were changes with sort preference, then call getSubscription to remount the list
-			if (this.sortPreferencesChanged) {
-				this.getSubscriptions();
-				this.sortPreferencesChanged = false;
-			}
-			// Check if there were changes while not focused (it's set on sCU)
-			if (this.shouldUpdate) {
-				this.forceUpdate();
-				this.shouldUpdate = false;
-			}
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
