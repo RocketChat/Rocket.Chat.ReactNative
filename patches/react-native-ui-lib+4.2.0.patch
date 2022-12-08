@@ -35,6 +35,10 @@ index cfe1d35..7ce5105 100644
        >
          {renderContent && renderContent()}
          <CustomKeyboardView
+diff --git a/node_modules/react-native-ui-lib/lib/ios/.DS_Store b/node_modules/react-native-ui-lib/lib/ios/.DS_Store
+new file mode 100644
+index 0000000..d378d89
+Binary files /dev/null and b/node_modules/react-native-ui-lib/lib/ios/.DS_Store differ
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
 index b3864d0..e78322f 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
@@ -62,7 +66,7 @@ index 4344724..2786051 100644
  
  @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
-index 8f8446e..fb6bb2c 100644
+index 8f8446e..351b05d 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
 +++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
 @@ -54,6 +54,7 @@ @interface KeyboardTrackingViewTemp : UIView
@@ -89,7 +93,7 @@ index 8f8446e..fb6bb2c 100644
      
      for (UIView* subview in allSubviews)
      {
-@@ -179,24 +180,13 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -179,25 +180,14 @@ - (void)initializeAccessoryViewsAndHandleInsets
          {
              if(_scrollViewToManage == nil)
              {
@@ -97,11 +101,7 @@ index 8f8446e..fb6bb2c 100644
 +                if([subview isKindOfClass:[RCTScrollView class]])
                  {
 -                    _scrollViewToManage = ((RCTScrollView*)subview).scrollView;
-+                    RCTScrollView *scrollView = (RCTScrollView*)subview;
-+                    if (subview.nativeID && [subview.nativeID isEqualToString:self.scrollViewNativeID]) {
-+                        _scrollViewToManage = scrollView.scrollView;
-+                    }
-                 }
+-                }
 -                else if(!_requiresSameParentToManageScrollView && [subview isKindOfClass:[UIScrollView class]])
 -                {
 -                    _scrollViewToManage = (UIScrollView*)subview;
@@ -110,15 +110,20 @@ index 8f8446e..fb6bb2c 100644
 -                if(_scrollViewToManage != nil)
 -                {
 -                    _scrollIsInverted = CGAffineTransformEqualToTransform(_scrollViewToManage.superview.transform, CGAffineTransformMakeScale(1, -1));
--                }
--            }
++                    RCTScrollView *scrollView = (RCTScrollView*)subview;
++                    if (subview.nativeID && [subview.nativeID isEqualToString:self.scrollViewNativeID]) {
++                        _scrollViewToManage = scrollView.scrollView;
++                    }
+                 }
+             }
 -            
 -            if([subview isKindOfClass:[RCTScrollView class]])
 -            {
 -                [rctScrollViewsArray addObject:(RCTScrollView*)subview];
-             }
+-            }
          }
          
+         if ([className isEqualToString:@"RCTTextField"])
 @@ -246,15 +236,15 @@ - (void)initializeAccessoryViewsAndHandleInsets
          }
      }
@@ -144,15 +149,6 @@ index 8f8446e..fb6bb2c 100644
      
  #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
      if (@available(iOS 11.0, *)) {
-@@ -363,7 +353,7 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
- 
- - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
- {
--    _bottomViewHeight = kBottomViewHeightTemp;
-+    _bottomViewHeight = [self getBottomSafeArea];
-     [self updateBottomViewFrame];
- }
- 
 @@ -468,7 +458,6 @@ -(void)addBottomViewIfNecessary
      if (self.addBottomView && _bottomView == nil)
      {
@@ -161,15 +157,6 @@ index 8f8446e..fb6bb2c 100644
          if (self.bottomViewColor)
          {
              _bottomView.backgroundColor = [self colorFromHexString:self.bottomViewColor];
-@@ -538,7 +527,7 @@ -(void)updateTransformAndInsets
-     CGFloat accessoryTranslation = MIN(-bottomSafeArea, -_ObservingInputAccessoryViewTemp.keyboardHeight);
-     
-     if (_ObservingInputAccessoryViewTemp.keyboardHeight <= bottomSafeArea) {
--        _bottomViewHeight = kBottomViewHeightTemp;
-+        _bottomViewHeight = [self getBottomSafeArea];
-     } else if (_ObservingInputAccessoryViewTemp.keyboardState != KeyboardStateWillHide) {
-         _bottomViewHeight = 0;
-     }
 @@ -664,6 +653,7 @@ @implementation KeyboardTrackingViewTempManager
  RCT_REMAP_VIEW_PROPERTY(useSafeArea, useSafeArea, BOOL)
  RCT_REMAP_VIEW_PROPERTY(scrollToFocusedInput, scrollToFocusedInput, BOOL)

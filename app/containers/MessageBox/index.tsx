@@ -170,7 +170,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			id: ''
 		},
 		sharing: false,
-		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorScrollToBottomInvertedOnly,
 		isActionsEnabled: true,
 		getCustomEmoji: () => {}
 	};
@@ -1310,7 +1310,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onKeyboardItemSelected}
-					trackInteractive
 					addBottomView
 					bottomViewColor={themes[theme].messageboxBackground}
 					iOSScrollBehavior={iOSScrollBehavior}
