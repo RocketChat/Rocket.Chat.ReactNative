@@ -229,7 +229,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			isMasterDetail,
 			showAvatar,
 			displayMode,
-			encryptionBanner
+			encryptionBanner,
+			showServerDropdown
 		} = this.props;
 		if (
 			sortBy !== nextProps.sortBy ||
@@ -240,7 +241,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			displayMode !== nextProps.displayMode ||
 			subscribedRoom !== nextProps.subscribedRoom ||
 			isMasterDetail !== nextProps.isMasterDetail ||
-			encryptionBanner !== nextProps.encryptionBanner
+			encryptionBanner !== nextProps.encryptionBanner ||
+			showServerDropdown !== nextProps.showServerDropdown
 		) {
 			return true;
 		}

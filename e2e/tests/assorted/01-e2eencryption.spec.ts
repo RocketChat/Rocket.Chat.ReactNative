@@ -340,7 +340,9 @@ describe('E2E Encryption', () => {
 		});
 
 		it('should add server and create new user', async () => {
-			await sleep(5000);
+			await waitFor(element(by.id('rooms-list-header-server-dropdown-button')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 			await waitFor(element(by.id('rooms-list-header-server-dropdown')))
 				.toBeVisible()
