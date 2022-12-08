@@ -1,14 +1,11 @@
 import { expect } from 'detox';
 
-import { navigateToRegister, platformTypes, TTextMatcher } from '../../helpers/app';
+import { navigateToRegister } from '../../helpers/app';
 import data from '../../data';
 
 describe('Create user screen', () => {
-	let alertButtonType: string;
-	let textMatcher: TTextMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToRegister();
 	});
 
