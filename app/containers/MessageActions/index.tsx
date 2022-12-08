@@ -285,10 +285,10 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleReaction: IHeader['handleReaction'] = (shortname, message) => {
+			const handleReaction: IHeader['handleReaction'] = (emoji, message) => {
 				logEvent(events.ROOM_MSG_ACTION_REACTION);
-				if (shortname) {
-					onReactionPress(shortname, message.id);
+				if (emoji) {
+					onReactionPress(emoji, message.id);
 				} else {
 					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
 				}
