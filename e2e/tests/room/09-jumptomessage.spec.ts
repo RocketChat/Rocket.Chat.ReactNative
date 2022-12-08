@@ -187,12 +187,19 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('204')))
+			.toExist()
+			.withTimeout(5000);
+		await waitFor(element(by[textMatcher]('Load Newer')))
+			.toExist()
+			.withTimeout(5000);
+		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
 		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toNotExist()
 			.withTimeout(5000);
 		await expect(element(by[textMatcher]('Load More'))).toNotExist();
-		await expect(element(by[textMatcher]('201'))).toExist();
-		await expect(element(by[textMatcher]('202'))).toExist();
+		await expect(element(by[textMatcher]('253'))).toExist();
+		await expect(element(by[textMatcher]('252'))).toExist();
 		await tapBack();
 	});
 });
