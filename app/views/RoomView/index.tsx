@@ -843,13 +843,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	showReactionPicker = () => {
 		const { showActionSheet } = this.props;
 		const { selectedMessage } = this.state;
-		showActionSheet({
-			children: (
-				<ReactionPicker message={selectedMessage} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
-			),
-			snaps: [400],
-			enableContentPanningGesture: false
-		});
+		setTimeout(() => {
+			showActionSheet({
+				children: (
+					<ReactionPicker message={selectedMessage} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
+				),
+				snaps: [400],
+				enableContentPanningGesture: false
+			});
+		}, 100);
 	};
 
 	onReactionInit = (message: TAnyMessage) => {
