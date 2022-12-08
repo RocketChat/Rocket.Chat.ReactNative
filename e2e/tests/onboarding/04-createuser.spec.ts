@@ -65,17 +65,17 @@ describe('Create user screen', () => {
 		// 	await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 		// });
 
-		it('should submit username already taken and raise error', async () => {
-			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-username')).replaceText(data.users.existing.username);
-			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
-			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by[textMatcher]('Username is already in use')).atIndex(0))
-				.toExist()
-				.withTimeout(10000);
-			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
-		});
+		// it('should submit username already taken and raise error', async () => {
+		// 	await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
+		// 	await element(by.id('register-view-username')).replaceText(data.users.existing.username);
+		// 	await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
+		// 	await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
+		// 	await element(by.id('register-view-submit')).tap();
+		// 	await waitFor(element(by[textMatcher]('Username is already in use')).atIndex(0))
+		// 		.toExist()
+		// 		.withTimeout(10000);
+		// 	await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
+		// });
 
 		it('should register', async () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
