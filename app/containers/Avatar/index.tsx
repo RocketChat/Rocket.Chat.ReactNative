@@ -26,8 +26,9 @@ const AvatarContainer = ({
 	getCustomEmoji,
 	isStatic,
 	rid,
-	handleEdit
-}: IAvatar & { handleEdit?: () => void }): React.ReactElement => {
+	handleEdit,
+	isUserProfile
+}: IAvatar & { isUserProfile?: boolean; handleEdit?: () => void }): React.ReactElement => {
 	const subscription = useRef<Subscription>();
 	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
 	const { colors } = useTheme();
@@ -36,10 +37,11 @@ const AvatarContainer = ({
 
 	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
 	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
-	const { id, token } = useSelector(
+	const { id, token, avatarETagUser } = useSelector(
 		(state: IApplicationState) => ({
 			id: getUserSelector(state).id,
-			token: getUserSelector(state).token
+			token: getUserSelector(state).token,
+			avatarETagUser: getUserSelector(state).avatarETag
 		}),
 		shallowEqual
 	);
@@ -110,7 +112,7 @@ const AvatarContainer = ({
 				rid={rid}
 				blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 				externalProviderUrl={externalProviderUrl}
-				avatarETag={avatarETag}
+				avatarETag={isUserProfile ? avatarETagUser : avatarETag}
 				serverVersion={serverVersion}
 			/>
 			{handleEdit ? (

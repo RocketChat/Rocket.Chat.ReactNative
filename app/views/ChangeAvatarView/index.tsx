@@ -158,11 +158,17 @@ const ChangeAvatarView = () => {
 					{...scrollPersistTaps}
 				>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
-						<Avatar text={textAvatar || user.username} avatar={avatar?.url} isStatic={avatar?.url} size={100} />
+						<Avatar
+							text={textAvatar || user.username}
+							avatar={avatar?.url}
+							isStatic={avatar?.url}
+							size={100}
+							isUserProfile={fromUser}
+						/>
 					</View>
 					<AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} />
 					<List.Separator style={styles.separator} />
-					{fromUser && avatarSuggestions.length ? (
+					{fromUser ? (
 						<AvatarSuggestion resetAvatar={resetAvatar} user={user} onPress={setAvatar} avatarSuggestions={avatarSuggestions} />
 					) : null}
 
