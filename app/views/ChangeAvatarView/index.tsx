@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
 
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
@@ -125,6 +126,24 @@ const ChangeAvatarView = () => {
 		avatarUrl.current = `@${user.username}`;
 	};
 
+	const pickImage = async () => {
+		const options = {
+			cropping: true,
+			compressImageQuality: 0.8,
+			freeStyleCropEnabled: true,
+			cropperAvoidEmptySpaceAroundImage: false,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			includeBase64: true
+		};
+		try {
+			const response: Image = await ImagePicker.openPicker(options);
+			setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
+		} catch (error) {
+			log(error);
+		}
+	};
+
 	return (
 		<KeyboardView
 			style={{ backgroundColor: colors.auxiliaryBackground }}
@@ -152,7 +171,7 @@ const ChangeAvatarView = () => {
 						type='secondary'
 						disabled={saving}
 						backgroundColor={colors.chatComponentBackground}
-						onPress={() => {}}
+						onPress={pickImage}
 						testID='change-avatar-view-logout-other-locations'
 					/>
 					{!fromUser ? (
