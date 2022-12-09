@@ -37,8 +37,7 @@ index cfe1d35..7ce5105 100644
          <CustomKeyboardView
 diff --git a/node_modules/react-native-ui-lib/lib/ios/.DS_Store b/node_modules/react-native-ui-lib/lib/ios/.DS_Store
 new file mode 100644
-index 0000000..d378d89
-Binary files /dev/null and b/node_modules/react-native-ui-lib/lib/ios/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
 index b3864d0..e78322f 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
@@ -66,7 +65,7 @@ index 4344724..2786051 100644
  
  @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
-index 8f8446e..351b05d 100644
+index 8f8446e..fc9645c 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
 +++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
 @@ -54,6 +54,7 @@ @interface KeyboardTrackingViewTemp : UIView
@@ -149,6 +148,36 @@ index 8f8446e..351b05d 100644
      
  #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
      if (@available(iOS 11.0, *)) {
+@@ -426,8 +416,8 @@ - (void)_updateScrollViewInsets
+         }
+         self.scrollViewToManage.contentInset = insets;
+         
+-        if(self.scrollBehavior == KeyboardTrackingScrollBehaviorScrollToBottomInvertedOnly && _scrollIsInverted)
+-        {
++//        if(self.scrollBehavior == KeyboardTrackingScrollBehaviorScrollToBottomInvertedOnly && _scrollIsInverted)
++//        {
+             BOOL fisrtTime = _ObservingInputAccessoryViewTemp.keyboardHeight == 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
+             BOOL willOpen = _ObservingInputAccessoryViewTemp.keyboardHeight != 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
+             BOOL isOpen = _ObservingInputAccessoryViewTemp.keyboardHeight != 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateShown;
+@@ -435,12 +425,12 @@ - (void)_updateScrollViewInsets
+             {
+                 [self.scrollViewToManage setContentOffset:CGPointMake(self.scrollViewToManage.contentOffset.x, -self.scrollViewToManage.contentInset.top) animated:!fisrtTime];
+             }
+-        }
+-        else if(self.scrollBehavior == KeyboardTrackingScrollBehaviorFixedOffset && !self.isDraggingScrollView)
+-        {
+-            CGFloat insetsDiff = (bottomInset - originalBottomInset) * (self.scrollIsInverted ? -1 : 1);
+-            self.scrollViewToManage.contentOffset = CGPointMake(originalOffset.x, originalOffset.y + insetsDiff);
+-        }
++//        }
++//        if(!self.isDraggingScrollView)
++//        {
++//            CGFloat insetsDiff = (bottomInset - originalBottomInset) * (self.scrollIsInverted ? -1 : 1);
++//            self.scrollViewToManage.contentOffset = CGPointMake(originalOffset.x, originalOffset.y + insetsDiff);
++//        }
+         
+         insets = self.scrollViewToManage.contentInset;
+         if(self.scrollIsInverted)
 @@ -468,7 +458,6 @@ -(void)addBottomViewIfNecessary
      if (self.addBottomView && _bottomView == nil)
      {
