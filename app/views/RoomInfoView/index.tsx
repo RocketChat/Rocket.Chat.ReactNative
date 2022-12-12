@@ -183,17 +183,17 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			title: t === SubscriptionType.DIRECT ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item
-								iconName='edit'
-								onPress={() => {
-									const isLivechat = t === SubscriptionType.OMNICHANNEL;
-									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
-								}}
-								testID='room-info-view-edit-button'
-							/>
-						</HeaderButton.Container>
+					<HeaderButton.Container>
+						<HeaderButton.Item
+							iconName='edit'
+							onPress={() => {
+								const isLivechat = t === SubscriptionType.OMNICHANNEL;
+								logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
+							}}
+							testID='room-info-view-edit-button'
+						/>
+					</HeaderButton.Container>
 				  )
 				: undefined
 		});
@@ -399,11 +399,26 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			log(e);
 		}
 	};
+
+	handleEditAvatar = () => {
+		const {navigation} = this.props
+		navigation.navigate("ChangeAvatarView",{titleHeader:I18n.t('Room_Info')})
+	}
+
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
 		const { theme } = this.props;
+		const { showEdit } = this.state;
+		const showAvatarEdit = showEdit && this.t !== SubscriptionType.OMNICHANNEL;
 
 		return (
-			<Avatar text={room.name || roomUser.username} style={styles.avatar} type={this.t} size={100} rid={room?.rid}>
+			<Avatar
+				text={room.name || roomUser.username}
+				style={styles.avatar}
+				type={this.t}
+				size={100}
+				rid={room?.rid}
+				handleEdit={showAvatarEdit ? this.handleEditAvatar : undefined}
+			>
 				{this.t === SubscriptionType.DIRECT && roomUser._id ? (
 					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						<Status size={20} id={roomUser._id} />

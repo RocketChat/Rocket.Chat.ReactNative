@@ -20,6 +20,7 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 				size={small ? 20 : 36}
 				borderRadius={small ? 2 : 4}
 				onPress={author._id === user.id ? undefined : () => navToRoomInfo(navParam)}
+				isUserProfile={author._id === user.id}
 				getCustomEmoji={getCustomEmoji}
 				avatar={avatar}
 				emoji={emoji}

@@ -34,7 +34,8 @@ const RoomItemContainer = React.memo(
 		getRoomTitle = () => 'title',
 		getRoomAvatar = () => '',
 		getIsRead = () => false,
-		swipeEnabled = true
+		swipeEnabled = true,
+		isUserProfile
 	}: IRoomItemContainerProps) => {
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${name}`;
@@ -127,6 +128,7 @@ const RoomItemContainer = React.memo(
 				showAvatar={showAvatar}
 				displayMode={displayMode}
 				sourceType={item.source}
+				isUserProfile={isUserProfile}
 			/>
 		);
 	},

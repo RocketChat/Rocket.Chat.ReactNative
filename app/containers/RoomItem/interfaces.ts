@@ -47,6 +47,7 @@ export interface IWrapperProps {
 	teamMain: boolean;
 	showAvatar: boolean;
 	sourceType: IOmnichannelSource;
+	isUserProfile: boolean;
 }
 
 export interface ITypeIconProps {
@@ -116,6 +117,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	size?: number;
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
+	isUserProfile: boolean;
 }
 
 export interface ILastMessageProps {
@@ -152,4 +154,5 @@ export interface IIconOrAvatar {
 	teamMain: boolean;
 	showLastMessage: boolean;
 	sourceType: IOmnichannelSource;
+	isUserProfile: boolean;
 }
