@@ -65,10 +65,18 @@ index 4344724..2786051 100644
  
  @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
-index 8f8446e..fc9645c 100644
+index 8f8446e..728bedd 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
 +++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
-@@ -54,6 +54,7 @@ @interface KeyboardTrackingViewTemp : UIView
+@@ -43,7 +43,6 @@ @interface KeyboardTrackingViewTemp : UIView
+ @property (nonatomic, strong) UIScrollView *scrollViewToManage;
+ @property (nonatomic) BOOL scrollIsInverted;
+ @property (nonatomic) BOOL revealKeyboardInteractive;
+-@property (nonatomic) BOOL isDraggingScrollView;
+ @property (nonatomic) BOOL manageScrollView;
+ @property (nonatomic) BOOL requiresSameParentToManageScrollView;
+ @property (nonatomic) NSUInteger deferedInitializeAccessoryViewsCount;
+@@ -54,6 +53,7 @@ @interface KeyboardTrackingViewTemp : UIView
  @property (nonatomic) BOOL useSafeArea;
  @property (nonatomic) BOOL scrollToFocusedInput;
  @property (nonatomic) BOOL allowHitsOutsideBounds;
@@ -76,7 +84,7 @@ index 8f8446e..fc9645c 100644
  
  @end
  
-@@ -84,6 +85,7 @@ -(instancetype)init
+@@ -84,6 +84,7 @@ -(instancetype)init
          self.addBottomView = NO;
          self.bottomViewColor = nil;
          self.scrollToFocusedInput = NO;
@@ -84,7 +92,7 @@ index 8f8446e..fc9645c 100644
          
          [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rctContentDidAppearNotification:) name:RCTContentDidAppearNotification object:nil];
      }
-@@ -170,7 +172,6 @@ -(void)layoutSubviews
+@@ -170,7 +171,6 @@ -(void)layoutSubviews
  - (void)initializeAccessoryViewsAndHandleInsets
  {
      NSArray<UIView*>* allSubviews = [self getBreadthFirstSubviewsForView:[self getRootView]];
@@ -92,7 +100,7 @@ index 8f8446e..fc9645c 100644
      
      for (UIView* subview in allSubviews)
      {
-@@ -179,25 +180,14 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -179,24 +179,13 @@ - (void)initializeAccessoryViewsAndHandleInsets
          {
              if(_scrollViewToManage == nil)
              {
@@ -100,7 +108,11 @@ index 8f8446e..fc9645c 100644
 +                if([subview isKindOfClass:[RCTScrollView class]])
                  {
 -                    _scrollViewToManage = ((RCTScrollView*)subview).scrollView;
--                }
++                    RCTScrollView *scrollView = (RCTScrollView*)subview;
++                    if (subview.nativeID && [subview.nativeID isEqualToString:self.scrollViewNativeID]) {
++                        _scrollViewToManage = scrollView.scrollView;
++                    }
+                 }
 -                else if(!_requiresSameParentToManageScrollView && [subview isKindOfClass:[UIScrollView class]])
 -                {
 -                    _scrollViewToManage = (UIScrollView*)subview;
@@ -109,21 +121,16 @@ index 8f8446e..fc9645c 100644
 -                if(_scrollViewToManage != nil)
 -                {
 -                    _scrollIsInverted = CGAffineTransformEqualToTransform(_scrollViewToManage.superview.transform, CGAffineTransformMakeScale(1, -1));
-+                    RCTScrollView *scrollView = (RCTScrollView*)subview;
-+                    if (subview.nativeID && [subview.nativeID isEqualToString:self.scrollViewNativeID]) {
-+                        _scrollViewToManage = scrollView.scrollView;
-+                    }
-                 }
-             }
+-                }
+-            }
 -            
 -            if([subview isKindOfClass:[RCTScrollView class]])
 -            {
 -                [rctScrollViewsArray addObject:(RCTScrollView*)subview];
--            }
+             }
          }
          
-         if ([className isEqualToString:@"RCTTextField"])
-@@ -246,15 +236,15 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -246,15 +235,15 @@ - (void)initializeAccessoryViewsAndHandleInsets
          }
      }
      
@@ -148,37 +155,42 @@ index 8f8446e..fc9645c 100644
      
  #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
      if (@available(iOS 11.0, *)) {
-@@ -426,8 +416,8 @@ - (void)_updateScrollViewInsets
+@@ -412,9 +401,6 @@ - (void)_updateScrollViewInsets
+         CGFloat bottomSafeArea = [self getBottomSafeArea];
+         CGFloat bottomInset = MAX(self.bounds.size.height, _ObservingInputAccessoryViewTemp.keyboardHeight + _ObservingInputAccessoryViewTemp.height);
+         
+-        CGFloat originalBottomInset = self.scrollIsInverted ? insets.top : insets.bottom;
+-        CGPoint originalOffset = self.scrollViewToManage.contentOffset;
+-        
+         bottomInset += (_ObservingInputAccessoryViewTemp.keyboardHeight == 0 ? bottomSafeArea : 0);
+         if(self.scrollIsInverted)
+         {
+@@ -426,20 +412,11 @@ - (void)_updateScrollViewInsets
          }
          self.scrollViewToManage.contentInset = insets;
          
 -        if(self.scrollBehavior == KeyboardTrackingScrollBehaviorScrollToBottomInvertedOnly && _scrollIsInverted)
--        {
-+//        if(self.scrollBehavior == KeyboardTrackingScrollBehaviorScrollToBottomInvertedOnly && _scrollIsInverted)
-+//        {
-             BOOL fisrtTime = _ObservingInputAccessoryViewTemp.keyboardHeight == 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
-             BOOL willOpen = _ObservingInputAccessoryViewTemp.keyboardHeight != 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
-             BOOL isOpen = _ObservingInputAccessoryViewTemp.keyboardHeight != 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateShown;
-@@ -435,12 +425,12 @@ - (void)_updateScrollViewInsets
-             {
-                 [self.scrollViewToManage setContentOffset:CGPointMake(self.scrollViewToManage.contentOffset.x, -self.scrollViewToManage.contentInset.top) animated:!fisrtTime];
-             }
++        BOOL firstTime = _ObservingInputAccessoryViewTemp.keyboardHeight == 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
++        BOOL willOpen = _ObservingInputAccessoryViewTemp.keyboardHeight != 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
++        if(firstTime || willOpen)
+         {
+-            BOOL fisrtTime = _ObservingInputAccessoryViewTemp.keyboardHeight == 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
+-            BOOL willOpen = _ObservingInputAccessoryViewTemp.keyboardHeight != 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateHidden;
+-            BOOL isOpen = _ObservingInputAccessoryViewTemp.keyboardHeight != 0 && _ObservingInputAccessoryViewTemp.keyboardState == KeyboardStateShown;
+-            if(fisrtTime || willOpen || (isOpen && !self.isDraggingScrollView))
+-            {
+-                [self.scrollViewToManage setContentOffset:CGPointMake(self.scrollViewToManage.contentOffset.x, -self.scrollViewToManage.contentInset.top) animated:!fisrtTime];
+-            }
 -        }
 -        else if(self.scrollBehavior == KeyboardTrackingScrollBehaviorFixedOffset && !self.isDraggingScrollView)
 -        {
 -            CGFloat insetsDiff = (bottomInset - originalBottomInset) * (self.scrollIsInverted ? -1 : 1);
 -            self.scrollViewToManage.contentOffset = CGPointMake(originalOffset.x, originalOffset.y + insetsDiff);
--        }
-+//        }
-+//        if(!self.isDraggingScrollView)
-+//        {
-+//            CGFloat insetsDiff = (bottomInset - originalBottomInset) * (self.scrollIsInverted ? -1 : 1);
-+//            self.scrollViewToManage.contentOffset = CGPointMake(originalOffset.x, originalOffset.y + insetsDiff);
-+//        }
++            [self.scrollViewToManage setContentOffset:CGPointMake(self.scrollViewToManage.contentOffset.x, -self.scrollViewToManage.contentInset.top) animated:!firstTime];
+         }
          
          insets = self.scrollViewToManage.contentInset;
-         if(self.scrollIsInverted)
-@@ -468,7 +458,6 @@ -(void)addBottomViewIfNecessary
+@@ -468,7 +445,6 @@ -(void)addBottomViewIfNecessary
      if (self.addBottomView && _bottomView == nil)
      {
          _bottomView = [UIView new];
@@ -186,7 +198,29 @@ index 8f8446e..fc9645c 100644
          if (self.bottomViewColor)
          {
              _bottomView.backgroundColor = [self colorFromHexString:self.bottomViewColor];
-@@ -664,6 +653,7 @@ @implementation KeyboardTrackingViewTempManager
+@@ -607,21 +583,6 @@ - (void)scrollViewDidScroll:(UIScrollView *)scrollView
+     }
+ }
+ 
+-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+-{
+-    self.isDraggingScrollView = YES;
+-}
+-
+-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+-{
+-    self.isDraggingScrollView = NO;
+-}
+-
+-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+-{
+-    self.isDraggingScrollView = NO;
+-}
+-
+ - (CGFloat)getKeyboardHeight
+ {
+     return _ObservingInputAccessoryViewTemp ? _ObservingInputAccessoryViewTemp.keyboardHeight : 0;
+@@ -664,6 +625,7 @@ @implementation KeyboardTrackingViewTempManager
  RCT_REMAP_VIEW_PROPERTY(useSafeArea, useSafeArea, BOOL)
  RCT_REMAP_VIEW_PROPERTY(scrollToFocusedInput, scrollToFocusedInput, BOOL)
  RCT_REMAP_VIEW_PROPERTY(allowHitsOutsideBounds, allowHitsOutsideBounds, BOOL)
