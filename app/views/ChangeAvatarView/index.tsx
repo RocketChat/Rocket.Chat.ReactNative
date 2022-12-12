@@ -27,7 +27,7 @@ import log from '../../lib/methods/helpers/log';
 
 const ChangeAvatarView = () => {
 	const [avatar, setAvatarState] = useState<IAvatar>();
-	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
+	
 	const [textAvatar, setTextAvatar] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
@@ -65,26 +65,6 @@ const ChangeAvatarView = () => {
 			});
 		});
 	}, [navigation]);
-
-	const getAvatarSuggestion = async () => {
-		const result = await Services.getAvatarSuggestion();
-		const suggestions = Object.keys(result).map(service => {
-			const { url, blob, contentType } = result[service];
-			return {
-				url,
-				data: blob,
-				service,
-				contentType
-			};
-		});
-		setAvatarSuggestions(suggestions);
-	};
-
-	useEffect(() => {
-		if (fromUser) {
-			getAvatarSuggestion();
-		}
-	}, [fromUser]);
 
 	const setAvatar = (value?: IAvatar) => {
 		avatarUrl.current = value?.url;
@@ -124,6 +104,12 @@ const ChangeAvatarView = () => {
 		setAvatar(undefined);
 		setTextAvatar(`@${user.username}`);
 		avatarUrl.current = `@${user.username}`;
+	};
+
+	const resetRoomAvatar = () => {
+		setAvatar(undefined);
+
+		// await Services.saveRoomSettings(room.rid, params);
 	};
 
 	const pickImage = async () => {
@@ -166,11 +152,9 @@ const ChangeAvatarView = () => {
 							isUserProfile={fromUser}
 						/>
 					</View>
-					<AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} />
+					{fromUser ? <AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} /> : null}
 					<List.Separator style={styles.separator} />
-					{fromUser ? (
-						<AvatarSuggestion resetAvatar={resetAvatar} user={user} onPress={setAvatar} avatarSuggestions={avatarSuggestions} />
-					) : null}
+					{fromUser ? <AvatarSuggestion resetAvatar={resetAvatar} user={user} onPress={setAvatar} /> : null}
 
 					<Button
 						title={I18n.t('Upload_image')}
@@ -186,7 +170,7 @@ const ChangeAvatarView = () => {
 							type='primary'
 							disabled={saving}
 							backgroundColor={colors.dangerColor}
-							onPress={() => {}}
+							onPress={resetRoomAvatar}
 							testID='change-avatar-view-delete-my-account'
 						/>
 					) : null}

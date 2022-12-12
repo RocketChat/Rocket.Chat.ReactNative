@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 
 import { IAvatar, IUser } from '../../definitions';
+import { Services } from '../../lib/services';
 import I18n from '../../i18n';
 import Avatar from '../../containers/Avatar';
-// import Touch from '../../containers/Touch';
 import styles from './styles';
 import { useTheme } from '../../theme';
 
@@ -23,25 +23,45 @@ const Item = ({ item, onPress, text }: { item?: IAvatar; onPress: (value?: IAvat
 	);
 };
 const AvatarSuggestion = ({
-	avatarSuggestions,
 	onPress,
 	user,
 	resetAvatar
 }: {
-	avatarSuggestions: IAvatar[];
 	onPress: (value?: IAvatar) => void;
 	user?: IUser;
 	resetAvatar?: () => void;
-}) => (
-	<View style={{ flex: 1 }}>
-		<Text style={styles.itemLabel}>{I18n.t('Images_uploaded')}</Text>
-		<View style={styles.containerAvatarSuggestion}>
-			{user?.username && resetAvatar ? <Item text={`@${user.username}`} onPress={resetAvatar} /> : null}
-			{avatarSuggestions.slice(0, 7).map(item => (
-				<Item item={item} onPress={onPress} />
-			))}
+}) => {
+	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
+
+	const getAvatarSuggestion = async () => {
+		const result = await Services.getAvatarSuggestion();
+		const suggestions = Object.keys(result).map(service => {
+			const { url, blob, contentType } = result[service];
+			return {
+				url,
+				data: blob,
+				service,
+				contentType
+			};
+		});
+		setAvatarSuggestions(suggestions);
+	};
+
+	useEffect(() => {
+		getAvatarSuggestion();
+	}, []);
+
+	return (
+		<View style={{ flex: 1 }}>
+			<Text style={styles.itemLabel}>{I18n.t('Images_uploaded')}</Text>
+			<View style={styles.containerAvatarSuggestion}>
+				{user?.username && resetAvatar ? <Item text={`@${user.username}`} onPress={resetAvatar} /> : null}
+				{avatarSuggestions.slice(0, 7).map(item => (
+					<Item item={item} onPress={onPress} />
+				))}
+			</View>
 		</View>
-	</View>
-);
+	);
+};
 
 export default AvatarSuggestion;
