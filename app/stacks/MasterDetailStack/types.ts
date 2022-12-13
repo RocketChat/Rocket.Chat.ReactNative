@@ -58,6 +58,12 @@ export type ModalStackParamList = {
 		onSearch?: Function;
 		isRadio?: boolean;
 	};
+	ChangeAvatarView: {
+		fromUser?: boolean;
+		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
+	};
 	RoomInfoEditView: {
 		rid: string;
 	};

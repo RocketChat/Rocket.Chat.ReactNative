@@ -4,6 +4,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 
+import { compareServerVersion } from '../../lib/methods/helpers';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -27,13 +28,14 @@ import log from '../../lib/methods/helpers/log';
 
 const ChangeAvatarView = () => {
 	const [avatar, setAvatarState] = useState<IAvatar>();
-	
+
 	const [textAvatar, setTextAvatar] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
-	const { user } = useAppSelector(state => ({
+	const { user, serverVersion } = useAppSelector(state => ({
 		user: getUserSelector(state),
-		isMasterDetail: state.app.isMasterDetail
+		isMasterDetail: state.app.isMasterDetail,
+		serverVersion: state.server.version
 	}));
 
 	const avatarUrl = useRef<string | undefined>('');
@@ -182,7 +184,7 @@ const ChangeAvatarView = () => {
 						onPress={pickImage}
 						testID='change-avatar-view-logout-other-locations'
 					/>
-					{!fromUser ? (
+					{!fromUser && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 						<Button
 							title={I18n.t('Delete_image')}
 							type='primary'
