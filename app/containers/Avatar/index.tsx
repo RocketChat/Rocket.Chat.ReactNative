@@ -31,6 +31,7 @@ const AvatarContainer = ({
 }: IAvatar & { isUserProfile?: boolean; handleEdit?: () => void }): React.ReactElement => {
 	const subscription = useRef<Subscription>();
 	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
+	const previousAvatarEtag = useRef<string | undefined>('');
 	const { colors } = useTheme();
 
 	const isDirect = () => type === 'd';
@@ -82,7 +83,7 @@ const AvatarContainer = ({
 	};
 
 	useEffect(() => {
-		if (!avatarETag) {
+		if (!avatarETag || avatarETag !== previousAvatarEtag.current) {
 			init();
 		}
 		return () => {
@@ -91,6 +92,10 @@ const AvatarContainer = ({
 			}
 		};
 	}, [text, type, size, avatarETag, externalProviderUrl]);
+
+	useEffect(() => {
+		previousAvatarEtag.current = avatarETag;
+	}, [avatarETag]);
 
 	return (
 		<>

@@ -553,7 +553,7 @@ export const saveRoomSettings = (
 	rid: string,
 	params: {
 		roomName?: string;
-		roomAvatar?: string;
+		roomAvatar?: string | null;
 		roomDescription?: string;
 		roomTopic?: string;
 		roomAnnouncement?: string;

@@ -17,7 +17,7 @@ export interface IAvatarButton {
 }
 
 export interface IAvatar {
-	data: {} | string | null;
+	data: string | null;
 	url?: string;
 	contentType?: string;
 	service?: any;

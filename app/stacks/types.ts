@@ -183,6 +183,8 @@ export type ChatsStackParamList = {
 	ChangeAvatarView: {
 		fromUser?: boolean;
 		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
 	};
 };
 
@@ -201,6 +203,8 @@ export type ProfileStackParamList = {
 	ChangeAvatarView: {
 		fromUser?: boolean;
 		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
 	};
 };
 

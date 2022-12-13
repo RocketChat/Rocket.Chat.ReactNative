@@ -39,7 +39,7 @@ const ChangeAvatarView = () => {
 	const avatarUrl = useRef<string | undefined>('');
 
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
-	const { fromUser, titleHeader } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
+	const { fromUser, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -72,6 +72,21 @@ const ChangeAvatarView = () => {
 	};
 
 	const submit = async () => {
+		if (!fromUser && room?.rid) {
+			try {
+				setSaving(true);
+				await Services.saveRoomSettings(room.rid, { roomAvatar: avatar?.data });
+				setSaving(false);
+				avatarUrl.current = '';
+				return navigation.goBack();
+			} catch (e) {
+				log(e);
+				setSaving(false);
+				return handleError(e, 'setAvatarFromService', 'changing_avatar');
+			}
+		}
+
+		// Change Users Avatar
 		if (avatar?.url) {
 			try {
 				setSaving(true);
@@ -107,9 +122,8 @@ const ChangeAvatarView = () => {
 	};
 
 	const resetRoomAvatar = () => {
-		setAvatar(undefined);
-
-		// await Services.saveRoomSettings(room.rid, params);
+		setAvatar({ data: null });
+		avatarUrl.current = 'resetRoomAvatar';
 	};
 
 	const pickImage = async () => {
@@ -130,6 +144,8 @@ const ChangeAvatarView = () => {
 		}
 	};
 
+	const ridProps = avatarUrl.current !== 'resetRoomAvatar' ? { rid: room?.rid } : {};
+
 	return (
 		<KeyboardView
 			style={{ backgroundColor: colors.auxiliaryBackground }}
@@ -145,11 +161,13 @@ const ChangeAvatarView = () => {
 				>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
 						<Avatar
-							text={textAvatar || user.username}
+							text={room?.name || textAvatar || user.username}
 							avatar={avatar?.url}
 							isStatic={avatar?.url}
 							size={100}
 							isUserProfile={fromUser}
+							type={t}
+							{...ridProps}
 						/>
 					</View>
 					{fromUser ? <AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} /> : null}
