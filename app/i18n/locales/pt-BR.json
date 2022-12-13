@@ -513,6 +513,8 @@
   "Unsupported_system_message": "Mensagem de sistema não suportada",
   "Updating": "Atualizando...",
   "Uploading": "Subindo arquivo",
+  "FileUpload_Error": "Erro de upload de arquivo",
+  "Upload_in_progress": "Carregamento em andamento",
   "Upload_file_question_mark": "Enviar arquivo?",
   "User": "Usuário",
   "Users": "Usuários",
