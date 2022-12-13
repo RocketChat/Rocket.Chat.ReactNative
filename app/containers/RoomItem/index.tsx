@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserPresence } from '../../lib/methods';
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
-import { IRoomItemContainerProps } from './interfaces';
+import { IRoomItemContainerProps, ITouchableRef } from './interfaces';
 import RoomItem from './RoomItem';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 
@@ -40,6 +40,7 @@ const RoomItemContainer = ({
 	const connected = useAppSelector(state => state.meteor.connected);
 	const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 	const isDirect = !!(item.t === 'd' && id && !isGroupChat(item));
+	const touchableRef = useRef<ITouchableRef>(null);
 
 	// When app reconnects, we need to fetch the rendered user's presence
 	useEffect(() => {
@@ -56,6 +57,9 @@ const RoomItemContainer = ({
 		if (!userStatus && isDirect) {
 			getUserPresence(id);
 		}
+
+		// TODO: Remove this when we have a better way to close the swipeable
+		touchableRef?.current?.close();
 	}, [item.rid]);
 
 	const handleOnPress = () => onPress(item);
@@ -79,6 +83,7 @@ const RoomItemContainer = ({
 
 	return (
 		<RoomItem
+			touchableRef={touchableRef}
 			name={name}
 			avatar={avatar}
 			isGroupChat={isGroupChat(item)}

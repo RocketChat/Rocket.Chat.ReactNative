@@ -51,9 +51,11 @@ const RoomItem = ({
 	showAvatar,
 	displayMode,
 	sourceType,
-	hideMentionStatus
+	hideMentionStatus,
+	touchableRef
 }: IRoomItemProps) => (
 	<Touchable
+		ref={touchableRef}
 		onPress={onPress}
 		onLongPress={onLongPress}
 		favorite={favorite}

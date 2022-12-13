@@ -115,6 +115,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	size?: number;
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
+	touchableRef: React.RefObject<ITouchableRef>;
 }
 
 export interface ILastMessageProps {
@@ -124,6 +125,10 @@ export interface ILastMessageProps {
 	username: string;
 	useRealName: boolean;
 	alert: boolean;
+}
+
+export interface ITouchableRef {
+	close: () => void;
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
