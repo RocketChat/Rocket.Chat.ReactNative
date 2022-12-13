@@ -239,7 +239,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showUnread !== nextProps.showUnread ||
 			showAvatar !== nextProps.showAvatar ||
 			displayMode !== nextProps.displayMode ||
-			subscribedRoom !== nextProps.subscribedRoom ||
+			(subscribedRoom !== nextProps.subscribedRoom && isMasterDetail) ||
 			isMasterDetail !== nextProps.isMasterDetail ||
 			encryptionBanner !== nextProps.encryptionBanner ||
 			showServerDropdown !== nextProps.showServerDropdown
