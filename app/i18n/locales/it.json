@@ -191,6 +191,7 @@
   "DELETE": "ELIMINA",
   "Delete_Account": "Elimina account",
   "Delete_Account_confirm": "Sì, Elimina",
+  "move": "spostare",
   "deleting_room": "cancellazione stanza",
   "description": "descrizione",
   "Description": "Descrizione",
@@ -320,6 +321,7 @@
   "Message_accessibility": "Messaggio da {{user}} alle {{time}}: {{message}}",
   "Message_actions": "Azioni messaggio",
   "Message_pinned": "Messaggio appuntato",
+  "Message_removed": "Messaggio rimosso",
   "Message_starred": "Messaggio importante",
   "Message_unstarred": "Messaggio non importante",
   "message": "messaggio",
@@ -687,5 +689,6 @@
   "Enter_workspace_URL": "Inserisci la url del workspace",
   "Workspace_URL_Example": "Es. tua-azienda.rocket.chat",
   "invalid-room": "Canale non valido",
+  "Open_Livechats": "Chat in corso",
   "Broadcast_hint": "Solo gli utenti autorizzati possono scrivere messaggi, ma gli altri utenti saranno in grado di rispondere"
 }
