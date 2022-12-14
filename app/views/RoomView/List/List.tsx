@@ -25,7 +25,7 @@ const List = ({ listRef, ...props }: IListProps) => (
 		// @ts-ignore
 		contentContainerStyle={styles.contentContainer}
 		inverted
-		estimatedItemSize={150}
+		estimatedItemSize={48}
 		onEndReachedThreshold={0.5}
 		{...props}
 		{...scrollPersistTaps}
