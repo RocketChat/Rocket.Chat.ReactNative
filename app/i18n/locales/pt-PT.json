@@ -307,6 +307,7 @@
   "Message_accessibility": "Mensagem de {{user}} às {{time}}: {{message}}",
   "Message_actions": "Acções de mensagem",
   "Message_pinned": "Mensagem afixada",
+  "Message_removed": "Mensagem removida",
   "Message_starred": "Mensagem estrelada",
   "Message_unstarred": "Mensagem não estrelada",
   "message": "mensagem",
@@ -492,5 +493,6 @@
   "you": "você",
   "You": "Você",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
+  "Open_Livechats": "Chats em andamento",
   "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder"
 }
