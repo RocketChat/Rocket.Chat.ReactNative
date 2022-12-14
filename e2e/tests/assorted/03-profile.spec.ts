@@ -46,6 +46,10 @@ describe('Profile screen', () => {
 			await expect(element(by.id('profile-view-avatar')).atIndex(0)).toExist();
 		});
 
+		it('should have avatar edit button', async () => {
+			await expect(element(by.id('avatar-edit-button'))).toExist();
+		});
+
 		it('should have name', async () => {
 			await expect(element(by.id('profile-view-name'))).toExist();
 		});
@@ -60,31 +64,6 @@ describe('Profile screen', () => {
 
 		it('should have new password', async () => {
 			await expect(element(by.id('profile-view-new-password'))).toExist();
-		});
-
-		it('should have avatar url', async () => {
-			await expect(element(by.id('profile-view-avatar-url'))).toExist();
-		});
-
-		it('should have reset avatar button', async () => {
-			await waitFor(element(by.id('profile-view-reset-avatar')))
-				.toExist()
-				.whileElement(by.id('profile-view-list'))
-				.scroll(scrollDown, 'down');
-		});
-
-		it('should have upload avatar button', async () => {
-			await waitFor(element(by.id('profile-view-upload-avatar')))
-				.toExist()
-				.whileElement(by.id('profile-view-list'))
-				.scroll(scrollDown, 'down');
-		});
-
-		it('should have avatar url button', async () => {
-			await waitFor(element(by.id('profile-view-avatar-url-button')))
-				.toExist()
-				.whileElement(by.id('profile-view-list'))
-				.scroll(scrollDown, 'down');
 		});
 
 		it('should have submit button', async () => {
@@ -122,9 +101,24 @@ describe('Profile screen', () => {
 		});
 
 		it('should reset avatar', async () => {
-			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
-			await element(by.id('profile-view-reset-avatar')).tap();
-			await waitForToast();
+			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
+			await element(by.id('avatar-edit-button')).tap();
+			await waitFor(element(by.id('change-avatar-view-avatar')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await waitFor(element(by.id('reset-avatar-suggestion')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('reset-avatar-suggestion')).tap();
+			await sleep(300);
+			await waitFor(element(by.id('change-avatar-view-submit')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('change-avatar-view-submit')).tap();
+			await sleep(300);
+			await waitFor(element(by.id('profile-view')))
+				.toBeVisible()
+				.withTimeout(2000);
 		});
 	});
 });

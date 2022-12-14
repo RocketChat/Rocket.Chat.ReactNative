@@ -8,13 +8,23 @@ import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import { useTheme } from '../../theme';
 
-const Item = ({ item, onPress, text }: { item?: IAvatar; onPress: (value?: IAvatar) => void; text?: string }) => {
+const Item = ({
+	item,
+	onPress,
+	text,
+	testID
+}: {
+	item?: IAvatar;
+	testID?: string;
+	onPress: (value?: IAvatar) => void;
+	text?: string;
+}) => {
 	const { colors } = useTheme();
 
 	return (
 		<TouchableOpacity
 			key={item?.service}
-			testID={`${item?.service}-avatar-suggestion`}
+			testID={testID}
 			onPress={() => onPress(item)}
 			style={[styles.avatarButton, { backgroundColor: colors.borderColor }]}
 		>
@@ -55,9 +65,11 @@ const AvatarSuggestion = ({
 		<View style={{ flex: 1 }}>
 			<Text style={styles.itemLabel}>{I18n.t('Images_uploaded')}</Text>
 			<View style={styles.containerAvatarSuggestion}>
-				{user?.username && resetAvatar ? <Item text={`@${user.username}`} onPress={resetAvatar} /> : null}
+				{user?.username && resetAvatar ? (
+					<Item text={`@${user.username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />
+				) : null}
 				{avatarSuggestions.slice(0, 7).map(item => (
-					<Item item={item} onPress={onPress} />
+					<Item item={item} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
 				))}
 			</View>
 		</View>
