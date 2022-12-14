@@ -10,7 +10,12 @@ const localeKeys: { [key: string]: string } = {
 	ja: 'ja',
 	nl: 'nl',
 	'es-ES': 'es',
-	'zh-TW': 'zh-tw'
+	'zh-TW': 'zh-tw',
+	ar: 'ar',
+	tr: 'tr',
+	'sl-SI': 'sl',
+	sv: 'sv',
+	fi: 'fi'
 };
 
 export const toMomentLocale = (locale: string): string => localeKeys[locale];
