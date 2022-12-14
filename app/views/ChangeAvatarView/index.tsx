@@ -74,46 +74,31 @@ const ChangeAvatarView = () => {
 	};
 
 	const submit = async () => {
-		if (!fromUser && room?.rid) {
-			try {
-				setSaving(true);
+		try {
+			setSaving(true);
+			if (!fromUser && room?.rid) {
+				// Change Rooms Avatar
 				await Services.saveRoomSettings(room.rid, { roomAvatar: avatar?.data });
-				setSaving(false);
-				avatarUrl.current = '';
-				return navigation.goBack();
-			} catch (e) {
-				log(e);
-				setSaving(false);
-				return handleError(e, 'setAvatarFromService', 'changing_avatar');
-			}
-		}
-
-		// Change Users Avatar
-		if (avatar?.url) {
-			try {
-				setSaving(true);
+			} else if (avatar?.url) {
+				// Change User's Avatar
 				await Services.setAvatarFromService(avatar);
-				setSaving(false);
-				avatarUrl.current = '';
-				return navigation.goBack();
-			} catch (e) {
-				log(e);
-				setSaving(false);
-				return handleError(e, 'setAvatarFromService', 'changing_avatar');
-			}
-		}
-
-		if (textAvatar) {
-			try {
-				setSaving(true);
+			} else if (textAvatar) {
+				// Change User's Avatar
 				await Services.resetAvatar(user.id);
-				setSaving(false);
-				avatarUrl.current = '';
-				return navigation.goBack();
-			} catch (e) {
-				setSaving(false);
-				handleError(e, 'resetAvatar', 'changing_avatar');
 			}
+			setSaving(false);
+			avatarUrl.current = '';
+			return navigation.goBack();
+		} catch (e) {
+			log(e);
+			setSaving(false);
+			if (!fromUser && room?.rid) {
+				return handleError(e, 'saveRoomSettings', 'changing_avatar');
+			}
+			if (textAvatar) {
+				return handleError(e, 'resetAvatar', 'changing_avatar');
+			}
+			return handleError(e, 'setAvatarFromService', 'changing_avatar');
 		}
 	};
 
