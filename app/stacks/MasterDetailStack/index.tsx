@@ -17,6 +17,7 @@ import RoomsListView from '../../views/RoomsListView';
 import RoomActionsView from '../../views/RoomActionsView';
 import RoomInfoView from '../../views/RoomInfoView';
 import RoomInfoEditView from '../../views/RoomInfoEditView';
+import ChangeAvatarView from '../../views/ChangeAvatarView';
 import RoomMembersView from '../../views/RoomMembersView';
 import SearchMessagesView from '../../views/SearchMessagesView';
 import SelectedUsersView from '../../views/SelectedUsersView';
@@ -128,6 +129,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 				<ModalStack.Screen name='SelectListView' component={SelectListView} />
 				<ModalStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
+				<ModalStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 				<ModalStack.Screen name='RoomMembersView' component={RoomMembersView} />
 				<ModalStack.Screen
 					name='SearchMessagesView'
