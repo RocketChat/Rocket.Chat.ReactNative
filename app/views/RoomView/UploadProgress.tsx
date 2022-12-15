@@ -160,7 +160,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await sendFileMessage(rid, item, undefined, server, user);
+			await sendFileMessage(rid, item, item.tmid, server, user, true);
 		} catch (e) {
 			log(e);
 		}
