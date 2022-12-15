@@ -42,7 +42,9 @@ const AvatarSuggestion = ({
 	resetAvatar?: () => void;
 }) => {
 	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
-
+	
+	const { colors } = useTheme();
+	
 	const getAvatarSuggestion = async () => {
 		const result = await Services.getAvatarSuggestion();
 		const suggestions = Object.keys(result).map(service => {
@@ -63,7 +65,7 @@ const AvatarSuggestion = ({
 
 	return (
 		<View style={{ flex: 1 }}>
-			<Text style={styles.itemLabel}>{I18n.t('Images_uploaded')}</Text>
+			<Text style={[styles.itemLabel, { color: colors.titleText }]}>{I18n.t('Images_uploaded')}</Text>
 			<View style={styles.containerAvatarSuggestion}>
 				{user?.username && resetAvatar ? (
 					<Item text={`@${user.username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />

@@ -165,7 +165,7 @@ const ChangeAvatarView = () => {
 						title={I18n.t('Upload_image')}
 						type='secondary'
 						disabled={saving}
-						backgroundColor={colors.chatComponentBackground}
+						backgroundColor={colors.editAndUploadButtonAvatar}
 						onPress={pickImage}
 						testID='change-avatar-view-logout-other-locations'
 					/>

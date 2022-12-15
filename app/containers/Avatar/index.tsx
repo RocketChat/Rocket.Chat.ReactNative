@@ -124,7 +124,7 @@ const AvatarContainer = ({
 				<Button
 					title={I18n.t('Edit')}
 					type='secondary'
-					backgroundColor={colors.passcodeButtonActive}
+					backgroundColor={colors.editAndUploadButtonAvatar}
 					onPress={handleEdit}
 					testID='avatar-edit-button'
 					style={styles.editAvatarButton}
