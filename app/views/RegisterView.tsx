@@ -319,14 +319,14 @@ class RegisterView extends React.Component<IProps, any> {
 						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
 							{`${I18n.t('Onboarding_agree_terms')}\n`}
 							<Text
-								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+								style={[styles.bottomContainerTextBold, { color: themes[theme].tintColor }]}
 								onPress={() => this.openContract('terms-of-service')}
 							>
 								{I18n.t('Terms_of_Service')}
 							</Text>{' '}
 							{I18n.t('and')}
 							<Text
-								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+								style={[styles.bottomContainerTextBold, { color: themes[theme].tintColor }]}
 								onPress={() => this.openContract('privacy-policy')}
 							>
 								{' '}
@@ -340,7 +340,7 @@ class RegisterView extends React.Component<IProps, any> {
 							<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
 								{I18n.t('Do_you_have_an_account')}
 							</Text>
-							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]} onPress={this.login}>
+							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].tintColor }]} onPress={this.login}>
 								{I18n.t('Login')}
 							</Text>
 						</View>

@@ -136,7 +136,7 @@ export const FormTextInput = ({
 
 				{showClearInput ? (
 					<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
-						<CustomIcon name='input-clear' size={20} color={colors.auxiliaryTintColor} />
+						<CustomIcon name='input-clear' size={20} color={colors.auxiliaryText} />
 					</Touchable>
 				) : null}
 

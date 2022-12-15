@@ -125,7 +125,7 @@ const CollapsibleQuote = React.memo(
 
 		let {
 			borderColor,
-			chatComponentBackground: backgroundColor,
+			surfaceTint: backgroundColor,
 			collapsibleQuoteBorder,
 			collapsibleChevron,
 			headerTintColor
@@ -161,7 +161,7 @@ const CollapsibleQuote = React.memo(
 							borderLeftWidth: 2
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<View style={styles.touchableContainer}>

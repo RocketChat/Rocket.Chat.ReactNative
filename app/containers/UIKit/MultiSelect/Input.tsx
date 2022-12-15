@@ -23,7 +23,7 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 		<Touchable
 			onPress={onPress}
 			style={[{ backgroundColor: colors.backgroundColor }, styles.inputBorder, inputStyle]}
-			background={Touchable.Ripple(colors.bannerBackground)}
+			background={Touchable.Ripple(colors.buttonBackgroundSecondaryPress)}
 			disabled={disabled}
 		>
 			<View style={[styles.input, styles.inputBorder, { borderColor: colors.separatorColor }, innerInputStyle]}>

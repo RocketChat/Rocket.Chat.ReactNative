@@ -67,7 +67,7 @@ const ServerAvatar = React.memo(({ theme, url, image }: IServerAvatar) => (
 				resizeMode={FastImage.resizeMode.cover}
 				indicator={Progress.Pie}
 				indicatorProps={{
-					color: themes[theme].actionTintColor
+					color: themes[theme].tintColor
 				}}
 				renderError={() => <Fallback theme={theme} initial={getInitial(url)} />}
 			/>

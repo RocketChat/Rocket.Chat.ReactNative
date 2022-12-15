@@ -56,7 +56,7 @@ const RenderListPicker = ({
 			onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
 			setOption(i);
 		},
-		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintColor} /> : undefined
 	}));
 
 	return (
@@ -65,7 +65,7 @@ const RenderListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
 			right={() => (
-				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.actionTintColor }]}>
+				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.tintColor }]}>
 					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
 				</Text>
 			)}

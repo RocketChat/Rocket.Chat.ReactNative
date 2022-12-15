@@ -16,7 +16,7 @@ const CallButton = React.memo(({ callJitsi }: IMessageCallButton) => {
 		<View style={styles.buttonContainer}>
 			<Touchable
 				onPress={callJitsi}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
+				background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 				style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 				hitSlop={BUTTON_HIT_SLOP}
 			>

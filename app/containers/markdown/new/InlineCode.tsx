@@ -19,7 +19,7 @@ const InlineCode = ({ value }: IInlineCodeProps) => {
 				styles.codeInline,
 				{
 					color: themes[theme].bodyText,
-					backgroundColor: themes[theme].bannerBackground,
+					backgroundColor: themes[theme].buttonBackgroundSecondaryPress,
 					borderColor: themes[theme].borderColor
 				}
 			]}

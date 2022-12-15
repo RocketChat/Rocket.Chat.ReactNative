@@ -62,7 +62,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
-		this.infoText = props.route?.params?.infoText ?? '';
+		this.auxiliaryText = props.route?.params?.auxiliaryText ?? '';
 		this.nextAction = props.route?.params?.nextAction;
 		this.showAlert = props.route?.params?.showAlert ?? (() => {});
 		this.isSearch = props.route?.params?.isSearch ?? false;
@@ -102,7 +102,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
+				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.auxiliaryText)}</Text>
 			</View>
 		);
 	};
@@ -153,7 +153,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 			<RadioButton
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
 				selected={selected.includes(item.rid)}
-				color={themes[theme].actionTintColor}
+				color={themes[theme].tintColor}
 				size={ICON_SIZE}
 			/>
 		);
@@ -162,7 +162,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				<List.Icon
 					testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
 					name={checked}
-					color={themes[theme].actionTintColor}
+					color={themes[theme].tintColor}
 				/>
 			) : null;
 
@@ -175,7 +175,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					testID={`select-list-view-item-${item.name}`}
 					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
 					alert={item.alert}
-					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
+					left={() => <List.Icon name={icon} color={themes[theme].auxiliaryText} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
 				/>
 			</>

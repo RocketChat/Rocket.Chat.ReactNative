@@ -202,7 +202,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 			return (
 				<BorderlessButton onPress={this.startRecordingAudio} style={styles.actionButton} testID='messagebox-send-audio'>
 					<View accessible accessibilityLabel={I18n.t('Send_audio_message')} accessibilityRole='button'>
-						<CustomIcon name='microphone' size={24} color={themes[theme].auxiliaryTintColor} />
+						<CustomIcon name='microphone' size={24} color={themes[theme].auxiliaryText} />
 					</View>
 				</BorderlessButton>
 			);

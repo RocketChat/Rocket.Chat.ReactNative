@@ -100,7 +100,7 @@ const Title = React.memo(
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
-					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>
+					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].auxiliaryText }]}>
 						{attachment.author_name}
 					</Text>
 				) : null}
@@ -131,7 +131,7 @@ const Description = React.memo(
 		return (
 			<Markdown
 				msg={text}
-				style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14 }]}
+				style={[{ color: themes[theme].auxiliaryText, fontSize: 14 }]}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
 				theme={theme}
@@ -242,7 +242,7 @@ const Reply = React.memo(
 							borderColor
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 					disabled={loading}
 				>
 					<View style={styles.attachmentContainer}>
@@ -251,7 +251,7 @@ const Reply = React.memo(
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
 							timeFormat={timeFormat}
-							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
+							style={[{ color: themes[theme].auxiliaryText, fontSize: 14, marginBottom: 8 }]}
 							isReply
 							id={messageId}
 						/>
@@ -263,7 +263,10 @@ const Reply = React.memo(
 								<View
 									style={[
 										styles.backdrop,
-										{ backgroundColor: themes[theme].bannerBackground, opacity: themes[theme].attachmentLoadingOpacity }
+										{
+											backgroundColor: themes[theme].buttonBackgroundSecondaryPress,
+											opacity: themes[theme].attachmentLoadingOpacity
+										}
 									]}
 								></View>
 								<RCActivityIndicator />

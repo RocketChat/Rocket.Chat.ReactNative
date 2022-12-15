@@ -214,7 +214,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					styles.item,
 					index !== 0 ? { marginTop: 4 } : {},
 					{
-						backgroundColor: themes[theme!].chatComponentBackground,
+						backgroundColor: themes[theme!].surfaceTint,
 						borderColor: themes[theme!].borderColor
 					}
 				]}

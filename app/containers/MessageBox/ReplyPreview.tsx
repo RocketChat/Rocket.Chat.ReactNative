@@ -66,7 +66,7 @@ const ReplyPreview = React.memo(
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
-				<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
+				<View style={[styles.messageContainer, { backgroundColor: themes[theme].surfaceTint }]}>
 					<View style={styles.header}>
 						<Text numberOfLines={1} style={[styles.username, { color: themes[theme].tintColor }]}>
 							{useRealName ? message.u?.name : message.u?.username}

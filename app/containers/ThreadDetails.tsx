@@ -87,7 +87,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 					<CustomIcon
 						size={24}
 						name={isFollowing ? 'notification' : 'notification-disabled'}
-						color={themes[theme].auxiliaryTintColor}
+						color={themes[theme].auxiliaryText}
 					/>
 				</Touchable>
 			</View>

@@ -21,55 +21,58 @@ const mentions = {
 
 export const colors = {
 	light: {
-		backgroundColor: '#ffffff',
-		focusedBackground: '#ffffff',
-		chatComponentBackground: '#f3f4f5',
-		auxiliaryBackground: '#efeff4',
-		bannerBackground: '#f1f2f4',
-		titleText: '#0d0e12',
-		bodyText: '#2f343d',
-		backdropColor: '#000000',
-		dangerColor: '#f5455c',
-		successColor: '#2de0a5',
-		borderColor: '#e1e5e8',
-		controlText: '#54585e',
-		auxiliaryText: '#9ca2a8',
-		infoText: '#6d6d72',
-		tintColor: '#1d74f5',
-		tintActive: '#549df9',
-		tintDisabled: '#88B4F5',
-		auxiliaryTintColor: '#6C727A',
-		actionTintColor: '#1d74f5',
-		separatorColor: '#cbcbcc',
-		navbarBackground: '#ffffff',
-		headerBorder: '#B2B2B2',
-		headerBackground: '#EEEFF1',
-		headerSecondaryBackground: '#ffffff',
-		headerTintColor: '#6C727A',
-		headerTitleColor: '#0C0D0F',
-		headerSecondaryText: '#1d74f5',
-		toastBackground: '#0C0D0F',
-		videoBackground: '#1f2329',
-		favoriteBackground: '#ffbb00',
-		hideBackground: '#54585e',
-		messageboxBackground: '#ffffff',
-		searchboxBackground: '#E6E6E7',
-		buttonBackground: '#414852',
-		buttonText: '#ffffff',
-		passcodeBackground: '#EEEFF1',
-		passcodeButtonActive: '#E4E7EA',
-		passcodeLockIcon: '#6C727A',
-		passcodePrimary: '#2F343D',
-		passcodeSecondary: '#6C727A',
-		passcodeDotEmpty: '#CBCED1',
-		passcodeDotFull: '#6C727A',
-		previewBackground: '#1F2329',
-		previewTintColor: '#f9f9f9',
-		backdropOpacity: 0.3,
-		attachmentLoadingOpacity: 0.7,
-		collapsibleQuoteBorder: '#CBCED1',
-		collapsibleChevron: '#6C727A',
-		cancelButton: '#E4E7EA',
+		backgroundColor: '#ffffff', // surface-light
+		// focusedBackground: '#ffffff', // removed in favor of backgroundColor
+		// chatComponentBackground: 'red',
+		surfaceTint: '#F7F8FA',
+		buttonBackgroundSecondaryDefault: '#E4E7EA',
+		buttonBackgroundSecondaryPress: '#9EA2A8',
+		statusBackgroundWarning: '#FFECAD',
+		// auxiliaryBackground: '#efeff4', // removed in favor of backgroundColor
+		// bannerBackground: '#f1f2f4', // removed in favor of buttonBackgroundSecondaryPress
+		titleText: '#1F2329', // fontTitleLabels
+		bodyText: '#2F343D', // fontDefault
+		auxiliaryText: '#6C727A', // fontSecondaryInfo
+		// controlText: '#54585e', // removed in favor of auxiliaryText
+		// infoText: '#6d6d72', // removed in favor of auxiliaryText
+		separatorColor: '#CBCED1', // strokeLight
+		tintColor: '#156FF5', // buttonBackgroundPrimaryDefault
+		// tintColor: '#549df9', // removed in favor of tintColor
+		// actionTintColor: '#1d74f5', // removed in favor of tintColor
+		tintDisabled: '#D1EBFE', // buttonBackgroundDisabled
+		// auxiliaryTintColor: '#6C727A', // removed in favor of auxiliaryText
+		backdropOpacity: 0.7,
+		dangerColor: '#EC0D2A', // buttonBackgroundDangerDefault
+		// successColor: '#2de0a5', not used
+		borderColor: '#9EA2A8', // strokeMedium
+		navbarBackground: '#F7F8FA', // surfaceTint
+		headerBorder: '#CBCED1', // strokeLight
+		headerBackground: '#F7F8FA', // surfaceTint
+		// headerSecondaryBackground: '#ffffff', removed in favor of headerBackground
+		headerTintColor: '#6C727A', // fontSecondaryInfo
+		headerTitleColor: '#1F2329', // fontTitleLabels
+		// headerSecondaryText: '#1d74f5', not used
+		toastBackground: '#0C0D0F', // strokeExtraDark
+		videoBackground: '#0C0D0F', // strokeExtraDark
+		favoriteBackground: '#ffbb00', // tbd
+		hideBackground: '#54585e', // tbd
+		messageboxBackground: '#F7F8FA', // surfaceTint
+		// searchboxBackground: '#E6E6E7', removed in favor of buttonBackgroundSecondaryDefault
+		// buttonBackground: '#414852', buttonBackgroundSecondaryDefault
+		buttonText: '#ffffff', // buttonFontOnPrimary
+		passcodeBackground: '#F7F8FA', // surfaceTint
+		passcodeButtonActive: '#9EA2A8', // buttonBackgroundSecondaryPress
+		passcodeLockIcon: '#1F2329', // fontTitleLabels
+		passcodePrimary: '#1F2329', // fontTitleLabels
+		passcodeSecondary: '#6C727A', // fontSecondaryInfo
+		passcodeDotEmpty: '#CBCED1', // surfaceLight
+		passcodeDotFull: '#9EA2A8', // surfaceMedium
+		previewBackground: '#0C0D0F', // strokeExtraDark
+		previewTintColor: '#ffffff', // buttonFontOnPrimary change later
+		attachmentLoadingOpacity: 0.7, // tbd
+		collapsibleQuoteBorder: '#CBCED1', // strokeLight
+		collapsibleChevron: '#6C727A', // fontSecondaryInfo
+		cancelButton: '#E4E7EA', // buttonBackgroundSecondaryDefault
 		conferenceCallBorder: '#F2F3F5',
 		conferenceCallBackground: '#F7F8FA',
 		conferenceCallOngoingPhoneBackground: '#C0F6E4',
@@ -105,7 +108,7 @@ export const colors = {
 		auxiliaryText: '#9297a2',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
-		tintActive: '#549df9',
+		// tintColor: '#549df9',
 		tintDisabled: '#88B4F5',
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1d74f5',
@@ -174,7 +177,7 @@ export const colors = {
 		auxiliaryText: '#b2b8c6',
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
-		tintActive: '#76b7fc',
+		// tintColor: '#76b7fc',
 		tintDisabled: '#88B4F5', // TODO: Evaluate this with design team
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1e9bfe',

@@ -138,7 +138,7 @@ const ActionSheet = React.memo(
 						handleComponent={renderHandle}
 						enablePanDownToClose
 						style={{ ...styles.container, ...bottomSheet }}
-						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
+						backgroundStyle={{ backgroundColor: colors.backgroundColor }}
 						onChange={index => index === -1 && onClose()}
 						// We need this to allow horizontal swipe gesture inside the bottom sheet like in reaction picker
 						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}

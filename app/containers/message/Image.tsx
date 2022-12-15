@@ -38,7 +38,7 @@ const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButto
 		disabled={disabled}
 		onPress={onPress}
 		style={styles.imageContainer}
-		background={Touchable.Ripple(themes[theme].bannerBackground)}
+		background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 	>
 		{children}
 	</Touchable>
@@ -51,7 +51,7 @@ export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; the
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
-			color: themes[theme].actionTintColor
+			color: themes[theme].tintColor
 		}}
 	/>
 ));

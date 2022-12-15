@@ -1272,7 +1272,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 						style={[
 							styles.textArea,
 							{ backgroundColor: themes[theme].messageboxBackground },
-							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
+							!recording && editing && { backgroundColor: themes[theme].statusBackgroundWarning }
 						]}
 						testID='messagebox'
 					>

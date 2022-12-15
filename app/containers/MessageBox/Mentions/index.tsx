@@ -25,7 +25,7 @@ const Mentions = React.memo(
 		return (
 			<View testID='messagebox-container'>
 				<FlatList
-					style={[styles.mentionList, { backgroundColor: themes[theme].auxiliaryBackground }]}
+					style={[styles.mentionList, { backgroundColor: themes[theme].backgroundColor }]}
 					ListHeaderComponent={() => (
 						<MentionHeaderList trackingType={trackingType} hasMentions={mentions.length > 0} loading={loading} />
 					)}

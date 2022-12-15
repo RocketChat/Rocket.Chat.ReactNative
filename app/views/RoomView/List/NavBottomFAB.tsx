@@ -65,7 +65,7 @@ const NavBottomFAB = ({
 		<Animated.View style={[styles.container, { bottom }]} testID='nav-jump-to-bottom'>
 			<Touch onPress={handleOnPress} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}>
 				<View style={[styles.content, { borderColor: themes[theme].borderColor }]}>
-					<CustomIcon name='chevron-down' color={themes[theme].auxiliaryTintColor} size={36} />
+					<CustomIcon name='chevron-down' color={themes[theme].auxiliaryText} size={36} />
 				</View>
 			</Touch>
 		</Animated.View>

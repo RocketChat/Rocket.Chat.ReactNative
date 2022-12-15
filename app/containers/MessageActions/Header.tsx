@@ -65,7 +65,7 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => (
 	<Touch
 		testID={`message-actions-emoji-${item}`}
 		onPress={() => onReaction({ emoji: item })}
-		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		style={[styles.headerItem, { backgroundColor: themes[theme].backgroundColor }]}
 	>
 		{typeof item === 'string' ? (
 			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item}:`)}</Text>
@@ -109,12 +109,12 @@ const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader)
 	}
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 			<FlatList
 				data={frequentlyUsed.slice(0, quantity)}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}

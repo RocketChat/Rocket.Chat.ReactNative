@@ -149,7 +149,7 @@ const ForwardLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamL
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.auxiliaryBackground }]}>
+		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
 			<Input onPress={onPressDepartment} placeholder={I18n.t('Select_a_Department')} />
 			<OrSeparator theme={theme} />
 			<Input onPress={onPressUser} placeholder={I18n.t('Select_a_User')} />

@@ -973,7 +973,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { theme } = this.props;
 		return (
 			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={[styles.groupTitle, { color: themes[theme].controlText }]}>{I18n.t(header)}</Text>
+				<Text style={[styles.groupTitle, { color: themes[theme].auxiliaryText }]}>{I18n.t(header)}</Text>
 			</View>
 		);
 	};

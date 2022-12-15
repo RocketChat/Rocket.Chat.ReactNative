@@ -405,7 +405,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		return (
 			<Avatar text={room.name || roomUser.username} style={styles.avatar} type={this.t} size={100} rid={room?.rid}>
 				{this.t === SubscriptionType.DIRECT && roomUser._id ? (
-					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
 						<Status size={20} id={roomUser._id} />
 					</View>
 				) : null}
@@ -415,7 +415,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	renderButton = (onPress: () => void, iconName: TIconsName, text: string, danger?: boolean) => {
 		const { theme } = this.props;
-		const color = danger ? themes[theme].dangerColor : themes[theme].actionTintColor;
+		const color = danger ? themes[theme].dangerColor : themes[theme].tintColor;
 		return (
 			<BorderlessButton testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
@@ -487,7 +487,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-info-view'>
-					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 						{this.renderAvatar(room, roomUserParsed)}
 						<View style={styles.roomTitleContainer}>
 							{renderRoomTitle({

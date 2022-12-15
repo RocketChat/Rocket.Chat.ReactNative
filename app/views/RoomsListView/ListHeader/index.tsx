@@ -37,8 +37,8 @@ const ListHeader = React.memo(
 									: 'Save_Your_Encryption_Password'
 							}
 							left={() => <List.Icon name='encrypted' color={themes[theme].buttonText} />}
-							underlayColor={themes[theme].tintActive}
-							backgroundColor={themes[theme].actionTintColor}
+							underlayColor={themes[theme].tintColor}
+							backgroundColor={themes[theme].tintColor}
 							color={themes[theme].buttonText}
 							onPress={goEncryption}
 							testID='listheader-encryption'

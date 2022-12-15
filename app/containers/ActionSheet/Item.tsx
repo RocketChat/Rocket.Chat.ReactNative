@@ -21,7 +21,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	};
 
 	return (
-		<Touch onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]} testID={item.testID}>
+		<Touch onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]} testID={item.testID}>
 			{item.icon ? (
 				<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 			) : null}

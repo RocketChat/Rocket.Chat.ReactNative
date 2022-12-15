@@ -61,7 +61,7 @@ const Button = ({
 			disabled={disabled || loading}
 			style={[
 				styles.container,
-				backgroundColor ? { backgroundColor } : { backgroundColor: isPrimary ? colors.actionTintColor : colors.backgroundColor },
+				backgroundColor ? { backgroundColor } : { backgroundColor: isPrimary ? colors.tintColor : colors.backgroundColor },
 				disabled && styles.disabled,
 				style
 			]}

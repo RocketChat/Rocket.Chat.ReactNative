@@ -15,9 +15,9 @@ export const defaultHeader = {
 	cardStyle: { backgroundColor: 'transparent' }
 };
 
-export const cardStyle = {
-	backgroundColor: 'rgba(0,0,0,0)'
-};
+// export const cardStyle = {
+// 	backgroundColor: 'rgba(0,0,0,0)'
+// };
 
 export const borderBottom: any = (theme: TSupportedThemes) => ({
 	borderBottomWidth: StyleSheet.hairlineWidth,

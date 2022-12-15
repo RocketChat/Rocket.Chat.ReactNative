@@ -111,7 +111,7 @@ const E2ESaveYourPasswordView = () => {
 						<Text style={[styles.password, { color: colors.bodyText }]}>{password}</Text>
 						<Button
 							onPress={onCopy}
-							style={[styles.copyButton, { backgroundColor: colors.auxiliaryBackground }]}
+							style={[styles.copyButton, { backgroundColor: colors.backgroundColor }]}
 							title={I18n.t('Copy')}
 							type='secondary'
 							fontSize={14}

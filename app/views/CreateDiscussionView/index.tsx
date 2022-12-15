@@ -144,7 +144,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>

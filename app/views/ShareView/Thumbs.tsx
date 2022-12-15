@@ -120,12 +120,12 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
 			<RectButton
 				hitSlop={BUTTON_HIT_SLOP}
-				style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
+				style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].backgroundColor }]}
 				activeOpacity={1}
-				rippleColor={themes[theme].bannerBackground}
+				rippleColor={themes[theme].buttonBackgroundSecondaryPress}
 				onPress={() => onRemove(item)}
 			>
-				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
+				<View style={[styles.removeView, { borderColor: themes[theme].backgroundColor }]}>
 					<CustomIcon name='close' color={themes[theme].backgroundColor} size={14} />
 				</View>
 			</RectButton>

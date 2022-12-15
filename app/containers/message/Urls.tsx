@@ -116,11 +116,11 @@ const Url = React.memo(
 					index > 0 && styles.marginTop,
 					styles.container,
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
+						backgroundColor: themes[theme].surfaceTint,
 						borderColor: themes[theme].borderColor
 					}
 				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
+				background={Touchable.Ripple(themes[theme].buttonBackgroundSecondaryPress)}
 			>
 				<>
 					<UrlImage image={url.image} />

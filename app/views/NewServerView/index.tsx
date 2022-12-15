@@ -366,7 +366,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.subtitle,
 							{
-								color: themes[theme].controlText,
+								color: themes[theme].auxiliaryText,
 								fontSize: moderateScale({ size: 16, width }),
 								marginBottom: verticalScale({ size: 30, height })
 							}
@@ -408,7 +408,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					<Button
 						title={I18n.t('Join_our_open_workspace')}
 						type='secondary'
-						backgroundColor={themes[theme].chatComponentBackground}
+						backgroundColor={themes[theme].buttonBackgroundSecondaryDefault}
 						onPress={this.connectOpen}
 						disabled={connecting}
 						loading={connectingOpen && connecting}

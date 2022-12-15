@@ -176,7 +176,7 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 								onPress={this.resetOwnKey}
 								title={I18n.t('E2E_encryption_reset_button')}
 								type='secondary'
-								backgroundColor={themes[theme].chatComponentBackground}
+								backgroundColor={themes[theme].buttonBackgroundSecondaryDefault}
 								testID='e2e-encryption-security-view-reset-key'
 							/>
 						</List.Section>
