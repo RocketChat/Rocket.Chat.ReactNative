@@ -177,6 +177,8 @@
   "delete": "刪除",
   "Delete": "刪除",
   "DELETE": "刪除",
+  "Delete_Account": "刪除帳號",
+  "Delete_Account_confirm": "是的，請刪除",
   "deleting_room": "正在刪除聊天室",
   "description": "描述",
   "Description": "描述",
@@ -222,6 +224,7 @@
   "Encryption_error_title": "您的加密密碼似乎有誤",
   "Encryption_error_desc": "無法使用匯入的加密金鑰來解密",
   "Everyone_can_access_this_channel": "所有人皆可存取此頻道",
+  "Everyone_can_access_this_team": "所有人皆可存取此團隊",
   "Error_uploading": "錯誤上傳",
   "Expiration_Days": "到期 (日)",
   "Favorites": "我的最愛",
@@ -301,6 +304,7 @@
   "Message_accessibility": "{{time}}來自{{user}}的訊息: {{message}}",
   "Message_actions": "訊息操作",
   "Message_pinned": "訊息被釘選",
+  "Message_removed": "訊息被刪除",
   "Message_starred": "訊息被標註",
   "Message_unstarred": "訊息被取消標註",
   "message": "訊息",
@@ -650,5 +654,6 @@
   "Messagebox_Send_to_channel": "發送至頻道",
   "Confirmation": "確認",
   "invalid-room": "無效的房間",
+  "Open_Livechats": "打開即時聊天",
   "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆"
 }

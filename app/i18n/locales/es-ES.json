@@ -183,6 +183,7 @@
   "Forgot_password": "¿Ha olvidado su contraseña?",
   "Forgot_Password": "Olvidé la contraseña",
   "Full_table": "Click para ver la tabla completa",
+  "Get_link": "Obtener enlace",
   "In_App_And_Desktop": "En la aplicación y en el escritorio",
   "In_App_and_Desktop_Alert_info": "Muestra un banner en la parte superior de la pantalla cuando la aplicación esté abierta y muestra una notificación en el escritorio",
   "Invisible": "Invisible",
@@ -214,6 +215,7 @@
   "Message_accessibility": "Mensaje de {{user}} a las {{time}}: {{message}}",
   "Message_actions": "Acciones de mensaje",
   "Message_pinned": "Mensaje fijado",
+  "Message_removed": "Mensaje eliminado",
   "message": "mensaje",
   "messages": "mensajes",
   "Messages": "Mensajes",
@@ -423,6 +425,5 @@
   "Server_selection_numbers": "Seleccionar servidor 1...9",
   "Add_server": "Añadir servidor",
   "New_line": "Nueva línea",
-  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
-  "Get_link": "Obtener enlace"
+  "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos."
 }
