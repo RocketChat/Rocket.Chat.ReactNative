@@ -634,6 +634,28 @@ export const URL = () => (
 	</>
 );
 
+export const URLImagePreview = () => (
+	<>
+		<Message
+			urls={[
+				{
+					url: 'https://www.google.com/logos/doodles/2022/seasonal-holidays-2022-6753651837109831.4-law.gif',
+					title: 'Google',
+					description:
+						"Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for."
+				}
+			]}
+		/>
+		<Message
+			urls={[
+				{
+					url: 'https://www.google.com/logos/doodles/2022/seasonal-holidays-2022-6753651837109831.4-law.gif'
+				}
+			]}
+		/>
+	</>
+);
+
 export const CustomFields = () => (
 	<>
 		<Message

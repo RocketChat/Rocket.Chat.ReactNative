@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 });
 
 const UrlImage = React.memo(
-	({ image }: { image: string }) => {
+	({ image, hasContent }: { image: string; hasContent: boolean }) => {
 		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!image) {
@@ -61,7 +61,13 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
+		return (
+			<FastImage
+				source={{ uri: image }}
+				style={[styles.image, !hasContent && { borderRadius: 4 }]}
+				resizeMode={FastImage.resizeMode.cover}
+			/>
+		);
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );
@@ -116,6 +122,9 @@ const Url = React.memo(
 			imageUrl = isImage(url.url) && isValidURL(url.url) ? url.url : '';
 		}
 
+		const hasContent = !!url.title || !!url.description;
+		console.log('🚀 ~ file: Urls.tsx:126 ~ hasContent', hasContent);
+
 		return (
 			<Touchable
 				onPress={onPress}
@@ -132,8 +141,8 @@ const Url = React.memo(
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<>
-					<UrlImage image={imageUrl} />
-					{url.title || url.description ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
+					<UrlImage image={imageUrl} hasContent={hasContent} />
+					{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
 				</>
 			</Touchable>
 		);
