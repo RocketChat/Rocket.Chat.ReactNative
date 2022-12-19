@@ -14,6 +14,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
+import { isImage, isValidURL } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	button: {
@@ -94,11 +95,6 @@ const UrlContent = React.memo(
 	}
 );
 
-const isImage = (url: string) => {
-	const regExpUrlImage = new RegExp(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/);
-	return regExpUrlImage.test(url);
-};
-
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
 		if (!url || url?.ignoreParse) {
@@ -117,7 +113,7 @@ const Url = React.memo(
 		if (url.image) {
 			imageUrl = url.image;
 		} else {
-			imageUrl = isImage(url.url) ? url.url : '';
+			imageUrl = isImage(url.url) && isValidURL(url.url) ? url.url : '';
 		}
 
 		return (
