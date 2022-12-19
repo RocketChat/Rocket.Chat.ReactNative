@@ -123,7 +123,6 @@ const Url = React.memo(
 		}
 
 		const hasContent = !!url.title || !!url.description;
-		console.log('🚀 ~ file: Urls.tsx:126 ~ hasContent', hasContent);
 
 		return (
 			<Touchable
