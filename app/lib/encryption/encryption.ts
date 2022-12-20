@@ -34,7 +34,7 @@ class Encryption {
 			handshake: Function;
 			decrypt: Function;
 			encrypt: Function;
-			evaluateSuggestedKey: Function;
+			importRoomKey: Function;
 		};
 	};
 
@@ -221,9 +221,17 @@ class Encryption {
 		return roomE2E;
 	};
 
-	evaluateSuggestedKey = async (rid: string, E2ESuggestedKey: string): Promise<boolean> => {
-		const roomE2E = await this.getRoomInstance(rid);
-		return roomE2E.evaluateSuggestedKey(E2ESuggestedKey);
+	evaluateSuggestedKey = async (rid: string, E2ESuggestedKey: string) => {
+		try {
+			if (this.privateKey) {
+				const roomE2E = await this.getRoomInstance(rid);
+				await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
+				delete this.roomInstances[rid];
+				await Services.e2eAcceptSuggestedGroupKey(rid);
+			}
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	// Logic to decrypt all pending messages/threads/threadMessages

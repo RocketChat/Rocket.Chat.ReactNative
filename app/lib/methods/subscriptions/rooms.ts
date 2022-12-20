@@ -27,7 +27,6 @@ import {
 	SubscriptionType
 } from '../../../definitions';
 import sdk from '../../services/sdk';
-import { Services } from '../../services';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
@@ -149,7 +148,6 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		}
 
 		let tmp = merge(subscription, room);
-		console.log('🚀 ~ file: rooms.ts:151 ~ createOrUpdateSubscription ~ tmp', tmp, subscription);
 		tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
 		const sub = await getSubscriptionByRoomId(tmp.rid);
 
@@ -169,18 +167,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			// Decrypt all pending messages of this room in parallel
 			Encryption.decryptPendingMessages(tmp.rid);
 		} else if (sub && subscription.E2ESuggestedKey) {
-			console.log(
-				'🚀 ~ file: rooms.ts:172 ~ createOrUpdateSubscription ~ subscription.E2ESuggestedKey',
-				subscription.E2ESuggestedKey
-			);
-			try {
-				const result = await Encryption.evaluateSuggestedKey(sub.rid, subscription.E2ESuggestedKey);
-				if (result) {
-					await Services.e2eAcceptSuggestedGroupKey(sub.rid);
-				}
-			} catch (error) {
-				console.error(error);
-			}
+			await Encryption.evaluateSuggestedKey(sub.rid, subscription.E2ESuggestedKey);
 		}
 
 		const batch: Model[] = [];
@@ -256,7 +243,6 @@ const getSubQueueId = (rid: string) => `SUB-${rid}`;
 const getRoomQueueId = (rid: string) => `ROOM-${rid}`;
 
 const debouncedUpdate = (subscription: ISubscription) => {
-	console.log('🚀 ~ file: rooms.ts:243 ~ debouncedUpdate ~ subscription', subscription);
 	if (!subTimer) {
 		subTimer = setTimeout(() => {
 			const batch = queue;
@@ -349,6 +335,7 @@ export default function subscribeRooms() {
 					log(e);
 				}
 			} else {
+				console.log('🚀 ~ file: rooms.ts:346 ~ handleStreamMessageReceived ~ data', data);
 				debouncedUpdate(data);
 			}
 		}
