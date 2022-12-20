@@ -69,12 +69,11 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
 			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
-			yield put(encryptionSet(true));
 		} else {
 			// Create new keys since the user doesn't have any
 			yield Encryption.createKeys(user.id, server);
-			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}
+		yield put(encryptionSet(true, storedRandomPassword ? E2E_BANNER_TYPE.SAVE_PASSWORD : undefined));
 
 		// Decrypt all pending messages/subscriptions
 		Encryption.initialize(user.id);
