@@ -323,6 +323,8 @@ export default function subscribeRooms() {
 						await db.batch(sub.prepareDestroyPermanently(), ...messagesToDelete, ...threadsToDelete, ...threadMessagesToDelete);
 					});
 
+					Encryption.stopRoom(data.rid);
+
 					const roomState = store.getState().room;
 					// Delete and remove events come from this stream
 					// Here we identify which one was triggered

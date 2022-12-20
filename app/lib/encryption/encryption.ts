@@ -98,6 +98,10 @@ class Encryption {
 			});
 	};
 
+	stopRoom = (rid: string) => {
+		delete this.roomInstances[rid];
+	};
+
 	// When a new participant join and request a new room encryption key
 	provideRoomKeyToUser = async (keyId: string, rid: string) => {
 		// If the client is not ready
