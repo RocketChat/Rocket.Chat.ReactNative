@@ -97,19 +97,45 @@ export default class EncryptionRoom {
 
 	// Import roomKey as an AES Decrypt key
 	importRoomKey = async (E2EKey: string, privateKey: string) => {
-		const roomE2EKey = E2EKey.slice(12);
+		try {
+			const roomE2EKey = E2EKey.slice(12);
 
-		const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
-		this.sessionKeyExportedString = toString(decryptedKey);
+			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
+			this.sessionKeyExportedString = toString(decryptedKey);
 
-		this.keyID = Base64.encode(this.sessionKeyExportedString as string).slice(0, 12);
+			this.keyID = Base64.encode(this.sessionKeyExportedString as string).slice(0, 12);
 
-		// Extract K from Web Crypto Secret Key
-		// K is a base64URL encoded array of bytes
-		// Web Crypto API uses this as a private key to decrypt/encrypt things
-		// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
-		const { k } = EJSON.parse(this.sessionKeyExportedString as string);
-		this.roomKey = b64ToBuffer(k);
+			// Extract K from Web Crypto Secret Key
+			// K is a base64URL encoded array of bytes
+			// Web Crypto API uses this as a private key to decrypt/encrypt things
+			// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
+			const { k } = EJSON.parse(this.sessionKeyExportedString as string);
+			this.roomKey = b64ToBuffer(k);
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	evaluateSuggestedKey = async (E2ESuggestedKey: String): Promise<boolean> => {
+		console.log('🚀 ~ file: room.ts:118 ~ EncryptionRoom ~ evaluateSuggestedKey= ~ E2ESuggestedKey', E2ESuggestedKey);
+		try {
+			const roomE2EKey = E2ESuggestedKey.slice(12);
+
+			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, Encryption.privateKey!);
+			const sessionKeyExportedString = toString(decryptedKey);
+
+			const keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
+
+			// Extract K from Web Crypto Secret Key
+			// K is a base64URL encoded array of bytes
+			// Web Crypto API uses this as a private key to decrypt/encrypt things
+			// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
+			const { k } = EJSON.parse(sessionKeyExportedString as string);
+			const roomKey = b64ToBuffer(k);
+			return true;
+		} catch (error) {
+			return false;
+		}
 	};
 
 	// Create a key to a room
@@ -146,6 +172,7 @@ export default class EncryptionRoom {
 	// this will be called again and run once in 5 seconds
 	requestRoomKey = debounce(
 		async (e2eKeyId: string) => {
+			console.log('🚀 ~ file: room.ts:149 ~ EncryptionRoom ~ e2eKeyId', e2eKeyId);
 			await Services.e2eRequestRoomKey(this.roomId, e2eKeyId);
 		},
 		5000,

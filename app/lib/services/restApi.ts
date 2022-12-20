@@ -74,6 +74,10 @@ export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ mess
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
+export const e2eAcceptSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
+	// RC 5.5
+	sdk.post('e2e.acceptSuggestedGroupKey', { rid });
+
 export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });

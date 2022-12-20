@@ -239,6 +239,15 @@ export default schemaMigrations({
 					columns: [{ name: 'hide_mention_status', type: 'boolean', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 19,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'e2e_suggested_key', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });
