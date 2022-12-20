@@ -13,7 +13,10 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import styles from './styles';
 
-type IAvatarContainer = IAvatar & { isUserProfile?: boolean; handleEdit?: () => void };
+interface IAvatarContainer extends IAvatar {
+	isUserProfile?: boolean;
+	handleEdit?: () => void;
+}
 
 const AvatarContainer = ({
 	style,
