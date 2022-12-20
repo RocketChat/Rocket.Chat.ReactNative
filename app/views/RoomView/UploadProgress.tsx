@@ -112,9 +112,10 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 
 	uploadCheck = () => {
 		this.ranInitialUploadCheck = true;
+		const { rid } = this.props;
 		const { uploads } = this.state;
 		uploads.forEach(async u => {
-			if (!isUploadActive(u.path)) {
+			if (!isUploadActive(u.path, rid)) {
 				try {
 					const db = database.active;
 					await db.write(async () => {
@@ -141,8 +142,9 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 	};
 
 	handleCancelUpload = async (item: TUploadModel) => {
+		const { rid } = this.props;
 		try {
-			await cancelUpload(item);
+			await cancelUpload(item, rid);
 		} catch (e) {
 			log(e);
 		}
@@ -210,7 +212,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 				key={item.path}
 				style={[
 					styles.item,
-					index !== 0 ? { marginTop: 10 } : {},
+					index !== 0 ? { marginTop: 4 } : {},
 					{
 						backgroundColor: themes[theme!].chatComponentBackground,
 						borderColor: themes[theme!].borderColor
