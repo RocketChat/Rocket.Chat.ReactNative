@@ -13,6 +13,8 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import styles from './styles';
 
+type IAvatarContainer = IAvatar & { isUserProfile?: boolean; handleEdit?: () => void };
+
 const AvatarContainer = ({
 	style,
 	text = '',
@@ -28,7 +30,7 @@ const AvatarContainer = ({
 	rid,
 	handleEdit,
 	isUserProfile
-}: IAvatar & { isUserProfile?: boolean; handleEdit?: () => void }): React.ReactElement => {
+}: IAvatarContainer): React.ReactElement => {
 	const subscription = useRef<Subscription>();
 	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
 	const previousAvatarEtag = useRef<string | undefined>('');
@@ -128,6 +130,7 @@ const AvatarContainer = ({
 					onPress={handleEdit}
 					testID='avatar-edit-button'
 					style={styles.editAvatarButton}
+					color={colors.titleText}
 				/>
 			) : null}
 		</>

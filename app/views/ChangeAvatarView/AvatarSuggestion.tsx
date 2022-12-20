@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { IAvatar, IUser } from '../../definitions';
 import { Services } from '../../lib/services';
@@ -7,29 +7,20 @@ import I18n from '../../i18n';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import { useTheme } from '../../theme';
+import Touch from '../../containers/Touch';
 
-const Item = ({
-	item,
-	onPress,
-	text,
-	testID
-}: {
-	item?: IAvatar;
-	testID?: string;
-	onPress: (value?: IAvatar) => void;
-	text?: string;
-}) => {
+const Item = ({ item, onPress, text, testID }: { item?: IAvatar; testID?: string; onPress: Function; text?: string }) => {
 	const { colors } = useTheme();
 
 	return (
-		<TouchableOpacity
+		<Touch
 			key={item?.service}
 			testID={testID}
 			onPress={() => onPress(item)}
 			style={[styles.avatarButton, { backgroundColor: colors.borderColor }]}
 		>
 			<Avatar avatar={item?.url} text={text} size={64} />
-		</TouchableOpacity>
+		</Touch>
 	);
 };
 const AvatarSuggestion = ({
@@ -37,14 +28,14 @@ const AvatarSuggestion = ({
 	user,
 	resetAvatar
 }: {
-	onPress: (value?: IAvatar) => void;
+	onPress: (value: IAvatar | null) => void;
 	user?: IUser;
 	resetAvatar?: () => void;
 }) => {
 	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
-	
+
 	const { colors } = useTheme();
-	
+
 	const getAvatarSuggestion = async () => {
 		const result = await Services.getAvatarSuggestion();
 		const suggestions = Object.keys(result).map(service => {

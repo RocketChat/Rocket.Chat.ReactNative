@@ -27,7 +27,7 @@ import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 
 const ChangeAvatarView = () => {
-	const [avatar, setAvatarState] = useState<IAvatar>();
+	const [avatar, setAvatarState] = useState<IAvatar | null>(null);
 
 	const [textAvatar, setTextAvatar] = useState('');
 	const [saving, setSaving] = useState(false);
@@ -68,7 +68,7 @@ const ChangeAvatarView = () => {
 		});
 	}, [navigation]);
 
-	const setAvatar = (value?: IAvatar) => {
+	const setAvatar = (value: IAvatar | null) => {
 		avatarUrl.current = value?.url;
 		setAvatarState(value);
 	};
@@ -103,7 +103,7 @@ const ChangeAvatarView = () => {
 	};
 
 	const resetAvatar = () => {
-		setAvatar(undefined);
+		setAvatar(null);
 		setTextAvatar(`@${user.username}`);
 		avatarUrl.current = `@${user.username}`;
 	};
