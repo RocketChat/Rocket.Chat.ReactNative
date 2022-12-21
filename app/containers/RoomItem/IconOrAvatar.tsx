@@ -18,19 +18,11 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	displayMode,
-	sourceType,
-	isUserProfile
+	sourceType
 }: IIconOrAvatar): React.ReactElement | null => {
 	if (showAvatar) {
 		return (
-			<Avatar
-				isUserProfile={isUserProfile}
-				text={avatar}
-				size={displayMode === DisplayMode.Condensed ? 36 : 48}
-				type={type}
-				style={styles.avatar}
-				rid={rid}
-			/>
+			<Avatar text={avatar} size={displayMode === DisplayMode.Condensed ? 36 : 48} type={type} style={styles.avatar} rid={rid} />
 		);
 	}
 

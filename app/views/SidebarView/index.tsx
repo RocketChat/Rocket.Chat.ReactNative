@@ -251,7 +251,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				>
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={styles.header}>
-							<Avatar text={user.username} style={styles.avatar} size={30} isUserProfile />
+							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
 									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].titleText }]}>

@@ -52,8 +52,7 @@ const RoomItem = ({
 	showAvatar,
 	displayMode,
 	sourceType,
-	hideMentionStatus,
-	isUserProfile
+	hideMentionStatus
 }: IRoomItemProps) => (
 	<Touchable
 		onPress={onPress}
@@ -84,7 +83,6 @@ const RoomItem = ({
 			showAvatar={showAvatar}
 			showLastMessage={!!showLastMessage}
 			sourceType={sourceType}
-			isUserProfile={isUserProfile}
 		>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>

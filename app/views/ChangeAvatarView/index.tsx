@@ -152,7 +152,6 @@ const ChangeAvatarView = () => {
 							avatar={avatar?.url}
 							isStatic={avatar?.url}
 							size={100}
-							isUserProfile={fromUser}
 							type={t}
 							{...ridProps}
 						/>

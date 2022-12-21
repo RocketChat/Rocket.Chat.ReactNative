@@ -416,7 +416,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								avatarETag={user.avatarETag}
 								size={100}
 								handleEdit={Accounts_AllowUserAvatarChange ? this.handleEditAvatar : undefined}
-								isUserProfile
 							/>
 						</View>
 						<FormTextInput

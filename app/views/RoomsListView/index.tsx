@@ -935,7 +935,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		const { item: currentItem } = this.state;
 		const {
-			user: { username, id: userId },
+			user: { username },
 			StoreLastMessage,
 			useRealName,
 			isMasterDetail,
@@ -945,7 +945,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} = this.props;
 		const id = getUidDirectMessage(item);
 		const swipeEnabled = this.isSwipeEnabled(item);
-		const isUserProfile = id === userId;
 
 		return (
 			<RoomItem
@@ -966,7 +965,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
-				isUserProfile={isUserProfile}
 			/>
 		);
 	};

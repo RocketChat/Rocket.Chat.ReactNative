@@ -1,8 +1,6 @@
 import React from 'react';
 import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
-import { useAppSelector } from '../lib/hooks';
-import { getUserSelector } from '../selectors/login';
 import Avatar from './Avatar';
 import { CustomIcon, TIconsName } from './CustomIcon';
 import sharedStyles from '../views/Styles';
@@ -45,12 +43,10 @@ interface IUserItem {
 	style?: StyleProp<ViewStyle>;
 	icon?: TIconsName | null;
 	iconColor?: string;
-	id?: string;
 }
 
-const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, iconColor, id }: IUserItem) => {
+const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, iconColor }: IUserItem) => {
 	const { colors } = useTheme();
-	const { userId } = useAppSelector(state => ({ userId: getUserSelector(state).id }));
 
 	return (
 		<Pressable
@@ -65,7 +61,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 			})}
 		>
 			<View style={[styles.container, styles.button, style]}>
-				<Avatar text={username} size={30} style={styles.avatar} isUserProfile={userId === id} />
+				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
 					<Text style={[styles.name, { color: colors.bodyText }]} numberOfLines={1}>
 						{name}

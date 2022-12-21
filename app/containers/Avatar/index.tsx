@@ -14,7 +14,6 @@ import { useTheme } from '../../theme';
 import styles from './styles';
 
 interface IAvatarContainer extends IAvatar {
-	isUserProfile?: boolean;
 	handleEdit?: () => void;
 }
 
@@ -31,23 +30,21 @@ const AvatarContainer = ({
 	getCustomEmoji,
 	isStatic,
 	rid,
-	handleEdit,
-	isUserProfile
+	handleEdit
 }: IAvatarContainer): React.ReactElement => {
 	const subscription = useRef<Subscription>();
 	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
-	const previousAvatarEtag = useRef<string | undefined>('');
 	const { colors } = useTheme();
 
 	const isDirect = () => type === 'd';
 
 	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
 	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
-	const { id, token, avatarETagUser } = useSelector(
+	const { id, token, username } = useSelector(
 		(state: IApplicationState) => ({
 			id: getUserSelector(state).id,
 			token: getUserSelector(state).token,
-			avatarETagUser: getUserSelector(state).avatarETag
+			username: getUserSelector(state).username
 		}),
 		shallowEqual
 	);
@@ -62,14 +59,21 @@ const AvatarContainer = ({
 			true
 	);
 
+	const unsubscribeQuery = () => {
+		if (subscription?.current?.unsubscribe) {
+			subscription.current.unsubscribe();
+		}
+	};
+
 	const init = async () => {
+		unsubscribeQuery();
 		const db = database.active;
 		const usersCollection = db.get('users');
 		const subsCollection = db.get('subscriptions');
 
 		let record;
 		try {
-			if (isDirect()) {
+			if (isDirect() || username === text) {
 				const [user] = await usersCollection.query(Q.where('username', text)).fetch();
 				record = user;
 			} else if (rid) {
@@ -88,19 +92,12 @@ const AvatarContainer = ({
 	};
 
 	useEffect(() => {
-		if (!avatarETag || avatarETag !== previousAvatarEtag.current) {
+		if (!avatarETag) {
 			init();
 		}
-		return () => {
-			if (subscription?.current?.unsubscribe) {
-				subscription.current.unsubscribe();
-			}
-		};
-	}, [text, type, size, avatarETag, externalProviderUrl]);
+	}, [text]); // testar se precisa do avatarETag
 
-	useEffect(() => {
-		previousAvatarEtag.current = avatarETag;
-	}, [avatarETag]);
+	useEffect(() => () => unsubscribeQuery(), []);
 
 	return (
 		<>
@@ -122,7 +119,7 @@ const AvatarContainer = ({
 				rid={rid}
 				blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 				externalProviderUrl={externalProviderUrl}
-				avatarETag={isUserProfile ? avatarETagUser : avatarETag}
+				avatarETag={avatarETag}
 				serverVersion={serverVersion}
 			/>
 			{handleEdit ? (
