@@ -74,10 +74,7 @@ const NewMessageView = () => {
 	const goRoom = useCallback(
 		(item: TGoRoomItem) => {
 			logEvent(events.NEW_MSG_CHAT_WITH_USER);
-
-			if (isMasterDetail) {
-				navigation.pop();
-			}
+			navigation.pop();
 			goRoomMethod({ item, isMasterDetail });
 		},
 		[isMasterDetail, navigation]

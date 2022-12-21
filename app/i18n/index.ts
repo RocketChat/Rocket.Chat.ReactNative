@@ -25,14 +25,9 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/en.json')
 	},
 	{
-		label: '简体中文',
-		value: 'zh-CN',
-		file: () => require('./locales/zh-CN.json')
-	},
-	{
-		label: '繁體中文',
-		value: 'zh-TW',
-		file: () => require('./locales/zh-TW.json')
+		label: 'العربية',
+		value: 'ar',
+		file: () => require('./locales/ar.json')
 	},
 	{
 		label: 'Deutsch',
@@ -45,9 +40,29 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/es-ES.json')
 	},
 	{
+		label: 'Finnish',
+		value: 'fi',
+		file: () => require('./locales/fi.json')
+	},
+	{
 		label: 'Français',
 		value: 'fr',
 		file: () => require('./locales/fr.json')
+	},
+	{
+		label: 'Italiano',
+		value: 'it',
+		file: () => require('./locales/it.json')
+	},
+	{
+		label: '日本語',
+		value: 'ja',
+		file: () => require('./locales/ja.json')
+	},
+	{
+		label: 'Nederlands',
+		value: 'nl',
+		file: () => require('./locales/nl.json')
 	},
 	{
 		label: 'Português (BR)',
@@ -65,24 +80,14 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/ru.json')
 	},
 	{
-		label: 'Nederlands',
-		value: 'nl',
-		file: () => require('./locales/nl.json')
+		label: 'Slovenian (Slovenia)',
+		value: 'sl-SI',
+		file: () => require('./locales/sl-SI.json')
 	},
 	{
-		label: 'Italiano',
-		value: 'it',
-		file: () => require('./locales/it.json')
-	},
-	{
-		label: '日本語',
-		value: 'ja',
-		file: () => require('./locales/ja.json')
-	},
-	{
-		label: 'العربية',
-		value: 'ar',
-		file: () => require('./locales/ar.json')
+		label: 'Swedish',
+		value: 'sv',
+		file: () => require('./locales/sv.json')
 	},
 	{
 		label: 'Türkçe',
@@ -90,9 +95,14 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/tr.json')
 	},
 	{
-		label: 'Slovenian (Slovenia)',
-		value: 'sl-SI',
-		file: () => require('./locales/sl-SI.json')
+		label: '简体中文',
+		value: 'zh-CN',
+		file: () => require('./locales/zh-CN.json')
+	},
+	{
+		label: '繁體中文',
+		value: 'zh-TW',
+		file: () => require('./locales/zh-TW.json')
 	}
 ];
 

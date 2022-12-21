@@ -1,5 +1,6 @@
 import data from '../../data';
 import { navigateToLogin, login, tapBack, sleep } from '../../helpers/app';
+import { sendMessage } from '../../helpers/data_setup';
 
 const testuser = data.users.regular;
 
@@ -26,6 +27,13 @@ describe('Join room from directory', () => {
 	});
 
 	describe('Usage', () => {
+		const threadMessage = `thread-${data.random}`;
+		before(async () => {
+			const result = await sendMessage(data.users.alternate, data.channels.detoxpublic.name, threadMessage);
+			const threadId = result.message._id;
+			await sendMessage(data.users.alternate, result.message.rid, data.random, threadId);
+		});
+
 		it('should tap directory', async () => {
 			await element(by.id('rooms-list-view-directory')).tap();
 			await waitFor(element(by.id('directory-view')))
@@ -35,6 +43,20 @@ describe('Join room from directory', () => {
 
 		it('should search public channel and navigate', async () => {
 			await navigateToRoom(data.channels.detoxpublic.name);
+		});
+
+		it('should navigate to thread messages view and load messages', async () => {
+			await waitFor(element(by.id('room-view-header-threads')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('room-view-header-threads')).tap();
+			await waitFor(element(by.id(`thread-messages-view-${threadMessage}`)))
+				.toBeVisible()
+				.withTimeout(2000);
+			await tapBack();
+			await waitFor(element(by.id('room-view-header-threads')))
+				.toBeVisible()
+				.withTimeout(2000);
 		});
 
 		it('should search user and navigate', async () => {

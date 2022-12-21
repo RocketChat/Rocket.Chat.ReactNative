@@ -65,6 +65,7 @@ const messagesWithAuthorName: MessageTypesValues[] = [
 	'room_changed_avatar',
 	'room_e2e_disabled',
 	'room_e2e_enabled',
+	'room-allowed-reacting',
 	'room-disallowed-reacting',
 	'room-set-read-only',
 	'room-removed-read-only',
