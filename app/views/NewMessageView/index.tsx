@@ -93,7 +93,6 @@ const NewMessageView = () => {
 
 					return (
 						<UserItem
-							id={itemModel.id || itemSearch._id}
 							name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
 							username={itemSearch.search ? itemSearch.username : itemModel.name}
 							onPress={() => goRoom(itemModel)}

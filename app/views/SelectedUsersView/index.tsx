@@ -155,7 +155,6 @@ const SelectedUsersView = () => {
 					const username = item.search ? (item.username as string) : item.name;
 					return (
 						<UserItem
-							id={item._id}
 							name={name}
 							username={username}
 							onPress={() => _onPressItem(item)}
