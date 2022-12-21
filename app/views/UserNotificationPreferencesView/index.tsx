@@ -17,7 +17,7 @@ import log from '../../lib/methods/helpers/log';
 
 const UserNotificationPreferencesView = () => {
 	const [preferences, setPreferences] = useState({} as INotificationPreferences);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	const navigation = useNavigation<StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>>();
 	const userId = useAppSelector(state => getUserSelector(state).id);
@@ -33,10 +33,11 @@ const UserNotificationPreferencesView = () => {
 			try {
 				const result = await Services.getUserPreferences(userId);
 				if (result.success) {
-					setLoading(true);
+					setLoading(false);
 					setPreferences(result.preferences);
 				}
 			} catch (error) {
+				setLoading(false);
 				log(error);
 			}
 		}
@@ -63,6 +64,8 @@ const UserNotificationPreferencesView = () => {
 			<StatusBar />
 			<List.Container>
 				{loading ? (
+					<ActivityIndicator />
+				) : (
 					<>
 						<List.Section title='Desktop_Notifications'>
 							<List.Separator />
@@ -103,8 +106,6 @@ const UserNotificationPreferencesView = () => {
 							<List.Info info='You_need_to_verifiy_your_email_address_to_get_notications' />
 						</List.Section>
 					</>
-				) : (
-					<ActivityIndicator />
 				)}
 			</List.Container>
 		</SafeAreaView>
