@@ -337,7 +337,6 @@ export default function subscribeRooms() {
 					log(e);
 				}
 			} else {
-				console.log('🚀 ~ file: rooms.ts:346 ~ handleStreamMessageReceived ~ data', data);
 				debouncedUpdate(data);
 			}
 		}
@@ -396,7 +395,6 @@ export default function subscribeRooms() {
 			handlePayloadUserInteraction(eventType, args);
 		}
 		if (/e2ekeyRequest/.test(ev)) {
-			console.log('🚀 ~ file: rooms.ts:393 ~ handleStreamMessageReceived ~ ev', ev);
 			const [roomId, keyId] = ddpMessage.fields.args;
 			try {
 				await Encryption.provideRoomKeyToUser(keyId, roomId);

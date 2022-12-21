@@ -162,7 +162,6 @@ export default class EncryptionRoom {
 	// this will be called again and run once in 5 seconds
 	requestRoomKey = debounce(
 		async (e2eKeyId: string) => {
-			console.log('🚀 ~ file: room.ts:149 ~ EncryptionRoom ~ e2eKeyId', e2eKeyId);
 			await Services.e2eRequestRoomKey(this.roomId, e2eKeyId);
 		},
 		5000,
