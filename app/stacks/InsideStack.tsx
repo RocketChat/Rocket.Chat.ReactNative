@@ -1,6 +1,6 @@
 import React from 'react';
 import { I18nManager } from 'react-native';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
@@ -82,14 +82,15 @@ import {
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 
+const createStackNavigator = createNativeStackNavigator;
+type StackNavigationOptions = NativeStackNavigationOptions;
+
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<ChatsStackParamList>();
 const ChatsStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ChatsStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) } as StackNavigationOptions}>
 			<ChatsStack.Screen name='RoomsListView' component={RoomsListView} />
 			<ChatsStack.Screen name='RoomView' component={RoomView} />
 			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />

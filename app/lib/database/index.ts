@@ -39,7 +39,8 @@ export const getDatabase = (database = ''): Database => {
 	const adapter = new SQLiteAdapter({
 		dbName,
 		schema: appSchema,
-		migrations
+		migrations,
+		jsi: true
 	});
 
 	return new Database({
@@ -74,7 +75,8 @@ class DB {
 			adapter: new SQLiteAdapter({
 				dbName: getDatabasePath('default'),
 				schema: serversSchema,
-				migrations: serversMigrations
+				migrations: serversMigrations,
+				jsi: true
 			}),
 			modelClasses: [Server, LoggedUser, ServersHistory]
 		}) as TServerDatabase
@@ -104,7 +106,8 @@ class DB {
 		const adapter = new SQLiteAdapter({
 			dbName,
 			schema: appSchema,
-			migrations
+			migrations,
+			jsi: true
 		});
 
 		this.databases.shareDB = new Database({
