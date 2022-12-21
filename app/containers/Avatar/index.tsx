@@ -1,17 +1,15 @@
-import { Q } from '@nozbe/watermelondb';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { Observable, Subscription } from 'rxjs';
 
 import Button from '../Button';
-import { IApplicationState, TSubscriptionModel, TUserModel } from '../../definitions';
-import database from '../../lib/database';
+import { IApplicationState } from '../../definitions';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import styles from './styles';
+import { useAvatarETag } from './useAvatarETag';
 
 interface IAvatarContainer extends IAvatar {
 	handleEdit?: () => void;
@@ -32,11 +30,7 @@ const AvatarContainer = ({
 	rid,
 	handleEdit
 }: IAvatarContainer): React.ReactElement => {
-	const subscription = useRef<Subscription>();
-	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
 	const { colors } = useTheme();
-
-	const isDirect = () => type === 'd';
 
 	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
 	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
@@ -59,45 +53,7 @@ const AvatarContainer = ({
 			true
 	);
 
-	const unsubscribeQuery = () => {
-		if (subscription?.current?.unsubscribe) {
-			subscription.current.unsubscribe();
-		}
-	};
-
-	const init = async () => {
-		unsubscribeQuery();
-		const db = database.active;
-		const usersCollection = db.get('users');
-		const subsCollection = db.get('subscriptions');
-
-		let record;
-		try {
-			if (isDirect() || username === text) {
-				const [user] = await usersCollection.query(Q.where('username', text)).fetch();
-				record = user;
-			} else if (rid) {
-				record = await subsCollection.find(rid);
-			}
-		} catch {
-			// Record not found
-		}
-
-		if (record) {
-			const observable = record.observe() as Observable<TSubscriptionModel | TUserModel>;
-			subscription.current = observable.subscribe(r => {
-				setAvatarETag(r.avatarETag);
-			});
-		}
-	};
-
-	useEffect(() => {
-		if (!avatarETag) {
-			init();
-		}
-	}, [text]); // testar se precisa do avatarETag
-
-	useEffect(() => () => unsubscribeQuery(), []);
+	const { avatarETag } = useAvatarETag({ username, text, type, rid });
 
 	return (
 		<>
