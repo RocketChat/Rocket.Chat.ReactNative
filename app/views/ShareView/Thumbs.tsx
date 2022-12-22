@@ -136,27 +136,29 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 	</ThumbButton>
 );
 
-const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
+const Thumbs = ({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
 	if (attachments?.length > 1) {
 		return (
-			<FlatList
-				horizontal
-				data={attachments}
-				keyExtractor={item => item.path}
-				renderItem={({ item }) => (
-					<Thumb
-						item={item}
-						theme={theme}
-						isShareExtension={isShareExtension}
-						onPress={() => onPress(item)}
-						onRemove={() => onRemove(item)}
-					/>
-				)}
-				style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
-			/>
+			<View style={{ height: THUMB_SIZE }}>
+				<FlatList
+					horizontal
+					data={attachments}
+					keyExtractor={item => item.path}
+					renderItem={({ item }) => (
+						<Thumb
+							item={item}
+							theme={theme}
+							isShareExtension={isShareExtension}
+							onPress={() => onPress(item)}
+							onRemove={() => onRemove(item)}
+						/>
+					)}
+					style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
+				/>
+			</View>
 		);
 	}
 	return null;
-});
+};
 
 export default Thumbs;

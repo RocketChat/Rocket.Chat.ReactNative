@@ -1,0 +1,12 @@
+index 7a28702..77888fc 100644
+--- a/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerModule.kt
++++ b/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerModule.kt
+@@ -56,7 +56,7 @@ class ImagePickerModule : Module() {
+ 
+     AsyncFunction("launchCameraAsync") Coroutine { options: ImagePickerOptions ->
+       ensureTargetActivityIsAvailable(options)
+-      ensureCameraPermissionsAreGranted()
++      // ensureCameraPermissionsAreGranted()
+ 
+       val mediaFile = createOutputFile(context.cacheDir, options.mediaTypes.toFileExtension())
+       val uri = mediaFile.toContentUri(context)
