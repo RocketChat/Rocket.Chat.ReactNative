@@ -19,12 +19,17 @@ import android.content.res.Configuration;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
 import java.lang.reflect.InvocationTargetException;
+import com.facebook.react.bridge.JSIModuleSpec;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.JavaScriptContextHolder;
 
 import java.util.Arrays;
 import java.util.List;
 
 import chat.rocket.reactnative.newarchitecture.MainApplicationReactNativeHost;
 import chat.rocket.reactnative.networking.SSLPinningPackage;
+
+import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -52,7 +57,20 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected JSIModulePackage getJSIModulePackage() {
-      return new ReanimatedJSIModulePackage();
+      return new JSIModulePackage() {
+        @Override
+        public List<JSIModuleSpec> getJSIModules(
+          final ReactApplicationContext reactApplicationContext,
+          final JavaScriptContextHolder jsContext
+        ) {
+          List<JSIModuleSpec> modules = Arrays.asList();
+
+          modules.addAll(new WatermelonDBJSIPackage().getJSIModules(reactApplicationContext, jsContext));
+          modules.addAll(new ReanimatedJSIModulePackage().getJSIModules(reactApplicationContext, jsContext));
+
+          return modules;
+        }
+      };
     }
 
     @Override
