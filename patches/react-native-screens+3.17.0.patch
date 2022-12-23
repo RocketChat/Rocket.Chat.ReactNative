@@ -1,0 +1,44 @@
+diff --git a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_left.xml b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_left.xml
+index 939110f..aaa293f 100644
+--- a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_left.xml
++++ b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_left.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <translate xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:duration="@android:integer/config_mediumAnimTime"
++    android:duration="@android:integer/config_shortAnimTime"
+     android:fromXDelta="-100%"
+     android:toXDelta="0%" />
+diff --git a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_right.xml b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_right.xml
+index 428eb9b..c4cc731 100644
+--- a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_right.xml
++++ b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_in_from_right.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <translate xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:duration="@android:integer/config_mediumAnimTime"
++    android:duration="@android:integer/config_shortAnimTime"
+     android:fromXDelta="100%"
+     android:toXDelta="0%" />
+diff --git a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_left.xml b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_left.xml
+index 400a202..021490a 100644
+--- a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_left.xml
++++ b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_left.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <translate xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:duration="@android:integer/config_mediumAnimTime"
++    android:duration="@android:integer/config_shortAnimTime"
+     android:fromXDelta="0%"
+     android:toXDelta="-100%"/>
+diff --git a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_right.xml b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_right.xml
+index a00332b..456a09d 100644
+--- a/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_right.xml
++++ b/node_modules/react-native-screens/android/src/main/res/anim/rns_slide_out_to_right.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <translate xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:duration="@android:integer/config_mediumAnimTime"
++    android:duration="@android:integer/config_shortAnimTime"
+     android:fromXDelta="0%"
+     android:toXDelta="100%"/>
