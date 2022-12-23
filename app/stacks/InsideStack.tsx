@@ -90,7 +90,9 @@ const ChatsStack = createStackNavigator<ChatsStackParamList>();
 const ChatsStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) } as StackNavigationOptions}>
+		<ChatsStack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), animation: 'slide_from_right' } as StackNavigationOptions}
+		>
 			<ChatsStack.Screen name='RoomsListView' component={RoomsListView} />
 			<ChatsStack.Screen name='RoomView' component={RoomView} />
 			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
