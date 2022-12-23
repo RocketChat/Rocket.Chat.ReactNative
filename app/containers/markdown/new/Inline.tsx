@@ -18,13 +18,25 @@ import MarkdownContext from './MarkdownContext';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
+	forceTrim?: boolean;
 }
 
-const Inline = ({ value }: IParagraphProps): React.ReactElement | null => {
+const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
 		<Text style={styles.inline}>
-			{value.map(block => {
+			{value.map((block, index) => {
+				// We are forcing trim when is a `[ ](https://https://open.rocket.chat/) plain_text`
+				// to clean the empty spaces
+				if (forceTrim) {
+					if (index === 0 && block.type === 'LINK') {
+						block.value.label.value = block.value.label.value.toString().trimLeft();
+					}
+					if (index === 1 && block.type !== 'LINK') {
+						block.value = block.value?.toString().trimLeft();
+					}
+				}
+
 				switch (block.type) {
 					case 'IMAGE':
 						return <Image value={block.value} />;

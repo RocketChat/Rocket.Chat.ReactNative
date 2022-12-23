@@ -1051,7 +1051,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					msg += `@${replyingMessage?.u?.username} `;
 				}
 
-				msg = `${msg} ${message}`;
+				msg = `${msg}\n${message}`;
 				onSubmit(msg);
 			}
 			replyCancel();
