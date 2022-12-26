@@ -302,6 +302,7 @@
   "Message_accessibility": "{{user}} tarafından {{time}} itibarıyla ileti: {{message}}",
   "Message_actions": "İleti işlemleri",
   "Message_pinned": "İleti sabitlendi",
+  "Message_removed": "İleti kaldırıldı",
   "Message_starred": "İletia yıldız eklendi",
   "Message_unstarred": "İletiın yıldızı kaldırıldı",
   "message": "ileti",
@@ -668,5 +669,6 @@
   "Enter_workspace_URL": "Çalışma alanı URL'nizi girin",
   "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat",
   "invalid-room": "Geçersiz oda",
+  "Open_Livechats": "Devam Eden Sohbetler",
   "Broadcast_hint": "Yalnızca yetkili kullanıcılar yeni ileti yazabilir, ancak diğer kullanıcılar yanıt verebilir"
 }

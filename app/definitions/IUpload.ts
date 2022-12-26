@@ -5,6 +5,7 @@ export interface IUpload {
 	rid?: string;
 	path: string;
 	name?: string;
+	tmid?: string;
 	description?: string;
 	size: number;
 	type?: string;

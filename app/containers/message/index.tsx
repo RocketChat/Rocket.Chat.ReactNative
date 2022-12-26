@@ -233,7 +233,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
 				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
 				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
-				previousItem.tmid === item.tmid
+				previousItem.tmid === item.tmid &&
+				item.t !== 'rm' &&
+				previousItem.t !== 'rm'
 			) {
 				return false;
 			}
@@ -405,8 +407,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					threadBadgeColor,
 					toggleFollowThread,
 					replies
-				}}
-			>
+				}}>
 				{/* @ts-ignore*/}
 				<Message
 					id={id}
