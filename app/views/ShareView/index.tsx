@@ -109,6 +109,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	componentWillUnmount = () => {
 		console.countReset(`${this.constructor.name}.render calls`);
+		// close reply from the RoomView
+		setTimeout(() => {
+			if (this.closeReply) {
+				this.closeReply();
+			}
+		}, 300);
 	};
 
 	setHeader = () => {
@@ -234,10 +240,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		let msg: string | undefined;
 		if (this.replying && this.replyingMessage) {
 			msg = await this.messagebox.current?.formatReplyMessage(this.replyingMessage);
-			// close reply from the RoomView
-			if (this.closeReply) {
-				this.closeReply();
-			}
 		}
 
 		try {
