@@ -302,7 +302,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (usedCannedResponse !== nextProps.usedCannedResponse) {
 			this.onChangeText(nextProps.usedCannedResponse ?? '');
 		}
-		if (sharing) {
+		if (sharing && !replying) {
 			this.setInput(nextProps.message.msg ?? '');
 			return;
 		}
