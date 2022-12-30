@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { BorderlessButton, ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
@@ -14,50 +14,47 @@ interface IBannerProps {
 	title?: string;
 	bannerClosed?: boolean;
 	closeBanner: () => void;
+	showAnnouncementModal?: boolean;
+	toggleAnnouncementModal: () => void;
 }
 
-const Banner = React.memo(
-	({ text, title, bannerClosed, closeBanner }: IBannerProps) => {
-		const [showModal, openModal] = useState(false);
-		const { theme } = useTheme();
+const Banner = ({ text, title, bannerClosed, closeBanner, showAnnouncementModal, toggleAnnouncementModal }: IBannerProps) => {
+	const { theme } = useTheme();
 
-		const toggleModal = () => openModal(prevState => !prevState);
-
-		if (text && !bannerClosed) {
-			return (
-				<>
-					<BorderlessButton
-						style={[styles.bannerContainer, { backgroundColor: themes[theme].bannerBackground }]}
-						testID='room-view-banner'
-						onPress={toggleModal}
-					>
-						<MarkdownPreview msg={text} style={[styles.bannerText]} />
-						<BorderlessButton onPress={closeBanner}>
-							<CustomIcon color={themes[theme].auxiliaryText} name='close' size={20} />
-						</BorderlessButton>
+	if (text && !bannerClosed) {
+		return (
+			<>
+				<BorderlessButton
+					style={[styles.bannerContainer, { backgroundColor: themes[theme].bannerBackground }]}
+					testID='room-view-banner'
+					onPress={toggleAnnouncementModal}
+				>
+					<MarkdownPreview msg={text} style={[styles.bannerText]} />
+					<BorderlessButton onPress={closeBanner}>
+						<CustomIcon color={themes[theme].auxiliaryText} name='close' size={20} />
 					</BorderlessButton>
-					<Modal
-						onBackdropPress={toggleModal}
-						onBackButtonPress={toggleModal}
-						useNativeDriver
-						isVisible={showModal}
-						animationIn='fadeIn'
-						animationOut='fadeOut'
-					>
-						<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
-							<Text style={[styles.bannerModalTitle, { color: themes[theme].auxiliaryText }]}>{title}</Text>
-							<ScrollView style={styles.modalScrollView}>
-								<Markdown msg={text} theme={theme} />
-							</ScrollView>
-						</View>
-					</Modal>
-				</>
-			);
-		}
+				</BorderlessButton>
+				<Modal
+					onBackdropPress={toggleAnnouncementModal}
+					onBackButtonPress={toggleAnnouncementModal}
+					useNativeDriver
+					isVisible={showAnnouncementModal}
+					animationIn='fadeIn'
+					animationOut='fadeOut'
+					presentationStyle='overFullScreen'
+				>
+					<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
+						<Text style={[styles.bannerModalTitle, { color: themes[theme].auxiliaryText }]}>{title}</Text>
+						<ScrollView style={styles.modalScrollView}>
+							<Markdown msg={text} theme={theme} />
+						</ScrollView>
+					</View>
+				</Modal>
+			</>
+		);
+	}
 
-		return null;
-	},
-	(prevProps, nextProps) => prevProps.text === nextProps.text && prevProps.bannerClosed === nextProps.bannerClosed
-);
+	return null;
+};
 
 export default Banner;

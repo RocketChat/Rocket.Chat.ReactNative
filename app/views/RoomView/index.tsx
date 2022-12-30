@@ -117,7 +117,8 @@ const stateAttrsUpdate = [
 	'member',
 	'canForwardGuest',
 	'canReturnQueue',
-	'canViewCannedResponse'
+	'canViewCannedResponse',
+	'showAnnouncementModal'
 ] as TStateAttrsUpdate[];
 
 type TRoomUpdate = keyof TSubscriptionModel;
@@ -202,6 +203,7 @@ interface IRoomViewState {
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
+	showAnnouncementModal?: boolean;
 }
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
@@ -281,7 +283,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canForwardGuest: false,
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
-			isOnHold: false
+			isOnHold: false,
+			showAnnouncementModal: false
 		};
 
 		this.setHeader();
@@ -347,12 +350,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
-		const { roomUpdate, member, isOnHold } = state;
+		const { roomUpdate, member, isOnHold, showAnnouncementModal } = state;
 		const { appState, theme, insets, route } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
 		if (appState !== nextProps.appState) {
+			if (appState === 'background' && showAnnouncementModal) {
+				this.setState({ showAnnouncementModal: !showAnnouncementModal });
+				return false;
+			}
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
@@ -1517,9 +1524,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		);
 	};
 
+	toggleAnnouncementModal = () => this.setState(prevState => ({ showAnnouncementModal: !prevState.showAnnouncementModal }));
+
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading } = this.state;
+		const { room, loading, showAnnouncementModal } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1534,7 +1543,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
 				<StatusBar />
-				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
+				<Banner
+					title={I18n.t('Announcement')}
+					text={announcement}
+					bannerClosed={bannerClosed}
+					closeBanner={this.closeBanner}
+					showAnnouncementModal={showAnnouncementModal}
+					toggleAnnouncementModal={this.toggleAnnouncementModal}
+				/>
 				<List
 					ref={this.list}
 					listRef={this.flatList}
