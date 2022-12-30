@@ -235,6 +235,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		cancel: () => void;
 	};
 	private sub?: RoomClass;
+	private listObservableQuery = false;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -359,7 +360,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (appState === 'background' && showAnnouncementModal) {
 				// Prevent app freezing while announcement's modal is open and then the user click on a link from announcement
 				// or minimize the app then resume it
-				this.setState({ showAnnouncementModal: false }, () => this.keepListObservableWorking());
+				this.listObservableQuery = true;
+				this.setState({ showAnnouncementModal: false });
 				return false;
 			}
 			return true;
@@ -395,8 +397,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.navToThread({ tmid: route?.params?.jumpToThreadId });
 		}
 
-		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
-			this.keepListObservableWorking()
+		if (this.listObservableQuery || (appState === 'foreground' && appState !== prevProps.appState && this.rid)) {
+			// Fire List.query() just to keep observables working
+			if (this.list && this.list.current) {
+				setTimeout(
+					() => {
+						this.list.current?.query();
+					},
+					this.listObservableQuery ? 500 : null
+				);
+			}
+			this.listObservableQuery = false;
 		}
 		// If it's a livechat room
 		if (this.t === 'l') {
@@ -414,13 +425,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setHeader();
 		}
 		this.setReadOnly();
-	}
-
-	keepListObservableWorking = () => {
-		// Fire List.query() just to keep observables working
-		if (this.list && this.list.current) {
-			this.list.current?.query();
-		}
 	}
 
 	updateOmnichannel = async () => {
@@ -1515,7 +1519,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => this.messageActions = ref}
+					ref={ref => (this.messageActions = ref)}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1525,7 +1529,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => this.messageErrorActions = ref} tmid={this.tmid} />
+				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
 			</>
 		);
 	};
