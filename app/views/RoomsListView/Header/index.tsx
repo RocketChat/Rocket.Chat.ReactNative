@@ -34,6 +34,13 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 		}
 	}
 
+	getSnapshotBeforeUpdate(prevProps: Readonly<IRoomsListHeaderViewProps>) {
+		const { showSearchHeader, showServerDropdown, dispatch } = this.props;
+		if (showSearchHeader !== prevProps.showSearchHeader && showSearchHeader && showServerDropdown) {
+			dispatch(closeServerDropdown());
+		}
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
 		if (handleCommandOpenServerDropdown(event)) {
