@@ -4,6 +4,7 @@ import BackgroundTimer from 'react-native-background-timer';
 import { isAppInstalled, openAppWithUri } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 import { IBaseScreen } from '../definitions';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -44,6 +45,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 			.catch(() => {});
 		this.onConferenceJoined();
 		this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
+		activateKeepAwake();
 	}
 
 	componentWillUnmount() {
@@ -54,6 +56,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 			BackgroundTimer.stopBackgroundTimer();
 		}
 		this.backHandler.remove();
+		deactivateKeepAwake();
 	}
 
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
