@@ -239,6 +239,15 @@ export default schemaMigrations({
 					columns: [{ name: 'hide_mention_status', type: 'boolean', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 19,
+			steps: [
+				addColumns({
+					table: 'uploads',
+					columns: [{ name: 'tmid', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });
