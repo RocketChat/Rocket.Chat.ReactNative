@@ -15,6 +15,9 @@ export type E2eEndpoints = {
 	'e2e.acceptSuggestedGroupKey': {
 		POST: (params: { rid: string }) => {};
 	};
+	'e2e.rejectSuggestedGroupKey': {
+		POST: (params: { rid: string }) => {};
+	};
 	'e2e.setRoomKeyID': {
 		POST: (params: { rid: string; keyID: string }) => {};
 	};

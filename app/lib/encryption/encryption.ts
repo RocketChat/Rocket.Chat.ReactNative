@@ -234,7 +234,7 @@ class Encryption {
 				await Services.e2eAcceptSuggestedGroupKey(rid);
 			}
 		} catch (e) {
-			console.error(e);
+			await Services.e2eRejectSuggestedGroupKey(rid);
 		}
 	};
 
