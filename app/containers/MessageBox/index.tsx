@@ -974,7 +974,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	submit = async () => {
 		const { tshow } = this.state;
-		const { onSubmit, rid: roomId, tmid, showSend, sharing } = this.props;
+		const { onSubmit, rid: roomId, tmid, showSend, sharing, serverVersion } = this.props;
 		const message = this.text;
 
 		// if sharing, only execute onSubmit prop
@@ -1051,7 +1051,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					msg += `@${replyingMessage?.u?.username} `;
 				}
 
-				msg = `${msg}\n${message}`;
+				const connectionString = compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ? ' ' : '\n';
+				msg = `${msg}${connectionString}${message}`;
 				onSubmit(msg);
 			}
 			replyCancel();
