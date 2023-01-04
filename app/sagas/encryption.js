@@ -72,6 +72,8 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 
 		if (storedRandomPassword) {
 			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
+		} else {
+			yield put(encryptionSet(true));
 		}
 
 		// Decrypt all pending messages/subscriptions
