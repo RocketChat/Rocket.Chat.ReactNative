@@ -244,6 +244,15 @@ export default schemaMigrations({
 			toVersion: 19,
 			steps: [
 				addColumns({
+					table: 'uploads',
+					columns: [{ name: 'tmid', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 20,
+			steps: [
+				addColumns({
 					table: 'subscriptions',
 					columns: [{ name: 'e2e_suggested_key', type: 'string', isOptional: true }]
 				})

@@ -46,7 +46,8 @@ export function sendFileMessage(
 	fileInfo: IUpload,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>
+	user: Partial<Pick<IUser, 'id' | 'token'>>,
+	isForceTryAgain?: boolean
 ): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -62,7 +63,7 @@ export function sendFileMessage(
 			let uploadRecord: TUploadModel;
 			try {
 				uploadRecord = await uploadsCollection.find(uploadPath);
-				if (uploadRecord.id) {
+				if (uploadRecord.id && !isForceTryAgain) {
 					return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
 				}
 			} catch (error) {
@@ -71,6 +72,9 @@ export function sendFileMessage(
 						uploadRecord = await uploadsCollection.create(u => {
 							u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
 							Object.assign(u, fileInfo);
+							if (tmid) {
+								u.tmid = tmid;
+							}
 							if (u.subscription) {
 								u.subscription.id = rid;
 							}
