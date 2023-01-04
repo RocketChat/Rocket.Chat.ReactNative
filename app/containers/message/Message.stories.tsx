@@ -1024,7 +1024,6 @@ export const LinkAndQuotesWithDifferentElements = () => (
 					author_name: 'rocket.cat',
 					author_icon: 'https://open.rocket.chat/avatar/rocket.cat',
 					attachments: [],
-					ts: '1970-01-01T00:00:00.000Z',
 					fields: []
 				}
 			]}
