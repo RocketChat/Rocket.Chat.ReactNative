@@ -302,7 +302,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (usedCannedResponse !== nextProps.usedCannedResponse) {
 			this.onChangeText(nextProps.usedCannedResponse ?? '');
 		}
-		if (sharing) {
+		if (sharing && !replying) {
 			this.setInput(nextProps.message.msg ?? '');
 			return;
 		}
@@ -857,14 +857,21 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	openShareView = (attachments: any) => {
-		const { message, replyCancel, replyWithMention } = this.props;
+		const { message, replyCancel, replyWithMention, replying } = this.props;
 		// Start a thread with an attachment
 		let value: TThreadModel | IMessage = this.thread;
 		if (replyWithMention) {
 			value = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, thread: value, attachments });
+		Navigation.navigate('ShareView', {
+			room: this.room,
+			thread: value,
+			attachments,
+			replying,
+			replyingMessage: message,
+			closeReply: replyCancel
+		});
 	};
 
 	createDiscussion = () => {
@@ -1042,16 +1049,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 				// Legacy reply or quote (quote is a reply without mention)
 			} else {
-				const { user, roomType } = this.props;
-				const permalink = await this.getPermalink(replyingMessage);
-				let msg = `[ ](${permalink}) `;
-
-				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyingMessage?.u?.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${replyingMessage?.u?.username} `;
-				}
-
-				msg = `${msg} ${message}`;
+				const msg = await this.formatReplyMessage(replyingMessage, message);
 				onSubmit(msg);
 			}
 			replyCancel();
@@ -1061,6 +1059,19 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			// @ts-ignore
 			onSubmit(message, undefined, tmid ? tshow : false);
 		}
+	};
+
+	formatReplyMessage = async (replyingMessage: IMessage, message = '') => {
+		const { user, roomType, replyWithMention } = this.props;
+		const permalink = await this.getPermalink(replyingMessage);
+		let msg = `[ ](${permalink}) `;
+
+		// if original message wasn't sent by current user and neither from a direct room
+		if (user.username !== replyingMessage?.u?.username && roomType !== 'd' && replyWithMention) {
+			msg += `@${replyingMessage?.u?.username} `;
+		}
+
+		return `${msg} ${message}`;
 	};
 
 	updateMentions = (keyword: any, type: string) => {
