@@ -22,7 +22,15 @@ import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import { IApplicationState, IServer, IShareAttachment, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	IApplicationState,
+	IMessage,
+	IServer,
+	IShareAttachment,
+	IUser,
+	TSubscriptionModel,
+	TThreadModel
+} from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 
@@ -50,11 +58,14 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
+	replying?: boolean;
+	replyingMessage?: IMessage;
 }
 
 interface IMessageBoxShareView {
 	text: string;
 	forceUpdate(): void;
+	formatReplyMessage: (replyingMessage: IMessage, message?: any) => Promise<string>;
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
@@ -62,6 +73,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
+	private replying?: boolean;
+	private replyingMessage?: IMessage;
+	private closeReply?: Function;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -69,6 +83,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
+		this.replying = props.route.params?.replying;
+		this.replyingMessage = props.route.params?.replyingMessage;
+		this.closeReply = props.route.params?.closeReply;
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -92,6 +109,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	componentWillUnmount = () => {
 		console.countReset(`${this.constructor.name}.render calls`);
+		// close reply from the RoomView
+		setTimeout(() => {
+			if (this.closeReply) {
+				this.closeReply();
+			}
+		}, 300);
 	};
 
 	setHeader = () => {
@@ -214,6 +237,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			navigation.pop();
 		}
 
+		let msg: string | undefined;
+		if (this.replying && this.replyingMessage) {
+			msg = await this.messagebox.current?.formatReplyMessage(this.replyingMessage);
+		}
+
 		try {
 			// Send attachment
 			if (attachments.length) {
@@ -228,7 +256,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 									size,
 									type,
 									path,
-									store: 'Uploads'
+									store: 'Uploads',
+									msg
 								},
 								thread?.id,
 								server,
@@ -313,11 +342,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						roomType={room.t}
 						theme={theme}
 						onSubmit={this.send}
-						message={{ msg: selected?.description ?? '' }}
+						message={this.replyingMessage}
 						navigation={navigation}
 						isFocused={navigation.isFocused}
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
 						isActionsEnabled={false}
+						replying={this.replying}
 					>
 						<Thumbs
 							attachments={attachments}
