@@ -223,8 +223,8 @@ commands:
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
             fi
 
-            if [[ $APP_STORE_CONNECT_API_BASE64 ]]; then
-              echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
                 bundle exec fastlane ios build_official
               else
@@ -318,7 +318,7 @@ commands:
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
             bundle exec fastlane ios beta official:<< parameters.official >>
           working_directory: ios
       - save_cache: *save-gems-cache
