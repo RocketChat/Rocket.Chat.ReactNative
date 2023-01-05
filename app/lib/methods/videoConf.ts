@@ -28,7 +28,6 @@ export const videoConfJoin = async (callId: string, cam: boolean) => {
 				await PermissionsAndroid.requestMultiple([
 					PermissionsAndroid.PERMISSIONS.CAMERA,
 					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-					PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
 					...bltPermission
 				]);
 			}
