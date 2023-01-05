@@ -14,7 +14,13 @@ interface IParagraphProps {
 const Paragraph = ({ value }: IParagraphProps) => {
 	let forceTrim = false;
 	const { theme } = useTheme();
-	if (value?.[0]?.type === 'LINK' && value?.[0]?.value?.label?.value?.toString().trim() === '') {
+	if (
+		value?.[0]?.type === 'LINK' &&
+		// Need to update the @rocket.chat/message-parser to understand that the label can be a Markup | Markup[]
+		// https://github.com/RocketChat/fuselage/blob/461ecf661d9ff4a46390957c915e4352fa942a7c/packages/message-parser/src/definitions.ts#L141
+		// @ts-ignore
+		(value?.[0]?.value?.label?.value?.toString().trim() === '' || value?.[0]?.value?.label?.[0]?.value?.toString().trim() === '')
+	) {
 		// We are returning null when we receive a message like this: `[ ](https://open.rocket.chat/)\nplain_text`
 		// to avoid render a line empty above the the message
 		if (value.length === 1) {

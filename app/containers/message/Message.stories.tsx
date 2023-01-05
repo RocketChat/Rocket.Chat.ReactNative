@@ -908,7 +908,6 @@ export const LongNameUser = () => (
 	</>
 );
 
-
 const linksWithEmptySpaceAndLineBreak = {
 	/**
 	 # ola head 1
@@ -985,10 +984,42 @@ const linksWithEmptySpaceAndLineBreak = {
 				{ type: 'BOLD', value: [{ type: 'PLAIN_TEXT', value: 'bold' }] }
 			]
 		}
+	],
+	simpleQuote: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: {
+						src: {
+							type: 'PLAIN_TEXT',
+							value: 'https://open.rocket.chat/group/quoteeee9798789?msg=ZZp6t2dCRX4TqExht'
+						},
+						// format of label for servers greater or equal than 6.0
+						label: [
+							{
+								type: 'PLAIN_TEXT',
+								value: ' '
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'PLAIN_TEXT',
+					value: 'Quote the hello'
+				}
+			]
+		}
 	]
 };
 
-export const LinkAndQuotesWithDifferentElements = () => (
+export const LinkAndQuoteWithDifferentElements = () => (
 	<>
 		<Message
 			msg={'msg'}
@@ -1042,6 +1073,20 @@ export const LinkAndQuotesWithDifferentElements = () => (
 				}
 			]}
 			md={linksWithEmptySpaceAndLineBreak.linkAndBoldText}
+		/>
+		<Message
+			msg={'msg'}
+			attachments={[
+				{
+					text: 'Hello',
+					message_link: 'https://open.rocket.chat/group/quoteeee9798789?msg=ZZp6t2dCRX4TqExht',
+					author_name: 'rocket.cat',
+					author_icon: 'https://open.rocket.chat/avatar/rocket.cat',
+					attachments: [],
+					fields: []
+				}
+			]}
+			md={linksWithEmptySpaceAndLineBreak.simpleQuote}
 		/>
 	</>
 );

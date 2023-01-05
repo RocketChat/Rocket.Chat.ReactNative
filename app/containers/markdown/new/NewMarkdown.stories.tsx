@@ -806,3 +806,124 @@ export const InlineKatex = () => (
 		<NewMarkdown tokens={inlineKatex} />
 	</View>
 );
+
+const linksWithEmptySpaceAndLineBreak = {
+	/**
+	 # ola head 1
+	 [ ](https://google.com)
+	 */
+	headAndLink: [
+		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'ola head 1' }] },
+		{ type: 'LINE_BREAK' },
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: { src: { type: 'PLAIN_TEXT', value: 'https://google.com' }, label: { type: 'PLAIN_TEXT', value: ' ' } }
+				}
+			]
+		}
+	],
+	/**
+	 # ola head 1
+	 bla bla bla bla bla bla 
+	 bla bla bla bla bla bla 
+	 [ ](https://google.com)
+	 */
+	headTextAndLink: [
+		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'ola head 1' }] },
+		{ type: 'LINE_BREAK' },
+		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'bla bla bla bla bla bla ' }] },
+		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'bla bla bla bla bla bla ' }] },
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: { src: { type: 'PLAIN_TEXT', value: 'https://google.com' }, label: { type: 'PLAIN_TEXT', value: ' ' } }
+				}
+			]
+		}
+	],
+	/**
+	 [ ](permalink from message)\n# ola head 1
+	 asdas asd asd asd
+	 */
+	headTextAndQuote: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: {
+						src: { type: 'PLAIN_TEXT', value: 'https://open.rocket.chat/direct/subaru123?msg=QB42gWcaO6BgqtLTo' },
+						label: { type: 'PLAIN_TEXT', value: ' ' }
+					}
+				},
+				{ type: 'PLAIN_TEXT', value: ' ' }
+			]
+		},
+		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'Ola head 1' }] },
+		{ type: 'LINE_BREAK' },
+		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Description' }] }
+	],
+	/**
+	 [ ](https://google.com) *bold*
+	 */
+	linkAndBoldText: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: { src: { type: 'PLAIN_TEXT', value: 'https://google.com' }, label: { type: 'PLAIN_TEXT', value: ' ' } }
+				},
+				{ type: 'PLAIN_TEXT', value: ' ' },
+				{ type: 'BOLD', value: [{ type: 'PLAIN_TEXT', value: 'bold' }] }
+			]
+		}
+	],
+	simpleQuote: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: {
+						src: {
+							type: 'PLAIN_TEXT',
+							value: 'https://open.rocket.chat/group/quoteeee9798789?msg=ZZp6t2dCRX4TqExht'
+						},
+						// format of label for servers greater or equal than 6.0
+						label: [
+							{
+								type: 'PLAIN_TEXT',
+								value: ' '
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'PLAIN_TEXT',
+					value: 'Quote the hello'
+				}
+			]
+		}
+	]
+};
+
+export const linkWithOtherElements = () => (
+	<View style={styles.container}>
+		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.headAndLink} />
+		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.headTextAndLink} />
+		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.headTextAndQuote} />
+		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.linkAndBoldText} />
+		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.simpleQuote} />
+	</View>
+);
