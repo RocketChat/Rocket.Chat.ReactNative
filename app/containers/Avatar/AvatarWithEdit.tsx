@@ -5,6 +5,7 @@ import AvatarContainer from './AvatarContainer';
 import { IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
+import { BUTTON_HIT_SLOP } from '../message/utils';
 import styles from './styles';
 
 interface IAvatarContainer extends IAvatar {
@@ -52,7 +53,9 @@ const AvatarWithEdit = ({
 					onPress={handleEdit}
 					testID='avatar-edit-button'
 					style={styles.editAvatarButton}
+					styleText={[styles.textButton]}
 					color={colors.titleText}
+					hitSlop={BUTTON_HIT_SLOP}
 				/>
 			) : null}
 		</>
