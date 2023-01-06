@@ -100,6 +100,13 @@ export function sendFileMessage(
 				});
 			}
 
+			if (fileInfo.msg) {
+				formData.push({
+					name: 'msg',
+					data: fileInfo.msg
+				});
+			}
+
 			if (tmid) {
 				formData.push({
 					name: 'tmid',
