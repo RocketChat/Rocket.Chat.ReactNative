@@ -381,27 +381,6 @@ export const BlockQuote = () => (
 	</View>
 );
 
-const rocketChatLink = [
-	{
-		type: 'PARAGRAPH',
-		value: [
-			{
-				type: 'LINK',
-				value: {
-					src: {
-						type: 'PLAIN_TEXT',
-						value: 'https://rocket.chat'
-					},
-					label: {
-						type: 'PLAIN_TEXT',
-						value: 'https://rocket.chat'
-					}
-				}
-			}
-		]
-	}
-];
-
 const markdownLink = [
 	{
 		type: 'PARAGRAPH',
@@ -487,7 +466,6 @@ const markdownLinkWithEmphasis = [
 
 export const Links = () => (
 	<View style={styles.container}>
-		<NewMarkdown tokens={rocketChatLink} />
 		<NewMarkdown tokens={markdownLink} />
 		<NewMarkdown tokens={markdownLinkWithEmphasis} />
 	</View>
@@ -807,13 +785,13 @@ export const InlineKatex = () => (
 	</View>
 );
 
-const linksWithEmptySpaceAndLineBreak = {
+const messageQuote = {
 	/**
-	 # ola head 1
+	 # Hello head 1
 	 [ ](https://google.com)
 	 */
 	headAndLink: [
-		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'ola head 1' }] },
+		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'Hello head 1' }] },
 		{ type: 'LINE_BREAK' },
 		{
 			type: 'PARAGRAPH',
@@ -826,13 +804,17 @@ const linksWithEmptySpaceAndLineBreak = {
 		}
 	],
 	/**
-	 # ola head 1
+	 # Head 1 as the first line then line break and after paragraph
 	 bla bla bla bla bla bla 
 	 bla bla bla bla bla bla 
 	 [ ](https://google.com)
 	 */
 	headTextAndLink: [
-		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'ola head 1' }] },
+		{
+			type: 'HEADING',
+			level: 1,
+			value: [{ type: 'PLAIN_TEXT', value: 'Head 1 as the first line then line break and after paragraph' }]
+		},
 		{ type: 'LINE_BREAK' },
 		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'bla bla bla bla bla bla ' }] },
 		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'bla bla bla bla bla bla ' }] },
@@ -847,7 +829,7 @@ const linksWithEmptySpaceAndLineBreak = {
 		}
 	],
 	/**
-	 [ ](permalink from message)\n# ola head 1
+	 [ ](permalink from message)\n# Head 1 after a forced line break
 	 asdas asd asd asd
 	 */
 	headTextAndQuote: [
@@ -864,12 +846,12 @@ const linksWithEmptySpaceAndLineBreak = {
 				{ type: 'PLAIN_TEXT', value: ' ' }
 			]
 		},
-		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'Ola head 1' }] },
+		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'Head 1 after a forced line break' }] },
 		{ type: 'LINE_BREAK' },
 		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Description' }] }
 	],
 	/**
-	 [ ](https://google.com) *bold*
+	 [ ](https://google.com) *There is a link before this bold separated by single space*
 	 */
 	linkAndBoldText: [
 		{
@@ -880,7 +862,7 @@ const linksWithEmptySpaceAndLineBreak = {
 					value: { src: { type: 'PLAIN_TEXT', value: 'https://google.com' }, label: { type: 'PLAIN_TEXT', value: ' ' } }
 				},
 				{ type: 'PLAIN_TEXT', value: ' ' },
-				{ type: 'BOLD', value: [{ type: 'PLAIN_TEXT', value: 'bold' }] }
+				{ type: 'BOLD', value: [{ type: 'PLAIN_TEXT', value: 'There is a link before this bold separated by single space' }] }
 			]
 		}
 	],
@@ -911,19 +893,19 @@ const linksWithEmptySpaceAndLineBreak = {
 			value: [
 				{
 					type: 'PLAIN_TEXT',
-					value: 'Quote the hello'
+					value: 'Quoting a message wrote before'
 				}
 			]
 		}
 	]
 };
 
-export const linkWithOtherElements = () => (
+export const MessageQuote = () => (
 	<View style={styles.container}>
-		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.headAndLink} />
-		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.headTextAndLink} />
-		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.headTextAndQuote} />
-		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.linkAndBoldText} />
-		<NewMarkdown tokens={linksWithEmptySpaceAndLineBreak.simpleQuote} />
+		<NewMarkdown tokens={messageQuote.headAndLink} />
+		<NewMarkdown tokens={messageQuote.headTextAndLink} />
+		<NewMarkdown tokens={messageQuote.headTextAndQuote} />
+		<NewMarkdown tokens={messageQuote.linkAndBoldText} />
+		<NewMarkdown tokens={messageQuote.simpleQuote} />
 	</View>
 );
