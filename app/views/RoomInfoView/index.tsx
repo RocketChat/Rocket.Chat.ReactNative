@@ -10,7 +10,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Status from '../../containers/Status';
-import Avatar from '../../containers/Avatar';
+import { AvatarWithEdit } from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
@@ -183,17 +183,17 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			title: t === SubscriptionType.DIRECT ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
-					<HeaderButton.Container>
-						<HeaderButton.Item
-							iconName='edit'
-							onPress={() => {
-								const isLivechat = t === SubscriptionType.OMNICHANNEL;
-								logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
-							}}
-							testID='room-info-view-edit-button'
-						/>
-					</HeaderButton.Container>
+						<HeaderButton.Container>
+							<HeaderButton.Item
+								iconName='edit'
+								onPress={() => {
+									const isLivechat = t === SubscriptionType.OMNICHANNEL;
+									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
+								}}
+								testID='room-info-view-edit-button'
+							/>
+						</HeaderButton.Container>
 				  )
 				: undefined
 		});
@@ -404,7 +404,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { navigation } = this.props;
 		const { room } = this.state;
 		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: this.t });
-	}
+	};
 
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
 		const { theme } = this.props;
@@ -412,7 +412,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const showAvatarEdit = showEdit && this.t !== SubscriptionType.OMNICHANNEL;
 
 		return (
-			<Avatar
+			<AvatarWithEdit
 				text={room.name || roomUser.username}
 				style={styles.avatar}
 				type={this.t}
@@ -425,7 +425,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 						<Status size={20} id={roomUser._id} />
 					</View>
 				) : null}
-			</Avatar>
+			</AvatarWithEdit>
 		);
 	};
 

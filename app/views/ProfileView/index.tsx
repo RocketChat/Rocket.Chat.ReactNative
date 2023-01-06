@@ -18,7 +18,7 @@ import { FormTextInput } from '../../containers/TextInput';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import Avatar from '../../containers/Avatar';
+import { AvatarWithEdit } from '../../containers/Avatar';
 import { setUser } from '../../actions/login';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -411,7 +411,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				<SafeAreaView testID='profile-view'>
 					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
-							<Avatar
+							<AvatarWithEdit
 								text={user.username}
 								avatarETag={user.avatarETag}
 								size={100}

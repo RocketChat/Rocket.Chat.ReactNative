@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
-import Avatar from '../../containers/Avatar';
+import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
@@ -527,7 +527,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						{...scrollPersistTaps}
 					>
 						<View style={styles.avatarContainer}>
-							<Avatar type={room.t} text={room.name} rid={room.rid} size={100} handleEdit={this.handleEditAvatar} />
+							<AvatarWithEdit type={room.t} text={room.name} rid={room.rid} size={100} handleEdit={this.handleEditAvatar} />
 						</View>
 						<FormTextInput
 							inputRef={e => {
