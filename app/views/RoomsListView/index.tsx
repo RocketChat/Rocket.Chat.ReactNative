@@ -593,8 +593,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	initSearching = () => {
 		logEvent(events.RL_SEARCH);
-		const { dispatch } = this.props;
+		const { dispatch, showServerDropdown } = this.props;
 		this.internalSetState({ searching: true }, () => {
+			if (showServerDropdown) {
+				dispatch(closeServerDropdown());
+			}
 			dispatch(openSearchHeader());
 			this.handleSearch('');
 			this.setHeader();
