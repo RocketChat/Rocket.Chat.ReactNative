@@ -8,7 +8,7 @@ import { compareServerVersion } from '../../lib/methods/helpers';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { showConfirmationAlert, handleError } from '../../lib/methods/helpers/info';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -74,32 +74,65 @@ const ChangeAvatarView = () => {
 	};
 
 	const submit = async () => {
-		try {
-			setSaving(true);
-			if (!fromUser && room?.rid) {
-				// Change Rooms Avatar
-				await Services.saveRoomSettings(room.rid, { roomAvatar: avatar?.data });
-			} else if (avatar?.url) {
-				// Change User's Avatar
-				await Services.setAvatarFromService(avatar);
-			} else if (textAvatar) {
-				// Change User's Avatar
-				await Services.resetAvatar(user.id);
-			}
+		let result;
+		if (!fromUser && room?.rid) {
+			// Change Rooms Avatar
+			result = await changeRoomsAvatar(room.rid);
+		} else if (avatar?.url) {
+			// Change User's Avatar
+			result = await changeUserAvatar(avatar);
+		} else if (textAvatar) {
+			// Change User's Avatar
+			result = await resetUserAvatar();
+		}
+		if (result) {
 			setSaving(false);
 			avatarUrl.current = '';
 			return navigation.goBack();
+		}
+	};
+
+	const changeRoomsAvatar = async (rid: string) => {
+		try {
+			setSaving(true);
+			await Services.saveRoomSettings(rid, { roomAvatar: avatar?.data });
+			return true;
 		} catch (e) {
 			log(e);
 			setSaving(false);
-			if (!fromUser && room?.rid) {
-				return handleError(e, 'saveRoomSettings', 'changing_avatar');
-			}
-			if (textAvatar) {
-				return handleError(e, 'resetAvatar', 'changing_avatar');
-			}
+			return handleError(e, 'saveRoomSettings', 'changing_avatar');
+		}
+	};
+
+	const changeUserAvatar = async (avatarUpload: IAvatar) => {
+		try {
+			setSaving(true);
+			await Services.setAvatarFromService(avatarUpload);
+			return true;
+		} catch (e) {
+			log(e);
+			setSaving(false);
+			return handleError(e, 'resetAvatar', 'changing_avatar');
+		}
+	};
+
+	const resetUserAvatar = async () => {
+		try {
+			await Services.resetAvatar(user.id);
+			return true;
+		} catch (e) {
 			return handleError(e, 'setAvatarFromService', 'changing_avatar');
 		}
+	};
+
+	const handleError = (e: any, _func: string, action: string) => {
+		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
+			return showErrorAlert(e.data.error);
+		}
+		if (I18n.isTranslated(e.error)) {
+			return showErrorAlert(I18n.t(e.error));
+		}
+		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	};
 
 	const resetAvatar = () => {

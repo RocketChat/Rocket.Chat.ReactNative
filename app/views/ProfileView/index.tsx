@@ -11,7 +11,7 @@ import Touch from '../../containers/Touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { handleError, showConfirmationAlert } from '../../lib/methods/helpers';
+import { showErrorAlert, showConfirmationAlert } from '../../lib/methods/helpers';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { FormTextInput } from '../../containers/TextInput';
@@ -254,7 +254,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
-			handleError(e, 'saveUserProfile', 'saving_profile');
+			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
 	};
 
@@ -271,8 +271,18 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
 			this.init();
 		} catch (e) {
-			handleError(e, 'resetAvatar', 'changing_avatar');
+			this.handleError(e, 'resetAvatar', 'changing_avatar');
 		}
+	};
+
+	handleError = (e: any, _func: string, action: string) => {
+		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
+			return showErrorAlert(e.data.error);
+		}
+		if (I18n.isTranslated(e.error)) {
+			return showErrorAlert(I18n.t(e.error));
+		}
+		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	};
 
 	handleEditAvatar = () => {
