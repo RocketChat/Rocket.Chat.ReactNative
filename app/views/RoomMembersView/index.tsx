@@ -110,8 +110,8 @@ const RoomMembersView = (): React.ReactElement => {
 
 	useEffect(() => {
 		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
-		setHeader(true);
-		fetchMembers(true);
+		setHeader(false);
+		fetchMembers(false);
 		return () => subscription?.unsubscribe();
 	}, []);
 
