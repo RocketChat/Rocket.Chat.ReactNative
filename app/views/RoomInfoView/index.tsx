@@ -403,7 +403,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	handleEditAvatar = () => {
 		const { navigation } = this.props;
 		const { room } = this.state;
-		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: this.t });
+		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: this.t, context: 'room' });
 	};
 
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {

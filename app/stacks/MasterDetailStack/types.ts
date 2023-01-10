@@ -6,6 +6,7 @@ import { IMessage } from '../../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -59,7 +60,7 @@ export type ModalStackParamList = {
 		isRadio?: boolean;
 	};
 	ChangeAvatarView: {
-		fromUser?: boolean;
+		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
 		t?: SubscriptionType;

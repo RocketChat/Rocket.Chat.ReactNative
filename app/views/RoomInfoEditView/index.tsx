@@ -465,7 +465,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 	handleEditAvatar = () => {
 		const { navigation } = this.props;
 		const { room } = this.state;
-		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: room.t });
+		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: room.t, context: 'room' });
 	};
 
 	toggleRoomType = (value: boolean) => {

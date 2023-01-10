@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 
-import { IAvatar, IUser } from '../../definitions';
+import { IAvatar } from '../../definitions';
 import { Services } from '../../lib/services';
 import I18n from '../../i18n';
 import styles from './styles';
@@ -10,11 +10,11 @@ import AvatarSuggestionItem from './AvatarSuggestionItem';
 
 const AvatarSuggestion = ({
 	onPress,
-	user,
+	username,
 	resetAvatar
 }: {
 	onPress: (value: IAvatar | null) => void;
-	user?: IUser;
+	username?: string;
 	resetAvatar?: () => void;
 }) => {
 	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
@@ -40,11 +40,11 @@ const AvatarSuggestion = ({
 	}, []);
 
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={styles.containerImagesUploaded}>
 			<Text style={[styles.itemLabel, { color: colors.titleText }]}>{I18n.t('Images_uploaded')}</Text>
 			<View style={styles.containerAvatarSuggestion}>
-				{user?.username && resetAvatar ? (
-					<AvatarSuggestionItem text={`@${user.username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />
+				{username && resetAvatar ? (
+					<AvatarSuggestionItem text={`@${username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />
 				) : null}
 				{avatarSuggestions.slice(0, 7).map(item => (
 					<AvatarSuggestionItem item={item} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />

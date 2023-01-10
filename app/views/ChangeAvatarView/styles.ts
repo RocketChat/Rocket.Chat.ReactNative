@@ -3,9 +3,6 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
-	disabled: {
-		opacity: 0.3
-	},
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -18,6 +15,9 @@ export default StyleSheet.create({
 		marginBottom: 12,
 		fontSize: 14,
 		...sharedStyles.textSemibold
+	},
+	containerImagesUploaded: {
+		flex: 1
 	},
 	containerAvatarSuggestion: {
 		flex: 1,

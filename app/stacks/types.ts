@@ -13,6 +13,7 @@ import { ModalStackParamList } from './MasterDetailStack/types';
 import { TThreadModel } from '../definitions';
 import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../definitions/ILivechatTag';
+import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
@@ -181,7 +182,7 @@ export type ChatsStackParamList = {
 		videoConf?: boolean;
 	};
 	ChangeAvatarView: {
-		fromUser?: boolean;
+		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
 		t?: SubscriptionType;
@@ -201,7 +202,7 @@ export type ProfileStackParamList = {
 		onChangeValue: Function;
 	};
 	ChangeAvatarView: {
-		fromUser?: boolean;
+		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
 		t?: SubscriptionType;

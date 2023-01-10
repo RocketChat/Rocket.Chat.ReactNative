@@ -287,7 +287,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	handleEditAvatar = () => {
 		const { navigation } = this.props;
-		navigation.navigate('ChangeAvatarView', { fromUser: true });
+		navigation.navigate('ChangeAvatarView', { context: 'profile' });
 	};
 
 	renderAvatarButton = ({ key, child, onPress, disabled = false }: IAvatarButton) => {

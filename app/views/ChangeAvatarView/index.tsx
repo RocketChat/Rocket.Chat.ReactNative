@@ -32,8 +32,9 @@ const ChangeAvatarView = () => {
 	const [textAvatar, setTextAvatar] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
-	const { user, serverVersion } = useAppSelector(state => ({
-		user: getUserSelector(state),
+	const { userId, username, serverVersion } = useAppSelector(state => ({
+		userId: getUserSelector(state).id,
+		username: getUserSelector(state).username,
 		isMasterDetail: state.app.isMasterDetail,
 		serverVersion: state.server.version
 	}));
@@ -41,7 +42,7 @@ const ChangeAvatarView = () => {
 	const avatarUrl = useRef<string | undefined>('');
 
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
-	const { fromUser, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
+	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -75,7 +76,7 @@ const ChangeAvatarView = () => {
 
 	const submit = async () => {
 		let result;
-		if (!fromUser && room?.rid) {
+		if ((context === 'room') && room?.rid) {
 			// Change Rooms Avatar
 			result = await changeRoomsAvatar(room.rid);
 		} else if (avatar?.url) {
@@ -118,7 +119,7 @@ const ChangeAvatarView = () => {
 
 	const resetUserAvatar = async () => {
 		try {
-			await Services.resetAvatar(user.id);
+			await Services.resetAvatar(userId);
 			return true;
 		} catch (e) {
 			return handleError(e, 'setAvatarFromService', 'changing_avatar');
@@ -137,8 +138,8 @@ const ChangeAvatarView = () => {
 
 	const resetAvatar = () => {
 		setAvatar(null);
-		setTextAvatar(`@${user.username}`);
-		avatarUrl.current = `@${user.username}`;
+		setTextAvatar(`@${username}`);
+		avatarUrl.current = `@${username}`;
 	};
 
 	const resetRoomAvatar = () => {
@@ -181,7 +182,7 @@ const ChangeAvatarView = () => {
 				>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
 						<Avatar
-							text={room?.name || textAvatar || user.username}
+							text={room?.name || textAvatar || username}
 							avatar={avatar?.url}
 							isStatic={avatar?.url}
 							size={100}
@@ -189,9 +190,9 @@ const ChangeAvatarView = () => {
 							{...ridProps}
 						/>
 					</View>
-					{fromUser ? <AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} /> : null}
+					{context=== 'profile' ? <AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} /> : null}
 					<List.Separator style={styles.separator} />
-					{fromUser ? <AvatarSuggestion resetAvatar={resetAvatar} user={user} onPress={setAvatar} /> : null}
+					{context=== 'profile' ? <AvatarSuggestion resetAvatar={resetAvatar} username={username} onPress={setAvatar} /> : null}
 
 					<Button
 						title={I18n.t('Upload_image')}
@@ -201,7 +202,7 @@ const ChangeAvatarView = () => {
 						onPress={pickImage}
 						testID='change-avatar-view-logout-other-locations'
 					/>
-					{!fromUser && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
+					{context === 'room' && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 						<Button
 							title={I18n.t('Delete_image')}
 							type='primary'
