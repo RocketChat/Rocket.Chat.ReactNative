@@ -19,15 +19,6 @@ export default StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
-	avatarButton: {
-		width: 64,
-		height: 64,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginRight: 20,
-		marginBottom: 12,
-		borderRadius: 4
-	},
 	containerAvatarSuggestion: {
 		flex: 1,
 		flexWrap: 'wrap',
