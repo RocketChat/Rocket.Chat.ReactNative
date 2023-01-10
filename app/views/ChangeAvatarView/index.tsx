@@ -26,6 +26,8 @@ import { Services } from '../../lib/services';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 
+const RESET_ROOM_AVATAR = 'resetRoomAvatar';
+
 const ChangeAvatarView = () => {
 	const [avatar, setAvatarState] = useState<IAvatar | null>(null);
 
@@ -35,11 +37,10 @@ const ChangeAvatarView = () => {
 	const { userId, username, serverVersion } = useAppSelector(state => ({
 		userId: getUserSelector(state).id,
 		username: getUserSelector(state).username,
-		isMasterDetail: state.app.isMasterDetail,
 		serverVersion: state.server.version
 	}));
 
-	const avatarUrl = useRef<string | undefined>('');
+	const avatarUrl = useRef<string>('');
 
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
@@ -70,13 +71,13 @@ const ChangeAvatarView = () => {
 	}, [navigation]);
 
 	const setAvatar = (value: IAvatar | null) => {
-		avatarUrl.current = value?.url;
+		avatarUrl.current = value?.url || '';
 		setAvatarState(value);
 	};
 
 	const submit = async () => {
 		let result;
-		if ((context === 'room') && room?.rid) {
+		if (context === 'room' && room?.rid) {
 			// Change Rooms Avatar
 			result = await changeRoomsAvatar(room.rid);
 		} else if (avatar?.url) {
@@ -144,7 +145,7 @@ const ChangeAvatarView = () => {
 
 	const resetRoomAvatar = () => {
 		setAvatar({ data: null });
-		avatarUrl.current = 'resetRoomAvatar';
+		avatarUrl.current = RESET_ROOM_AVATAR;
 	};
 
 	const pickImage = async () => {
@@ -165,7 +166,7 @@ const ChangeAvatarView = () => {
 		}
 	};
 
-	const ridProps = avatarUrl.current !== 'resetRoomAvatar' ? { rid: room?.rid } : {};
+	const ridProps = avatarUrl.current !== RESET_ROOM_AVATAR ? { rid: room?.rid } : {};
 
 	return (
 		<KeyboardView
@@ -190,9 +191,9 @@ const ChangeAvatarView = () => {
 							{...ridProps}
 						/>
 					</View>
-					{context=== 'profile' ? <AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} /> : null}
+					{context === 'profile' ? <AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} /> : null}
 					<List.Separator style={styles.separator} />
-					{context=== 'profile' ? <AvatarSuggestion resetAvatar={resetAvatar} username={username} onPress={setAvatar} /> : null}
+					{context === 'profile' ? <AvatarSuggestion resetAvatar={resetAvatar} username={username} onPress={setAvatar} /> : null}
 
 					<Button
 						title={I18n.t('Upload_image')}
