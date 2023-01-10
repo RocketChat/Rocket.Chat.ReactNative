@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import I18n from '../../i18n';
-import { FormTextInput } from '../../containers/TextInput';
-import { useDebounce, isImage, isValidURLRequest, isValidURL } from '../../lib/methods/helpers';
+import { ControlledFormTextInput } from '../../containers/TextInput';
+import { regExpUrlImage } from '../../lib/methods/helpers';
+
+const schema = yup.object().shape({
+	avatarUrl: yup.string().matches(regExpUrlImage).required()
+});
+
+interface ISubmit {
+	avatarUrl: string;
+}
 
 const AvatarUrl = ({ submit }: { submit: (value: string) => void }) => {
-	const handleChangeText = useDebounce(async (value: string) => {
-		if (isImage(value) && isValidURL(value)) {
-			const result = await isValidURLRequest(value);
-			if (result) {
-				submit(value);
-			}
+	const {
+		control,
+		formState: { isValid },
+		getValues
+	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema) });
+
+	useEffect(() => {
+		if (isValid) {
+			const { avatarUrl } = getValues();
+			submit(avatarUrl);
+		} else {
+			submit('');
 		}
-	}, 300);
+	}, [isValid]);
 
 	return (
-		<FormTextInput
+		<ControlledFormTextInput
+			control={control}
+			name='avatarUrl'
 			label={I18n.t('Avatar_Url')}
 			placeholder={I18n.t('insert_Avatar_URL')}
-			onChangeText={handleChangeText}
 			testID='change-avatar-view-avatar-url'
 			containerStyle={{ marginBottom: 0 }}
 		/>

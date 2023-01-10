@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
+import { shallowEqual } from 'react-redux';
 
 import { compareServerVersion } from '../../lib/methods/helpers';
 import KeyboardView from '../../containers/KeyboardView';
@@ -34,11 +35,14 @@ const ChangeAvatarView = () => {
 	const [textAvatar, setTextAvatar] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
-	const { userId, username, serverVersion } = useAppSelector(state => ({
-		userId: getUserSelector(state).id,
-		username: getUserSelector(state).username,
-		serverVersion: state.server.version
-	}));
+	const { userId, username, serverVersion } = useAppSelector(
+		state => ({
+			userId: getUserSelector(state).id,
+			username: getUserSelector(state).username,
+			serverVersion: state.server.version
+		}),
+		shallowEqual
+	);
 
 	const avatarUrl = useRef<string>('');
 
