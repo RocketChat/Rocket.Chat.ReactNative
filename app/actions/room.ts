@@ -47,7 +47,6 @@ interface IUserTyping extends Action {
 export interface IRoomHistoryRequest extends Action {
 	rid: string;
 	t: SubscriptionType;
-	tmid?: string;
 	loaderId: string;
 }
 
@@ -121,19 +120,16 @@ export function userTyping(rid: string, status = true): IUserTyping {
 export function roomHistoryRequest({
 	rid,
 	t,
-	tmid,
 	loaderId
 }: {
 	rid: string;
 	t: SubscriptionType;
-	tmid?: string;
 	loaderId: string;
 }): IRoomHistoryRequest {
 	return {
 		type: ROOM.HISTORY_REQUEST,
 		rid,
 		t,
-		tmid,
 		loaderId
 	};
 }
