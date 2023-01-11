@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { ERoomType } from '../definitions/ERoomType';
+import { ERoomType, SubscriptionType, TAnyMessageModel } from '../definitions';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
@@ -97,5 +97,25 @@ export function userTyping(rid: string, status = true): IUserTyping {
 		type: ROOM.USER_TYPING,
 		rid,
 		status
+	};
+}
+
+export function roomHistoryRequest({
+	rid,
+	t,
+	tmid,
+	loaderItem
+}: {
+	rid: string;
+	t: SubscriptionType;
+	tmid?: string;
+	loaderItem: TAnyMessageModel;
+}): any {
+	return {
+		type: ROOM.HISTORY_REQUEST,
+		rid,
+		t,
+		tmid,
+		loaderItem
 	};
 }

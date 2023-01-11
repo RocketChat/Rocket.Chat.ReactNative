@@ -174,18 +174,18 @@ interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
 	room:
-	| TSubscriptionModel
-	| {
-		rid: string;
-		t: string;
-		name?: string;
-		fname?: string;
-		prid?: string;
-		joinCodeRequired?: boolean;
-		status?: string;
-		lastMessage?: ILastMessage;
-		sysMes?: boolean;
-		onHold?: boolean;
+		| TSubscriptionModel
+		| {
+				rid: string;
+				t: string;
+				name?: string;
+				fname?: string;
+				prid?: string;
+				joinCodeRequired?: boolean;
+				status?: string;
+				lastMessage?: ILastMessage;
+				sysMes?: boolean;
+				onHold?: boolean;
 		  };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any;
@@ -1337,7 +1337,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			content = (
 				<LoadMore
-					load={() => this.onLoadMoreMessages(item)}
+					// load={() => this.onLoadMoreMessages(item)}
+					rid={room.rid}
+					t={room.t as any}
+					tmid={this.tmid}
+					loaderItem={item} // whole item?
 					type={item.t}
 					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}
 				/>
@@ -1502,7 +1506,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => this.messageActions = ref}
+					ref={ref => (this.messageActions = ref)}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1512,7 +1516,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => this.messageErrorActions = ref} tmid={this.tmid} />
+				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
 			</>
 		);
 	};

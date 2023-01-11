@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { delay, put, race, select, take, takeLatest, actionChannel, call } from 'redux-saga/effects';
 
 import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
@@ -10,6 +10,24 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';
 import { Services } from '../lib/services';
+import getMoreMessages from '../views/RoomView/services/getMoreMessages';
+
+function* handleHistoryRequest({ rid, t, tmid, loaderItem }) {
+	console.log(`starting handle request ${loaderItem.ts}`);
+	// yield delay(10000);
+	yield getMoreMessages({ rid, t, tmid, loaderItem });
+	console.log(`ending handle request ${loaderItem.ts}`);
+}
+
+function* watchHistoryRequests() {
+	const requestChan = yield actionChannel(types.ROOM.HISTORY_REQUEST);
+	while (true) {
+		const { rid, t, tmid, loaderItem } = yield take(requestChan);
+		yield call(handleHistoryRequest, { rid, t, tmid, loaderItem });
+
+		// yield put({ type: types.ROOM.HISTORY.REQUEST, rid, end, t });
+	}
+}
 
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -132,5 +150,6 @@ const root = function* root() {
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);
+	yield watchHistoryRequests();
 };
 export default root;
