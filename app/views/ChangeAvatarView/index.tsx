@@ -135,6 +135,9 @@ const ChangeAvatarView = () => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
+		if (e.error && e.error === 'error-avatar-invalid-url') {
+			return showErrorAlert(I18n.t(e.error, { url: e.details.url }));
+		}
 		if (I18n.isTranslated(e.error)) {
 			return showErrorAlert(I18n.t(e.error));
 		}
