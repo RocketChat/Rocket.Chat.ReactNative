@@ -6,21 +6,14 @@ import { ThemeContext, TSupportedThemes } from '../../../theme';
 import { Message } from '../../../containers/message/Message.stories';
 import { MessageTypeLoad, themes } from '../../../lib/constants';
 import LoadMoreComponent from '.';
-import { SubscriptionType } from '../../../definitions';
+import { ERoomType } from '../../../definitions';
 
 export default {
 	title: 'RoomView/LoadMore'
 };
 
 const LoadMore = ({ ...props }) => (
-	<LoadMoreComponent
-		rid='rid'
-		t={SubscriptionType.CHANNEL}
-		loaderId='loaderId'
-		type={MessageTypeLoad.MORE}
-		runOnRender={false}
-		{...props}
-	/>
+	<LoadMoreComponent rid='rid' t={ERoomType.c} loaderId='loaderId' type={MessageTypeLoad.MORE} runOnRender={false} {...props} />
 );
 
 export const Basic = () => (
