@@ -9,7 +9,7 @@ import { BUTTON_HIT_SLOP } from '../message/utils';
 import styles from './styles';
 
 interface IAvatarContainer extends IAvatar {
-	handleEdit: () => void;
+	handleEdit?: () => void;
 }
 
 const AvatarWithEdit = ({
@@ -45,17 +45,19 @@ const AvatarWithEdit = ({
 				isStatic={isStatic}
 				rid={rid}
 			/>
-			<Button
-				title={I18n.t('Edit')}
-				type='secondary'
-				backgroundColor={colors.editAndUploadButtonAvatar}
-				onPress={handleEdit}
-				testID='avatar-edit-button'
-				style={styles.editAvatarButton}
-				styleText={[styles.textButton]}
-				color={colors.titleText}
-				hitSlop={BUTTON_HIT_SLOP}
-			/>
+			{handleEdit ? (
+				<Button
+					title={I18n.t('Edit')}
+					type='secondary'
+					backgroundColor={colors.editAndUploadButtonAvatar}
+					onPress={handleEdit}
+					testID='avatar-edit-button'
+					style={styles.editAvatarButton}
+					styleText={[styles.textButton]}
+					color={colors.titleText}
+					hitSlop={BUTTON_HIT_SLOP}
+				/>
+			) : null}
 		</>
 	);
 };
