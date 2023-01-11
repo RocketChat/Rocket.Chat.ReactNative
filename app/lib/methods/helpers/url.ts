@@ -1,5 +1,3 @@
-import fetch from './fetch';
-
 export const isValidURL = (url: string): boolean => {
 	const pattern = new RegExp(
 		'^(https?:\\/\\/)?' + // protocol
@@ -15,12 +13,3 @@ export const isValidURL = (url: string): boolean => {
 
 // Use checkUseSsl: false only if server url starts with http://
 export const isSsl = (url: string): boolean => !/http:\/\//.test(url);
-
-export const isValidURLRequest = async (url: string) => {
-	try {
-		const result = await fetch(url);
-		return result.status === 200;
-	} catch {
-		return false;
-	}
-};

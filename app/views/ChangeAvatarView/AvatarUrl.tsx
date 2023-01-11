@@ -5,10 +5,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import I18n from '../../i18n';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { regExpUrlImage } from '../../lib/methods/helpers';
+import { regExpImageType } from '../../lib/methods/helpers';
 
 const schema = yup.object().shape({
-	avatarUrl: yup.string().matches(regExpUrlImage).required()
+	avatarUrl: yup.string().url().matches(regExpImageType).required()
 });
 
 interface ISubmit {
