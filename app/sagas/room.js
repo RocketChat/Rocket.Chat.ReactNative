@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { delay, put, race, select, take, takeLatest, actionChannel, call } from 'redux-saga/effects';
+import { delay, put, race, select, take, takeLatest, actionChannel } from 'redux-saga/effects';
 
 import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
