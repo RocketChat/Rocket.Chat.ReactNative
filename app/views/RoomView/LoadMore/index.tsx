@@ -23,50 +23,52 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LoadMore = ({
-	rid,
-	t,
-	tmid,
-	loaderId,
-	type,
-	runOnRender
-}: {
-	rid: string;
-	t: SubscriptionType;
-	tmid?: string;
-	loaderId: string;
-	type: MessageType;
-	runOnRender: boolean;
-}): React.ReactElement => {
-	const { theme } = useTheme();
-	const dispatch = useDispatch();
-	const loading = useAppSelector(state => state.room.historyLoaders.find(historyLoader => historyLoader === loaderId));
+const LoadMore = React.memo(
+	({
+		rid,
+		t,
+		tmid,
+		loaderId,
+		type,
+		runOnRender
+	}: {
+		rid: string;
+		t: SubscriptionType;
+		tmid?: string;
+		loaderId: string;
+		type: MessageType;
+		runOnRender: boolean;
+	}): React.ReactElement => {
+		const { theme } = useTheme();
+		const dispatch = useDispatch();
+		const loading = useAppSelector(state => state.room.historyLoaders.find(historyLoader => historyLoader === loaderId));
 
-	const handleLoad = () => dispatch(roomHistoryRequest({ rid, t, tmid, loaderId }));
+		const handleLoad = () => dispatch(roomHistoryRequest({ rid, t, tmid, loaderId }));
 
-	useEffect(() => {
-		if (runOnRender) {
-			handleLoad();
+		useEffect(() => {
+			if (runOnRender) {
+				handleLoad();
+			}
+		}, []);
+
+		let text = 'Load_More';
+		if (type === MessageTypeLoad.NEXT_CHUNK) {
+			text = 'Load_Newer';
 		}
-	}, []);
+		if (type === MessageTypeLoad.PREVIOUS_CHUNK) {
+			text = 'Load_Older';
+		}
 
-	let text = 'Load_More';
-	if (type === MessageTypeLoad.NEXT_CHUNK) {
-		text = 'Load_Newer';
+		return (
+			<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
+				{loading ? (
+					<ActivityIndicator color={themes[theme].auxiliaryText} />
+				) : (
+					<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
+				)}
+			</Touch>
+		);
 	}
-	if (type === MessageTypeLoad.PREVIOUS_CHUNK) {
-		text = 'Load_Older';
-	}
-
-	return (
-		<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
-			{loading ? (
-				<ActivityIndicator color={themes[theme].auxiliaryText} />
-			) : (
-				<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
-			)}
-		</Touch>
-	);
-};
+);
 
 export default LoadMore;
