@@ -124,27 +124,31 @@ const Url = React.memo(
 
 		const hasContent = !!url.title || !!url.description;
 
-		return (
-			<Touchable
-				onPress={onPress}
-				onLongPress={onLongPress}
-				style={[
-					styles.button,
-					index > 0 && styles.marginTop,
-					styles.container,
-					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
-					}
-				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
-			>
-				<>
-					<UrlImage image={imageUrl} hasContent={hasContent} />
-					{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
-				</>
-			</Touchable>
-		);
+		if (hasContent || imageUrl) {
+			return (
+				<Touchable
+					onPress={onPress}
+					onLongPress={onLongPress}
+					style={[
+						styles.button,
+						index > 0 && styles.marginTop,
+						styles.container,
+						{
+							backgroundColor: themes[theme].chatComponentBackground,
+							borderColor: themes[theme].borderColor
+						}
+					]}
+					background={Touchable.Ripple(themes[theme].bannerBackground)}
+				>
+					<>
+						<UrlImage image={imageUrl} hasContent={hasContent} />
+						{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
+					</>
+				</Touchable>
+			);
+		}
+
+		return null;
 	},
 	(oldProps, newProps) => dequal(oldProps.url, newProps.url) && oldProps.theme === newProps.theme
 );
