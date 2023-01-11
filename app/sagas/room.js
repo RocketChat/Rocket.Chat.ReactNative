@@ -11,14 +11,15 @@ import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';
 import { Services } from '../lib/services';
 import getMoreMessages from '../lib/methods/getMoreMessages';
+import { getMessageById } from '../lib/database/services/Message';
 
 function* watchHistoryRequests() {
 	const requestChan = yield actionChannel(types.ROOM.HISTORY_REQUEST);
 	while (true) {
-		const { rid, t, tmid, loaderItem } = yield take(requestChan);
+		const { rid, t, tmid, loaderId } = yield take(requestChan);
 
-		// Prevents some loader from running twice
-		if (loaderItem?.syncStatus !== 'deleted') {
+		const loaderItem = yield getMessageById(loaderId);
+		if (loaderItem) {
 			try {
 				yield getMoreMessages({ rid, t, tmid, loaderItem });
 			} catch (e) {

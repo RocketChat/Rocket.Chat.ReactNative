@@ -104,18 +104,18 @@ export function roomHistoryRequest({
 	rid,
 	t,
 	tmid,
-	loaderItem
+	loaderId
 }: {
 	rid: string;
 	t: SubscriptionType;
 	tmid?: string;
-	loaderItem: TAnyMessageModel;
+	loaderId: string;
 }): any {
 	return {
 		type: ROOM.HISTORY_REQUEST,
 		rid,
 		t,
 		tmid,
-		loaderItem
+		loaderId
 	};
 }

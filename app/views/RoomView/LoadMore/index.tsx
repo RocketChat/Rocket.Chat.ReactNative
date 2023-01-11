@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { MessageTypeLoad, themes } from '../../../lib/constants';
-import { MessageType, SubscriptionType, TAnyMessageModel } from '../../../definitions';
+import { MessageType, SubscriptionType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import sharedStyles from '../../Styles';
@@ -23,18 +23,17 @@ const styles = StyleSheet.create({
 });
 
 const LoadMore = ({
-	// load,
 	rid,
 	t,
 	tmid,
-	loaderItem,
+	loaderId,
 	type,
 	runOnRender
 }: {
 	rid: string;
 	t: SubscriptionType;
 	tmid?: string;
-	loaderItem: TAnyMessageModel;
+	loaderId: string;
 	type: MessageType;
 	runOnRender: boolean;
 }): React.ReactElement => {
@@ -42,19 +41,18 @@ const LoadMore = ({
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
-	const handleLoad = useCallback(() => {
+	const handleLoad = () => {
 		try {
 			if (loading) {
 				return;
 			}
 			setLoading(true);
-			// await load();
 			// FIXME: add loading item to reducer
-			dispatch(roomHistoryRequest({ rid, t, tmid, loaderItem }));
+			dispatch(roomHistoryRequest({ rid, t, tmid, loaderId }));
 		} finally {
 			setLoading(false);
 		}
-	}, [loading]);
+	};
 
 	useEffect(() => {
 		if (runOnRender) {

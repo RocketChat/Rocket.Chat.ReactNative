@@ -1330,7 +1330,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					rid={room.rid}
 					t={room.t as any}
 					tmid={this.tmid}
-					loaderItem={item} // whole item?
+					loaderId={item.id}
 					type={item.t}
 					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}
 				/>
