@@ -30,7 +30,7 @@ export const ROOM = createRequestTypes('ROOM', [
 	'FORWARD',
 	'USER_TYPING',
 	'HISTORY_REQUEST',
-	'HISTORY_FINISHED' // TODO: I'm not sure about this naming, but I don't see value on handling failure atm
+	'HISTORY_FINISHED'
 ]);
 export const INQUIRY = createRequestTypes('INQUIRY', [
 	...defaultTypes,

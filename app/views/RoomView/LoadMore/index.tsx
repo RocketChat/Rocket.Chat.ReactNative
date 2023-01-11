@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { MessageTypeLoad, themes } from '../../../lib/constants';
-import { MessageType, SubscriptionType } from '../../../definitions';
+import { ERoomType, MessageType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import sharedStyles from '../../Styles';
@@ -27,23 +27,21 @@ const LoadMore = React.memo(
 	({
 		rid,
 		t,
-		tmid,
 		loaderId,
 		type,
 		runOnRender
 	}: {
 		rid: string;
-		t: SubscriptionType;
-		tmid?: string;
+		t: ERoomType;
 		loaderId: string;
 		type: MessageType;
 		runOnRender: boolean;
 	}): React.ReactElement => {
 		const { theme } = useTheme();
 		const dispatch = useDispatch();
-		const loading = useAppSelector(state => state.room.historyLoaders.find(historyLoader => historyLoader === loaderId));
+		const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));
 
-		const handleLoad = () => dispatch(roomHistoryRequest({ rid, t, tmid, loaderId }));
+		const handleLoad = () => dispatch(roomHistoryRequest({ rid, t, loaderId }));
 
 		useEffect(() => {
 			if (runOnRender) {
