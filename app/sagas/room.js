@@ -24,6 +24,8 @@ function* watchHistoryRequests() {
 				yield getMoreMessages({ rid, t, tmid, loaderItem });
 			} catch (e) {
 				log(e);
+			} finally {
+				yield put({ type: types.ROOM.HISTORY_FINISHED, loaderId });
 			}
 		}
 	}

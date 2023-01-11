@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -9,6 +9,7 @@ import Touch from '../../../containers/Touch';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
+import { useAppSelector } from '../../../lib/hooks';
 
 const styles = StyleSheet.create({
 	button: {
@@ -38,21 +39,10 @@ const LoadMore = ({
 	runOnRender: boolean;
 }): React.ReactElement => {
 	const { theme } = useTheme();
-	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
+	const loading = useAppSelector(state => state.room.historyLoaders.find(historyLoader => historyLoader === loaderId));
 
-	const handleLoad = () => {
-		try {
-			if (loading) {
-				return;
-			}
-			setLoading(true);
-			// FIXME: add loading item to reducer
-			dispatch(roomHistoryRequest({ rid, t, tmid, loaderId }));
-		} finally {
-			setLoading(false);
-		}
-	};
+	const handleLoad = () => dispatch(roomHistoryRequest({ rid, t, tmid, loaderId }));
 
 	useEffect(() => {
 		if (runOnRender) {
