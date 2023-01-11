@@ -10,7 +10,7 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';
 import { Services } from '../lib/services';
-import getMoreMessages from '../views/RoomView/services/getMoreMessages';
+import getMoreMessages from '../lib/methods/getMoreMessages';
 
 function* watchHistoryRequests() {
 	const requestChan = yield actionChannel(types.ROOM.HISTORY_REQUEST);

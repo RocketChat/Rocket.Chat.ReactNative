@@ -1301,16 +1301,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return false;
 	};
 
-	onLoadMoreMessages = (loaderItem: TAnyMessageModel) => {
-		const { room } = this.state;
-		return RoomServices.getMoreMessages({
-			rid: room.rid,
-			tmid: this.tmid,
-			t: room.t as any,
-			loaderItem
-		});
-	};
-
 	goToCannedResponses = () => {
 		const { room } = this.state;
 		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
@@ -1337,7 +1327,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			content = (
 				<LoadMore
-					// load={() => this.onLoadMoreMessages(item)}
 					rid={room.rid}
 					t={room.t as any}
 					tmid={this.tmid}
