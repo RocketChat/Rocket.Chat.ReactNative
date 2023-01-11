@@ -12,20 +12,19 @@ import { LISTENER } from '../containers/Toast';
 import { Services } from '../lib/services';
 import getMoreMessages from '../views/RoomView/services/getMoreMessages';
 
-function* handleHistoryRequest({ rid, t, tmid, loaderItem }) {
-	console.log(`starting handle request ${loaderItem.ts}`);
-	// yield delay(10000);
-	yield getMoreMessages({ rid, t, tmid, loaderItem });
-	console.log(`ending handle request ${loaderItem.ts}`);
-}
-
 function* watchHistoryRequests() {
 	const requestChan = yield actionChannel(types.ROOM.HISTORY_REQUEST);
 	while (true) {
 		const { rid, t, tmid, loaderItem } = yield take(requestChan);
-		yield call(handleHistoryRequest, { rid, t, tmid, loaderItem });
 
-		// yield put({ type: types.ROOM.HISTORY.REQUEST, rid, end, t });
+		// Prevents some loader from running twice
+		if (loaderItem?.syncStatus !== 'deleted') {
+			try {
+				yield getMoreMessages({ rid, t, tmid, loaderItem });
+			} catch (e) {
+				log(e);
+			}
+		}
 	}
 }
 
