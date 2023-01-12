@@ -7,10 +7,6 @@ import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
 
-interface IAvatarContainer extends IAvatar {
-	handleEdit?: () => void;
-}
-
 const AvatarContainer = ({
 	style,
 	text = '',
@@ -24,7 +20,7 @@ const AvatarContainer = ({
 	getCustomEmoji,
 	isStatic,
 	rid
-}: IAvatarContainer): React.ReactElement => {
+}: IAvatar): React.ReactElement => {
 	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
 	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
 	const { id, token, username } = useSelector(
