@@ -174,18 +174,18 @@ interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
 	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
+	| TSubscriptionModel
+	| {
+		rid: string;
+		t: string;
+		name?: string;
+		fname?: string;
+		prid?: string;
+		joinCodeRequired?: boolean;
+		status?: string;
+		lastMessage?: ILastMessage;
+		sysMes?: boolean;
+		onHold?: boolean;
 		  };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any;
@@ -388,7 +388,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			// Fire List.query() just to keep observables working
-			if (this.list && this.list.current) {
+			if (this.list && this.list.current && !isIOS) {
 				this.list.current?.query();
 			}
 		}
@@ -1502,7 +1502,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={ref => this.messageActions = ref}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1512,7 +1512,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions ref={ref => this.messageErrorActions = ref} tmid={this.tmid} />
 			</>
 		);
 	};
