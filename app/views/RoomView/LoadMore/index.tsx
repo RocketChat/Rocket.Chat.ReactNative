@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { MessageTypeLoad, themes } from '../../../lib/constants';
+import { MessageTypeLoad } from '../../../lib/constants';
 import { ERoomType, MessageType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
@@ -37,7 +37,7 @@ const LoadMore = React.memo(
 		type: MessageType;
 		runOnRender: boolean;
 	}): React.ReactElement => {
-		const { theme } = useTheme();
+		const { colors } = useTheme();
 		const dispatch = useDispatch();
 		const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));
 
@@ -60,9 +60,9 @@ const LoadMore = React.memo(
 		return (
 			<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
 				{loading ? (
-					<ActivityIndicator color={themes[theme].auxiliaryText} />
+					<ActivityIndicator color={colors.auxiliaryText} />
 				) : (
-					<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
+					<Text style={[styles.text, { color: colors.titleText }]}>{I18n.t(text)}</Text>
 				)}
 			</Touch>
 		);
