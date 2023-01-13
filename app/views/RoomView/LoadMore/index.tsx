@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { MessageTypeLoad } from '../../../lib/constants';
-import { ERoomType, MessageType } from '../../../definitions';
+import { MessageType, RoomType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import sharedStyles from '../../Styles';
@@ -32,7 +32,7 @@ const LoadMore = React.memo(
 		runOnRender
 	}: {
 		rid: string;
-		t: ERoomType;
+		t: RoomType;
 		loaderId: string;
 		type: MessageType;
 		runOnRender: boolean;

@@ -75,7 +75,8 @@ import {
 	TThreadModel,
 	ICustomEmojis,
 	IEmoji,
-	TGetCustomEmoji
+	TGetCustomEmoji,
+	RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 import { TListRef } from './List/List';
@@ -685,7 +686,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
 			} else {
 				const newLastOpen = new Date();
-				await RoomServices.getMessages(room);
+				await RoomServices.getMessages({
+					rid: room.rid,
+					lastOpen: 'lastOpen' in room ? room.lastOpen : undefined,
+					t: room.t as RoomType
+				});
 
 				// if room is joined
 				if (joined && 'id' in room) {
@@ -1328,7 +1333,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			content = (
 				<LoadMore
 					rid={room.rid}
-					t={room.t as any}
+					t={room.t as RoomType}
 					loaderId={item.id}
 					type={item.t}
 					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}

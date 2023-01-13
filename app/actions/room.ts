@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { ERoomType } from '../definitions';
+import { ERoomType, RoomType } from '../definitions';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
@@ -46,7 +46,7 @@ interface IUserTyping extends Action {
 
 export interface IRoomHistoryRequest extends Action {
 	rid: string;
-	t: ERoomType;
+	t: RoomType;
 	loaderId: string;
 }
 
@@ -117,7 +117,7 @@ export function userTyping(rid: string, status = true): IUserTyping {
 	};
 }
 
-export function roomHistoryRequest({ rid, t, loaderId }: { rid: string; t: ERoomType; loaderId: string }): IRoomHistoryRequest {
+export function roomHistoryRequest({ rid, t, loaderId }: { rid: string; t: RoomType; loaderId: string }): IRoomHistoryRequest {
 	return {
 		type: ROOM.HISTORY_REQUEST,
 		rid,

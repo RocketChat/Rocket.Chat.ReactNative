@@ -59,7 +59,7 @@ describe('test room reducer', () => {
 	});
 
 	it('should return historyLoaders with one item after call historyRequest', () => {
-		mockedStore.dispatch(roomHistoryRequest({ rid: 'GENERAL', t: ERoomType.c, loaderId: 'loader' }));
+		mockedStore.dispatch(roomHistoryRequest({ rid: 'GENERAL', t: 'c', loaderId: 'loader' }));
 		const { historyLoaders } = mockedStore.getState().room;
 		expect(historyLoaders).toEqual(['loader']);
 	});
