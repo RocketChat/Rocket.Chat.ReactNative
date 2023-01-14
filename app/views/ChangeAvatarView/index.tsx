@@ -31,7 +31,6 @@ const RESET_ROOM_AVATAR = 'resetRoomAvatar';
 
 const ChangeAvatarView = () => {
 	const [avatar, setAvatarState] = useState<IAvatar | null>(null);
-
 	const [textAvatar, setTextAvatar] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();

@@ -23,7 +23,7 @@ export const useAvatarETag = ({
 	useEffect(() => {
 		let subscription: Subscription;
 		if (!avatarETag) {
-			(async () => {
+			const observeAvatarETag = async () => {
 				const db = database.active;
 				const usersCollection = db.get('users');
 				const subsCollection = db.get('subscriptions');
@@ -46,8 +46,8 @@ export const useAvatarETag = ({
 						setAvatarETag(r.avatarETag);
 					});
 				}
-			})();
-
+			};
+			observeAvatarETag();
 			return () => {
 				if (subscription?.unsubscribe) {
 					subscription.unsubscribe();

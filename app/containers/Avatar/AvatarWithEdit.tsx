@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 
 import Button from '../Button';
 import AvatarContainer from './AvatarContainer';
@@ -6,9 +7,22 @@ import { IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
-import styles from './styles';
 
-interface IAvatarContainer extends IAvatar {
+const styles = StyleSheet.create({
+	editAvatarButton: {
+		marginTop: 8,
+		paddingVertical: 8,
+		paddingHorizontal: 12,
+		marginBottom: 0,
+		height: undefined
+	},
+	textButton: {
+		fontSize: 12,
+		fontWeight: '600'
+	}
+});
+
+interface IAvatarContainer extends Omit<IAvatar, 'size'> {
 	handleEdit?: () => void;
 }
 
@@ -17,7 +31,6 @@ const AvatarWithEdit = ({
 	text = '',
 	avatar,
 	emoji,
-	size,
 	borderRadius,
 	type,
 	children,
@@ -36,7 +49,7 @@ const AvatarWithEdit = ({
 				text={text}
 				avatar={avatar}
 				emoji={emoji}
-				size={size}
+				size={120}
 				borderRadius={borderRadius}
 				type={type}
 				children={children}

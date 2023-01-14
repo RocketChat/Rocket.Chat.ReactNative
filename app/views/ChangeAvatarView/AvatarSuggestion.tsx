@@ -21,21 +21,20 @@ const AvatarSuggestion = ({
 
 	const { colors } = useTheme();
 
-	const getAvatarSuggestion = async () => {
-		const result = await Services.getAvatarSuggestion();
-		const suggestions = Object.keys(result).map(service => {
-			const { url, blob, contentType } = result[service];
-			return {
-				url,
-				data: blob,
-				service,
-				contentType
-			};
-		});
-		setAvatarSuggestions(suggestions);
-	};
-
 	useEffect(() => {
+		const getAvatarSuggestion = async () => {
+			const result = await Services.getAvatarSuggestion();
+			const suggestions = Object.keys(result).map(service => {
+				const { url, blob, contentType } = result[service];
+				return {
+					url,
+					data: blob,
+					service,
+					contentType
+				};
+			});
+			setAvatarSuggestions(suggestions);
+		};
 		getAvatarSuggestion();
 	}, []);
 

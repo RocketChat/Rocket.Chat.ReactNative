@@ -1,15 +1,8 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 import I18n from '../../i18n';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { regExpImageType } from '../../lib/methods/helpers';
-
-const schema = yup.object().shape({
-	avatarUrl: yup.string().url().matches(regExpImageType).required()
-});
 
 interface ISubmit {
 	avatarUrl: string;
@@ -18,18 +11,18 @@ interface ISubmit {
 const AvatarUrl = ({ submit }: { submit: (value: string) => void }) => {
 	const {
 		control,
-		formState: { isValid },
+		formState: { isDirty },
 		getValues
-	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema) });
+	} = useForm<ISubmit>({ mode: 'onChange', defaultValues: { avatarUrl: '' } });
 
 	useEffect(() => {
-		if (isValid) {
+		if (isDirty) {
 			const { avatarUrl } = getValues();
 			submit(avatarUrl);
 		} else {
 			submit('');
 		}
-	}, [isValid]);
+	}, [isDirty]);
 
 	return (
 		<ControlledFormTextInput
