@@ -102,6 +102,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey,
+					E2ESuggestedKey: s.E2ESuggestedKey,
 					avatarETag: s.avatarETag,
 					onHold: s.onHold,
 					hideMentionStatus: s.hideMentionStatus
@@ -165,6 +166,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
 			// Decrypt all pending messages of this room in parallel
 			Encryption.decryptPendingMessages(tmp.rid);
+		} else if (sub && subscription.E2ESuggestedKey) {
+			await Encryption.evaluateSuggestedKey(sub.rid, subscription.E2ESuggestedKey);
 		}
 
 		const batch: Model[] = [];
@@ -319,6 +322,8 @@ export default function subscribeRooms() {
 					await db.write(async () => {
 						await db.batch(sub.prepareDestroyPermanently(), ...messagesToDelete, ...threadsToDelete, ...threadMessagesToDelete);
 					});
+
+					Encryption.stopRoom(data.rid);
 
 					const roomState = store.getState().room;
 					// Delete and remove events come from this stream
