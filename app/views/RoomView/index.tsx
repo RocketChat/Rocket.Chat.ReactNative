@@ -688,8 +688,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const newLastOpen = new Date();
 				await RoomServices.getMessages({
 					rid: room.rid,
-					lastOpen: 'lastOpen' in room ? room.lastOpen : undefined,
-					t: room.t as RoomType
+					t: room.t as RoomType,
+					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
 				});
 
 				// if room is joined
