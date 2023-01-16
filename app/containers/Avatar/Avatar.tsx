@@ -3,7 +3,9 @@ import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
+import { useTheme } from '../../theme';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/Emoji';
@@ -31,15 +33,23 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		externalProviderUrl
 	}: IAvatar) => {
-		if ((!text && !avatar && !emoji && !rid) || !server) {
-			return null;
-		}
+		
+		const { colors } = useTheme();
 
 		const avatarStyle = {
 			width: size,
 			height: size,
+			backgroundColor: colors.bannerBackground,
 			borderRadius
 		};
+
+		if ((!text && !avatar && !emoji && !rid) || !server) {
+			return (
+				<SkeletonPlaceholder>
+					<View style={[avatarStyle, style]} testID='avatar'></View>
+				</SkeletonPlaceholder>
+			);
+		}
 
 		let image;
 		if (emoji) {
