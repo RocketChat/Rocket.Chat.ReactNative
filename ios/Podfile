@@ -35,8 +35,7 @@ def all_pods
 end
 
 abstract_target 'defaults' do
-  # force use our own JitsiMeetSDK
-  pod 'JitsiMeetSDK'
+  pod 'JitsiMeetSDKLite'
 
   all_pods
 

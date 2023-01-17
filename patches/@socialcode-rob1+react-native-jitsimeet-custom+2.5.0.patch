@@ -1,32 +1,5 @@
-diff --git a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet-Bridging-Header.h b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet-Bridging-Header.h
-index 84660e3..5fff35c 100644
---- a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet-Bridging-Header.h
-+++ b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet-Bridging-Header.h
-@@ -1 +1 @@
--#import "React/RCTBridgeModule.h"
-+#import <React/RCTBridgeModule.h>
-diff --git a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet.m b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet.m
-index 2eef51d..9997007 100644
---- a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet.m
-+++ b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeet.m
-@@ -1,4 +1,4 @@
--#import "React/RCTBridgeModule.h"
-+#import <React/RCTBridgeModule.h>
- 
- @interface RCT_EXTERN_MODULE(JitsiMeet, NSObject)
- RCT_EXTERN_METHOD(hangUp)
-diff --git a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeetViewManager.m b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeetViewManager.m
-index 7e80262..e21caac 100644
---- a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeetViewManager.m
-+++ b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/ios/JitsiMeetViewManager.m
-@@ -1,4 +1,4 @@
--#import "React/RCTViewManager.h"
-+#import <React/RCTViewManager.h>
- 
- @interface RCT_EXTERN_MODULE(JitsiMeetViewManager, RCTViewManager)
-   RCT_EXPORT_VIEW_PROPERTY(options, NSDictionary)
 diff --git a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec
-index 80a584b..3499cb6 100644
+index 80a584b..5b2f71c 100644
 --- a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec
 +++ b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec
 @@ -16,5 +16,5 @@ Pod::Spec.new do |s|
@@ -34,5 +7,5 @@ index 80a584b..3499cb6 100644
  
    s.dependency "React-Core"
 -  s.dependency 'JitsiMeetSDK', '6.2.2'
-+  s.dependency 'JitsiMeetSDK', '7.0.1'
++  s.dependency 'JitsiMeetSDKLite', '7.0.1-lite'
  end

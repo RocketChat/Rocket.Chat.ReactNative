@@ -75,8 +75,6 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
   - fmt (6.2.1)
-  - Giphy (2.1.20):
-    - libwebp
   - glog (0.3.5)
   - GoogleAppMeasurement/WithoutAdIdSupport (8.15.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -109,8 +107,7 @@ PODS:
     - GoogleUtilities/Logger
   - hermes-engine (0.11.0)
   - iosMath (0.9.4)
-  - JitsiMeetSDK (7.0.1):
-    - Giphy (= 2.1.20)
+  - JitsiMeetSDKLite (7.0.1-lite):
     - JitsiWebRTC (~> 106.0)
   - JitsiWebRTC (106.0.0)
   - KeyCommands (2.0.3):
@@ -370,7 +367,7 @@ PODS:
   - react-native-document-picker (8.1.2):
     - React-Core
   - react-native-jitsimeet-custom (2.5.0):
-    - JitsiMeetSDK (= 7.0.1)
+    - JitsiMeetSDKLite (= 7.0.1-lite)
     - React-Core
   - react-native-mmkv-storage (0.8.0):
     - MMKV (= 1.2.13)
@@ -610,7 +607,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (~> 0.11.0)
-  - JitsiMeetSDK
+  - JitsiMeetSDKLite
   - KeyCommands (from `../node_modules/react-native-keycommands`)
   - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -695,13 +692,12 @@ SPEC REPOS:
     - FirebaseCrashlytics
     - FirebaseInstallations
     - fmt
-    - Giphy
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
     - hermes-engine
     - iosMath
-    - JitsiMeetSDK
+    - JitsiMeetSDKLite
     - JitsiWebRTC
     - libevent
     - libwebp
@@ -916,14 +912,13 @@ SPEC CHECKSUMS:
   FirebaseCrashlytics: feb07e4e9187be3c23c6a846cce4824e5ce2dd0b
   FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  Giphy: b6d5087521d251bb8c99cdc0eb07bbdf86d142d5
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   GoogleAppMeasurement: 4c19f031220c72464d460c9daa1fb5d1acce958e
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   hermes-engine: 84e3af1ea01dd7351ac5d8689cbbea1f9903ffc3
   iosMath: f7a6cbadf9d836d2149c2a84c435b1effc244cba
-  JitsiMeetSDK: 3a8798edb12e401237a0d74ce863a3227ca5d681
+  JitsiMeetSDKLite: d59573336ce887ec52327a9927aa8443f560d0b9
   JitsiWebRTC: f441eb0e2d67f0588bf24e21c5162e97342714fb
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -952,7 +947,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
-  react-native-jitsimeet-custom: 0a26de275932440ea7f87fcf1285b20ce2a9ff32
+  react-native-jitsimeet-custom: a57ca376bfc1c69f639b138f2de2a10e0ed42c04
   react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: 83b4fd4a127a6c918fc846cae90da60f84819e44
@@ -1007,6 +1002,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
-PODFILE CHECKSUM: d508af1807958bc345fc68dc6bc58616c156757a
+PODFILE CHECKSUM: 3f8e7d68a70cfe4d4d54fe67bd7abcceba85c82e
 
 COCOAPODS: 1.11.3
