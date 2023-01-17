@@ -36,7 +36,7 @@ end
 
 abstract_target 'defaults' do
   # force use our own JitsiMeetSDK
-  pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git'
+  pod 'JitsiMeetSDK'
 
   all_pods
 
@@ -52,6 +52,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
       case target.name
       when 'RCT-Folly'
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
