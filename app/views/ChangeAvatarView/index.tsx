@@ -22,9 +22,9 @@ import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IAvatar } from '../../definitions';
-import { Services } from '../../lib/services';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
+import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitHelpers';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -110,13 +110,13 @@ const ChangeAvatarView = () => {
 			setSaving(true);
 			if (context === 'room' && room?.rid) {
 				// Change Rooms Avatar
-				await changeRoomsAvatar(room.rid);
+				await changeRoomsAvatar(room.rid, state?.data);
 			} else if (state?.url) {
 				// Change User's Avatar
 				await changeUserAvatar(state);
 			} else if (state.resetUserAvatar) {
 				// Change User's Avatar
-				await resetUserAvatar();
+				await resetUserAvatar(userId);
 			}
 			isDirty.current = false;
 		} catch (e: any) {
@@ -126,44 +126,6 @@ const ChangeAvatarView = () => {
 			setSaving(false);
 		}
 		return navigation.goBack();
-	};
-
-	const changeRoomsAvatar = async (rid: string) => {
-		try {
-			await Services.saveRoomSettings(rid, { roomAvatar: state?.data });
-		} catch (e) {
-			log(e);
-			return handleError(e, 'changing_avatar');
-		}
-	};
-
-	const changeUserAvatar = async (avatarUpload: IAvatar) => {
-		try {
-			await Services.setAvatarFromService(avatarUpload);
-		} catch (e) {
-			return handleError(e, 'changing_avatar');
-		}
-	};
-
-	const resetUserAvatar = async () => {
-		try {
-			await Services.resetAvatar(userId);
-		} catch (e) {
-			return handleError(e, 'changing_avatar');
-		}
-	};
-
-	const handleError = (e: any, action: string) => {
-		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
-			throw new Error(e.data.error);
-		}
-		if (e.error && e.error === 'error-avatar-invalid-url') {
-			throw new Error(I18n.t(e.error, { url: e.details.url }));
-		}
-		if (I18n.isTranslated(e.error)) {
-			throw new Error(I18n.t(e.error));
-		}
-		throw new Error(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	};
 
 	const pickImage = async () => {
@@ -240,7 +202,6 @@ const ChangeAvatarView = () => {
 							}
 						/>
 					) : null}
-
 					<Button
 						title={I18n.t('Upload_image')}
 						type='secondary'
