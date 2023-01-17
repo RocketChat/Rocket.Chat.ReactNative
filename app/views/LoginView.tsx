@@ -15,6 +15,7 @@ import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import sharedStyles from './Styles';
+import UGCRules from '../containers/UserGeneratedContentRules';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -206,6 +207,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						fontSize={14}
 					/>
 				)}
+				<UGCRules />
 				{this.showRegistrationButton ? (
 					<View style={styles.bottomContainer}>
 						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
