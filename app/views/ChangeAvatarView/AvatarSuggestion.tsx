@@ -13,7 +13,7 @@ const AvatarSuggestion = ({
 	username,
 	resetAvatar
 }: {
-	onPress: (value: IAvatar | null) => void;
+	onPress: (value: IAvatar) => void;
 	username?: string;
 	resetAvatar?: () => void;
 }) => {

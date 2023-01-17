@@ -423,8 +423,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<AvatarWithEdit
 								text={user.username}
-								avatarETag={user.avatarETag}
-								size={100}
 								handleEdit={Accounts_AllowUserAvatarChange ? this.handleEditAvatar : undefined}
 							/>
 						</View>

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -27,11 +27,42 @@ import { Services } from '../../lib/services';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 
-const RESET_ROOM_AVATAR = 'resetRoomAvatar';
+enum AvatarStateActions {
+	CHANGE_AVATAR = 'CHANGE_AVATAR',
+	RESET_USER_AVATAR = 'RESET_USER_AVATAR',
+	RESET_ROOM_AVATAR = 'RESET_ROOM_AVATAR'
+}
+
+interface IReducerAction {
+	type: AvatarStateActions;
+	payload?: Partial<IState>;
+}
+
+interface IState extends IAvatar {
+	resetUserAvatar: string;
+}
+
+const initialState = {
+	data: '',
+	url: '',
+	contentType: '',
+	service: '',
+	resetUserAvatar: ''
+};
+
+function reducer(state: IState, action: IReducerAction) {
+	const { type, payload } = action;
+	if (type in AvatarStateActions) {
+		return {
+			...initialState,
+			...payload
+		};
+	}
+	return state;
+}
 
 const ChangeAvatarView = () => {
-	const [avatar, setAvatarState] = useState<IAvatar | null>(null);
-	const [textAvatar, setTextAvatar] = useState('');
+	const [state, dispatch] = useReducer(reducer, initialState);
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
 	const { userId, username, serverVersion } = useAppSelector(
@@ -42,9 +73,7 @@ const ChangeAvatarView = () => {
 		}),
 		shallowEqual
 	);
-
-	const avatarUrl = useRef<string>('');
-
+	const isDirty = useRef<boolean>(false);
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 
@@ -56,7 +85,7 @@ const ChangeAvatarView = () => {
 
 	useEffect(() => {
 		navigation.addListener('beforeRemove', e => {
-			if (!avatarUrl.current) {
+			if (!isDirty.current) {
 				return;
 			}
 
@@ -73,85 +102,74 @@ const ChangeAvatarView = () => {
 		});
 	}, [navigation]);
 
-	const setAvatar = (value: IAvatar | null) => {
-		avatarUrl.current = value?.url || '';
-		setAvatarState(value);
+	const dispatchAvatar = (action: IReducerAction) => {
+		isDirty.current = true;
+		dispatch(action);
 	};
 
 	const submit = async () => {
-		let result;
-		if (context === 'room' && room?.rid) {
-			// Change Rooms Avatar
-			result = await changeRoomsAvatar(room.rid);
-		} else if (avatar?.url) {
-			// Change User's Avatar
-			result = await changeUserAvatar(avatar);
-		} else if (textAvatar) {
-			// Change User's Avatar
-			result = await resetUserAvatar();
-		}
-		if (result) {
+		try {
+			setSaving(true);
+			console.log('🚀 ~ file: index.tsx:117 ~ submit ~ state', state);
+			if (context === 'room' && room?.rid) {
+				// Change Rooms Avatar
+				await changeRoomsAvatar(room.rid);
+			} else if (state?.url) {
+				// Change User's Avatar
+				await changeUserAvatar(state);
+			} else if (state.resetUserAvatar) {
+				// Change User's Avatar
+				await resetUserAvatar();
+			}
+			isDirty.current = false;
+		} catch (e: any) {
+			log(e);
+			return showErrorAlert(e.message, I18n.t('Oops'));
+		} finally {
 			setSaving(false);
-			avatarUrl.current = '';
-			return navigation.goBack();
 		}
+		return navigation.goBack();
 	};
 
 	const changeRoomsAvatar = async (rid: string) => {
 		try {
-			setSaving(true);
-			await Services.saveRoomSettings(rid, { roomAvatar: avatar?.data });
-			return true;
+			console.log('🚀 ~ file: index.tsx:135 ~ changeRoomsAvatar ~ rid', rid, state);
+			await Services.saveRoomSettings(rid, { roomAvatar: state?.data });
 		} catch (e) {
 			log(e);
-			setSaving(false);
-			return handleError(e, 'saveRoomSettings', 'changing_avatar');
+			return handleError(e, 'changing_avatar');
 		}
 	};
 
 	const changeUserAvatar = async (avatarUpload: IAvatar) => {
 		try {
-			setSaving(true);
+			console.log('🚀 ~ file: index.tsx:144 ~ changeUserAvatar ~ avatarUpload', avatarUpload);
 			await Services.setAvatarFromService(avatarUpload);
-			return true;
 		} catch (e) {
-			log(e);
-			setSaving(false);
-			return handleError(e, 'resetAvatar', 'changing_avatar');
+			return handleError(e, 'changing_avatar');
 		}
 	};
 
 	const resetUserAvatar = async () => {
 		try {
+			console.log('🚀 ~ file: index.tsx:154 ~ resetUserAvatar ~ userId', userId);
 			await Services.resetAvatar(userId);
-			return true;
 		} catch (e) {
-			return handleError(e, 'setAvatarFromService', 'changing_avatar');
+			return handleError(e, 'changing_avatar');
 		}
 	};
 
-	const handleError = (e: any, _func: string, action: string) => {
+	const handleError = (e: any, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
-			return showErrorAlert(e.data.error);
+			throw new Error(e.data.error);
 		}
 		if (e.error && e.error === 'error-avatar-invalid-url') {
-			return showErrorAlert(I18n.t(e.error, { url: e.details.url }));
+			throw new Error(I18n.t(e.error, { url: e.details.url }));
 		}
 		if (I18n.isTranslated(e.error)) {
-			return showErrorAlert(I18n.t(e.error));
+			throw new Error(I18n.t(e.error));
 		}
-		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-	};
-
-	const resetAvatar = () => {
-		setAvatar(null);
-		setTextAvatar(`@${username}`);
-		avatarUrl.current = `@${username}`;
-	};
-
-	const resetRoomAvatar = () => {
-		setAvatar({ data: null });
-		avatarUrl.current = RESET_ROOM_AVATAR;
+		throw new Error(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	};
 
 	const pickImage = async () => {
@@ -166,13 +184,16 @@ const ChangeAvatarView = () => {
 		};
 		try {
 			const response: Image = await ImagePicker.openPicker(options);
-			setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
+			dispatchAvatar({
+				type: AvatarStateActions.CHANGE_AVATAR,
+				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
+			});
 		} catch (error) {
 			log(error);
 		}
 	};
 
-	const ridProps = avatarUrl.current !== RESET_ROOM_AVATAR ? { rid: room?.rid } : {};
+	const deletingRoomAvatar = context === 'room' && state.data === null ? {} : { rid: room?.rid };
 
 	return (
 		<KeyboardView
@@ -189,17 +210,42 @@ const ChangeAvatarView = () => {
 				>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
 						<Avatar
-							text={room?.name || textAvatar || username}
-							avatar={avatar?.url}
-							isStatic={avatar?.url}
-							size={100}
+							text={room?.name || state.resetUserAvatar || username}
+							avatar={state?.url}
+							isStatic={state?.url}
+							size={120}
 							type={t}
-							{...ridProps}
+							{...deletingRoomAvatar}
 						/>
 					</View>
-					{context === 'profile' ? <AvatarUrl submit={value => setAvatar({ url: value, data: value, service: 'url' })} /> : null}
+					{context === 'profile' ? (
+						<AvatarUrl
+							submit={value =>
+								dispatchAvatar({
+									type: AvatarStateActions.CHANGE_AVATAR,
+									payload: { url: value, data: value, service: 'url' }
+								})
+							}
+						/>
+					) : null}
 					<List.Separator style={styles.separator} />
-					{context === 'profile' ? <AvatarSuggestion resetAvatar={resetAvatar} username={username} onPress={setAvatar} /> : null}
+					{context === 'profile' ? (
+						<AvatarSuggestion
+							resetAvatar={() =>
+								dispatchAvatar({
+									type: AvatarStateActions.RESET_USER_AVATAR,
+									payload: { resetUserAvatar: `@${username}` }
+								})
+							}
+							username={username}
+							onPress={value =>
+								dispatchAvatar({
+									type: AvatarStateActions.CHANGE_AVATAR,
+									payload: value
+								})
+							}
+						/>
+					) : null}
 
 					<Button
 						title={I18n.t('Upload_image')}
@@ -215,13 +261,13 @@ const ChangeAvatarView = () => {
 							type='primary'
 							disabled={saving}
 							backgroundColor={colors.dangerColor}
-							onPress={resetRoomAvatar}
+							onPress={() => dispatchAvatar({ type: AvatarStateActions.RESET_ROOM_AVATAR, payload: { data: null } })}
 							testID='change-avatar-view-delete-my-account'
 						/>
 					) : null}
 					<Button
 						title={I18n.t('Save')}
-						disabled={!avatarUrl.current || saving}
+						disabled={!isDirty.current || saving}
 						type='primary'
 						loading={saving}
 						onPress={submit}
