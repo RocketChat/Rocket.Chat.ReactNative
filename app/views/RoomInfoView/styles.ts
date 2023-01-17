@@ -21,7 +21,8 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 20,
-		paddingVertical: 8
+		paddingBottom: 8,
+		paddingTop: 32
 	},
 	avatar: {
 		marginHorizontal: 10

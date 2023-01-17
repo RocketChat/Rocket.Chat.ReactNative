@@ -7,6 +7,8 @@ import { IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
+import { useAppSelector } from '../../lib/hooks';
+import { compareServerVersion } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	editAvatarButton: {
@@ -42,6 +44,10 @@ const AvatarWithEdit = ({
 }: IAvatarContainer): React.ReactElement => {
 	const { colors } = useTheme();
 
+	const { serverVersion } = useAppSelector(state => ({
+		serverVersion: state.server.version
+	}));
+
 	return (
 		<>
 			<AvatarContainer
@@ -58,7 +64,7 @@ const AvatarWithEdit = ({
 				isStatic={isStatic}
 				rid={rid}
 			/>
-			{handleEdit ? (
+			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
 					title={I18n.t('Edit')}
 					type='secondary'

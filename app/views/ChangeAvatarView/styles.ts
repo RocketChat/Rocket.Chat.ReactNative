@@ -6,7 +6,7 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 32
+		marginBottom: 24
 	},
 	separator: {
 		marginVertical: 16

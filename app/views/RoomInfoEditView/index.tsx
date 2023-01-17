@@ -527,7 +527,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						{...scrollPersistTaps}
 					>
 						<View style={styles.avatarContainer}>
-							<AvatarWithEdit type={room.t} text={room.name} rid={room.rid} size={100} handleEdit={this.handleEditAvatar} />
+							<AvatarWithEdit type={room.t} text={room.name} rid={room.rid} handleEdit={this.handleEditAvatar} />
 						</View>
 						<FormTextInput
 							inputRef={e => {

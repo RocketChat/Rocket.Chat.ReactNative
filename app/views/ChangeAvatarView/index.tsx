@@ -5,7 +5,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { shallowEqual } from 'react-redux';
 
-import { compareServerVersion } from '../../lib/methods/helpers';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -65,11 +64,10 @@ const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
-	const { userId, username, serverVersion } = useAppSelector(
+	const { userId, username } = useAppSelector(
 		state => ({
 			userId: getUserSelector(state).id,
-			username: getUserSelector(state).username,
-			serverVersion: state.server.version
+			username: getUserSelector(state).username
 		}),
 		shallowEqual
 	);
@@ -110,7 +108,6 @@ const ChangeAvatarView = () => {
 	const submit = async () => {
 		try {
 			setSaving(true);
-			console.log('🚀 ~ file: index.tsx:117 ~ submit ~ state', state);
 			if (context === 'room' && room?.rid) {
 				// Change Rooms Avatar
 				await changeRoomsAvatar(room.rid);
@@ -133,7 +130,6 @@ const ChangeAvatarView = () => {
 
 	const changeRoomsAvatar = async (rid: string) => {
 		try {
-			console.log('🚀 ~ file: index.tsx:135 ~ changeRoomsAvatar ~ rid', rid, state);
 			await Services.saveRoomSettings(rid, { roomAvatar: state?.data });
 		} catch (e) {
 			log(e);
@@ -143,7 +139,6 @@ const ChangeAvatarView = () => {
 
 	const changeUserAvatar = async (avatarUpload: IAvatar) => {
 		try {
-			console.log('🚀 ~ file: index.tsx:144 ~ changeUserAvatar ~ avatarUpload', avatarUpload);
 			await Services.setAvatarFromService(avatarUpload);
 		} catch (e) {
 			return handleError(e, 'changing_avatar');
@@ -152,7 +147,6 @@ const ChangeAvatarView = () => {
 
 	const resetUserAvatar = async () => {
 		try {
-			console.log('🚀 ~ file: index.tsx:154 ~ resetUserAvatar ~ userId', userId);
 			await Services.resetAvatar(userId);
 		} catch (e) {
 			return handleError(e, 'changing_avatar');
@@ -255,7 +249,7 @@ const ChangeAvatarView = () => {
 						onPress={pickImage}
 						testID='change-avatar-view-logout-other-locations'
 					/>
-					{context === 'room' && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
+					{context === 'room' ? (
 						<Button
 							title={I18n.t('Delete_image')}
 							type='primary'

@@ -416,7 +416,6 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				text={room.name || roomUser.username}
 				style={styles.avatar}
 				type={this.t}
-				size={100}
 				rid={room?.rid}
 				handleEdit={showAvatarEdit ? this.handleEditAvatar : undefined}
 			>
