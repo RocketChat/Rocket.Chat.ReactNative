@@ -1,3 +1,5 @@
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
 import JitsiMeet from '@socialcode-rob1/react-native-jitsimeet-custom';
 import React, { useEffect } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
