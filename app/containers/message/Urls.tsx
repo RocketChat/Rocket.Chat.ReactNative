@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
@@ -14,7 +14,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
-import { isImage, isValidURL } from '../../lib/methods/helpers';
+import { isImageURL } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	button: {
@@ -103,6 +103,18 @@ const UrlContent = React.memo(
 
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
+		const [isImageUrlFromParamUrl, setIsImageUrlFromParamUrl] = useState(false);
+
+		useEffect(() => {
+			if (!url.image && url.url) {
+				const testImageUrl = async () => {
+					const result = await isImageURL(url.url);
+					setIsImageUrlFromParamUrl(result);
+				};
+				testImageUrl();
+			}
+		}, []);
+
 		if (!url || url?.ignoreParse) {
 			return null;
 		}
@@ -114,12 +126,13 @@ const Url = React.memo(
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		};
 
-		let imageUrl;
+		let imageUrl = '';
 
 		if (url.image) {
 			imageUrl = url.image;
-		} else {
-			imageUrl = isImage(url.url) && isValidURL(url.url) ? url.url : '';
+		}
+		if (isImageUrlFromParamUrl) {
+			imageUrl = url.url;
 		}
 
 		const hasContent = !!url.title || !!url.description;

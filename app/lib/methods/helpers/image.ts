@@ -1,6 +1,10 @@
-// Fast Image can't render a svg image from a uri yet, because of that we aren't test the svg within the RegEx
-const regExpUrlImage = new RegExp(
-	'.(jpg|jpeg|png|webp|avif|gif)' + // type of the URL
-		'(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-);
-export const isImage = (url: string) => regExpUrlImage.test(url);
+import { Image } from 'react-native';
+
+export const isImageURL = async (url: string) => {
+	try {
+		const result = await Image.prefetch(url);
+		return result;
+	} catch {
+		return false;
+	}
+};
