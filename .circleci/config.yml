@@ -118,26 +118,26 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
-              echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > ./app/$KEYSTORE_OFFICIAL
+              echo $KEYSTORE_OFFICIAL_BASE64 | base64 --decode > ./app/$KEYSTORE_OFFICIAL
               echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
-              echo -e "KEYSTORE_PASSWORD=$CHAT_ROCKET_ANDROID_STORE_PASSWORD" >> ./gradle.properties
-              echo -e "KEY_ALIAS=$CHAT_ROCKET_ANDROID_KEY_ALIAS" >> ./gradle.properties
-              echo -e "KEY_PASSWORD=$CHAT_ROCKET_ANDROID_KEY_PASSWORD" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEYSTORE_OFFICIAL_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
             else
               echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
-              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
-              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
-              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
-              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
-              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
+              echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEYSTORE_EXPERIMENTAL_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
             fi
           working_directory: android
 
       - run:
           name: Set Google Services
           command: |
-            if [[ $KEYSTORE ]]; then
+            if [[ $GOOGLE_SERVICES_ANDROID ]]; then
               echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
             fi
           working_directory: android/app
@@ -151,7 +151,7 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
-            if [[ ! $KEYSTORE ]]; then
+            if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
               ./gradlew assembleExperimentalPlayDebug
             fi
           working_directory: android
@@ -200,8 +200,12 @@ commands:
       - run:
           name: Set Google Services
           command: |
-            if [[ $KEYSTORE ]]; then
-              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+                echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+              else 
+                echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
+              fi
             fi
           working_directory: ios
       - run:
@@ -223,12 +227,12 @@ commands:
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
             fi
 
-            if [[ $APP_STORE_CONNECT_API_BASE64 ]]; then
-              echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
                 bundle exec fastlane ios build_official
               else
-                if [[ $KEYSTORE ]]; then
+                if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
                   bundle exec fastlane ios build_experimental
                 else
                   bundle exec fastlane ios build_fork
@@ -318,7 +322,7 @@ commands:
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
             bundle exec fastlane ios beta official:<< parameters.official >>
           working_directory: ios
       - save_cache: *save-gems-cache
