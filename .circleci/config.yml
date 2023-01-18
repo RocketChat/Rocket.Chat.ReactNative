@@ -201,7 +201,11 @@ commands:
           name: Set Google Services
           command: |
             if [[ $KEYSTORE ]]; then
-              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+                echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+              else 
+                echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
+              fi
             fi
           working_directory: ios
       - run:
