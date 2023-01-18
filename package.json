@@ -81,7 +81,7 @@
 		"prop-types": "15.7.2",
 		"react": "17.0.2",
 		"react-hook-form": "^7.34.2",
-		"react-native": "RocketChat/react-native#fix.request-challenges",
+		"react-native": "RocketChat/react-native#281140d2e39d66a8e486db397ce0bf5bd0e334fc",
 		"react-native-animatable": "^1.3.3",
 		"react-native-background-timer": "2.4.1",
 		"react-native-bootsplash": "^4.3.3",
