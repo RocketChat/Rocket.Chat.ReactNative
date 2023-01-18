@@ -137,7 +137,7 @@ commands:
       - run:
           name: Set Google Services
           command: |
-            if [[ $KEYSTORE ]]; then
+            if [[ $GOOGLE_SERVICES_ANDROID ]]; then
               echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
             fi
           working_directory: android/app
@@ -151,7 +151,7 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
-            if [[ ! $KEYSTORE ]]; then
+            if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
               ./gradlew assembleExperimentalPlayDebug
             fi
           working_directory: android
@@ -200,12 +200,12 @@ commands:
       - run:
           name: Set Google Services
           command: |
-            if [[ $KEYSTORE ]]; then
-              # if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
                 echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
-              # else 
-              #   echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
-              # fi
+              else 
+                echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
+              fi
             fi
           working_directory: ios
       - run:
@@ -232,7 +232,7 @@ commands:
               if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
                 bundle exec fastlane ios build_official
               else
-                if [[ $KEYSTORE ]]; then
+                if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
                   bundle exec fastlane ios build_experimental
                 else
                   bundle exec fastlane ios build_fork
