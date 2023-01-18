@@ -254,7 +254,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
-			this.handleError(e, 'saveUserProfile', 'saving_profile');
+			this.handleError(e, 'saving_profile');
 		}
 	};
 
@@ -271,11 +271,11 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
 			this.init();
 		} catch (e) {
-			this.handleError(e, 'resetAvatar', 'changing_avatar');
+			this.handleError(e, 'changing_avatar');
 		}
 	};
 
-	handleError = (e: any, _func: string, action: string) => {
+	handleError = (e: any, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}

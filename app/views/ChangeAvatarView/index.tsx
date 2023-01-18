@@ -17,6 +17,7 @@ import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from '../../containers/Avatar';
+import AvatarPresentational from '../../containers/Avatar/Avatar';
 import AvatarUrl from './AvatarUrl';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
@@ -24,7 +25,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
-import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitHelpers';
+import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -64,10 +65,11 @@ const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
-	const { userId, username } = useAppSelector(
+	const { userId, username, server } = useAppSelector(
 		state => ({
 			userId: getUserSelector(state).id,
-			username: getUserSelector(state).username
+			username: getUserSelector(state).username,
+			server: state.server.server
 		}),
 		shallowEqual
 	);
@@ -149,7 +151,7 @@ const ChangeAvatarView = () => {
 		}
 	};
 
-	const deletingRoomAvatar = context === 'room' && state.data === null ? {} : { rid: room?.rid };
+	const deletingRoomAvatar = context === 'room' && state.data === null;
 
 	return (
 		<KeyboardView
@@ -165,14 +167,25 @@ const ChangeAvatarView = () => {
 					{...scrollPersistTaps}
 				>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
-						<Avatar
-							text={room?.name || state.resetUserAvatar || username}
-							avatar={state?.url}
-							isStatic={state?.url}
-							size={120}
-							type={t}
-							{...deletingRoomAvatar}
-						/>
+						{deletingRoomAvatar ? (
+							<AvatarPresentational
+								text={room?.name || state.resetUserAvatar || username}
+								avatar={state?.url}
+								isStatic={state?.url}
+								size={120}
+								type={t}
+								server={server}
+							/>
+						) : (
+							<Avatar
+								text={room?.name || state.resetUserAvatar || username}
+								avatar={state?.url}
+								isStatic={state?.url}
+								size={120}
+								type={t}
+								rid={room?.rid}
+							/>
+						)}
 					</View>
 					{context === 'profile' ? (
 						<AvatarUrl

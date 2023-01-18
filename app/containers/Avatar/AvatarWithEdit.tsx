@@ -9,6 +9,7 @@ import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import { useAppSelector } from '../../lib/hooks';
 import { compareServerVersion } from '../../lib/methods/helpers';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	editAvatarButton: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 	},
 	textButton: {
 		fontSize: 12,
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	}
 });
 
@@ -72,7 +73,7 @@ const AvatarWithEdit = ({
 					onPress={handleEdit}
 					testID='avatar-edit-button'
 					style={styles.editAvatarButton}
-					styleText={[styles.textButton]}
+					styleText={styles.textButton}
 					color={colors.titleText}
 					hitSlop={BUTTON_HIT_SLOP}
 				/>
