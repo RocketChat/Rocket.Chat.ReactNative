@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
 	},
 	bottomContainer: {
 		flexDirection: 'column',
-		alignItems: 'center',
-		marginBottom: 32
+		alignItems: 'center'
 	},
 	bottomContainerText: {
 		...sharedStyles.textRegular,
@@ -45,6 +44,9 @@ const styles = StyleSheet.create({
 	},
 	loginButton: {
 		marginTop: 16
+	},
+	ugcContainer: {
+		marginTop: 32
 	}
 });
 
@@ -207,7 +209,6 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						fontSize={14}
 					/>
 				)}
-				<UGCRules />
 				{this.showRegistrationButton ? (
 					<View style={styles.bottomContainer}>
 						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
@@ -226,6 +227,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
 				)}
+				<UGCRules styleContainer={styles.ugcContainer} />
 			</>
 		);
 	};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ViewStyle } from 'react-native';
 
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UGCRules = () => {
+const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	const { colors, theme } = useTheme();
 	const { server } = useAppSelector(state => ({
 		server: state.server.server
@@ -37,7 +37,7 @@ const UGCRules = () => {
 		openLink(`${server}/${route}`, theme);
 	};
 	return (
-		<View style={styles.bottomContainer}>
+		<View style={[styles.bottomContainer, styleContainer]}>
 			<Text style={[styles.bottomContainerText, { color: colors.auxiliaryText }]}>
 				{`${I18n.t('Onboarding_agree_terms')}\n`}
 				<Text
