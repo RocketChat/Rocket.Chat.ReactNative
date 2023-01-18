@@ -34,7 +34,7 @@ const SelectedUsersView = () => {
 	const [chats, setChats] = useState<ISelectedUser[]>([]);
 	const [search, setSearch] = useState<TSearch[]>([]);
 
-	const { maxUsers, showButton, title, buttonText, nextAction } = useRoute<TRoute>().params;
+	const { maxUsers, showButton, title, buttonText, showSkipText = true, nextAction } = useRoute<TRoute>().params;
 	const navigation = useNavigation<TNavigation>();
 
 	const { colors } = useTheme();
@@ -58,20 +58,25 @@ const SelectedUsersView = () => {
 
 	const isGroupChat = () => maxUsers && maxUsers > 2;
 
+	const handleButtonTitle = (buttonTextHeader: string) => {
+		if (users.length > 0) {
+			return buttonTextHeader;
+		}
+		return showSkipText ? I18n.t('Skip') : '';
+	};
+
 	useLayoutEffect(() => {
 		const titleHeader = title ?? I18n.t('Select_Members');
 		const buttonTextHeader = buttonText ?? I18n.t('Next');
 		const nextActionHeader = nextAction ?? (() => {});
+		const buttonTitle = handleButtonTitle(buttonTextHeader);
 		const options = {
 			title: titleHeader,
 			headerRight: () =>
-				(!maxUsers || showButton || (isGroupChat() && users.length > 1)) && (
+				(!maxUsers || showButton || (isGroupChat() && users.length > 1)) &&
+				!!buttonTitle && (
 					<HeaderButton.Container>
-						<HeaderButton.Item
-							title={users.length > 0 ? buttonTextHeader : I18n.t('Skip')}
-							onPress={nextActionHeader}
-							testID='selected-users-view-submit'
-						/>
+						<HeaderButton.Item title={buttonTitle} onPress={nextActionHeader} testID='selected-users-view-submit' />
 					</HeaderButton.Container>
 				)
 		};
