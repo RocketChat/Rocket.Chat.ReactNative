@@ -1,23 +1,22 @@
-import { loadMessagesForRoom, loadMissedMessages } from '../../../lib/methods';
+import { loadMessagesForRoom, loadMissedMessages, RoomTypes } from '../../../lib/methods';
 
-// TODO: clarify latest vs lastOpen
-const getMessages = ({
-	rid,
-	t,
-	latest,
-	lastOpen,
-	loaderItem
-}: {
+interface IBaseParams {
 	rid: string;
-	t?: string;
-	latest?: Date;
-	lastOpen?: Date;
-	loaderItem?: any; // TODO: type this
-}): Promise<void> => {
-	if (lastOpen) {
-		return loadMissedMessages({ rid, lastOpen });
+}
+
+interface ILoadMessagesForRoomParams extends IBaseParams {
+	t: RoomTypes;
+}
+
+interface ILoadMissedMessagesParams extends IBaseParams {
+	lastOpen: Date;
+}
+
+const getMessages = (params: ILoadMissedMessagesParams | ILoadMessagesForRoomParams): Promise<void> => {
+	if ('lastOpen' in params) {
+		return loadMissedMessages(params);
 	}
-	return loadMessagesForRoom({ rid, t: t as any, latest, loaderItem });
+	return loadMessagesForRoom(params);
 };
 
 export default getMessages;
