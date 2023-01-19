@@ -35,7 +35,6 @@ def all_pods
 end
 
 abstract_target 'defaults' do
-  pod 'JitsiMeetSDKLite'
 
   all_pods
 

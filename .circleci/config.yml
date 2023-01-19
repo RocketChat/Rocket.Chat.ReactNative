@@ -3,7 +3,7 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "13.3.0"
+    xcode: "14.2.0"
   resource_class: large
 
 bash-env: &bash-env
