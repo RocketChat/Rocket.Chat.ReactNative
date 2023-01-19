@@ -32,8 +32,9 @@ describe('InApp Notification', () => {
 				.withTimeout(2000);
 			await sleep(500);
 			await element(by.id(`in-app-notification-${text}`)).tap();
-			await sleep(500);
-			await expect(element(by.id('room-header'))).toExist();
+			await waitFor(element(by.id('room-view')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await expect(element(by.id(`room-view-title-${data.users.alternate.username}`))).toExist();
 		});
 	});

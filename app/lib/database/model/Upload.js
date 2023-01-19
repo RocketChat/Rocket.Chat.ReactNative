@@ -16,6 +16,8 @@ export default class Upload extends Model {
 
 	@field('name') name;
 
+	@field('tmid') tmid;
+
 	@field('description') description;
 
 	@field('size') size;

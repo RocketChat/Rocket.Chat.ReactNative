@@ -285,6 +285,9 @@ export type InsideStackParamList = {
 		text: string;
 		room: TSubscriptionModel;
 		thread: TThreadModel;
+		replying?: boolean;
+		replyingMessage?: IMessage;
+		closeReply?: Function;
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
