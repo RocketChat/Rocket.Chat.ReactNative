@@ -66,7 +66,6 @@ const JitsiMeetView = (): React.ReactElement => {
 				'breakoutRooms.hideJoinRoomButton': false
 			}
 		};
-		console.log(conferenceOptions);
 		logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_JOIN : events.JM_CONFERENCE_JOIN);
 		await JitsiMeet.launchJitsiMeetView(conferenceOptions);
 		logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
