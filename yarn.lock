@@ -5214,9 +5214,9 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@socialcode-rob1/react-native-jitsimeet-custom@git+https://github.com/socialcode-rob1/react-native-jitsimeet-custom.git":
+"@socialcode-rob1/react-native-jitsimeet-custom@socialcode-rob1/react-native-jitsimeet-custom.git":
   version "2.5.0"
-  resolved "git+https://github.com/socialcode-rob1/react-native-jitsimeet-custom.git#b1f57cd065028fef2e806824e176d2b54e12cfaf"
+  resolved "https://codeload.github.com/socialcode-rob1/react-native-jitsimeet-custom/tar.gz/b1f57cd065028fef2e806824e176d2b54e12cfaf"
 
 "@storybook/addon-storyshots@6.3":
   version "6.3.13"
