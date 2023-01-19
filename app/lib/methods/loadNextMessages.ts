@@ -15,7 +15,6 @@ const COUNT = 50;
 interface ILoadNextMessages {
 	rid: string;
 	ts: Date;
-	tmid?: string;
 	loaderItem: TMessageModel;
 }
 
@@ -32,7 +31,6 @@ export function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 					const loadMoreItem = {
 						_id: generateLoadMoreId(lastMessage._id),
 						rid: lastMessage.rid,
-						tmid: args.tmid,
 						ts: moment(lastMessage.ts).add(1, 'millisecond'),
 						t: MessageTypeLoad.NEXT_CHUNK
 					};

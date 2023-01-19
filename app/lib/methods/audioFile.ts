@@ -4,12 +4,17 @@ import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
 
+const DEFAULT_EXTENSION = 'mp3';
+
 const sanitizeString = (value: string) => sanitizeLikeString(value.substring(value.lastIndexOf('/') + 1));
 
-const parseFilename = (value: string) => {
-	const extension = value.substring(value.lastIndexOf('.') + 1);
-	const filename = sanitizeString(value.substring(value.lastIndexOf('/') + 1).split('.')[0]);
-	return `${filename}.${extension}`;
+const getExtension = (value: string) => {
+	let extension = DEFAULT_EXTENSION;
+	const filename = value.split('/').pop();
+	if (filename?.includes('.')) {
+		extension = value.substring(value.lastIndexOf('.') + 1);
+	}
+	return extension;
 };
 
 const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> => {
@@ -27,7 +32,7 @@ export const downloadAudioFile = async (url: string, fileUrl: string, messageId:
 		const serverUrl = store.getState().server.server;
 		const serverUrlParsed = sanitizeString(serverUrl);
 		const folderPath = `${FileSystem.documentDirectory}audios/${serverUrlParsed}`;
-		const filename = `${messageId}_${parseFilename(fileUrl)}`;
+		const filename = `${messageId}.${getExtension(fileUrl)}`;
 		const filePath = `${folderPath}/${filename}`;
 		await ensureDirAsync(folderPath);
 		const file = await FileSystem.getInfoAsync(filePath);

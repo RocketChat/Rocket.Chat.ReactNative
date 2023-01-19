@@ -1,4 +1,5 @@
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, Permission } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import i18n from '../../i18n';
 import navigation from '../navigation/appNavigation';
@@ -7,14 +8,27 @@ import { isAndroid, showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
 
+const handleBltPermission = async (): Promise<Permission[]> => {
+	const systemVersion = await DeviceInfo.getApiLevel();
+	if (systemVersion <= 28) {
+		return [PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT, PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN];
+	}
+	if (systemVersion === 29) {
+		return [PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
+	}
+	return [PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
+};
+
 export const videoConfJoin = async (callId: string, cam: boolean) => {
 	try {
 		const result = await Services.videoConferenceJoin(callId, cam);
 		if (result.success) {
 			if (isAndroid) {
+				const bltPermission = await handleBltPermission();
 				await PermissionsAndroid.requestMultiple([
 					PermissionsAndroid.PERMISSIONS.CAMERA,
-					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+					...bltPermission
 				]);
 			}
 			const { url, providerName } = result;
