@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 19,
+	version: 20,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -55,6 +55,7 @@ export default appSchema({
 				{ name: 'livechat_data', type: 'string', isOptional: true },
 				{ name: 'tags', type: 'string', isOptional: true },
 				{ name: 'e2e_key', type: 'string', isOptional: true },
+				{ name: 'e2e_suggested_key', type: 'string', isOptional: true },
 				{ name: 'encrypted', type: 'boolean', isOptional: true },
 				{ name: 'e2e_key_id', type: 'string', isOptional: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true },
