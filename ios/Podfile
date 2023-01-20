@@ -65,12 +65,6 @@ post_install do |installer|
         config.build_settings['DEVELOPMENT_TEAM'] = dev_team_id
         config.build_settings['CODE_SIGN_IDENTITY'] = 'Apple Distribution';
         config.build_settings['CODE_SIGN_STYLE'] = 'Manual';
-      end if
-      case target.name
-      when 'RCT-Folly'
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
-      else
-        config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
       end
     end
   end
