@@ -3795,7 +3795,7 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@^4.0.14", "@expo/config-plugins@^4.1.5":
+"@expo/config-plugins@^4.0.14":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.1.5.tgz#9d357d2cda9c095e511b51583ede8a3b76174068"
   integrity sha512-RVvU40RtZt12HavuDAe+LDIq9lHj7sheOfMEHdmpJ/uTA8pgvkbc56XF6JHQD+yRr6+uhhb+JnAasGq49dsQbw==
@@ -3816,12 +3816,12 @@
     xcode "^3.0.1"
     xml2js "0.4.23"
 
-"@expo/config-plugins@~5.0.0", "@expo/config-plugins@~5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-5.0.1.tgz#66bc8d15785bdcd3598e466344f8c0518390179d"
-  integrity sha512-1OfnsOrfeSkB0VZfT01UjQ5Uq6p+yYbq8yNkj0e99K/6NLHpyvIxj+5tZIV0nQXgkOcqBIABL2uA7lwB8CkaBQ==
+"@expo/config-plugins@^5.0.4", "@expo/config-plugins@~5.0.0", "@expo/config-plugins@~5.0.1":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-5.0.4.tgz#216fea6558fe66615af1370de55193f4181cb23e"
+  integrity sha512-vzUcVpqOMs3h+hyRdhGwk+eGIOhXa5xYdd92yO17RMNHav3v/+ekMbs7XA2c3lepMO8Yd4/5hqmRw9ZTL6jGzg==
   dependencies:
-    "@expo/config-types" "^46.0.0"
+    "@expo/config-types" "^47.0.0"
     "@expo/json-file" "8.2.36"
     "@expo/plist" "0.0.18"
     "@expo/sdk-runtime-versions" "^1.0.0"
@@ -3846,6 +3846,11 @@
   version "46.0.2"
   resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-46.0.2.tgz#191f225ebfcbe624868ddc40efae79593f948dd8"
   integrity sha512-PXkmOgNwRyBfgVT1HmFZhfh3Qm7WKKyV6mk3/5HJ/LzPh1t+Zs2JrWX8U2YncTLV1QzV7nV8tnkyvszzqnZEzQ==
+
+"@expo/config-types@^47.0.0":
+  version "47.0.0"
+  resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-47.0.0.tgz#99eeabe0bba7a776e0f252b78beb0c574692c38d"
+  integrity sha512-r0pWfuhkv7KIcXMUiNACJmJKKwlTBGMw9VZHNdppS8/0Nve8HZMTkNRFQzTHW1uH3pBj8jEXpyw/2vSWDHex9g==
 
 "@expo/config@7.0.1", "@expo/config@~7.0.0", "@expo/config@~7.0.1":
   version "7.0.1"
@@ -5138,26 +5143,26 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-firebase/analytics@^14.11.0":
-  version "14.11.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-14.11.0.tgz#99a3bb96f0ed6362907a120a40489f9a8bcf9ccd"
-  integrity sha512-hYc2avm4S1vicBdKLtBif87SFGru85LOMPqDblC9GM7cGFRR5WlkOiECvNTzzs+a5Jrfq1zPJsK1YQKxD7CRfQ==
+"@react-native-firebase/analytics@^16.5.1":
+  version "16.5.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-16.5.1.tgz#9b31acbb7109098ce9e0923731beb7521b8acf27"
+  integrity sha512-0i96zZELcXG+qiVQAOdEJI2uXKbmHRaWLs/GB1+wp9MKJeCoz8GbJPgP4OUFVQZzFOXGS7a0TzrLpnruw7H0KQ==
 
-"@react-native-firebase/app@^14.11.0":
-  version "14.11.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-14.11.0.tgz#41b1b7d41f51b6880ebad6a12ff87c85bcdab0d6"
-  integrity sha512-LzqgZNx+WcNGYRZG6LB9BkJAx4LE+LsbPF9p65TMSagWYd/iJafoXl4d6KWQeUMIFZQH7Ke/eJ/fIZkc+4eMRw==
+"@react-native-firebase/app@^16.5.1":
+  version "16.5.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-16.5.1.tgz#4e1360bd9441b74b2f8028e20497cabc3c0fd8c1"
+  integrity sha512-7hfbGolGeGk6UNhVBnkltn2xWUuAZcR9RzRL8yn2kjt7XzjRYwOXom7iIRYw0onrZDorzupOhPGV90eJM3L5XA==
   dependencies:
-    "@expo/config-plugins" "^4.1.5"
+    "@expo/config-plugins" "^5.0.4"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/crashlytics@^14.11.0":
-  version "14.11.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-14.11.0.tgz#73c9c02154b50bcb34b77d67c7f5e0393ec2ae2e"
-  integrity sha512-HNLJE+XvMt7dNvV5n+M+tDv7n9xER050KtayJoKjzkyFTyPTQzf1IEKqckSZS1PHSG+Sqcbe2nfoMF2GwNAAhA==
+"@react-native-firebase/crashlytics@^16.5.1":
+  version "16.5.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-16.5.1.tgz#bb243903f6d67e3d906946b65a7d26e6eea15f61"
+  integrity sha512-X4Zi/SpdxUSkOmsfLbVcMvQz/48xWAFAtICwq8mccR3TRh5Zo5lfNE+hPW1Va5M4isQPtTf/8T8I52k0mTlXyw==
   dependencies:
-    "@expo/config-plugins" "^4.1.5"
+    "@expo/config-plugins" "^5.0.4"
     stacktrace-js "^2.0.0"
 
 "@react-native-masked-view/masked-view@^0.2.8":
