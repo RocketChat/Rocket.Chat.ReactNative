@@ -15,6 +15,7 @@ import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import sharedStyles from './Styles';
+import UGCRules from '../containers/UserGeneratedContentRules';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -31,8 +32,7 @@ const styles = StyleSheet.create({
 	},
 	bottomContainer: {
 		flexDirection: 'column',
-		alignItems: 'center',
-		marginBottom: 32
+		alignItems: 'center'
 	},
 	bottomContainerText: {
 		...sharedStyles.textRegular,
@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
 	},
 	loginButton: {
 		marginTop: 16
+	},
+	ugcContainer: {
+		marginTop: 32
 	}
 });
 
@@ -224,6 +227,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
 				)}
+				<UGCRules styleContainer={styles.ugcContainer} />
 			</>
 		);
 	};
