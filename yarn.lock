@@ -5361,6 +5361,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@socialcode-rob1/react-native-jitsimeet-custom@socialcode-rob1/react-native-jitsimeet-custom.git":
+  version "2.5.0"
+  resolved "https://codeload.github.com/socialcode-rob1/react-native-jitsimeet-custom/tar.gz/b1f57cd065028fef2e806824e176d2b54e12cfaf"
+
 "@storybook/addon-storyshots@6.3":
   version "6.3.13"
   resolved "https://registry.yarnpkg.com/@storybook/addon-storyshots/-/addon-storyshots-6.3.13.tgz#282a48880e5074baea7b84f5b091591eb21a9485"
@@ -17312,10 +17316,6 @@ react-native-iphone-x-helper@^1.0.3:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
-
-react-native-jitsi-meet@RocketChat/react-native-jitsi-meet:
-  version "3.6.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/90bae9b9d779c13829d7dc618e31d11dba60140d"
 
 react-native-keycommands@2.0.3:
   version "2.0.3"
