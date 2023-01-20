@@ -61,16 +61,12 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
       if target.respond_to?(:product_type) and target.product_type == 'com.apple.product-type.bundle'
         config.build_settings['DEVELOPMENT_TEAM'] = dev_team_id
         config.build_settings['CODE_SIGN_IDENTITY'] = 'Apple Distribution';
         config.build_settings['CODE_SIGN_STYLE'] = 'Manual';
-      end if
-      case target.name
-      when 'RCT-Folly'
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
-      else
-        config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
       end
     end
   end
