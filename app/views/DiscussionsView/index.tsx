@@ -89,9 +89,9 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	}, 500);
 
 	const onCancelSearchPress = () => {
-		setSearch([]);
 		setIsSearching(false);
 		offset.current = 0;
+		setSearch([]);
 	};
 
 	const onSearchPress = () => {
