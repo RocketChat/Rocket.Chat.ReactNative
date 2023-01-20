@@ -607,7 +607,6 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (~> 0.11.0)
-  - JitsiMeetSDKLite
   - KeyCommands (from `../node_modules/react-native-keycommands`)
   - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -1002,6 +1001,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
-PODFILE CHECKSUM: 3f8e7d68a70cfe4d4d54fe67bd7abcceba85c82e
+PODFILE CHECKSUM: 670cc455843e2a5aeeaabfba29cc1194a8948056
 
 COCOAPODS: 1.11.3
