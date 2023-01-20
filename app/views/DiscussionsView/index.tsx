@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
@@ -47,7 +47,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	const [search, setSearch] = useState<IMessageFromServer[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
 	const [total, setTotal] = useState(0);
-	const [searchTotal, setSearchTotal] = useState(0);
+	const offset = useRef(0);
 
 	const { colors } = useTheme();
 
@@ -60,19 +60,19 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		try {
 			const result = await Services.getDiscussions({
 				roomId: rid,
-				offset: isSearching ? search.length : discussions.length,
+				offset: offset.current,
 				count: API_FETCH_COUNT,
 				text
 			});
 
 			if (result.success) {
 				if (isSearching) {
-					setSearch(result.messages);
-					setSearchTotal(result.total);
+					setSearch(prevState => (offset.current ? [...prevState, ...result.messages] : result.messages));
 				} else {
 					setDiscussions(result.messages);
-					setTotal(result.total);
 				}
+				offset.current += API_FETCH_COUNT;
+				setTotal(result.total);
 			}
 			setLoading(false);
 		} catch (e) {
@@ -83,13 +83,15 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 
 	const onSearchChangeText = useDebounce(async (text: string) => {
 		setIsSearching(true);
+		offset.current = 0;
+		setSearch([]);
 		await load(text);
 	}, 500);
 
 	const onCancelSearchPress = () => {
-		setIsSearching(false);
 		setSearch([]);
-		setSearchTotal(0);
+		setIsSearching(false);
+		offset.current = 0;
 	};
 
 	const onSearchPress = () => {
@@ -186,7 +188,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => (isSearching ? searchTotal : total) > API_FETCH_COUNT ?? load()}
+				onEndReached={() => isSearching && offset.current < total && load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
