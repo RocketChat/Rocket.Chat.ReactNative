@@ -46,12 +46,13 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
 	const [search, setSearch] = useState<IMessageFromServer[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
-	const [total, setTotal] = useState(0);
+	const total = useRef(0);
+	const searchText = useRef('');
 	const offset = useRef(0);
 
 	const { colors } = useTheme();
 
-	const load = async (text = '') => {
+	const load = async () => {
 		if (loading) {
 			return;
 		}
@@ -62,17 +63,17 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 				roomId: rid,
 				offset: offset.current,
 				count: API_FETCH_COUNT,
-				text
+				text: searchText.current
 			});
 
 			if (result.success) {
+				offset.current += result.count;
+				total.current = result.total;
 				if (isSearching) {
 					setSearch(prevState => (offset.current ? [...prevState, ...result.messages] : result.messages));
 				} else {
 					setDiscussions(result.messages);
 				}
-				offset.current += API_FETCH_COUNT;
-				setTotal(result.total);
 			}
 			setLoading(false);
 		} catch (e) {
@@ -83,15 +84,17 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 
 	const onSearchChangeText = useDebounce(async (text: string) => {
 		setIsSearching(true);
-		offset.current = 0;
 		setSearch([]);
-		await load(text);
+		searchText.current = text;
+		offset.current = 0;
+		await load();
 	}, 500);
 
 	const onCancelSearchPress = () => {
 		setIsSearching(false);
-		offset.current = 0;
 		setSearch([]);
+		searchText.current = '';
+		offset.current = 0;
 	};
 
 	const onSearchPress = () => {
@@ -183,12 +186,12 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 			<FlatList
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
-				keyExtractor={(item: any) => item.msg}
+				keyExtractor={(item: any) => item._id}
 				style={{ backgroundColor: colors.backgroundColor }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => isSearching && offset.current < total && load()}
+				onEndReached={() => isSearching && offset.current < total.current && load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
