@@ -20,7 +20,7 @@ export const cardStyle = {
 };
 
 export const borderBottom: any = (theme: TSupportedThemes) => ({
-	borderBottomWidth: StyleSheet.hairlineWidth,
+	borderBottomWidth: 1,
 	borderBottomColor: themes[theme].headerBorder,
 	elevation: 0
 });

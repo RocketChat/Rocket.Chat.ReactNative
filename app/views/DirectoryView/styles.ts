@@ -40,7 +40,7 @@ export default StyleSheet.create({
 	},
 	dropdownContainerHeader: {
 		height: 46,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: 1,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
@@ -76,7 +76,7 @@ export default StyleSheet.create({
 		marginHorizontal: 15
 	},
 	dropdownSeparator: {
-		height: StyleSheet.hairlineWidth,
+		height: 1,
 		marginHorizontal: 15,
 		flex: 1
 	},
