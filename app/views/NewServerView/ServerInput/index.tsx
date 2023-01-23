@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 		top: '100%',
 		zIndex: 1,
 		position: 'absolute',
-		borderWidth: StyleSheet.hairlineWidth,
+		borderWidth: 1,
 		borderRadius: 4,
 		borderTopWidth: 0
 	}

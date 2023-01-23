@@ -27,7 +27,7 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	separator: {
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: 1,
 		marginVertical: 4
 	},
 	header: {

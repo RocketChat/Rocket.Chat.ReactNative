@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	},
 	dropdownContainerHeader: {
 		height: 41,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: 1,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
@@ -19,7 +19,7 @@ export default StyleSheet.create({
 		width: '100%',
 		position: 'absolute',
 		top: 0,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		borderBottomWidth: 1
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject
