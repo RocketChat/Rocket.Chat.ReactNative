@@ -3,7 +3,7 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "13.3.0"
+    xcode: "14.2.0"
   resource_class: large
 
 bash-env: &bash-env
@@ -51,14 +51,14 @@ save-gems-cache: &save-gems-cache
 update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
-    echo "ruby-2.6.4" > ~/.ruby-version
+    echo "ruby-2.7.7" > ~/.ruby-version
     bundle install
   working_directory: ios
 
 update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
-    echo "ruby-2.6.4" > ~/.ruby-version
+    echo "ruby-2.7.7" > ~/.ruby-version
     bundle install
   working_directory: android
 
