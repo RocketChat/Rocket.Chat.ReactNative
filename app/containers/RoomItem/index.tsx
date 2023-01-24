@@ -2,13 +2,13 @@ import React, { useEffect, useReducer, useRef } from 'react';
 import { Subscription } from 'rxjs';
 
 import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks';
 import { getUserPresence } from '../../lib/methods';
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
 import { IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
+import { useUserStatus } from './useUserStatus';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 
@@ -42,10 +42,10 @@ const RoomItemContainer = React.memo(
 		const isRead = getIsRead(item);
 		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
 		const alert = item.alert || item.tunread?.length;
-		const connected = useAppSelector(state => state.meteor.connected);
-		const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const roomSubscription = useRef<Subscription | null>(null);
+
+		const { connected, status } = useUserStatus(item.t, item?.visitor?.status, id);
 
 		useEffect(() => {
 			const init = () => {
@@ -84,8 +84,6 @@ const RoomItemContainer = React.memo(
 		if (date) {
 			accessibilityLabel = `, ${I18n.t('last_message')} ${date}`;
 		}
-
-		const status = item.t === 'l' ? item.visitor?.status || item.v?.status : userStatus;
 
 		return (
 			<RoomItem
