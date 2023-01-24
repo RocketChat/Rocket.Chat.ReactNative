@@ -1,18 +1,16 @@
 import { Model } from '@nozbe/watermelondb';
-import {
-	field, relation, date, json
-} from '@nozbe/watermelondb/decorators';
+import { date, field, json, relation } from '@nozbe/watermelondb/decorators';
 
 import { sanitizer } from '../utils';
 
-export const TABLE_NAME = 'thread_messages';
+export const THREAD_MESSAGES_TABLE = 'thread_messages';
 
 export default class ThreadMessage extends Model {
-	static table = TABLE_NAME;
+	static table = THREAD_MESSAGES_TABLE;
 
 	static associations = {
 		subscriptions: { type: 'belongs_to', key: 'subscription_id' }
-	}
+	};
 
 	@field('msg') msg;
 

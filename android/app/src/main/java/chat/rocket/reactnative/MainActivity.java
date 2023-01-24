@@ -1,40 +1,23 @@
 package chat.rocket.reactnative;
 
-import android.os.Bundle;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.ReactRootView;
+import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactFragmentActivity;
-
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import com.facebook.react.ReactRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
-import com.google.gson.Gson;
 
-class ThemePreferences {
-  String currentTheme;
-  String darkLevel;
-}
+import expo.modules.ReactActivityDelegateWrapper;
 
-class SortPreferences {
-  String sortBy;
-  Boolean groupByType;
-  Boolean showFavorites;
-  Boolean showUnread;
-}
-
-public class MainActivity extends ReactFragmentActivity {
+public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RNBootSplash.init(this);
         // https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
         super.onCreate(null);
-        RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
     }
 
     @Override
@@ -51,16 +34,6 @@ public class MainActivity extends ReactFragmentActivity {
         return "RocketChatRN";
     }
 
-    @Override
-    protected ReactActivityDelegate createReactActivityDelegate() {
-      return new ReactActivityDelegate(this, getMainComponentName()) {
-        @Override
-        protected ReactRootView createRootView() {
-         return new RNGestureHandlerEnabledRootView(MainActivity.this);
-        }
-      };
-    }
-
     // from react-native-orientation
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -69,5 +42,27 @@ public class MainActivity extends ReactFragmentActivity {
         intent.putExtra("newConfig", newConfig);
         this.sendBroadcast(intent);
     }
-}
 
+    /**
+    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
+    * you can specify the rendered you wish to use (Fabric or the older renderer).
+    */
+    @Override
+    protected ReactActivityDelegate createReactActivityDelegate() {
+        return new ReactActivityDelegateWrapper(this, new MainActivityDelegate(this, getMainComponentName()));
+    }
+
+    public static class MainActivityDelegate extends ReactActivityDelegate {
+        public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
+            super(activity, mainComponentName);
+        }
+
+        @Override
+        protected ReactRootView createRootView() {
+            ReactRootView reactRootView = new ReactRootView(getContext());
+            // If you opted-in for the New Architecture, we enable the Fabric Renderer.
+            reactRootView.setIsFabric(BuildConfig.IS_NEW_ARCHITECTURE_ENABLED);
+            return reactRootView;
+        }
+    }
+}

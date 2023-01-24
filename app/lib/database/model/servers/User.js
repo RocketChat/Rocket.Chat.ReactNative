@@ -3,8 +3,10 @@ import { field, json } from '@nozbe/watermelondb/decorators';
 
 import { sanitizer } from '../../utils';
 
+export const LOGGED_USERS_TABLE = 'users';
+
 export default class User extends Model {
-	static table = 'users';
+	static table = LOGGED_USERS_TABLE;
 
 	@field('token') token;
 
@@ -25,4 +27,6 @@ export default class User extends Model {
 	@field('show_message_in_main_thread') showMessageInMainThread;
 
 	@field('is_from_webview') isFromWebView;
+
+	@field('enable_message_parser_early_adoption') enableMessageParserEarlyAdoption;
 }

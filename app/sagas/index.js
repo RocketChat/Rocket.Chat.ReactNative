@@ -1,4 +1,6 @@
 import { all } from 'redux-saga/effects';
+
+import inquiry from '../ee/omnichannel/sagas/inquiry';
 import login from './login';
 import rooms from './rooms';
 import room from './room';
@@ -11,8 +13,6 @@ import deepLinking from './deepLinking';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import encryption from './encryption';
-
-import inquiry from '../ee/omnichannel/sagas/inquiry';
 
 const root = function* root() {
 	yield all([

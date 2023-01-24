@@ -3,7 +3,7 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "12.5.0"
+    xcode: "13.3.0"
   resource_class: large
 
 bash-env: &bash-env
@@ -80,18 +80,15 @@ commands:
     steps:
       - restore_cache:
           name: Restore pods
-          # TODO: CircleCI isn't caching Podfile.lock correctly, because checksum changes after install
-          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
-          key: pods-v1-{{ checksum "ios/Podfile" }}
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
       - run:
           name: Install pods libs
           command: |
-            bundle exec pod install
+            bundle exec pod install --deployment
           working_directory: ios
       - save_cache:
           name: Save pods specs and pods cache
-          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
-          key: pods-v1-{{ checksum "ios/Podfile" }}
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
           paths:
             - ~/.pods
             - ios/Pods
@@ -114,7 +111,8 @@ commands:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
@@ -150,7 +148,7 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ ! $KEYSTORE ]]; then
@@ -169,7 +167,7 @@ commands:
                 --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
                 --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               npx bugsnag-source-maps upload-react-native \
                 --api-key=$BUGSNAG_KEY \
                 --app-version-code=$CIRCLE_BUILD_NUM \
@@ -339,8 +337,8 @@ jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: circleci/node:15
-
+      - image: cimg/node:16.14
+    resource_class: large
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
 
@@ -359,7 +357,7 @@ jobs:
       - run:
           name: Test
           command: |
-            yarn test
+            yarn test -w 8
 
       - run:
           name: Codecov
@@ -372,27 +370,41 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
     environment:
       <<: *android-env
       <<: *bash-env
+    resource_class: large
     steps:
       - android-build
-  
-  android-build-official:
+
+    # Android automatic builds
+  android-automatic-build-experimental:
     <<: *defaults
     docker:
       - image: circleci/android:api-29-node
     environment:
       <<: *android-env
       <<: *bash-env
+    resource_class: large
+    steps:
+      - android-build
+
+  android-build-official:
+    <<: *defaults
+    docker:
+      - image: cimg/android:2022.03.1-node
+    environment:
+      <<: *android-env
+      <<: *bash-env
+    resource_class: large
     steps:
       - android-build
 
   android-internal-app-sharing-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-internal-app-sharing
@@ -400,7 +412,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:
@@ -409,14 +421,14 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:
@@ -483,6 +495,10 @@ workflows:
           type: approval
           requires:
               - lint-testunit
+          filters:
+            branches:
+              ignore:
+                - develop
       - android-build-experimental:
           requires:
             - android-hold-build-experimental
@@ -503,7 +519,7 @@ workflows:
       - android-google-play-production-experimental:
           requires:
             - android-hold-google-play-production-experimental
-      
+
       # Android Official
       - android-hold-build-official:
           type: approval
@@ -519,3 +535,15 @@ workflows:
       - android-google-play-beta-official:
           requires:
             - android-hold-google-play-beta-official
+
+      # Android Automatic Experimental
+      - android-automatic-build-experimental:
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - lint-testunit
+      - android-google-play-production-experimental:
+          requires:
+            - android-automatic-build-experimental

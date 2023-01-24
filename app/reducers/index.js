@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+
+import inquiry from '../ee/omnichannel/reducers/inquiry';
 import settings from './settings';
 import login from './login';
 import meteor from './connect';
@@ -19,8 +21,6 @@ import enterpriseModules from './enterpriseModules';
 import encryption from './encryption';
 import permissions from './permissions';
 import roles from './roles';
-
-import inquiry from '../ee/omnichannel/reducers/inquiry';
 
 export default combineReducers({
 	settings,

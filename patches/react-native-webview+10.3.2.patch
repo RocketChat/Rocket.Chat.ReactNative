@@ -102,7 +102,7 @@ index ab869cf..08ce7ce 100644
        ignoreErrFailedForThisURL = url;
      }
 diff --git a/node_modules/react-native-webview/apple/RNCWebView.m b/node_modules/react-native-webview/apple/RNCWebView.m
-index 02b4238..04bad05 100644
+index 02b4238..e0635ed 100644
 --- a/node_modules/react-native-webview/apple/RNCWebView.m
 +++ b/node_modules/react-native-webview/apple/RNCWebView.m
 @@ -17,6 +17,9 @@
@@ -115,7 +115,7 @@ index 02b4238..04bad05 100644
  static NSTimer *keyboardTimer;
  static NSString *const HistoryShimName = @"ReactNativeHistoryShim";
  static NSString *const MessageHandlerName = @"ReactNativeWebView";
-@@ -737,6 +740,68 @@ + (void)setCustomCertificatesForHost:(nullable NSDictionary*)certificates {
+@@ -737,6 +740,68 @@ static NSDictionary* customCertificatesForHost;
      customCertificatesForHost = certificates;
  }
  
@@ -184,29 +184,27 @@ index 02b4238..04bad05 100644
  - (void)                    webView:(WKWebView *)webView
    didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
                    completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable))completionHandler
-@@ -746,7 +811,34 @@ - (void)                    webView:(WKWebView *)webView
+@@ -746,7 +811,32 @@ static NSDictionary* customCertificatesForHost;
          host = webView.URL.host;
      }
      if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodClientCertificate) {
 -        completionHandler(NSURLSessionAuthChallengeUseCredential, clientAuthenticationCredential);
 +        NSString *host = challenge.protectionSpace.host;
-+  
++
 +        // Read the clientSSL info from MMKV
 +        __block NSDictionary *clientSSL;
 +        SecureStorage *secureStorage = [[SecureStorage alloc] init];
 +
 +        // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-+        [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
-+          // Error happened
-+          if ([response objectAtIndex:0] != [NSNull null]) {
-+              return;
-+          }
-+          NSString *key = [response objectAtIndex:1];
-+          NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
-+          MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++        NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
 +
-+          clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
-+        }];
++        if (key == NULL) {
++        return;
++        }
++
++        NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++        MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++        clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
 +
 +        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +

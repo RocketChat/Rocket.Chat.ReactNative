@@ -1,35 +1,37 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
 
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
-import {
-	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
-} from '../actions/server';
+import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
 import { clearSettings } from '../actions/settings';
-import { setUser } from '../actions/login';
-import RocketChat from '../lib/rocketchat';
+import { clearUser, setUser } from '../actions/login';
+import { clearActiveUsers } from '../actions/activeUsers';
 import database from '../lib/database';
-import log, { logServerVersion } from '../utils/log';
+import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
-import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
-import UserPreferences from '../lib/userPreferences';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
+import { appStart } from '../actions/app';
+import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
-import SSLPinning from '../utils/sslPinning';
-
+import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
+import { RootEnum } from '../definitions';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
+import { Services } from '../lib/services';
+import { connect } from '../lib/services/connect';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
-		const serverInfo = yield RocketChat.getServerInfo(server);
+		const serverInfo = yield Services.getServerInfo(server);
 		let websocketInfo = { success: true };
 		if (raiseError) {
-			websocketInfo = yield RocketChat.getWebsocketInfo({ server });
+			websocketInfo = yield Services.getWebsocketInfo({ server });
 		}
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
@@ -47,14 +49,14 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
-		yield serversDB.action(async() => {
+		yield serversDB.action(async () => {
 			try {
 				const serverRecord = await serversCollection.find(server);
-				await serverRecord.update((record) => {
+				await serverRecord.update(record => {
 					record.version = serverVersion;
 				});
 			} catch (e) {
-				await serversCollection.create((record) => {
+				await serversCollection.create(record => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
 					record.version = serverVersion;
 				});
@@ -70,14 +72,13 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
-		yield SSLPinning.setCertificate(certificate, server);
-
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+		SSLPinning.setCertificate(certificate, server);
 		yield put(inquiryReset());
 		yield put(encryptionStop());
+		yield put(clearActiveUsers());
 		const serversDB = database.servers;
-		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
-		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {
@@ -97,36 +98,35 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				};
 			} catch {
 				// search credentials on shared credentials (Experimental/Official)
-				const token = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ userId }`);
+				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
 				}
 			}
 		}
 
-		const basicAuth = yield UserPreferences.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
 		setBasicAuth(basicAuth);
-
-		// Check for running requests and abort them before connecting to the server
-		RocketChat.abort();
 
 		if (user) {
 			yield put(clearSettings());
-			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
-			yield put(appStart({ root: ROOT_INSIDE }));
+			yield connect({ server, logoutOnError: true });
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
-			yield RocketChat.connect({ server });
-			yield put(appStart({ root: ROOT_OUTSIDE }));
+			yield put(clearUser());
+			yield connect({ server });
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
-		RocketChat.setSettings();
-		RocketChat.setCustomEmojis();
-		RocketChat.setPermissions();
-		RocketChat.setRoles();
-		RocketChat.setEnterpriseModules();
+		setSettings();
+		setCustomEmojis();
+		setPermissions();
+		setRoles();
+		setEnterpriseModules();
 
 		let serverInfo;
 		if (fetchVersion) {
@@ -148,27 +148,28 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
-		yield SSLPinning.setCertificate(certificate, server);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+		SSLPinning.setCertificate(certificate, server);
 
 		const serverInfo = yield getServerInfo({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield RocketChat.getLoginServices(server);
-			yield RocketChat.getLoginSettings({ server });
+			yield Services.getLoginServices(server);
+			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 
-			if (fromServerHistory) {
+			const Accounts_iframe_enabled = yield select(state => state.settings.Accounts_iframe_enabled);
+			if (fromServerHistory && !Accounts_iframe_enabled) {
 				Navigation.navigate('LoginView', { username });
 			}
 
-			yield serversDB.action(async() => {
+			yield serversDB.action(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (!serversHistory?.length) {
-						await serversHistoryCollection.create((s) => {
+						await serversHistoryCollection.create(s => {
 							s.url = server;
 						});
 					}

@@ -1,12 +1,11 @@
-import { takeLatest, select } from 'redux-saga/effects';
+import { select, takeLatest } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 
-import Navigation from '../lib/Navigation';
 import { MESSAGES } from '../actions/actionsTypes';
-import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import log from '../utils/log';
-import { goRoom } from '../utils/goRoom';
+import log from '../lib/methods/helpers/log';
+import { goRoom } from '../lib/methods/helpers/goRoom';
+import { Services } from '../lib/services';
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
@@ -16,18 +15,13 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
 
 		const isMasterDetail = yield select(state => state.app.isMasterDetail);
-		if (isMasterDetail) {
-			Navigation.navigate('DrawerNavigator');
-		} else {
-			Navigation.navigate('RoomsListView');
-		}
 
 		if (subscriptions.length) {
-			goRoom({ item: subscriptions[0], isMasterDetail, message });
+			goRoom({ item: subscriptions[0], isMasterDetail, popToRoot: true, message });
 		} else {
-			const result = yield RocketChat.createDirectMessage(username);
+			const result = yield Services.createDirectMessage(username);
 			if (result?.success) {
-				goRoom({ item: result?.room, isMasterDetail, message });
+				goRoom({ item: result?.room, isMasterDetail, popToRoot: true, message });
 			}
 		}
 	} catch (e) {

@@ -11,9 +11,12 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
 import java.net.Socket;
+import java.security.KeyStore;
 import java.security.Principal;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509ExtendedKeyManager;
 import java.security.PrivateKey;
 import javax.net.ssl.SSLContext;
@@ -21,11 +24,12 @@ import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import okhttp3.OkHttpClient;
-import java.lang.InterruptedException;
 import android.app.Activity;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import com.RNFetchBlob.RNFetchBlob;
@@ -52,8 +56,9 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         public void apply(OkHttpClient.Builder builder) {
             if (alias != null) {
                 SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
+                X509TrustManager trustManager = getTrustManagerFactory();
                 if (sslSocketFactory != null) {
-                    builder.sslSocketFactory(sslSocketFactory);
+                    builder.sslSocketFactory(sslSocketFactory, trustManager);
                 }
             }
         }
@@ -68,8 +73,9 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
 
         if (alias != null) {
             SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
+            X509TrustManager trustManager = getTrustManagerFactory();
             if (sslSocketFactory != null) {
-                builder.sslSocketFactory(sslSocketFactory);
+                builder.sslSocketFactory(sslSocketFactory, trustManager);
             }
         }
 
@@ -162,30 +168,29 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
                 }
             };
 
-            final TrustManager[] trustAllCerts = new TrustManager[] {
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return certChain;
-                        }
-                    }
-            };
-
+            final X509TrustManager trustManager = getTrustManagerFactory();
             final SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(new KeyManager[]{keyManager}, trustAllCerts, new java.security.SecureRandom());
+            sslContext.init(new KeyManager[]{keyManager}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
             SSLContext.setDefault(sslContext);
 
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
             return sslSocketFactory;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static X509TrustManager getTrustManagerFactory() {
+        try {
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init((KeyStore) null);
+            TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+            if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+                throw new IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers));
+            }
+            final X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+            return trustManager;
         } catch (Exception e) {
             return null;
         }

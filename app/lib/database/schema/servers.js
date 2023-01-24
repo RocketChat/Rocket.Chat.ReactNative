@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 11,
+	version: 12,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -16,7 +16,8 @@ export default appSchema({
 				{ name: 'login_email_password', type: 'boolean', isOptional: true },
 				{ name: 'show_message_in_main_thread', type: 'boolean', isOptional: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true },
-				{ name: 'is_from_webview', type: 'boolean', isOptional: true }
+				{ name: 'is_from_webview', type: 'boolean', isOptional: true },
+				{ name: 'enable_message_parser_early_adoption', type: 'boolean', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -32,7 +33,7 @@ export default appSchema({
 				{ name: 'last_local_authenticated_session', type: 'number', isOptional: true },
 				{ name: 'auto_lock', type: 'boolean', isOptional: true },
 				{ name: 'auto_lock_time', type: 'number', isOptional: true },
-				{ name: 'biometry', type: 'boolean', isOptional: true },
+				{ name: 'biometry', type: 'boolean', isOptional: true }, // deprecated
 				{ name: 'unique_id', type: 'string', isOptional: true },
 				{ name: 'enterprise_modules', type: 'string', isOptional: true },
 				{ name: 'e2e_enable', type: 'boolean', isOptional: true }

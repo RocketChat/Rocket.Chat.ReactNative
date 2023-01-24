@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 13,
+	version: 18,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -59,7 +59,10 @@ export default appSchema({
 				{ name: 'e2e_key_id', type: 'string', isOptional: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true },
 				{ name: 'team_id', type: 'string', isIndexed: true },
-				{ name: 'team_main', type: 'boolean', isOptional: true } // Use `Q.notEq(true)` to get false or null
+				{ name: 'team_main', type: 'boolean', isOptional: true }, // Use `Q.notEq(true)` to get false or null
+				{ name: 'on_hold', type: 'boolean', isOptional: true },
+				{ name: 'source', type: 'string', isOptional: true },
+				{ name: 'hide_mention_status', type: 'boolean', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -115,7 +118,9 @@ export default appSchema({
 				{ name: 'tmsg', type: 'string', isOptional: true },
 				{ name: 'blocks', type: 'string', isOptional: true },
 				{ name: 'e2e', type: 'string', isOptional: true },
-				{ name: 'tshow', type: 'boolean', isOptional: true }
+				{ name: 'tshow', type: 'boolean', isOptional: true },
+				{ name: 'md', type: 'string', isOptional: true },
+				{ name: 'comment', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -152,7 +157,8 @@ export default appSchema({
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true },
-				{ name: 'e2e', type: 'string', isOptional: true }
+				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'draft_message', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -236,9 +242,7 @@ export default appSchema({
 		}),
 		tableSchema({
 			name: 'roles',
-			columns: [
-				{ name: 'description', type: 'string', isOptional: true }
-			]
+			columns: [{ name: 'description', type: 'string', isOptional: true }]
 		}),
 		tableSchema({
 			name: 'permissions',
