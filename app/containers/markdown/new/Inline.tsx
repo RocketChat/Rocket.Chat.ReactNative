@@ -30,7 +30,11 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 				// to clean the empty spaces
 				if (forceTrim) {
 					if (index === 0 && block.type === 'LINK') {
-						block.value.label.value = block.value.label.value.toString().trimLeft();
+						block.value.label.value =
+							// Need to update the @rocket.chat/message-parser to understand that the label can be a Markup | Markup[]
+							// https://github.com/RocketChat/fuselage/blob/461ecf661d9ff4a46390957c915e4352fa942a7c/packages/message-parser/src/definitions.ts#L141
+							// @ts-ignore
+							block.value?.label?.value?.toString().trimLeft() || block?.value?.label?.[0]?.value?.toString().trimLeft();
 					}
 					if (index === 1 && block.type !== 'LINK') {
 						block.value = block.value?.toString().trimLeft();
