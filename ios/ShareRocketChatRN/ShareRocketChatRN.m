@@ -44,7 +44,7 @@ RCT_EXPORT_MODULE();
 
   // AppGroup MMKV
   NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
-  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
   
   return rootView;
 }

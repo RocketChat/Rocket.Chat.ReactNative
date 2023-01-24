@@ -15,7 +15,7 @@ module.exports = {
 				android: null
 			}
 		},
-		'react-native-jitsi-meet': {
+		'@socialcode-rob1/react-native-jitsimeet-custom': {
 			platforms: {
 				android: null
 			}
