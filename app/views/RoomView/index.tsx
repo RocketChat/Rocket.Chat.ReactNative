@@ -861,9 +861,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
+		const { readOnly } = this.state;
 		// if it's a thread message on main room, we disable the long press
 		if (message.tmid && !this.tmid) {
 			return;
+		}
+		// if it's read only the message box isn't rendered, and doesn't exist this.messagebox is undefined
+		if (readOnly) {
+			return this.messageActions?.showMessageActions(message);
 		}
 		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
 	};
