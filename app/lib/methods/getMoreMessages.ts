@@ -1,16 +1,14 @@
-import { SubscriptionType, TAnyMessageModel } from '../../../definitions';
-import { loadNextMessages, loadMessagesForRoom } from '../../../lib/methods';
-import { MessageTypeLoad } from '../../../lib/constants';
+import { SubscriptionType, TAnyMessageModel } from '../../definitions';
+import { loadNextMessages, loadMessagesForRoom } from '.';
+import { MessageTypeLoad } from '../constants';
 
 const getMoreMessages = ({
 	rid,
 	t,
-	tmid,
 	loaderItem
 }: {
 	rid: string;
 	t: SubscriptionType;
-	tmid?: string;
 	loaderItem: TAnyMessageModel;
 }): Promise<void> => {
 	if ([MessageTypeLoad.MORE, MessageTypeLoad.PREVIOUS_CHUNK].includes(loaderItem.t as MessageTypeLoad)) {
@@ -25,7 +23,6 @@ const getMoreMessages = ({
 	if (loaderItem.t === MessageTypeLoad.NEXT_CHUNK) {
 		return loadNextMessages({
 			rid,
-			tmid,
 			ts: loaderItem.ts as Date,
 			loaderItem
 		});
