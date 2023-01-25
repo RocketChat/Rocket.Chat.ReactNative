@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
@@ -14,7 +14,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
-import { isImageURL } from '../../lib/methods/helpers';
+import { isIOS, isImageURL } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	button: {
@@ -108,8 +108,16 @@ const Url = React.memo(
 		useEffect(() => {
 			if (!url.image && url.url) {
 				const testImageUrl = async () => {
-					const result = await isImageURL(url.url);
-					setIsImageUrlFromParamUrl(result);
+					if (isIOS) {
+						const result = await isImageURL(url.url);
+						setIsImageUrlFromParamUrl(result);
+					} else {
+						Image.getSize(
+							url.url,
+							() => setIsImageUrlFromParamUrl(true),
+							() => setIsImageUrlFromParamUrl(false)
+						);
+					}
 				};
 				testImageUrl();
 			}
