@@ -7,8 +7,15 @@ import { useTheme } from '../../../../theme';
 
 const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
 	const { theme } = useTheme();
-	if (isReadReceiptEnabled && !unread && unread !== null) {
-		return <CustomIcon name='check' color={themes[theme].tintColor} size={16} style={styles.rightIcons} />;
+	if (isReadReceiptEnabled) {
+		return (
+			<CustomIcon
+				name='check'
+				color={!unread && unread !== null ? themes[theme].tintColor : themes[theme].auxiliaryTintColor}
+				size={16}
+				style={styles.rightIcons}
+			/>
+		);
 	}
 	return null;
 });
