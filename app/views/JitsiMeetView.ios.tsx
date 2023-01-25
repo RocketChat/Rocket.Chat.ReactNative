@@ -39,7 +39,7 @@ const JitsiMeetView = (): React.ReactElement => {
 		const urlWithoutServer = regex.exec(url)![1];
 		const serverUrl = url.replace(`/${urlWithoutServer}`, '');
 		const room = urlWithoutServer.split('#')[0];
-
+		const jwtToken = url.includes('jwt=') ? url.substring(url.indexOf('jwt=') + 4, url.lastIndexOf('#config')) : undefined;
 		const conferenceOptions = {
 			room,
 			serverUrl,
@@ -51,6 +51,7 @@ const JitsiMeetView = (): React.ReactElement => {
 			audioOnly,
 			audioMuted: false,
 			videoMuted: audioOnly,
+			token: jwtToken,
 			featureFlags: {
 				'live-streaming.enabled': false,
 				'calendar.enabled': false,
