@@ -13,7 +13,7 @@
 
 Either
 
-* Install Rocket.Chat meteor app by following this [guide](https://docs.rocket.chat/guides/developer/quick-start).
+* Install Rocket.Chat meteor app by following this [guide](https://developer.rocket.chat/rocket.chat/rocket-chat-environment-setup).
 
 Or
 

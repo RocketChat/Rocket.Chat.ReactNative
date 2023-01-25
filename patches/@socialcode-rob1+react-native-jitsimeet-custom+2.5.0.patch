@@ -1,0 +1,11 @@
+diff --git a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec
+index 80a584b..5b2f71c 100644
+--- a/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec
++++ b/node_modules/@socialcode-rob1/react-native-jitsimeet-custom/react-native-jitsimeet-custom.podspec
+@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
+   s.source_files = "ios/**/*.{h,m,mm,swift}"
+ 
+   s.dependency "React-Core"
+-  s.dependency 'JitsiMeetSDK', '6.2.2'
++  s.dependency 'JitsiMeetSDKLite', '7.0.1-lite'
+ end
