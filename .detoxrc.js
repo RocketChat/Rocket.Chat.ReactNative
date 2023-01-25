@@ -24,13 +24,13 @@ module.exports = {
 		},
 		'android.debug': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/debug/app-experimental-play-debug.apk',
+			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk',
 			build: 'cd android ; ./gradlew assembleExperimentalPlayDebug assembleAndroidTest -DtestBuildType=debug ; cd -',
 			reversePorts: [8081]
 		},
 		'android.release': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/release/app-experimental-play-release.apk',
+			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk',
 			build: 'cd android ; ./gradlew assembleExperimentalPlayRelease assembleAndroidTest -DtestBuildType=release ; cd -'
 		}
 	},
@@ -50,7 +50,7 @@ module.exports = {
 		emulator: {
 			type: 'android.emulator',
 			device: {
-				avdName: 'Pixel_3a_API_30_x86'
+				avdName: 'Pixel_4_XL_API_31'
 			}
 		}
 	},
