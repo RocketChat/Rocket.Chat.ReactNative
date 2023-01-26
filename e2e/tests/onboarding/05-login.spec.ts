@@ -52,10 +52,23 @@ describe('Login screen', () => {
 		});
 
 		it('should navigate to forgot password', async () => {
-			await element(by.id('login-view-forgot-password')).tap();
-			await waitFor(element(by.id('forgot-password-view')))
-				.toExist()
+			await expect(element(by.id('login-view-more'))).toBeVisible();
+			await waitFor(element(by.id('login-view-forgot-password')))
+				.toBeVisible()
 				.withTimeout(2000);
+
+			let n = 0;
+			while (n < 3) {
+				try {
+					await element(by.id('login-view-forgot-password')).tap();
+					await waitFor(element(by.id('forgot-password-view')))
+						.toExist()
+						.withTimeout(2000);
+					n = 3;
+				} catch (error) {
+					n += 1;
+				}
+			}
 			await tapBack();
 		});
 

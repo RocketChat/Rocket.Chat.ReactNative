@@ -20,6 +20,7 @@ async function openJoinCode() {
 		.toExist()
 		.withTimeout(2000);
 	let n = 0;
+	// FIXME: this while is always matching 3 loops
 	while (n < 3) {
 		try {
 			await element(by.id('room-view-join-button')).tap();

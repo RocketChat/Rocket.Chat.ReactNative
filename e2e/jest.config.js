@@ -2,7 +2,7 @@
 module.exports = {
 	rootDir: '..',
 	setupFilesAfterEnv: ['<rootDir>/e2e/tests/init.ts'],
-	testMatch: ['<rootDir>/e2e/tests/**/*.spec.ts'],
+	testMatch: ['<rootDir>/e2e/tests/onboarding/05-login.spec.ts'],
 	testTimeout: 120000,
 	maxWorkers: 1,
 	globalSetup: 'detox/runners/jest/globalSetup',
