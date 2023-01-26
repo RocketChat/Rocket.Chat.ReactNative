@@ -330,6 +330,14 @@ commands:
           working_directory: ios
       - save_cache: *save-gems-cache
 
+  create-e2e-account-file:
+    description: "Create e2e account file"
+    steps:
+      - run:
+          command: |
+            echo $E2E_ACCOUNT | base64 --decode > ./e2e_account.ts
+          working_directory: e2e
+
 version: 2.1
 
 # EXECUTORS
@@ -454,6 +462,7 @@ jobs:
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
       - restore_cache: *restore-gradle-cache
+      - create-e2e-account-file
       - run:
           name: Run Detox Tests
           command: |
@@ -489,6 +498,7 @@ jobs:
           command: |
             brew tap wix/brew
             brew install applesimutils
+      - create-e2e-account-file
       - run:
           name: Build
           command: |
