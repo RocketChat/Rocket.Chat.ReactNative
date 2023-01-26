@@ -441,6 +441,31 @@ jobs:
       - upload-to-google-play-beta:
           official: true
 
+  android-experimental-test:
+    <<: *defaults
+    docker:
+      - image: cimg/android:2022.03.1-node
+    environment:
+      <<: *android-env
+      <<: *bash-env
+    resource_class: large
+    steps:
+      - checkout
+      - restore_cache: *restore-npm-cache-linux
+      - run: *install-npm-modules
+      - restore_cache: *restore-gradle-cache
+      - run:
+          name: Configure Detox
+          command: |
+            npm install -g detox-cli
+      - run:
+          name: Run Detox Tests
+          command: |
+            yarn detox build --configuration android.emu.release
+            yarn detox test --configuration android.emu.release --cleanup --headless
+      - save_cache: *save-npm-cache-linux
+      - save_cache: *save-gradle-cache
+
   # iOS builds
   ios-build-experimental:
     executor: mac-env
@@ -505,6 +530,7 @@ workflows:
             - ios-build-experimental
 
       - ios-experimental-test
+      - android-experimental-test
 
       # iOS Official
       - ios-hold-build-official:
