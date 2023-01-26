@@ -485,7 +485,7 @@ workflows:
           build_configuration: Release
           detox_configuration: ios.sim.release
           device: iPhone 12
-          project_path: ios/RocketChatRN.xcodeproj
+          project_path: ios/RocketChatRN.xcworkspace
           scheme: RocketChatRN
           xcode_version: 14.2.0
           resource_class: large
