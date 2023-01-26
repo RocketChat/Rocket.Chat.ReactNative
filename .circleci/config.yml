@@ -488,7 +488,7 @@ workflows:
           project_path: ios/RocketChatRN.xcodeproj
           scheme: RocketChatRN
           xcode_version: 14.2.0
-
+          resource_class: large
 
       # iOS Official
       - ios-hold-build-official:
