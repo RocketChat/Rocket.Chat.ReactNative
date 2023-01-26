@@ -504,8 +504,8 @@ jobs:
           command: |
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
+            yarn detox clean-framework-cache && yarn detox build-framework-cache
             yarn detox build --configuration ios.sim.release
-            yarn detox test --configuration ios.sim.release --cleanup --headless
       - save_cache:
             key: >-
               ios-build-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ .Environment.CACHE_VERSION }}
