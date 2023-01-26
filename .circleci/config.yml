@@ -1,3 +1,5 @@
+version: 2.1
+
 defaults: &defaults
   working_directory: ~/repo
 
@@ -480,19 +482,6 @@ workflows:
       - ios-testflight-experimental:
           requires:
             - ios-build-experimental
-
-      - ios-hold-build-experimental-test:
-          type: approval
-          requires:
-              - lint-testunit
-      - rn/ios_build_and_test:
-          build_configuration: Release
-          detox_configuration: ios.sim.release
-          device: iPhone 12
-          project_path: ios/RocketChatRN.xcodeproj
-          scheme: RocketChatRN
-          requires:
-            - ios-hold-build-experimental-test
 
       # iOS Official
       - ios-hold-build-official:
