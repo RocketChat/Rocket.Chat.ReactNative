@@ -485,10 +485,12 @@ workflows:
           checkout: true
           build_configuration: Release
           detox_configuration: ios.sim.release
-          device: iPhone 13
+          device: iPhone 14
           project_path: ios/RocketChatRN.xcodeproj
           scheme: RocketChatRN
           xcode_version: 14.2.0
+          pod_install_directory: ios
+          project_type: workspace
           resource_class: large
 
       # iOS Official
