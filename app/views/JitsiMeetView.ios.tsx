@@ -38,7 +38,7 @@ const JitsiMeetView = (): React.ReactElement => {
 		const regex = /(?:\/.*\/)(.*)/;
 		const urlWithoutServer = regex.exec(url)![1];
 		const serverUrl = url.replace(`/${urlWithoutServer}`, '');
-		const room = urlWithoutServer.split('#')[0];
+		const room = url.includes('jwt=') ? urlWithoutServer.split('jwt=')[0] : urlWithoutServer.split('#')[0];
 		const jwtToken = url.includes('jwt=') ? url.substring(url.indexOf('jwt=') + 4, url.lastIndexOf('#config')) : undefined;
 		const conferenceOptions = {
 			room,
