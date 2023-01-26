@@ -490,6 +490,8 @@ jobs:
       - run:
           name: Run Detox Tests
           command: |
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
             yarn detox build --configuration ios.sim.release
             yarn detox test --configuration ios.sim.release --cleanup --headless
       - save_cache: *save-npm-cache-mac
