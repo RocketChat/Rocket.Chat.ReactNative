@@ -456,11 +456,17 @@ jobs:
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
-      - rn/setup_macos_executor
-      - rn/detox_build:
-          configuration: release
-      - rn/detox_test:
-          configuration: release
+      - run:
+          name: Configure Detox
+          command: |
+            npm install -g detox-cli
+            brew tap wix/brew
+            brew install applesimutils
+      - run:
+          name: Run Detox Tests
+          command: |
+            yarn detox build --configuration ios.sim.release
+            yarn detox test --configuration ios.sim.release --cleanup --headless
       - save_cache: *save-npm-cache-mac
       - save_cache: *save-gems-cache
 
