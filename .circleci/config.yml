@@ -476,6 +476,8 @@ jobs:
       - restore_cache: *restore-npm-cache-mac
       - run: *install-npm-modules
       - run: *update-fastlane-ios
+      - save_cache: *save-npm-cache-mac
+      - save_cache: *save-gems-cache
       - manage-pods
       - run:
           name: Configure Detox
@@ -489,8 +491,6 @@ jobs:
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
             yarn detox build --configuration ios.sim.release
             yarn detox test --configuration ios.sim.release --cleanup --headless
-      - save_cache: *save-npm-cache-mac
-      - save_cache: *save-gems-cache
 
   ios-build-official:
     executor: mac-env
