@@ -38,7 +38,7 @@ const JitsiMeetView = (): React.ReactElement => {
 		const regex = /(?:\/.*\/)(.*)/;
 		const urlWithoutServer = regex.exec(url)![1];
 		const serverUrl = url.replace(`/${urlWithoutServer}`, '');
-		const room = url.includes('jwt=') ? urlWithoutServer.split('jwt=')[0] : urlWithoutServer.split('#')[0];
+		const room = (url.includes('jwt=') ? urlWithoutServer.split('jwt=')[0] : urlWithoutServer.split('#')[0]).replace('?', '');
 		const jwtToken = url.includes('jwt=') ? url.substring(url.indexOf('jwt=') + 4, url.lastIndexOf('#config')) : undefined;
 		const conferenceOptions = {
 			room,
@@ -50,21 +50,13 @@ const JitsiMeetView = (): React.ReactElement => {
 			subject: room,
 			audioOnly,
 			audioMuted: false,
-			videoMuted: audioOnly,
+			videoMuted: true,
 			token: jwtToken,
 			featureFlags: {
-				'live-streaming.enabled': false,
-				'calendar.enabled': false,
-				'call-integration.enabled': false,
-				'pip.enabled': false,
-				'invite.enabled': false,
-				'welcomepage.enabled': false,
-				'add-people.enabled': false
+				'calendar.enabled': false
 			},
 			configOverrides: {
-				'breakoutRooms.hideAddRoomButton': false,
-				'breakoutRooms.hideAutoAssignButton': false,
-				'breakoutRooms.hideJoinRoomButton': false
+				'breakoutRooms.hideAddRoomButton': false
 			}
 		};
 		logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_JOIN : events.JM_CONFERENCE_JOIN);
