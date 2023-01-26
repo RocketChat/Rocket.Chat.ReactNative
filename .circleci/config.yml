@@ -485,7 +485,7 @@ workflows:
           checkout: true
           build_configuration: Release
           detox_configuration: ios.sim.release
-          device: iPhone 12
+          device: iPhone 13
           project_path: ios/RocketChatRN.xcodeproj
           scheme: RocketChatRN
           xcode_version: 14.2.0
