@@ -447,6 +447,23 @@ jobs:
     steps:
       - ios-build
 
+  ios-experimental-test:
+    executor: mac-env
+    steps:
+      - checkout
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - manage-pods
+      - rn/setup_macos_executor
+      - rn/detox_build:
+          configuration: release
+      - rn/detox_test:
+          configuration: release
+      - save_cache: *save-npm-cache-mac
+      - save_cache: *save-gems-cache
+
   ios-build-official:
     executor: mac-env
     steps:
@@ -481,17 +498,7 @@ workflows:
           requires:
             - ios-build-experimental
 
-      - rn/ios_build_and_test:
-          checkout: true
-          build_configuration: Release
-          detox_configuration: ios.sim.release
-          device: iPhone 14
-          project_path: ios/RocketChatRN.xcodeproj
-          scheme: RocketChatRN
-          xcode_version: 14.2.0
-          pod_install_directory: ios
-          project_type: workspace
-          resource_class: large
+      - ios-experimental-test
 
       # iOS Official
       - ios-hold-build-official:
