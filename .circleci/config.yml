@@ -464,6 +464,24 @@ jobs:
       - restore_cache: *restore-gradle-cache
       - create-e2e-account-file
       - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
+            echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
+            echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
+            echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+            echo -e "KEY_ALIAS=$KEYSTORE_EXPERIMENTAL_ALIAS" >> ./gradle.properties
+            echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+          working_directory: android
+      - run:
           name: Run Detox Tests
           command: |
             yarn detox build --configuration android.emu.release
