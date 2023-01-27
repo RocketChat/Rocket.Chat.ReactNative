@@ -60,8 +60,9 @@ async function login(username: string, password: string) {
 		.toExist()
 		.withTimeout(2000);
 	await element(by.id('login-view-email')).replaceText(username);
+	await element(by.id('login-view-email')).tapReturnKey();
 	await element(by.id('login-view-password')).replaceText(password);
-	await element(by.id('login-view-submit')).tap();
+	await element(by.id('login-view-password')).tapReturnKey();
 	await waitFor(element(by.id('rooms-list-view')))
 		.toExist()
 		.withTimeout(30000);
