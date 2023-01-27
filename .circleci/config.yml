@@ -483,11 +483,6 @@ jobs:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
-      - restore_cache:
-            keys:
-              - >-
-                ios-build-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ .Environment.CACHE_VERSION }}
-            name: Restoring iOS Build caches
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - save_cache: *save-npm-cache-mac
@@ -506,12 +501,6 @@ jobs:
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
             yarn detox clean-framework-cache && yarn detox build-framework-cache
             yarn detox build --configuration ios.sim.release
-      - save_cache:
-            key: >-
-              ios-build-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ .Environment.CACHE_VERSION }}
-            name: Saving iOS Build Cache
-            paths:
-              - ios/build/Build
       - run:
           name: Run tests
           command: |
