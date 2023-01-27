@@ -470,6 +470,8 @@ jobs:
             yarn detox test --configuration android.emu.release --cleanup --headless
       - save_cache: *save-npm-cache-linux
       - save_cache: *save-gradle-cache
+      - store_artifacts:
+          path: artifacts
 
   # iOS builds
   ios-build-experimental:
@@ -505,6 +507,8 @@ jobs:
           name: Run tests
           command: |
             yarn detox test --configuration ios.sim.release --cleanup --headless
+      - store_artifacts:
+          path: artifacts
 
   ios-build-official:
     executor: mac-env
