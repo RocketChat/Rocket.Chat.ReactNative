@@ -25,13 +25,13 @@ module.exports = {
 		'android.debug': {
 			type: 'android.apk',
 			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk',
-			build: 'cd android ; ./gradlew assembleExperimentalPlayDebug assembleAndroidTest -DtestBuildType=debug ; cd -',
+			build: 'cd android ; ./gradlew assembleExperimentalPlayDebugAndroidTest -DtestBuildType=debug ; cd -',
 			reversePorts: [8081]
 		},
 		'android.release': {
 			type: 'android.apk',
 			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk',
-			build: 'cd android ; ./gradlew assembleExperimentalPlayRelease assembleAndroidTest -DtestBuildType=release ; cd -'
+			build: 'cd android ; ./gradlew assembleExperimentalPlayReleaseAndroidTest -DtestBuildType=release ; cd -'
 		}
 	},
 	devices: {
