@@ -1,17 +1,16 @@
 import React from 'react';
 
-import { themes } from '../../../../lib/constants';
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';
 
 const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	if (isReadReceiptEnabled) {
 		return (
 			<CustomIcon
 				name='check'
-				color={!unread && unread !== null ? themes[theme].tintColor : themes[theme].auxiliaryTintColor}
+				color={!unread && unread !== null ? colors.tintColor : colors.auxiliaryTintColor}
 				size={16}
 				style={styles.rightIcons}
 			/>
