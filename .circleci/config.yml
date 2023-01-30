@@ -449,7 +449,7 @@ jobs:
       - upload-to-google-play-beta:
           official: true
 
-  android-experimental-test:
+  android-build-e2e:
     <<: *defaults
     executor:
       name: android/android-machine
@@ -461,15 +461,6 @@ jobs:
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-linux
       - restore_cache: *restore-gradle-cache
-      - create-e2e-account-file
-      - android/create-avd:
-          avd-name: myavd
-          install: true
-          system-image: system-images;android-32;google_apis;x86_64
-      - android/start-emulator:
-          avd-name: myavd
-          no-window: true
-          post-emulator-launch-assemble-command: ''
       - run:
           name: Configure Gradle
           command: |
@@ -493,6 +484,37 @@ jobs:
           command: |
             yarn detox build --configuration android.att.release
       - save_cache: *save-gradle-cache
+      - store_artifacts:
+          path: android/app/build/outputs
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/app/build/outputs
+
+  android-test-e2e:
+    <<: *defaults
+    executor:
+      name: android/android-machine
+      resource-class: large
+      tag: 2022.12.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - restore_cache: *restore-npm-cache-linux
+      - run: *install-npm-modules
+      - save_cache: *save-npm-cache-linux
+      # - restore_cache: *restore-gradle-cache
+      - create-e2e-account-file
+      - android/create-avd:
+          avd-name: myavd
+          install: true
+          system-image: system-images;android-32;google_apis;x86_64
+      - android/start-emulator:
+          avd-name: myavd
+          no-window: true
+          post-emulator-launch-assemble-command: ''
+      # - save_cache: *save-gradle-cache
       - run:
           name: Run Detox Tests
           command: |
@@ -572,7 +594,11 @@ workflows:
             - ios-build-experimental
 
       - ios-experimental-test
-      - android-experimental-test
+      
+      - android-build-e2e
+      - android-test-e2e:
+          requires:
+            - android-build-e2e
 
       # iOS Official
       - ios-hold-build-official:
