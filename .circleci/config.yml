@@ -459,6 +459,7 @@ jobs:
       - checkout
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
+      - save_cache: *save-npm-cache-linux
       - restore_cache: *restore-gradle-cache
       - create-e2e-account-file
       - android/create-avd:
@@ -491,7 +492,6 @@ jobs:
           name: Build Android
           command: |
             yarn detox build --configuration android.att.debug
-      - save_cache: *save-npm-cache-linux
       - save_cache: *save-gradle-cache
       - run:
           name: Run Detox Tests
