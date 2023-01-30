@@ -491,12 +491,12 @@ jobs:
       - run:
           name: Build Android
           command: |
-            yarn detox build --configuration android.att.debug
+            yarn detox build --configuration android.att.release
       - save_cache: *save-gradle-cache
       - run:
           name: Run Detox Tests
           command: |
-            yarn detox test --configuration android.att.debug --cleanup --headless
+            yarn detox test --configuration android.att.release --cleanup --headless
       - store_artifacts:
           path: artifacts
 
