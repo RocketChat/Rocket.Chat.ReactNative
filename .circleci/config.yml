@@ -2,7 +2,7 @@ defaults: &defaults
   working_directory: ~/repo
 
 orbs:
-  rn: react-native-community/react-native@7.1.1
+  android: circleci/android@2.1.2
 
 macos: &macos
   macos:
@@ -451,18 +451,23 @@ jobs:
 
   android-experimental-test:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
-    environment:
-      <<: *android-env
-      <<: *bash-env
-    resource_class: large
+    executor:
+      name: android/android-machine
+      resource-class: large
     steps:
       - checkout
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
       - restore_cache: *restore-gradle-cache
       - create-e2e-account-file
+      - android/create-avd:
+          avd-name: myavd
+          install: true
+          system-image: system-images;android-31;default;x86
+      - android/start-emulator:
+          avd-name: myavd
+          no-window: true
+          restore-gradle-cache-prefix: v1a
       - run:
           name: Configure Gradle
           command: |
@@ -482,12 +487,15 @@ jobs:
             echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
           working_directory: android
       - run:
-          name: Run Detox Tests
+          name: Build Android
           command: |
-            yarn detox build --configuration android.emu.release
-            yarn detox test --configuration android.emu.release --cleanup --headless
+            yarn detox build --configuration android.att.debug
       - save_cache: *save-npm-cache-linux
       - save_cache: *save-gradle-cache
+      - run:
+          name: Run Detox Tests
+          command: |
+            yarn detox test --configuration android.att.debug --cleanup --headless
       - store_artifacts:
           path: artifacts
 
