@@ -455,6 +455,8 @@ jobs:
       name: android/android-machine
       resource-class: large
       tag: 2022.12.1
+    environment:
+      <<: *android-env
     steps:
       - checkout
       - restore_cache: *restore-npm-cache-linux
