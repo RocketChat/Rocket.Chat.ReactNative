@@ -50,7 +50,7 @@ const JitsiMeetView = (): React.ReactElement => {
 			subject: room,
 			audioOnly,
 			audioMuted: false,
-			videoMuted: true,
+			videoMuted: audioOnly,
 			token: jwtToken,
 			featureFlags: {
 				'calendar.enabled': false
