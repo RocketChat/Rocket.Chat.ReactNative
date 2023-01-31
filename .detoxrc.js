@@ -30,7 +30,8 @@ module.exports = {
 		},
 		'android.release': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk',
+			binaryPath:
+				'android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk',
 			build: 'cd android ; ./gradlew assembleExperimentalPlayReleaseAndroidTest -DtestBuildType=release ; cd -'
 		}
 	},
@@ -50,7 +51,7 @@ module.exports = {
 		emulator: {
 			type: 'android.emulator',
 			device: {
-				avdName: 'Pixel_4_XL_API_31'
+				avdName: 'myavd'
 			}
 		}
 	},

@@ -523,7 +523,7 @@ jobs:
       - run:
           name: Run Detox Tests
           command: |
-            yarn detox test --configuration android.att.release --cleanup --headless
+            yarn detox test --configuration android.emu.release --cleanup --headless
       - store_artifacts:
           path: artifacts
 
