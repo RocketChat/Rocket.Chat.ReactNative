@@ -487,11 +487,11 @@ jobs:
             yarn detox build --configuration android.att.release
       - save_cache: *save-gradle-cache
       - store_artifacts:
-          path: android/app/build/outputs
+          path: android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
       - persist_to_workspace:
-          root: .
+          root: /tmp/workspace
           paths:
-            - android/app/build/outputs
+            - android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
 
   android-test-e2e:
     <<: *defaults
@@ -502,7 +502,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: android
+          at: /tmp/workspace
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-linux
