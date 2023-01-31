@@ -489,7 +489,7 @@ jobs:
       - store_artifacts:
           path: android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: /home/circleci/repo
           paths:
             - android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
 
@@ -502,7 +502,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/workspace
+          at: /home/circleci/repo
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-linux
