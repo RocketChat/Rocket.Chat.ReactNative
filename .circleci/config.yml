@@ -504,7 +504,10 @@ jobs:
       - attach_workspace:
           at: /home/circleci/repo
       - restore_cache: *restore-npm-cache-linux
-      - run: *install-npm-modules
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn install --cache-folder=/home/circleci/repo/node_modules
       - save_cache: *save-npm-cache-linux
       # - restore_cache: *restore-gradle-cache
       - create-e2e-account-file
