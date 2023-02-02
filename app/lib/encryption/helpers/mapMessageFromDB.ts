@@ -1,8 +1,7 @@
 import { TMessageModel } from '../../../definitions';
-import { parseModelMessageToMessage } from './parseModelMessageToMessage';
 
 export const mapMessageFromDB = (messageModel: TMessageModel) => {
-	const parsedMessage = parseModelMessageToMessage(messageModel);
+	const parsedMessage = messageModel.asPlain!();
 	return {
 		...parsedMessage,
 		ts: new Date(parsedMessage.ts),
