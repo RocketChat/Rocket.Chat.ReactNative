@@ -19,9 +19,6 @@ export function loadSurroundingMessages({ messageId, rid }: { messageId: string;
 			let messages: IMessage[] = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
 
-			const message = messages.find(m => m._id === messageId);
-			const tmid = message?.tmid;
-
 			if (messages?.length) {
 				if (data?.moreBefore) {
 					const firstMessage = messages[0];
@@ -30,7 +27,6 @@ export function loadSurroundingMessages({ messageId, rid }: { messageId: string;
 						const loadMoreItem = {
 							_id: generateLoadMoreId(firstMessage._id),
 							rid: firstMessage.rid,
-							tmid,
 							ts: moment(firstMessage.ts).subtract(1, 'millisecond').toDate(),
 							t: MessageTypeLoad.PREVIOUS_CHUNK,
 							msg: firstMessage.msg
@@ -46,7 +42,6 @@ export function loadSurroundingMessages({ messageId, rid }: { messageId: string;
 						const loadMoreItem = {
 							_id: generateLoadMoreId(lastMessage._id),
 							rid: lastMessage.rid,
-							tmid,
 							ts: moment(lastMessage.ts).add(1, 'millisecond').toDate(),
 							t: MessageTypeLoad.NEXT_CHUNK,
 							msg: lastMessage.msg

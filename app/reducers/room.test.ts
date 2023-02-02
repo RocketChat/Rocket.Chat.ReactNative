@@ -1,4 +1,13 @@
-import { deleteRoom, forwardRoom, leaveRoom, removedRoom, subscribeRoom, unsubscribeRoom } from '../actions/room';
+import {
+	deleteRoom,
+	forwardRoom,
+	leaveRoom,
+	removedRoom,
+	roomHistoryFinished,
+	roomHistoryRequest,
+	subscribeRoom,
+	unsubscribeRoom
+} from '../actions/room';
 import { ERoomType } from '../definitions/ERoomType';
 import { mockedStore } from './mockedStore';
 import { initialState } from './room';
@@ -12,13 +21,13 @@ describe('test room reducer', () => {
 	it('should return modified store after subscribeRoom', () => {
 		mockedStore.dispatch(subscribeRoom('GENERAL'));
 		const state = mockedStore.getState().room;
-		expect(state.rooms).toEqual(['GENERAL']);
+		expect(state.subscribedRoom).toEqual('GENERAL');
 	});
 
 	it('should return empty store after remove unsubscribeRoom', () => {
 		mockedStore.dispatch(unsubscribeRoom('GENERAL'));
 		const state = mockedStore.getState().room;
-		expect(state.rooms).toEqual([]);
+		expect(state.subscribedRoom).toEqual('');
 	});
 
 	it('should return initial state after leaveRoom', () => {
@@ -47,5 +56,17 @@ describe('test room reducer', () => {
 		mockedStore.dispatch(removedRoom());
 		const { isDeleting } = mockedStore.getState().room;
 		expect(isDeleting).toEqual(false);
+	});
+
+	it('should return historyLoaders with one item after call historyRequest', () => {
+		mockedStore.dispatch(roomHistoryRequest({ rid: 'GENERAL', t: 'c', loaderId: 'loader' }));
+		const { historyLoaders } = mockedStore.getState().room;
+		expect(historyLoaders).toEqual(['loader']);
+	});
+
+	it('should return historyLoaders with empty array after call historyFinished', () => {
+		mockedStore.dispatch(roomHistoryFinished({ loaderId: 'loader' }));
+		const { historyLoaders } = mockedStore.getState().room;
+		expect(historyLoaders).toEqual([]);
 	});
 });

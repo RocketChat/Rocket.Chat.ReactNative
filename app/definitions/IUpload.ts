@@ -5,6 +5,7 @@ export interface IUpload {
 	rid?: string;
 	path: string;
 	name?: string;
+	tmid?: string;
 	description?: string;
 	size: number;
 	type?: string;
@@ -12,6 +13,7 @@ export interface IUpload {
 	progress?: number;
 	error?: boolean;
 	subscription?: { id: string };
+	msg?: string;
 }
 
 export type TUploadModel = IUpload & Model;
