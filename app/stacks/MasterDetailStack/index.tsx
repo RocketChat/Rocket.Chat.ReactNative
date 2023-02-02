@@ -142,11 +142,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={AddExistingChannelView}
 					options={AddExistingChannelView.navigationOptions}
 				/>
-				<ModalStack.Screen
-					name='InviteUsersEditView'
-					component={InviteUsersEditView}
-					options={InviteUsersEditView.navigationOptions}
-				/>
+				<ModalStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 				<ModalStack.Screen name='MessagesView' component={MessagesView} />
 				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
 				<ModalStack.Screen
