@@ -70,7 +70,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 				onPress={() => {
 					hideActionSheet();
 					setTimeout(() => {
-						videoConfStartAndJoin(user.rid, camera);
+						videoConfStartAndJoin(user.rid, camera, phone);
 					}, 100);
 				}}
 				title={i18n.t('Call')}
