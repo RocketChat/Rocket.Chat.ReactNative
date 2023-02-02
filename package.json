@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.36.0",
+	"version": "4.35.1",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
