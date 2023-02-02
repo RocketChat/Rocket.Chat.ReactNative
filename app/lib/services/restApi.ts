@@ -933,7 +933,7 @@ export function getUserInfo(userId: string) {
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
 
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
-	sdk.post('video-conference.join', { callId, state: { cam: !!cam, mic: !!mic } });
+	sdk.post('video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });
 
 export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId });
 
