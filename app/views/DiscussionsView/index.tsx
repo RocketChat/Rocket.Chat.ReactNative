@@ -82,12 +82,12 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		}
 	};
 
-	const onSearchChangeText = useDebounce(async (text: string) => {
+	const onSearchChangeText = useDebounce((text: string) => {
 		setIsSearching(true);
 		setSearch([]);
 		searchText.current = text;
 		offset.current = 0;
-		await load();
+		load();
 	}, 500);
 
 	const onCancelSearchPress = () => {
