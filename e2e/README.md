@@ -21,7 +21,7 @@ Or
 
 #### 1.2. Set up detox
 
-* Install dependencies by following this [guide](https://github.com/wix/Detox/blob/master/docs/Introduction.GettingStarted.md#step-1-install-dependencies) (only Step 1).
+* Install dependencies by following this [guide](https://wix.github.io/Detox/docs/introduction/getting-started#1-command-line-tools-detox-cli) (only Step 1).
 
 ### 2. Prepare test data
 
