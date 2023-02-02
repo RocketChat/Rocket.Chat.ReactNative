@@ -40,6 +40,7 @@ export interface IMessageActionsProps {
 	editMessagePermission?: string[];
 	deleteMessagePermission?: string[];
 	forceDeleteMessagePermission?: string[];
+	deleteOwnMessagePermission?: string[];
 	pinMessagePermission?: string[];
 	createDirectMessagePermission?: string[];
 }
@@ -71,6 +72,7 @@ const MessageActions = React.memo(
 				editMessagePermission,
 				deleteMessagePermission,
 				forceDeleteMessagePermission,
+				deleteOwnMessagePermission,
 				pinMessagePermission,
 				createDirectMessagePermission
 			},
@@ -80,19 +82,27 @@ const MessageActions = React.memo(
 				hasEditPermission: false,
 				hasDeletePermission: false,
 				hasForceDeletePermission: false,
-				hasPinPermission: false
+				hasPinPermission: false,
+				hasDeleteOwnPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
 
 			const getPermissions = async () => {
 				try {
-					const permission = [editMessagePermission, deleteMessagePermission, forceDeleteMessagePermission, pinMessagePermission];
+					const permission = [
+						editMessagePermission,
+						deleteMessagePermission,
+						forceDeleteMessagePermission,
+						pinMessagePermission,
+						deleteOwnMessagePermission
+					];
 					const result = await hasPermission(permission, room.rid);
 					permissions = {
 						hasEditPermission: result[0],
 						hasDeletePermission: result[1],
 						hasForceDeletePermission: result[2],
-						hasPinPermission: result[3]
+						hasPinPermission: result[3],
+						hasDeleteOwnPermission: result[4]
 					};
 				} catch {
 					// Do nothing
@@ -134,7 +144,7 @@ const MessageActions = React.memo(
 				if (tmid === message.id) {
 					return false;
 				}
-				const deleteOwn = isOwn(message);
+				const deleteOwn = isOwn(message) && permissions.hasDeleteOwnPermission;
 				if (!(permissions.hasDeletePermission || (Message_AllowDeleting && deleteOwn) || permissions.hasForceDeletePermission)) {
 					return false;
 				}
@@ -275,10 +285,10 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleReaction: IHeader['handleReaction'] = (shortname, message) => {
+			const handleReaction: IHeader['handleReaction'] = (emoji, message) => {
 				logEvent(events.ROOM_MSG_ACTION_REACTION);
-				if (shortname) {
-					onReactionPress(shortname, message.id);
+				if (emoji) {
+					onReactionPress(emoji, message.id);
 				} else {
 					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
 				}
@@ -343,9 +353,10 @@ const MessageActions = React.memo(
 
 			const getOptions = (message: TAnyMessageModel) => {
 				const options: TActionSheetOptionsItem[] = [];
+				const videoConfBlock = message.t === 'videoconf';
 
 				// Quote
-				if (!isReadOnly) {
+				if (!isReadOnly && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
@@ -363,7 +374,7 @@ const MessageActions = React.memo(
 				}
 
 				// Reply in DM
-				if (room.t !== 'd' && room.t !== 'l' && createDirectMessagePermission) {
+				if (room.t !== 'd' && room.t !== 'l' && createDirectMessagePermission && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
@@ -386,11 +397,13 @@ const MessageActions = React.memo(
 				});
 
 				// Copy
-				options.push({
-					title: I18n.t('Copy'),
-					icon: 'copy',
-					onPress: () => handleCopy(message)
-				});
+				if (!videoConfBlock) {
+					options.push({
+						title: I18n.t('Copy'),
+						icon: 'copy',
+						onPress: () => handleCopy(message)
+					});
+				}
 
 				// Share
 				options.push({
@@ -400,7 +413,7 @@ const MessageActions = React.memo(
 				});
 
 				// Edit
-				if (allowEdit(message)) {
+				if (allowEdit(message) && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Edit'),
 						icon: 'edit',
@@ -409,7 +422,7 @@ const MessageActions = React.memo(
 				}
 
 				// Pin
-				if (Message_AllowPinning && permissions?.hasPinPermission) {
+				if (Message_AllowPinning && permissions?.hasPinPermission && !videoConfBlock) {
 					options.push({
 						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
@@ -418,7 +431,7 @@ const MessageActions = React.memo(
 				}
 
 				// Star
-				if (Message_AllowStarring) {
+				if (Message_AllowStarring && !videoConfBlock) {
 					options.push({
 						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
@@ -505,6 +518,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
+	deleteOwnMessagePermission: state.permissions['delete-own-message'],
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
 	pinMessagePermission: state.permissions['pin-message'],
 	createDirectMessagePermission: state.permissions['create-d']

@@ -72,6 +72,7 @@ const LeftButtons = ({
 				tintColor={themes[theme].headerTintColor}
 				labelStyle={{ fontSize, marginLeft }}
 				style={styles.container}
+				testID='header-back'
 			/>
 		);
 	}

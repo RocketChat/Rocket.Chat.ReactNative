@@ -1,7 +1,9 @@
 export const mappedIcons = {
-	'lamp-bulb': 59812,
+	'lamp-bulb': 59836,
+	'phone-in': 59835,
 	'basketball': 59776,
 	'percentage': 59777,
+	'glasses': 59812,
 	'burger': 59813,
 	'leaf': 59814,
 	'airplane': 59815,

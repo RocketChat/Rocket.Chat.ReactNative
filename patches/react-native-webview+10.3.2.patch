@@ -197,16 +197,16 @@ index 02b4238..e0635ed 100644
 +
 +        // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
 +        NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
++        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +
 +        if (key == NULL) {
-+        return;
++           return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
 +        }
 +
 +        NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
 +        MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
 +        clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
 +
-+        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +
 +        if (clientSSL != (id)[NSNull null]) {
 +          NSString *path = [clientSSL objectForKey:@"path"];
