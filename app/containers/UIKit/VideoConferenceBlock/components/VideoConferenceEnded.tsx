@@ -8,7 +8,7 @@ import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useSnaps } from '../../../../lib/hooks/useSnaps';
 import { useActionSheet } from '../../../ActionSheet';
-import CallAgainActionSheet from './CallAgainActionSheet';
+import StartACallActionSheet from './StartACallActionSheet';
 import { CallParticipants, TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
@@ -39,7 +39,7 @@ export default function VideoConferenceEnded({
 						style={style.callToActionCallBack}
 						onPress={() =>
 							showActionSheet({
-								children: <CallAgainActionSheet rid={rid} />,
+								children: <StartACallActionSheet rid={rid} />,
 								snaps
 							})
 						}

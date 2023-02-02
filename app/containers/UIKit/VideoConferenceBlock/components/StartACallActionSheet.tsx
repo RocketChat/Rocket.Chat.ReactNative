@@ -16,7 +16,7 @@ import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import StatusContainer from '../../../Status';
 import useStyle from './styles';
 
-export default function CallAgainActionSheet({ rid }: { rid: string }): React.ReactElement {
+export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
 	const style = useStyle();
 	const { colors } = useTheme();
 	const [user, setUser] = useState({ username: '', avatar: '', uid: '', rid: '' });
