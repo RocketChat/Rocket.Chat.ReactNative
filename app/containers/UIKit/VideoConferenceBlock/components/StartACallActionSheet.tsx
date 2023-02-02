@@ -61,7 +61,9 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 			<View style={style.actionSheetUsernameContainer}>
 				<AvatarContainer text={user.avatar} size={36} />
 				<StatusContainer size={16} id={user.uid} style={{ marginLeft: 8, marginRight: 6 }} />
-				<Text style={style.actionSheetUsername}>{user.username}</Text>
+				<Text style={style.actionSheetUsername} numberOfLines={1}>
+					{user.username}
+				</Text>
 			</View>
 			<View style={style.actionSheetPhotoContainer}>
 				<AvatarContainer size={62} text={username} />
