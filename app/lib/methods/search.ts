@@ -38,7 +38,8 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		t: item.t,
 		encrypted: item.encrypted,
 		lastMessage: item.lastMessage,
-		status: item.status
+		status: item.status,
+		teamMain: item.teamMain
 	})) as ISearchLocal[];
 
 	return search;
