@@ -1062,7 +1062,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	formatReplyMessage = async (replyingMessage: IMessage, message = '') => {
-		const { user, roomType, replyWithMention } = this.props;
+		const { user, roomType, replyWithMention, serverVersion } = this.props;
 		const permalink = await this.getPermalink(replyingMessage);
 		let msg = `[ ](${permalink}) `;
 
@@ -1071,7 +1071,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			msg += `@${replyingMessage?.u?.username} `;
 		}
 
-		return `${msg} ${message}`;
+		const connectionString = compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ? ' ' : '\n';
+		return `${msg}${connectionString}${message}`;
 	};
 
 	updateMentions = (keyword: any, type: string) => {
