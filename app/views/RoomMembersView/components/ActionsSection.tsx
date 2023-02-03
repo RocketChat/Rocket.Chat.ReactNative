@@ -75,7 +75,8 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 								route: 'SelectedUsersView',
 								params: {
 									title: i18n.t('Add_users'),
-									nextAction: addUser
+									nextAction: addUser,
+									showSkipText: false
 								}
 							})
 						}
