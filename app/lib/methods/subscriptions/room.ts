@@ -145,13 +145,13 @@ export default class RoomSubscription {
 			if (subscribedRoom !== _rid) {
 				return;
 			}
-			const [name, activity] = ddpMessage.fields.args;
+			const [name, activities] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (activity.includes('user-typing')) {
+				if (activities.includes('user-typing')) {
 					reduxStore.dispatch(addUserTyping(name));
 				}
-				if (!activity.length) {
+				if (!activities.length) {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}
