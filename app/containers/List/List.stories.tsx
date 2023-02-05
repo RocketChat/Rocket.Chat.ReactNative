@@ -72,31 +72,31 @@ export const SectionAndInfo = () => (
 		<List.Container>
 			<List.Section>
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
 			</List.Section>
 			<List.Section>
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
 			</List.Section>
 			<List.Section title='Chats'>
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
 				<List.Info info='Chats' />
 			</List.Section>
 			<List.Section title={longText} translateTitle={false}>
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
-				<List.Item title='Section Item' translateTitle={false} />
+				<List.Item title='Section item' translateTitle={false} />
 				<List.Separator />
 				<List.Info info={longText} translateInfo={false} />
 			</List.Section>
@@ -107,9 +107,9 @@ export const SectionAndInfo = () => (
 export const WithIcon = () => (
 	<List.Container>
 		<List.Separator />
-		<List.Item title='Icon Left' translateTitle={false} left={() => <List.Icon name='emoji' />} />
+		<List.Item title='Icon left' translateTitle={false} left={() => <List.Icon name='emoji' />} />
 		<List.Separator />
-		<List.Item title='Icon Right' translateTitle={false} right={() => <List.Icon name='emoji' />} />
+		<List.Item title='Icon right' translateTitle={false} right={() => <List.Icon name='emoji' />} />
 		<List.Separator />
 		<List.Item
 			title={longText}
@@ -120,7 +120,7 @@ export const WithIcon = () => (
 			right={() => <List.Icon name='emoji' />}
 		/>
 		<List.Separator />
-		<List.Item title='Show Action Indicator' translateTitle={false} showActionIndicator />
+		<List.Item title='Show action indicator' translateTitle={false} showActionIndicator />
 		<List.Separator />
 	</List.Container>
 );
