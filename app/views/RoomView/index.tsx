@@ -621,18 +621,20 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerRight: () => (
 				<RightButtons
-					rid={rid}
+					rid={rid!}
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}
 					status={room.status}
 					omnichannelPermissions={omnichannelPermissions}
-					t={this.t || t}
+					t={(this.t || t) as SubscriptionType}
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
+					name={avatar!}
+					teamMain={teamMain}
 				/>
 			)
 		});

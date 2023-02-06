@@ -1,4 +1,4 @@
-import { VideoConference } from '../../IVideoConference';
+import { VideoConference, VideoConferenceCapabilities } from '../../IVideoConference';
 
 export type VideoConferenceEndpoints = {
 	'video-conference/jitsi.update-timeout': {
@@ -17,11 +17,15 @@ export type VideoConferenceEndpoints = {
 
 	'video-conference.info': {
 		GET: (params: { callId: string }) => VideoConference & {
-			capabilities: {
-				mic?: boolean;
-				cam?: boolean;
-				title?: boolean;
-			};
+			capabilities: VideoConferenceCapabilities;
 		};
+	};
+
+	'video-conference.capabilities': {
+		GET: () => { providerName: string; capabilities: VideoConferenceCapabilities };
+	};
+
+	'video-conference.providers': {
+		GET: () => { data: { key: string; label: string }[] };
 	};
 };

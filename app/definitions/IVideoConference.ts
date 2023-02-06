@@ -93,3 +93,9 @@ export type VideoConferenceCreateData = AtLeast<
 	DirectVideoConferenceCreateData | GroupVideoConferenceCreateData | LivechatVideoConferenceCreateData,
 	'createdBy' | 'type' | 'rid' | 'providerName' | 'providerData'
 >;
+
+export type VideoConferenceCapabilities = {
+	mic?: boolean;
+	cam?: boolean;
+	title?: boolean;
+};
