@@ -1,24 +1,34 @@
-import { VideoConference, VideoConferenceCapabilities } from '../../IVideoConference';
+import {
+	VideoConfCancelProps,
+	VideoConference,
+	VideoConferenceCapabilities,
+	VideoConferenceInstructions,
+	VideoConfInfoProps,
+	VideoConfJoinProps,
+	VideoConfListProps,
+	VideoConfStartProps
+} from '../../IVideoConference';
+import { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type VideoConferenceEndpoints = {
-	'video-conference/jitsi.update-timeout': {
-		POST: (params: { roomId: string }) => void;
-	};
-	'video-conference.join': {
-		POST: (params: { callId: string; state?: { cam: boolean; mic: boolean } }) => { url: string; providerName: string };
-	};
 	'video-conference.start': {
-		POST: (params: { roomId: string }) => { url: string };
+		POST: (params: VideoConfStartProps) => { data: VideoConferenceInstructions & { providerName: string } };
+	};
+
+	'video-conference.join': {
+		POST: (params: VideoConfJoinProps) => { url: string; providerName: string };
 	};
 
 	'video-conference.cancel': {
-		POST: (params: { callId: string }) => void;
+		POST: (params: VideoConfCancelProps) => void;
 	};
 
 	'video-conference.info': {
-		GET: (params: { callId: string }) => VideoConference & {
-			capabilities: VideoConferenceCapabilities;
-		};
+		GET: (params: VideoConfInfoProps) => VideoConference & { capabilities: VideoConferenceCapabilities };
+	};
+
+	'video-conference.list': {
+		GET: (params: VideoConfListProps) => PaginatedResult<{ data: VideoConference[] }>;
 	};
 
 	'video-conference.capabilities': {
