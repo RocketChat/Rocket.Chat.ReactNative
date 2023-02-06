@@ -19,7 +19,7 @@ const handleBltPermission = async (): Promise<Permission[]> => {
 	return [PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
 };
 
-export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean) => {
+export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean): Promise<void> => {
 	try {
 		const result = await Services.videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
@@ -44,9 +44,9 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 	}
 };
 
-export const videoConfStartAndJoin = async (rid: string, cam?: boolean, mic?: boolean) => {
+export const videoConfStartAndJoin = async ({ rid, cam, mic }: { rid: string; cam?: boolean; mic?: boolean }): Promise<void> => {
 	try {
-		const videoConfResponse: any = await Services.videoConferenceStart(rid);
+		const videoConfResponse = await Services.videoConferenceStart(rid);
 		if (videoConfResponse.success) {
 			videoConfJoin(videoConfResponse.data.callId, cam, mic);
 		}

@@ -1033,7 +1033,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate } = this.state;
-		const { rid, t, prid, name, teamMain, usernames } = room;
+		const { rid, t, prid } = room;
 		const isGroupChatHandler = isGroupChat(room);
 
 		return (
@@ -1041,7 +1041,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<StatusBar />
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
-					<CallSection room={{ rid, name, t, teamMain, usernames }} />
+					<CallSection rid={rid} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />

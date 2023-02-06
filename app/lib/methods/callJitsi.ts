@@ -4,7 +4,7 @@ import { store } from '../store/auxStore';
 import Navigation from '../navigation/appNavigation';
 import sdk from '../services/sdk';
 
-async function jitsiURL({ room }: { room: Pick<ISubscription, 'rid' | 't' | 'usernames' | 'name'> }) {
+async function jitsiURL({ room }: { room: ISubscription }) {
 	const { settings } = store.getState();
 	const { Jitsi_Enabled } = settings;
 
@@ -46,7 +46,7 @@ export function callJitsiWithoutServer(path: string): void {
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio: false });
 }
 
-export async function callJitsi(room: Pick<ISubscription, 'rid' | 't' | 'usernames' | 'name'>, cam = false): Promise<void> {
+export async function callJitsi({ room, cam = false }: { room: ISubscription; cam: boolean }): Promise<void> {
 	logEvent(cam ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
 	const url = await jitsiURL({ room });
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio: cam, rid: room?.rid });

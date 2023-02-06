@@ -336,7 +336,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, name, teamMain, usernames } = this.props;
+		const { t, tmid, threadsEnabled, rid } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -361,7 +361,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				<HeaderCallIcon room={{ name, rid, t, teamMain, usernames }} />
+				<HeaderCallIcon rid={rid} />
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'

@@ -1,15 +1,10 @@
 import React from 'react';
 
 import * as List from '../../../containers/List';
-import { ISubscription } from '../../../definitions';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 
-export default function CallSection({
-	room
-}: {
-	room: Pick<ISubscription, 'rid' | 't' | 'usernames' | 'name' | 'teamMain'>;
-}): React.ReactElement | null {
-	const { showCallOption, initCall } = useVideoConf(room);
+export default function CallSection({ rid }: { rid: string }): React.ReactElement | null {
+	const { showCallOption, showInitCallActionSheet } = useVideoConf(rid);
 
 	if (showCallOption)
 		return (
@@ -17,7 +12,7 @@ export default function CallSection({
 				<List.Separator />
 				<List.Item
 					title='Call'
-					onPress={initCall}
+					onPress={showInitCallActionSheet}
 					testID='room-actions-call'
 					left={() => <List.Icon name='phone' />}
 					showActionIndicator
