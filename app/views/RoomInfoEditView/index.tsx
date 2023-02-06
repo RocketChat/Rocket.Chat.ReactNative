@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
