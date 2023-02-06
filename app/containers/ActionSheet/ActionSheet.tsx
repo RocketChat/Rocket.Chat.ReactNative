@@ -4,7 +4,7 @@ import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useR
 import { Keyboard } from 'react-native';
 import { Easing } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetProps } from '@gorhom/bottom-sheet';
 
 import { useDimensions, useOrientation } from '../../dimensions';
 import { useTheme } from '../../theme';
@@ -125,9 +125,11 @@ const ActionSheet = React.memo(
 		// when is android tablet and the input text is focused
 		const androidTablet: any = isTablet && isLandscape && !isIOS ? { android_keyboardInputMode: 'adjustResize' } : {};
 
-		const handleOnChange = (index: number) => {
+		const handleOnChange: BottomSheetProps['onChange'] = index => {
 			onChange(index);
-			index === -1 && onClose();
+			if (index === -1) {
+				return onClose();
+			}
 		};
 
 		return (

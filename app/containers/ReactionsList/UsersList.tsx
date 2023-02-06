@@ -12,7 +12,7 @@ import { calculatePadding } from './calculatePadding';
 const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement => {
 	const { colors } = useTheme();
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
-	const { indexPosition } = useActionSheet();
+	const { actionSheetSnapIndex } = useActionSheet();
 	const { height } = useWindowDimensions();
 	const paddingBottom = calculatePadding(height);
 
@@ -25,7 +25,7 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 	return (
 		<FlatList
 			data={users}
-			contentContainerStyle={[styles.listContainer, indexPosition === 0 && { paddingBottom }]}
+			contentContainerStyle={[styles.listContainer, actionSheetSnapIndex === 0 && { paddingBottom }]}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
 					<Text style={[styles.emojiName, { color: colors.auxiliaryText }]} testID='usersListEmojiName'>

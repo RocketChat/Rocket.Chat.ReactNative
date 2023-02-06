@@ -66,13 +66,13 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps): React.ReactElement => {
 	const { height } = useWindowDimensions();
 	const paddingBottom = calculatePadding(height);
-	const { indexPosition } = useActionSheet();
+	const { actionSheetSnapIndex } = useActionSheet();
 
 	return (
 		<View style={styles.allTabContainer} testID='reactionsListAllTab'>
 			<FlatList
 				data={reactions}
-				contentContainerStyle={[styles.listContainer, indexPosition === 0 && { paddingBottom }]}
+				contentContainerStyle={[styles.listContainer, actionSheetSnapIndex === 0 && { paddingBottom }]}
 				renderItem={({ item }) => <AllReactionsListItem item={item} getCustomEmoji={getCustomEmoji} />}
 				keyExtractor={item => item.emoji}
 			/>
