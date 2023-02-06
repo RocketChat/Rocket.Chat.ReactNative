@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 import { themes } from '../../../constants';
