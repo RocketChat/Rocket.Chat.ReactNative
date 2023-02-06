@@ -52,7 +52,7 @@ export const deleteAllAudioFiles = async (serverUrl: string): Promise<void> => {
 	try {
 		const serverUrlParsed = sanitizeString(serverUrl);
 		const path = `${FileSystem.documentDirectory}audios/${serverUrlParsed}`;
-		await FileSystem.deleteAsync(path);
+		await FileSystem.deleteAsync(path, { idempotent: true });
 	} catch (error) {
 		log(error);
 	}
