@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, useWindowDimensions } from 'react-native';
 
+import { useActionSheet } from '../ActionSheet';
 import Emoji from '../message/Emoji';
 import { useTheme } from '../../theme';
 import { IReaction } from '../../definitions';
@@ -8,6 +9,7 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
+import { calculatePadding } from './calculatePadding';
 
 interface IAllReactionsListItemProps {
 	getCustomEmoji: TGetCustomEmoji;
@@ -61,15 +63,21 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 	);
 };
 
-const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps): React.ReactElement => (
-	<View style={styles.allTabContainer} testID='reactionsListAllTab'>
-		<FlatList
-			data={reactions}
-			contentContainerStyle={styles.listContainer}
-			renderItem={({ item }) => <AllReactionsListItem item={item} getCustomEmoji={getCustomEmoji} />}
-			keyExtractor={item => item.emoji}
-		/>
-	</View>
-);
+const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps): React.ReactElement => {
+	const { height } = useWindowDimensions();
+	const paddingBottom = calculatePadding(height);
+	const { indexPosition } = useActionSheet();
+
+	return (
+		<View style={styles.allTabContainer} testID='reactionsListAllTab'>
+			<FlatList
+				data={reactions}
+				contentContainerStyle={[styles.listContainer, indexPosition === 0 && { paddingBottom }]}
+				renderItem={({ item }) => <AllReactionsListItem item={item} getCustomEmoji={getCustomEmoji} />}
+				keyExtractor={item => item.emoji}
+			/>
+		</View>
+	);
+};
 
 export default AllTab;

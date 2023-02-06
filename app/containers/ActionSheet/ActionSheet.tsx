@@ -27,7 +27,7 @@ const ANIMATION_CONFIG = {
 };
 
 const ActionSheet = React.memo(
-	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+	forwardRef(({ children, onChange }: { children: React.ReactElement; onChange(index: number): void }, ref) => {
 		const { colors } = useTheme();
 		const bottomSheetRef = useRef<BottomSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
@@ -125,6 +125,11 @@ const ActionSheet = React.memo(
 		// when is android tablet and the input text is focused
 		const androidTablet: any = isTablet && isLandscape && !isIOS ? { android_keyboardInputMode: 'adjustResize' } : {};
 
+		const handleOnChange = (index: number) => {
+			onChange(index);
+			index === -1 && onClose();
+		};
+
 		return (
 			<>
 				{children}
@@ -139,7 +144,7 @@ const ActionSheet = React.memo(
 						enablePanDownToClose
 						style={{ ...styles.container, ...bottomSheet }}
 						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
-						onChange={index => index === -1 && onClose()}
+						onChange={handleOnChange}
 						// We need this to allow horizontal swipe gesture inside the bottom sheet like in reaction picker
 						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}
 						{...androidTablet}

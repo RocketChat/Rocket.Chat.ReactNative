@@ -1,5 +1,5 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
+import React, { ForwardedRef, forwardRef, useContext, useRef, useState } from 'react';
 
 import { TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
@@ -27,11 +27,13 @@ export type TActionSheetOptions = {
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
+	indexPosition: number;
 }
 
 const context = React.createContext<IActionSheetProvider>({
 	showActionSheet: () => {},
-	hideActionSheet: () => {}
+	hideActionSheet: () => {},
+	indexPosition: -1
 });
 
 export const useActionSheet = () => useContext(context);
@@ -48,7 +50,10 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 };
 
 export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+	const [indexPosition, setIndexPosition] = useState(-1);
 	const ref: ForwardedRef<IActionSheetProvider> = useRef(null);
+
+	const onChange = (index: number) => setIndexPosition(index);
 
 	const getContext = () => ({
 		showActionSheet: (options: TActionSheetOptions) => {
@@ -56,12 +61,13 @@ export const ActionSheetProvider = React.memo(({ children }: { children: React.R
 		},
 		hideActionSheet: () => {
 			ref.current?.hideActionSheet();
-		}
+		},
+		indexPosition
 	});
 
 	return (
 		<Provider value={getContext()}>
-			<ActionSheet ref={ref}>
+			<ActionSheet ref={ref} onChange={onChange}>
 				<>{children}</>
 			</ActionSheet>
 		</Provider>

@@ -1,15 +1,20 @@
 import React from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { useTheme } from '../../theme';
 import { IReaction, IApplicationState } from '../../definitions';
 import Avatar from '../Avatar';
 import styles from './styles';
+import { useActionSheet } from '../ActionSheet';
+import { calculatePadding } from './calculatePadding';
 
 const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement => {
 	const { colors } = useTheme();
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
+	const { indexPosition } = useActionSheet();
+	const { height } = useWindowDimensions();
+	const paddingBottom = calculatePadding(height);
 
 	const { emoji, usernames, names } = tabLabel;
 	const users =
@@ -20,7 +25,7 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 	return (
 		<FlatList
 			data={users}
-			contentContainerStyle={styles.listContainer}
+			contentContainerStyle={[styles.listContainer, indexPosition === 0 && { paddingBottom }]}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
 					<Text style={[styles.emojiName, { color: colors.auxiliaryText }]} testID='usersListEmojiName'>
