@@ -487,11 +487,11 @@ jobs:
             yarn detox build --configuration android.att.release
       - save_cache: *save-gradle-cache
       - store_artifacts:
-          path: android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
+          path: android/app/build/outputs/apk/
       - persist_to_workspace:
           root: /home/circleci/repo
           paths:
-            - android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
+            - android/app/build/outputs/apk/
 
   android-test-e2e:
     <<: *defaults
