@@ -269,6 +269,11 @@ android {
     //     pickFirst '**/x86_64/libc++_shared.so'
     // }
 
+    // FIXME: Remove when we update RN
+    packagingOptions {
+        pickFirst '**/*.so'
+    }
+
     // applicationVariants are e.g. debug, release
 
     flavorDimensions "app", "type"
