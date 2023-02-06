@@ -374,6 +374,7 @@ dependencies {
     implementation "com.tencent:mmkv-static:1.2.10"
     androidTestImplementation('com.wix:detox:+')
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.facebook.soloader:soloader:0.10.4'
 }
 
 if (isNewArchitectureEnabled()) {
