@@ -38,4 +38,8 @@ export type VideoConferenceEndpoints = {
 	'video-conference.providers': {
 		GET: () => { data: { key: string; label: string }[] };
 	};
+
+	'video-conference/jitsi.update-timeout': {
+		POST: (params: { roomId: string }) => void;
+	};
 };
