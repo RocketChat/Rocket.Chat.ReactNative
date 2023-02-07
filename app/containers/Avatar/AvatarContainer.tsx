@@ -42,7 +42,7 @@ const AvatarContainer = ({
 			true
 	);
 
-	const { avatarETag } = useAvatarETag({ username, text, type, rid });
+	const { avatarETag } = useAvatarETag({ username, text, type, rid, id });
 
 	return (
 		<Avatar
