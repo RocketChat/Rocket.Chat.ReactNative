@@ -1222,14 +1222,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	handleCallJitsi = () => {
+	// OLD METHOD - support versions before 5.0.0
+	handleEnterCall = () => {
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
-				callJitsi(room);
+				callJitsi({ room });
 			}
 		}
 	};
@@ -1375,7 +1376,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
 					getCustomEmoji={this.getCustomEmoji}
-					callJitsi={this.handleCallJitsi}
+					handleEnterCall={this.handleEnterCall}
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}
