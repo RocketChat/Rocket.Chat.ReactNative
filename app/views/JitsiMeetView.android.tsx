@@ -90,7 +90,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	render() {
 		return (
 			<WebView
-				source={{ uri: `${this.url}&config.disableDeepLinking=true` }}
+				source={{ uri: `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true` }}
 				onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
 				onNavigationStateChange={this.onNavigationStateChange}
 				style={{ flex: 1 }}
