@@ -453,7 +453,7 @@ jobs:
     <<: *defaults
     executor:
       name: android/android-machine
-      resource-class: large
+      resource-class: xlarge
       tag: 2022.12.1
     environment:
       <<: *android-env
@@ -497,7 +497,7 @@ jobs:
     <<: *defaults
     executor:
       name: android/android-machine
-      resource-class: large
+      resource-class: xlarge
       tag: 2022.12.1
     steps:
       - checkout
