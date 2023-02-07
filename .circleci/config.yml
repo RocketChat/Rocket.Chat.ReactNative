@@ -527,7 +527,7 @@ jobs:
       - run:
           name: Run Detox Tests
           command: |
-            yarn detox test --configuration android.emu.release --cleanup --headless
+            yarn detox test --configuration android.emu.release --cleanup --headless --take-screenshots failing
       - store_artifacts:
           path: artifacts
 
@@ -564,7 +564,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            yarn detox test --configuration ios.sim.release --cleanup --headless
+            yarn detox test --configuration ios.sim.release --cleanup --headless --take-screenshots failing
       - store_artifacts:
           path: artifacts
 
