@@ -522,13 +522,14 @@ jobs:
             echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
             echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
             echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
-      - android/start-emulator:
-          avd-name: Pixel_API_32_AOSP
-          no-window: true
-          post-emulator-launch-assemble-command: ''
+      # - android/start-emulator:
+      #     avd-name: Pixel_API_32_AOSP
+      #     no-window: true
+      #     post-emulator-launch-assemble-command: ''
       - run:
           name: Run Detox Tests
           command: |
+            adb devices
             yarn e2e:android-test
       - store_artifacts:
           path: artifacts
