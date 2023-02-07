@@ -218,17 +218,6 @@ function runCommand(command: string) {
 	});
 }
 
-async function prepareAndroid() {
-	if (device.getPlatform() !== 'android') {
-		return;
-	}
-	await runCommand('adb shell settings put secure spell_checker_enabled 0');
-	await runCommand('adb shell settings put secure autofill_service null');
-	await runCommand('adb shell settings put global window_animation_scale 0.0');
-	await runCommand('adb shell settings put global transition_animation_scale 0.0');
-	await runCommand('adb shell settings put global animator_duration_scale 0.0');
-}
-
 export {
 	navigateToWorkspace,
 	navigateToLogin,
@@ -244,6 +233,5 @@ export {
 	searchRoom,
 	tryTapping,
 	checkServer,
-	platformTypes,
-	prepareAndroid
+	platformTypes
 };
