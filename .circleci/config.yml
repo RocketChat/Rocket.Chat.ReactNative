@@ -509,17 +509,21 @@ jobs:
           command: |
             yarn install --cache-folder=/home/circleci/repo/node_modules
       - save_cache: *save-npm-cache-linux
-      # - restore_cache: *restore-gradle-cache
       - create-e2e-account-file
       - android/create-avd:
-          avd-name: myavd
+          avd-name: Pixel_API_32_AOSP
           install: true
           system-image: system-images;android-32;google_apis;x86_64
       - android/start-emulator:
-          avd-name: myavd
+          avd-name: Pixel_API_32_AOSP
           no-window: true
           post-emulator-launch-assemble-command: ''
-      # - save_cache: *save-gradle-cache
+      - run:
+          name: Setup emulator
+          command: |
+            echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
+            echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
+            echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
       - run:
           name: Run Detox Tests
           command: |
