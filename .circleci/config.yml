@@ -516,16 +516,16 @@ jobs:
           avd-name: Pixel_API_32_AOSP
           install: true
           system-image: system-images;android-32;google_apis;x86_64
-      - android/start-emulator:
-          avd-name: Pixel_API_32_AOSP
-          no-window: true
-          post-emulator-launch-assemble-command: ''
       - run:
           name: Setup emulator
           command: |
             echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
             echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
             echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
+      - android/start-emulator:
+          avd-name: Pixel_API_32_AOSP
+          no-window: true
+          post-emulator-launch-assemble-command: ''
       - run:
           name: Run Detox Tests
           command: |
