@@ -1,4 +1,9 @@
 const HEADER_HEIGHT = 48;
+/**
+ * This SNAP_PERCENTAGE is calculate between the snaps: ['50%', '80%']
+ * so considering the content size is set to 80% and the first snap is 50%
+ * we need to 50% * 80% = 40%
+ */
 const SNAP_PERCENTAGE = 0.4;
 /**
  * This function is required for the ReactionsList to see the full list and the scroll enables,

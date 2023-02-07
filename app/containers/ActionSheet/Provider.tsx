@@ -1,5 +1,6 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import React, { ForwardedRef, forwardRef, useContext, useRef, useState } from 'react';
+import { BottomSheetProps } from '@gorhom/bottom-sheet';
 
 import { TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
@@ -53,7 +54,7 @@ export const ActionSheetProvider = React.memo(({ children }: { children: React.R
 	const [actionSheetSnapIndex, setActionSheetSnapIndex] = useState(-1);
 	const ref: ForwardedRef<IActionSheetProvider> = useRef(null);
 
-	const onChange = (index: number) => setActionSheetSnapIndex(index);
+	const onChange: BottomSheetProps['onChange'] = index => setActionSheetSnapIndex(index);
 
 	const getContext = () => ({
 		showActionSheet: (options: TActionSheetOptions) => {
