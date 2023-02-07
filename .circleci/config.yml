@@ -484,7 +484,7 @@ jobs:
       - run:
           name: Build Android
           command: |
-            yarn detox build --configuration android.att.release
+            yarn e2e:android-build
       - save_cache: *save-gradle-cache
       - store_artifacts:
           path: android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk
@@ -529,7 +529,7 @@ jobs:
       - run:
           name: Run Detox Tests
           command: |
-            yarn detox test --configuration android.emu.release --cleanup --headless --take-screenshots failing
+            yarn e2e:android-test
       - store_artifacts:
           path: artifacts
 
@@ -562,11 +562,11 @@ jobs:
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
             yarn detox clean-framework-cache && yarn detox build-framework-cache
-            yarn detox build --configuration ios.sim.release
+            yarn e2e:ios-build
       - run:
           name: Run tests
           command: |
-            yarn detox test --configuration ios.sim.release --cleanup --headless --take-screenshots failing
+            yarn e2e:ios-test
       - store_artifacts:
           path: artifacts
 

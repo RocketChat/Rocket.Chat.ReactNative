@@ -18,7 +18,11 @@
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
 		"prepare": "husky install",
-		"build-icon-set": "node scripts/build-icon-set.js"
+		"build-icon-set": "node scripts/build-icon-set.js",
+		"e2e:android-build": "yarn detox build -c android.emu.release",
+		"e2e:android-test": "yarn detox test -c android.emu.release --cleanup --headless --take-screenshots failing",
+		"e2e:ios-build": "yarn detox build -c ios.sim.release",
+		"e2e:ios-test": "yarn detox test -c ios.sim.release --cleanup --headless --take-screenshots failing"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [
