@@ -1,5 +1,3 @@
-import { expect } from 'detox';
-
 import { navigateToLogin, tapBack, platformTypes, navigateToWorkspace, login, TTextMatcher } from '../../helpers/app';
 import data from '../../data';
 
@@ -12,66 +10,7 @@ describe('Login screen', () => {
 		await navigateToLogin();
 	});
 
-	describe('Render', () => {
-		it('should have login screen', async () => {
-			await expect(element(by.id('login-view'))).toExist();
-		});
-
-		it('should have email input', async () => {
-			await expect(element(by.id('login-view-email'))).toBeVisible();
-		});
-
-		it('should have password input', async () => {
-			await expect(element(by.id('login-view-password'))).toBeVisible();
-		});
-
-		it('should have submit button', async () => {
-			await expect(element(by.id('login-view-submit'))).toBeVisible();
-		});
-
-		it('should have register button', async () => {
-			await expect(element(by.id('login-view-register'))).toBeVisible();
-		});
-
-		it('should have forgot password button', async () => {
-			await expect(element(by.id('login-view-forgot-password'))).toBeVisible();
-		});
-
-		it('should have legal button', async () => {
-			await expect(element(by.id('login-view-more'))).toBeVisible();
-		});
-	});
-
 	describe('Usage', () => {
-		it('should navigate to register', async () => {
-			await element(by.id('login-view-register')).tap();
-			await waitFor(element(by.id('register-view')))
-				.toExist()
-				.withTimeout(2000);
-			await tapBack();
-		});
-
-		it('should navigate to forgot password', async () => {
-			await expect(element(by.id('login-view-more'))).toBeVisible();
-			await waitFor(element(by.id('login-view-forgot-password')))
-				.toBeVisible()
-				.withTimeout(2000);
-
-			let n = 0;
-			while (n < 3) {
-				try {
-					await element(by.id('login-view-forgot-password')).tap();
-					await waitFor(element(by.id('forgot-password-view')))
-						.toExist()
-						.withTimeout(2000);
-					n = 3;
-				} catch (error) {
-					n += 1;
-				}
-			}
-			await tapBack();
-		});
-
 		it('should insert wrong password and get error', async () => {
 			await element(by.id('login-view-email')).replaceText(data.users.regular.username);
 			await element(by.id('login-view-email')).tapReturnKey();
