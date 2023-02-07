@@ -521,9 +521,9 @@ jobs:
       - run:
           name: Setup emulator
           command: |
-            echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
-            echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
-            echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
+            echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
+            echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
+            echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_32_AOSP.avd/config.ini
       - run:
           name: Run Detox Tests
           command: |
