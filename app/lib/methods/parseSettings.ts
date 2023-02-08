@@ -3,6 +3,10 @@ import { defaultSettings } from '../constants';
 export function parseSettings(settings: any) {
 	return settings.reduce((ret: any, item: any) => {
 		// @ts-ignore
+		if (item._id === 'Presence_broadcast_disabled') {
+			ret[item._id] = true;
+			return ret;
+		}
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
 			ret[item._id] = ret[item._id].reduce(
