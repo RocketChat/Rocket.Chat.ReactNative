@@ -36,6 +36,7 @@ interface ISidebarProps {
 	loadingServer: boolean;
 	useRealName: boolean;
 	allowStatusMessage: boolean;
+	Presence_broadcast_disabled: boolean;
 	isMasterDetail: boolean;
 	viewStatisticsPermission: string[];
 	viewRoomAdministrationPermission: string[];
@@ -61,6 +62,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			isMasterDetail,
 			useRealName,
 			theme,
+			Presence_broadcast_disabled,
 			viewStatisticsPermission,
 			viewRoomAdministrationPermission,
 			viewUserAdministrationPermission,
@@ -92,6 +94,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return true;
 		}
 		if (nextProps.useRealName !== useRealName) {
+			return true;
+		}
+		if (nextProps.Presence_broadcast_disabled !== Presence_broadcast_disabled) {
 			return true;
 		}
 		if (!dequal(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
@@ -219,11 +224,15 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	renderCustomStatus = () => {
-		const { user, theme } = this.props;
+		const { user, theme, Presence_broadcast_disabled } = this.props;
+		let status = user?.status;
+		if (Presence_broadcast_disabled) {
+			status = 'disabled';
+		}
 		return (
 			<SidebarItem
 				text={user.statusText || I18n.t('Edit_Status')}
-				left={<Status size={24} status={user?.status} />}
+				left={<Status size={24} status={status} />}
 				theme={theme!}
 				right={<CustomIcon name='edit' size={20} color={themes[theme!].titleText} />}
 				onPress={() => this.sidebarNavigate('StatusView')}
@@ -294,6 +303,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	loadingServer: state.server.loading,
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
+	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled,
 	isMasterDetail: state.app.isMasterDetail,
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],
