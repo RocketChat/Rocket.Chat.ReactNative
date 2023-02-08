@@ -451,6 +451,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
+					badge={() => <HeaderButton.BadgeWarn />}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
