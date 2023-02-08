@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerNavigationState } from '@react-navigation/native';
-import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, ScrollView, Text, TouchableWithoutFeedback, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
@@ -11,7 +11,7 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants';
+import { STATUS_COLORS, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -161,6 +161,30 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		navigation?.closeDrawer();
 	};
 
+	onPressLearnMorePresenceCap = () => {
+		// FIXME: tbd
+		Linking.openURL('https://go.rocket.chat/i/presence-cap');
+	};
+
+	onPressPresenceLearnMore = () => {
+		Alert.alert(
+			I18n.t('Presence_Cap_Warning_Title'),
+			I18n.t('Presence_Cap_Warning_Description'),
+			[
+				{
+					text: I18n.t('Learn_more'),
+					onPress: this.onPressLearnMorePresenceCap,
+					style: 'cancel'
+				},
+				{
+					text: I18n.t('Close'),
+					style: 'default'
+				}
+			],
+			{ cancelable: false }
+		);
+	};
+
 	renderAdmin = () => {
 		const { theme, isMasterDetail } = this.props;
 		if (!this.getIsAdmin()) {
@@ -234,8 +258,14 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status size={24} status={status} />}
 				theme={theme!}
-				right={<CustomIcon name='edit' size={20} color={themes[theme!].titleText} />}
-				onPress={() => this.sidebarNavigate('StatusView')}
+				right={
+					Presence_broadcast_disabled ? (
+						<View style={[styles.customStatusDisabled, { backgroundColor: STATUS_COLORS.disabled }]} />
+					) : (
+						<CustomIcon name='edit' size={20} color={themes[theme!].titleText} />
+					)
+				}
+				onPress={() => (Presence_broadcast_disabled ? this.onPressPresenceLearnMore() : this.sidebarNavigate('StatusView'))}
 				testID={`sidebar-custom-status-${user.status}`}
 			/>
 		);
@@ -303,7 +333,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	loadingServer: state.server.loading,
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
-	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled,
+	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled as boolean,
 	isMasterDetail: state.app.isMasterDetail,
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],
