@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-import data, { TDataChannels, TDataGroups, TDataTeams, TDataUsers, TUserRegularChannels } from '../data';
-import random from './random';
+import data, { Data, TDataChannels, TDataGroups, TDataTeams, TDataUsers, TUserRegularChannels } from '../data';
 
 const TEAM_TYPE = {
 	PUBLIC: 0,
@@ -108,7 +107,7 @@ const changeChannelJoinCode = async (roomId: string, joinCode: string) => {
 		await rocketchat.post('method.call/saveRoomSettings', {
 			message: JSON.stringify({
 				msg: 'method',
-				id: random(10),
+				id: globalThis.random,
 				method: 'saveRoomSettings',
 				params: [roomId, { joinCode }]
 			})
@@ -132,6 +131,8 @@ const sendMessage = async (user: { username: string; password: string }, channel
 };
 
 const setup = async () => {
+	const data = new Data(globalThis.random);
+
 	await login(data.adminUser, data.adminPassword);
 
 	for (const userKey in data.users) {
