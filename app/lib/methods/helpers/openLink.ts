@@ -44,9 +44,9 @@ const addProtocol = (url: string): string => {
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
+	url = addProtocol(url);
 	try {
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
-		url = addProtocol(url);
 		if (browser === 'inApp') {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].headerBackground,
