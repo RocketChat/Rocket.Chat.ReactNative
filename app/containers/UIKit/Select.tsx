@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
 	viewContainer: {
 		marginBottom: 16,
 		paddingHorizontal: 16,
-		borderWidth: 2,
-		borderRadius: 2,
+		borderWidth: 1,
+		borderRadius: 4,
 		justifyContent: 'center'
 	},
 	pickerText: {

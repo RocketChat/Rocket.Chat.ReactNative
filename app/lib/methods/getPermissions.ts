@@ -57,7 +57,8 @@ export const SUPPORTED_PERMISSIONS = [
 	'edit-omnichannel-contact',
 	'edit-livechat-room-customfields',
 	'view-canned-responses',
-	'mobile-upload-file'
+	'mobile-upload-file',
+	'delete-own-message'
 ] as const;
 
 export async function setPermissions(): Promise<void> {

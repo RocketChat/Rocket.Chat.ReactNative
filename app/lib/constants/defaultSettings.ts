@@ -226,5 +226,8 @@ export const defaultSettings = {
 	},
 	Accounts_AllowDeleteOwnAccount: {
 		type: 'valueAsBoolean'
+	},
+	Number_of_users_autocomplete_suggestions: {
+		type: 'valueAsNumber'
 	}
 } as const;

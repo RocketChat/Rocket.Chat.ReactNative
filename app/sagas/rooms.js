@@ -58,15 +58,15 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
 			const subsToDelete = existingSubs.filter(i1 => !subscriptions.find(i2 => i1._id === i2._id));
 
-			const openedRooms = yield select(state => state.room.rooms);
+			const subscribedRoom = yield select(state => state.room.subscribedRoom);
 			const lastMessages = subscriptions
 				/** Checks for opened rooms and filter them out.
 				 * It prevents this process to try persisting the same last message on the room messages fetch.
 				 * This race condition is easy to reproduce on push notification tap.
 				 */
-				.filter(sub => !openedRooms.includes(sub.rid))
+				.filter(sub => subscribedRoom !== sub.rid)
 				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
-				.filter(lm => lm);
+				.filter(lm => lm && lm._id && lm.rid);
 			const lastMessagesIds = lastMessages.map(lm => lm._id).filter(lm => lm);
 			const existingMessages = yield messagesCollection.query(Q.where('id', Q.oneOf(lastMessagesIds))).fetch();
 			const messagesToUpdate = existingMessages.filter(i1 => lastMessages.find(i2 => i1.id === i2._id));

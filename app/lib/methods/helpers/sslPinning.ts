@@ -33,6 +33,9 @@ const RCSSLPinning = Platform.select({
 						type: ['com.rsa.pkcs-12']
 					});
 					const { uri, name } = res;
+					if (!name) {
+						return reject();
+					}
 					Alert.prompt(
 						I18n.t('Certificate_password'),
 						I18n.t('Whats_the_password_for_your_certificate'),

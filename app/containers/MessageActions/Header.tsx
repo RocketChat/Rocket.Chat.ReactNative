@@ -14,12 +14,12 @@ import { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
 
 export interface IHeader {
-	handleReaction: (emoji: IEmoji, message: TAnyMessageModel) => void;
+	handleReaction: (emoji: IEmoji | null, message: TAnyMessageModel) => void;
 	message: TAnyMessageModel;
 	isMasterDetail: boolean;
 }
 
-type TOnReaction = ({ emoji }: { emoji: IEmoji }) => void;
+type TOnReaction = ({ emoji }: { emoji?: IEmoji }) => void;
 
 interface THeaderItem {
 	item: IEmoji;
@@ -94,8 +94,10 @@ const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader)
 	const quantity = Math.trunc(size / (ITEM_SIZE + ITEM_MARGIN * 2) - 1);
 
 	const onReaction: TOnReaction = ({ emoji }) => {
-		handleReaction(emoji, message);
-		addFrequentlyUsed(emoji);
+		handleReaction(emoji || null, message);
+		if (emoji) {
+			addFrequentlyUsed(emoji);
+		}
 	};
 
 	const renderItem = ({ item }: { item: IEmoji }) => <HeaderItem item={item} onReaction={onReaction} theme={theme} />;
