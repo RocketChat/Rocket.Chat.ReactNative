@@ -170,6 +170,9 @@ export async function getSettings(): Promise<void> {
 				userPreferences.setBool(NOTIFICATION_PRESENCE_CAP, true);
 				reduxStore.dispatch(setNotificationPresenceCap(true));
 			}
+		} else {
+			userPreferences.removeItem(NOTIFICATION_PRESENCE_CAP);
+			reduxStore.dispatch(setNotificationPresenceCap(false));
 		}
 
 		// filter server info

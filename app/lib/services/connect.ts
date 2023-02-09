@@ -19,9 +19,11 @@ import { connectRequest, connectSuccess, disconnect as disconnectAction } from '
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
-import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
+import { defaultSettings, MIN_ROCKETCHAT_VERSION, NOTIFICATION_PRESENCE_CAP } from '../constants';
 import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUser, _setUserTimer, onRolesChanged } from '../methods';
 import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
+import userPreferences from '../methods/userPreferences';
+import { setNotificationPresenceCap } from '../../actions/app';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -144,6 +146,19 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 							});
 						}
 						store.dispatch(updateSettings(_id, value));
+
+						if (_id === 'Presence_broadcast_disabled') {
+							if (value) {
+								const notificationPresenceCap = await userPreferences.getBool(NOTIFICATION_PRESENCE_CAP);
+								if (notificationPresenceCap !== false) {
+									userPreferences.setBool(NOTIFICATION_PRESENCE_CAP, true);
+									store.dispatch(setNotificationPresenceCap(true));
+								}
+							} else {
+								userPreferences.removeItem(NOTIFICATION_PRESENCE_CAP);
+								store.dispatch(setNotificationPresenceCap(false));
+							}
+						}
 					} catch (e) {
 						log(e);
 					}
