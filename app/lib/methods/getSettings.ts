@@ -13,6 +13,7 @@ import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import userPreferences from './userPreferences';
+import { setPresenceCap } from './getUsersPresence';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -163,17 +164,7 @@ export async function getSettings(): Promise<void> {
 
 		reduxStore.dispatch(addSettings(parsedSettings));
 
-		// sets presence cap notification badge
-		if (parsedSettings.Presence_broadcast_disabled) {
-			const notificationPresenceCap = await userPreferences.getBool(NOTIFICATION_PRESENCE_CAP);
-			if (notificationPresenceCap !== false) {
-				userPreferences.setBool(NOTIFICATION_PRESENCE_CAP, true);
-				reduxStore.dispatch(setNotificationPresenceCap(true));
-			}
-		} else {
-			userPreferences.removeItem(NOTIFICATION_PRESENCE_CAP);
-			reduxStore.dispatch(setNotificationPresenceCap(false));
-		}
+		setPresenceCap(parsedSettings.Presence_broadcast_disabled);
 
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
