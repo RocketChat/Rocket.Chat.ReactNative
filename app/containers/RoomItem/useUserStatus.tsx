@@ -11,17 +11,14 @@ export const useUserStatus = (
 	const presenceDisabled = useAppSelector(state => state.settings.Presence_broadcast_disabled);
 	const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 
-	if (presenceDisabled) {
-		return {
-			connected,
-			status: 'disabled'
-		};
-	}
-
 	let status = 'loading';
 	if (connected) {
 		if (type === 'd') {
-			status = userStatus || 'loading';
+			if (presenceDisabled) {
+				status = 'disabled';
+			} else {
+				status = userStatus || 'loading';
+			}
 		} else if (type === 'l' && liveChatStatus) {
 			status = liveChatStatus;
 		}

@@ -61,12 +61,14 @@ const RoomHeaderContainer = React.memo(
 		}
 
 		if (connected) {
-			if (presenceDisabled) {
-				status = 'disabled';
-			} else if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
-				status = statusActiveUser;
-				statusText = statusTextActiveUser;
+			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
+				if (presenceDisabled) {
+					status = 'disabled';
+				} else {
+					const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
+					status = statusActiveUser;
+					statusText = statusTextActiveUser;
+				}
 			} else if (type === 'l' && visitor?.status) {
 				const { status: statusVisitor } = visitor;
 				status = statusVisitor;
