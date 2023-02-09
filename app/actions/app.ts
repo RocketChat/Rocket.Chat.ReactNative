@@ -12,7 +12,11 @@ interface ISetMasterDetail extends Action {
 	isMasterDetail: boolean;
 }
 
-export type TActionApp = IAppStart & ISetMasterDetail;
+interface ISetNotificationPresenceCap extends Action {
+	show: boolean;
+}
+
+export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap;
 
 interface Params {
 	root: RootEnum;
@@ -49,5 +53,12 @@ export function setMasterDetail(isMasterDetail: boolean): ISetMasterDetail {
 	return {
 		type: APP.SET_MASTER_DETAIL,
 		isMasterDetail
+	};
+}
+
+export function setNotificationPresenceCap(show: boolean): ISetNotificationPresenceCap {
+	return {
+		type: APP.SET_NOTIFICATION_PRESENCE_CAP,
+		show
 	};
 }

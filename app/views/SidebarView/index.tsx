@@ -4,14 +4,16 @@ import { DrawerNavigationState } from '@react-navigation/native';
 import { Alert, ScrollView, Text, TouchableWithoutFeedback, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { Dispatch } from 'redux';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import userPreferences from '../../lib/methods/userPreferences';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { STATUS_COLORS, themes } from '../../lib/constants';
+import { NOTIFICATION_PRESENCE_CAP, STATUS_COLORS, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -21,6 +23,7 @@ import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import { IApplicationState, IUser } from '../../definitions';
 import * as List from '../../containers/List';
+import { setNotificationPresenceCap } from '../../actions/app';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -29,6 +32,7 @@ interface ISidebarState {
 interface ISidebarProps {
 	baseUrl: string;
 	navigation?: DrawerNavigationProp<DrawerParamList>;
+	dispatch: Dispatch;
 	state?: DrawerNavigationState<DrawerParamList>;
 	Site_Name: string;
 	user: IUser;
@@ -36,6 +40,7 @@ interface ISidebarProps {
 	loadingServer: boolean;
 	useRealName: boolean;
 	allowStatusMessage: boolean;
+	notificationPresenceCap: boolean;
 	Presence_broadcast_disabled: boolean;
 	isMasterDetail: boolean;
 	viewStatisticsPermission: string[];
@@ -60,6 +65,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			baseUrl,
 			state,
 			isMasterDetail,
+			notificationPresenceCap,
 			useRealName,
 			theme,
 			Presence_broadcast_disabled,
@@ -91,6 +97,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return true;
 		}
 		if (nextProps.isMasterDetail !== isMasterDetail) {
+			return true;
+		}
+		if (nextProps.notificationPresenceCap !== notificationPresenceCap) {
 			return true;
 		}
 		if (nextProps.useRealName !== useRealName) {
@@ -167,6 +176,10 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	onPressPresenceLearnMore = () => {
+		const { dispatch } = this.props;
+		dispatch(setNotificationPresenceCap(false));
+		userPreferences.setBool(NOTIFICATION_PRESENCE_CAP, false);
+
 		Alert.alert(
 			I18n.t('Presence_Cap_Warning_Title'),
 			I18n.t('Presence_Cap_Warning_Description'),
@@ -248,23 +261,26 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	renderCustomStatus = () => {
-		const { user, theme, Presence_broadcast_disabled } = this.props;
+		const { user, theme, Presence_broadcast_disabled, notificationPresenceCap } = this.props;
+
 		let status = user?.status;
 		if (Presence_broadcast_disabled) {
 			status = 'disabled';
 		}
+
+		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].titleText} />;
+		if (notificationPresenceCap) {
+			right = <View style={[styles.customStatusDisabled, { backgroundColor: STATUS_COLORS.disabled }]} />;
+		} else if (Presence_broadcast_disabled) {
+			right = undefined;
+		}
+
 		return (
 			<SidebarItem
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status size={24} status={status} />}
 				theme={theme!}
-				right={
-					Presence_broadcast_disabled ? (
-						<View style={[styles.customStatusDisabled, { backgroundColor: STATUS_COLORS.disabled }]} />
-					) : (
-						<CustomIcon name='edit' size={20} color={themes[theme!].titleText} />
-					)
-				}
+				right={right}
 				onPress={() => (Presence_broadcast_disabled ? this.onPressPresenceLearnMore() : this.sidebarNavigate('StatusView'))}
 				testID={`sidebar-custom-status-${user.status}`}
 			/>
@@ -334,6 +350,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
 	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled as boolean,
+	notificationPresenceCap: state.app.notificationPresenceCap,
 	isMasterDetail: state.app.isMasterDetail,
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],

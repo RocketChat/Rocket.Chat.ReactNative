@@ -2,7 +2,8 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { addSettings, clearSettings } from '../../actions/settings';
-import { DEFAULT_AUTO_LOCK, defaultSettings } from '../constants';
+import { setNotificationPresenceCap } from '../../actions/app';
+import { DEFAULT_AUTO_LOCK, defaultSettings, NOTIFICATION_PRESENCE_CAP } from '../constants';
 import { IPreparedSettings, ISettingsIcon } from '../../definitions';
 import fetch from './helpers/fetch';
 import log from './helpers/log';
@@ -11,6 +12,7 @@ import database from '../database';
 import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
+import userPreferences from './userPreferences';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -157,8 +159,18 @@ export async function getSettings(): Promise<void> {
 		const data: IData[] = result.settings || [];
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
+		const parsedSettings = parseSettings(filteredSettings);
 
-		reduxStore.dispatch(addSettings(parseSettings(filteredSettings)));
+		reduxStore.dispatch(addSettings(parsedSettings));
+
+		// sets presence cap notification badge
+		if (parsedSettings.Presence_broadcast_disabled) {
+			const notificationPresenceCap = await userPreferences.getBool(NOTIFICATION_PRESENCE_CAP);
+			if (notificationPresenceCap !== false) {
+				userPreferences.setBool(NOTIFICATION_PRESENCE_CAP, true);
+				reduxStore.dispatch(setNotificationPresenceCap(true));
+			}
+		}
 
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));

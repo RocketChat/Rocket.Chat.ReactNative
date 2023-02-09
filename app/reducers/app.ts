@@ -9,6 +9,7 @@ export interface IApp {
 	ready: boolean;
 	foreground: boolean;
 	background: boolean;
+	notificationPresenceCap: boolean;
 }
 
 export const initialState: IApp = {
@@ -17,7 +18,8 @@ export const initialState: IApp = {
 	text: undefined,
 	ready: false,
 	foreground: true,
-	background: false
+	background: false,
+	notificationPresenceCap: false
 };
 
 export default function app(state = initialState, action: TActionApp): IApp {
@@ -54,6 +56,11 @@ export default function app(state = initialState, action: TActionApp): IApp {
 			return {
 				...state,
 				isMasterDetail: action.isMasterDetail
+			};
+		case APP.SET_NOTIFICATION_PRESENCE_CAP:
+			return {
+				...state,
+				notificationPresenceCap: action.show
 			};
 		default:
 			return state;
