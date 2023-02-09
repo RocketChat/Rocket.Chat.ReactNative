@@ -2,8 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { addSettings, clearSettings } from '../../actions/settings';
-import { setNotificationPresenceCap } from '../../actions/app';
-import { DEFAULT_AUTO_LOCK, defaultSettings, NOTIFICATION_PRESENCE_CAP } from '../constants';
+import { DEFAULT_AUTO_LOCK, defaultSettings } from '../constants';
 import { IPreparedSettings, ISettingsIcon } from '../../definitions';
 import fetch from './helpers/fetch';
 import log from './helpers/log';
@@ -12,7 +11,6 @@ import database from '../database';
 import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
-import userPreferences from './userPreferences';
 import { setPresenceCap } from './getUsersPresence';
 
 const serverInfoKeys = [
