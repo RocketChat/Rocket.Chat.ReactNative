@@ -171,8 +171,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	onPressLearnMorePresenceCap = () => {
-		// FIXME: tbd
-		Linking.openURL('https://go.rocket.chat/i/presence-cap');
+		Linking.openURL('https://go.rocket.chat/i/presence-cap-learn-more');
 	};
 
 	onPressPresenceLearnMore = () => {
