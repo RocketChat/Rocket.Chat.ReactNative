@@ -38,13 +38,13 @@ const InviteUsersEditView = () => {
 				<StatusBar />
 				<List.Section>
 					<List.Separator />
-					<List.Item title='Expiration_Days' right={() => <Picker param={'days'} first={'Never'} />} />
+					<List.Item title='Expiration_days' right={() => <Picker param={'days'} first={'Never'} />} />
 					<List.Separator />
 					<List.Item title='Max_number_of_uses' right={() => <Picker param='maxUses' first='No_limit' />} />
 					<List.Separator />
 				</List.Section>
 				<View style={styles.innerContainer}>
-					<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={createInviteLink} />
+					<Button title={I18n.t('Generate_new_link')} type='primary' onPress={createInviteLink} />
 				</View>
 			</List.Container>
 		</SafeAreaView>

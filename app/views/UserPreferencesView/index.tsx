@@ -78,7 +78,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					<List.Section>
 						<List.Separator />
 						<List.Item
-							title='Enable_Message_Parser'
+							title='Enable_message_parser'
 							testID='preferences-view-enable-message-parser'
 							right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption)}
 						/>
@@ -92,7 +92,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 							onChangeValue={setAlsoSendThreadToChannel}
 							preference='alsoSendThreadToChannel'
 							value={alsoSendThreadToChannel}
-							title='Messagebox_Send_to_channel'
+							title='Messagebox_send_to_channel'
 							testID='preferences-view-enable-message-parser'
 						/>
 						<List.Separator />

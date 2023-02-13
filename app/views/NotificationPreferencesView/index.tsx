@@ -129,7 +129,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title='Receive_Notification'
+						title='Receive_notification'
 						testID='notification-preference-view-receive-notification'
 						right={() => <RenderSwitch preference='disableNotifications' room={room} onChangeValue={saveNotificationSettings} />}
 					/>
@@ -140,7 +140,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title='Receive_Group_Mentions'
+						title='Receive_group_mentions'
 						testID='notification-preference-view-group-mentions'
 						right={() => <RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={saveNotificationSettings} />}
 					/>
@@ -156,7 +156,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						right={() => <RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={saveNotificationSettings} />}
 					/>
 					<List.Separator />
-					<List.Info info='Mark_as_unread_Info' />
+					<List.Info info='Mark_as_unread_info' />
 				</List.Section>
 
 				{hideUnreadStatus && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0') ? (
@@ -168,11 +168,11 @@ const NotificationPreferencesView = (): React.ReactElement => {
 							right={() => <RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={saveNotificationSettings} />}
 						/>
 						<List.Separator />
-						<List.Info info='Show_badge_for_mentions_Info' />
+						<List.Info info='Show_badge_for_mentions_info' />
 					</List.Section>
 				) : null}
 
-				<List.Section title='In_App_And_Desktop'>
+				<List.Section title='In_app_and_desktop'>
 					<List.Separator />
 					<RenderListPicker
 						preference='desktopNotifications'
@@ -192,7 +192,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 					<List.Separator />
 					<List.Info info='In_App_and_Desktop_Alert_info' />
 				</List.Section>
-				<List.Section title='Push_Notifications'>
+				<List.Section title='Push_notifications'>
 					<List.Separator />
 					<RenderListPicker
 						preference='mobilePushNotifications'

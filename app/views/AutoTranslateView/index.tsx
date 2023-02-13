@@ -23,7 +23,7 @@ type TAutoTranslateViewProps = IBaseScreen<ChatsStackParamList, 'AutoTranslateVi
 
 class AutoTranslateView extends React.Component<TAutoTranslateViewProps, any> {
 	static navigationOptions = () => ({
-		title: I18n.t('Auto_Translate')
+		title: I18n.t('Auto_translate')
 	});
 
 	private mounted: boolean;

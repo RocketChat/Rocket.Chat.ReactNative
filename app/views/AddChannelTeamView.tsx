@@ -52,7 +52,7 @@ const AddChannelTeamView = () => {
 			<List.Container>
 				<List.Separator />
 				<List.Item
-					title='Create_New'
+					title='Create_new'
 					onPress={() =>
 						isMasterDetail
 							? navigation.navigate('SelectedUsersViewCreateChannel', {
@@ -69,7 +69,7 @@ const AddChannelTeamView = () => {
 				/>
 				<List.Separator />
 				<List.Item
-					title='Add_Existing'
+					title='Add_existing'
 					onPress={() => navigation.navigate('AddExistingChannelView', { teamId, teamChannels })}
 					testID='add-channel-team-view-add-existing'
 					left={() => <List.Icon name='channel-public' />}

@@ -960,7 +960,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				{['c', 'p'].includes(t) && canConvertToTeam ? (
 					<>
 						<List.Item
-							title='Convert_to_Team'
+							title='Convert_to_team'
 							onPress={() =>
 								this.onPressTouchable({
 									event: this.convertToTeam
@@ -977,7 +977,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				{['c', 'p'].includes(t) && canMoveToTeam ? (
 					<>
 						<List.Item
-							title='Move_to_Team'
+							title='Move_to_team'
 							onPress={() =>
 								this.onPressTouchable({
 									event: this.moveToTeam
@@ -1003,7 +1003,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				{['c', 'p'].includes(t) && canConvertTeamToChannel ? (
 					<>
 						<List.Item
-							title='Convert_to_Channel'
+							title='Convert_to_channel'
 							disabled={loading}
 							onPress={() =>
 								this.onPressTouchable({
@@ -1152,7 +1152,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions?.canViewCannedResponse ? (
 							<>
 								<List.Item
-									title='Canned_Responses'
+									title='Canned_responses'
 									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid } })}
 									left={() => <List.Icon name='canned-response' />}
 									showActionIndicator
@@ -1253,7 +1253,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						{['c', 'p', 'd'].includes(t) && canAutoTranslate ? (
 							<>
 								<List.Item
-									title='Auto_Translate'
+									title='Auto_translate'
 									onPress={() =>
 										this.onPressTouchable({
 											route: 'AutoTranslateView',

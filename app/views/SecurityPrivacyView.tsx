@@ -74,7 +74,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 					{e2eEnabled ? (
 						<>
 							<List.Item
-								title='E2E_Encryption'
+								title='E2E_encryption'
 								showActionIndicator
 								onPress={() => navigateToScreen('E2EEncryptionSecurityView')}
 								testID='security-privacy-view-e2e-encryption'
