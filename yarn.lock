@@ -16754,7 +16754,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-promise@^8.0.3:
+promise@^8.2.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/promise/-/promise-8.3.0.tgz#8cb333d1edeb61ef23869fbb8a4ea0279ab60e0a"
   integrity sha512-rZPNPKTOYVNEEKFaq1HqTgOwZD+4/YHS5ukLzQCypkj+OkYx7iv0mA91lJlpPPZ8vMau3IIGj5Qlwrx+8iiSmg==
@@ -17216,10 +17216,10 @@ react-native-bootsplash@^4.3.3:
     jimp "^0.16.2"
     picocolors "^1.0.0"
 
-react-native-codegen@^0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.17.tgz#83fb814d94061cbd46667f510d2ddba35ffb50ac"
-  integrity sha512-7GIEUmAemH9uWwB6iYXNNsPoPgH06pxzGRmdBzK98TgFBdYJZ7CBuZFPMe4jmHQTPOkQazKZ/w5O6/71JBixmw==
+react-native-codegen@^0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.18.tgz#99d6623d65292e8ce3fdb1d133a358caaa2145e7"
+  integrity sha512-XPI9aVsFy3dvgDZvyGWrFnknNiyb22kg5nHgxa0vjWTH9ENLBgVRZt9A64xHZ8BYihH+gl0p/1JNOCIEUzRPBg==
   dependencies:
     "@babel/parser" "^7.14.0"
     flow-parser "^0.121.0"
@@ -17553,9 +17553,9 @@ react-native-webview@10.3.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@RocketChat/react-native#281140d2e39d66a8e486db397ce0bf5bd0e334fc:
-  version "0.68.2"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/281140d2e39d66a8e486db397ce0bf5bd0e334fc"
+react-native@RocketChat/react-native#51266d5ab8b4c3f04c0e8f207ea5db6056647104:
+  version "0.68.6"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/51266d5ab8b4c3f04c0e8f207ea5db6056647104"
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^7.0.3"
@@ -17577,9 +17577,9 @@ react-native@RocketChat/react-native#281140d2e39d66a8e486db397ce0bf5bd0e334fc:
     metro-source-map "0.67.0"
     nullthrows "^1.1.1"
     pretty-format "^26.5.2"
-    promise "^8.0.3"
+    promise "^8.2.0"
     react-devtools-core "^4.23.0"
-    react-native-codegen "^0.0.17"
+    react-native-codegen "^0.0.18"
     react-native-gradle-plugin "^0.0.6"
     react-refresh "^0.4.0"
     react-shallow-renderer "16.14.1"

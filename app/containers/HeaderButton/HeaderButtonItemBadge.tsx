@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { STATUS_COLORS } from '../../lib/constants';
 import UnreadBadge from '../UnreadBadge';
 
 const styles = StyleSheet.create({
@@ -15,6 +16,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Badge = ({ ...props }): React.ReactElement => <UnreadBadge {...props} style={styles.badgeContainer} small />;
+export const BadgeUnread = ({ ...props }): React.ReactElement => <UnreadBadge {...props} style={styles.badgeContainer} small />;
 
-export default Badge;
+export const BadgeWarn = (): React.ReactElement => (
+	<View style={[styles.badgeContainer, { width: 10, height: 10, backgroundColor: STATUS_COLORS.disabled }]} />
+);
