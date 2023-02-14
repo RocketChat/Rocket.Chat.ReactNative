@@ -64,7 +64,7 @@
 		"ejson": "^2.2.3",
 		"expo": "^46.0.9",
 		"expo-apple-authentication": "4.2.1",
-		"expo-av": "11.2.3",
+		"expo-av": "13.0.2",
 		"expo-file-system": "14.0.0",
 		"expo-haptics": "11.2.0",
 		"expo-keep-awake": "10.1.1",
