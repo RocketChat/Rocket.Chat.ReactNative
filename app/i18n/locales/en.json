@@ -877,7 +877,7 @@
   "Reply_in_direct_message": "Reply in Direct Message",
   "room_archived": "archived room",
   "room_unarchived": "unarchived room",
-  "Presence_Cap_Warning_Title": "Keeping performance in mind",
-  "Presence_Cap_Warning_Description": "Due to high volume of active connections, the service that handles user status is temporarily disabled.",
+  "Presence_Cap_Warning_Title": "User status temporarily disabled",
+  "Presence_Cap_Warning_Description": "Active connections have reached the limit for the workspace, thus the service that handles user status is disabled. It can be re-enabled manually in workspace settings.",
   "Learn_more": "Learn more"
 }
