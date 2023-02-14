@@ -1,4 +1,4 @@
-import { appStart, appInit, setMasterDetail } from '../actions/app';
+import { appStart, appInit, setMasterDetail, setNotificationPresenceCap, appReady } from '../actions/app';
 import { initialState } from './app';
 import { mockedStore } from './mockedStore';
 import { RootEnum } from '../definitions';
@@ -20,6 +20,9 @@ describe('test reducer', () => {
 		mockedStore.dispatch(appInit());
 		const { ready } = mockedStore.getState().app;
 		expect(ready).toEqual(false);
+		mockedStore.dispatch(appReady());
+		const { ready: ready2 } = mockedStore.getState().app;
+		expect(ready2).toEqual(true);
 	});
 
 	it('should return ready state after dispatch setMasterDetail action', () => {
@@ -40,5 +43,14 @@ describe('test reducer', () => {
 		const { foreground, background } = mockedStore.getState().app;
 		expect(foreground).toEqual(false);
 		expect(background).toEqual(true);
+	});
+
+	it('should return correct state after dispatch setNotificationPresenceCap action', () => {
+		mockedStore.dispatch(setNotificationPresenceCap(true));
+		const { notificationPresenceCap } = mockedStore.getState().app;
+		expect(notificationPresenceCap).toEqual(true);
+		mockedStore.dispatch(setNotificationPresenceCap(false));
+		const { notificationPresenceCap: notificationPresenceCap2 } = mockedStore.getState().app;
+		expect(notificationPresenceCap2).toEqual(false);
 	});
 });

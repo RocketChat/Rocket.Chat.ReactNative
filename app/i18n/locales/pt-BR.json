@@ -875,5 +875,8 @@
   "Call": "Ligar",
   "Reply_in_direct_message": "Responder por mensagem direta",
   "room_archived": "{{username}} arquivou a sala",
-  "room_unarchived": "{{username}} desarquivou a sala"
+  "room_unarchived": "{{username}} desarquivou a sala",
+  "Presence_Cap_Warning_Title": "Mantendo o desempenho em mente",
+  "Presence_Cap_Warning_Description": "Devido ao alto volume de conexões ativas, o serviço responsável pela presença dos usuários está temporariamente desabilitado.",
+  "Learn_more": "Saiba mais"
 }
