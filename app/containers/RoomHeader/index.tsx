@@ -46,6 +46,7 @@ const RoomHeaderContainer = React.memo(
 		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
 		const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
 		const connected = useSelector((state: IApplicationState) => state.meteor.connected);
+		const presenceDisabled = useSelector((state: IApplicationState) => state.settings.Presence_broadcast_disabled);
 		const activeUser = useSelector(
 			(state: IApplicationState) => (roomUserId ? state.activeUsers?.[roomUserId] : undefined),
 			shallowEqual
@@ -61,9 +62,13 @@ const RoomHeaderContainer = React.memo(
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
-				status = statusActiveUser;
-				statusText = statusTextActiveUser;
+				if (presenceDisabled) {
+					status = 'disabled';
+				} else {
+					const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
+					status = statusActiveUser;
+					statusText = statusTextActiveUser;
+				}
 			} else if (type === 'l' && visitor?.status) {
 				const { status: statusVisitor } = visitor;
 				status = statusVisitor;
