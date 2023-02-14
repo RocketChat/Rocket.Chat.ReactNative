@@ -876,5 +876,8 @@
   "Call": "Call",
   "Reply_in_direct_message": "Reply in Direct Message",
   "room_archived": "archived room",
-  "room_unarchived": "unarchived room"
+  "room_unarchived": "unarchived room",
+  "Presence_Cap_Warning_Title": "Keeping performance in mind",
+  "Presence_Cap_Warning_Description": "Due to high volume of active connections, the service that handles user status is temporarily disabled.",
+  "Learn_more": "Learn more"
 }
