@@ -11,6 +11,7 @@ import database from '../database';
 import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
+import { setPresenceCap } from './getUsersPresence';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -157,8 +158,11 @@ export async function getSettings(): Promise<void> {
 		const data: IData[] = result.settings || [];
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
+		const parsedSettings = parseSettings(filteredSettings);
 
-		reduxStore.dispatch(addSettings(parseSettings(filteredSettings)));
+		reduxStore.dispatch(addSettings(parsedSettings));
+
+		setPresenceCap(parsedSettings.Presence_broadcast_disabled);
 
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
