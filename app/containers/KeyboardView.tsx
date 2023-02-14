@@ -1,7 +1,9 @@
 import React from 'react';
 import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from '@codler/react-native-keyboard-aware-scroll-view';
+import { Keyboard, Pressable } from 'react-native';
 
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
+import sharedStyles from '../views/Styles';
 
 interface IKeyboardViewProps extends KeyboardAwareScrollViewProps {
 	keyboardVerticalOffset?: number;
@@ -18,7 +20,13 @@ const KeyboardView = ({ style, contentContainerStyle, scrollEnabled, keyboardVer
 		alwaysBounceVertical={false}
 		extraHeight={keyboardVerticalOffset}
 	>
-		{children}
+		{/** Use Pressable instead of TouchableWithoutFeedback, because the TouchableWithoutFeedback requires a view wrapping the children
+		 * and this wrapping is causing wrong behavior on ScrollView
+		 * https://stackoverflow.com/a/74456534
+		 *  */}
+		<Pressable style={sharedStyles.container} onPress={() => Keyboard.dismiss()}>
+			{children}
+		</Pressable>
 	</KeyboardAwareScrollView>
 );
 
