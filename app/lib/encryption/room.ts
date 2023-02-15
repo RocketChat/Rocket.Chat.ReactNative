@@ -24,7 +24,7 @@ import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import { Services } from '../services';
 import { getMessageUrlRegex } from './helpers/getMessageUrlRegex';
-import { mapMessageFromAPI } from './helpers/mapMessageFromAPI';
+import { mapMessageFromAPI } from './helpers/mapMessageFromApi';
 import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getMessageById } from '../database/services/Message';
