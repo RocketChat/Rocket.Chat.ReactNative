@@ -58,7 +58,7 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 				await Services.videoConferenceGetCapabilities();
 				return true;
 			} catch (error: any) {
-				const isAdmin = !!['admin', 'livechat-manager'].find(role => user.roles?.includes(role));
+				const isAdmin = !!['admin'].find(role => user.roles?.includes(role));
 				switch (error?.error) {
 					case availabilityErrors.NOT_CONFIGURED:
 						return handleErrors(isAdmin, availabilityErrors.NOT_CONFIGURED);
