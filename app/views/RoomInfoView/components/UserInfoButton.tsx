@@ -11,7 +11,7 @@ import { useAppSelector } from '../../../lib/hooks';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 
 // TODO: change other icons on future
-export function UserInfoIcon({
+function UserInfoButton({
 	danger,
 	iconName,
 	onPress,
@@ -37,12 +37,12 @@ export function UserInfoIcon({
 	return null;
 }
 
-export function CallIcon({ rid, isDirect }: { rid: string; isDirect: boolean }): React.ReactElement | null {
+export function CallButton({ rid, isDirect }: { rid: string; isDirect: boolean }): React.ReactElement | null {
 	const { showCallOption, showInitCallActionSheet } = useVideoConf(rid);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const greaterThanFive = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 
 	const showIcon = greaterThanFive ? showCallOption : showCallOption && isDirect;
 
-	return <UserInfoIcon onPress={showInitCallActionSheet} iconName='phone' label={i18n.t('Call')} showIcon={showIcon} />;
+	return <UserInfoButton onPress={showInitCallActionSheet} iconName='phone' label={i18n.t('Call')} showIcon={showIcon} />;
 }
