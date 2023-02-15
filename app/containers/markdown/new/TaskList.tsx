@@ -17,7 +17,7 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 			{value.map(item => (
 				<View style={styles.row}>
 					<Text style={[styles.text, { color: colors.bodyText }]}>{item.status ? '- [x] ' : '- [ ] '}</Text>
-					<Text style={{ color: colors.bodyText }}>
+					<Text style={[styles.inline, { color: colors.bodyText }]}>
 						<Inline value={item.value} />
 					</Text>
 				</View>
