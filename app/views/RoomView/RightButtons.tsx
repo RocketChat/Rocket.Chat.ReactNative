@@ -21,7 +21,7 @@ import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import HeaderCallButton from './components/HeaderCallButton';
 
-interface IRightButtonsProps extends Pick<ISubscription, 'rid' | 't' | 'usernames' | 'name' | 'teamMain'> {
+interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
 	threadsEnabled: boolean;
 	tmid?: string;
@@ -41,6 +41,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 'rid' | 't' | 'username
 	livechatRequestComment: boolean;
 	showActionSheet: Function;
 	departmentId?: string;
+	rid?: string;
 }
 
 interface IRigthButtonsState {
@@ -361,7 +362,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				<HeaderCallButton rid={rid} />
+				{rid ? <HeaderCallButton rid={rid} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
