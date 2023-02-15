@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleProp, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import FastImage from 'react-native-fast-image';
+import FastImage, { ImageStyle } from 'react-native-fast-image';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
@@ -14,7 +14,6 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
-import { isIOS, isImageURL } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	button: {
@@ -49,11 +48,30 @@ const styles = StyleSheet.create({
 		height: 150,
 		borderTopLeftRadius: 4,
 		borderTopRightRadius: 4
+	},
+	imageWithoutContent: {
+		borderRadius: 4
+	},
+	activityPosition: {
+		zIndex: 2,
+		position: 'absolute'
+	},
+	loadingState: {
+		height: 0,
+		borderWidth: 0
 	}
 });
 
 const UrlImage = React.memo(
-	({ image, hasContent }: { image: string; hasContent: boolean }) => {
+	({
+		image,
+		setImageLoadedState,
+		style
+	}: {
+		image: string;
+		setImageLoadedState(value: TImageLoadedState): void;
+		style: StyleProp<ImageStyle>;
+	}) => {
 		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!image) {
@@ -61,15 +79,20 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+
 		return (
-			<FastImage
-				source={{ uri: image }}
-				style={[styles.image, !hasContent && { borderRadius: 4 }]}
-				resizeMode={FastImage.resizeMode.cover}
-			/>
+			<>
+				<FastImage
+					source={{ uri: image }}
+					style={[styles.image, style]}
+					resizeMode={FastImage.resizeMode.cover}
+					onError={() => setImageLoadedState('error')}
+					onLoad={() => setImageLoadedState('done')}
+				/>
+			</>
 		);
 	},
-	(prevProps, nextProps) => prevProps.image === nextProps.image
+	(prevProps, nextProps) => prevProps.image === nextProps.image && dequal(prevProps.style, nextProps.style)
 );
 
 const UrlContent = React.memo(
@@ -101,29 +124,12 @@ const UrlContent = React.memo(
 	}
 );
 
+type TImageLoadedState = 'loading' | 'done' | 'error';
+
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
-		const [isImageUrlFromParamUrl, setIsImageUrlFromParamUrl] = useState(false);
-
-		useEffect(() => {
-			if (!url.image && url.url) {
-				const testImageUrl = async () => {
-					if (isIOS) {
-						const result = await isImageURL(url.url);
-						setIsImageUrlFromParamUrl(result);
-					} else {
-						Image.getSize(
-							url.url,
-							() => setIsImageUrlFromParamUrl(true),
-							() => setIsImageUrlFromParamUrl(false)
-						);
-					}
-				};
-				testImageUrl();
-			}
-		}, []);
-
-		if (!url || url?.ignoreParse) {
+		const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
+		if (!url || url?.ignoreParse || imageLoadedState === 'error') {
 			return null;
 		}
 
@@ -134,42 +140,34 @@ const Url = React.memo(
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		};
 
-		let imageUrl = '';
+		const hasContent = url.title || url.description;
 
-		if (url.image) {
-			imageUrl = url.image;
-		}
-		if (isImageUrlFromParamUrl) {
-			imageUrl = url.url;
-		}
-
-		const hasContent = !!url.title || !!url.description;
-
-		if (hasContent || imageUrl) {
-			return (
-				<Touchable
-					onPress={onPress}
-					onLongPress={onLongPress}
-					style={[
-						styles.button,
-						index > 0 && styles.marginTop,
-						styles.container,
-						{
-							backgroundColor: themes[theme].chatComponentBackground,
-							borderColor: themes[theme].borderColor
-						}
-					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
-				>
-					<>
-						<UrlImage image={imageUrl} hasContent={hasContent} />
-						{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
-					</>
-				</Touchable>
-			);
-		}
-
-		return null;
+		return (
+			<Touchable
+				onPress={onPress}
+				onLongPress={onLongPress}
+				style={[
+					styles.button,
+					index > 0 && styles.marginTop,
+					styles.container,
+					{
+						backgroundColor: themes[theme].chatComponentBackground,
+						borderColor: themes[theme].borderColor
+					},
+					imageLoadedState === 'loading' && styles.loadingState
+				]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
+				<>
+					<UrlImage
+						setImageLoadedState={setImageLoadedState}
+						image={url.image || url.url}
+						style={[!hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loadingState]}
+					/>
+					{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
+				</>
+			</Touchable>
+		);
 	},
 	(oldProps, newProps) => dequal(oldProps.url, newProps.url) && oldProps.theme === newProps.theme
 );
