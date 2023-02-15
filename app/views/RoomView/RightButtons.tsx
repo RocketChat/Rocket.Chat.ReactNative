@@ -370,9 +370,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
 					/>
 				) : null}
-				{/* {isTeamRoom({ teamId, joined }) ? (
-					<HeaderButton.Item iconName='channel-public' onPress={this.goTeamChannels} testID='room-view-header-team-channels' />
-				) : null} */}
 				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' />
 			</HeaderButton.Container>
 		);
