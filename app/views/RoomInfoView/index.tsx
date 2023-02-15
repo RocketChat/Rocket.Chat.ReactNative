@@ -34,7 +34,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes, withTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import Channel from './Channel';
-import { CallIcon } from './components/UserInfoIcon';
+import { CallButton } from './components/UserInfoButton';
 import Direct from './Direct';
 import Livechat from './Livechat';
 import styles from './styles';
@@ -436,7 +436,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		return (
 			<View style={styles.roomButtonsContainer}>
 				{this.renderButton(() => this.handleCreateDirectMessage(this.goRoom), 'message', I18n.t('Message'))}
-				<CallIcon isDirect={this.isDirect} rid={room.rid} />
+				<CallButton isDirect={this.isDirect} rid={room.rid} />
 				{isDirectFromSaved && !isFromDm && !isDmWithMyself
 					? this.renderButton(
 							() => handleIgnore(roomUser._id, !isIgnored, roomFromRid.rid),
