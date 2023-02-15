@@ -19,7 +19,7 @@ import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import HeaderCallIcon from './components/HeaderCallRightIcon';
+import HeaderCallButton from './components/HeaderCallButton';
 
 interface IRightButtonsProps extends Pick<ISubscription, 'rid' | 't' | 'usernames' | 'name' | 'teamMain'> {
 	userId?: string;
@@ -361,7 +361,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				<HeaderCallIcon rid={rid} />
+				<HeaderCallButton rid={rid} />
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
