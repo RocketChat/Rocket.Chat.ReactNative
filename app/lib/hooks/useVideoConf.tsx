@@ -33,13 +33,13 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	const jitsiEnableChannels = useAppSelector(state => state.settings.Jitsi_Enable_Channels);
 	const user = useAppSelector(state => getUserSelector(state));
 
-	const greaterThanFive = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
+	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 
 	const { showActionSheet } = useActionSheet();
 	const snaps = useSnaps([1250]);
 
 	const handleShowCallOption = async () => {
-		if (greaterThanFive) return setShowCallOption(true);
+		if (isServer5OrNewer) return setShowCallOption(true);
 		const room = await getSubscriptionByRoomId(rid);
 		if (room) {
 			const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
@@ -53,7 +53,7 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	};
 
 	const canInitAnCall = async () => {
-		if (greaterThanFive) {
+		if (isServer5OrNewer) {
 			try {
 				await Services.videoConferenceGetCapabilities();
 				return true;
@@ -75,7 +75,7 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	};
 
 	const initCall = async ({ cam, mic }: { cam: boolean; mic: boolean }) => {
-		if (greaterThanFive) return videoConfStartAndJoin({ rid, cam, mic });
+		if (isServer5OrNewer) return videoConfStartAndJoin({ rid, cam, mic });
 		const room = (await getSubscriptionByRoomId(rid)) as ISubscription;
 		callJitsi({ room, cam });
 	};
