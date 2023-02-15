@@ -371,7 +371,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
-						badge={() => <HeaderButton.Badge tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
+						badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
 					/>
 				) : null}
 				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' />
