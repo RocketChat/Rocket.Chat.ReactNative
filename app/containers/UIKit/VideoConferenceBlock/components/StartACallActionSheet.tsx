@@ -46,14 +46,14 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 						style={[style.iconCallContainer, cam && style.enabledBackground, { marginRight: 6 }]}
 						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={16} color={handleColor(cam)} />
+						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={20} color={handleColor(cam)} />
 					</Touchable>
 					<Touchable
 						onPress={() => setMic(!mic)}
 						style={[style.iconCallContainer, mic && style.enabledBackground]}
 						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={16} color={handleColor(mic)} />
+						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={20} color={handleColor(mic)} />
 					</Touchable>
 				</View>
 			</View>
