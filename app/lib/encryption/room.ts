@@ -3,7 +3,6 @@ import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
-import { Q } from '@nozbe/watermelondb';
 
 import getSingleMessage from '../methods/getSingleMessage';
 import { IMessage, IUser } from '../../definitions';
@@ -25,10 +24,10 @@ import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import { Services } from '../services';
 import { getMessageUrlRegex } from './helpers/getMessageUrlRegex';
-import { mapMessageFromApi } from './helpers/mapMessageFromApi';
+import { mapMessageFromAPI } from './helpers/mapMessageFromAPI';
 import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
-import { getMessageByQuery } from '../database/services/Message';
+import { getMessageById } from '../database/services/Message';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -283,7 +282,7 @@ export default class EncryptionRoom {
 					e2e: 'done'
 				};
 
-				const decryptedMessageWithQuote = await this.parseQuoteAttachment(decryptedMessage);
+				const decryptedMessageWithQuote = await this.decryptQuoteAttachment(decryptedMessage);
 				return decryptedMessageWithQuote;
 			}
 		} catch {
@@ -293,29 +292,31 @@ export default class EncryptionRoom {
 		return message;
 	};
 
-	async parseQuoteAttachment(message: IMessage) {
-		const urls = message.msg?.match(getMessageUrlRegex()) || [];
+	async decryptQuoteAttachment(message: IMessage) {
+		const urls = message?.msg?.match(getMessageUrlRegex()) || [];
 		await Promise.all(
 			urls.map(async (url: string) => {
 				const parsedUrl = parse(url, true);
 				const messageId = parsedUrl.query?.msg;
-				if (!messageId || Array.isArray(messageId)) {
+				if (!messageId) {
 					return;
 				}
 
-				const messageFromDB = await getMessageByQuery(Q.and(Q.where('id', messageId), Q.where('e2e', E2E_STATUS.DONE)));
-				if (messageFromDB?.length) {
-					const decryptedQuoteMessage = mapMessageFromDB(messageFromDB[0]);
+				// From local db
+				const messageFromDB = await getMessageById(messageId);
+				if (messageFromDB && messageFromDB.e2e === 'done') {
+					const decryptedQuoteMessage = mapMessageFromDB(messageFromDB);
 					message.attachments = message.attachments || [];
 					const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
 					return message.attachments.push(quoteAttachment);
 				}
 
+				// From API
 				const quotedMessageObject = await getSingleMessage(messageId);
 				if (!quotedMessageObject) {
 					return;
 				}
-				const decryptedQuoteMessage = await this.decrypt(mapMessageFromApi(quotedMessageObject));
+				const decryptedQuoteMessage = await this.decrypt(mapMessageFromAPI(quotedMessageObject));
 				message.attachments = message.attachments || [];
 				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
 				return message.attachments.push(quoteAttachment);
