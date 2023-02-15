@@ -5,6 +5,7 @@ import parse from 'url-parse';
 import { themes } from '../../constants';
 import { TSupportedThemes } from '../../../theme';
 import UserPreferences from '../userPreferences';
+import addProtocol from './addProtocol';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
 
@@ -34,13 +35,6 @@ const appSchemeURL = (url: string, browser: string): string => {
 	}
 
 	return schemeUrl;
-};
-
-const addProtocol = (url: string): string => {
-	if (!url.toLowerCase().startsWith('http')) {
-		return `https://${url.replace('//', '')}`;
-	}
-	return url;
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
