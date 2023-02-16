@@ -169,9 +169,14 @@ async function navigateToRoom(room: string) {
 	await checkRoomTitle(room);
 }
 
-async function tryTapping(theElement: Detox.IndexableNativeElement, timeout: number, longtap = false) {
+async function tryTapping(
+	theElement: Detox.IndexableNativeElement | Detox.NativeElement,
+	timeout: number,
+	longtap = false
+): Promise<void> {
 	try {
 		if (longtap) {
+			await theElement.tap();
 			await theElement.longPress();
 		} else {
 			await theElement.tap();
@@ -180,8 +185,7 @@ async function tryTapping(theElement: Detox.IndexableNativeElement, timeout: num
 		if (timeout <= 0) {
 			throw e;
 		}
-		await sleep(100);
-		await tryTapping(theElement, timeout - 100);
+		return tryTapping(theElement, timeout - 100);
 	}
 }
 
