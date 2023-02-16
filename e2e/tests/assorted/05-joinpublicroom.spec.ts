@@ -123,6 +123,9 @@ describe('Join public room', () => {
 		it('should join room', async () => {
 			await element(by.id('room-view-join-button')).tap();
 			await tapBack();
+			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id(`rooms-list-view-item-${room}`)).tap();
 			await waitFor(element(by.id('room-view')))
 				.toBeVisible()
