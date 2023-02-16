@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const EMOJI_BUTTON_SIZE = 44;
-export const EMOJI_SIZE = EMOJI_BUTTON_SIZE - 16;
+export const EMOJI_BUTTON_SIZE = 40;
+export const EMOJI_SIZE = EMOJI_BUTTON_SIZE - 12;
 
 export default StyleSheet.create({
 	container: {
@@ -17,7 +17,7 @@ export default StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingVertical: 10,
+		paddingVertical: 12,
 		width: EMOJI_BUTTON_SIZE
 	},
 	tabEmoji: {
