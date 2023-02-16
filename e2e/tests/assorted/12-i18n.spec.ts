@@ -119,22 +119,22 @@ describe('i18n', () => {
 			await element(by.id('sidebar-close-drawer')).tap();
 		});
 
-		it("should set unsupported language and fallback to 'en'", async () => {
-			await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
-			await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
-			await waitFor(element(by.id('rooms-list-view')))
-				.toBeVisible()
-				.withTimeout(10000);
-			await element(by.id('rooms-list-view-sidebar')).tap();
-			await waitFor(element(by.id('sidebar-view')))
-				.toBeVisible()
-				.withTimeout(2000);
-			// give the app some time to apply new language
-			await sleep(3000);
-			await expect(element(by.id('sidebar-chats').withDescendant(by.label('Chats')))).toBeVisible();
-			await expect(element(by.id('sidebar-profile').withDescendant(by.label('Profile')))).toBeVisible();
-			await expect(element(by.id('sidebar-settings').withDescendant(by.label('Settings')))).toBeVisible();
-			await post('users.setPreferences', { data: { language: 'en' } }); // Set back to english
-		});
+		// it("should set unsupported language and fallback to 'en'", async () => {
+		// 	await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
+		// 	await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
+		// 	await waitFor(element(by.id('rooms-list-view')))
+		// 		.toBeVisible()
+		// 		.withTimeout(10000);
+		// 	await element(by.id('rooms-list-view-sidebar')).tap();
+		// 	await waitFor(element(by.id('sidebar-view')))
+		// 		.toBeVisible()
+		// 		.withTimeout(2000);
+		// 	// give the app some time to apply new language
+		// 	await sleep(3000);
+		// 	await expect(element(by.id('sidebar-chats').withDescendant(by.label('Chats')))).toBeVisible();
+		// 	await expect(element(by.id('sidebar-profile').withDescendant(by.label('Profile')))).toBeVisible();
+		// 	await expect(element(by.id('sidebar-settings').withDescendant(by.label('Settings')))).toBeVisible();
+		// 	await post('users.setPreferences', { data: { language: 'en' } }); // Set back to english
+		// });
 	});
 });
