@@ -22,8 +22,7 @@ const login = async (username: string, password: string) => {
 		user: username,
 		password
 	});
-	const { userId } = response.data.data;
-	const { authToken } = response.data.data;
+	const { authToken, userId } = response.data.data;
 	rocketchat.defaults.headers.common['X-User-Id'] = userId;
 	rocketchat.defaults.headers.common['X-Auth-Token'] = authToken;
 	return { authToken, userId };
@@ -186,7 +185,9 @@ const get = (endpoint: string) => {
 	return rocketchat.get(endpoint);
 };
 
-const post = (endpoint: string, body: any) => {
+const post = async (endpoint: string, body: any) => {
+	const data = new Data(globalThis.random);
+	await login(data.users.regular.username, data.users.regular.password);
 	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
 	return rocketchat.post(endpoint, body);
 };

@@ -163,6 +163,12 @@ async function searchRoom(room: string) {
 		.withTimeout(60000);
 }
 
+async function navigateToRoom(room: string) {
+	await searchRoom(room);
+	await element(by.id(`rooms-list-view-item-${room}`)).tap();
+	await checkRoomTitle(room);
+}
+
 async function tryTapping(theElement: Detox.IndexableNativeElement, timeout: number, longtap = false) {
 	try {
 		if (longtap) {
@@ -196,6 +202,12 @@ async function tapAndWaitFor(
 	}
 }
 
+async function checkRoomTitle(room: string) {
+	await waitFor(element(by.id(`room-view-title-${room}`)))
+		.toBeVisible()
+		.withTimeout(60000);
+}
+
 const checkServer = async (server: string) => {
 	const label = `Connected to ${server}`;
 	await element(by.id('rooms-list-view-sidebar')).tap();
@@ -227,8 +239,10 @@ export {
 	tapBack,
 	sleep,
 	searchRoom,
+	navigateToRoom,
 	tryTapping,
 	tapAndWaitFor,
+	checkRoomTitle,
 	checkServer,
 	platformTypes
 };
