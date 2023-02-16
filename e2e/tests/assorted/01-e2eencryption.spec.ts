@@ -9,7 +9,8 @@ import {
 	searchRoom,
 	logout,
 	platformTypes,
-	TTextMatcher
+	TTextMatcher,
+	tapAndWaitFor
 } from '../../helpers/app';
 import data from '../../data';
 
@@ -261,10 +262,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('listheader-encryption')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('listheader-encryption')).tap();
-				await waitFor(element(by.id('e2e-enter-your-password-view')))
-					.toBeVisible()
-					.withTimeout(2000);
+				await tapAndWaitFor(element(by.id('listheader-encryption')), element(by.id('e2e-enter-your-password-view')), 2000);
 				await element(by.id('e2e-enter-your-password-view-password')).typeText(newPassword);
 				await element(by.id('e2e-enter-your-password-view-confirm')).tap();
 				await waitFor(element(by.id('listheader-encryption')))

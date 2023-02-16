@@ -1,5 +1,3 @@
-import { exec } from 'child_process';
-
 import { by, expect, element } from 'detox';
 
 import data from '../data';
@@ -157,12 +155,7 @@ async function searchRoom(room: string) {
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(30000);
-	await element(by.id('rooms-list-view-search')).tap();
-	await waitFor(element(by.id('rooms-list-view-search-input')))
-		.toExist()
-		.withTimeout(5000);
-	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
-	await sleep(300);
+	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
 	await element(by.id('rooms-list-view-search-input')).typeText(room);
 	await sleep(300);
 	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
@@ -170,7 +163,6 @@ async function searchRoom(room: string) {
 		.withTimeout(60000);
 }
 
-// eslint-disable-next-line no-undef
 async function tryTapping(theElement: Detox.IndexableNativeElement, timeout: number, longtap = false) {
 	try {
 		if (longtap) {
