@@ -1,6 +1,6 @@
 import { expect } from 'detox';
 
-import { login, navigateToLogin, logout, tapBack } from '../../helpers/app';
+import { login, navigateToLogin, logout, tapBack, tryTapping, tapAndWaitFor } from '../../helpers/app';
 import data from '../../data';
 
 describe('Server history', () => {
@@ -42,10 +42,7 @@ describe('Server history', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(2000);
-			await element(by.id('new-server-view-input')).tap();
-			await waitFor(element(by.id(`server-history-${data.server}`)))
-				.toBeVisible()
-				.withTimeout(2000);
+			await tapAndWaitFor(element(by.id('new-server-view-input')), element(by.id(`server-history-${data.server}`)), 2000);
 			await element(by.id(`server-history-delete-${data.server}`)).tap();
 			await element(by.id('new-server-view-input')).tap();
 			await waitFor(element(by.id(`server-history-${data.server}`)))

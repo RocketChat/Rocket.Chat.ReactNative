@@ -180,11 +180,27 @@ async function tryTapping(theElement: Detox.IndexableNativeElement, timeout: num
 		}
 	} catch (e) {
 		if (timeout <= 0) {
-			// TODO: Maths. How closely has the timeout been honoured here?
 			throw e;
 		}
 		await sleep(100);
 		await tryTapping(theElement, timeout - 100);
+	}
+}
+
+async function tapAndWaitFor(
+	elementToTap: Detox.IndexableNativeElement,
+	elementToWaitFor: Detox.IndexableNativeElement,
+	timeout: number
+) {
+	try {
+		await elementToTap.tap();
+		await waitFor(elementToWaitFor).toBeVisible().withTimeout(200);
+	} catch (e) {
+		if (timeout <= 0) {
+			throw e;
+		}
+		await sleep(100);
+		await tapAndWaitFor(elementToTap, elementToWaitFor, timeout - 100);
 	}
 }
 
@@ -206,18 +222,6 @@ const checkServer = async (server: string) => {
 		.withTimeout(10000);
 };
 
-function runCommand(command: string) {
-	return new Promise<void>((resolve, reject) => {
-		exec(command, (error, _stdout, stderr) => {
-			if (error) {
-				reject(new Error(`exec error: ${stderr}`));
-				return;
-			}
-			resolve();
-		});
-	});
-}
-
 export {
 	navigateToWorkspace,
 	navigateToLogin,
@@ -232,6 +236,7 @@ export {
 	sleep,
 	searchRoom,
 	tryTapping,
+	tapAndWaitFor,
 	checkServer,
 	platformTypes
 };
