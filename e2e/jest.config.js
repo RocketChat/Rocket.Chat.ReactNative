@@ -1,7 +1,8 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
 	rootDir: '..',
-	testMatch: ['<rootDir>/e2e/tests/**/*.spec.ts'],
+	testSequencer: '<rootDir>/e2e/testSequencer.js',
+	testMatch: ['<rootDir>/e2e/tests/assorted/*.spec.ts'],
 	testTimeout: 120000,
 	maxWorkers: 1,
 	globalSetup: '<rootDir>/e2e/globalSetup.ts',
