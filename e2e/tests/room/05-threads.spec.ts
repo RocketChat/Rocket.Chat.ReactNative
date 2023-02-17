@@ -10,7 +10,8 @@ import {
 	searchRoom,
 	platformTypes,
 	dismissReviewNag,
-	TTextMatcher
+	TTextMatcher,
+	tapAndWaitFor
 } from '../../helpers/app';
 
 async function navigateToRoom(roomName: string) {
@@ -221,18 +222,12 @@ describe('Threads', () => {
 				await element(by.id('messagebox-input-thread')).replaceText(`${thread}draft`);
 				await tapBack();
 
-				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id(`room-view-title-${thread}`)))
-					.toExist()
-					.withTimeout(5000);
+				await tapAndWaitFor(element(by.id(`message-thread-button-${thread}`)), element(by.id(`room-view-title-${thread}`)), 2000);
 				await expect(element(by.id('messagebox-input-thread'))).toHaveText(`${thread}draft`);
 				await element(by.id('messagebox-input-thread')).clearText();
 				await tapBack();
 
-				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id(`room-view-title-${thread}`)))
-					.toExist()
-					.withTimeout(5000);
+				await tapAndWaitFor(element(by.id(`message-thread-button-${thread}`)), element(by.id(`room-view-title-${thread}`)), 2000);
 				await expect(element(by.id('messagebox-input-thread'))).toHaveText('');
 			});
 		});
