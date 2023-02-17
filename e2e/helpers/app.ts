@@ -128,6 +128,7 @@ async function pinMessage(message: string) {
 	const { textMatcher } = platformTypes[deviceType];
 	const messageLabel = `${data.random}${message}`;
 	await waitFor(element(by[textMatcher](messageLabel)).atIndex(0)).toExist();
+	await element(by[textMatcher](messageLabel)).atIndex(0).tap();
 	await element(by[textMatcher](messageLabel)).atIndex(0).longPress();
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
@@ -190,8 +191,8 @@ async function tryTapping(
 }
 
 async function tapAndWaitFor(
-	elementToTap: Detox.IndexableNativeElement,
-	elementToWaitFor: Detox.IndexableNativeElement,
+	elementToTap: Detox.IndexableNativeElement | Detox.NativeElement,
+	elementToWaitFor: Detox.IndexableNativeElement | Detox.NativeElement,
 	timeout: number
 ) {
 	try {

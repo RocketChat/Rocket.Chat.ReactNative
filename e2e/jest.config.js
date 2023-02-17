@@ -2,7 +2,7 @@
 module.exports = {
 	rootDir: '..',
 	testSequencer: '<rootDir>/e2e/testSequencer.js',
-	testMatch: ['<rootDir>/e2e/tests/onboarding/*.spec.ts', '<rootDir>/e2e/tests/assorted/*.spec.ts'],
+	testMatch: ['<rootDir>/e2e/tests/**/*.spec.ts'],
 	testTimeout: 120000,
 	maxWorkers: 1,
 	globalSetup: '<rootDir>/e2e/globalSetup.ts',

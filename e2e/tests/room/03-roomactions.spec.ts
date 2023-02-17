@@ -11,7 +11,8 @@ import {
 	starMessage,
 	pinMessage,
 	platformTypes,
-	TTextMatcher
+	TTextMatcher,
+	tapAndWaitFor
 } from '../../helpers/app';
 
 const { sendMessage } = require('../../helpers/data_setup');
@@ -396,10 +397,7 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id('room-actions-members')))
 						.toExist()
 						.withTimeout(2000);
-					await element(by.id('room-actions-members')).tap();
-					await waitFor(element(by.id('room-members-view')))
-						.toExist()
-						.withTimeout(2000);
+					await tapAndWaitFor(element(by.id('room-actions-members')), element(by.id('room-members-view')), 2000);
 				});
 
 				const openActionSheet = async (username: string) => {
@@ -591,10 +589,11 @@ describe('Room actions screen', () => {
 					await waitFor(element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0))
 						.toExist()
 						.withTimeout(60000);
-					await element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0).tap();
-					await waitFor(element(by[textMatcher](message)).atIndex(0))
-						.toExist()
-						.withTimeout(60000);
+					await tapAndWaitFor(
+						element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0),
+						element(by[textMatcher](message)).atIndex(0),
+						2000
+					);
 					await element(by[textMatcher](message)).atIndex(0).tap();
 				});
 
