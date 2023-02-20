@@ -22,7 +22,7 @@ describe('InApp Notification', () => {
 		it('should tap on InApp Notification', async () => {
 			await sendMessage(data.users.alternate, dmCreatedRid, text);
 			await waitFor(element(by.id(`in-app-notification-${text}`)))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await waitForInAppNotificationAnimation();
 			await element(by.id(`in-app-notification-${text}`)).tap();

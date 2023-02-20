@@ -134,6 +134,7 @@ describe('E2E Encryption', () => {
 					.toExist()
 					.withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await element(by.id('create-channel-encrypted')).longPress();
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view')))

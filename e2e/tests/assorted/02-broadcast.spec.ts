@@ -2,7 +2,17 @@
 // const GA = OTP.googleAuthenticator;
 import { expect } from 'detox';
 
-import { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes, TTextMatcher, sleep } from '../../helpers/app';
+import {
+	navigateToLogin,
+	login,
+	mockMessage,
+	tapBack,
+	searchRoom,
+	platformTypes,
+	TTextMatcher,
+	sleep,
+	checkRoomTitle
+} from '../../helpers/app';
 import data from '../../data';
 
 const testuser = data.users.regular;
@@ -42,15 +52,10 @@ describe('Broadcast room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('create-channel-name')).replaceText(`broadcast${data.random}`);
-		await element(by.id('create-channel-broadcast')).longPress(); // https://github.com/facebook/react-native/issues/28032
+		await element(by.id('create-channel-name')).tapReturnKey();
+		await element(by.id('create-channel-broadcast')).tap();
 		await element(by.id('create-channel-submit')).tap();
-		await waitFor(element(by.id('room-view')))
-			.toBeVisible()
-			.withTimeout(60000);
-		await waitFor(element(by.id(`room-view-title-broadcast${data.random}`)))
-			.toBeVisible()
-			.withTimeout(60000);
-		await sleep(500);
+		await checkRoomTitle(`broadcast${data.random}`);
 		await element(by.id('room-header')).tap();
 		await waitFor(element(by.id('room-actions-view')))
 			.toBeVisible()

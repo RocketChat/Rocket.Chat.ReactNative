@@ -99,7 +99,7 @@ describe('Profile screen', () => {
 		it('should change name and username', async () => {
 			await element(by.id('profile-view-name')).replaceText(`${profileChangeUser.username}new`);
 			await element(by.id('profile-view-username')).replaceText(`${profileChangeUser.username}new`);
-			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
+			await element(by.id('profile-view-list')).swipe('down');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});

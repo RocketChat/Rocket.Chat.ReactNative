@@ -1,7 +1,7 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { tapBack, navigateToLogin, login, tryTapping, platformTypes, TTextMatcher } from '../../helpers/app';
+import { tapBack, navigateToLogin, login, tryTapping, platformTypes, TTextMatcher, tapAndWaitFor } from '../../helpers/app';
 
 describe('Create room screen', () => {
 	let alertButtonType: string;
@@ -46,11 +46,7 @@ describe('Create room screen', () => {
 					.toBeVisible()
 					.withTimeout(5000);
 
-				await tryTapping(element(by.id('rooms-list-view-create-channel')), 3000);
-				// await element(by.id('rooms-list-view-create-channel')).tap();
-				await waitFor(element(by.id('new-message-view')))
-					.toExist()
-					.withTimeout(5000);
+				await tapAndWaitFor(element(by.id('rooms-list-view-create-channel')), element(by.id('new-message-view')), 2000);
 			});
 
 			it('should search user and navigate', async () => {
@@ -130,6 +126,7 @@ describe('Create room screen', () => {
 		describe('Usage', () => {
 			it('should get invalid room', async () => {
 				await element(by.id('create-channel-name')).replaceText('general');
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -143,8 +140,8 @@ describe('Create room screen', () => {
 
 			it('should create public room', async () => {
 				const room = `public${data.random}`;
-				await element(by.id('create-channel-name')).replaceText('');
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await element(by.id('create-channel-type')).tap();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
@@ -190,6 +187,7 @@ describe('Create room screen', () => {
 					.toExist()
 					.withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -231,6 +229,7 @@ describe('Create room screen', () => {
 					.toExist()
 					.withTimeout(10000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);

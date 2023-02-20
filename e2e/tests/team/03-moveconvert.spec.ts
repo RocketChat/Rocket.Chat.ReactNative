@@ -1,5 +1,14 @@
 import data from '../../data';
-import { navigateToLogin, login, tapBack, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
+import {
+	navigateToLogin,
+	login,
+	tapBack,
+	searchRoom,
+	platformTypes,
+	TTextMatcher,
+	tapAndWaitFor,
+	sleep
+} from '../../helpers/app';
 
 const toBeConverted = `to-be-converted-${data.random}`;
 const toBeMoved = `to-be-moved-${data.random}`;
@@ -21,6 +30,7 @@ const createChannel = async (room: string) => {
 		.toExist()
 		.withTimeout(10000);
 	await element(by.id('create-channel-name')).replaceText(room);
+	await element(by.id('create-channel-name')).tapReturnKey();
 	await waitFor(element(by.id('create-channel-submit')))
 		.toExist()
 		.withTimeout(10000);
@@ -107,21 +117,16 @@ describe('Move/Convert Team', () => {
 			await navigateToRoomActions(toBeMoved);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 			await waitFor(element(by.id('room-actions-move-to-team')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-move-to-team')).tap();
-			await waitFor(element(by[textMatcher]('Move to Team')).atIndex(0))
-				.toExist()
-				.withTimeout(2000);
+			await sleep(300); // wait for animation
 			await waitFor(element(by.id('select-list-view-submit')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('select-list-view-submit')).tap();
-			await waitFor(element(by[textMatcher]('Select Team')))
-				.toExist()
-				.withTimeout(2000);
 			await waitFor(element(by.id(`select-list-view-item-${toBeConverted}`)))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id(`select-list-view-item-${toBeConverted}`)).tap();
 			await element(by.id('select-list-view-submit')).atIndex(0).tap();
@@ -132,11 +137,11 @@ describe('Move/Convert Team', () => {
 					)
 				)
 			)
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Yes, move it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('room-view-header-team-channels')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(10000);
 		});
 
