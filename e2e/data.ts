@@ -15,6 +15,7 @@ export type TUserRegularChannels = keyof typeof data.userRegularChannels;
 export type TDataGroups = keyof typeof data.groups;
 export type TDataTeams = keyof typeof data.teams;
 
+// @ts-ignore
 const value = globalThis.random;
 const data = {
 	server: 'https://mobile.rocket.chat',

@@ -8,6 +8,7 @@ import random from './helpers/random';
 
 module.exports = async () => {
 	await require('detox/runners/jest/index').globalSetup();
+	// @ts-ignore
 	globalThis.random = random(20);
 	await setup();
 };

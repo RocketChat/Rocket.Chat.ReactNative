@@ -106,6 +106,7 @@ const changeChannelJoinCode = async (roomId: string, joinCode: string) => {
 		await rocketchat.post('method.call/saveRoomSettings', {
 			message: JSON.stringify({
 				msg: 'method',
+				// @ts-ignore
 				id: globalThis.random,
 				method: 'saveRoomSettings',
 				params: [roomId, { joinCode }]
@@ -130,6 +131,7 @@ const sendMessage = async (user: { username: string; password: string }, channel
 };
 
 const setup = async () => {
+	// @ts-ignore
 	const data = new Data(globalThis.random);
 
 	await login(data.adminUser, data.adminPassword);
@@ -186,6 +188,7 @@ const get = (endpoint: string) => {
 };
 
 const post = async (endpoint: string, body: any) => {
+	// @ts-ignore
 	const data = new Data(globalThis.random);
 	await login(data.users.regular.username, data.users.regular.password);
 	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
