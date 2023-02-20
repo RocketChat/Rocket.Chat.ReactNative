@@ -1,7 +1,17 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, searchRoom, sleep, platformTypes, TTextMatcher, tapBack } from '../../helpers/app';
+import {
+	navigateToLogin,
+	login,
+	searchRoom,
+	sleep,
+	platformTypes,
+	TTextMatcher,
+	tapBack,
+	tapAndWaitFor,
+	checkRoomTitle
+} from '../../helpers/app';
 import { sendMessage } from '../../helpers/data_setup';
 
 async function navigateToRoom(user: string) {
@@ -58,8 +68,11 @@ describe('Ignore/Block User', () => {
 
 			it('should unblock user', async () => {
 				await navigateToInfoView();
-				await element(by.id('room-info-view-ignore')).tap();
-				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user')))).toExist();
+				await tapAndWaitFor(
+					element(by.id('room-info-view-ignore')),
+					element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user'))),
+					2000
+				);
 				await tapBack();
 				await waitFor(element(by.id('room-actions-view')))
 					.toBeVisible()
@@ -70,34 +83,47 @@ describe('Ignore/Block User', () => {
 			});
 		});
 		describe('Ignore user from Message', () => {
+			const channelName = data.userRegularChannels.detoxpublic.name;
 			it('should ignore user from message', async () => {
-				const channelName = data.userRegularChannels.detoxpublic.name;
 				await navigateToRoom(channelName);
-				await sleep(300);
 				await sendMessage(data.users.alternate, channelName, 'message-01');
 				await sendMessage(data.users.alternate, channelName, 'message-02');
 				await waitFor(element(by[textMatcher](user)).atIndex(0))
 					.toExist()
 					.withTimeout(30000);
-				await sleep(300);
 				await element(by[textMatcher](user)).atIndex(0).tap();
-				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Ignore')))).toExist();
-				await element(by.id('room-info-view-ignore')).tap();
-				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unignore')))).toExist();
+				await sleep(300); // wait for navigation animation
+				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Ignore'))))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Ignore'))).tap();
+				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unignore'))))
+					.toBeVisible()
+					.withTimeout(2000);
 				await tapBack();
 			});
+
 			it('should tap to display message', async () => {
-				await expect(element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0)).toExist();
-				await element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0).tap();
-				await waitFor(element(by[textMatcher](user)))
+				await checkRoomTitle(channelName);
+				await waitFor(element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0))
 					.toBeVisible()
-					.withTimeout(1000);
+					.withTimeout(2000);
+				await tapAndWaitFor(
+					element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0),
+					element(by[textMatcher](user)),
+					2000
+				);
 				await element(by[textMatcher](user)).atIndex(0).tap();
-				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unignore')))).toExist();
+				await sleep(300); // wait for navigation animation
+				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unignore')))).toBeVisible();
 				await element(by.id('room-info-view-ignore')).tap();
-				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Ignore')))).toExist();
+				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Ignore'))))
+					.toBeVisible()
+					.withTimeout(2000);
 				await tapBack();
-				await expect(element(by[textMatcher]('message-02')).atIndex(0)).toBeVisible();
+				await waitFor(element(by[textMatcher]('message-02')).atIndex(0))
+					.toBeVisible()
+					.withTimeout(2000);
 			});
 		});
 	});
