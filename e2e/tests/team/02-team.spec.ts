@@ -1,7 +1,17 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
+import {
+	navigateToLogin,
+	login,
+	tapBack,
+	sleep,
+	searchRoom,
+	platformTypes,
+	TTextMatcher,
+	checkRoomTitle,
+	tapAndWaitFor
+} from '../../helpers/app';
 
 async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
@@ -13,11 +23,9 @@ async function navigateToRoom(roomName: string) {
 
 async function openActionSheet(username: string) {
 	await waitFor(element(by.id(`room-members-view-item-${username}`)))
-		.toExist()
+		.toBeVisible()
 		.withTimeout(5000);
-	await element(by.id(`room-members-view-item-${username}`)).tap();
-	await sleep(300);
-	await expect(element(by.id('action-sheet'))).toExist();
+	await tapAndWaitFor(element(by.id(`room-members-view-item-${username}`)), element(by.id('action-sheet')), 2000);
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 	await element(by.id('action-sheet-handle')).swipe('up');
 }
@@ -26,7 +34,7 @@ async function navigateToRoomActions() {
 	await waitFor(element(by.id('room-view')))
 		.toExist()
 		.withTimeout(2000);
-	await element(by.id('room-header')).tap();
+	await element(by.id('room-header')).atIndex(0).tap();
 	await waitFor(element(by.id('room-actions-view')))
 		.toExist()
 		.withTimeout(5000);
@@ -222,12 +230,10 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(6000);
 				await element(by.id('add-existing-channel-view-submit')).tap();
-
-				await waitFor(element(by.id('room-view')))
-					.toExist()
-					.withTimeout(20000);
-				await expect(element(by.id('room-view'))).toExist();
-				await expect(element(by.id('room-view-header-team-channels'))).toExist();
+				await checkRoomTitle(team);
+				await waitFor(element(by.id('room-view-header-team-channels')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('room-view-header-team-channels')).tap();
 
 				await waitFor(element(by.id(`rooms-list-view-item-${existingRoom}`)).atIndex(0))
@@ -348,7 +354,7 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(2000);
 				await waitFor(element(by.id(`select-list-view-item-${existingRoom}`)))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id(`select-list-view-item-${room}`)).tap();
 
@@ -372,16 +378,17 @@ describe('Team', () => {
 				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await tapBack();
 				await waitFor(element(by.id('room-actions-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(2000);
 			});
 
 			describe('Room Members', () => {
 				beforeAll(async () => {
-					await element(by.id('room-actions-members')).tap();
-					await waitFor(element(by.id('room-members-view')))
-						.toExist()
-						.withTimeout(2000);
+					await tapAndWaitFor(element(by.id('room-actions-members')), element(by.id('room-members-view')), 2000);
+					// await element(by.id('room-actions-members')).tap();
+					// await waitFor(element(by.id('room-members-view')))
+					// 	.toBeVisible()
+					// 	.withTimeout(2000);
 				});
 
 				it('should show all users', async () => {
@@ -416,15 +423,12 @@ describe('Team', () => {
 						.toBeVisible()
 						.withTimeout(2000);
 					await element(by.id('action-sheet-remove-from-team')).tap();
-					await waitFor(element(by.id('select-list-view')))
-						.toExist()
-						.withTimeout(5000);
 					await waitFor(element(by.id(`select-list-view-item-${room}`)))
-						.toExist()
+						.toBeVisible()
 						.withTimeout(5000);
 					await element(by.id(`select-list-view-item-${room}`)).tap();
 					await waitFor(element(by.id(`${room}-checked`)))
-						.toExist()
+						.toBeVisible()
 						.withTimeout(5000);
 					await element(by.id(`select-list-view-item-${room}`)).tap();
 					await waitFor(element(by.id(`${room}-checked`)))
@@ -450,6 +454,9 @@ describe('Team', () => {
 
 				it('should leave team', async () => {
 					await tapBack();
+					await waitFor(element(by.id('room-actions-view')))
+						.toBeVisible()
+						.withTimeout(2000);
 					await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 					await waitFor(element(by.id('room-actions-leave-channel')))
 						.toExist()
@@ -463,7 +470,7 @@ describe('Team', () => {
 						.toExist()
 						.withTimeout(2000);
 					await waitFor(element(by.id(`select-list-view-item-${existingRoom}`)))
-						.toExist()
+						.toBeVisible()
 						.withTimeout(2000);
 					await element(by.id(`select-list-view-item-${room}`)).tap();
 
