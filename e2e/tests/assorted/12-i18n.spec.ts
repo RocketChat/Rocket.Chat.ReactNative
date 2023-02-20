@@ -119,6 +119,10 @@ describe('i18n', () => {
 			await element(by.id('sidebar-close-drawer')).tap();
 		});
 
+		afterAll(async () => {
+			await post('users.setPreferences', { data: { language: 'en' } }); // Set back to english
+		});
+
 		// it("should set unsupported language and fallback to 'en'", async () => {
 		// 	await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
 		// 	await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
