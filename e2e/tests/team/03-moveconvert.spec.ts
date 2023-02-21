@@ -167,6 +167,7 @@ describe('Move/Convert Team', () => {
 			await waitFor(element(by.id(`select-list-view-item-${toBeMoved}`)))
 				.toExist()
 				.withTimeout(2000);
+			await sleep(300); // wait for animation
 			await element(by.id(`select-list-view-item-${toBeMoved}`)).tap();
 			await waitFor(element(by.id('select-list-view-submit')))
 				.toExist()

@@ -366,7 +366,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('emoji-searchbar-input')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.id('emoji-searchbar-input')).typeText('laughing');
+				await element(by.id('emoji-searchbar-input')).replaceText('laughing');
 				await waitFor(element(by.id('emoji-laughing')))
 					.toExist()
 					.withTimeout(4000);
