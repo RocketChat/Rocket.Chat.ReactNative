@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import data, { Data, TDataChannels, TDataGroups, TDataTeams, TDataUsers, TUserRegularChannels } from '../data';
+import data, { TDataChannels, TDataGroups, TDataTeams, TDataUsers, TUserRegularChannels } from '../data';
 
 const TEAM_TYPE = {
 	PUBLIC: 0,
@@ -106,8 +106,7 @@ const changeChannelJoinCode = async (roomId: string, joinCode: string) => {
 		await rocketchat.post('method.call/saveRoomSettings', {
 			message: JSON.stringify({
 				msg: 'method',
-				// @ts-ignore
-				id: globalThis.random,
+				id: process.env.TEST_SESSION,
 				method: 'saveRoomSettings',
 				params: [roomId, { joinCode }]
 			})
@@ -131,9 +130,6 @@ const sendMessage = async (user: { username: string; password: string }, channel
 };
 
 const setup = async () => {
-	// @ts-ignore
-	const data = new Data(globalThis.random);
-
 	await login(data.adminUser, data.adminPassword);
 
 	for (const userKey in data.users) {
@@ -188,8 +184,6 @@ const get = (endpoint: string) => {
 };
 
 const post = async (endpoint: string, body: any) => {
-	// @ts-ignore
-	const data = new Data(globalThis.random);
 	await login(data.users.regular.username, data.users.regular.password);
 	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
 	return rocketchat.post(endpoint, body);
