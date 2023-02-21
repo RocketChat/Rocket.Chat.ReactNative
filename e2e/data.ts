@@ -37,10 +37,20 @@ const data = {
 			password: '123',
 			email: `mobile+profileChanges${value}@rocket.chat`
 		},
+		encryption: {
+			username: `userencryption${value}`,
+			password: '123',
+			email: `mobile+encryption${value}@rocket.chat`
+		},
 		existing: {
 			username: `existinguser${value}`,
 			password: '123',
 			email: `mobile+existing${value}@rocket.chat`
+		},
+		inapp: {
+			username: `inappuser${value}`,
+			password: '123',
+			email: `mobile+inapp${value}@rocket.chat`
 		}
 	},
 	channels: {

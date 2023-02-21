@@ -1,5 +1,5 @@
 import data from '../../data';
-import { navigateToLogin, login, checkServer, sleep } from '../../helpers/app';
+import { navigateToLogin, login, checkServer, sleep, expectValidRegisterOrRetry } from '../../helpers/app';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -65,10 +65,8 @@ describe('Change server', () => {
 		await element(by.id('register-view-username')).replaceText(data.registeringUser2.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser2.email);
 		await element(by.id('register-view-password')).replaceText(data.registeringUser2.password);
-		await element(by.id('register-view-submit')).tap();
-		await waitFor(element(by.id('rooms-list-view')))
-			.toBeVisible()
-			.withTimeout(60000);
+		await element(by.id('register-view-password')).tapReturnKey();
+		await expectValidRegisterOrRetry(device.getPlatform());
 
 		await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
 			.toBeNotVisible()

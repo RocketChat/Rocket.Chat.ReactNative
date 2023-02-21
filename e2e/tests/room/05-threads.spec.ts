@@ -83,6 +83,7 @@ describe('Threads', () => {
 			const thread = `${data.random}thread`;
 			it('should create thread', async () => {
 				await mockMessage('thread');
+				await element(by[textMatcher](thread)).atIndex(0).tap();
 				await element(by[textMatcher](thread)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();

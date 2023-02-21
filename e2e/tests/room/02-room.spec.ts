@@ -241,7 +241,7 @@ describe('Room screen', () => {
 					.withTimeout(4000);
 				await tryTapping(element(by.id(`mention-item-${username}`)), 2000);
 				await expect(element(by.id('messagebox-input'))).toHaveText(`${messageMention} `);
-				await tryTapping(element(by.id('messagebox-input')), 2000);
+				// await tryTapping(element(by.id('messagebox-input')), 2000);
 				if (device.getPlatform() === 'ios') {
 					await element(by.id('messagebox-input')).typeText(message);
 					await element(by.id('messagebox-send-message')).tap();
@@ -342,7 +342,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('emoji-picker-tab-emoji')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 1);
+				// await element(by.id('action-sheet-handle')).swipe('up', 'fast', 1);
 				await element(by.id('emoji-picker-tab-emoji')).tap();
 				await waitFor(element(by.id('emoji-grinning')))
 					.toExist()
@@ -364,7 +364,7 @@ describe('Room screen', () => {
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.id('add-reaction')).tap();
 				await waitFor(element(by.id('emoji-searchbar-input')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('emoji-searchbar-input')).replaceText('laughing');
 				await waitFor(element(by.id('emoji-laughing')))

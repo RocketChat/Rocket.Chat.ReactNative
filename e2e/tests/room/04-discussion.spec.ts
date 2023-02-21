@@ -93,6 +93,7 @@ describe('Discussion', () => {
 
 		it('should create discussion', async () => {
 			const discussionName = `${data.random}message`;
+			await element(by[textMatcher](discussionName)).atIndex(0).tap();
 			await element(by[textMatcher](discussionName)).atIndex(0).longPress();
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()

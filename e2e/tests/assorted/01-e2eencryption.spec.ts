@@ -10,11 +10,12 @@ import {
 	logout,
 	platformTypes,
 	TTextMatcher,
-	tapAndWaitFor
+	tapAndWaitFor,
+	expectValidRegisterOrRetry
 } from '../../helpers/app';
 import data from '../../data';
 
-const testuser = data.users.regular;
+const testuser = data.users.encryption;
 const otheruser = data.users.alternate;
 
 const checkServer = async (server: string) => {
@@ -107,6 +108,7 @@ describe('E2E Encryption', () => {
 
 			it('should tap "Save my password" and close modal', async () => {
 				await element(by.id('e2e-save-password-view-saved-password').and(by.label('I Saved My E2E Password'))).tap();
+				await sleep(300); // wait for animation
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
@@ -365,10 +367,8 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
-			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.id('rooms-list-view')))
-				.toBeVisible()
-				.withTimeout(60000);
+			await element(by.id('register-view-password')).tapReturnKey();
+			await expectValidRegisterOrRetry(device.getPlatform());
 
 			await checkServer(data.alternateServer);
 		});

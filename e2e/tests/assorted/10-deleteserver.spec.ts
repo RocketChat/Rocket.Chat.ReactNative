@@ -1,5 +1,13 @@
 import data from '../../data';
-import { sleep, navigateToLogin, login, checkServer, platformTypes, TTextMatcher } from '../../helpers/app';
+import {
+	sleep,
+	navigateToLogin,
+	login,
+	checkServer,
+	platformTypes,
+	TTextMatcher,
+	expectValidRegisterOrRetry
+} from '../../helpers/app';
 
 describe('Delete server', () => {
 	let alertButtonType: string;
@@ -41,10 +49,8 @@ describe('Delete server', () => {
 		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
 		await element(by.id('register-view-password')).replaceText(data.registeringUser3.password);
-		await element(by.id('register-view-submit')).tap();
-		await waitFor(element(by.id('rooms-list-view')))
-			.toBeVisible()
-			.withTimeout(60000);
+		await element(by.id('register-view-password')).tapReturnKey();
+		await expectValidRegisterOrRetry(device.getPlatform());
 
 		await checkServer(data.alternateServer);
 	});

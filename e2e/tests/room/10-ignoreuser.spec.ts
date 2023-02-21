@@ -68,6 +68,7 @@ describe('Ignore/Block User', () => {
 
 			it('should unblock user', async () => {
 				await navigateToInfoView();
+				await sleep(300); // wait for navigation animation
 				await tapAndWaitFor(
 					element(by.id('room-info-view-ignore')),
 					element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user'))),
@@ -78,7 +79,9 @@ describe('Ignore/Block User', () => {
 					.toBeVisible()
 					.withTimeout(5000);
 				await tapBack();
-				await expect(element(by.id('messagebox'))).toBeVisible();
+				await waitFor(element(by.id('messagebox')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await tapBack();
 			});
 		});

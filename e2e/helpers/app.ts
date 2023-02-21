@@ -109,36 +109,6 @@ async function mockMessage(message: string, isThread = false) {
 		.tap();
 }
 
-async function starMessage(message: string) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	const messageLabel = `${data.random}${message}`;
-	await element(by[textMatcher](messageLabel)).atIndex(0).longPress();
-	await expect(element(by.id('action-sheet'))).toExist();
-	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by[textMatcher]('Star')).atIndex(0).tap();
-	await waitFor(element(by.id('action-sheet')))
-		.not.toExist()
-		.withTimeout(5000);
-}
-
-async function pinMessage(message: string) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	const messageLabel = `${data.random}${message}`;
-	await waitFor(element(by[textMatcher](messageLabel)).atIndex(0)).toExist();
-	await element(by[textMatcher](messageLabel)).atIndex(0).tap();
-	await element(by[textMatcher](messageLabel)).atIndex(0).longPress();
-	await expect(element(by.id('action-sheet'))).toExist();
-	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by[textMatcher]('Pin')).atIndex(0).tap();
-	await waitFor(element(by.id('action-sheet')))
-		.not.toExist()
-		.withTimeout(5000);
-}
-
 async function dismissReviewNag() {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
@@ -150,6 +120,7 @@ async function dismissReviewNag() {
 
 async function tapBack() {
 	await element(by.id('header-back')).atIndex(0).tap();
+	await sleep(300); // Wait for animation to finish
 }
 
 async function searchRoom(room: string) {
@@ -173,10 +144,10 @@ async function navigateToRoom(room: string) {
 async function tryTapping(
 	theElement: Detox.IndexableNativeElement | Detox.NativeElement,
 	timeout: number,
-	longtap = false
+	longPress = false
 ): Promise<void> {
 	try {
-		if (longtap) {
+		if (longPress) {
 			await theElement.tap();
 			await theElement.longPress();
 		} else {
@@ -193,11 +164,16 @@ async function tryTapping(
 async function tapAndWaitFor(
 	elementToTap: Detox.IndexableNativeElement | Detox.NativeElement,
 	elementToWaitFor: Detox.IndexableNativeElement | Detox.NativeElement,
-	timeout: number
+	timeout: number,
+	longPress = false
 ) {
 	try {
-		await elementToTap.tap();
-		await waitFor(elementToWaitFor).toBeVisible().withTimeout(200);
+		if (longPress) {
+			elementToTap.longPress();
+		} else {
+			await elementToTap.tap();
+		}
+		await waitFor(elementToWaitFor).toBeVisible().withTimeout(1000);
 	} catch (e) {
 		if (timeout <= 0) {
 			throw e;
@@ -231,6 +207,26 @@ const checkServer = async (server: string) => {
 		.withTimeout(10000);
 };
 
+// Useful to get rid of `Too many requests` alert on register
+async function expectValidRegisterOrRetry(platform: keyof typeof platformTypes, retries = 3) {
+	if (retries === 0) {
+		throw new Error('Too many retries');
+	}
+	try {
+		await waitFor(element(by.id('rooms-list-view')))
+			.toBeVisible()
+			.withTimeout(60000);
+	} catch (error) {
+		/**
+		 * We can't use regex to properly match by label, so we assume [error-too-many-requests] is visible.
+		 * We don't need to wait for another 60 seconds, because we already did above, so we just try again.
+		 *  */
+		await element(by[platformTypes[platform].textMatcher]('OK').and(by.type(platformTypes[platform].alertButtonType))).tap();
+		await element(by.id('register-view-submit')).tap();
+		await expectValidRegisterOrRetry(platform, retries - 1);
+	}
+}
+
 export {
 	navigateToWorkspace,
 	navigateToLogin,
@@ -238,8 +234,6 @@ export {
 	login,
 	logout,
 	mockMessage,
-	starMessage,
-	pinMessage,
 	dismissReviewNag,
 	tapBack,
 	sleep,
@@ -249,5 +243,6 @@ export {
 	tapAndWaitFor,
 	checkRoomTitle,
 	checkServer,
-	platformTypes
+	platformTypes,
+	expectValidRegisterOrRetry
 };

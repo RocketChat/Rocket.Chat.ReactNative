@@ -183,8 +183,8 @@ const get = (endpoint: string) => {
 	return rocketchat.get(endpoint);
 };
 
-const post = async (endpoint: string, body: any) => {
-	await login(data.users.regular.username, data.users.regular.password);
+const post = async (endpoint: string, body: any, user = data.users.regular) => {
+	await login(user.username, user.password);
 	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
 	return rocketchat.post(endpoint, body);
 };

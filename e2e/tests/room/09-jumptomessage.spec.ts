@@ -168,7 +168,7 @@ describe('Room', () => {
 		await waitFor(element(by[textMatcher]('50')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.4);
+		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.3);
 		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toExist()
 			.withTimeout(5000);

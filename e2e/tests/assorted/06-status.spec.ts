@@ -52,10 +52,8 @@ describe('Status screen', () => {
 			await element(by.id('sidebar-custom-status-busy')).tap();
 		});
 
-		// TODO: flaky
 		it('should change status text', async () => {
 			await element(by.id('status-view-input')).replaceText('status-text-new');
-			await element(by.id('status-view-online')).tap(); // necessary to receive in-app notifications later
 			await element(by.id('status-view-submit')).tap();
 			await sleep(3000); // Wait until the loading hide
 			await waitFor(element(by.label('status-text-new')))

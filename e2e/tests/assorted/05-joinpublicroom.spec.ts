@@ -1,7 +1,7 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
+import { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes, TTextMatcher, sleep } from '../../helpers/app';
 
 const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
@@ -122,6 +122,9 @@ describe('Join public room', () => {
 	describe('Usage', () => {
 		it('should join room', async () => {
 			await element(by.id('room-view-join-button')).tap();
+			await waitFor(element(by.id('room-view-join-button')))
+				.not.toBeVisible()
+				.withTimeout(2000);
 			await tapBack();
 			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 				.toBeVisible()

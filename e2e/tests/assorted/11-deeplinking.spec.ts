@@ -1,7 +1,14 @@
 import EJSON from 'ejson';
 
 import data from '../../data';
-import { tapBack, checkServer, navigateToRegister, platformTypes, TTextMatcher } from '../../helpers/app';
+import {
+	tapBack,
+	checkServer,
+	navigateToRegister,
+	platformTypes,
+	TTextMatcher,
+	expectValidRegisterOrRetry
+} from '../../helpers/app';
 import { get, login, sendMessage } from '../../helpers/data_setup';
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
@@ -79,11 +86,8 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-username')).replaceText(data.registeringUser4.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser4.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser4.password);
-			await element(by.type(scrollViewType)).atIndex(0).scrollTo('bottom');
-			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.id('rooms-list-view')))
-				.toBeVisible()
-				.withTimeout(10000);
+			await element(by.id('register-view-password')).tapReturnKey();
+			await expectValidRegisterOrRetry(device.getPlatform());
 			await authAndNavigate();
 		});
 	});
