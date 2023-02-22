@@ -2,7 +2,7 @@ import { expect } from 'detox';
 
 import data from '../../data';
 import { navigateToLogin, login, searchRoom, mockRandomMessage } from '../../helpers/app';
-import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 const room = data.channels.detoxpublicprotected.name;
 const { joinCode } = data.channels.detoxpublicprotected;
@@ -34,7 +34,7 @@ async function openJoinCode() {
 }
 
 describe('Join protected room', () => {
-	let user: ICreateUser;
+	let user: ITestUser;
 
 	beforeAll(async () => {
 		user = await createRandomUser();

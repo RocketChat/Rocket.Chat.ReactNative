@@ -1,18 +1,20 @@
-import data from '../../data';
 import { navigateToLogin, login, sleep, tapBack, navigateToRoom, checkRoomTitle } from '../../helpers/app';
-import { sendMessage, post } from '../../helpers/data_setup';
+import { sendMessage, post, ITestUser, createRandomUser, createRandomRoom } from '../../helpers/data_setup';
 
 const waitForInAppNotificationAnimation = async () => {
 	await sleep(500);
 };
 
-const sender = data.users.alternate;
-const receiver = data.users.inapp;
-
 describe('InApp Notification', () => {
 	let dmCreatedRid: string;
+	let sender: ITestUser;
+	let receiver: ITestUser;
+	let room: string;
 
 	beforeAll(async () => {
+		sender = await createRandomUser();
+		receiver = await createRandomUser();
+		({ name: room } = await createRandomRoom(sender));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(receiver.username, receiver.password);
@@ -37,7 +39,7 @@ describe('InApp Notification', () => {
 	describe('receive in another room', () => {
 		const text = 'Another msg';
 		it('should receive and tap InAppNotification while in another room', async () => {
-			await navigateToRoom(data.userRegularChannels.detoxpublic.name);
+			await navigateToRoom(room);
 			await sendMessage(sender, dmCreatedRid, text);
 			await waitFor(element(by.id(`in-app-notification-${text}`)))
 				.toExist()

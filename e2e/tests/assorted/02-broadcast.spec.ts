@@ -13,13 +13,13 @@ import {
 	checkRoomTitle,
 	mockRandomMessage
 } from '../../helpers/app';
-import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 describe('Broadcast room', () => {
 	let textMatcher: TTextMatcher;
-	let user: ICreateUser;
-	let otherUser: ICreateUser;
+	let user: ITestUser;
+	let otherUser: ITestUser;
 	let message: string;
 	const room = `broadcast${random()}`;
 

@@ -14,7 +14,7 @@ import {
 	mockRandomMessage
 } from '../../helpers/app';
 import data from '../../data';
-import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const checkServer = async (server: string) => {
@@ -71,8 +71,8 @@ async function navigateSecurityPrivacy() {
 
 describe('E2E Encryption', () => {
 	const room = `encrypted${random()}`;
-	let user: ICreateUser;
-	let otherUser: ICreateUser;
+	let user: ITestUser;
+	let otherUser: ITestUser;
 	let mockedMessageText: string;
 	const newPassword = 'abc';
 

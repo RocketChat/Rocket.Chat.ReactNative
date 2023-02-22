@@ -1,6 +1,6 @@
 import data from '../../data';
 import { navigateToLogin, login, tapBack, sleep } from '../../helpers/app';
-import { createRandomTeam, createRandomUser, ICreateUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomTeam, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 async function navigateToRoom(search: string) {
@@ -19,8 +19,8 @@ async function navigateToRoom(search: string) {
 }
 
 describe('Join room from directory', () => {
-	let user: ICreateUser;
-	let otherUser: ICreateUser;
+	let user: ITestUser;
+	let otherUser: ITestUser;
 	let team: string;
 
 	beforeAll(async () => {

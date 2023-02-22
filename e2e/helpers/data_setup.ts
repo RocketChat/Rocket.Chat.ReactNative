@@ -29,14 +29,14 @@ const login = async (username: string, password: string) => {
 	return { authToken, userId };
 };
 
-export interface ICreateUser {
+export interface ITestUser {
 	username: string;
 	password: string;
 	name: string;
 	email: string;
 }
 
-export const createRandomUser = async (): Promise<ICreateUser> => {
+export const createRandomUser = async (): Promise<ITestUser> => {
 	try {
 		await login(data.adminUser, data.adminPassword);
 		const user = data.randomUser();
@@ -89,15 +89,21 @@ const createChannelIfNotExists = async (channelname: string) => {
 	}
 };
 
-export const createRandomRoom = async (user: { username: string; password: string }, type: 'p' | 'c' = 'c'): Promise<string> => {
+export const createRandomRoom = async (
+	user: { username: string; password: string },
+	type: 'p' | 'c' = 'c'
+): Promise<{ _id: string; name: string }> => {
 	try {
 		await login(user.username, user.password);
 		const room = `room${random()}`;
 		console.log(`Creating room ${room}`);
-		await rocketchat.post(type === 'c' ? 'channels.create' : 'groups.create', {
+		const result = await rocketchat.post(type === 'c' ? 'channels.create' : 'groups.create', {
 			name: room
 		});
-		return room;
+		return {
+			_id: type === 'c' ? result.data.channel._id : result.data.group._id,
+			name: type === 'c' ? result.data.channel.name : result.data.group.name
+		};
 	} catch (e) {
 		console.log(JSON.stringify(e));
 		throw new Error('Failed to create room');

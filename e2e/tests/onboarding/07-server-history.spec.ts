@@ -1,17 +1,20 @@
 import { expect } from 'detox';
 
-import { login, navigateToLogin, logout, tapBack, tryTapping, tapAndWaitFor } from '../../helpers/app';
+import { login, navigateToLogin, logout, tapBack, tapAndWaitFor } from '../../helpers/app';
 import data from '../../data';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Server history', () => {
+	let user: ITestUser;
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 	});
 
 	describe('Usage', () => {
 		it('should login, save server as history and logout', async () => {
 			await navigateToLogin();
-			await login(data.users.regular.username, data.users.regular.password);
+			await login(user.username, user.password);
 			await logout();
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
@@ -30,7 +33,7 @@ describe('Server history', () => {
 			await waitFor(element(by.id('login-view-email')))
 				.toBeVisible()
 				.withTimeout(5000);
-			await expect(element(by.label(data.users.regular.username).withAncestor(by.id('login-view-email'))));
+			await expect(element(by.label(user.username).withAncestor(by.id('login-view-email'))));
 		});
 
 		it('should delete server from history', async () => {

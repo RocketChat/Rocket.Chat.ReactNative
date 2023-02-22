@@ -2,7 +2,7 @@ import { expect } from 'detox';
 
 import data from '../../data';
 import { navigateToLogin, login, tapBack, searchRoom, platformTypes, TTextMatcher, mockRandomMessage } from '../../helpers/app';
-import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 const room = data.channels.detoxpublic.name;
 
@@ -24,7 +24,7 @@ async function navigateToRoomActions() {
 describe('Join public room', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	let user: ICreateUser;
+	let user: ITestUser;
 
 	beforeAll(async () => {
 		user = await createRandomUser();

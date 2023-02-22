@@ -1,7 +1,7 @@
 import { expect } from 'detox';
 
 import { login, navigateToLogin } from '../../helpers/app';
-import data from '../../data';
+import { createRandomUser } from '../../helpers/data_setup';
 
 const goToDisplayPref = async () => {
 	await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
@@ -18,9 +18,10 @@ const goToRoomList = async () => {
 
 describe('Display prefs', () => {
 	beforeAll(async () => {
+		const user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Render', () => {

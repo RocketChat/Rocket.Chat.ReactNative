@@ -1,16 +1,18 @@
 import { expect } from 'detox';
 
-import data from '../../data';
-import { tapBack, navigateToLogin, login, tryTapping, platformTypes, TTextMatcher, tapAndWaitFor } from '../../helpers/app';
+import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWaitFor } from '../../helpers/app';
+import { createRandomUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 describe('Create room screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	beforeAll(async () => {
+		const user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('New Message', () => {
@@ -139,7 +141,7 @@ describe('Create room screen', () => {
 			});
 
 			it('should create public room', async () => {
-				const room = `public${data.random}`;
+				const room = `public${random()}`;
 				await element(by.id('create-channel-name')).replaceText(room);
 				await element(by.id('create-channel-name')).tapReturnKey();
 				await element(by.id('create-channel-type')).tap();
@@ -166,7 +168,7 @@ describe('Create room screen', () => {
 			});
 
 			it('should create private room', async () => {
-				const room = `private${data.random}`;
+				const room = `private${random()}`;
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(5000);
@@ -211,7 +213,7 @@ describe('Create room screen', () => {
 			});
 
 			it('should create empty room', async () => {
-				const room = `empty${data.random}`;
+				const room = `empty${random()}`;
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(10000);

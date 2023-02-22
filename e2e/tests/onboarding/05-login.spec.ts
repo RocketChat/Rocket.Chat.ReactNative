@@ -1,10 +1,12 @@
 import { navigateToLogin, tapBack, platformTypes, navigateToWorkspace, login, TTextMatcher } from '../../helpers/app';
-import data from '../../data';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Login screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let user: ITestUser;
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
@@ -12,7 +14,7 @@ describe('Login screen', () => {
 
 	describe('Usage', () => {
 		it('should insert wrong password and get error', async () => {
-			await element(by.id('login-view-email')).replaceText(data.users.regular.username);
+			await element(by.id('login-view-email')).replaceText(user.username);
 			await element(by.id('login-view-email')).tapReturnKey();
 			await element(by.id('login-view-password')).replaceText('NotMyActualPassword');
 			await element(by.id('login-view-password')).tapReturnKey();
@@ -23,7 +25,7 @@ describe('Login screen', () => {
 		});
 
 		it('should login with success', async () => {
-			await element(by.id('login-view-password')).replaceText(data.users.regular.password);
+			await element(by.id('login-view-password')).replaceText(user.password);
 			await element(by.id('login-view-password')).tapReturnKey();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
@@ -35,7 +37,7 @@ describe('Login screen', () => {
 			await navigateToWorkspace();
 			await tapBack();
 			await navigateToLogin();
-			await login(data.users.regular.username, data.users.regular.password);
+			await login(user.username, user.password);
 		});
 	});
 });

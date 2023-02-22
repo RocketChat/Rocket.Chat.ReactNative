@@ -1,10 +1,10 @@
 import { expect } from 'detox';
 
 import { navigateToLogin, login, sleep } from '../../helpers/app';
-import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Status screen', () => {
-	let user: ICreateUser;
+	let user: ITestUser;
 
 	beforeAll(async () => {
 		user = await createRandomUser();

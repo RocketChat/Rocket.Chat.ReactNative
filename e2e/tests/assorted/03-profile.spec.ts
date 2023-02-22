@@ -1,7 +1,7 @@
 import { expect } from 'detox';
 
 import { navigateToLogin, login, sleep, platformTypes, TTextMatcher } from '../../helpers/app';
-import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const scrollDown = 200;
@@ -13,7 +13,7 @@ async function waitForToast() {
 describe('Profile screen', () => {
 	let scrollViewType: string;
 	let textMatcher: TTextMatcher;
-	let user: ICreateUser;
+	let user: ITestUser;
 
 	beforeAll(async () => {
 		user = await createRandomUser();

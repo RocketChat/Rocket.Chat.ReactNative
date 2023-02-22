@@ -1,6 +1,6 @@
 import data from '../../data';
 import { navigateToLogin, login, checkServer, expectValidRegisterOrRetry } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -11,12 +11,12 @@ const reopenAndCheckServer = async (server: string) => {
 };
 
 describe('Change server', () => {
-	let user: ICreateUser;
+	let user: ITestUser;
 	let room: string;
 
 	beforeAll(async () => {
 		user = await createRandomUser();
-		room = await createRandomRoom(user);
+		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(user.username, user.password);

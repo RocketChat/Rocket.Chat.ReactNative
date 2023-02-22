@@ -8,12 +8,12 @@ import {
 	TTextMatcher,
 	expectValidRegisterOrRetry
 } from '../../helpers/app';
-import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Delete server', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	let user: ICreateUser;
+	let user: ITestUser;
 
 	beforeAll(async () => {
 		user = await createRandomUser();
