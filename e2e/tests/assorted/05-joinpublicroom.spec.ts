@@ -1,9 +1,9 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes, TTextMatcher, sleep } from '../../helpers/app';
+import { navigateToLogin, login, tapBack, searchRoom, platformTypes, TTextMatcher, mockRandomMessage } from '../../helpers/app';
+import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
 
-const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
 
 async function navigateToRoom() {
@@ -24,11 +24,14 @@ async function navigateToRoomActions() {
 describe('Join public room', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let user: ICreateUser;
+
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 		await navigateToRoom();
 	});
 
@@ -141,7 +144,7 @@ describe('Join public room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockMessage('message');
+			await mockRandomMessage('message');
 		});
 
 		it('should have notifications and leave channel', async () => {

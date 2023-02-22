@@ -1,5 +1,6 @@
 import data from '../../data';
-import { navigateToLogin, login, checkServer, sleep, expectValidRegisterOrRetry } from '../../helpers/app';
+import { navigateToLogin, login, checkServer, expectValidRegisterOrRetry } from '../../helpers/app';
+import { createRandomChannel, createRandomUser, ICreateUser } from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -10,13 +11,15 @@ const reopenAndCheckServer = async (server: string) => {
 };
 
 describe('Change server', () => {
+	let user: ICreateUser;
+	let channel: string;
+
 	beforeAll(async () => {
+		user = await createRandomUser();
+		channel = await createRandomChannel(user);
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
-		await waitFor(element(by.id('rooms-list-view')))
-			.toBeVisible()
-			.withTimeout(10000);
+		await login(user.username, user.password);
 	});
 
 	it('should open the dropdown button, have the server add button and create workspace button', async () => {
@@ -37,7 +40,7 @@ describe('Change server', () => {
 		await waitFor(element(by.id('new-server-view')))
 			.toBeVisible()
 			.withTimeout(6000);
-		await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
+		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
 		await element(by.id('new-server-view-input')).tapReturnKey();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
@@ -60,15 +63,15 @@ describe('Change server', () => {
 			.withTimeout(2000);
 
 		// Register new user
-		await sleep(5000);
-		await element(by.id('register-view-name')).replaceText(data.registeringUser2.username);
-		await element(by.id('register-view-username')).replaceText(data.registeringUser2.username);
-		await element(by.id('register-view-email')).replaceText(data.registeringUser2.email);
-		await element(by.id('register-view-password')).replaceText(data.registeringUser2.password);
+		const randomUser = data.randomUser();
+		await element(by.id('register-view-name')).replaceText(randomUser.name);
+		await element(by.id('register-view-username')).replaceText(randomUser.username);
+		await element(by.id('register-view-email')).replaceText(randomUser.email);
+		await element(by.id('register-view-password')).replaceText(randomUser.password);
 		await element(by.id('register-view-password')).tapReturnKey();
 		await expectValidRegisterOrRetry(device.getPlatform());
 
-		await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
+		await waitFor(element(by.id(`rooms-list-view-item-${channel}`)))
 			.toBeNotVisible()
 			.withTimeout(60000);
 		await checkServer(data.alternateServer);
@@ -87,7 +90,7 @@ describe('Change server', () => {
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
+		await waitFor(element(by.id(`rooms-list-view-item-${channel}`)))
 			.toBeVisible()
 			.withTimeout(60000);
 		await checkServer(data.server);

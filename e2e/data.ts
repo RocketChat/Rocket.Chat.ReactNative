@@ -105,11 +105,12 @@ const data = {
 		email: `mobile+registeringfour${value}@rocket.chat`
 	},
 	random: value,
-	randomUser: (): { username: string; password: string; email: string } => {
+	randomUser: (): { username: string; name: string; password: string; email: string } => {
 		const randomVal = random();
 		return {
 			username: `user${randomVal}`,
-			password: '123',
+			name: `name${randomVal}`,
+			password: `password${randomVal}`,
 			email: `mobile+${randomVal}@rocket.chat`
 		};
 	}

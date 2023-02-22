@@ -37,22 +37,17 @@ export interface ICreateUser {
 }
 
 export const createRandomUser = async (): Promise<ICreateUser> => {
-	await login(data.adminUser, data.adminPassword);
-	const val = random(5);
-	console.log(`Creating user user${val}`);
-
 	try {
-		const username = `user${val}`;
-		const password = `pass${val}`;
-		const name = `name${val}`;
-		const email = `mobile+${val}@rocket.chat`;
+		await login(data.adminUser, data.adminPassword);
+		const user = data.randomUser();
+		console.log(`Creating user ${user.username}`);
 		await rocketchat.post('users.create', {
-			username,
-			password,
-			name,
-			email
+			username: user.username,
+			password: user.password,
+			name: user.name,
+			email: user.email
 		});
-		return { username, password, name, email } as const;
+		return user;
 	} catch (error) {
 		console.log(JSON.stringify(error));
 		throw new Error('Failed to create user');
@@ -91,6 +86,21 @@ const createChannelIfNotExists = async (channelname: string) => {
 			console.log(JSON.stringify(infoError));
 			throw new Error('Failed to find or create public channel');
 		}
+	}
+};
+
+export const createRandomChannel = async (user: { username: string; password: string }) => {
+	await login(user.username, user.password);
+	const room = `room${random()}`;
+	console.log(`Creating public channel ${room}`);
+	try {
+		const result = await rocketchat.post('channels.create', {
+			name: room
+		});
+		return result.data.channel.name;
+	} catch (e) {
+		console.log(JSON.stringify(e));
+		throw new Error('Failed to create public channel');
 	}
 };
 

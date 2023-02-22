@@ -1,15 +1,16 @@
 import { expect } from 'detox';
 
 import { navigateToLogin, login, sleep } from '../../helpers/app';
-import data from '../../data';
-
-const testuser = data.users.regular;
+import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
 
 describe('Status screen', () => {
+	let user: ICreateUser;
+
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view')))

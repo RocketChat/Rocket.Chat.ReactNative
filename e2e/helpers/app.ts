@@ -95,6 +95,9 @@ async function logout() {
 	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
+/**
+ * @deprecated use mockRandomMessage
+ */
 async function mockMessage(message: string, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];

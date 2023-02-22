@@ -13,7 +13,6 @@ import {
 	checkRoomTitle,
 	mockRandomMessage
 } from '../../helpers/app';
-import data from '../../data';
 import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
