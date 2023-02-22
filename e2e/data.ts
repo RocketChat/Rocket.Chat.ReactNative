@@ -1,5 +1,6 @@
 // @ts-ignore
 import account from './e2e_account';
+import random from './helpers/random';
 
 export interface IUser {
 	username: string;
@@ -103,7 +104,15 @@ const data = {
 		password: `passwordfour${value}`,
 		email: `mobile+registeringfour${value}@rocket.chat`
 	},
-	random: value
+	random: value,
+	randomUser: (): { username: string; password: string; email: string } => {
+		const randomVal = random();
+		return {
+			username: `user${randomVal}`,
+			password: '123',
+			email: `mobile+${randomVal}@rocket.chat`
+		};
+	}
 };
 
 export default data;

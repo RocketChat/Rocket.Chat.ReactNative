@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import data, { TDataChannels, TDataGroups, TDataTeams, TDataUsers, TUserRegularChannels } from '../data';
+import random from './random';
 
 const TEAM_TYPE = {
 	PUBLIC: 0,
@@ -26,6 +27,36 @@ const login = async (username: string, password: string) => {
 	rocketchat.defaults.headers.common['X-User-Id'] = userId;
 	rocketchat.defaults.headers.common['X-Auth-Token'] = authToken;
 	return { authToken, userId };
+};
+
+export interface ICreateUser {
+	username: string;
+	password: string;
+	name: string;
+	email: string;
+}
+
+export const createRandomUser = async (): Promise<ICreateUser> => {
+	await login(data.adminUser, data.adminPassword);
+	const val = random(5);
+	console.log(`Creating user user${val}`);
+
+	try {
+		const username = `user${val}`;
+		const password = `pass${val}`;
+		const name = `name${val}`;
+		const email = `mobile+${val}@rocket.chat`;
+		await rocketchat.post('users.create', {
+			username,
+			password,
+			name,
+			email
+		});
+		return { username, password, name, email } as const;
+	} catch (error) {
+		console.log(JSON.stringify(error));
+		throw new Error('Failed to create user');
+	}
 };
 
 const createUser = async (username: string, password: string, name: string, email: string) => {

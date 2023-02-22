@@ -1,6 +1,7 @@
 import { by, expect, element } from 'detox';
 
 import data from '../data';
+import random from './random';
 
 export type TTextMatcher = keyof Pick<Detox.ByFacade, 'text' | 'label'>;
 
@@ -107,6 +108,21 @@ async function mockMessage(message: string, isThread = false) {
 	await element(by[textMatcher](`${data.random}${message}`))
 		.atIndex(0)
 		.tap();
+}
+
+async function mockRandomMessage(messageEnd: string, isThread = false) {
+	const message = `${random(10)}${messageEnd}`;
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
+	await element(by.id(input)).replaceText(message);
+	await sleep(300);
+	await element(by.id('messagebox-send-message')).tap();
+	await waitFor(element(by[textMatcher](message)))
+		.toExist()
+		.withTimeout(60000);
+	await element(by[textMatcher](message)).atIndex(0).tap();
+	return message;
 }
 
 async function dismissReviewNag() {
@@ -234,6 +250,7 @@ export {
 	login,
 	logout,
 	mockMessage,
+	mockRandomMessage,
 	dismissReviewNag,
 	tapBack,
 	sleep,

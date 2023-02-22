@@ -1,4 +1,4 @@
-function random(length: number) {
+function random(length = 10) {
 	let text = '';
 	const possible = 'abcdefghijklmnopqrstuvwxyz';
 	for (let i = 0; i < length; i += 1) {
