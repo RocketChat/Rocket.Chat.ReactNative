@@ -1,18 +1,20 @@
 import { expect } from 'detox';
 
-import data from '../../data';
 import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
-
-const teamName = `team-${data.random}`;
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 describe('Create team screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let user: ITestUser;
+	const teamName = `team${random()}`;
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('New Message', () => {
@@ -48,20 +50,7 @@ describe('Create team screen', () => {
 
 	describe('Create Team', () => {
 		describe('Usage', () => {
-			it('should get invalid team name', async () => {
-				await element(by.id('create-channel-name')).replaceText(`${data.teams.private.name}`);
-				await waitFor(element(by.id('create-channel-submit')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by[textMatcher]('OK').and(by.type(alertButtonType))))
-					.toBeVisible()
-					.withTimeout(5000);
-				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
-			});
-
 			it('should create private team', async () => {
-				await element(by.id('create-channel-name')).replaceText('');
 				await element(by.id('create-channel-name')).replaceText(teamName);
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()

@@ -1,18 +1,7 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, tapBack, login, searchRoom, sleep, platformTypes, TTextMatcher } from '../../helpers/app';
-
-async function navigateToRoom(roomName: string) {
-	await searchRoom(`${roomName}`);
-	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-	await waitFor(element(by.id(`room-view-title-${roomName}`)))
-		.toExist()
-		.withTimeout(5000);
-}
+import { navigateToLogin, tapBack, login, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
 
 let textMatcher: TTextMatcher;
 let alertButtonType: string;

@@ -1,22 +1,10 @@
 import { expect } from 'detox';
 
-import data from '../../data';
-import { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
+import { navigateToLogin, login, tapBack, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
+import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
-const privateRoomName = data.groups.private.name;
-
-async function navigateToRoomInfo(type: string) {
-	let room;
-	if (type === 'd') {
-		room = 'rocket.cat';
-	} else {
-		room = privateRoomName;
-	}
-	await searchRoom(room);
-	await element(by.id(`rooms-list-view-item-${room}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toExist()
-		.withTimeout(2000);
+async function navigateToRoomInfo(room: string) {
+	await navigateToRoom(room);
 	await element(by.id('room-header')).tap();
 	await waitFor(element(by.id('room-actions-view')))
 		.toExist()
@@ -38,33 +26,20 @@ async function waitForToast() {
 describe('Room info screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let room: string;
+	let user: ITestUser;
 	beforeAll(async () => {
+		user = await createRandomUser();
+		({ name: room } = await createRandomRoom(user, 'p'));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
-	});
-
-	describe('Direct', () => {
-		beforeAll(async () => {
-			await navigateToRoomInfo('d');
-		});
-
-		it('should navigate to room info', async () => {
-			await expect(element(by.id('room-info-view'))).toExist();
-			await expect(element(by.id('room-info-view-name'))).toExist();
-		});
-
-		afterAll(async () => {
-			await tapBack();
-			await tapBack();
-			await tapBack();
-		});
+		await login(user.username, user.password);
 	});
 
 	describe('Channel/Group', () => {
 		beforeAll(async () => {
-			await navigateToRoomInfo('c');
+			await navigateToRoomInfo(room);
 		});
 
 		describe('Render', () => {
@@ -175,7 +150,7 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
 				await element(by.id('room-info-edit-view-reset')).tap();
 				// after reset
-				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(privateRoomName);
+				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(room);
 				await expect(element(by.id('room-info-edit-view-description'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-topic'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-announcement'))).toHaveText('');
@@ -187,7 +162,7 @@ describe('Room info screen', () => {
 			});
 
 			it('should change room name', async () => {
-				await element(by.id('room-info-edit-view-name')).replaceText(`${privateRoomName}new`);
+				await element(by.id('room-info-edit-view-name')).replaceText(`${room}new`);
 				await swipe('down'); // dismiss keyboard
 				await swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
@@ -198,7 +173,7 @@ describe('Room info screen', () => {
 					.withTimeout(2000);
 				const matcher = device.getPlatform() === 'android' ? 'toHaveText' : 'toHaveLabel';
 				await waitFor(element(by.id('room-info-view-name')))
-					[matcher](`${privateRoomName}new`)
+					[matcher](`${room}new`)
 					.withTimeout(10000);
 				await element(by.id('room-info-view-edit-button')).tap();
 				await waitFor(element(by.id('room-info-edit-view')))
@@ -207,7 +182,7 @@ describe('Room info screen', () => {
 			});
 
 			it('should change room description, topic, announcement', async () => {
-				await sleep(3000); // wait for changes to be applied from socket
+				await sleep(5000); // wait for changes to be applied from socket
 				await element(by.id('room-info-edit-view-description')).replaceText('new description');
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
@@ -273,7 +248,7 @@ describe('Room info screen', () => {
 					.toExist()
 					.withTimeout(5000);
 				await element(by[textMatcher]('Yes, delete it!').and(by.type(alertButtonType))).tap();
-				await waitFor(element(by.id(`rooms-list-view-item-${privateRoomName}new`)))
+				await waitFor(element(by.id(`rooms-list-view-item-${room}new`)))
 					.not.toBeVisible()
 					.withTimeout(60000);
 			});

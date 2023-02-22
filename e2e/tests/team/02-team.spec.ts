@@ -1,25 +1,18 @@
 import { expect } from 'detox';
 
-import data from '../../data';
 import {
 	navigateToLogin,
 	login,
 	tapBack,
 	sleep,
-	searchRoom,
 	platformTypes,
 	TTextMatcher,
 	checkRoomTitle,
-	tapAndWaitFor
+	tapAndWaitFor,
+	navigateToRoom
 } from '../../helpers/app';
-
-async function navigateToRoom(roomName: string) {
-	await searchRoom(`${roomName}`);
-	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-}
+import { createRandomRoom, createRandomTeam, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 async function openActionSheet(username: string) {
 	await waitFor(element(by.id(`room-members-view-item-${username}`)))
@@ -79,18 +72,23 @@ async function swipeTillVisible(
 }
 
 describe('Team', () => {
-	const team = data.teams.private.name;
-	const user = data.users.alternate;
-	const room = `private${data.random}-channel-team`;
-	const existingRoom = data.groups.alternate.name;
+	const room = `private${random()}-channel-team`;
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let user: ITestUser;
+	let otherUser: ITestUser;
+	let team: string;
+	let existingRoom: string;
 
 	beforeAll(async () => {
+		user = await createRandomUser();
+		otherUser = await createRandomUser();
+		team = await createRandomTeam(user);
+		({ name: existingRoom } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 		await navigateToRoom(team);
 	});
 
@@ -174,8 +172,8 @@ describe('Team', () => {
 				await waitFor(element(by.id('create-channel-view')))
 					.toExist()
 					.withTimeout(10000);
-				await element(by.id('create-channel-name')).replaceText('');
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(10000);
@@ -312,12 +310,12 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(4000);
 				await element(by.id('select-users-view-search')).tap();
-				await element(by.id('select-users-view-search')).replaceText(user.username);
-				await waitFor(element(by.id(`select-users-view-item-${user.username}`)))
+				await element(by.id('select-users-view-search')).replaceText(otherUser.username);
+				await waitFor(element(by.id(`select-users-view-item-${otherUser.username}`)))
 					.toExist()
 					.withTimeout(10000);
-				await element(by.id(`select-users-view-item-${user.username}`)).tap();
-				await waitFor(element(by.id(`selected-user-${user.username}`)))
+				await element(by.id(`select-users-view-item-${otherUser.username}`)).tap();
+				await waitFor(element(by.id(`selected-user-${otherUser.username}`)))
 					.toExist()
 					.withTimeout(5000);
 
@@ -334,7 +332,7 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('room-members-view-toggle-status-all')).tap();
-				await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
+				await waitFor(element(by.id(`room-members-view-item-${otherUser.username}`)))
 					.toExist()
 					.withTimeout(60000);
 				await backToActions();
@@ -397,22 +395,22 @@ describe('Team', () => {
 						.toExist()
 						.withTimeout(2000);
 					await element(by.id('room-members-view-toggle-status-all')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
+					await waitFor(element(by.id(`room-members-view-item-${otherUser.username}`)))
 						.toExist()
 						.withTimeout(60000);
 				});
 
 				it('should filter user', async () => {
-					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
+					await waitFor(element(by.id(`room-members-view-item-${otherUser.username}`)))
 						.toExist()
 						.withTimeout(60000);
 					await element(by.id('room-members-view-search')).replaceText('rocket');
-					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
+					await waitFor(element(by.id(`room-members-view-item-${otherUser.username}`)))
 						.toBeNotVisible()
 						.withTimeout(60000);
 					await element(by.id('room-members-view-search')).tap();
 					await element(by.id('room-members-view-search')).clearText();
-					await waitFor(element(by.id(`room-members-view-item-${user.username}`)))
+					await waitFor(element(by.id(`room-members-view-item-${otherUser.username}`)))
 						.toExist()
 						.withTimeout(60000);
 				});
@@ -441,11 +439,11 @@ describe('Team', () => {
 				});
 
 				it('should set member as owner', async () => {
-					await openActionSheet(user.username);
+					await openActionSheet(otherUser.username);
 					await element(by.id('action-sheet-set-owner')).tap();
 					await waitForToast();
 
-					await openActionSheet(user.username);
+					await openActionSheet(otherUser.username);
 					await waitFor(element(by.id('action-sheet-set-owner-checked')))
 						.toBeVisible()
 						.withTimeout(6000);
@@ -488,9 +486,12 @@ describe('Team', () => {
 						.toExist()
 						.withTimeout(2000);
 					await element(by.id('select-list-view-submit')).tap();
+					await waitFor(element(by.id('rooms-list-view')))
+						.toBeVisible()
+						.withTimeout(10000);
 					await waitFor(element(by.id(`rooms-list-view-item-${team}`)))
 						.toBeNotVisible()
-						.withTimeout(60000);
+						.withTimeout(10000);
 				});
 			});
 		});

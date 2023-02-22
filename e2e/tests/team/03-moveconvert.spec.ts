@@ -1,17 +1,9 @@
-import data from '../../data';
-import {
-	navigateToLogin,
-	login,
-	tapBack,
-	searchRoom,
-	platformTypes,
-	TTextMatcher,
-	tapAndWaitFor,
-	sleep
-} from '../../helpers/app';
+import { navigateToLogin, login, tapBack, platformTypes, TTextMatcher, sleep, navigateToRoom } from '../../helpers/app';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
-const toBeConverted = `to-be-converted-${data.random}`;
-const toBeMoved = `to-be-moved-${data.random}`;
+const toBeConverted = `to-be-converted-${random()}`;
+const toBeMoved = `to-be-moved-${random()}`;
 
 const createChannel = async (room: string) => {
 	await waitFor(element(by.id('rooms-list-view-create-channel')))
@@ -50,14 +42,6 @@ const createChannel = async (room: string) => {
 		.withTimeout(60000);
 };
 
-async function navigateToRoom(room: string) {
-	await searchRoom(`${room}`);
-	await element(by.id(`rooms-list-view-item-${room}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-}
-
 async function navigateToRoomActions(room: string) {
 	await navigateToRoom(room);
 	await element(by.id('room-header')).tap();
@@ -69,11 +53,13 @@ async function navigateToRoomActions(room: string) {
 describe('Move/Convert Team', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let user: ITestUser;
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Convert', () => {

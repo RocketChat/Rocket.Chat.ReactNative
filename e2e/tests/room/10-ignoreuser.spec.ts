@@ -4,23 +4,15 @@ import data from '../../data';
 import {
 	navigateToLogin,
 	login,
-	searchRoom,
 	sleep,
 	platformTypes,
 	TTextMatcher,
 	tapBack,
 	tapAndWaitFor,
-	checkRoomTitle
+	checkRoomTitle,
+	navigateToRoom
 } from '../../helpers/app';
-import { sendMessage } from '../../helpers/data_setup';
-
-async function navigateToRoom(user: string) {
-	await searchRoom(`${user}`);
-	await element(by.id(`rooms-list-view-item-${user}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-}
+import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
 
 async function navigateToInfoView() {
 	await element(by.id('room-header')).tap();
@@ -34,20 +26,25 @@ async function navigateToInfoView() {
 }
 
 describe('Ignore/Block User', () => {
-	const user = data.users.alternate.username;
+	let user: ITestUser;
+	let otherUser: ITestUser;
+	let room: string;
 	let textMatcher: TTextMatcher;
 
 	beforeAll(async () => {
+		user = await createRandomUser();
+		otherUser = await createRandomUser();
+		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Usage', () => {
 		describe('Block user from DM', () => {
 			it('should go to user info view', async () => {
-				await navigateToRoom(user);
+				await navigateToRoom(otherUser.username);
 				await navigateToInfoView();
 			});
 			it('should block user', async () => {
@@ -86,15 +83,14 @@ describe('Ignore/Block User', () => {
 			});
 		});
 		describe('Ignore user from Message', () => {
-			const channelName = data.userRegularChannels.detoxpublic.name;
 			it('should ignore user from message', async () => {
-				await navigateToRoom(channelName);
-				await sendMessage(data.users.alternate, channelName, 'message-01');
-				await sendMessage(data.users.alternate, channelName, 'message-02');
-				await waitFor(element(by[textMatcher](user)).atIndex(0))
+				await navigateToRoom(room);
+				await sendMessage(otherUser, room, 'message-01');
+				await sendMessage(otherUser, room, 'message-02');
+				await waitFor(element(by[textMatcher](otherUser.username)).atIndex(0))
 					.toExist()
 					.withTimeout(30000);
-				await element(by[textMatcher](user)).atIndex(0).tap();
+				await element(by[textMatcher](otherUser.username)).atIndex(0).tap();
 				await sleep(300); // wait for navigation animation
 				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Ignore'))))
 					.toExist()
@@ -107,16 +103,16 @@ describe('Ignore/Block User', () => {
 			});
 
 			it('should tap to display message', async () => {
-				await checkRoomTitle(channelName);
+				await checkRoomTitle(room);
 				await waitFor(element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0))
 					.toBeVisible()
 					.withTimeout(2000);
 				await tapAndWaitFor(
 					element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0),
-					element(by[textMatcher](user)),
+					element(by[textMatcher](otherUser.username)),
 					2000
 				);
-				await element(by[textMatcher](user)).atIndex(0).tap();
+				await element(by[textMatcher](otherUser.username)).atIndex(0).tap();
 				await sleep(300); // wait for navigation animation
 				await expect(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unignore')))).toBeVisible();
 				await element(by.id('room-info-view-ignore')).tap();
