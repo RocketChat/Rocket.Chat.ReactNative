@@ -8,15 +8,19 @@ import {
 	TTextMatcher,
 	expectValidRegisterOrRetry
 } from '../../helpers/app';
+import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
 
 describe('Delete server', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let user: ICreateUser;
+
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	it('should be logged in main server', async () => {
@@ -45,10 +49,11 @@ describe('Delete server', () => {
 			.withTimeout(2000);
 
 		// Register new user
-		await element(by.id('register-view-name')).replaceText(data.registeringUser3.username);
-		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
-		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
-		await element(by.id('register-view-password')).replaceText(data.registeringUser3.password);
+		const randomUser = data.randomUser();
+		await element(by.id('register-view-name')).replaceText(randomUser.name);
+		await element(by.id('register-view-username')).replaceText(randomUser.username);
+		await element(by.id('register-view-email')).replaceText(randomUser.email);
+		await element(by.id('register-view-password')).replaceText(randomUser.password);
 		await element(by.id('register-view-password')).tapReturnKey();
 		await expectValidRegisterOrRetry(device.getPlatform());
 

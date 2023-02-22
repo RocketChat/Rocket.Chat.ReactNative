@@ -43,8 +43,8 @@ export const createRandomUser = async (): Promise<ICreateUser> => {
 		console.log(`Creating user ${user.username}`);
 		await rocketchat.post('users.create', {
 			username: user.username,
-			password: user.password,
 			name: user.name,
+			password: user.password,
 			email: user.email
 		});
 		return user;
@@ -90,17 +90,33 @@ const createChannelIfNotExists = async (channelname: string) => {
 };
 
 export const createRandomChannel = async (user: { username: string; password: string }) => {
-	await login(user.username, user.password);
-	const room = `room${random()}`;
-	console.log(`Creating public channel ${room}`);
 	try {
-		const result = await rocketchat.post('channels.create', {
+		await login(user.username, user.password);
+		const room = `room${random()}`;
+		console.log(`Creating public channel ${room}`);
+		await rocketchat.post('channels.create', {
 			name: room
 		});
-		return result.data.channel.name;
+		return room;
 	} catch (e) {
 		console.log(JSON.stringify(e));
 		throw new Error('Failed to create public channel');
+	}
+};
+
+export const createRandomTeam = async (user: { username: string; password: string }) => {
+	try {
+		await login(user.username, user.password);
+		const team = `team${random()}`;
+		console.log(`Creating team ${team}`);
+		await rocketchat.post('teams.create', {
+			name: team,
+			type: TEAM_TYPE.PRIVATE
+		});
+		return team;
+	} catch (e) {
+		console.log(JSON.stringify(e));
+		throw new Error('Failed create team');
 	}
 };
 
@@ -155,6 +171,29 @@ const changeChannelJoinCode = async (roomId: string, joinCode: string) => {
 	} catch (createError) {
 		console.log(JSON.stringify(createError));
 		throw new Error('Failed to create protected channel');
+	}
+};
+
+export const sendRandomMessage = async ({
+	user,
+	room,
+	messageEnd,
+	tmid
+}: {
+	user: { username: string; password: string };
+	room: string;
+	messageEnd: string;
+	tmid?: string;
+}) => {
+	try {
+		const msg = `${random()}${messageEnd}`;
+		console.log(`Sending message ${msg} to ${room}`);
+		await login(user.username, user.password);
+		const response = await rocketchat.post('chat.postMessage', { channel: room, msg, tmid });
+		return response.data;
+	} catch (infoError) {
+		console.log(JSON.stringify(infoError));
+		throw new Error('Failed to find or create private group');
 	}
 };
 

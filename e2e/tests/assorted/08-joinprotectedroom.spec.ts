@@ -1,9 +1,9 @@
 import { expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, mockMessage, searchRoom } from '../../helpers/app';
+import { navigateToLogin, login, searchRoom, mockRandomMessage } from '../../helpers/app';
+import { createRandomUser, ICreateUser } from '../../helpers/data_setup';
 
-const testuser = data.users.regular;
 const room = data.channels.detoxpublicprotected.name;
 const { joinCode } = data.channels.detoxpublicprotected;
 
@@ -34,10 +34,13 @@ async function openJoinCode() {
 }
 
 describe('Join protected room', () => {
+	let user: ICreateUser;
+
 	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 		await navigateToRoom();
 	});
 
@@ -68,7 +71,7 @@ describe('Join protected room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockMessage('message');
+			await mockRandomMessage('message');
 		});
 	});
 });
