@@ -1,19 +1,19 @@
 import { expect } from 'detox';
 
-import data from '../../data';
 import {
 	navigateToLogin,
 	login,
-	mockMessage,
 	tapBack,
 	sleep,
 	searchRoom,
 	dismissReviewNag,
 	tryTapping,
 	platformTypes,
-	TTextMatcher
+	TTextMatcher,
+	mockRandomMessage
 } from '../../helpers/app';
-import { sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
@@ -24,22 +24,26 @@ async function navigateToRoom(roomName: string) {
 }
 
 describe('Room screen', () => {
-	const mainRoom = data.groups.private.name;
+	let room: string;
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
+	let user: ITestUser;
+	let randomMessage: string;
 
 	beforeAll(async () => {
+		user = await createRandomUser();
+		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
-		await navigateToRoom(mainRoom);
+		await login(user.username, user.password);
+		await navigateToRoom(room);
 	});
 
 	describe('Render', () => {
 		it('should have room screen', async () => {
 			await expect(element(by.id('room-view'))).toExist();
-			await waitFor(element(by.id(`room-view-title-${mainRoom}`)))
+			await waitFor(element(by.id(`room-view-title-${room}`)))
 				.toExist()
 				.withTimeout(5000);
 		});
@@ -82,8 +86,7 @@ describe('Room screen', () => {
 	describe('Usage', () => {
 		describe('Messagebox', () => {
 			it('should send message', async () => {
-				await mockMessage('message');
-				await expect(element(by[textMatcher](`${data.random}message`)).atIndex(0)).toExist();
+				randomMessage = await mockRandomMessage('message');
 			});
 
 			// describe('Emoji Keyboard', () => {
@@ -227,9 +230,9 @@ describe('Room screen', () => {
 			});
 
 			it('should show and tap on user autocomplete and send mention', async () => {
-				const { username } = data.users.regular;
+				const { username } = user;
 				const messageMention = `@${username}`;
-				const message = `${data.random}mention`;
+				const message = `${random()}mention`;
 				const fullMessage = `${messageMention} ${message}`;
 				await element(by.id('messagebox-input')).typeText(`@${username}`);
 				await sleep(300);
@@ -241,7 +244,6 @@ describe('Room screen', () => {
 					.withTimeout(4000);
 				await tryTapping(element(by.id(`mention-item-${username}`)), 2000);
 				await expect(element(by.id('messagebox-input'))).toHaveText(`${messageMention} `);
-				// await tryTapping(element(by.id('messagebox-input')), 2000);
 				if (device.getPlatform() === 'ios') {
 					await element(by.id('messagebox-input')).typeText(message);
 					await element(by.id('messagebox-send-message')).tap();
@@ -284,24 +286,23 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).clearText();
 			});
 			it('should draft message', async () => {
-				await element(by.id('messagebox-input')).typeText(`${data.random}draft`);
+				const draftMessage = `${random()}draft`;
+				await element(by.id('messagebox-input')).typeText(draftMessage);
 				await tapBack();
 
-				await navigateToRoom(mainRoom);
-				await expect(element(by.id('messagebox-input'))).toHaveText(`${data.random}draft`);
+				await navigateToRoom(room);
+				await expect(element(by.id('messagebox-input'))).toHaveText(draftMessage);
 				await element(by.id('messagebox-input')).clearText();
 				await tapBack();
 
-				await navigateToRoom(mainRoom);
+				await navigateToRoom(room);
 				await expect(element(by.id('messagebox-input'))).toHaveText('');
 			});
 		});
 
 		describe('Message', () => {
 			it('should copy link', async () => {
-				await element(by[textMatcher](`${data.random}message`))
-					.atIndex(0)
-					.longPress();
+				await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
@@ -311,9 +312,7 @@ describe('Room screen', () => {
 				// TODO: test clipboard
 			});
 			it('should copy message', async () => {
-				await element(by[textMatcher](`${data.random}message`))
-					.atIndex(0)
-					.longPress();
+				await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
@@ -324,25 +323,21 @@ describe('Room screen', () => {
 			});
 
 			it('should react to message', async () => {
-				await waitFor(element(by[textMatcher](`${data.random}message`)))
+				await waitFor(element(by[textMatcher](randomMessage)))
 					.toExist()
 					.withTimeout(60000);
-				await element(by[textMatcher](`${data.random}message`))
-					.atIndex(0)
-					.tap();
-				await element(by[textMatcher](`${data.random}message`))
-					.atIndex(0)
-					.longPress();
+				await element(by[textMatcher](randomMessage)).atIndex(0).tap();
+				await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+				await sleep(300); // wait for animation
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.id('add-reaction')).tap();
+				await sleep(300); // wait for animation
 				await waitFor(element(by.id('emoji-picker-tab-emoji')))
 					.toExist()
 					.withTimeout(2000);
-				// await element(by.id('action-sheet-handle')).swipe('up', 'fast', 1);
 				await element(by.id('emoji-picker-tab-emoji')).tap();
 				await waitFor(element(by.id('emoji-grinning')))
 					.toExist()
@@ -354,9 +349,7 @@ describe('Room screen', () => {
 			});
 
 			it('should search emojis in the reaction picker and react', async () => {
-				await element(by[textMatcher](`${data.random}message`))
-					.atIndex(0)
-					.longPress();
+				await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
@@ -377,9 +370,7 @@ describe('Room screen', () => {
 			});
 
 			it('should react to message with frequently used emoji', async () => {
-				await element(by[textMatcher](`${data.random}message`))
-					.atIndex(0)
-					.longPress();
+				await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
@@ -438,30 +429,32 @@ describe('Room screen', () => {
 			});
 
 			it('should edit message', async () => {
-				await mockMessage('edit');
-				await tryTapping(element(by[textMatcher](`${data.random}edit`)).atIndex(0), 2000, true);
+				const editMessage = await mockRandomMessage('edit');
+				const editedMessage = `${editMessage}ed`;
+				await tryTapping(element(by[textMatcher](editMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by[textMatcher]('Edit')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).replaceText(`${data.random}edited`);
+				await element(by.id('messagebox-input')).replaceText(editedMessage);
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by[textMatcher](`${data.random}edited`)).atIndex(0))
+				await waitFor(element(by[textMatcher](editedMessage)).atIndex(0))
 					.toExist()
 					.withTimeout(60000);
 			});
 			it('should quote message', async () => {
-				await mockMessage('quote');
-				await tryTapping(element(by[textMatcher](`${data.random}quote`)).atIndex(0), 2000, true);
+				const quoteMessage = await mockRandomMessage('quote');
+				const quotedMessage = `${quoteMessage}d`;
+				await tryTapping(element(by[textMatcher](quoteMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by[textMatcher]('Quote')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).replaceText(`${data.random}quoted`);
+				await element(by.id('messagebox-input')).replaceText(quotedMessage);
 				await waitFor(element(by.id('messagebox-send-message')))
 					.toExist()
 					.withTimeout(2000);
@@ -470,8 +463,8 @@ describe('Room screen', () => {
 			});
 
 			it('should delete message', async () => {
-				await mockMessage('delete');
-				await tryTapping(element(by[textMatcher](`${data.random}delete`)).atIndex(0), 2000, true);
+				const deleteMessage = await mockRandomMessage('delete');
+				await tryTapping(element(by[textMatcher](deleteMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
@@ -486,40 +479,51 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(10000);
 				await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
-				await waitFor(element(by[textMatcher](`${data.random}delete`)).atIndex(0))
+				await waitFor(element(by[textMatcher](deleteMessage)).atIndex(0))
 					.not.toExist()
 					.withTimeout(2000);
 				await tapBack();
 			});
 
 			it('should reply in DM to another user', async () => {
-				const channelName = data.userRegularChannels.detoxpublic.name;
-				const stringToReply = 'Message to reply in DM';
+				const replyUser = await createRandomUser();
+				const { name: replyRoom } = await createRandomRoom(replyUser, 'c');
+				const originalMessage = 'Message to reply in DM';
+				const replyMessage = `${random()} replied in dm`;
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await navigateToRoom(channelName);
-				await sendMessage(data.users.alternate, channelName, stringToReply);
-				await waitFor(element(by[textMatcher](stringToReply)).atIndex(0))
+				await navigateToRoom(replyRoom);
+				await sendMessage(replyUser, replyRoom, originalMessage);
+				await waitFor(element(by[textMatcher](originalMessage)).atIndex(0))
 					.toBeVisible()
-					.withTimeout(3000);
-				await element(by[textMatcher](stringToReply)).atIndex(0).longPress();
+					.withTimeout(10000);
+				await element(by.id('room-view-join-button')).tap();
+				await waitFor(element(by.id('room-view-join-button')))
+					.not.toBeVisible()
+					.withTimeout(10000);
+				await element(by[textMatcher](originalMessage)).atIndex(0).tap();
+				await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
+				await sleep(300); // wait for animation
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
 					.toExist()
 					.withTimeout(6000);
 				await element(by[textMatcher]('Reply in Direct Message')).atIndex(0).tap();
-				await waitFor(element(by.id(`room-view-title-${data.users.alternate.username}`)))
+				await waitFor(element(by.id(`room-view-title-${replyUser.username}`)))
 					.toExist()
 					.withTimeout(6000);
-				await element(by.id('messagebox-input')).replaceText(`${data.random} replied in dm`);
+				await element(by.id('messagebox-input')).replaceText(replyMessage);
 				await waitFor(element(by.id('messagebox-send-message')))
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by[textMatcher](replyMessage)))
+					.toExist()
+					.withTimeout(60000);
+				await element(by[textMatcher](replyMessage)).atIndex(0).tap();
 			});
 		});
 	});
