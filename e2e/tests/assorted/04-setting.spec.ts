@@ -1,17 +1,17 @@
 import { expect } from 'detox';
 
 import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
-import { createRandomChannel, createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, ICreateUser } from '../../helpers/data_setup';
 
 describe('Settings screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ICreateUser;
-	let channel: string;
+	let room: string;
 
 	beforeAll(async () => {
 		user = await createRandomUser();
-		channel = await createRandomChannel(user);
+		room = await createRandomRoom(user);
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
@@ -87,7 +87,7 @@ describe('Settings screen', () => {
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(5000);
-			await waitFor(element(by.id(`rooms-list-view-item-${channel}`)))
+			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 				.toExist()
 				.withTimeout(10000);
 		});

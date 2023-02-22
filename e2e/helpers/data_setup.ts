@@ -89,18 +89,18 @@ const createChannelIfNotExists = async (channelname: string) => {
 	}
 };
 
-export const createRandomChannel = async (user: { username: string; password: string }) => {
+export const createRandomRoom = async (user: { username: string; password: string }, type: 'p' | 'c' = 'c'): Promise<string> => {
 	try {
 		await login(user.username, user.password);
 		const room = `room${random()}`;
-		console.log(`Creating public channel ${room}`);
-		await rocketchat.post('channels.create', {
+		console.log(`Creating room ${room}`);
+		await rocketchat.post(type === 'c' ? 'channels.create' : 'groups.create', {
 			name: room
 		});
 		return room;
 	} catch (e) {
 		console.log(JSON.stringify(e));
-		throw new Error('Failed to create public channel');
+		throw new Error('Failed to create room');
 	}
 };
 

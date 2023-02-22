@@ -1,6 +1,6 @@
 import data from '../../data';
 import { navigateToLogin, login, checkServer, expectValidRegisterOrRetry } from '../../helpers/app';
-import { createRandomChannel, createRandomUser, ICreateUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, ICreateUser } from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -12,11 +12,11 @@ const reopenAndCheckServer = async (server: string) => {
 
 describe('Change server', () => {
 	let user: ICreateUser;
-	let channel: string;
+	let room: string;
 
 	beforeAll(async () => {
 		user = await createRandomUser();
-		channel = await createRandomChannel(user);
+		room = await createRandomRoom(user);
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(user.username, user.password);
@@ -71,7 +71,7 @@ describe('Change server', () => {
 		await element(by.id('register-view-password')).tapReturnKey();
 		await expectValidRegisterOrRetry(device.getPlatform());
 
-		await waitFor(element(by.id(`rooms-list-view-item-${channel}`)))
+		await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 			.toBeNotVisible()
 			.withTimeout(60000);
 		await checkServer(data.alternateServer);
@@ -90,7 +90,7 @@ describe('Change server', () => {
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await waitFor(element(by.id(`rooms-list-view-item-${channel}`)))
+		await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 			.toBeVisible()
 			.withTimeout(60000);
 		await checkServer(data.server);
