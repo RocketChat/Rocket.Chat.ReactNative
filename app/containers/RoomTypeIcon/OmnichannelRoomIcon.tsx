@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 
 import { OmnichannelSourceType, IOmnichannelSource } from '../../definitions';
@@ -46,7 +46,14 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 					onError={() => setSvgError(true)}
 					onLoad={() => setLoading(false)}
 				/>
-				{loading ? <ActivityIndicator size={size} style={style} /> : null}
+				{loading ? (
+					<CustomIcon
+						name={iconMap[sourceType?.type || 'other']}
+						size={size}
+						style={style}
+						color={STATUS_COLORS[status || 'offline']}
+					/>
+				) : null}
 			</>
 		);
 	}
