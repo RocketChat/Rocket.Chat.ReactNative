@@ -3,7 +3,6 @@ import { expect } from 'detox';
 import {
 	navigateToLogin,
 	login,
-	mockMessage,
 	tapBack,
 	sleep,
 	platformTypes,
@@ -14,7 +13,6 @@ import {
 	mockRandomMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser } from '../../helpers/data_setup';
-import random from '../../helpers/random';
 
 describe('Threads', () => {
 	let room: string;

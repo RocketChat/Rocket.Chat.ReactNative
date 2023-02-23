@@ -1,7 +1,7 @@
 import { expect } from 'detox';
 
 import { navigateToLogin, login } from '../../helpers/app';
-import { createRandomUser, ITestUser, post } from '../../helpers/data_setup';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 const defaultLaunchArgs = { permissions: { notifications: 'YES' } } as Detox.DeviceLaunchAppConfig;
 
