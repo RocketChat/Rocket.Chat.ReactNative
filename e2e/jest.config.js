@@ -5,7 +5,7 @@ module.exports = {
 	testMatch: ['<rootDir>/e2e/tests/**/*.spec.ts'],
 	testTimeout: 240000,
 	maxWorkers: 3,
-	globalSetup: '<rootDir>/e2e/globalSetup.ts',
+	globalSetup: 'detox/runners/jest/globalSetup',
 	globalTeardown: 'detox/runners/jest/globalTeardown',
 	reporters: ['detox/runners/jest/reporter'],
 	testEnvironment: 'detox/runners/jest/testEnvironment',
