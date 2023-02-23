@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 
 import { OmnichannelSourceType, IOmnichannelSource } from '../../definitions';
@@ -29,20 +29,25 @@ interface IOmnichannelRoomIconProps {
 }
 
 export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnichannelRoomIconProps) => {
+	const [loading, setLoading] = useState(true);
 	const [svgError, setSvgError] = useState(false);
 	const baseUrl = useAppSelector(state => state.server?.server);
 	const connected = useAppSelector(state => state.meteor?.connected);
 
 	if (!svgError && sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
 		return (
-			<SvgUri
-				height={size}
-				width={size}
-				color={STATUS_COLORS[status || 'offline']}
-				uri={`${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}`}
-				style={style}
-				onError={() => setSvgError(true)}
-			/>
+			<>
+				<SvgUri
+					height={size}
+					width={size}
+					color={STATUS_COLORS[status || 'offline']}
+					uri={`${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}`}
+					style={style}
+					onError={() => setSvgError(true)}
+					onLoad={() => setLoading(false)}
+				/>
+				{loading ? <ActivityIndicator size={size} style={style} /> : null}
+			</>
 		);
 	}
 
