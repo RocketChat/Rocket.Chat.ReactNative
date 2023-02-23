@@ -286,7 +286,6 @@ describe('Room screen', () => {
 			it('should draft message', async () => {
 				const draftMessage = 'draft';
 				await element(by.id('messagebox-input')).replaceText(draftMessage);
-				await device.pressBack(); // close keyboard
 				await tapBack();
 
 				await navigateToRoom(room);

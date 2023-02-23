@@ -137,9 +137,9 @@ async function dismissReviewNag() {
 }
 
 async function tapBack() {
-	if (device.getPlatform() === 'ios') {
+	try {
 		await element(by.id('header-back')).atIndex(0).tap();
-	} else {
+	} catch (error) {
 		await device.pressBack();
 	}
 	await sleep(300); // Wait for animation to finish
