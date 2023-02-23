@@ -221,9 +221,16 @@ const checkServer = async (server: string) => {
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('sidebar-close-drawer')).tap();
-	await waitFor(element(by.id('sidebar-close-drawer')))
-		.not.toBeVisible()
-		.withTimeout(10000);
+
+	if (device.getPlatform() === 'ios') {
+		await waitFor(element(by.id('sidebar-close-drawer')))
+			.not.toBeVisible()
+			.withTimeout(10000);
+	} else {
+		// toBeVisible is not working on Android
+		// It is always visible, even when it's not
+		await sleep(2000);
+	}
 };
 
 // Useful to get rid of `Too many requests` alert on register
