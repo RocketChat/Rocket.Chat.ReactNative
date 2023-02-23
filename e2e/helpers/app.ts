@@ -113,8 +113,7 @@ async function mockMessage(message: string, isThread = false) {
 		.tap();
 }
 
-async function mockRandomMessage(messageEnd: string, isThread = false) {
-	const message = `${random(10)}${messageEnd}`;
+async function mockRandomMessage(message: string, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
@@ -138,7 +137,11 @@ async function dismissReviewNag() {
 }
 
 async function tapBack() {
-	await element(by.id('header-back')).atIndex(0).tap();
+	if (device.getPlatform() === 'ios') {
+		await element(by.id('header-back')).atIndex(0).tap();
+	} else {
+		await device.pressBack();
+	}
 	await sleep(300); // Wait for animation to finish
 }
 
@@ -147,7 +150,7 @@ async function searchRoom(room: string) {
 		.toBeVisible()
 		.withTimeout(30000);
 	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	await element(by.id('rooms-list-view-search-input')).typeText(room);
+	await element(by.id('rooms-list-view-search-input')).replaceText(room);
 	await sleep(300);
 	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 		.toBeVisible()

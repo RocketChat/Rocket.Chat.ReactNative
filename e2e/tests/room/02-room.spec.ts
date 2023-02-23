@@ -13,7 +13,6 @@ import {
 	mockRandomMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
-import random from '../../helpers/random';
 
 async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
@@ -232,7 +231,7 @@ describe('Room screen', () => {
 			it('should show and tap on user autocomplete and send mention', async () => {
 				const { username } = user;
 				const messageMention = `@${username}`;
-				const message = `${random()}mention`;
+				const message = 'mention';
 				const fullMessage = `${messageMention} ${message}`;
 				await element(by.id('messagebox-input')).typeText(`@${username}`);
 				await sleep(300);
@@ -263,7 +262,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).typeText('email@gmail');
 				await waitFor(element(by.id('messagebox-container')))
 					.toNotExist()
-					.withTimeout(4000);
+					.withTimeout(2000);
 				await element(by.id('messagebox-input')).clearText();
 			});
 
@@ -278,7 +277,6 @@ describe('Room screen', () => {
 			});
 
 			it('should not show room autocomplete on # in middle of a string', async () => {
-				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText('te#gen');
 				await waitFor(element(by.id('messagebox-container')))
 					.toNotExist()
@@ -286,8 +284,9 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).clearText();
 			});
 			it('should draft message', async () => {
-				const draftMessage = `${random()}draft`;
-				await element(by.id('messagebox-input')).typeText(draftMessage);
+				const draftMessage = 'draft';
+				await element(by.id('messagebox-input')).replaceText(draftMessage);
+				await device.pressBack(); // close keyboard
 				await tapBack();
 
 				await navigateToRoom(room);
@@ -369,6 +368,17 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 
+			it('should remove reaction', async () => {
+				await element(by.id('message-reaction-:grinning:')).tap();
+				await waitFor(element(by.id('message-reaction-:grinning:')))
+					.not.toExist()
+					.withTimeout(60000);
+			});
+
+			it('should ask for review', async () => {
+				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
+			});
+
 			it('should react to message with frequently used emoji', async () => {
 				await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet')))
@@ -376,6 +386,7 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300); // wait for animation
 				await waitFor(element(by.id('message-actions-emoji-grinning')))
 					.toBeVisible()
 					.withTimeout(2000);
@@ -383,10 +394,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('message-reaction-:grinning:')))
 					.toBeVisible()
 					.withTimeout(60000);
-			});
-
-			it('should ask for review', async () => {
-				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			});
 
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async () => {
@@ -419,13 +426,6 @@ describe('Room screen', () => {
 					.withTimeout(4000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
-			});
-
-			it('should remove reaction', async () => {
-				await element(by.id('message-reaction-:laughing:')).tap();
-				await waitFor(element(by.id('message-reaction-:laughing:')))
-					.not.toExist()
-					.withTimeout(60000);
 			});
 
 			it('should edit message', async () => {
@@ -470,9 +470,10 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300); // wait for animation
 				await waitFor(element(by[textMatcher]('Delete')))
 					.toExist()
-					.withTimeout(1000);
+					.withTimeout(2000);
 				await element(by[textMatcher]('Delete')).atIndex(0).tap();
 				const deleteAlertMessage = 'You will not be able to recover this message!';
 				await waitFor(element(by[textMatcher](deleteAlertMessage)).atIndex(0))
@@ -489,7 +490,7 @@ describe('Room screen', () => {
 				const replyUser = await createRandomUser();
 				const { name: replyRoom } = await createRandomRoom(replyUser, 'c');
 				const originalMessage = 'Message to reply in DM';
-				const replyMessage = `${random()} replied in dm`;
+				const replyMessage = 'replied in dm';
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
