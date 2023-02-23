@@ -291,11 +291,6 @@ describe('E2E Encryption', () => {
 					.withTimeout(2000);
 			});
 			it('should reset e2e key', async () => {
-				// FIXME: too flaky on Android for now... let's fix it later
-				// It's also flaky on iOS, but it works from time to time
-				if (device.getPlatform() === 'android') {
-					return;
-				}
 				await navigateSecurityPrivacy();
 				await element(by.id('security-privacy-view-e2e-encryption')).tap();
 				await waitFor(element(by.id('e2e-encryption-security-view')))
@@ -332,14 +327,6 @@ describe('E2E Encryption', () => {
 	});
 
 	describe('Persist Banner', () => {
-		beforeAll(async () => {
-			// reinstall the app because of one flaky test above
-			if (device.getPlatform() === 'android') {
-				await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-				await navigateToLogin();
-				await login(user.username, user.password);
-			}
-		});
 		it('check save banner', async () => {
 			await checkServer(data.server);
 			await checkBanner();

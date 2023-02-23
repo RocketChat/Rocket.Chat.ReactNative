@@ -36,10 +36,10 @@ async function clearCache() {
 }
 
 async function waitForLoading() {
-	if (device.getPlatform() === 'android') {
-		await sleep(10000);
-		return; // FIXME: Loading indicator doesn't animate properly on android
-	}
+	// if (device.getPlatform() === 'android') {
+	// 	await sleep(10000);
+	// 	return; // FIXME: Loading indicator doesn't animate properly on android
+	// }
 	await waitFor(element(by.id('loading-image')))
 		.toBeVisible()
 		.withTimeout(5000);
@@ -125,10 +125,6 @@ describe('Room', () => {
 	});
 
 	it('should load newer and older messages', async () => {
-		// TODO: couldn't make it work on Android :(
-		if (device.getPlatform() === 'android') {
-			return;
-		}
 		let found = false;
 		while (!found) {
 			try {

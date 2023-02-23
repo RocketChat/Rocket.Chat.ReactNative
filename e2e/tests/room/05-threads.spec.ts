@@ -53,9 +53,7 @@ describe('Threads', () => {
 			});
 
 			it('should have open emoji button', async () => {
-				if (device.getPlatform() === 'android') {
-					await expect(element(by.id('messagebox-open-emoji'))).toExist();
-				}
+				await expect(element(by.id('messagebox-open-emoji'))).toExist();
 			});
 
 			it('should have message input', async () => {
