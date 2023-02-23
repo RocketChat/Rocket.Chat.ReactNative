@@ -9,7 +9,7 @@ import {
 	TTextMatcher,
 	expectValidRegisterOrRetry
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, get, login, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, login, sendMessage } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };

@@ -17,7 +17,7 @@ const rocketchat = axios.create({
 	}
 });
 
-const login = async (username: string, password: string) => {
+export const login = async (username: string, password: string) => {
 	console.log(`Logging in as user ${username}`);
 	const response = await rocketchat.post('login', {
 		user: username,
