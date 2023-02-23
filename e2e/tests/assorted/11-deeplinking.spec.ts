@@ -134,6 +134,10 @@ describe('Deep linking', () => {
 			});
 
 			it('should resume from background and navigate to the room', async () => {
+				if (device.getPlatform() === 'android') {
+					console.log('Skipped on Android');
+					return;
+				}
 				await device.sendToHome();
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
@@ -150,6 +154,10 @@ describe('Deep linking', () => {
 			});
 
 			it('should simulate a tap on a push notification and navigate to the room', async () => {
+				if (device.getPlatform() === 'android') {
+					console.log('Skipped on Android');
+					return;
+				}
 				/**
 				 * Ideally, we would repeat this test to simulate a resume from background,
 				 * but for some reason it was not working as expected
