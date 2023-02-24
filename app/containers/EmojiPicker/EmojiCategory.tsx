@@ -1,43 +1,41 @@
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { EMOJI_BUTTON_SIZE } from './styles';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji } from '../../definitions/IEmoji';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { PressableEmoji } from './PressableEmoji';
+import { EMOJI_BUTTON_SIZE } from './styles';
 
 interface IEmojiCategoryProps {
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
 	tabLabel?: string; // needed for react-native-scrollable-tab-view only
+	windowWidth: number;
 }
 
-const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.ReactElement | null => {
-	const { width } = useWindowDimensions();
-
-	const numColumns = Math.trunc(width / EMOJI_BUTTON_SIZE);
-	const marginHorizontal = (width % EMOJI_BUTTON_SIZE) / 2;
+const EmojiCategory = ({ onEmojiSelected, emojis, windowWidth }: IEmojiCategoryProps): React.ReactElement | null => {
+	const numColumns = windowWidth / EMOJI_BUTTON_SIZE;
+	const canBeRound = numColumns % 1 > 0.75; // pixel logic
+	const fixedColumnsNum = canBeRound ? Math.round(numColumns) : Math.trunc(numColumns);
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 
-	if (!width) {
+	if (!windowWidth) {
 		return null;
 	}
 
 	return (
 		<FlatList
-			// needed to update the numColumns when the width changes
-			key={`emoji-category-${width}`}
+			key={`emoji-category-${windowWidth}`}
 			keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 			data={emojis}
 			renderItem={renderItem}
-			numColumns={numColumns}
+			numColumns={fixedColumnsNum}
 			initialNumToRender={45}
 			removeClippedSubviews
-			contentContainerStyle={{ marginHorizontal }}
 			{...scrollPersistTaps}
 			keyboardDismissMode={'none'}
+			contentContainerStyle={{ alignItems: 'center' }}
 		/>
 	);
 };
