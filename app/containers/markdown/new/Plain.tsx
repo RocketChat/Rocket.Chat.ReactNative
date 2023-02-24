@@ -8,7 +8,7 @@ interface IPlainProps {
 	value: PlainProps['value'];
 }
 
-const Plain = ({ value }: IPlainProps) => (
+const Plain = ({ value }: IPlainProps): React.ReactElement => (
 	<Text accessibilityLabel={value} style={styles.plainText}>
 		{value}
 	</Text>
