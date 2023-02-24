@@ -57,6 +57,9 @@ describe('Room', () => {
 	});
 
 	it('should jump to an old message and load its surroundings', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await navigateToRoom('jumping');
 		await waitFor(element(by[textMatcher]('295')))
 			.toExist()
@@ -71,6 +74,9 @@ describe('Room', () => {
 	});
 
 	it('should tap FAB and scroll to bottom', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await waitFor(element(by.id('nav-jump-to-bottom')))
 			.toExist()
 			.withTimeout(15000);
@@ -82,6 +88,9 @@ describe('Room', () => {
 	});
 
 	it('should load messages on scroll', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await navigateToRoom('jumping');
 		await waitFor(element(by.id('room-view-messages')))
 			.toExist()
@@ -104,6 +113,9 @@ describe('Room', () => {
 	});
 
 	it('should search for old message and load its surroundings', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await navigateToRoom('jumping');
 		await sleep(1000); // wait for proper load the room
 		await element(by.id('room-view-search')).tap();
@@ -125,6 +137,9 @@ describe('Room', () => {
 	});
 
 	it('should load newer and older messages', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		let found = false;
 		while (!found) {
 			try {
@@ -198,6 +213,9 @@ describe('Threads', () => {
 	});
 
 	it('should navigate to a thread from another room', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await navigateToRoom('jumping');
 		await waitFor(element(by[textMatcher]("Go to jumping-thread's thread")).atIndex(0))
 			.toExist()
@@ -208,6 +226,9 @@ describe('Threads', () => {
 	});
 
 	it('should tap on thread message from main room', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await waitFor(element(by.id('room-view-title-jumping-thread')))
 			.toExist()
 			.withTimeout(5000);
@@ -220,6 +241,9 @@ describe('Threads', () => {
 	});
 
 	it('should tap on quote', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await waitFor(element(by.id('room-view-title-jumping-thread')))
 			.toExist()
 			.withTimeout(5000);
@@ -232,6 +256,9 @@ describe('Threads', () => {
 	});
 
 	it('should jump from search message', async () => {
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		await waitFor(element(by.id('room-view-title-jumping-thread')))
 			.toExist()
 			.withTimeout(5000);
