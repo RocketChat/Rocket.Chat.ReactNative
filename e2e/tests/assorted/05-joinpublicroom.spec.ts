@@ -3,6 +3,7 @@ import { expect } from 'detox';
 import data from '../../data';
 import { navigateToLogin, login, tapBack, searchRoom, platformTypes, TTextMatcher, mockRandomMessage } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 const room = data.channels.detoxpublic.name;
 
@@ -144,7 +145,7 @@ describe('Join public room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockRandomMessage('message');
+			await mockRandomMessage(`${random()}message`);
 		});
 
 		it('should have notifications and leave channel', async () => {

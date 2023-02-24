@@ -3,6 +3,7 @@ import { expect } from 'detox';
 import data from '../../data';
 import { navigateToLogin, login, searchRoom, mockRandomMessage } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 const room = data.channels.detoxpublicprotected.name;
 const { joinCode } = data.channels.detoxpublicprotected;
@@ -71,7 +72,7 @@ describe('Join protected room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockRandomMessage('message');
+			await mockRandomMessage(`${random()}message`);
 		});
 	});
 });
