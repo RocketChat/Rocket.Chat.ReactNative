@@ -501,6 +501,7 @@ jobs:
       name: android/android-machine
       resource-class: xlarge
       tag: 2022.12.1
+    parallelism: 3
     steps:
       - checkout
       - attach_workspace:
@@ -522,7 +523,8 @@ jobs:
       - run:
           name: Run Detox Tests
           command: |
-            yarn e2e:android-test
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split)
+            yarn e2e:android-test $TEST
       - store_artifacts:
           path: artifacts
 
