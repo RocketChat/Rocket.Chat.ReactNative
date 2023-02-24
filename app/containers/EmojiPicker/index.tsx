@@ -20,7 +20,7 @@ const EmojiPicker = ({
 	searchedEmojis = []
 }: IEmojiPickerProps): React.ReactElement | null => {
 	const { colors } = useTheme();
-	const [windowWidth, setWindowWidth] = useState(0);
+	const [parentWidth, setParentWidth] = useState(0);
 
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 
@@ -54,7 +54,7 @@ const EmojiPicker = ({
 		}
 		return (
 			<EmojiCategory
-				windowWidth={windowWidth}
+				parentWidth={parentWidth}
 				emojis={emojis}
 				onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
 				tabLabel={label}
@@ -67,12 +67,12 @@ const EmojiPicker = ({
 	}
 
 	return (
-		<View style={styles.emojiPickerContainer} onLayout={e => setWindowWidth(e.nativeEvent.layout.width)}>
+		<View style={styles.emojiPickerContainer} onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
 				<EmojiCategory
 					emojis={searchedEmojis}
 					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
-					windowWidth={windowWidth}
+					parentWidth={parentWidth}
 				/>
 			) : (
 				<ScrollableTabView

@@ -10,27 +10,25 @@ interface IEmojiCategoryProps {
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
 	tabLabel?: string; // needed for react-native-scrollable-tab-view only
-	windowWidth: number;
+	parentWidth: number;
 }
 
-const EmojiCategory = ({ onEmojiSelected, emojis, windowWidth }: IEmojiCategoryProps): React.ReactElement | null => {
-	const numColumns = windowWidth / EMOJI_BUTTON_SIZE;
-	const canBeRound = numColumns % 1 > 0.75; // pixel logic
-	const fixedColumnsNum = canBeRound ? Math.round(numColumns) : Math.trunc(numColumns);
-
-	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
-
-	if (!windowWidth) {
+const EmojiCategory = ({ onEmojiSelected, emojis, parentWidth }: IEmojiCategoryProps): React.ReactElement | null => {
+	if (!parentWidth) {
 		return null;
 	}
 
+	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
+
+	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
+
 	return (
 		<FlatList
-			key={`emoji-category-${windowWidth}`}
+			key={`emoji-category-${parentWidth}`}
 			keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 			data={emojis}
 			renderItem={renderItem}
-			numColumns={fixedColumnsNum}
+			numColumns={numColumns}
 			initialNumToRender={45}
 			removeClippedSubviews
 			{...scrollPersistTaps}
