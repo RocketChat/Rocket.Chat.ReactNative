@@ -34,6 +34,15 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 	const baseUrl = useAppSelector(state => state.server?.server);
 	const connected = useAppSelector(state => state.meteor?.connected);
 
+	const customIcon = (
+		<CustomIcon
+			name={iconMap[sourceType?.type || 'other']}
+			size={size}
+			style={style}
+			color={STATUS_COLORS[status || 'offline']}
+		/>
+	);
+
 	if (!svgError && sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
 		return (
 			<>
@@ -46,24 +55,10 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 					onError={() => setSvgError(true)}
 					onLoad={() => setLoading(false)}
 				/>
-				{loading ? (
-					<CustomIcon
-						name={iconMap[sourceType?.type || 'other']}
-						size={size}
-						style={style}
-						color={STATUS_COLORS[status || 'offline']}
-					/>
-				) : null}
+				{loading ? customIcon : null}
 			</>
 		);
 	}
 
-	return (
-		<CustomIcon
-			name={iconMap[sourceType?.type || 'other']}
-			size={size}
-			style={style}
-			color={STATUS_COLORS[status || 'offline']}
-		/>
-	);
+	return customIcon;
 };
