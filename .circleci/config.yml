@@ -575,7 +575,7 @@ jobs:
             yarn detox clean-framework-cache && yarn detox build-framework-cache
             yarn e2e:ios-build
       - store_artifacts:
-          path: ios/Rocket.Chat Experimental.ipa
+          path: ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
       - persist_to_workspace:
           root: /Users/distiller/project
           paths:
