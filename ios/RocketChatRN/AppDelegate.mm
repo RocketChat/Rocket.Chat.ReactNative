@@ -46,7 +46,6 @@
   }
   [Bugsnag start];
 
-  // UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"RocketChatRN", nil);
   UIView *rootView = [self.reactDelegate createRootViewWithBridge:bridge moduleName:@"RocketChatRN" initialProperties:nil];
 
   if (@available(iOS 13.0, *)) {
@@ -56,14 +55,18 @@
   }
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [self.reactDelegate createRootViewController];
+  UIViewController *rootViewController = [UIViewController new];
+  UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
+  navigationController.navigationBarHidden = YES;
   rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
+  self.window.rootViewController = navigationController;
   [self.window makeKeyAndVisible];
-  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNNotifications startMonitorNotifications];
+  [ReplyNotification configure];
+
   // AppGroup MMKV
   NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
-  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
 
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
 

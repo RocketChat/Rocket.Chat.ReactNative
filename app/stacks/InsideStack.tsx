@@ -80,6 +80,7 @@ import {
 	ProfileStackParamList,
 	SettingsStackParamList
 } from './types';
+import { isIOS } from '../lib/methods/helpers';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<ChatsStackParamList>();
@@ -95,7 +96,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='SelectListView' component={SelectListView} options={SelectListView.navigationOptions} />
 			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 			<ChatsStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
-			<ChatsStack.Screen name='RoomMembersView' component={RoomMembersView} options={RoomMembersView.navigationOptions} />
+			<ChatsStack.Screen name='RoomMembersView' component={RoomMembersView} />
 			<ChatsStack.Screen name='DiscussionsView' component={DiscussionsView} />
 			<ChatsStack.Screen
 				name='SearchMessagesView'
@@ -104,11 +105,7 @@ const ChatsStackNavigator = () => {
 			/>
 			<ChatsStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
 			<ChatsStack.Screen name='InviteUsersView' component={InviteUsersView} />
-			<ChatsStack.Screen
-				name='InviteUsersEditView'
-				component={InviteUsersEditView}
-				options={InviteUsersEditView.navigationOptions}
-			/>
+			<ChatsStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 			<ChatsStack.Screen name='MessagesView' component={MessagesView} />
 			<ChatsStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
 			<ChatsStack.Screen name='DirectoryView' component={DirectoryView} options={DirectoryView.navigationOptions} />
@@ -123,7 +120,7 @@ const ChatsStackNavigator = () => {
 				options={ThreadMessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen name='TeamChannelsView' component={TeamChannelsView} />
-			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} options={CreateChannelView.navigationOptions} />
+			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<ChatsStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
 			<ChatsStack.Screen
 				name='AddExistingChannelView'
@@ -135,7 +132,11 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
 			<ChatsStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 			<ChatsStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
-			<ChatsStack.Screen name='JitsiMeetView' component={JitsiMeetView} options={{ headerShown: false }} />
+			<ChatsStack.Screen
+				name='JitsiMeetView'
+				component={JitsiMeetView}
+				options={{ headerShown: false, animationEnabled: isIOS }}
+			/>
 		</ChatsStack.Navigator>
 	);
 };
@@ -150,11 +151,7 @@ const ProfileStackNavigator = () => {
 		>
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
-			<ProfileStack.Screen
-				name='UserNotificationPrefView'
-				component={UserNotificationPrefView}
-				options={UserNotificationPrefView.navigationOptions}
-			/>
+			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<ProfileStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 		</ProfileStack.Navigator>
 	);
@@ -169,14 +166,14 @@ const SettingsStackNavigator = () => {
 		<SettingsStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
-			<SettingsStack.Screen name='SettingsView' component={SettingsView} options={SettingsView.navigationOptions} />
+			<SettingsStack.Screen name='SettingsView' component={SettingsView} />
 			<SettingsStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 			<SettingsStack.Screen
 				name='E2EEncryptionSecurityView'
 				component={E2EEncryptionSecurityView}
 				options={E2EEncryptionSecurityView.navigationOptions}
 			/>
-			<SettingsStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
+			<SettingsStack.Screen name='LanguageView' component={LanguageView} />
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<SettingsStack.Screen
@@ -252,13 +249,9 @@ const NewMessageStackNavigator = () => {
 		<NewMessageStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
-			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} options={NewMessageView.navigationOptions} />
+			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} />
 			<NewMessageStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
-			<NewMessageStack.Screen
-				name='CreateChannelView'
-				component={CreateChannelView}
-				options={CreateChannelView.navigationOptions}
-			/>
+			<NewMessageStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<NewMessageStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
 		</NewMessageStack.Navigator>
 	);

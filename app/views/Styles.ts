@@ -18,7 +18,7 @@ export default StyleSheet.create({
 		flexDirection: 'column'
 	},
 	containerScrollView: {
-		padding: 15,
+		padding: 16,
 		paddingBottom: 30
 	},
 	tabletScreenContent: {

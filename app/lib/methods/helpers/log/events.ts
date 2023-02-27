@@ -187,6 +187,7 @@ export default {
 	ROOM_SEND_MESSAGE: 'room_send_message',
 	ROOM_ENCRYPTED_PRESS: 'room_encrypted_press',
 	ROOM_OPEN_EMOJI: 'room_open_emoji',
+	ROOM_CLOSE_EMOJI: 'room_close_emoji',
 	ROOM_AUDIO_RECORD: 'room_audio_record',
 	ROOM_AUDIO_RECORD_F: 'room_audio_record_f',
 	ROOM_AUDIO_FINISH: 'room_audio_finish',
@@ -238,6 +239,13 @@ export default {
 	ROOM_MENTION_GO_USER_INFO: 'room_mention_go_user_info',
 	COMMAND_RUN: 'command_run',
 	COMMAND_RUN_F: 'command_run_f',
+	MB_BACKSPACE: 'mb_backspace',
+	MB_EMOJI_SELECTED: 'mb_emoji_selected',
+	MB_EMOJI_SEARCH_PRESSED: 'mb_emoji_search_pressed',
+	MB_SB_EMOJI_SEARCH: 'mb_sb_emoji_search',
+	MB_SB_EMOJI_SELECTED: 'mb_sb_emoji_selected',
+	REACTION_PICKER_EMOJI_SELECTED: 'reaction_picker_emoji_selected',
+	REACTION_PICKER_SEARCH_EMOJIS: 'reaction_picker_search_emojis',
 
 	// ROOM ACTIONS VIEW
 	RA_JITSI_VIDEO: 'ra_jitsi_video',
@@ -272,10 +280,15 @@ export default {
 	RA_MOVE_TO_TEAM_F: 'ra_move_to_team_f',
 	RA_SEARCH_TEAM: 'ra_search_team',
 
+	// ROOM MEMBERS ACTIONS VIEW
+	RM_GO_SELECTEDUSERS: 'rm_go_selected_users',
+	RM_GO_INVITEUSERS: 'rm_go_invite_users',
+
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',
 	RI_GO_LIVECHAT_EDIT: 'ri_go_livechat_edit',
 	RI_GO_ROOM_USER: 'ri_go_room_user',
+	RI_TOGGLE_BLOCK_USER: 'ri_toggle_block_user',
 
 	// ROOM INFO EDIT VIEW
 	RI_EDIT_TOGGLE_ROOM_TYPE: 'ri_edit_toggle_room_type',

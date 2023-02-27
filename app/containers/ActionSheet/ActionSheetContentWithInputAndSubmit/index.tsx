@@ -122,7 +122,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 					}}
 					testID={testID}
 					secureTextEntry={secureTextEntry}
-					inputStyle={{ borderWidth: 2 }}
 					bottomSheet={isIOS}
 				/>
 			) : null}

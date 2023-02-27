@@ -13,6 +13,7 @@ interface ILoginRequest extends Action {
 	credentials: any;
 	logoutOnError?: boolean;
 	isFromWebView?: boolean;
+	registerCustomFields?: any;
 }
 
 interface ILoginSuccess extends Action {
@@ -56,13 +57,15 @@ export type TActionsLogin = ILoginRequest &
 export function loginRequest(
 	credentials: Partial<ICredentials>,
 	logoutOnError?: boolean,
-	isFromWebView?: boolean
+	isFromWebView?: boolean,
+	registerCustomFields?: any
 ): ILoginRequest {
 	return {
 		type: types.LOGIN.REQUEST,
 		credentials,
 		logoutOnError,
-		isFromWebView
+		isFromWebView,
+		registerCustomFields
 	};
 }
 

@@ -3,21 +3,24 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import NewMarkdownComponent from '.';
-import { themes } from '../../../lib/constants';
+import { colors, themes } from '../../../lib/constants';
 import { longText } from '../../../../.storybook/utils';
+import { ThemeContext } from '../../../theme';
+
+const theme = 'light';
 
 export default {
 	title: 'NewMarkdown',
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<Story />
+				<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+					<Story />
+				</ThemeContext.Provider>
 			</NavigationContainer>
 		)
 	]
 };
-
-const theme = 'light';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,11 +37,8 @@ const getCustomEmoji = (content: string) => {
 	}[content];
 	return customEmoji;
 };
-const baseUrl = 'https://open.rocket.chat';
 
-const NewMarkdown = ({ ...props }) => (
-	<NewMarkdownComponent baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} username='rocket.cat' {...props} />
-);
+const NewMarkdown = ({ ...props }) => <NewMarkdownComponent getCustomEmoji={getCustomEmoji} username='rocket.cat' {...props} />;
 
 const simpleTextMsg = [
 	{
@@ -340,7 +340,7 @@ const emojiTokens = [
 export const Emoji = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={bigEmojiTokens} />
-		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
+		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} />
 	</View>
 );
 
@@ -381,27 +381,6 @@ export const BlockQuote = () => (
 	</View>
 );
 
-const rocketChatLink = [
-	{
-		type: 'PARAGRAPH',
-		value: [
-			{
-				type: 'LINK',
-				value: {
-					src: {
-						type: 'PLAIN_TEXT',
-						value: 'https://rocket.chat'
-					},
-					label: {
-						type: 'PLAIN_TEXT',
-						value: 'https://rocket.chat'
-					}
-				}
-			}
-		]
-	}
-];
-
 const markdownLink = [
 	{
 		type: 'PARAGRAPH',
@@ -423,10 +402,72 @@ const markdownLink = [
 	}
 ];
 
+const markdownLinkWithEmphasis = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'LINK',
+				value: {
+					src: {
+						type: 'PLAIN_TEXT',
+						value: 'https://rocket.chat/'
+					},
+					label: [
+						{
+							type: 'PLAIN_TEXT',
+							value: 'Normal Link - '
+						},
+						{
+							type: 'BOLD',
+							value: [
+								{
+									type: 'PLAIN_TEXT',
+									value: 'Bold'
+								}
+							]
+						},
+						{
+							type: 'PLAIN_TEXT',
+							value: ' '
+						},
+						{
+							type: 'STRIKE',
+							value: [
+								{
+									type: 'PLAIN_TEXT',
+									value: 'strike'
+								}
+							]
+						},
+						{
+							type: 'PLAIN_TEXT',
+							value: ' and '
+						},
+						{
+							type: 'ITALIC',
+							value: [
+								{
+									type: 'PLAIN_TEXT',
+									value: 'Italic'
+								}
+							]
+						},
+						{
+							type: 'PLAIN_TEXT',
+							value: ' Styles'
+						}
+					]
+				}
+			}
+		]
+	}
+];
+
 export const Links = () => (
 	<View style={styles.container}>
-		<NewMarkdown tokens={rocketChatLink} />
 		<NewMarkdown tokens={markdownLink} />
+		<NewMarkdown tokens={markdownLinkWithEmphasis} />
 	</View>
 );
 
@@ -741,5 +782,130 @@ export const Katex = () => (
 export const InlineKatex = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={inlineKatex} />
+	</View>
+);
+
+const messageQuote = {
+	/**
+	 # Hello head 1
+	 [ ](https://google.com)
+	 */
+	headAndLink: [
+		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'Hello head 1' }] },
+		{ type: 'LINE_BREAK' },
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: { src: { type: 'PLAIN_TEXT', value: 'https://google.com' }, label: { type: 'PLAIN_TEXT', value: ' ' } }
+				}
+			]
+		}
+	],
+	/**
+	 # Head 1 as the first line then line break and after paragraph
+	 bla bla bla bla bla bla 
+	 bla bla bla bla bla bla 
+	 [ ](https://google.com)
+	 */
+	headTextAndLink: [
+		{
+			type: 'HEADING',
+			level: 1,
+			value: [{ type: 'PLAIN_TEXT', value: 'Head 1 as the first line then line break and after paragraph' }]
+		},
+		{ type: 'LINE_BREAK' },
+		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'bla bla bla bla bla bla ' }] },
+		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'bla bla bla bla bla bla ' }] },
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: { src: { type: 'PLAIN_TEXT', value: 'https://google.com' }, label: { type: 'PLAIN_TEXT', value: ' ' } }
+				}
+			]
+		}
+	],
+	/**
+	 [ ](permalink from message)\n# Head 1 after a forced line break
+	 asdas asd asd asd
+	 */
+	headTextAndQuote: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: {
+						src: { type: 'PLAIN_TEXT', value: 'https://open.rocket.chat/direct/subaru123?msg=QB42gWcaO6BgqtLTo' },
+						label: { type: 'PLAIN_TEXT', value: ' ' }
+					}
+				},
+				{ type: 'PLAIN_TEXT', value: ' ' }
+			]
+		},
+		{ type: 'HEADING', level: 1, value: [{ type: 'PLAIN_TEXT', value: 'Head 1 after a forced line break' }] },
+		{ type: 'LINE_BREAK' },
+		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Description' }] }
+	],
+	/**
+	 [ ](https://google.com) *There is a link before this bold separated by single space*
+	 */
+	linkAndBoldText: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: { src: { type: 'PLAIN_TEXT', value: 'https://google.com' }, label: { type: 'PLAIN_TEXT', value: ' ' } }
+				},
+				{ type: 'PLAIN_TEXT', value: ' ' },
+				{ type: 'BOLD', value: [{ type: 'PLAIN_TEXT', value: 'There is a link before this bold separated by single space' }] }
+			]
+		}
+	],
+	simpleQuote: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'LINK',
+					value: {
+						src: {
+							type: 'PLAIN_TEXT',
+							value: 'https://open.rocket.chat/group/quoteeee9798789?msg=ZZp6t2dCRX4TqExht'
+						},
+						// format of label for servers greater or equal than 6.0
+						label: [
+							{
+								type: 'PLAIN_TEXT',
+								value: ' '
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'PLAIN_TEXT',
+					value: 'Quoting a message wrote before'
+				}
+			]
+		}
+	]
+};
+
+export const MessageQuote = () => (
+	<View style={styles.container}>
+		<NewMarkdown tokens={messageQuote.headAndLink} />
+		<NewMarkdown tokens={messageQuote.headTextAndLink} />
+		<NewMarkdown tokens={messageQuote.headTextAndQuote} />
+		<NewMarkdown tokens={messageQuote.linkAndBoldText} />
+		<NewMarkdown tokens={messageQuote.simpleQuote} />
 	</View>
 );

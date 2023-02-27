@@ -21,6 +21,7 @@ export interface ILoggedUser {
 	showMessageInMainThread?: boolean;
 	isFromWebView?: boolean;
 	enableMessageParserEarlyAdoption: boolean;
+	alsoSendThreadToChannel: 'default' | 'always' | 'never';
 }
 
 export interface ILoggedUserResultFromServer

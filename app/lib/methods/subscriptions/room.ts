@@ -125,8 +125,8 @@ export default class RoomSubscription {
 		if (ev === 'typing') {
 			const { user } = reduxStore.getState().login;
 			const { UI_Use_Real_Name } = reduxStore.getState().settings;
-			const { rooms } = reduxStore.getState().room;
-			if (rooms[0] !== _rid) {
+			const { subscribedRoom } = reduxStore.getState().room;
+			if (subscribedRoom !== _rid) {
 				return;
 			}
 			const [name, typing] = ddpMessage.fields.args;
@@ -135,6 +135,23 @@ export default class RoomSubscription {
 				if (typing) {
 					reduxStore.dispatch(addUserTyping(name));
 				} else {
+					reduxStore.dispatch(removeUserTyping(name));
+				}
+			}
+		} else if (ev === 'user-activity') {
+			const { user } = reduxStore.getState().login;
+			const { UI_Use_Real_Name } = reduxStore.getState().settings;
+			const { subscribedRoom } = reduxStore.getState().room;
+			if (subscribedRoom !== _rid) {
+				return;
+			}
+			const [name, activities] = ddpMessage.fields.args;
+			const key = UI_Use_Real_Name ? 'name' : 'username';
+			if (name !== user[key]) {
+				if (activities.includes('user-typing')) {
+					reduxStore.dispatch(addUserTyping(name));
+				}
+				if (!activities.length) {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}

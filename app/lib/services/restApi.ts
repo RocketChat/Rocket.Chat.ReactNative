@@ -74,6 +74,14 @@ export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ mess
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
+export const e2eAcceptSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
+	// RC 5.5
+	sdk.post('e2e.acceptSuggestedGroupKey', { rid });
+
+export const e2eRejectSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
+	// RC 5.5
+	sdk.post('e2e.rejectSuggestedGroupKey', { rid });
+
 export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
@@ -89,9 +97,16 @@ export const forgotPassword = (email: string) =>
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
 	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
-export const spotlight = (search: string, usernames: string[], type: { users: boolean; rooms: boolean }): Promise<ISpotlight> =>
+export const spotlight = (
+	search: string,
+	usernames: string[],
+	type: { users: boolean; rooms: boolean },
+	rid?: string
+): Promise<ISpotlight> =>
 	// RC 0.51.0
-	sdk.methodCallWrapper('spotlight', search, usernames, type);
+	rid
+		? sdk.methodCallWrapper('spotlight', search, usernames, type, rid)
+		: sdk.methodCallWrapper('spotlight', search, usernames, type);
 
 export const createDirectMessage = (username: string) =>
 	// RC 0.59.0
@@ -160,7 +175,7 @@ export const createTeam = ({
 }) => {
 	const params = {
 		name,
-		users,
+		members: users,
 		type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
 		room: {
 			readOnly,
@@ -688,7 +703,7 @@ export const runSlashCommand = (command: string, roomId: string, params: string,
 		roomId,
 		params,
 		triggerId,
-		tmid
+		...(tmid && { tmid })
 	});
 
 export const getCommandPreview = (command: string, roomId: string, params: string) =>
@@ -797,10 +812,14 @@ export const addUsersToRoom = (rid: string): Promise<boolean> => {
 };
 
 export const emitTyping = (room: IRoom, typing = true) => {
-	const { login, settings } = reduxStore.getState();
+	const { login, settings, server } = reduxStore.getState();
 	const { UI_Use_Real_Name } = settings;
+	const { version: serverVersion } = server;
 	const { user } = login;
 	const name = UI_Use_Real_Name ? user.name : user.username;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
+		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : []);
+	}
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
 

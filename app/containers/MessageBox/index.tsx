@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
+import { Alert, Keyboard, NativeModules, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
@@ -13,12 +13,11 @@ import { TextInput, IThemedTextInput } from '../TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import styles from './styles';
 import database from '../../lib/database';
-import { emojis } from '../EmojiPicker/emojis';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
-import { themes } from '../../lib/constants';
+import { themes, emojis } from '../../lib/constants';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { canUploadFile } from '../../lib/methods/helpers/media';
@@ -51,14 +50,18 @@ import {
 	TGetCustomEmoji,
 	TSubscriptionModel,
 	TThreadModel,
-	IMessage
+	IMessage,
+	IEmoji
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce, isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersion } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
+import { EventTypes } from '../EmojiPicker/interfaces';
+import EmojiSearchbar from './EmojiSearchbar';
+import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 
 require('./EmojiKeyboard');
 
@@ -111,8 +114,8 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	isActionsEnabled: boolean;
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
-	serverVersion: string;
 	goToCannedResponses: () => void | null;
+	serverVersion: string;
 }
 
 interface IMessageBoxState {
@@ -129,6 +132,7 @@ interface IMessageBoxState {
 	tshow: boolean;
 	mentionLoading: boolean;
 	permissionToUpload: boolean;
+	showEmojiSearchbar: boolean;
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
@@ -181,9 +185,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			tshow: false,
+			tshow: this.sendThreadToChannel,
 			mentionLoading: false,
-			permissionToUpload: true
+			permissionToUpload: true,
+			showEmojiSearchbar: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -209,11 +214,30 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			...videoPickerConfig,
 			...libPickerLabels
 		};
+
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	get sendThreadToChannel() {
+		const { user, serverVersion, tmid } = this.props;
+		if (tmid && compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
+			return false;
+		}
+		if (tmid && user.alsoSendThreadToChannel === 'default') {
+			return false;
+		}
+		if (user.alsoSendThreadToChannel === 'always') {
+			return true;
+		}
+		if (user.alsoSendThreadToChannel === 'never') {
+			return false;
+		}
+		return true;
 	}
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail } = this.props;
+		const { rid, tmid, navigation, sharing, usedCannedResponse } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.get('threads');
@@ -248,7 +272,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
-		if (isMasterDetail && usedCannedResponse) {
+		if (usedCannedResponse) {
 			this.onChangeText(usedCannedResponse);
 		}
 
@@ -278,7 +302,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (usedCannedResponse !== nextProps.usedCannedResponse) {
 			this.onChangeText(nextProps.usedCannedResponse ?? '');
 		}
-		if (sharing) {
+		if (sharing && !replying) {
 			this.setInput(nextProps.message.msg ?? '');
 			return;
 		}
@@ -309,7 +333,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tshow,
 			mentionLoading,
 			trackingType,
-			permissionToUpload
+			permissionToUpload,
+			showEmojiSearchbar
 		} = this.state;
 
 		const {
@@ -327,6 +352,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextState.showEmojiSearchbar !== showEmojiSearchbar) {
 			return true;
 		}
 		if (!isFocused()) {
@@ -381,7 +409,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission, goToCannedResponses } = this.props;
+		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled } = this.props;
+		if (prevProps.replyWithMention !== replyWithMention) {
+			if (threadsEnabled && replyWithMention) {
+				this.setState({ tshow: this.sendThreadToChannel });
+			}
+		}
 		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
 			this.setOptions();
 		}
@@ -416,6 +449,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	setOptions = async () => {
@@ -497,7 +531,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}, 100);
 
 	onKeyboardResigned = () => {
-		this.closeEmoji();
+		const { showEmojiSearchbar } = this.state;
+		if (!showEmojiSearchbar) {
+			this.closeEmoji();
+		}
 	};
 
 	onPressMention = (item: any) => {
@@ -555,18 +592,50 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onEmojiSelected = (keyboardId: string, params: { emoji: string }) => {
+	onKeyboardItemSelected = (keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
+		const { eventType, emoji } = params;
 		const { text } = this;
-		const { emoji } = params;
 		let newText = '';
-
 		// if messagebox has an active cursor
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
-		const newCursor = cursor + emoji.length;
-		this.setInput(newText, { start: newCursor, end: newCursor });
-		this.setShowSend(true);
+		let newCursor;
+
+		switch (eventType) {
+			case EventTypes.BACKSPACE_PRESSED:
+				logEvent(events.MB_BACKSPACE);
+				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
+				let charsToRemove = 1;
+				const lastEmoji = text.substr(cursor > 0 ? cursor - 2 : text.length - 2, cursor > 0 ? cursor : text.length);
+				// Check if last character is an emoji
+				if (emojiRegex.test(lastEmoji)) charsToRemove = 2;
+				newText =
+					text.substr(0, (cursor > 0 ? cursor : text.length) - charsToRemove) + text.substr(cursor > 0 ? cursor : text.length);
+				newCursor = cursor - charsToRemove;
+				this.setInput(newText, { start: newCursor, end: newCursor });
+				this.setShowSend(newText !== '');
+				break;
+			case EventTypes.EMOJI_PRESSED:
+				logEvent(events.MB_EMOJI_SELECTED);
+				let emojiText = '';
+				if (typeof emoji === 'string') {
+					const shortname = `:${emoji}:`;
+					emojiText = shortnameToUnicode(shortname);
+				} else {
+					emojiText = `:${emoji.name}:`;
+				}
+				newText = `${text.substr(0, cursor)}${emojiText}${text.substr(cursor)}`;
+				newCursor = cursor + emojiText.length;
+				this.setInput(newText, { start: newCursor, end: newCursor });
+				this.setShowSend(true);
+				break;
+			case EventTypes.SEARCH_PRESSED:
+				logEvent(events.MB_EMOJI_SEARCH_PRESSED);
+				this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: true });
+				break;
+			default:
+			// Do nothing
+		}
 	};
 
 	getPermalink = async (message: any) => {
@@ -589,7 +658,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	getUsers = debounce(async (keyword: any) => {
-		let res = await search({ text: keyword, filterRooms: false, filterUsers: true });
+		const { rid } = this.props;
+		let res = await search({ text: keyword, filterRooms: false, filterUsers: true, rid });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
@@ -599,16 +669,20 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
-	getEmojis = debounce(async (keyword: any) => {
-		const db = database.active;
-		const customEmojisCollection = db.get('custom_emojis');
+	getCustomEmojis = async (keyword: any, count: number) => {
 		const likeString = sanitizeLikeString(keyword);
 		const whereClause = [];
 		if (likeString) {
 			whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
 		}
-		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
-		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const db = database.active;
+		const customEmojisCollection = db.get('custom_emojis');
+		const customEmojis = await (await customEmojisCollection.query(...whereClause).fetch()).slice(0, count);
+		return customEmojis;
+	};
+
+	getEmojis = debounce(async (keyword: any) => {
+		const customEmojis = await this.getCustomEmojis(keyword, MENTIONS_COUNT_TO_DISPLAY);
 		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		this.setState({ mentions: mergedEmojis || [], mentionLoading: false });
@@ -687,9 +761,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	clearInput = () => {
+		const { tshow } = this.state;
+		const { user, serverVersion } = this.props;
 		this.setInput('');
 		this.setShowSend(false);
-		this.setState({ tshow: false });
+		if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0') || (tshow && user.alsoSendThreadToChannel === 'default')) {
+			this.setState({ tshow: false });
+		}
 	};
 
 	canUploadFile = (file: any) => {
@@ -779,14 +857,21 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	openShareView = (attachments: any) => {
-		const { message, replyCancel, replyWithMention } = this.props;
+		const { message, replyCancel, replyWithMention, replying } = this.props;
 		// Start a thread with an attachment
 		let value: TThreadModel | IMessage = this.thread;
 		if (replyWithMention) {
 			value = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, thread: value, attachments });
+		Navigation.navigate('ShareView', {
+			room: this.room,
+			thread: value,
+			attachments,
+			replying,
+			replyingMessage: message,
+			closeReply: replyCancel
+		});
 	};
 
 	createDiscussion = () => {
@@ -855,7 +940,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	openEmoji = () => {
 		logEvent(events.ROOM_OPEN_EMOJI);
-		this.setState({ showEmojiKeyboard: true });
+		this.setState({ showEmojiKeyboard: true, showEmojiSearchbar: false });
+		this.stopTrackingMention();
 	};
 
 	recordingCallback = (recording: any) => {
@@ -877,7 +963,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	closeEmoji = () => {
-		this.setState({ showEmojiKeyboard: false });
+		this.setState({ showEmojiKeyboard: false, showEmojiSearchbar: false });
+	};
+
+	closeEmojiKeyboardAndFocus = () => {
+		logEvent(events.ROOM_CLOSE_EMOJI);
+		this.closeEmoji();
+		this.focus();
 	};
 
 	closeEmojiAndAction = (action?: Function, params?: any) => {
@@ -900,7 +992,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		this.clearInput();
 		this.debouncedOnChangeText.stop();
-		this.closeEmoji();
+		this.closeEmojiKeyboardAndFocus();
 		this.stopTrackingMention();
 		this.handleTyping(false);
 		if (message.trim() === '' && !showSend) {
@@ -957,16 +1049,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 				// Legacy reply or quote (quote is a reply without mention)
 			} else {
-				const { user, roomType } = this.props;
-				const permalink = await this.getPermalink(replyingMessage);
-				let msg = `[ ](${permalink}) `;
-
-				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyingMessage?.u?.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${replyingMessage?.u?.username} `;
-				}
-
-				msg = `${msg} ${message}`;
+				const msg = await this.formatReplyMessage(replyingMessage, message);
 				onSubmit(msg);
 			}
 			replyCancel();
@@ -974,8 +1057,22 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			// Normal message
 		} else {
 			// @ts-ignore
-			onSubmit(message, undefined, tshow);
+			onSubmit(message, undefined, tmid ? tshow : false);
 		}
+	};
+
+	formatReplyMessage = async (replyingMessage: IMessage, message = '') => {
+		const { user, roomType, replyWithMention, serverVersion } = this.props;
+		const permalink = await this.getPermalink(replyingMessage);
+		let msg = `[ ](${permalink}) `;
+
+		// if original message wasn't sent by current user and neither from a direct room
+		if (user.username !== replyingMessage?.u?.username && roomType !== 'd' && replyWithMention) {
+			msg += `@${replyingMessage?.u?.username} `;
+		}
+
+		const connectionString = compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ? ' ' : '\n';
+		return `${msg}${connectionString}${message}`;
 	};
 
 	updateMentions = (keyword: any, type: string) => {
@@ -1044,7 +1141,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				onPress={this.onPressSendToChannel}
 				testID='messagebox-send-to-channel'
 			>
-				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
+				<CustomIcon
+					testID={tshow ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
+					name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'}
+					size={24}
+					color={themes[theme].auxiliaryText}
+				/>
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>
 					{I18n.t('Messagebox_Send_to_channel')}
 				</Text>
@@ -1052,10 +1154,34 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		);
 	};
 
+	renderEmojiSearchbar = () => {
+		const { showEmojiSearchbar } = this.state;
+
+		return showEmojiSearchbar ? (
+			<EmojiSearchbar
+				openEmoji={this.openEmoji}
+				closeEmoji={this.closeEmoji}
+				onEmojiSelected={(emoji: IEmoji) => {
+					this.onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
+				}}
+			/>
+		) : null;
+	};
+
+	handleBackPress = () => {
+		const { showEmojiSearchbar } = this.state;
+		if (showEmojiSearchbar) {
+			this.setState({ showEmojiSearchbar: false });
+			return true;
+		}
+		return false;
+	};
+
 	renderContent = () => {
 		const {
 			recording,
 			showEmojiKeyboard,
+			showEmojiSearchbar,
 			showSend,
 			mentions,
 			trackingType,
@@ -1118,11 +1244,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const textInputAndButtons = !recording ? (
 			<>
 				<LeftButtons
-					showEmojiKeyboard={showEmojiKeyboard}
+					showEmojiKeyboard={showEmojiKeyboard || showEmojiSearchbar}
 					editing={editing}
 					editCancel={this.editCancel}
 					openEmoji={this.openEmoji}
-					closeEmoji={this.closeEmoji}
+					closeEmoji={this.closeEmojiKeyboardAndFocus}
 				/>
 				<TextInput
 					ref={component => (this.component = component)}
@@ -1166,6 +1292,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 						{recordAudio}
 					</View>
 					{this.renderSendToChannel()}
+					{this.renderEmojiSearchbar()}
 				</View>
 				{children}
 			</>
@@ -1193,7 +1320,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
-					onItemSelected={this.onEmojiSelected}
+					onItemSelected={this.onKeyboardItemSelected}
 					trackInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
@@ -1213,7 +1340,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	uploadFilePermission: state.permissions['mobile-upload-file']
+	uploadFilePermission: state.permissions['mobile-upload-file'],
+	serverVersion: state.server.version
 });
 
 const dispatchToProps = {

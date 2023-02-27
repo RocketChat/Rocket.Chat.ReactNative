@@ -23,13 +23,14 @@ import { IRoomInfoParam } from '../SearchMessagesView';
 import {
 	IApplicationState,
 	TMessageModel,
-	IEmoji,
 	ISubscription,
 	SubscriptionType,
 	IAttachment,
 	IMessage,
 	TAnyMessageModel,
-	IUrl
+	IUrl,
+	TGetCustomEmoji,
+	ICustomEmoji
 } from '../../definitions';
 import { Services } from '../../lib/services';
 
@@ -45,7 +46,7 @@ interface IMessagesViewProps {
 		StackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	customEmojis: { [key: string]: IEmoji };
+	customEmojis: { [key: string]: ICustomEmoji };
 	theme: TSupportedThemes;
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	useRealName: boolean;
@@ -297,7 +298,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		}
 	};
 
-	getCustomEmoji = (name: string) => {
+	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {

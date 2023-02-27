@@ -105,7 +105,7 @@ export default StyleSheet.create({
 	},
 	emojiKeyboardContainer: {
 		flex: 1,
-		borderTopWidth: StyleSheet.hairlineWidth
+		borderTopWidth: 1
 	},
 	slash: {
 		height: 30,
@@ -113,7 +113,7 @@ export default StyleSheet.create({
 		padding: 5,
 		paddingHorizontal: 12,
 		marginHorizontal: 10,
-		borderRadius: 2
+		borderRadius: 4
 	},
 	commandPreviewImage: {
 		justifyContent: 'center',

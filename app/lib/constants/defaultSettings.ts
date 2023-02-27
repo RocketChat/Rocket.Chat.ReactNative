@@ -1,3 +1,4 @@
+// 🚨🚨 48 settings after login. Pay attention not to reach 50 as that's the limit per request.
 export const defaultSettings = {
 	Accounts_AllowEmailChange: {
 		type: 'valueAsBoolean'
@@ -225,6 +226,12 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	Accounts_AllowDeleteOwnAccount: {
+		type: 'valueAsBoolean'
+	},
+	Number_of_users_autocomplete_suggestions: {
+		type: 'valueAsNumber'
+	},
+	Presence_broadcast_disabled: {
 		type: 'valueAsBoolean'
 	}
 } as const;

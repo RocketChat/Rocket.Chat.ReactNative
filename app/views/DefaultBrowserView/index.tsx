@@ -53,7 +53,7 @@ const DefaultBrowserView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Close_Chat')
+			title: I18n.t('Default_browser')
 		});
 	}, [navigation]);
 

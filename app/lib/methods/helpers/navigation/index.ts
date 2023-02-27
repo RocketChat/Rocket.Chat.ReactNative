@@ -10,6 +10,7 @@ export * from './animations';
 
 export const defaultHeader = {
 	headerBackTitleVisible: false,
+	headerBackTestID: 'header-back',
 	cardOverlayEnabled: true,
 	cardStyle: { backgroundColor: 'transparent' }
 };

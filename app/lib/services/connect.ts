@@ -20,7 +20,16 @@ import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
-import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUser, _setUserTimer, onRolesChanged } from '../methods';
+import {
+	getSettings,
+	IActiveUsers,
+	unsubscribeRooms,
+	_activeUsers,
+	_setUser,
+	_setUserTimer,
+	onRolesChanged,
+	setPresenceCap
+} from '../methods';
 import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
 
 interface IServices {
@@ -144,6 +153,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 							});
 						}
 						store.dispatch(updateSettings(_id, value));
+
+						if (_id === 'Presence_broadcast_disabled') {
+							setPresenceCap(value);
+						}
 					} catch (e) {
 						log(e);
 					}
@@ -268,8 +281,10 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 	const result = sdk.current.currentLogin?.result;
 
 	let enableMessageParserEarlyAdoption = true;
+	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
 		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
 	if (result) {
@@ -287,8 +302,9 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
-			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
-			enableMessageParserEarlyAdoption
+			showMessageInMainThread,
+			enableMessageParserEarlyAdoption,
+			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel
 		};
 		return user;
 	}

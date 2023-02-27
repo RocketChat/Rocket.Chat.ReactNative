@@ -6,13 +6,15 @@ export type IRoomRecord = string[];
 export interface IRoom {
 	rid: string;
 	isDeleting: boolean;
-	rooms: IRoomRecord;
+	subscribedRoom: string;
+	historyLoaders: string[];
 }
 
 export const initialState: IRoom = {
 	rid: '',
 	isDeleting: false,
-	rooms: []
+	subscribedRoom: '',
+	historyLoaders: []
 };
 
 export default function (state = initialState, action: TActionsRoom): IRoom {
@@ -20,12 +22,12 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 		case ROOM.SUBSCRIBE:
 			return {
 				...state,
-				rooms: [action.rid, ...state.rooms]
+				subscribedRoom: action.rid
 			};
 		case ROOM.UNSUBSCRIBE:
 			return {
 				...state,
-				rooms: state.rooms.filter(rid => rid !== action.rid)
+				subscribedRoom: state.subscribedRoom === action.rid ? '' : state.subscribedRoom
 			};
 		case ROOM.LEAVE:
 			return {
@@ -55,6 +57,16 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 			return {
 				...state,
 				isDeleting: false
+			};
+		case ROOM.HISTORY_REQUEST:
+			return {
+				...state,
+				historyLoaders: [...state.historyLoaders, action.loaderId]
+			};
+		case ROOM.HISTORY_FINISHED:
+			return {
+				...state,
+				historyLoaders: state.historyLoaders.filter(loaderId => loaderId !== action.loaderId)
 			};
 		default:
 			return state;
