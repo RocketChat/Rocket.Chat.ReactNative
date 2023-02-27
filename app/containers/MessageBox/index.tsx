@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
+import { KeyboardAccessoryView } from 'react-native-ui-lib';
 import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
@@ -592,7 +592,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onKeyboardItemSelected = (keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
+	onKeyboardItemSelected = (keyboardId: string | undefined, params: { eventType: EventTypes; emoji: IEmoji }) => {
 		const { eventType, emoji } = params;
 		const { text } = this;
 		let newText = '';
@@ -1317,7 +1317,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					ref={(ref: any) => (this.tracking = ref)}
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
-					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : undefined}
 					kbInitialProps={{ theme }}
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onKeyboardItemSelected}
@@ -1325,7 +1325,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					requiresSameParentToManageScrollView
 					addBottomView
 					bottomViewColor={themes[theme].messageboxBackground}
-					iOSScrollBehavior={iOSScrollBehavior}
+					scrollBehavior={iOSScrollBehavior}
 				/>
 			</MessageboxContext.Provider>
 		);
