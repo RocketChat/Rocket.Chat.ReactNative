@@ -129,13 +129,13 @@ async function mockRandomMessage(message: string, isThread = false) {
 	try {
 		await matchMessage();
 	} catch {
-		// TODO: Create a proper test for this elsewhere.
 		await dismissReviewNag();
 		await matchMessage();
 	}
 	return message;
 }
 
+// TODO: Create a proper test for this elsewhere.
 async function dismissReviewNag() {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
