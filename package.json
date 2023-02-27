@@ -209,6 +209,7 @@
 		"jest": "^28.1.3",
 		"jest-cli": "^28.1.3",
 		"jest-expo": "^46.0.1",
+		"jest-junit": "^15.0.0",
 		"metro-react-native-babel-preset": "^0.67.0",
 		"otp.js": "1.2.0",
 		"patch-package": "6.4.7",
@@ -240,6 +241,9 @@
 			"@testing-library/jest-native/extend-expect",
 			"./jest.setup.js"
 		]
+	},
+	"jest-junit": {
+		"addFileAttribute": "true"
 	},
 	"snyk": true,
 	"engines": {
