@@ -6,7 +6,6 @@ import {
 	tapBack,
 	sleep,
 	searchRoom,
-	dismissReviewNag,
 	tryTapping,
 	platformTypes,
 	TTextMatcher,
@@ -372,10 +371,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('message-reaction-:grinning:')))
 					.not.toExist()
 					.withTimeout(60000);
-			});
-
-			it('should ask for review', async () => {
-				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			});
 
 			it('should react to message with frequently used emoji', async () => {

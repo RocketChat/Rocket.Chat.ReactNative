@@ -6,7 +6,6 @@ import {
 	tapBack,
 	sleep,
 	platformTypes,
-	dismissReviewNag,
 	TTextMatcher,
 	tapAndWaitFor,
 	navigateToRoom,
@@ -156,12 +155,7 @@ describe('Threads', () => {
 			it('should navigate to thread from thread name', async () => {
 				const messageText = 'navthreadname';
 				await mockRandomMessage('dummymessagebetweenthethread');
-				try {
-					await element(by.id(`message-thread-button-${thread}`)).tap();
-				} catch {
-					await dismissReviewNag();
-					await element(by.id(`message-thread-button-${thread}`)).tap();
-				}
+				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id('messagebox-input-thread')))
 					.toExist()
 					.withTimeout(5000);

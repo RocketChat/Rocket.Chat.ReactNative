@@ -1,7 +1,6 @@
 import { by, expect, element } from 'detox';
 
 import data from '../data';
-import random from './random';
 
 export type TTextMatcher = keyof Pick<Detox.ByFacade, 'text' | 'label'>;
 
@@ -126,23 +125,8 @@ async function mockRandomMessage(message: string, isThread = false) {
 	await element(by.id(input)).replaceText(message);
 	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
-	try {
-		await matchMessage();
-	} catch {
-		await dismissReviewNag();
-		await matchMessage();
-	}
+	await matchMessage();
 	return message;
-}
-
-// TODO: Create a proper test for this elsewhere.
-async function dismissReviewNag() {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	await waitFor(element(by[textMatcher]('Are you enjoying this app?')))
-		.toExist()
-		.withTimeout(60000);
-	await element(by[textMatcher]('No')).atIndex(0).tap(); // Tap `no` on ask for review alert
 }
 
 async function tapBack() {
@@ -273,7 +257,6 @@ export {
 	logout,
 	mockMessage,
 	mockRandomMessage,
-	dismissReviewNag,
 	tapBack,
 	sleep,
 	searchRoom,
