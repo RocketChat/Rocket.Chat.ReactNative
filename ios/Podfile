@@ -8,7 +8,6 @@ install! 'cocoapods', :deterministic_uuids => false
 def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
-  pod 'ReactNativeUiLib', :path => '../node_modules/react-native-ui-lib/lib'
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
   config = use_native_modules!
 
