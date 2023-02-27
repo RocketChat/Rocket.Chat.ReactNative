@@ -534,37 +534,6 @@ jobs:
     steps:
       - ios-build
 
-  ios-experimental-test:
-    executor: mac-env
-    steps:
-      - checkout
-      - restore_cache: *restore-gems-cache
-      - restore_cache: *restore-npm-cache-mac
-      - run: *install-npm-modules
-      - run: *update-fastlane-ios
-      - save_cache: *save-npm-cache-mac
-      - save_cache: *save-gems-cache
-      - manage-pods
-      - run:
-          name: Configure Detox
-          command: |
-            brew tap wix/brew
-            brew install applesimutils
-      - create-e2e-account-file
-      - run:
-          name: Build
-          command: |
-            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
-            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
-            yarn detox clean-framework-cache && yarn detox build-framework-cache
-            yarn e2e:ios-build
-      - run:
-          name: Run tests
-          command: |
-            yarn e2e:ios-test
-      - store_artifacts:
-          path: artifacts
-
   ios-build-official:
     executor: mac-env
     steps:
@@ -581,6 +550,60 @@ jobs:
     steps:
       - upload-to-testflight:
           official: true
+
+  ios-build-e2e:
+    executor: mac-env
+    steps:
+      - checkout
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - save_cache: *save-npm-cache-mac
+      - save_cache: *save-gems-cache
+      - manage-pods
+      - run:
+          name: Configure Detox
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+      - run:
+          name: Build
+          command: |
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
+            yarn detox clean-framework-cache && yarn detox build-framework-cache
+            yarn e2e:ios-build
+      - store_artifacts:
+          path: ios/Rocket.Chat Experimental.ipa
+      - persist_to_workspace:
+          root: /Users/distiller/project
+          paths:
+            - ios
+  
+  ios-test-e2e:
+    executor: mac-env
+    parallelism: 3
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /Users/distiller/project
+      - restore_cache: *restore-npm-cache-mac
+      - run: *install-npm-modules
+      - save_cache: *save-npm-cache-mac
+      - run:
+          name: Configure Detox
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+      - create-e2e-account-file
+      - run:
+          name: Run tests
+          command: |
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split)
+            yarn e2e:ios-test $TEST
+      - store_artifacts:
+          path: artifacts
 
 workflows:
   build-and-test:
@@ -599,7 +622,10 @@ workflows:
           requires:
             - ios-build-experimental
 
-      - ios-experimental-test
+      - ios-build-e2e
+      - ios-test-e2e:
+          requires:
+            - ios-build-e2e
       
       - android-build-e2e
       - android-test-e2e:
