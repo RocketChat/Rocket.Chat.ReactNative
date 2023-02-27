@@ -595,14 +595,16 @@ jobs:
       - save_cache: *save-npm-cache-mac
       - run:
           name: Configure Detox
+          # Removes "nvm is not compatible with the "PREFIX" environment variable: currently set to "/usr/local"" error
           command: |
+            unset PREFIX
             brew tap wix/brew
             brew install applesimutils
+            yarn detox clean-framework-cache && yarn detox build-framework-cache
       - create-e2e-account-file
       - run:
           name: Run tests
           command: |
-            yarn detox clean-framework-cache && yarn detox build-framework-cache
             TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split)
             yarn e2e:ios-test $TEST
       - store_artifacts:
