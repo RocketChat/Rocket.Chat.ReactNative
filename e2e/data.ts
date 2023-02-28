@@ -1,4 +1,5 @@
 // @ts-ignore
+// eslint-disable-next-line import/no-unresolved, import/extensions
 import account from './e2e_account';
 import random from './helpers/random';
 
