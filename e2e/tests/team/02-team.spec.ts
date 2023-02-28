@@ -288,35 +288,35 @@ describe('Team', () => {
 			it('should add users to the team', async () => {
 				await element(by.id('room-actions-members')).tap();
 				await waitFor(element(by.id('room-members-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(2000);
 
 				await waitFor(element(by.id('room-actions-add-user')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(10000);
 				await element(by.id('room-actions-add-user')).tap();
 
 				const rocketCat = 'rocket.cat';
 				await element(by.id('select-users-view-search')).replaceText('rocket.cat');
 				await waitFor(element(by.id(`select-users-view-item-${rocketCat}`)))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(10000);
 				await element(by.id(`select-users-view-item-${rocketCat}`)).tap();
 				await waitFor(element(by.id(`selected-user-${rocketCat}`)))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
 
 				await waitFor(element(by.id('select-users-view-search')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(4000);
 				await element(by.id('select-users-view-search')).tap();
 				await element(by.id('select-users-view-search')).replaceText(otherUser.username);
 				await waitFor(element(by.id(`select-users-view-item-${otherUser.username}`)))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(10000);
 				await element(by.id(`select-users-view-item-${otherUser.username}`)).tap();
 				await waitFor(element(by.id(`selected-user-${otherUser.username}`)))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
 
 				await element(by.id('selected-users-view-submit')).tap();
@@ -324,16 +324,16 @@ describe('Team', () => {
 				await tapBack();
 				await sleep(300);
 				await waitFor(element(by.id('room-actions-members')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(10000);
 				await element(by.id('room-actions-members')).tap();
 				await element(by.id('room-members-view-filter')).tap();
 				await waitFor(element(by.id('room-members-view-toggle-status-all')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('room-members-view-toggle-status-all')).tap();
 				await waitFor(element(by.id(`room-members-view-item-${otherUser.username}`)))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(60000);
 				await backToActions();
 			});

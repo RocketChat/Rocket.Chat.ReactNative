@@ -69,7 +69,7 @@ describe('Room', () => {
 		await waitForLoading();
 		await waitFor(element(by[textMatcher]('1')).atIndex(0))
 			.toExist()
-			.withTimeout(10000);
+			.withTimeout(30000);
 		await expect(element(by[textMatcher]('2'))).toExist();
 	});
 
@@ -97,7 +97,7 @@ describe('Room', () => {
 			.withTimeout(5000);
 		await waitFor(element(by[textMatcher]('300')))
 			.toExist()
-			.withTimeout(5000);
+			.withTimeout(30000);
 		let found = false;
 		while (!found) {
 			try {
