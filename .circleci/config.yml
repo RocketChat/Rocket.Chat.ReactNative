@@ -502,7 +502,7 @@ jobs:
       name: android/android-machine
       resource-class: xlarge
       tag: 2022.12.1
-    parallelism: 3
+    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -593,7 +593,7 @@ jobs:
   
   ios-test-e2e:
     executor: mac-env
-    parallelism: 3
+    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
