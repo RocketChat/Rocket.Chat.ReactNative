@@ -1,5 +1,6 @@
 import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// eslint-disable-next-line import/no-unresolved
 import { RUNNING_E2E_TESTS } from '@env';
 
 import I18n from '../../../i18n';
