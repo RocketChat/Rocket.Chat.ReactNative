@@ -13,8 +13,11 @@ const createChannel = async (room: string) => {
 		.withTimeout(5000);
 	await element(by.id('rooms-list-view-create-channel')).tap();
 	await waitFor(element(by.id('new-message-view')))
-		.toExist()
+		.toBeVisible()
 		.withTimeout(5000);
+	await waitFor(element(by.id('new-message-view-create-channel')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('new-message-view-create-channel')).tap();
 	await waitFor(element(by.id('select-users-view')))
 		.toExist()
@@ -73,7 +76,7 @@ describe('Move/Convert Team', () => {
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 			await waitFor(element(by.id('room-actions-convert-to-team')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-convert-to-team')).tap();
 			await waitFor(element(by[textMatcher]('You are converting this Channel to a Team. All Members will be kept.')))

@@ -72,8 +72,11 @@ describe('Create room screen', () => {
 			it('should navigate to select users', async () => {
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))
 					.toExist()
@@ -174,8 +177,11 @@ describe('Create room screen', () => {
 					.withTimeout(5000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))
 					.toExist()
@@ -217,11 +223,13 @@ describe('Create room screen', () => {
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(10000);
-				// await device.launchApp({ newInstance: true });
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))
 					.toExist()

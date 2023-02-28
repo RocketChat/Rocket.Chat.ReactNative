@@ -123,6 +123,9 @@ describe('E2E Encryption', () => {
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
 					.toBeVisible()
+					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))

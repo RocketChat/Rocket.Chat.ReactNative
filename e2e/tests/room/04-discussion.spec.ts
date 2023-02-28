@@ -34,7 +34,10 @@ describe('Discussion', () => {
 			.withTimeout(2000);
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view')))
-			.toExist()
+			.toBeVisible()
+			.withTimeout(2000);
+		await waitFor(element(by[textMatcher]('Discussion')))
+			.toBeVisible()
 			.withTimeout(2000);
 		await element(by[textMatcher]('Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))

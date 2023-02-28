@@ -1,19 +1,19 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, tapBack, searchRoom, platformTypes, TTextMatcher, mockRandomMessage } from '../../helpers/app';
+import {
+	navigateToLogin,
+	login,
+	tapBack,
+	platformTypes,
+	TTextMatcher,
+	mockRandomMessage,
+	navigateToRoom
+} from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const room = data.channels.detoxpublic.name;
-
-async function navigateToRoom() {
-	await searchRoom(room);
-	await element(by.id(`rooms-list-view-item-${room}`)).tap();
-	await waitFor(element(by.id('room-view')).atIndex(0))
-		.toExist()
-		.withTimeout(5000);
-}
 
 async function navigateToRoomActions() {
 	await element(by.id(`room-view-title-${room}`)).tap();
@@ -33,7 +33,7 @@ describe('Join public room', () => {
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(user.username, user.password);
-		await navigateToRoom();
+		await navigateToRoom(room);
 	});
 
 	describe('Render', () => {
@@ -130,16 +130,10 @@ describe('Join public room', () => {
 				.not.toBeVisible()
 				.withTimeout(2000);
 			await tapBack();
-			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
-				.toBeVisible()
-				.withTimeout(2000);
-			await element(by.id(`rooms-list-view-item-${room}`)).tap();
-			await waitFor(element(by.id('room-view')))
-				.toBeVisible()
-				.withTimeout(5000);
+			await navigateToRoom(room);
 			await waitFor(element(by.id('messagebox')))
 				.toBeVisible()
-				.withTimeout(60000);
+				.withTimeout(10000);
 			await expect(element(by.id('messagebox'))).toBeVisible();
 			await expect(element(by.id('room-view-join'))).toBeNotVisible();
 		});
