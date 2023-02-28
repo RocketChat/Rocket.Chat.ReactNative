@@ -604,9 +604,7 @@ jobs:
       - run: mkdir ~/junit
       - run:
           name: Configure Detox
-          # Removes "nvm is not compatible with the "PREFIX" environment variable: currently set to "/usr/local"" error
           command: |
-            unset PREFIX
             brew tap wix/brew
             brew install applesimutils
             yarn detox clean-framework-cache && yarn detox build-framework-cache
