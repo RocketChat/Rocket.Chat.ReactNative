@@ -19,6 +19,9 @@ import random from '../../helpers/random';
 
 const checkServer = async (server: string) => {
 	const label = `Connected to ${server}`;
+	await waitFor(element(by.id('rooms-list-view-sidebar')))
+		.toBeVisible()
+		.withTimeout(10000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
