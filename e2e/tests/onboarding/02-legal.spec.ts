@@ -1,4 +1,4 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { navigateToRegister, navigateToLogin } from '../../helpers/app';
 

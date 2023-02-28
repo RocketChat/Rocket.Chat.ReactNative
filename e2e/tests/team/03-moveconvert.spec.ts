@@ -1,3 +1,5 @@
+import { device, waitFor, element, by } from 'detox';
+
 import { navigateToLogin, login, tapBack, platformTypes, TTextMatcher, sleep, navigateToRoom } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';

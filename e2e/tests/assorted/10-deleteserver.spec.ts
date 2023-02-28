@@ -1,3 +1,5 @@
+import { device, waitFor, element, by } from 'detox';
+
 import data from '../../data';
 import {
 	sleep,

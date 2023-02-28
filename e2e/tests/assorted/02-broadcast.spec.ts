@@ -1,6 +1,6 @@
 // const OTP = require('otp.js');
 // const GA = OTP.googleAuthenticator;
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import {
 	navigateToLogin,

@@ -1,3 +1,5 @@
+import { device, waitFor, element, by } from 'detox';
+
 import data from '../../data';
 import { navigateToLogin, login, checkServer, expectValidRegisterOrRetry } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';

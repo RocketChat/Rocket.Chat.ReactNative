@@ -1,4 +1,4 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { login, navigateToLogin, logout, tapBack, searchRoom } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';

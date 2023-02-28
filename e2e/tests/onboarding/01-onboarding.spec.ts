@@ -1,4 +1,4 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { TTextMatcher, platformTypes } from '../../helpers/app';
 import data from '../../data';

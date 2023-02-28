@@ -1,4 +1,4 @@
-import { expect } from 'detox';
+import Detox, { device, waitFor, element, by, expect } from 'detox';
 
 import { navigateToLogin, login, tapBack, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';

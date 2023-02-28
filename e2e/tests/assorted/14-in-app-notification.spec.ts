@@ -1,3 +1,5 @@
+import { device, waitFor, element, by } from 'detox';
+
 import { navigateToLogin, login, sleep, tapBack, navigateToRoom, checkRoomTitle } from '../../helpers/app';
 import { sendMessage, post, ITestUser, createRandomUser, createRandomRoom } from '../../helpers/data_setup';
 

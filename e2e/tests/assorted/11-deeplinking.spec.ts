@@ -1,3 +1,4 @@
+import { device, waitFor, element, by } from 'detox';
 import EJSON from 'ejson';
 
 import data from '../../data';

@@ -1,3 +1,5 @@
+import { device, element, by } from 'detox';
+
 import { navigateToRegister, expectValidRegisterOrRetry } from '../../helpers/app';
 import data from '../../data';
 
