@@ -5,8 +5,13 @@ module.exports = {
 			$0: 'jest',
 			config: 'e2e/jest.config.js'
 		},
-		jest: {
-			setupTimeout: 120000
+		retries: 3
+	},
+	artifacts: {
+		plugins: {
+			screenshot: 'failing',
+			video: 'failing',
+			uiHierarchy: 'enabled'
 		}
 	},
 	apps: {
@@ -53,7 +58,8 @@ module.exports = {
 			type: 'android.emulator',
 			device: {
 				avdName: 'Pixel_API_31_AOSP'
-			}
+			},
+			headless: process.env.CI ? true : false
 		}
 	},
 	configurations: {
