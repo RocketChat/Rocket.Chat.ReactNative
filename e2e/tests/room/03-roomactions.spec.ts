@@ -10,7 +10,7 @@ import {
 	TTextMatcher,
 	tapAndWaitFor,
 	tryTapping,
-	mockRandomMessage
+	mockMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser, post } from '../../helpers/data_setup';
 import random from '../../helpers/random';
@@ -152,7 +152,7 @@ describe('Room actions screen', () => {
 			it('should show starred message and unstar it', async () => {
 				// Go back to room and send a message
 				await tapBack();
-				const messageToStar = await mockRandomMessage('messageToStar');
+				const messageToStar = await mockMessage('messageToStar');
 
 				// Star the message
 				await starMessage(messageToStar);
@@ -189,7 +189,7 @@ describe('Room actions screen', () => {
 			it('should show pinned message and unpin it', async () => {
 				// Go back to room and send a message
 				await tapBack();
-				const messageToPin = await mockRandomMessage('messageToPin');
+				const messageToPin = await mockMessage('messageToPin');
 
 				// Pin the message
 				await pinMessage(messageToPin);

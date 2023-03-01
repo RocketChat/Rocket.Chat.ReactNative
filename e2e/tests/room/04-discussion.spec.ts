@@ -7,7 +7,7 @@ import {
 	tapBack,
 	navigateToRoom,
 	platformTypes,
-	mockRandomMessage,
+	mockMessage,
 	sleep
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
@@ -97,7 +97,7 @@ describe('Discussion', () => {
 			await waitFor(element(by.id('messagebox')))
 				.toBeVisible()
 				.withTimeout(60000);
-			discussionFromActionSheet = await mockRandomMessage('message');
+			discussionFromActionSheet = await mockMessage('message');
 		});
 
 		it('should create discussion', async () => {

@@ -11,7 +11,7 @@ import {
 	TTextMatcher,
 	sleep,
 	checkRoomTitle,
-	mockRandomMessage
+	mockMessage
 } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
@@ -87,7 +87,7 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('room-view')))
 			.toBeVisible()
 			.withTimeout(5000);
-		message = await mockRandomMessage('message');
+		message = await mockMessage('message');
 		await tapBack();
 	});
 

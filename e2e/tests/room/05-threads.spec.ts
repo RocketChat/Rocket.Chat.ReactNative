@@ -9,7 +9,7 @@ import {
 	TTextMatcher,
 	tapAndWaitFor,
 	navigateToRoom,
-	mockRandomMessage
+	mockMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser } from '../../helpers/data_setup';
 
@@ -73,7 +73,7 @@ describe('Threads', () => {
 		describe('Thread', () => {
 			let thread: string;
 			it('should create thread', async () => {
-				thread = await mockRandomMessage('thread');
+				thread = await mockMessage('thread');
 				await element(by[textMatcher](thread)).atIndex(0).tap();
 				await element(by[textMatcher](thread)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -118,7 +118,7 @@ describe('Threads', () => {
 			});
 
 			it('should send message in thread only', async () => {
-				const messageText = await mockRandomMessage('threadonly', true);
+				const messageText = await mockMessage('threadonly', true);
 				await tapBack();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.not.toExist()
@@ -154,7 +154,7 @@ describe('Threads', () => {
 
 			it('should navigate to thread from thread name', async () => {
 				const messageText = 'navthreadname';
-				await mockRandomMessage('dummymessagebetweenthethread');
+				await mockMessage('dummymessagebetweenthethread');
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id('messagebox-input-thread')))
 					.toExist()

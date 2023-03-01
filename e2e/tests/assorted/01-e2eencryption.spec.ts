@@ -11,7 +11,7 @@ import {
 	TTextMatcher,
 	tapAndWaitFor,
 	expectValidRegisterOrRetry,
-	mockRandomMessage
+	mockMessage
 } from '../../helpers/app';
 import data from '../../data';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
@@ -159,7 +159,7 @@ describe('E2E Encryption', () => {
 			});
 
 			it('should send message and be able to read it', async () => {
-				mockedMessageText = await mockRandomMessage('message');
+				mockedMessageText = await mockMessage('message');
 				await tapBack();
 			});
 		});

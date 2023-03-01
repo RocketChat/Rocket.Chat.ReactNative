@@ -1,15 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../../data';
-import {
-	navigateToLogin,
-	login,
-	tapBack,
-	platformTypes,
-	TTextMatcher,
-	mockRandomMessage,
-	navigateToRoom
-} from '../../helpers/app';
+import { navigateToLogin, login, tapBack, platformTypes, TTextMatcher, mockMessage, navigateToRoom } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
@@ -139,7 +131,7 @@ describe('Join public room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockRandomMessage(`${random()}message`);
+			await mockMessage(`${random()}message`);
 		});
 
 		it('should have notifications and leave channel', async () => {

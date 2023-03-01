@@ -94,7 +94,7 @@ async function logout() {
 	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
-async function mockRandomMessage(message: string, isThread = false) {
+async function mockMessage(message: string, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
@@ -234,7 +234,7 @@ export {
 	navigateToRegister,
 	login,
 	logout,
-	mockRandomMessage,
+	mockMessage,
 	tapBack,
 	sleep,
 	searchRoom,

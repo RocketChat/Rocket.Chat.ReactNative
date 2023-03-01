@@ -9,7 +9,7 @@ import {
 	tryTapping,
 	platformTypes,
 	TTextMatcher,
-	mockRandomMessage
+	mockMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
 
@@ -84,7 +84,7 @@ describe('Room screen', () => {
 	describe('Usage', () => {
 		describe('Messagebox', () => {
 			it('should send message', async () => {
-				randomMessage = await mockRandomMessage('message');
+				randomMessage = await mockMessage('message');
 			});
 
 			// describe('Emoji Keyboard', () => {
@@ -423,7 +423,7 @@ describe('Room screen', () => {
 			});
 
 			it('should edit message', async () => {
-				const editMessage = await mockRandomMessage('edit');
+				const editMessage = await mockMessage('edit');
 				const editedMessage = `${editMessage}ed`;
 				await tryTapping(element(by[textMatcher](editMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
@@ -439,7 +439,7 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 			it('should quote message', async () => {
-				const quoteMessage = await mockRandomMessage('quote');
+				const quoteMessage = await mockMessage('quote');
 				const quotedMessage = `${quoteMessage}d`;
 				await tryTapping(element(by[textMatcher](quoteMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
@@ -457,7 +457,7 @@ describe('Room screen', () => {
 			});
 
 			it('should delete message', async () => {
-				const deleteMessage = await mockRandomMessage('delete');
+				const deleteMessage = await mockMessage('delete');
 				await tryTapping(element(by[textMatcher](deleteMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
