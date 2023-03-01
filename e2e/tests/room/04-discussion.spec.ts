@@ -8,7 +8,8 @@ import {
 	navigateToRoom,
 	platformTypes,
 	mockMessage,
-	sleep
+	sleep,
+	checkRoomTitle
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
@@ -109,15 +110,10 @@ describe('Discussion', () => {
 				.withTimeout(2000);
 			await element(by[textMatcher]('Start a Discussion')).atIndex(0).tap();
 			await waitFor(element(by.id('create-discussion-view')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('create-discussion-submit')).tap();
-			await waitFor(element(by.id('room-view')))
-				.toExist()
-				.withTimeout(10000);
-			await waitFor(element(by.id(`room-view-title-${discussionFromActionSheet}`)))
-				.toExist()
-				.withTimeout(5000);
+			await checkRoomTitle(discussionFromActionSheet);
 		});
 	});
 

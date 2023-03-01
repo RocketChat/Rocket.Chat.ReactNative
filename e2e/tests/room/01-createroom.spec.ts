@@ -192,7 +192,7 @@ describe('Create room screen', () => {
 					.withTimeout(5000);
 				await element(by.id('selected-users-view-submit')).tap();
 				await waitFor(element(by.id('create-channel-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
 				await element(by.id('create-channel-name')).tapReturnKey();
