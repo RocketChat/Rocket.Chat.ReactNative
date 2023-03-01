@@ -100,7 +100,8 @@ export default function useStyle() {
 		actionSheetUsername: {
 			fontSize: 16,
 			...sharedStyles.textBold,
-			color: colors.passcodePrimary
+			color: colors.passcodePrimary,
+			flexShrink: 1
 		},
 		enabledBackground: {
 			backgroundColor: colors.conferenceCallEnabledIconBackground
