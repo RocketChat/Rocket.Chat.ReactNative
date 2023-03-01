@@ -7,7 +7,8 @@ import {
 	tapBack,
 	navigateToRoom,
 	platformTypes,
-	mockRandomMessage
+	mockRandomMessage,
+	sleep
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
@@ -101,6 +102,7 @@ describe('Discussion', () => {
 		it('should create discussion', async () => {
 			await element(by[textMatcher](discussionFromActionSheet)).atIndex(0).tap();
 			await element(by[textMatcher](discussionFromActionSheet)).atIndex(0).longPress();
+			await sleep(300); // wait for animation
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
