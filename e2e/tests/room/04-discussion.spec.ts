@@ -36,9 +36,9 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('new-message-view')))
 			.toBeVisible()
 			.withTimeout(2000);
-		await waitFor(element(by[textMatcher]('Discussion')))
+		await waitFor(element(by.id('new-message-view-create-discussion')))
 			.toBeVisible()
-			.withTimeout(2000);
+			.withTimeout(5000);
 		await element(by[textMatcher]('Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()

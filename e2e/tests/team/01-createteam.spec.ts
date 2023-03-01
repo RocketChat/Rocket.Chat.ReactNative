@@ -82,7 +82,13 @@ describe('Create team screen', () => {
 
 		it('should delete team', async () => {
 			await element(by.id('room-info-view-edit-button')).tap();
+			await waitFor(element(by.id('room-info-edit-view-list')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
+			await waitFor(element(by.id('room-info-edit-view-delete')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('room-info-edit-view-delete')).tap();
 			await waitFor(element(by[textMatcher]('Yes, delete it!')))
 				.toExist()
