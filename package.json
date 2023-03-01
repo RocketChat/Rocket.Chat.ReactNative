@@ -123,7 +123,7 @@
 		"react-native-skeleton-placeholder": "^5.2.3",
 		"react-native-slowlog": "^1.0.2",
 		"react-native-svg": "^12.3.0",
-		"react-native-ui-lib": "RocketChat/react-native-ui-lib#6c73c815861142659383f03b57c4eb0da5a10bce",
+		"react-native-ui-lib": "RocketChat/react-native-ui-lib#da07d0a27231c9503d524010166904c42abdb72d",
 		"react-native-vector-icons": "9.1.0",
 		"react-native-webview": "10.3.2",
 		"react-redux": "^8.0.5",
