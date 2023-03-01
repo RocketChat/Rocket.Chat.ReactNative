@@ -71,8 +71,9 @@ describe('Discussion', () => {
 	it('should create discussion from Messagebox Actions', async () => {
 		await navigateToRoom(room);
 		await element(by.id('messagebox-actions')).tap();
+		await sleep(300); // wait for animation
 		await waitFor(element(by.id('action-sheet')))
-			.toExist()
+			.toBeVisible()
 			.withTimeout(2000);
 		await element(by[textMatcher]('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
