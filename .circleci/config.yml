@@ -584,12 +584,10 @@ jobs:
             yarn detox clean-framework-cache && yarn detox build-framework-cache
             echo "RUNNING_E2E_TESTS=true" > ./.env
             yarn e2e:ios-build
-      - store_artifacts:
-          path: ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
       - persist_to_workspace:
           root: /Users/distiller/project
           paths:
-            - ios
+            - ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
   
   ios-test-e2e:
     executor: mac-env
