@@ -195,6 +195,8 @@ commands:
     description: "Build iOS app"
     steps:
       - checkout
+      - attach_workspace:
+          at: /Users/distiller/project
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
       - run: *install-npm-modules
@@ -588,14 +590,15 @@ jobs:
           root: /Users/distiller/project
           paths:
             - ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
+            - ios/DerivedData/Build/Products
   
   ios-test-e2e:
     executor: mac-env
     parallelism: 4
     steps:
       - checkout
-      - attach_workspace:
-          at: /Users/distiller/project
+      # - attach_workspace:
+      #     at: /Users/distiller/project
       - restore_cache: *restore-npm-cache-mac
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-mac
