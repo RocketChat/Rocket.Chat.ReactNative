@@ -5,7 +5,7 @@ module.exports = {
 			$0: 'jest',
 			config: 'e2e/jest.config.js'
 		},
-		retries: 3
+		retries: process.env.CI ? 3 : 0
 	},
 	artifacts: {
 		plugins: {
