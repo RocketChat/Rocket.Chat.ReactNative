@@ -10,8 +10,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { isTeamRoom } from '../../lib/methods/helpers/room';
-import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, ISubscription, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
 import i18n from '../../i18n';
@@ -20,12 +19,11 @@ import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { Services } from '../../lib/services';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import HeaderCallButton from './components/HeaderCallButton';
 
-interface IRightButtonsProps {
+interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
 	threadsEnabled: boolean;
-	rid?: string;
-	t: string;
 	tmid?: string;
 	teamId?: string;
 	isMasterDetail: boolean;
@@ -43,6 +41,7 @@ interface IRightButtonsProps {
 	livechatRequestComment: boolean;
 	showActionSheet: Function;
 	departmentId?: string;
+	rid?: string;
 }
 
 interface IRigthButtonsState {
@@ -338,7 +337,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, teamId, joined } = this.props;
+		const { t, tmid, threadsEnabled, rid } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -363,9 +362,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				{isTeamRoom({ teamId, joined }) ? (
-					<HeaderButton.Item iconName='channel-public' onPress={this.goTeamChannels} testID='room-view-header-team-channels' />
-				) : null}
+				{rid ? <HeaderCallButton rid={rid} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
