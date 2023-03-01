@@ -131,7 +131,7 @@ export const get = (endpoint: string) => {
 	return rocketchat.get(endpoint);
 };
 
-export const post = async (endpoint: string, body: any, user = data.users.regular) => {
+export const post = async (endpoint: string, body: any, user: ITestUser) => {
 	await login(user.username, user.password);
 	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
 	return rocketchat.post(endpoint, body);

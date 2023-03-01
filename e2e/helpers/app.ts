@@ -94,38 +94,17 @@ async function logout() {
 	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
-/**
- * @deprecated use mockRandomMessage
- */
-async function mockMessage(message: string, isThread = false) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
-	await element(by.id(input)).replaceText(`${data.random}${message}`);
-	await sleep(300);
-	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by[textMatcher](`${data.random}${message}`)))
-		.toExist()
-		.withTimeout(60000);
-	await element(by[textMatcher](`${data.random}${message}`))
-		.atIndex(0)
-		.tap();
-}
-
 async function mockRandomMessage(message: string, isThread = false) {
-	const matchMessage = async () => {
-		await waitFor(element(by[textMatcher](message)))
-			.toExist()
-			.withTimeout(60000);
-		await element(by[textMatcher](message)).atIndex(0).tap();
-	};
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
 	await element(by.id(input)).replaceText(message);
 	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
-	await matchMessage();
+	await waitFor(element(by[textMatcher](message)))
+		.toExist()
+		.withTimeout(60000);
+	await element(by[textMatcher](message)).atIndex(0).tap();
 	return message;
 }
 
@@ -255,7 +234,6 @@ export {
 	navigateToRegister,
 	login,
 	logout,
-	mockMessage,
 	mockRandomMessage,
 	tapBack,
 	sleep,
