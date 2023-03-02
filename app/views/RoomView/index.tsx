@@ -627,7 +627,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					joined={joined}
 					status={room.status}
 					omnichannelPermissions={omnichannelPermissions}
-					t={this.t || t}
+					t={(this.t || t) as SubscriptionType}
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
@@ -785,13 +785,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
+	handleCloseEmoji = (action?: Function, params?: any) => {
+		if (this.messagebox?.current) {
+			return this.messagebox?.current.closeEmojiAndAction(action, params);
+		}
+		if (action) {
+			return action(params);
+		}
+	};
+
 	errorActionsShow = (message: TAnyMessageModel) => {
-		this.messagebox?.current?.closeEmojiAndAction(this.messageErrorActions?.showMessageErrorActions, message);
+		this.handleCloseEmoji(this.messageErrorActions?.showMessageErrorActions, message);
 	};
 
 	showActionSheet = (options: any) => {
 		const { showActionSheet } = this.props;
-		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, options);
+		this.handleCloseEmoji(showActionSheet, options);
 	};
 
 	onEditInit = (message: TAnyMessageModel) => {
@@ -850,7 +859,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionInit = (message: TAnyMessageModel) => {
-		this.messagebox?.current?.closeEmojiAndAction(() => {
+		this.handleCloseEmoji(() => {
 			this.setState({ selectedMessage: message }, this.showReactionPicker);
 		});
 	};
@@ -865,7 +874,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (message.tmid && !this.tmid) {
 			return;
 		}
-		this.messagebox?.current?.closeEmojiAndAction(this.messageActions?.showMessageActions, message);
+		this.handleCloseEmoji(this.messageActions?.showMessageActions, message);
 	};
 
 	showAttachment = (attachment: IAttachment) => {
@@ -894,7 +903,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: message });
 		const { showActionSheet } = this.props;
 		const { selectedMessage } = this.state;
-		this.messagebox?.current?.closeEmojiAndAction(showActionSheet, {
+		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={selectedMessage?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%', '80%'],
 			enableContentPanningGesture: false
@@ -1225,14 +1234,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	handleCallJitsi = () => {
+	// OLD METHOD - support versions before 5.0.0
+	handleEnterCall = () => {
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
-				callJitsi(room);
+				callJitsi({ room });
 			}
 		}
 	};
@@ -1378,14 +1388,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
 					getCustomEmoji={this.getCustomEmoji}
-					callJitsi={this.handleCallJitsi}
+					handleEnterCall={this.handleEnterCall}
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}
 					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
 					theme={theme}
-					closeEmojiAndAction={this.messagebox?.current?.closeEmojiAndAction}
+					closeEmojiAndAction={this.handleCloseEmoji}
 				/>
 			);
 		}
