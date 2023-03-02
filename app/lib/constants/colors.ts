@@ -3,7 +3,8 @@ export const STATUS_COLORS: any = {
 	busy: '#f5455c',
 	away: '#ffd21f',
 	offline: '#cbced1',
-	loading: '#9ea2a8'
+	loading: '#9ea2a8',
+	disabled: '#F38C39'
 };
 
 export const SWITCH_TRACK_COLOR = {

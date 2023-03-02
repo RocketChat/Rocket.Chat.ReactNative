@@ -6,7 +6,7 @@ import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/url';
 import { store as reduxStore } from '../store/auxStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
-import { random } from '../methods/helpers';
+import { compareServerVersion, random } from '../methods/helpers';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
@@ -162,7 +162,22 @@ class Sdk {
 	}
 
 	subscribeRoom(...args: any[]) {
-		return this.current.subscribeRoom(...args);
+		const { server } = reduxStore.getState();
+		const { version: serverVersion } = server;
+		const topic = 'stream-notify-room';
+		let eventUserTyping;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
+			eventUserTyping = this.subscribe(topic, `${args[0]}/user-activity`, ...args);
+		} else {
+			eventUserTyping = this.subscribe(topic, `${args[0]}/typing`, ...args);
+		}
+
+		// Taken from https://github.com/RocketChat/Rocket.Chat.js.SDK/blob/454b4ba784095057b8de862eb99340311b672e15/lib/drivers/ddp.ts#L555
+		return Promise.all([
+			this.subscribe('stream-room-messages', args[0], ...args),
+			eventUserTyping,
+			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args)
+		]);
 	}
 
 	unsubscribe(subscription: any[]) {
