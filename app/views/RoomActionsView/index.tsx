@@ -1102,7 +1102,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 											});
 										}
 									}}
-									testID='room-actions-discussions'
+									testID='room-actions-teams'
 									left={() => <List.Icon name='channel-public' />}
 									showActionIndicator
 								/>
