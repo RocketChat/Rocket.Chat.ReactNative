@@ -19,14 +19,10 @@ const handleBltPermission = async (): Promise<Permission[]> => {
 	return [PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
 };
 
-export const handleCallPermissions = async (): Promise<void> => {
+export const handleAndroidBltPermission = async (): Promise<void> => {
 	if (isAndroid) {
 		const bltPermission = await handleBltPermission();
-		await PermissionsAndroid.requestMultiple([
-			PermissionsAndroid.PERMISSIONS.CAMERA,
-			PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-			...bltPermission
-		]);
+		await PermissionsAndroid.requestMultiple(bltPermission);
 	}
 };
 
