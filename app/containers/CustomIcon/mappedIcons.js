@@ -1,4 +1,5 @@
 export const mappedIcons = {
+	'status-disabled': 59837,
 	'lamp-bulb': 59836,
 	'phone-in': 59835,
 	'basketball': 59776,
