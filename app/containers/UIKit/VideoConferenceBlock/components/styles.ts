@@ -116,12 +116,12 @@ export default function useStyle() {
 		actionSheetPhotoContainer: {
 			height: 220,
 			width: 148,
-			backgroundColor: colors.conferenceCallPhotoBackground,
 			borderRadius: 8,
 			margin: 24,
 			alignSelf: 'center',
 			justifyContent: 'center',
-			alignItems: 'center'
+			alignItems: 'center',
+			overflow: 'hidden'
 		}
 	});
 }

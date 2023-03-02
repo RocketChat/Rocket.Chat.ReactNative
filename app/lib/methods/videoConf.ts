@@ -19,18 +19,21 @@ const handleBltPermission = async (): Promise<Permission[]> => {
 	return [PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
 };
 
+export const handleCallPermissions = async (): Promise<void> => {
+	if (isAndroid) {
+		const bltPermission = await handleBltPermission();
+		await PermissionsAndroid.requestMultiple([
+			PermissionsAndroid.PERMISSIONS.CAMERA,
+			PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+			...bltPermission
+		]);
+	}
+};
+
 export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean): Promise<void> => {
 	try {
 		const result = await Services.videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
-			if (isAndroid) {
-				const bltPermission = await handleBltPermission();
-				await PermissionsAndroid.requestMultiple([
-					PermissionsAndroid.PERMISSIONS.CAMERA,
-					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-					...bltPermission
-				]);
-			}
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });

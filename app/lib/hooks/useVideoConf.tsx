@@ -10,7 +10,7 @@ import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { callJitsi } from '../methods';
 import { compareServerVersion, showErrorAlert } from '../methods/helpers';
-import { videoConfStartAndJoin } from '../methods/videoConf';
+import { handleCallPermissions, videoConfStartAndJoin } from '../methods/videoConf';
 import { Services } from '../services';
 import { useAppSelector } from './useAppSelector';
 import { useSnaps } from './useSnaps';
@@ -87,6 +87,7 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 				children: <StartACallActionSheet rid={rid} initCall={initCall} />,
 				snaps
 			});
+			handleCallPermissions();
 		}
 	};
 

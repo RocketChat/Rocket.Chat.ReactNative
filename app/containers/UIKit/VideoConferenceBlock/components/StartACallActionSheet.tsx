@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import { Camera, CameraType } from 'expo-camera';
 
 import i18n from '../../../../i18n';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
@@ -14,6 +15,8 @@ import { CustomIcon } from '../../../CustomIcon';
 import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import StatusContainer from '../../../Status';
 import useStyle from './styles';
+
+const CAM_SIZE = { height: 220, width: 148 };
 
 export default function StartACallActionSheet({ rid, initCall }: { rid: string; initCall: Function }): React.ReactElement {
 	const style = useStyle();
@@ -64,8 +67,14 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 					{user.username}
 				</Text>
 			</View>
-			<View style={style.actionSheetPhotoContainer}>
-				<AvatarContainer size={62} text={username} />
+			<View
+				style={[
+					style.actionSheetPhotoContainer,
+					CAM_SIZE,
+					{ backgroundColor: cam ? undefined : colors.conferenceCallPhotoBackground }
+				]}
+			>
+				{cam ? <Camera style={CAM_SIZE} type={CameraType.front} /> : <AvatarContainer size={62} text={username} />}
 			</View>
 			<Button
 				onPress={() => {
