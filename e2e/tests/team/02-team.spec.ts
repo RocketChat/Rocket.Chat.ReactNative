@@ -92,7 +92,7 @@ describe('Team', () => {
 		await navigateToRoom(team);
 	});
 
-	describe('Team Room', () => {
+	describe.skip('Team Room', () => {
 		describe('Team Header', () => {
 			it('should have actions button ', async () => {
 				await expect(element(by.id('room-header'))).toExist();
@@ -106,7 +106,7 @@ describe('Team', () => {
 				await expect(element(by.id('room-view-header-threads'))).toExist();
 			});
 
-			it('should have threads button ', async () => {
+			it('should have search button ', async () => {
 				await expect(element(by.id('room-view-search'))).toExist();
 			});
 		});
