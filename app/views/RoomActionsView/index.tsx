@@ -1088,6 +1088,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								<List.Item
 									title='Teams'
 									onPress={() => {
+										logEvent(events.ROOM_GO_TEAM_CHANNELS);
 										if (isMasterDetail) {
 											// @ts-ignore TODO: find a way to make this work - OLD Diego :)
 											navigation.navigate('ModalStackNavigator', {
@@ -1095,12 +1096,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 												params: { teamId, joined }
 											});
 										} else {
-											this.onPressTouchable({
-												route: 'TeamChannelsView',
-												params: {
-													teamId,
-													joined
-												}
+											navigation.navigate('TeamChannelsView', {
+												teamId,
+												joined
 											});
 										}
 									}}
