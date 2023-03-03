@@ -591,7 +591,7 @@ jobs:
   
   ios-test-e2e:
     executor: mac-env
-    parallelism: 4
+    parallelism: 5
     steps:
       - checkout
       - attach_workspace:
