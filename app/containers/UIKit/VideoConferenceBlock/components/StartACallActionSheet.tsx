@@ -1,14 +1,13 @@
+import { Camera, CameraType } from 'expo-camera';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import { Camera, CameraType } from 'expo-camera';
 
 import i18n from '../../../../i18n';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../../lib/hooks';
 import { getRoomAvatar, getUidDirectMessage } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
-import { useActionSheet } from '../../../ActionSheet';
 import AvatarContainer from '../../../Avatar';
 import Button from '../../../Button';
 import { CustomIcon } from '../../../CustomIcon';
@@ -17,6 +16,9 @@ import StatusContainer from '../../../Status';
 import useStyle from './styles';
 
 const CAM_SIZE = { height: 220, width: 148 };
+// fixed colors, do not change with theme change.
+const gray300 = '#5f656e';
+const gray100 = '#CBCED1';
 
 export default function StartACallActionSheet({ rid, initCall }: { rid: string; initCall: Function }): React.ReactElement {
 	const style = useStyle();
@@ -24,9 +26,8 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 	const [user, setUser] = useState({ username: '', avatar: '', uid: '' });
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
+	const [calling, setCalling] = useState(true);
 	const username = useAppSelector(state => state.login.user.username);
-
-	const { hideActionSheet } = useActionSheet();
 
 	useEffect(() => {
 		(async () => {
@@ -37,26 +38,37 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 		})();
 	}, [rid]);
 
-	const handleColor = (enabled: boolean) => (enabled ? colors.conferenceCallEnabledIcon : colors.conferenceCallDisabledIcon);
+	const handleColors = (enabled: boolean) => {
+		if (calling) {
+			if (enabled) {
+				return { button: colors.conferenceCallCallBackButton, icon: gray300 };
+			}
+			return { button: 'transparent', icon: gray100 };
+		}
+		if (enabled) {
+			return { button: colors.conferenceCallEnabledIconBackground, icon: colors.conferenceCallEnabledIcon };
+		}
+		return { button: 'transparent', icon: colors.conferenceCallDisabledIcon };
+	};
 
 	return (
 		<View style={style.actionSheetContainer}>
 			<View style={style.actionSheetHeader}>
-				<Text style={style.actionSheetHeaderTitle}>{i18n.t('Start_a_call')}</Text>
+				<Text style={style.actionSheetHeaderTitle}>{calling ? i18n.t('Calling') : i18n.t('Start_a_call')}</Text>
 				<View style={style.actionSheetHeaderButtons}>
 					<Touchable
 						onPress={() => setCam(!cam)}
-						style={[style.iconCallContainer, cam && style.enabledBackground, { marginRight: 6 }]}
+						style={[style.iconCallContainer, { backgroundColor: handleColors(cam).button }, { marginRight: 6 }]}
 						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={20} color={handleColor(cam)} />
+						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={20} color={handleColors(cam).icon} />
 					</Touchable>
 					<Touchable
 						onPress={() => setMic(!mic)}
-						style={[style.iconCallContainer, mic && style.enabledBackground]}
+						style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={20} color={handleColor(mic)} />
+						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={20} color={handleColors(mic).icon} />
 					</Touchable>
 				</View>
 			</View>
@@ -77,13 +89,17 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 				{cam ? <Camera style={CAM_SIZE} type={CameraType.front} /> : <AvatarContainer size={62} text={username} />}
 			</View>
 			<Button
+				backgroundColor={calling ? colors.conferenceCallCallBackButton : colors.actionTintColor}
+				color={calling ? gray300 : colors.conferenceCallEnabledIcon}
 				onPress={() => {
-					hideActionSheet();
-					setTimeout(() => {
+					if (!calling) {
+						setCalling(true);
 						initCall({ cam, mic });
-					}, 100);
+					} else {
+						setCalling(false);
+					}
 				}}
-				title={i18n.t('Call')}
+				title={calling ? i18n.t('Cancel') : i18n.t('Call')}
 			/>
 		</View>
 	);
