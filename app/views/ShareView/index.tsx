@@ -43,6 +43,8 @@ interface IShareViewState {
 	room: TSubscriptionModel;
 	thread: TThreadModel;
 	maxFileSize?: number;
+	chunkUploadEnabled?: boolean;
+	maxChunkSize?: number;
 	mediaAllowList?: string;
 }
 
@@ -58,6 +60,8 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
+	FileUpload_Chunked_Enabled?: boolean;
+	FileUpload_Chunked_MaxSize?: number;
 	replying?: boolean;
 	replyingMessage?: IMessage;
 }
@@ -96,6 +100,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
+			chunkUploadEnabled: this.isShareExtension ? this.serverInfo?.FileUpload_Chunked_Enabled : props.FileUpload_Chunked_Enabled,
+			maxChunkSize: this.isShareExtension ? this.serverInfo?.FileUpload_Chunked_MaxSize : props.FileUpload_Chunked_MaxSize,
 			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
 		};
 		this.getServerInfo();
@@ -261,7 +267,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								},
 								thread?.id,
 								server,
-								{ id: user.id, token: user.token }
+								{ id: user.id, token: user.token },
+								this.state.chunkUploadEnabled,
+								this.state.maxChunkSize
 							);
 						}
 						return Promise.resolve();

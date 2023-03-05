@@ -47,6 +47,8 @@ export function sendFileMessage(
 	tmid: string | undefined,
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
+	chunkUploadEnabled?: boolean,
+	chunkMaxSize?: number,
 	isForceTryAgain?: boolean
 ): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
@@ -85,68 +87,175 @@ export function sendFileMessage(
 				}
 			}
 
-			const formData: IFileUpload[] = [];
-			formData.push({
-				name: 'file',
-				type: fileInfo.type,
-				filename: fileInfo.name || 'fileMessage',
-				uri: fileInfo.path
-			});
-
-			if (fileInfo.description) {
-				formData.push({
-					name: 'description',
-					data: fileInfo.description
-				});
-			}
-
-			if (fileInfo.msg) {
-				formData.push({
-					name: 'msg',
-					data: fileInfo.msg
-				});
-			}
-
-			if (tmid) {
-				formData.push({
-					name: 'tmid',
-					data: tmid
-				});
-			}
+			const shouldChunk: boolean = chunkUploadEnabled === true && chunkMaxSize !== undefined && fileInfo.size > chunkMaxSize;
 
 			const headers = {
 				...RocketChatSettings.customHeaders,
-				'Content-Type': 'multipart/form-data',
 				'X-Auth-Token': token,
 				'X-User-Id': id
 			};
 
-			uploadQueue[uploadPath] = FileUpload.fetch('POST', uploadUrl, headers, formData);
+			let chunkSeekOffset = fileInfo.chunkState ? fileInfo.chunkState.offset : 0;
+			let chunkEndOffset = 0;
 
-			uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
-				try {
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.progress = Math.floor((loaded / total) * 100);
-						});
-					});
-				} catch (e) {
-					log(e);
+			const iterUpload = function () {
+				const formData: IFileUpload[] = [];
+
+				headers['Content-Type'] = shouldChunk ? 'application/octet-stream' : 'multipart/form-data';
+
+				if (shouldChunk) {
+					// @ts-ignore
+					const nextEndOffset = chunkSeekOffset + chunkMaxSize;
+					chunkEndOffset = nextEndOffset > fileInfo.size ? fileInfo.size : nextEndOffset;
+
+					headers['Content-Range'] = `bytes ${chunkSeekOffset}-${chunkEndOffset}/${fileInfo.size}`;
 				}
-			});
 
-			uploadQueue[uploadPath].then(async response => {
-				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
-					// If response is all good...
+				formData.push({
+					name: 'file',
+					type: fileInfo.type,
+					filename: fileInfo.name || 'fileMessage',
+					uri: fileInfo.path
+				});
+
+				if (shouldChunk) {
+					formData[0].chunkStartOffset = chunkSeekOffset;
+					formData[0].chunkEndOffset = chunkEndOffset;
+				}
+
+				if (fileInfo.description) {
+					formData.push({
+						name: 'description',
+						data: fileInfo.description
+					});
+				}
+
+				if (fileInfo.msg) {
+					formData.push({
+						name: 'msg',
+						data: fileInfo.msg
+					});
+				}
+
+				if (tmid) {
+					formData.push({
+						name: 'tmid',
+						data: tmid
+					});
+				}
+
+				uploadQueue[uploadPath] = FileUpload.fetch('POST', uploadUrl, headers, formData);
+
+				if (shouldChunk) {
+					uploadQueue[uploadPath].uploadProgress(async (loaded: number) => {
+						try {
+							await db.write(async () => {
+								await uploadRecord.update(u => {
+									u.progress = Math.floor((chunkEndOffset + loaded / fileInfo.size) * 100);
+								});
+							});
+						} catch (e) {
+							log(e);
+						}
+					});
+
+					uploadQueue[uploadPath].then(async response => {
+						if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
+							const remainingSize = fileInfo.size - chunkEndOffset;
+
+							if (remainingSize === 0) {
+								try {
+									await db.write(async () => {
+										await uploadRecord.destroyPermanently();
+									});
+									resolve(response);
+								} catch (e) {
+									log(e);
+								}
+							}
+
+							chunkSeekOffset = chunkEndOffset;
+							iterUpload();
+						} else {
+							try {
+								await db.write(async () => {
+									await uploadRecord.update(u => {
+										u.error = true;
+										// @ts-ignore
+										u.chunkState = { offset: chunkSeekOffset, blocSize: chunkMaxSize };
+									});
+								});
+							} catch (e) {
+								log(e);
+							}
+							try {
+								reject(response);
+							} catch (e) {
+								reject(e);
+							}
+						}
+					});
+
+					uploadQueue[uploadPath].catch(async error => {
+						try {
+							await db.write(async () => {
+								await uploadRecord.update(u => {
+									u.error = true;
+									// @ts-ignore
+									u.chunkState = { offset: chunkSeekOffset, blocSize: chunkMaxSize };
+								});
+							});
+						} catch (e) {
+							log(e);
+						}
+						reject(error);
+					});
+
+					return;
+				}
+
+				uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
 					try {
 						await db.write(async () => {
-							await uploadRecord.destroyPermanently();
+							await uploadRecord.update(u => {
+								u.progress = Math.floor((loaded / total) * 100);
+							});
 						});
-						resolve(response);
 					} catch (e) {
 						log(e);
 					}
-				} else {
+				});
+
+				uploadQueue[uploadPath].then(async response => {
+					if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
+						// If response is all good...
+						try {
+							await db.write(async () => {
+								await uploadRecord.destroyPermanently();
+							});
+							resolve(response);
+						} catch (e) {
+							log(e);
+						}
+					} else {
+						try {
+							await db.write(async () => {
+								await uploadRecord.update(u => {
+									u.error = true;
+								});
+							});
+						} catch (e) {
+							log(e);
+						}
+						try {
+							reject(response);
+						} catch (e) {
+							reject(e);
+						}
+					}
+				});
+
+				uploadQueue[uploadPath].catch(async error => {
 					try {
 						await db.write(async () => {
 							await uploadRecord.update(u => {
@@ -156,26 +265,11 @@ export function sendFileMessage(
 					} catch (e) {
 						log(e);
 					}
-					try {
-						reject(response);
-					} catch (e) {
-						reject(e);
-					}
-				}
-			});
+					reject(error);
+				});
+			};
 
-			uploadQueue[uploadPath].catch(async error => {
-				try {
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.error = true;
-						});
-					});
-				} catch (e) {
-					log(e);
-				}
-				reject(error);
-			});
+			iterUpload();
 		} catch (e) {
 			log(e);
 		}

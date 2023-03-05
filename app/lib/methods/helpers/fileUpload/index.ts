@@ -11,7 +11,9 @@ class FileUpload {
 					name: item.name,
 					type: item.type,
 					filename: item.filename,
-					data: RNFetchBlob.wrap(decodeURI(item.uri))
+					data: RNFetchBlob.wrap(
+						item.chunkStartOffset ? decodeURI(item.uri).slice(item.chunkStartOffset, item.chunkEndOffset) : decodeURI(item.uri)
+					)
 				};
 			}
 			return item;

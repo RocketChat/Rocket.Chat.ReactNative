@@ -8,6 +8,8 @@ export interface IServer {
 	useRealName: boolean;
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
+	FileUpload_Chunked_Enabled: boolean;
+	FileUpload_Chunked_MaxSize: number;
 	roomsUpdatedAt: Date | null;
 	version: string;
 	lastLocalAuthenticatedSession: Date;

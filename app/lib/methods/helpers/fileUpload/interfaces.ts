@@ -4,4 +4,6 @@ export interface IFileUpload {
 	type?: string;
 	filename?: string;
 	data?: any;
+	chunkStartOffset?: number;
+	chunkEndOffset?: number;
 }
