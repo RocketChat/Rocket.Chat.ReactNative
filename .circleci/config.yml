@@ -449,7 +449,7 @@ jobs:
       - upload-to-google-play-beta:
           official: true
 
-  android-build-e2e:
+  e2e-build-android:
     <<: *defaults
     executor:
       name: android/android-machine
@@ -496,7 +496,7 @@ jobs:
           paths:
             - android/app/build/outputs/apk/
 
-  android-test-e2e:
+  e2e-test-android:
     <<: *defaults
     executor:
       name: android/android-machine
@@ -560,7 +560,7 @@ jobs:
       - upload-to-testflight:
           official: true
 
-  ios-build-e2e:
+  e2e-build-ios:
     executor: mac-env
     steps:
       - checkout
@@ -589,7 +589,7 @@ jobs:
           paths:
             - ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
   
-  ios-test-e2e:
+  e2e-test-ios:
     executor: mac-env
     parallelism: 5
     steps:
@@ -627,6 +627,22 @@ workflows:
     jobs:
       - lint-testunit
 
+      # E2E tests
+      - e2e-hold:
+          type: approval
+      - e2e-build-ios:
+          requires:
+            - e2e-hold
+      - e2e-test-ios:
+          requires:
+            - e2e-build-ios
+      - e2e-build-android:
+          requires:
+            - e2e-hold
+      - e2e-test-android:
+          requires:
+            - e2e-build-android
+
       # iOS Experimental
       - ios-hold-build-experimental:
           type: approval
@@ -638,16 +654,6 @@ workflows:
       - ios-testflight-experimental:
           requires:
             - ios-build-experimental
-
-      - ios-build-e2e
-      - ios-test-e2e:
-          requires:
-            - ios-build-e2e
-      
-      - android-build-e2e
-      - android-test-e2e:
-          requires:
-            - android-build-e2e
 
       # iOS Official
       - ios-hold-build-official:
