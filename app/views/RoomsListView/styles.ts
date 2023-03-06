@@ -7,7 +7,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	list: {
-		width: '100%'
+		width: '100%',
+		flex: 1
 	},
 	dropdownContainerHeader: {
 		height: 41,

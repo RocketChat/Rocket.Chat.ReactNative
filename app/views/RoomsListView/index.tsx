@@ -1026,7 +1026,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<KeyboardView contentContainerStyle={styles.container}>
+				<KeyboardView>
 					<StatusBar />
 					{this.renderHeader()}
 					{this.renderScroll()}
