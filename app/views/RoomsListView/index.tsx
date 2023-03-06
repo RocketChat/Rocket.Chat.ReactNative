@@ -11,6 +11,7 @@ import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
+import KeyboardView from '../../containers/KeyboardView';
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
@@ -1025,12 +1026,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar />
-				{this.renderHeader()}
-				{this.renderScroll()}
-				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
-				{/* @ts-ignore*/}
-				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
+				<KeyboardView contentContainerStyle={styles.container}>
+					<StatusBar />
+					{this.renderHeader()}
+					{this.renderScroll()}
+					{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
+					{/* @ts-ignore*/}
+					{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
+				</KeyboardView>
 			</SafeAreaView>
 		);
 	};
