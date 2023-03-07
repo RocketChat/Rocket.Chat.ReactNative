@@ -1,4 +1,4 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { TTextMatcher, platformTypes } from '../../helpers/app';
 import data from '../../data';
@@ -6,7 +6,7 @@ import data from '../../data';
 describe('Onboarding', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	beforeAll(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await waitFor(element(by.id('new-server-view')))

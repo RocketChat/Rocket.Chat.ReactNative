@@ -1,23 +1,27 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import {
 	navigateToLogin,
 	login,
 	sleep,
 	tapBack,
-	mockMessage,
 	searchRoom,
 	logout,
 	platformTypes,
-	TTextMatcher
+	TTextMatcher,
+	tapAndWaitFor,
+	expectValidRegisterOrRetry,
+	mockMessage
 } from '../../helpers/app';
 import data from '../../data';
-
-const testuser = data.users.regular;
-const otheruser = data.users.alternate;
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 const checkServer = async (server: string) => {
 	const label = `Connected to ${server}`;
+	await waitFor(element(by.id('rooms-list-view-sidebar')))
+		.toBeVisible()
+		.withTimeout(10000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
@@ -69,16 +73,22 @@ async function navigateSecurityPrivacy() {
 }
 
 describe('E2E Encryption', () => {
-	const room = `encrypted${data.random}`;
+	const room = `encrypted${random()}`;
+	let user: ITestUser;
+	let otherUser: ITestUser;
+	let mockedMessageText: string;
 	const newPassword = 'abc';
+
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 
-	before(async () => {
+	beforeAll(async () => {
+		user = await createRandomUser();
+		otherUser = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Banner', () => {
@@ -106,6 +116,7 @@ describe('E2E Encryption', () => {
 
 			it('should tap "Save my password" and close modal', async () => {
 				await element(by.id('e2e-save-password-view-saved-password').and(by.label('I Saved My E2E Password'))).tap();
+				await sleep(300); // wait for animation
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
@@ -115,17 +126,20 @@ describe('E2E Encryption', () => {
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
 					.toBeVisible()
+					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('select-users-view-search')).replaceText(otheruser.username);
-				await waitFor(element(by.id(`select-users-view-item-${otheruser.username}`)))
+				await element(by.id('select-users-view-search')).replaceText(otherUser.username);
+				await waitFor(element(by.id(`select-users-view-item-${otherUser.username}`)))
 					.toBeVisible()
 					.withTimeout(60000);
-				await element(by.id(`select-users-view-item-${otheruser.username}`)).tap();
-				await waitFor(element(by.id(`selected-user-${otheruser.username}`)))
+				await element(by.id(`select-users-view-item-${otherUser.username}`)).tap();
+				await waitFor(element(by.id(`selected-user-${otherUser.username}`)))
 					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.id('selected-users-view-submit')).tap();
@@ -133,6 +147,7 @@ describe('E2E Encryption', () => {
 					.toExist()
 					.withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await element(by.id('create-channel-encrypted')).longPress();
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view')))
@@ -144,7 +159,7 @@ describe('E2E Encryption', () => {
 			});
 
 			it('should send message and be able to read it', async () => {
-				await mockMessage('message');
+				mockedMessageText = await mockMessage('message');
 				await tapBack();
 			});
 		});
@@ -201,7 +216,7 @@ describe('E2E Encryption', () => {
 
 		describe('Change password', () => {
 			it('should change password', async () => {
-				await element(by.id('e2e-encryption-security-view-password')).typeText(newPassword);
+				await element(by.id('e2e-encryption-security-view-password')).replaceText(newPassword);
 				await element(by.id('e2e-encryption-security-view-change-password')).tap();
 				await waitFor(element(by[textMatcher]('Are you sure?')))
 					.toExist()
@@ -232,7 +247,7 @@ describe('E2E Encryption', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(room);
-				await waitFor(element(by[textMatcher](`${data.random}message`)).atIndex(0))
+				await waitFor(element(by[textMatcher](mockedMessageText)).atIndex(0))
 					.toExist()
 					.withTimeout(2000);
 			});
@@ -244,9 +259,9 @@ describe('E2E Encryption', () => {
 					.withTimeout(2000);
 				await logout();
 				await navigateToLogin();
-				await login(testuser.username, testuser.password);
+				await login(user.username, user.password);
 				await navigateToRoom(room);
-				await waitFor(element(by[textMatcher](`${data.random}message`)).atIndex(0))
+				await waitFor(element(by[textMatcher](mockedMessageText)).atIndex(0))
 					.not.toExist()
 					.withTimeout(2000);
 				await expect(element(by.label('Encrypted message')).atIndex(0)).toExist();
@@ -261,35 +276,27 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('listheader-encryption')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('listheader-encryption')).tap();
-				await waitFor(element(by.id('e2e-enter-your-password-view')))
-					.toBeVisible()
-					.withTimeout(2000);
-				await element(by.id('e2e-enter-your-password-view-password')).typeText(newPassword);
+				await tapAndWaitFor(element(by.id('listheader-encryption')), element(by.id('e2e-enter-your-password-view')), 2000);
+				await element(by.id('e2e-enter-your-password-view-password')).replaceText(newPassword);
 				await element(by.id('e2e-enter-your-password-view-confirm')).tap();
 				await waitFor(element(by.id('listheader-encryption')))
 					.not.toExist()
 					.withTimeout(10000);
 				await navigateToRoom(room);
-				await waitFor(element(by[textMatcher](`${data.random}message`)).atIndex(0))
+				await waitFor(element(by[textMatcher](mockedMessageText)).atIndex(0))
 					.toExist()
 					.withTimeout(2000);
 			});
 		});
 
 		describe('Reset E2E key', () => {
-			before(async () => {
+			beforeAll(async () => {
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
 			});
 			it('should reset e2e key', async () => {
-				// FIXME: too flaky on Android for now... let's fix it later
-				// It's also flaky on iOS, but it works from time to time
-				if (device.getPlatform() === 'android') {
-					return;
-				}
 				await navigateSecurityPrivacy();
 				await element(by.id('security-privacy-view-e2e-encryption')).tap();
 				await waitFor(element(by.id('e2e-encryption-security-view')))
@@ -316,7 +323,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('login-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await login(testuser.username, testuser.password);
+				await login(user.username, user.password);
 				// TODO: assert 'Save Your Encryption Password'
 				await waitFor(element(by.id('listheader-encryption')))
 					.toBeVisible()
@@ -326,14 +333,6 @@ describe('E2E Encryption', () => {
 	});
 
 	describe('Persist Banner', () => {
-		before(async () => {
-			// reinstall the app because of one flaky test above
-			if (device.getPlatform() === 'android') {
-				await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-				await navigateToLogin();
-				await login(testuser.username, testuser.password);
-			}
-		});
 		it('check save banner', async () => {
 			await checkServer(data.server);
 			await checkBanner();
@@ -351,7 +350,7 @@ describe('E2E Encryption', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(60000);
-			await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}`);
+			await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
 			await element(by.id('new-server-view-input')).tapReturnKey();
 			await waitFor(element(by.id('workspace-view')))
 				.toBeVisible()
@@ -362,14 +361,13 @@ describe('E2E Encryption', () => {
 				.withTimeout(2000);
 
 			// Register new user
-			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
-			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.id('rooms-list-view')))
-				.toBeVisible()
-				.withTimeout(60000);
+			const randomUser = data.randomUser();
+			await element(by.id('register-view-name')).replaceText(randomUser.username);
+			await element(by.id('register-view-username')).replaceText(randomUser.username);
+			await element(by.id('register-view-email')).replaceText(randomUser.email);
+			await element(by.id('register-view-password')).replaceText(randomUser.password);
+			await element(by.id('register-view-password')).tapReturnKey();
+			await expectValidRegisterOrRetry(device.getPlatform());
 
 			await checkServer(data.alternateServer);
 		});

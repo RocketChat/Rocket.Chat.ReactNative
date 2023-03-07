@@ -1197,6 +1197,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
+			if (!jumpToMessageId) {
+				setTimeout(() => {
+					sendLoadingEvent({ visible: false });
+				}, 300);
+			}
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.tmid,
