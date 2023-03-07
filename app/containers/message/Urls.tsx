@@ -58,38 +58,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UrlImage = ({
-	image,
-	setImageLoadedState,
-	hasContent,
-	imageLoadedState
-}: {
-	image: string;
-	setImageLoadedState(value: TImageLoadedState): void;
-	hasContent: boolean;
-	imageLoadedState: TImageLoadedState;
-}) => {
-	const { baseUrl, user } = useContext(MessageContext);
-
-	if (!image) {
-		return null;
-	}
-
-	image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-
-	return (
-		<>
-			<FastImage
-				source={{ uri: image }}
-				style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
-				resizeMode={FastImage.resizeMode.cover}
-				onError={() => setImageLoadedState('error')}
-				onLoad={() => setImageLoadedState('done')}
-			/>
-		</>
-	);
-};
-
 const UrlContent = React.memo(
 	({ title, description, theme }: { title: string; description: string; theme: TSupportedThemes }) => (
 		<View style={styles.textContainer}>
@@ -124,6 +92,8 @@ type TImageLoadedState = 'loading' | 'done' | 'error';
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
 		const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!url || url?.ignoreParse || imageLoadedState === 'error') {
 			return null;
 		}
@@ -136,6 +106,11 @@ const Url = React.memo(
 		};
 
 		const hasContent = url.title || url.description;
+
+		let image = url.image || url.url;
+		if (image) {
+			image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+		}
 
 		return (
 			<Touchable
@@ -154,12 +129,15 @@ const Url = React.memo(
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<>
-					<UrlImage
-						setImageLoadedState={setImageLoadedState}
-						image={url.image || url.url}
-						hasContent={!!hasContent}
-						imageLoadedState={imageLoadedState}
-					/>
+					{image ? (
+						<FastImage
+							source={{ uri: image }}
+							style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
+							resizeMode={FastImage.resizeMode.cover}
+							onError={() => setImageLoadedState('error')}
+							onLoad={() => setImageLoadedState('done')}
+						/>
+					) : null}
 					{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
 				</>
 			</Touchable>
@@ -182,7 +160,6 @@ const Urls = React.memo(
 	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls)
 );
 
-UrlImage.displayName = 'MessageUrlImage';
 UrlContent.displayName = 'MessageUrlContent';
 Url.displayName = 'MessageUrl';
 Urls.displayName = 'MessageUrls';
