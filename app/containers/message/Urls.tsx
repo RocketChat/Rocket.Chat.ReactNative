@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { StyleProp, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import FastImage, { ImageStyle } from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 		zIndex: 2,
 		position: 'absolute'
 	},
-	loadingState: {
+	loading: {
 		height: 0,
 		borderWidth: 0
 	}
@@ -66,11 +66,13 @@ const UrlImage = React.memo(
 	({
 		image,
 		setImageLoadedState,
-		style
+		hasContent,
+		imageLoadedState
 	}: {
 		image: string;
 		setImageLoadedState(value: TImageLoadedState): void;
-		style: StyleProp<ImageStyle>;
+		hasContent: boolean;
+		imageLoadedState: TImageLoadedState;
 	}) => {
 		const { baseUrl, user } = useContext(MessageContext);
 
@@ -84,7 +86,7 @@ const UrlImage = React.memo(
 			<>
 				<FastImage
 					source={{ uri: image }}
-					style={[styles.image, style]}
+					style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
 					resizeMode={FastImage.resizeMode.cover}
 					onError={() => setImageLoadedState('error')}
 					onLoad={() => setImageLoadedState('done')}
@@ -92,7 +94,7 @@ const UrlImage = React.memo(
 			</>
 		);
 	},
-	(prevProps, nextProps) => prevProps.image === nextProps.image && dequal(prevProps.style, nextProps.style)
+	(prevProps, nextProps) => prevProps.image === nextProps.image && prevProps.imageLoadedState === nextProps.imageLoadedState
 );
 
 const UrlContent = React.memo(
@@ -154,7 +156,7 @@ const Url = React.memo(
 						backgroundColor: themes[theme].chatComponentBackground,
 						borderColor: themes[theme].borderColor
 					},
-					imageLoadedState === 'loading' && styles.loadingState
+					imageLoadedState === 'loading' && styles.loading
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
@@ -162,7 +164,8 @@ const Url = React.memo(
 					<UrlImage
 						setImageLoadedState={setImageLoadedState}
 						image={url.image || url.url}
-						style={[!hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loadingState]}
+						hasContent={!!hasContent}
+						imageLoadedState={imageLoadedState}
 					/>
 					{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
 				</>
