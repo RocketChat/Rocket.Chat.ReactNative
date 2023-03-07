@@ -243,7 +243,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			title: item.name as string,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `directory-view-item-${item.name}`.toLowerCase(),
+			testID: `directory-view-item-${item.name}`,
 			style,
 			user,
 			theme,

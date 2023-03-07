@@ -16,7 +16,7 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"types": ["node", "detox", "mocha"]
+		"types": ["node", "detox", "jest"]
 	},
 	"include": ["./**/*.ts"],
 	"exclude": ["../node_modules"]
