@@ -53,7 +53,7 @@ const Content = React.memo(
 			content = (
 				<Markdown
 					msg={props.msg}
-					md={props.md}
+					md={props.type !== 'e2e' ? props.md : undefined}
 					getCustomEmoji={props.getCustomEmoji}
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
