@@ -84,3 +84,5 @@ export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DEC
 
 export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
 export const ROLES = createRequestTypes('ROLES', ['SET', 'UPDATE', 'REMOVE']);
+export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', ['HANDLE_INCOMING_WEBSOCKET_MESSAGES']);
+
