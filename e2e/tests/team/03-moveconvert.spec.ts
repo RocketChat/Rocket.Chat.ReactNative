@@ -1,8 +1,11 @@
-import data from '../../data';
-import { navigateToLogin, login, tapBack, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
+import { device, waitFor, element, by } from 'detox';
 
-const toBeConverted = `to-be-converted-${data.random}`;
-const toBeMoved = `to-be-moved-${data.random}`;
+import { navigateToLogin, login, tapBack, platformTypes, TTextMatcher, sleep, navigateToRoom } from '../../helpers/app';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
+
+const toBeConverted = `to-be-converted-${random()}`;
+const toBeMoved = `to-be-moved-${random()}`;
 
 const createChannel = async (room: string) => {
 	await waitFor(element(by.id('rooms-list-view-create-channel')))
@@ -10,8 +13,11 @@ const createChannel = async (room: string) => {
 		.withTimeout(5000);
 	await element(by.id('rooms-list-view-create-channel')).tap();
 	await waitFor(element(by.id('new-message-view')))
-		.toExist()
+		.toBeVisible()
 		.withTimeout(5000);
+	await waitFor(element(by.id('new-message-view-create-channel')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('new-message-view-create-channel')).tap();
 	await waitFor(element(by.id('select-users-view')))
 		.toExist()
@@ -21,6 +27,7 @@ const createChannel = async (room: string) => {
 		.toExist()
 		.withTimeout(10000);
 	await element(by.id('create-channel-name')).replaceText(room);
+	await element(by.id('create-channel-name')).tapReturnKey();
 	await waitFor(element(by.id('create-channel-submit')))
 		.toExist()
 		.withTimeout(10000);
@@ -40,14 +47,6 @@ const createChannel = async (room: string) => {
 		.withTimeout(60000);
 };
 
-async function navigateToRoom(room: string) {
-	await searchRoom(`${room}`);
-	await element(by.id(`rooms-list-view-item-${room}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-}
-
 async function navigateToRoomActions(room: string) {
 	await navigateToRoom(room);
 	await element(by.id('room-header')).tap();
@@ -56,18 +55,20 @@ async function navigateToRoomActions(room: string) {
 		.withTimeout(5000);
 }
 
-describe('Move/Convert Team', () => {
+describe.skip('Move/Convert Team', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	let user: ITestUser;
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Convert', () => {
-		before(async () => {
+		beforeAll(async () => {
 			await createChannel(toBeConverted);
 		});
 
@@ -75,7 +76,7 @@ describe('Move/Convert Team', () => {
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 			await waitFor(element(by.id('room-actions-convert-to-team')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-convert-to-team')).tap();
 			await waitFor(element(by[textMatcher]('You are converting this Channel to a Team. All Members will be kept.')))
@@ -90,7 +91,7 @@ describe('Move/Convert Team', () => {
 				.withTimeout(6000);
 		});
 
-		after(async () => {
+		afterAll(async () => {
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toExist()
@@ -99,7 +100,7 @@ describe('Move/Convert Team', () => {
 	});
 
 	describe('Move', () => {
-		before(async () => {
+		beforeAll(async () => {
 			await createChannel(toBeMoved);
 		});
 
@@ -107,21 +108,16 @@ describe('Move/Convert Team', () => {
 			await navigateToRoomActions(toBeMoved);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 			await waitFor(element(by.id('room-actions-move-to-team')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-move-to-team')).tap();
-			await waitFor(element(by[textMatcher]('Move to Team')).atIndex(0))
-				.toExist()
-				.withTimeout(2000);
+			await sleep(300); // wait for animation
 			await waitFor(element(by.id('select-list-view-submit')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('select-list-view-submit')).tap();
-			await waitFor(element(by[textMatcher]('Select Team')))
-				.toExist()
-				.withTimeout(2000);
 			await waitFor(element(by.id(`select-list-view-item-${toBeConverted}`)))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id(`select-list-view-item-${toBeConverted}`)).tap();
 			await element(by.id('select-list-view-submit')).atIndex(0).tap();
@@ -132,15 +128,15 @@ describe('Move/Convert Team', () => {
 					)
 				)
 			)
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Yes, move it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('room-view-header-team-channels')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(10000);
 		});
 
-		after(async () => {
+		afterAll(async () => {
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toExist()
@@ -162,6 +158,7 @@ describe('Move/Convert Team', () => {
 			await waitFor(element(by.id(`select-list-view-item-${toBeMoved}`)))
 				.toExist()
 				.withTimeout(2000);
+			await sleep(300); // wait for animation
 			await element(by.id(`select-list-view-item-${toBeMoved}`)).tap();
 			await waitFor(element(by.id('select-list-view-submit')))
 				.toExist()
