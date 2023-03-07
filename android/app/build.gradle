@@ -250,6 +250,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
+            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
             signingConfig signingConfigs.release
             if (!isFoss) {
                 firebaseCrashlytics {
@@ -268,6 +269,11 @@ android {
     //     pickFirst '**/x86_64/libc++_shared.so'
     // }
 
+    // FIXME: Remove when we update RN
+    packagingOptions {
+        pickFirst '**/*.so'
+    }
+
     // applicationVariants are e.g. debug, release
 
     flavorDimensions "app", "type"
@@ -277,10 +283,6 @@ android {
             buildConfigField "boolean", "IS_OFFICIAL", "true"
         }
         experimental {
-            dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "false"
-        }
-        e2e {
             dimension = "app"
             buildConfigField "boolean", "IS_OFFICIAL", "false"
         }
@@ -309,16 +311,6 @@ android {
         }
         officialPlayRelease {
             java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        e2ePlayDebug {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            res.srcDirs = ['src/experimental/res']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        e2ePlayRelease {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            res.srcDirs = ['src/experimental/res']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }
@@ -385,8 +377,9 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
     implementation "com.tencent:mmkv-static:1.2.10"
-    androidTestImplementation('com.wix:detox:+') { transitive = true }
-    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.wix:detox:+')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.facebook.soloader:soloader:0.10.4'
 }
 
 if (isNewArchitectureEnabled()) {

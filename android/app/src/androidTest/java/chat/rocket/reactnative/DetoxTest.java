@@ -18,7 +18,7 @@ public class DetoxTest {
     @Rule
     // Replace 'MainActivity' with the value of android:name entry in 
     // <activity> in AndroidManifest.xml
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, false, false);
+    public ActivityTestRule<chat.rocket.reactnative.MainActivity> mActivityRule = new ActivityTestRule<>(chat.rocket.reactnative.MainActivity.class, false, false);
 
     @Test
     public void runDetoxTests() {
