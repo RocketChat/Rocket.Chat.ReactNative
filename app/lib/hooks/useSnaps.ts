@@ -1,4 +1,4 @@
-import { useDimensions } from '@react-native-community/hooks';
+import { useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Not sure if it's worth adding this here in the context of the actionSheet
@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
  */
 export const useSnaps = (snaps: number[]): string[] => {
 	const insets = useSafeAreaInsets();
-	const { screen } = useDimensions();
+	const { height, scale } = useWindowDimensions();
 	const percentage = insets.bottom + insets.top > 75 ? 110 : 100;
-	return snaps.map(snap => `${((percentage * snap) / (screen.height * screen.scale)).toFixed(2)}%`);
+	return snaps.map(snap => `${((percentage * snap) / (height * scale)).toFixed(2)}%`);
 };
