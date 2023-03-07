@@ -52,50 +52,43 @@ const styles = StyleSheet.create({
 	imageWithoutContent: {
 		borderRadius: 4
 	},
-	activityPosition: {
-		zIndex: 2,
-		position: 'absolute'
-	},
 	loading: {
 		height: 0,
 		borderWidth: 0
 	}
 });
 
-const UrlImage = React.memo(
-	({
-		image,
-		setImageLoadedState,
-		hasContent,
-		imageLoadedState
-	}: {
-		image: string;
-		setImageLoadedState(value: TImageLoadedState): void;
-		hasContent: boolean;
-		imageLoadedState: TImageLoadedState;
-	}) => {
-		const { baseUrl, user } = useContext(MessageContext);
+const UrlImage = ({
+	image,
+	setImageLoadedState,
+	hasContent,
+	imageLoadedState
+}: {
+	image: string;
+	setImageLoadedState(value: TImageLoadedState): void;
+	hasContent: boolean;
+	imageLoadedState: TImageLoadedState;
+}) => {
+	const { baseUrl, user } = useContext(MessageContext);
 
-		if (!image) {
-			return null;
-		}
+	if (!image) {
+		return null;
+	}
 
-		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+	image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 
-		return (
-			<>
-				<FastImage
-					source={{ uri: image }}
-					style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
-					resizeMode={FastImage.resizeMode.cover}
-					onError={() => setImageLoadedState('error')}
-					onLoad={() => setImageLoadedState('done')}
-				/>
-			</>
-		);
-	},
-	(prevProps, nextProps) => prevProps.image === nextProps.image && prevProps.imageLoadedState === nextProps.imageLoadedState
-);
+	return (
+		<>
+			<FastImage
+				source={{ uri: image }}
+				style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
+				resizeMode={FastImage.resizeMode.cover}
+				onError={() => setImageLoadedState('error')}
+				onLoad={() => setImageLoadedState('done')}
+			/>
+		</>
+	);
+};
 
 const UrlContent = React.memo(
 	({ title, description, theme }: { title: string; description: string; theme: TSupportedThemes }) => (
