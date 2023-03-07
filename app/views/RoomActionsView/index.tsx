@@ -85,7 +85,7 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 
 interface IRoomActionsViewState {
 	room: TSubscriptionModel;
-	membersCount: number;
+	membersCount?: number;
 	member: Partial<IUser>;
 	joined: boolean;
 	canViewMembers: boolean;
@@ -152,7 +152,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
-					this.setState({ room: changes });
+					this.setState({ room: changes, membersCount: changes.usersCount });
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
@@ -1050,7 +1050,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							<>
 								<List.Item
 									title='Members'
-									subtitle={membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
+									subtitle={membersCount && membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
 									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room, joined: this.joined } })}
 									testID='room-actions-members'
 									left={() => <List.Icon name='team' />}
