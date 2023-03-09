@@ -1,48 +1,58 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
-import { TTextMatcher, navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } from '../../helpers/app';
-import data from '../../data';
-
-const channel = data.groups.private.name;
-
-const navigateToRoom = async () => {
-	await searchRoom(channel);
-	await element(by.id(`rooms-list-view-item-${channel}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-};
+import {
+	TTextMatcher,
+	navigateToLogin,
+	login,
+	tapBack,
+	navigateToRoom,
+	platformTypes,
+	mockMessage,
+	sleep,
+	checkRoomTitle
+} from '../../helpers/app';
+import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 describe('Discussion', () => {
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	let user: ITestUser;
+	let room: string;
+	const discussionFromNewMessage = `${random()} Discussion NewMessageView`;
+	const discussionFromMessagebox = `${random()} Discussion Messagebox actions`;
+	let discussionFromActionSheet: string;
+	beforeAll(async () => {
+		user = await createRandomUser();
+		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	it('should create discussion from NewMessageView', async () => {
-		const discussionName = `${data.random} Discussion NewMessageView`;
 		await waitFor(element(by.id('rooms-list-view-create-channel')))
 			.toExist()
 			.withTimeout(2000);
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view')))
-			.toExist()
+			.toBeVisible()
 			.withTimeout(2000);
+		await waitFor(element(by.id('new-message-view-create-discussion')))
+			.toBeVisible()
+			.withTimeout(5000);
 		await element(by[textMatcher]('Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
 		await element(by[textMatcher]('Select a Channel...')).tap();
-		await element(by.id('multi-select-search')).replaceText(`${channel}`);
-		await waitFor(element(by.id(`multi-select-item-${channel}`)))
+		await element(by.id('multi-select-search')).replaceText(`${room}`);
+		await waitFor(element(by.id(`multi-select-item-${room}`)))
 			.toExist()
 			.withTimeout(10000);
-		await element(by.id(`multi-select-item-${channel}`)).tap();
-		await element(by.id('multi-select-discussion-name')).replaceText(discussionName);
+		await element(by.id(`multi-select-item-${room}`)).tap();
+		await element(by.id('multi-select-discussion-name')).replaceText(discussionFromNewMessage);
 		await waitFor(element(by.id('create-discussion-submit')))
 			.toExist()
 			.withTimeout(10000);
@@ -50,27 +60,27 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('room-view')))
 			.toExist()
 			.withTimeout(10000);
-		await waitFor(element(by.id(`room-view-title-${discussionName}`)))
+		await waitFor(element(by.id(`room-view-title-${discussionFromNewMessage}`)))
 			.toExist()
 			.withTimeout(5000);
 		await tapBack();
-		await waitFor(element(by.id(`rooms-list-view-item-${discussionName}`)))
+		await waitFor(element(by.id(`rooms-list-view-item-${discussionFromNewMessage}`)))
 			.toExist()
 			.withTimeout(5000);
 	});
 
-	it('should create discussion from action button', async () => {
-		const discussionName = `${data.random} Discussion Action Button`;
-		await navigateToRoom();
+	it('should create discussion from Messagebox Actions', async () => {
+		await navigateToRoom(room);
 		await element(by.id('messagebox-actions')).tap();
+		await sleep(300); // wait for animation
 		await waitFor(element(by.id('action-sheet')))
-			.toExist()
+			.toBeVisible()
 			.withTimeout(2000);
 		await element(by[textMatcher]('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(2000);
-		await element(by.id('multi-select-discussion-name')).replaceText(discussionName);
+		await element(by.id('multi-select-discussion-name')).replaceText(discussionFromMessagebox);
 		await waitFor(element(by.id('create-discussion-submit')))
 			.toExist()
 			.withTimeout(10000);
@@ -78,7 +88,7 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('room-view')))
 			.toExist()
 			.withTimeout(10000);
-		await waitFor(element(by.id(`room-view-title-${discussionName}`)))
+		await waitFor(element(by.id(`room-view-title-${discussionFromMessagebox}`)))
 			.toExist()
 			.withTimeout(5000);
 	});
@@ -88,26 +98,24 @@ describe('Discussion', () => {
 			await waitFor(element(by.id('messagebox')))
 				.toBeVisible()
 				.withTimeout(60000);
-			await mockMessage('message');
+			discussionFromActionSheet = await mockMessage('message');
 		});
 
 		it('should create discussion', async () => {
-			const discussionName = `${data.random}message`;
-			await element(by[textMatcher](discussionName)).atIndex(0).longPress();
+			await element(by[textMatcher](discussionFromActionSheet)).atIndex(0).tap();
+			await element(by[textMatcher](discussionFromActionSheet)).atIndex(0).longPress();
+			await sleep(1000); // wait for animation
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Start a Discussion')).atIndex(0).tap();
+			await sleep(1000); // wait for animation
 			await waitFor(element(by.id('create-discussion-view')))
-				.toExist()
+				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('create-discussion-submit')).tap();
-			await waitFor(element(by.id('room-view')))
-				.toExist()
-				.withTimeout(10000);
-			await waitFor(element(by.id(`room-view-title-${discussionName}`)))
-				.toExist()
-				.withTimeout(5000);
+			await sleep(1000); // wait for animation
+			await checkRoomTitle(discussionFromActionSheet);
 		});
 	});
 
@@ -180,24 +188,20 @@ describe('Discussion', () => {
 	});
 
 	describe('Open Discussion from DiscussionsView', () => {
-		const discussionName = `${data.random}message`;
 		it('should go back to main room', async () => {
 			await tapBack();
 			await waitFor(element(by.id('room-actions-view')))
 				.toBeVisible()
 				.withTimeout(5000);
 			await tapBack();
-			await waitFor(element(by.id(`room-view-title-${discussionName}`)))
+			await waitFor(element(by.id(`room-view-title-${discussionFromActionSheet}`)))
 				.toExist()
 				.withTimeout(5000);
 			await tapBack();
-			await navigateToRoom();
+			await navigateToRoom(room);
 		});
 
 		it('should navigate to DiscussionsView', async () => {
-			await waitFor(element(by.id(`room-view-title-${channel}`)))
-				.toExist()
-				.withTimeout(5000);
 			await waitFor(element(by.id('room-header')))
 				.toBeVisible()
 				.withTimeout(5000);
@@ -212,12 +216,11 @@ describe('Discussion', () => {
 		});
 
 		it('should navigate to discussion', async () => {
-			const discussionName = `${data.random} Discussion NewMessageView`;
-			await waitFor(element(by.label(discussionName)).atIndex(0))
+			await waitFor(element(by.label(discussionFromNewMessage)).atIndex(0))
 				.toExist()
 				.withTimeout(5000);
-			await element(by.label(discussionName)).atIndex(0).tap();
-			await waitFor(element(by.id(`room-view-title-${discussionName}`)))
+			await element(by.label(discussionFromNewMessage)).atIndex(0).tap();
+			await waitFor(element(by.id(`room-view-title-${discussionFromNewMessage}`)))
 				.toExist()
 				.withTimeout(5000);
 		});

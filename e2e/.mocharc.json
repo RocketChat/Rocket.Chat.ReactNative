@@ -1,8 +1,0 @@
-{
-	"timeout": 300000,
-	"recursive": true,
-	"bail": true,
-	"require": ["ts-node/register"],
-	"file": "e2e/tests/init.ts",
-	"extension": ["ts"]
-}

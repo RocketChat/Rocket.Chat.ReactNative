@@ -240,19 +240,8 @@ module.exports = {
 		},
 		{
 			files: ['e2e/**'],
-			globals: {
-				by: true,
-				detox: true,
-				device: true,
-				element: true,
-				waitFor: true
-			},
 			rules: {
-				'import/no-extraneous-dependencies': 0,
-				'no-await-in-loop': 0,
-				'no-restricted-syntax': 0,
-				// TODO: remove this rule when update Detox to 20 and test if the namespace Detox is available
-				'no-undef': 1
+				'no-await-in-loop': 0
 			}
 		}
 	]
