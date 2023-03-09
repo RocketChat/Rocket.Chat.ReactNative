@@ -14,19 +14,29 @@ interface ICallInfoRecord {
 	[key: string]: ICallInfo;
 }
 
-export const initialState: ICallInfoRecord = {};
+interface IVideoConf {
+	calls: ICallInfoRecord;
+	calling: boolean;
+}
 
-export default (state = initialState, action: TActionVideoConf): ICallInfoRecord => {
+export const initialState: IVideoConf = { calls: {}, calling: false };
+
+export default (state = initialState, action: TActionVideoConf): IVideoConf => {
 	switch (action.type) {
 		case VIDEO_CONF.SET:
 			return {
 				...state,
-				[action.payload.callId]: action.payload
+				calls: { ...state.calls, [action.payload.callId]: action.payload }
 			};
 		case VIDEO_CONF.REMOVE:
-			return Object.fromEntries(Object.entries(state).filter(([key]) => key !== action.payload.callId));
+			return {
+				...state,
+				calls: Object.fromEntries(Object.entries(state).filter(([key]) => key !== action.payload.callId))
+			};
 		case VIDEO_CONF.CLEAR:
 			return initialState;
+		case VIDEO_CONF.SET_CALLING:
+			return { ...state, calling: action.payload };
 		default:
 			return state;
 	}

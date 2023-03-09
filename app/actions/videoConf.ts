@@ -8,12 +8,18 @@ interface IHandleVideoConfIncomingWebsocketMessages extends Action {
 }
 
 export type TCallProps = { mic: boolean; cam: boolean; direct: boolean; roomId: string };
+type TInitCallAction = Action & { payload: TCallProps };
+type TSetCallingAction = Action & { payload: boolean };
 
 export interface IVideoConfGenericAction extends Action {
 	payload: ICallInfo;
 }
 
-export type TActionVideoConf = IHandleVideoConfIncomingWebsocketMessages & IVideoConfGenericAction & Action;
+export type TActionVideoConf = IHandleVideoConfIncomingWebsocketMessages &
+	IVideoConfGenericAction &
+	TSetCallingAction &
+	Action &
+	TInitCallAction;
 
 export function handleVideoConfIncomingWebsocketMessages(data: any): IHandleVideoConfIncomingWebsocketMessages {
 	return {
@@ -42,9 +48,16 @@ export function clearVideoConfCalls(): Action {
 	};
 }
 
-export function initVideoCall(payload: TCallProps): Action & { payload: TCallProps } {
+export function initVideoCall(payload: TCallProps): TInitCallAction {
 	return {
 		type: VIDEO_CONF.INIT_CALL,
+		payload
+	};
+}
+
+export function setCalling(payload: boolean): TSetCallingAction {
+	return {
+		type: VIDEO_CONF.SET_CALLING,
 		payload
 	};
 }
