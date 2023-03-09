@@ -19,6 +19,7 @@ const EmojiCategory = ({ onEmojiSelected, emojis, parentWidth }: IEmojiCategoryP
 	}
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
+	const marginLeft = EMOJI_BUTTON_SIZE * (((parentWidth / EMOJI_BUTTON_SIZE) % 1) / 2);
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 
@@ -33,7 +34,7 @@ const EmojiCategory = ({ onEmojiSelected, emojis, parentWidth }: IEmojiCategoryP
 			removeClippedSubviews
 			{...scrollPersistTaps}
 			keyboardDismissMode={'none'}
-			contentContainerStyle={{ alignItems: 'center' }}
+			contentContainerStyle={{ marginLeft }}
 		/>
 	);
 };
