@@ -1,29 +1,26 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { navigateToLogin, login, sleep, platformTypes, TTextMatcher } from '../../helpers/app';
-import data from '../../data';
-
-const profileChangeUser = data.users.profileChanges;
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 const scrollDown = 200;
 
 async function waitForToast() {
-	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(1000);
-	// await expect(element(by.id('toast'))).toBeVisible();
-	// await waitFor(element(by.id('toast'))).not.toBeNotVisible().withTimeout(1000);
-	// await expect(element(by.id('toast'))).not.toBeVisible();
 	await sleep(600);
 }
 
 describe('Profile screen', () => {
 	let scrollViewType: string;
 	let textMatcher: TTextMatcher;
+	let user: ITestUser;
 
-	before(async () => {
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ scrollViewType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(profileChangeUser.username, profileChangeUser.password);
+		await login(user.username, user.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view')))
 			.toBeVisible()
@@ -97,16 +94,19 @@ describe('Profile screen', () => {
 
 	describe('Usage', () => {
 		it('should change name and username', async () => {
-			await element(by.id('profile-view-name')).replaceText(`${profileChangeUser.username}new`);
-			await element(by.id('profile-view-username')).replaceText(`${profileChangeUser.username}new`);
-			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
+			await element(by.id('profile-view-name')).replaceText(`${user.username}new`);
+			await element(by.id('profile-view-username')).replaceText(`${user.username}new`);
+			await element(by.id('profile-view-list')).swipe('down');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});
 
 		it('should change email and password', async () => {
-			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${data.random}@rocket.chat`);
-			await element(by.id('profile-view-new-password')).replaceText(`${profileChangeUser.password}new`);
+			await waitFor(element(by.id('profile-view-email')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${random()}@rocket.chat`);
+			await element(by.id('profile-view-new-password')).replaceText(`${user.password}new`);
 			await waitFor(element(by.id('profile-view-submit')))
 				.toExist()
 				.withTimeout(2000);
@@ -114,7 +114,7 @@ describe('Profile screen', () => {
 			await waitFor(element(by.id('profile-view-enter-password-sheet')))
 				.toBeVisible()
 				.withTimeout(2000);
-			await element(by.id('profile-view-enter-password-sheet')).replaceText(`${profileChangeUser.password}`);
+			await element(by.id('profile-view-enter-password-sheet')).replaceText(`${user.password}`);
 			await element(by[textMatcher]('Save').withAncestor(by.id('action-sheet-content-with-input-and-submit')))
 				.atIndex(0)
 				.tap();

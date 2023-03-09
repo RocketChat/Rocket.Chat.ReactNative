@@ -1,35 +1,28 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
-import data from '../../data';
-import { navigateToLogin, login, searchRoom, sleep, platformTypes, TTextMatcher } from '../../helpers/app';
-import { sendMessage } from '../../helpers/data_setup';
-
-async function navigateToRoom(user: string) {
-	await searchRoom(`${user}`);
-	await element(by.id(`rooms-list-view-item-${user}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-}
+import { navigateToLogin, login, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
+import { createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
 
 describe('Mark as unread', () => {
-	const user = data.users.alternate.username;
+	let user: ITestUser;
+	let otherUser: ITestUser;
 	let textMatcher: TTextMatcher;
 
-	before(async () => {
+	beforeAll(async () => {
+		user = await createRandomUser();
+		otherUser = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
-		await navigateToRoom(user);
+		await login(user.username, user.password);
+		await navigateToRoom(otherUser.username);
 	});
 
 	describe('Usage', () => {
 		describe('Mark message as unread', () => {
 			it('should mark message as unread', async () => {
-				const message = `${data.random}message-mark-as-unread`;
-				const channelName = `@${data.users.regular.username}`;
-				await sendMessage(data.users.alternate, channelName, message);
+				const message = 'message-mark-as-unread';
+				await sendMessage(otherUser, `@${user.username}`, message);
 				await waitFor(element(by[textMatcher](message)).atIndex(0))
 					.toExist()
 					.withTimeout(30000);
@@ -43,7 +36,7 @@ describe('Mark as unread', () => {
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(5000);
-				await expect(element(by.id(`rooms-list-view-item-${data.users.alternate.username}`))).toExist();
+				await expect(element(by.id(`rooms-list-view-item-${otherUser.username}`))).toExist();
 			});
 		});
 	});

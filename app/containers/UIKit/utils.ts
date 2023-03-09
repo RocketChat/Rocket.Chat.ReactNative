@@ -2,7 +2,7 @@
 import { BlockContext } from '@rocket.chat/ui-kit';
 import React, { useContext, useState } from 'react';
 
-import { useVideoConf } from '../../lib/hooks/useVideoConf';
+import { videoConfJoin } from '../../lib/methods/videoConf';
 import { IText } from './interfaces';
 
 export const textParser = ([{ text }]: IText[]) => text;
@@ -40,7 +40,6 @@ export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUse
 	const { action, appId: appIdFromContext, viewId, state, language, errors, values = {} } = useContext(KitContext);
 	const { value = initialValue } = values[actionId] || {};
 	const [loading, setLoading] = useState(false);
-	const { joinCall } = useVideoConf();
 
 	const error = errors && actionId && errors[actionId];
 
@@ -58,7 +57,7 @@ export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUse
 				try {
 					if (appId === 'videoconf-core' && blockId) {
 						setLoading(false);
-						return joinCall(blockId);
+						return videoConfJoin(blockId);
 					}
 					await action({
 						blockId,
