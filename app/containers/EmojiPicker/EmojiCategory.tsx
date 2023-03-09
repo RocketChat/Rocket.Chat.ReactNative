@@ -19,6 +19,9 @@ const EmojiCategory = ({ onEmojiSelected, emojis, parentWidth }: IEmojiCategoryP
 	}
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
+	// The emojis are not aligned because the logic above does not close and there is space left.
+	// this logic here calculates how much space is left and divides it by two.
+	// thus making the spacing on the right and left symmetrical.
 	const marginLeft = EMOJI_BUTTON_SIZE * (((parentWidth / EMOJI_BUTTON_SIZE) % 1) / 2);
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
