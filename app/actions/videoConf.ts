@@ -7,7 +7,7 @@ interface IHandleVideoConfIncomingWebsocketMessages extends Action {
 	data: any;
 }
 
-export type TCallProps = { mic: boolean; cam: boolean; direct: boolean; roomId: string };
+export type TCallProps = { mic: boolean; cam: boolean; direct: boolean; rid: string; uid: string };
 type TInitCallAction = Action & { payload: TCallProps };
 type TSetCallingAction = Action & { payload: boolean };
 

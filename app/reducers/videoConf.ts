@@ -7,14 +7,14 @@ export interface ICallInfo {
 	callId: string;
 	rid: string;
 	uid: string;
-	type: TSupportedCallStatus;
+	action?: TSupportedCallStatus;
 }
 
 interface ICallInfoRecord {
 	[key: string]: ICallInfo;
 }
 
-interface IVideoConf {
+export interface IVideoConf {
 	calls: ICallInfoRecord;
 	calling: boolean;
 }
