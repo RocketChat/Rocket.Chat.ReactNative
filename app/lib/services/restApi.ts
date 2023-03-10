@@ -941,7 +941,9 @@ export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean
 
 export const videoConferenceGetCapabilities = () => sdk.get('video-conference.capabilities');
 
-export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId });
+export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId, allowRinging: true });
+
+export const videoConferenceCancel = (callId: string) => sdk.post('video-conference.cancel', { callId });
 
 export const saveUserProfileMethod = (
 	params: IProfileParams,
