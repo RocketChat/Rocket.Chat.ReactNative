@@ -2,7 +2,9 @@ import { Camera, CameraType } from 'expo-camera';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import { useDispatch } from 'react-redux';
 
+import { initVideoCall } from '../../../../actions/videoConf';
 import i18n from '../../../../i18n';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../../lib/hooks';
@@ -20,21 +22,23 @@ const CAM_SIZE = { height: 220, width: 148 };
 const gray300 = '#5f656e';
 const gray100 = '#CBCED1';
 
-export default function StartACallActionSheet({ rid, initCall }: { rid: string; initCall: Function }): React.ReactElement {
+export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
 	const style = useStyle();
 	const { colors } = useTheme();
-	const [user, setUser] = useState({ username: '', avatar: '', uid: '' });
+	const [room, setRoom] = useState({ roomName: '', avatar: '', uid: '', direct: false });
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
-	const [calling, setCalling] = useState(true);
+
 	const username = useAppSelector(state => state.login.user.username);
+	const calling = useAppSelector(state => state.videoConf.calling);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		(async () => {
 			const room = await getSubscriptionByRoomId(rid);
 			const uid = (await getUidDirectMessage(room)) as string;
 			const avt = getRoomAvatar(room);
-			setUser({ uid, username: room?.name || '', avatar: avt });
+			setRoom({ uid, roomName: room?.name || '', avatar: avt, direct: room?.t === 'd' });
 		})();
 	}, [rid]);
 
@@ -60,6 +64,7 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 						onPress={() => setCam(!cam)}
 						style={[style.iconCallContainer, { backgroundColor: handleColors(cam).button }, { marginRight: 6 }]}
 						hitSlop={BUTTON_HIT_SLOP}
+						disabled={calling}
 					>
 						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={20} color={handleColors(cam).icon} />
 					</Touchable>
@@ -67,16 +72,17 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 						onPress={() => setMic(!mic)}
 						style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
+						disabled={calling}
 					>
 						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={20} color={handleColors(mic).icon} />
 					</Touchable>
 				</View>
 			</View>
 			<View style={style.actionSheetUsernameContainer}>
-				<AvatarContainer text={user.avatar} size={36} />
-				<StatusContainer size={16} id={user.uid} style={{ marginLeft: 8, marginRight: 6 }} />
+				<AvatarContainer text={room.avatar} size={36} />
+				<StatusContainer size={16} id={room.uid} style={{ marginLeft: 8, marginRight: 6 }} />
 				<Text style={style.actionSheetUsername} numberOfLines={1}>
-					{user.username}
+					{room.roomName}
 				</Text>
 			</View>
 			<View
@@ -91,14 +97,7 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 			<Button
 				backgroundColor={calling ? colors.conferenceCallCallBackButton : colors.actionTintColor}
 				color={calling ? gray300 : colors.conferenceCallEnabledIcon}
-				onPress={() => {
-					if (!calling) {
-						setCalling(true);
-						initCall({ cam, mic });
-					} else {
-						setCalling(false);
-					}
-				}}
+				onPress={() => dispatch(initVideoCall({ cam, mic, direct: room.direct, rid, uid: room.uid }))}
 				title={calling ? i18n.t('Cancel') : i18n.t('Call')}
 			/>
 		</View>
