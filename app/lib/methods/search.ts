@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString } from '../database/utils';
+import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
@@ -15,10 +15,15 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
+	const slugifiedString = slugifyLikeString(searchText);
 	let subscriptions = await db
 		.get('subscriptions')
 		.query(
-			Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))),
+			Q.or(
+				Q.where('name', Q.like(`%${likeString}%`)),
+				Q.where('fname', Q.like(`%${likeString}%`)),
+				Q.where('name', Q.like(`%${slugifiedString}%`))
+			),
 			Q.experimentalSortBy('room_updated_at', Q.desc)
 		)
 		.fetch();
