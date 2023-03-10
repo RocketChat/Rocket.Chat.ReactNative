@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
-import { KeyCommandsEmitter } from 'react-native-keycommands';
+// import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
@@ -38,6 +38,8 @@ import {
 } from './lib/methods/helpers/theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+
+const KeyCommandsEmitter = {};
 
 RNScreens.enableScreens();
 initStore(store);

@@ -1,6 +1,10 @@
 /* eslint-disable no-bitwise */
 import { NativeSyntheticEvent } from 'react-native';
-import KeyCommands, { constants, KeyCommand } from 'react-native-keycommands';
+// import KeyCommands, { constants, KeyCommand } from 'react-native-keycommands';
+
+const constants = {};
+const KeyCommands = {};
+const KeyCommand = {};
 
 import I18n from './i18n';
 
