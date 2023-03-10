@@ -955,3 +955,6 @@ export const saveUserProfileMethod = (
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0
 	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });
+
+export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
+	sdk.methodCall('stream-notify-user', type, params);
