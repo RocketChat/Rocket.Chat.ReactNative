@@ -1,25 +1,27 @@
-import {
-	takeLatest, take, select, put, all, delay
-} from 'redux-saga/effects';
+import { all, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
-import UserPreferences from '../lib/userPreferences';
-import Navigation from '../lib/Navigation';
+import UserPreferences from '../lib/methods/userPreferences';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
-import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks';
+import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
-import EventEmitter from '../utils/events';
-import {
-	appStart, ROOT_INSIDE, ROOT_NEW_SERVER, appInit
-} from '../actions/app';
-import { localAuthenticate } from '../utils/localAuthentication';
-import { goRoom } from '../utils/goRoom';
+import EventEmitter from '../lib/methods/helpers/events';
+import { appInit, appStart } from '../actions/app';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { goRoom } from '../lib/methods/helpers/goRoom';
+import { getUidDirectMessage } from '../lib/methods/helpers';
 import { loginRequest } from '../actions/login';
-import log from '../utils/log';
+import log from '../lib/methods/helpers/log';
+import { RootEnum } from '../definitions';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { callJitsi, callJitsiWithoutServer, canOpenRoom } from '../lib/methods';
+import { Services } from '../lib/services';
 
 const roomTypes = {
-	channel: 'c', direct: 'd', group: 'p', channels: 'l'
+	channel: 'c',
+	direct: 'd',
+	group: 'p',
+	channels: 'l'
 };
 
 const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
@@ -33,51 +35,32 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 	}
 };
 
-const popToRoot = function popToRoot({ isMasterDetail }) {
-	if (isMasterDetail) {
-		Navigation.navigate('DrawerNavigator');
-	} else {
-		Navigation.navigate('RoomsListView');
-	}
-};
-
 const navigate = function* navigate({ params }) {
-	yield put(appStart({ root: ROOT_INSIDE }));
+	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
 		let type;
 		let name;
+		let jumpToThreadId;
 		if (params.path) {
-			[type, name] = params.path.split('/');
+			// Following this pattern: {channelType}/{channelName}/thread/{threadId}
+			[type, name, , jumpToThreadId] = params.path.split('/');
 		}
 		if (type !== 'invite' || params.rid) {
-			const room = yield RocketChat.canOpenRoom(params);
+			const room = yield canOpenRoom(params);
 			if (room) {
 				const item = {
 					name,
 					t: roomTypes[type],
-					roomUserId: RocketChat.getUidDirectMessage(room),
+					roomUserId: getUidDirectMessage(room),
 					...room
 				};
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
-				const focusedRooms = yield select(state => state.room.rooms);
 				const jumpToMessageId = params.messageId;
 
-				if (focusedRooms.includes(room.rid)) {
-					// if there's one room on the list or last room is the one
-					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						yield goRoom({ item, isMasterDetail, jumpToMessageId });
-					} else {
-						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail, jumpToMessageId });
-					}
-				} else {
-					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail, jumpToMessageId });
-				}
-
+				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
 				if (params.isCall) {
-					RocketChat.callJitsi(item);
+					callJitsi(item);
 				}
 			}
 		} else {
@@ -97,7 +80,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
 	try {
-		yield RocketChat.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		yield Services.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
 		log(e);
 	}
@@ -116,6 +99,11 @@ const handleOpen = function* handleOpen({ params }) {
 				host = id;
 			}
 		});
+
+		if (!host && params.fullURL) {
+			callJitsiWithoutServer(params.fullURL);
+			return;
+		}
 	}
 
 	if (params.type === 'oauth') {
@@ -132,9 +120,9 @@ const handleOpen = function* handleOpen({ params }) {
 	// If there's host, continue
 	if (!/^(http|https)/.test(host)) {
 		if (/^localhost(:\d+)?/.test(host)) {
-			host = `http://${ host }`;
+			host = `http://${host}`;
 		} else {
-			host = `https://${ host }`;
+			host = `https://${host}`;
 		}
 	} else {
 		// Notification should always come from https
@@ -146,8 +134,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const [server, user] = yield all([
-		UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER),
-		UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		UserPreferences.getString(CURRENT_SERVER),
+		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
 	]);
 
 	// TODO: needs better test
@@ -175,13 +163,13 @@ const handleOpen = function* handleOpen({ params }) {
 			// do nothing?
 		}
 		// if deep link is from a different server
-		const result = yield RocketChat.getServerInfo(host);
+		const result = yield Services.getServerInfo(host);
 		if (!result.success) {
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();
 			return;
 		}
-		yield put(appStart({ root: ROOT_NEW_SERVER }));
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });

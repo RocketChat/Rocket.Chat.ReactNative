@@ -1,1 +1,0 @@
-../../../FirebaseInstallations/FirebaseInstallations/Source/Library/InstallationsAPI/FIRInstallationsAPIService.h

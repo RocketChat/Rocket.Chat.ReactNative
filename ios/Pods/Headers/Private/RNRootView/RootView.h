@@ -1,1 +1,0 @@
-../../../../../node_modules/rn-root-view/ios/RootView.h

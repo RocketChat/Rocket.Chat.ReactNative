@@ -115,7 +115,7 @@ class Encryption {
         jwk.putString("dq", privKey.dq);
         jwk.putString("qi", privKey.qi);
 
-        return new RCTRsaUtils().jwkToPrivatePkcs1(jwk);
+        return new RCTRsaUtils(reactContext).jwkToPrivatePkcs1(jwk);
     }
 
     public String decryptRoomKey(final String e2eKey, final Ejson ejson) throws Exception {

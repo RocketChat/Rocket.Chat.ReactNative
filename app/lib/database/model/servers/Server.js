@@ -1,8 +1,10 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, date } from '@nozbe/watermelondb/decorators';
+import { date, field } from '@nozbe/watermelondb/decorators';
+
+export const SERVERS_TABLE = 'servers';
 
 export default class Server extends Model {
-	static table = 'servers';
+	static table = SERVERS_TABLE;
 
 	@field('name') name;
 

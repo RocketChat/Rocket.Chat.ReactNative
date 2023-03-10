@@ -22,6 +22,8 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 *.mobileprovision
+ios/Pods/
+/vendor/bundle/
 
 # Android/IntelliJ
 #
@@ -63,5 +65,8 @@ artifacts
 .vscode/
 e2e/docker/rc_test_env/docker-compose.yml
 e2e/docker/data/db
+e2e/e2e_account.js
+e2e/e2e_account.ts
+junit.xml
 
 *.p8

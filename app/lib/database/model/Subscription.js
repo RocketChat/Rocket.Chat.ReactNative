@@ -1,20 +1,19 @@
 import { Model } from '@nozbe/watermelondb';
-import {
-	field, date, json, children
-} from '@nozbe/watermelondb/decorators';
+import { children, date, field, json } from '@nozbe/watermelondb/decorators';
+
 import { sanitizer } from '../utils';
 
-export const TABLE_NAME = 'subscriptions';
+export const SUBSCRIPTIONS_TABLE = 'subscriptions';
 
 export default class Subscription extends Model {
-	static table = TABLE_NAME;
+	static table = SUBSCRIPTIONS_TABLE;
 
 	static associations = {
 		messages: { type: 'has_many', foreignKey: 'rid' },
 		threads: { type: 'has_many', foreignKey: 'rid' },
 		thread_messages: { type: 'has_many', foreignKey: 'subscription_id' },
 		uploads: { type: 'has_many', foreignKey: 'rid' }
-	}
+	};
 
 	@field('_id') _id;
 
@@ -104,6 +103,8 @@ export default class Subscription extends Model {
 
 	@field('hide_unread_status') hideUnreadStatus;
 
+	@field('hide_mention_status') hideMentionStatus;
+
 	@json('sys_mes', sanitizer) sysMes;
 
 	@json('uids', sanitizer) uids;
@@ -122,6 +123,8 @@ export default class Subscription extends Model {
 
 	@field('e2e_key') E2EKey;
 
+	@field('e2e_suggested_key') E2ESuggestedKey;
+
 	@field('encrypted') encrypted;
 
 	@field('e2e_key_id') e2eKeyId;
@@ -131,4 +134,8 @@ export default class Subscription extends Model {
 	@field('team_id') teamId;
 
 	@field('team_main') teamMain;
+
+	@field('on_hold') onHold;
+
+	@json('source', sanitizer) source;
 }

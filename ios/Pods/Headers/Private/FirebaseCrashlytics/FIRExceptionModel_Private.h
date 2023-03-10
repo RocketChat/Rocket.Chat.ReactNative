@@ -1,1 +1,0 @@
-../../../FirebaseCrashlytics/Crashlytics/Crashlytics/Private/FIRExceptionModel_Private.h

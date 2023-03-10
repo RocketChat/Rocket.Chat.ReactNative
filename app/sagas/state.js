@@ -1,15 +1,14 @@
-import { takeLatest, select } from 'redux-saga/effects';
+import { select, takeLatest } from 'redux-saga/effects';
 
-import RocketChat from '../lib/rocketchat';
-import { setBadgeCount } from '../notifications/push';
-import log from '../utils/log';
-import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
+import log from '../lib/methods/helpers/log';
+import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
-import { ROOT_OUTSIDE } from '../actions/app';
+import { RootEnum } from '../definitions';
+import { Services } from '../lib/services';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === ROOT_OUTSIDE) {
+	if (appRoot === RootEnum.ROOT_OUTSIDE) {
 		return;
 	}
 	const login = yield select(state => state.login);
@@ -19,9 +18,8 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	try {
 		yield localAuthenticate(server.server);
-		RocketChat.checkAndReopen();
-		setBadgeCount();
-		return yield RocketChat.setUserPresenceOnline();
+		Services.checkAndReopen();
+		return yield Services.setUserPresenceOnline();
 	} catch (e) {
 		log(e);
 	}
@@ -29,14 +27,14 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 
 const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === ROOT_OUTSIDE) {
+	if (appRoot === RootEnum.ROOT_OUTSIDE) {
 		return;
 	}
 	try {
 		const server = yield select(state => state.server.server);
 		yield saveLastLocalAuthenticationSession(server);
 
-		yield RocketChat.setUserPresenceAway();
+		yield Services.setUserPresenceAway();
 	} catch (e) {
 		log(e);
 	}

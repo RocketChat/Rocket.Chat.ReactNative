@@ -53,16 +53,8 @@ public class Ejson {
         String alias = Utils.toHex("com.MMKV.default");
 
         // Retrieve container password
-        secureKeystore.getSecureKey(alias, new RNCallback() {
-            @Override
-            public void invoke(Object... args) {
-                String error = (String) args[0];
-                if (error == null) {
-                    String password = (String) args[1];
-                    mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
-                }
-            }
-        });
+        String password = secureKeystore.getSecureKey(alias);
+        mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
     }
 
     public String getAvatarUri() {

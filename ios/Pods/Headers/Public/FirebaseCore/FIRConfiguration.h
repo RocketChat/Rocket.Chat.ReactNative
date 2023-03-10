@@ -1,1 +1,0 @@
-../../../FirebaseCore/FirebaseCore/Sources/Public/FIRConfiguration.h

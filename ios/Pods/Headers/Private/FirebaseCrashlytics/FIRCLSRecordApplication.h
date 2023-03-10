@@ -1,1 +1,0 @@
-../../../FirebaseCrashlytics/Crashlytics/Crashlytics/Models/Record/FIRCLSRecordApplication.h
