@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
+import ImageWithSkeleton from '../../containers/ImageWithSkeleton';
 import { themes } from '../../lib/constants';
 import { isTablet } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
@@ -31,11 +31,10 @@ interface IServerAvatar {
 	image: string;
 }
 
-// TODO: missing skeleton
 const ServerAvatar = React.memo(({ theme, url, image }: IServerAvatar) => (
 	<View style={styles.container}>
 		{image && (
-			<FastImage style={[styles.image, { borderColor: themes[theme].borderColor }]} source={{ uri: `${url}/${image}` }} />
+			<ImageWithSkeleton style={[styles.image, { borderColor: themes[theme].borderColor }]} source={{ uri: `${url}/${image}` }} />
 		)}
 	</View>
 ));
