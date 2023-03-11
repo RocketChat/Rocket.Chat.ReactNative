@@ -2,9 +2,8 @@ import React, { useContext } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
-import { createImageProgress } from 'react-native-image-progress';
-import * as Progress from 'react-native-progress';
 
+import ImageWithSkeleton from '../ImageWithSkeleton';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import styles from './styles';
@@ -31,8 +30,6 @@ interface IMessageImage {
 	getCustomEmoji?: TGetCustomEmoji;
 }
 
-const ImageProgress = createImageProgress(FastImage);
-
 const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButton) => (
 	<Touchable
 		disabled={disabled}
@@ -45,14 +42,10 @@ const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButto
 ));
 
 export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; theme: TSupportedThemes }) => (
-	<ImageProgress
+	<ImageWithSkeleton
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(imgUri) }}
 		resizeMode={FastImage.resizeMode.cover}
-		indicator={Progress.Pie}
-		indicatorProps={{
-			color: themes[theme].actionTintColor
-		}}
 	/>
 ));
 
