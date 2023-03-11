@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, StyleProp, Text, TextStyle } from 'react-native';
+import { StyleProp, Text, TextStyle } from 'react-native';
 import { Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import { MarkdownAST } from '@rocket.chat/message-parser';
@@ -24,6 +24,7 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
+import ImageWithSkeleton from '../ImageWithSkeleton';
 
 export { default as MarkdownPreview } from './Preview';
 
@@ -250,7 +251,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return null;
 		}
 
-		return <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} />;
+		return <ImageWithSkeleton style={styles.inlineImage} source={{ uri: encodeURI(src) }} />;
 	};
 
 	renderHeading = ({ children, level }: any) => {

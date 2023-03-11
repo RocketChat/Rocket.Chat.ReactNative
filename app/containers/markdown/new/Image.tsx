@@ -1,12 +1,11 @@
 import React from 'react';
 import { Image as ImageProps } from '@rocket.chat/message-parser';
-import { createImageProgress } from 'react-native-image-progress';
-import * as Progress from 'react-native-progress';
 import FastImage from 'react-native-fast-image';
 
 import { TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import styles from '../../message/styles';
+import ImageWithSkeleton from '../../ImageWithSkeleton';
 
 interface IImageProps {
 	value: ImageProps['value'];
@@ -17,17 +16,11 @@ type TMessageImage = {
 	theme: TSupportedThemes;
 };
 
-const ImageProgress = createImageProgress(FastImage);
-
 const MessageImage = ({ img, theme }: TMessageImage) => (
-	<ImageProgress
+	<ImageWithSkeleton
 		style={[styles.inlineImage, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
 		resizeMode={FastImage.resizeMode.cover}
-		indicator={Progress.Pie}
-		indicatorProps={{
-			color: themes[theme].actionTintColor
-		}}
 	/>
 );
 
