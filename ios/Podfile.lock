@@ -384,7 +384,7 @@ PODS:
   - react-native-simple-crypto (0.5.1):
     - OpenSSL-Universal (= 1.1.1100)
     - React
-  - react-native-slider (4.2.2):
+  - react-native-slider (4.4.2):
     - React-Core
   - react-native-webview (10.3.2):
     - React
@@ -505,7 +505,7 @@ PODS:
     - React
   - RNCPicker (1.8.1):
     - React-Core
-  - RNDateTimePicker (3.5.2):
+  - RNDateTimePicker (6.7.5):
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
@@ -949,7 +949,7 @@ SPEC CHECKSUMS:
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-simple-crypto: a26121696064628b6cb92f52f653353114deb7f4
-  react-native-slider: 2f25c919f1dc309b90e2cc8346b8042ecec2102f
+  react-native-slider: 33b8d190b59d4f67a541061bb91775d53d617d9d
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-perflogger: ad1416a715d86b32f456e5d0aed99c3b52f1de37
   React-RCTActionSheet: cbf7c6a953982562418ee72a1084ff7b9447b558
@@ -973,7 +973,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
-  RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
+  RNDateTimePicker: 65e1d202799460b286ff5e741d8baf54695e8abd
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: d5510534be9cccc80e824bfec6369c116d212871
   RNFBAnalytics: 091c8adcbb0da1e1680ce434fc6e8a0a501fe2e6
