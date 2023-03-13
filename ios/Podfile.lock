@@ -7,7 +7,7 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXAppleAuthentication (4.2.1):
     - ExpoModulesCore
-  - EXAV (11.2.3):
+  - EXAV (12.0.4):
     - ExpoModulesCore
     - React-runtimeexecutor
     - ReactCommon
@@ -889,7 +889,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXAppleAuthentication: 709a807fe7f48ac6986a2ceed206ee6a8baf28df
-  EXAV: 88f61c5af8415715b7ee51f084c1020235b85c56
+  EXAV: 596506c9bee54ad52f2f3b625cdaeb9d9f2dd6b7
   EXFileSystem: 2aa2d9289f84bca9532b9ccbd81504fa31eb1ded
   EXLocalAuthentication: 7f37b242eae73f9acf111d39bdee3f1379e68902
   Expo: 73412414e62f5cbc6e713def821de70b92cd3ad6
