@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString } from '../database/utils';
+import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
@@ -15,16 +15,16 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
+	const slugifiedString = slugifyLikeString(searchText);
 	let subscriptions = await db
 		.get('subscriptions')
 		.query(
-			// https://watermelondb.dev/Query.html#unsafe-sql-queries
-			Q.unsafeSqlQuery(
-				`select * from subscriptions where upper(fname) like ? or upper(name) like ? and _status is not 'deleted' order by room_updated_at desc`,
-				// @ts-ignore
-				// FIXME: update the WatermelonDb > 0.23.0 to update the types
-				[`%${likeString?.toUpperCase()}%`, `%${likeString?.toUpperCase()}%`]
-			)
+			Q.or(
+				Q.where('name', Q.like(`%${likeString}%`)),
+				Q.where('fname', Q.like(`%${likeString}%`)),
+				Q.where('name', Q.like(`%${slugifiedString}%`))
+			),
+			Q.experimentalSortBy('room_updated_at', Q.desc)
 		)
 		.fetch();
 
