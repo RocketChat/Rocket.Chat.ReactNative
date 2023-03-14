@@ -29,7 +29,7 @@ const JitsiMeetView = (): React.ReactElement => {
 		const avatarAuthURLFragment = `&rc_token=${token}&rc_uid=${userId}`;
 		const avatar = formatUrl(username, baseUrl, 100, avatarAuthURLFragment);
 		const conferenceOptions = {
-			url: `${url}`,
+			url,
 			userInfo: {
 				displayName: name as string,
 				avatar

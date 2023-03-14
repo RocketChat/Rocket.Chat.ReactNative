@@ -17416,10 +17416,10 @@ react-native-iphone-x-helper@^1.0.3:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
-react-native-jitsi@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-jitsi/-/react-native-jitsi-0.2.0.tgz#a47a5e687621461c74266beb8f534b16ea376a33"
-  integrity sha512-ueodexdSlHRsKWZmd23UIoCHIwxMwfcYcgRRXW+XAaMxyyqJKnMBQtfzGNH4ffh4qq9Skb/EkG38+721SGkZzQ==
+react-native-jitsi@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-jitsi/-/react-native-jitsi-0.2.1.tgz#219d708fb011f89aa412f967c278680af54eb500"
+  integrity sha512-aRoweBQcNun1G00ChH8sB72jZ/tqRmneUTMUzprs/J3nzszlGNKq0qrWIGqqC0IQClshp/ZbWyRmzNW1xS/urw==
 
 react-native-keycommands@2.0.3:
   version "2.0.3"
