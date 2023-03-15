@@ -17605,9 +17605,9 @@ react-native-text-size@4.0.0-rc.1:
   resolved "https://registry.yarnpkg.com/react-native-text-size/-/react-native-text-size-4.0.0-rc.1.tgz#1e048d345dd6a5a8e1269e0585c1a5948c478da5"
   integrity sha512-CysqjU2jK6Yc+a+kEI222pUyTY2ywcU2HqbFqf1KHymW6OPTdvBBHqbEJKL0QiLhQaFYDbqicM+h990s9TP00g==
 
-react-native-ui-lib@RocketChat/react-native-ui-lib#master-7.2:
+react-native-ui-lib@RocketChat/react-native-ui-lib#7.2.0:
   version "7.0.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/a08c2c6ed2dda56ae6e38a5f3af2630043689ca0"
+  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/ed4448045fb962dc71877256dc7a27be8d97d043"
   dependencies:
     babel-plugin-transform-inline-environment-variables "^0.0.2"
     color "^3.1.0"
