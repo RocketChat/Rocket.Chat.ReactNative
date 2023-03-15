@@ -1,34 +1,31 @@
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { EMOJI_BUTTON_SIZE } from './styles';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { IEmoji } from '../../definitions/IEmoji';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { PressableEmoji } from './PressableEmoji';
+import { EMOJI_BUTTON_SIZE } from './styles';
 
 interface IEmojiCategoryProps {
 	emojis: IEmoji[];
 	onEmojiSelected: (emoji: IEmoji) => void;
 	tabLabel?: string; // needed for react-native-scrollable-tab-view only
+	parentWidth: number;
 }
 
-const EmojiCategory = ({ onEmojiSelected, emojis }: IEmojiCategoryProps): React.ReactElement | null => {
-	const { width } = useWindowDimensions();
-
-	const numColumns = Math.trunc(width / EMOJI_BUTTON_SIZE);
-	const marginHorizontal = (width % EMOJI_BUTTON_SIZE) / 2;
-
-	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
-
-	if (!width) {
+const EmojiCategory = ({ onEmojiSelected, emojis, parentWidth }: IEmojiCategoryProps): React.ReactElement | null => {
+	if (!parentWidth) {
 		return null;
 	}
 
+	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
+	const marginHorizontal = (parentWidth % EMOJI_BUTTON_SIZE) / 2;
+
+	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
+
 	return (
 		<FlatList
-			// needed to update the numColumns when the width changes
-			key={`emoji-category-${width}`}
+			key={`emoji-category-${parentWidth}`}
 			keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 			data={emojis}
 			renderItem={renderItem}
