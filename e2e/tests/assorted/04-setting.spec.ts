@@ -1,18 +1,21 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
-import data from '../../data';
-
-const testuser = data.users.regular;
+import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Settings screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	let user: ITestUser;
+	let room: string;
+
+	beforeAll(async () => {
+		user = await createRandomUser();
+		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -84,7 +87,7 @@ describe('Settings screen', () => {
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(5000);
-			await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
+			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 				.toExist()
 				.withTimeout(10000);
 		});

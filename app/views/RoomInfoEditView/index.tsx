@@ -655,7 +655,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							label={I18n.t('Password')}
 							value={joinCode}
 							onChangeText={value => this.setState({ joinCode: value })}
-							onSubmitEditing={this.submit}
 							secureTextEntry
 							testID='room-info-edit-view-password'
 						/>
