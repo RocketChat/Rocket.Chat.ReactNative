@@ -281,7 +281,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		const params = {} as IRoomSettings;
 
 		// Name
-		if (room.name !== name) {
+		if (getRoomTitle(room) !== name) {
 			params.roomName = name;
 		}
 		// Avatar
@@ -318,7 +318,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 
 		// Join Code
-		if (this.randomValue !== joinCode) {
+		if (room.joinCodeRequired && this.randomValue !== joinCode) {
 			params.joinCode = joinCode;
 		}
 
