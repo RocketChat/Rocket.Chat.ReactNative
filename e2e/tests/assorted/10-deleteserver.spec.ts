@@ -1,14 +1,28 @@
+import { device, waitFor, element, by } from 'detox';
+
 import data from '../../data';
-import { sleep, navigateToLogin, login, checkServer, platformTypes, TTextMatcher } from '../../helpers/app';
+import {
+	sleep,
+	navigateToLogin,
+	login,
+	checkServer,
+	platformTypes,
+	TTextMatcher,
+	expectValidRegisterOrRetry
+} from '../../helpers/app';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Delete server', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	let user: ITestUser;
+
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	it('should be logged in main server', async () => {
@@ -37,14 +51,13 @@ describe('Delete server', () => {
 			.withTimeout(2000);
 
 		// Register new user
-		await element(by.id('register-view-name')).replaceText(data.registeringUser3.username);
-		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
-		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
-		await element(by.id('register-view-password')).replaceText(data.registeringUser3.password);
-		await element(by.id('register-view-submit')).tap();
-		await waitFor(element(by.id('rooms-list-view')))
-			.toBeVisible()
-			.withTimeout(60000);
+		const randomUser = data.randomUser();
+		await element(by.id('register-view-name')).replaceText(randomUser.name);
+		await element(by.id('register-view-username')).replaceText(randomUser.username);
+		await element(by.id('register-view-email')).replaceText(randomUser.email);
+		await element(by.id('register-view-password')).replaceText(randomUser.password);
+		await element(by.id('register-view-password')).tapReturnKey();
+		await expectValidRegisterOrRetry(device.getPlatform());
 
 		await checkServer(data.alternateServer);
 	});

@@ -16,11 +16,13 @@ const styles = StyleSheet.create({
 	},
 	bottomContainerText: {
 		...sharedStyles.textRegular,
-		fontSize: 13
+		fontSize: 13,
+		textAlign: 'center'
 	},
 	bottomContainerTextBold: {
 		...sharedStyles.textSemibold,
-		fontSize: 13
+		fontSize: 13,
+		textAlign: 'center'
 	}
 });
 
