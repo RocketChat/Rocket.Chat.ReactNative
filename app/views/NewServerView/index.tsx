@@ -28,7 +28,7 @@ import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { moderateScale, verticalScale } from './scaling';
-import SSLPinning from '../../lib/methods/helpers/sslPinning';
+// import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 import { serializeAsciiUrl } from '../../lib/methods';
@@ -242,8 +242,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	chooseCertificate = async () => {
 		try {
-			const certificate = await SSLPinning?.pickCertificate();
-			this.setState({ certificate });
+			// const certificate = await SSLPinning?.pickCertificate();
+			// this.setState({ certificate });
 		} catch {
 			// Do nothing
 		}

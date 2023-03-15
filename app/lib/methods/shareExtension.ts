@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 
 import { shareSetSettings, shareSelectServer, shareSetUser } from '../../actions/share';
-import SSLPinning from './helpers/sslPinning';
+// import SSLPinning from './helpers/sslPinning';
 import log from './helpers/log';
 import { IShareServer, IShareUser } from '../../reducers/share';
 import UserPreferences from './userPreferences';
@@ -19,9 +19,9 @@ export async function shareExtensionInit(server: string) {
 
 	try {
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (SSLPinning && certificate) {
-			await SSLPinning.setCertificate(certificate, server);
-		}
+		// if (SSLPinning && certificate) {
+		// 	await SSLPinning.setCertificate(certificate, server);
+		// }
 	} catch {
 		// Do nothing
 	}
