@@ -247,6 +247,8 @@ const Reply = React.memo(
 				>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<UrlImage image={attachment.thumb_url} />
 						<Attachments
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
@@ -255,8 +257,6 @@ const Reply = React.memo(
 							isReply
 							id={messageId}
 						/>
-						<UrlImage image={attachment.thumb_url} />
-						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{loading ? (
 							<View style={[styles.backdrop]}>

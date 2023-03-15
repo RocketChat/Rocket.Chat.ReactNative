@@ -1,8 +1,9 @@
+import { device, waitFor, element, by } from 'detox';
+
 import data from '../../data';
 import { navigateToLogin, login, tapBack, sleep } from '../../helpers/app';
-import { sendMessage } from '../../helpers/data_setup';
-
-const testuser = data.users.regular;
+import { createRandomTeam, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 async function navigateToRoom(search: string) {
 	await element(by.id('directory-view-search')).replaceText(search);
@@ -20,18 +21,26 @@ async function navigateToRoom(search: string) {
 }
 
 describe('Join room from directory', () => {
-	before(async () => {
+	let user: ITestUser;
+	let otherUser: ITestUser;
+	let team: string;
+
+	beforeAll(async () => {
+		user = await createRandomUser();
+		otherUser = await createRandomUser();
+		team = await createRandomTeam(user);
+
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Usage', () => {
-		const threadMessage = `thread-${data.random}`;
-		before(async () => {
-			const result = await sendMessage(data.users.alternate, data.channels.detoxpublic.name, threadMessage);
+		const thread = `${random()}thread`;
+		beforeAll(async () => {
+			const result = await sendMessage(user, data.channels.detoxpublic.name, thread);
 			const threadId = result.message._id;
-			await sendMessage(data.users.alternate, result.message.rid, data.random, threadId);
+			await sendMessage(user, result.message.rid, 'insidethread', threadId);
 		});
 
 		it('should tap directory', async () => {
@@ -50,7 +59,7 @@ describe('Join room from directory', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-view-header-threads')).tap();
-			await waitFor(element(by.id(`thread-messages-view-${threadMessage}`)))
+			await waitFor(element(by.id(`thread-messages-view-${thread}`)))
 				.toBeVisible()
 				.withTimeout(2000);
 			await tapBack();
@@ -68,7 +77,7 @@ describe('Join room from directory', () => {
 			await element(by.id('directory-view-dropdown')).tap();
 			await element(by.label('Users')).atIndex(0).tap();
 			await element(by.label('Search by')).atIndex(0).tap();
-			await navigateToRoom(data.users.alternate.username);
+			await navigateToRoom(otherUser.username);
 		});
 
 		it('should search team and navigate', async () => {
@@ -80,7 +89,7 @@ describe('Join room from directory', () => {
 			await element(by.id('directory-view-dropdown')).tap();
 			await element(by.label('Teams')).atIndex(0).tap();
 			await element(by.label('Search by')).atIndex(0).tap();
-			await navigateToRoom(data.teams.private.name);
+			await navigateToRoom(team);
 		});
 	});
 });
