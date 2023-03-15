@@ -812,10 +812,14 @@ export const addUsersToRoom = (rid: string): Promise<boolean> => {
 };
 
 export const emitTyping = (room: IRoom, typing = true) => {
-	const { login, settings } = reduxStore.getState();
+	const { login, settings, server } = reduxStore.getState();
 	const { UI_Use_Real_Name } = settings;
+	const { version: serverVersion } = server;
 	const { user } = login;
 	const name = UI_Use_Real_Name ? user.name : user.username;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
+		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : []);
+	}
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
 
@@ -932,8 +936,10 @@ export function getUserInfo(userId: string) {
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
 
-export const videoConferenceJoin = (callId: string, cam: boolean) =>
-	sdk.post('video-conference.join', { callId, state: { cam } });
+export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
+	sdk.post('video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });
+
+export const videoConferenceGetCapabilities = () => sdk.get('video-conference.capabilities');
 
 export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId });
 

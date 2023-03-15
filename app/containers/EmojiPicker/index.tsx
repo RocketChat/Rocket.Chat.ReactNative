@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
@@ -20,6 +20,8 @@ const EmojiPicker = ({
 	searchedEmojis = []
 }: IEmojiPickerProps): React.ReactElement | null => {
 	const { colors } = useTheme();
+	const [parentWidth, setParentWidth] = useState(0);
+
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 
 	const allCustomEmojis: ICustomEmojis = useAppSelector(
@@ -50,7 +52,14 @@ const EmojiPicker = ({
 		if (!emojis.length) {
 			return null;
 		}
-		return <EmojiCategory emojis={emojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} tabLabel={label} />;
+		return (
+			<EmojiCategory
+				parentWidth={parentWidth}
+				emojis={emojis}
+				onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
+				tabLabel={label}
+			/>
+		);
 	};
 
 	if (!loaded) {
@@ -58,9 +67,13 @@ const EmojiPicker = ({
 	}
 
 	return (
-		<View style={styles.emojiPickerContainer}>
+		<View style={styles.emojiPickerContainer} onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
-				<EmojiCategory emojis={searchedEmojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} />
+				<EmojiCategory
+					emojis={searchedEmojis}
+					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
+					parentWidth={parentWidth}
+				/>
 			) : (
 				<ScrollableTabView
 					renderTabBar={() => <TabBar />}
