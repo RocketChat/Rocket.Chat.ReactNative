@@ -40,7 +40,7 @@ export interface IMessageBroadcast {
 }
 
 export interface IMessageCallButton {
-	callJitsi?: () => void;
+	handleEnterCall?: () => void;
 }
 
 export interface IMessageContent {

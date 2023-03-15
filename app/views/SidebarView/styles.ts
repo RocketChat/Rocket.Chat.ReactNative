@@ -63,5 +63,10 @@ export default StyleSheet.create({
 	},
 	inverted: {
 		transform: [{ scaleY: -1 }]
+	},
+	customStatusDisabled: {
+		width: 10,
+		height: 10,
+		borderRadius: 5
 	}
 });

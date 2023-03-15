@@ -33,7 +33,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { callJitsi, getPermalinkChannel } from '../../lib/methods';
+import { getPermalinkChannel } from '../../lib/methods';
 import {
 	canAutoTranslate as canAutoTranslateMethod,
 	getRoomAvatar,
@@ -48,9 +48,9 @@ import { getSubscriptionByRoomId } from '../../lib/database/services/Subscriptio
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
-import { videoConfStartAndJoin } from '../../lib/methods/videoConf';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
+import CallSection from './components/CallSection';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
@@ -730,16 +730,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
-	startVideoConf = ({ video }: { video: boolean }): void => {
-		const { room } = this.state;
-		const { serverVersion } = this.props;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
-			videoConfStartAndJoin(room.rid, video);
-		} else {
-			callJitsi(room, !video);
-		}
-	};
-
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
@@ -810,63 +800,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>
 				</Touch>
-				<List.Separator />
-			</List.Section>
-		);
-	};
-
-	renderJitsi = () => {
-		const { room } = this.state;
-		const {
-			jitsiEnabled,
-			jitsiEnableTeams,
-			jitsiEnableChannels,
-			serverVersion,
-			videoConf_Enable_DMs,
-			videoConf_Enable_Channels,
-			videoConf_Enable_Groups,
-			videoConf_Enable_Teams
-		} = this.props;
-
-		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
-		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
-
-		const isVideoConfDisabledForTeams = !!room.teamMain && !videoConf_Enable_Teams;
-		const isVideoConfDisabledForChannels = !room.teamMain && room.t === 'c' && !videoConf_Enable_Channels;
-		const isVideoConfDisabledForGroups = !room.teamMain && room.t === 'p' && !videoConf_Enable_Groups;
-		const isVideoConfDisabledForDirect = !room.teamMain && room.t === 'd' && !videoConf_Enable_DMs;
-
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
-			if (
-				isVideoConfDisabledForTeams ||
-				isVideoConfDisabledForChannels ||
-				isVideoConfDisabledForGroups ||
-				isVideoConfDisabledForDirect
-			) {
-				return null;
-			}
-		} else if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
-			return null;
-		}
-
-		return (
-			<List.Section>
-				<List.Separator />
-				<List.Item
-					title='Voice_call'
-					onPress={() => this.startVideoConf({ video: false })}
-					testID='room-actions-voice'
-					left={() => <List.Icon name='phone' />}
-					showActionIndicator
-				/>
-				<List.Separator />
-				<List.Item
-					title='Video_call'
-					onPress={() => this.startVideoConf({ video: true })}
-					testID='room-actions-video'
-					left={() => <List.Icon name='camera' />}
-					showActionIndicator
-				/>
 				<List.Separator />
 			</List.Section>
 		);
@@ -1108,7 +1041,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<StatusBar />
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
-					{this.renderJitsi()}
+					<CallSection rid={rid} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />
@@ -1299,13 +1232,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
-	jitsiEnabled: (state.settings.Jitsi_Enabled || false) as boolean,
-	jitsiEnableTeams: (state.settings.Jitsi_Enable_Teams || false) as boolean,
-	jitsiEnableChannels: (state.settings.Jitsi_Enable_Channels || false) as boolean,
-	videoConf_Enable_DMs: (state.settings.VideoConf_Enable_DMs ?? true) as boolean,
-	videoConf_Enable_Channels: (state.settings.VideoConf_Enable_Channels ?? true) as boolean,
-	videoConf_Enable_Groups: (state.settings.VideoConf_Enable_Groups ?? true) as boolean,
-	videoConf_Enable_Teams: (state.settings.VideoConf_Enable_Teams ?? true) as boolean,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,

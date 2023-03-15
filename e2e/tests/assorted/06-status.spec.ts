@@ -1,15 +1,16 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { navigateToLogin, login, sleep } from '../../helpers/app';
-import data from '../../data';
-
-const testuser = data.users.regular;
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Status screen', () => {
-	before(async () => {
+	let user: ITestUser;
+
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view')))
@@ -52,7 +53,6 @@ describe('Status screen', () => {
 			await element(by.id('sidebar-custom-status-busy')).tap();
 		});
 
-		// TODO: flaky
 		it('should change status text', async () => {
 			await element(by.id('status-view-input')).replaceText('status-text-new');
 			await element(by.id('status-view-submit')).tap();

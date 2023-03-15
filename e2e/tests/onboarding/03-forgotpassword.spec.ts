@@ -1,12 +1,14 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
-import data from '../../data';
 import { navigateToLogin, platformTypes, TTextMatcher } from '../../helpers/app';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Forgot password screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	let user: ITestUser;
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
@@ -32,7 +34,7 @@ describe('Forgot password screen', () => {
 
 	describe('Usage', () => {
 		it('should reset password and navigate to login', async () => {
-			await element(by.id('forgot-password-view-email')).replaceText(data.users.existing.email);
+			await element(by.id('forgot-password-view-email')).replaceText(user.email);
 			await element(by.id('forgot-password-view-submit')).tap();
 			await waitFor(element(by[textMatcher]('OK')))
 				.toExist()

@@ -250,7 +250,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			prid: item.prid,
 			uids: item.uids,
 			usernames: item.usernames,
-			topic: item.topic
+			topic: item.topic,
+			teamMain: item.teamMain
 		}));
 	};
 
@@ -380,6 +381,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${item.name}`}
+				teamMain={item.teamMain}
 			/>
 		);
 	};
