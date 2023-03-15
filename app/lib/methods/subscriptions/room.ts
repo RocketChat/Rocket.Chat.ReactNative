@@ -138,6 +138,23 @@ export default class RoomSubscription {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}
+		} else if (ev === 'user-activity') {
+			const { user } = reduxStore.getState().login;
+			const { UI_Use_Real_Name } = reduxStore.getState().settings;
+			const { subscribedRoom } = reduxStore.getState().room;
+			if (subscribedRoom !== _rid) {
+				return;
+			}
+			const [name, activities] = ddpMessage.fields.args;
+			const key = UI_Use_Real_Name ? 'name' : 'username';
+			if (name !== user[key]) {
+				if (activities.includes('user-typing')) {
+					reduxStore.dispatch(addUserTyping(name));
+				}
+				if (!activities.length) {
+					reduxStore.dispatch(removeUserTyping(name));
+				}
+			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async () => {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {

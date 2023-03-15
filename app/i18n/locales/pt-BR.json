@@ -876,7 +876,6 @@
   "Reply_in_direct_message": "Responder por mensagem direta",
   "room_archived": "{{username}} arquivou a sala",
   "room_unarchived": "{{username}} desarquivou a sala",
-  "Presence_Cap_Warning_Title": "Mantendo o desempenho em mente",
-  "Presence_Cap_Warning_Description": "Devido ao alto volume de conexões ativas, o serviço responsável pela presença dos usuários está temporariamente desabilitado.",
-  "Learn_more": "Saiba mais"
+  "Presence_Cap_Warning_Title": "Status do usuário desabilitado temporariamente",
+  "Presence_Cap_Warning_Description": "O limite de conexões ativas para a workspace foi atingido, por isso o serviço responsável pela presença dos usuários está temporariamente desabilitado. Ele pode ser reabilitado manualmente nas configurações da workspace."
 }
