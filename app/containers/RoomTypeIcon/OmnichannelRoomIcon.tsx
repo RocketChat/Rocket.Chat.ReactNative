@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 
@@ -29,22 +29,12 @@ interface IOmnichannelRoomIconProps {
 }
 
 export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnichannelRoomIconProps) => {
+	const [loading, setLoading] = useState(true);
+	const [svgError, setSvgError] = useState(false);
 	const baseUrl = useAppSelector(state => state.server?.server);
 	const connected = useAppSelector(state => state.meteor?.connected);
 
-	if (sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
-		return (
-			<SvgUri
-				height={size}
-				width={size}
-				color={STATUS_COLORS[status || 'offline']}
-				uri={`${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}`}
-				style={style}
-			/>
-		);
-	}
-
-	return (
+	const customIcon = (
 		<CustomIcon
 			name={iconMap[sourceType?.type || 'other']}
 			size={size}
@@ -52,4 +42,23 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 			color={STATUS_COLORS[status || 'offline']}
 		/>
 	);
+
+	if (!svgError && sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
+		return (
+			<>
+				<SvgUri
+					height={size}
+					width={size}
+					color={STATUS_COLORS[status || 'offline']}
+					uri={`${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}`}
+					style={style}
+					onError={() => setSvgError(true)}
+					onLoad={() => setLoading(false)}
+				/>
+				{loading ? customIcon : null}
+			</>
+		);
+	}
+
+	return customIcon;
 };
