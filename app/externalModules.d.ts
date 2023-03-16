@@ -12,3 +12,6 @@ declare module 'react-native-restart';
 declare module 'react-native-jitsi-meet';
 declare module 'rn-root-view';
 declare module 'react-native-math-view';
+declare module '@env' {
+	export const RUNNING_E2E_TESTS: string;
+}

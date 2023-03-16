@@ -65,6 +65,7 @@ export const UserStatus = () => (
 		<RoomItem status='busy' />
 		<RoomItem status='offline' />
 		<RoomItem status='loading' />
+		<RoomItem status='disabled' />
 		<RoomItem status='wrong' />
 	</>
 );

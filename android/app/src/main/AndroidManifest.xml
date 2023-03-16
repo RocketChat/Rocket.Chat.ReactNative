@@ -12,14 +12,8 @@
     <uses-permission android:name="android.permission.AUDIO_CAPTURE" />
 
     <!-- permissions related to jitsi call -->
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" android:usesPermissionFlags="neverForLocation" tools:targetApi="s" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="28"/>
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" tools:targetApi="Q"/>
-
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    
     <application
         android:name="chat.rocket.reactnative.MainApplication"
         android:allowBackup="false"

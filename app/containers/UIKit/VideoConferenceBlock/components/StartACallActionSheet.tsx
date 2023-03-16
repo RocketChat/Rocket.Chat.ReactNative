@@ -6,7 +6,6 @@ import i18n from '../../../../i18n';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../../lib/hooks';
 import { getRoomAvatar, getUidDirectMessage } from '../../../../lib/methods/helpers';
-import { videoConfStartAndJoin } from '../../../../lib/methods/videoConf';
 import { useTheme } from '../../../../theme';
 import { useActionSheet } from '../../../ActionSheet';
 import AvatarContainer from '../../../Avatar';
@@ -16,12 +15,12 @@ import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import StatusContainer from '../../../Status';
 import useStyle from './styles';
 
-export default function CallAgainActionSheet({ rid }: { rid: string }): React.ReactElement {
+export default function StartACallActionSheet({ rid, initCall }: { rid: string; initCall: Function }): React.ReactElement {
 	const style = useStyle();
 	const { colors } = useTheme();
-	const [user, setUser] = useState({ username: '', avatar: '', uid: '', rid: '' });
-	const [phone, setPhone] = useState(true);
-	const [camera, setCamera] = useState(false);
+	const [user, setUser] = useState({ username: '', avatar: '', uid: '' });
+	const [mic, setMic] = useState(true);
+	const [cam, setCam] = useState(false);
 	const username = useAppSelector(state => state.login.user.username);
 
 	const { hideActionSheet } = useActionSheet();
@@ -31,7 +30,7 @@ export default function CallAgainActionSheet({ rid }: { rid: string }): React.Re
 			const room = await getSubscriptionByRoomId(rid);
 			const uid = (await getUidDirectMessage(room)) as string;
 			const avt = getRoomAvatar(room);
-			setUser({ uid, username: room?.name || '', avatar: avt, rid: room?.id || '' });
+			setUser({ uid, username: room?.name || '', avatar: avt });
 		})();
 	}, [rid]);
 
@@ -43,25 +42,27 @@ export default function CallAgainActionSheet({ rid }: { rid: string }): React.Re
 				<Text style={style.actionSheetHeaderTitle}>{i18n.t('Start_a_call')}</Text>
 				<View style={style.actionSheetHeaderButtons}>
 					<Touchable
-						onPress={() => setCamera(!camera)}
-						style={[style.iconCallContainer, camera && style.enabledBackground, { marginRight: 6 }]}
+						onPress={() => setCam(!cam)}
+						style={[style.iconCallContainer, cam && style.enabledBackground, { marginRight: 6 }]}
 						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name={camera ? 'camera' : 'camera-disabled'} size={16} color={handleColor(camera)} />
+						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={20} color={handleColor(cam)} />
 					</Touchable>
 					<Touchable
-						onPress={() => setPhone(!phone)}
-						style={[style.iconCallContainer, phone && style.enabledBackground]}
+						onPress={() => setMic(!mic)}
+						style={[style.iconCallContainer, mic && style.enabledBackground]}
 						hitSlop={BUTTON_HIT_SLOP}
 					>
-						<CustomIcon name={phone ? 'microphone' : 'microphone-disabled'} size={16} color={handleColor(phone)} />
+						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={20} color={handleColor(mic)} />
 					</Touchable>
 				</View>
 			</View>
 			<View style={style.actionSheetUsernameContainer}>
 				<AvatarContainer text={user.avatar} size={36} />
 				<StatusContainer size={16} id={user.uid} style={{ marginLeft: 8, marginRight: 6 }} />
-				<Text style={style.actionSheetUsername}>{user.username}</Text>
+				<Text style={style.actionSheetUsername} numberOfLines={1}>
+					{user.username}
+				</Text>
 			</View>
 			<View style={style.actionSheetPhotoContainer}>
 				<AvatarContainer size={62} text={username} />
@@ -70,7 +71,7 @@ export default function CallAgainActionSheet({ rid }: { rid: string }): React.Re
 				onPress={() => {
 					hideActionSheet();
 					setTimeout(() => {
-						videoConfStartAndJoin(user.rid, camera);
+						initCall({ cam, mic });
 					}, 100);
 				}}
 				title={i18n.t('Call')}

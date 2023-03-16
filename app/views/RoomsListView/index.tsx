@@ -86,6 +86,7 @@ interface IRoomsListViewProps {
 	StoreLastMessage: boolean;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	notificationPresenceCap: boolean;
 	subscribedRoom: string;
 	width: number;
 	insets: {
@@ -146,6 +147,7 @@ const shouldUpdateProps = [
 	'StoreLastMessage',
 	'theme',
 	'isMasterDetail',
+	'notificationPresenceCap',
 	'refreshing',
 	'queueSize',
 	'inquiryEnabled',
@@ -255,21 +257,18 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
 		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
-		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
 		}
 
 		// check if some display props are changed to force update when focus this view again
-		// eslint-disable-next-line react/destructuring-assignment
 		const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
 		if (displayUpdated) {
 			this.shouldUpdate = true;
 		}
 
 		// check if some sort preferences are changed to getSubscription() when focus this view again
-		// eslint-disable-next-line react/destructuring-assignment
 		const sortPreferencesUpdate = sortPreferencesShouldUpdate.some(key => nextProps[key] !== this.props[key]);
 		if (sortPreferencesUpdate) {
 			this.sortPreferencesChanged = true;
@@ -339,6 +338,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showUnread,
 			subscribedRoom,
 			isMasterDetail,
+			notificationPresenceCap,
 			insets,
 			createTeamPermission,
 			createPublicChannelPermission,
@@ -366,7 +366,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (isMasterDetail && item?.rid !== subscribedRoom && subscribedRoom !== prevProps.subscribedRoom) {
 			this.setState({ item: { rid: subscribedRoom } as ISubscription });
 		}
-		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+		if (
+			insets.left !== prevProps.insets.left ||
+			insets.right !== prevProps.insets.right ||
+			notificationPresenceCap !== prevProps.notificationPresenceCap
+		) {
 			this.setHeader();
 		}
 
@@ -421,7 +425,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation, isMasterDetail, notificationPresenceCap } = this.props;
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
@@ -451,6 +455,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
+					badge={() => (notificationPresenceCap ? <HeaderButton.BadgeWarn /> : null)}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
@@ -1034,6 +1039,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
+	notificationPresenceCap: state.app.notificationPresenceCap,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,
