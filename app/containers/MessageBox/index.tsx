@@ -1204,14 +1204,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tmid
 		} = this.props;
 
-		const isAndroidTablet: Partial<IThemedTextInput> =
-			isTablet && isAndroid
-				? {
-						multiline: false,
-						onSubmitEditing: this.submit,
-						returnKeyType: 'send'
-				  }
-				: {};
+		const tabletProps: Partial<IThemedTextInput> = isTablet
+			? {
+					multiline: false,
+					onSubmitEditing: this.submit,
+					returnKeyType: 'send'
+			  }
+			: {};
 
 		const recordAudio =
 			showSend || !Message_AudioRecorderEnabled ? null : (
@@ -1264,7 +1263,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					defaultValue=''
 					multiline
 					testID={`messagebox-input${tmid ? '-thread' : ''}`}
-					{...isAndroidTablet}
+					{...tabletProps}
 				/>
 				<RightButtons
 					showSend={showSend}
