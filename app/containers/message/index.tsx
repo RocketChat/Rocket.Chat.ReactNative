@@ -50,7 +50,7 @@ interface IMessageContainerProps {
 	showAttachment: (file: IAttachment) => void;
 	onReactionLongPress?: (item: TAnyMessageModel) => void;
 	navToRoomInfo: (navParam: IRoomInfoParam) => void;
-	callJitsi?: () => void;
+	handleEnterCall?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
 	threadBadgeColor?: string;
@@ -69,7 +69,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
-		callJitsi: () => {},
 		blockAction: () => {},
 		archived: false,
 		broadcast: false,
@@ -338,7 +337,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			navToRoomInfo,
 			getCustomEmoji,
 			isThreadRoom,
-			callJitsi,
+			handleEnterCall,
 			blockAction,
 			rid,
 			threadBadgeColor,
@@ -456,7 +455,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
 					navToRoomInfo={navToRoomInfo}
-					callJitsi={callJitsi}
+					handleEnterCall={handleEnterCall}
 					blockAction={blockAction}
 					highlighted={highlighted}
 					comment={comment}

@@ -126,6 +126,12 @@ export const Links = () => (
 	<View style={styles.container}>
 		<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' theme={theme} />
 		<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' theme={theme} />
+		<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' theme={theme} />
+		<Markdown
+			msg='[Markdown link](https://rocket.chat) and the text with a color specific as auxiliaryText'
+			theme={theme}
+			style={[{ color: themes[theme].auxiliaryText }]}
+		/>
 	</View>
 );
 
