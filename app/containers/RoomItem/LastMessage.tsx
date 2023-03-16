@@ -24,8 +24,16 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 	const isLastMessageSentByMe = lastMessage.u.username === username;
 
 	if (!lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length) {
-		const user = isLastMessageSentByMe ? I18n.t('You') : lastMessage.u.username;
-		return I18n.t('User_sent_an_attachment', { user });
+		const userAttachment = () => {
+			if (isLastMessageSentByMe) {
+				return I18n.t('You');
+			}
+			if (useRealName && lastMessage.u.name) {
+				return lastMessage.u.name;
+			}
+			return lastMessage.u.username;
+		};
+		return I18n.t('User_sent_an_attachment', { user: userAttachment() });
 	}
 
 	// Encrypted message pending decrypt
