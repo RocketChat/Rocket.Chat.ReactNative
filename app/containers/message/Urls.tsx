@@ -59,28 +59,28 @@ const styles = StyleSheet.create({
 });
 
 const UrlContent = React.memo(
-	({ title, description, theme }: { title: string; description: string; theme: TSupportedThemes }) => (
-		<View style={styles.textContainer}>
-			{title ? (
-				<Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>
-					{title}
-				</Text>
-			) : null}
-			{description ? (
-				<Text style={[styles.description, { color: themes[theme].auxiliaryText }]} numberOfLines={2}>
-					{description}
-				</Text>
-			) : null}
-		</View>
-	),
+	({ title, description }: { title: string; description: string }) => {
+		const { colors } = useTheme();
+		return (
+			<View style={styles.textContainer}>
+				{title ? (
+					<Text style={[styles.title, { color: colors.tintColor }]} numberOfLines={2}>
+						{title}
+					</Text>
+				) : null}
+				{description ? (
+					<Text style={[styles.description, { color: colors.auxiliaryText }]} numberOfLines={2}>
+						{description}
+					</Text>
+				) : null}
+			</View>
+		);
+	},
 	(prevProps, nextProps) => {
 		if (prevProps.title !== nextProps.title) {
 			return false;
 		}
 		if (prevProps.description !== nextProps.description) {
-			return false;
-		}
-		if (prevProps.theme !== nextProps.theme) {
 			return false;
 		}
 		return true;
@@ -138,7 +138,7 @@ const Url = React.memo(
 							onLoad={() => setImageLoadedState('done')}
 						/>
 					) : null}
-					{hasContent ? <UrlContent title={url.title} description={url.description} theme={theme} /> : null}
+					{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 				</>
 			</Touchable>
 		);
