@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
+import { StyleSheet, TextInputProps, View } from 'react-native';
 
 import { FormTextInput } from '../../../containers/TextInput';
-import * as List from '../../../containers/List';
+import { Separator } from '../../../containers/List';
 import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { TServerHistoryModel } from '../../../definitions';
 import Item from './Item';
 import { TSupportedThemes } from '../../../theme';
+
+const MAX_ITEMS_HISTORY = 3;
 
 const styles = StyleSheet.create({
 	container: {
@@ -47,7 +49,14 @@ const ServerInput = ({
 	onDelete,
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
+	// Limit serverHistory to 3 items.
+	// In theory this is useless because the number of items in the history is already limited to 3 when querying the database:
+	// https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/5aaf7af5f4004e8b0b9386da579ae4c8aed3a9a0/app/views/NewServerView/index.tsx#L160
+	// But we repeat the filtering here out of precaution, since having more than three items would break the display pretty badly:
+	const mostRecentServers = serversHistory.slice(0, MAX_ITEMS_HISTORY);
+
 	const [focused, setFocused] = useState(false);
+
 	return (
 		<View style={styles.container}>
 			<FormTextInput
@@ -72,14 +81,12 @@ const ServerInput = ({
 						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
 					]}
 				>
-					<FlatList
-						data={serversHistory}
-						renderItem={({ item }) => (
+					{mostRecentServers.map((item, index) => (
+						<View key={item.id}>
 							<Item item={item} theme={theme} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />
-						)}
-						ItemSeparatorComponent={List.Separator}
-						keyExtractor={item => item.id}
-					/>
+							{index < mostRecentServers.length && <Separator /> /* Don't display <Separator /> below last item. */}
+						</View>
+					))}
 				</View>
 			) : null}
 		</View>
