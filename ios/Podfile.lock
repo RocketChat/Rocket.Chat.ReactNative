@@ -653,7 +653,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
-  - ReactNativeUiLib (from `../node_modules/react-native-ui-lib/lib`)
+  - ReactNativeUiLib (from `../node_modules/react-native-ui-lib`)
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
@@ -831,7 +831,7 @@ EXTERNAL SOURCES:
   ReactNativeART:
     :path: "../node_modules/@react-native-community/art"
   ReactNativeUiLib:
-    :path: "../node_modules/react-native-ui-lib/lib"
+    :path: "../node_modules/react-native-ui-lib"
   rn-extensions-share:
     :path: "../node_modules/rn-extensions-share"
   rn-fetch-blob:
@@ -969,7 +969,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: d5498cfb7059bf8397b6416db4777843f3f4c1e7
   ReactCommon: 1974dab5108c79b40199f12a4833d2499b9f6303
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
-  ReactNativeUiLib: cde7263a7d308b60161cd286f95c9433e79f2f7d
+  ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
   rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: 7e91ea56c7010aae487489789dbe212e8c905a0c
@@ -1001,6 +1001,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 7929b92b1828675c1bebeb114dae8cb8fa7ef6a3
 
-PODFILE CHECKSUM: 670cc455843e2a5aeeaabfba29cc1194a8948056
+PODFILE CHECKSUM: 0dc489a0c4bec783a132693070c2d02e2ca6b0db
 
 COCOAPODS: 1.11.3
