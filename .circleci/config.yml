@@ -360,7 +360,7 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache: *restore-npm-cache-linux
+      - restore_cache: *restore-npm-cache-linux
 
       - run: *install-npm-modules
 
