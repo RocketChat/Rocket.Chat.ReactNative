@@ -1,4 +1,3 @@
-import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
 import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
@@ -17,8 +16,6 @@ import OrSeparator from '../../containers/OrSeparator';
 import { IApplicationState, IBaseScreen, TServersHistoryModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
-import database from '../../lib/database';
-import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
@@ -77,7 +74,6 @@ interface INewServerViewState {
 	text: string;
 	connectingOpen: boolean;
 	certificate: string | null;
-	serversHistory: TServersHistoryModel[];
 }
 
 interface ISubmitParams {
@@ -96,15 +92,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		this.state = {
 			text: '',
 			connectingOpen: false,
-			certificate: null,
-			serversHistory: []
+			certificate: null
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-	}
-
-	componentDidMount() {
-		this.queryServersHistory();
 	}
 
 	componentWillUnmount() {
@@ -150,23 +141,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	onChangeText = (text: string) => {
 		this.setState({ text });
-		this.queryServersHistory(text);
-	};
-
-	queryServersHistory = async (text?: string) => {
-		const db = database.servers;
-		try {
-			const serversHistoryCollection = db.get('servers_history');
-			let whereClause = [Q.where('username', Q.notEq(null)), Q.experimentalSortBy('updated_at', Q.desc), Q.experimentalTake(3)];
-			if (text) {
-				const likeString = sanitizeLikeString(text);
-				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
-			}
-			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
-			this.setState({ serversHistory });
-		} catch {
-			// Do nothing
-		}
 	};
 
 	close = () => {
@@ -283,20 +257,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		});
 	};
 
-	deleteServersHistory = async (item: TServersHistoryModel) => {
-		const db = database.servers;
-		try {
-			await db.write(async () => {
-				await item.destroyPermanently();
-			});
-			this.setState((prevstate: INewServerViewState) => ({
-				serversHistory: prevstate.serversHistory.filter(server => server.id !== item.id)
-			}));
-		} catch {
-			// Nothing
-		}
-	};
-
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
 		const { theme, width, height, previousServer } = this.props;
@@ -333,7 +293,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	render() {
 		const { connecting, theme, previousServer, width, height } = this.props;
-		const { text, connectingOpen, serversHistory } = this.state;
+		const { text, connectingOpen } = this.state;
 		const marginTop = previousServer ? 0 : 35;
 
 		return (
@@ -379,10 +339,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					<ServerInput
 						text={text}
 						theme={theme}
-						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}
-						onDelete={this.deleteServersHistory}
 						onPressServersHistory={this.onPressServersHistory}
 					/>
 					<Button

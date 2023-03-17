@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInputProps, View } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 
+import { sanitizeLikeString } from '../../../lib/database/utils';
+import database from '../../../lib/database';
 import { FormTextInput } from '../../../containers/TextInput';
 import { Separator } from '../../../containers/List';
 import { themes } from '../../../lib/constants';
@@ -8,8 +11,6 @@ import I18n from '../../../i18n';
 import { TServersHistoryModel } from '../../../definitions';
 import Item from './Item';
 import { TSupportedThemes } from '../../../theme';
-
-const MAX_ITEMS_HISTORY = 3;
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,31 +32,59 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IServerInput extends TextInputProps {
+interface IServerInputProps extends TextInputProps {
 	text: string;
 	theme: TSupportedThemes;
-	serversHistory: any[];
+	onChangeText: (text: string) => void;
 	onSubmit(): void;
-	onDelete(item: TServersHistoryModel): void;
 	onPressServersHistory(serversHistory: TServersHistoryModel): void;
 }
 
-const ServerInput = ({
-	text,
-	theme,
-	serversHistory,
-	onChangeText,
-	onSubmit,
-	onDelete,
-	onPressServersHistory
-}: IServerInput): JSX.Element => {
-	// Limit serversHistory to 3 items.
-	// In theory this is useless because the number of items in the history is already limited to 3 when querying the database:
-	// https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/5aaf7af5f4004e8b0b9386da579ae4c8aed3a9a0/app/views/NewServerView/index.tsx#L160
-	// But we repeat the filtering here out of precaution, since having more than three items would break the display pretty badly:
-	const mostRecentServers = serversHistory.slice(0, MAX_ITEMS_HISTORY);
-
+const ServerInput = ({ text, theme, onChangeText, onSubmit, onPressServersHistory }: IServerInputProps): JSX.Element => {
 	const [focused, setFocused] = useState(false);
+	const [serversHistory, setServersHistory] = useState([] as TServersHistoryModel[]);
+
+	useEffect(() => {
+		queryServersHistory('');
+	}, []);
+
+	const queryServersHistory = async (textFilter: string) => {
+		const MAX_NUMBER_SERVERS = 3;
+		const db = database.servers;
+		try {
+			const serversHistoryCollection = db.get('servers_history');
+			let whereClause = [
+				Q.where('username', Q.notEq(null)),
+				Q.experimentalSortBy('updated_at', Q.desc),
+				Q.experimentalTake(MAX_NUMBER_SERVERS)
+			];
+			if (textFilter) {
+				const likeString = sanitizeLikeString(textFilter);
+				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
+			}
+			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
+			setServersHistory(serversHistory);
+		} catch {
+			// Do nothing
+		}
+	};
+
+	const internalOnChangeText = (newText: string) => {
+		queryServersHistory(newText);
+		onChangeText(newText);
+	};
+
+	const deleteServersHistory = async (item: TServersHistoryModel) => {
+		const db = database.servers;
+		try {
+			await db.write(async () => {
+				await item.destroyPermanently();
+			});
+			setServersHistory(previousServersHistory => previousServersHistory.filter(server => server.id !== item.id));
+		} catch {
+			// Nothing
+		}
+	};
 
 	return (
 		<View style={styles.container}>
@@ -65,7 +94,7 @@ const ServerInput = ({
 				containerStyle={styles.inputContainer}
 				value={text}
 				returnKeyType='send'
-				onChangeText={onChangeText}
+				onChangeText={internalOnChangeText}
 				testID='new-server-view-input'
 				onSubmitEditing={onSubmit}
 				clearButtonMode='while-editing'
@@ -81,10 +110,10 @@ const ServerInput = ({
 						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
 					]}
 				>
-					{mostRecentServers.map((item, index) => (
+					{serversHistory.map((item, index) => (
 						<View key={item.id}>
-							<Item item={item} theme={theme} onPress={() => onPressServersHistory(item)} onDelete={onDelete} />
-							{index < mostRecentServers.length && <Separator /> /* Don't display <Separator /> below last item. */}
+							<Item item={item} theme={theme} onPress={() => onPressServersHistory(item)} onDelete={deleteServersHistory} />
+							{index < serversHistory.length && <Separator /> /* Don't display <Separator /> below last item. */}
 						</View>
 					))}
 				</View>
