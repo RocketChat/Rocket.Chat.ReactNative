@@ -71,10 +71,10 @@ const handleLoginRequest = function* handleLoginRequest({
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
-						const serverHistoryRecord = serversHistory[0];
+						const serversHistoryRecord = serversHistory[0];
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update(s => {
+						await serversHistoryRecord.update(s => {
 							s.username = result.username;
 						});
 					}

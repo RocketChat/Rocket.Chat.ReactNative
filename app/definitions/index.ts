@@ -21,7 +21,7 @@ export * from './ISlashCommand';
 export * from './IUser';
 export * from './IServer';
 export * from './ILoggedUser';
-export * from './IServerHistory';
+export * from './IServersHistory';
 export * from './ICertificate';
 export * from './IUrl';
 export * from './ICredentials';

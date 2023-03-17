@@ -64,7 +64,7 @@ type ObjectServerType<T> = T extends typeof models.SERVERS_TABLE
 	: T extends typeof models.LOGGED_USERS_TABLE
 	? definitions.TLoggedUserModel
 	: T extends typeof models.SERVERS_HISTORY_TABLE
-	? definitions.TServerHistoryModel
+	? definitions.TServersHistoryModel
 	: never;
 
 export type TServerDatabase = {

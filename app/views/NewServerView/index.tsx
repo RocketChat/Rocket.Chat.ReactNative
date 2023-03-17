@@ -14,7 +14,7 @@ import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
-import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, TServersHistoryModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -77,11 +77,11 @@ interface INewServerViewState {
 	text: string;
 	connectingOpen: boolean;
 	certificate: string | null;
-	serversHistory: TServerHistoryModel[];
+	serversHistory: TServersHistoryModel[];
 }
 
 interface ISubmitParams {
-	fromServerHistory?: boolean;
+	fromServersHistory?: boolean;
 	username?: string;
 }
 
@@ -104,7 +104,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	}
 
 	componentDidMount() {
-		this.queryServerHistory();
+		this.queryServersHistory();
 	}
 
 	componentWillUnmount() {
@@ -150,10 +150,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	onChangeText = (text: string) => {
 		this.setState({ text });
-		this.queryServerHistory(text);
+		this.queryServersHistory(text);
 	};
 
-	queryServerHistory = async (text?: string) => {
+	queryServersHistory = async (text?: string) => {
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.get('servers_history');
@@ -189,11 +189,13 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		dispatch(serverRequest(server));
 	};
 
-	onPressServerHistory = (serverHistory: TServerHistoryModel) => {
-		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
+	onPressServersHistory = (serversHistory: TServersHistoryModel) => {
+		this.setState({ text: serversHistory.url }, () =>
+			this.submit({ fromServersHistory: true, username: serversHistory?.username })
+		);
 	};
 
-	submit = ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
+	submit = ({ fromServersHistory = false, username }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
@@ -212,7 +214,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			// Save info - HTTP Basic Authentication
 			this.basicAuth(server, text);
 
-			if (fromServerHistory) {
+			if (fromServersHistory) {
 				dispatch(serverRequest(server, username, true));
 			} else {
 				dispatch(serverRequest(server));
@@ -281,7 +283,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		});
 	};
 
-	deleteServerHistory = async (item: TServerHistoryModel) => {
+	deleteServersHistory = async (item: TServersHistoryModel) => {
 		const db = database.servers;
 		try {
 			await db.write(async () => {
@@ -380,8 +382,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}
-						onDelete={this.deleteServerHistory}
-						onPressServerHistory={this.onPressServerHistory}
+						onDelete={this.deleteServersHistory}
+						onPressServersHistory={this.onPressServersHistory}
 					/>
 					<Button
 						title={I18n.t('Connect')}

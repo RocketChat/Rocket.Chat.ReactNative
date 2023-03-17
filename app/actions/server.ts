@@ -17,7 +17,7 @@ interface ISelectServerSuccess extends Action {
 interface IServer extends Action {
 	server: string;
 	username: string | null;
-	fromServerHistory: boolean;
+	fromServersHistory: boolean;
 }
 
 interface IServerInit extends Action {
@@ -54,12 +54,12 @@ export function selectServerFailure(): Action {
 	};
 }
 
-export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServer {
+export function serverRequest(server: string, username: string | null = null, fromServersHistory = false): IServer {
 	return {
 		type: SERVER.REQUEST,
 		server,
 		username,
-		fromServerHistory
+		fromServersHistory
 	};
 }
 

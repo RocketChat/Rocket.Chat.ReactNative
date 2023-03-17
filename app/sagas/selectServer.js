@@ -145,7 +145,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
+const handleServerRequest = function* handleServerRequest({ server, username, fromServersHistory }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
@@ -161,7 +161,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			Navigation.navigate('WorkspaceView');
 
 			const Accounts_iframe_enabled = yield select(state => state.settings.Accounts_iframe_enabled);
-			if (fromServerHistory && !Accounts_iframe_enabled) {
+			if (fromServersHistory && !Accounts_iframe_enabled) {
 				Navigation.navigate('LoginView', { username });
 			}
 
