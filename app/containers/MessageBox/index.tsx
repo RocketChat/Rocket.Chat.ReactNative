@@ -55,7 +55,7 @@ import {
 } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { hasPermission, debounce, isAndroid, isIOS, isTablet, compareServerVersion } from '../../lib/methods/helpers';
+import { hasPermission, debounce, isIOS, isTablet, compareServerVersion } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
