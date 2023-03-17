@@ -9,7 +9,7 @@ import database from '../database';
 import { encryptionInit } from '../../actions/encryption';
 import { store } from '../store/auxStore';
 import sdk from '../services/sdk';
-import { CERTIFICATE_KEY, TOKEN_KEY } from '../constants';
+import { TOKEN_KEY } from '../constants';
 import { setCustomEmojis } from './getCustomEmojis';
 import { Services } from '../services';
 import { parseSettings } from './parseSettings';
@@ -18,7 +18,7 @@ export async function shareExtensionInit(server: string) {
 	database.setShareDB(server);
 
 	try {
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+		// const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		// if (SSLPinning && certificate) {
 		// 	await SSLPinning.setCertificate(certificate, server);
 		// }

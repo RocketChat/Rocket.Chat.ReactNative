@@ -1,12 +1,19 @@
 /* eslint-disable no-bitwise */
 import { NativeSyntheticEvent } from 'react-native';
-// import KeyCommands, { constants, KeyCommand } from 'react-native-keycommands';
-
-const constants = {};
-const KeyCommands = {};
-const KeyCommand = {};
 
 import I18n from './i18n';
+// import KeyCommands, { constants, KeyCommand } from 'react-native-keycommands';
+
+const constants = { keyModifierCommand: 0, keyModifierAlternate: 0, keyInputUpArrow: '', keyInputDownArrow: '' };
+const KeyCommands = {
+	setKeyCommands: (args: any) => {
+		console.log(args);
+	},
+	deleteKeyCommands: (args: any) => {
+		console.log(args);
+	}
+};
+const KeyCommand = {};
 
 const KEY_TYPING = '\t';
 const KEY_PREFERENCES = 'p';
