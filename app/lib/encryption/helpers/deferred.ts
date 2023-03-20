@@ -1,5 +1,5 @@
 export default class Deferred {
-	[Symbol.toStringTag]: 'Promise';
+	// [Symbol.toStringTag]: 'Promise';
 
 	private promise: Promise<unknown>;
 	private _resolve: (value?: unknown) => void;

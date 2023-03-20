@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.d.ts b/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.d.ts
+index 58cfac7..0fb7755 100644
+--- a/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.d.ts
++++ b/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.d.ts
+@@ -4,7 +4,7 @@ declare type SkeletonPlaceholderProps = {
+     /**
+      * Determines component's children.
+      */
+-    children: JSX.Element;
++    children: JSX.Element[] | JSX.Element;
+     /**
+      * Determines the color of placeholder.
+      */
+@@ -33,6 +33,7 @@ declare type SkeletonPlaceholderProps = {
+ };
+ declare type SkeletonPlaceholderItemProps = ViewStyle & {
+     style?: StyleProp<ViewStyle>;
++    children?: JSX.Element[] | JSX.Element;
+ };
+ declare const SkeletonPlaceholder: React.FC<SkeletonPlaceholderProps> & {
+     Item: React.FC<SkeletonPlaceholderItemProps>;

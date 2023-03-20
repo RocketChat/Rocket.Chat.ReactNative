@@ -39,7 +39,11 @@ import {
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
-const KeyCommandsEmitter = {};
+const KeyCommandsEmitter = {
+	addListener: (arg: string, cb: (command: any) => void) => {
+		console.log(arg, cb);
+	}
+};
 
 RNScreens.enableScreens();
 initStore(store);

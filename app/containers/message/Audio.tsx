@@ -114,7 +114,7 @@ Button.displayName = 'MessageAudioButton';
 
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
-
+	declare context: React.ContextType<typeof MessageContext>;
 	private sound: Sound;
 
 	constructor(props: IMessageAudioProps) {

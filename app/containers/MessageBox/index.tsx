@@ -976,7 +976,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { showEmojiKeyboard } = this.state;
 
 		this.closeEmoji();
-		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : null);
+		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : undefined);
 	};
 
 	submit = async () => {
