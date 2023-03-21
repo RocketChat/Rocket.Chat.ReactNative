@@ -17,7 +17,7 @@ const OrderedList = ({ value }: IOrderedListProps): React.ReactElement => {
 			{value.map(item => (
 				<View style={styles.row} key={item.number?.toString()}>
 					<Text style={[styles.text, { color: colors.bodyText }]}>{item.number}. </Text>
-					<Text style={{ color: colors.bodyText }}>
+					<Text style={[styles.inline, { color: colors.bodyText }]}>
 						<Inline value={item.value} />
 					</Text>
 				</View>
