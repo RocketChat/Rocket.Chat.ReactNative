@@ -17490,9 +17490,9 @@ react-native-text-size@4.0.0-rc.1:
   resolved "https://registry.yarnpkg.com/react-native-text-size/-/react-native-text-size-4.0.0-rc.1.tgz#1e048d345dd6a5a8e1269e0585c1a5948c478da5"
   integrity sha512-CysqjU2jK6Yc+a+kEI222pUyTY2ywcU2HqbFqf1KHymW6OPTdvBBHqbEJKL0QiLhQaFYDbqicM+h990s9TP00g==
 
-react-native-ui-lib@RocketChat/react-native-ui-lib#9360d927b5391ad083c7ff0846c05cddccb00092:
-  version "7.0.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/9360d927b5391ad083c7ff0846c05cddccb00092"
+react-native-ui-lib@RocketChat/react-native-ui-lib#7.2.0:
+  version "7.2.1"
+  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/ba4bf0f672f1de816e3d9cb1307f124379df5327"
   dependencies:
     babel-plugin-transform-inline-environment-variables "^0.0.2"
     color "^3.1.0"
@@ -17510,10 +17510,10 @@ react-native-ui-lib@RocketChat/react-native-ui-lib#9360d927b5391ad083c7ff0846c05
     tinycolor2 "^1.4.2"
     url-parse "^1.2.0"
 
-react-native-vector-icons@9.1.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-9.1.0.tgz#52eaa205f5954d567b7048eb93d58ac854a2c59e"
-  integrity sha512-2AHZ/h9d/+rC0odz+OwbGNlc1Lik/pHhSixn4HfC8RtQ8CxfSBZ6gg7bTLcZhdSvZN+ZEGi30Fj+ZnOSQy+smg==
+react-native-vector-icons@^9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-9.2.0.tgz#3c0c82e95defd274d56363cbe8fead8d53167ebd"
+  integrity sha512-wKYLaFuQST/chH3AJRjmOLoLy3JEs1JR6zMNgTaemFpNoXs0ztRnTxcxFD9xhX7cJe1/zoN5BpQYe7kL0m5yyA==
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
