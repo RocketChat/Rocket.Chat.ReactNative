@@ -10,6 +10,8 @@ const blocklist = require('metro-config/src/defaults/exclusionList');
 
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
 
+console.log('🚀 ~ file: metro.config.js:27 ~ process.env.MOCK_E2E_TEST:', process.env.MOCK_E2E_TEST);
+
 module.exports = {
 	transformer: {
 		getTransformOptions: () => ({
