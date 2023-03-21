@@ -10,8 +10,6 @@ const blocklist = require('metro-config/src/defaults/exclusionList');
 
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
 
-console.log('🚀 ~ file: metro.config.js:27 ~ process.env.MOCK_E2E_TEST:', process.env.MOCK_E2E_TEST);
-
 module.exports = {
 	transformer: {
 		getTransformOptions: () => ({
@@ -25,6 +23,6 @@ module.exports = {
 	resolver: {
 		blocklistRE: blocklist([/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/]),
 		resolverMainFields: ['sbmodern', 'react-native', 'browser', 'main'],
-		sourceExts: process.env.MOCK_E2E_TEST ? ['mock.ts', ...defaultSourceExts] : defaultSourceExts
+		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...defaultSourceExts] : defaultSourceExts
 	}
 };
