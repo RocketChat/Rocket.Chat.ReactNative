@@ -2,7 +2,6 @@ import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 
 import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { shallowEqual } from 'react-redux';
 
 import KeyboardView from '../../containers/KeyboardView';
@@ -26,6 +25,7 @@ import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
+import ImagePicker, { Image } from './ImagePicker';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -221,7 +221,7 @@ const ChangeAvatarView = () => {
 						disabled={saving}
 						backgroundColor={colors.editAndUploadButtonAvatar}
 						onPress={pickImage}
-						testID='change-avatar-view-logout-other-locations'
+						testID='change-avatar-view-upload-image'
 					/>
 					{context === 'room' ? (
 						<Button
