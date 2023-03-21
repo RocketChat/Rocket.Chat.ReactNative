@@ -24,7 +24,6 @@ def all_pods
   
   use_react_native!(
     :path => config[:reactNativePath],
-    :production => false,
     # Hermes is now enabled by default. Disable by setting this flag to false.
     # Upcoming versions of React Native may rely on get_default_flags(), but
     # we make it explicit here to aid in the React Native upgrade process.
@@ -55,7 +54,7 @@ post_install do |installer|
     installer,
     # Set `mac_catalyst_enabled` to `true` in order to apply patches
     # necessary for Mac Catalyst builds
-    # :mac_catalyst_enabled => false
+    :mac_catalyst_enabled => false
   )
   # __apply_Xcode_12_5_M1_post_install_workaround(installer) # TODO: is this needed?
 

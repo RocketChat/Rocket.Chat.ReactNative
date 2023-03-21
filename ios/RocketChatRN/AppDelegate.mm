@@ -44,10 +44,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
   bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
 #endif
-  if(![FIRApp defaultApp]){
-    [FIRApp configure];
-  }
-  [Bugsnag start];
+ if(![FIRApp defaultApp]){
+   [FIRApp configure];
+ }
+ [Bugsnag start];
 
   NSDictionary *initProps = [self prepareInitialProps];
   UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"RocketChatRN", initProps);
