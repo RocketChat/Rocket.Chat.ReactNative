@@ -9,10 +9,24 @@ import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessa
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
-import { ModalStackParamList } from './MasterDetailStack/types';
+import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
 import { TThreadModel } from '../definitions';
 import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../definitions/ILivechatTag';
+
+export type SetUsernameStackParamList = {
+	SetUsernameView: {
+		title: string;
+	};
+};
+
+export type StackParamList = {
+	AuthLoading: undefined;
+	OutsideStack: NavigatorScreenParams<OutsideParamList>;
+	InsideStack: NavigatorScreenParams<InsideStackParamList>;
+	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
+	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+};
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
