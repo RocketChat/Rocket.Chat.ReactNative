@@ -3,6 +3,7 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 import { TSubscriptionModel } from '../../definitions/ISubscription';
 import { TServerModel } from '../../definitions/IServer';
 import { IAttachment } from '../../definitions/IAttachment';
+import { IMessage, TThreadModel } from '../../definitions';
 
 export type ShareInsideStackParamList = {
 	ShareListView: undefined;
@@ -13,7 +14,10 @@ export type ShareInsideStackParamList = {
 		serverInfo: TServerModel;
 		text: string;
 		room: TSubscriptionModel;
-		thread?: any; // TODO: Change
+		thread?: TThreadModel;
+		replying?: boolean;
+		replyingMessage?: IMessage;
+		closeReply?: Function;
 	};
 	SelectServerView: undefined;
 };

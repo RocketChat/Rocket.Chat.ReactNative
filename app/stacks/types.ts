@@ -3,7 +3,7 @@ import { TextInputProps } from 'react-native';
 
 import { IItem } from '../views/TeamChannelsView';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
-import { IServer } from '../definitions/IServer';
+import { TServerModel } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
@@ -283,10 +283,10 @@ export type InsideStackParamList = {
 		attachments: IAttachment[];
 		isShareView?: boolean;
 		isShareExtension: boolean;
-		serverInfo: IServer;
+		serverInfo: TServerModel;
 		text: string;
 		room: TSubscriptionModel;
-		thread: TThreadModel;
+		thread?: TThreadModel;
 		replying?: boolean;
 		replyingMessage?: IMessage;
 		closeReply?: Function;
