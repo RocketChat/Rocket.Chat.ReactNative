@@ -13,7 +13,6 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.soloader.SoLoader;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.facebook.react.bridge.JSIModulePackage;
-import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import android.content.Context;
 import android.content.res.Configuration;
 import expo.modules.ApplicationLifecycleDispatcher;
@@ -48,11 +47,6 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected String getJSMainModuleName() {
       return "index";
-    }
-
-    @Override
-    protected JSIModulePackage getJSIModulePackage() {
-      return new ReanimatedJSIModulePackage();
     }
 
     @Override

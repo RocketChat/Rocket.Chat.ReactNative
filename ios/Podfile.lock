@@ -5,28 +5,27 @@ PODS:
   - BVLinearGradient (2.6.2):
     - React-Core
   - DoubleConversion (1.1.6)
-  - EXAppleAuthentication (4.2.1):
+  - EXAV (13.2.1):
     - ExpoModulesCore
-  - EXAV (12.0.4):
+    - ReactCommon/turbomodule/core
+  - EXFileSystem (15.2.2):
     - ExpoModulesCore
-    - React-runtimeexecutor
-    - ReactCommon
-  - EXFileSystem (14.0.0):
+  - Expo (48.0.9):
     - ExpoModulesCore
-  - EXLocalAuthentication (12.2.0):
+  - ExpoAppleAuthentication (6.0.1):
     - ExpoModulesCore
-  - Expo (46.0.9):
+  - ExpoHaptics (12.2.1):
     - ExpoModulesCore
-  - ExpoHaptics (11.2.0):
+  - ExpoKeepAwake (12.0.1):
     - ExpoModulesCore
-  - ExpoKeepAwake (10.1.1):
+  - ExpoLocalAuthentication (13.2.1):
     - ExpoModulesCore
-  - ExpoModulesCore (0.11.4):
+  - ExpoModulesCore (1.2.6):
     - React-Core
     - ReactCommon/turbomodule/core
-  - ExpoWebBrowser (10.2.1):
+  - ExpoVideoThumbnails (7.2.1):
     - ExpoModulesCore
-  - EXVideoThumbnails (6.3.0):
+  - ExpoWebBrowser (12.1.1):
     - ExpoModulesCore
   - FBLazyVector (0.70.7)
   - FBReactNativeSpec (0.70.7):
@@ -443,25 +442,6 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.70.7)
   - React-runtimeexecutor (0.70.7):
     - React-jsi (= 0.70.7)
-  - ReactCommon (0.70.7):
-    - React-logger (= 0.70.7)
-    - ReactCommon/react_debug_core (= 0.70.7)
-    - ReactCommon/turbomodule (= 0.70.7)
-  - ReactCommon/react_debug_core (0.70.7):
-    - React-logger (= 0.70.7)
-  - ReactCommon/turbomodule (0.70.7):
-    - DoubleConversion
-    - glog
-    - RCT-Folly (= 2021.07.22.00)
-    - React-bridging (= 0.70.7)
-    - React-callinvoker (= 0.70.7)
-    - React-Core (= 0.70.7)
-    - React-cxxreact (= 0.70.7)
-    - React-jsi (= 0.70.7)
-    - React-logger (= 0.70.7)
-    - React-perflogger (= 0.70.7)
-    - ReactCommon/turbomodule/core (= 0.70.7)
-    - ReactCommon/turbomodule/samples (= 0.70.7)
   - ReactCommon/turbomodule/core (0.70.7):
     - DoubleConversion
     - glog
@@ -473,18 +453,6 @@ PODS:
     - React-jsi (= 0.70.7)
     - React-logger (= 0.70.7)
     - React-perflogger (= 0.70.7)
-  - ReactCommon/turbomodule/samples (0.70.7):
-    - DoubleConversion
-    - glog
-    - RCT-Folly (= 2021.07.22.00)
-    - React-bridging (= 0.70.7)
-    - React-callinvoker (= 0.70.7)
-    - React-Core (= 0.70.7)
-    - React-cxxreact (= 0.70.7)
-    - React-jsi (= 0.70.7)
-    - React-logger (= 0.70.7)
-    - React-perflogger (= 0.70.7)
-    - ReactCommon/turbomodule/core (= 0.70.7)
   - ReactNativeART (1.2.0):
     - React
   - ReactNativeUiLib (3.0.4):
@@ -539,7 +507,7 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.1.1):
     - React-Core
-  - RNReanimated (2.9.1):
+  - RNReanimated (2.14.4):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -593,16 +561,16 @@ DEPENDENCIES:
   - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EXAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
-  - EXLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - Expo (from `../node_modules/expo`)
+  - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
-  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
+  - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
-  - EXVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -714,26 +682,26 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  EXAppleAuthentication:
-    :path: "../node_modules/expo-apple-authentication/ios"
   EXAV:
     :path: "../node_modules/expo-av/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
-  EXLocalAuthentication:
-    :path: "../node_modules/expo-local-authentication/ios"
   Expo:
     :path: "../node_modules/expo"
+  ExpoAppleAuthentication:
+    :path: "../node_modules/expo-apple-authentication/ios"
   ExpoHaptics:
     :path: "../node_modules/expo-haptics/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
+  ExpoLocalAuthentication:
+    :path: "../node_modules/expo-local-authentication/ios"
   ExpoModulesCore:
-    :path: "../node_modules/expo-modules-core/ios"
+    :path: "../node_modules/expo-modules-core"
+  ExpoVideoThumbnails:
+    :path: "../node_modules/expo-video-thumbnails/ios"
   ExpoWebBrowser:
     :path: "../node_modules/expo-web-browser/ios"
-  EXVideoThumbnails:
-    :path: "../node_modules/expo-video-thumbnails/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -888,16 +856,16 @@ SPEC CHECKSUMS:
   BugsnagReactNative: a97b3132c1854fd7bf92350fabd505e3ebdd7829
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
-  EXAppleAuthentication: 709a807fe7f48ac6986a2ceed206ee6a8baf28df
-  EXAV: 596506c9bee54ad52f2f3b625cdaeb9d9f2dd6b7
-  EXFileSystem: 2aa2d9289f84bca9532b9ccbd81504fa31eb1ded
-  EXLocalAuthentication: 7f37b242eae73f9acf111d39bdee3f1379e68902
-  Expo: 73412414e62f5cbc6e713def821de70b92cd3ad6
-  ExpoHaptics: ad58ec96a25e57579c14a47c7d71f0de0de8656a
-  ExpoKeepAwake: c0c494b442ecd8122974c13b93ccfb57bd408e88
-  ExpoModulesCore: e281bb7b78ea47e227dd5af94d04b24d8b2e1255
-  ExpoWebBrowser: 4b5f9633e5f169dc948587cb6d26d2d1d1406187
-  EXVideoThumbnails: 19e055dc3245b53c536da9e0ef9c618fd2118297
+  EXAV: f1f69397ecdcf44cfacd4ff5d338cd1b96891e87
+  EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
+  Expo: 863488a600a4565698a79577117c70b170054d08
+  ExpoAppleAuthentication: 7bd5e4150d59e8df37aa80b425850ae88adf9e65
+  ExpoHaptics: 5156bc5160d8e04c170dd6e645a71154951a2ad9
+  ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
+  ExpoLocalAuthentication: b870b7a8df5e15b8b0be042185a2bb7764093096
+  ExpoModulesCore: 8d3a44404b8871fa05a24102a064444e8a6c0588
+  ExpoVideoThumbnails: 0021303b614a89fcc5df8b59d9d37ddf14a7d4cf
+  ExpoWebBrowser: 033d34c478d9986da2f1679729041423837626e0
   FBLazyVector: a6454570f573a0f6f1d397e5a95c13e8e45d1700
   FBReactNativeSpec: 09e8dfba44487e5dc4882a9f5318cde67549549c
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
@@ -983,7 +951,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
-  RNReanimated: 24508aef58348323f891abd6616debf39173f1b9
+  RNReanimated: 6668b0587bebd4b15dd849b99e5a9c70fc12ed95
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
