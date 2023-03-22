@@ -484,6 +484,7 @@ jobs:
       - run:
           name: Build Android
           command: |
+            export RUNNING_E2E_TESTS=true
             echo "RUNNING_E2E_TESTS=true" > ./.env
             yarn e2e:android-build
       - save_cache: *save-gradle-cache
