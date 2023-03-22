@@ -27,7 +27,6 @@ import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../d
 import styles from './styles';
 import Options from './Options';
 import { Services } from '../../lib/services';
-import KeyboardView from '../../containers/KeyboardView';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -291,33 +290,31 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { isFederationEnabled, theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
-				<KeyboardView>
-					<StatusBar />
-					<FlatList
-						data={data}
-						style={styles.list}
-						contentContainerStyle={styles.listContainer}
-						extraData={this.state}
-						keyExtractor={item => item._id}
-						ListHeaderComponent={this.renderHeader}
-						renderItem={this.renderItem}
-						ItemSeparatorComponent={List.Separator}
-						keyboardShouldPersistTaps='always'
-						ListFooterComponent={loading ? <ActivityIndicator /> : null}
-						onEndReached={() => this.load({})}
+				<StatusBar />
+				<FlatList
+					data={data}
+					style={styles.list}
+					contentContainerStyle={styles.listContainer}
+					extraData={this.state}
+					keyExtractor={item => item._id}
+					ListHeaderComponent={this.renderHeader}
+					renderItem={this.renderItem}
+					ItemSeparatorComponent={List.Separator}
+					keyboardShouldPersistTaps='always'
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
+					onEndReached={() => this.load({})}
+				/>
+				{showOptionsDropdown ? (
+					<Options
+						theme={theme}
+						type={type}
+						globalUsers={globalUsers}
+						close={this.toggleDropdown}
+						changeType={this.changeType}
+						toggleWorkspace={this.toggleWorkspace}
+						isFederationEnabled={isFederationEnabled}
 					/>
-					{showOptionsDropdown ? (
-						<Options
-							theme={theme}
-							type={type}
-							globalUsers={globalUsers}
-							close={this.toggleDropdown}
-							changeType={this.changeType}
-							toggleWorkspace={this.toggleWorkspace}
-							isFederationEnabled={isFederationEnabled}
-						/>
-					) : null}
-				</KeyboardView>
+				) : null}
 			</SafeAreaView>
 		);
 	};
