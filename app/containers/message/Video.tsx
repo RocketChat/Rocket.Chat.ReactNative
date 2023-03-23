@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { StyleProp, StyleSheet, TextStyle } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { dequal } from 'dequal';
+import * as VideoThumbnails from 'expo-video-thumbnails';
+import FastImage from 'react-native-fast-image';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -24,11 +26,23 @@ const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	thumbnailImage: {
+		width: '100%',
+		height: '100%',
 		borderRadius: 4,
+		borderWidth: 1,
+		overflow: 'hidden',
+		position: 'absolute',
+		opacity: 0.6
+	},
+	container: {
 		height: 150,
-		marginBottom: 6,
-		alignItems: 'center',
-		justifyContent: 'center'
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 
@@ -45,6 +59,11 @@ const Video = React.memo(
 		const { baseUrl, user } = useContext(MessageContext);
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
+		const [thumbnailImage, setThumbnailImage] = useState('');
+
+		useEffect(() => {
+			getThumbnail();
+		}, []);
 
 		if (!baseUrl) {
 			return null;
@@ -75,6 +94,20 @@ const Video = React.memo(
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
 		};
 
+		const getThumbnail = async () => {
+			if (file.video_url) {
+				const url = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
+				try {
+					const { uri } = await VideoThumbnails.getThumbnailAsync(url, {
+						quality: 0.3
+					});
+					setThumbnailImage(uri);
+				} catch (e) {
+					console.warn(e);
+				}
+			}
+		};
+
 		return (
 			<>
 				<Markdown
@@ -90,7 +123,10 @@ const Video = React.memo(
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
 				>
-					{loading ? <RCActivityIndicator /> : <CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />}
+					<View style={styles.container}>
+						<FastImage source={{ uri: thumbnailImage }} resizeMode={FastImage.resizeMode.cover} style={[styles.thumbnailImage]} />
+						{loading ? <RCActivityIndicator /> : <CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />}
+					</View>
 				</Touchable>
 			</>
 		);
