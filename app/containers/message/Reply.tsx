@@ -232,7 +232,9 @@ const Reply = React.memo(
 
 		return (
 			<>
+				{/* The testID is to test properly quoted messages using it as ancestor  */}
 				<Touchable
+					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 					onPress={onPress}
 					style={[
 						styles.button,
