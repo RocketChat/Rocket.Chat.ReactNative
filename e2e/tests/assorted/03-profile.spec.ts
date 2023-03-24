@@ -74,6 +74,7 @@ describe('Profile screen', () => {
 		it('should change name and username', async () => {
 			await element(by.id('profile-view-name')).replaceText(`${user.username}new`);
 			await element(by.id('profile-view-username')).replaceText(`${user.username}new`);
+			// dismiss keyboard
 			await element(by.id('profile-view-list')).swipe('down');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
@@ -85,9 +86,11 @@ describe('Profile screen', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${random()}@rocket.chat`);
-			// password is hide by the keyboard
-			await element(by.id('profile-view-list')).swipe('up', 'slow');
+			// dismiss keyboard
+			await element(by.id('profile-view-list')).swipe('down');
 			await element(by.id('profile-view-new-password')).replaceText(`${user.password}new`);
+			// dismiss keyboard
+			await element(by.id('profile-view-list')).swipe('down');
 			await waitFor(element(by.id('profile-view-submit')))
 				.toExist()
 				.withTimeout(2000);

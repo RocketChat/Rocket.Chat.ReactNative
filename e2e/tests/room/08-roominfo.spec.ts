@@ -185,7 +185,7 @@ describe('Room info screen', () => {
 				await sleep(5000); // wait for changes to be applied from socket
 				await element(by.id('room-info-edit-view-description')).replaceText('new description');
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
-				await swipe('up');
+				await swipe('down'); // dismiss keyboard
 				// announcement is hide by the keyboard
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
 				await element(by.id('room-info-edit-view-announcement')).tapReturnKey();
