@@ -16,7 +16,7 @@ async function navigateToRoomInfo(room: string) {
 }
 
 async function swipe(direction: Detox.Direction) {
-	await element(by.id('room-info-edit-view-list')).swipe(direction, 'fast', 0.8, 0.2);
+	await element(by.id('room-info-edit-view-list')).swipe(direction);
 }
 
 async function waitForToast() {
@@ -243,6 +243,7 @@ describe('Room info screen', () => {
 			});
 
 			it('should delete room', async () => {
+				await element(by.id('room-info-edit-view-list')).swipe('up');
 				await element(by.id('room-info-edit-view-delete')).tap();
 				await waitFor(element(by[textMatcher]('Yes, delete it!')))
 					.toExist()

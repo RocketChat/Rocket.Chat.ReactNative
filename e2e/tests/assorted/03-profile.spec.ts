@@ -80,6 +80,7 @@ describe('Profile screen', () => {
 		});
 
 		it('should change email and password', async () => {
+			await element(by.id('profile-view-list')).swipe('up');
 			await waitFor(element(by.id('profile-view-email')))
 				.toBeVisible()
 				.withTimeout(2000);
