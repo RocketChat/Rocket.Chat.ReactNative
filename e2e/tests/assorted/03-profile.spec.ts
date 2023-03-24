@@ -85,6 +85,8 @@ describe('Profile screen', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${random()}@rocket.chat`);
+			// password is hide by the keyboard
+			await element(by.id('profile-view-list')).swipe('up', 'slow');
 			await element(by.id('profile-view-new-password')).replaceText(`${user.password}new`);
 			await waitFor(element(by.id('profile-view-submit')))
 				.toExist()

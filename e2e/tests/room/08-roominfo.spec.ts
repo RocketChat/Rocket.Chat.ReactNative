@@ -16,7 +16,7 @@ async function navigateToRoomInfo(room: string) {
 }
 
 async function swipe(direction: Detox.Direction) {
-	await element(by.id('room-info-edit-view-list')).swipe(direction, 'fast', 0.8, 0.2);
+	await element(by.id('room-info-edit-view-list')).swipe(direction);
 }
 
 async function waitForToast() {
@@ -185,6 +185,8 @@ describe('Room info screen', () => {
 				await sleep(5000); // wait for changes to be applied from socket
 				await element(by.id('room-info-edit-view-description')).replaceText('new description');
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
+				await swipe('up');
+				// announcement is hide by the keyboard
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
 				await element(by.id('room-info-edit-view-announcement')).tapReturnKey();
 				await element(by.id('room-info-edit-view-password')).tapReturnKey();
