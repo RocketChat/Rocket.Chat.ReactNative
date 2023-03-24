@@ -487,7 +487,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.handleTyping(!isTextEmpty);
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		const txt = cursor < text.length ? text.substr(0, cursor).split(' ') : text.split(' ');
+		const whiteSpaceOrBreakLineRegex = /[\s\n]+/;
+		const txt =
+			cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
 		const lastWord = txt[txt.length - 1];
 		const result = lastWord.substring(1);
 
