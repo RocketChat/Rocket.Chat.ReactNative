@@ -13,7 +13,7 @@ export const getMessageById = async (messageId: string | null) => {
 	try {
 		const result = await messageCollection.find(messageId);
 		return result;
-	} catch (error) {
+	} catch {
 		return null;
 	}
 };
