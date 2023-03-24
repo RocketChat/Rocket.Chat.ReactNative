@@ -16,7 +16,7 @@ async function navigateToRoomInfo(room: string) {
 }
 
 async function swipe(direction: Detox.Direction) {
-	await element(by.id('room-info-edit-view-list')).swipe(direction);
+	await element(by.id('room-info-edit-view-list')).swipe(direction, 'fast', 0.8, 0.2);
 }
 
 async function waitForToast() {
