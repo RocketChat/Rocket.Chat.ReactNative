@@ -11,9 +11,10 @@ import { IServer } from '../definitions/IServer';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { IItem } from '../views/TeamChannelsView';
 import { ModalStackParamList } from './MasterDetailStack/types';
+import { TNavigation } from './stackType';
 
 export type ChatsStackParamList = {
-	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
+	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
 	SettingsView: any;

@@ -1,24 +1,25 @@
+import { StackNavigationProp } from '@react-navigation/stack';
+import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { dequal } from 'dequal';
-import { Observable, Subscription } from 'rxjs';
 import { Dispatch } from 'redux';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { Observable, Subscription } from 'rxjs';
 
-import { ILivechatTag } from '../../definitions/ILivechatTag';
-import * as HeaderButton from '../../containers/HeaderButton';
-import database from '../../lib/database';
-import { getUserSelector } from '../../selectors/login';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { IApplicationState, ISubscription, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
-import { ChatsStackParamList } from '../../stacks/types';
 import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
-import i18n from '../../i18n';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
-import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
-import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
-import { Services } from '../../lib/services';
+import * as HeaderButton from '../../containers/HeaderButton';
+import { IApplicationState, ISubscription, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { ILivechatTag } from '../../definitions/ILivechatTag';
+import i18n from '../../i18n';
+import database from '../../lib/database';
+import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import { Services } from '../../lib/services';
+import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
+import { getUserSelector } from '../../selectors/login';
+import { TNavigation } from '../../stacks/stackType';
+import { ChatsStackParamList } from '../../stacks/types';
 import HeaderCallButton from './components/HeaderCallButton';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
@@ -32,7 +33,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	status?: string;
 	dispatch: Dispatch;
 	encrypted?: boolean;
-	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
+	navigation: StackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
 	omnichannelPermissions: {
 		canForwardGuest: boolean;
 		canReturnQueue: boolean;
