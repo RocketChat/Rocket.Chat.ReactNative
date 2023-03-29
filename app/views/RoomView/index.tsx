@@ -591,7 +591,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<LeftButtons
 					tmid={tmid}
 					unreadsCount={unreadsCount}
-					navigation={navigation}
 					baseUrl={baseUrl}
 					userId={userId}
 					token={token}
