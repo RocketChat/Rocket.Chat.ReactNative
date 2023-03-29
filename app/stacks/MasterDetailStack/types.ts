@@ -1,11 +1,10 @@
-import { TextInputProps } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/core';
 
 import { IAttachment } from '../../definitions/IAttachment';
-import { IMessage } from '../../definitions/IMessage';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { IMessage } from '../../definitions/IMessage';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -111,9 +110,6 @@ export type ModalStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
-	ForwardLivechatView: {
-		rid: string;
-	};
 	CloseLivechatView: {
 		rid: string;
 		departmentId?: string;
@@ -135,14 +131,6 @@ export type ModalStackParamList = {
 	LivechatEditView: {
 		room: ISubscription;
 		roomUser: any; // TODO: Change
-	};
-	PickerView: {
-		title: string;
-		data: []; // TODO: Change
-		value: any; // TODO: Change
-		onChangeText: TextInputProps['onChangeText'];
-		goBack: Function;
-		onChangeValue: Function;
 	};
 	ThreadMessagesView: {
 		rid: string;

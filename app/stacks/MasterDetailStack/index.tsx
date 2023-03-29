@@ -74,6 +74,7 @@ import {
 	ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
+import { TNavigation } from '../stackType';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -116,7 +117,7 @@ export interface INavigation {
 	navigation: StackNavigationProp<ModalStackParamList>;
 }
 
-const ModalStack = createStackNavigator<ModalStackParamList>();
+const ModalStack = createStackNavigator<ModalStackParamList & TNavigation>();
 const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
@@ -157,7 +158,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
-				<ModalStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
+				<ModalStack.Screen name='PickerView' component={PickerView} />
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />

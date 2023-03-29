@@ -81,9 +81,10 @@ import {
 	SettingsStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
+import { TNavigation } from './stackType';
 
 // ChatsStackNavigator
-const ChatsStack = createStackNavigator<ChatsStackParamList>();
+const ChatsStack = createStackNavigator<ChatsStackParamList & TNavigation>();
 const ChatsStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
@@ -113,7 +114,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 			<ChatsStack.Screen name='CloseLivechatView' component={CloseLivechatView} />
 			<ChatsStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
-			<ChatsStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
+			<ChatsStack.Screen name='PickerView' component={PickerView} />
 			<ChatsStack.Screen
 				name='ThreadMessagesView'
 				component={ThreadMessagesView}
@@ -142,7 +143,7 @@ const ChatsStackNavigator = () => {
 };
 
 // ProfileStackNavigator
-const ProfileStack = createStackNavigator<ProfileStackParamList>();
+const ProfileStack = createStackNavigator<ProfileStackParamList & TNavigation>();
 const ProfileStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
@@ -152,7 +153,7 @@ const ProfileStackNavigator = () => {
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
-			<ProfileStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
+			<ProfileStack.Screen name='PickerView' component={PickerView} />
 		</ProfileStack.Navigator>
 	);
 };
