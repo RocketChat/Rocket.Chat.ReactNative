@@ -39,6 +39,7 @@ import {
 	ICustomEmoji
 } from '../../definitions';
 import { Services } from '../../lib/services';
+import { TNavigation } from '../../stacks/stackType';
 
 const QUERY_SIZE = 50;
 
@@ -59,7 +60,7 @@ export interface IRoomInfoParam {
 interface INavigationOption {
 	navigation: CompositeNavigationProp<
 		StackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
-		StackNavigationProp<InsideStackParamList>
+		StackNavigationProp<InsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'SearchMessagesView'>;
 }
