@@ -43,11 +43,11 @@ save-npm-cache-mac: &save-npm-cache-mac
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
-  key: *gems_cache_key
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
 save-gems-cache: &save-gems-cache
   name: Save gems cache
-  key: *gems_cache_key
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
   paths:
     - vendor/bundle
 
@@ -72,11 +72,6 @@ save-gradle-cache: &save-gradle-cache
 restore_cache: &restore-gradle-cache
   name: Restore gradle cache
   key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-
-references:
-  cache_keys:
-    gems_cache_key: &gems_cache_key v1-gems-{{ checksum "Gemfile.lock" }}
-    rbenv_cache_key: &rbenv_cache_key v1-rbenv-{{ checksum "/tmp/required_ruby" }}
 
 # COMMANDS
 commands:
@@ -351,12 +346,12 @@ commands:
         type: string
     steps:
       - restore_cache:
-          key: *gems_cache_key
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
       - run:
           name: Set Required Ruby
           command: echo << parameters.ruby_version >> > /tmp/required_ruby
       - restore_cache:
-          key: *rbenv_cache_key
+          key: v1-rbenv-{{ checksum "/tmp/required_ruby" }}
       - run:
           name: Bundle Install
           command: |
@@ -387,11 +382,11 @@ commands:
             gem install bundler
             bundle check || bundle install --path vendor/bundle --clean
       - save_cache:
-          key: *rbenv_cache_key
+          key: v1-rbenv-{{ checksum "/tmp/required_ruby" }}
           paths:
             - ~/.rbenv
       - save_cache:
-          key: *gems_cache_key
+          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
           paths:
             - vendor/bundle
 
