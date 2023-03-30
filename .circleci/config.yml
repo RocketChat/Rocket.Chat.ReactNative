@@ -43,11 +43,11 @@ save-npm-cache-mac: &save-npm-cache-mac
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
-  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  key: *gems_cache_key
 
 save-gems-cache: &save-gems-cache
   name: Save gems cache
-  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  key: *gems_cache_key
   paths:
     - vendor/bundle
 
@@ -72,6 +72,10 @@ save-gradle-cache: &save-gradle-cache
 restore_cache: &restore-gradle-cache
   name: Restore gradle cache
   key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+
+cache_keys:
+  gems_cache_key: &gems_cache_key v1-gems-{{ checksum "Gemfile.lock" }}
+  rbenv_cache_key: &rbenv_cache_key v1-rbenv-{{ checksum "/tmp/required_ruby" }}
 
 # COMMANDS
 commands:
@@ -195,6 +199,8 @@ commands:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - setup_ruby:
+          ruby_version: 2.7.5
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
@@ -335,6 +341,58 @@ commands:
           command: |
             echo $E2E_ACCOUNT | base64 --decode > ./e2e_account.ts
           working_directory: e2e
+
+  # https://github.com/facebook/react-native/blob/367faa22823ed081576f2fd59733f5680c849426/.circleci/config.yml#L160
+  setup_ruby:
+    parameters:
+      ruby_version:
+        default: "2.6.10"
+        type: string
+    steps:
+      - restore_cache:
+          key: *gems_cache_key
+      - run:
+          name: Set Required Ruby
+          command: echo << parameters.ruby_version >> > /tmp/required_ruby
+      - restore_cache:
+          key: *rbenv_cache_key
+      - run:
+          name: Bundle Install
+          command: |
+            # Check if rbenv is installed. CircleCI is migrating to rbenv so we may not need to always install it.
+            if [[ -z "$(command -v rbenv)" ]]; then
+              brew install rbenv ruby-build
+              # Load and init rbenv
+              (rbenv init 2> /dev/null) || true
+              echo '' >>  ~/.bash_profile
+              echo 'eval "$(rbenv init - bash)"' >> ~/.bash_profile
+              source ~/.bash_profile
+            else
+              echo "rbenv found; Skipping installation"
+            fi
+            brew reinstall libyaml
+            gem install psych -- --with-libyaml-dir=$(brew --prefix libyaml)
+            export RUBY_CONFIGURE_OPTS=--with-libyaml-dir=$(brew --prefix libyaml)
+            # Install the right version of ruby
+            if [[ -z "$(rbenv versions | grep << parameters.ruby_version >>)" ]]; then
+              # ensure that `ruby-build` can see all the available versions of Ruby
+              # some PRs received machines in a weird state, this should make the pipelines
+              # more robust.
+              brew update && brew upgrade ruby-build
+              rbenv install << parameters.ruby_version >>
+            fi
+            # Set ruby dependencies
+            rbenv global << parameters.ruby_version >>
+            gem install bundler
+            bundle check || bundle install --path vendor/bundle --clean
+      - save_cache:
+          key: *rbenv_cache_key
+          paths:
+            - ~/.rbenv
+      - save_cache:
+          key: *gems_cache_key
+          paths:
+            - vendor/bundle
 
 version: 2.1
 
@@ -564,6 +622,8 @@ jobs:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - setup_ruby:
+          ruby_version: 2.7.5
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - save_cache: *save-npm-cache-mac
