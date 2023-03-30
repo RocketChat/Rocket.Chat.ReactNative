@@ -596,7 +596,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					userId={userId}
 					token={token}
 					title={avatar}
-					theme={theme}
+					theme={theme!}
 					t={t}
 					goRoomActionsView={this.goRoomActionsView}
 					isMasterDetail={isMasterDetail}
@@ -1148,7 +1148,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	getBadgeColor = (messageId: string) => {
 		const { room } = this.state;
 		const { theme } = this.props;
-		return getBadgeColor({ subscription: room, theme, messageId });
+		return getBadgeColor({ subscription: room, theme: theme!, messageId });
 	};
 
 	navToRoomInfo = (navParam: any) => {
@@ -1394,7 +1394,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					toggleFollowThread={this.toggleFollowThread}
 					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
-					theme={theme}
+					theme={theme!}
 					closeEmojiAndAction={this.handleCloseEmoji}
 				/>
 			);
@@ -1425,15 +1425,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('onHold' in room && room.onHold) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
-					<Text accessibilityLabel={I18n.t('Chat_is_on_hold')} style={[styles.previewMode, { color: themes[theme].titleText }]}>
+					<Text accessibilityLabel={I18n.t('Chat_is_on_hold')} style={[styles.previewMode, { color: themes[theme!].titleText }]}>
 						{I18n.t('Chat_is_on_hold')}
 					</Text>
 					<Touch
 						onPress={this.resumeRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme!].actionTintColor }]}
 						enabled={!loading}
 					>
-						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
+						<Text style={[styles.joinRoomText, { color: themes[theme!].buttonText }]} testID='room-view-chat-on-hold-button'>
 							{I18n.t('Resume')}
 						</Text>
 					</Touch>
@@ -1445,16 +1445,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text
 						accessibilityLabel={I18n.t('You_are_in_preview_mode')}
-						style={[styles.previewMode, { color: themes[theme].titleText }]}
+						style={[styles.previewMode, { color: themes[theme!].titleText }]}
 					>
 						{I18n.t('You_are_in_preview_mode')}
 					</Text>
 					<Touch
 						onPress={this.joinRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme!].actionTintColor }]}
 						enabled={!loading}
 					>
-						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
+						<Text style={[styles.joinRoomText, { color: themes[theme!].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
 						</Text>
 					</Touch>
@@ -1465,7 +1465,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return (
 				<View style={styles.readOnly}>
 					<Text
-						style={[styles.previewMode, { color: themes[theme].titleText }]}
+						style={[styles.previewMode, { color: themes[theme!].titleText }]}
 						accessibilityLabel={I18n.t('This_room_is_read_only')}
 					>
 						{I18n.t('This_room_is_read_only')}
@@ -1476,7 +1476,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('id' in room && isBlocked(room)) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme!].titleText }]}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}
@@ -1490,7 +1490,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				joined={joined}
 				roomType={room.t}
 				isFocused={navigation.isFocused}
-				theme={theme}
+				theme={theme!}
 				message={selectedMessage}
 				editing={editing}
 				editRequest={this.onEditRequest}
@@ -1544,7 +1544,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='room-view'>
 				<StatusBar />
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
@@ -1564,7 +1564,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				{this.renderFooter()}
 				{this.renderActions()}
 				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme!} />
 			</SafeAreaView>
 		);
 	}

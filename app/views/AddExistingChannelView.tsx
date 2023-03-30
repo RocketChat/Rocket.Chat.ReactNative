@@ -32,7 +32,7 @@ interface IAddExistingChannelViewState {
 interface IAddExistingChannelViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 	route: RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	isMasterDetail: boolean;
 	addTeamChannelPermission?: string[];
 }
@@ -193,7 +193,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={{ backgroundColor: themes[theme!].backgroundColor }}
 				keyboardShouldPersistTaps='always'
 			/>
 		);

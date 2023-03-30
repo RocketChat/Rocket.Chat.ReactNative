@@ -142,7 +142,7 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: ISubscription;
-		roomUser: any; // TODO: Change
+		roomUser?: any; // TODO: Change
 	};
 	PickerView: {
 		title: string;
@@ -267,7 +267,7 @@ export type E2ESaveYourPasswordStackParamList = {
 };
 
 export type E2EEnterYourPasswordStackParamList = {
-	E2EEnterYourPasswordView: undefined;
+	E2EEnterYourPasswordView?: undefined;
 };
 
 export type InsideStackParamList = {

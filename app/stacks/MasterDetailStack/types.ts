@@ -210,6 +210,7 @@ export type MasterDetailInsideStackParamList = {
 		rid: string;
 		url: string;
 		onlyAudio?: boolean;
+		videoConf?: boolean;
 	};
 	ShareView: {
 		attachments: IAttachment[];
