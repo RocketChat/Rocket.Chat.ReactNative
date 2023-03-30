@@ -73,9 +73,10 @@ restore_cache: &restore-gradle-cache
   name: Restore gradle cache
   key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
-cache_keys:
-  gems_cache_key: &gems_cache_key v1-gems-{{ checksum "Gemfile.lock" }}
-  rbenv_cache_key: &rbenv_cache_key v1-rbenv-{{ checksum "/tmp/required_ruby" }}
+references:
+  cache_keys:
+    gems_cache_key: &gems_cache_key v1-gems-{{ checksum "Gemfile.lock" }}
+    rbenv_cache_key: &rbenv_cache_key v1-rbenv-{{ checksum "/tmp/required_ruby" }}
 
 # COMMANDS
 commands:
