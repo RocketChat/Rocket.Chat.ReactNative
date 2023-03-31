@@ -355,8 +355,15 @@ commands:
       - run:
           name: Bundle Install
           command: |
-            brew update && brew upgrade ruby-build
-            rbenv install << parameters.ruby_version >>
+            # Install the right version of ruby
+            if [[ -z "$(rbenv versions | grep << parameters.ruby_version >>)" ]]; then
+              # ensure that `ruby-build` can see all the available versions of Ruby
+              # some PRs received machines in a weird state, this should make the pipelines
+              # more robust.
+              brew update && brew upgrade ruby-build
+              rbenv install << parameters.ruby_version >>
+            fi
+
             rbenv global << parameters.ruby_version >>
             gem install bundler
             bundle check || bundle install --path vendor/bundle --clean
