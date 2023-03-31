@@ -320,6 +320,8 @@ commands:
           at: ios
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - setup_ruby:
+          ruby_version: 2.7.5
       - run: *update-fastlane-ios
       - manage-pods
       - run:
