@@ -168,6 +168,7 @@ async function tapAndWaitFor(
 			await elementToTap.tap();
 		}
 		await waitFor(elementToWaitFor).toBeVisible().withTimeout(1000);
+		await sleep(300); // Wait for animation
 	} catch (e) {
 		if (timeout <= 0) {
 			throw e;
