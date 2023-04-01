@@ -57,20 +57,20 @@ export default StyleSheet.create({
 		marginBottom: 15
 	},
 	separator: {
-		height: StyleSheet.hairlineWidth
+		height: 1
 	},
 	separatorTop: {
-		borderTopWidth: StyleSheet.hairlineWidth
+		borderTopWidth: 1
 	},
 	separatorBottom: {
-		borderBottomWidth: StyleSheet.hairlineWidth
+		borderBottomWidth: 1
 	},
 	separatorVertical: {
-		borderTopWidth: StyleSheet.hairlineWidth,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		borderTopWidth: 1,
+		borderBottomWidth: 1
 	},
 	separatorLeft: {
-		borderLeftWidth: StyleSheet.hairlineWidth
+		borderLeftWidth: 1
 	},
 	textRegular: {
 		...defaultTextStyle,

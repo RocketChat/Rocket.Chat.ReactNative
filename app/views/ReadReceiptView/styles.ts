@@ -19,7 +19,7 @@ export default StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	separator: {
-		height: StyleSheet.hairlineWidth
+		height: 1
 	},
 	name: {
 		...sharedStyles.textRegular,

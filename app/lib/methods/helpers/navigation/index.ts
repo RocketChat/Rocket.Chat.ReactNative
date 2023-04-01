@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 import { themes } from '../../../constants';
@@ -20,7 +19,7 @@ export const cardStyle = {
 };
 
 export const borderBottom: any = (theme: TSupportedThemes) => ({
-	borderBottomWidth: StyleSheet.hairlineWidth,
+	borderBottomWidth: 1,
 	borderBottomColor: themes[theme].headerBorder,
 	elevation: 0
 });

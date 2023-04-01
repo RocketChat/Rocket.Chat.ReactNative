@@ -22,7 +22,7 @@ export default StyleSheet.create({
 		width: '100%',
 		position: 'absolute',
 		top: 0,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		borderBottomWidth: 1
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject

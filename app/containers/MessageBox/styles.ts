@@ -65,7 +65,7 @@ export default StyleSheet.create({
 	},
 	mentionItem: {
 		height: MENTION_HEIGHT,
-		borderTopWidth: StyleSheet.hairlineWidth,
+		borderTopWidth: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 5
