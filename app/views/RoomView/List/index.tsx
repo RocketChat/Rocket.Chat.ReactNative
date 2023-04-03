@@ -171,15 +171,13 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			}
 			this.messagesObservable = db
 				.get('thread_messages')
-				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
+				.query(Q.where('rid', tmid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(this.count))
 				.observe();
 		} else if (rid) {
-			const whereClause = [
-				Q.where('rid', rid),
-				Q.experimentalSortBy('ts', Q.desc),
-				Q.experimentalSkip(0),
-				Q.experimentalTake(this.count)
-			] as (Q.WhereDescription | Q.Or)[];
+			const whereClause = [Q.where('rid', rid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(this.count)] as (
+				| Q.WhereDescription
+				| Q.Or
+			)[];
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}

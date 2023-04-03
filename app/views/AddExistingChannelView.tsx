@@ -86,8 +86,8 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 					Q.where('team_id', ''),
 					Q.where('t', Q.oneOf(['c', 'p'])),
 					Q.where('name', Q.like(`%${stringToSearch}%`)),
-					Q.experimentalTake(QUERY_SIZE),
-					Q.experimentalSortBy('room_updated_at', Q.desc)
+					Q.take(QUERY_SIZE),
+					Q.sortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
 

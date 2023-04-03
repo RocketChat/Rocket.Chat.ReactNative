@@ -507,7 +507,7 @@ PODS:
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNBootSplash (4.3.3):
+  - RNBootSplash (4.5.3):
     - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
@@ -553,7 +553,7 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.1.1):
     - React-Core
-  - RNReanimated (2.14.4):
+  - RNReanimated (3.0.2):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -595,9 +595,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - simdjson (0.9.6-fix2)
+  - simdjson (1.0.0)
   - TOCropViewController (2.6.1)
-  - WatermelonDB (0.23.0):
+  - WatermelonDB (0.25.5):
     - React
     - React-jsi
   - Yoga (1.14.0)
@@ -981,7 +981,7 @@ SPEC CHECKSUMS:
   ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
   rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNBootSplash: 7e91ea56c7010aae487489789dbe212e8c905a0c
+  RNBootSplash: 8fb33325dc3620a01984c6660c42cbd93fadcc80
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
@@ -997,16 +997,16 @@ SPEC CHECKSUMS:
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
-  RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
+  RNReanimated: f0dd6b881808e635ef0673f89642937d6c141314
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SDWebImage: a47aea9e3d8816015db4e523daff50cfd294499d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  simdjson: 85016870cd17207312b718ef6652eb6a1cd6a2b0
+  simdjson: c96317b3a50dff3468a42f586ab7ed22c6ab2fd9
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
+  WatermelonDB: 6ae836b52d11281d87187ff2283480e44b111771
   Yoga: cd7d7f509dbfac14ee7f31a6c750acb957cd5022
 
 PODFILE CHECKSUM: 158a0b9fb2dba55d4ee7f1724cfc1e8a7dea840c

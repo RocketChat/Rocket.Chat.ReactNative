@@ -19,7 +19,7 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		.get('subscriptions')
 		.query(
 			Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))),
-			Q.experimentalSortBy('room_updated_at', Q.desc)
+			Q.sortBy('room_updated_at', Q.desc)
 		)
 		.fetch();
 
@@ -55,8 +55,8 @@ export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }): Pro
 		.get('messages')
 		.query(
 			Q.and(Q.where('rid', rid), Q.where('u', Q.notLike(`%${userId}%`)), Q.where('t', null)),
-			Q.experimentalSortBy('ts', Q.desc),
-			Q.experimentalTake(50)
+			Q.sortBy('ts', Q.desc),
+			Q.take(50)
 		)
 		.fetch();
 
