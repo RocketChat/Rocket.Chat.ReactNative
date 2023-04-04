@@ -1,11 +1,11 @@
-import i18n from 'i18n-js';
+import { createIntl, createIntlCache } from '@formatjs/intl';
 import { I18nManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
 import moment from 'moment';
 import 'moment/min/locales';
 
 import { toMomentLocale } from './moment';
-import { isRTL } from './isRTL';
+// import { isRTL } from './isRTL';
 import englishJson from './locales/en.json';
 
 type TTranslatedKeys = keyof typeof englishJson;
@@ -115,44 +115,78 @@ const translations = LANGUAGES.reduce((ret, item) => {
 	return ret;
 }, {} as ITranslations);
 
-export const setLanguage = (l: string) => {
-	if (!l) {
-		return;
-	}
-	// server uses lowercase pattern (pt-br), but we're forced to use standard pattern (pt-BR)
-	let locale = LANGUAGES.find(ll => ll.value.toLowerCase() === l.toLowerCase())?.value;
-	if (!locale) {
-		locale = 'en';
-	}
-	// don't go forward if it's the same language and default language (en) was setup already
-	if (i18n.locale === locale && i18n.translations?.en) {
-		return;
-	}
-	i18n.locale = locale;
-	i18n.translations = { ...i18n.translations, [locale]: translations[locale]?.() };
-	I18nManager.forceRTL(isRTL(locale));
-	I18nManager.swapLeftAndRightInRTL(isRTL(locale));
-	// TODO: Review this logic
-	// @ts-ignore
-	i18n.isRTL = I18nManager.isRTL;
-	moment.locale(toMomentLocale(locale));
+// const translations = {
+//   ar: require("./translations/ar.json"),
+//   en: require("./translations/en.json"),
+//   fr: require("./translations/fr.json"),
+// } as const;
+
+type Translation = keyof typeof translations;
+
+// fallback if no available language fits
+const fallback = { languageTag: 'en', isRTL: false };
+
+const { languageTag, isRTL } = RNLocalize.findBestAvailableLanguage(Object.keys(translations)) ?? fallback;
+
+// update layout direction
+I18nManager.forceRTL(isRTL);
+
+const intl = createIntl(
+	{
+		defaultLocale: 'en',
+		locale: languageTag,
+		messages: translations[languageTag as Translation]?.()
+	},
+	createIntlCache()
+);
+
+type TranslationParams = Parameters<typeof intl['formatMessage']>[1];
+
+const i18n = {
+	isRTL: false,
+	t: (key: string, params?: TranslationParams) =>
+		intl.formatMessage({ id: key, defaultMessage: translations.en[key] }, params).toString(),
+	isTranslated: (text?: string) => (text ? text in englishJson : false)
 };
 
-i18n.translations = { en: translations.en?.() };
-const defaultLanguage = { languageTag: 'en', isRTL: false };
-const availableLanguages = Object.keys(translations);
-const { languageTag } = RNLocalize.findBestAvailableLanguage(availableLanguages) || defaultLanguage;
+export const setLanguage = (l: string) => {
+	if (!l) {
+	}
 
-// @ts-ignore
-i18n.isTranslated = (text?: string) => text in englishJson;
+	// // server uses lowercase pattern (pt-br), but we're forced to use standard pattern (pt-BR)
+	// let locale = LANGUAGES.find(ll => ll.value.toLowerCase() === l.toLowerCase())?.value;
+	// if (!locale) {
+	// 	locale = 'en';
+	// }
+	// // don't go forward if it's the same language and default language (en) was setup already
+	// if (i18n.locale === locale && i18n.translations?.en) {
+	// 	return;
+	// }
+	// i18n.locale = locale;
+	// i18n.translations = { ...i18n.translations, [locale]: translations[locale]?.() };
+	// I18nManager.forceRTL(isRTL(locale));
+	// I18nManager.swapLeftAndRightInRTL(isRTL(locale));
+	// // TODO: Review this logic
+	// // @ts-ignore
+	// i18n.isRTL = I18nManager.isRTL;
+	// moment.locale(toMomentLocale(locale));
+};
 
-setLanguage(languageTag);
-i18n.fallbacks = true;
+// i18n.translations = { en: translations.en?.() };
+// const defaultLanguage = { languageTag: 'en', isRTL: false };
+// const availableLanguages = Object.keys(translations);
+// const { languageTag } = RNLocalize.findBestAvailableLanguage(availableLanguages) || defaultLanguage;
+
+// // @ts-ignore
+// i18n.isTranslated = (text?: string) => text in englishJson;
+
+// setLanguage(languageTag);
+// i18n.fallbacks = true;
 
 type Ti18n = {
 	isRTL: boolean;
 	t(scope: TTranslatedKeys, options?: any): string;
 	isTranslated: (text?: string) => boolean;
-} & typeof i18n;
+};
 
 export default i18n as Ti18n;

@@ -1,6 +1,8 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
+import mockRNLocalize from 'react-native-localize/mock';
+
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 global.__reanimatedWorkletInit = () => {};
@@ -67,3 +69,5 @@ jest.mock('react-native-math-view', () => {
 		MathText: react.View // {...} Named export
 	};
 });
+
+jest.mock('react-native-localize', () => mockRNLocalize);
