@@ -6101,7 +6101,7 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native@*", "@types/react-native@0.69":
+"@types/react-native@*":
   version "0.69.18"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.69.18.tgz#bd8a9b4c74aede140000cbbb3c0ea31e03537f4d"
   integrity sha512-7eoce6RmLT/QIvD6OfkYONvTfxNB8crxuyED5+y60p+8W9RMGDPwD9mcwHNROsUaTLEc00JP1eRL8n1+377mHw==
