@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Linking } from 'react-native';
+import { Dimensions, Linking, EmitterSubscription } from 'react-native';
 // import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
@@ -89,7 +89,7 @@ const parseDeepLinking = (url: string) => {
 
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
-
+	private dimensionsListener?: EmitterSubscription;
 	private onKeyCommands: any;
 
 	constructor(props: any) {
@@ -123,12 +123,14 @@ export default class Root extends React.Component<{}, IState> {
 				}
 			});
 		}, 5000);
-		Dimensions.addEventListener('change', this.onDimensionsChange);
+		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		Dimensions.removeEventListener('change', this.onDimensionsChange);
+		if (this.dimensionsListener) {
+			this.dimensionsListener.remove();
+		}
 
 		unsubscribeTheme();
 
