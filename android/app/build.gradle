@@ -65,8 +65,6 @@ react {
 //     enableHermes: true,  // clean and rebuild if changing
 // ]
 
-apply from: "../../node_modules/react-native/react.gradle"
-
 /**
  * Set this to true to create four separate APKs instead of one,
  * one for each native architecture. This is useful if you don't
@@ -166,9 +164,9 @@ android {
     // }
 
     // FIXME: Remove when we update RN
-    // packagingOptions {
-    //     pickFirst '**/*.so'
-    // }
+//     packagingOptions {
+//         pickFirst '**/*.so'
+//     }
 
     // applicationVariants are e.g. debug, release
 
