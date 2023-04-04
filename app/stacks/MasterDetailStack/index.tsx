@@ -73,6 +73,7 @@ import {
 	MasterDetailInsideStackParamList,
 	ModalStackParamList
 } from './types';
+import { isIOS } from '../../lib/methods/helpers';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -141,11 +142,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={AddExistingChannelView}
 					options={AddExistingChannelView.navigationOptions}
 				/>
-				<ModalStack.Screen
-					name='InviteUsersEditView'
-					component={InviteUsersEditView}
-					options={InviteUsersEditView.navigationOptions}
-				/>
+				<ModalStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 				<ModalStack.Screen name='MessagesView' component={MessagesView} />
 				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
 				<ModalStack.Screen
@@ -222,7 +219,11 @@ const InsideStackNavigator = React.memo(() => {
 			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
-			<InsideStack.Screen name='JitsiMeetView' component={JitsiMeetView} options={{ headerShown: false }} />
+			<InsideStack.Screen
+				name='JitsiMeetView'
+				component={JitsiMeetView}
+				options={{ headerShown: false, animationEnabled: isIOS }}
+			/>
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 		</InsideStack.Navigator>
 	);

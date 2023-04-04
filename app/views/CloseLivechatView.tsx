@@ -102,7 +102,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 								value={tagParamSelected}
 								context={BlockContext.FORM}
 								multiselect
-								inputStyle={{ borderColor: colors.separatorColor, borderWidth: 2 }}
+								inputStyle={{ borderColor: colors.separatorColor }}
 							/>
 						</>
 					) : null}

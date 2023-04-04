@@ -2,7 +2,9 @@ import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
+import parse from 'url-parse';
 
+import getSingleMessage from '../methods/getSingleMessage';
 import { IMessage, IUser } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
@@ -21,6 +23,11 @@ import {
 import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import { Services } from '../services';
+import { getMessageUrlRegex } from './helpers/getMessageUrlRegex';
+import { mapMessageFromAPI } from './helpers/mapMessageFromApi';
+import { mapMessageFromDB } from './helpers/mapMessageFromDB';
+import { createQuoteAttachment } from './helpers/createQuoteAttachment';
+import { getMessageById } from '../database/services/Message';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -74,7 +81,10 @@ export default class EncryptionRoom {
 			if (E2EKey && Encryption.privateKey) {
 				// We're establishing a new room encryption client
 				this.establishing = true;
-				await this.importRoomKey(E2EKey, Encryption.privateKey);
+				const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2EKey, Encryption.privateKey);
+				this.keyID = keyID;
+				this.roomKey = roomKey;
+				this.sessionKeyExportedString = sessionKeyExportedString;
 				this.readyPromise.resolve();
 				return;
 			}
@@ -96,20 +106,33 @@ export default class EncryptionRoom {
 	};
 
 	// Import roomKey as an AES Decrypt key
-	importRoomKey = async (E2EKey: string, privateKey: string) => {
-		const roomE2EKey = E2EKey.slice(12);
+	importRoomKey = async (
+		E2EKey: string,
+		privateKey: string
+	): Promise<{ sessionKeyExportedString: string | ByteBuffer; roomKey: ArrayBuffer; keyID: string }> => {
+		try {
+			const roomE2EKey = E2EKey.slice(12);
 
-		const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
-		this.sessionKeyExportedString = toString(decryptedKey);
+			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
+			const sessionKeyExportedString = toString(decryptedKey);
 
-		this.keyID = Base64.encode(this.sessionKeyExportedString as string).slice(0, 12);
+			const keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
 
-		// Extract K from Web Crypto Secret Key
-		// K is a base64URL encoded array of bytes
-		// Web Crypto API uses this as a private key to decrypt/encrypt things
-		// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
-		const { k } = EJSON.parse(this.sessionKeyExportedString as string);
-		this.roomKey = b64ToBuffer(k);
+			// Extract K from Web Crypto Secret Key
+			// K is a base64URL encoded array of bytes
+			// Web Crypto API uses this as a private key to decrypt/encrypt things
+			// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
+			const { k } = EJSON.parse(sessionKeyExportedString as string);
+			const roomKey = b64ToBuffer(k);
+
+			return {
+				sessionKeyExportedString,
+				roomKey,
+				keyID
+			};
+		} catch (e: any) {
+			throw new Error(e);
+		}
 	};
 
 	// Create a key to a room
@@ -252,12 +275,15 @@ export default class EncryptionRoom {
 					tmsg = await this.decryptText(tmsg);
 				}
 
-				return {
+				const decryptedMessage: IMessage = {
 					...message,
 					tmsg,
 					msg,
-					e2e: E2E_STATUS.DONE
+					e2e: 'done'
 				};
+
+				const decryptedMessageWithQuote = await this.decryptQuoteAttachment(decryptedMessage);
+				return decryptedMessageWithQuote;
 			}
 		} catch {
 			// Do nothing
@@ -265,4 +291,37 @@ export default class EncryptionRoom {
 
 		return message;
 	};
+
+	async decryptQuoteAttachment(message: IMessage) {
+		const urls = message?.msg?.match(getMessageUrlRegex()) || [];
+		await Promise.all(
+			urls.map(async (url: string) => {
+				const parsedUrl = parse(url, true);
+				const messageId = parsedUrl.query?.msg;
+				if (!messageId) {
+					return;
+				}
+
+				// From local db
+				const messageFromDB = await getMessageById(messageId);
+				if (messageFromDB && messageFromDB.e2e === 'done') {
+					const decryptedQuoteMessage = mapMessageFromDB(messageFromDB);
+					message.attachments = message.attachments || [];
+					const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
+					return message.attachments.push(quoteAttachment);
+				}
+
+				// From API
+				const quotedMessageObject = await getSingleMessage(messageId);
+				if (!quotedMessageObject) {
+					return;
+				}
+				const decryptedQuoteMessage = await this.decrypt(mapMessageFromAPI(quotedMessageObject));
+				message.attachments = message.attachments || [];
+				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
+				return message.attachments.push(quoteAttachment);
+			})
+		);
+		return message;
+	}
 }

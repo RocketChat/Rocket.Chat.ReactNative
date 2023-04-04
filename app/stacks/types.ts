@@ -5,7 +5,7 @@ import { IItem } from '../views/TeamChannelsView';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
-import { IMessage, TMessageModel } from '../definitions/IMessage';
+import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
@@ -37,6 +37,7 @@ export type ChatsStackParamList = {
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
 				status?: string;
+				replyInDM?: TAnyMessageModel;
 		  }
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
@@ -93,6 +94,7 @@ export type ChatsStackParamList = {
 		showButton?: boolean;
 		title?: string;
 		buttonText?: string;
+		showSkipText?: boolean;
 		nextAction?(): void;
 	};
 	InviteUsersView: {
@@ -271,6 +273,9 @@ export type InsideStackParamList = {
 		text: string;
 		room: TSubscriptionModel;
 		thread: TThreadModel;
+		replying?: boolean;
+		replyingMessage?: IMessage;
+		closeReply?: Function;
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;

@@ -8,7 +8,15 @@ import { TThreadMessageModel } from './IThreadMessage';
 import { TThreadModel } from './IThread';
 import { IUrl, IUrlFromServer } from './IUrl';
 
-export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad | MessageTypesValues;
+export type MessageType =
+	| 'jitsi_call_started'
+	| 'discussion-created'
+	| 'e2e'
+	| 'load_more'
+	| 'rm'
+	| 'uj'
+	| MessageTypeLoad
+	| MessageTypesValues;
 
 export interface IUserMessage {
 	_id: string;
@@ -139,7 +147,10 @@ export interface IMessage extends IMessageFromServer {
 	editedAt?: string | Date;
 }
 
-export type TMessageModel = IMessage & Model;
+export type TMessageModel = IMessage &
+	Model & {
+		asPlain: () => IMessage;
+	};
 
 export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
@@ -222,6 +233,7 @@ export type MessageTypesValues =
 	| 'room-allowed-reacting'
 	| 'room-disallowed-reacting'
 	| 'command'
+	| 'videoconf'
 	| LivechatMessageTypes
 	| TeamMessageTypes
 	| VoipMessageTypesValues
