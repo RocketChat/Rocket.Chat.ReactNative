@@ -362,7 +362,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				{rid ? <HeaderCallButton rid={rid} /> : null}
+				{/* {rid ? <HeaderCallButton rid={rid} /> : null} */}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
