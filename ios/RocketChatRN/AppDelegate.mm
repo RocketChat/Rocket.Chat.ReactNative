@@ -3,9 +3,9 @@
 #import <React/RCTBundleURLProvider.h>
 // #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
-// #import "RNNotifications.h"
+ #import "RNNotifications.h"
 #import "RNBootSplash.h"
-// #import "Orientation.h"
+ #import "Orientation.h"
  #import <Firebase.h>
  #import <Bugsnag/Bugsnag.h>
  #import <MMKV/MMKV.h>
@@ -91,7 +91,7 @@
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   
-//  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:self.window.rootViewController.view];
+  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:self.window.rootViewController.view];
   
   return YES;
 }
@@ -155,32 +155,32 @@
 // }
 // #endif
 
-// - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
-// {
-//   [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-// }
+ - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+ {
+   [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+ }
 
-// - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-//   [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
-// }
+ - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+   [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+ }
 
-// - (BOOL)application:(UIApplication *)application
-//    openURL:(NSURL *)url
-//    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-// {
-//   return [RCTLinkingManager application:application openURL:url options:options];
-// }
+ - (BOOL)application:(UIApplication *)application
+    openURL:(NSURL *)url
+    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+ {
+   return [RCTLinkingManager application:application openURL:url options:options];
+ }
 
-// - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
-//  restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
-// {
-//  return [RCTLinkingManager application:application
-//                   continueUserActivity:userActivity
-//                     restorationHandler:restorationHandler];
-// }
+ - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+  restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+ {
+  return [RCTLinkingManager application:application
+                   continueUserActivity:userActivity
+                     restorationHandler:restorationHandler];
+ }
 
-// - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
-// {
-//   return [Orientation getOrientation];
-// }
+ - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+ {
+   return [Orientation getOrientation];
+ }
 @end
