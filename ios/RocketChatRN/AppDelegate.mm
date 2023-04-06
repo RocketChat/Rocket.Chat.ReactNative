@@ -6,9 +6,9 @@
 // #import "RNNotifications.h"
 #import "RNBootSplash.h"
 // #import "Orientation.h"
-// #import <Firebase.h>
-// #import <Bugsnag/Bugsnag.h>
-// #import <MMKV/MMKV.h>
+ #import <Firebase.h>
+ #import <Bugsnag/Bugsnag.h>
+ #import <MMKV/MMKV.h>
 
 // #import <React/RCTAppSetupUtils.h>
 // #if RCT_NEW_ARCH_ENABLED
@@ -75,6 +75,15 @@
 //   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
 
 //   return YES;
+  
+  if(![FIRApp defaultApp]){
+    [FIRApp configure];
+  }
+  [Bugsnag start];
+  
+ // AppGroup MMKV
+ NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+ [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
 
   self.moduleName = @"RocketChatRN";
   // You can add your custom initial props in the dictionary below.
