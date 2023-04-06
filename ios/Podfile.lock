@@ -1,6 +1,6 @@
 PODS:
   - boost (1.76.0)
-  - BugsnagReactNative (7.10.5):
+  - BugsnagReactNative (7.19.0):
     - React-Core
   - BVLinearGradient (2.6.2):
     - React-Core
@@ -108,9 +108,6 @@ PODS:
   - hermes-engine (0.71.5):
     - hermes-engine/Pre-built (= 0.71.5)
   - hermes-engine/Pre-built (0.71.5)
-  - JitsiMeetSDKLite (7.0.1-lite):
-    - JitsiWebRTC (~> 106.0)
-  - JitsiWebRTC (106.0.0)
   - libevent (2.1.12)
   - libwebp (1.2.4):
     - libwebp/demux (= 1.2.4)
@@ -392,10 +389,7 @@ PODS:
     - React-Core
   - react-native-document-picker (8.1.2):
     - React-Core
-  - react-native-jitsimeet-custom (2.5.0):
-    - JitsiMeetSDKLite (= 7.0.1-lite)
-    - React-Core
-  - react-native-mmkv-storage (0.8.0):
+  - react-native-mmkv-storage (0.9.1):
     - MMKV (= 1.2.13)
     - React-Core
   - react-native-netinfo (6.0.0):
@@ -551,7 +545,7 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNLocalize (2.1.1):
+  - RNLocalize (2.2.6):
     - React-Core
   - RNReanimated (3.0.2):
     - DoubleConversion
@@ -642,7 +636,6 @@ DEPENDENCIES:
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-  - "react-native-jitsimeet-custom (from `../node_modules/@socialcode-rob1/react-native-jitsimeet-custom`)"
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
@@ -706,8 +699,6 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
-    - JitsiMeetSDKLite
-    - JitsiWebRTC
     - libevent
     - libwebp
     - MMKV
@@ -794,8 +785,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-  react-native-jitsimeet-custom:
-    :path: "../node_modules/@socialcode-rob1/react-native-jitsimeet-custom"
   react-native-mmkv-storage:
     :path: "../node_modules/react-native-mmkv-storage"
   react-native-netinfo:
@@ -899,7 +888,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
-  BugsnagReactNative: a97b3132c1854fd7bf92350fabd505e3ebdd7829
+  BugsnagReactNative: fa312f53a83ca21c0afdfeaec98a9c5eeb8fc4ed
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXAV: f1f69397ecdcf44cfacd4ff5d338cd1b96891e87
@@ -926,8 +915,6 @@ SPEC CHECKSUMS:
   GoogleDataTransport: ea169759df570f4e37bdee1623ec32a7e64e67c4
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   hermes-engine: 0784cadad14b011580615c496f77e0ae112eed75
-  JitsiMeetSDKLite: d59573336ce887ec52327a9927aa8443f560d0b9
-  JitsiWebRTC: f441eb0e2d67f0588bf24e21c5162e97342714fb
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
   MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
@@ -954,8 +941,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
-  react-native-jitsimeet-custom: a57ca376bfc1c69f639b138f2de2a10e0ed42c04
-  react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
+  react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: 83b4fd4a127a6c918fc846cae90da60f84819e44
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
@@ -996,7 +982,7 @@ SPEC CHECKSUMS:
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
-  RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
+  RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNReanimated: f0dd6b881808e635ef0673f89642937d6c141314
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
