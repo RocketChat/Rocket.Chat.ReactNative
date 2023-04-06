@@ -12,14 +12,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
-//   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//   UIViewController *rootViewController = [UIViewController new];
-//   UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
-//   navigationController.navigationBarHidden = YES;
-//   rootViewController.view = rootView;
-//   self.window.rootViewController = navigationController;
-  
   if(![FIRApp defaultApp]){
     [FIRApp configure];
   }
@@ -34,6 +26,12 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
+  
+  UIViewController *rootViewController = self.window.rootViewController;
+  [self.window removeReactSubview:(RCTRootView *)self.window.rootViewController.view];
+  UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
+  navigationController.navigationBarHidden = YES;
+  self.window.rootViewController = navigationController;
   
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:self.window.rootViewController.view];
   
