@@ -55,7 +55,7 @@ async function navigateToRoomActions(room: string) {
 		.withTimeout(5000);
 }
 
-describe.skip('Move/Convert Team', () => {
+describe('Move/Convert Team', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
@@ -124,16 +124,19 @@ describe.skip('Move/Convert Team', () => {
 			await waitFor(
 				element(
 					by[textMatcher](
-						'After reading the previous intructions about this behavior, do you still want to move this channel to the selected team?'
+						'After reading the previous instructions about this behavior, do you still want to move this channel to the selected team?'
 					)
 				)
 			)
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Yes, move it!').and(by.type(alertButtonType))).tap();
-			await waitFor(element(by.id('room-view-header-team-channels')))
-				.toBeVisible()
-				.withTimeout(10000);
+			await sleep(300); // wait for animation
+			await element(by.id('room-header')).tap();
+			await waitFor(element(by.id(`room-actions-teams`)))
+				.toExist()
+				.withTimeout(6000);
+			await tapBack();
 		});
 
 		afterAll(async () => {
