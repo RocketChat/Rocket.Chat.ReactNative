@@ -11,6 +11,7 @@ import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
+import KeyboardView from '../../containers/KeyboardView';
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
@@ -62,8 +63,8 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from 
 import { Services } from '../../lib/services';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
 >;
 
 interface IRoomsListViewProps {
@@ -479,11 +480,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	internalSetState = (
 		state:
-			| ((
-					prevState: Readonly<IRoomsListViewState>,
-					props: Readonly<IRoomsListViewProps>
+		| ((
+			prevState: Readonly<IRoomsListViewState>,
+			props: Readonly<IRoomsListViewProps>
 			  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
-			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
+		| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
 		callback?: () => void
 	) => {
 		if (this.animated) {
@@ -907,7 +908,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: FlatList) => this.scroll = ref;
 
 	renderListHeader = () => {
 		const { searching } = this.state;
@@ -1025,9 +1026,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar />
-				{this.renderHeader()}
-				{this.renderScroll()}
+				<KeyboardView>
+					<StatusBar />
+					{this.renderHeader()}
+					{this.renderScroll()}
+				</KeyboardView>
 				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
 				{/* @ts-ignore*/}
 				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
