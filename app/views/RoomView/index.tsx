@@ -589,6 +589,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<LeftButtons
+					rid={rid}
 					tmid={tmid}
 					unreadsCount={unreadsCount}
 					navigation={navigation}

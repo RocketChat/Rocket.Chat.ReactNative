@@ -453,7 +453,12 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('messagebox-send-message')).tap();
-				// TODO: test if quote was sent
+				await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
+					.toBeVisible()
+					.withTimeout(3000);
+				await waitFor(element(by.id(`reply-${user.name}-${quoteMessage}`).withDescendant(by[textMatcher](quoteMessage))))
+					.toBeVisible()
+					.withTimeout(3000);
 			});
 
 			it('should delete message', async () => {
