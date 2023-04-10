@@ -85,7 +85,7 @@ describe('Create team screen', () => {
 			await waitFor(element(by.id('room-info-edit-view-list')))
 				.toBeVisible()
 				.withTimeout(2000);
-			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
+			await element(by.id('room-info-edit-view-list')).swipe('up');
 			await waitFor(element(by.id('room-info-edit-view-delete')))
 				.toBeVisible()
 				.withTimeout(2000);
