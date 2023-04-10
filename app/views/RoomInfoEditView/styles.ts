@@ -76,7 +76,8 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 10
+		marginBottom: 32,
+		marginTop: 16
 	},
 	resetButton: {
 		padding: 4,
