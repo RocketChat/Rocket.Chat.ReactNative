@@ -38,4 +38,7 @@ export interface IThread extends IMessage {
 	draftMessage?: string;
 }
 
-export type TThreadModel = IThread & Model;
+export type TThreadModel = IThread &
+	Model & {
+		asPlain: () => IMessage;
+	};

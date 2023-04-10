@@ -136,3 +136,8 @@ export const post = async (endpoint: string, body: any, user: ITestUser) => {
 	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
 	return rocketchat.post(endpoint, body);
 };
+
+export const getProfileInfo = async (userId: string) => {
+	const result = await get(`users.info?userId=${userId}`);
+	return result.data.user;
+};

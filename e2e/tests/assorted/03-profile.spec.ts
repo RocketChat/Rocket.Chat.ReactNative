@@ -11,14 +11,13 @@ async function waitForToast() {
 }
 
 describe('Profile screen', () => {
-	let scrollViewType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
 
 	beforeAll(async () => {
 		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ scrollViewType, textMatcher } = platformTypes[device.getPlatform()]);
+		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(user.username, user.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();
@@ -43,6 +42,10 @@ describe('Profile screen', () => {
 			await expect(element(by.id('profile-view-avatar')).atIndex(0)).toExist();
 		});
 
+		it('should have avatar edit button', async () => {
+			await expect(element(by.id('avatar-edit-button'))).toExist();
+		});
+
 		it('should have name', async () => {
 			await expect(element(by.id('profile-view-name'))).toExist();
 		});
@@ -59,31 +62,6 @@ describe('Profile screen', () => {
 			await expect(element(by.id('profile-view-new-password'))).toExist();
 		});
 
-		it('should have avatar url', async () => {
-			await expect(element(by.id('profile-view-avatar-url'))).toExist();
-		});
-
-		it('should have reset avatar button', async () => {
-			await waitFor(element(by.id('profile-view-reset-avatar')))
-				.toExist()
-				.whileElement(by.id('profile-view-list'))
-				.scroll(scrollDown, 'down');
-		});
-
-		it('should have upload avatar button', async () => {
-			await waitFor(element(by.id('profile-view-upload-avatar')))
-				.toExist()
-				.whileElement(by.id('profile-view-list'))
-				.scroll(scrollDown, 'down');
-		});
-
-		it('should have avatar url button', async () => {
-			await waitFor(element(by.id('profile-view-avatar-url-button')))
-				.toExist()
-				.whileElement(by.id('profile-view-list'))
-				.scroll(scrollDown, 'down');
-		});
-
 		it('should have submit button', async () => {
 			await waitFor(element(by.id('profile-view-submit')))
 				.toExist()
@@ -96,17 +74,23 @@ describe('Profile screen', () => {
 		it('should change name and username', async () => {
 			await element(by.id('profile-view-name')).replaceText(`${user.username}new`);
 			await element(by.id('profile-view-username')).replaceText(`${user.username}new`);
+			// dismiss keyboard
 			await element(by.id('profile-view-list')).swipe('down');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});
 
 		it('should change email and password', async () => {
+			await element(by.id('profile-view-list')).swipe('up');
 			await waitFor(element(by.id('profile-view-email')))
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${random()}@rocket.chat`);
+			// dismiss keyboard
+			await element(by.id('profile-view-list')).swipe('down');
 			await element(by.id('profile-view-new-password')).replaceText(`${user.password}new`);
+			// dismiss keyboard
+			await element(by.id('profile-view-list')).swipe('down');
 			await waitFor(element(by.id('profile-view-submit')))
 				.toExist()
 				.withTimeout(2000);
@@ -118,12 +102,6 @@ describe('Profile screen', () => {
 			await element(by[textMatcher]('Save').withAncestor(by.id('action-sheet-content-with-input-and-submit')))
 				.atIndex(0)
 				.tap();
-			await waitForToast();
-		});
-
-		it('should reset avatar', async () => {
-			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
-			await element(by.id('profile-view-reset-avatar')).tap();
 			await waitForToast();
 		});
 	});
