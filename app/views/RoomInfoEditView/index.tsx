@@ -2,15 +2,13 @@ import React from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
-import isEmpty from 'lodash/isEmpty';
 import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
-import Avatar from '../../containers/Avatar';
+import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
@@ -23,13 +21,11 @@ import {
 	IRoomSettings,
 	ISubscription,
 	SubscriptionType,
-	TSubscriptionModel,
-	IAvatar
+	TSubscriptionModel
 } from '../../definitions';
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { CustomIcon } from '../../containers/CustomIcon';
 import KeyboardView from '../../containers/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -54,7 +50,6 @@ import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {
 	room: ISubscription;
-	avatar: IAvatar;
 	permissions: { [key in TSupportedPermissions]?: boolean };
 	name: string;
 	description?: string;
@@ -102,7 +97,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		this.room = {} as TSubscriptionModel;
 		this.state = {
 			room: {} as ISubscription,
-			avatar: {} as IAvatar,
 			permissions: {},
 			name: '',
 			description: '',
@@ -192,7 +186,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			topic,
 			announcement,
 			t: t === 'p',
-			avatar: {} as IAvatar,
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
@@ -228,8 +221,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			joinCode,
 			systemMessages,
 			enableSysMes,
-			encrypted,
-			avatar
+			encrypted
 		} = this.state;
 		const { joinCodeRequired } = room;
 		const sysMes = room.sysMes as string[];
@@ -244,28 +236,15 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			room.reactWhenReadOnly === reactWhenReadOnly &&
 			dequal(sysMes, systemMessages) &&
 			enableSysMes === (sysMes && sysMes.length > 0) &&
-			room.encrypted === encrypted &&
-			isEmpty(avatar)
+			room.encrypted === encrypted
 		);
 	};
 
 	submit = async () => {
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
-		const {
-			room,
-			name,
-			description,
-			topic,
-			announcement,
-			t,
-			ro,
-			reactWhenReadOnly,
-			joinCode,
-			systemMessages,
-			encrypted,
-			avatar
-		} = this.state;
+		const { room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, encrypted } =
+			this.state;
 
 		sendLoadingEvent({ visible: true });
 		let error = false;
@@ -283,10 +262,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		// Name
 		if (getRoomTitle(room) !== name) {
 			params.roomName = name;
-		}
-		// Avatar
-		if (!isEmpty(avatar)) {
-			params.roomAvatar = avatar.data as string;
 		}
 		// Description
 		if (room.description !== description) {
@@ -487,26 +462,10 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		);
 	};
 
-	changeAvatar = async () => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
-
-		try {
-			const response: Image = await ImagePicker.openPicker(options);
-			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
-	resetAvatar = () => {
-		this.setState({ avatar: { data: null } });
+	handleEditAvatar = () => {
+		const { navigation } = this.props;
+		const { room } = this.state;
+		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: room.t, context: 'room' });
 	};
 
 	toggleRoomType = (value: boolean) => {
@@ -549,8 +508,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			permissions,
 			archived,
 			enableSysMes,
-			encrypted,
-			avatar
+			encrypted
 		} = this.state;
 		const { serverVersion, encryptionEnabled, theme } = this.props;
 		const { dangerColor } = themes[theme];
@@ -568,29 +526,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						testID='room-info-edit-view-list'
 						{...scrollPersistTaps}
 					>
-						<TouchableOpacity
-							style={styles.avatarContainer}
-							onPress={this.changeAvatar}
-							disabled={compareServerVersion(serverVersion || '', 'lowerThan', '3.6.0')}
-						>
-							<Avatar
-								type={room.t}
-								text={room.name}
-								avatar={avatar?.url}
-								isStatic={avatar?.url}
-								rid={isEmpty(avatar) ? room.rid : undefined}
-								size={100}
-							>
-								{serverVersion && compareServerVersion(serverVersion, 'lowerThan', '3.6.0') ? undefined : (
-									<TouchableOpacity
-										style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]}
-										onPress={this.resetAvatar}
-									>
-										<CustomIcon name='delete' color={themes[theme].backgroundColor} size={24} />
-									</TouchableOpacity>
-								)}
-							</Avatar>
-						</TouchableOpacity>
+						<View style={styles.avatarContainer}>
+							<AvatarWithEdit type={room.t} text={room.name} rid={room.rid} handleEdit={this.handleEditAvatar} />
+						</View>
 						<FormTextInput
 							inputRef={e => {
 								this.name = e;

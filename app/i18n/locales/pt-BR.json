@@ -876,6 +876,14 @@
   "Reply_in_direct_message": "Responder por mensagem direta",
   "room_archived": "{{username}} arquivou a sala",
   "room_unarchived": "{{username}} desarquivou a sala",
+  "Upload_image": "Carregar imagem",
+  "Delete_image": "Deletar imagem",
+  "Images_uploaded": "Imagens carregadas",
+  "Avatar": "Avatar",
+  "insert_Avatar_URL": "insira o URL da imagem aqui",
+  "Discard_changes":"Descartar alterações?",
+  "Discard":"Descartar",
+  "Discard_changes_description":"Todas as alterações serão perdidas, se você sair sem salvar.",
   "Presence_Cap_Warning_Title": "Status do usuário desabilitado temporariamente",
   "Presence_Cap_Warning_Description": "O limite de conexões ativas para a workspace foi atingido, por isso o serviço responsável pela presença dos usuários está temporariamente desabilitado. Ele pode ser reabilitado manualmente nas configurações da workspace."
 }
