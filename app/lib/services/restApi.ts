@@ -561,7 +561,7 @@ export const saveRoomSettings = (
 	rid: string,
 	params: {
 		roomName?: string;
-		roomAvatar?: string;
+		roomAvatar?: string | null;
 		roomDescription?: string;
 		roomTopic?: string;
 		roomAnnouncement?: string;
@@ -602,7 +602,7 @@ export const getRoomRoles = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>
+export const getAvatarSuggestion = (): Promise<{ [service: string]: IAvatarSuggestion }> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('getAvatarSuggestion');
 

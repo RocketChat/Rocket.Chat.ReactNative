@@ -515,7 +515,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (data[0]) {
 					if (this.subObserveQuery && this.subObserveQuery.unsubscribe) {
 						this.observeRoom(data[0]);
-						this.setState({ room: data[0] });
+						this.setState({ room: data[0], joined: true });
 						this.subObserveQuery.unsubscribe();
 					}
 				}
@@ -589,6 +589,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<LeftButtons
+					rid={rid}
 					tmid={tmid}
 					unreadsCount={unreadsCount}
 					navigation={navigation}
@@ -1440,7 +1441,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		if (!joined && !this.tmid) {
+		if (!joined) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text
