@@ -156,6 +156,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
+					// @ts-ignore
+					this.state.membersCount = changes.usersCount;
 				}
 			});
 		}
@@ -190,7 +192,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
-						this.setState({ membersCount: counters.members, joined: counters.joined });
+						await this.updateUsersCount(counters.members);
+						this.setState({ joined: counters.joined });
 					}
 				} catch (e) {
 					log(e);
@@ -229,6 +232,23 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { room } = this.state;
 		return room.t === 'l' && room.status === 'queued' && !this.joined;
 	}
+
+	updateUsersCount = async (members: number) => {
+		const { room } = this.state;
+		if (members === room.usersCount) return;
+		try {
+			const db = database.active;
+			await db.write(async () => {
+				await room.update(
+					protectedFunction((r: TSubscriptionModel) => {
+						r.usersCount = members;
+					})
+				);
+			});
+		} catch {
+			//
+		}
+	};
 
 	onPressTouchable: IOnPressTouch = (item: {
 		route?: keyof ChatsStackParamList;
@@ -1033,6 +1053,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate } = this.state;
+		console.log('🚀 ~ file: index.tsx:1038 ~ RoomActionsView ~ render ~ membersCount:', membersCount);
 		const { rid, t, prid } = room;
 		const isGroupChatHandler = isGroupChat(room);
 
