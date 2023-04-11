@@ -26,7 +26,8 @@
 		"e2e:ios-build-debug": "yarn detox build -c ios.sim.debug",
 		"e2e:ios-test-debug": "yarn detox test -c ios.sim.debug",
 		"e2e:ios-build": "yarn detox build -c ios.sim.release",
-		"e2e:ios-test": "yarn detox test -c ios.sim.release"
+		"e2e:ios-test": "yarn detox test -c ios.sim.release",
+		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [
