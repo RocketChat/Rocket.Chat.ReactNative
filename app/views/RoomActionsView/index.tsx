@@ -1053,7 +1053,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate } = this.state;
-		console.log('🚀 ~ file: index.tsx:1038 ~ RoomActionsView ~ render ~ membersCount:', membersCount);
 		const { rid, t, prid } = room;
 		const isGroupChatHandler = isGroupChat(room);
 
