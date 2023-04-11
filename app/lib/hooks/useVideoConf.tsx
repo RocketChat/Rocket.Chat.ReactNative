@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Q } from '@nozbe/watermelondb';
 
 import { useActionSheet } from '../../containers/ActionSheet';
 import StartACallActionSheet from '../../containers/UIKit/VideoConferenceBlock/components/StartACallActionSheet';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { ISubscription, SubscriptionType } from '../../definitions';
 import i18n from '../../i18n';
 import { getUserSelector } from '../../selectors/login';
-import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { callJitsi } from '../methods';
 import { compareServerVersion, showErrorAlert } from '../methods/helpers';
@@ -40,14 +38,18 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	const { showActionSheet } = useActionSheet();
 	const snaps = useSnaps([1250]);
 
-	const handleShowCallOption = (room: TSubscriptionModel) => {
+	const handleShowCallOption = async () => {
 		if (isServer5OrNewer) return setShowCallOption(true);
-		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
-		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
+		const room = await getSubscriptionByRoomId(rid);
 
-		if (room.t === SubscriptionType.DIRECT) return setShowCallOption(!!jitsiEnabled);
-		if (room.t === SubscriptionType.CHANNEL) return setShowCallOption(!isJitsiDisabledForChannels);
-		if (room.t === SubscriptionType.GROUP) return setShowCallOption(!isJitsiDisabledForTeams);
+		if (room) {
+			const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
+			const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
+
+			if (room.t === SubscriptionType.DIRECT) return setShowCallOption(!!jitsiEnabled);
+			if (room.t === SubscriptionType.CHANNEL) return setShowCallOption(!isJitsiDisabledForChannels);
+			if (room.t === SubscriptionType.GROUP) return setShowCallOption(!isJitsiDisabledForTeams);
+		}
 
 		return setShowCallOption(false);
 	};
@@ -90,23 +92,8 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 		}
 	};
 
-	const initSubscription = () => {
-		try {
-			const db = database.active;
-			const observeSubCollection = db.get('subscriptions').query(Q.where('rid', rid)).observe();
-			const subObserveQuery = observeSubCollection.subscribe(data => {
-				if (data[0]) {
-					handleShowCallOption(data[0]);
-					subObserveQuery.unsubscribe();
-				}
-			});
-		} catch (e) {
-			console.log("observeSubscriptions: Can't find subscription to observe");
-		}
-	};
-
 	useEffect(() => {
-		initSubscription();
+		handleShowCallOption();
 	}, []);
 
 	return { showInitCallActionSheet, showCallOption };
