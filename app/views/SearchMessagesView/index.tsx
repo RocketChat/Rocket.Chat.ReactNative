@@ -39,6 +39,7 @@ import {
 	ICustomEmoji
 } from '../../definitions';
 import { Services } from '../../lib/services';
+import KeyboardView from '../../containers/KeyboardView';
 
 const QUERY_SIZE = 50;
 
@@ -327,18 +328,20 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
 				<StatusBar />
-				<View style={styles.searchContainer}>
-					<FormTextInput
-						autoFocus
-						label={I18n.t('Search')}
-						onChangeText={this.search}
-						placeholder={I18n.t('Search_Messages')}
-						testID='search-message-view-input'
-					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
-					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
-				</View>
-				{this.renderList()}
+				<KeyboardView>
+					<View style={styles.searchContainer}>
+						<FormTextInput
+							autoFocus
+							label={I18n.t('Search')}
+							onChangeText={this.search}
+							placeholder={I18n.t('Search_Messages')}
+							testID='search-message-view-input'
+						/>
+						<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
+						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
+					</View>
+					{this.renderList()}
+				</KeyboardView>
 			</SafeAreaView>
 		);
 	}

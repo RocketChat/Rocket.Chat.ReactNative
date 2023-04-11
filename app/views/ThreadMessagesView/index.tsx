@@ -35,6 +35,7 @@ import styles from './styles';
 import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import KeyboardView from '../../containers/KeyboardView';
 
 const API_FETCH_COUNT = 50;
 
@@ -516,16 +517,18 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 		return (
 			<SafeAreaView testID='thread-messages-view'>
-				<StatusBar />
-				{this.renderContent()}
-				{showFilterDropdown ? (
-					<Dropdown
-						currentFilter={currentFilter}
-						onFilterSelected={this.onFilterSelected}
-						onClose={this.closeFilterDropdown}
-						theme={theme}
-					/>
-				) : null}
+				<KeyboardView>
+					<StatusBar />
+					{this.renderContent()}
+					{showFilterDropdown ? (
+						<Dropdown
+							currentFilter={currentFilter}
+							onFilterSelected={this.onFilterSelected}
+							onClose={this.closeFilterDropdown}
+							theme={theme}
+						/>
+					) : null}
+				</KeyboardView>
 			</SafeAreaView>
 		);
 	}
