@@ -515,7 +515,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (data[0]) {
 					if (this.subObserveQuery && this.subObserveQuery.unsubscribe) {
 						this.observeRoom(data[0]);
-						this.setState({ room: data[0] });
+						this.setState({ room: data[0], joined: true });
 						this.subObserveQuery.unsubscribe();
 					}
 				}
@@ -589,6 +589,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<LeftButtons
+					rid={rid}
 					tmid={tmid}
 					unreadsCount={unreadsCount}
 					navigation={navigation}
@@ -627,7 +628,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					joined={joined}
 					status={room.status}
 					omnichannelPermissions={omnichannelPermissions}
-					t={this.t || t}
+					t={(this.t || t) as SubscriptionType}
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
@@ -1197,6 +1198,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
+			if (!jumpToMessageId) {
+				setTimeout(() => {
+					sendLoadingEvent({ visible: false });
+				}, 300);
+			}
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.tmid,
@@ -1229,14 +1235,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	handleCallJitsi = () => {
+	// OLD METHOD - support versions before 5.0.0
+	handleEnterCall = () => {
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
-				callJitsi(room);
+				callJitsi({ room });
 			}
 		}
 	};
@@ -1382,7 +1389,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
 					getCustomEmoji={this.getCustomEmoji}
-					callJitsi={this.handleCallJitsi}
+					handleEnterCall={this.handleEnterCall}
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}
@@ -1434,7 +1441,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		if (!joined && !this.tmid) {
+		if (!joined) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text

@@ -86,14 +86,15 @@ class ReviewApp {
 	positiveEventCount = 0;
 
 	pushPositiveEvent = () => {
-		if (!isFDroidBuild) {
-			if (this.positiveEventCount >= numberOfPositiveEvent) {
-				return;
-			}
-			this.positiveEventCount += 1;
-			if (this.positiveEventCount === numberOfPositiveEvent) {
-				tryReview();
-			}
+		if (isFDroidBuild || process.env.RUNNING_E2E_TESTS === 'true') {
+			return;
+		}
+		if (this.positiveEventCount >= numberOfPositiveEvent) {
+			return;
+		}
+		this.positiveEventCount += 1;
+		if (this.positiveEventCount === numberOfPositiveEvent) {
+			tryReview();
 		}
 	};
 }
