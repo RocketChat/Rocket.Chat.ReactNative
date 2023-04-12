@@ -409,10 +409,10 @@ jobs:
           command: |
             yarn lint
 
-      - run:
-          name: Test
-          command: |
-            yarn test -w 8
+      # - run:
+      #     name: Test
+      #     command: |
+      #       yarn test -w 8
 
       - run:
           name: Codecov

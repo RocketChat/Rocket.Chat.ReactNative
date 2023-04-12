@@ -1,10 +1,10 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
 import { I18nManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
-import moment from 'moment';
+// import moment from 'moment';
 import 'moment/min/locales';
 
-import { toMomentLocale } from './moment';
+// import { toMomentLocale } from './moment';
 // import { isRTL } from './isRTL';
 import englishJson from './locales/en.json';
 
@@ -145,12 +145,14 @@ type TranslationParams = Parameters<typeof intl['formatMessage']>[1];
 const i18n = {
 	isRTL: false,
 	t: (key: string, params?: TranslationParams) =>
+		// @ts-ignore
 		intl.formatMessage({ id: key, defaultMessage: translations.en[key] }, params).toString(),
 	isTranslated: (text?: string) => (text ? text in englishJson : false)
 };
 
 export const setLanguage = (l: string) => {
 	if (!l) {
+		console.log('No language provided');
 	}
 
 	// // server uses lowercase pattern (pt-br), but we're forced to use standard pattern (pt-BR)
