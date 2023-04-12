@@ -6,6 +6,8 @@ import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 
 import { IBaseScreen } from '../definitions';
+import { userAgent } from '../lib/constants';
+import { isAndroid } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../lib/methods/videoConfTimer';
 import { ChatsStackParamList } from '../stacks/types';
@@ -30,18 +32,20 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 
 	componentDidMount() {
 		const { route, navigation } = this.props;
-		isAppInstalled(JITSI_INTENT)
-			.then(function (isInstalled) {
-				if (isInstalled) {
-					const callUrl = route.params.url.replace(/^https?:\/\//, '').split('#')[0];
-					openAppWithUri(`intent://${callUrl}#Intent;scheme=${JITSI_INTENT};package=${JITSI_INTENT};end`)
-						.then(() => navigation.pop())
-						.catch(() => {});
-				}
-			})
-			.catch(() => {});
+		if (isAndroid) {
+			isAppInstalled(JITSI_INTENT)
+				.then(function (isInstalled) {
+					if (isInstalled) {
+						const callUrl = route.params.url.replace(/^https?:\/\//, '').split('#')[0];
+						openAppWithUri(`intent://${callUrl}#Intent;scheme=${JITSI_INTENT};package=${JITSI_INTENT};end`)
+							.then(() => navigation.pop())
+							.catch(() => {});
+					}
+				})
+				.catch(() => {});
+			this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
+		}
 		this.onConferenceJoined();
-		this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
 		activateKeepAwake();
 	}
 
@@ -50,7 +54,9 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 		if (!this.videoConf) {
 			endVideoConfTimer();
 		}
-		this.backHandler.remove();
+		if (this.backHandler) {
+			this.backHandler.remove();
+		}
 		deactivateKeepAwake();
 	}
 
@@ -81,6 +87,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 				onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
 				onNavigationStateChange={this.onNavigationStateChange}
 				style={{ flex: 1 }}
+				userAgent={userAgent}
 				javaScriptEnabled
 				domStorageEnabled
 				mediaPlaybackRequiresUserAction={false}
