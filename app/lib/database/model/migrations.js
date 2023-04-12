@@ -257,6 +257,15 @@ export default schemaMigrations({
 					columns: [{ name: 'e2e_suggested_key', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 21,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'sanitized_fname', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

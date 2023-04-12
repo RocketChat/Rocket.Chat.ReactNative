@@ -20,6 +20,8 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		.get('subscriptions')
 		.query(
 			Q.or(
+				Q.where('sanitized_fname', Q.like(`%${slugifiedString}%`)),
+				// TODO: We still need the others comparisons, otherwise we needed to clear the cache
 				Q.where('name', Q.like(`%${likeString}%`)),
 				Q.where('fname', Q.like(`%${likeString}%`)),
 				Q.where('name', Q.like(`%${slugifiedString}%`))
@@ -44,7 +46,8 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		encrypted: item.encrypted,
 		lastMessage: item.lastMessage,
 		status: item.status,
-		teamMain: item.teamMain
+		teamMain: item.teamMain,
+		prid: item.prid
 	})) as ISearchLocal[];
 
 	return search;

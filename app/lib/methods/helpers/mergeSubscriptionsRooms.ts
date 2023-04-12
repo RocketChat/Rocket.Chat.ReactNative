@@ -1,5 +1,6 @@
 import EJSON from 'ejson';
 
+import { slugifyLikeString } from '../../database/utils';
 import { Encryption } from '../../encryption';
 import { store as reduxStore } from '../../store/auxStore';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
@@ -98,7 +99,7 @@ export const merge = (
 	mergedSubscription.blocker = !!mergedSubscription.blocker;
 	mergedSubscription.blocked = !!mergedSubscription.blocked;
 	mergedSubscription.hideMentionStatus = !!mergedSubscription.hideMentionStatus;
-
+	mergedSubscription.sanitizedFname = slugifyLikeString(mergedSubscription.fname || mergedSubscription.name);
 	return mergedSubscription;
 };
 

@@ -5,7 +5,8 @@ import slug from 'slug';
 const likeStringRegex = XRegExp('[^\\p{L}\\p{Nd}]', 'g');
 export const sanitizeLikeString = (str?: string): string | undefined => str?.replace(likeStringRegex, '_');
 
-export const slugifyLikeString = (str: string) => {
+export const slugifyLikeString = (str?: string) => {
+	if (!str) return '';
 	str?.replace(likeStringRegex, '_');
 	const slugified = slug(str);
 	return slugified;
