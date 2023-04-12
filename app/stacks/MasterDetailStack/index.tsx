@@ -239,6 +239,7 @@ const InsideStackNavigator = React.memo(() => {
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
 			<InsideStack.Screen
 				name='JitsiMeetView'
+				// @ts-ignore
 				component={JitsiMeetView}
 				options={{ headerShown: false, animationEnabled: isIOS }}
 			/>

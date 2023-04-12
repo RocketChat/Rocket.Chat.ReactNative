@@ -145,6 +145,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 			<ChatsStack.Screen
 				name='JitsiMeetView'
+				// @ts-ignore
 				component={JitsiMeetView}
 				options={{ headerShown: false, animationEnabled: isIOS }}
 			/>
