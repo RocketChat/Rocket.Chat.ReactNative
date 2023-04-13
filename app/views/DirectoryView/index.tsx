@@ -16,7 +16,7 @@ import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { debounce } from '../../lib/methods/helpers';
+import { debounce, showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
@@ -158,31 +158,35 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 	onPressItem = async (item: IServerRoom) => {
 		const { type } = this.state;
-		if (type === 'users') {
-			const result = await Services.createDirectMessage(item.username as string);
-			if (result.success) {
-				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
-			}
-		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const result = await Services.getRoomInfo(item._id);
-			if (result.success) {
+		try {
+			if (type === 'users') {
+				const result = await Services.createDirectMessage(item.username as string);
+				if (result.success) {
+					this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+				}
+			} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
+				const result = await Services.getRoomInfo(item._id);
+				if (result.success) {
+					this.goRoom({
+						rid: item._id,
+						name: item.name,
+						joinCodeRequired: result.room.joinCodeRequired,
+						t: item.t as SubscriptionType,
+						search: true
+					});
+				}
+			} else {
 				this.goRoom({
 					rid: item._id,
 					name: item.name,
-					joinCodeRequired: result.room.joinCodeRequired,
 					t: item.t as SubscriptionType,
-					search: true
+					search: true,
+					teamMain: item.teamMain,
+					teamId: item.teamId
 				});
 			}
-		} else {
-			this.goRoom({
-				rid: item._id,
-				name: item.name,
-				t: item.t as SubscriptionType,
-				search: true,
-				teamMain: item.teamMain,
-				teamId: item.teamId
-			});
+		} catch (e: any) {
+			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
 	};
 
