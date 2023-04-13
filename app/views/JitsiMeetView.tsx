@@ -1,6 +1,6 @@
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React from 'react';
-import { BackHandler, NativeEventSubscription } from 'react-native';
+import { BackHandler, NativeEventSubscription, SafeAreaView } from 'react-native';
 import { isAppInstalled, openAppWithUri } from 'react-native-send-intent';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
@@ -82,16 +82,18 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 
 	render() {
 		return (
-			<WebView
-				source={{ uri: `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true` }}
-				onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
-				onNavigationStateChange={this.onNavigationStateChange}
-				style={{ flex: 1 }}
-				userAgent={userAgent}
-				javaScriptEnabled
-				domStorageEnabled
-				mediaPlaybackRequiresUserAction={false}
-			/>
+			<SafeAreaView style={{ flex: 1 }}>
+				<WebView
+					source={{ uri: `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true` }}
+					onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
+					onNavigationStateChange={this.onNavigationStateChange}
+					style={{ flex: 1 }}
+					userAgent={userAgent}
+					javaScriptEnabled
+					domStorageEnabled
+					mediaPlaybackRequiresUserAction={false}
+				/>
+			</SafeAreaView>
 		);
 	}
 }
