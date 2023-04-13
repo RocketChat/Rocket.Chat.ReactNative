@@ -113,6 +113,7 @@ commands:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
@@ -511,6 +512,7 @@ jobs:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
             echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
