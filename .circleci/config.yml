@@ -166,7 +166,7 @@ commands:
                 --api-key=$BUGSNAG_KEY_OFFICIAL \
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
+                --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/index.android.bundle.map \
                 --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
@@ -174,7 +174,7 @@ commands:
                 --api-key=$BUGSNAG_KEY \
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
+                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/index.android.bundle.map \
                 --bundle android/app/build/generated/assets/react/experimentalPlay/release/app.bundle
             fi
 
