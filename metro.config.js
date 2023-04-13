@@ -19,7 +19,6 @@ module.exports = {
 	},
 	maxWorkers: 2,
 	resolver: {
-		blocklistRE: blocklist([/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/]),
 		resolverMainFields: ['sbmodern', 'react-native', 'browser', 'main']
 	}
 };
