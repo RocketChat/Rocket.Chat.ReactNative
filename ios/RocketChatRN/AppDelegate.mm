@@ -27,12 +27,6 @@
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   
-  UIViewController *rootViewController = self.window.rootViewController;
-  [self.window removeReactSubview:(RCTRootView *)self.window.rootViewController.view];
-  UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
-  navigationController.navigationBarHidden = YES;
-  self.window.rootViewController = navigationController;
-  
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:self.window.rootViewController.view];
   
   return YES;
