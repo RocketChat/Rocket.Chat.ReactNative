@@ -196,8 +196,6 @@ commands:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
-      - setup_ruby:
-          ruby_version: 2.7.5
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
@@ -321,8 +319,6 @@ commands:
           at: ios
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
-      - setup_ruby:
-          ruby_version: 2.7.5
       - run: *update-fastlane-ios
       - manage-pods
       - run:
@@ -340,44 +336,6 @@ commands:
           command: |
             echo $E2E_ACCOUNT | base64 --decode > ./e2e_account.ts
           working_directory: e2e
-
-  # https://github.com/facebook/react-native/blob/367faa22823ed081576f2fd59733f5680c849426/.circleci/config.yml#L160
-  setup_ruby:
-    parameters:
-      ruby_version:
-        default: "2.6.10"
-        type: string
-    steps:
-      - restore_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-      - run:
-          name: Set Required Ruby
-          command: echo << parameters.ruby_version >> > /tmp/required_ruby
-      - restore_cache:
-          key: v1-rbenv-{{ checksum "/tmp/required_ruby" }}
-      - run:
-          name: Bundle Install
-          command: |
-            # Install the right version of ruby
-            if [[ -z "$(rbenv versions | grep << parameters.ruby_version >>)" ]]; then
-              # ensure that `ruby-build` can see all the available versions of Ruby
-              # some PRs received machines in a weird state, this should make the pipelines
-              # more robust.
-              brew update && brew upgrade ruby-build
-              rbenv install << parameters.ruby_version >>
-            fi
-
-            rbenv global << parameters.ruby_version >>
-            gem install bundler
-            bundle check || bundle install --path vendor/bundle --clean
-      - save_cache:
-          key: v1-rbenv-{{ checksum "/tmp/required_ruby" }}
-          paths:
-            - ~/.rbenv
-      - save_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
 
 version: 2.1
 
@@ -608,8 +566,6 @@ jobs:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
-      - setup_ruby:
-          ruby_version: 2.7.5
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - save_cache: *save-npm-cache-mac
