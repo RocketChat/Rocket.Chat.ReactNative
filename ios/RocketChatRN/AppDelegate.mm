@@ -17,9 +17,12 @@
   }
   [Bugsnag start];
   
- // AppGroup MMKV
- NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
- [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
+  // AppGroup MMKV
+  NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
+  
+  [RNNotifications startMonitorNotifications];
+  [ReplyNotification configure];
 
   self.moduleName = @"RocketChatRN";
   // You can add your custom initial props in the dictionary below.
@@ -59,6 +62,10 @@
 
  - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
    [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+ }
+
+ - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+  [RNNotifications didReceiveBackgroundNotification:userInfo withCompletionHandler:completionHandler];
  }
 
  - (BOOL)application:(UIApplication *)application
