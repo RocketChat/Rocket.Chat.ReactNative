@@ -6,19 +6,20 @@ import i18n from '../../../../i18n';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../../lib/hooks';
 import { getRoomAvatar, getUidDirectMessage } from '../../../../lib/methods/helpers';
+import { Services } from '../../../../lib/services';
 import { useTheme } from '../../../../theme';
 import { useActionSheet } from '../../../ActionSheet';
 import AvatarContainer from '../../../Avatar';
 import Button from '../../../Button';
 import { CustomIcon } from '../../../CustomIcon';
-import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import StatusContainer from '../../../Status';
+import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import useStyle from './styles';
 
 export default function StartACallActionSheet({ rid, initCall }: { rid: string; initCall: Function }): React.ReactElement {
 	const style = useStyle();
 	const { colors } = useTheme();
-	const [user, setUser] = useState({ username: '', avatar: '', uid: '' });
+	const [user, setUser] = useState({ username: '', avatar: '', uid: '', type: '' });
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
 	const username = useAppSelector(state => state.login.user.username);
@@ -28,9 +29,25 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 	useEffect(() => {
 		(async () => {
 			const room = await getSubscriptionByRoomId(rid);
-			const uid = (await getUidDirectMessage(room)) as string;
-			const avt = getRoomAvatar(room);
-			setUser({ uid, username: room?.name || '', avatar: avt });
+			if (room) {
+				const uid = (await getUidDirectMessage(room)) as string;
+				const avt = getRoomAvatar(room);
+				setUser({ uid, username: room?.name || '', avatar: avt, type: room?.t || '' });
+			} else {
+				try {
+					const result = await Services.getUserInfo(rid);
+					if (result.success) {
+						setUser({
+							username: result.user.name || result.user.username,
+							avatar: result.user.username,
+							uid: result.user._id,
+							type: 'd'
+						});
+					}
+				} catch (error) {
+					//
+				}
+			}
 		})();
 	}, [rid]);
 
@@ -58,7 +75,7 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 				</View>
 			</View>
 			<View style={style.actionSheetUsernameContainer}>
-				<AvatarContainer text={user.avatar} size={36} />
+				<AvatarContainer text={user.avatar} size={36} rid={rid} type={user.type} />
 				<StatusContainer size={16} id={user.uid} style={{ marginLeft: 8, marginRight: 6 }} />
 				<Text style={style.actionSheetUsername} numberOfLines={1}>
 					{user.username}
