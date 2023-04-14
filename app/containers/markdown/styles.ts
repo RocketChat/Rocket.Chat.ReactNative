@@ -162,17 +162,5 @@ export default StyleSheet.create({
 	},
 	inline: {
 		flexShrink: 1
-	},
-	// Avoid infinite margin issues by removing all margins when a <Text> wraps a <FastImage>
-	removeMargins: {
-		margin: 0,
-		marginBottom: 0,
-		marginHorizontal: 0,
-		marginRight: 0,
-		marginEnd: 0,
-		marginLeft: 0,
-		marginStart: 0,
-		marginTop: 0,
-		marginVertical: 0
 	}
 });
