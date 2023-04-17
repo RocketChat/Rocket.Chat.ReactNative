@@ -41,7 +41,8 @@ import {
 	getUidDirectMessage,
 	hasPermission,
 	isGroupChat,
-	compareServerVersion
+	compareServerVersion,
+	isTeamRoom
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
@@ -1033,7 +1034,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate } = this.state;
-		const { rid, t, prid } = room;
+		const { isMasterDetail, navigation } = this.props;
+		const { rid, t, prid, teamId } = room;
 		const isGroupChatHandler = isGroupChat(room);
 
 		return (
@@ -1081,7 +1083,32 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								<List.Separator />
 							</>
 						) : null}
-
+						{teamId && isTeamRoom({ teamId, joined }) ? (
+							<>
+								<List.Item
+									title='Teams'
+									onPress={() => {
+										logEvent(events.ROOM_GO_TEAM_CHANNELS);
+										if (isMasterDetail) {
+											// @ts-ignore TODO: find a way to make this work - OLD Diego :)
+											navigation.navigate('ModalStackNavigator', {
+												screen: 'TeamChannelsView',
+												params: { teamId, joined }
+											});
+										} else {
+											navigation.navigate('TeamChannelsView', {
+												teamId,
+												joined
+											});
+										}
+									}}
+									testID='room-actions-teams'
+									left={() => <List.Icon name='channel-public' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions?.canViewCannedResponse ? (
 							<>
 								<List.Item

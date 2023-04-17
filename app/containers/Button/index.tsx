@@ -14,7 +14,7 @@ interface IButtonProps extends PlatformTouchableProps {
 	loading?: boolean;
 	color?: string;
 	fontSize?: number;
-	styleText?: StyleProp<TextStyle>[];
+	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
 }
 
 const styles = StyleSheet.create({

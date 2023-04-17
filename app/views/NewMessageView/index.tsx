@@ -5,6 +5,7 @@ import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
+import KeyboardView from '../../containers/KeyboardView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -82,29 +83,31 @@ const NewMessageView = () => {
 
 	return (
 		<SafeAreaView testID='new-message-view'>
-			<StatusBar />
-			<FlatList
-				data={search.length > 0 ? search : chats}
-				keyExtractor={item => item._id || item.rid}
-				ListHeaderComponent={<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} />}
-				renderItem={({ item }) => {
-					const itemSearch = item as ISearch;
-					const itemModel = item as TSubscriptionModel;
+			<KeyboardView>
+				<StatusBar />
+				<FlatList
+					data={search.length > 0 ? search : chats}
+					keyExtractor={item => item._id || item.rid}
+					ListHeaderComponent={<HeaderNewMessage maxUsers={maxUsers} onChangeText={handleSearch} />}
+					renderItem={({ item }) => {
+						const itemSearch = item as ISearch;
+						const itemModel = item as TSubscriptionModel;
 
-					return (
-						<UserItem
-							name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
-							username={itemSearch.search ? itemSearch.username : itemModel.name}
-							onPress={() => goRoom(itemModel)}
-							testID={`new-message-view-item-${item.name}`}
-						/>
-					);
-				}}
-				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
-				keyboardShouldPersistTaps='always'
-			/>
+						return (
+							<UserItem
+								name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
+								username={itemSearch.search ? itemSearch.username : itemModel.name}
+								onPress={() => goRoom(itemModel)}
+								testID={`new-message-view-item-${item.name}`}
+							/>
+						);
+					}}
+					ItemSeparatorComponent={List.Separator}
+					ListFooterComponent={List.Separator}
+					contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+					keyboardShouldPersistTaps='always'
+				/>
+			</KeyboardView>
 		</SafeAreaView>
 	);
 };

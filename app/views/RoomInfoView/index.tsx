@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 
-import Avatar from '../../containers/Avatar';
+import { AvatarWithEdit } from '../../containers/Avatar';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { MarkdownPreview } from '../../containers/markdown';
@@ -394,17 +394,32 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			log(e);
 		}
 	};
+
+	handleEditAvatar = () => {
+		const { navigation } = this.props;
+		const { room } = this.state;
+		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: this.t, context: 'room' });
+	};
+
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
 		const { theme } = this.props;
+		const { showEdit } = this.state;
+		const showAvatarEdit = showEdit && this.t !== SubscriptionType.OMNICHANNEL;
 
 		return (
-			<Avatar text={room.name || roomUser.username} style={styles.avatar} type={this.t} size={100} rid={room?.rid}>
+			<AvatarWithEdit
+				text={room.name || roomUser.username}
+				style={styles.avatar}
+				type={this.t}
+				rid={room?.rid}
+				handleEdit={showAvatarEdit ? this.handleEditAvatar : undefined}
+			>
 				{this.t === SubscriptionType.DIRECT && roomUser._id ? (
 					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						<Status size={20} id={roomUser._id} />
 					</View>
 				) : null}
-			</Avatar>
+			</AvatarWithEdit>
 		);
 	};
 

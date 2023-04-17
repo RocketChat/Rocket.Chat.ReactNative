@@ -17413,7 +17413,7 @@ react-native-gradle-plugin@^0.0.6:
 
 react-native-image-crop-picker@RocketChat/react-native-image-crop-picker:
   version "0.36.3"
-  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f347776247afb5cbd1400dde215689d7ca8fd6f2"
+  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/35f5c90576cadcdd4c0eb5cef83a9f1b7b7e26e3"
 
 react-native-image-progress@^1.1.1:
   version "1.1.1"

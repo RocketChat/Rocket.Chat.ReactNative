@@ -33,8 +33,7 @@ WIP: End-to-end tests are a work in progress and they're going to change.
     - Ask Diego Mello for credentials
 
 ## Shared config
-- Change `.env` to `RUNNING_E2E_TESTS=true`
-  - You can also `RUNNING_E2E_TESTS=true yarn start reset-cache`, but it's easier to change the file as long as you don't commit it
+- To start the Metro bundler in the mocked mode, you should run `yarn e2e:start`
 
 ## Setup and run iOS
 
