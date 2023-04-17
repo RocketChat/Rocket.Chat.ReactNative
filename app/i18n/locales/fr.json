@@ -730,7 +730,6 @@
   "Convert_to_Team_Warning": "Vous convertissez ce canal en équipe. Tous les membres seront conservés.",
   "Move_to_Team": "Déplacer vers l'équipe",
   "Move_Channel_Paragraph": "Le déplacement d'un canal dans une équipe signifie que ce canal sera ajouté dans le contexte d'équipe. Cependant, tous les membres du canal, qui ne sont pas membres de l'équipe respective, auront toujours accès à ce canal, mais ne seront pas ajoutés comme membres de l'équipe.\n\nLa gestion de tout le canal sera toujours assurée par les propriétaires de ce canal.\n\nLes membres de l'équipe et même les propriétaires de l'équipe, s'ils ne sont pas membres de ce canal, ne peuvent pas avoir accès au contenu du canal.\n\nVeuillez noter que le propriétaire de l'équipe pourra supprimer des membres du canal.",
-  "Move_to_Team_Warning": "Après avoir lu les instructions précédentes sur ce comportement, voulez-vous toujours déplacer ce canal vers l'équipe sélectionnée ?",
   "Load_More": "Charger plus",
   "Load_Newer": "Charger plus récent",
   "Load_Older": "Charger plus ancien",

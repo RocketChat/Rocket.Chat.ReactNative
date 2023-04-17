@@ -741,7 +741,6 @@
   "Convert_to_Team_Warning": "Ta kanal pretvorite v ekipo. Vsi člani bodo zadržani.",
   "Move_to_Team": "Premaknite se v ekipo",
   "Move_Channel_Paragraph": "Premik kanala znotraj ekipe pomeni, da bo ta kanal dodan v kontekstu ekipe, vendar bodo vsi člani kanala, ki niso člani ustrezne ekipe, še vedno imeli dostop do tega kanala, vendar ne bodo dodani kot člani ekipe.\n\nZ vsemi kanali bodo še vedno upravljali lastniki teh kanalov.\n\nČlani ekipe in celo lastniki ekipe, če ni član tega kanala, ne morejo imeti dostopa do vsebine kanala.\n\nPazite, da bo lastnik ekipe lahko odstranil člane s kanala.",
-  "Move_to_Team_Warning": "Ali po branju prejšnjih navodil še vedno želite premakniti ta kanal v izbrano ekipo?",
   "Load_More": "Naloži več",
   "Load_Newer": "Naloži novejše",
   "Load_Older": "Naložiti starejše",

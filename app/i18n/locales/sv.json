@@ -766,7 +766,6 @@
   "Convert_to_Team_Warning": "Du konverterar kanalen till ett team. Alla medlemmar behålls.",
   "Move_to_Team": "Flytta till team",
   "Move_Channel_Paragraph": "Om du flyttar in en kanal i ett team läggs kanalen till i teamets kontext. Alla kanalmedlemmar som inte är medlemmar i respektive team har dock fortfarande åtkomst till kanalen, men läggs inte till som teammedlemmar. \n\nAll kanalhantering görs fortfarande av kanalens ägare.\n\nTeammedlemmar och teamägare som inte är medlemmar i kanalen får inte ha åtkomst till kanalens innehåll. \n\nObs! Teamets ägare kan ta bort medlemmar från kanalen.",
-  "Move_to_Team_Warning": "Vill du fortfarande flytta kanalen till det valda teamet nu när du har läst informationen om den här funktionen?",
   "Load_More": "Läs in fler",
   "Load_Newer": "Läs in nyare",
   "Load_Older": "Läs in äldre",

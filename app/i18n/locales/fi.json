@@ -768,7 +768,6 @@
   "Convert_to_Team_Warning": "Muunnat tätä kanavaa tiimiksi. Kaikki jäsenet säilytetään.",
   "Move_to_Team": "Siirrä tiimiin",
   "Move_Channel_Paragraph": "Kanavan siirtäminen tiimiin tarkoittaa, että tämä kanava lisätään tiimin kontekstiin. Kaikki kanavan jäsenet, jotka eivät ole vastaavan tiimin jäseniä, pääsevät silti edelleen tälle kanavalle, mutta heitä ei lisätä tiimin jäseniksi. \n\nKanavan omistajat hoitavat edelleen kaiken kanavan hallinnan.\n\nTiimin jäsenillä ja jopa tiimin omistajilla, jotka eivät ole tämän kanavan jäseniä, ei ole pääsyä kanavan sisältöön. \n\nHuomioi, että tiimin omistaja voi poistaa jäseniä kanavalta.",
-  "Move_to_Team_Warning": "Nyt kun olet lukenut edellä olevat tätä toimintaa koskevat ohjeet, haluatko silti siirtää tämän kanavan valitulle tiimille?",
   "Load_More": "Lataa lisää",
   "Load_Newer": "Lataa uudemmat",
   "Load_Older": "Lataa vanhemmat",

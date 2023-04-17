@@ -768,7 +768,6 @@
   "Convert_to_Team_Warning": "Dies kann nicht rückgängig gemacht werden. Sobald Sie einen Channel in ein Team umgewandelt haben, können Sie ihn nicht mehr zurück in einen Channel verwandeln.",
   "Move_to_Team": "Zu Team hinzufügen",
   "Move_Channel_Paragraph": "Das Verschieben eines Channels innerhalb eines Teams bedeutet, dass dieser Channel im Kontext des Teams hinzugefügt wird, jedoch haben alle Mitglieder des Channels, die nicht Mitglied des jeweiligen Teams sind, weiterhin Zugriff auf diesen Channel, werden aber nicht als Teammitglieder hinzugefügt \n\nDie gesamte Verwaltung des Channels wird weiterhin von den Eigentümern dieses Channels vorgenommen.\n\nTeammitglieder und sogar Teameigentümer, die nicht Mitglied dieses Channels  sind, haben keinen Zugriff auf den Inhalt des Channels. \n\nBitte beachten Sie, dass der Besitzer des Teams in der Lage ist, Mitglieder aus dem Channel zu entfernen.",
-  "Move_to_Team_Warning": "Nachdem Sie die vorherigen Informationen zu diesem Verhalten gelesen haben, möchten Sie diesen Channel immer noch in das ausgewählte Team verschieben?",
   "Load_More": "Weitere laden",
   "Load_Newer": "Neuere laden",
   "Load_Older": "Ältere laden",

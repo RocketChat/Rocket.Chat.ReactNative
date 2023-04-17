@@ -730,7 +730,6 @@
   "Convert_to_Team_Warning": "Je converteert dit kanaal naar een team. Alle leden blijven behouden.",
   "Move_to_Team": "Verplaats naar team",
   "Move_Channel_Paragraph": "Het verplaatsen van een kanaal binnen een team betekent dat dit kanaal wordt toegevoegd in de context van het team. Maar, alle leden van dit kanaal, die geen lid zijn van het respectieve team, zullen nog steeds toegang hebben tot dit kanaal, maar worden niet als teamleden toegevoegd.\n\nHet volledige beheer van dit kanaal wordt nog steeds door de eigenaren van dit kanaal gedaan.\n\nTeamleden en zelfs teameigenaren, wanneer ze geen lid zijn van dit kanaal, hebben geen toegang tot de content van het kanaal.\n\nHou er rekening mee dat de eigenaar van het team de leden uit het kanaal kan verwijderen.",
-  "Move_to_Team_Warning": "Wil je na het lezen van de vorige instructies over dit gedrag, dit kanaal nog steeds naar het geselecteerde team verplaatsen?",
   "Load_More": "Meer laden",
   "Load_Newer": "Nieuwer laden",
   "Load_Older": "Ouder laden",

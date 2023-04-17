@@ -767,7 +767,6 @@
   "Convert_to_Team_Warning": "Você está convertendo este Canal para um Time. Todos os Membros serão mantidos.",
   "Move_to_Team": "Mover para Time",
   "Move_Channel_Paragraph": "Mover um canal dentro de um time significa que este canal será adicionado no contexto da equipe, no entanto, todos os membros do canal, que não são membros do respectivo time, ainda terão acesso a este canal, mas não serão adicionados como membros da equipe \n\nA gestão de todos os canais continuará a ser feita pelos proprietários deste canal.\n\nOs membros da equipe e até mesmo os proprietários da equipe, se não forem membros deste canal, não podem ter acesso ao conteúdo do canal.\n\nPor favor, note que o dono do time poderá remover membros do canal.",
-  "Move_to_Team_Warning": "Depois de ler as instruções anteriores sobre este comportamento, você ainda deseja mover este canal para o time selecionado?",
   "Load_More": "Carregar mais",
   "Load_Newer": "Carregar mais novas",
   "Load_Older": "Carregar mais antigas",
@@ -876,14 +875,6 @@
   "Reply_in_direct_message": "Responder por mensagem direta",
   "room_archived": "{{username}} arquivou a sala",
   "room_unarchived": "{{username}} desarquivou a sala",
-  "Upload_image": "Carregar imagem",
-  "Delete_image": "Deletar imagem",
-  "Images_uploaded": "Imagens carregadas",
-  "Avatar": "Avatar",
-  "insert_Avatar_URL": "insira o URL da imagem aqui",
-  "Discard_changes":"Descartar alterações?",
-  "Discard":"Descartar",
-  "Discard_changes_description":"Todas as alterações serão perdidas, se você sair sem salvar.",
   "Presence_Cap_Warning_Title": "Status do usuário desabilitado temporariamente",
   "Presence_Cap_Warning_Description": "O limite de conexões ativas para a workspace foi atingido, por isso o serviço responsável pela presença dos usuários está temporariamente desabilitado. Ele pode ser reabilitado manualmente nas configurações da workspace."
 }
