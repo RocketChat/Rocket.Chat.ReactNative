@@ -27,7 +27,7 @@ interface IItem {
 	onItemPress: () => void;
 }
 
-const Item = React.memo(({ item, selected, onItemPress }: IItem) => {
+const Item = ({ item, selected, onItemPress }: IItem) => {
 	const { colors } = useTheme();
 	return (
 		<List.Item
@@ -37,7 +37,7 @@ const Item = React.memo(({ item, selected, onItemPress }: IItem) => {
 			translateTitle={false}
 		/>
 	);
-});
+};
 
 const RenderSearch = ({ onChangeText }: TextInputProps) => (
 	<>
