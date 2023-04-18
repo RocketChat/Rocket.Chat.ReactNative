@@ -809,5 +809,6 @@
   "error-init-video-conf": "Napaka Zagon video klica",
   "totp-invalid": "Koda ali geslo neveljavno",
   "Close_Chat": "Zaprite klepet",
-  "Select_tags": "Izberite oznake"
+  "Select_tags": "Izberite oznake",
+  "and_N_more": "in še {{count}}"
 }
