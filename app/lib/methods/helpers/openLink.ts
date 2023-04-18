@@ -5,6 +5,7 @@ import parse from 'url-parse';
 import { themes } from '../../constants';
 import { TSupportedThemes } from '../../../theme';
 import UserPreferences from '../userPreferences';
+import ensureSecureProtocol from './ensureSecureProtocol';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
 
@@ -37,9 +38,9 @@ const appSchemeURL = (url: string, browser: string): string => {
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
+	url = ensureSecureProtocol(url);
 	try {
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
-
 		if (browser === 'inApp') {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].headerBackground,

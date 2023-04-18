@@ -16,7 +16,7 @@ import {
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
-describe.skip('Broadcast room', () => {
+describe('Broadcast room', () => {
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
 	let otherUser: ITestUser;
