@@ -12,6 +12,7 @@ import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definiti
 import { IItem } from '../views/TeamChannelsView';
 import { ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
+import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
@@ -167,12 +168,24 @@ export type ChatsStackParamList = {
 		onlyAudio?: boolean;
 		videoConf?: boolean;
 	};
+	ChangeAvatarView: {
+		context: TChangeAvatarViewContext;
+		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
+	};
 };
 
 export type ProfileStackParamList = {
 	ProfileView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
+	ChangeAvatarView: {
+		context: TChangeAvatarViewContext;
+		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
+	};
 };
 
 export type SettingsStackParamList = {

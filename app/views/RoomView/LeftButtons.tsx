@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 });
 
 interface ILeftButtonsProps {
+	rid?: string;
 	tmid?: string;
 	unreadsCount: number | null;
 	baseUrl: string;
@@ -36,6 +37,7 @@ interface ILeftButtonsProps {
 }
 
 const LeftButtons = ({
+	rid,
 	tmid,
 	unreadsCount,
 	baseUrl,
@@ -75,7 +77,7 @@ const LeftButtons = ({
 	}
 
 	if (baseUrl && userId && token) {
-		return <Avatar text={title} size={30} type={t} style={styles.avatar} onPress={onPress} />;
+		return <Avatar rid={rid} text={title} size={30} type={t} style={styles.avatar} onPress={onPress} />;
 	}
 	return null;
 };
