@@ -146,7 +146,7 @@
 		"rn-fetch-blob": "^0.12.0",
 		"rn-root-view": "RocketChat/rn-root-view",
 		"semver": "^7.3.8",
-		"ua-parser-js": "^1.0.32",
+		"ua-parser-js": "^1.0.35",
 		"uri-js": "^4.4.1",
 		"url-parse": "1.5.10",
 		"use-debounce": "^8.0.4",
