@@ -485,7 +485,7 @@ describe('Room screen', () => {
 				await tapBack();
 			});
 
-			it.skip('should reply in DM to another user', async () => {
+			it('should reply in DM to another user', async () => {
 				const replyUser = await createRandomUser();
 				const { name: replyRoom } = await createRandomRoom(replyUser, 'c');
 				const originalMessage = 'Message to reply in DM';
