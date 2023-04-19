@@ -151,6 +151,7 @@ commands:
       - run:
           name: Build App
           command: |
+            sudo apt install -y libicu-dev
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
