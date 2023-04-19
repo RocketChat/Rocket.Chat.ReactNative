@@ -1,6 +1,10 @@
 defaults: &defaults
   working_directory: ~/repo
 
+android-img: &android-img
+  docker:
+    - image: cimg/android:2023.04.1-node
+
 orbs:
   android: circleci/android@2.1.2
 
@@ -143,11 +147,6 @@ commands:
               echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
             fi
           working_directory: android/app
-
-      - run:
-          name: CMake
-          command: |
-            $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "cmake;3.22.1"
 
       - run:
           name: Build App
@@ -388,8 +387,7 @@ jobs:
   # Android builds
   android-build-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-img
     environment:
       <<: *android-env
       <<: *bash-env
@@ -411,8 +409,7 @@ jobs:
 
   android-build-official:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-img
     environment:
       <<: *android-env
       <<: *bash-env
@@ -422,16 +419,14 @@ jobs:
 
   android-internal-app-sharing-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-img
 
     steps:
       - upload-to-internal-app-sharing
 
   android-google-play-beta-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-img
 
     steps:
       - upload-to-google-play-beta:
@@ -439,15 +434,13 @@ jobs:
 
   android-google-play-production-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-img
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-img
 
     steps:
       - upload-to-google-play-beta:
