@@ -145,6 +145,11 @@ commands:
           working_directory: android/app
 
       - run:
+          name: CMake
+          command: |
+            $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "cmake;3.22.1"
+
+      - run:
           name: Build App
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
