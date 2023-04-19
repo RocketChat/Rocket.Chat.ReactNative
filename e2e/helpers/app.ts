@@ -117,14 +117,14 @@ async function tapBack() {
 	await sleep(300); // Wait for animation to finish
 }
 
-async function searchRoom(room: string, formattedRoomName?: string) {
+async function searchRoom(room: string) {
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(30000);
 	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
 	await element(by.id('rooms-list-view-search-input')).typeText(room);
 	await sleep(300);
-	await waitFor(element(by.id(`rooms-list-view-item-${formattedRoomName || room}`)))
+	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 		.toBeVisible()
 		.withTimeout(60000);
 }
