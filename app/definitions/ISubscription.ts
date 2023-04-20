@@ -46,7 +46,7 @@ export interface ISubscription {
 	ls: Date;
 	name: string;
 	fname?: string;
-	sanitizedFname: string;
+	sanitizedFname?: string;
 	rid: string; // the same as id
 	open: boolean;
 	alert: boolean;
