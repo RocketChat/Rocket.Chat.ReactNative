@@ -5,6 +5,10 @@ import { slugify } from 'transliteration';
 const likeStringRegex = XRegExp('[^\\p{L}\\p{Nd}]', 'g');
 export const sanitizeLikeString = (str?: string): string | undefined => str?.replace(likeStringRegex, '_');
 
+// Will change any non-latin character to return a lower latin character string
+// Example:
+// slugifyLikeString('測試123') => 'ce-shi-123'
+// slugifyLikeString('テスト123') => 'tesuto123'
 export const slugifyLikeString = (str?: string) => {
 	if (!str) return '';
 	str?.replace(likeStringRegex, '_');
