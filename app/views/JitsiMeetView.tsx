@@ -1,19 +1,15 @@
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React from 'react';
-import { BackHandler, NativeEventSubscription, SafeAreaView } from 'react-native';
-import { isAppInstalled, openAppWithUri } from 'react-native-send-intent';
+import { BackHandler, Linking, NativeEventSubscription, SafeAreaView } from 'react-native';
 import WebView from 'react-native-webview';
 import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 
 import { IBaseScreen } from '../definitions';
 import { userAgent } from '../lib/constants';
-import { isAndroid } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../lib/methods/videoConfTimer';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-
-const JITSI_INTENT = 'org.jitsi.meet';
 
 type TJitsiMeetViewProps = IBaseScreen<ChatsStackParamList, 'JitsiMeetView'>;
 
@@ -31,20 +27,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	}
 
 	componentDidMount() {
-		const { route, navigation } = this.props;
-		if (isAndroid) {
-			isAppInstalled(JITSI_INTENT)
-				.then(function (isInstalled) {
-					if (isInstalled) {
-						const callUrl = route.params.url.replace(/^https?:\/\//, '').split('#')[0];
-						openAppWithUri(`intent://${callUrl}#Intent;scheme=${JITSI_INTENT};package=${JITSI_INTENT};end`)
-							.then(() => navigation.pop())
-							.catch(() => {});
-					}
-				})
-				.catch(() => {});
-			this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
-		}
+		this.handleJitsiApp();
 		this.onConferenceJoined();
 		activateKeepAwake();
 	}
@@ -59,6 +42,18 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 		}
 		deactivateKeepAwake();
 	}
+
+	handleJitsiApp = async () => {
+		const { route, navigation } = this.props;
+		const callUrl = route.params.url.replace(/^https?:\/\//, '');
+		try {
+			await Linking.openURL(`org.jitsi.meet://${callUrl}`);
+			navigation.pop();
+		} catch (error) {
+			// As the jitsi app was not opened disable the backhandler on android
+			this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
+		}
+	};
 
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
