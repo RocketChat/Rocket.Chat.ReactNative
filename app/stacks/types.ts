@@ -1,7 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 
-import { IItem } from '../views/TeamChannelsView';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
@@ -154,12 +153,10 @@ export type ChatsStackParamList = {
 		teamId?: string;
 	};
 	AddChannelTeamView: {
-		teamId?: string;
-		teamChannels: IItem[];
+		teamId: string;
 	};
 	AddExistingChannelView: {
-		teamId?: string;
-		teamChannels: IItem[];
+		teamId: string;
 	};
 	MarkdownTableView: {
 		renderRows: (drawExtraBorders?: boolean) => JSX.Element;

@@ -186,7 +186,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	}, 300);
 
 	setHeader = () => {
-		const { isSearching, showCreate, data } = this.state;
+		const { isSearching, showCreate } = this.state;
 		const { navigation, isMasterDetail, theme } = this.props;
 
 		const { team } = this;
@@ -234,7 +234,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						<HeaderButton.Item
 							iconName='create'
 							testID='team-channels-view-create'
-							onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })}
+							onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId })}
 						/>
 					) : null}
 					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
