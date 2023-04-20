@@ -454,7 +454,7 @@ jobs:
     executor:
       name: android/android-machine
       resource-class: xlarge
-      tag: 2022.12.1
+      tag: 2023.04.1
     environment:
       <<: *android-env
     steps:
@@ -502,7 +502,7 @@ jobs:
     executor:
       name: android/android-machine
       resource-class: xlarge
-      tag: 2022.12.1
+      tag: 2023.04.1
     parallelism: 4
     steps:
       - checkout
