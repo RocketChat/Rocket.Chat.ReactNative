@@ -64,6 +64,7 @@ update-fastlane-ios: &update-fastlane-ios
 update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
+    bundle config set --local deployment 'true'
     bundle install
   working_directory: android
 
