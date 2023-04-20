@@ -1,5 +1,5 @@
 import XRegExp from 'xregexp';
-import slug from 'slug';
+import { slugify } from 'transliteration';
 
 // Matches letters from any alphabet and numbers
 const likeStringRegex = XRegExp('[^\\p{L}\\p{Nd}]', 'g');
@@ -8,7 +8,7 @@ export const sanitizeLikeString = (str?: string): string | undefined => str?.rep
 export const slugifyLikeString = (str?: string) => {
 	if (!str) return '';
 	str?.replace(likeStringRegex, '_');
-	const slugified = slug(str);
+	const slugified = slugify(str);
 	return slugified;
 };
 
