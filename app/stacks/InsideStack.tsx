@@ -124,11 +124,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='TeamChannelsView' component={TeamChannelsView} />
 			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<ChatsStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
-			<ChatsStack.Screen
-				name='AddExistingChannelView'
-				component={AddExistingChannelView}
-				options={AddExistingChannelView.navigationOptions}
-			/>
+			<ChatsStack.Screen name='AddExistingChannelView' component={AddExistingChannelView} />
 			<ChatsStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 			<ChatsStack.Screen name='ReadReceiptsView' component={ReadReceiptsView} options={ReadReceiptsView.navigationOptions} />
 			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
