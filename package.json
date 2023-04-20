@@ -188,7 +188,6 @@
 		"@types/react-native-vector-icons": "^6.4.12",
 		"@types/react-test-renderer": "^17.0.1",
 		"@types/semver": "^7.3.13",
-		"@types/slug": "^5.0.3",
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/url-parse": "^1.4.8",
 		"@typescript-eslint/eslint-plugin": "^4.28.3",
