@@ -107,3 +107,5 @@ export type VideoConfListProps = {
 };
 
 export type VideoConfInfoProps = { callId: string };
+
+export type VideoConfCall = VideoConference & { capabilities: VideoConferenceCapabilities };
