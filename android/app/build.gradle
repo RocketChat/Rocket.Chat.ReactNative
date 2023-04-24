@@ -267,6 +267,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
     implementation "com.tencent:mmkv-static:1.2.10"
     androidTestImplementation('com.wix:detox:+')
+    androidTestImplementation 'androidx.test:core:1.4.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.facebook.soloader:soloader:0.10.4'
 }
