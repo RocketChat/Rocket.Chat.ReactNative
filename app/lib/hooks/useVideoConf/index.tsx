@@ -1,19 +1,18 @@
-import { Q } from '@nozbe/watermelondb';
 import { Camera } from 'expo-camera';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Audio } from 'expo-av';
 
-import { useActionSheet } from '../../containers/ActionSheet';
-import StartACallActionSheet from '../../containers/UIKit/VideoConferenceBlock/components/StartACallActionSheet';
-import { ISubscription, SubscriptionType } from '../../definitions';
-import i18n from '../../i18n';
-import { getUserSelector } from '../../selectors/login';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { callJitsi } from '../methods';
-import { compareServerVersion, showErrorAlert } from '../methods/helpers';
-import { handleAndroidBltPermission, videoConfStartAndJoin } from '../methods/videoConf';
-import { Services } from '../services';
-import { useAppSelector } from './useAppSelector';
-import { useSnaps } from './useSnaps';
+import { useActionSheet } from '../../../containers/ActionSheet';
+import StartACallActionSheet from '../../../containers/UIKit/VideoConferenceBlock/components/StartACallActionSheet';
+import { SubscriptionType } from '../../../definitions';
+import i18n from '../../../i18n';
+import { getUserSelector } from '../../../selectors/login';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { compareServerVersion, showErrorAlert } from '../../methods/helpers';
+import { handleAndroidBltPermission } from '../../methods/videoConf';
+import { Services } from '../../services';
+import { useAppSelector } from '../useAppSelector';
+import { useSnaps } from '../useSnaps';
 
 const availabilityErrors = {
 	NOT_CONFIGURED: 'video-conf-provider-not-configured',
@@ -80,17 +79,11 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 		return true;
 	};
 
-	const initCall = async ({ cam, mic }: { cam: boolean; mic: boolean }) => {
-		if (isServer5OrNewer) return videoConfStartAndJoin({ rid, cam, mic });
-		const room = (await getSubscriptionByRoomId(rid)) as ISubscription;
-		callJitsi({ room, cam });
-	};
-
 	const showInitCallActionSheet = async () => {
 		const canInit = await canInitAnCall();
 		if (canInit) {
 			showActionSheet({
-				children: <StartACallActionSheet rid={rid} initCall={initCall} />,
+				children: <StartACallActionSheet rid={rid} />,
 				snaps
 			});
 			if (!permission?.granted) {
@@ -105,4 +98,47 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	}, []);
 
 	return { showInitCallActionSheet, showCallOption };
+};
+
+export enum ESounds {
+	DIALTONE = 'dialtone',
+	RINGTONE = 'ringtone'
+}
+
+export const useVideoConfRinger = (ringer: ESounds) => {
+	const sound = useRef<Audio.Sound | null>(null);
+	useEffect(() => {
+		(async () => {
+			let expo = null;
+			switch (ringer) {
+				case ESounds.DIALTONE:
+					expo = await Audio.Sound.createAsync(require(`./dialtone.mp3`));
+					break;
+				case ESounds.RINGTONE:
+					expo = await Audio.Sound.createAsync(require(`./ringtone.mp3`));
+					break;
+				default:
+					expo = await Audio.Sound.createAsync(require(`./dialtone.mp3`));
+					break;
+			}
+			sound.current = expo.sound;
+		})();
+	}, []);
+
+	useEffect(() => () => stopSound(), []);
+
+	const playSound = async () => {
+		if (sound.current) {
+			await sound.current.playAsync();
+			await sound.current.setIsLoopingAsync(true);
+		}
+	};
+
+	const stopSound = () => {
+		if (sound.current?.unloadAsync) {
+			sound.current.unloadAsync();
+		}
+	};
+
+	return { playSound, stopSound };
 };
