@@ -34,7 +34,7 @@ export default function VideoConferenceEnded({
 				<>
 					<Touchable style={style.callToActionCallBack} onPress={showInitCallActionSheet}>
 						<Text style={style.callToActionCallBackText}>
-							{createdBy.username === username ? i18n.t('Call_back') : i18n.t('Call_again')}
+							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
 						</Text>
 					</Touchable>
 					<Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text>
