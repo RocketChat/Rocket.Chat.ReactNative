@@ -27,6 +27,9 @@ const InAppNotification = memo(() => {
 			if (payload.rid === subscribedRoom || route?.name === 'JitsiMeetView') {
 				return;
 			}
+			if (payload?.message?.t === 'videoconf') {
+				return;
+			}
 			Notifier.showNotification({
 				showEasing: Easing.inOut(Easing.quad),
 				Component: NotifierComponent,
