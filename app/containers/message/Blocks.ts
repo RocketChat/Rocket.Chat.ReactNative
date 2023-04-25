@@ -31,7 +31,9 @@ const Blocks = React.memo(
 	},
 	(prevProps, nextProps) => {
 		if (
+			// @ts-ignore
 			('type' in prevProps.blocks[0] && prevProps.blocks[0].type === 'video_conf') ||
+			// @ts-ignore
 			('type' in nextProps.blocks[0] && nextProps.blocks[0].type === 'video_conf')
 		) {
 			// Avoid multiple request on the VideoConferenceBlock
