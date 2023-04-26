@@ -90,5 +90,6 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 	'REMOVE',
 	'CLEAR',
 	'INIT_CALL',
+	'CANCEL_CALL',
 	'SET_CALLING'
 ]);

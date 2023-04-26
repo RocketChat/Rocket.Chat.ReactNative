@@ -92,27 +92,9 @@ export default function useStyle() {
 			paddingHorizontal: 24,
 			flex: 1
 		},
-		actionSheetHeaderTitle: {
-			fontSize: 14,
-			...sharedStyles.textBold,
-			color: colors.passcodePrimary
-		},
-		actionSheetUsername: {
-			fontSize: 16,
-			...sharedStyles.textBold,
-			color: colors.passcodePrimary,
-			flexShrink: 1
-		},
 		enabledBackground: {
 			backgroundColor: colors.conferenceCallEnabledIconBackground
 		},
-		iconCallContainer: {
-			padding: 6,
-			borderRadius: 4
-		},
-		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
-		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
-		actionSheetUsernameContainer: { flexDirection: 'row', paddingTop: 8, alignItems: 'center' },
 		actionSheetPhotoContainer: {
 			height: 220,
 			width: 148,

@@ -1,10 +1,9 @@
-import { Camera, CameraType } from 'expo-camera';
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { Camera, CameraType } from 'expo-camera';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { initVideoCall } from '../../../../actions/videoConf';
+import { cancelCall, initVideoCall } from '../../../../actions/videoConf';
 import i18n from '../../../../i18n';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../../lib/hooks';
@@ -12,18 +11,19 @@ import { getRoomAvatar, getUidDirectMessage } from '../../../../lib/methods/help
 import { useTheme } from '../../../../theme';
 import AvatarContainer from '../../../Avatar';
 import Button from '../../../Button';
-import { CustomIcon } from '../../../CustomIcon';
-import { BUTTON_HIT_SLOP } from '../../../message/utils';
-import StatusContainer from '../../../Status';
+import { CallHeader } from '../../../VideoConf/CallHeader';
 import useStyle from './styles';
+import { ESounds, useVideoConfRinger } from '../../../../lib/hooks/useVideoConf';
 
 const CAM_SIZE = { height: 220, width: 148 };
 // fixed colors, do not change with theme change.
-const gray300 = '#5f656e';
-const gray100 = '#CBCED1';
+export const gray300 = '#5f656e';
+export const gray100 = '#CBCED1';
 
 export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
 	const style = useStyle();
+	const { playSound, stopSound } = useVideoConfRinger(ESounds.DIALTONE);
+
 	const { colors } = useTheme();
 	const [room, setRoom] = useState({ roomName: '', avatar: '', uid: '', direct: false });
 	const [mic, setMic] = useState(true);
@@ -42,49 +42,19 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 		})();
 	}, [rid]);
 
-	const handleColors = (enabled: boolean) => {
-		if (calling) {
-			if (enabled) {
-				return { button: colors.conferenceCallCallBackButton, icon: gray300 };
-			}
-			return { button: 'transparent', icon: gray100 };
-		}
-		if (enabled) {
-			return { button: colors.conferenceCallEnabledIconBackground, icon: colors.conferenceCallEnabledIcon };
-		}
-		return { button: 'transparent', icon: colors.conferenceCallDisabledIcon };
-	};
-
 	return (
 		<View style={style.actionSheetContainer}>
-			<View style={style.actionSheetHeader}>
-				<Text style={style.actionSheetHeaderTitle}>{calling ? i18n.t('Calling') : i18n.t('Start_a_call')}</Text>
-				<View style={style.actionSheetHeaderButtons}>
-					<Touchable
-						onPress={() => setCam(!cam)}
-						style={[style.iconCallContainer, { backgroundColor: handleColors(cam).button }, { marginRight: 6 }]}
-						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}
-					>
-						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={20} color={handleColors(cam).icon} />
-					</Touchable>
-					<Touchable
-						onPress={() => setMic(!mic)}
-						style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
-						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}
-					>
-						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={20} color={handleColors(mic).icon} />
-					</Touchable>
-				</View>
-			</View>
-			<View style={style.actionSheetUsernameContainer}>
-				<AvatarContainer text={room.avatar} size={36} />
-				<StatusContainer size={16} id={room.uid} style={{ marginLeft: 8, marginRight: 6 }} />
-				<Text style={style.actionSheetUsername} numberOfLines={1}>
-					{room.roomName}
-				</Text>
-			</View>
+			<CallHeader
+				title={calling ? i18n.t('Calling') : i18n.t('Start_a_call')}
+				cam={cam}
+				setCam={setCam}
+				mic={mic}
+				setMic={setMic}
+				avatar={room.avatar}
+				roomName={room.roomName}
+				uid={room.uid}
+				direct={room.direct}
+			/>
 			<View
 				style={[
 					style.actionSheetPhotoContainer,
@@ -97,7 +67,15 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 			<Button
 				backgroundColor={calling ? colors.conferenceCallCallBackButton : colors.actionTintColor}
 				color={calling ? gray300 : colors.conferenceCallEnabledIcon}
-				onPress={() => dispatch(initVideoCall({ cam, mic, direct: room.direct, rid, uid: room.uid }))}
+				onPress={() => {
+					if (calling) {
+						stopSound();
+						dispatch(cancelCall({}));
+					} else {
+						playSound();
+						dispatch(initVideoCall({ cam, mic, direct: room.direct, rid, uid: room.uid }));
+					}
+				}}
 				title={calling ? i18n.t('Cancel') : i18n.t('Call')}
 			/>
 		</View>
