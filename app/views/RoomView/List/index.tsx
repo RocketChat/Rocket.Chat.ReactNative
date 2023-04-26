@@ -266,14 +266,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		}
 	};
 
-	getLastMessage = (): TMessageModel | TThreadMessageModel | null => {
-		const { messages } = this.state;
-		if (messages.length > 0) {
-			return messages[0];
-		}
-		return null;
-	};
-
 	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
 		const { listRef } = this.props;
 		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });

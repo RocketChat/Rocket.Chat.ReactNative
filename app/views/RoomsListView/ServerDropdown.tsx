@@ -15,8 +15,6 @@ import ServerItem from '../../containers/ServerItem';
 import database from '../../lib/database';
 import { themes, TOKEN_KEY } from '../../lib/constants';
 import { withTheme } from '../../theme';
-import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
-import { isTablet } from '../../lib/methods/helpers';
 import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -69,9 +67,6 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 			easing: Easing.inOut(Easing.quad),
 			useNativeDriver: true
 		}).start();
-		if (isTablet) {
-			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
-		}
 	}
 
 	componentDidUpdate(prevProps: IServerDropdownProps) {
@@ -88,9 +83,6 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 		}
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
-		}
-		if (isTablet) {
-			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
 
@@ -166,18 +158,6 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 				}
 			}
 		});
-
-	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
-		const { servers } = this.state;
-		const { navigation } = this.props;
-		const { input } = event as unknown as { input: number };
-		if (handleCommandSelectServer(event)) {
-			if (servers[input - 1]) {
-				this.select(servers[input - 1].id);
-				navigation.navigate('RoomView');
-			}
-		}
-	};
 
 	renderServer = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => {
 		const { server } = this.props;
