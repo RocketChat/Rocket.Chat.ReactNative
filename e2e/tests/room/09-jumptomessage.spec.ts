@@ -125,11 +125,8 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('search-message-view-input')).replaceText('30');
-		await waitFor(element(by[textMatcher]('30')).atIndex(1))
-			.toExist()
-			.withTimeout(30000);
-		await sleep(1000);
-		await element(by[textMatcher]('30')).atIndex(1).tap();
+		await sleep(5000);
+		await element(by[textMatcher]('30')).atIndex(0).tap();
 		await waitForLoading();
 		await waitFor(element(by[textMatcher]('30')).atIndex(0))
 			.toExist()
@@ -189,12 +186,19 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('202')))
+			.toExist()
+			.withTimeout(5000);
+		await waitFor(element(by[textMatcher]('Load Newer')))
+			.toExist()
+			.withTimeout(5000);
+		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
 		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toNotExist()
 			.withTimeout(5000);
 		await expect(element(by[textMatcher]('Load More'))).toNotExist();
-		await expect(element(by[textMatcher]('201'))).toExist();
-		await expect(element(by[textMatcher]('202'))).toExist();
+		await expect(element(by[textMatcher]('252'))).toExist();
+		await expect(element(by[textMatcher]('253'))).toExist();
 		await tapBack();
 	});
 });
@@ -269,10 +273,8 @@ describe('Threads', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('search-message-view-input')).replaceText('to be searched');
-		await waitFor(element(by[textMatcher]('to be searched')).atIndex(1))
-			.toExist()
-			.withTimeout(30000);
-		await element(by[textMatcher]('to be searched')).atIndex(1).tap();
+		await sleep(5000);
+		await element(by[textMatcher]('to be searched')).atIndex(0).tap();
 		await expectThreadMessages('to be searched');
 	});
 

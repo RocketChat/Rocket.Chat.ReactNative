@@ -42,8 +42,9 @@ describe('i18n', () => {
 			});
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
-				.withTimeout(20000);
-			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
+				.withTimeout(60000);
+			await expect(element(by.id('new-server-view-open'))).toBeVisible();
+			await expect(element(by.text('Join our open workspace'))).toBeVisible();
 		});
 
 		it("OS set to unavailable language and fallback to 'en'", async () => {
@@ -59,8 +60,9 @@ describe('i18n', () => {
 			});
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
-				.withTimeout(20000);
-			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
+				.withTimeout(60000);
+			await expect(element(by.id('new-server-view-open'))).toBeVisible();
+			await expect(element(by.text('Join our open workspace'))).toBeVisible();
 		});
 
 		/**

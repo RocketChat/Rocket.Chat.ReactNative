@@ -101,6 +101,7 @@ async function mockMessage(message: string, isThread = false) {
 	await element(by.id(input)).replaceText(message);
 	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
+	await sleep(2000);
 	await waitFor(element(by[textMatcher](message)))
 		.toExist()
 		.withTimeout(60000);
