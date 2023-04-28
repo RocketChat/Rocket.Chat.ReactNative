@@ -76,18 +76,27 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		theme: 'light' as TSupportedThemes
 	};
 
-	state = { isManualUnignored: false };
-
 	private subscription?: Subscription;
+	private mounted: boolean;
 
-	componentDidMount() {
+	constructor(props: IMessageContainerProps) {
+		super(props);
+		this.state = { isManualUnignored: false };
+		this.mounted = false;
+
 		const { item } = this.props;
 		if (item && item.observe) {
 			const observable = item.observe();
 			this.subscription = observable.subscribe(() => {
-				this.forceUpdate();
+				if (this.mounted) {
+					this.forceUpdate();
+				}
 			});
 		}
+	}
+
+	componentDidMount() {
+		this.mounted = true;
 	}
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
