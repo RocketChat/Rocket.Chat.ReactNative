@@ -874,5 +874,6 @@
   "Call": "Ring",
   "Reply_in_direct_message": "Svara med direktmeddelande",
   "room_archived": "arkiverade rum",
-  "room_unarchived": "avarkiverade rum"
+  "room_unarchived": "avarkiverade rum",
+  "and_N_more": "och ytterligare {{count}}"
 }
