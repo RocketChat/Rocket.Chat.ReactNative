@@ -494,5 +494,6 @@
   "You": "Você",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
   "Open_Livechats": "Chats em andamento",
-  "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder"
+  "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder",
+  "and_N_more": "e mais {{count}}"
 }

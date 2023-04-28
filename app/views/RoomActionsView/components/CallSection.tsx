@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as List from '../../../containers/List';
-import i18n from '../../../i18n';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 
 export default function CallSection({ rid }: { rid: string }): React.ReactElement | null {
@@ -12,7 +11,7 @@ export default function CallSection({ rid }: { rid: string }): React.ReactElemen
 			<List.Section>
 				<List.Separator />
 				<List.Item
-					title={i18n.t('Call')}
+					title={'Call'}
 					onPress={showInitCallActionSheet}
 					testID='room-actions-call'
 					left={() => <List.Icon name='phone' />}

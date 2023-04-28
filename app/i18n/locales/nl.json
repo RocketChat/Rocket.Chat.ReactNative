@@ -791,5 +791,6 @@
   "Omnichannel_on_hold_chat_resumed": "Chat in de wacht hervat: {{comment}}",
   "Omnichannel_queue": "Omnichannel-wachtrij",
   "Empty": "Leeg",
-  "Broadcast_hint": "Alleen geautoriseerde gebruikers kunnen nieuwe berichten schrijven, maar de andere gebruikers zullen kunnen antwoorden"
+  "Broadcast_hint": "Alleen geautoriseerde gebruikers kunnen nieuwe berichten schrijven, maar de andere gebruikers zullen kunnen antwoorden",
+  "and_N_more": "en nog {{count}}"
 }
