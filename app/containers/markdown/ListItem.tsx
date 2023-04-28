@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
+import styles from './styles';
 
 const style = StyleSheet.create({
 	container: {
@@ -43,7 +44,7 @@ const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue
 	return (
 		<View style={style.container}>
 			<View style={[{ width: bulletWidth }, style.bullet]}>
-				<Text style={{ color: themes[theme].bodyText }}>{bullet}</Text>
+				<Text style={[styles.text, styles.listPrefix, { color: themes[theme].bodyText }]}>{bullet}</Text>
 			</View>
 			<View style={style.contents}>{children}</View>
 		</View>
