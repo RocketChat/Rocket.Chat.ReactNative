@@ -524,7 +524,7 @@ jobs:
             echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
       - android/start-emulator:
           avd-name: Pixel_API_31_AOSP
-          wait-for-emulator: true
+          # wait-for-emulator: true
           verbose: true
       - run:
           name: Run Detox Tests
