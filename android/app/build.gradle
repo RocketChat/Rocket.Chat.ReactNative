@@ -105,7 +105,8 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace APPLICATION_ID
+    // Can't set this, since it causes issues to Official flavor
+    // namespace APPLICATION_ID 
     defaultConfig {
         applicationId APPLICATION_ID
         minSdkVersion rootProject.ext.minSdkVersion
