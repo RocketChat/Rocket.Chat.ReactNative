@@ -483,6 +483,7 @@ jobs:
           working_directory: android
       - run:
           name: Build Android
+          no_output_timeout: 20m
           command: |
             echo "RUNNING_E2E_TESTS=true" > ./.env
             yarn e2e:android-build
@@ -583,6 +584,7 @@ jobs:
             brew install applesimutils
       - run:
           name: Build
+          no_output_timeout: 20m
           command: |
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
