@@ -526,6 +526,7 @@ jobs:
           avd-name: Pixel_API_31_AOSP
           # wait-for-emulator: true
           verbose: true
+          post-emulator-launch-assemble-command: ''
       - run:
           name: Run Detox Tests
           command: |
