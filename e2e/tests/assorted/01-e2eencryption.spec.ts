@@ -11,7 +11,8 @@ import {
 	TTextMatcher,
 	tapAndWaitFor,
 	expectValidRegisterOrRetry,
-	mockMessage
+	mockMessage,
+	tryTapping
 } from '../../helpers/app';
 import data from '../../data';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
@@ -160,6 +161,33 @@ describe('E2E Encryption', () => {
 
 			it('should send message and be able to read it', async () => {
 				mockedMessageText = await mockMessage('message');
+			});
+
+			it('should quote a message and be able to read both', async () => {
+				const mockedMessageTextToQuote = await mockMessage('message to be quote');
+				const quotedMessage = `${mockedMessageTextToQuote}d`;
+				await tryTapping(element(by[textMatcher](mockedMessageTextToQuote)).atIndex(0), 2000, true);
+				await waitFor(element(by.id('action-sheet')))
+					.toExist()
+					.withTimeout(2000);
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by[textMatcher]('Quote')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).replaceText(quotedMessage);
+				await waitFor(element(by.id('messagebox-send-message')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
+					.toBeVisible()
+					.withTimeout(3000);
+				await waitFor(
+					element(
+						by.id(`reply-${user.name}-${mockedMessageTextToQuote}`).withDescendant(by[textMatcher](mockedMessageTextToQuote))
+					)
+				)
+					.toBeVisible()
+					.withTimeout(3000);
 				await tapBack();
 			});
 		});

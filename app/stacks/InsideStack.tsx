@@ -68,6 +68,7 @@ import AddChannelTeamView from '../views/AddChannelTeamView';
 import AddExistingChannelView from '../views/AddExistingChannelView';
 import SelectListView from '../views/SelectListView';
 import DiscussionsView from '../views/DiscussionsView';
+import ChangeAvatarView from '../views/ChangeAvatarView';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
@@ -97,6 +98,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
+			<ChatsStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ChatsStack.Screen name='RoomMembersView' component={RoomMembersView} />
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='DiscussionsView' component={DiscussionsView} />
@@ -163,6 +165,7 @@ const ProfileStackNavigator = () => {
 		>
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
+			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			{/* @ts-ignore */}
 			<ProfileStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />

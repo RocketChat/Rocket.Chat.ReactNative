@@ -485,7 +485,7 @@ jobs:
           name: Build Android
           no_output_timeout: 20m
           command: |
-            echo "RUNNING_E2E_TESTS=true" > ./.env
+            export RUNNING_E2E_TESTS=true
             yarn e2e:android-build
       - save_cache: *save-gradle-cache
       - store_artifacts:
@@ -589,7 +589,7 @@ jobs:
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
             yarn detox clean-framework-cache && yarn detox build-framework-cache
-            echo "RUNNING_E2E_TESTS=true" > ./.env
+            export RUNNING_E2E_TESTS=true
             yarn e2e:ios-build
       - persist_to_workspace:
           root: /Users/distiller/project
