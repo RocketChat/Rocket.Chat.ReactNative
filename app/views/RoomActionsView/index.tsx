@@ -86,7 +86,7 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 
 interface IRoomActionsViewState {
 	room: TSubscriptionModel;
-	membersCount: number;
+	membersCount?: number;
 	member: Partial<IUser>;
 	joined: boolean;
 	canViewMembers: boolean;
@@ -153,10 +153,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
-					this.setState({ room: changes });
+					this.setState({ room: changes, membersCount: changes.usersCount });
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
+					// @ts-ignore
+					this.state.membersCount = changes.usersCount;
 				}
 			});
 		}
@@ -191,7 +193,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
-						this.setState({ membersCount: counters.members, joined: counters.joined });
+						await this.updateUsersCount(counters.members);
+						this.setState({ joined: counters.joined });
 					}
 				} catch (e) {
 					log(e);
@@ -230,6 +233,23 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { room } = this.state;
 		return room.t === 'l' && room.status === 'queued' && !this.joined;
 	}
+
+	updateUsersCount = async (members: number) => {
+		const { room } = this.state;
+		if (members === room.usersCount) return;
+		try {
+			const db = database.active;
+			await db.write(async () => {
+				await room.update(
+					protectedFunction((r: TSubscriptionModel) => {
+						r.usersCount = members;
+					})
+				);
+			});
+		} catch {
+			//
+		}
+	};
 
 	onPressTouchable: IOnPressTouch = (item: {
 		route?: keyof ChatsStackParamList;
@@ -1052,7 +1072,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							<>
 								<List.Item
 									title='Members'
-									subtitle={membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
+									subtitle={membersCount && membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
 									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room, joined: this.joined } })}
 									testID='room-actions-members'
 									left={() => <List.Icon name='team' />}
