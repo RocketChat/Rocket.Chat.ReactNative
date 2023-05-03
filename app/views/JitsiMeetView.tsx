@@ -2,10 +2,11 @@ import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React from 'react';
 import { BackHandler, Linking, NativeEventSubscription, SafeAreaView } from 'react-native';
 import WebView from 'react-native-webview';
-import { WebViewMessage, WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
+import { WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 
 import { IBaseScreen } from '../definitions';
 import { userAgent } from '../lib/constants';
+import { isIOS } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../lib/methods/videoConfTimer';
 import { ChatsStackParamList } from '../stacks/types';
@@ -64,14 +65,20 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 		}
 	};
 
-	onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
+	onNavigationStateChange = (webViewState: WebViewNavigation) => {
 		const { navigation, route } = this.props;
 		const jitsiRoomId = route.params.url
 			?.split(/^https?:\/\//)[1]
 			?.split('#')[0]
 			?.split('/')[1];
 		if ((jitsiRoomId && !webViewState.url.includes(jitsiRoomId)) || webViewState.url.includes('close')) {
-			navigation.pop();
+			if (isIOS) {
+				if (webViewState.navigationType) {
+					navigation.pop();
+				}
+			} else {
+				navigation.pop();
+			}
 		}
 	};
 
@@ -80,7 +87,6 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 			<SafeAreaView style={{ flex: 1 }}>
 				<WebView
 					source={{ uri: `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true` }}
-					onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
 					onNavigationStateChange={this.onNavigationStateChange}
 					style={{ flex: 1 }}
 					userAgent={userAgent}
