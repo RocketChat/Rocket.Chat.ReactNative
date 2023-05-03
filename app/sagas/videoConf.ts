@@ -53,9 +53,7 @@ function* onDirectCallAccepted(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.filter(c => c.callId === payload.callId);
 	if (currentCall.length) {
-		yield put(removeVideoConfCall(currentCall[0]));
-		yield call(actionSheetRef?.current?.hideActionSheet);
-		videoConfJoin(payload.callId, false, true);
+		yield put(setVideoConfCall(payload));
 	}
 }
 
@@ -66,7 +64,14 @@ function* onDirectCallRejected(payload: ICallInfo) {
 }
 
 function* onDirectCallConfirmed(payload: ICallInfo) {
-	return null;
+	const calls = yield* appSelector(state => state.videoConf.calls);
+	const currentCall = calls.filter(c => c.callId === payload.callId);
+	console.log(payload);
+	if (currentCall.length) {
+		yield put(removeVideoConfCall(currentCall[0]));
+		yield call(actionSheetRef?.current?.hideActionSheet);
+		videoConfJoin(payload.callId, false, true);
+	}
 }
 
 function* onDirectCallJoined(payload: ICallInfo) {
