@@ -4,7 +4,7 @@ import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
-import { cancelCall } from '../../../actions/videoConf';
+import { acceptCall, cancelCall } from '../../../actions/videoConf';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
@@ -86,7 +86,14 @@ const IncomingCallComponent = React.memo(
 					>
 						<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
 					</Touchable>
-					<Touchable hitSlop={BUTTON_HIT_SLOP} onPress={() => {}} style={styles.acceptButton}>
+					<Touchable
+						hitSlop={BUTTON_HIT_SLOP}
+						onPress={() => {
+							hideCustomNotification();
+							dispatch(acceptCall({ callId }));
+						}}
+						style={styles.acceptButton}
+					>
 						<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
 					</Touchable>
 				</View>

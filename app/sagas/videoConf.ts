@@ -4,7 +4,7 @@ import { call } from 'typed-redux-saga';
 
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { removeVideoConfCall, setCalling, setVideoConfCall, TCallProps } from '../actions/videoConf';
-import { actionSheetRef } from '../containers/ActionSheet';
+import { hideActionSheetRef } from '../containers/ActionSheet';
 import IncomingCallComponent from '../containers/InAppNotification/IncomingCallComponent';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
@@ -19,70 +19,94 @@ import { Services } from '../lib/services';
 import { notifyUser } from '../lib/services/restApi';
 import { ICallInfo } from '../reducers/videoConf';
 
-// The interval between attempts to call the remote user
-const CALL_INTERVAL = 3000;
-// How many attempts to call we're gonna make
-const CALL_ATTEMPT_LIMIT = 10;
 interface IGenericAction extends Action {
 	type: string;
 }
 
+type THandleGeneric = IGenericAction & {
+	data: any;
+};
+
+type TInitCallGeneric = IGenericAction & {
+	payload: TCallProps;
+};
+
+type TCancelCallGeneric = IGenericAction & {
+	payload?: { callId?: string };
+};
+
+type TAcceptCallGeneric = IGenericAction & {
+	payload: { callId: string };
+};
+
+// The interval between attempts to call the remote user
+const CALL_INTERVAL = 3000;
+// How many attempts to call we're gonna make
+const CALL_ATTEMPT_LIMIT = 10;
+
 function* onDirectCall(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
-	const currentCall = calls.filter(c => c.callId === payload.callId);
-	const hasAnotherCall = calls.filter(c => c.action === 'call');
-	if (hasAnotherCall.length && hasAnotherCall[0].callId !== payload.callId) {
+	const currentCall = calls.find(c => c.callId === payload.callId);
+	const hasAnotherCall = calls.find(c => c.action === 'call');
+	if (hasAnotherCall && hasAnotherCall.callId !== payload.callId) {
 		return;
 	}
-	if (!currentCall.length) {
-		yield put(setVideoConfCall({ ...payload, action: 'call' }));
+	if (!currentCall) {
+		yield put(setVideoConfCall(payload));
 		showCustomNotification(IncomingCallComponent, payload, 30000);
 	}
 }
 
 function* onDirectCallCanceled(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
-	const currentCall = calls.filter(c => c.callId === payload.callId);
-	if (currentCall.length) {
-		yield put(removeVideoConfCall(currentCall[0]));
+	const currentCall = calls.find(c => c.callId === payload.callId);
+	if (currentCall) {
+		yield put(removeVideoConfCall(currentCall));
 		hideCustomNotification();
 	}
 }
 
-function* onDirectCallAccepted(payload: ICallInfo) {
+function* onDirectCallAccepted({ callId, rid, uid, action }: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
-	const currentCall = calls.filter(c => c.callId === payload.callId);
-	if (currentCall.length) {
-		yield put(setVideoConfCall(payload));
+	const userId = yield* appSelector(state => state.login.user.id);
+	const currentCall = calls.find(c => c.callId === callId);
+	if (currentCall && currentCall.action === 'calling') {
+		yield call(notifyUser, `${uid}/video-conference`, { action: 'confirmed', params: { uid: userId, rid, callId } });
+		yield put(setVideoConfCall({ callId, rid, uid, action }));
 	}
 }
 
-function* onDirectCallRejected(payload: ICallInfo) {
+function* onDirectCallRejected() {
 	yield call(cancelCall, {});
 	showToast(i18n.t('Call_rejected'));
-	yield call(actionSheetRef?.current?.hideActionSheet);
+	yield call(hideActionSheetRef);
 }
 
 function* onDirectCallConfirmed(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
-	const currentCall = calls.filter(c => c.callId === payload.callId);
-	console.log(payload);
-	if (currentCall.length) {
-		yield put(removeVideoConfCall(currentCall[0]));
-		yield call(actionSheetRef?.current?.hideActionSheet);
+	const currentCall = calls.find(c => c.callId === payload.callId);
+	if (currentCall) {
+		yield put(removeVideoConfCall(currentCall));
+		yield call(hideActionSheetRef);
 		videoConfJoin(payload.callId, false, true);
 	}
 }
 
 function* onDirectCallJoined(payload: ICallInfo) {
-	return null;
+	const calls = yield* appSelector(state => state.videoConf.calls);
+	const currentCall = calls.find(c => c.callId === payload.callId);
+	if (currentCall && currentCall.action === 'accepted') {
+		yield put(removeVideoConfCall(currentCall));
+		yield call(hideActionSheetRef);
+		videoConfJoin(payload.callId, false, true);
+	}
 }
 
 function* onDirectCallEnded(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
-	const currentCall = calls.filter(c => c.callId === payload.callId);
-	if (currentCall.length) {
-		yield put(removeVideoConfCall(currentCall[0]));
+	const currentCall = calls.find(c => c.callId === payload.callId);
+	if (currentCall) {
+		yield put(removeVideoConfCall(currentCall));
 		hideCustomNotification();
 	}
 }
@@ -134,7 +158,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 					yield call(callUser, { rid, uid: videoConfResponse.data.calleeId, callId: videoConfResponse.data.callId });
 				} else {
 					videoConfJoin(videoConfResponse.data.callId, cam, mic);
-					yield call(actionSheetRef?.current?.hideActionSheet);
+					yield call(hideActionSheetRef);
 					yield put(setCalling(false));
 				}
 			}
@@ -164,14 +188,14 @@ function* giveUp({ rid, uid, callId, rejected }: { rid: string; uid: string; cal
 function* cancelCall({ payload }: { payload?: { callId?: string } }) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	if (payload?.callId) {
-		const currentCall = calls.filter(c => c.callId === payload.callId);
-		if (currentCall.length) {
-			yield call(giveUp, { ...currentCall[0], rejected: true });
+		const currentCall = calls.find(c => c.callId === payload.callId);
+		if (currentCall) {
+			yield call(giveUp, { ...currentCall, rejected: true });
 		}
 	} else {
-		const currentCall = calls.filter(c => c.action === 'calling');
-		if (currentCall.length && currentCall[0].callId) {
-			yield call(giveUp, currentCall[0]);
+		const currentCall = calls.find(c => c.action === 'calling');
+		if (currentCall && currentCall.callId) {
+			yield call(giveUp, currentCall);
 		}
 	}
 }
@@ -182,30 +206,37 @@ function* callUser({ rid, uid, callId }: { rid: string; uid: string; callId: str
 	for (let attempt = 1; attempt <= CALL_ATTEMPT_LIMIT; attempt++) {
 		if (attempt < CALL_ATTEMPT_LIMIT) {
 			const calls = yield* appSelector(state => state.videoConf.calls);
-			const currentCall = calls.filter(c => c.callId === callId);
-			if (!currentCall.length || currentCall[0].action !== 'calling') {
+			const currentCall = calls.find(c => c.callId === callId);
+			if (!currentCall || currentCall.action !== 'calling') {
 				break;
 			}
 			yield call(notifyUser, `${uid}/video-conference`, { action: 'call', params: { uid: userId, rid, callId } });
 			yield delay(CALL_INTERVAL);
 		} else {
-			actionSheetRef?.current?.hideActionSheet();
+			hideActionSheetRef();
 			yield call(giveUp, { uid, rid, callId });
 			break;
 		}
 	}
 }
 
+function* acceptCall({ payload: { callId } }: { payload: { callId: string } }) {
+	const calls = yield* appSelector(state => state.videoConf.calls);
+	const currentCall = calls.find(c => c.callId === callId);
+	if (currentCall && currentCall.action === 'call') {
+		const userId = yield* appSelector(state => state.login.user.id);
+		yield call(notifyUser, `${currentCall.uid}/video-conference`, {
+			action: 'accepted',
+			params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
+		});
+		yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
+		hideCustomNotification();
+	}
+}
+
 export default function* root(): Generator {
-	yield takeEvery<
-		IGenericAction & {
-			data: any;
-		}
-	>(VIDEO_CONF.HANDLE_INCOMING_WEBSOCKET_MESSAGES, handleVideoConfIncomingWebsocketMessages);
-	yield takeEvery<IGenericAction & { payload: TCallProps }>(VIDEO_CONF.INIT_CALL, initCall);
-	yield takeEvery<
-		IGenericAction & {
-			payload?: { callId?: string };
-		}
-	>(VIDEO_CONF.CANCEL_CALL, cancelCall);
+	yield takeEvery<THandleGeneric>(VIDEO_CONF.HANDLE_INCOMING_WEBSOCKET_MESSAGES, handleVideoConfIncomingWebsocketMessages);
+	yield takeEvery<TInitCallGeneric>(VIDEO_CONF.INIT_CALL, initCall);
+	yield takeEvery<TCancelCallGeneric>(VIDEO_CONF.CANCEL_CALL, cancelCall);
+	yield takeEvery<TAcceptCallGeneric>(VIDEO_CONF.ACCEPT_CALL, acceptCall);
 }

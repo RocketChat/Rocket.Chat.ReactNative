@@ -11,6 +11,7 @@ export type TCallProps = { mic: boolean; cam: boolean; direct: boolean; rid: str
 type TInitCallAction = Action & { payload: TCallProps };
 type TSetCallingAction = Action & { payload: boolean };
 type TCancelCallAction = Action & { payload: { callId?: string } };
+type TAcceptCallAction = Action & { payload: { callId: string } };
 
 export interface IVideoConfGenericAction extends Action {
 	payload: ICallInfo;
@@ -21,7 +22,8 @@ export type TActionVideoConf = IHandleVideoConfIncomingWebsocketMessages &
 	TSetCallingAction &
 	Action &
 	TInitCallAction &
-	TCancelCallAction;
+	TCancelCallAction &
+	TAcceptCallAction;
 
 export function handleVideoConfIncomingWebsocketMessages(data: any): IHandleVideoConfIncomingWebsocketMessages {
 	return {
@@ -60,6 +62,13 @@ export function initVideoCall(payload: TCallProps): TInitCallAction {
 export function cancelCall(payload: { callId?: string }): TCancelCallAction {
 	return {
 		type: VIDEO_CONF.CANCEL_CALL,
+		payload
+	};
+}
+
+export function acceptCall(payload: { callId: string }): TAcceptCallAction {
+	return {
+		type: VIDEO_CONF.ACCEPT_CALL,
 		payload
 	};
 }
