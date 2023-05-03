@@ -14,6 +14,7 @@ import { getShowLoginButton } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
+import RegisterDisabledComponent from './RegisterDisabledComponent';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<OutsideParamList, 'WorkspaceView'>,
@@ -32,7 +33,6 @@ const WorkspaceView = () => {
 		Site_Url,
 		inviteLinkToken,
 		registrationForm,
-		registrationText,
 		server,
 		showLoginButton
 	} = useAppSelector(state => ({
@@ -41,7 +41,6 @@ const WorkspaceView = () => {
 		Site_Url: state.settings.Site_Url as string,
 		Assets_favicon_512: state.settings.Assets_favicon_512 as IAssetsFavicon512,
 		registrationForm: state.settings.Accounts_RegistrationForm as string,
-		registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
 		Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean,
 		showLoginButton: getShowLoginButton(state),
 		inviteLinkToken: state.inviteLinks.token
@@ -70,14 +69,6 @@ const WorkspaceView = () => {
 		navigation.navigate('RegisterView', { title: Site_Name });
 	};
 
-	const renderRegisterDisabled = () => {
-		if (Accounts_iframe_enabled) {
-			return null;
-		}
-
-		return <Text style={[styles.registrationText, { color: colors.auxiliaryText }]}>{registrationText}</Text>;
-	};
-
 	return (
 		<FormContainer testID='workspace-view'>
 			<FormContainerInner>
@@ -96,7 +87,7 @@ const WorkspaceView = () => {
 						testID='workspace-view-register'
 					/>
 				) : (
-					renderRegisterDisabled()
+					<RegisterDisabledComponent />
 				)}
 			</FormContainerInner>
 		</FormContainer>
