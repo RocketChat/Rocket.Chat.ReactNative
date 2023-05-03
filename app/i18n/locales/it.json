@@ -690,5 +690,6 @@
   "Workspace_URL_Example": "Es. tua-azienda.rocket.chat",
   "invalid-room": "Canale non valido",
   "Open_Livechats": "Chat in corso",
-  "Broadcast_hint": "Solo gli utenti autorizzati possono scrivere messaggi, ma gli altri utenti saranno in grado di rispondere"
+  "Broadcast_hint": "Solo gli utenti autorizzati possono scrivere messaggi, ma gli altri utenti saranno in grado di rispondere",
+  "and_N_more": "e altri {{count}}"
 }

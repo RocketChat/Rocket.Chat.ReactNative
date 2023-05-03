@@ -791,5 +791,6 @@
   "Omnichannel_on_hold_chat_resumed": "Le chat en attente a repris : {{comment}}",
   "Omnichannel_queue": "File d'attente omnicanale",
   "Empty": "Vide",
-  "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre."
+  "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre.",
+  "and_N_more": "et {{count}} de plus"
 }
