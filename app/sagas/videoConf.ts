@@ -95,7 +95,7 @@ function* onDirectCallConfirmed(payload: ICallInfo) {
 function* onDirectCallJoined(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);
-	if (currentCall && currentCall.action === 'accepted') {
+	if (currentCall && (currentCall.action === 'accepted' || currentCall.action === 'calling')) {
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
 		videoConfJoin(payload.callId, false, true);
