@@ -48,7 +48,9 @@ const AuthenticationWebView = () => {
 	const [loading, setLoading] = useState(false);
 
 	const navigation = useNavigation<StackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
-	const { authType, url, ssoToken } = useRoute<RouteProp<OutsideModalParamList, 'AuthenticationWebView'>>().params;
+	const {
+		params: { authType, url, ssoToken }
+	} = useRoute<RouteProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 
 	const { Accounts_Iframe_api_method, Accounts_Iframe_api_url, server } = useAppSelector(state => ({
 		server: state.server.server,
@@ -136,7 +138,7 @@ const AuthenticationWebView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} />,
+			headerLeft: () => <HeaderButton.CloseModal />,
 			title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
 		});
 	}, [authType, navigation]);
@@ -151,12 +153,8 @@ const AuthenticationWebView = () => {
 				onMessage={({ nativeEvent }) => onNavigationStateChange(nativeEvent)}
 				onNavigationStateChange={onNavigationStateChange}
 				injectedJavaScript={isIframe ? injectedJavaScript : undefined}
-				onLoadStart={() => {
-					setLoading(true);
-				}}
-				onLoadEnd={() => {
-					setLoading(false);
-				}}
+				onLoadStart={() => setLoading(true)}
+				onLoadEnd={() => setLoading(false)}
 			/>
 			{loading ? <ActivityIndicator size='large' absolute /> : null}
 		</>
