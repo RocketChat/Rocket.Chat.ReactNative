@@ -508,6 +508,24 @@ export const MessageWithReply = () => (
 				}
 			]}
 		/>
+		<Message
+			msg='Yes, I am'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'Are you seeing this mario :marioparty: ?',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					],
+					text: ''
+				}
+			]}
+		/>
 	</>
 );
 
