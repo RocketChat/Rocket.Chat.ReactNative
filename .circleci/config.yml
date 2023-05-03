@@ -3,6 +3,7 @@ defaults: &defaults
 
 orbs:
   android: circleci/android@2.1.2
+  macos: circleci/macos@2.3.4
 
 macos: &macos
   macos:
@@ -615,6 +616,9 @@ jobs:
             brew install applesimutils
             yarn detox clean-framework-cache && yarn detox build-framework-cache
       - create-e2e-account-file
+      - macos/preboot-paired-simulator:
+          iphone-device: iPhone 14
+          iphone-version: "16.2"
       - run:
           name: Run tests
           command: |
