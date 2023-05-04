@@ -655,5 +655,6 @@
   "Confirmation": "確認",
   "invalid-room": "無效的房間",
   "Open_Livechats": "打開即時聊天",
-  "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆"
+  "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆",
+  "and_N_more": "另外{{count}}個"
 }
