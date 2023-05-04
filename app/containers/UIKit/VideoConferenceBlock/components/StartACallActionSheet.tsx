@@ -16,16 +16,8 @@ import StatusContainer from '../../../Status';
 import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import useStyle from './styles';
 
-export default function StartACallActionSheet({ rid, initCall }: { rid: string; initCall: Function }): React.ReactElement {
-	const style = useStyle();
-	const { colors } = useTheme();
+const useUserData = (rid: string) => {
 	const [user, setUser] = useState({ username: '', avatar: '', uid: '', type: '' });
-	const [mic, setMic] = useState(true);
-	const [cam, setCam] = useState(false);
-	const username = useAppSelector(state => state.login.user.username);
-
-	const { hideActionSheet } = useActionSheet();
-
 	useEffect(() => {
 		(async () => {
 			const room = await getSubscriptionByRoomId(rid);
@@ -49,7 +41,20 @@ export default function StartACallActionSheet({ rid, initCall }: { rid: string; 
 				}
 			}
 		})();
-	}, [rid]);
+	}, []);
+
+	return user;
+};
+
+export default function StartACallActionSheet({ rid, initCall }: { rid: string; initCall: Function }): React.ReactElement {
+	const style = useStyle();
+	const { colors } = useTheme();
+	const [mic, setMic] = useState(true);
+	const [cam, setCam] = useState(false);
+	const username = useAppSelector(state => state.login.user.username);
+
+	const { hideActionSheet } = useActionSheet();
+	const user = useUserData(rid);
 
 	const handleColor = (enabled: boolean) => (enabled ? colors.conferenceCallEnabledIcon : colors.conferenceCallDisabledIcon);
 
