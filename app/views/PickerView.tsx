@@ -6,7 +6,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { debounce } from '../lib/methods/helpers';
+import { useDebounce } from '../lib/methods/helpers';
 import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { IOptionsField } from './NotificationPreferencesView/options';
@@ -69,7 +69,7 @@ const PickerView = (): React.ReactElement => {
 		navigation.goBack();
 	};
 
-	const onChangeText = debounce(async (text: string) => {
+	const onChangeText = useDebounce(async (text: string) => {
 		const search = await onSearch(text);
 		if (search?.data) {
 			setSearchText(text);
