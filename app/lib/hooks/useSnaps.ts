@@ -1,7 +1,7 @@
 import { StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { isAndroid, isIOS, isTablet } from '../methods/helpers';
+import { isIOS, isTablet } from '../methods/helpers';
 
 // Not sure if it's worth adding this here in the context of the actionSheet
 /**
@@ -14,12 +14,9 @@ export const useSnaps = (componentSize: number): number[] | string[] => {
 		const fixTabletInset = isTablet ? 2 : 1;
 		return [componentSize + insets.bottom * fixTabletInset];
 	}
-	if (isAndroid) {
-		let statusHeight = 0;
-		if (StatusBar.currentHeight) {
-			statusHeight = StatusBar.currentHeight;
-		}
-		return [componentSize + statusHeight];
+	let statusHeight = 0;
+	if (StatusBar.currentHeight) {
+		statusHeight = StatusBar.currentHeight;
 	}
-	return [`100%`];
+	return [componentSize + statusHeight];
 };
