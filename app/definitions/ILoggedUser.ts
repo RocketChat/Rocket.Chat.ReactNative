@@ -22,6 +22,8 @@ export interface ILoggedUser {
 	isFromWebView?: boolean;
 	enableMessageParserEarlyAdoption: boolean;
 	alsoSendThreadToChannel: 'default' | 'always' | 'never';
+	bio?: string;
+	nickname?: string;
 }
 
 export interface ILoggedUserResultFromServer
