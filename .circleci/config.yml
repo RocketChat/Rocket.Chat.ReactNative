@@ -606,16 +606,12 @@ jobs:
             brew tap wix/brew
             brew install applesimutils
             yarn detox clean-framework-cache && yarn detox build-framework-cache
-      - run:
-          name: Preboot Simulator
-          # Taken from https://circle-macos-docs.s3.amazonaws.com/image-manifest/v11441/manifest.txt
-          command: xcrun simctl boot "89119BED-E983-4E57-B1CB-63B97F41EC99"
       - create-e2e-account-file
       - run:
           name: Run tests
           command: |
             TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
-            yarn e2e:ios-test $TEST -l trace
+            yarn e2e:ios-test $TEST
       - store_artifacts:
           path: artifacts
       - run:
