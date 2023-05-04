@@ -858,5 +858,6 @@
   "Channel_hint_not_read_only": "Alle Nutzer im Kanal können neue Nachrichten schreiben",
   "Channel_hint_encrypted_not_available": "Nicht verfügbar in öffentlichen Kanälen",
   "Read_only_hint": "Nur autorisierte Benutzer können neue Nachrichten schreiben",
-  "Discussion": "Diskussion"
+  "Discussion": "Diskussion",
+  "and_N_more": "und {{count}} weitere"
 }
