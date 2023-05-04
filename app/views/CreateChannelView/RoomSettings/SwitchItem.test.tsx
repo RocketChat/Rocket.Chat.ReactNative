@@ -11,7 +11,7 @@ const onPressMock = jest.fn((value: boolean) => value);
 const testSwitch = {
 	id: 'switch-id',
 	hint: 'Read_only_hint',
-	label: 'Onboarding_title',
+	label: 'Chats',
 	onValueChange: onPressMock,
 	value: false,
 	testSwitchID: 'create-channel-switch-id',
