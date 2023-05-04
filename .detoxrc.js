@@ -7,13 +7,13 @@ module.exports = {
 		},
 		retries: process.env.CI ? 3 : 0
 	},
-	// artifacts: {
-	// 	plugins: {
-	// 		screenshot: 'failing',
-	// 		video: 'failing',
-	// 		uiHierarchy: 'enabled'
-	// 	}
-	// },
+	artifacts: {
+		plugins: {
+			screenshot: process.env.CI ? undefined : 'failing',
+			video: process.env.CI ? undefined : 'failing',
+			uiHierarchy: process.env.CI ? undefined : 'enabled'
+		}
+	},
 	apps: {
 		'ios.debug': {
 			type: 'ios.app',

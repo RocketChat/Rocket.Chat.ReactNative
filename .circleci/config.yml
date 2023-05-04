@@ -3,7 +3,6 @@ defaults: &defaults
 
 orbs:
   android: circleci/android@2.1.2
-  macos: circleci/macos@2.3.4
 
 macos: &macos
   macos:
@@ -595,14 +594,6 @@ jobs:
     parallelism: 5
     steps:
       - checkout
-      - run:
-          name: check user log
-          command: tail -f ~/Library/Logs/*
-          background: true
-      - run:
-          name: check system log
-          command: tail -f /private/var/log/**/*.log
-          background: true
       - attach_workspace:
           at: /Users/distiller/project
       - restore_cache: *restore-npm-cache-mac
@@ -624,7 +615,7 @@ jobs:
           name: Run tests
           command: |
             TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
-            unset PREFIX && yarn e2e:ios-test $TEST -l trace
+            yarn e2e:ios-test $TEST -l trace
       - store_artifacts:
           path: artifacts
       - run:
