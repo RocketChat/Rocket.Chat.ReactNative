@@ -11,7 +11,7 @@ import Touch from '../../containers/Touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { showErrorAlert, showConfirmationAlert } from '../../lib/methods/helpers';
+import { showErrorAlert, showConfirmationAlert, compareServerVersion } from '../../lib/methods/helpers';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { FormTextInput } from '../../containers/TextInput';
@@ -48,6 +48,7 @@ interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileSta
 	theme: TSupportedThemes;
 	Accounts_AllowDeleteOwnAccount: boolean;
 	isMasterDetail: boolean;
+	serverVersion: string;
 }
 
 interface IProfileViewState {
@@ -55,6 +56,8 @@ interface IProfileViewState {
 	name: string;
 	username: string;
 	email: string | null;
+	bio?: string;
+	nickname?: string;
 	newPassword: string | null;
 	currentPassword: string | null;
 	customFields: {
@@ -72,6 +75,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private email?: TextInput;
 	private avatarUrl?: TextInput;
 	private newPassword?: TextInput;
+	private nickname?: TextInput;
+	private bio?: TextInput;
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
@@ -98,6 +103,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		name: '',
 		username: '',
 		email: '',
+		bio: '',
+		nickname: '',
 		newPassword: '',
 		currentPassword: '',
 		customFields: {},
@@ -123,7 +130,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	init = (user?: IUser) => {
 		const { user: userProps } = this.props;
-		const { name, username, emails, customFields } = user || userProps;
+		const { name, username, emails, customFields, bio, nickname } = user || userProps;
 
 		this.setState({
 			name: name as string,
@@ -131,7 +138,9 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			email: emails ? emails[0].address : null,
 			newPassword: null,
 			currentPassword: null,
-			customFields: customFields || {}
+			customFields: customFields || {},
+			bio,
+			nickname
 		});
 	};
 
@@ -168,7 +177,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		this.setState({ saving: true });
 
-		const { name, username, email, newPassword, currentPassword, customFields, twoFactorCode } = this.state;
+		const { name, username, email, newPassword, currentPassword, customFields, twoFactorCode, bio, nickname } = this.state;
 		const { user, dispatch } = this.props;
 		const params = {} as IProfileParams;
 
@@ -185,6 +194,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		// Email
 		if (user.emails && user.emails[0].address !== email) {
 			params.email = email;
+		}
+
+		if (user.bio !== bio) {
+			params.bio = bio;
+		}
+
+		if (user.nickname !== nickname) {
+			params.nickname = nickname;
 		}
 
 		// newPassword
@@ -398,7 +415,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	render() {
-		const { name, username, email, newPassword, customFields, saving } = this.state;
+		const { name, username, email, newPassword, customFields, saving, nickname, bio } = this.state;
 		const {
 			user,
 			theme,
@@ -408,7 +425,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
 			Accounts_CustomFields,
-			Accounts_AllowDeleteOwnAccount
+			Accounts_AllowDeleteOwnAccount,
+			serverVersion
 		} = this.props;
 
 		return (
@@ -469,10 +487,42 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							value={email || undefined}
 							onChangeText={value => this.setState({ email: value })}
 							onSubmitEditing={() => {
-								this.newPassword?.focus();
+								this.nickname?.focus();
 							}}
 							testID='profile-view-email'
 						/>
+						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
+							<FormTextInput
+								inputRef={e => {
+									if (e) {
+										this.nickname = e;
+									}
+								}}
+								label={I18n.t('Nickname')}
+								value={nickname}
+								onChangeText={value => this.setState({ nickname: value })}
+								onSubmitEditing={() => {
+									this.bio?.focus();
+								}}
+								testID='profile-view-nickname'
+							/>
+						) : null}
+						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
+							<FormTextInput
+								inputRef={e => {
+									if (e) {
+										this.bio = e;
+									}
+								}}
+								label={I18n.t('Bio')}
+								value={bio}
+								onChangeText={value => this.setState({ bio: value })}
+								onSubmitEditing={() => {
+									this.newPassword?.focus();
+								}}
+								testID='profile-view-bio'
+							/>
+						) : null}
 						<FormTextInput
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
@@ -537,6 +587,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
 	baseUrl: state.server.server,
+	serverVersion: state.server.version,
 	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 });
 
