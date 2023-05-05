@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Tasks as TasksProps } from '@rocket.chat/message-parser';
+import CheckBox from '@react-native-community/checkbox';
 
 import Inline from './Inline';
 import styles from '../styles';
@@ -16,7 +17,9 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 		<View>
 			{value.map(item => (
 				<View style={styles.row}>
-					<Text style={[styles.text, { color: colors.bodyText }]}>{item.status ? '- [x] ' : '- [ ] '}</Text>
+					<Text style={[styles.text, { color: colors.bodyText }]}>
+						<CheckBox disabled={true} style={{ height: 20, width: 20, margin: 5 }} boxType='square' value={item.status} />
+					</Text>
 					<Text style={[styles.inline, { color: colors.bodyText }]}>
 						<Inline value={item.value} />
 					</Text>
