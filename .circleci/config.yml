@@ -29,7 +29,7 @@ save-npm-cache-linux: &save-npm-cache-linux
   key: node-modules-{{ checksum "yarn.lock" }}
   name: Save NPM cache
   paths:
-    - ./node_modules
+    - node_modules
 
 restore-npm-cache-mac: &restore-npm-cache-mac
   name: Restore NPM cache
@@ -39,7 +39,7 @@ save-npm-cache-mac: &save-npm-cache-mac
   key: node-v1-mac-{{ checksum "yarn.lock" }}
   name: Save NPM cache
   paths:
-    - ./node_modules
+    - node_modules
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
