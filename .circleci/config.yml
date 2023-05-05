@@ -59,13 +59,13 @@ commands:
     steps:
       - restore_cache:
           name: Restore NPM cache
-          key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}-test
       - run:
           name: Install NPM modules
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache:
           name: Save NPM cache
-          key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}-test
           paths:
             - ~/.cache/yarn
 
