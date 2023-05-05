@@ -62,12 +62,12 @@ commands:
           key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}
       - run:
           name: Install NPM modules
-          command: yarn
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache:
           name: Save NPM cache
           key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
-            - node_modules
+            - ~/.cache/yarn
 
   manage-pods:
     description: "Restore/Get/Save cache of pods libs"
