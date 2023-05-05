@@ -17,30 +17,6 @@ android-env: &android-env
   GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
   TERM: dumb
 
-install-npm-modules: &install-npm-modules
-  name: Install NPM modules
-  command: yarn
-
-restore-npm-cache-linux: &restore-npm-cache-linux
-  name: Restore NPM cache
-  key: node-modules-{{ checksum "yarn.lock" }}
-
-save-npm-cache-linux: &save-npm-cache-linux
-  key: node-modules-{{ checksum "yarn.lock" }}
-  name: Save NPM cache
-  paths:
-    - node_modules
-
-restore-npm-cache-mac: &restore-npm-cache-mac
-  name: Restore NPM cache
-  key: node-v1-mac-{{ checksum "yarn.lock" }}
-
-save-npm-cache-mac: &save-npm-cache-mac
-  key: node-v1-mac-{{ checksum "yarn.lock" }}
-  name: Save NPM cache
-  paths:
-    - node_modules
-
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
   key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
@@ -78,6 +54,21 @@ restore_cache: &restore-gradle-cache
 # COMMANDS
 commands:
 
+  npm-dependencies:
+    description: "Get npm dependencies"
+    steps:
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - run:
+          name: Install NPM modules
+          command: yarn
+      - save_cache:
+          name: Save NPM cache
+          key: node-modules-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - node_modules
+
   manage-pods:
     description: "Restore/Get/Save cache of pods libs"
     steps:
@@ -101,9 +92,7 @@ commands:
     steps:
       - checkout
 
-      - restore_cache: *restore-npm-cache-linux
-
-      - run: *install-npm-modules
+      - npm-dependencies
 
       - restore_cache: *restore-gradle-cache
 
@@ -182,8 +171,6 @@ commands:
       - store_artifacts:
           path: android/app/build/outputs
 
-      - save_cache: *save-npm-cache-linux
-
       - save_cache: *save-gradle-cache
 
       - persist_to_workspace:
@@ -196,8 +183,7 @@ commands:
     steps:
       - checkout
       - restore_cache: *restore-gems-cache
-      - restore_cache: *restore-npm-cache-mac
-      - run: *install-npm-modules
+      - npm-dependencies
       - run: *update-fastlane-ios
       - manage-pods
       - run:
@@ -243,7 +229,6 @@ commands:
               fi
             fi
           working_directory: ios
-      - save_cache: *save-npm-cache-mac
       - save_cache: *save-gems-cache
       - store_artifacts:
           path: ios/Rocket.Chat.ipa
@@ -319,7 +304,6 @@ commands:
       - attach_workspace:
           at: ios
       - restore_cache: *restore-gems-cache
-      - restore_cache: *restore-npm-cache-mac
       - run: *update-fastlane-ios
       - manage-pods
       - run:
@@ -360,9 +344,7 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache: *restore-npm-cache-linux
-
-      - run: *install-npm-modules
+      - npm-dependencies
 
       - run:
           name: Lint
@@ -378,8 +360,6 @@ jobs:
           name: Codecov
           command: |
             yarn codecov
-
-      - save_cache: *save-npm-cache-linux
 
   # Android builds
   android-build-experimental:
@@ -459,9 +439,7 @@ jobs:
       <<: *android-env
     steps:
       - checkout
-      - restore_cache: *restore-npm-cache-linux
-      - run: *install-npm-modules
-      - save_cache: *save-npm-cache-linux
+      - npm-dependencies
       - restore_cache: *restore-gradle-cache
       - run:
           name: Configure Gradle
@@ -507,9 +485,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: /home/circleci/repo
-      - restore_cache: *restore-npm-cache-linux
-      - run: *install-npm-modules
-      - save_cache: *save-npm-cache-linux
+      - npm-dependencies
       - run: mkdir ~/junit
       - create-e2e-account-file
       - android/create-avd:
@@ -565,10 +541,8 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-gems-cache
-      - restore_cache: *restore-npm-cache-mac
-      - run: *install-npm-modules
+      - npm-dependencies
       - run: *update-fastlane-ios
-      - save_cache: *save-npm-cache-mac
       - save_cache: *save-gems-cache
       - manage-pods
       - run:
@@ -596,9 +570,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: /Users/distiller/project
-      - restore_cache: *restore-npm-cache-mac
-      - run: *install-npm-modules
-      - save_cache: *save-npm-cache-mac
+      - npm-dependencies
       - run: mkdir ~/junit
       - run:
           name: Configure Detox
