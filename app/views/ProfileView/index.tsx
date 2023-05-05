@@ -145,7 +145,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	formIsChanged = () => {
-		const { name, username, email, newPassword, customFields } = this.state;
+		const { name, username, email, newPassword, customFields, bio, nickname } = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
 
@@ -161,6 +161,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		return !(
 			user.name === name &&
 			user.username === username &&
+			user.bio === bio &&
+			user.nickname === nickname &&
 			!newPassword &&
 			user.emails &&
 			user.emails[0].address === email &&
@@ -515,6 +517,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 									}
 								}}
 								label={I18n.t('Bio')}
+								inputStyle={styles.inputBio}
+								multiline
 								value={bio}
 								onChangeText={value => this.setState({ bio: value })}
 								onSubmitEditing={() => {
