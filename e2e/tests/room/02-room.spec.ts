@@ -305,7 +305,7 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Get Link')).atIndex(0).tap();
+				await element(by[textMatcher]('Get link')).atIndex(0).tap();
 				// TODO: test clipboard
 			});
 			it('should copy message', async () => {
@@ -508,10 +508,10 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
+				await waitFor(element(by[textMatcher]('Reply in direct message')).atIndex(0))
 					.toExist()
 					.withTimeout(6000);
-				await element(by[textMatcher]('Reply in Direct Message')).atIndex(0).tap();
+				await element(by[textMatcher]('Reply in direct message')).atIndex(0).tap();
 				await waitFor(element(by.id(`room-view-title-${replyUser.username}`)))
 					.toExist()
 					.withTimeout(6000);
