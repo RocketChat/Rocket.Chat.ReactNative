@@ -26,9 +26,9 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdo
 	let m = formatText(msg);
 	m = formatHyperlink(m);
 	m = shortnameToUnicode(m);
+	m = removeMarkdown(m);
 	// Removes sequential empty spaces
 	m = m.replace(/\s+/g, ' ');
-	m = removeMarkdown(m);
 	m = m.replace(/\n+/g, ' ');
 	return (
 		<Text
