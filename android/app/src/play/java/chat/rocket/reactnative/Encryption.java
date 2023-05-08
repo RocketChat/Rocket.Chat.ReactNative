@@ -81,7 +81,6 @@ class Encryption {
             dbName += "-experimental";
         }
         dbName += ".db";
-        // TODO: it shouldn't be needed, but let's add it for now
         Database database = new Database(dbName, reactContext, SQLiteDatabase.CREATE_IF_NECESSARY);
         String[] query = {ejson.rid};
         Cursor cursor = database.rawQuery("select * from subscriptions where id == ? limit 1", query);

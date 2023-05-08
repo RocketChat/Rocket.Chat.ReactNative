@@ -114,7 +114,6 @@ commands:
           name: Configure Gradle
           command: |
             echo -e "" > ./gradle.properties
-            # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
@@ -525,7 +524,6 @@ jobs:
             echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
       - android/start-emulator:
           avd-name: Pixel_API_31_AOSP
-          # wait-for-emulator: true
           verbose: true
           post-emulator-launch-assemble-command: ''
       - run:
