@@ -48,6 +48,13 @@ async function waitForLoading() {
 	// 	.withTimeout(10000);
 }
 
+function getIndex() {
+	if (device.getPlatform() === 'android') {
+		return 1;
+	}
+	return 0;
+}
+
 describe('Room', () => {
 	beforeAll(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -123,11 +130,11 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('search-message-view-input')).replaceText('30');
-		await waitFor(element(by[textMatcher]('30')).atIndex(1))
+		await waitFor(element(by[textMatcher]('30')).atIndex(getIndex()))
 			.toExist()
 			.withTimeout(30000);
 		await sleep(1000);
-		await element(by[textMatcher]('30')).atIndex(1).tap();
+		await element(by[textMatcher]('30')).atIndex(getIndex()).tap();
 		await waitForLoading();
 		await waitFor(element(by[textMatcher]('30')).atIndex(0))
 			.toExist()
@@ -267,10 +274,10 @@ describe('Threads', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('search-message-view-input')).replaceText('to be searched');
-		await waitFor(element(by[textMatcher]('to be searched')).atIndex(1))
+		await waitFor(element(by[textMatcher]('to be searched')).atIndex(getIndex()))
 			.toExist()
 			.withTimeout(30000);
-		await element(by[textMatcher]('to be searched')).atIndex(1).tap();
+		await element(by[textMatcher]('to be searched')).atIndex(getIndex()).tap();
 		await expectThreadMessages('to be searched');
 	});
 
