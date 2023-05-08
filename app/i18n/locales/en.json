@@ -11,6 +11,7 @@
   "error-file-too-large": "File is too large",
   "error-not-permission-to-upload-file": "You don't have permission to upload files",
   "error-invalid-email": "Invalid email {{email}}",
+  "error-invalid-file-type": "Invalid file type",
   "error-invalid-password": "Invalid password",
   "error-invalid-room-name": "{{room_name}} is not a valid room name",
   "error-not-allowed": "Not allowed",
