@@ -220,6 +220,7 @@ export type SettingsStackParamList = {
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
+	MediaAutoDownloadView: undefined;
 };
 
 export type AdminPanelStackParamList = {

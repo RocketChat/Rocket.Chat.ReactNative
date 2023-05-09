@@ -225,6 +225,13 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
+						title='Media_auto_download'
+						showActionIndicator
+						onPress={() => navigateToScreen('MediaAutoDownloadView')}
+						testID='media-auto-download-view-theme'
+					/>
+					<List.Separator />
+					<List.Item
 						title='Security_and_privacy'
 						showActionIndicator
 						onPress={() => navigateToScreen('SecurityPrivacyView')}
