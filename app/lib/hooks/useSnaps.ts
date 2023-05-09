@@ -12,7 +12,7 @@ export const useSnaps = (componentSize: number): number[] | string[] => {
 	const insets = useSafeAreaInsets();
 	if (isIOS) {
 		const fixTabletInset = isTablet ? 2 : 1;
-		return [componentSize + insets.bottom * fixTabletInset];
+		return [componentSize + (insets.bottom || insets.top) * fixTabletInset];
 	}
 	let statusHeight = 0;
 	if (StatusBar.currentHeight) {
