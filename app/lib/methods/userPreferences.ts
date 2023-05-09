@@ -14,6 +14,10 @@ class UserPreferences {
 		this.mmkv = MMKV;
 	}
 
+	getMMKV() {
+		return this.mmkv;
+	}
+
 	getString(key: string): string | null {
 		try {
 			return this.mmkv.getString(key) ?? null;
