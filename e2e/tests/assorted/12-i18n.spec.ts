@@ -33,9 +33,9 @@ describe('i18n', () => {
 			({ textMatcher } = platformTypes[device.getPlatform()]);
 		});
 		it("OS set to 'en' and proper translate to 'en'", async () => {
-			// if (device.getPlatform() === 'android') {
-			// 	return; // FIXME: Passing language with launch parameters doesn't work with Android
-			// }
+			if (device.getPlatform() === 'android') {
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {
@@ -54,9 +54,9 @@ describe('i18n', () => {
 		});
 
 		it("OS set to unavailable language and fallback to 'en'", async () => {
-			// if (device.getPlatform() === 'android') {
-			// 	return; // FIXME: Passing language with launch parameters doesn't work with Android
-			// }
+			if (device.getPlatform() === 'android') {
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {
