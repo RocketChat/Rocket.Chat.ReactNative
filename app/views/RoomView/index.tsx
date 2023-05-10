@@ -906,7 +906,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { selectedMessage } = this.state;
 		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={selectedMessage?.reactions} getCustomEmoji={this.getCustomEmoji} />,
-			snaps: ['50%', '80%'],
+			snaps: ['50%'],
 			enableContentPanningGesture: false
 		});
 	};
