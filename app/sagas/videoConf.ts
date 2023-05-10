@@ -96,6 +96,7 @@ function* onDirectCallJoined(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	if (currentCall && (currentCall.action === 'accepted' || currentCall.action === 'calling')) {
+		yield put(setCalling(false));
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
 		videoConfJoin(payload.callId, false, true);
@@ -178,11 +179,11 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 
 function* giveUp({ rid, uid, callId, rejected }: { rid: string; uid: string; callId: string; rejected?: boolean }) {
 	yield put(removeVideoConfCall({ rid, uid, callId }));
+	notifyUser(`${uid}/video-conference`, { action: rejected ? 'rejected' : 'canceled', params: { uid, rid, callId } });
 	if (!rejected) {
 		yield put(setCalling(false));
+		yield call(Services.videoConferenceCancel, callId);
 	}
-	notifyUser(`${uid}/video-conference`, { action: rejected ? 'rejected' : 'canceled', params: { uid, rid, callId } });
-	yield call(Services.videoConferenceCancel, callId);
 }
 
 function* cancelCall({ payload }: { payload?: { callId?: string } }) {
