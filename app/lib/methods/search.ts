@@ -21,14 +21,7 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		.query(
 			Q.or(
 				Q.where('sanitized_fname', Q.like(`%${slugifiedString}%`)),
-				// We still need the others comparisons, because as sanitized_fname is an optional column.
-				// For those rooms that were already on local db the columns will begins as null,
-				// and each interact with the room will sanitize the fname or name and add to the sanitized_fname.
-				// The interacts can be:
-				// - open the room
-				// - receive any updates as changing the name, last message
-				// - join or create a new room
-				// Otherwise, if we want to only search for sanitized_fname, we should clear the local DB
+				// `sanitized_fname` is an optional column, so it's going to start null and it's going to get filled over time
 				Q.where('name', Q.like(`%${likeString}%`)),
 				Q.where('fname', Q.like(`%${likeString}%`)),
 				Q.where('name', Q.like(`%${slugifiedString}%`))

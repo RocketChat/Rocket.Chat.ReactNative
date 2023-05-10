@@ -280,7 +280,7 @@ describe('Create room screen', () => {
 			it('should create a room with non-latin alphabet and do a case insensitive search for it', async () => {
 				const randomValue = random();
 				const roomName = `ПРОВЕРКА${randomValue}`;
-				const roomNameLower = `проверка${randomValue}`;
+				const roomNameLower = roomName.toLowerCase();
 
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()

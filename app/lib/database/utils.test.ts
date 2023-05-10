@@ -45,6 +45,10 @@ describe('slugifyLikeString', () => {
 		expect(utils.slugifyLikeString('')).toBe('');
 		expect(utils.slugifyLikeString(undefined)).toBe('');
 	});
+	test('slugify the latin alphabet', () => {
+		expect(utils.slugifyLikeString('test123')).toBe('test123');
+		expect(utils.slugifyLikeString('TEST123')).toBe('test123');
+	});
 	test('slugify the russian alphabet', () => {
 		const textToSlugify = 'ПРОВЕРКА';
 		const textSlugified = 'proverka';
