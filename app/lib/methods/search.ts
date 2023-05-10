@@ -104,6 +104,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 							...user,
 							rid: user.username,
 							name: user.username,
+							fname: user.name,
 							t: SubscriptionType.DIRECT,
 							search: true
 						});
