@@ -107,9 +107,6 @@ PODS:
     - GoogleUtilities/Logger
   - hermes-engine (0.11.0)
   - iosMath (0.9.4)
-  - JitsiMeetSDKLite (7.0.1-lite):
-    - JitsiWebRTC (~> 106.0)
-  - JitsiWebRTC (106.0.0)
   - KeyCommands (2.0.3):
     - React
   - libevent (2.1.12)
@@ -365,9 +362,6 @@ PODS:
   - react-native-cookies (6.2.1):
     - React-Core
   - react-native-document-picker (8.1.2):
-    - React-Core
-  - react-native-jitsimeet-custom (2.5.0):
-    - JitsiMeetSDKLite (= 7.0.1-lite)
     - React-Core
   - react-native-mmkv-storage (0.8.0):
     - MMKV (= 1.2.13)
@@ -630,7 +624,6 @@ DEPENDENCIES:
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-  - "react-native-jitsimeet-custom (from `../node_modules/@socialcode-rob1/react-native-jitsimeet-custom`)"
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
@@ -696,8 +689,6 @@ SPEC REPOS:
     - GoogleUtilities
     - hermes-engine
     - iosMath
-    - JitsiMeetSDKLite
-    - JitsiWebRTC
     - libevent
     - libwebp
     - MMKV
@@ -784,8 +775,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-  react-native-jitsimeet-custom:
-    :path: "../node_modules/@socialcode-rob1/react-native-jitsimeet-custom"
   react-native-mmkv-storage:
     :path: "../node_modules/react-native-mmkv-storage"
   react-native-netinfo:
@@ -917,8 +906,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   hermes-engine: 84e3af1ea01dd7351ac5d8689cbbea1f9903ffc3
   iosMath: f7a6cbadf9d836d2149c2a84c435b1effc244cba
-  JitsiMeetSDKLite: d59573336ce887ec52327a9927aa8443f560d0b9
-  JitsiWebRTC: f441eb0e2d67f0588bf24e21c5162e97342714fb
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
@@ -946,7 +933,6 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
-  react-native-jitsimeet-custom: a57ca376bfc1c69f639b138f2de2a10e0ed42c04
   react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: 83b4fd4a127a6c918fc846cae90da60f84819e44
