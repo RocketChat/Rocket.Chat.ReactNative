@@ -139,5 +139,7 @@ export default class Subscription extends Model {
 
 	@field('on_hold') onHold;
 
+	@field('users_count') usersCount;
+
 	@json('source', sanitizer) source;
 }

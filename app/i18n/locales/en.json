@@ -899,5 +899,6 @@
   "admin-video-conf-provider-not-configured-body": "Configure conference calls in order to make it available on this workspace.",
   "Presence_Cap_Warning_Title": "User status temporarily disabled",
   "Presence_Cap_Warning_Description": "Active connections have reached the limit for the workspace, thus the service that handles user status is disabled. It can be re-enabled manually in workspace settings.",
-  "Learn_more": "Learn more"
+  "Learn_more": "Learn more",
+  "and_N_more": "and {{count}} more"
 }
