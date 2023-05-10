@@ -1,29 +1,3 @@
-diff --git a/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js b/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
-index 4d49faf..262edb5 100644
---- a/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
-+++ b/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
-@@ -60,6 +60,10 @@ var encodeComparison = function (table, comparison) {
-     return right.values ? "between ".concat((0, _encodeValue.default)(right.values[0]), " and ").concat((0, _encodeValue.default)(right.values[1])) : '';
-   }
- 
-+  if (comparison.operator === 'like' && !!comparison.right.value && typeof comparison.right.value === 'string') {
-+    return "".concat(operators[comparison.operator], " \"").concat(comparison.right.value.toUpperCase(), "\"");
-+  }
-+
-   return "".concat(operators[comparison.operator], " ").concat(getComparisonRight(table, comparison.right));
- };
- 
-@@ -100,6 +104,10 @@ var encodeWhereCondition = function (associations, table, left, comparison) {
-     Q.where(left, Q.gt(Q.column(comparison.right.column))), Q.and(Q.where(left, Q.notEq(null)), Q.where(comparison.right.column, null))));
-   }
- 
-+  if (comparison.operator === 'like') {
-+    return "upper(".concat(table, ".").concat(left, ") ").concat(encodeComparison(table, comparison));
-+  }
-+
-   return "\"".concat(table, "\".\"").concat(left, "\" ").concat(encodeComparison(table, comparison));
- };
- 
 diff --git a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
 index 802f137..cfcac91 100644
 --- a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
@@ -80,33 +54,3 @@ index b4d7151..429e318 100644
          let resultSet = try fmdb.executeQuery(query, values: args)
  
          return AnyIterator {
-diff --git a/node_modules/@nozbe/watermelondb/src/adapters/sqlite/encodeQuery/index.js b/node_modules/@nozbe/watermelondb/src/adapters/sqlite/encodeQuery/index.js
-index 29c3322..5f20279 100644
---- a/node_modules/@nozbe/watermelondb/src/adapters/sqlite/encodeQuery/index.js
-+++ b/node_modules/@nozbe/watermelondb/src/adapters/sqlite/encodeQuery/index.js
-@@ -62,6 +62,14 @@ const encodeComparison = (table: TableName<any>, comparison: Comparison) => {
-       : ''
-   }
- 
-+  if (
-+    comparison.operator === 'like' &&
-+    !!comparison.right.value &&
-+    typeof comparison.right.value === 'string'
-+  ) {
-+    return `${operators[comparison.operator]} "${comparison.right.value.toUpperCase()}"`
-+  }
-+
-   return `${operators[comparison.operator]} ${getComparisonRight(table, comparison.right)}`
- }
- 
-@@ -109,6 +117,10 @@ const encodeWhereCondition = (
-     )
-   }
- 
-+  if (comparison.operator === 'like') {
-+    return `upper(${table}.${left}) ${encodeComparison(table, comparison)}`
-+  }
-+
-   return `"${table}"."${left}" ${encodeComparison(table, comparison)}`
- }
- 
