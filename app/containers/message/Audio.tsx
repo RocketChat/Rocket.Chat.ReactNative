@@ -6,12 +6,13 @@ import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
+import NetInfo, { NetInfoStateType } from '@react-native-community/netinfo';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
+import { MediaDownloadOption, VIDEO_PREFERENCE_DOWNLOAD, themes } from '../../lib/constants';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
@@ -19,9 +20,10 @@ import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
-import { downloadAudioFile } from '../../lib/methods/audioFile';
+import { downloadAudioFile, searchAudioFileAsync } from '../../lib/methods/audioFile';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
+import userPreferences from '../../lib/methods/userPreferences';
 
 interface IButton {
 	loading: boolean;
@@ -29,6 +31,7 @@ interface IButton {
 	theme: TSupportedThemes;
 	disabled?: boolean;
 	onPress: () => void;
+	toDownload: boolean;
 }
 
 interface IMessageAudioProps {
@@ -46,6 +49,7 @@ interface IMessageAudioState {
 	currentTime: number;
 	duration: number;
 	paused: boolean;
+	toDownload: boolean;
 }
 
 const mode = {
@@ -90,25 +94,29 @@ const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButton) => (
-	<Touchable
-		style={styles.playPauseButton}
-		disabled={disabled}
-		onPress={onPress}
-		hitSlop={BUTTON_HIT_SLOP}
-		background={Touchable.SelectableBackgroundBorderless()}
-	>
-		{loading ? (
-			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
-		) : (
-			<CustomIcon
-				name={paused ? 'play-filled' : 'pause-filled'}
-				size={36}
-				color={disabled ? themes[theme].tintDisabled : themes[theme].tintColor}
-			/>
-		)}
-	</Touchable>
-));
+const Button = React.memo(({ loading, paused, onPress, disabled, theme, toDownload }: IButton) => {
+	const customIconName = () => {
+		if (toDownload) {
+			return 'arrow-down-circle';
+		}
+		return paused ? 'play-filled' : 'pause-filled';
+	};
+	return (
+		<Touchable
+			style={styles.playPauseButton}
+			disabled={disabled}
+			onPress={onPress}
+			hitSlop={BUTTON_HIT_SLOP}
+			background={Touchable.SelectableBackgroundBorderless()}
+		>
+			{loading ? (
+				<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
+			) : (
+				<CustomIcon name={customIconName()} size={36} color={disabled ? themes[theme].tintDisabled : themes[theme].tintColor} />
+			)}
+		</Touchable>
+	);
+});
 
 Button.displayName = 'MessageAudioButton';
 
@@ -123,7 +131,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			loading: false,
 			currentTime: 0,
 			duration: 0,
-			paused: true
+			paused: true,
+			toDownload: false
 		};
 
 		this.sound = new Audio.Sound();
@@ -136,25 +145,49 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	async componentDidMount() {
-		const { file, messageId } = this.props;
-		const { baseUrl, user } = this.context;
+		this.setState({ loading: true });
+		await this.handleAutoDownload();
+	}
+
+	getUrl = () => {
+		const { file } = this.props;
+		const { baseUrl } = this.context;
 
 		let url = file.audio_url;
 		if (url && !url.startsWith('http')) {
 			url = `${baseUrl}${file.audio_url}`;
 		}
+		return url;
+	};
 
-		this.setState({ loading: true });
+	handleAutoDownload = async () => {
+		const { messageId } = this.props;
+		const url = this.getUrl();
 		try {
 			if (url) {
-				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url, messageId);
-				await this.sound.loadAsync({ uri: audio });
+				const fileSearch = await searchAudioFileAsync(url, messageId);
+				if (fileSearch?.file?.exists) {
+					await this.sound.loadAsync({ uri: fileSearch.file.uri });
+					return this.setState({ loading: false });
+				}
+
+				const audioDownloadPreference = userPreferences.getString(VIDEO_PREFERENCE_DOWNLOAD);
+				const netInfoState = await NetInfo.fetch();
+				const autoDownload =
+					(audioDownloadPreference === MediaDownloadOption.WIFI && netInfoState.type === NetInfoStateType.wifi) ||
+					audioDownloadPreference === MediaDownloadOption.WIFI_MOBILE_DATA;
+
+				if (autoDownload) {
+					await this.startDownload();
+				}
+
+				// MediaDownloadOption.NEVER or MediaDownloadOption.WIFI and the mobile is using mobile data
+				return this.setState({ loading: false, toDownload: true });
 			}
 		} catch {
 			// Do nothing
 		}
-		this.setState({ loading: false });
-	}
+	};
 
 	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
 		const { currentTime, duration, paused, loading } = this.state;
@@ -247,6 +280,26 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ paused: !paused }, this.playPause);
 	};
 
+	startDownload = async () => {
+		const { messageId } = this.props;
+		const { user } = this.context;
+		this.setState({ loading: true });
+
+		const url = this.getUrl();
+
+		if (url) {
+			const fileSearch = await searchAudioFileAsync(url, messageId);
+			const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, fileSearch.filePath);
+			await this.sound.loadAsync({ uri: audio });
+			return this.setState({ loading: false });
+		}
+	};
+
+	onPress = () => {
+		const { toDownload } = this.state;
+		return toDownload ? this.startDownload() : this.togglePlayPause();
+	};
+
 	playPause = async () => {
 		const { paused } = this.state;
 		try {
@@ -274,7 +327,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	render() {
-		const { loading, paused, currentTime, duration } = this.state;
+		const { loading, paused, currentTime, duration, toDownload } = this.state;
 		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
@@ -305,7 +358,14 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
 					]}
 				>
-					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
+					<Button
+						disabled={isReply}
+						loading={loading}
+						paused={paused}
+						toDownload={toDownload}
+						onPress={this.onPress}
+						theme={theme}
+					/>
 					<Slider
 						disabled={isReply}
 						style={styles.slider}

@@ -26,26 +26,32 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	return ensureDirAsync(dir, intermediates);
 };
 
-export const downloadAudioFile = async (url: string, fileUrl: string, messageId: string): Promise<string> => {
-	let path = '';
+export const searchAudioFileAsync = async (fileUrl: string, messageId: string) => {
+	let file;
+	let filePath = '';
 	try {
 		const serverUrl = store.getState().server.server;
 		const serverUrlParsed = sanitizeString(serverUrl);
 		const folderPath = `${FileSystem.documentDirectory}audios/${serverUrlParsed}`;
 		const filename = `${messageId}.${getExtension(fileUrl)}`;
-		const filePath = `${folderPath}/${filename}`;
+		filePath = `${folderPath}/${filename}`;
 		await ensureDirAsync(folderPath);
-		const file = await FileSystem.getInfoAsync(filePath);
-		if (!file.exists) {
-			const downloadedFile = await FileSystem.downloadAsync(url, filePath);
-			path = downloadedFile.uri;
-		} else {
-			path = file.uri;
-		}
+		file = await FileSystem.getInfoAsync(filePath);
+	} catch (e) {
+		log(e);
+	}
+	return { file, filePath };
+};
+
+export const downloadAudioFile = async (url: string, filePath: string) => {
+	let uri = '';
+	try {
+		const downloadedFile = await FileSystem.downloadAsync(url, filePath);
+		uri = downloadedFile.uri;
 	} catch (error) {
 		log(error);
 	}
-	return path;
+	return uri;
 };
 
 export const deleteAllAudioFiles = async (serverUrl: string): Promise<void> => {
