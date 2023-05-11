@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { StyleProp, Text, TextStyle, View } from 'react-native';
+import { transparentize } from 'color2k';
 
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
@@ -20,28 +21,33 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	const { theme } = useTheme();
 	if (mention === 'all' || mention === 'here') {
 		return (
-			<Text
-				style={[
-					styles.mention,
-					{
-						color: themes[theme].mentionGroupColor
-					},
-					...style
-				]}
-			>
-				{mention}
-			</Text>
+			<View style={{ marginBottom: -3 }}>
+				<Text
+					style={[
+						styles.mention,
+						{
+							color: themes[theme].mentionGroupColor,
+							backgroundColor: transparentize(themes[theme].mentionGroupColor, 0.8)
+						},
+						...style
+					]}
+				>
+					{`${mention}`}
+				</Text>
+			</View>
 		);
 	}
 
 	let mentionStyle = {};
 	if (mention === username) {
 		mentionStyle = {
-			color: themes[theme].mentionMeColor
+			color: themes[theme].mentionMeColor,
+			backgroundColor: transparentize(themes[theme].mentionMeColor, 0.8)
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].mentionOtherColor
+			color: themes[theme].mentionOtherColor,
+			backgroundColor: transparentize(themes[theme].mentionOtherColor, 0.8)
 		};
 	}
 
@@ -59,10 +65,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	};
 
 	if (user) {
+		const m = useRealName && user.name ? user.name : user.username;
 		return (
-			<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
-				{useRealName && user.name ? user.name : user.username}
-			</Text>
+			<View style={{ marginBottom: -3 }}>
+				<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
+					{`${m}`}
+				</Text>
+			</View>
 		);
 	}
 

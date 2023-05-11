@@ -32,7 +32,8 @@ export default StyleSheet.create({
 	},
 	plainText: {
 		fontSize: 16,
-		flexShrink: 1
+		flexShrink: 1,
+		lineHeight: 22
 	},
 	text: {
 		fontSize: 16,
@@ -58,7 +59,9 @@ export default StyleSheet.create({
 	temp: { opacity: 0.3 },
 	mention: {
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		borderRadius: 4,
+		overflow: 'hidden'
 	},
 	paragraph: {
 		marginTop: 0,
