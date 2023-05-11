@@ -18,7 +18,7 @@ import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment } from '../../definitions';
+import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
 import { downloadAudioFile, searchAudioFileAsync } from '../../lib/methods/audioFile';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -42,6 +42,7 @@ interface IMessageAudioProps {
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
 	messageId: string;
+	author?: IUserMessage;
 }
 
 interface IMessageAudioState {
@@ -161,7 +162,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	handleAutoDownload = async () => {
-		const { messageId } = this.props;
+		const { messageId, author } = this.props;
+		const { user } = this.context;
 		const url = this.getUrl();
 		try {
 			if (url) {
@@ -175,7 +177,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				const netInfoState = await NetInfo.fetch();
 				const autoDownload =
 					(audioDownloadPreference === MediaDownloadOption.WIFI && netInfoState.type === NetInfoStateType.wifi) ||
-					audioDownloadPreference === MediaDownloadOption.WIFI_MOBILE_DATA;
+					audioDownloadPreference === MediaDownloadOption.WIFI_MOBILE_DATA ||
+					author?._id === user.id;
 
 				if (autoDownload) {
 					await this.startDownload();
