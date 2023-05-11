@@ -12,3 +12,4 @@ export * from './notifications';
 export * from './defaultSettings';
 export * from './tablet';
 export * from './mediaAutoDownload';
+export * from './userAgent';
