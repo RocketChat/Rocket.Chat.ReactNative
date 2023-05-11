@@ -6,13 +6,12 @@ import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
-import NetInfo, { NetInfoStateType } from '@react-native-community/netinfo';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { MediaDownloadOption, VIDEO_PREFERENCE_DOWNLOAD, themes } from '../../lib/constants';
+import { themes } from '../../lib/constants';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
@@ -23,7 +22,7 @@ import { TSupportedThemes } from '../../theme';
 import { downloadAudioFile, searchAudioFileAsync } from '../../lib/methods/audioFile';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
-import userPreferences from '../../lib/methods/userPreferences';
+import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
 
 interface IButton {
 	loading: boolean;
@@ -173,13 +172,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					return this.setState({ loading: false });
 				}
 
-				const audioDownloadPreference = userPreferences.getString(VIDEO_PREFERENCE_DOWNLOAD);
-				const netInfoState = await NetInfo.fetch();
-				const autoDownload =
-					(audioDownloadPreference === MediaDownloadOption.WIFI && netInfoState.type === NetInfoStateType.wifi) ||
-					audioDownloadPreference === MediaDownloadOption.WIFI_MOBILE_DATA ||
-					author?._id === user.id;
-
+				const autoDownload = await isAutoDownloadEnabled('audioPreferenceDownload', { author, user });
 				if (autoDownload) {
 					await this.startDownload();
 				}

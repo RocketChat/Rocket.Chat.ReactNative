@@ -11,9 +11,10 @@ import styles from './styles';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment } from '../../definitions';
+import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
+import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -29,6 +30,7 @@ interface IMessageImage {
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
+	author?: IUserMessage;
 }
 
 const ImageProgress = createImageProgress(FastImage);
@@ -57,7 +59,7 @@ export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; the
 ));
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author }: IMessageImage) => {
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
@@ -65,6 +67,14 @@ const ImageContainer = React.memo(
 		if (!img) {
 			return null;
 		}
+
+		isAutoDownloadEnabled('imagesPreferenceDownload', { user, author }).then(result => {
+			if (result && file.title_link) {
+				// Since https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/3370 the title_link is considered the full image
+				const imgBestQualityPreload = formatAttachmentUrl(file.title_link, user.id, user.token, baseUrl);
+				FastImage.preload([{ uri: imgBestQualityPreload }]);
+			}
+		});
 
 		const onPress = () => {
 			if (!showAttachment) {
