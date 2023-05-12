@@ -2,39 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-const SIZE = 7;
-const MARGIN = 5;
-const BG = '#a9cbff';
-const ACTIVE_BG = '#1d74f5';
+import { useTheme } from '../../theme';
+
+const SIZE = 8;
+const MARGIN = 4;
 const dots = [1, 2, 3];
 const INTERVAL = 300;
 const ANIMATION_DURATION = 400;
 const ANIMATION_SCALE = 1.4;
 
 interface DotProps {
-	size?: number;
-	background?: string;
-	activeBackground?: string;
-	dotMargin?: number;
-	animationDuration?: number;
-	animationScale?: number;
 	active: boolean;
 }
 
-const Dot: React.FC<DotProps> = ({
-	active,
-	size = SIZE,
-	background = BG,
-	activeBackground = ACTIVE_BG,
-	dotMargin = MARGIN,
-	animationDuration = ANIMATION_DURATION,
-	animationScale = ANIMATION_SCALE
-}) => {
+const Dot: React.FC<DotProps> = ({ active }) => {
 	const scale = useSharedValue(1);
 
 	useEffect(() => {
-		scale.value = withTiming(active ? animationScale : 1, {
-			duration: animationDuration
+		scale.value = withTiming(active ? ANIMATION_SCALE : 1, {
+			duration: ANIMATION_DURATION
 		});
 	}, [active]);
 
@@ -42,12 +28,14 @@ const Dot: React.FC<DotProps> = ({
 		transform: [{ scale: scale.value }]
 	}));
 
+	const { colors } = useTheme();
+
 	const style: StyleProp<ViewStyle> = {
-		height: size,
-		width: size,
-		borderRadius: size / 2,
-		marginHorizontal: dotMargin,
-		backgroundColor: active ? activeBackground : background
+		height: SIZE,
+		width: SIZE,
+		borderRadius: SIZE / 2,
+		marginHorizontal: MARGIN,
+		backgroundColor: active ? colors.dotActiveBg : colors.dotBg
 	};
 
 	return <Animated.View style={[style, animatedStyle]} />;
