@@ -85,6 +85,9 @@ export const merge = (
 		if (room && 'source' in room) {
 			mergedSubscription.source = room?.source;
 		}
+		if (room && 'usersCount' in room) {
+			mergedSubscription.usersCount = room.usersCount;
+		}
 	}
 
 	if (!mergedSubscription.name) {
