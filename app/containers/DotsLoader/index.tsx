@@ -11,11 +11,7 @@ const INTERVAL = 300;
 const ANIMATION_DURATION = 400;
 const ANIMATION_SCALE = 1.4;
 
-interface DotProps {
-	active: boolean;
-}
-
-const Dot: React.FC<DotProps> = ({ active }) => {
+function Dot({ active }: { active: boolean }): JSX.Element {
 	const scale = useSharedValue(1);
 
 	useEffect(() => {
@@ -39,9 +35,9 @@ const Dot: React.FC<DotProps> = ({ active }) => {
 	};
 
 	return <Animated.View style={[style, animatedStyle]} />;
-};
+}
 
-const DotsLoader: React.FC = () => {
+function DotsLoader(): JSX.Element {
 	const [active, setActive] = useState(1);
 
 	useEffect(() => {
@@ -57,9 +53,9 @@ const DotsLoader: React.FC = () => {
 		<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 			{dots.map(i => (
 				<Dot key={i} active={i === active} />
-			))}
+			))} 
 		</View>
 	);
-};
+}
 
 export default DotsLoader;
