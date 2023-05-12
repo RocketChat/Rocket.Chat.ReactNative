@@ -1,6 +1,5 @@
 import React from 'react';
 import { Keyboard, ViewStyle } from 'react-native';
-import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -78,13 +77,16 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	state = { isManualUnignored: false };
 
-	private subscription?: Subscription;
+	private subscription?: Function;
 
 	componentDidMount() {
 		const { item } = this.props;
-		if (item && item.observe) {
-			const observable = item.observe();
-			this.subscription = observable.subscribe(() => {
+		// @ts-ignore
+		if (item && item.experimentalSubscribe) {
+			// TODO: Update watermelonDB to recognize experimentalSubscribe at types
+			// experimentalSubscribe(subscriber: (isDeleted: boolean) => void, debugInfo?: any): Unsubscribe
+			// @ts-ignore
+			this.subscription = item.experimentalSubscribe(() => {
 				this.forceUpdate();
 			});
 		}
@@ -112,8 +114,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	}
 
 	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
+		if (this.subscription) {
+			this.subscription();
 		}
 	}
 

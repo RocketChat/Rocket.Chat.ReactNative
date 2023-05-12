@@ -645,5 +645,6 @@
   "No_threads_following": "当前没有正在追踪的讨论",
   "No_threads_unread": "当前没有未读的讨论",
   "Messagebox_Send_to_channel": "发送至频道",
-  "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复"
+  "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复",
+  "and_N_more": "另外{{count}}个"
 }

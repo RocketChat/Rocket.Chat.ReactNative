@@ -108,7 +108,10 @@ describe('E2E Encryption', () => {
 			});
 
 			it('should tap "How it works" and navigate', async () => {
-				await element(by.id('e2e-save-password-view-how-it-works').and(by.label('How It Works'))).tap();
+				await waitFor(element(by[textMatcher]('How It Works')).atIndex(0))
+					.toExist()
+					.withTimeout(1000);
+				await element(by.id('e2e-save-password-view-how-it-works')).tap();
 				await waitFor(element(by.id('e2e-how-it-works-view')))
 					.toBeVisible()
 					.withTimeout(2000);
@@ -116,7 +119,10 @@ describe('E2E Encryption', () => {
 			});
 
 			it('should tap "Save my password" and close modal', async () => {
-				await element(by.id('e2e-save-password-view-saved-password').and(by.label('I Saved My E2E Password'))).tap();
+				await waitFor(element(by[textMatcher]('I Saved My E2E Password')).atIndex(0))
+					.toExist()
+					.withTimeout(1000);
+				await element(by.id('e2e-save-password-view-saved-password')).tap();
 				await sleep(300); // wait for animation
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
@@ -237,8 +243,14 @@ describe('E2E Encryption', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await expect(element(by.id('e2e-encryption-security-view-password'))).toExist();
-				await expect(element(by.id('e2e-encryption-security-view-change-password').and(by.label('Save Changes')))).toExist();
-				await expect(element(by.id('e2e-encryption-security-view-reset-key').and(by.label('Reset E2E Key')))).toExist();
+				await waitFor(element(by[textMatcher]('Save Changes')).atIndex(0))
+					.toExist()
+					.withTimeout(1000);
+				await expect(element(by.id('e2e-encryption-security-view-change-password'))).toExist();
+				await waitFor(element(by[textMatcher]('Reset E2E Key')).atIndex(0))
+					.toExist()
+					.withTimeout(1000);
+				await expect(element(by.id('e2e-encryption-security-view-reset-key'))).toExist();
 			});
 		});
 
@@ -330,7 +342,10 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('e2e-encryption-security-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('e2e-encryption-security-view-reset-key').and(by.label('Reset E2E Key'))).tap();
+				await waitFor(element(by[textMatcher]('Reset E2E Key')).atIndex(0))
+					.toExist()
+					.withTimeout(1000);
+				await element(by.id('e2e-encryption-security-view-reset-key')).tap();
 				await waitFor(element(by[textMatcher]('Are you sure?')))
 					.toExist()
 					.withTimeout(2000);
