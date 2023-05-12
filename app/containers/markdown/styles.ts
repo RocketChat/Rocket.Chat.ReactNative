@@ -57,11 +57,13 @@ export default StyleSheet.create({
 		height: 30
 	},
 	temp: { opacity: 0.3 },
+	mentionView: {},
 	mention: {
 		fontSize: 16,
 		...sharedStyles.textSemibold,
 		borderRadius: 4,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		marginBottom: -3
 	},
 	paragraph: {
 		marginTop: 0,
