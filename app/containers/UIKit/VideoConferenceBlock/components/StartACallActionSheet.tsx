@@ -16,9 +16,6 @@ import useStyle from './styles';
 import { ESounds, useVideoConfRinger } from '../../../../lib/hooks/useVideoConf';
 
 const CAM_SIZE = { height: 220, width: 148 };
-// fixed colors, do not change with theme change.
-export const gray300 = '#5f656e';
-export const gray100 = '#CBCED1';
 
 export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
 	const style = useStyle();
@@ -66,7 +63,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 			</View>
 			<Button
 				backgroundColor={calling ? colors.conferenceCallCallBackButton : colors.actionTintColor}
-				color={calling ? gray300 : colors.conferenceCallEnabledIcon}
+				color={calling ? colors.gray300 : colors.conferenceCallEnabledIcon}
 				onPress={() => {
 					if (calling) {
 						stopSound();

@@ -91,6 +91,8 @@ export const colors = {
 		textInputSecondaryBackground: '#E4E7EA',
 		dotBg: '#a9cbff',
 		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
 		...mentions
 	},
 	dark: {
@@ -163,6 +165,8 @@ export const colors = {
 		textInputSecondaryBackground: '#030b1b',
 		dotBg: '#a9cbff',
 		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
 		...mentions
 	},
 	black: {
@@ -235,6 +239,8 @@ export const colors = {
 		textInputSecondaryBackground: '#000000',
 		dotBg: '#a9cbff',
 		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
 		...mentions
 	}
 };

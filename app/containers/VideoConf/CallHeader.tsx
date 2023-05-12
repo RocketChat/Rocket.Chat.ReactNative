@@ -7,7 +7,6 @@ import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../CustomIcon';
-import { gray100, gray300 } from '../UIKit/VideoConferenceBlock/components/StartACallActionSheet';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import AvatarContainer from '../Avatar';
 import StatusContainer from '../Status';
@@ -41,9 +40,9 @@ export const CallHeader = ({
 	const handleColors = (enabled: boolean) => {
 		if (calling) {
 			if (enabled) {
-				return { button: colors.conferenceCallCallBackButton, icon: gray300 };
+				return { button: colors.conferenceCallCallBackButton, icon: colors.gray300 };
 			}
-			return { button: 'transparent', icon: gray100 };
+			return { button: 'transparent', icon: colors.gray100 };
 		}
 		if (enabled) {
 			return { button: colors.conferenceCallEnabledIconBackground, icon: colors.conferenceCallEnabledIcon };
