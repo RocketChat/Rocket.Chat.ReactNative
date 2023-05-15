@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { isTablet } from '../../lib/methods/helpers';
+import { isAndroid, isTablet } from '../../lib/methods/helpers';
 
 export default StyleSheet.create({
 	root: {
@@ -96,7 +96,9 @@ export default StyleSheet.create({
 	},
 	imageContainer: {
 		flexDirection: 'column',
-		borderRadius: 4
+		borderRadius: 4,
+		// https://github.com/Kureev/react-native-blur/issues/520#issuecomment-1378339192 Fix BlurView
+		overflow: isAndroid ? 'hidden' : 'visible'
 	},
 	image: {
 		width: '100%',

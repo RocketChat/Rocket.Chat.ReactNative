@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
+import { BlurView } from '@react-native-community/blur';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -14,6 +15,9 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
+import { CustomIcon } from '../CustomIcon';
+import RCActivityIndicator from '../ActivityIndicator';
+import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
 
 interface IMessageButton {
@@ -31,6 +35,7 @@ interface IMessageImage {
 	isReply?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
 	author?: IUserMessage;
+	messageId: string;
 }
 
 const ImageProgress = createImageProgress(FastImage);
@@ -46,37 +51,100 @@ const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButto
 	</Touchable>
 ));
 
-export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; theme: TSupportedThemes }) => (
-	<ImageProgress
-		style={[styles.image, { borderColor: themes[theme].borderColor }]}
-		source={{ uri: encodeURI(imgUri) }}
-		resizeMode={FastImage.resizeMode.cover}
-		indicator={Progress.Pie}
-		indicatorProps={{
-			color: themes[theme].actionTintColor
-		}}
-	/>
-));
+export const MessageImage = React.memo(
+	({ imgUri, toDownload, loading }: { imgUri: string; toDownload: boolean; loading: boolean }) => {
+		const { colors } = useTheme();
+
+		return (
+			<>
+				<ImageProgress
+					style={[styles.image, { borderColor: colors.borderColor }]}
+					source={{ uri: encodeURI(imgUri) }}
+					resizeMode={FastImage.resizeMode.cover}
+					indicator={Progress.Pie}
+					indicatorProps={{
+						color: colors.actionTintColor
+					}}
+				/>
+				{toDownload ? <BlurComponent loading={loading} /> : null}
+			</>
+		);
+	}
+);
+
+const BlurComponent = ({ loading = false }: { loading: boolean }) => {
+	const { theme, colors } = useTheme();
+
+	return (
+		<>
+			<BlurView
+				style={[styles.image, { position: 'absolute', borderWidth: 0, top: 0, left: 0, bottom: 0, right: 0 }]}
+				blurType={theme === 'light' ? 'light' : 'dark'}
+				blurAmount={10}
+				reducedTransparencyFallbackColor='white'
+			/>
+			<View style={[styles.image, { position: 'absolute', justifyContent: 'center', alignItems: 'center', borderWidth: 0 }]}>
+				{loading ? <RCActivityIndicator /> : <CustomIcon color={colors.buttonText} name='arrow-down-circle' size={54} />}
+			</View>
+		</>
+	);
+};
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author, messageId }: IMessageImage) => {
+		const [toDownload, setToDownload] = useState(true);
+		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+		const filePath = useRef('');
+
+		useLayoutEffect(() => {
+			const handleAutoDownload = async () => {
+				if (img) {
+					const searchImageBestQuality = await searchMediaFileAsync({
+						type: MediaTypes.image,
+						mimeType: file.image_type,
+						messageId
+					});
+					filePath.current = searchImageBestQuality.filePath;
+					if (searchImageBestQuality.file?.exists) {
+						file.title_link = searchImageBestQuality.file.uri;
+						return setToDownload(false);
+					}
+
+					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload', { user, author });
+					if (autoDownload) {
+						await handleDownload();
+					}
+				}
+			};
+			handleAutoDownload();
+		}, []);
 
 		if (!img) {
 			return null;
 		}
 
-		isAutoDownloadEnabled('imagesPreferenceDownload', { user, author }).then(result => {
-			if (result && file.title_link) {
-				// Since https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/3370 the title_link is considered the full image
-				const imgBestQualityPreload = formatAttachmentUrl(file.title_link, user.id, user.token, baseUrl);
-				FastImage.preload([{ uri: imgBestQualityPreload }]);
-			}
-		});
+		const handleDownload = async () => {
+			setLoading(true);
+			const imgUrl = imageUrl || formatAttachmentUrl(file.title_link || file.image_url, user.id, user.token, baseUrl);
+			const imageUri = await downloadMediaFile({ url: imgUrl, filePath: filePath.current });
+			file.title_link = imageUri;
+			setToDownload(false);
+			setLoading(false);
+		};
 
 		const onPress = () => {
+			if (loading) {
+				// Cancelar o download
+				return;
+			}
+
+			if (toDownload && !loading) {
+				return handleDownload();
+			}
+
 			if (!showAttachment) {
 				return;
 			}
@@ -95,7 +163,7 @@ const ImageContainer = React.memo(
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
 						/>
-						<MessageImage imgUri={img} theme={theme} />
+						<MessageImage imgUri={img} toDownload={toDownload} loading={loading} />
 					</View>
 				</Button>
 			);
@@ -103,7 +171,9 @@ const ImageContainer = React.memo(
 
 		return (
 			<Button disabled={isReply} theme={theme} onPress={onPress}>
-				<MessageImage imgUri={img} theme={theme} />
+				<>
+					<MessageImage imgUri={img} toDownload={toDownload} loading={loading} />
+				</>
 			</Button>
 		);
 	},

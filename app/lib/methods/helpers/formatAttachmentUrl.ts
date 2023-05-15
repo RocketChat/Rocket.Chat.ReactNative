@@ -1,4 +1,9 @@
+import * as FileSystem from 'expo-file-system';
+
 export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: string, token: string, server: string): string => {
+	if (attachmentUrl?.startsWith(`${FileSystem.documentDirectory}`)) {
+		return attachmentUrl;
+	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {
 		if (attachmentUrl.includes('rc_token')) {
 			return encodeURI(attachmentUrl);
