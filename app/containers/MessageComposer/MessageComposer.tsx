@@ -27,7 +27,7 @@ export const MessageComposer = () => {
 	const { colors, theme } = useTheme();
 
 	const renderContent = () => (
-		<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeExtraLight }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
 			<TextInput
 				style={[styles.textInput, { color: colors.fontDefault }]}
 				placeholder={`Message {ROOM}`}

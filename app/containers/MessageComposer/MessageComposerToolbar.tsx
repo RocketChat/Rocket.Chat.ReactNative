@@ -10,8 +10,7 @@ export const MessageComposerToolbar = () => (
 			flexDirection: 'row',
 			gap: 12,
 			paddingHorizontal: 16,
-			paddingVertical: 12,
-			backgroundColor: 'red'
+			paddingVertical: 12
 		}}
 	>
 		<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
