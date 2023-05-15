@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import { BaseButton } from './BaseButton';
+import { MicOrSendButton } from './MicOrSendButton';
 
-export const MessageComposerToolbar = () => (
+export const MessageComposerToolbar = memo(() => (
 	<View
 		style={{
 			flex: 1,
@@ -18,6 +19,6 @@ export const MessageComposerToolbar = () => (
 		<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
 		<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
 		<View style={{ flex: 1 }} />
-		<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='microphone' />
+		<MicOrSendButton />
 	</View>
-);
+));

@@ -37,3 +37,10 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	// goToCannedResponses: () => void | null;
 	serverVersion: string;
 }
+
+export interface IInputSelection {
+	start: number;
+	end: number;
+}
+
+export type TMicOrSend = 'mic' | 'send';
