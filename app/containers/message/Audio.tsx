@@ -293,7 +293,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				mimeType: file.audio_type,
 				messageId
 			});
-			const audio = await downloadMediaFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, fileSearch.filePath);
+			const audio = await downloadMediaFile({
+				url: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
+				filePath: fileSearch.filePath
+			});
 			await this.sound.loadAsync({ uri: audio });
 			return this.setState({ loading: false, toDownload: false });
 		}

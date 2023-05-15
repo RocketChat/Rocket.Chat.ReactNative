@@ -68,7 +68,15 @@ export const searchMediaFileAsync = async ({
 	return { file, filePath };
 };
 
-export const downloadMediaFile = async (url: string, filePath: string, downloadResumable?: FileSystem.DownloadResumable) => {
+export const downloadMediaFile = async ({
+	url,
+	filePath,
+	downloadResumable
+}: {
+	url: string;
+	filePath: string;
+	downloadResumable?: FileSystem.DownloadResumable;
+}) => {
 	let uri = '';
 	try {
 		if (downloadResumable) {
