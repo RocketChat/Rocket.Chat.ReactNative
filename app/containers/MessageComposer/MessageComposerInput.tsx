@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
-import { IInputSelection } from './interfaces';
+import { IComposerInput, IComposerInputProps, IInputSelection } from './interfaces';
 import { MessageComposerContext } from './context';
 import { userTyping } from '../../actions/room';
 
@@ -24,11 +24,10 @@ const styles = StyleSheet.create({
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-export const MessageComposerInput = forwardRef((_, ref) => {
+export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors } = useTheme();
 	const { setMicOrSend, rid, sharing } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
-	const inputRef = React.useRef<TextInput | null>(null);
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
 

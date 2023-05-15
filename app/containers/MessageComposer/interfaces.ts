@@ -1,3 +1,6 @@
+import { MutableRefObject, RefObject } from 'react';
+import { TextInput } from 'react-native';
+
 export interface IMessageComposerProps {
 	rid: string;
 	// baseUrl: string;
@@ -43,4 +46,12 @@ export type TMicOrSend = 'mic' | 'send';
 
 export interface IComposerInput {
 	sendMessage: () => string;
+}
+
+export interface IComposerInputProps {
+	inputRef: any; // FIXME: how do I type this?
+}
+
+export interface ITrackingView {
+	resetTracking: () => void;
 }
