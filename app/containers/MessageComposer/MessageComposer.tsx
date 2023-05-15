@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 
 import { useTheme } from '../../theme';
-import { MessageComposerToolbar } from './Toolbar/MessageComposerToolbar';
+import { MessageComposerToolbar } from './Toolbar';
 import { MessageComposerInput } from './MessageComposerInput';
-import { MicOrSendContext } from './context';
-import { TMicOrSend } from './interfaces';
+import { MessageComposerContext } from './context';
+import { IMessageBoxProps, TMicOrSend } from './interfaces';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const MessageComposer = () => {
+export const MessageComposer = ({ onSubmit }: IMessageBoxProps): ReactElement => {
 	console.count('Message Composer');
 	const { colors, theme } = useTheme();
 	const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
@@ -26,8 +26,13 @@ export const MessageComposer = () => {
 		</View>
 	);
 
+	const sendMessage = () => {
+		console.log('sendMessage');
+		// onSubmit()
+	};
+
 	return (
-		<MicOrSendContext.Provider value={{ micOrSend, setMicOrSend }}>
+		<MessageComposerContext.Provider value={{ micOrSend, setMicOrSend, sendMessage }}>
 			<KeyboardAccessoryView
 				// ref={(ref: any) => (this.tracking = ref)}
 				renderContent={renderContent}
@@ -42,6 +47,6 @@ export const MessageComposer = () => {
 				bottomViewColor={colors.surfaceLight}
 				// iOSScrollBehavior={iOSScrollBehavior}
 			/>
-		</MicOrSendContext.Provider>
+		</MessageComposerContext.Provider>
 	);
 };

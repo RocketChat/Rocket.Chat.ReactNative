@@ -4,7 +4,7 @@ import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { IInputSelection } from './interfaces';
-import { MicOrSendContext } from './context';
+import { MessageComposerContext } from './context';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -23,7 +23,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const MessageComposerInput = () => {
 	const { colors } = useTheme();
-	const { setMicOrSend } = useContext(MicOrSendContext);
+	const { setMicOrSend } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const inputRef = React.useRef<TextInput | null>(null);
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);

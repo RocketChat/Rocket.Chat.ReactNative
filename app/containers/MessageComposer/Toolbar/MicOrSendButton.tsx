@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
 
 import { BaseButton } from './BaseButton';
-import { MicOrSendContext } from '../context';
+import { MessageComposerContext } from '../context';
 import { useTheme } from '../../../theme';
 
 export const MicOrSendButton = () => {
-	const { micOrSend } = useContext(MicOrSendContext);
+	const { micOrSend, sendMessage } = useContext(MessageComposerContext);
 	const { colors } = useTheme();
 
 	if (micOrSend === 'send') {
 		return (
 			<BaseButton
-				onPress={() => alert('tbd')}
+				onPress={() => sendMessage()}
 				testID='messagebox-cancel-editing'
 				accessibilityLabel='TBD'
 				icon='send-filled'
