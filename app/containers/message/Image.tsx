@@ -4,7 +4,6 @@ import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
-import { BlurView } from '@react-native-community/blur';
 import * as FileSystem from 'expo-file-system';
 
 import Touchable from './Touchable';
@@ -16,10 +15,9 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { CustomIcon } from '../CustomIcon';
-import RCActivityIndicator from '../ActivityIndicator';
 import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
+import BlurComponent from './Components/BlurComponent';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -72,24 +70,6 @@ export const MessageImage = React.memo(
 		);
 	}
 );
-
-const BlurComponent = ({ loading = false }: { loading: boolean }) => {
-	const { theme, colors } = useTheme();
-
-	return (
-		<>
-			<BlurView
-				style={[styles.image, { position: 'absolute', borderWidth: 0, top: 0, left: 0, bottom: 0, right: 0 }]}
-				blurType={theme === 'light' ? 'light' : 'dark'}
-				blurAmount={10}
-				reducedTransparencyFallbackColor='white'
-			/>
-			<View style={[styles.image, { position: 'absolute', justifyContent: 'center', alignItems: 'center', borderWidth: 0 }]}>
-				{loading ? <RCActivityIndicator /> : <CustomIcon color={colors.buttonText} name='arrow-down-circle' size={54} />}
-			</View>
-		</>
-	);
-};
 
 const ImageContainer = React.memo(
 	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author, messageId }: IMessageImage) => {
