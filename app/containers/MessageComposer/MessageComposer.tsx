@@ -33,7 +33,7 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 	};
 
 	return (
-		<MessageComposerContext.Provider value={{ micOrSend, setMicOrSend, sendMessage, rid, tmid }}>
+		<MessageComposerContext.Provider value={{ micOrSend, setMicOrSend, sendMessage, rid, tmid, sharing }}>
 			<KeyboardAccessoryView
 				// ref={(ref: any) => (this.tracking = ref)}
 				renderContent={renderContent}

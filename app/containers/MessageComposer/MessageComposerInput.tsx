@@ -30,7 +30,6 @@ export const MessageComposerInput = forwardRef((_, ref) => {
 	const textRef = React.useRef('');
 	const inputRef = React.useRef<TextInput | null>(null);
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
-	const typingTimeout = React.useRef<ReturnType<typeof setTimeout> | false>(false);
 	const dispatch = useDispatch();
 
 	useImperativeHandle(ref, () => ({
@@ -62,7 +61,6 @@ export const MessageComposerInput = forwardRef((_, ref) => {
 	};
 
 	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
-		// const { sharing, roomType } = this.props;
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
 		if (isTextEmpty) {
@@ -70,13 +68,11 @@ export const MessageComposerInput = forwardRef((_, ref) => {
 			console.log('stopTrackingMention');
 			return;
 		}
-		console.log('handleTyping');
-		// const { start, end } = this.selection;
+		const { start, end } = selectionRef.current;
+		console.log('🚀 ~ file: MessageComposerInput.tsx:73 ~ debouncedOnChangeText ~ start, end:', start, end);
 	}, 300); // TODO: 300ms?
 
 	const handleTyping = (isTyping: boolean) => {
-		console.log('🚀 ~ file: MessageComposerInput.tsx:74 ~ handleTyping ~ isTyping:', isTyping);
-		// const { typing, rid, sharing } = this.props;
 		if (sharing) {
 			return;
 		}
