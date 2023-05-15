@@ -22,26 +22,95 @@ const mentions = {
 
 // TODO: Remove this after the new colors are implemented
 const newColors = {
-	fontDefault: '#2F343D',
-	fontAnnotation: '#9EA2A8',
-	fontHint: '#6C727A',
-	fontSecondaryInfo: '#6C727A',
-	fontTitlesLabels: '#1F2329',
-	fontDanger: '#D40C26',
-	fontWhite: '#FFFFFF',
-
-	statusBackgroundWarning2: '#FFF6D6',
-
-	buttonBackgroundPrimaryDefault: '#156FF5',
-	buttonBackgroundPrimaryPress: '#10529E',
-
 	surfaceLight: '#FFFFFF',
 	surfaceTint: '#F7F8FA',
+	surfaceRoom: '#FFFFFF',
+	surfaceNeutral: '#E4E7EA',
+	surfaceDisabled: '#F7F8FA',
+	surfaceHover: '#F2F3F5',
+	surfaceSelected: '#D7DBE0',
 	surfaceDark: '#1F2329',
+	surfaceFeatured: '#5F1477',
+	surfaceFeaturedHover: '#4A105D',
 
 	strokeExtraLight: '#EBECEF',
 	strokeLight: '#CBCED1',
-	strokeHighlight: '#156FF5'
+	strokeMedium: '#9EA2A8',
+	strokeDark: '#6C727A',
+	strokeExtraDark: '#2F343D',
+	strokeExtraLightHighlight: '#D1EBFE',
+	strokeHighlight: '#156FF5',
+	strokeExtraLightError: '#FFC1C9',
+	strokeError: '#EC0D2A',
+
+	fontWhite: '#FFFFFF',
+	fontDisabled: '#CBCED1',
+	fontAnnotation: '#9EA2A8',
+	fontHint: '#6C727A',
+	fontSecondaryInfo: '#6C727A',
+	fontDefault: '#2F343D',
+	fontTitlesLabels: '#1F2329',
+	fontInfo: '#095AD2',
+	fontDanger: '#D40C26',
+	fontPureBlack: '#2F343D',
+	fontPureWhite: '#FFFFFF',
+
+	statusBackgroundInfo: '#D1EBFE',
+	statusBackgroundSuccess: '#C0F6E4',
+	statusBackgroundDanger: '#FFC1C9',
+	statusBackgroundWarning: '#FFECAD',
+	statusBackgroundWarning2: '#FFF6D6',
+	statusBackgroundService: '#FAD1B0',
+	statusBackgroundService2: '#EDD0F7',
+	statusFontInfo: '#095AD2',
+	statusFontSuccess: '#148660',
+	statusFontDanger: '#9B1325',
+	statusFontWarning: '#B88D00',
+	statusFontWarning2: '#2F343D',
+	statusFontService: '#974809',
+	statusFontService2: '#7F1B9F',
+
+	badgeBackgroundLevel1: '#6C727A',
+	badgeBackgroundLevel2: '#1D74F5',
+	badgeBackgroundLevel3: '#F38C39',
+	badgeBackgroundLevel4: '#F5455C',
+
+	userPresenceOnline: '#158D65',
+	userPresenceBusy: '#DA1F37',
+	userPresenceAway: '#AC892F',
+	userPresenceOffline: '#6C727A',
+	userPresenceDisabled: '#F38C39',
+
+	buttonBackgroundPrimaryDefault: '#156FF5',
+	buttonBackgroundPrimaryPress: '#10529E',
+	buttonBackgroundPrimaryDisabled: '#D1EBFE',
+
+	buttonBackgroundSecondaryDefault: '#E4E7EA',
+	buttonBackgroundSecondaryPress: '#9EA2A8',
+	buttonBackgroundSecondaryDisabled: '#EEEFF1',
+
+	buttonBackgroundSecondaryDangerDefault: '#E4E7EA',
+	buttonBackgroundSecondaryDangerPress: '#9EA2A8',
+	buttonBackgroundSecondaryDangerDisabled: '#EEEFF1',
+
+	buttonBackgroundDangerDefault: '#EC0D2A',
+	buttonBackgroundDangerPress: '#BB0B21',
+	buttonBackgroundDangerDisabled: '#FFC1C9',
+
+	buttonBackgroundSuccessDefault: '#158D65',
+	buttonBackgroundSuccessPress: '#0D5940',
+	buttonBackgroundSuccessDisabled: '#C0F6E4',
+
+	buttonFontPrimary: '#FFFFFF',
+	buttonPrimaryDisabled: '#FFFFFF',
+	buttonFontSecondary: '#1F2329',
+	buttonSecondaryDisabled: '#CBCED1',
+	buttonFontSecondaryDanger: '#BB0B21',
+	buttonSecondaryDangerDisabled: '#F98F9D',
+	buttonFontDanger: '#FFFFFF',
+	buttonDangerDisabled: '#FFFFFF',
+	buttonFontSuccess: '#FFFFFF',
+	buttonSuccessDisabled: '#FFFFFF'
 };
 
 export const colors = {
