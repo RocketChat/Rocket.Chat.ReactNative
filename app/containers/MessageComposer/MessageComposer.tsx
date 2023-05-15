@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import { MessageComposerToolbar } from './Toolbar';
 import { MessageComposerInput } from './MessageComposerInput';
 import { MessageComposerContext } from './context';
-import { IComposerInput, IMessageBoxProps, TMicOrSend } from './interfaces';
+import { IComposerInput, IMessageComposerProps, TMicOrSend } from './interfaces';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const MessageComposer = ({ onSendMessage }: IMessageBoxProps): ReactElement => {
+export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: IMessageComposerProps): ReactElement => {
 	// console.count('Message Composer');
 	const composerInputRef = React.useRef<IComposerInput>({ clearInput: () => {}, getText: () => '' });
 	const { colors, theme } = useTheme();
@@ -28,13 +28,12 @@ export const MessageComposer = ({ onSendMessage }: IMessageBoxProps): ReactEleme
 	);
 
 	const sendMessage = () => {
-		console.log('sendMessage');
 		onSendMessage(composerInputRef.current.getText());
 		composerInputRef.current.clearInput();
 	};
 
 	return (
-		<MessageComposerContext.Provider value={{ micOrSend, setMicOrSend, sendMessage }}>
+		<MessageComposerContext.Provider value={{ micOrSend, setMicOrSend, sendMessage, rid, tmid }}>
 			<KeyboardAccessoryView
 				// ref={(ref: any) => (this.tracking = ref)}
 				renderContent={renderContent}

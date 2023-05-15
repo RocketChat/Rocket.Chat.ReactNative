@@ -1,10 +1,13 @@
-import React, { RefObject, forwardRef, useContext, useImperativeHandle } from 'react';
+import React, { forwardRef, useContext, useImperativeHandle } from 'react';
 import { TextInput, StyleSheet, TextInputProps } from 'react-native';
+import { useDebouncedCallback } from 'use-debounce';
+import { useDispatch } from 'react-redux';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { IInputSelection } from './interfaces';
 import { MessageComposerContext } from './context';
+import { userTyping } from '../../actions/room';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -23,10 +26,12 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const MessageComposerInput = forwardRef((_, ref) => {
 	const { colors } = useTheme();
-	const { setMicOrSend } = useContext(MessageComposerContext);
+	const { setMicOrSend, rid, sharing } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const inputRef = React.useRef<TextInput | null>(null);
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
+	const typingTimeout = React.useRef<ReturnType<typeof setTimeout> | false>(false);
+	const dispatch = useDispatch();
 
 	useImperativeHandle(ref, () => ({
 		clearInput: () => {
@@ -48,12 +53,48 @@ export const MessageComposerInput = forwardRef((_, ref) => {
 	const onChangeText: TextInputProps['onChangeText'] = text => {
 		const isTextEmpty = text.length === 0;
 		setMicOrSend(!isTextEmpty ? 'send' : 'mic');
-		// this.debouncedOnChangeText(text);
+		debouncedOnChangeText(text);
 		setInput(text);
 	};
 
 	const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
 		selectionRef.current = e.nativeEvent.selection;
+	};
+
+	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
+		// const { sharing, roomType } = this.props;
+		const isTextEmpty = text.length === 0;
+		handleTyping(!isTextEmpty);
+		if (isTextEmpty) {
+			// this.stopTrackingMention();
+			console.log('stopTrackingMention');
+			return;
+		}
+		console.log('handleTyping');
+		// const { start, end } = this.selection;
+	}, 300); // TODO: 300ms?
+
+	const handleTyping = (isTyping: boolean) => {
+		console.log('🚀 ~ file: MessageComposerInput.tsx:74 ~ handleTyping ~ isTyping:', isTyping);
+		// const { typing, rid, sharing } = this.props;
+		if (sharing) {
+			return;
+		}
+		if (!isTyping) {
+			if (typingTimeout.current) {
+				clearTimeout(typingTimeout.current);
+				typingTimeout.current = false;
+			}
+			dispatch(userTyping(rid, false));
+			return;
+		}
+		if (typingTimeout.current) {
+			return;
+		}
+		typingTimeout.current = setTimeout(() => {
+			dispatch(userTyping(rid, true));
+			typingTimeout.current = false;
+		}, 1000);
 	};
 
 	return (

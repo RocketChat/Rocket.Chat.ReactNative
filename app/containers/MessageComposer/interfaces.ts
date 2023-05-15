@@ -1,5 +1,5 @@
-export interface IMessageBoxProps {
-	// rid: string;
+export interface IMessageComposerProps {
+	rid: string;
 	// baseUrl: string;
 	// // message: IMessage;
 	// // replying: boolean;
@@ -8,7 +8,7 @@ export interface IMessageBoxProps {
 	// // isFocused(): boolean;
 	// // user: IUser;
 	// roomType: string;
-	// tmid: string;
+	tmid?: string;
 	// // replyWithMention: boolean;
 	// FileUpload_MediaTypeWhiteList: string;
 	// FileUpload_MaxFileSize: number;
@@ -26,7 +26,7 @@ export interface IMessageBoxProps {
 	// isMasterDetail: boolean;
 	// showActionSheet: Function;
 	// // iOSScrollBehavior: number;
-	// // sharing: boolean;
+	sharing: boolean;
 	// isActionsEnabled: boolean;
 	// // usedCannedResponse: string;
 	// // uploadFilePermission: string[];
