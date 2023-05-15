@@ -33,10 +33,11 @@ export const MessageComposerInput = forwardRef((_, ref) => {
 	const dispatch = useDispatch();
 
 	useImperativeHandle(ref, () => ({
-		clearInput: () => {
+		sendMessage: () => {
+			const text = textRef.current;
 			setInput('');
-		},
-		getText: () => textRef.current
+			return text;
+		}
 	}));
 
 	const setInput = (text: string, selection?: IInputSelection) => {

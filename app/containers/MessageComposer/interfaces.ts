@@ -42,6 +42,5 @@ export interface IInputSelection {
 export type TMicOrSend = 'mic' | 'send';
 
 export interface IComposerInput {
-	clearInput: () => void;
-	getText: () => string;
+	sendMessage: () => string;
 }

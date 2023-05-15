@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 
 export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: IMessageComposerProps): ReactElement => {
 	// console.count('Message Composer');
-	const composerInputRef = React.useRef<IComposerInput>({ clearInput: () => {}, getText: () => '' });
+	const composerInputRef = React.useRef<IComposerInput>({ sendMessage: () => '' });
 	const { colors, theme } = useTheme();
 	const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
 
@@ -28,8 +28,7 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 	);
 
 	const sendMessage = () => {
-		onSendMessage(composerInputRef.current.getText());
-		composerInputRef.current.clearInput();
+		onSendMessage(composerInputRef.current.sendMessage());
 	};
 
 	return (
