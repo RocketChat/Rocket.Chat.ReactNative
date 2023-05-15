@@ -5,6 +5,7 @@ import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import { BlurView } from '@react-native-community/blur';
+import * as FileSystem from 'expo-file-system';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -98,6 +99,7 @@ const ImageContainer = React.memo(
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		const filePath = useRef('');
+		const downloadResumable = useRef<FileSystem.DownloadResumable | null>(null);
 
 		useLayoutEffect(() => {
 			const handleAutoDownload = async () => {
@@ -129,7 +131,16 @@ const ImageContainer = React.memo(
 		const handleDownload = async () => {
 			setLoading(true);
 			const imgUrl = imageUrl || formatAttachmentUrl(file.title_link || file.image_url, user.id, user.token, baseUrl);
-			const imageUri = await downloadMediaFile({ url: imgUrl, filePath: filePath.current });
+			downloadResumable.current = FileSystem.createDownloadResumable(imgUrl, filePath.current);
+			const imageUri = await downloadMediaFile({
+				url: imgUrl,
+				filePath: filePath.current,
+				downloadResumable: downloadResumable.current
+			});
+			if (!imageUri) {
+				setLoading(false);
+				return setToDownload(true);
+			}
 			file.title_link = imageUri;
 			setToDownload(false);
 			setLoading(false);
@@ -137,8 +148,7 @@ const ImageContainer = React.memo(
 
 		const onPress = () => {
 			if (loading) {
-				// Cancelar o download
-				return;
+				return downloadResumable.current?.cancelAsync();
 			}
 
 			if (toDownload && !loading) {

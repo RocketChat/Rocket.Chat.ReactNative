@@ -99,6 +99,7 @@ const SettingsView = (): React.ReactElement => {
 			confirmationText: I18n.t('Clear'),
 			onPress: async () => {
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
+				await deleteAllSpecificMediaFiles(MediaTypes.image, server);
 				await deleteAllSpecificMediaFiles(MediaTypes.audio, server);
 				await clearCache({ server });
 				await FastImage.clearMemoryCache();
