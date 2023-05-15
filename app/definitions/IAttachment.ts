@@ -28,6 +28,7 @@ export interface IAttachment {
 	color?: string;
 	thumb_url?: string;
 	collapsed?: boolean;
+	audio_type?: string;
 }
 
 export interface IServerAttachment {

@@ -19,7 +19,7 @@ import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
-import { downloadAudioFile, searchAudioFileAsync } from '../../lib/methods/audioFile';
+import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
 import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
@@ -161,12 +161,16 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	handleAutoDownload = async () => {
-		const { messageId, author } = this.props;
+		const { messageId, author, file } = this.props;
 		const { user } = this.context;
 		const url = this.getUrl();
 		try {
 			if (url) {
-				const fileSearch = await searchAudioFileAsync(url, messageId);
+				const fileSearch = await searchMediaFileAsync({
+					type: MediaTypes.audio,
+					mimeType: file.audio_type,
+					messageId
+				});
 				if (fileSearch?.file?.exists) {
 					await this.sound.loadAsync({ uri: fileSearch.file.uri });
 					return this.setState({ loading: false });
@@ -277,15 +281,19 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	startDownload = async () => {
-		const { messageId } = this.props;
+		const { messageId, file } = this.props;
 		const { user } = this.context;
 		this.setState({ loading: true });
 
 		const url = this.getUrl();
 
 		if (url) {
-			const fileSearch = await searchAudioFileAsync(url, messageId);
-			const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, fileSearch.filePath);
+			const fileSearch = await searchMediaFileAsync({
+				type: MediaTypes.audio,
+				mimeType: file.audio_type,
+				messageId
+			});
+			const audio = await downloadMediaFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, fileSearch.filePath);
 			await this.sound.loadAsync({ uri: audio });
 			return this.setState({ loading: false, toDownload: false });
 		}
