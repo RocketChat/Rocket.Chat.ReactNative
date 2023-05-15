@@ -80,21 +80,7 @@ export const MessageComposerInput = forwardRef((_, ref) => {
 		if (sharing) {
 			return;
 		}
-		if (!isTyping) {
-			if (typingTimeout.current) {
-				clearTimeout(typingTimeout.current);
-				typingTimeout.current = false;
-			}
-			dispatch(userTyping(rid, false));
-			return;
-		}
-		if (typingTimeout.current) {
-			return;
-		}
-		typingTimeout.current = setTimeout(() => {
-			dispatch(userTyping(rid, true));
-			typingTimeout.current = false;
-		}, 1000);
+		dispatch(userTyping(rid, isTyping));
 	};
 
 	return (
