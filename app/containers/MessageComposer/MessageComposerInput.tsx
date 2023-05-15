@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { RefObject, forwardRef, useContext, useImperativeHandle } from 'react';
 import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
@@ -21,12 +21,19 @@ const styles = StyleSheet.create({
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-export const MessageComposerInput = () => {
+export const MessageComposerInput = forwardRef((_, ref) => {
 	const { colors } = useTheme();
 	const { setMicOrSend } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const inputRef = React.useRef<TextInput | null>(null);
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
+
+	useImperativeHandle(ref, () => ({
+		clearInput: () => {
+			setInput('');
+		},
+		getText: () => textRef.current
+	}));
 
 	const setInput = (text: string, selection?: IInputSelection) => {
 		textRef.current = text;
@@ -65,4 +72,4 @@ export const MessageComposerInput = () => {
 			// {...isAndroidTablet}
 		/>
 	);
-};
+});

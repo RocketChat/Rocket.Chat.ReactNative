@@ -1442,7 +1442,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		return <MessageComposer />;
+		return <MessageComposer onSendMessage={this.handleSendMessage} />;
 		// return (
 		// 	<MessageBox
 		// 		ref={this.messagebox}

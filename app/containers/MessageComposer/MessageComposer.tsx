@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import { MessageComposerToolbar } from './Toolbar';
 import { MessageComposerInput } from './MessageComposerInput';
 import { MessageComposerContext } from './context';
-import { IMessageBoxProps, TMicOrSend } from './interfaces';
+import { IComposerInput, IMessageBoxProps, TMicOrSend } from './interfaces';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,21 +14,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const MessageComposer = ({ onSubmit }: IMessageBoxProps): ReactElement => {
-	console.count('Message Composer');
+export const MessageComposer = ({ onSendMessage }: IMessageBoxProps): ReactElement => {
+	// console.count('Message Composer');
+	const composerInputRef = React.useRef<IComposerInput>({ clearInput: () => {}, getText: () => '' });
 	const { colors, theme } = useTheme();
 	const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
 
 	const renderContent = () => (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
-			<MessageComposerInput />
+			<MessageComposerInput ref={composerInputRef} />
 			<MessageComposerToolbar />
 		</View>
 	);
 
 	const sendMessage = () => {
 		console.log('sendMessage');
-		// onSubmit()
+		onSendMessage(composerInputRef.current.getText());
+		composerInputRef.current.clearInput();
 	};
 
 	return (

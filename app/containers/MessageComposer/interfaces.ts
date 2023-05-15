@@ -16,7 +16,8 @@ export interface IMessageBoxProps {
 	// getCustomEmoji: TGetCustomEmoji;
 	// // editCancel: Function;
 	// // editRequest: Function;
-	onSubmit(message: string, tmid?: string, tshow?: boolean): void;
+	// TODO: discuss this prop name
+	onSendMessage(message: string, tmid?: string, tshow?: boolean): void;
 	// typing: Function;
 	// // theme: TSupportedThemes;
 	// // replyCancel(): void;
@@ -39,3 +40,8 @@ export interface IInputSelection {
 }
 
 export type TMicOrSend = 'mic' | 'send';
+
+export interface IComposerInput {
+	clearInput: () => void;
+	getText: () => string;
+}
