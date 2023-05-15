@@ -93,6 +93,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { MessageComposer } from '../../containers/MessageComposer';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -1441,29 +1442,30 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		return (
-			<MessageBox
-				ref={this.messagebox}
-				goToCannedResponses={canViewCannedResponse ? this.goToCannedResponses : null}
-				onSubmit={this.handleSendMessage}
-				rid={this.rid}
-				tmid={this.tmid}
-				joined={joined}
-				roomType={room.t}
-				isFocused={navigation.isFocused}
-				theme={theme!}
-				message={selectedMessage}
-				editing={editing}
-				editRequest={this.onEditRequest}
-				editCancel={this.onEditCancel}
-				replying={replying}
-				replyWithMention={replyWithMention}
-				replyCancel={this.onReplyCancel}
-				getCustomEmoji={this.getCustomEmoji}
-				navigation={navigation}
-				usedCannedResponse={usedCannedResponse}
-			/>
-		);
+		return <MessageComposer />;
+		// return (
+		// 	<MessageBox
+		// 		ref={this.messagebox}
+		// 		goToCannedResponses={canViewCannedResponse ? this.goToCannedResponses : null}
+		// 		onSubmit={this.handleSendMessage}
+		// 		rid={this.rid}
+		// 		tmid={this.tmid}
+		// 		joined={joined}
+		// 		roomType={room.t}
+		// 		isFocused={navigation.isFocused}
+		// 		theme={theme!}
+		// 		message={selectedMessage}
+		// 		editing={editing}
+		// 		editRequest={this.onEditRequest}
+		// 		editCancel={this.onEditCancel}
+		// 		replying={replying}
+		// 		replyWithMention={replyWithMention}
+		// 		replyCancel={this.onReplyCancel}
+		// 		getCustomEmoji={this.getCustomEmoji}
+		// 		navigation={navigation}
+		// 		usedCannedResponse={usedCannedResponse}
+		// 	/>
+		// );
 	};
 
 	renderActions = () => {

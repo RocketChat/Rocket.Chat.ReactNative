@@ -20,8 +20,34 @@ const mentions = {
 	mentionOtherColor: '#F3BE08'
 };
 
+// TODO: Remove this after the new colors are implemented
+const newColors = {
+	fontDefault: '#2F343D',
+	fontAnnotation: '#9EA2A8',
+	fontHint: '#6C727A',
+	fontSecondaryInfo: '#6C727A',
+	fontTitlesLabels: '#1F2329',
+	fontDanger: '#D40C26',
+	fontWhite: '#FFFFFF',
+
+	statusBackgroundWarning2: '#FFF6D6',
+
+	buttonBackgroundPrimaryDefault: '#156FF5',
+	buttonBackgroundPrimaryPress: '#10529E',
+
+	surfaceLight: '#FFFFFF',
+	surfaceTint: '#F7F8FA',
+	surfaceDark: '#1F2329',
+
+	strokeExtraLight: '#EBECEF',
+	strokeLight: '#CBCED1',
+	strokeHighlight: '#156FF5'
+};
+
 export const colors = {
 	light: {
+		...newColors,
+
 		backgroundColor: '#ffffff',
 		focusedBackground: '#ffffff',
 		chatComponentBackground: '#f3f4f5',
@@ -92,6 +118,8 @@ export const colors = {
 		...mentions
 	},
 	dark: {
+		...newColors,
+
 		backgroundColor: '#030b1b',
 		focusedBackground: '#0b182c',
 		chatComponentBackground: '#192132',
@@ -162,6 +190,8 @@ export const colors = {
 		...mentions
 	},
 	black: {
+		...newColors,
+
 		backgroundColor: '#000000',
 		focusedBackground: '#0d0d0d',
 		chatComponentBackground: '#16181a',
