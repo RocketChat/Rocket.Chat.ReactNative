@@ -101,6 +101,7 @@ export default class Root extends React.Component<{}, IState> {
 			this.initTablet();
 		}
 		setNativeTheme(theme);
+		subscribeTheme(theme, this.state.theme, this.setTheme);
 	}
 
 	componentDidMount() {
@@ -174,9 +175,9 @@ export default class Root extends React.Component<{}, IState> {
 		this.setState(
 			prevState => newThemeState(prevState, newTheme as IThemePreference),
 			() => {
-				const { themePreferences } = this.state;
+				const { themePreferences, theme } = this.state;
 				// subscribe to Appearance changes
-				subscribeTheme(themePreferences, this.setTheme);
+				subscribeTheme(themePreferences, theme, this.setTheme);
 			}
 		);
 	};
