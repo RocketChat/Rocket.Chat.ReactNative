@@ -96,6 +96,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 					javaScriptEnabled
 					domStorageEnabled
 					mediaPlaybackRequiresUserAction={false}
+					mediaCapturePermissionGrantType={'grant'}
 				/>
 			</SafeAreaView>
 		);
