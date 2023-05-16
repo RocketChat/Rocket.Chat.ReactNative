@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 
 import { TMicOrSend } from './interfaces';
+import { IEmoji } from '../../definitions';
 
 type TMessageComposerContext = {
 	rid: string;
@@ -9,17 +10,21 @@ type TMessageComposerContext = {
 	sharing: boolean;
 	micOrSend: TMicOrSend;
 	setMicOrSend(type: TMicOrSend): void;
+	showEmojiSearchbar: boolean;
 	sendMessage(): void;
-	showEmojiKeyboard: boolean;
-	setShowEmojiKeyboard(show: boolean): void;
+	openEmojiKeyboard(): void;
+	closeEmojiKeyboard(): void;
+	onEmojiSelected(emoji: IEmoji): void;
 };
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({
 	rid: '',
 	micOrSend: 'mic',
-	sharing: false,
 	setMicOrSend: () => {},
+	sharing: false,
+	showEmojiSearchbar: false,
 	sendMessage: () => {},
-	showEmojiKeyboard: false,
-	setShowEmojiKeyboard: () => {}
+	openEmojiKeyboard: () => {},
+	closeEmojiKeyboard: () => {},
+	onEmojiSelected: () => {}
 });

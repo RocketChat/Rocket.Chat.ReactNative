@@ -10,6 +10,7 @@ import { MessageComposerContext } from './context';
 import { IComposerInput, IMessageComposerProps, ITrackingView, TMicOrSend } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
+import EmojiSearchBar from './EmojiSearchbar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,7 +41,7 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 
 	const onKeyboardResigned = () => {
 		if (!showEmojiSearchbar) {
-			closeEmoji();
+			closeEmojiKeyboard();
 		}
 	};
 
@@ -89,21 +90,45 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 		}
 	};
 
-	const closeEmoji = () => {
+	const openEmojiKeyboard = () => {
+		// logEvent(events.ROOM_OPEN_EMOJI);
+		setShowEmojiKeyboard(true);
+		setShowEmojiSearchbar(false);
+		// this.stopTrackingMention();
+	};
+
+	const closeEmojiKeyboard = () => {
+		// TODO: log event
 		setShowEmojiKeyboard(false);
 		setShowEmojiSearchbar(false);
+	};
+
+	const onEmojiSelected = (emoji: IEmoji) => {
+		onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 	};
 
 	const renderContent = () => (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
 			<MessageComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 			<MessageComposerToolbar />
+			<EmojiSearchBar />
 		</View>
 	);
 
 	return (
 		<MessageComposerContext.Provider
-			value={{ micOrSend, setMicOrSend, rid, tmid, sharing, showEmojiKeyboard, setShowEmojiKeyboard, sendMessage }}
+			value={{
+				micOrSend,
+				setMicOrSend,
+				rid,
+				tmid,
+				sharing,
+				showEmojiSearchbar,
+				openEmojiKeyboard,
+				closeEmojiKeyboard,
+				onEmojiSelected,
+				sendMessage
+			}}
 		>
 			<KeyboardAccessoryView
 				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}

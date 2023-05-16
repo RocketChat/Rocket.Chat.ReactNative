@@ -6,7 +6,7 @@ import { MicOrSendButton } from './MicOrSendButton';
 import { MessageComposerContext } from '../context';
 
 export const MessageComposerToolbar = () => {
-	const { showEmojiKeyboard, setShowEmojiKeyboard } = useContext(MessageComposerContext);
+	const { openEmojiKeyboard } = useContext(MessageComposerContext);
 	return (
 		<View
 			style={{
@@ -18,12 +18,7 @@ export const MessageComposerToolbar = () => {
 			}}
 		>
 			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
-			<BaseButton
-				onPress={() => setShowEmojiKeyboard(true)}
-				testID='messagebox-cancel-editing'
-				accessibilityLabel='TBD'
-				icon='emoji'
-			/>
+			<BaseButton onPress={() => openEmojiKeyboard()} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='emoji' />
 			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
 			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
 			<View style={{ flex: 1 }} />
