@@ -1,5 +1,5 @@
 import React, { useState, ReactElement, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -117,7 +117,7 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 				requiresSameParentToManageScrollView
 				addBottomView
 				bottomViewColor={colors.surfaceLight}
-				// iOSScrollBehavior={iOSScrollBehavior}
+				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 			/>
 		</MessageComposerContext.Provider>
 	);
