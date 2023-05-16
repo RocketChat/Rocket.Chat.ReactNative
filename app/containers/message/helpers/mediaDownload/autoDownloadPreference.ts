@@ -1,5 +1,4 @@
 import NetInfo, { NetInfoStateType } from '@react-native-community/netinfo';
-import { useEffect, useState } from 'react';
 
 import {
 	IMAGES_PREFERENCE_DOWNLOAD,
@@ -25,19 +24,4 @@ export const isAutoDownloadEnabled = async (mediaType: TMediaType, { author, use
 		mediaDownloadPreference === MediaDownloadOption.WIFI_MOBILE_DATA ||
 		author?._id === user.id
 	);
-};
-
-export const useAutoDownloadEnabled = (mediaType: TMediaType, { author, user }: IUsersParam) => {
-	const [enabled, setEnabled] = useState(false);
-
-	useEffect(() => {
-		const handleAutoDownload = async () => {
-			const result = await isAutoDownloadEnabled(mediaType, { author, user });
-			console.log('🚀 ~ file: autoDownloadPreference.ts:38 ~ handleAutoDownload ~ result:', result);
-			setEnabled(result);
-		};
-		handleAutoDownload();
-	}, []);
-
-	return enabled;
 };
