@@ -8,13 +8,9 @@ import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 
-import { AvatarWithEdit } from '../../containers/Avatar';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { MarkdownPreview } from '../../containers/markdown';
-import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { IApplicationState, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
@@ -32,54 +28,11 @@ import { Services } from '../../lib/services';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes, withTheme } from '../../theme';
-import sharedStyles from '../Styles';
-import Channel from './Channel';
+import RoomInfoViewAvatar from './components/RoomInfoViewAvatar';
+import RoomInfoViewBody from './components/RoomInfoViewBody';
+import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import { CallButton } from './components/UserInfoButton';
-import Direct from './Direct';
-import Livechat from './Livechat';
 import styles from './styles';
-
-interface IGetRoomTitle {
-	room: ISubscription;
-	type: SubscriptionType;
-	name?: string;
-	username: string;
-	statusText?: string;
-	theme: TSupportedThemes;
-}
-
-const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
-	type === SubscriptionType.DIRECT ? (
-		<>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>
-				{name}
-			</Text>
-			{username && (
-				<Text
-					testID='room-info-view-username'
-					style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}
-				>{`@${username}`}</Text>
-			)}
-			{!!statusText && (
-				<View testID='room-info-view-custom-status'>
-					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} />
-				</View>
-			)}
-		</>
-	) : (
-		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon
-				type={room.prid ? 'discussion' : room.t}
-				teamMain={room.teamMain}
-				key='room-info-type'
-				status={room.visitor?.status}
-				sourceType={room.source}
-			/>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
-				{getRoomTitle(room)}
-			</Text>
-		</View>
-	);
 
 interface IRoomInfoViewProps {
 	navigation: CompositeNavigationProp<
@@ -395,34 +348,6 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		}
 	};
 
-	handleEditAvatar = () => {
-		const { navigation } = this.props;
-		const { room } = this.state;
-		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: this.t, context: 'room' });
-	};
-
-	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
-		const { theme } = this.props;
-		const { showEdit } = this.state;
-		const showAvatarEdit = showEdit && this.t !== SubscriptionType.OMNICHANNEL;
-
-		return (
-			<AvatarWithEdit
-				text={room.name || roomUser.username}
-				style={styles.avatar}
-				type={this.t}
-				rid={room?.rid}
-				handleEdit={showAvatarEdit ? this.handleEditAvatar : undefined}
-			>
-				{this.t === SubscriptionType.DIRECT && roomUser._id ? (
-					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-						<Status size={20} id={roomUser._id} />
-					</View>
-				) : null}
-			</AvatarWithEdit>
-		);
-	};
-
 	renderButton = (onPress: () => void, iconName: TIconsName, text: string, danger?: boolean) => {
 		const { theme } = this.props;
 		const color = danger ? themes[theme].dangerColor : themes[theme].actionTintColor;
@@ -472,22 +397,9 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		);
 	};
 
-	renderContent = () => {
-		const { room, roomUser } = this.state;
-
-		if (this.isDirect) {
-			return <Direct roomUser={roomUser as IUserParsed} />;
-		}
-
-		if (this.t === SubscriptionType.OMNICHANNEL) {
-			return <Livechat room={room} roomUser={roomUser as ILivechatVisitorModified} />;
-		}
-		return <Channel room={room} />;
-	};
-
 	render() {
-		const { room, roomUser } = this.state;
-		const { theme } = this.props;
+		const { room, roomUser, showEdit } = this.state;
+		const { theme, navigation } = this.props;
 		const roomUserParsed = roomUser as IUserParsed;
 
 		return (
@@ -495,20 +407,27 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				<StatusBar />
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-info-view'>
 					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-						{this.renderAvatar(room, roomUserParsed)}
+						<RoomInfoViewAvatar
+							username={room.name || roomUser.username}
+							userId={roomUser._id}
+							handleEditAvatar={() =>
+								navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: this.t, context: 'room' })
+							}
+							showEdit={showEdit}
+							type={this.t}
+						/>
 						<View style={styles.roomTitleContainer}>
-							{renderRoomTitle({
-								room,
-								type: this.t,
-								name: roomUserParsed?.name,
-								username: roomUserParsed?.username,
-								statusText: roomUserParsed?.statusText,
-								theme
-							})}
+							<RoomInfoViewTitle
+								room={room}
+								type={this.t}
+								name={roomUserParsed?.name}
+								username={roomUserParsed?.username}
+								statusText={roomUserParsed?.statusText}
+							/>
 						</View>
 						{this.renderButtons()}
 					</View>
-					{this.renderContent()}
+					<RoomInfoViewBody isDirect={this.isDirect} room={room} roomUser={roomUserParsed} type={this.t} />
 				</SafeAreaView>
 			</ScrollView>
 		);
