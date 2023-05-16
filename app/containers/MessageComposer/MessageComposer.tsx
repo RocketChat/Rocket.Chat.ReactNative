@@ -34,13 +34,6 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 	const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 
-	const renderContent = () => (
-		<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
-			<MessageComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-			<MessageComposerToolbar />
-		</View>
-	);
-
 	const sendMessage = () => {
 		onSendMessage(composerInputComponentRef.current.sendMessage());
 	};
@@ -100,6 +93,13 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 		setShowEmojiKeyboard(false);
 		setShowEmojiSearchbar(false);
 	};
+
+	const renderContent = () => (
+		<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
+			<MessageComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+			<MessageComposerToolbar />
+		</View>
+	);
 
 	return (
 		<MessageComposerContext.Provider
