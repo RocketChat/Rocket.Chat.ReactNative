@@ -21,6 +21,7 @@ import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentU
 import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
 import sharedStyles from '../../views/Styles';
+import userPreferences from '../../lib/methods/userPreferences';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -69,6 +70,8 @@ const DownloadIndicator = ({ handleCancelDownload }: { handleCancelDownload(): v
 	);
 };
 
+const downloadResumableKey = (video: string) => `DownloadResumable${video}`;
+
 const Video = React.memo(
 	({ file, showAttachment, getCustomEmoji, style, isReply, messageId }: IMessageVideo) => {
 		const [loading, setLoading] = useState(false);
@@ -81,20 +84,21 @@ const Video = React.memo(
 		useLayoutEffect(() => {
 			const handleAutoDownload = async () => {
 				if (video) {
-					const searchImageBestQuality = await searchMediaFileAsync({
+					const searchVideoCached = await searchMediaFileAsync({
 						type: MediaTypes.video,
 						mimeType: file.video_type,
 						messageId
 					});
-					filePath.current = searchImageBestQuality.filePath;
-					if (searchImageBestQuality.file?.exists) {
-						file.video_url = searchImageBestQuality.file.uri;
+					filePath.current = searchVideoCached.filePath;
+					handleDownloadResumableSnapshot();
+					if (searchVideoCached.file?.exists) {
+						file.video_url = searchVideoCached.file.uri;
 						return;
 					}
 
 					// We don't pass the author to avoid auto-download what the user sent
 					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload', { user });
-					if (autoDownload) {
+					if (autoDownload && !downloadResumable.current) {
 						await handleDownload();
 					}
 				}
@@ -106,14 +110,33 @@ const Video = React.memo(
 			return null;
 		}
 
+		const handleDownloadResumableSnapshot = () => {
+			if (video) {
+				const result = userPreferences.getString(downloadResumableKey(video));
+				if (result) {
+					const snapshot = JSON.parse(result);
+					downloadResumable.current = new FileSystem.DownloadResumable(
+						video,
+						filePath.current,
+						{},
+						() => {},
+						snapshot.resumeData
+					);
+					setLoading(true);
+				}
+			}
+		};
+
 		const handleDownload = async () => {
 			setLoading(true);
 			downloadResumable.current = FileSystem.createDownloadResumable(video, filePath.current);
+			userPreferences.setString(downloadResumableKey(video), JSON.stringify(downloadResumable.current.savable()));
 			const videoUri = await downloadMediaFile({
 				url: video,
 				filePath: filePath.current,
 				downloadResumable: downloadResumable.current
 			});
+			userPreferences.removeItem(downloadResumableKey(video));
 			if (videoUri) {
 				file.video_url = videoUri;
 			}
@@ -136,7 +159,9 @@ const Video = React.memo(
 
 		const handleCancelDownload = () => {
 			if (loading && downloadResumable.current) {
-				return downloadResumable.current.cancelAsync();
+				downloadResumable.current.cancelAsync();
+				userPreferences.removeItem(downloadResumableKey(video));
+				return setLoading(false);
 			}
 		};
 
