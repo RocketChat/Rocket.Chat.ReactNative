@@ -51,19 +51,3 @@ allprojects {
         }
     }
 }
-
-// TODO: try without this
-// subprojects { subproject ->	
-//     afterEvaluate {	
-//         if (!project.name.equalsIgnoreCase("app") && project.hasProperty("android")) {	
-//             android {	
-//                 compileSdkVersion 31	
-//                 buildToolsVersion "31.0.0"
-//                 defaultConfig {	
-//                     minSdkVersion 23	
-//                     targetSdkVersion 31
-//                 }	
-//             }	
-//         }	
-//     }
-// }
