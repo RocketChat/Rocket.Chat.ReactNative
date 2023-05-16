@@ -65,7 +65,7 @@ export const MessageImage = React.memo(
 						color: colors.actionTintColor
 					}}
 				/>
-				{toDownload ? <BlurComponent loading={loading} /> : null}
+				{toDownload ? <BlurComponent style={styles.image} loading={loading} /> : null}
 			</>
 		);
 	}
@@ -127,8 +127,8 @@ const ImageContainer = React.memo(
 		};
 
 		const onPress = () => {
-			if (loading) {
-				return downloadResumable.current?.cancelAsync();
+			if (loading && downloadResumable.current) {
+				return downloadResumable.current.cancelAsync();
 			}
 
 			if (toDownload && !loading) {

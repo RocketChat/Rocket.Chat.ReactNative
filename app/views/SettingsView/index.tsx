@@ -101,6 +101,7 @@ const SettingsView = (): React.ReactElement => {
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
 				await deleteAllSpecificMediaFiles(MediaTypes.image, server);
 				await deleteAllSpecificMediaFiles(MediaTypes.audio, server);
+				await deleteAllSpecificMediaFiles(MediaTypes.video, server);
 				await clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
