@@ -18,7 +18,7 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 			{value.map(item => (
 				<View style={styles.row}>
 					<Text style={[styles.text, { color: colors.bodyText }]}>
-						<CheckBox disabled={true} style={{ height: 20, width: 20, margin: 5 }} boxType='square' value={item.status} />
+						<CheckBox disabled style={[styles.checkBox]} boxType='square' value={item.status} />
 					</Text>
 					<Text style={[styles.inline, { color: colors.bodyText }]}>
 						<Inline value={item.value} />
