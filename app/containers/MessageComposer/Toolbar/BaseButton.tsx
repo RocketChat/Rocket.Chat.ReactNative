@@ -26,7 +26,7 @@ interface IBaseButton {
 export const BaseButton = ({ accessibilityLabel, icon, color, ...props }: IBaseButton) => {
 	const { colors } = useTheme();
 	return (
-		<BorderlessButton {...props} style={styles.button}>
+		<BorderlessButton {...props} style={[styles.button, props.style]}>
 			<View
 				accessible
 				accessibilityLabel={accessibilityLabel ? i18n.t(accessibilityLabel) : accessibilityLabel}

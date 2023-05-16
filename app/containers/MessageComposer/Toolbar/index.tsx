@@ -1,10 +1,10 @@
 import React, { ReactElement, useContext } from 'react';
-import { View } from 'react-native';
 
 import { BaseButton } from './BaseButton';
 import { MicOrSendButton } from './MicOrSendButton';
 import { MessageComposerContext } from '../context';
 import { Container } from './Container';
+import { EmptySpace } from './EmptySpace';
 
 export const MessageComposerToolbar = (): ReactElement => {
 	const { openEmojiKeyboard, closeEmojiKeyboard, showEmojiKeyboard } = useContext(MessageComposerContext);
@@ -19,7 +19,7 @@ export const MessageComposerToolbar = (): ReactElement => {
 					accessibilityLabel='TBD'
 					icon='keyboard'
 				/>
-				<View style={{ flex: 1 }} />
+				<EmptySpace />
 				<MicOrSendButton />
 			</Container>
 		);
@@ -30,7 +30,7 @@ export const MessageComposerToolbar = (): ReactElement => {
 			<BaseButton onPress={() => openEmojiKeyboard()} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='emoji' />
 			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
 			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
-			<View style={{ flex: 1 }} />
+			<EmptySpace />
 			<MicOrSendButton />
 		</Container>
 	);
