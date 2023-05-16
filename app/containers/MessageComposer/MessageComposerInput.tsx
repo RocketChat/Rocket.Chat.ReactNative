@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
-import { IComposerInput, IComposerInputProps, IInputSelection } from './interfaces';
+import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from './interfaces';
 import { MessageComposerContext } from './context';
 import { userTyping } from '../../actions/room';
 
@@ -36,10 +36,13 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 			const text = textRef.current;
 			setInput('');
 			return text;
-		}
+		},
+		getText: () => textRef.current,
+		getSelection: () => selectionRef.current,
+		setInput
 	}));
 
-	const setInput = (text: string, selection?: IInputSelection) => {
+	const setInput: TSetInput = (text, selection) => {
 		textRef.current = text;
 		if (selection) {
 			selectionRef.current = selection;
@@ -47,6 +50,7 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 		if (inputRef.current) {
 			inputRef.current.setNativeProps({ text });
 		}
+		setMicOrSend(text.length === 0 ? 'mic' : 'send');
 	};
 
 	const onChangeText: TextInputProps['onChangeText'] = text => {

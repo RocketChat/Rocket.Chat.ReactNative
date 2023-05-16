@@ -1,6 +1,3 @@
-import { MutableRefObject, RefObject } from 'react';
-import { TextInput } from 'react-native';
-
 export interface IMessageComposerProps {
 	rid: string;
 	// baseUrl: string;
@@ -42,10 +39,15 @@ export interface IInputSelection {
 	end: number;
 }
 
+export type TSetInput = (text: string, selection?: IInputSelection) => void;
+
 export type TMicOrSend = 'mic' | 'send';
 
 export interface IComposerInput {
 	sendMessage: () => string;
+	getText: () => string;
+	getSelection: () => IInputSelection;
+	setInput: TSetInput;
 }
 
 export interface IComposerInputProps {
