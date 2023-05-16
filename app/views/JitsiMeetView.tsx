@@ -71,7 +71,10 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 			?.split(/^https?:\/\//)[1]
 			?.split('#')[0]
 			?.split('/')[1];
-		if ((jitsiRoomId && !webViewState.url.includes(jitsiRoomId)) || webViewState.url.includes('close')) {
+
+		const roomId = jitsiRoomId.includes('?jwt') ? jitsiRoomId.split('?jwt')[0] : jitsiRoomId;
+
+		if ((roomId && !webViewState.url.includes(roomId)) || webViewState.url.includes('close')) {
 			if (isIOS) {
 				if (webViewState.navigationType) {
 					navigation.pop();
