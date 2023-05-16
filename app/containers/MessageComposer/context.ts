@@ -10,6 +10,7 @@ type TMessageComposerContext = {
 	sharing: boolean;
 	micOrSend: TMicOrSend;
 	setMicOrSend(type: TMicOrSend): void;
+	showEmojiKeyboard: boolean;
 	showEmojiSearchbar: boolean;
 	sendMessage(): void;
 	openEmojiKeyboard(): void;
@@ -22,6 +23,7 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	micOrSend: 'mic',
 	setMicOrSend: () => {},
 	sharing: false,
+	showEmojiKeyboard: false,
 	showEmojiSearchbar: false,
 	sendMessage: () => {},
 	openEmojiKeyboard: () => {},

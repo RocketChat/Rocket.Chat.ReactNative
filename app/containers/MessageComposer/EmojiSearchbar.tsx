@@ -77,6 +77,7 @@ const EmojiSearchBar = (): React.ReactElement | null => {
 		return null;
 	}
 
+	// TODO: Use RNGH
 	return (
 		<View style={{ backgroundColor: colors.messageboxBackground }}>
 			<FlatList

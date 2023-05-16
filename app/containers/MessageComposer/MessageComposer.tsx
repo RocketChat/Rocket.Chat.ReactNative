@@ -107,14 +107,6 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 		onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 	};
 
-	const renderContent = () => (
-		<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
-			<MessageComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-			<MessageComposerToolbar />
-			<EmojiSearchBar />
-		</View>
-	);
-
 	return (
 		<MessageComposerContext.Provider
 			value={{
@@ -123,6 +115,7 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 				rid,
 				tmid,
 				sharing,
+				showEmojiKeyboard,
 				showEmojiSearchbar,
 				openEmojiKeyboard,
 				closeEmojiKeyboard,
@@ -132,7 +125,13 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 		>
 			<KeyboardAccessoryView
 				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
-				renderContent={renderContent}
+				renderContent={() => (
+					<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
+						<MessageComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+						<MessageComposerToolbar />
+						<EmojiSearchBar />
+					</View>
+				)}
 				kbInputRef={composerInputRef}
 				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 				kbInitialProps={{ theme }}
