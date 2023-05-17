@@ -5,6 +5,7 @@ import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import * as FileSystem from 'expo-file-system';
+import { BlurView } from '@react-native-community/blur';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -17,7 +18,8 @@ import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
-import BlurComponent from './Components/BlurComponent';
+import RCActivityIndicator from '../ActivityIndicator';
+import { CustomIcon } from '../CustomIcon';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -50,6 +52,24 @@ const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButto
 	</Touchable>
 ));
 
+const BlurComponent = ({ loading = false }: { loading: boolean }) => {
+	const { theme, colors } = useTheme();
+
+	return (
+		<>
+			<BlurView
+				style={[styles.image, styles.imageBlur]}
+				blurType={theme === 'light' ? 'light' : 'dark'}
+				blurAmount={10}
+				reducedTransparencyFallbackColor='white'
+			/>
+			<View style={[styles.image, styles.imageIndicator]}>
+				{loading ? <RCActivityIndicator /> : <CustomIcon color={colors.buttonText} name='arrow-down-circle' size={54} />}
+			</View>
+		</>
+	);
+};
+
 export const MessageImage = React.memo(
 	({ imgUri, toDownload, loading }: { imgUri: string; toDownload: boolean; loading: boolean }) => {
 		const { colors } = useTheme();
@@ -65,7 +85,7 @@ export const MessageImage = React.memo(
 						color: colors.actionTintColor
 					}}
 				/>
-				{toDownload ? <BlurComponent style={styles.image} loading={loading} /> : null}
+				{toDownload ? <BlurComponent loading={loading} /> : null}
 			</>
 		);
 	}

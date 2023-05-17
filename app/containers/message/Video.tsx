@@ -151,7 +151,7 @@ const Video = React.memo(
 			}
 
 			if (!isIOS && file.video_url) {
-				await downloadVideo(video);
+				await downloadVideoToGallery(video);
 				return;
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('Unsupported_format') });
@@ -165,7 +165,7 @@ const Video = React.memo(
 			}
 		};
 
-		const downloadVideo = async (uri: string) => {
+		const downloadVideoToGallery = async (uri: string) => {
 			setLoading(true);
 			const fileDownloaded = await fileDownload(uri, file);
 			setLoading(false);

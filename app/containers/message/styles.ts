@@ -170,5 +170,19 @@ export default StyleSheet.create({
 	threadDetails: {
 		flex: 1,
 		marginLeft: 12
+	},
+	imageBlur: {
+		position: 'absolute',
+		borderWidth: 0,
+		top: 0,
+		left: 0,
+		bottom: 0,
+		right: 0
+	},
+	imageIndicator: {
+		position: 'absolute',
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderWidth: 0
 	}
 });
