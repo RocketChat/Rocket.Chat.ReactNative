@@ -14,9 +14,9 @@ import { ESounds, useVideoConfRinger } from '../../../lib/hooks/useVideoConf';
 import { getRoomAvatar } from '../../../lib/methods/helpers';
 import { hideCustomNotification } from '../../../lib/methods/helpers/notifications';
 import { CustomIcon } from '../../CustomIcon';
-import { gray300 } from '../../UIKit/VideoConferenceBlock/components/StartACallActionSheet';
 import { CallHeader } from '../../VideoConf/CallHeader';
 import { useStyle } from './style';
+import { useTheme } from '../../../theme';
 
 export interface INotifierComponent {
 	notification: {
@@ -51,6 +51,8 @@ const IncomingCallComponent = React.memo(
 			(() => playSound())();
 		}, []);
 
+		const { colors } = useTheme();
+
 		return (
 			<View
 				style={[
@@ -74,7 +76,7 @@ const IncomingCallComponent = React.memo(
 				/>
 				<View style={styles.row}>
 					<Touchable hitSlop={BUTTON_HIT_SLOP} onPress={hideCustomNotification} style={styles.closeButton}>
-						<CustomIcon name='close' size={20} color={gray300} />
+						<CustomIcon name='close' size={20} color={colors.gray300} />
 					</Touchable>
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}
