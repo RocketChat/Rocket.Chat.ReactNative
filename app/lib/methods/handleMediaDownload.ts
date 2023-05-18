@@ -22,6 +22,8 @@ const defaultType = {
 	[MediaTypes.video]: 'mp4'
 };
 
+export const mediaDownloadKey = (mediaType: MediaTypes, messageId: string) => `${mediaType}-${messageId}`;
+
 export const LOCAL_DOCUMENT_PATH = `${FileSystem.documentDirectory}`;
 
 const sanitizeString = (value: string) => sanitizeLikeString(value.substring(value.lastIndexOf('/') + 1));
