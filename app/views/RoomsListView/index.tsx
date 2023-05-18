@@ -1,6 +1,6 @@
 import React from 'react';
 import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
-import { batch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
@@ -16,32 +16,18 @@ import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/Roo
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import { appStart } from '../../actions/app';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
-import EventEmitter from '../../lib/methods/helpers/events';
 import { themedHeader } from '../../lib/methods/helpers/navigation';
-import {
-	KEY_COMMAND,
-	handleCommandAddNewServer,
-	handleCommandNextRoom,
-	handleCommandPreviousRoom,
-	handleCommandSearching,
-	handleCommandSelectRoom,
-	handleCommandShowNewMessage,
-	handleCommandShowPreferences,
-	IKeyCommandEvent
-} from '../../commands';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { IApplicationState, ISubscription, IUser, RootEnum, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
@@ -172,7 +158,6 @@ const keyExtractor = (item: ISubscription) => item.rid;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
 	private animated: boolean;
-	private mounted: boolean;
 	private count: number;
 	private unsubscribeFocus?: () => void;
 	private unsubscribeBlur?: () => void;
@@ -189,7 +174,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		console.time(`${this.constructor.name} mount`);
 
 		this.animated = false;
-		this.mounted = false;
 		this.count = 0;
 		this.state = {
 			searching: false,
@@ -208,11 +192,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	componentDidMount() {
 		const { navigation, dispatch } = this.props;
 		this.handleHasPermission();
-		this.mounted = true;
-
-		if (isTablet) {
-			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
-		}
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			Orientation.unlockAllOrientations();
 			this.animated = true;
@@ -397,9 +376,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (this.backHandler && this.backHandler.remove) {
 			this.backHandler.remove();
 		}
-		if (isTablet) {
-			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
-		}
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
@@ -513,9 +489,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
 		if (sortBy === SortBy.Alphabetical) {
-			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
+			defaultWhereClause.push(Q.sortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
 		} else {
-			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
+			defaultWhereClause.push(Q.sortBy('room_updated_at', Q.desc));
 		}
 
 		// When we're grouping by something
@@ -529,7 +505,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
-				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
+				.query(...defaultWhereClause, Q.skip(0), Q.take(this.count))
 				.observeWithColumns(['on_hold']);
 		}
 
@@ -788,57 +764,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		goRoom({ item, isMasterDetail });
 	};
 
-	goRoomByIndex = (index: number) => {
-		const { chats } = this.state;
-		const { isMasterDetail } = this.props;
-		const filteredChats = chats ? chats.filter(c => !c.separator) : [];
-		const room = filteredChats[index - 1];
-		if (room) {
-			this.goRoom({ item: room, isMasterDetail });
-		}
-	};
-
-	findOtherRoom = (index: number, sign: number): ISubscription | void => {
-		const { chats } = this.state;
-		const otherIndex = index + sign;
-		const otherRoom = chats?.length ? chats[otherIndex] : ({} as IRoomItem);
-		if (!otherRoom) {
-			return;
-		}
-		if (otherRoom.separator) {
-			return this.findOtherRoom(otherIndex, sign);
-		}
-		return otherRoom;
-	};
-
-	// Go to previous or next room based on sign (-1 or 1)
-	// It's used by iPad key commands
-	goOtherRoom = (sign: number) => {
-		const { item } = this.state;
-		if (!item) {
-			return;
-		}
-
-		// Don't run during search
-		const { search } = this.state;
-		if (search && search?.length > 0) {
-			return;
-		}
-
-		const { chats } = this.state;
-		const { isMasterDetail } = this.props;
-
-		if (!chats?.length) {
-			return;
-		}
-
-		const index = chats.findIndex(c => c.rid === item.rid);
-		const otherRoom = this.findOtherRoom(index, sign);
-		if (otherRoom) {
-			this.goRoom({ item: otherRoom, isMasterDetail });
-		}
-	};
-
 	goToNewMessage = () => {
 		logEvent(events.RL_GO_NEW_MSG);
 		const { navigation, isMasterDetail } = this.props;
@@ -861,33 +786,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} else {
 			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
 			navigation.navigate(screen);
-		}
-	};
-
-	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
-		const { navigation, server, isMasterDetail, dispatch } = this.props;
-		const { input } = event;
-		if (handleCommandShowPreferences(event)) {
-			navigation.navigate('SettingsView');
-		} else if (handleCommandSearching(event)) {
-			this.initSearching();
-		} else if (handleCommandSelectRoom(event)) {
-			this.goRoomByIndex(input);
-		} else if (handleCommandPreviousRoom(event)) {
-			this.goOtherRoom(-1);
-		} else if (handleCommandNextRoom(event)) {
-			this.goOtherRoom(1);
-		} else if (handleCommandShowNewMessage(event)) {
-			if (isMasterDetail) {
-				navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
-			} else {
-				navigation.navigate('NewMessageStack');
-			}
-		} else if (handleCommandAddNewServer(event)) {
-			batch(() => {
-				dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-				dispatch(serverInitAdd(server));
-			});
 		}
 	};
 
