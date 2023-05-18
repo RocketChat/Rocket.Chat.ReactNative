@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.37.1",
+	"version": "4.39.0",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -76,7 +76,7 @@
 		"expo-file-system": "^15.2.2",
 		"expo-haptics": "^12.2.1",
 		"expo-keep-awake": "^12.0.1",
-		"expo-local-authentication": "^13.2.1",
+		"expo-local-authentication": "^13.3.0",
 		"expo-video-thumbnails": "^7.2.1",
 		"expo-web-browser": "^12.1.1",
 		"hoist-non-react-statics": "3.3.2",

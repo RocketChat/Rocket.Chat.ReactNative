@@ -10571,10 +10571,10 @@ expo-keep-awake@^12.0.1, expo-keep-awake@~12.0.1:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-12.0.1.tgz#19c5ab55391394ded3f6c262b0707c7140658a11"
   integrity sha512-hqeCnb4033TyuZaXs93zTK7rjVJ3bywXATyMmKmKkLEsH2PKBAl/VmjlCOPQL/2Ncqz6aj7Wo//tjeJTARBD4g==
 
-expo-local-authentication@^13.2.1:
-  version "13.2.1"
-  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-13.2.1.tgz#7139a67d4a980e55347ac2b079015e52eb7da974"
-  integrity sha512-DugTdymppsXyW0EDuYwUO6l2I9YK+FkDOUmuPQRGXPkYvmETSGEoGI7JQf0i/unihhS1uzyYvqNBAT3mPM4Tpg==
+expo-local-authentication@^13.3.0:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-13.3.0.tgz#884f6f5c1d1412b053c2ed7cf3899f405b91adde"
+  integrity sha512-HZ2L9GOQGooV+6kT2wLrR42BlxczT4N18kPY6HF82S31/a/YHslgUUt1lmHNU64NJViSCOBaTeVCjh8t/BeNEA==
   dependencies:
     invariant "^2.2.4"
 

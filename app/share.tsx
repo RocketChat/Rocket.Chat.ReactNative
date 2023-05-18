@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 
-import { getTheme, setNativeTheme, initialTheme as initialThemeFunction, unsubscribeTheme } from './lib/methods/helpers/theme';
+import { getTheme, setNativeTheme, initialTheme as initialThemeFunction } from './lib/methods/helpers/theme';
 import UserPreferences from './lib/methods/userPreferences';
 import Navigation from './lib/navigation/shareNavigation';
 import store from './lib/store';
@@ -54,7 +54,6 @@ const Root = (): React.ReactElement => {
 
 		return () => {
 			closeShareExtension();
-			unsubscribeTheme();
 		};
 	}, []);
 
