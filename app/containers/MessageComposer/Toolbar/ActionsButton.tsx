@@ -6,7 +6,7 @@ import { MessageComposerContext } from '../context';
 import I18n from '../../../i18n';
 
 export const ActionsButton = () => {
-	const { permissionToUpload, takePhoto, takeVideo, chooseFromLibrary } = useContext(MessageComposerContext);
+	const { permissionToUpload, takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useContext(MessageComposerContext);
 	const { showActionSheet } = useActionSheet();
 
 	const onPress = () => {
@@ -41,7 +41,7 @@ export const ActionsButton = () => {
 				{
 					title: I18n.t('Choose_file'),
 					icon: 'attach',
-					onPress: () => alert('tbd') // this.chooseFile
+					onPress: () => chooseFile()
 				}
 			);
 		}
