@@ -22,6 +22,8 @@ const defaultType = {
 	[MediaTypes.video]: 'mp4'
 };
 
+export const LOCAL_DOCUMENT_PATH = `${FileSystem.documentDirectory}`;
+
 const sanitizeString = (value: string) => sanitizeLikeString(value.substring(value.lastIndexOf('/') + 1));
 
 const getExtension = (type: MediaTypes, mimeType?: string) => {
@@ -57,7 +59,7 @@ export const searchMediaFileAsync = async ({
 	try {
 		const serverUrl = store.getState().server.server;
 		const serverUrlParsed = sanitizeString(serverUrl);
-		const folderPath = `${FileSystem.documentDirectory}${typeString[type]}${serverUrlParsed}`;
+		const folderPath = `${LOCAL_DOCUMENT_PATH}${typeString[type]}${serverUrlParsed}`;
 		const filename = `${messageId}.${getExtension(type, mimeType)}`;
 		filePath = `${folderPath}/${filename}`;
 		await ensureDirAsync(folderPath);
@@ -95,7 +97,7 @@ export const downloadMediaFile = async ({
 export const deleteAllSpecificMediaFiles = async (type: MediaTypes, serverUrl: string): Promise<void> => {
 	try {
 		const serverUrlParsed = sanitizeString(serverUrl);
-		const path = `${FileSystem.documentDirectory}${typeString[type]}${serverUrlParsed}`;
+		const path = `${LOCAL_DOCUMENT_PATH}${typeString[type]}${serverUrlParsed}`;
 		await FileSystem.deleteAsync(path, { idempotent: true });
 	} catch (error) {
 		log(error);

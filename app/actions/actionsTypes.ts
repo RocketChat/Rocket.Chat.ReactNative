@@ -84,3 +84,4 @@ export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DEC
 
 export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
 export const ROLES = createRequestTypes('ROLES', ['SET', 'UPDATE', 'REMOVE']);
+export const MEDIA_DOWNLOAD = createRequestTypes('MEDIA_DOWNLOAD', ['IN_PROGRESS', 'REMOVE']);
