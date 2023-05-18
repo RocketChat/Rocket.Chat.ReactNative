@@ -6,6 +6,7 @@ import { IEmoji } from '../../definitions';
 type TMessageComposerContext = {
 	rid: string;
 	tmid?: string;
+	editing: boolean;
 	// TODO: Refactor to "origin"? ShareView | RoomView?
 	sharing: boolean;
 	micOrSend: TMicOrSend;
@@ -26,6 +27,7 @@ type TMessageComposerContext = {
 export const MessageComposerContext = createContext<TMessageComposerContext>({
 	rid: '',
 	micOrSend: 'mic',
+	editing: false,
 	sharing: false,
 	showEmojiKeyboard: false,
 	showEmojiSearchbar: false,

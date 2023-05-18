@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useImperativeHandle } from 'react';
+import React, { forwardRef, useContext, useEffect, useImperativeHandle } from 'react';
 import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { useTheme } from '../../theme';
 import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from './interfaces';
 import { MessageComposerContext } from './context';
 import { userTyping } from '../../actions/room';
+import { loadDraftMessage, saveDraftMessage } from './helpers';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -26,10 +27,24 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors } = useTheme();
-	const { setMicOrSend, rid, sharing } = useContext(MessageComposerContext);
+	const { setMicOrSend, rid, tmid, editing, sharing } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const setDraftMessage = async () => {
+			const draftMessage = await loadDraftMessage({ rid, tmid });
+			setInput(draftMessage);
+		};
+		setDraftMessage();
+
+		return () => {
+			if (!editing && textRef.current) {
+				saveDraftMessage({ rid, tmid, draftMessage: textRef.current });
+			}
+		};
+	}, []);
 
 	useImperativeHandle(ref, () => ({
 		sendMessage: () => {

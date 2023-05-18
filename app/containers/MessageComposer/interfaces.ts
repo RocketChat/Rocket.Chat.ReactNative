@@ -3,7 +3,7 @@ export interface IMessageComposerProps {
 	// baseUrl: string;
 	// // message: IMessage;
 	// // replying: boolean;
-	// // editing: boolean;
+	editing: boolean;
 	// threadsEnabled: boolean;
 	// // isFocused(): boolean;
 	// // user: IUser;
