@@ -17,6 +17,9 @@ type TMessageComposerContext = {
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
 	onEmojiSelected(emoji: IEmoji): void;
+	takePhoto(): void;
+	takeVideo(): void;
+	chooseFromLibrary(): void;
 };
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({
@@ -30,5 +33,8 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	sendMessage: () => {},
 	openEmojiKeyboard: () => {},
 	closeEmojiKeyboard: () => {},
-	onEmojiSelected: () => {}
+	onEmojiSelected: () => {},
+	takePhoto: () => {},
+	takeVideo: () => {},
+	chooseFromLibrary: () => {}
 });

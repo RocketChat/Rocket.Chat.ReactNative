@@ -1,8 +1,12 @@
 import React, { useState, ReactElement, useRef } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
+import { View, StyleSheet, NativeModules, Alert } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
+import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
+import { canUploadFile } from '../../lib/methods/helpers';
+import log from '../../lib/methods/helpers/log';
+import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import { MessageComposerToolbar } from './Toolbar';
 import { MessageComposerInput } from './MessageComposerInput';
@@ -12,6 +16,9 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
 import EmojiSearchBar from './EmojiSearchbar';
 import { useCanUploadFile } from './useCanUploadFile';
+import { imagePickerConfig, libraryPickerConfig, videoPickerConfig } from './constants';
+import { forceJpgExtension } from './helpers';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,6 +43,7 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 	const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 	const permissionToUpload = useCanUploadFile(rid);
+	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 
 	const sendMessage = () => {
 		onSendMessage(composerInputComponentRef.current.sendMessage());
@@ -109,6 +117,88 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 		onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 	};
 
+	const openShareView = (attachments: any) => {
+		// const { message, replyCancel, replyWithMention, replying } = this.props;
+		// // Start a thread with an attachment
+		// let value: TThreadModel | IMessage = this.thread;
+		// if (replyWithMention) {
+		// 	value = message;
+		// 	replyCancel();
+		// }
+		// Navigation.navigate('ShareView', {
+		// 	room: this.room,
+		// 	thread: value,
+		// 	attachments,
+		// 	replying,
+		// 	replyingMessage: message,
+		// 	closeReply: replyCancel
+		// });
+		alert('tbd');
+	};
+
+	const takePhoto = async () => {
+		// logEvent(events.ROOM_BOX_ACTION_PHOTO);
+		try {
+			let image = await ImagePicker.openCamera(imagePickerConfig);
+			image = forceJpgExtension(image);
+			const file = image as any; // FIXME: unify those types to remove the need for any
+			const canUploadResult = canUploadFile({
+				file,
+				allowList: FileUpload_MediaTypeWhiteList as string,
+				maxFileSize: FileUpload_MaxFileSize as number,
+				permissionToUploadFile: permissionToUpload
+			});
+			if (canUploadResult.success) {
+				return openShareView([image]);
+			}
+
+			Alert.alert(
+				I18n.t('Error_uploading'),
+				canUploadResult.error && I18n.isTranslated(canUploadResult.error) ? I18n.t(canUploadResult.error) : canUploadResult.error
+			);
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const takeVideo = async () => {
+		// logEvent(events.ROOM_BOX_ACTION_VIDEO);
+		try {
+			const video = await ImagePicker.openCamera(videoPickerConfig);
+			const file = video as any; // FIXME: unify those types to remove the need for any
+			const canUploadResult = canUploadFile({
+				file,
+				allowList: FileUpload_MediaTypeWhiteList as string,
+				maxFileSize: FileUpload_MaxFileSize as number,
+				permissionToUploadFile: permissionToUpload
+			});
+			if (canUploadResult.success) {
+				return openShareView([video]);
+			}
+
+			Alert.alert(
+				I18n.t('Error_uploading'),
+				canUploadResult.error && I18n.isTranslated(canUploadResult.error) ? I18n.t(canUploadResult.error) : canUploadResult.error
+			);
+		} catch (e) {
+			log(e);
+			// logEvent(events.ROOM_BOX_ACTION_VIDEO_F);
+		}
+	};
+
+	const chooseFromLibrary = async () => {
+		// logEvent(events.ROOM_BOX_ACTION_LIBRARY);
+		try {
+			// The type can be video or photo, however the lib understands that it is just one of them.
+			let attachments = (await ImagePicker.openPicker(libraryPickerConfig)) as unknown as ImageOrVideo[]; // FIXME: type this
+			attachments = attachments.map(att => forceJpgExtension(att));
+			openShareView(attachments);
+		} catch (e) {
+			log(e);
+			// logEvent(events.ROOM_BOX_ACTION_LIBRARY_F);
+		}
+	};
+
 	return (
 		<MessageComposerContext.Provider
 			value={{
@@ -123,7 +213,10 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 				openEmojiKeyboard,
 				closeEmojiKeyboard,
 				onEmojiSelected,
-				sendMessage
+				sendMessage,
+				takePhoto,
+				takeVideo,
+				chooseFromLibrary
 			}}
 		>
 			<KeyboardAccessoryView
