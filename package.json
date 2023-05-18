@@ -163,7 +163,7 @@
 		"@babel/plugin-proposal-decorators": "^7.8.3",
 		"@babel/plugin-transform-named-capturing-groups-regex": "^7.17.12",
 		"@babel/preset-env": "^7.20.0",
-		"@babel/runtime": "^7.20.0",
+		"@babel/runtime": "^7.21.5",
 		"@bugsnag/source-maps": "^2.2.0",
 		"@rocket.chat/eslint-config": "^0.4.0",
 		"@storybook/addon-storyshots": "6.3",
