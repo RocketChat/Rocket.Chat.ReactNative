@@ -11,6 +11,7 @@ import { IComposerInput, IMessageComposerProps, ITrackingView, TMicOrSend } from
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
 import EmojiSearchBar from './EmojiSearchbar';
+import { useCanUploadFile } from './useCanUploadFile';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,6 +35,7 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 	const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 	const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
+	const permissionToUpload = useCanUploadFile(rid);
 
 	const sendMessage = () => {
 		onSendMessage(composerInputComponentRef.current.sendMessage());
@@ -111,12 +113,13 @@ export const MessageComposer = ({ onSendMessage, rid, tmid, sharing = false }: I
 		<MessageComposerContext.Provider
 			value={{
 				micOrSend,
-				setMicOrSend,
 				rid,
 				tmid,
 				sharing,
 				showEmojiKeyboard,
 				showEmojiSearchbar,
+				permissionToUpload,
+				setMicOrSend,
 				openEmojiKeyboard,
 				closeEmojiKeyboard,
 				onEmojiSelected,

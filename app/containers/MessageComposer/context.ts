@@ -9,9 +9,10 @@ type TMessageComposerContext = {
 	// TODO: Refactor to "origin"? ShareView | RoomView?
 	sharing: boolean;
 	micOrSend: TMicOrSend;
-	setMicOrSend(type: TMicOrSend): void;
 	showEmojiKeyboard: boolean;
 	showEmojiSearchbar: boolean;
+	permissionToUpload: boolean;
+	setMicOrSend(type: TMicOrSend): void;
 	sendMessage(): void;
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
@@ -21,10 +22,11 @@ type TMessageComposerContext = {
 export const MessageComposerContext = createContext<TMessageComposerContext>({
 	rid: '',
 	micOrSend: 'mic',
-	setMicOrSend: () => {},
 	sharing: false,
 	showEmojiKeyboard: false,
 	showEmojiSearchbar: false,
+	permissionToUpload: false,
+	setMicOrSend: () => {},
 	sendMessage: () => {},
 	openEmojiKeyboard: () => {},
 	closeEmojiKeyboard: () => {},

@@ -5,6 +5,7 @@ import { MicOrSendButton } from './MicOrSendButton';
 import { MessageComposerContext } from '../context';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
+import { ActionsButton } from './ActionsButton';
 
 export const MessageComposerToolbar = (): ReactElement => {
 	const { openEmojiKeyboard, closeEmojiKeyboard, showEmojiKeyboard } = useContext(MessageComposerContext);
@@ -12,7 +13,7 @@ export const MessageComposerToolbar = (): ReactElement => {
 	if (showEmojiKeyboard) {
 		return (
 			<Container>
-				<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
+				<ActionsButton />
 				<BaseButton
 					onPress={() => closeEmojiKeyboard()}
 					testID='messagebox-cancel-editing'
@@ -24,9 +25,12 @@ export const MessageComposerToolbar = (): ReactElement => {
 			</Container>
 		);
 	}
+
+	// TODO: Markdown state?
+
 	return (
 		<Container>
-			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
+			<ActionsButton />
 			<BaseButton onPress={() => openEmojiKeyboard()} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='emoji' />
 			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
 			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />
