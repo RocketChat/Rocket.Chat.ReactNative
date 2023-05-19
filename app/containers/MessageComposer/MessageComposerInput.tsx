@@ -9,6 +9,8 @@ import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from 
 import { MessageComposerContext } from './context';
 import { userTyping } from '../../actions/room';
 import { loadDraftMessage, saveDraftMessage } from './helpers';
+import { useSubscription } from './hooks';
+import { getRoomTitle } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -31,6 +33,12 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
+	const subscription = useSubscription(rid);
+	let placeholder = 'Message ';
+	if (subscription) {
+		placeholder += subscription.t === 'd' ? '@' : '#';
+		placeholder += getRoomTitle(subscription);
+	}
 
 	useEffect(() => {
 		const setDraftMessage = async () => {
@@ -101,7 +109,7 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 	return (
 		<TextInput
 			style={[styles.textInput, { color: colors.fontDefault }]}
-			placeholder={`Message {ROOM}`}
+			placeholder={placeholder}
 			placeholderTextColor={colors.fontAnnotation}
 			ref={component => (inputRef.current = component)}
 			blurOnSubmit={false}
