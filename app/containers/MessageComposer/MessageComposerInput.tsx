@@ -118,8 +118,7 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 			underlineColorAndroid='transparent'
 			defaultValue=''
 			multiline
-			// testID={`messagebox-input${tmid ? '-thread' : ''}`}
-			// {...isAndroidTablet}
+			testID={`message-composer-input${tmid ? '-thread' : ''}`}
 		/>
 	);
 });

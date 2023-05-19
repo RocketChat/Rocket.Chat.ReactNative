@@ -12,8 +12,8 @@ export const MicOrSendButton = () => {
 		return (
 			<BaseButton
 				onPress={() => sendMessage()}
-				testID='messagebox-cancel-editing'
-				accessibilityLabel='TBD'
+				testID='message-composer-send'
+				accessibilityLabel='Send_message'
 				icon='send-filled'
 				color={colors.buttonBackgroundPrimaryDefault}
 			/>
@@ -21,6 +21,11 @@ export const MicOrSendButton = () => {
 	}
 
 	return (
-		<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='microphone' />
+		<BaseButton
+			onPress={() => alert('tbd')}
+			testID='message-composer-send-audio'
+			accessibilityLabel='Send_audio_message'
+			icon='microphone'
+		/>
 	);
 };

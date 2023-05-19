@@ -16,8 +16,8 @@ export const MessageComposerToolbar = (): ReactElement => {
 				<ActionsButton />
 				<BaseButton
 					onPress={() => closeEmojiKeyboard()}
-					testID='messagebox-cancel-editing'
-					accessibilityLabel='TBD'
+					testID='message-composer-close-emoji'
+					accessibilityLabel='Close_emoji_selector'
 					icon='keyboard'
 				/>
 				<EmptySpace />
@@ -31,9 +31,14 @@ export const MessageComposerToolbar = (): ReactElement => {
 	return (
 		<Container>
 			<ActionsButton />
-			<BaseButton onPress={() => openEmojiKeyboard()} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='emoji' />
-			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='text-format' />
-			<BaseButton onPress={() => alert('tbd')} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='mention' />
+			<BaseButton
+				onPress={() => openEmojiKeyboard()}
+				testID='message-composer-open-emoji'
+				accessibilityLabel='Open_emoji_selector'
+				icon='emoji'
+			/>
+			<BaseButton onPress={() => alert('tbd')} testID='TBD' accessibilityLabel='TBD' icon='text-format' />
+			<BaseButton onPress={() => alert('tbd')} testID='TBD' accessibilityLabel='TBD' icon='mention' />
 			<EmptySpace />
 			<MicOrSendButton />
 		</Container>

@@ -71,5 +71,5 @@ export const ActionsButton = () => {
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};
 
-	return <BaseButton onPress={() => onPress()} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />;
+	return <BaseButton onPress={() => onPress()} testID='messagebox-actions' accessibilityLabel='Message_actions' icon='add' />;
 };

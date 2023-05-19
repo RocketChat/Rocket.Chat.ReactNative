@@ -138,9 +138,9 @@ describe('Broadcast room', () => {
 	});
 
 	it('should reply broadcasted message', async () => {
-		await element(by.id('messagebox-input')).replaceText(`${random()}broadcastreply`);
+		await element(by.id('message-composer-input')).replaceText(`${random()}broadcastreply`);
 		await sleep(300);
-		await element(by.id('messagebox-send-message')).tap();
+		await element(by.id('message-composer-send')).tap();
 		await waitFor(element(by[textMatcher](message)))
 			.toExist()
 			.withTimeout(10000);

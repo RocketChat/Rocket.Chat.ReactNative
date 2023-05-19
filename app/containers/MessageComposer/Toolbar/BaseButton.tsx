@@ -2,7 +2,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import i18n from '../../../i18n';
+import I18n from '../../../i18n';
 import { CustomIcon, TIconsName } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 
@@ -16,22 +16,18 @@ const styles = StyleSheet.create({
 });
 
 interface IBaseButton {
-	onPress(): void;
 	testID: string;
 	accessibilityLabel: string;
 	icon: TIconsName;
 	color?: string;
+	onPress(): void;
 }
 
-export const BaseButton = ({ accessibilityLabel, icon, color, ...props }: IBaseButton) => {
+export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
 	const { colors } = useTheme();
 	return (
-		<BorderlessButton {...props} style={[styles.button, props.style]}>
-			<View
-				accessible
-				accessibilityLabel={accessibilityLabel ? i18n.t(accessibilityLabel) : accessibilityLabel}
-				accessibilityRole='button'
-			>
+		<BorderlessButton style={styles.button} onPress={onPress} testID={testID}>
+			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
 				<CustomIcon name={icon} size={24} color={color || colors.fontSecondaryInfo} />
 			</View>
 		</BorderlessButton>
