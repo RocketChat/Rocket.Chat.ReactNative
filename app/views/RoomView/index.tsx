@@ -408,36 +408,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	async componentWillUnmount() {
-		const { editing, room } = this.state;
-		const db = database.active;
+	componentWillUnmount() {
 		this.mounted = false;
-		if (!editing && this.messagebox && this.messagebox.current) {
-			const { text } = this.messagebox.current;
-			let obj: TSubscriptionModel | TThreadModel | null = null;
-			if (this.tmid) {
-				try {
-					const threadsCollection = db.get('threads');
-					obj = await threadsCollection.find(this.tmid);
-				} catch (e) {
-					// Do nothing
-				}
-			} else {
-				obj = room as TSubscriptionModel;
-			}
-			if (obj) {
-				try {
-					const object = obj;
-					await db.write(async () => {
-						await object.update(r => {
-							r.draftMessage = text;
-						});
-					});
-				} catch (error) {
-					// Do nothing
-				}
-			}
-		}
 		this.unsubscribe();
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
@@ -1375,11 +1347,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderFooter = () => {
-		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, loading, canViewCannedResponse } =
-			this.state;
-		const { navigation, theme, route } = this.props;
+		const {
+			joined,
+			room,
+			// selectedMessage,
+			editing,
+			// replying,
+			// replyWithMention,
+			readOnly,
+			loading
+			// canViewCannedResponse
+		} = this.state;
+		const {
+			// navigation,
+			theme
+			// route
+		} = this.props;
 
-		const usedCannedResponse = route?.params?.usedCannedResponse;
+		// const usedCannedResponse = route?.params?.usedCannedResponse;
 
 		if (!this.rid) {
 			return null;
@@ -1442,30 +1427,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		return <MessageComposer onSendMessage={this.handleSendMessage} rid={this.rid} tmid={this.tmid} editing={editing} />;
-		// return (
-		// 	<MessageBox
-		// 		ref={this.messagebox}
-		// 		goToCannedResponses={canViewCannedResponse ? this.goToCannedResponses : null}
-		// 		onSubmit={this.handleSendMessage}
-		// 		rid={this.rid}
-		// 		tmid={this.tmid}
-		// 		joined={joined}
-		// 		roomType={room.t}
-		// 		isFocused={navigation.isFocused}
-		// 		theme={theme!}
-		// 		message={selectedMessage}
-		// 		editing={editing}
-		// 		editRequest={this.onEditRequest}
-		// 		editCancel={this.onEditCancel}
-		// 		replying={replying}
-		// 		replyWithMention={replyWithMention}
-		// 		replyCancel={this.onReplyCancel}
-		// 		getCustomEmoji={this.getCustomEmoji}
-		// 		navigation={navigation}
-		// 		usedCannedResponse={usedCannedResponse}
-		// 	/>
-		// );
+		return (
+			<MessageComposer onSendMessage={this.handleSendMessage} rid={this.rid} tmid={this.tmid} editing={editing} sharing={false} />
+		);
 	};
 
 	renderActions = () => {

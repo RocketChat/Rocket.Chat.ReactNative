@@ -90,13 +90,13 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
-		if (isTextEmpty) {
-			// this.stopTrackingMention();
-			console.log('stopTrackingMention');
-			return;
-		}
-		const { start, end } = selectionRef.current;
-		console.log('🚀 ~ file: MessageComposerInput.tsx:73 ~ debouncedOnChangeText ~ start, end:', start, end);
+		// if (isTextEmpty) {
+		// 	// this.stopTrackingMention();
+		// 	console.log('stopTrackingMention');
+		// 	return;
+		// }
+		// const { start, end } = selectionRef.current;
+		// console.log('🚀 ~ file: MessageComposerInput.tsx:73 ~ debouncedOnChangeText ~ start, end:', start, end);
 	}, 300); // TODO: 300ms?
 
 	const handleTyping = (isTyping: boolean) => {
