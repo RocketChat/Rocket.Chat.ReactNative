@@ -654,8 +654,8 @@ workflows:
           requires:
               - lint-testunit
       - ios-build-experimental
-          # requires:
-          #   - ios-hold-build-experimental
+          requires:
+            - ios-hold-build-experimental
       - ios-testflight-experimental:
           requires:
             - ios-build-experimental
