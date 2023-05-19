@@ -1,7 +1,6 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, Text } from 'react-native';
 import { dequal } from 'dequal';
-import * as FileSystem from 'expo-file-system';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -18,10 +17,16 @@ import RCActivityIndicator from '../ActivityIndicator';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
+import {
+	LOCAL_DOCUMENT_PATH,
+	MediaTypes,
+	cancelDownload,
+	downloadMediaFile,
+	isDownloadActive,
+	searchMediaFileAsync
+} from '../../lib/methods/handleMediaDownload';
 import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
 import sharedStyles from '../../views/Styles';
-import userPreferences from '../../lib/methods/userPreferences';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -70,18 +75,16 @@ const DownloadIndicator = ({ handleCancelDownload }: { handleCancelDownload(): v
 	);
 };
 
-const downloadResumableKey = (video: string) => `DownloadResumable${video}`;
-
 const Video = React.memo(
 	({ file, showAttachment, getCustomEmoji, style, isReply, messageId }: IMessageVideo) => {
+		const [newFile, setNewFile] = useState(file);
 		const [loading, setLoading] = useState(false);
 		const { baseUrl, user } = useContext(MessageContext);
 		const { theme } = useTheme();
 		const filePath = useRef('');
-		const downloadResumable = useRef<FileSystem.DownloadResumable | null>(null);
 		const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
-		useLayoutEffect(() => {
+		useEffect(() => {
 			const handleAutoDownload = async () => {
 				if (video) {
 					const searchVideoCached = await searchMediaFileAsync({
@@ -89,16 +92,25 @@ const Video = React.memo(
 						mimeType: file.video_type,
 						messageId
 					});
+					console.log('🚀 ~ file: Video.tsx:100 ~ handleAutoDownload ~ searchVideoCached:', searchVideoCached);
 					filePath.current = searchVideoCached.filePath;
-					handleDownloadResumableSnapshot();
+					const downloadActive = isDownloadActive(MediaTypes.video, messageId);
 					if (searchVideoCached.file?.exists) {
-						file.video_url = searchVideoCached.file.uri;
+						setNewFile(prev => ({
+							...prev,
+							video_url: searchVideoCached.file?.uri
+						}));
+						if (downloadActive) {
+							cancelDownload(MediaTypes.video, messageId);
+						}
 						return;
 					}
 
+					if (downloadActive) return setLoading(true);
+
 					// We don't pass the author to avoid auto-download what the user sent
 					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload', { user });
-					if (autoDownload && !downloadResumable.current) {
+					if (autoDownload) {
 						await handleDownload();
 					}
 				}
@@ -110,44 +122,31 @@ const Video = React.memo(
 			return null;
 		}
 
-		const handleDownloadResumableSnapshot = () => {
-			if (video) {
-				const result = userPreferences.getString(downloadResumableKey(video));
-				if (result) {
-					const snapshot = JSON.parse(result);
-					downloadResumable.current = new FileSystem.DownloadResumable(
-						video,
-						filePath.current,
-						{},
-						() => {},
-						snapshot.resumeData
-					);
-					setLoading(true);
-				}
-			}
-		};
-
 		const handleDownload = async () => {
 			setLoading(true);
-			downloadResumable.current = FileSystem.createDownloadResumable(video, filePath.current);
-			userPreferences.setString(downloadResumableKey(video), JSON.stringify(downloadResumable.current.savable()));
 			const videoUri = await downloadMediaFile({
-				url: video,
-				filePath: filePath.current,
-				downloadResumable: downloadResumable.current
+				downloadUrl: video,
+				mediaType: MediaTypes.video,
+				messageId,
+				path: filePath.current
 			});
-			userPreferences.removeItem(downloadResumableKey(video));
+			console.log('🚀 ~ file: Video.tsx:137 ~ handleDownload ~ videoUri:', videoUri);
 			if (videoUri) {
-				file.video_url = videoUri;
+				setNewFile(prev => ({
+					...prev,
+					video_url: videoUri
+				}));
 			}
 			setLoading(false);
 		};
 
 		const onPress = async () => {
 			if (file.video_type && isTypeSupported(file.video_type) && showAttachment) {
-				// Keep the video downloading while showing the video buffering
-				handleDownload();
-				return showAttachment(file);
+				if (!newFile.video_url?.startsWith(LOCAL_DOCUMENT_PATH) && !loading) {
+					// Keep the video downloading while showing the video buffering
+					handleDownload();
+				}
+				return showAttachment(newFile);
 			}
 
 			if (!isIOS && file.video_url) {
@@ -158,9 +157,8 @@ const Video = React.memo(
 		};
 
 		const handleCancelDownload = () => {
-			if (loading && downloadResumable.current) {
-				downloadResumable.current.cancelAsync();
-				userPreferences.removeItem(downloadResumableKey(video));
+			if (loading) {
+				cancelDownload(MediaTypes.video, messageId);
 				return setLoading(false);
 			}
 		};

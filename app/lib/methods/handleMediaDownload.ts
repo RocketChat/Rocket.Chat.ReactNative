@@ -1,5 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
+import { isEmpty } from 'lodash';
+import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
@@ -22,7 +24,69 @@ const defaultType = {
 	[MediaTypes.video]: 'mp4'
 };
 
+const downloadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
+
 export const mediaDownloadKey = (mediaType: MediaTypes, messageId: string) => `${mediaType}-${messageId}`;
+
+export function isDownloadActive(mediaType: MediaTypes, messageId: string): boolean {
+	return !!downloadQueue[mediaDownloadKey(mediaType, messageId)];
+}
+
+export async function cancelDownload(mediaType: MediaTypes, messageId: string): Promise<void> {
+	const downloadKey = mediaDownloadKey(mediaType, messageId);
+	if (!isEmpty(downloadQueue[downloadKey])) {
+		console.log('🚀 ~ file: handleMediaDownload.ts:38 ~ cancelDownload ~ downloadQueue:', downloadQueue);
+		try {
+			await downloadQueue[downloadKey].cancel();
+		} catch {
+			// Do nothing
+		}
+		delete downloadQueue[downloadKey];
+		console.log('🚀 ~ file: handleMediaDownload.ts:47 ~ cancelDownload ~ downloadQueue:', downloadQueue);
+	}
+}
+
+export function downloadMediaFile({
+	mediaType,
+	messageId,
+	downloadUrl,
+	path
+}: {
+	mediaType: MediaTypes;
+	messageId: string;
+	downloadUrl: string;
+	path: string;
+}): Promise<string | null> {
+	return new Promise((resolve, reject) => {
+		const downloadKey = mediaDownloadKey(mediaType, messageId);
+		const options = {
+			timeout: 10000,
+			indicator: true,
+			overwrite: true,
+			path: path.replace('file://', '')
+		};
+		downloadQueue[downloadKey] = RNFetchBlob.config(options).fetch('GET', downloadUrl);
+		downloadQueue[downloadKey].then(response => {
+			if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
+				// If response is all good...
+				try {
+					console.log('🚀 ~ file: handleMediaDownload.ts:71 ~ returnnewPromise ~ response:', response, response.path());
+					resolve(response.data);
+					delete downloadQueue[downloadKey];
+				} catch (e) {
+					log(e);
+				}
+			} else {
+				reject(null);
+			}
+		});
+		downloadQueue[downloadKey].catch(error => {
+			console.log('🚀 ~ file: handleMediaDownload.ts:82 ~ returnnewPromise ~ error:', error);
+			delete downloadQueue[downloadKey];
+			reject(null);
+		});
+	});
+}
 
 export const LOCAL_DOCUMENT_PATH = `${FileSystem.documentDirectory}`;
 
@@ -70,30 +134,6 @@ export const searchMediaFileAsync = async ({
 		log(e);
 	}
 	return { file, filePath };
-};
-
-export const downloadMediaFile = async ({
-	url,
-	filePath,
-	downloadResumable
-}: {
-	url: string;
-	filePath: string;
-	downloadResumable?: FileSystem.DownloadResumable;
-}) => {
-	let uri = '';
-	try {
-		if (downloadResumable) {
-			const downloadFile = await downloadResumable.downloadAsync();
-			uri = downloadFile?.uri || '';
-		} else {
-			const downloadedFile = await FileSystem.downloadAsync(url, filePath);
-			uri = downloadedFile.uri;
-		}
-	} catch (error) {
-		log(error);
-	}
-	return uri;
 };
 
 export const deleteAllSpecificMediaFiles = async (type: MediaTypes, serverUrl: string): Promise<void> => {

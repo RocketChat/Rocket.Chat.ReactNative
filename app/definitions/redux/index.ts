@@ -16,7 +16,6 @@ import { TActionSortPreferences } from '../../actions/sortPreferences';
 import { TActionUserTyping } from '../../actions/usersTyping';
 import { TActionPermissions } from '../../actions/permissions';
 import { TActionEnterpriseModules } from '../../actions/enterpriseModules';
-import { TActionMediaDownload } from '../../actions/mediaDownload';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { IApp } from '../../reducers/app';
@@ -35,7 +34,6 @@ import { IShare } from '../../reducers/share';
 import { IInquiry } from '../../ee/omnichannel/reducers/inquiry';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IEnterpriseModules } from '../../reducers/enterpriseModules';
-import { IDownloads } from '../../reducers/mediaDownload';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -59,7 +57,6 @@ export interface IApplicationState {
 	encryption: IEncryption;
 	permissions: IPermissionsState;
 	roles: IRoles;
-	mediaDownload: IDownloads;
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -78,5 +75,4 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionApp &
 	TActionInquiry &
 	TActionPermissions &
-	TActionEnterpriseModules &
-	TActionMediaDownload;
+	TActionEnterpriseModules;

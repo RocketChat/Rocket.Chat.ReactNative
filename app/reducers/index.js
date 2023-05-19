@@ -21,7 +21,6 @@ import enterpriseModules from './enterpriseModules';
 import encryption from './encryption';
 import permissions from './permissions';
 import roles from './roles';
-import mediaDownload from './mediaDownload';
 
 export default combineReducers({
 	settings,
@@ -44,6 +43,5 @@ export default combineReducers({
 	enterpriseModules,
 	encryption,
 	permissions,
-	roles,
-	mediaDownload
+	roles
 });
