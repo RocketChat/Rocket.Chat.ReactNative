@@ -1,7 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
-import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
@@ -24,7 +23,7 @@ const defaultType = {
 	[MediaTypes.video]: 'mp4'
 };
 
-const downloadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
+const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
 
 export const mediaDownloadKey = (mediaType: MediaTypes, messageId: string) => `${mediaType}-${messageId}`;
 
@@ -36,7 +35,7 @@ export async function cancelDownload(mediaType: MediaTypes, messageId: string): 
 	const downloadKey = mediaDownloadKey(mediaType, messageId);
 	if (!isEmpty(downloadQueue[downloadKey])) {
 		try {
-			await downloadQueue[downloadKey].cancel();
+			await downloadQueue[downloadKey].cancelAsync();
 		} catch {
 			// Do nothing
 		}
@@ -55,36 +54,18 @@ export function downloadMediaFile({
 	downloadUrl: string;
 	path: string;
 }): Promise<string> {
-	return new Promise((resolve, reject) => {
-		const downloadKey = mediaDownloadKey(mediaType, messageId);
-		const options = {
-			timeout: 10000,
-			indicator: true,
-			overwrite: true,
-			// The RNFetchBlob just save the file when didn't exist the file:// at the begin of path
-			path: path.replace('file://', '')
-		};
-		downloadQueue[downloadKey] = RNFetchBlob.config(options).fetch('GET', downloadUrl);
-		downloadQueue[downloadKey].then(response => {
-			if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
-				// If response is all good...
-				try {
-					resolve(path);
-				} catch (e) {
-					reject();
-					log(e);
-				} finally {
-					delete downloadQueue[downloadKey];
-				}
-			} else {
-				delete downloadQueue[downloadKey];
-				reject();
+	return new Promise(async (resolve, reject) => {
+		try {
+			const downloadKey = mediaDownloadKey(mediaType, messageId);
+			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
+			const result = await downloadQueue[downloadKey].downloadAsync();
+			if (result?.uri) {
+				return resolve(result.uri);
 			}
-		});
-		downloadQueue[downloadKey].catch(() => {
-			delete downloadQueue[downloadKey];
 			reject();
-		});
+		} catch {
+			reject();
+		}
 	});
 }
 
