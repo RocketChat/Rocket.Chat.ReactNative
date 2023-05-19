@@ -1,14 +1,29 @@
 import { useContext } from 'react';
 
+import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
 import { TActionSheetOptionsItem, useActionSheet } from '../../ActionSheet';
 import { MessageComposerContext } from '../context';
 import I18n from '../../../i18n';
+import Navigation from '../../../lib/navigation/appNavigation';
+import { useAppSelector } from '../../../lib/hooks';
 
 export const ActionsButton = () => {
-	const { permissionToUpload, takePhoto, takeVideo, chooseFromLibrary, chooseFile, closeEmojiKeyboardAndAction } =
+	const { rid, permissionToUpload, takePhoto, takeVideo, chooseFromLibrary, chooseFile, closeEmojiKeyboardAndAction } =
 		useContext(MessageComposerContext);
 	const { showActionSheet } = useActionSheet();
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+
+	const createDiscussion = async () => {
+		// logEvent(events.ROOM_BOX_ACTION_DISCUSSION);
+		const subscription = await getSubscriptionByRoomId(rid);
+		const params = { channel: subscription, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+		}
+	};
 
 	const onPress = () => {
 		// logEvent(events.ROOM_SHOW_BOX_ACTIONS);
@@ -50,7 +65,7 @@ export const ActionsButton = () => {
 		options.push({
 			title: I18n.t('Create_Discussion'),
 			icon: 'discussions',
-			onPress: () => alert('tbd') // this.createDiscussion
+			onPress: () => createDiscussion()
 		});
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
