@@ -10,9 +10,9 @@ export const loadDraftMessage = async ({ rid, tmid }: { rid: string; tmid?: stri
 			return thread.draftMessage;
 		}
 	}
-	const room = await getSubscriptionByRoomId(rid);
-	if (room && room.draftMessage) {
-		return room.draftMessage;
+	const subscription = await getSubscriptionByRoomId(rid);
+	if (subscription && subscription.draftMessage) {
+		return subscription.draftMessage;
 	}
 
 	return '';
