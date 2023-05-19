@@ -21,7 +21,7 @@ interface IWorkSpaceProp {
 		StackNavigationProp<OutsideParamList, 'WorkspaceView'>,
 		StackNavigationProp<OutsideModalParamList>
 	>;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	Site_Name: string;
 	Site_Url: string;
 	server: string;
@@ -66,7 +66,7 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 			return null;
 		}
 
-		return <Text style={[styles.registrationText, { color: themes[theme].auxiliaryText }]}>{registrationText}</Text>;
+		return <Text style={[styles.registrationText, { color: themes[theme!].auxiliaryText }]}>{registrationText}</Text>;
 	};
 
 	render() {
@@ -76,9 +76,9 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 			<FormContainer testID='workspace-view'>
 				<FormContainerInner>
 					<View style={styles.alignItemsCenter}>
-						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
-						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{Site_Name}</Text>
-						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
+						<ServerAvatar theme={theme!} url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
+						<Text style={[styles.serverName, { color: themes[theme!].titleText }]}>{Site_Name}</Text>
+						<Text style={[styles.serverUrl, { color: themes[theme!].auxiliaryText }]}>{Site_Url}</Text>
 					</View>
 					{showLoginButton ? (
 						<Button title={I18n.t('Login')} type='primary' onPress={this.login} testID='workspace-view-login' />
@@ -87,7 +87,7 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 						<Button
 							title={I18n.t('Create_account')}
 							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
+							backgroundColor={themes[theme!].chatComponentBackground}
 							onPress={this.register}
 							testID='workspace-view-register'
 						/>

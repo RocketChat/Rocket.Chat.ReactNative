@@ -159,7 +159,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 
 		return (
 			<>
-				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
+				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme!].titleText }]}>{I18n.t('Login')}</Text>
 				<FormTextInput
 					label={I18n.t('Username_or_email')}
 					containerStyle={styles.inputContainer}
@@ -205,17 +205,17 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						type='secondary'
 						onPress={this.forgotPassword}
 						testID='login-view-forgot-password'
-						color={themes[theme].auxiliaryText}
+						color={themes[theme!].auxiliaryText}
 						fontSize={14}
 					/>
 				)}
 				{this.showRegistrationButton ? (
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
+						<Text style={[styles.bottomContainerText, { color: themes[theme!].auxiliaryText }]}>
 							{I18n.t('Dont_Have_An_Account')}
 						</Text>
 						<Text
-							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+							style={[styles.bottomContainerTextBold, { color: themes[theme!].actionTintColor }]}
 							onPress={this.register}
 							testID='login-view-register'
 						>
@@ -223,7 +223,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						</Text>
 					</View>
 				) : (
-					<Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>
+					<Text style={[styles.registerDisabled, { color: themes[theme!].auxiliaryText }]}>
 						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
 				)}

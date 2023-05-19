@@ -108,7 +108,7 @@ class AutoTranslateView extends React.Component<TAutoTranslateViewProps, any> {
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme].tintColor} />;
+		return <List.Icon name='check' color={themes[theme!].tintColor} />;
 	};
 
 	renderSwitch = () => {
