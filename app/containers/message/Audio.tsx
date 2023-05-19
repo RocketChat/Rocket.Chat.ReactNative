@@ -161,6 +161,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	getUrl = () => {
 		const { file } = this.props;
+		// @ts-ignore can't use declare to type this
 		const { baseUrl } = this.context;
 
 		let url = file.audio_url;
@@ -172,6 +173,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	handleAutoDownload = async () => {
 		const { author } = this.props;
+		// @ts-ignore can't use declare to type this
 		const { user } = this.context;
 		const url = this.getUrl();
 		try {
@@ -285,6 +287,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	startDownload = async () => {
 		const { messageId } = this.props;
+		// @ts-ignore can't use declare to type this
 		const { user } = this.context;
 		this.setState({ loading: true });
 		try {
