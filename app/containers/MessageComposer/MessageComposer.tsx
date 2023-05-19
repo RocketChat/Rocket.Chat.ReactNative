@@ -1,6 +1,7 @@
 import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle } from 'react';
 import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
+import { useBackHandler } from '@react-native-community/hooks';
 
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -47,6 +48,14 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			allowList: FileUpload_MediaTypeWhiteList as string,
 			maxFileSize: FileUpload_MaxFileSize as number,
 			permissionToUpload
+		});
+
+		useBackHandler(() => {
+			if (showEmojiSearchbar) {
+				setShowEmojiSearchbar(false);
+				return true;
+			}
+			return false;
 		});
 
 		useImperativeHandle(ref, () => ({
