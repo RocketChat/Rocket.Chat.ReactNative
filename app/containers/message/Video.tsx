@@ -92,7 +92,6 @@ const Video = React.memo(
 						mimeType: file.video_type,
 						messageId
 					});
-					console.log('🚀 ~ file: Video.tsx:100 ~ handleAutoDownload ~ searchVideoCached:', searchVideoCached);
 					filePath.current = searchVideoCached.filePath;
 					const downloadActive = isDownloadActive(MediaTypes.video, messageId);
 					if (searchVideoCached.file?.exists) {
@@ -130,11 +129,10 @@ const Video = React.memo(
 				messageId,
 				path: filePath.current
 			});
-			console.log('🚀 ~ file: Video.tsx:137 ~ handleDownload ~ videoUri:', videoUri);
 			if (videoUri) {
 				setNewFile(prev => ({
 					...prev,
-					video_url: videoUri
+					video_url: filePath.current
 				}));
 			}
 			setLoading(false);
