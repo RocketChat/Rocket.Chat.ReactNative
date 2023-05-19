@@ -1,13 +1,10 @@
 import React from 'react';
 import { Text, TextStyle } from 'react-native';
-import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { themes } from '../../lib/constants';
-import { formatText } from './formatText';
 import { useTheme } from '../../theme';
 import styles from './styles';
-import { formatHyperlink } from './formatHyperlink';
+import { previewFormatText } from './previewFormatText';
 
 interface IMarkdownPreview {
 	msg?: string;
@@ -23,13 +20,7 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdo
 		return null;
 	}
 
-	let m = formatText(msg);
-	m = formatHyperlink(m);
-	m = shortnameToUnicode(m);
-	m = removeMarkdown(m);
-	// Removes sequential empty spaces
-	m = m.replace(/\s+/g, ' ');
-	m = m.replace(/\n+/g, ' ');
+	const m = previewFormatText(msg);
 	return (
 		<Text
 			accessibilityLabel={m}
