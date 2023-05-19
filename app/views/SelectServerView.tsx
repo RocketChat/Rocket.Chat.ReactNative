@@ -11,9 +11,9 @@ import { shareExtensionInit } from '../lib/methods/shareExtension';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import { ShareInsideStackParamList } from '../definitions/navigationTypes';
 import { TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks';
+import { ShareInsideStackParamList } from '../stacks/ShareExtensionStack/types';
 
 const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TServerModel) => item.id;
