@@ -34,6 +34,10 @@ export interface IMessageComposerProps {
 	// serverVersion: string;
 }
 
+export interface IMessageComposerRef {
+	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => void;
+}
+
 export interface IInputSelection {
 	start: number;
 	end: number;

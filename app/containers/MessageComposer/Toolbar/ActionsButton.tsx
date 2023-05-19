@@ -6,7 +6,8 @@ import { MessageComposerContext } from '../context';
 import I18n from '../../../i18n';
 
 export const ActionsButton = () => {
-	const { permissionToUpload, takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useContext(MessageComposerContext);
+	const { permissionToUpload, takePhoto, takeVideo, chooseFromLibrary, chooseFile, closeEmojiKeyboardAndAction } =
+		useContext(MessageComposerContext);
 	const { showActionSheet } = useActionSheet();
 
 	const onPress = () => {
@@ -52,8 +53,7 @@ export const ActionsButton = () => {
 			onPress: () => alert('tbd') // this.createDiscussion
 		});
 
-		// this.closeEmojiAndAction(showActionSheet, { options });
-		showActionSheet({ options });
+		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};
 
 	return <BaseButton onPress={() => onPress()} testID='messagebox-cancel-editing' accessibilityLabel='TBD' icon='add' />;

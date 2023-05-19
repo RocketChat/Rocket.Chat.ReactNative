@@ -22,6 +22,7 @@ type TMessageComposerContext = {
 	takeVideo(): void;
 	chooseFromLibrary(): void;
 	chooseFile(): void;
+	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
 };
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({
@@ -40,5 +41,6 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	takePhoto: () => {},
 	takeVideo: () => {},
 	chooseFromLibrary: () => {},
-	chooseFile: () => {}
+	chooseFile: () => {},
+	closeEmojiKeyboardAndAction: () => {}
 });

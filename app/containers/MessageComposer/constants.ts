@@ -17,3 +17,5 @@ export const libraryPickerConfig: Options = {
 export const videoPickerConfig: Options = {
 	mediaType: 'video'
 };
+
+export const TIMEOUT_CLOSE_EMOJI_KEYBOARD = 300;
