@@ -103,7 +103,7 @@ const ImageContainer = React.memo(
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
-		const img = imageUrl || formatAttachmentUrl(newFile.image_url, user.id, user.token, baseUrl);
+		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		const filePath = useRef('');
 
 		useLayoutEffect(() => {
@@ -144,7 +144,7 @@ const ImageContainer = React.memo(
 			setLoading(true);
 			try {
 				// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
-				// And we don't have sure that exists the file.title_link
+				// And we don't have sure that ever exists the file.title_link
 				const imgUrl = imageUrl || formatAttachmentUrl(newFile.title_link || newFile.image_url, user.id, user.token, baseUrl);
 				const imageUri = await downloadMediaFile({
 					downloadUrl: imgUrl,
@@ -160,7 +160,6 @@ const ImageContainer = React.memo(
 				setToDownload(false);
 				setLoading(false);
 			} catch (e) {
-				console.log('🚀 ~ file: Image.tsx:164 ~ handleDownload ~ e:', e);
 				setLoading(false);
 				return setToDownload(true);
 			}

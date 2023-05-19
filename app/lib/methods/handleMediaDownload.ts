@@ -35,14 +35,12 @@ export function isDownloadActive(mediaType: MediaTypes, messageId: string): bool
 export async function cancelDownload(mediaType: MediaTypes, messageId: string): Promise<void> {
 	const downloadKey = mediaDownloadKey(mediaType, messageId);
 	if (!isEmpty(downloadQueue[downloadKey])) {
-		console.log('🚀 ~ file: handleMediaDownload.ts:38 ~ cancelDownload ~ downloadQueue:', downloadQueue);
 		try {
 			await downloadQueue[downloadKey].cancel();
 		} catch {
 			// Do nothing
 		}
 		delete downloadQueue[downloadKey];
-		console.log('🚀 ~ file: handleMediaDownload.ts:47 ~ cancelDownload ~ downloadQueue:', downloadQueue);
 	}
 }
 
@@ -63,6 +61,7 @@ export function downloadMediaFile({
 			timeout: 10000,
 			indicator: true,
 			overwrite: true,
+			// The RNFetchBlob just save the file when didn't exist the file:// at the begin of path
 			path: path.replace('file://', '')
 		};
 		downloadQueue[downloadKey] = RNFetchBlob.config(options).fetch('GET', downloadUrl);
