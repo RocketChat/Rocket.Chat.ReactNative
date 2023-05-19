@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, useRef, useEffect } from 'react';
+import React, { useState, ReactElement, useRef } from 'react';
 import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 
@@ -13,7 +13,6 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
 import EmojiSearchBar from './EmojiSearchbar';
 import { useCanUploadFile, useChooseMedia } from './hooks';
-import { saveDraftMessage } from './helpers';
 
 const styles = StyleSheet.create({
 	container: {

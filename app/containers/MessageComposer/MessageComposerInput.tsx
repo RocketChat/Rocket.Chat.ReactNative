@@ -40,7 +40,7 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 		setDraftMessage();
 
 		return () => {
-			if (!editing && textRef.current) {
+			if (!editing) {
 				saveDraftMessage({ rid, tmid, draftMessage: textRef.current });
 			}
 		};

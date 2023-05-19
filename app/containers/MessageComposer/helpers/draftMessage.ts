@@ -33,7 +33,7 @@ export const saveDraftMessage = async ({
 	} else {
 		obj = await getSubscriptionByRoomId(rid);
 	}
-	if (obj) {
+	if (obj && obj.draftMessage !== draftMessage) {
 		try {
 			const db = database.active;
 			const object = obj;
