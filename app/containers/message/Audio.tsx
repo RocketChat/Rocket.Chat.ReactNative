@@ -124,11 +124,12 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	static contextType = MessageContext;
 
 	private sound: Sound;
+	private filePath?: string;
 
 	constructor(props: IMessageAudioProps) {
 		super(props);
 		this.state = {
-			loading: false,
+			loading: true,
 			currentTime: 0,
 			duration: 0,
 			paused: true,
@@ -145,7 +146,29 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	async componentDidMount() {
-		this.setState({ loading: true });
+		const { messageId, file } = this.props;
+		const fileSearch = await searchMediaFileAsync({
+			type: MediaTypes.audio,
+			mimeType: file.audio_type,
+			messageId
+		});
+		this.filePath = fileSearch.filePath;
+		if (fileSearch?.file?.exists) {
+			console.log(
+				'🚀 ~ file: Audio.tsx:157 ~ MessageAudio ~ componentDidMount ~ fileSearch?.file?.exists:',
+				fileSearch?.file?.exists
+			);
+			console.log('🚀 ~ file: Audio.tsx:163 ~ MessageAudio ~ componentDidMount ~ fileSearch.file.uri:', fileSearch.file.uri);
+			await this.sound
+				.loadAsync({ uri: fileSearch.file.uri })
+				.then(value => {
+					console.log('🚀 ~ file: Audio.tsx:162 ~ MessageAudio ~ awaitthis.sound.loadAsync ~ value:', value);
+				})
+				.catch(er => {
+					console.log('🚀 ~ file: Audio.tsx:158 ~ MessageAudio ~ awaitthis.sound.loadAsync ~ er:', er);
+				});
+			return this.setState({ loading: false });
+		}
 		await this.handleAutoDownload();
 	}
 
@@ -161,24 +184,14 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	handleAutoDownload = async () => {
-		const { messageId, author, file } = this.props;
+		const { author } = this.props;
 		const { user } = this.context;
 		const url = this.getUrl();
 		try {
 			if (url) {
-				const fileSearch = await searchMediaFileAsync({
-					type: MediaTypes.audio,
-					mimeType: file.audio_type,
-					messageId
-				});
-				if (fileSearch?.file?.exists) {
-					await this.sound.loadAsync({ uri: fileSearch.file.uri });
-					return this.setState({ loading: false });
-				}
-
 				const autoDownload = await isAutoDownloadEnabled('audioPreferenceDownload', { author, user });
 				if (autoDownload) {
-					await this.startDownload();
+					return await this.startDownload();
 				}
 
 				// MediaDownloadOption.NEVER or MediaDownloadOption.WIFI and the mobile is using mobile data
@@ -190,7 +203,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
-		const { currentTime, duration, paused, loading } = this.state;
+		const { currentTime, duration, paused, loading, toDownload } = this.state;
 		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -208,6 +221,9 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			return true;
 		}
 		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.toDownload !== toDownload) {
 			return true;
 		}
 		return false;
@@ -281,23 +297,21 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	startDownload = async () => {
-		const { messageId, file } = this.props;
+		const { messageId } = this.props;
 		const { user } = this.context;
 		this.setState({ loading: true });
-
 		const url = this.getUrl();
-
-		if (url) {
-			const fileSearch = await searchMediaFileAsync({
-				type: MediaTypes.audio,
-				mimeType: file.audio_type,
-				messageId
-			});
+		if (url && this.filePath) {
 			const audio = await downloadMediaFile({
-				url: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-				filePath: fileSearch.filePath
+				downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
+				mediaType: MediaTypes.audio,
+				messageId,
+				path: this.filePath
 			});
-			await this.sound.loadAsync({ uri: audio });
+			if (!audio) {
+				return this.setState({ loading: false, toDownload: true });
+			}
+			await this.sound.loadAsync({ uri: this.filePath });
 			return this.setState({ loading: false, toDownload: false });
 		}
 	};

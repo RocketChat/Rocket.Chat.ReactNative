@@ -56,7 +56,7 @@ export function downloadMediaFile({
 	messageId: string;
 	downloadUrl: string;
 	path: string;
-}): Promise<string | null> {
+}): Promise<string | void> {
 	return new Promise((resolve, reject) => {
 		const downloadKey = mediaDownloadKey(mediaType, messageId);
 		const options = {
@@ -70,20 +70,21 @@ export function downloadMediaFile({
 			if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
 				// If response is all good...
 				try {
-					console.log('🚀 ~ file: handleMediaDownload.ts:71 ~ returnnewPromise ~ response:', response, response.path());
-					resolve(response.data);
-					delete downloadQueue[downloadKey];
+					resolve(path);
 				} catch (e) {
+					reject();
 					log(e);
+				} finally {
+					delete downloadQueue[downloadKey];
 				}
 			} else {
-				reject(null);
+				delete downloadQueue[downloadKey];
+				reject();
 			}
 		});
-		downloadQueue[downloadKey].catch(error => {
-			console.log('🚀 ~ file: handleMediaDownload.ts:82 ~ returnnewPromise ~ error:', error);
+		downloadQueue[downloadKey].catch(() => {
 			delete downloadQueue[downloadKey];
-			reject(null);
+			reject();
 		});
 	});
 }
@@ -96,9 +97,19 @@ const getExtension = (type: MediaTypes, mimeType?: string) => {
 	if (!mimeType) {
 		return defaultType[type];
 	}
-	// The library is returning mpag instead of mp3 for audio/mpeg
-	const extensionFromMime = mimeType === 'audio/mpeg' ? 'mp3' : mime.extension(mimeType);
-	return extensionFromMime;
+	const extensionFromMime = () => {
+		// The library is returning mpag instead of mp3 for audio/mpeg
+		if (mimeType === 'audio/mpeg') {
+			return 'mp3';
+		}
+		const extension = mime.extension(mimeType);
+		// The mime.extension can return false when there aren't any extension
+		if (!extension) {
+			return defaultType[type];
+		}
+		return extension;
+	};
+	return extensionFromMime();
 };
 
 const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> => {

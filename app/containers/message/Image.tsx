@@ -4,7 +4,6 @@ import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
-import * as FileSystem from 'expo-file-system';
 import { BlurView } from '@react-native-community/blur';
 
 import Touchable from './Touchable';
@@ -16,7 +15,13 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
+import {
+	MediaTypes,
+	cancelDownload,
+	downloadMediaFile,
+	isDownloadActive,
+	searchMediaFileAsync
+} from '../../lib/methods/handleMediaDownload';
 import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
 import RCActivityIndicator from '../ActivityIndicator';
 import { CustomIcon } from '../CustomIcon';
@@ -93,26 +98,33 @@ export const MessageImage = React.memo(
 
 const ImageContainer = React.memo(
 	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author, messageId }: IMessageImage) => {
+		const [newFile, setNewFile] = useState(file);
 		const [toDownload, setToDownload] = useState(true);
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
-		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+		const img = imageUrl || formatAttachmentUrl(newFile.image_url, user.id, user.token, baseUrl);
 		const filePath = useRef('');
-		const downloadResumable = useRef<FileSystem.DownloadResumable | null>(null);
 
 		useLayoutEffect(() => {
 			const handleAutoDownload = async () => {
 				if (img) {
-					const searchImageBestQuality = await searchMediaFileAsync({
+					const searchImageCached = await searchMediaFileAsync({
 						type: MediaTypes.image,
-						mimeType: file.image_type,
+						mimeType: newFile.image_type,
 						messageId
 					});
-					filePath.current = searchImageBestQuality.filePath;
-					if (searchImageBestQuality.file?.exists) {
-						file.title_link = searchImageBestQuality.file.uri;
+					filePath.current = searchImageCached.filePath;
+					if (searchImageCached.file?.exists) {
+						setNewFile(prev => ({
+							...prev,
+							title_link: searchImageCached.file?.uri
+						}));
 						return setToDownload(false);
+					}
+
+					if (isDownloadActive(MediaTypes.image, messageId)) {
+						return setLoading(true);
 					}
 
 					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload', { user, author });
@@ -130,25 +142,32 @@ const ImageContainer = React.memo(
 
 		const handleDownload = async () => {
 			setLoading(true);
-			const imgUrl = imageUrl || formatAttachmentUrl(file.title_link || file.image_url, user.id, user.token, baseUrl);
-			downloadResumable.current = FileSystem.createDownloadResumable(imgUrl, filePath.current);
+			// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
+			// And we don't have sure that exists the file.title_link
+			const imgUrl = imageUrl || formatAttachmentUrl(newFile.title_link || newFile.image_url, user.id, user.token, baseUrl);
 			const imageUri = await downloadMediaFile({
-				url: imgUrl,
-				filePath: filePath.current,
-				downloadResumable: downloadResumable.current
+				downloadUrl: imgUrl,
+				mediaType: MediaTypes.image,
+				messageId,
+				path: filePath.current
 			});
 			if (!imageUri) {
 				setLoading(false);
 				return setToDownload(true);
 			}
-			file.title_link = imageUri;
+			setNewFile(prev => ({
+				...prev,
+				title_link: filePath.current
+			}));
 			setToDownload(false);
 			setLoading(false);
 		};
 
 		const onPress = () => {
-			if (loading && downloadResumable.current) {
-				return downloadResumable.current.cancelAsync();
+			if (loading && isDownloadActive(MediaTypes.image, messageId)) {
+				cancelDownload(MediaTypes.image, messageId);
+				setLoading(false);
+				return setToDownload(true);
 			}
 
 			if (toDownload && !loading) {
@@ -159,15 +178,15 @@ const ImageContainer = React.memo(
 				return;
 			}
 
-			return showAttachment(file);
+			return showAttachment(newFile);
 		};
 
-		if (file.description) {
+		if (newFile.description) {
 			return (
 				<Button disabled={isReply} theme={theme} onPress={onPress}>
 					<View>
 						<Markdown
-							msg={file.description}
+							msg={newFile.description}
 							style={[isReply && style]}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
