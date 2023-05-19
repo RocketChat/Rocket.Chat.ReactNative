@@ -101,6 +101,7 @@ async function mockMessage(message: string, isThread = false) {
 	await element(by.id(input)).replaceText(message);
 	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
+	await sleep(2000);
 	await waitFor(element(by[textMatcher](message)))
 		.toExist()
 		.withTimeout(60000);
@@ -168,6 +169,7 @@ async function tapAndWaitFor(
 			await elementToTap.tap();
 		}
 		await waitFor(elementToWaitFor).toBeVisible().withTimeout(1000);
+		await sleep(300); // Wait for animation
 	} catch (e) {
 		if (timeout <= 0) {
 			throw e;
