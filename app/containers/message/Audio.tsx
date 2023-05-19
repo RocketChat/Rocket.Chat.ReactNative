@@ -300,19 +300,21 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const { messageId } = this.props;
 		const { user } = this.context;
 		this.setState({ loading: true });
-		const url = this.getUrl();
-		if (url && this.filePath) {
-			const audio = await downloadMediaFile({
-				downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-				mediaType: MediaTypes.audio,
-				messageId,
-				path: this.filePath
-			});
-			if (!audio) {
-				return this.setState({ loading: false, toDownload: true });
+		try {
+			const url = this.getUrl();
+			if (url && this.filePath) {
+				const audio = await downloadMediaFile({
+					downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
+					mediaType: MediaTypes.audio,
+					messageId,
+					path: this.filePath
+				});
+
+				await this.sound.loadAsync({ uri: audio });
+				return this.setState({ loading: false, toDownload: false });
 			}
-			await this.sound.loadAsync({ uri: this.filePath });
-			return this.setState({ loading: false, toDownload: false });
+		} catch {
+			return this.setState({ loading: false, toDownload: true });
 		}
 	};
 

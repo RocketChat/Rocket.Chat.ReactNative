@@ -123,19 +123,20 @@ const Video = React.memo(
 
 		const handleDownload = async () => {
 			setLoading(true);
-			const videoUri = await downloadMediaFile({
-				downloadUrl: video,
-				mediaType: MediaTypes.video,
-				messageId,
-				path: filePath.current
-			});
-			if (videoUri) {
+			try {
+				const videoUri = await downloadMediaFile({
+					downloadUrl: video,
+					mediaType: MediaTypes.video,
+					messageId,
+					path: filePath.current
+				});
 				setNewFile(prev => ({
 					...prev,
-					video_url: filePath.current
+					video_url: videoUri
 				}));
+			} finally {
+				setLoading(false);
 			}
-			setLoading(false);
 		};
 
 		const onPress = async () => {

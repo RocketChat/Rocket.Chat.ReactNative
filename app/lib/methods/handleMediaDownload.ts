@@ -56,7 +56,7 @@ export function downloadMediaFile({
 	messageId: string;
 	downloadUrl: string;
 	path: string;
-}): Promise<string | void> {
+}): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const downloadKey = mediaDownloadKey(mediaType, messageId);
 		const options = {

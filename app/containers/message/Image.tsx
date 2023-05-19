@@ -142,25 +142,28 @@ const ImageContainer = React.memo(
 
 		const handleDownload = async () => {
 			setLoading(true);
-			// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
-			// And we don't have sure that exists the file.title_link
-			const imgUrl = imageUrl || formatAttachmentUrl(newFile.title_link || newFile.image_url, user.id, user.token, baseUrl);
-			const imageUri = await downloadMediaFile({
-				downloadUrl: imgUrl,
-				mediaType: MediaTypes.image,
-				messageId,
-				path: filePath.current
-			});
-			if (!imageUri) {
+			try {
+				// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
+				// And we don't have sure that exists the file.title_link
+				const imgUrl = imageUrl || formatAttachmentUrl(newFile.title_link || newFile.image_url, user.id, user.token, baseUrl);
+				const imageUri = await downloadMediaFile({
+					downloadUrl: imgUrl,
+					mediaType: MediaTypes.image,
+					messageId,
+					path: filePath.current
+				});
+
+				setNewFile(prev => ({
+					...prev,
+					title_link: imageUri
+				}));
+				setToDownload(false);
+				setLoading(false);
+			} catch (e) {
+				console.log('🚀 ~ file: Image.tsx:164 ~ handleDownload ~ e:', e);
 				setLoading(false);
 				return setToDownload(true);
 			}
-			setNewFile(prev => ({
-				...prev,
-				title_link: filePath.current
-			}));
-			setToDownload(false);
-			setLoading(false);
 		};
 
 		const onPress = () => {
