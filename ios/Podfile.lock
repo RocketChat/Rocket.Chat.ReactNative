@@ -18,11 +18,7 @@ PODS:
     - ExpoModulesCore
   - ExpoKeepAwake (12.0.1):
     - ExpoModulesCore
-<<<<<<< HEAD
-  - ExpoLocalAuthentication (13.2.1):
-=======
   - ExpoLocalAuthentication (13.3.0):
->>>>>>> develop
     - ExpoModulesCore
   - ExpoModulesCore (1.2.6):
     - React-Core
@@ -901,11 +897,7 @@ SPEC CHECKSUMS:
   ExpoAppleAuthentication: 7bd5e4150d59e8df37aa80b425850ae88adf9e65
   ExpoHaptics: 5156bc5160d8e04c170dd6e645a71154951a2ad9
   ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
-<<<<<<< HEAD
-  ExpoLocalAuthentication: b870b7a8df5e15b8b0be042185a2bb7764093096
-=======
   ExpoLocalAuthentication: 32919307c66fb3661caefa07e7811a95a7539d7b
->>>>>>> develop
   ExpoModulesCore: 6e0259511f4c4341b6b8357db393624df2280828
   ExpoVideoThumbnails: 0021303b614a89fcc5df8b59d9d37ddf14a7d4cf
   ExpoWebBrowser: 033d34c478d9986da2f1679729041423837626e0
