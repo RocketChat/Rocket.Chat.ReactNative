@@ -3,14 +3,14 @@ import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 
-import sharedStyles from '../../views/Styles';
-import { useTheme } from '../../theme';
-import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from './interfaces';
-import { MessageComposerContext } from './context';
-import { userTyping } from '../../actions/room';
-import { loadDraftMessage, saveDraftMessage } from './helpers';
-import { useSubscription } from './hooks';
-import { getRoomTitle } from '../../lib/methods/helpers';
+import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
+import { MessageComposerContext } from '../context';
+import { loadDraftMessage, saveDraftMessage } from '../helpers';
+import { useSubscription } from '../hooks';
+import sharedStyles from '../../../views/Styles';
+import { useTheme } from '../../../theme';
+import { userTyping } from '../../../actions/room';
+import { getRoomTitle } from '../../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
+export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
 	const { setMicOrSend, rid, tmid, editing, sharing } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');

@@ -3,19 +3,17 @@ import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 
+import { Toolbar, EmojiSearchbar, ComposerInput } from './components';
+import { TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
+import { MessageComposerContext } from './context';
+import { useCanUploadFile, useChooseMedia } from './hooks';
+import { IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView, TMicOrSend } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
-import { MessageComposerToolbar } from './Toolbar';
-import { MessageComposerInput } from './MessageComposerInput';
-import { MessageComposerContext } from './context';
-import { IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView, TMicOrSend } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
-import EmojiSearchBar from './EmojiSearchbar';
-import { useCanUploadFile, useChooseMedia } from './hooks';
-import { TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -166,9 +164,9 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 					renderContent={() => (
 						<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
-							<MessageComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-							<MessageComposerToolbar />
-							<EmojiSearchBar />
+							<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+							<Toolbar />
+							<EmojiSearchbar />
 						</View>
 					)}
 					kbInputRef={composerInputRef}

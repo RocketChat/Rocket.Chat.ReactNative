@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 
-import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
+import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
-import { TActionSheetOptionsItem, useActionSheet } from '../../ActionSheet';
-import { MessageComposerContext } from '../context';
-import I18n from '../../../i18n';
-import Navigation from '../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../lib/hooks';
+import { TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
+import { MessageComposerContext } from '../../context';
+import I18n from '../../../../i18n';
+import Navigation from '../../../../lib/navigation/appNavigation';
+import { useAppSelector } from '../../../../lib/hooks';
 
 export const ActionsButton = () => {
 	const { rid, permissionToUpload, takePhoto, takeVideo, chooseFromLibrary, chooseFile, closeEmojiKeyboardAndAction } =

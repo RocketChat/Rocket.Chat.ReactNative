@@ -2,9 +2,9 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import I18n from '../../../i18n';
-import { CustomIcon, TIconsName } from '../../CustomIcon';
-import { useTheme } from '../../../theme';
+import I18n from '../../../../i18n';
+import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { useTheme } from '../../../../theme';
 
 const styles = StyleSheet.create({
 	button: {

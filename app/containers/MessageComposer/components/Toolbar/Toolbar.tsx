@@ -1,13 +1,11 @@
 import React, { ReactElement, useContext } from 'react';
 
-import { BaseButton } from './BaseButton';
-import { MicOrSendButton } from './MicOrSendButton';
-import { MessageComposerContext } from '../context';
+import { MicOrSendButton, ActionsButton, BaseButton } from '..';
+import { MessageComposerContext } from '../../context';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
-import { ActionsButton } from './ActionsButton';
 
-export const MessageComposerToolbar = (): ReactElement | null => {
+export const Toolbar = (): ReactElement | null => {
 	const { openEmojiKeyboard, closeEmojiKeyboard, showEmojiKeyboard, showEmojiSearchbar } = useContext(MessageComposerContext);
 
 	if (showEmojiSearchbar) {

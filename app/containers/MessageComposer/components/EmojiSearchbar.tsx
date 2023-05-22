@@ -1,19 +1,19 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
-import { CustomIcon } from '../CustomIcon';
-import { IEmoji } from '../../definitions';
-import { useFrequentlyUsedEmoji } from '../../lib/hooks';
-import { addFrequentlyUsed, searchEmojis } from '../../lib/methods';
-import { useDebounce } from '../../lib/methods/helpers';
-import sharedStyles from '../../views/Styles';
-import { PressableEmoji } from '../EmojiPicker/PressableEmoji';
-import { EmojiSearch } from '../EmojiPicker/EmojiSearch';
-import { EMOJI_BUTTON_SIZE } from '../EmojiPicker/styles';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { MessageComposerContext } from './context';
+import { MessageComposerContext } from '../context';
+import { useTheme } from '../../../theme';
+import I18n from '../../../i18n';
+import { CustomIcon } from '../../CustomIcon';
+import { IEmoji } from '../../../definitions';
+import { useFrequentlyUsedEmoji } from '../../../lib/hooks';
+import { addFrequentlyUsed, searchEmojis } from '../../../lib/methods';
+import { useDebounce } from '../../../lib/methods/helpers';
+import sharedStyles from '../../../views/Styles';
+import { PressableEmoji } from '../../EmojiPicker/PressableEmoji';
+import { EmojiSearch } from '../../EmojiPicker/EmojiSearch';
+import { EMOJI_BUTTON_SIZE } from '../../EmojiPicker/styles';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmojiSearchBar = (): React.ReactElement | null => {
+export const EmojiSearchbar = (): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 	const { showEmojiSearchbar, openEmojiKeyboard, closeEmojiKeyboard, onEmojiSelected } = useContext(MessageComposerContext);
@@ -110,5 +110,3 @@ const EmojiSearchBar = (): React.ReactElement | null => {
 		</View>
 	);
 };
-
-export default EmojiSearchBar;

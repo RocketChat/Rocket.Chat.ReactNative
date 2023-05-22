@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 
 import { BaseButton } from './BaseButton';
-import { MessageComposerContext } from '../context';
-import { useTheme } from '../../../theme';
-import { useAppSelector } from '../../../lib/hooks';
+import { MessageComposerContext } from '../../context';
+import { useTheme } from '../../../../theme';
+import { useAppSelector } from '../../../../lib/hooks';
 
 export const MicOrSendButton = () => {
 	const { micOrSend, permissionToUpload, sendMessage } = useContext(MessageComposerContext);
