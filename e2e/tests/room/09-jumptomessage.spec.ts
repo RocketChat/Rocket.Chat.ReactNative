@@ -15,11 +15,13 @@ async function clearCache() {
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
-	await waitFor(element(by.id('sidebar-view')))
+	await sleep(300); // wait animation
+	await waitFor(element(by.id('sidebar-settings')))
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
-	await waitFor(element(by.id('settings-view')))
+	await sleep(300); // wait animation
+	await waitFor(element(by.id('settings-view-clear-cache')))
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('settings-view-clear-cache')).tap();
@@ -194,12 +196,19 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('202')))
+			.toExist()
+			.withTimeout(5000);
+		await waitFor(element(by[textMatcher]('Load Newer')))
+			.toExist()
+			.withTimeout(5000);
+		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
 		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toNotExist()
 			.withTimeout(5000);
 		await expect(element(by[textMatcher]('Load More'))).toNotExist();
-		await expect(element(by[textMatcher]('201'))).toExist();
-		await expect(element(by[textMatcher]('202'))).toExist();
+		await expect(element(by[textMatcher]('252'))).toExist();
+		await expect(element(by[textMatcher]('253'))).toExist();
 		await tapBack();
 	});
 });

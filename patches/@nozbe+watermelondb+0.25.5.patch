@@ -1,17 +1,17 @@
 diff --git a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
-index 802f137..cfcac91 100644
+index ca31e20..1c1bc24 100644
 --- a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
 +++ b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
 @@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase
  import android.database.sqlite.SQLiteQuery
  import java.io.File
  
--class Database(private val name: String, private val context: Context) {
-+public class Database(private val name: String, private val context: Context) {
- 
-     private val db: SQLiteDatabase by lazy {
-         SQLiteDatabase.openOrCreateDatabase(
-@@ -44,7 +44,7 @@ class Database(private val name: String, private val context: Context) {
+-class Database(
++public class Database(
+     private val name: String,
+     private val context: Context,
+     private val openFlags: Int = SQLiteDatabase.CREATE_IF_NECESSARY or SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING
+@@ -49,7 +49,7 @@ class Database(
  
      fun delete(query: SQL, args: QueryArgs) = db.execSQL(query, args)
  

@@ -16,6 +16,7 @@ import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
+import { IApplicationState } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +54,7 @@ interface IModalBlockViewState {
 interface IModalBlockViewProps {
 	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	language: string;
 	user: {
 		id: string;
@@ -255,7 +256,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 
 		return (
 			<KeyboardAwareScrollView
-				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				style={[styles.container, { backgroundColor: themes[theme!].auxiliaryBackground }]}
 				keyboardShouldPersistTaps='always'
 			>
 				<View style={styles.content}>
@@ -279,8 +280,8 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	language: state.login.user && state.login.user.language
+const mapStateToProps = (state: IApplicationState) => ({
+	language: state.login.user.language as string
 });
 
 export default connect(mapStateToProps)(withTheme(ModalBlockView));
