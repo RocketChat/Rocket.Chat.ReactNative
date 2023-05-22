@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
-	const { colors } = useTheme();
+	const { colors, theme } = useTheme();
 	const { setMicOrSend, rid, tmid, editing, sharing } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
@@ -118,6 +118,7 @@ export const MessageComposerInput = forwardRef<IComposerInput, IComposerInputPro
 			underlineColorAndroid='transparent'
 			defaultValue=''
 			multiline
+			keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 			testID={`message-composer-input${tmid ? '-thread' : ''}`}
 		/>
 	);
