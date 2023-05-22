@@ -57,7 +57,7 @@ const NavBottomFAB = ({
 		return null;
 	}
 
-	let bottom = hasNotch ? 100 : 60;
+	let bottom = hasNotch ? 140 : 100;
 	if (isThread) {
 		bottom += SEND_TO_CHANNEL_HEIGHT;
 	}
