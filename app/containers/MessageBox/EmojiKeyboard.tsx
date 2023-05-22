@@ -24,10 +24,7 @@ const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 					colors: colors[theme]
 				}}
 			>
-				<View
-					style={[styles.emojiKeyboardContainer, { borderTopColor: colors[theme].borderColor }]}
-					testID='messagebox-keyboard-emoji'
-				>
+				<View style={styles.emojiKeyboardContainer} testID='messagebox-keyboard-emoji'>
 					<EmojiPicker onItemClicked={onItemClicked} isEmojiKeyboard={true} />
 				</View>
 			</ThemeContext.Provider>

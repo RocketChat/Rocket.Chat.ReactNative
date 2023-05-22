@@ -7,8 +7,12 @@ import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
 import { ActionsButton } from './ActionsButton';
 
-export const MessageComposerToolbar = (): ReactElement => {
-	const { openEmojiKeyboard, closeEmojiKeyboard, showEmojiKeyboard } = useContext(MessageComposerContext);
+export const MessageComposerToolbar = (): ReactElement | null => {
+	const { openEmojiKeyboard, closeEmojiKeyboard, showEmojiKeyboard, showEmojiSearchbar } = useContext(MessageComposerContext);
+
+	if (showEmojiSearchbar) {
+		return null;
+	}
 
 	if (showEmojiKeyboard) {
 		return (
