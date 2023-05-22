@@ -36,7 +36,7 @@ interface IDirectoryViewProps {
 	baseUrl: string;
 	isFederationEnabled: boolean;
 	user: IUser;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
 }
@@ -210,15 +210,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						style={[
 							sharedStyles.separatorVertical,
 							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme].separatorColor }
+							{ borderColor: themes[theme!].separatorColor }
 						]}
 					>
-						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
+						<CustomIcon name={icon} size={20} color={themes[theme!].tintColor} style={styles.toggleDropdownIcon} />
+						<Text style={[styles.toggleDropdownText, { color: themes[theme!].tintColor }]}>{I18n.t(text)}</Text>
 						<CustomIcon
 							name='chevron-down'
 							size={20}
-							color={themes[theme].auxiliaryTintColor}
+							color={themes[theme!].auxiliaryTintColor}
 							style={styles.toggleDropdownArrow}
 						/>
 					</View>
@@ -235,7 +235,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		if (index === data.length - 1) {
 			style = {
 				...sharedStyles.separatorBottom,
-				borderColor: themes[theme].separatorColor
+				borderColor: themes[theme!].separatorColor
 			};
 		}
 
@@ -289,7 +289,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='directory-view'>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -306,7 +306,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				/>
 				{showOptionsDropdown ? (
 					<Options
-						theme={theme}
+						theme={theme!}
 						type={type}
 						globalUsers={globalUsers}
 						close={this.toggleDropdown}

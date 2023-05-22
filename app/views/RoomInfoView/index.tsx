@@ -41,7 +41,7 @@ interface IRoomInfoViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 	subscribedRoom: string;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
 	editRoomPermission?: string[];
@@ -142,6 +142,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 								onPress={() => {
 									const isLivechat = t === SubscriptionType.OMNICHANNEL;
 									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+									// @ts-ignore
 									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
 								}}
 								testID='room-info-view-edit-button'
@@ -350,7 +351,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	renderButton = (onPress: () => void, iconName: TIconsName, text: string, danger?: boolean) => {
 		const { theme } = this.props;
-		const color = danger ? themes[theme].dangerColor : themes[theme].actionTintColor;
+		const color = danger ? themes[theme!].dangerColor : themes[theme!].actionTintColor;
 		return (
 			<BorderlessButton testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
@@ -403,7 +404,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const roomUserParsed = roomUser as IUserParsed;
 
 		return (
-			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
+			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme!].backgroundColor }]}>
 				<StatusBar />
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-info-view'>
 					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
