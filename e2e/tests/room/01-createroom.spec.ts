@@ -1,20 +1,8 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWaitFor, sleep } from '../../helpers/app';
+import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWaitFor, searchRoom } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
-
-async function searchRoomNonLatin(room: string, roomTestID: string) {
-	await waitFor(element(by.id('rooms-list-view')))
-		.toBeVisible()
-		.withTimeout(30000);
-	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	await element(by.id('rooms-list-view-search-input')).replaceText(room);
-	await sleep(300);
-	await waitFor(element(by.id(roomTestID)))
-		.toBeVisible()
-		.withTimeout(60000);
-}
 
 describe('Create room screen', () => {
 	let alertButtonType: string;
@@ -325,7 +313,7 @@ describe('Create room screen', () => {
 					.toExist()
 					.withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${roomName}`))).toExist();
-				await searchRoomNonLatin(`${roomNameLower}`, `rooms-list-view-item-${roomName}`);
+				await searchRoom(roomNameLower, `rooms-list-view-item-${roomName}`);
 				await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 				await waitFor(element(by.id('room-view')))
 					.toBeVisible()
