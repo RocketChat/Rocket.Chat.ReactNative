@@ -3,7 +3,7 @@ import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import { Toolbar, EmojiSearchbar, ComposerInput } from './components';
+import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
 import { useCanUploadFile, useChooseMedia } from './hooks';
@@ -17,7 +17,8 @@ import { IEmoji } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
-		borderTopWidth: 1
+		borderTopWidth: 1,
+		paddingHorizontal: 16
 	}
 });
 
@@ -38,6 +39,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
 		const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 		const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
+		const [focused, setFocused] = useState(false);
 		const permissionToUpload = useCanUploadFile(rid);
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 		const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -145,6 +147,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					tmid,
 					editing,
 					sharing,
+					focused,
+					setFocused,
 					showEmojiKeyboard,
 					showEmojiSearchbar,
 					permissionToUpload,
@@ -164,7 +168,11 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 					renderContent={() => (
 						<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
-							<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+							<View style={{ flexDirection: 'row', flex: 1 }}>
+								<Left />
+								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+								<Right />
+							</View>
 							<Toolbar />
 							<EmojiSearchbar />
 						</View>

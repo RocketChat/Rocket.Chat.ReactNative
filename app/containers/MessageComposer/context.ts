@@ -12,11 +12,13 @@ type TMessageComposerContext = {
 	micOrSend: TMicOrSend;
 	showEmojiKeyboard: boolean;
 	showEmojiSearchbar: boolean;
+	focused: boolean;
 	permissionToUpload: boolean;
 	setMicOrSend(type: TMicOrSend): void;
 	sendMessage(): void;
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
+	setFocused(focused: boolean): void;
 	onEmojiSelected(emoji: IEmoji): void;
 	takePhoto(): void;
 	takeVideo(): void;
@@ -32,11 +34,13 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	sharing: false,
 	showEmojiKeyboard: false,
 	showEmojiSearchbar: false,
+	focused: false,
 	permissionToUpload: false,
 	setMicOrSend: () => {},
 	sendMessage: () => {},
 	openEmojiKeyboard: () => {},
 	closeEmojiKeyboard: () => {},
+	setFocused: () => {},
 	onEmojiSelected: () => {},
 	takePhoto: () => {},
 	takeVideo: () => {},

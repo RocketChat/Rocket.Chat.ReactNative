@@ -11,17 +11,20 @@ import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
+import { MIN_HEIGHT } from '../constants';
 
 const styles = StyleSheet.create({
 	textInput: {
+		flex: 1,
+		minHeight: MIN_HEIGHT,
 		maxHeight: 240,
-		paddingHorizontal: 16,
 		paddingTop: 12,
 		// TODO: check glitch on iOS selector pin with several lines
 		paddingBottom: 12,
 		fontSize: 16,
-		// textAlignVertical: 'center',
-		...sharedStyles.textRegular
+		textAlignVertical: 'center',
+		...sharedStyles.textRegular,
+		lineHeight: 22
 	}
 });
 
@@ -29,7 +32,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { setMicOrSend, rid, tmid, editing, sharing } = useContext(MessageComposerContext);
+	const { rid, tmid, editing, sharing, setFocused, setMicOrSend } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -87,6 +90,14 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		selectionRef.current = e.nativeEvent.selection;
 	};
 
+	const onFocus: TextInputProps['onFocus'] = () => {
+		setFocused(true);
+	};
+
+	const onBlur: TextInputProps['onBlur'] = () => {
+		setFocused(false);
+	};
+
 	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
@@ -115,6 +126,8 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			blurOnSubmit={false}
 			onChangeText={onChangeText}
 			onSelectionChange={onSelectionChange}
+			onFocus={onFocus}
+			onBlur={onBlur}
 			underlineColorAndroid='transparent'
 			defaultValue=''
 			multiline

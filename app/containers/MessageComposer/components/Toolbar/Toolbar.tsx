@@ -6,7 +6,8 @@ import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
 
 export const Toolbar = (): ReactElement | null => {
-	const { openEmojiKeyboard, closeEmojiKeyboard, showEmojiKeyboard, showEmojiSearchbar } = useContext(MessageComposerContext);
+	const { openEmojiKeyboard, closeEmojiKeyboard, focused, showEmojiKeyboard, showEmojiSearchbar } =
+		useContext(MessageComposerContext);
 
 	if (showEmojiSearchbar) {
 		return null;
@@ -26,6 +27,10 @@ export const Toolbar = (): ReactElement | null => {
 				<MicOrSendButton />
 			</Container>
 		);
+	}
+
+	if (!focused) {
+		return null;
 	}
 
 	// TODO: Markdown state?

@@ -6,7 +6,6 @@ export const Container = ({ children }: { children: ReactElement[] }): ReactElem
 		style={{
 			flexDirection: 'row',
 			gap: 12,
-			paddingHorizontal: 16,
 			paddingVertical: 12
 		}}
 	>
