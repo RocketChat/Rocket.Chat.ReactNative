@@ -23,10 +23,17 @@ interface IBaseButton {
 	onPress(): void;
 }
 
+const hitSlop = {
+	top: 8,
+	right: 8,
+	bottom: 8,
+	left: 8
+};
+
 export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
 	const { colors } = useTheme();
 	return (
-		<BorderlessButton style={styles.button} onPress={onPress} testID={testID}>
+		<BorderlessButton style={styles.button} onPress={onPress} testID={testID} hitSlop={hitSlop}>
 			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
 				<CustomIcon name={icon} size={24} color={color || colors.fontSecondaryInfo} />
 			</View>
