@@ -30,7 +30,8 @@ export default StyleSheet.create({
 	roomTitleContainer: {
 		paddingTop: 32,
 		marginHorizontal: 16,
-		alignItems: 'center'
+		alignItems: 'center',
+		flexDirection: 'row'
 	},
 	roomTitle: {
 		fontSize: 20,

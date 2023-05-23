@@ -39,7 +39,7 @@ const RoomInfoViewTitle = ({ room, type, name, username, statusText }: IRoomInfo
 		);
 	}
 	return (
-		<View style={styles.roomTitleRow}>
+		<View style={styles.roomTitleContainer}>
 			<RoomTypeIcon
 				type={room.prid ? 'discussion' : room.t}
 				teamMain={room.teamMain}
