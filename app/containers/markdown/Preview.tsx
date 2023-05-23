@@ -9,11 +9,10 @@ import { previewFormatText } from './previewFormatText';
 interface IMarkdownPreview {
 	msg?: string;
 	numberOfLines?: number;
-	testID?: string;
 	style?: TextStyle[];
 }
 
-const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview) => {
+const MarkdownPreview = ({ msg, numberOfLines = 1, style = [] }: IMarkdownPreview) => {
 	const { theme } = useTheme();
 
 	if (!msg) {
@@ -26,8 +25,7 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdo
 			accessibilityLabel={m}
 			style={[styles.text, { color: themes[theme].bodyText }, ...style]}
 			numberOfLines={numberOfLines}
-			testID={testID}
-		>
+			testID={`markdown-preview-${m}`}>
 			{m}
 		</Text>
 	);
