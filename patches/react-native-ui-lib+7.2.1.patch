@@ -24,6 +24,19 @@ index 4344724..2786051 100644
  #endif
  
  @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
+index 1ca52e8..a3ec07b 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
+@@ -147,6 +147,8 @@ - (void)_keyboardWillHideNotification:(NSNotification*)notification
+ - (void)_keyboardDidHideNotification:(NSNotification*)notification
+ {
+     _keyboardState = KeyboardStateHidden;
++    _height = self.window.bounds.size.height;
++    [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
+     
+     [self invalidateIntrinsicContentSize];
+ }
 diff --git a/node_modules/react-native-ui-lib/src/commons/Constants.ts b/node_modules/react-native-ui-lib/src/commons/Constants.ts
 index c029d61..77f60f7 100644
 --- a/node_modules/react-native-ui-lib/src/commons/Constants.ts
