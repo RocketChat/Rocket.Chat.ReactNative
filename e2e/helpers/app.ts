@@ -123,11 +123,8 @@ async function searchRoom(room: string, roomTestID?: string) {
 		.toBeVisible()
 		.withTimeout(30000);
 	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	// eslint-disable-next-line no-control-regex
-	const regexOnlyASCII = new RegExp('^[\x00-\x7F]*$');
-	// If there is any character different from ASCII the simulator must paste the string on the input
-	const inputTextType = regexOnlyASCII.test(room) ? 'typeText' : 'replaceText';
-	await element(by.id('rooms-list-view-search-input'))[inputTextType](room);
+	await element(by.id('rooms-list-view-search-input')).replaceText(room);
+	await element(by.id('rooms-list-view-search-input')).typeText(' ');
 	await sleep(300);
 	await waitFor(element(by.id(roomTestID || `rooms-list-view-item-${room}`)))
 		.toBeVisible()
