@@ -154,7 +154,8 @@ const getItemLayout = (data: ISubscription[] | null | undefined, index: number, 
 	offset: height * index,
 	index
 });
-const keyExtractor = (item: ISubscription) => item.rid;
+// We need to pass the isSearching to handle the room if it's a room returned from search (without observable) or from query subscription (with observable)
+const keyExtractor = (item: ISubscription, isSearching: boolean) => `${item.rid}-${isSearching}`;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
 	private animated: boolean;
@@ -899,7 +900,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
-				keyExtractor={keyExtractor}
+				keyExtractor={item => keyExtractor(item, !!searching)}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
