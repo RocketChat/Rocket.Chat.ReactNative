@@ -123,8 +123,11 @@ async function searchRoom(room: string, roomTestID?: string) {
 		.toBeVisible()
 		.withTimeout(30000);
 	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	await element(by.id('rooms-list-view-search-input')).replaceText(room);
-	await element(by.id('rooms-list-view-search-input')).typeText(' ');
+	const roomFirstSlice = room.slice(0, room.length - 1);
+	const roomSecondSlice = room.slice(room.length - 1);
+	await element(by.id('rooms-list-view-search-input')).replaceText(roomFirstSlice);
+	await sleep(300);
+	await element(by.id('rooms-list-view-search-input')).typeText(roomSecondSlice);
 	await sleep(300);
 	await waitFor(element(by.id(roomTestID || `rooms-list-view-item-${room}`)))
 		.toBeVisible()
