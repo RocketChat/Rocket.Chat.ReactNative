@@ -51,18 +51,18 @@ interface IGetRoomTitle {
 const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
 	type === SubscriptionType.DIRECT ? (
 		<>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme!].titleText }]}>
 				{name}
 			</Text>
 			{username && (
 				<Text
 					testID='room-info-view-username'
-					style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}
+					style={[styles.roomUsername, { color: themes[theme!].auxiliaryText }]}
 				>{`@${username}`}</Text>
 			)}
 			{!!statusText && (
 				<View testID='room-info-view-custom-status'>
-					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} />
+					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme!].auxiliaryText }]} />
 				</View>
 			)}
 		</>
@@ -75,7 +75,7 @@ const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGet
 				status={room.visitor?.status}
 				sourceType={room.source}
 			/>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme!].titleText }]} key='room-info-name'>
 				{getRoomTitle(room)}
 			</Text>
 		</View>
@@ -88,7 +88,7 @@ interface IRoomInfoViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 	subscribedRoom: string;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
 	editRoomPermission?: string[];
@@ -189,6 +189,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 								onPress={() => {
 									const isLivechat = t === SubscriptionType.OMNICHANNEL;
 									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+									// @ts-ignore
 									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
 								}}
 								testID='room-info-view-edit-button'
@@ -415,7 +416,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				handleEdit={showAvatarEdit ? this.handleEditAvatar : undefined}
 			>
 				{this.t === SubscriptionType.DIRECT && roomUser._id ? (
-					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<View style={[sharedStyles.status, { backgroundColor: themes[theme!].auxiliaryBackground }]}>
 						<Status size={20} id={roomUser._id} />
 					</View>
 				) : null}
@@ -425,7 +426,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	renderButton = (onPress: () => void, iconName: TIconsName, text: string, danger?: boolean) => {
 		const { theme } = this.props;
-		const color = danger ? themes[theme].dangerColor : themes[theme].actionTintColor;
+		const color = danger ? themes[theme!].dangerColor : themes[theme!].actionTintColor;
 		return (
 			<BorderlessButton testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
@@ -491,10 +492,10 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const roomUserParsed = roomUser as IUserParsed;
 
 		return (
-			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
+			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme!].backgroundColor }]}>
 				<StatusBar />
-				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-info-view'>
-					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+				<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='room-info-view'>
+					<View style={[styles.avatarContainer, { backgroundColor: themes[theme!].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUserParsed)}
 						<View style={styles.roomTitleContainer}>
 							{renderRoomTitle({
@@ -503,7 +504,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 								name: roomUserParsed?.name,
 								username: roomUserParsed?.username,
 								statusText: roomUserParsed?.statusText,
-								theme
+								theme: theme!
 							})}
 						</View>
 						{this.renderButtons()}
