@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { IUser } from '../../definitions';
+import { TUserParsed } from '../../definitions';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
@@ -30,7 +30,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	return null;
 };
 
-const Direct = ({ roomUser }: { roomUser: IUser & { parsedRoles?: string[] } }): React.ReactElement => (
+const Direct = ({ roomUser }: { roomUser: TUserParsed }): React.ReactElement => (
 	<>
 		<Roles roles={roomUser.parsedRoles} />
 		<Timezone utcOffset={roomUser.utcOffset} />

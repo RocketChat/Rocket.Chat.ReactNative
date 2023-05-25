@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { ISubscription, SubscriptionType } from '../../../definitions';
+import { ISubscription, SubscriptionType, TUserParsed } from '../../../definitions';
+import { ILivechatVisitorModified } from '../../../definitions/ILivechatVisitor';
 import Channel from '../Channel';
 import Direct from '../Direct';
 import Livechat from '../Livechat';
-import { ILivechatVisitorModified } from '../../../definitions/ILivechatVisitor';
 
 const RoomInfoViewBody = ({
 	isDirect,
@@ -13,16 +13,16 @@ const RoomInfoViewBody = ({
 	type
 }: {
 	isDirect: boolean;
-	roomUser: ILivechatVisitorModified;
+	roomUser: TUserParsed | ILivechatVisitorModified;
 	room?: ISubscription;
 	type: SubscriptionType;
 }): React.ReactElement => {
 	if (isDirect) {
-		return <Direct roomUser={roomUser} />;
+		return <Direct roomUser={roomUser as TUserParsed} />;
 	}
 
 	if (type === SubscriptionType.OMNICHANNEL && room) {
-		return <Livechat room={room} roomUser={roomUser} />;
+		return <Livechat room={room} roomUser={roomUser as ILivechatVisitorModified} />;
 	}
 	return <Channel room={room} />;
 };
