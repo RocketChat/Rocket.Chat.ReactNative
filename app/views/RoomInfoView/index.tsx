@@ -99,8 +99,9 @@ const RoomInfoView = (): React.ReactElement => {
 								iconName='edit'
 								onPress={() => {
 									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-									const screen = isLivechat ? 'LivechatEditView' : 'RoomInfoEditView';
-									navigate(screen, { rid, room, roomUser });
+									const navigationProps = { room, roomUser };
+									if (isLivechat) navigate('LivechatEditView', navigationProps);
+									else navigate('RoomInfoEditView', { rid, ...navigationProps });
 								}}
 								testID='room-info-view-edit-button'
 							/>
