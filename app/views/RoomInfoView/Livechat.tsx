@@ -6,12 +6,12 @@ import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { ISubscription } from '../../definitions';
-import { ILivechatVisitorModified } from './index';
 import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { Services } from '../../lib/services';
+import { ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
 
 const styles = StyleSheet.create({
 	title: {
