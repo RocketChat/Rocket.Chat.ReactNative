@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { themes } from '../../lib/constants';
+import { IUser } from '../../definitions';
 import I18n from '../../i18n';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import Timezone from './Timezone';
 import CustomFields from './CustomFields';
+import Timezone from './Timezone';
 import styles from './styles';
-import { IUserParsed } from '.';
 
 const Roles = ({ roles }: { roles?: string[] }) => {
 	const { theme } = useTheme();
@@ -30,7 +30,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	return null;
 };
 
-const Direct = ({ roomUser }: { roomUser: IUserParsed }) => (
+const Direct = ({ roomUser }: { roomUser: IUser & { parsedRoles?: string[] } }): React.ReactElement => (
 	<>
 		<Roles roles={roomUser.parsedRoles} />
 		<Timezone utcOffset={roomUser.utcOffset} />
