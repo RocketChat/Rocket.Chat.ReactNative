@@ -56,7 +56,6 @@ export const RoomInfoButtons = ({
 	handleIgnoreUser,
 	handleBlockUser
 }) => {
-	console.log(room, roomFromRid, roomUser, isDirect, fromRid);
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = roomFromRid?.uids && roomFromRid.uids?.filter((uid: string) => uid !== roomUser._id).length === 0;
 
