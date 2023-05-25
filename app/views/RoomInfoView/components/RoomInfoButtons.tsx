@@ -3,13 +3,13 @@ import { Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
+import { TSubscriptionModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
-import { ISubscription, TSubscriptionModel } from '../../../definitions';
 
 function BaseButton({
 	danger,
