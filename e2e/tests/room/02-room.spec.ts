@@ -504,16 +504,17 @@ describe('Room screen', () => {
 					.withTimeout(10000);
 				await element(by[textMatcher](originalMessage)).atIndex(0).tap();
 				await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
-				await sleep(300); // wait for animation
+				await sleep(600); // wait for animation
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
-				await sleep(300); // wait for animation
+				await sleep(600); // wait for animation
 				await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(6000);
-				await sleep(500); // wait for animation
+				await sleep(600); // wait for animation
 				await element(by[textMatcher]('Reply in Direct Message')).atIndex(0).tap();
+				await sleep(600); // wait for animation
 				await waitFor(element(by.id(`room-view-title-${replyUser.username}`)))
 					.toExist()
 					.withTimeout(6000);
