@@ -30,6 +30,15 @@ jest.mock('./app/lib/database', () => ({
 	active: { get: jest.fn(() => null) }
 }));
 
+jest.mock('./app/containers/MessageBox/EmojiKeyboard', () => jest.fn(() => null));
+
+jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
+	useFrequentlyUsedEmoji: () => ({
+		frequentlyUsed: [],
+		loaded: true
+	})
+}));
+
 const mockedNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
@@ -67,5 +76,16 @@ jest.mock('react-native-math-view', () => {
 		__esModule: true,
 		default: react.View, // Default export
 		MathText: react.View // {...} Named export
+	};
+});
+
+jest.mock('react-native-ui-lib/keyboard', () => {
+	const { forwardRef } = jest.requireActual('react');
+	return {
+		__esModule: true,
+		KeyboardAccessoryView: forwardRef((props, ref) => {
+			const MockName = 'keyboard-accessory-view-mock';
+			return <MockName>{props.renderContent()}</MockName>;
+		})
 	};
 });
