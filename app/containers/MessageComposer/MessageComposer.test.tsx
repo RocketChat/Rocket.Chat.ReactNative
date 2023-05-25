@@ -89,9 +89,50 @@ test('send message', async () => {
 		await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
 		expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
 		expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
-		// await fireEvent.press(screen.getByTestId('message-composer-send'));
+		await fireEvent.press(screen.getByTestId('message-composer-send'));
 	});
-	// await waitFor(() => expect(onSendMessage).toHaveBeenCalledTimes(1));
-	// expect(onSendMessage).toHaveBeenCalledWith('test');
+	await waitFor(() => expect(onSendMessage).toHaveBeenCalledTimes(1));
+	expect(onSendMessage).toHaveBeenCalledWith('test');
+	expect(screen.toJSON()).toMatchSnapshot();
+});
+
+test('tap actions from toolbar', async () => {
+	render(<Render />);
+
+	await act(async () => {
+		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+		await fireEvent.press(screen.getByTestId('message-composer-actions'));
+	});
+	expect(screen.toJSON()).toMatchSnapshot();
+});
+
+test('tap emoji', async () => {
+	render(<Render />);
+
+	await act(async () => {
+		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+		await fireEvent.press(screen.getByTestId('message-composer-open-emoji'));
+	});
+	expect(screen.getByTestId('message-composer-close-emoji')).toBeOnTheScreen();
+	expect(screen.toJSON()).toMatchSnapshot();
+});
+
+test('tap markdown', async () => {
+	render(<Render />);
+
+	await act(async () => {
+		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+		// await fireEvent.press(screen.getByTestId('message-composer-markdown'));
+	});
+	expect(screen.toJSON()).toMatchSnapshot();
+});
+
+test('tap mention', async () => {
+	render(<Render />);
+
+	await act(async () => {
+		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+		// await fireEvent.press(screen.getByTestId('message-composer-mention'));
+	});
 	expect(screen.toJSON()).toMatchSnapshot();
 });
