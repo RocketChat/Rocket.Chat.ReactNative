@@ -42,7 +42,7 @@ const RoomInfoView = (): React.ReactElement => {
 	} = useRoute<TRoomInfoViewRouteProp>();
 	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
 
-	const [room, setRoom] = useState(roomParam || { rid, t })
+	const [room, setRoom] = useState(roomParam || { rid, t });
 	const [roomUser, setRoomUser] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
 	const [roomFromRid, setRoomFromRid] = useState<TSubscriptionModel | undefined>(undefined);
@@ -179,6 +179,8 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				const result = await Services.getRoomInfo(rid);
 				if (result.success) {
+					// TODO: FIX ROOM TYPES
+					// @ts-ignore
 					setRoom({ ...room, ...result.room });
 				}
 			} catch (e) {
