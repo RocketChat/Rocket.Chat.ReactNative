@@ -44,8 +44,8 @@ export const Toolbar = (): ReactElement | null => {
 				accessibilityLabel='Open_emoji_selector'
 				icon='emoji'
 			/>
-			<BaseButton onPress={() => alert('tbd')} testID='TBD' accessibilityLabel='TBD' icon='text-format' />
-			<BaseButton onPress={() => alert('tbd')} testID='TBD' accessibilityLabel='TBD' icon='mention' />
+			<BaseButton onPress={() => alert('tbd')} testID='message-composer-markdown' accessibilityLabel='TBD' icon='text-format' />
+			<BaseButton onPress={() => alert('tbd')} testID='message-composer-mention' accessibilityLabel='TBD' icon='mention' />
 			<EmptySpace />
 			<MicOrSendButton />
 		</Container>
