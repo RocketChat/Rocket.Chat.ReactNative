@@ -9,7 +9,7 @@ import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import { getRoomTitle } from '../../../lib/methods/helpers';
 
 interface IRoomInfoViewTitle {
-	room: ISubscription;
+	room?: ISubscription;
 	type: SubscriptionType;
 	name?: string;
 	username: string;
@@ -41,11 +41,11 @@ const RoomInfoViewTitle = ({ room, type, name, username, statusText }: IRoomInfo
 	return (
 		<View style={styles.roomTitleContainer}>
 			<RoomTypeIcon
-				type={room.prid ? 'discussion' : room.t}
-				teamMain={room.teamMain}
+				type={room?.prid ? 'discussion' : room?.t}
+				teamMain={room?.teamMain}
 				key='room-info-type'
-				status={room.visitor?.status}
-				sourceType={room.source}
+				status={room?.visitor?.status}
+				sourceType={room?.source}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.titleText }]} key='room-info-name'>
 				{getRoomTitle(room)}

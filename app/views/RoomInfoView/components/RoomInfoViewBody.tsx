@@ -14,14 +14,14 @@ const RoomInfoViewBody = ({
 }: {
 	isDirect: boolean;
 	roomUser: ILivechatVisitorModified;
-	room: ISubscription;
+	room?: ISubscription;
 	type: SubscriptionType;
 }): React.ReactElement => {
 	if (isDirect) {
 		return <Direct roomUser={roomUser} />;
 	}
 
-	if (type === SubscriptionType.OMNICHANNEL) {
+	if (type === SubscriptionType.OMNICHANNEL && room) {
 		return <Livechat room={room} roomUser={roomUser} />;
 	}
 	return <Channel room={room} />;

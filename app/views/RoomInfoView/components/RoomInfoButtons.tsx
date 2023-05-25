@@ -9,6 +9,7 @@ import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
+import { ISubscription, TSubscriptionModel } from '../../../definitions';
 
 function BaseButton({
 	danger,
@@ -46,8 +47,19 @@ function CallButton({ rid, isDirect }: { rid: string; isDirect: boolean }): Reac
 	return <BaseButton onPress={showInitCallActionSheet} iconName='phone' label={i18n.t('Call')} showIcon={showIcon} />;
 }
 
+interface IRoomInfoButtons {
+	rid: string;
+	roomFromRid: TSubscriptionModel | undefined;
+	roomUser: any;
+	isDirect: boolean;
+	fromRid?: string;
+	handleCreateDirectMessage: () => void;
+	handleIgnoreUser: () => void;
+	handleBlockUser: () => void;
+}
+
 export const RoomInfoButtons = ({
-	room,
+	rid,
 	roomFromRid,
 	roomUser,
 	isDirect,
@@ -55,7 +67,7 @@ export const RoomInfoButtons = ({
 	handleCreateDirectMessage,
 	handleIgnoreUser,
 	handleBlockUser
-}) => {
+}: IRoomInfoButtons): React.ReactElement => {
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = roomFromRid?.uids && roomFromRid.uids?.filter((uid: string) => uid !== roomUser._id).length === 0;
 
@@ -70,19 +82,19 @@ export const RoomInfoButtons = ({
 	return (
 		<View style={styles.roomButtonsContainer}>
 			<BaseButton onPress={handleCreateDirectMessage} label={i18n.t('Message')} iconName='message' />
-			<CallButton isDirect={isDirect} rid={room.rid} />
+			<CallButton isDirect={isDirect} rid={rid} />
 			<BaseButton
 				onPress={handleIgnoreUser}
 				label={i18n.t(isIgnored ? 'Unignore' : 'Ignore')}
 				iconName='ignore'
-				showIcon={renderIgnoreUser}
+				showIcon={!!renderIgnoreUser}
 				danger
 			/>
 			<BaseButton
 				onPress={handleBlockUser}
 				label={i18n.t(`${isBlocked ? 'Unblock' : 'Block'}_user`)}
 				iconName='ignore'
-				showIcon={renderBlockUser}
+				showIcon={!!renderBlockUser}
 				danger
 			/>
 		</View>

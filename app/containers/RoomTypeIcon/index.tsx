@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomTypeIcon {
-	type: string;
+	type?: string;
 	isGroupChat?: boolean;
 	teamMain?: boolean;
 	status?: TUserStatus;

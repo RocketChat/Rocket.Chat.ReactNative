@@ -42,13 +42,13 @@ const RoomInfoView = (): React.ReactElement => {
 	} = useRoute<TRoomInfoViewRouteProp>();
 	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
 
-	const [room, setRoom] = useState(roomParam || { rid, t });
+	const [room, setRoom] = useState(roomParam);
 	const [roomUser, setRoomUser] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
 	const [roomFromRid, setRoomFromRid] = useState<TSubscriptionModel | undefined>(undefined);
 
-	const isDirect = room?.t === SubscriptionType.DIRECT;
-	const isLivechat = room?.t === SubscriptionType.OMNICHANNEL;
+	const isDirect = room?.t || t === SubscriptionType.DIRECT;
+	const isLivechat = room?.t || t === SubscriptionType.OMNICHANNEL;
 
 	const subscription = useRef<Subscription | undefined>(undefined);
 	const subscriptionRoomFromRid = useRef<Subscription | undefined>(undefined);
@@ -98,6 +98,7 @@ const RoomInfoView = (): React.ReactElement => {
 							<HeaderButton.Item
 								iconName='edit'
 								onPress={() => {
+									if (!room) return;
 									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
 									const navigationProps = { room, roomUser };
 									if (isLivechat) navigate('LivechatEditView', navigationProps);
@@ -206,7 +207,7 @@ const RoomInfoView = (): React.ReactElement => {
 			// TODO: Check if some direct with the user already exists on database
 			try {
 				const result = await Services.createDirectMessage(roomUser.userName);
-				if (result.success) {
+				if (result.success && room) {
 					setRoom({ ...room, rid: result.room.rid });
 					return resolve();
 				}
@@ -285,17 +286,17 @@ const RoomInfoView = (): React.ReactElement => {
 						statusText={roomUser?.statusText}
 					/>
 					<RoomInfoButtons
-						room={room}
+						rid={room?.rid || rid}
 						fromRid={fromRid}
 						handleBlockUser={handleBlockUser}
 						handleCreateDirectMessage={handleCreateDirectMessage}
 						handleIgnoreUser={handleIgnoreUser}
-						isDirect={isDirect}
+						isDirect={!!isDirect}
 						roomFromRid={roomFromRid}
 						roomUser={roomUser}
 					/>
 				</View>
-				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} type={t} />
+				<RoomInfoViewBody isDirect={!!isDirect} room={room} roomUser={roomUser} type={t} />
 			</SafeAreaView>
 		</ScrollView>
 	);

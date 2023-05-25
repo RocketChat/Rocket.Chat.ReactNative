@@ -79,7 +79,7 @@ export type ChatsStackParamList = {
 		isRadio?: boolean;
 	};
 	RoomInfoView: {
-		room: ISubscription;
+		room?: ISubscription;
 		member?: any;
 		rid: string;
 		t: SubscriptionType;
