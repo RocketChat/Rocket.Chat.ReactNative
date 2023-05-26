@@ -36,7 +36,7 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 
 	const { showActionSheet } = useActionSheet();
-	const snaps = useSnaps([1250]);
+	const snaps = useSnaps(404);
 
 	const handleShowCallOption = async () => {
 		if (isServer5OrNewer) return setShowCallOption(true);
