@@ -167,7 +167,10 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				<KeyboardAccessoryView
 					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 					renderContent={() => (
-						<View style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}>
+						<View
+							style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
+							testID='message-composer'
+						>
 							<View style={{ flexDirection: 'row', flex: 1 }}>
 								<Left />
 								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />

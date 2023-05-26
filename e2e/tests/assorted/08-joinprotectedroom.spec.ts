@@ -65,10 +65,10 @@ describe.skip('Join protected room', () => {
 			await waitFor(element(by.id('join-code')))
 				.toBeNotVisible()
 				.withTimeout(5000);
-			await waitFor(element(by.id('messagebox')))
+			await waitFor(element(by.id('message-composer')))
 				.toBeVisible()
 				.withTimeout(60000);
-			await expect(element(by.id('messagebox'))).toBeVisible();
+			await expect(element(by.id('message-composer'))).toBeVisible();
 			await expect(element(by.id('room-view-join'))).toBeNotVisible();
 		});
 

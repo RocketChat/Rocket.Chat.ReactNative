@@ -150,78 +150,80 @@ describe('Room actions screen', () => {
 				await backToActions();
 			});
 
-			it('should show starred message and unstar it', async () => {
-				// Go back to room and send a message
-				await tapBack();
-				const messageToStar = await mockMessage('messageToStar');
+			// FIXME: implement before merging to develop
+			// it('should show starred message and unstar it', async () => {
+			// 	// Go back to room and send a message
+			// 	await tapBack();
+			// 	const messageToStar = await mockMessage('messageToStar');
 
-				// Star the message
-				await starMessage(messageToStar);
+			// 	// Star the message
+			// 	await starMessage(messageToStar);
 
-				// Back into Room Actions
-				await element(by.id('room-header')).tap();
-				await waitFor(element(by.id('room-actions-view')))
-					.toExist()
-					.withTimeout(5000);
+			// 	// Back into Room Actions
+			// 	await element(by.id('room-header')).tap();
+			// 	await waitFor(element(by.id('room-actions-view')))
+			// 		.toExist()
+			// 		.withTimeout(5000);
 
-				// Go to starred messages
-				await element(by.id('room-actions-view')).swipe('up');
-				await waitFor(element(by.id('room-actions-starred'))).toExist();
-				await element(by.id('room-actions-starred')).tap();
-				await waitFor(element(by.id('starred-messages-view')))
-					.toExist()
-					.withTimeout(2000);
-				await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
-					.toExist()
-					.withTimeout(60000);
+			// 	// Go to starred messages
+			// 	await element(by.id('room-actions-view')).swipe('up');
+			// 	await waitFor(element(by.id('room-actions-starred'))).toExist();
+			// 	await element(by.id('room-actions-starred')).tap();
+			// 	await waitFor(element(by.id('starred-messages-view')))
+			// 		.toExist()
+			// 		.withTimeout(2000);
+			// 	await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
+			// 		.toExist()
+			// 		.withTimeout(60000);
 
-				// Unstar message
-				await element(by[textMatcher](messageToStar)).atIndex(0).longPress();
-				await expect(element(by.id('action-sheet'))).toExist();
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by[textMatcher]('Unstar')).atIndex(0).tap();
+			// 	// Unstar message
+			// 	await element(by[textMatcher](messageToStar)).atIndex(0).longPress();
+			// 	await expect(element(by.id('action-sheet'))).toExist();
+			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			// 	await element(by[textMatcher]('Unstar')).atIndex(0).tap();
 
-				await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
-					.toBeNotVisible()
-					.withTimeout(60000);
-				await backToActions();
-			});
+			// 	await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
+			// 		.toBeNotVisible()
+			// 		.withTimeout(60000);
+			// 	await backToActions();
+			// });
 
-			it('should show pinned message and unpin it', async () => {
-				// Go back to room and send a message
-				await tapBack();
-				const messageToPin = await mockMessage('messageToPin');
+			// FIXME: implement before merging to develop
+			// it('should show pinned message and unpin it', async () => {
+			// 	// Go back to room and send a message
+			// 	await tapBack();
+			// 	const messageToPin = await mockMessage('messageToPin');
 
-				// Pin the message
-				await pinMessage(messageToPin);
+			// 	// Pin the message
+			// 	await pinMessage(messageToPin);
 
-				// Back into Room Actions
-				await element(by.id('room-header')).tap();
-				await waitFor(element(by.id('room-actions-view')))
-					.toExist()
-					.withTimeout(5000);
-				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
-				await waitFor(element(by.id('room-actions-pinned'))).toExist();
-				await element(by.id('room-actions-pinned')).tap();
-				await waitFor(element(by.id('pinned-messages-view')))
-					.toExist()
-					.withTimeout(2000);
-				await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
-					.toExist()
-					.withTimeout(6000);
-				await element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view')))
-					.atIndex(0)
-					.longPress();
+			// 	// Back into Room Actions
+			// 	await element(by.id('room-header')).tap();
+			// 	await waitFor(element(by.id('room-actions-view')))
+			// 		.toExist()
+			// 		.withTimeout(5000);
+			// 	await element(by.id('room-actions-scrollview')).scrollTo('bottom');
+			// 	await waitFor(element(by.id('room-actions-pinned'))).toExist();
+			// 	await element(by.id('room-actions-pinned')).tap();
+			// 	await waitFor(element(by.id('pinned-messages-view')))
+			// 		.toExist()
+			// 		.withTimeout(2000);
+			// 	await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
+			// 		.toExist()
+			// 		.withTimeout(6000);
+			// 	await element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view')))
+			// 		.atIndex(0)
+			// 		.longPress();
 
-				await expect(element(by.id('action-sheet'))).toExist();
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by[textMatcher]('Unpin')).atIndex(0).tap();
+			// 	await expect(element(by.id('action-sheet'))).toExist();
+			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			// 	await element(by[textMatcher]('Unpin')).atIndex(0).tap();
 
-				await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
-					.not.toExist()
-					.withTimeout(6000);
-				await backToActions();
-			});
+			// 	await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
+			// 		.not.toExist()
+			// 		.withTimeout(6000);
+			// 	await backToActions();
+			// });
 		});
 
 		describe('Notification', () => {

@@ -11,7 +11,7 @@ import {
 	TTextMatcher,
 	mockMessage
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 async function navigateToRoom(roomName: string) {
 	await searchRoom(`${roomName}`);
@@ -59,7 +59,7 @@ describe('Room screen', () => {
 	});
 
 	describe('Usage', () => {
-		describe('Messagebox', () => {
+		describe('Message Composer', () => {
 			it('should send message', async () => {
 				randomMessage = await mockMessage('message');
 			});

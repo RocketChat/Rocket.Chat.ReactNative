@@ -45,29 +45,6 @@ describe.skip('Threads', () => {
 				await expect(element(by.id('room-view-header-threads'))).toExist();
 			});
 		});
-
-		// Render - Messagebox
-		describe('Messagebox', () => {
-			it('should have messagebox', async () => {
-				await expect(element(by.id('messagebox'))).toExist();
-			});
-
-			it('should have open emoji button', async () => {
-				await expect(element(by.id('message-composer-open-emoji'))).toExist();
-			});
-
-			it('should have message input', async () => {
-				await expect(element(by.id('message-composer-input'))).toExist();
-			});
-
-			it('should have audio button', async () => {
-				await expect(element(by.id('message-composer-send-audio'))).toExist();
-			});
-
-			it('should have actions button', async () => {
-				await expect(element(by.id('message-composer-actions'))).toExist();
-			});
-		});
 	});
 
 	describe('Usage', () => {
