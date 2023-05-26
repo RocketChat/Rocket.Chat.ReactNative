@@ -7,6 +7,7 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -15,11 +16,11 @@ exports[`renders correctly 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -211,6 +212,7 @@ exports[`renders correctly with audio recorder disabled 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -219,11 +221,11 @@ exports[`renders correctly with audio recorder disabled 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -354,6 +356,7 @@ exports[`renders correctly with audio recorder disabled and without audio upload
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -362,11 +365,11 @@ exports[`renders correctly with audio recorder disabled and without audio upload
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -497,6 +500,7 @@ exports[`renders correctly without audio upload permissions 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -505,11 +509,11 @@ exports[`renders correctly without audio upload permissions 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -640,6 +644,7 @@ exports[`renders toolbar when focused 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -648,11 +653,11 @@ exports[`renders toolbar when focused 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -1021,6 +1026,7 @@ exports[`send message 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -1029,11 +1035,11 @@ exports[`send message 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -1225,6 +1231,7 @@ exports[`tap actions from toolbar 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -1233,11 +1240,11 @@ exports[`tap actions from toolbar 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -1606,6 +1613,7 @@ exports[`tap emoji 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -1614,11 +1622,11 @@ exports[`tap emoji 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -1867,6 +1875,7 @@ exports[`tap markdown 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -1875,11 +1884,11 @@ exports[`tap markdown 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
@@ -2248,6 +2257,7 @@ exports[`tap mention 1`] = `
       Array [
         Object {
           "borderTopWidth": 1,
+          "minHeight": 48,
           "paddingHorizontal": 16,
         },
         Object {
@@ -2256,11 +2266,11 @@ exports[`tap mention 1`] = `
         },
       ]
     }
+    testID="message-composer"
   >
     <View
       style={
         Object {
-          "flex": 1,
           "flexDirection": "row",
         }
       }
