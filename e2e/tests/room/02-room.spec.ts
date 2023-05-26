@@ -6,7 +6,7 @@ import {
 	tapBack,
 	sleep,
 	searchRoom,
-	tryTapping,
+	// tryTapping,
 	platformTypes,
 	TTextMatcher,
 	mockMessage
@@ -23,7 +23,7 @@ async function navigateToRoom(roomName: string) {
 
 describe('Room screen', () => {
 	let room: string;
-	let alertButtonType: string;
+	// let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
 	let randomMessage: string;
@@ -32,7 +32,7 @@ describe('Room screen', () => {
 		user = await createRandomUser();
 		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
+		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(user.username, user.password);
 		await navigateToRoom(room);

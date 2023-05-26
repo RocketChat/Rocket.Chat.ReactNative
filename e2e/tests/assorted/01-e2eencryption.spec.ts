@@ -10,9 +10,9 @@ import {
 	platformTypes,
 	TTextMatcher,
 	tapAndWaitFor,
-	expectValidRegisterOrRetry,
-	mockMessage,
-	tryTapping
+	expectValidRegisterOrRetry
+	// mockMessage,
+	// tryTapping
 } from '../../helpers/app';
 import data from '../../data';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
