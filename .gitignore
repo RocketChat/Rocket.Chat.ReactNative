@@ -24,6 +24,7 @@ project.xcworkspace
 *.mobileprovision
 ios/Pods/
 /vendor/bundle/
+ios/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -32,6 +33,10 @@ build/
 .gradle
 local.properties
 *.iml
+.cxx/
+*.keystore
+!debug.keystore
+*.jks
 
 # node.js
 #
@@ -40,12 +45,6 @@ npm-debug.log
 yarn-error.log
 
 coverage/
-
-# BUCK
-buck-out/
-\.buckd/
-*.keystore
-*.jks
 
 # fastlane
 #
@@ -63,10 +62,10 @@ coverage
 
 artifacts
 .vscode/
-e2e/docker/rc_test_env/docker-compose.yml
-e2e/docker/data/db
-e2e/e2e_account.js
 e2e/e2e_account.ts
 junit.xml
 
 *.p8
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*

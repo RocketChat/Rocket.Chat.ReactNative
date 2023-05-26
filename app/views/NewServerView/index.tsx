@@ -21,7 +21,7 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
@@ -67,10 +67,11 @@ const styles = StyleSheet.create({
 });
 
 interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
-	connecting: boolean;
-	previousServer: string | null;
-	width: number;
-	height: number;
+	connecting?: boolean;
+	previousServer?: string | null;
+	width?: number;
+	height?: number;
+	theme?: TSupportedThemes;
 }
 
 interface INewServerViewState {
@@ -157,7 +158,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.get('servers_history');
-			let whereClause = [Q.where('username', Q.notEq(null)), Q.experimentalSortBy('updated_at', Q.desc), Q.experimentalTake(3)];
+			let whereClause = [Q.where('username', Q.notEq(null)), Q.sortBy('updated_at', Q.desc), Q.take(3)];
 			if (text) {
 				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
@@ -303,14 +304,14 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
+						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height: height! })
 					}
 				]}
 			>
 				<Text
 					style={[
 						styles.chooseCertificateTitle,
-						{ color: themes[theme].auxiliaryText, fontSize: moderateScale({ size: 13, width }) }
+						{ color: themes[theme!].auxiliaryText, fontSize: moderateScale({ size: 13, width: width! }) }
 					]}
 				>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
@@ -320,7 +321,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					testID='new-server-choose-certificate'
 				>
 					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}
+						style={[
+							styles.chooseCertificate,
+							{ color: themes[theme!].tintColor, fontSize: moderateScale({ size: 13, width: width! }) }
+						]}
 					>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
@@ -333,6 +337,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { connecting, theme, previousServer, width, height } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
 		const marginTop = previousServer ? 0 : 35;
+
+		if (!height || !width) {
+			return null;
+		}
 
 		return (
 			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -354,7 +362,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.title,
 							{
-								color: themes[theme].titleText,
+								color: themes[theme!].titleText,
 								fontSize: moderateScale({ size: 22, width }),
 								marginBottom: verticalScale({ size: 8, height })
 							}
@@ -366,7 +374,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.subtitle,
 							{
-								color: themes[theme].controlText,
+								color: themes[theme!].controlText,
 								fontSize: moderateScale({ size: 16, width }),
 								marginBottom: verticalScale({ size: 30, height })
 							}
@@ -376,7 +384,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					</Text>
 					<ServerInput
 						text={text}
-						theme={theme}
+						theme={theme!}
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}
@@ -394,12 +402,12 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					/>
 					{isIOS ? (
 						<>
-							<OrSeparator theme={theme} />
+							<OrSeparator theme={theme!} />
 							<Text
 								style={[
 									styles.description,
 									{
-										color: themes[theme].auxiliaryText,
+										color: themes[theme!].auxiliaryText,
 										fontSize: moderateScale({ size: 14, width }),
 										marginBottom: verticalScale({ size: 16, height })
 									}
@@ -410,7 +418,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							<Button
 								title={I18n.t('Join_our_open_workspace')}
 								type='secondary'
-								backgroundColor={themes[theme].chatComponentBackground}
+								backgroundColor={themes[theme!].chatComponentBackground}
 								onPress={this.connectOpen}
 								disabled={connecting}
 								loading={connectingOpen && connecting}
