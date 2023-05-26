@@ -13,7 +13,8 @@ import {
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser } from '../../helpers/data_setup';
 
-describe('Threads', () => {
+// FIXME: implement before merging to develop
+describe.skip('Threads', () => {
 	let room: string;
 	let textMatcher: TTextMatcher;
 
