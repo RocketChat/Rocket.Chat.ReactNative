@@ -4,7 +4,7 @@ import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 
 import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
-import { TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
+import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
 import { useCanUploadFile, useChooseMedia } from './hooks';
 import { IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView, TMicOrSend } from './interfaces';
@@ -18,7 +18,11 @@ import { IEmoji } from '../../definitions';
 const styles = StyleSheet.create({
 	container: {
 		borderTopWidth: 1,
-		paddingHorizontal: 16
+		paddingHorizontal: 16,
+		minHeight: MIN_HEIGHT
+	},
+	input: {
+		flexDirection: 'row'
 	}
 });
 
@@ -171,7 +175,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 							style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
 							testID='message-composer'
 						>
-							<View style={{ flexDirection: 'row', flex: 1 }}>
+							<View style={styles.input}>
 								<Left />
 								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 								<Right />
