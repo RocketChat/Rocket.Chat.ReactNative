@@ -8,44 +8,44 @@ import {
 	searchRoom,
 	platformTypes,
 	TTextMatcher,
-	tapAndWaitFor,
-	tryTapping,
-	mockMessage
+	tapAndWaitFor
+	// tryTapping,
+	// mockMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser, post } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const { sendMessage } = require('../../helpers/data_setup');
 
-async function starMessage(message: string) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
-	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
-	await waitFor(element(by.id('action-sheet')))
-		.toExist()
-		.withTimeout(2000);
-	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by[textMatcher]('Star')).atIndex(0).tap();
-	await waitFor(element(by.id('action-sheet')))
-		.not.toExist()
-		.withTimeout(5000);
-}
+// async function starMessage(message: string) {
+// 	const deviceType = device.getPlatform();
+// 	const { textMatcher } = platformTypes[deviceType];
+// 	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
+// 	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
+// 	await waitFor(element(by.id('action-sheet')))
+// 		.toExist()
+// 		.withTimeout(2000);
+// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+// 	await element(by[textMatcher]('Star')).atIndex(0).tap();
+// 	await waitFor(element(by.id('action-sheet')))
+// 		.not.toExist()
+// 		.withTimeout(5000);
+// }
 
-async function pinMessage(message: string) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
-	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
-	await waitFor(element(by.id('action-sheet')))
-		.toExist()
-		.withTimeout(2000);
-	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by[textMatcher]('Pin')).atIndex(0).tap();
-	await waitFor(element(by.id('action-sheet')))
-		.not.toExist()
-		.withTimeout(5000);
-}
+// async function pinMessage(message: string) {
+// 	const deviceType = device.getPlatform();
+// 	const { textMatcher } = platformTypes[deviceType];
+// 	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
+// 	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
+// 	await waitFor(element(by.id('action-sheet')))
+// 		.toExist()
+// 		.withTimeout(2000);
+// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+// 	await element(by[textMatcher]('Pin')).atIndex(0).tap();
+// 	await waitFor(element(by.id('action-sheet')))
+// 		.not.toExist()
+// 		.withTimeout(5000);
+// }
 
 async function navigateToRoomActions() {
 	await searchRoom(room);

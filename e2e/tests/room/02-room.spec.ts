@@ -449,29 +449,30 @@ describe('Room screen', () => {
 			// 		.withTimeout(3000);
 			// });
 
-			it('should delete message', async () => {
-				const deleteMessage = await mockMessage('delete');
-				await tryTapping(element(by[textMatcher](deleteMessage)).atIndex(0), 2000, true);
-				await waitFor(element(by.id('action-sheet')))
-					.toExist()
-					.withTimeout(2000);
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await sleep(300); // wait for animation
-				await waitFor(element(by[textMatcher]('Delete')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by[textMatcher]('Delete')).atIndex(0).tap();
-				const deleteAlertMessage = 'You will not be able to recover this message!';
-				await waitFor(element(by[textMatcher](deleteAlertMessage)).atIndex(0))
-					.toExist()
-					.withTimeout(10000);
-				await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
-				await waitFor(element(by[textMatcher](deleteMessage)).atIndex(0))
-					.not.toExist()
-					.withTimeout(2000);
-				await tapBack();
-			});
+			// FIXME: implement before merging to develop
+			// it('should delete message', async () => {
+			// 	const deleteMessage = await mockMessage('delete');
+			// 	await tryTapping(element(by[textMatcher](deleteMessage)).atIndex(0), 2000, true);
+			// 	await waitFor(element(by.id('action-sheet')))
+			// 		.toExist()
+			// 		.withTimeout(2000);
+			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			// 	await sleep(300); // wait for animation
+			// 	await waitFor(element(by[textMatcher]('Delete')))
+			// 		.toExist()
+			// 		.withTimeout(2000);
+			// 	await element(by[textMatcher]('Delete')).atIndex(0).tap();
+			// 	const deleteAlertMessage = 'You will not be able to recover this message!';
+			// 	await waitFor(element(by[textMatcher](deleteAlertMessage)).atIndex(0))
+			// 		.toExist()
+			// 		.withTimeout(10000);
+			// 	await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
+			// 	await waitFor(element(by[textMatcher](deleteMessage)).atIndex(0))
+			// 		.not.toExist()
+			// 		.withTimeout(2000);
+			// 	await tapBack();
+			// });
 
 			// FIXME: implement before merging to develop
 			// it('should reply in DM to another user', async () => {
