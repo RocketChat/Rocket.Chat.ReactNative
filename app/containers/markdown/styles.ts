@@ -165,10 +165,5 @@ export default StyleSheet.create({
 	},
 	listPrefix: {
 		fontVariant: ['tabular-nums']
-	},
-	checkBox: {
-		height: 20,
-		width: 20,
-		margin: 5
 	}
 });

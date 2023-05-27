@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Tasks as TasksProps } from '@rocket.chat/message-parser';
-import CheckBox from '@react-native-community/checkbox';
 
 import Inline from './Inline';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
+import { CustomIcon } from '../../CustomIcon';
 
 interface ITasksProps {
 	value: TasksProps['value'];
@@ -18,7 +18,12 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 			{value.map(item => (
 				<View style={styles.row}>
 					<Text style={[styles.text, { color: colors.bodyText }]}>
-						<CheckBox disabled style={[styles.checkBox]} boxType='square' value={item.status} />
+						<CustomIcon
+							testID={item.status ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
+							name={item.status ? 'checkbox-checked' : 'checkbox-unchecked'}
+							size={24}
+							color='#9297a2'
+						/>
 					</Text>
 					<Text style={[styles.inline, { color: colors.bodyText }]}>
 						<Inline value={item.value} />
