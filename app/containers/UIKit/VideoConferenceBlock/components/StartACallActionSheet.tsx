@@ -14,6 +14,7 @@ import Button from '../../../Button';
 import { CallHeader } from '../../../VideoConf/CallHeader';
 import useStyle from './styles';
 import { ESounds, useVideoConfRinger } from '../../../../lib/hooks/useVideoConf';
+import { getUserSelector } from '../../../../selectors/login';
 
 const CAM_SIZE = { height: 220, width: 148 };
 
@@ -26,7 +27,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
 
-	const username = useAppSelector(state => state.login.user.username);
+	const username = useAppSelector(state => getUserSelector(state).username);
 	const calling = useAppSelector(state => state.videoConf.calling);
 	const dispatch = useDispatch();
 

@@ -12,6 +12,18 @@ import AvatarContainer from '../Avatar';
 import StatusContainer from '../Status';
 import DotsLoader from '../DotsLoader';
 
+type TCallHeader = {
+	mic: boolean;
+	cam: boolean;
+	setCam: Function;
+	setMic: Function;
+	title: string;
+	avatar: string;
+	uid: string;
+	roomName: string;
+	direct: boolean;
+};
+
 export const CallHeader = ({
 	mic,
 	cam,
@@ -22,31 +34,17 @@ export const CallHeader = ({
 	uid,
 	roomName,
 	direct
-}: {
-	mic: boolean;
-	cam: boolean;
-	setCam: Function;
-	setMic: Function;
-	title: string;
-	avatar: string;
-	uid: string;
-	roomName: string;
-	direct: boolean;
-}): React.ReactElement => {
+}: TCallHeader): React.ReactElement => {
 	const style = useStyle();
 	const { colors } = useTheme();
 	const calling = useAppSelector(state => state.videoConf.calling);
 
 	const handleColors = (enabled: boolean) => {
 		if (calling) {
-			if (enabled) {
-				return { button: colors.conferenceCallCallBackButton, icon: colors.gray300 };
-			}
+			if (enabled) return { button: colors.conferenceCallCallBackButton, icon: colors.gray300 };
 			return { button: 'transparent', icon: colors.gray100 };
 		}
-		if (enabled) {
-			return { button: colors.conferenceCallEnabledIconBackground, icon: colors.conferenceCallEnabledIcon };
-		}
+		if (enabled) return { button: colors.conferenceCallEnabledIconBackground, icon: colors.conferenceCallEnabledIcon };
 		return { button: 'transparent', icon: colors.conferenceCallDisabledIcon };
 	};
 
