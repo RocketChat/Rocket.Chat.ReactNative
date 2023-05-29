@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
 	viewContainer: {
 		marginBottom: 16,
 		paddingHorizontal: 16,
-		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 2,
+		borderWidth: 1,
+		borderRadius: 4,
 		justifyContent: 'center'
 	},
 	pickerText: {
@@ -63,6 +63,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		);
 
 	return (
+		// @ts-ignore lib types issues. We need to fork it and maintain or find another lib
 		<RNPickerSelect
 			items={items}
 			placeholder={placeholder ? { label: textParser([placeholder]), value: null } : {}}
@@ -79,8 +80,6 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			}}
 			Icon={Icon}
 			textInputProps={{
-				// style property was Omitted in lib, but can be used normally
-				// @ts-ignore
 				style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText }
 			}}
 		/>

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
 
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
@@ -64,11 +64,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 		}
 
 		return (
-			<Touch
-				onPress={() => changeType(itemType)}
-				style={styles.dropdownItemButton}
-				theme={theme}
-				accessibilityLabel={I18n.t(text)}>
+			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
 				<View style={styles.dropdownItemContainer}>
 					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
 					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
@@ -94,14 +90,16 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
 				<Animated.View
-					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}>
-					<Touch onPress={this.close} theme={theme} accessibilityLabel={I18n.t('Search_by')}>
+					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
+				>
+					<Touch onPress={this.close} accessibilityLabel={I18n.t('Search_by')}>
 						<View
 							style={[
 								styles.dropdownContainerHeader,
 								styles.dropdownItemContainer,
 								{ borderColor: themes[theme].separatorColor }
-							]}>
+							]}
+						>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon
 								style={[styles.dropdownItemIcon, styles.inverted]}

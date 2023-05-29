@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ScrollView, Switch, Text } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
-import Loading from '../../containers/Loading';
+import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
@@ -12,7 +12,6 @@ import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { FormTextInput } from '../../containers/TextInput';
-import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
@@ -52,27 +51,23 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			this.setHeader();
 		}
 
-		if (!loading && loading !== prevProps.loading) {
-			setTimeout(() => {
+		if (loading !== prevProps.loading) {
+			sendLoadingEvent({ visible: loading });
+			if (!loading) {
 				if (failure) {
 					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });
 					showErrorAlert(msg);
 				} else {
 					const { rid, t, prid } = result;
-					if (isMasterDetail) {
-						Navigation.navigate('DrawerNavigator');
-					} else {
-						Navigation.navigate('RoomsListView');
-					}
 					const item = {
 						rid,
 						name: getRoomTitle(result),
 						t,
 						prid
 					};
-					goRoom({ item, isMasterDetail });
+					goRoom({ item, isMasterDetail, popToRoot: true });
 				}
-			}, 300);
+			}
 		}
 	}
 
@@ -146,16 +141,17 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 	render() {
 		const { name, users, encrypted } = this.state;
-		const { server, user, loading, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
+		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme!].auxiliaryBackground }}
 				contentContainerStyle={styles.container}
-				keyboardVerticalOffset={128}>
+				keyboardVerticalOffset={128}
+			>
 				<StatusBar />
 				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
-						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
+						<Text style={[styles.description, { color: themes[theme!].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
 							server={server}
 							userId={user.id}
@@ -184,11 +180,10 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 						/>
 						{this.isEncryptionEnabled ? (
 							<>
-								<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
+								<Text style={[styles.label, { color: themes[theme!].titleText }]}>{I18n.t('Encrypted')}</Text>
 								<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
 							</>
 						) : null}
-						<Loading visible={loading} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>

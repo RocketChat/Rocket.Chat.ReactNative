@@ -1,6 +1,6 @@
 import * as LocalAuthentication from 'expo-local-authentication';
 import RNBootSplash from 'react-native-bootsplash';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { sha256 } from 'js-sha256';
 import moment from 'moment';
 
@@ -134,7 +134,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 		// Make sure splash screen has been hidden
 		try {
-			await RNBootSplash.hide();
+			await RNBootSplash.hide({ fade: true });
 		} catch {
 			// Do nothing
 		}

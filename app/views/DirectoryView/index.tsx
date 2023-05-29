@@ -7,7 +7,7 @@ import { CompositeNavigationProp } from '@react-navigation/native';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
@@ -36,7 +36,7 @@ interface IDirectoryViewProps {
 	baseUrl: string;
 	isFederationEnabled: boolean;
 	user: IUser;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
 }
@@ -152,13 +152,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	goRoom = (item: TGoRoomItem) => {
-		const { navigation, isMasterDetail } = this.props;
-		if (isMasterDetail) {
-			navigation.navigate('DrawerNavigator');
-		} else {
-			navigation.navigate('RoomsListView');
-		}
-		goRoom({ item, isMasterDetail });
+		const { isMasterDetail } = this.props;
+		goRoom({ item, isMasterDetail, popToRoot: true });
 	};
 
 	onPressItem = async (item: IServerRoom) => {
@@ -210,19 +205,20 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		return (
 			<>
 				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
-				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown' theme={theme}>
+				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
 					<View
 						style={[
 							sharedStyles.separatorVertical,
 							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme].separatorColor }
-						]}>
-						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
+							{ borderColor: themes[theme!].separatorColor }
+						]}
+					>
+						<CustomIcon name={icon} size={20} color={themes[theme!].tintColor} style={styles.toggleDropdownIcon} />
+						<Text style={[styles.toggleDropdownText, { color: themes[theme!].tintColor }]}>{I18n.t(text)}</Text>
 						<CustomIcon
 							name='chevron-down'
 							size={20}
-							color={themes[theme].auxiliaryTintColor}
+							color={themes[theme!].auxiliaryTintColor}
 							style={styles.toggleDropdownArrow}
 						/>
 					</View>
@@ -239,7 +235,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		if (index === data.length - 1) {
 			style = {
 				...sharedStyles.separatorBottom,
-				borderColor: themes[theme].separatorColor
+				borderColor: themes[theme!].separatorColor
 			};
 		}
 
@@ -247,7 +243,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			title: item.name as string,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `directory-view-item-${item.name}`.toLowerCase(),
+			testID: `directory-view-item-${item.name}`,
 			style,
 			user,
 			theme,
@@ -293,7 +289,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='directory-view'>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -310,7 +306,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				/>
 				{showOptionsDropdown ? (
 					<Options
-						theme={theme}
+						theme={theme!}
 						type={type}
 						globalUsers={globalUsers}
 						close={this.toggleDropdown}

@@ -1,5 +1,5 @@
 import { Alert, Linking } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import I18n from '../../../i18n';
 import { isFDroidBuild, STORE_REVIEW_LINK } from '../../constants';
@@ -86,14 +86,15 @@ class ReviewApp {
 	positiveEventCount = 0;
 
 	pushPositiveEvent = () => {
-		if (!isFDroidBuild) {
-			if (this.positiveEventCount >= numberOfPositiveEvent) {
-				return;
-			}
-			this.positiveEventCount += 1;
-			if (this.positiveEventCount === numberOfPositiveEvent) {
-				tryReview();
-			}
+		if (isFDroidBuild || process.env.RUNNING_E2E_TESTS === 'true') {
+			return;
+		}
+		if (this.positiveEventCount >= numberOfPositiveEvent) {
+			return;
+		}
+		this.positiveEventCount += 1;
+		if (this.positiveEventCount === numberOfPositiveEvent) {
+			tryReview();
 		}
 	};
 }

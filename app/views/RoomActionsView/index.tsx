@@ -28,12 +28,12 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import Touch from '../../lib/methods/helpers/touch';
+import Touch from '../../containers/Touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { callJitsi, getPermalinkChannel } from '../../lib/methods';
+import { getPermalinkChannel } from '../../lib/methods';
 import {
 	canAutoTranslate as canAutoTranslateMethod,
 	getRoomAvatar,
@@ -41,16 +41,17 @@ import {
 	getUidDirectMessage,
 	hasPermission,
 	isGroupChat,
-	compareServerVersion
+	compareServerVersion,
+	isTeamRoom
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
-import { videoConfStartAndJoin } from '../../lib/methods/videoConf';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
+import CallSection from './components/CallSection';
 
 interface IOnPressTouch {
 	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
@@ -64,10 +65,6 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	encryptionEnabled: boolean;
 	fontScale: number;
 	serverVersion: string | null;
-	addUserToJoinedRoomPermission?: string[];
-	addUserToAnyCRoomPermission?: string[];
-	addUserToAnyPRoomPermission?: string[];
-	createInviteLinksPermission?: string[];
 	editRoomPermission?: string[];
 	toggleRoomE2EEncryptionPermission?: string[];
 	viewBroadcastMemberListPermission?: string[];
@@ -89,18 +86,17 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 
 interface IRoomActionsViewState {
 	room: TSubscriptionModel;
-	membersCount: number;
+	membersCount?: number;
 	member: Partial<IUser>;
 	joined: boolean;
 	canViewMembers: boolean;
 	canAutoTranslate: boolean;
-	canAddUser: boolean;
-	canInviteUser: boolean;
 	canEdit: boolean;
 	canToggleEncryption: boolean;
 	canCreateTeam: boolean;
 	canAddChannelToTeam: boolean;
 	canConvertTeam: boolean;
+	loading: boolean;
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -146,22 +142,23 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			joined: !!room,
 			canViewMembers: false,
 			canAutoTranslate: false,
-			canAddUser: false,
-			canInviteUser: false,
 			canEdit: false,
 			canToggleEncryption: false,
 			canCreateTeam: false,
 			canAddChannelToTeam: false,
-			canConvertTeam: false
+			canConvertTeam: false,
+			loading: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
-					this.setState({ room: changes });
+					this.setState({ room: changes, membersCount: changes.usersCount });
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
+					// @ts-ignore
+					this.state.membersCount = changes.usersCount;
 				}
 			});
 		}
@@ -196,7 +193,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
-						this.setState({ membersCount: counters.members, joined: counters.joined });
+						await this.updateUsersCount(counters.members);
+						this.setState({ joined: counters.joined });
 					}
 				} catch (e) {
 					log(e);
@@ -206,8 +204,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			}
 
 			const canAutoTranslate = canAutoTranslateMethod();
-			const canAddUser = await this.canAddUser();
-			const canInviteUser = await this.canInviteUser();
 			const canEdit = await this.canEdit();
 			const canToggleEncryption = await this.canToggleEncryption();
 			const canViewMembers = await this.canViewMembers();
@@ -217,8 +213,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			this.setState({
 				canAutoTranslate,
-				canAddUser,
-				canInviteUser,
 				canEdit,
 				canToggleEncryption,
 				canViewMembers,
@@ -240,6 +234,23 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return room.t === 'l' && room.status === 'queued' && !this.joined;
 	}
 
+	updateUsersCount = async (members: number) => {
+		const { room } = this.state;
+		if (members === room.usersCount) return;
+		try {
+			const db = database.active;
+			await db.write(async () => {
+				await room.update(
+					protectedFunction((r: TSubscriptionModel) => {
+						r.usersCount = members;
+					})
+				);
+			});
+		} catch {
+			//
+		}
+	};
+
 	onPressTouchable: IOnPressTouch = (item: {
 		route?: keyof ChatsStackParamList;
 		params?: ChatsStackParamList[keyof ChatsStackParamList];
@@ -254,45 +265,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			// @ts-ignore
 			logEvent(events[`RA_GO_${route.replace('View', '').toUpperCase()}${params.name ? params.name.toUpperCase() : ''}`]);
 			const { navigation } = this.props;
+			// @ts-ignore
 			navigation.navigate(route, params);
 		}
 		if (event) {
 			return event();
 		}
-	};
-
-	canAddUser = async () => {
-		const { room, joined } = this.state;
-		const { addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission } = this.props;
-		const { rid, t } = room;
-		let canAddUser = false;
-
-		const userInRoom = joined;
-		const permissions = await hasPermission(
-			[addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission],
-			rid
-		);
-
-		if (userInRoom && permissions[0]) {
-			canAddUser = true;
-		}
-		if (t === 'c' && permissions[1]) {
-			canAddUser = true;
-		}
-		if (t === 'p' && permissions[2]) {
-			canAddUser = true;
-		}
-		return canAddUser;
-	};
-
-	canInviteUser = async () => {
-		const { room } = this.state;
-		const { createInviteLinksPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([createInviteLinksPermission], rid);
-
-		const canInviteUser = permissions[0];
-		return canInviteUser;
 	};
 
 	canEdit = async () => {
@@ -558,6 +536,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
+			this.setState({ loading: true });
 			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
@@ -577,6 +556,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					this.convertTeamToChannelConfirmation();
 				}
 			}
+			this.setState({ loading: false });
 		} catch (e) {
 			this.convertTeamToChannelConfirmation();
 		}
@@ -619,6 +599,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
+			this.setState({ loading: true });
 			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
@@ -644,6 +625,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					});
 				}
 			}
+			this.setState({ loading: false });
 		} catch (e) {
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: getRoomTitle(room) }),
@@ -705,7 +687,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				const data = teamRooms.map(team => ({
 					rid: team.teamId as string,
 					t: team.t,
-					name: team.name
+					name: team.name,
+					teamMain: team.teamMain
 				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
@@ -744,8 +727,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				.query(
 					Q.where('team_main', true),
 					Q.where('name', Q.like(`%${onChangeText}%`)),
-					Q.experimentalTake(QUERY_SIZE),
-					Q.experimentalSortBy('room_updated_at', Q.desc)
+					Q.take(QUERY_SIZE),
+					Q.sortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
 
@@ -769,16 +752,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
-	startVideoConf = ({ video }: { video: boolean }): void => {
-		const { room } = this.state;
-		const { serverVersion } = this.props;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
-			videoConfStartAndJoin(room.rid, video);
-		} else {
-			callJitsi(room, !video);
-		}
-	};
-
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
@@ -799,26 +772,27 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								rid,
 								t,
 								room,
-								member
+								member,
+								fromRid: room.rid
 							}
 						})
 					}
-					style={{ backgroundColor: themes[theme].backgroundColor }}
+					style={{ backgroundColor: themes[theme!].backgroundColor }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'
-					theme={theme}>
+				>
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
 							{t === 'd' && member._id ? (
-								<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+								<View style={[sharedStyles.status, { backgroundColor: themes[theme!].backgroundColor }]}>
 									<Status size={16} id={member._id} />
 								</View>
 							) : undefined}
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
-								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+								<Text style={[styles.roomTitle, { color: themes[theme!].titleText }]} numberOfLines={1}>
 									{room.fname}
 								</Text>
 							) : (
@@ -829,82 +803,25 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										status={room.visitor?.status}
 										sourceType={source}
 									/>
-									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+									<Text style={[styles.roomTitle, { color: themes[theme!].titleText }]} numberOfLines={1}>
 										{getRoomTitle(room)}
 									</Text>
 								</View>
 							)}
 							<MarkdownPreview
 								msg={t === 'd' ? `@${name}` : topic}
-								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+								style={[styles.roomDescription, { color: themes[theme!].auxiliaryText }]}
 							/>
 							{room.t === 'd' && (
 								<MarkdownPreview
 									msg={member.statusText}
-									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+									style={[styles.roomDescription, { color: themes[theme!].auxiliaryText }]}
 								/>
 							)}
 						</View>
 						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>
 				</Touch>
-				<List.Separator />
-			</List.Section>
-		);
-	};
-
-	renderJitsi = () => {
-		const { room } = this.state;
-		const {
-			jitsiEnabled,
-			jitsiEnableTeams,
-			jitsiEnableChannels,
-			serverVersion,
-			videoConf_Enable_DMs,
-			videoConf_Enable_Channels,
-			videoConf_Enable_Groups,
-			videoConf_Enable_Teams
-		} = this.props;
-
-		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
-		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
-
-		const isVideoConfDisabledForTeams = !!room.teamMain && !videoConf_Enable_Teams;
-		const isVideoConfDisabledForChannels = !room.teamMain && room.t === 'c' && !videoConf_Enable_Channels;
-		const isVideoConfDisabledForGroups = !room.teamMain && room.t === 'p' && !videoConf_Enable_Groups;
-		const isVideoConfDisabledForDirect = !room.teamMain && room.t === 'd' && !videoConf_Enable_DMs;
-
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0')) {
-			if (
-				isVideoConfDisabledForTeams ||
-				isVideoConfDisabledForChannels ||
-				isVideoConfDisabledForGroups ||
-				isVideoConfDisabledForDirect
-			) {
-				return null;
-			}
-		} else if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
-			return null;
-		}
-
-		return (
-			<List.Section>
-				<List.Separator />
-				<List.Item
-					title='Voice_call'
-					onPress={() => this.startVideoConf({ video: false })}
-					testID='room-actions-voice'
-					left={() => <List.Icon name='phone' />}
-					showActionIndicator
-				/>
-				<List.Separator />
-				<List.Item
-					title='Video_call'
-					onPress={() => this.startVideoConf({ video: true })}
-					testID='room-actions-video'
-					left={() => <List.Icon name='camera' />}
-					showActionIndicator
-				/>
 				<List.Separator />
 			</List.Section>
 		);
@@ -934,7 +851,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	renderLastSection = () => {
-		const { room, joined } = this.state;
+		const { room, joined, loading } = this.state;
 		const { theme } = this.props;
 		const { t, blocker } = room;
 
@@ -954,9 +871,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							})
 						}
 						testID='room-actions-block-user'
-						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='ignore' color={themes[theme!].dangerColor} />}
 						showActionIndicator
-						color={themes[theme].dangerColor}
+						color={themes[theme!].dangerColor}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -968,6 +885,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Section>
 					<List.Separator />
 					<List.Item
+						disabled={loading}
 						title='Leave'
 						onPress={() =>
 							this.onPressTouchable({
@@ -975,9 +893,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							})
 						}
 						testID='room-actions-leave-channel'
-						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='logout' color={themes[theme!].dangerColor} />}
 						showActionIndicator
-						color={themes[theme].dangerColor}
+						color={themes[theme!].dangerColor}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -1032,7 +950,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	teamToChannelActions = (t: string, room: ISubscription) => {
-		const { canEdit, canConvertTeam } = this.state;
+		const { canEdit, canConvertTeam, loading } = this.state;
 		const canConvertTeamToChannel = canEdit && canConvertTeam && !!room?.teamMain;
 
 		return (
@@ -1041,6 +959,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					<>
 						<List.Item
 							title='Convert_to_Channel'
+							disabled={loading}
 							onPress={() =>
 								this.onPressTouchable({
 									event: this.convertTeamToChannel
@@ -1077,7 +996,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									params: { rid }
 								})
 							}
-							left={() => <List.Icon name='chat-forward' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='chat-forward' color={themes[theme!].titleText} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1093,7 +1012,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.placeOnHoldLivechat
 								})
 							}
-							left={() => <List.Icon name='pause' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='pause' color={themes[theme!].titleText} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1109,7 +1028,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.returnLivechat
 								})
 							}
-							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='move-to-the-queue' color={themes[theme!].titleText} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1119,13 +1038,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<>
 					<List.Item
 						title='Close'
-						color={themes[theme].dangerColor}
+						color={themes[theme!].dangerColor}
 						onPress={() =>
 							this.onPressTouchable({
 								event: this.closeLivechat
 							})
 						}
-						left={() => <List.Icon name='chat-close' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='chat-close' color={themes[theme!].dangerColor} />}
 						showActionIndicator
 					/>
 					<List.Separator />
@@ -1135,8 +1054,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	render() {
-		const { room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate } = this.state;
-		const { rid, t, prid } = room;
+		const { room, membersCount, canViewMembers, joined, canAutoTranslate } = this.state;
+		const { isMasterDetail, navigation } = this.props;
+		const { rid, t, prid, teamId } = room;
 		const isGroupChatHandler = isGroupChat(room);
 
 		return (
@@ -1144,7 +1064,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<StatusBar />
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
-					{this.renderJitsi()}
+					<CallSection rid={rid} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />
@@ -1153,51 +1073,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							<>
 								<List.Item
 									title='Members'
-									subtitle={membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
-									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room } })}
+									subtitle={membersCount && membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
+									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room, joined: this.joined } })}
 									testID='room-actions-members'
 									left={() => <List.Icon name='team' />}
 									showActionIndicator
 									translateSubtitle={false}
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['c', 'p'].includes(t) && canAddUser ? (
-							<>
-								<List.Item
-									title='Add_users'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'SelectedUsersView',
-											params: {
-												title: I18n.t('Add_users'),
-												nextAction: this.addUser
-											}
-										})
-									}
-									testID='room-actions-add-user'
-									left={() => <List.Icon name='add' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['c', 'p'].includes(t) && canInviteUser ? (
-							<>
-								<List.Item
-									title='Invite_users'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'InviteUsersView',
-											params: { rid }
-										})
-									}
-									testID='room-actions-invite-user'
-									left={() => <List.Icon name='user-add' />}
-									showActionIndicator
 								/>
 								<List.Separator />
 							</>
@@ -1223,7 +1104,32 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								<List.Separator />
 							</>
 						) : null}
-
+						{teamId && isTeamRoom({ teamId, joined }) ? (
+							<>
+								<List.Item
+									title='Teams'
+									onPress={() => {
+										logEvent(events.ROOM_GO_TEAM_CHANNELS);
+										if (isMasterDetail) {
+											// @ts-ignore TODO: find a way to make this work - OLD Diego :)
+											navigation.navigate('ModalStackNavigator', {
+												screen: 'TeamChannelsView',
+												params: { teamId, joined }
+											});
+										} else {
+											navigation.navigate('TeamChannelsView', {
+												teamId,
+												joined
+											});
+										}
+									}}
+									testID='room-actions-teams'
+									left={() => <List.Icon name='channel-public' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions?.canViewCannedResponse ? (
 							<>
 								<List.Item
@@ -1374,20 +1280,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
-	jitsiEnabled: (state.settings.Jitsi_Enabled || false) as boolean,
-	jitsiEnableTeams: (state.settings.Jitsi_Enable_Teams || false) as boolean,
-	jitsiEnableChannels: (state.settings.Jitsi_Enable_Channels || false) as boolean,
-	videoConf_Enable_DMs: (state.settings.VideoConf_Enable_DMs ?? true) as boolean,
-	videoConf_Enable_Channels: (state.settings.VideoConf_Enable_Channels ?? true) as boolean,
-	videoConf_Enable_Groups: (state.settings.VideoConf_Enable_Groups ?? true) as boolean,
-	videoConf_Enable_Teams: (state.settings.VideoConf_Enable_Teams ?? true) as boolean,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
-	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
-	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
-	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
-	createInviteLinksPermission: state.permissions['create-invite-links'],
 	editRoomPermission: state.permissions['edit-room'],
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],

@@ -14,7 +14,7 @@ interface IButtonProps extends PlatformTouchableProps {
 	loading?: boolean;
 	color?: string;
 	fontSize?: number;
-	styleText?: StyleProp<TextStyle>[];
+	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
 }
 
 const styles = StyleSheet.create({
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 14,
 		justifyContent: 'center',
 		height: 48,
-		borderRadius: 2,
+		borderRadius: 4,
 		marginBottom: 12
 	},
 	text: {
@@ -66,7 +66,8 @@ const Button = ({
 				style
 			]}
 			accessibilityLabel={title}
-			{...otherProps}>
+			{...otherProps}
+		>
 			{loading ? (
 				<ActivityIndicator color={textColor} />
 			) : (

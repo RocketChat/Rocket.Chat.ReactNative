@@ -34,9 +34,9 @@ export interface IUnreadBadge {
 	userMentions?: number;
 	groupMentions?: number;
 	style?: StyleProp<ViewStyle>;
-	tunread?: [];
-	tunreadUser?: [];
-	tunreadGroup?: [];
+	tunread?: any[];
+	tunreadUser?: any[];
+	tunreadGroup?: any[];
 	small?: boolean;
 	hideUnreadStatus?: boolean;
 	hideMentionStatus?: boolean;
@@ -103,7 +103,8 @@ const UnreadBadge = React.memo(
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
 					{ backgroundColor, minWidth },
 					style
-				]}>
+				]}
+			>
 				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
 					{text}
 				</Text>

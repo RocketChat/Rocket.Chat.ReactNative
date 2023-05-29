@@ -7,6 +7,7 @@ import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
+import { useAppSelector } from '../../lib/hooks';
 
 const HIT_SLOP = {
 	top: 5,
@@ -141,8 +142,9 @@ const Header = React.memo(
 		const { colors } = useTheme();
 		const portrait = height > width;
 		let scale = 1;
+		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
-		if (!portrait && !tmid) {
+		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {
 				scale = 0.8;
 			}
@@ -169,7 +171,8 @@ const Header = React.memo(
 				onPress={handleOnPress}
 				style={styles.container}
 				disabled={!!tmid}
-				hitSlop={HIT_SLOP}>
+				hitSlop={HIT_SLOP}
+			>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon

@@ -1,7 +1,6 @@
 import { all, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import UserPreferences from '../lib/methods/userPreferences';
-import Navigation from '../lib/navigation/appNavigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
@@ -36,14 +35,6 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 	}
 };
 
-const popToRoot = function popToRoot({ isMasterDetail }) {
-	if (isMasterDetail) {
-		Navigation.navigate('DrawerNavigator');
-	} else {
-		Navigation.navigate('RoomsListView');
-	}
-};
-
 const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
@@ -65,27 +56,9 @@ const navigate = function* navigate({ params }) {
 				};
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
-				const focusedRooms = yield select(state => state.room.rooms);
 				const jumpToMessageId = params.messageId;
 
-				if (focusedRooms.includes(room.rid)) {
-					// if there's one room on the list or last room is the one
-					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						if (jumpToThreadId) {
-							// With this conditional when there is a jumpToThreadId we can avoid the thread open again
-							// above other thread and the room could call again the thread
-							popToRoot({ isMasterDetail });
-						}
-						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
-					} else {
-						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
-					}
-				} else {
-					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
-				}
-
+				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
 				if (params.isCall) {
 					callJitsi(item);
 				}

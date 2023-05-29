@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { getInfoAsync } from 'expo-file-system';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
@@ -17,26 +17,28 @@ interface IMessageBoxRecordAudioProps {
 	permissionToUpload: boolean;
 	recordingCallback: Function;
 	onFinish: Function;
+	onStart: Function;
 }
 
 const RECORDING_EXTENSION = '.m4a';
 const RECORDING_SETTINGS = {
 	android: {
 		extension: RECORDING_EXTENSION,
-		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
-		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
-		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
-		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate
+		outputFormat: Audio.AndroidOutputFormat.MPEG_4,
+		audioEncoder: Audio.AndroidAudioEncoder.AAC,
+		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.sampleRate,
+		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.android.numberOfChannels,
+		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.bitRate
 	},
 	ios: {
 		extension: RECORDING_EXTENSION,
-		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MIN,
-		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.sampleRate,
-		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate,
-		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC
-	}
+		audioQuality: Audio.IOSAudioQuality.MIN,
+		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.sampleRate,
+		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.numberOfChannels,
+		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.bitRate,
+		outputFormat: Audio.IOSOutputFormat.MPEG4AAC
+	},
+	web: {}
 };
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
@@ -44,8 +46,8 @@ const RECORDING_MODE = {
 	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
 
 const formatTime = function (time: number) {
@@ -116,6 +118,9 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 	};
 
 	startRecordingAudio = async () => {
+		const { onStart } = this.props;
+		onStart();
+
 		logEvent(events.ROOM_AUDIO_RECORD);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
@@ -159,7 +164,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 					type: 'audio/aac',
 					store: 'Uploads',
 					path: fileURI,
-					size: fileData.size
+					size: fileData.exists ? fileData.size : null
 				};
 
 				onFinish(fileInfo);

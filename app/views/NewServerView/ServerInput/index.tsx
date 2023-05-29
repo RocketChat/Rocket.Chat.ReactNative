@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 		position: 'absolute',
 		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 2,
+		borderRadius: 4,
 		borderTopWidth: 0
 	}
 });
@@ -70,7 +70,8 @@ const ServerInput = ({
 					style={[
 						styles.serverHistory,
 						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
-					]}>
+					]}
+				>
 					<FlatList
 						data={serversHistory}
 						renderItem={({ item }) => (

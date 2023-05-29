@@ -29,7 +29,7 @@ interface IItem {
 	item: IOptionsField;
 	selected: boolean;
 	onItemPress: () => void;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 }
 
 interface IRenderSearch {
@@ -49,7 +49,7 @@ type IPickerViewProps = IBaseScreen<ChatsStackParamList, 'PickerView'>;
 const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 	<List.Item
 		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
-		right={() => (selected ? <List.Icon name='check' color={themes[theme].tintColor} /> : null)}
+		right={() => (selected ? <List.Icon name='check' color={themes[theme!].tintColor} /> : null)}
 		onPress={onItemPress}
 		translateTitle={false}
 	/>
@@ -137,7 +137,7 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 					ListHeaderComponent={<RenderSearch hasSearch={!!this.onSearch} onChangeText={this.onChangeText} />}
 					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => (
-						<Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+						<Text style={[styles.noResult, { color: themes[theme!].titleText }]}>{I18n.t('No_results_found')}</Text>
 					)}
 				/>
 			</SafeAreaView>

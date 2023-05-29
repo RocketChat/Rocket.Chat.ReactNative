@@ -3,7 +3,7 @@ import React from 'react';
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
 import { IMessageBlocks } from './interfaces';
 
-const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
+const Blocks = ({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
 	if (blocks && blocks.length > 0) {
 		const appId = blocks[0]?.appId || '';
 		return React.createElement(
@@ -27,7 +27,7 @@ const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: IMessageBlocks
 		);
 	}
 	return null;
-});
+};
 
 Blocks.displayName = 'MessageBlocks';
 

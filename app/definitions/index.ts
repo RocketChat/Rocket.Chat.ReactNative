@@ -28,6 +28,8 @@ export * from './ICredentials';
 export * from './ISearch';
 export * from './TUserStatus';
 export * from './IProfile';
+export * from './IReaction';
+export * from './ERoomType';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;
@@ -35,7 +37,7 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 	dispatch: Dispatch;
 	isMasterDetail: boolean;
 	// TODO: remove after migrating all Class components
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	colors: TColors;
 }
 

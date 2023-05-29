@@ -17,9 +17,9 @@ import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import openLink from '../lib/methods/helpers/openLink';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
+import UGCRules from '../containers/UserGeneratedContentRules';
 
 const styles = StyleSheet.create({
 	title: {
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
 });
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {
-	server: string;
 	Site_Name: string;
 	Gitlab_URL: string;
 	CAS_enabled: boolean;
@@ -127,22 +126,22 @@ class RegisterView extends React.Component<IProps, any> {
 		const { dispatch, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
 
 		try {
-			await Services.register({
+			const user = await Services.register({
 				name,
 				email,
 				pass: password,
-				username,
-				...customFields
+				username
 			});
-
-			if (Accounts_EmailVerification) {
-				await navigation.goBack();
-				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
-			} else if (Accounts_ManuallyApproveNewUsers) {
-				await navigation.goBack();
-				showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
-			} else {
-				dispatch(loginRequest({ user: email, password }));
+			if (user.success) {
+				if (Accounts_EmailVerification) {
+					await navigation.goBack();
+					showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
+				} else if (Accounts_ManuallyApproveNewUsers) {
+					await navigation.goBack();
+					showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
+				} else {
+					dispatch(loginRequest({ user: email, password }, false, false, customFields));
+				}
 			}
 		} catch (e: any) {
 			if (e.data?.errorType === 'username-invalid') {
@@ -154,14 +153,6 @@ class RegisterView extends React.Component<IProps, any> {
 			}
 		}
 		this.setState({ saving: false });
-	};
-
-	openContract = (route: string) => {
-		const { server, theme } = this.props;
-		if (!server) {
-			return;
-		}
-		openLink(`${server}/${route}`, theme);
 	};
 
 	renderCustomFields = () => {
@@ -185,7 +176,8 @@ class RegisterView extends React.Component<IProps, any> {
 										newValue[key] = value;
 										this.setState({ customFields: { ...customFields, ...newValue } });
 									}}
-									value={customFields[key]}>
+									value={customFields[key]}
+								>
 									<FormTextInput
 										inputRef={e => {
 											// @ts-ignore
@@ -239,7 +231,7 @@ class RegisterView extends React.Component<IProps, any> {
 			<FormContainer testID='register-view'>
 				<FormContainerInner>
 					<LoginServices separator />
-					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
+					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme!].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<FormTextInput
 						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}
@@ -250,6 +242,8 @@ class RegisterView extends React.Component<IProps, any> {
 							this.usernameInput?.focus();
 						}}
 						testID='register-view-name'
+						textContentType='name'
+						autoComplete='name'
 					/>
 					<FormTextInput
 						label={I18n.t('Username')}
@@ -264,6 +258,8 @@ class RegisterView extends React.Component<IProps, any> {
 							this.emailInput?.focus();
 						}}
 						testID='register-view-username'
+						textContentType='username'
+						autoComplete='username'
 					/>
 					<FormTextInput
 						label={I18n.t('Email')}
@@ -273,12 +269,14 @@ class RegisterView extends React.Component<IProps, any> {
 						}}
 						placeholder={I18n.t('Email')}
 						returnKeyType='next'
-						keyboardType='email-address'
 						onChangeText={(email: string) => this.setState({ email })}
 						onSubmitEditing={() => {
 							this.passwordInput?.focus();
 						}}
 						testID='register-view-email'
+						keyboardType='email-address'
+						textContentType='emailAddress'
+						autoComplete='email'
 					/>
 					<FormTextInput
 						label={I18n.t('Password')}
@@ -292,6 +290,8 @@ class RegisterView extends React.Component<IProps, any> {
 						onChangeText={(value: string) => this.setState({ password: value })}
 						onSubmitEditing={this.submit}
 						testID='register-view-password'
+						textContentType='newPassword'
+						autoComplete='password-new'
 					/>
 
 					{this.renderCustomFields()}
@@ -306,30 +306,14 @@ class RegisterView extends React.Component<IProps, any> {
 						style={styles.registerButton}
 					/>
 
-					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
-							{`${I18n.t('Onboarding_agree_terms')}\n`}
-							<Text
-								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('terms-of-service')}>
-								{I18n.t('Terms_of_Service')}
-							</Text>{' '}
-							{I18n.t('and')}
-							<Text
-								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('privacy-policy')}>
-								{' '}
-								{I18n.t('Privacy_Policy')}
-							</Text>
-						</Text>
-					</View>
+					<UGCRules />
 
 					{showLoginButton ? (
 						<View style={styles.bottomContainer}>
-							<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
+							<Text style={[styles.bottomContainerText, { color: themes[theme!].auxiliaryText }]}>
 								{I18n.t('Do_you_have_an_account')}
 							</Text>
-							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]} onPress={this.login}>
+							<Text style={[styles.bottomContainerTextBold, { color: themes[theme!].actionTintColor }]} onPress={this.login}>
 								{I18n.t('Login')}
 							</Text>
 						</View>
@@ -341,7 +325,6 @@ class RegisterView extends React.Component<IProps, any> {
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	server: state.server.server,
 	Site_Name: state.settings.Site_Name as string,
 	Gitlab_URL: state.settings.API_Gitlab_URL as string,
 	CAS_enabled: state.settings.CAS_enabled as boolean,

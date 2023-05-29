@@ -51,13 +51,6 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			return;
 		}
 
-		// If the user has a private key stored, but never entered the password
-		const storedRandomPassword = UserPreferences.getString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-
-		if (storedRandomPassword) {
-			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
-		}
-
 		// Fetch stored public e2e key for this server
 		let storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
@@ -66,14 +59,21 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			storedPublicKey = EJSON.parse(storedPublicKey);
 		}
 
-		if (storedPublicKey && storedPrivateKey && !storedRandomPassword) {
+		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
 			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
-			yield put(encryptionSet(true));
 		} else {
 			// Create new keys since the user doesn't have any
 			yield Encryption.createKeys(user.id, server);
+		}
+
+		// If the user has a private key stored, but never entered the password
+		const storedRandomPassword = UserPreferences.getString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+
+		if (storedRandomPassword) {
 			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
+		} else {
+			yield put(encryptionSet(true));
 		}
 
 		// Decrypt all pending messages/subscriptions

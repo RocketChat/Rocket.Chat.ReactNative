@@ -25,7 +25,7 @@ interface IItem {
 }
 
 interface IScreenLockConfigViewProps {
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	server: string;
 	Force_Screen_Lock: boolean;
 	Force_Screen_Lock_After: number;
@@ -91,14 +91,15 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const { server } = this.props;
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
-		const hasBiometry = userPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? DEFAULT_BIOMETRY;
 		try {
 			this.serverRecord = await serversCollection.find(server);
-			this.setState({
-				autoLock: this.serverRecord?.autoLock,
-				autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime,
-				biometry: hasBiometry
-			});
+			this.setState(
+				{
+					autoLock: this.serverRecord?.autoLock,
+					autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime
+				},
+				() => this.hasBiometry()
+			);
 		} catch (error) {
 			// Do nothing
 		}
@@ -119,6 +120,11 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		});
 	};
 
+	hasBiometry = () => {
+		const biometry = userPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? DEFAULT_BIOMETRY;
+		this.setState({ biometry });
+	};
+
 	changePasscode = async ({ force }: { force: boolean }) => {
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
@@ -133,6 +139,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				if (autoLock) {
 					try {
 						await checkHasPasscode({ force: false });
+						this.hasBiometry();
 					} catch {
 						this.toggleAutoLock();
 					}
@@ -165,7 +172,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme].tintColor} />;
+		return <List.Icon name='check' color={themes[theme!].tintColor} />;
 	};
 
 	renderItem = ({ item }: { item: IItem }) => {

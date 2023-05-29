@@ -2,16 +2,14 @@ import React from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
-import isEmpty from 'lodash/isEmpty';
 import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
 import { deleteRoom } from '../../actions/room';
 import { themes } from '../../lib/constants';
-import Avatar from '../../containers/Avatar';
-import Loading from '../../containers/Loading';
+import { AvatarWithEdit } from '../../containers/Avatar';
+import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
@@ -23,13 +21,11 @@ import {
 	IRoomSettings,
 	ISubscription,
 	SubscriptionType,
-	TSubscriptionModel,
-	IAvatar
+	TSubscriptionModel
 } from '../../definitions';
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { CustomIcon } from '../../containers/CustomIcon';
 import KeyboardView from '../../containers/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -54,7 +50,6 @@ import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {
 	room: ISubscription;
-	avatar: IAvatar;
 	permissions: { [key in TSupportedPermissions]?: boolean };
 	name: string;
 	description?: string;
@@ -62,7 +57,6 @@ interface IRoomInfoEditViewState {
 	announcement?: string;
 	joinCode: string;
 	nameError: any;
-	saving: boolean;
 	t: boolean;
 	ro: boolean;
 	reactWhenReadOnly?: boolean;
@@ -103,7 +97,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		this.room = {} as TSubscriptionModel;
 		this.state = {
 			room: {} as ISubscription,
-			avatar: {} as IAvatar,
 			permissions: {},
 			name: '',
 			description: '',
@@ -111,7 +104,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			announcement: '',
 			joinCode: '',
 			nameError: {},
-			saving: false,
 			t: false,
 			ro: false,
 			reactWhenReadOnly: false,
@@ -194,7 +186,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			topic,
 			announcement,
 			t: t === 'p',
-			avatar: {} as IAvatar,
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
@@ -230,8 +221,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			joinCode,
 			systemMessages,
 			enableSysMes,
-			encrypted,
-			avatar
+			encrypted
 		} = this.state;
 		const { joinCodeRequired } = room;
 		const sysMes = room.sysMes as string[];
@@ -246,30 +236,17 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			room.reactWhenReadOnly === reactWhenReadOnly &&
 			dequal(sysMes, systemMessages) &&
 			enableSysMes === (sysMes && sysMes.length > 0) &&
-			room.encrypted === encrypted &&
-			isEmpty(avatar)
+			room.encrypted === encrypted
 		);
 	};
 
 	submit = async () => {
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
-		const {
-			room,
-			name,
-			description,
-			topic,
-			announcement,
-			t,
-			ro,
-			reactWhenReadOnly,
-			joinCode,
-			systemMessages,
-			encrypted,
-			avatar
-		} = this.state;
+		const { room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, encrypted } =
+			this.state;
 
-		this.setState({ saving: true });
+		sendLoadingEvent({ visible: true });
 		let error = false;
 
 		if (!this.formIsChanged()) {
@@ -283,12 +260,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		const params = {} as IRoomSettings;
 
 		// Name
-		if (room.name !== name) {
+		if (getRoomTitle(room) !== name) {
 			params.roomName = name;
-		}
-		// Avatar
-		if (!isEmpty(avatar)) {
-			params.roomAvatar = avatar.data as string;
 		}
 		// Description
 		if (room.description !== description) {
@@ -320,7 +293,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 
 		// Join Code
-		if (this.randomValue !== joinCode) {
+		if (room.joinCodeRequired && this.randomValue !== joinCode) {
 			params.joinCode = joinCode;
 		}
 
@@ -339,7 +312,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			log(e);
 		}
 
-		await this.setState({ saving: false });
+		sendLoadingEvent({ visible: false });
 		setTimeout(() => {
 			if (error) {
 				logEvent(events.RI_EDIT_SAVE_F);
@@ -489,26 +462,10 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		);
 	};
 
-	changeAvatar = async () => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
-
-		try {
-			const response: Image = await ImagePicker.openPicker(options);
-			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
-	resetAvatar = () => {
-		this.setState({ avatar: { data: null } });
+	handleEditAvatar = () => {
+		const { navigation } = this.props;
+		const { room } = this.state;
+		navigation.navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t: room.t, context: 'room' });
 	};
 
 	toggleRoomType = (value: boolean) => {
@@ -548,47 +505,30 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			reactWhenReadOnly,
 			room,
 			joinCode,
-			saving,
 			permissions,
 			archived,
 			enableSysMes,
-			encrypted,
-			avatar
+			encrypted
 		} = this.state;
 		const { serverVersion, encryptionEnabled, theme } = this.props;
-		const { dangerColor } = themes[theme];
+		const { dangerColor } = themes[theme!];
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				style={{ backgroundColor: themes[theme!].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}>
+				keyboardVerticalOffset={128}
+			>
 				<StatusBar />
-				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme!].backgroundColor }}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='room-info-edit-view-list'
-						{...scrollPersistTaps}>
-						<TouchableOpacity
-							style={styles.avatarContainer}
-							onPress={this.changeAvatar}
-							disabled={compareServerVersion(serverVersion || '', 'lowerThan', '3.6.0')}>
-							<Avatar
-								type={room.t}
-								text={room.name}
-								avatar={avatar?.url}
-								isStatic={avatar?.url}
-								rid={isEmpty(avatar) ? room.rid : undefined}
-								size={100}>
-								{serverVersion && compareServerVersion(serverVersion, 'lowerThan', '3.6.0') ? undefined : (
-									<TouchableOpacity
-										style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]}
-										onPress={this.resetAvatar}>
-										<CustomIcon name='delete' color={themes[theme].backgroundColor} size={24} />
-									</TouchableOpacity>
-								)}
-							</Avatar>
-						</TouchableOpacity>
+						{...scrollPersistTaps}
+					>
+						<View style={styles.avatarContainer}>
+							<AvatarWithEdit type={room.t} text={room.name} rid={room.rid} handleEdit={this.handleEditAvatar} />
+						</View>
 						<FormTextInput
 							inputRef={e => {
 								this.name = e;
@@ -653,7 +593,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							label={I18n.t('Password')}
 							value={joinCode}
 							onChangeText={value => this.setState({ joinCode: value })}
-							onSubmitEditing={this.submit}
 							secureTextEntry
 							testID='room-info-edit-view-password'
 						/>
@@ -670,7 +609,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									: I18n.t('Just_invited_people_can_access_this_channel')
 							}
 							onValueChange={this.toggleRoomType}
-							theme={theme}
+							theme={theme!}
 							testID='room-info-edit-view-t'
 						/>
 						<SwitchContainer
@@ -685,7 +624,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={this.toggleReadOnly}
 							disabled={!permissions['set-readonly'] || room.broadcast}
-							theme={theme}
+							theme={theme!}
 							testID='room-info-edit-view-ro'
 						/>
 						{ro && !room.broadcast ? (
@@ -697,14 +636,14 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								rightLabelSecondary={I18n.t('Reactions_are_enabled')}
 								onValueChange={this.toggleReactions}
 								disabled={!permissions['set-react-when-readonly']}
-								theme={theme}
+								theme={theme!}
 								testID='room-info-edit-view-react-when-ro'
 							/>
 						) : null}
 						{room.broadcast
 							? [
-									<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
-									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
+									<View style={[styles.divider, { borderColor: themes[theme!].separatorColor }]} />
 							  ]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
@@ -716,11 +655,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 										? I18n.t('Overwrites_the_server_configuration_and_use_room_config')
 										: I18n.t('Uses_server_configuration')
 								}
-								theme={theme}
+								theme={theme!}
 								testID='room-info-edit-switch-system-messages'
 								onValueChange={this.toggleHideSystemMessages}
 								labelContainerStyle={styles.hideSystemMessages}
-								leftLabelStyle={styles.systemMessagesLabel}>
+								leftLabelStyle={styles.systemMessagesLabel}
+							>
 								{this.renderSystemMessages()}
 							</SwitchContainer>
 						) : null}
@@ -730,7 +670,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								disabled={!t}
 								leftLabelPrimary={I18n.t('Encrypted')}
 								leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
-								theme={theme}
+								theme={theme!}
 								testID='room-info-edit-switch-encrypted'
 								onValueChange={this.toggleEncrypted}
 								labelContainerStyle={styles.hideSystemMessages}
@@ -740,13 +680,14 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
-								{ backgroundColor: themes[theme].buttonBackground },
+								{ backgroundColor: themes[theme!].buttonBackground },
 								!this.formIsChanged() && styles.buttonContainerDisabled
 							]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
-							testID='room-info-edit-view-submit'>
-							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityRole='button'>
+							testID='room-info-edit-view-submit'
+						>
+							<Text style={[styles.button, { color: themes[theme!].buttonText }]} accessibilityRole='button'>
 								{I18n.t('SAVE')}
 							</Text>
 						</TouchableOpacity>
@@ -755,15 +696,17 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								style={[
 									styles.buttonContainer_inverted,
 									styles.buttonInverted,
-									{ flex: 1, borderColor: themes[theme].auxiliaryText },
+									{ flex: 1, borderColor: themes[theme!].auxiliaryText },
 									!this.formIsChanged() && styles.buttonContainerDisabled
 								]}
 								onPress={this.reset}
 								disabled={!this.formIsChanged()}
-								testID='room-info-edit-view-reset'>
+								testID='room-info-edit-view-reset'
+							>
 								<Text
-									style={[styles.button, styles.button_inverted, { color: themes[theme].bodyText }]}
-									accessibilityRole='button'>
+									style={[styles.button, styles.button_inverted, { color: themes[theme!].bodyText }]}
+									accessibilityRole='button'
+								>
 									{I18n.t('RESET')}
 								</Text>
 							</TouchableOpacity>
@@ -778,13 +721,14 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								]}
 								onPress={this.toggleArchive}
 								disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
-								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}>
+								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
+							>
 								<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]}>
 									{archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
 								</Text>
 							</TouchableOpacity>
 						</View>
-						<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+						<View style={[styles.divider, { borderColor: themes[theme!].separatorColor }]} />
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer_inverted,
@@ -795,12 +739,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							]}
 							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
-							testID='room-info-edit-view-delete'>
+							testID='room-info-edit-view-delete'
+						>
 							<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]} accessibilityRole='button'>
 								{I18n.t('DELETE')}
 							</Text>
 						</TouchableOpacity>
-						<Loading visible={saving} />
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>
@@ -810,7 +754,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version as string,
-	encryptionEnabled: state.encryption.enabled,
+	encryptionEnabled: state.encryption.enabled as boolean,
 	setReadOnlyPermission: state.permissions['set-readonly'] as string[],
 	setReactWhenReadOnlyPermission: state.permissions['set-react-when-readonly'] as string[],
 	archiveRoomPermission: state.permissions['archive-room'] as string[],
@@ -818,7 +762,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	deleteCPermission: state.permissions['delete-c'] as string[],
 	deletePPermission: state.permissions['delete-p'] as string[],
 	deleteTeamPermission: state.permissions['delete-team'] as string[],
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoEditView));

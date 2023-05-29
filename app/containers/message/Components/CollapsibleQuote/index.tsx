@@ -82,7 +82,7 @@ interface IMessageReply {
 const Fields = React.memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
 		const { theme } = useTheme();
-		const { baseUrl, user } = useContext(MessageContext);
+		const { user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
 			return null;
@@ -97,7 +97,6 @@ const Fields = React.memo(
 						</Text>
 						<Markdown
 							msg={field?.value || ''}
-							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
@@ -163,7 +162,8 @@ const CollapsibleQuote = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					hitSlop={BUTTON_HIT_SLOP}>
+					hitSlop={BUTTON_HIT_SLOP}
+				>
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>

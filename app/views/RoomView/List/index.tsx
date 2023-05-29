@@ -2,12 +2,10 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
+import { FlatListProps, View, ViewToken, StyleSheet, Platform } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
-import { TSupportedThemes } from '../../../theme';
-import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
@@ -19,8 +17,19 @@ import List, { IListProps, TListRef } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
+import RefreshControl from './RefreshControl';
 
 const QUERY_SIZE = 50;
+
+const styles = StyleSheet.create({
+	inverted: {
+		...Platform.select({
+			android: {
+				scaleY: -1
+			}
+		})
+	}
+});
 
 const onScroll = ({ y }: { y: Value<number> }) =>
 	event(
@@ -40,7 +49,6 @@ export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
 	tmid?: string;
-	theme: TSupportedThemes;
 	loading: boolean;
 	listRef: TListRef;
 	hideSystemMessages?: string[];
@@ -62,6 +70,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	private mounted = false;
 	private animated = false;
 	private jumping = false;
+	private cancelJump = false;
 	private y = new Value(0);
 	private onScroll = onScroll({ y: this.y });
 	private unsubscribeFocus: () => void;
@@ -97,10 +106,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
-		const { hideSystemMessages, theme, tunread, ignored, loading } = this.props;
-		if (theme !== nextProps.theme) {
-			return true;
-		}
+		const { hideSystemMessages, tunread, ignored, loading } = this.props;
 		if (loading !== nextProps.loading) {
 			return true;
 		}
@@ -138,6 +144,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
+	// clears previous highlighted message timeout, if exists
 	clearHighlightedMessageTimeout = () => {
 		if (this.highlightedMessageTimeout) {
 			clearTimeout(this.highlightedMessageTimeout);
@@ -164,15 +171,13 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			}
 			this.messagesObservable = db
 				.get('thread_messages')
-				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
+				.query(Q.where('rid', tmid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(this.count))
 				.observe();
 		} else if (rid) {
-			const whereClause = [
-				Q.where('rid', rid),
-				Q.experimentalSortBy('ts', Q.desc),
-				Q.experimentalSkip(0),
-				Q.experimentalTake(this.count)
-			] as (Q.WhereDescription | Q.Or)[];
+			const whereClause = [Q.where('rid', rid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(this.count)] as (
+				| Q.WhereDescription
+				| Q.Or
+			)[];
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
@@ -261,58 +266,70 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		}
 	};
 
-	getLastMessage = (): TMessageModel | TThreadMessageModel | null => {
-		const { messages } = this.state;
-		if (messages.length > 0) {
-			return messages[0];
-		}
-		return null;
-	};
-
 	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
 		const { listRef } = this.props;
-		listRef.current?.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
 
 	jumpToMessage = (messageId: string) =>
 		new Promise<void>(async resolve => {
-			this.jumping = true;
 			const { messages } = this.state;
 			const { listRef } = this.props;
+
+			// if jump to message was cancelled, reset variables and stop
+			if (this.cancelJump) {
+				this.resetJumpToMessage();
+				return resolve();
+			}
+			this.jumping = true;
+
+			// look for the message on the state
 			const index = messages.findIndex(item => item.id === messageId);
+
+			// if found message, scroll to it
 			if (index > -1) {
-				listRef.current?.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+
+				// wait for scroll animation to finish
 				await new Promise(res => setTimeout(res, 300));
+
+				// if message is not visible
 				if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
-					if (!this.jumping) {
-						return resolve();
-					}
 					await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 					return;
 				}
+				// if message is visible, highlight it
 				this.setState({ highlightedMessage: messageId });
 				this.clearHighlightedMessageTimeout();
+				// clears highlighted message after some time
 				this.highlightedMessageTimeout = setTimeout(() => {
 					this.setState({ highlightedMessage: null });
-				}, 10000);
-				await setTimeout(() => resolve(), 300);
+				}, 5000);
+				this.resetJumpToMessage();
+				resolve();
 			} else {
-				listRef.current?.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
-				if (!this.jumping) {
-					return resolve();
-				}
+				// if message not found, wait for scroll to top and then jump to message
+				listRef.current?.scrollToIndex({ index: messages.length - 1, animated: true });
 				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 			}
 		});
 
-	// this.jumping is checked in between operations to make sure we're not stuck
-	cancelJumpToMessage = () => {
+	resetJumpToMessage = () => {
+		this.cancelJump = false;
 		this.jumping = false;
+	};
+
+	cancelJumpToMessage = () => {
+		if (this.jumping) {
+			this.cancelJump = true;
+			return;
+		}
+		this.resetJumpToMessage();
 	};
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
-		listRef.current?.getNode().scrollToOffset({ offset: -100 });
+		listRef.current?.scrollToOffset({ offset: -100 });
 	};
 
 	renderFooter = () => {
@@ -326,7 +343,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
-		return renderRow(item, messages[index + 1], highlightedMessage);
+		return <View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessage)}</View>;
 	};
 
 	onViewableItemsChanged: FlatListProps<any>['onViewableItemsChanged'] = ({ viewableItems }) => {
@@ -337,25 +354,23 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.count(`${this.constructor.name}.render calls`);
 		const { rid, tmid, listRef } = this.props;
 		const { messages, refreshing } = this.state;
-		const { theme } = this.props;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
-				<List
-					onScroll={this.onScroll}
-					scrollEventThrottle={16}
-					listRef={listRef}
-					data={messages}
-					renderItem={this.renderItem}
-					onEndReached={this.onEndReached}
-					ListFooterComponent={this.renderFooter}
-					onScrollToIndexFailed={this.handleScrollToIndexFailed}
-					onViewableItemsChanged={this.onViewableItemsChanged}
-					viewabilityConfig={this.viewabilityConfig}
-					refreshControl={
-						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
-					}
-				/>
+				<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh}>
+					<List
+						onScroll={this.onScroll}
+						scrollEventThrottle={16}
+						listRef={listRef}
+						data={messages}
+						renderItem={this.renderItem}
+						onEndReached={this.onEndReached}
+						ListFooterComponent={this.renderFooter}
+						onScrollToIndexFailed={this.handleScrollToIndexFailed}
+						onViewableItemsChanged={this.onViewableItemsChanged}
+						viewabilityConfig={this.viewabilityConfig}
+					/>
+				</RefreshControl>
 				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>
 		);

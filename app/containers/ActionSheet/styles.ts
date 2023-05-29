@@ -27,7 +27,6 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		marginLeft: 16,
 		...sharedStyles.textRegular
 	},
 	handle: {
@@ -53,7 +52,7 @@ export default StyleSheet.create({
 		paddingHorizontal: 14,
 		justifyContent: 'center',
 		height: ITEM_HEIGHT,
-		borderRadius: 2,
+		borderRadius: 4,
 		marginBottom: 12
 	},
 	text: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import { Audio, AVPlaybackStatus } from 'expo-av';
+import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import { dequal } from 'dequal';
@@ -19,6 +19,9 @@ import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
+import { downloadAudioFile } from '../../lib/methods/audioFile';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { PAUSE_AUDIO } from './constants';
 
 interface IButton {
 	loading: boolean;
@@ -35,6 +38,7 @@ interface IMessageAudioProps {
 	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
+	messageId: string;
 }
 
 interface IMessageAudioState {
@@ -50,8 +54,8 @@ const mode = {
 	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
 
 const styles = StyleSheet.create({
@@ -92,7 +96,8 @@ const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButto
 		disabled={disabled}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
-		background={Touchable.SelectableBackgroundBorderless()}>
+		background={Touchable.SelectableBackgroundBorderless()}
+	>
 		{loading ? (
 			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 		) : (
@@ -109,7 +114,6 @@ Button.displayName = 'MessageAudioButton';
 
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
-
 	private sound: Sound;
 
 	constructor(props: IMessageAudioProps) {
@@ -125,8 +129,14 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.sound.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate);
 	}
 
+	pauseSound = () => {
+		EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
+		this.togglePlayPause();
+	};
+
 	async componentDidMount() {
-		const { file } = this.props;
+		const { file, messageId } = this.props;
+		// @ts-ignore can't use declare to type this
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
@@ -136,7 +146,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		this.setState({ loading: true });
 		try {
-			await this.sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
+			if (url) {
+				const audio = await downloadAudioFile(`${url}?rc_uid=${user.id}&rc_token=${user.token}`, url, messageId);
+				await this.sound.loadAsync({ uri: audio });
+			}
 		} catch {
 			// Do nothing
 		}
@@ -177,6 +190,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	async componentWillUnmount() {
+		EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
 		try {
 			await this.sound.stopAsync();
 		} catch {
@@ -215,6 +229,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				try {
 					await this.sound.stopAsync();
 					this.setState({ paused: true, currentTime: 0 });
+					EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
 				} catch {
 					// do nothing
 				}
@@ -237,7 +252,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		try {
 			if (paused) {
 				await this.sound.pauseAsync();
+				EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
 			} else {
+				EventEmitter.emit(PAUSE_AUDIO);
+				EventEmitter.addEventListener(PAUSE_AUDIO, this.pauseSound);
 				await Audio.setAudioModeAsync(mode);
 				await this.sound.playAsync();
 			}
@@ -259,6 +277,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const { loading, paused, currentTime, duration } = this.state;
 		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
 		const { description } = file;
+		// @ts-ignore can't use declare to type this
 		const { baseUrl, user } = this.context;
 
 		if (!baseUrl) {
@@ -277,7 +296,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				<Markdown
 					msg={description}
 					style={[isReply && style]}
-					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
@@ -286,7 +304,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					style={[
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-					]}>
+					]}
+				>
 					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
 						disabled={isReply}

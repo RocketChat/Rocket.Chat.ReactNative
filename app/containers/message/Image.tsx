@@ -38,7 +38,8 @@ const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButto
 		disabled={disabled}
 		onPress={onPress}
 		style={styles.imageContainer}
-		background={Touchable.Ripple(themes[theme].bannerBackground)}>
+		background={Touchable.Ripple(themes[theme].bannerBackground)}
+	>
 		{children}
 	</Touchable>
 ));
@@ -80,7 +81,6 @@ const ImageContainer = React.memo(
 						<Markdown
 							msg={file.description}
 							style={[isReply && style]}
-							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}

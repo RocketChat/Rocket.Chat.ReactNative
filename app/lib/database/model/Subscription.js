@@ -29,6 +29,8 @@ export default class Subscription extends Model {
 
 	@field('fname') fname;
 
+	@field('sanitized_fname') sanitizedFname;
+
 	@field('rid') rid;
 
 	@field('open') open;
@@ -123,6 +125,8 @@ export default class Subscription extends Model {
 
 	@field('e2e_key') E2EKey;
 
+	@field('e2e_suggested_key') E2ESuggestedKey;
+
 	@field('encrypted') encrypted;
 
 	@field('e2e_key_id') e2eKeyId;
@@ -134,6 +138,8 @@ export default class Subscription extends Model {
 	@field('team_main') teamMain;
 
 	@field('on_hold') onHold;
+
+	@field('users_count') usersCount;
 
 	@json('source', sanitizer) source;
 }

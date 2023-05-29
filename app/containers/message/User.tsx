@@ -7,8 +7,8 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
-import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
-import { MessageType, SubscriptionType } from '../../definitions';
+import { messageHaveAuthorName } from './utils';
+import { MessageType, MessageTypesValues, SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import RightIcons from './Components/RightIcons';
 
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 		flexShrink: 1,
 		fontSize: 16,
 		lineHeight: 22,
-		...sharedStyles.textMedium
+		...sharedStyles.textSemibold
 	},
 	usernameInfoMessage: {
 		fontSize: 16,
@@ -88,14 +88,14 @@ const User = React.memo(
 					{aliasUsername}
 				</>
 			);
-
-			if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(type)) {
+			if (messageHaveAuthorName(type as MessageTypesValues)) {
 				return (
 					<Text
 						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
 						onPress={onUserPress}
 						// @ts-ignore // TODO - check this prop
-						disabled={isDisabled}>
+						disabled={isDisabled}
+					>
 						{textContent}
 					</Text>
 				);
@@ -113,8 +113,8 @@ const User = React.memo(
 						type={type}
 						isEdited={isEdited}
 						hasError={hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled || false}
-						unread={props.unread || false}
+						isReadReceiptEnabled={props.isReadReceiptEnabled}
+						unread={props.unread}
 					/>
 				</View>
 			);

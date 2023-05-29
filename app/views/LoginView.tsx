@@ -15,6 +15,7 @@ import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import sharedStyles from './Styles';
+import UGCRules from '../containers/UserGeneratedContentRules';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -31,8 +32,7 @@ const styles = StyleSheet.create({
 	},
 	bottomContainer: {
 		flexDirection: 'column',
-		alignItems: 'center',
-		marginBottom: 32
+		alignItems: 'center'
 	},
 	bottomContainerText: {
 		...sharedStyles.textRegular,
@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
 	},
 	loginButton: {
 		marginTop: 16
+	},
+	ugcContainer: {
+		marginTop: 32
 	}
 });
 
@@ -156,7 +159,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 
 		return (
 			<>
-				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
+				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme!].titleText }]}>{I18n.t('Login')}</Text>
 				<FormTextInput
 					label={I18n.t('Username_or_email')}
 					containerStyle={styles.inputContainer}
@@ -169,7 +172,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					}}
 					testID='login-view-email'
 					textContentType='username'
-					autoCompleteType='username'
+					autoComplete='username'
 					value={user}
 				/>
 				<FormTextInput
@@ -185,7 +188,7 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 					onChangeText={(value: string) => this.setState({ password: value })}
 					testID='login-view-password'
 					textContentType='password'
-					autoCompleteType='password'
+					autoComplete='password'
 				/>
 				<Button
 					title={I18n.t('Login')}
@@ -202,27 +205,29 @@ class LoginView extends React.Component<ILoginViewProps, ILoginViewState> {
 						type='secondary'
 						onPress={this.forgotPassword}
 						testID='login-view-forgot-password'
-						color={themes[theme].auxiliaryText}
+						color={themes[theme!].auxiliaryText}
 						fontSize={14}
 					/>
 				)}
 				{this.showRegistrationButton ? (
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
+						<Text style={[styles.bottomContainerText, { color: themes[theme!].auxiliaryText }]}>
 							{I18n.t('Dont_Have_An_Account')}
 						</Text>
 						<Text
-							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+							style={[styles.bottomContainerTextBold, { color: themes[theme!].actionTintColor }]}
 							onPress={this.register}
-							testID='login-view-register'>
+							testID='login-view-register'
+						>
 							{I18n.t('Create_account')}
 						</Text>
 					</View>
 				) : (
-					<Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>
+					<Text style={[styles.registerDisabled, { color: themes[theme!].auxiliaryText }]}>
 						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
 				)}
+				<UGCRules styleContainer={styles.ugcContainer} />
 			</>
 		);
 	};

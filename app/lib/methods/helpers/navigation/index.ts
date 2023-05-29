@@ -4,11 +4,13 @@ import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
 import { isIOS } from '../deviceInfo';
+import sharedStyles from '../../../../views/Styles';
 
 export * from './animations';
 
 export const defaultHeader = {
 	headerBackTitleVisible: false,
+	headerBackTestID: 'header-back',
 	cardOverlayEnabled: true,
 	cardStyle: { backgroundColor: 'transparent' }
 };
@@ -36,7 +38,7 @@ export const themedHeader = (theme: TSupportedThemes) => ({
 		backgroundColor: themes[theme].headerBackground
 	},
 	headerTintColor: themes[theme].headerTintColor,
-	headerTitleStyle: { color: themes[theme].headerTitleColor }
+	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].headerTitleColor, fontSize: 18 }
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {

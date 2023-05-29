@@ -102,6 +102,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey,
+					E2ESuggestedKey: s.E2ESuggestedKey,
 					avatarETag: s.avatarETag,
 					onHold: s.onHold,
 					hideMentionStatus: s.hideMentionStatus
@@ -165,6 +166,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
 			// Decrypt all pending messages of this room in parallel
 			Encryption.decryptPendingMessages(tmp.rid);
+		} else if (sub && subscription.E2ESuggestedKey) {
+			await Encryption.evaluateSuggestedKey(sub.rid, subscription.E2ESuggestedKey);
 		}
 
 		const batch: Model[] = [];
@@ -197,8 +200,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			}
 		}
 
-		const { rooms } = store.getState().room;
-		if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
+		const { subscribedRoom } = store.getState().room;
+		if (tmp.lastMessage && subscribedRoom !== tmp.rid) {
 			const lastMessage = buildMessage(tmp.lastMessage);
 			const messagesCollection = db.get('messages');
 			let messageRecord = {} as TMessageModel | null;
@@ -209,6 +212,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			if (messageRecord) {
 				batch.push(
 					messageRecord.prepareUpdate(() => {
+						// @ts-ignore
 						Object.assign(messageRecord, lastMessage);
 					})
 				);
@@ -288,12 +292,21 @@ export default function subscribeRooms() {
 		const [type, data] = ddpMessage.fields.args;
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/userData/.test(ev)) {
-			const [{ diff }] = ddpMessage.fields.args;
+			const [{ diff, unset }] = ddpMessage.fields.args;
 			if (diff?.statusLivechat) {
 				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
 			}
 			if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
 				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
+			}
+			if ((['settings.preferences.alsoSendThreadToChannel'] as any) in diff) {
+				store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+			}
+			if (diff?.avatarETag) {
+				store.dispatch(setUser({ avatarETag: diff.avatarETag }));
+			}
+			if (unset?.avatarETag) {
+				store.dispatch(setUser({ avatarETag: '' }));
 			}
 		}
 		if (/subscriptions/.test(ev)) {
@@ -316,6 +329,8 @@ export default function subscribeRooms() {
 					await db.write(async () => {
 						await db.batch(sub.prepareDestroyPermanently(), ...messagesToDelete, ...threadsToDelete, ...threadMessagesToDelete);
 					});
+
+					Encryption.stopRoom(data.rid);
 
 					const roomState = store.getState().room;
 					// Delete and remove events come from this stream

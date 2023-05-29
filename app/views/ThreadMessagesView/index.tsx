@@ -54,7 +54,7 @@ interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'Thr
 	user: { id: string };
 	baseUrl: string;
 	useRealName: boolean;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	isMasterDetail: boolean;
 }
 
@@ -133,11 +133,16 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			headerTitle: I18n.t('Threads'),
 			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={themes[theme!].headerTintColor}
+					testID='header-back'
+				/>
 			),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
 				</HeaderButton.Container>
 			)
 		};
@@ -180,7 +185,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				this.messagesSubscription.unsubscribe();
 			}
 
-			const whereClause = [Q.where('rid', this.rid), Q.experimentalSortBy('tlm', Q.desc)];
+			const whereClause = [Q.where('rid', this.rid), Q.sortBy('tlm', Q.desc)];
 
 			if (searchText?.trim()) {
 				whereClause.push(Q.where('msg', Q.like(`%${sanitizeLikeString(searchText.trim())}%`)));
@@ -237,7 +242,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		const { subscription } = this.state;
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
-		if (!subscription) {
+		if (!subscription._id) {
 			this.setState(({ messages }) => ({ messages: [...messages, ...update] }));
 			return;
 		}
@@ -390,7 +395,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	getBadgeColor = (item: TThreadModel) => {
 		const { subscription } = this.state;
 		const { theme } = this.props;
-		return getBadgeColor({ subscription, theme, messageId: item?.id });
+		return getBadgeColor({ subscription, theme: theme!, messageId: item?.id });
 	};
 
 	// helper to query threads
@@ -488,7 +493,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				data={displayingThreads}
 				extraData={this.state}
 				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme!].backgroundColor }]}
 				contentContainerStyle={styles.contentContainer}
 				onEndReached={this.load}
 				onEndReachedThreshold={0.5}
@@ -518,7 +523,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 						currentFilter={currentFilter}
 						onFilterSelected={this.onFilterSelected}
 						onClose={this.closeFilterDropdown}
-						theme={theme}
+						theme={theme!}
 					/>
 				) : null}
 			</SafeAreaView>

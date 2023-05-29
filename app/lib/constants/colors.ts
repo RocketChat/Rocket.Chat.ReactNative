@@ -3,7 +3,8 @@ export const STATUS_COLORS: any = {
 	busy: '#f5455c',
 	away: '#ffd21f',
 	offline: '#cbced1',
-	loading: '#9ea2a8'
+	loading: '#9ea2a8',
+	disabled: '#F38C39'
 };
 
 export const SWITCH_TRACK_COLOR = {
@@ -58,6 +59,7 @@ export const colors = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#EEEFF1',
 		passcodeButtonActive: '#E4E7EA',
+		editAndUploadButtonAvatar: '#E4E7EA',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#2F343D',
 		passcodeSecondary: '#6C727A',
@@ -70,6 +72,23 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
+		conferenceCallBorder: '#F2F3F5',
+		conferenceCallBackground: '#F7F8FA',
+		conferenceCallOngoingPhoneBackground: '#C0F6E4',
+		conferenceCallIncomingPhoneBackground: '#D1EBFE',
+		conferenceCallEndedPhoneBackground: '#E4E7EA',
+		conferenceCallOngoingPhoneIcon: '#158D65',
+		conferenceCallIncomingPhoneIcon: '#095AD2',
+		conferenceCallEndedPhoneIcon: '#6C727A',
+		conferenceCallPlusUsersButton: '#E4E7EA',
+		conferenceCallPlusUsersText: '#6C727A',
+		conferenceCallCallBackButton: '#EEEFF1',
+		conferenceCallCallBackText: '#1F2329',
+		conferenceCallDisabledIcon: '#6C727A',
+		conferenceCallEnabledIcon: '#FFFFFF',
+		conferenceCallEnabledIconBackground: '#156FF5',
+		conferenceCallPhotoBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#E4E7EA',
 		...mentions
 	},
 	dark: {
@@ -110,6 +129,7 @@ export const colors = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#030C1B',
 		passcodeButtonActive: '#0B182C',
+		editAndUploadButtonAvatar: '#0B182C',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#FFFFFF',
 		passcodeSecondary: '#CBCED1',
@@ -122,6 +142,23 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
+		conferenceCallBorder: '#1F2329',
+		conferenceCallBackground: '#1F2329',
+		conferenceCallOngoingPhoneBackground: '#106D4F',
+		conferenceCallIncomingPhoneBackground: '#D1EBFE',
+		conferenceCallEndedPhoneBackground: '#6C727A',
+		conferenceCallOngoingPhoneIcon: '#F7F8FA',
+		conferenceCallIncomingPhoneIcon: '#095AD2',
+		conferenceCallEndedPhoneIcon: '#F7F8FA',
+		conferenceCallPlusUsersButton: '#2F343D',
+		conferenceCallPlusUsersText: '#9EA2A8',
+		conferenceCallCallBackButton: '#E4E7EA',
+		conferenceCallCallBackText: '#FFFFFF',
+		conferenceCallDisabledIcon: '#6C727A',
+		conferenceCallEnabledIcon: '#FFFFFF',
+		conferenceCallEnabledIconBackground: '#156FF5',
+		conferenceCallPhotoBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#030b1b', // backgroundColor
 		...mentions
 	},
 	black: {
@@ -162,6 +199,7 @@ export const colors = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#000000',
 		passcodeButtonActive: '#0E0D0D',
+		editAndUploadButtonAvatar: '#0E0D0D',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#FFFFFF',
 		passcodeSecondary: '#CBCED1',
@@ -174,6 +212,23 @@ export const colors = {
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
 		cancelButton: '#E4E7EA',
+		conferenceCallBorder: '#1F2329',
+		conferenceCallBackground: '#1F2329',
+		conferenceCallOngoingPhoneBackground: '#106D4F',
+		conferenceCallIncomingPhoneBackground: '#D1EBFE',
+		conferenceCallEndedPhoneBackground: '#6C727A',
+		conferenceCallOngoingPhoneIcon: '#F7F8FA',
+		conferenceCallIncomingPhoneIcon: '#095AD2',
+		conferenceCallEndedPhoneIcon: '#F7F8FA',
+		conferenceCallPlusUsersButton: '#2F343D',
+		conferenceCallPlusUsersText: '#9EA2A8',
+		conferenceCallCallBackButton: '#E4E7EA',
+		conferenceCallCallBackText: '#FFFFFF',
+		conferenceCallDisabledIcon: '#6C727A',
+		conferenceCallEnabledIcon: '#FFFFFF',
+		conferenceCallEnabledIconBackground: '#156FF5',
+		conferenceCallPhotoBackground: '#E4E7EA',
+		textInputSecondaryBackground: '#000000', // backgroundColor
 		...mentions
 	}
 };

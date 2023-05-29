@@ -8,8 +8,8 @@ export default StyleSheet.create({
 		...sharedStyles.textAlignCenter
 	},
 	buttonInverted: {
-		borderWidth: 2,
-		borderRadius: 2
+		borderWidth: 1,
+		borderRadius: 4
 	},
 	buttonContainerDisabled: {
 		opacity: 0.7
@@ -27,11 +27,11 @@ export default StyleSheet.create({
 	buttonContainer: {
 		paddingVertical: 15,
 		marginBottom: 20,
-		borderRadius: 2
+		borderRadius: 4
 	},
 	buttonDanger: {
-		borderWidth: 2,
-		borderRadius: 2
+		borderWidth: 1,
+		borderRadius: 4
 	},
 	switchContainer: {
 		flexDirection: 'row',
@@ -76,7 +76,8 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 10
+		marginBottom: 32,
+		marginTop: 16
 	},
 	resetButton: {
 		padding: 4,

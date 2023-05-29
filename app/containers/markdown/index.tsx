@@ -22,18 +22,17 @@ import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
-import { TSupportedThemes } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
 	msg?: string | null;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
-	baseUrl?: string;
 	username?: string;
 	tmid?: string;
 	numberOfLines?: number;
@@ -46,6 +45,7 @@ interface IMarkdownProps {
 	testID?: string;
 	style?: StyleProp<TextStyle>[];
 	onLinkPress?: TOnLinkPress;
+	isTranslated?: boolean;
 }
 
 type TLiteral = {
@@ -94,9 +94,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	constructor(props: IMarkdownProps) {
 		super(props);
-		if (!this.isNewMarkdown) {
-			this.renderer = this.createRenderer();
-		}
+		this.renderer = this.createRenderer();
 	}
 
 	createRenderer = () =>
@@ -142,10 +140,10 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	}
 
 	renderText = ({ context, literal }: { context: []; literal: string }) => {
-		const { numberOfLines, style = [] } = this.props;
+		const { numberOfLines } = this.props;
 		const defaultStyle = [this.isMessageContainsOnlyEmoji ? styles.textBig : {}, ...context.map(type => styles[type])];
 		return (
-			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle, ...style]} numberOfLines={numberOfLines}>
+			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle]} numberOfLines={numberOfLines}>
 				{literal}
 			</Text>
 		);
@@ -158,12 +156,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				style={[
 					{
 						...styles.codeInline,
-						color: themes[theme].bodyText,
-						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						color: themes[theme!].bodyText,
+						backgroundColor: themes[theme!].bannerBackground,
+						borderColor: themes[theme!].bannerBackground
 					},
 					...style
-				]}>
+				]}
+			>
 				{literal}
 			</Text>
 		);
@@ -176,12 +175,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				style={[
 					{
 						...styles.codeBlock,
-						color: themes[theme].bodyText,
-						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						color: themes[theme!].bodyText,
+						backgroundColor: themes[theme!].bannerBackground,
+						borderColor: themes[theme!].bannerBackground
 					},
 					...style
-				]}>
+				]}
+			>
 				{literal}
 			</Text>
 		);
@@ -193,12 +193,12 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderParagraph = ({ children }: any) => {
-		const { numberOfLines, style, theme } = this.props;
+		const { numberOfLines, style = [], theme } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
 		return (
-			<Text style={[styles.text, style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
+			<Text style={[styles.text, { color: themes[theme!].bodyText }, ...style]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
@@ -207,7 +207,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderLink = ({ children, href }: any) => {
 		const { theme, onLinkPress } = this.props;
 		return (
-			<MarkdownLink link={href} theme={theme} onLinkPress={onLinkPress}>
+			<MarkdownLink link={href} theme={theme!} onLinkPress={onLinkPress}>
 				{children}
 			</MarkdownLink>
 		);
@@ -233,13 +233,12 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderEmoji = ({ literal }: TLiteral) => {
-		const { getCustomEmoji, baseUrl = '', customEmojis, style } = this.props;
+		const { getCustomEmoji, customEmojis, style } = this.props;
 		return (
 			<MarkdownEmoji
 				literal={literal}
 				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}
-				baseUrl={baseUrl}
 				customEmojis={customEmojis}
 				style={style}
 			/>
@@ -259,7 +258,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		// @ts-ignore
 		const textStyle = styles[`heading${level}Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>
+			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme!].bodyText }]}>
 				{children}
 			</Text>
 		);
@@ -287,13 +286,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	renderBlockQuote = ({ children }: { children: JSX.Element }) => {
 		const { theme } = this.props;
-		return <MarkdownBlockQuote theme={theme}>{children}</MarkdownBlockQuote>;
+		return <MarkdownBlockQuote theme={theme!}>{children}</MarkdownBlockQuote>;
 	};
 
 	renderTable = ({ children, numColumns }: { children: JSX.Element; numColumns: number }) => {
 		const { theme } = this.props;
 		return (
-			<MarkdownTable numColumns={numColumns} theme={theme}>
+			<MarkdownTable numColumns={numColumns} theme={theme!}>
 				{children}
 			</MarkdownTable>
 		);
@@ -319,19 +318,18 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			useRealName,
 			username = '',
 			getCustomEmoji,
-			baseUrl = '',
-			onLinkPress
+			onLinkPress,
+			isTranslated
 		} = this.props;
 
 		if (!msg) {
 			return null;
 		}
 
-		if (this.isNewMarkdown) {
+		if (this.isNewMarkdown && !isTranslated) {
 			return (
 				<NewMarkdown
 					username={username}
-					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 					useRealName={useRealName}
 					tokens={md}
@@ -348,8 +346,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		let ast = parser.parse(m);
 		ast = mergeTextNodes(ast);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
-		return this.renderer.render(ast);
+		return this.renderer?.render(ast) || null;
 	}
 }
 
-export default Markdown;
+export default withTheme(Markdown);

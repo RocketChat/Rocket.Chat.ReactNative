@@ -21,8 +21,8 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
-import { isTablet } from '../../lib/methods/helpers';
+import { TSupportedThemes, withTheme } from '../../theme';
+import { isIOS, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
@@ -31,6 +31,7 @@ import { moderateScale, verticalScale } from './scaling';
 import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
+import { serializeAsciiUrl } from '../../lib/methods';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -66,10 +67,11 @@ const styles = StyleSheet.create({
 });
 
 interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
-	connecting: boolean;
-	previousServer: string | null;
-	width: number;
-	height: number;
+	connecting?: boolean;
+	previousServer?: string | null;
+	width?: number;
+	height?: number;
+	theme?: TSupportedThemes;
 }
 
 interface INewServerViewState {
@@ -115,12 +117,21 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		}
 	}
 
+	componentDidUpdate(prevProps: Readonly<INewServerViewProps>) {
+		if (prevProps.connecting !== this.props.connecting) {
+			this.setHeader();
+		}
+	}
+
 	setHeader = () => {
-		const { previousServer, navigation } = this.props;
+		const { previousServer, navigation, connecting } = this.props;
 		if (previousServer) {
 			return navigation.setOptions({
 				headerTitle: I18n.t('Workspaces'),
-				headerLeft: () => <HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+				headerLeft: () =>
+					!connecting ? (
+						<HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+					) : null
 			});
 		}
 
@@ -147,7 +158,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.get('servers_history');
-			let whereClause = [Q.where('username', Q.notEq(null)), Q.experimentalSortBy('updated_at', Q.desc), Q.experimentalTake(3)];
+			let whereClause = [Q.where('username', Q.notEq(null)), Q.sortBy('updated_at', Q.desc), Q.take(3)];
 			if (text) {
 				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
@@ -161,6 +172,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	close = () => {
 		const { dispatch, previousServer } = this.props;
+
 		dispatch(inviteLinksClear());
 		if (previousServer) {
 			dispatch(selectServerRequest(previousServer));
@@ -257,8 +269,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				url = `https://${url}`;
 			}
 		}
-
-		return url.replace(/\/+$/, '').replace(/\\/g, '/');
+		return serializeAsciiUrl(url.replace(/\/+$/, '').replace(/\\/g, '/'));
 	};
 
 	uriToPath = (uri: string) => uri.replace('file://', '');
@@ -293,21 +304,28 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
+						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height: height! })
 					}
-				]}>
+				]}
+			>
 				<Text
 					style={[
 						styles.chooseCertificateTitle,
-						{ color: themes[theme].auxiliaryText, fontSize: moderateScale({ size: 13, width }) }
-					]}>
+						{ color: themes[theme!].auxiliaryText, fontSize: moderateScale({ size: 13, width: width! }) }
+					]}
+				>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
-					testID='new-server-choose-certificate'>
+					testID='new-server-choose-certificate'
+				>
 					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}>
+						style={[
+							styles.chooseCertificate,
+							{ color: themes[theme!].tintColor, fontSize: moderateScale({ size: 13, width: width! }) }
+						]}
+					>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
@@ -319,6 +337,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { connecting, theme, previousServer, width, height } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
 		const marginTop = previousServer ? 0 : 35;
+
+		if (!height || !width) {
+			return null;
+		}
 
 		return (
 			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -340,27 +362,29 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.title,
 							{
-								color: themes[theme].titleText,
+								color: themes[theme!].titleText,
 								fontSize: moderateScale({ size: 22, width }),
 								marginBottom: verticalScale({ size: 8, height })
 							}
-						]}>
+						]}
+					>
 						Rocket.Chat
 					</Text>
 					<Text
 						style={[
 							styles.subtitle,
 							{
-								color: themes[theme].controlText,
+								color: themes[theme!].controlText,
 								fontSize: moderateScale({ size: 16, width }),
 								marginBottom: verticalScale({ size: 30, height })
 							}
-						]}>
+						]}
+					>
 						{I18n.t('Onboarding_subtitle')}
 					</Text>
 					<ServerInput
 						text={text}
-						theme={theme}
+						theme={theme!}
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}
@@ -376,27 +400,32 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
 						testID='new-server-view-button'
 					/>
-					<OrSeparator theme={theme} />
-					<Text
-						style={[
-							styles.description,
-							{
-								color: themes[theme].auxiliaryText,
-								fontSize: moderateScale({ size: 14, width }),
-								marginBottom: verticalScale({ size: 16, height })
-							}
-						]}>
-						{I18n.t('Onboarding_join_open_description')}
-					</Text>
-					<Button
-						title={I18n.t('Join_our_open_workspace')}
-						type='secondary'
-						backgroundColor={themes[theme].chatComponentBackground}
-						onPress={this.connectOpen}
-						disabled={connecting}
-						loading={connectingOpen && connecting}
-						testID='new-server-view-open'
-					/>
+					{isIOS ? (
+						<>
+							<OrSeparator theme={theme!} />
+							<Text
+								style={[
+									styles.description,
+									{
+										color: themes[theme!].auxiliaryText,
+										fontSize: moderateScale({ size: 14, width }),
+										marginBottom: verticalScale({ size: 16, height })
+									}
+								]}
+							>
+								{I18n.t('Onboarding_join_open_description')}
+							</Text>
+							<Button
+								title={I18n.t('Join_our_open_workspace')}
+								type='secondary'
+								backgroundColor={themes[theme!].chatComponentBackground}
+								onPress={this.connectOpen}
+								disabled={connecting}
+								loading={connectingOpen && connecting}
+								testID='new-server-view-open'
+							/>
+						</>
+					) : null}
 				</FormContainerInner>
 				{this.renderCertificatePicker()}
 			</FormContainer>

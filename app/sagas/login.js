@@ -42,7 +42,12 @@ const loginWithPasswordCall = args => Services.loginWithPassword(args);
 const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
 const logoutCall = args => logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
+const handleLoginRequest = function* handleLoginRequest({
+	credentials,
+	logoutOnError = false,
+	isFromWebView = false,
+	registerCustomFields
+}) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
@@ -78,6 +83,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 				}
 			});
 			yield put(loginSuccess(result));
+			if (registerCustomFields) {
+				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
+				yield put(setUser({ ...result, ...updatedUser.user }));
+			}
 		}
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
@@ -238,6 +247,22 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 };
 
 const handleSetUser = function* handleSetUser({ user }) {
+	if ('avatarETag' in user) {
+		const userId = yield select(state => state.login.user.id);
+		const serversDB = database.servers;
+		const userCollections = serversDB.get('users');
+		yield serversDB.write(async () => {
+			try {
+				const userRecord = await userCollections.find(userId);
+				await userRecord.update(record => {
+					record.avatarETag = user.avatarETag;
+				});
+			} catch {
+				//
+			}
+		});
+	}
+
 	setLanguage(user?.language);
 
 	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {

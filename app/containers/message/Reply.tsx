@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
 	},
 	author: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		flexShrink: 1
 	},
 	fieldsContainer: {
 		flex: 1,
@@ -90,6 +91,7 @@ interface IMessageReply {
 	timeFormat?: string;
 	index: number;
 	getCustomEmoji: TGetCustomEmoji;
+	messageId: string;
 }
 
 const Title = React.memo(
@@ -98,7 +100,9 @@ const Title = React.memo(
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
-					<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
+					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>
+						{attachment.author_name}
+					</Text>
 				) : null}
 				{time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
 				{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
@@ -117,7 +121,7 @@ const Description = React.memo(
 		getCustomEmoji: TGetCustomEmoji;
 		theme: TSupportedThemes;
 	}) => {
-		const { baseUrl, user } = useContext(MessageContext);
+		const { user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
 
 		if (!text) {
@@ -128,7 +132,6 @@ const Description = React.memo(
 			<Markdown
 				msg={text}
 				style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14 }]}
-				baseUrl={baseUrl}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
 				theme={theme}
@@ -173,7 +176,7 @@ const Fields = React.memo(
 		theme: TSupportedThemes;
 		getCustomEmoji: TGetCustomEmoji;
 	}) => {
-		const { baseUrl, user } = useContext(MessageContext);
+		const { user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
 			return null;
@@ -184,13 +187,7 @@ const Fields = React.memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
-						<Markdown
-							msg={field?.value || ''}
-							baseUrl={baseUrl}
-							username={user.username}
-							getCustomEmoji={getCustomEmoji}
-							theme={theme}
-						/>
+						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 					</View>
 				))}
 			</View>
@@ -201,7 +198,7 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
+	({ attachment, timeFormat, index, getCustomEmoji, messageId }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
@@ -235,7 +232,9 @@ const Reply = React.memo(
 
 		return (
 			<>
+				{/* The testID is to test properly quoted messages using it as ancestor  */}
 				<Touchable
+					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 					onPress={onPress}
 					style={[
 						styles.button,
@@ -246,18 +245,20 @@ const Reply = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					disabled={loading}>
+					disabled={loading}
+				>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<UrlImage image={attachment.thumb_url} />
 						<Attachments
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
 							timeFormat={timeFormat}
 							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
 							isReply
+							id={messageId}
 						/>
-						<UrlImage image={attachment.thumb_url} />
-						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{loading ? (
 							<View style={[styles.backdrop]}>
@@ -265,19 +266,14 @@ const Reply = React.memo(
 									style={[
 										styles.backdrop,
 										{ backgroundColor: themes[theme].bannerBackground, opacity: themes[theme].attachmentLoadingOpacity }
-									]}></View>
+									]}
+								></View>
 								<RCActivityIndicator />
 							</View>
 						) : null}
 					</View>
 				</Touchable>
-				<Markdown
-					msg={attachment.description}
-					baseUrl={baseUrl}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
+				<Markdown msg={attachment.description} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);
 	},

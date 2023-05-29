@@ -1,7 +1,8 @@
 import React from 'react';
 
 export interface IProfileParams {
-	name: string;
+	realname?: string;
+	name?: string;
 	username: string;
 	email: string | null;
 	newPassword: string;
@@ -16,16 +17,14 @@ export interface IAvatarButton {
 }
 
 export interface IAvatar {
-	data: {} | string | null;
+	data: string | null;
 	url?: string;
 	contentType?: string;
 	service?: any;
 }
 
 export interface IAvatarSuggestion {
-	[service: string]: {
-		url: string;
-		blob: string;
-		contentType: string;
-	};
+	url: string;
+	blob: string;
+	contentType: string;
 }

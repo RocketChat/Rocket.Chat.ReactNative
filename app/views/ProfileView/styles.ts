@@ -7,7 +7,7 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 10
+		marginBottom: 24
 	},
 	avatarButtons: {
 		flexWrap: 'wrap',
@@ -15,13 +15,12 @@ export default StyleSheet.create({
 		justifyContent: 'flex-start'
 	},
 	avatarButton: {
-		backgroundColor: '#e1e5e8',
 		width: 50,
 		height: 50,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: 15,
 		marginBottom: 15,
-		borderRadius: 2
+		borderRadius: 4
 	}
 });
