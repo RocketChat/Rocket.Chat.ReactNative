@@ -179,7 +179,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 
 function* giveUp({ rid, uid, callId, rejected }: { rid: string; uid: string; callId: string; rejected?: boolean }) {
 	yield put(removeVideoConfCall({ rid, uid, callId }));
-	notifyUser(`${uid}/video-conference`, { action: rejected ? 'rejected' : 'canceled', params: { uid, rid, callId } });
+	yield call(notifyUser, `${uid}/video-conference`, { action: rejected ? 'rejected' : 'canceled', params: { uid, rid, callId } });
 	if (!rejected) {
 		yield put(setCalling(false));
 		yield call(Services.videoConferenceCancel, callId);
