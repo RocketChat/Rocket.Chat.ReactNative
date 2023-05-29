@@ -7,6 +7,7 @@ import { WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 import { IBaseScreen } from '../definitions';
 import { userAgent } from '../lib/constants';
 import { isIOS } from '../lib/methods/helpers';
+import { getRoomIdFromJitsiCallUrl } from '../lib/methods/helpers/getRoomIdFromJitsiCall';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../lib/methods/videoConfTimer';
 import { ChatsStackParamList } from '../stacks/types';
@@ -67,12 +68,8 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 
 	onNavigationStateChange = (webViewState: WebViewNavigation) => {
 		const { navigation, route } = this.props;
-		const jitsiRoomId = route.params.url
-			?.split(/^https?:\/\//)[1]
-			?.split('#')[0]
-			?.split('/')[1];
 
-		const roomId = jitsiRoomId.includes('?jwt') ? jitsiRoomId.split('?jwt')[0] : jitsiRoomId;
+		const roomId = getRoomIdFromJitsiCallUrl(route.params.url);
 
 		if ((roomId && !webViewState.url.includes(roomId)) || webViewState.url.includes('close')) {
 			if (isIOS) {
