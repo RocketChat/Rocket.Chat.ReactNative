@@ -92,7 +92,7 @@ interface IRoomsListViewProps {
 }
 
 interface IRoomsListViewState {
-	searching?: boolean;
+	searching: boolean;
 	search?: IRoomItem[];
 	loading?: boolean;
 	chatsUpdate?: string[] | { rid: string; alert?: boolean }[];
@@ -154,7 +154,7 @@ const getItemLayout = (data: ISubscription[] | null | undefined, index: number, 
 	offset: height * index,
 	index
 });
-// We need to pass the isSearching to handle the room if it's a room returned from search (without observable) or from query subscription (with observable)
+// isSearching is needed to trigger RoomItem's useEffect properly after searching
 const keyExtractor = (item: ISubscription, isSearching: boolean) => `${item.rid}-${isSearching}`;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
@@ -562,7 +562,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				chats: tempChats,
 				chatsUpdate,
 				omnichannelsUpdate,
-				loading: false
+				loading: false,
+				searching: false
 			});
 		});
 	};
@@ -900,7 +901,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
-				keyExtractor={item => keyExtractor(item, !!searching)}
+				keyExtractor={item => keyExtractor(item, searching)}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
