@@ -1,6 +1,6 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWaitFor } from '../../helpers/app';
+import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWaitFor, searchRoom } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
@@ -238,6 +238,9 @@ describe('Create room screen', () => {
 				await waitFor(element(by.id('create-channel-view')))
 					.toExist()
 					.withTimeout(10000);
+				await waitFor(element(by.id('create-channel-name')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('create-channel-name')).replaceText(room);
 				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
@@ -260,6 +263,61 @@ describe('Create room screen', () => {
 					.toExist()
 					.withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${room}`))).toExist();
+			});
+
+			it('should create a room with non-latin alphabet and do a case insensitive search for it', async () => {
+				const randomValue = random();
+				const roomName = `ПРОВЕРКА${randomValue}`;
+				const roomNameLower = roomName.toLowerCase();
+
+				await waitFor(element(by.id('rooms-list-view')))
+					.toExist()
+					.withTimeout(10000);
+				await element(by.id('rooms-list-view-create-channel')).tap();
+				await waitFor(element(by.id('new-message-view')))
+					.toBeVisible()
+					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('new-message-view-create-channel')).tap();
+				await waitFor(element(by.id('select-users-view')))
+					.toExist()
+					.withTimeout(5000);
+				await element(by.id('selected-users-view-submit')).tap();
+				await waitFor(element(by.id('create-channel-view')))
+					.toExist()
+					.withTimeout(10000);
+				await waitFor(element(by.id('create-channel-name')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('create-channel-name')).replaceText(roomName);
+				await element(by.id('create-channel-name')).tapReturnKey();
+				await waitFor(element(by.id('create-channel-submit')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('create-channel-submit')).tap();
+				await waitFor(element(by.id('room-view')))
+					.toExist()
+					.withTimeout(60000);
+				await expect(element(by.id('room-view'))).toExist();
+				await waitFor(element(by.id(`room-view-title-${roomName}`)))
+					.toExist()
+					.withTimeout(60000);
+				await expect(element(by.id(`room-view-title-${roomName}`))).toExist();
+				await tapBack();
+				await waitFor(element(by.id('rooms-list-view')))
+					.toExist()
+					.withTimeout(2000);
+				await waitFor(element(by.id(`rooms-list-view-item-${roomName}`)))
+					.toExist()
+					.withTimeout(60000);
+				await expect(element(by.id(`rooms-list-view-item-${roomName}`))).toExist();
+				await searchRoom(roomNameLower, `rooms-list-view-item-${roomName}`);
+				await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
+				await waitFor(element(by.id('room-view')))
+					.toBeVisible()
+					.withTimeout(5000);
 			});
 		});
 	});
