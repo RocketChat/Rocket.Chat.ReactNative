@@ -17,30 +17,6 @@ export const useStyle = () => {
 			borderColor: colors.separatorColor,
 			flex: 1
 		},
-		content: {
-			flex: 1
-		},
-		inner: {
-			flex: 1
-		},
-		avatar: {
-			marginRight: 10
-		},
-		roomName: {
-			fontSize: 17,
-			lineHeight: 20,
-			color: colors.titleText,
-			...sharedStyles.textMedium
-		},
-		message: {
-			fontSize: 14,
-			lineHeight: 17,
-			color: colors.titleText,
-			...sharedStyles.textRegular
-		},
-		close: {
-			marginLeft: 10
-		},
 		small: {
 			width: '50%',
 			alignSelf: 'center'
