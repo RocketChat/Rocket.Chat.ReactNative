@@ -89,8 +89,8 @@ export const colors = {
 		pureWhite: '#ffffff',
 		mentionMeColor: '#F5455C',
 		mentionGroupColor: '#F38C39',
-		mentionRoomBackground: '#E4E7EA',
-		mentionRoomColor: '#095AD2',
+		mentionOthersBackground: '#E4E7EA',
+		mentionOthersColor: '#095AD2',
 		...mentions
 	},
 	dark: {
@@ -164,8 +164,8 @@ export const colors = {
 		pureWhite: '#ffffff',
 		mentionMeColor: '#B43C4C',
 		mentionGroupColor: '#955828',
-		mentionRoomBackground: '#2F343D',
-		mentionRoomColor: '#739EDE',
+		mentionOthersBackground: '#2F343D',
+		mentionOthersColor: '#739EDE',
 		...mentions
 	},
 	black: {
@@ -239,8 +239,8 @@ export const colors = {
 		pureWhite: '#ffffff',
 		mentionMeColor: '#B43C4C',
 		mentionGroupColor: '#955828',
-		mentionRoomBackground: '#2F343D',
-		mentionRoomColor: '#739EDE',
+		mentionOthersBackground: '#2F343D',
+		mentionOthersColor: '#739EDE',
 		...mentions
 	}
 };

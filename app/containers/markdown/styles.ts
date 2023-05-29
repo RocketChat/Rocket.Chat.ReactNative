@@ -57,7 +57,7 @@ export default StyleSheet.create({
 		height: 30
 	},
 	temp: { opacity: 0.3 },
-	mentionView: { marginBottom: -2 },
+	mentionView: { marginBottom: -4 },
 	mention: {
 		fontSize: 16,
 		...sharedStyles.textMedium,

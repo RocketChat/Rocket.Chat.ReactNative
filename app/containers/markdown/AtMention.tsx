@@ -50,8 +50,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].pureWhite,
-			backgroundColor: themes[theme].mentionGroupColor
+			color: themes[theme].mentionOthersColor,
+			backgroundColor: themes[theme].mentionOthersBackground
 		};
 	}
 
