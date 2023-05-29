@@ -213,6 +213,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			if (messageRecord) {
 				batch.push(
 					messageRecord.prepareUpdate(() => {
+						// @ts-ignore
 						Object.assign(messageRecord, lastMessage);
 					})
 				);
