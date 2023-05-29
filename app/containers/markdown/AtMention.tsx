@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle, View } from 'react-native';
-import { transparentize } from 'color2k';
 
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
