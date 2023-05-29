@@ -34,7 +34,7 @@ const RefreshControl = ({ children, onRefresh, refreshing }: IRefreshControl): R
 
 	const refreshControl = <RNRefreshControl onRefresh={onRefresh} refreshing={refreshing} tintColor={colors.auxiliaryText} />;
 
-	return React.cloneElement(children, { refreshControl });
+	return React.cloneElement(children, { refreshControl, inverted: true });
 };
 
 export default RefreshControl;

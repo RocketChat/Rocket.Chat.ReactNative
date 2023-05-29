@@ -1,0 +1,472 @@
+diff --git a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+index 175865d..c1cabef 100644
+--- a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
++++ b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+@@ -956,6 +956,7 @@ export type Props = $ReadOnly<{|
+ 
+ type ImperativeMethods = $ReadOnly<{|
+   clear: () => void,
++  setTextAndSelection: () => void,
+   isFocused: () => boolean,
+   getNativeRef: () => ?React.ElementRef<HostComponent<mixed>>,
+   setSelection: (start: number, end: number) => void,
+@@ -1214,6 +1215,18 @@ function InternalTextInput(props: Props): React.Node {
+     }
+   }
+ 
++  function setTextAndSelection(_text, _selection): void {
++    if (inputRef.current != null) {
++      viewCommands.setTextAndSelection(
++        inputRef.current,
++        mostRecentEventCount,
++        _text,
++        _selection?.start ?? -1,
++        _selection?.end ?? -1,
++      );
++    }
++  }
++
+   // TODO: Fix this returning true on null === null, when no input is focused
+   function isFocused(): boolean {
+     return TextInputState.currentlyFocusedInput() === inputRef.current;
+@@ -1252,6 +1265,7 @@ function InternalTextInput(props: Props): React.Node {
+         */
+       if (ref) {
+         ref.clear = clear;
++        ref.setTextAndSelection = setTextAndSelection;
+         ref.isFocused = isFocused;
+         ref.getNativeRef = getNativeRef;
+         ref.setSelection = setSelection;
+diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+index b7b2db1..baf5b3c 100644
+--- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
++++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+@@ -8,11 +8,13 @@
+ #import <React/RCTHTTPRequestHandler.h>
+ 
+ #import <mutex>
+-
++#import <MMKV/MMKV.h>
+ #import <React/RCTNetworking.h>
+ #import <ReactCommon/RCTTurboModule.h>
++#import <SDWebImage/SDWebImageDownloader.h>
+ 
+ #import "RCTNetworkPlugins.h"
++#import "SecureStorage.h"
+ 
+ @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate, RCTTurboModule>
+ 
+@@ -64,6 +66,102 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+   return [schemes containsObject:request.URL.scheme.lowercaseString];
+ }
+ 
++-(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
++{
++  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
++    return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++  } else if (path && password) {
++    NSMutableArray *policies = [NSMutableArray array];
++    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++    SecTrustResultType result;
++    SecTrustEvaluate(serverTrust, &result);
++
++    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
++    {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSData *p12data = [NSData dataWithContentsOfFile:path];
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
++    CFArrayRef rawItems = NULL;
++    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                      (__bridge CFDictionaryRef)options,
++                                      &rawItems);
++
++    if (status != noErr) {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++    NSDictionary* firstItem = nil;
++    if ((status == errSecSuccess) && ([items count]>0)) {
++        firstItem = items[0];
++    }
++
++    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++    SecCertificateRef certificate = NULL;
++    if (identity) {
++        SecIdentityCopyCertificate(identity, &certificate);
++        if (certificate) { CFRelease(certificate); }
++    }
++
++    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++    [certificates addObject:CFBridgingRelease(certificate)];
++
++    [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++
++    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++  }
++
++  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++  char *utf8 = (char *)[string UTF8String];
++  NSMutableString *hex = [NSMutableString string];
++  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
++-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
++
++  NSString *host = challenge.protectionSpace.host;
++
++  // Read the clientSSL info from MMKV
++  __block NSString *clientSSL;
++  SecureStorage *secureStorage = [[SecureStorage alloc] init];
++
++  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++  NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
++  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++
++  if (key == NULL) {
++    return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
++  }
++
++  NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++  MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++  clientSSL = [mmkv getStringForKey:host];
++
++  if (clientSSL) {
++    NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
++    id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
++    NSString *path = [dict objectForKey:@"path"];
++    NSString *password = [dict objectForKey:@"password"];
++    credential = [self getUrlCredential:challenge path:path password:password];
++  }
++
++  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
++}
++
++
+ - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request withDelegate:(id<RCTURLRequestDelegate>)delegate
+ {
+   std::lock_guard<std::mutex> lock(_mutex);
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+index 925596f..d23e727 100644
+--- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
++++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+@@ -24,6 +24,9 @@
+ #import <React/RCTAssert.h>
+ #import <React/RCTLog.h>
+ 
++#import <MMKV/MMKV.h>
++#import "SecureStorage.h"
++
+ typedef NS_ENUM(NSInteger, RCTSROpCode) {
+   RCTSROpCodeTextFrame = 0x1,
+   RCTSROpCodeBinaryFrame = 0x2,
+@@ -513,6 +516,38 @@ - (void)didConnect
+   [self _readHTTPHeader];
+ }
+ 
++- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
++{
++    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
++    {
++      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
++      NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
++      CFArrayRef keyref = NULL;
++      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
++                                              (__bridge CFDictionaryRef)certOptions,
++                                              &keyref);
++      if (sanityChesk == noErr) {
++        CFDictionaryRef identityDict = CFArrayGetValueAtIndex(keyref, 0);
++        SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
++        SecCertificateRef cert = NULL;
++        OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
++        if (!status) {
++          NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
++          [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
++        }
++      }
++    }
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++  char *utf8 = (char *)[string UTF8String];
++  NSMutableString *hex = [NSMutableString string];
++  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
+ - (void)_initializeStreams
+ {
+   assert(_url.port.unsignedIntValue <= UINT32_MAX);
+@@ -550,6 +585,26 @@ - (void)_initializeStreams
+     RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
+ #endif
+ 
++    // Read the clientSSL info from MMKV
++    __block NSString *clientSSL;
++    SecureStorage *secureStorage = [[SecureStorage alloc] init];
++
++    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++    NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
++
++    if (key != NULL) {
++      NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++      MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++      clientSSL = [mmkv getStringForKey:host];
++      if (clientSSL) {
++          NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
++          id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
++          NSString *path = [dict objectForKey:@"path"];
++          NSString *password = [dict objectForKey:@"password"];
++          [self setClientSSL:path password:password options:SSLOptions];
++      }
++    }
++
+     [_outputStream setProperty:SSLOptions forKey:(__bridge id)kCFStreamPropertySSLSettings];
+   }
+ 
+@@ -634,6 +689,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
+       }
+     }
+ 
++    [self.delegate webSocket:self didCloseWithCode:code reason:reason wasClean:YES];
+     [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
+   });
+ }
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/fresco/ReactOkHttpNetworkFetcher.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/fresco/ReactOkHttpNetworkFetcher.java
+index 18a7ce9..9644a5b 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/fresco/ReactOkHttpNetworkFetcher.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/fresco/ReactOkHttpNetworkFetcher.java
+@@ -22,11 +22,25 @@ import okhttp3.Headers;
+ import okhttp3.OkHttpClient;
+ import okhttp3.Request;
+ 
+-class ReactOkHttpNetworkFetcher extends OkHttpNetworkFetcher {
++import android.os.Looper;
++import com.facebook.imagepipeline.common.BytesRange;
++import com.facebook.imagepipeline.image.EncodedImage;
++import com.facebook.imagepipeline.producers.BaseNetworkFetcher;
++import com.facebook.imagepipeline.producers.BaseProducerContextCallbacks;
++import com.facebook.imagepipeline.producers.Consumer;
++import com.facebook.imagepipeline.producers.FetchState;
++import com.facebook.imagepipeline.producers.ProducerContext;
++import java.io.IOException;
++import javax.annotation.Nullable;
++import okhttp3.Call;
++import okhttp3.Response;
++import okhttp3.ResponseBody;
++
++public class ReactOkHttpNetworkFetcher extends OkHttpNetworkFetcher {
+ 
+   private static final String TAG = "ReactOkHttpNetworkFetcher";
+ 
+-  private final OkHttpClient mOkHttpClient;
++  private static OkHttpClient mOkHttpClient;
+   private final Executor mCancellationExecutor;
+ 
+   /** @param okHttpClient client to use */
+@@ -36,6 +50,10 @@ class ReactOkHttpNetworkFetcher extends OkHttpNetworkFetcher {
+     mCancellationExecutor = okHttpClient.dispatcher().executorService();
+   }
+ 
++  public static void setOkHttpClient(OkHttpClient okHttpClient) {
++    mOkHttpClient = okHttpClient;
++  }
++
+   private Map<String, String> getHeaders(ReadableMap readableMap) {
+     if (readableMap == null) {
+       return null;
+@@ -75,4 +93,88 @@ class ReactOkHttpNetworkFetcher extends OkHttpNetworkFetcher {
+ 
+     fetchWithRequest(fetchState, callback, request);
+   }
++
++  @Override
++  protected void fetchWithRequest(
++      final OkHttpNetworkFetchState fetchState,
++      final NetworkFetcher.Callback callback,
++      final Request request) {
++    final Call call = mOkHttpClient.newCall(request);
++
++    fetchState
++        .getContext()
++        .addCallbacks(
++            new BaseProducerContextCallbacks() {
++              @Override
++              public void onCancellationRequested() {
++                if (Looper.myLooper() != Looper.getMainLooper()) {
++                  call.cancel();
++                } else {
++                  mCancellationExecutor.execute(
++                      new Runnable() {
++                        @Override
++                        public void run() {
++                          call.cancel();
++                        }
++                      });
++                }
++              }
++            });
++
++    call.enqueue(
++        new okhttp3.Callback() {
++          @Override
++          public void onResponse(Call call, Response response) throws IOException {
++            fetchState.responseTime = SystemClock.elapsedRealtime();
++            final ResponseBody body = response.body();
++            try {
++              if (!response.isSuccessful()) {
++                handleException(
++                    call, new IOException("Unexpected HTTP code " + response), callback);
++                return;
++              }
++
++              BytesRange responseRange =
++                  BytesRange.fromContentRangeHeader(response.header("Content-Range"));
++              if (responseRange != null
++                  && !(responseRange.from == 0
++                      && responseRange.to == BytesRange.TO_END_OF_CONTENT)) {
++                // Only treat as a partial image if the range is not all of the content
++                fetchState.setResponseBytesRange(responseRange);
++                fetchState.setOnNewResultStatusFlags(Consumer.IS_PARTIAL_RESULT);
++              }
++
++              long contentLength = body.contentLength();
++              if (contentLength < 0) {
++                contentLength = 0;
++              }
++              callback.onResponse(body.byteStream(), (int) contentLength);
++            } catch (Exception e) {
++              handleException(call, e, callback);
++            } finally {
++              body.close();
++            }
++          }
++
++          @Override
++          public void onFailure(Call call, IOException e) {
++            handleException(call, e, callback);
++          }
++        });
++  }
++
++  /**
++   * Handles exceptions.
++   *
++   * <p>OkHttp notifies callers of cancellations via an IOException. If IOException is caught after
++   * request cancellation, then the exception is interpreted as successful cancellation and
++   * onCancellation is called. Otherwise onFailure is called.
++   */
++  private void handleException(final Call call, final Exception e, final Callback callback) {
++    if (call.isCanceled()) {
++      callback.onCancellation();
++    } else {
++      callback.onFailure(e);
++    }
++  }
+ }
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/CustomClientBuilder.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/CustomClientBuilder.java
+new file mode 100644
+index 0000000..db81d65
+--- /dev/null
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/CustomClientBuilder.java
+@@ -0,0 +1,14 @@
++/*
++ * Copyright (c) Facebook, Inc. and its affiliates.
++ *
++ * This source code is licensed under the MIT license found in the
++ * LICENSE file in the root directory of this source tree.
++ */
++
++package com.facebook.react.modules.network;
++
++import okhttp3.OkHttpClient;
++
++public interface CustomClientBuilder {
++  public void apply(OkHttpClient.Builder builder);
++}
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java
+index f80b1c6..49b649e 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java
+@@ -170,10 +170,6 @@ public final class NetworkingModule extends NativeNetworkingAndroidSpec {
+     customClientBuilder = ccb;
+   }
+ 
+-  public static interface CustomClientBuilder {
+-    public void apply(OkHttpClient.Builder builder);
+-  }
+-
+   private static void applyCustomBuilder(OkHttpClient.Builder builder) {
+     if (customClientBuilder != null) {
+       customClientBuilder.apply(builder);
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+index 50e6f9d..280e604 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+@@ -21,6 +21,8 @@ import com.facebook.react.common.ReactConstants;
+ import com.facebook.react.module.annotations.ReactModule;
+ import com.facebook.react.modules.core.DeviceEventManagerModule;
+ import com.facebook.react.modules.network.ForwardingCookieHandler;
++import com.facebook.react.modules.network.OkHttpClientProvider;
++import com.facebook.react.modules.network.CustomClientBuilder;
+ import java.io.IOException;
+ import java.net.URI;
+ import java.net.URISyntaxException;
+@@ -53,11 +55,23 @@ public final class WebSocketModule extends NativeWebSocketModuleSpec {
+ 
+   private ForwardingCookieHandler mCookieHandler;
+ 
++  private static @Nullable CustomClientBuilder customClientBuilder = null;
++
+   public WebSocketModule(ReactApplicationContext context) {
+     super(context);
+     mCookieHandler = new ForwardingCookieHandler(context);
+   }
+ 
++  public static void setCustomClientBuilder(CustomClientBuilder ccb) {
++    customClientBuilder = ccb;
++  }
++
++  private static void applyCustomBuilder(OkHttpClient.Builder builder) {
++    if (customClientBuilder != null) {
++      customClientBuilder.apply(builder);
++    }
++  }
++
+   @Override
+   public void invalidate() {
+     for (WebSocket socket : mWebSocketConnections.values()) {
+@@ -96,12 +110,15 @@ public final class WebSocketModule extends NativeWebSocketModuleSpec {
+       @Nullable final ReadableMap options,
+       final double socketID) {
+     final int id = (int) socketID;
+-    OkHttpClient client =
++    OkHttpClient.Builder clientBuilder =
+         new OkHttpClient.Builder()
+             .connectTimeout(10, TimeUnit.SECONDS)
+             .writeTimeout(10, TimeUnit.SECONDS)
+-            .readTimeout(0, TimeUnit.MINUTES) // Disable timeouts for read
+-            .build();
++            .readTimeout(0, TimeUnit.MINUTES); // Disable timeouts for read
++    
++    applyCustomBuilder(clientBuilder);
++
++    OkHttpClient client = clientBuilder.build();
+ 
+     Request.Builder builder = new Request.Builder().tag(id).url(url);
+ 
