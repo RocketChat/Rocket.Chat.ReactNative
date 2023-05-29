@@ -8,6 +8,8 @@ PODS:
   - EXAV (13.2.1):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
+  - EXCamera (13.2.1):
+    - ExpoModulesCore
   - EXFileSystem (15.2.2):
     - ExpoModulesCore
   - Expo (48.0.9):
@@ -895,6 +897,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXAV: f1f69397ecdcf44cfacd4ff5d338cd1b96891e87
+  EXCamera: a323a5942b5e7fc8349e17d728e91c18840ad561
   EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
   Expo: 863488a600a4565698a79577117c70b170054d08
   ExpoAppleAuthentication: 7bd5e4150d59e8df37aa80b425850ae88adf9e65
