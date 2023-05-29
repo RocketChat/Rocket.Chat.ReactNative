@@ -177,7 +177,7 @@
 		"@types/ejson": "^2.1.3",
 		"@types/i18n-js": "^3.8.3",
 		"@types/jest": "^26.0.24",
-		"@types/lodash": "^4.14.188",
+		"@types/lodash": "^4.14.195",
 		"@types/react": "18",
 		"@types/react-native-background-timer": "^2.0.0",
 		"@types/react-native-config-reader": "^4.1.0",
