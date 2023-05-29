@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { useTheme } from '../../theme';
@@ -50,12 +50,14 @@ function DotsLoader(): JSX.Element {
 	}, []);
 
 	return (
-		<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+		<View style={styles.dotsContainer}>
 			{dots.map(i => (
 				<Dot key={i} active={i === active} />
-			))} 
+			))}
 		</View>
 	);
 }
+
+const styles = StyleSheet.create({ dotsContainer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } });
 
 export default DotsLoader;
