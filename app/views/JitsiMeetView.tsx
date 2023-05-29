@@ -86,12 +86,14 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	};
 
 	render() {
+		const uri = `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true`;
 		return (
 			<SafeAreaView style={{ flex: 1 }}>
 				<WebView
-					source={{ uri: `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true` }}
+					source={{ uri: uri.replace(/"/g, "'") }}
 					onNavigationStateChange={this.onNavigationStateChange}
-					style={{ flex: 1 }}
+					// Jitsi default background color
+					style={{ flex: 1, backgroundColor: 'rgb(62,62,62)' }}
 					userAgent={userAgent}
 					javaScriptEnabled
 					domStorageEnabled
