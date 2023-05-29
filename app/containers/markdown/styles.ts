@@ -1,5 +1,6 @@
 import { Platform, StyleSheet } from 'react-native';
 
+import { isIOS } from '../../lib/methods/helpers';
 import sharedStyles from '../../views/Styles';
 
 const codeFontFamily = Platform.select({
@@ -57,13 +58,13 @@ export default StyleSheet.create({
 		height: 30
 	},
 	temp: { opacity: 0.3 },
-	mentionView: { marginBottom: -4 },
+	mentionView: { height: 20, marginBottom: isIOS ? -2 : -4 },
 	mention: {
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		borderRadius: 4,
 		overflow: 'hidden',
-		marginBottom: -2
+		marginBottom: -4
 	},
 	paragraph: {
 		marginTop: 0,

@@ -21,8 +21,10 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	if (mention === 'all' || mention === 'here') {
 		return (
 			<View style={styles.mentionView}>
-				<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText }]}>
-					@
+				<Text>
+					<View>
+						<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText, marginBottom: -4 }]}>@</Text>
+					</View>
 					<View>
 						<Text
 							style={[
@@ -72,8 +74,10 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		const m = useRealName && user.name ? user.name : user.username;
 		return (
 			<View style={styles.mentionView}>
-				<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText }]}>
-					@
+				<Text>
+					<View>
+						<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText, marginBottom: -4 }]}>@</Text>
+					</View>
 					<View>
 						<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
 							{` ${m} `}

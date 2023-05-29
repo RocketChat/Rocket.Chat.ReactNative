@@ -39,8 +39,10 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
 			<View style={styles.mentionView}>
-				<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText }]}>
-					#
+				<Text>
+					<View>
+						<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText, marginBottom: -4 }]}>@</Text>
+					</View>
 					<View>
 						<Text
 							style={[
