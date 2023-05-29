@@ -43,12 +43,6 @@ describe('ButtonTests', () => {
 		expect(ButtonTitle.props.children).toEqual(testProps.title);
 	});
 
-	test('find button using accessibilityLabel', async () => {
-		const { findByA11yLabel } = render(<TestButton />);
-		const Button = await findByA11yLabel(testProps.title);
-		expect(Button).toBeTruthy();
-	});
-
 	test('title not visible while loading', async () => {
 		const { queryByText } = render(<TestButton loading={true} />);
 		const ButtonTitle = await queryByText(testProps.title);

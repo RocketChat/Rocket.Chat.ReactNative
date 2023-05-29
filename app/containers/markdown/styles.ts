@@ -33,7 +33,7 @@ export default StyleSheet.create({
 	plainText: {
 		fontSize: 16,
 		flexShrink: 1,
-		lineHeight: 22
+		lineHeight: 24
 	},
 	text: {
 		fontSize: 16,
@@ -57,13 +57,13 @@ export default StyleSheet.create({
 		height: 30
 	},
 	temp: { opacity: 0.3 },
-	mentionView: {},
+	mentionView: { marginBottom: -2 },
 	mention: {
 		fontSize: 16,
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		borderRadius: 4,
 		overflow: 'hidden',
-		marginBottom: -3
+		marginBottom: -2
 	},
 	paragraph: {
 		marginTop: 0,

@@ -22,17 +22,22 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	if (mention === 'all' || mention === 'here') {
 		return (
 			<View style={styles.mentionView}>
-				<Text
-					style={[
-						styles.mention,
-						{
-							color: themes[theme].mentionGroupColor,
-							backgroundColor: transparentize(themes[theme].mentionGroupColor, 0.8)
-						},
-						...style
-					]}
-				>
-					{` ${mention} `}
+				<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText }]}>
+					@
+					<View>
+						<Text
+							style={[
+								styles.mention,
+								{
+									color: themes[theme].pureWhite,
+									backgroundColor: themes[theme].mentionGroupColor
+								},
+								...style
+							]}
+						>
+							{` ${mention} `}
+						</Text>
+					</View>
 				</Text>
 			</View>
 		);
@@ -41,13 +46,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	let mentionStyle = {};
 	if (mention === username) {
 		mentionStyle = {
-			color: themes[theme].mentionMeColor,
-			backgroundColor: transparentize(themes[theme].mentionMeColor, 0.8)
+			color: themes[theme].pureWhite,
+			backgroundColor: themes[theme].mentionMeColor
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].mentionOtherColor,
-			backgroundColor: transparentize(themes[theme].mentionOtherColor, 0.8)
+			color: themes[theme].pureWhite,
+			backgroundColor: themes[theme].mentionGroupColor
 		};
 	}
 
@@ -68,8 +73,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		const m = useRealName && user.name ? user.name : user.username;
 		return (
 			<View style={styles.mentionView}>
-				<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
-					{` ${m} `}
+				<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText }]}>
+					@
+					<View>
+						<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
+							{` ${m} `}
+						</Text>
+					</View>
 				</Text>
 			</View>
 		);

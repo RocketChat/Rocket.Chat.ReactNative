@@ -14,10 +14,7 @@ export const SWITCH_TRACK_COLOR = {
 
 const mentions = {
 	unreadColor: '#6C727A',
-	tunreadColor: '#1d74f5',
-	mentionMeColor: '#F5455C',
-	mentionGroupColor: '#F38C39',
-	mentionOtherColor: '#F3BE08'
+	tunreadColor: '#1d74f5'
 };
 
 export const colors = {
@@ -89,6 +86,11 @@ export const colors = {
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
 		textInputSecondaryBackground: '#E4E7EA',
+		pureWhite: '#ffffff',
+		mentionMeColor: '#F5455C',
+		mentionGroupColor: '#F38C39',
+		mentionRoomBackground: '#E4E7EA',
+		mentionRoomColor: '#095AD2',
 		...mentions
 	},
 	dark: {
@@ -159,6 +161,11 @@ export const colors = {
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
 		textInputSecondaryBackground: '#030b1b', // backgroundColor
+		pureWhite: '#ffffff',
+		mentionMeColor: '#B43C4C',
+		mentionGroupColor: '#955828',
+		mentionRoomBackground: '#2F343D',
+		mentionRoomColor: '#739EDE',
 		...mentions
 	},
 	black: {
@@ -229,6 +236,11 @@ export const colors = {
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
 		textInputSecondaryBackground: '#000000', // backgroundColor
+		pureWhite: '#ffffff',
+		mentionMeColor: '#B43C4C',
+		mentionGroupColor: '#955828',
+		mentionRoomBackground: '#2F343D',
+		mentionRoomColor: '#739EDE',
 		...mentions
 	}
 };

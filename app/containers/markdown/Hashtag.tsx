@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { StyleProp, Text, TextStyle, View } from 'react-native';
 
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
@@ -38,18 +38,26 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
-			<Text
-				style={[
-					styles.mention,
-					{
-						color: themes[theme].mentionOtherColor
-					},
-					...style
-				]}
-				onPress={handlePress}
-			>
-				{`#${hashtag}`}
-			</Text>
+			<View style={styles.mentionView}>
+				<Text style={[styles.plainText, styles.text, { color: themes[theme].bodyText }]}>
+					#
+					<View>
+						<Text
+							style={[
+								styles.mention,
+								{
+									color: themes[theme].mentionRoomColor,
+									backgroundColor: themes[theme].mentionRoomBackground
+								},
+								...style
+							]}
+							onPress={handlePress}
+						>
+							{` ${hashtag} `}
+						</Text>
+					</View>
+				</Text>
+			</View>
 		);
 	}
 	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`#${hashtag}`}</Text>;
