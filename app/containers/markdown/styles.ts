@@ -37,6 +37,7 @@ export default StyleSheet.create({
 		lineHeight: 24
 	},
 	text: {
+		lineHeight: 24,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
@@ -58,13 +59,24 @@ export default StyleSheet.create({
 		height: 30
 	},
 	temp: { opacity: 0.3 },
-	mentionView: { height: 20, marginBottom: isIOS ? -2 : -4 },
+	mentionView: {
+		height: 24,
+		marginBottom: isIOS ? -8 : -8,
+		backgroundColor: 'green'
+	},
 	mention: {
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		borderRadius: 4,
 		overflow: 'hidden',
-		marginBottom: -4
+		// marginBottom: -4,
+		lineHeight: 24
+	},
+	mentionSymbol: {
+		lineHeight: 20,
+		marginBottom: isIOS ? 0 : -2,
+		backgroundColor: 'yellow',
+		overflow: 'hidden'
 	},
 	paragraph: {
 		marginTop: 0,

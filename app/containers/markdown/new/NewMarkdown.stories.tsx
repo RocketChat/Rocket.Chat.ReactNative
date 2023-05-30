@@ -141,7 +141,9 @@ const allMentionTokens = [
 	}
 ];
 
-const multipleMentionTokens = [
+const shortText = 'Lorem ipsum dolor sit amet consectetur adipiscing elit';
+
+const startingWithMention = [
 	{
 		type: 'PARAGRAPH',
 		value: [
@@ -149,12 +151,12 @@ const multipleMentionTokens = [
 				type: 'MENTION_USER',
 				value: {
 					type: 'PLAIN_TEXT',
-					value: 'name'
+					value: 'all'
 				}
 			},
 			{
 				type: 'PLAIN_TEXT',
-				value: ' '
+				value: ` ${shortText} `
 			},
 			{
 				type: 'MENTION_USER',
@@ -165,37 +167,49 @@ const multipleMentionTokens = [
 			},
 			{
 				type: 'PLAIN_TEXT',
-				value: ' '
+				value: ` ${shortText} `
 			},
 			{
 				type: 'MENTION_USER',
 				value: {
 					type: 'PLAIN_TEXT',
-					value: 'not_a_user'
+					value: 'name'
 				}
 			},
 			{
 				type: 'PLAIN_TEXT',
-				value: ' '
+				value: ` ${shortText} `
 			},
 			{
-				type: 'MENTION_USER',
+				type: 'MENTION_CHANNEL',
 				value: {
 					type: 'PLAIN_TEXT',
-					value: 'here'
+					value: 'text_channel'
 				}
 			},
 			{
 				type: 'PLAIN_TEXT',
-				value: ' '
+				value: ` ${shortText} `
 			},
 			{
-				type: 'MENTION_USER',
+				type: 'MENTION_CHANNEL',
 				value: {
 					type: 'PLAIN_TEXT',
-					value: 'all'
+					value: 'not_a_channel'
 				}
 			}
+		]
+	}
+];
+const startingWithoutMention = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'PLAIN_TEXT',
+				value: `${shortText} `
+			},
+			...startingWithMention[0].value.slice(2, startingWithMention[0].value.length)
 		]
 	}
 ];
@@ -229,9 +243,41 @@ const multipleMentions = [
 export const Mentions = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={allMentionTokens} mentions={allMentions} navToRoomInfo={() => {}} style={[]} />
-		<NewMarkdown tokens={multipleMentionTokens} mentions={multipleMentions} navToRoomInfo={() => {}} style={[]} />
+		<NewMarkdown
+			tokens={startingWithMention}
+			mentions={multipleMentions}
+			channels={channelMention}
+			navToRoomInfo={() => {}}
+			style={[]}
+		/>
+		<NewMarkdown
+			tokens={startingWithoutMention}
+			mentions={multipleMentions}
+			channels={channelMention}
+			navToRoomInfo={() => {}}
+			style={[]}
+		/>
 	</View>
 );
+
+// export const Mentions = () => (
+// 	<View style={styles.container}>
+// 		<Text style={{ lineHeight: 24, fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>
+// 			<AtMention mention='all' />
+// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
+// 			<AtMention mention='all' />
+// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
+// 			<AtMention mention='all' />
+// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
+// 			<AtMention mention='all' />
+// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
+// 			<AtMention mention='all' />
+// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
+// 			<AtMention mention='all' />
+// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
+// 		</Text>
+// 	</View>
+// );
 
 const channelTokens = [
 	{

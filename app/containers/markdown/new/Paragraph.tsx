@@ -13,7 +13,12 @@ interface IParagraphProps {
 
 const Paragraph = ({ value }: IParagraphProps) => {
 	let forceTrim = false;
+	let prependSpace = false;
 	const { theme } = useTheme();
+	// if starts with mention
+	if (value?.[0]?.type === 'MENTION_CHANNEL' || value?.[0]?.type === 'MENTION_USER') {
+		prependSpace = true;
+	}
 	if (
 		value?.[0]?.type === 'LINK' &&
 		// Need to update the @rocket.chat/message-parser to understand that the label can be a Markup | Markup[]
@@ -33,6 +38,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 	}
 	return (
 		<Text style={[styles.text, { color: themes[theme].bodyText }]}>
+			{prependSpace ? ' ' : ''}
 			<Inline value={value} forceTrim={forceTrim} />
 		</Text>
 	);
