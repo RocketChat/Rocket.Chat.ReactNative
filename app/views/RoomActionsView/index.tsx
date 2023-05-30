@@ -771,7 +771,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							params: {
 								rid,
 								t,
-								room,
+								room: room.asPlain(),
 								member,
 								fromRid: room.rid
 							}

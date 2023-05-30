@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
-import { TSubscriptionModel } from '../../../definitions';
+import { ISubscription } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
@@ -49,8 +49,8 @@ function CallButton({ rid, isDirect }: { rid: string; isDirect: boolean }): Reac
 
 interface IRoomInfoButtons {
 	rid: string;
-	roomFromRid: TSubscriptionModel | undefined;
-	roomUser: any;
+	room: ISubscription | undefined;
+	roomUserId?: string;
 	isDirect: boolean;
 	fromRid?: string;
 	handleCreateDirectMessage: () => void;
@@ -60,8 +60,8 @@ interface IRoomInfoButtons {
 
 export const RoomInfoButtons = ({
 	rid,
-	roomFromRid,
-	roomUser,
+	room,
+	roomUserId,
 	isDirect,
 	fromRid,
 	handleCreateDirectMessage,
@@ -69,12 +69,12 @@ export const RoomInfoButtons = ({
 	handleBlockUser
 }: IRoomInfoButtons): React.ReactElement => {
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
-	const isDmWithMyself = roomFromRid?.uids && roomFromRid.uids?.filter((uid: string) => uid !== roomUser._id).length === 0;
+	const isDmWithMyself = room?.uids && room.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
 
-	const isFromDm = roomFromRid?.rid === roomUser._id;
-	const isDirectFromSaved = isDirect && fromRid && roomFromRid;
-	const isIgnored = roomFromRid?.ignored?.includes?.(roomUser._id);
-	const isBlocked = roomFromRid?.blocker;
+	const isFromDm = room?.rid === roomUserId;
+	const isDirectFromSaved = isDirect && fromRid && room;
+	const isIgnored = room?.ignored?.includes?.(roomUserId || '');
+	const isBlocked = room?.blocker;
 
 	const renderIgnoreUser = isDirectFromSaved && !isFromDm && !isDmWithMyself;
 	const renderBlockUser = isDirectFromSaved && isFromDm;
