@@ -490,11 +490,11 @@ describe('Room screen', () => {
 				const { name: replyRoom } = await createRandomRoom(replyUser, 'c');
 				const originalMessage = 'Message to reply in DM';
 				const replyMessage = 'replied in dm';
+				await sendMessage(replyUser, replyRoom, originalMessage);
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(replyRoom);
-				await sendMessage(replyUser, replyRoom, originalMessage);
 				await waitFor(element(by[textMatcher](originalMessage)).atIndex(0))
 					.toBeVisible()
 					.withTimeout(10000);
@@ -502,16 +502,27 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('room-view-join-button')))
 					.not.toBeVisible()
 					.withTimeout(10000);
-				await element(by[textMatcher](originalMessage)).atIndex(0).tap();
 				await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
-				await sleep(300); // wait for animation
+				await sleep(600); // wait for animation
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
+				await sleep(600); // wait for animation
+				// Fix android flaky test. Close the action sheet, then re-open again
+				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
+				await sleep(1000); // wait for animation
+				await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
+				await sleep(600); // wait for animation
+				await waitFor(element(by.id('action-sheet')))
 					.toExist()
+					.withTimeout(2000);
+				await sleep(600); // wait for animation
+				await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
+					.toBeVisible()
 					.withTimeout(6000);
+				await sleep(600); // wait for animation
 				await element(by[textMatcher]('Reply in Direct Message')).atIndex(0).tap();
+				await sleep(600); // wait for animation
 				await waitFor(element(by.id(`room-view-title-${replyUser.username}`)))
 					.toExist()
 					.withTimeout(6000);
