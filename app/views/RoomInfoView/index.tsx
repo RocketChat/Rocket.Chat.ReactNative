@@ -47,8 +47,9 @@ const RoomInfoView = (): React.ReactElement => {
 	const [showEdit, setShowEdit] = useState(false);
 	const [roomFromRid, setRoomFromRid] = useState<TSubscriptionModel | undefined>(undefined);
 
-	const isDirect = room?.t || t === SubscriptionType.DIRECT;
-	const isLivechat = room?.t || t === SubscriptionType.OMNICHANNEL;
+	const roomType = room?.t || t;
+	const isDirect = roomType === SubscriptionType.DIRECT;
+	const isLivechat = roomType === SubscriptionType.OMNICHANNEL;
 
 	const subscription = useRef<Subscription | undefined>(undefined);
 	const subscriptionRoomFromRid = useRef<Subscription | undefined>(undefined);
@@ -88,11 +89,12 @@ const RoomInfoView = (): React.ReactElement => {
 		setHeader();
 	}, []);
 
-	const setHeader = () =>
+	const setHeader = (canEdit?: boolean) => {
+		const editEnabled = canEdit || showEdit;
 		setOptions({
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal /> : undefined,
 			title: isDirect ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: showEdit
+			headerRight: editEnabled
 				? () => (
 						<HeaderButton.Container>
 							<HeaderButton.Item
@@ -110,6 +112,7 @@ const RoomInfoView = (): React.ReactElement => {
 				  )
 				: undefined
 		});
+	};
 
 	const loadVisitor = async () => {
 		try {
@@ -138,7 +141,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadUser = async () => {
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = getUidDirectMessage(room);
+				const roomUserId = getUidDirectMessage(room || { rid, t });
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
@@ -193,7 +196,7 @@ const RoomInfoView = (): React.ReactElement => {
 		const permissions = await hasPermission(permissionToEdit, room?.rid);
 		if (permissions.some(Boolean)) {
 			setShowEdit(true);
-			setHeader();
+			setHeader(true);
 		}
 	};
 
@@ -206,9 +209,10 @@ const RoomInfoView = (): React.ReactElement => {
 
 			// TODO: Check if some direct with the user already exists on database
 			try {
-				const result = await Services.createDirectMessage(roomUser.userName);
-				if (result.success && room) {
-					setRoom({ ...room, rid: result.room.rid });
+				const result = await Services.createDirectMessage(roomUser.username);
+				if (result.success) {
+					// @ts-ignore
+					setRoom({ ...(room || {}), rid: result.room.rid, t: result.room.t as SubscriptionType });
 					return resolve();
 				}
 			} catch {
@@ -265,7 +269,6 @@ const RoomInfoView = (): React.ReactElement => {
 		const isIgnored = roomFromRid?.ignored?.includes?.(roomUser._id);
 		if (roomFromRid?.rid) handleIgnore(roomUser._id, !isIgnored, roomFromRid.rid);
 	};
-
 	return (
 		<ScrollView style={[styles.scroll, { backgroundColor: colors.backgroundColor }]}>
 			<StatusBar />
