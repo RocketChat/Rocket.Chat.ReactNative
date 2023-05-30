@@ -92,7 +92,7 @@ interface IRoomsListViewProps {
 }
 
 interface IRoomsListViewState {
-	searching: boolean;
+	searching?: boolean;
 	search?: IRoomItem[];
 	loading?: boolean;
 	chatsUpdate?: string[] | { rid: string; alert?: boolean }[];
@@ -155,7 +155,7 @@ const getItemLayout = (data: ISubscription[] | null | undefined, index: number, 
 	index
 });
 // isSearching is needed to trigger RoomItem's useEffect properly after searching
-const keyExtractor = (item: ISubscription, isSearching: boolean) => `${item.rid}-${isSearching}`;
+const keyExtractor = (item: ISubscription, isSearching = false) => `${item.rid}-${isSearching}`;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
 	private animated: boolean;
@@ -562,8 +562,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				chats: tempChats,
 				chatsUpdate,
 				omnichannelsUpdate,
-				loading: false,
-				searching: false
+				loading: false
 			});
 		});
 	};
