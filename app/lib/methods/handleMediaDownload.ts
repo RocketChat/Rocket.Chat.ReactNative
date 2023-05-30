@@ -82,6 +82,10 @@ const getExtension = (type: MediaTypes, mimeType?: string) => {
 		if (mimeType === 'audio/mpeg') {
 			return 'mp3';
 		}
+		// For older audios the server is returning the type audio/aac and we can't play it as mp3
+		if (mimeType === 'audio/aac') {
+			return 'm4a';
+		}
 		const extension = mime.extension(mimeType);
 		// The mime.extension can return false when there aren't any extension
 		if (!extension) {
@@ -127,7 +131,7 @@ export const searchMediaFileAsync = async ({
 	return { file, filePath };
 };
 
-export const deleteAllSpecificMediaFiles = async (type: MediaTypes, serverUrl: string): Promise<void> => {
+export const deleteMediaFiles = async (type: MediaTypes, serverUrl: string): Promise<void> => {
 	try {
 		const serverUrlParsed = sanitizeString(serverUrl);
 		const path = `${LOCAL_DOCUMENT_PATH}${typeString[type]}${serverUrlParsed}`;

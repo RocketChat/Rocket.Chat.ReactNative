@@ -1,11 +1,10 @@
 import React from 'react';
-import { useMMKVStorage } from 'react-native-mmkv-storage';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import ListPicker from './ListPicker';
-import userPreferences from '../../lib/methods/userPreferences';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
 	AUDIO_PREFERENCE_DOWNLOAD,
 	IMAGES_PREFERENCE_DOWNLOAD,
@@ -13,22 +12,17 @@ import {
 	VIDEO_PREFERENCE_DOWNLOAD
 } from '../../lib/constants';
 
-const MMKV = userPreferences.getMMKV();
-
 const MediaAutoDownload = () => {
-	const [imagesPreference, setImagesPreference] = useMMKVStorage<MediaDownloadOption>(
+	const [imagesPreference, setImagesPreference] = useUserPreferences<MediaDownloadOption>(
 		IMAGES_PREFERENCE_DOWNLOAD,
-		MMKV,
 		MediaDownloadOption.NEVER
 	);
-	const [videoPreference, setVideoPreference] = useMMKVStorage<MediaDownloadOption>(
+	const [videoPreference, setVideoPreference] = useUserPreferences<MediaDownloadOption>(
 		VIDEO_PREFERENCE_DOWNLOAD,
-		MMKV,
 		MediaDownloadOption.NEVER
 	);
-	const [audioPreference, setAudioPreference] = useMMKVStorage<MediaDownloadOption>(
+	const [audioPreference, setAudioPreference] = useUserPreferences<MediaDownloadOption>(
 		AUDIO_PREFERENCE_DOWNLOAD,
-		MMKV,
 		MediaDownloadOption.NEVER
 	);
 

@@ -22,7 +22,7 @@ import { TSupportedThemes } from '../../theme';
 import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
-import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
+import { isAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 
 interface IButton {
 	loading: boolean;
@@ -107,8 +107,7 @@ const Button = React.memo(({ loading, paused, onPress, disabled, theme, toDownlo
 			disabled={disabled}
 			onPress={onPress}
 			hitSlop={BUTTON_HIT_SLOP}
-			background={Touchable.SelectableBackgroundBorderless()}
-		>
+			background={Touchable.SelectableBackgroundBorderless()}>
 			{loading ? (
 				<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 			) : (
@@ -180,7 +179,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			if (url) {
 				const autoDownload = await isAutoDownloadEnabled('audioPreferenceDownload', { author, user });
 				if (autoDownload) {
-					return await this.startDownload();
+					await this.startDownload();
+					return;
 				}
 
 				// MediaDownloadOption.NEVER or MediaDownloadOption.WIFI and the mobile is using mobile data
@@ -370,8 +370,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					style={[
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-					]}
-				>
+					]}>
 					<Button
 						disabled={isReply}
 						loading={loading}

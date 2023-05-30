@@ -22,7 +22,7 @@ import {
 	isDownloadActive,
 	searchMediaFileAsync
 } from '../../lib/methods/handleMediaDownload';
-import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
+import { isAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import RCActivityIndicator from '../ActivityIndicator';
 import { CustomIcon } from '../CustomIcon';
 

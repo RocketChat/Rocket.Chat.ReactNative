@@ -25,7 +25,7 @@ import {
 	isDownloadActive,
 	searchMediaFileAsync
 } from '../../lib/methods/handleMediaDownload';
-import { isAutoDownloadEnabled } from './helpers/mediaDownload/autoDownloadPreference';
+import { isAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import sharedStyles from '../../views/Styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
@@ -107,8 +107,7 @@ const Video = React.memo(
 
 					if (downloadActive) return setLoading(true);
 
-					// We don't pass the author to avoid auto-download what the user sent
-					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload', { user });
+					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload');
 					if (autoDownload) {
 						await handleDownload();
 					}
@@ -187,8 +186,7 @@ const Video = React.memo(
 					disabled={isReply}
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
-				>
+					background={Touchable.Ripple(themes[theme].bannerBackground)}>
 					{loading ? (
 						<DownloadIndicator handleCancelDownload={handleCancelDownload} />
 					) : (
