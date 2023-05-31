@@ -136,6 +136,131 @@ const allMentionTokens = [
 					type: 'PLAIN_TEXT',
 					value: 'rocket.cat'
 				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
 			}
 		]
 	}
@@ -259,25 +384,6 @@ export const Mentions = () => (
 		/>
 	</View>
 );
-
-// export const Mentions = () => (
-// 	<View style={styles.container}>
-// 		<Text style={{ lineHeight: 24, fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>
-// 			<AtMention mention='all' />
-// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
-// 			<AtMention mention='all' />
-// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
-// 			<AtMention mention='all' />
-// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
-// 			<AtMention mention='all' />
-// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
-// 			<AtMention mention='all' />
-// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
-// 			<AtMention mention='all' />
-// 			<Text> asd as das dasd asd asd asd asd asd asd ads adas </Text>
-// 		</Text>
-// 	</View>
-// );
 
 const channelTokens = [
 	{

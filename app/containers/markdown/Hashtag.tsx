@@ -41,7 +41,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
 			<Text style={[styles.plainText, styles.text]}>
-				<View style={{ marginBottom: isIOS ? -3 : 0 }}>
+				<View style={{ marginBottom: isIOS ? -2 : 0 }}>
 					<Text
 						style={[
 							styles.plainText,
@@ -53,7 +53,8 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 								overflow: 'hidden',
 								marginBottom: isIOS ? 0 : -5,
 								color: themes[theme].mentionOthersColor,
-								backgroundColor: themes[theme].mentionOthersBackground
+								backgroundColor: themes[theme].mentionOthersBackground,
+								lineHeight: 23
 							}
 						]}
 						onPress={handlePress}

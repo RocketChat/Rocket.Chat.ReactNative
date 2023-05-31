@@ -23,7 +23,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	if (mention === 'all' || mention === 'here') {
 		return (
 			<Text style={[styles.plainText, styles.text]}>
-				<View style={{ marginBottom: isIOS ? -3 : 0 }}>
+				<View style={{ marginBottom: isIOS ? -2 : 0 }}>
 					<Text
 						style={[
 							styles.plainText,
@@ -35,7 +35,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 								overflow: 'hidden',
 								marginBottom: isIOS ? 0 : -5,
 								color: themes[theme].pureWhite,
-								backgroundColor: themes[theme].mentionGroupColor
+								backgroundColor: themes[theme].mentionGroupColor,
+								lineHeight: 23
 							}
 						]}
 					>
@@ -76,7 +77,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		const m = useRealName && user.name ? user.name : user.username;
 		return (
 			<Text style={[styles.plainText, styles.text]}>
-				<View style={{ marginBottom: isIOS ? -3 : 0 }}>
+				<View style={{ marginBottom: isIOS ? -2 : 0 }}>
 					<Text
 						style={[
 							styles.plainText,
@@ -86,7 +87,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 								...sharedStyles.textMedium,
 								borderRadius: 4,
 								overflow: 'hidden',
-								marginBottom: isIOS ? 0 : -5
+								marginBottom: isIOS ? 0 : -5,
+								lineHeight: 23
 							},
 							mentionStyle
 						]}
