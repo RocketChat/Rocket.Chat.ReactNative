@@ -1,5 +1,14 @@
 import React from 'react';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
+import {
+	BackHandler,
+	FlatList,
+	FlatListProps,
+	Keyboard,
+	NativeEventSubscription,
+	RefreshControl,
+	Text,
+	View
+} from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
@@ -118,6 +127,9 @@ const DM_HEADER = 'Direct_Messages';
 const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
+const DISMISS_KEYBOARD_ON_DRAG: Pick<FlatListProps<IRoomItem[]>, 'keyboardDismissMode'> = isIOS
+	? { keyboardDismissMode: 'on-drag' }
+	: {};
 
 const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = (s: TSubscriptionModel) => s.f;
@@ -913,6 +925,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
+				{...DISMISS_KEYBOARD_ON_DRAG}
 			/>
 		);
 	};
