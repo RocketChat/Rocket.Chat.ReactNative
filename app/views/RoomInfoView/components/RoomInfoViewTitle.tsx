@@ -10,15 +10,14 @@ import { getRoomTitle } from '../../../lib/methods/helpers';
 
 interface IRoomInfoViewTitle {
 	room?: ISubscription;
-	type: SubscriptionType;
 	name?: string;
 	username: string;
 	statusText?: string;
 }
 
-const RoomInfoViewTitle = ({ room, type, name, username, statusText }: IRoomInfoViewTitle): React.ReactElement => {
+const RoomInfoViewTitle = ({ room, name, username, statusText }: IRoomInfoViewTitle): React.ReactElement => {
 	const { colors } = useTheme();
-	if (type === SubscriptionType.DIRECT) {
+	if (room?.t === SubscriptionType.DIRECT) {
 		return (
 			<>
 				<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.titleText }]}>

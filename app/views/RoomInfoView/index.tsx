@@ -78,12 +78,10 @@ const RoomInfoView = (): React.ReactElement => {
 
 	useEffect(() => {
 		loadRoom();
-		setHeader();
 		if (isDirect) loadUser();
 	}, []);
 
 	const setHeader = (canEdit?: boolean) => {
-		const editEnabled = canEdit || showEdit;
 		const HeaderRight = () => (
 			<HeaderButton.Container>
 				<HeaderButton.Item
@@ -102,7 +100,7 @@ const RoomInfoView = (): React.ReactElement => {
 		setOptions({
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal /> : undefined,
 			title: isDirect ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: editEnabled ? () => <HeaderRight /> : undefined
+			headerRight: canEdit ? () => <HeaderRight /> : undefined
 		});
 	};
 
@@ -153,12 +151,16 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	const loadRoom = async () => {
+		const permissionToEdit = isLivechat ? [editOmnichannelContact, editLivechatRoomCustomfields] : [editRoomPermission];
+		const permissions = await hasPermission(permissionToEdit, rid);
+		const canEdit = permissions.some(Boolean);
+
 		const subRoom = await getSubscriptionByRoomId(rid);
 		if (subRoom?.observe) {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader();
+				setHeader(canEdit);
 			});
 		} else {
 			try {
@@ -168,13 +170,8 @@ const RoomInfoView = (): React.ReactElement => {
 				log(e);
 			}
 		}
-
-		const permissionToEdit = isLivechat ? [editOmnichannelContact, editLivechatRoomCustomfields] : [editRoomPermission];
-		const permissions = await hasPermission(permissionToEdit, rid);
-		if (permissions.some(Boolean)) {
-			setShowEdit(true);
-			setHeader(true);
-		}
+		setShowEdit(canEdit);
+		setHeader(canEdit);
 	};
 
 	const createDirect = () =>
@@ -256,25 +253,19 @@ const RoomInfoView = (): React.ReactElement => {
 						showEdit={showEdit}
 						type={t}
 					/>
-					<RoomInfoViewTitle
-						room={room}
-						type={t}
-						name={roomUser?.name}
-						username={roomUser?.username}
-						statusText={roomUser?.statusText}
-					/>
+					<RoomInfoViewTitle room={room} name={roomUser?.name} username={roomUser?.username} statusText={roomUser?.statusText} />
 					<RoomInfoButtons
 						rid={room?.rid || rid}
 						fromRid={fromRid}
 						handleBlockUser={handleBlockUser}
 						handleCreateDirectMessage={handleCreateDirectMessage}
 						handleIgnoreUser={handleIgnoreUser}
-						isDirect={!!isDirect}
+						isDirect={isDirect}
 						room={room}
 						roomUserId={roomUser?._id}
 					/>
 				</View>
-				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} type={t} />
+				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} />
 			</SafeAreaView>
 		</ScrollView>
 	);

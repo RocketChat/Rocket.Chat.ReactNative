@@ -9,19 +9,17 @@ import Livechat from '../Livechat';
 const RoomInfoViewBody = ({
 	isDirect,
 	roomUser,
-	room,
-	type
+	room
 }: {
 	isDirect: boolean;
 	roomUser: TUserParsed | ILivechatVisitorModified;
 	room?: ISubscription;
-	type: SubscriptionType;
 }): React.ReactElement => {
 	if (isDirect) {
 		return <Direct roomUser={roomUser as TUserParsed} />;
 	}
 
-	if (type === SubscriptionType.OMNICHANNEL && room) {
+	if (room?.t === SubscriptionType.OMNICHANNEL && room) {
 		return <Livechat room={room} roomUser={roomUser as ILivechatVisitorModified} />;
 	}
 	return <Channel room={room} />;
