@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
-import { ISubscription } from '../../../definitions';
+import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
@@ -71,7 +71,7 @@ export const RoomInfoButtons = ({
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids && room.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
 
-	const isFromDm = room?.rid === roomUserId;
+	const isFromDm = room?.t === SubscriptionType.DIRECT;
 	const isDirectFromSaved = isDirect && fromRid && room;
 	const isIgnored = room?.ignored?.includes?.(roomUserId || '');
 	const isBlocked = room?.blocker;

@@ -13,11 +13,12 @@ interface IRoomInfoViewTitle {
 	name?: string;
 	username: string;
 	statusText?: string;
+	type: SubscriptionType;
 }
 
-const RoomInfoViewTitle = ({ room, name, username, statusText }: IRoomInfoViewTitle): React.ReactElement => {
+const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfoViewTitle): React.ReactElement => {
 	const { colors } = useTheme();
-	if (room?.t === SubscriptionType.DIRECT) {
+	if (type === SubscriptionType.DIRECT) {
 		return (
 			<>
 				<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.titleText }]}>
@@ -40,7 +41,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText }: IRoomInfoViewTi
 	return (
 		<View style={styles.roomTitleContainer}>
 			<RoomTypeIcon
-				type={room?.prid ? 'discussion' : room?.t}
+				type={room?.prid ? 'discussion' : type}
 				teamMain={room?.teamMain}
 				key='room-info-type'
 				status={room?.visitor?.status}
