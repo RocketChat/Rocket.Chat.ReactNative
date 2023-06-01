@@ -234,12 +234,13 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	const handleBlockUser = async () => {
+		const r = roomFromRid || room;
 		const userBlocked = roomUser._id;
-		const blocker = room?.blocker;
-		if (!rid) return;
+		const blocker = r?.blocker;
+		if (!r?.rid) return;
 		logEvent(events.RI_TOGGLE_BLOCK_USER);
 		try {
-			await Services.toggleBlockUser(rid, userBlocked, !!blocker);
+			await Services.toggleBlockUser(r.rid, userBlocked, !blocker);
 		} catch (e) {
 			log(e);
 		}
