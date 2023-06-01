@@ -22,6 +22,7 @@ const RoomInfoViewBody = ({
 	if (room?.t === SubscriptionType.OMNICHANNEL && room) {
 		return <Livechat room={room} roomUser={roomUser as ILivechatVisitorModified} />;
 	}
+
 	return <Channel room={room} />;
 };
 
