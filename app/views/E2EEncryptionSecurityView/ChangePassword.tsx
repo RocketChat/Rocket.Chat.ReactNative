@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	},
 	description: {
 		fontSize: 14,
-		paddingVertical: 10,
+		paddingVertical: 12,
 		...sharedStyles.textRegular
 	},
 	changePasswordButton: {
@@ -79,7 +79,7 @@ const ChangePassword = () => {
 					{I18n.t('E2E_encryption_change_password_description')}
 				</Text>
 				<FormTextInput
-					inputRef={ref => (newPasswordInputRef.current = ref)}
+					inputRef={newPasswordInputRef}
 					placeholder={I18n.t('New_Password')}
 					returnKeyType='send'
 					secureTextEntry
