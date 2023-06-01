@@ -32,8 +32,20 @@ export interface UserFormRef {
 	getUser: () => string;
 }
 
+const useLoginViewSelector = () =>
+	useAppSelector(state => ({
+		Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm as string,
+		Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
+		isFetching: state.login.isFetching,
+		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
+		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
+		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
+		Site_Name: state.settings.Site_Name as string,
+		inviteLinkToken: state.inviteLinks.token
+	}));
+
 const UserForm = forwardRef<UserFormRef>((_, ref) => {
-	const passwordInput = useRef<RNTextInput | null>(null);
+	const passwordInputRef = useRef<RNTextInput | null>(null);
 
 	const {
 		params: { username }
@@ -64,16 +76,7 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 		Accounts_RegistrationForm,
 		Site_Name,
 		inviteLinkToken
-	} = useAppSelector(state => ({
-		Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm as string,
-		Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
-		isFetching: state.login.isFetching,
-		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
-		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
-		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
-		Site_Name: state.settings.Site_Name as string,
-		inviteLinkToken: state.inviteLinks.token
-	}));
+	} = useLoginViewSelector();
 
 	const showRegistrationButton =
 		Accounts_RegistrationForm === 'Public' || (Accounts_RegistrationForm === 'Secret URL' && inviteLinkToken?.length);
@@ -105,9 +108,7 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 				placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 				keyboardType='email-address'
 				returnKeyType='next'
-				onSubmitEditing={() => {
-					passwordInput.current?.focus();
-				}}
+				onSubmitEditing={() => passwordInputRef.current?.focus()}
 				testID='login-view-email'
 				textContentType='username'
 				autoComplete='username'
@@ -117,9 +118,7 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 				control={control}
 				label={I18n.t('Password')}
 				containerStyle={styles.inputContainer}
-				inputRef={e => {
-					passwordInput.current = e;
-				}}
+				inputRef={passwordInputRef}
 				placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
 				returnKeyType='send'
 				secureTextEntry
@@ -137,7 +136,7 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 				disabled={!isValid}
 				style={styles.loginButton}
 			/>
-			{Accounts_PasswordReset && (
+			{Accounts_PasswordReset ? (
 				<Button
 					title={I18n.t('Forgot_password')}
 					type='secondary'
@@ -146,14 +145,15 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 					color={colors.auxiliaryText}
 					fontSize={14}
 				/>
-			)}
+			) : null}
 			{showRegistrationButton ? (
 				<View style={styles.bottomContainer}>
 					<Text style={[styles.bottomContainerText, { color: colors.auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
 						style={[styles.bottomContainerTextBold, { color: colors.actionTintColor }]}
 						onPress={register}
-						testID='login-view-register'>
+						testID='login-view-register'
+					>
 						{I18n.t('Create_account')}
 					</Text>
 				</View>
