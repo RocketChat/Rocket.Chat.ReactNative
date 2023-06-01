@@ -37,14 +37,24 @@ function BaseButton({
 	return null;
 }
 
-function CallButton({ rid, isDirect }: { rid: string; isDirect: boolean }): React.ReactElement | null {
+function CallButton({
+	rid,
+	isDirect,
+	roomFromRid
+}: {
+	rid: string;
+	isDirect: boolean;
+	roomFromRid: boolean;
+}): React.ReactElement | null {
 	const { showCallOption, showInitCallActionSheet } = useVideoConf(rid);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const greaterThanFive = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 
 	const showIcon = greaterThanFive ? showCallOption : showCallOption && isDirect;
 
-	return <BaseButton onPress={showInitCallActionSheet} iconName='phone' label={i18n.t('Call')} showIcon={showIcon} />;
+	return (
+		<BaseButton onPress={showInitCallActionSheet} iconName='phone' label={i18n.t('Call')} showIcon={showIcon && !roomFromRid} />
+	);
 }
 
 interface IRoomInfoButtons {
@@ -56,18 +66,21 @@ interface IRoomInfoButtons {
 	handleCreateDirectMessage: () => void;
 	handleIgnoreUser: () => void;
 	handleBlockUser: () => void;
+	roomFromRid: ISubscription | undefined;
 }
 
 export const RoomInfoButtons = ({
 	rid,
-	room,
+	room: roomFromProps,
 	roomUserId,
 	isDirect,
 	fromRid,
 	handleCreateDirectMessage,
 	handleIgnoreUser,
-	handleBlockUser
+	handleBlockUser,
+	roomFromRid
 }: IRoomInfoButtons): React.ReactElement => {
+	const room = roomFromRid || roomFromProps;
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids && room.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
 
@@ -82,7 +95,7 @@ export const RoomInfoButtons = ({
 	return (
 		<View style={styles.roomButtonsContainer}>
 			<BaseButton onPress={handleCreateDirectMessage} label={i18n.t('Message')} iconName='message' />
-			<CallButton isDirect={isDirect} rid={rid} />
+			<CallButton isDirect={isDirect} rid={rid} roomFromRid={!!roomFromRid} />
 			<BaseButton
 				onPress={handleIgnoreUser}
 				label={i18n.t(isIgnored ? 'Unignore' : 'Ignore')}

@@ -43,6 +43,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
 
 	const [room, setRoom] = useState(roomParam);
+	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
 	const [roomUser, setRoomUser] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
 
@@ -131,7 +132,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadUser = async () => {
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = getUidDirectMessage(room);
+				const roomUserId = getUidDirectMessage(room || { rid, t });
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
@@ -154,9 +155,16 @@ const RoomInfoView = (): React.ReactElement => {
 		const permissionToEdit = isLivechat ? [editOmnichannelContact, editLivechatRoomCustomfields] : [editRoomPermission];
 		const permissions = await hasPermission(permissionToEdit, rid);
 		const canEdit = permissions.some(Boolean);
-
 		const subRoom = await getSubscriptionByRoomId(rid);
-		if (subRoom?.observe) {
+		if (!subRoom && isDirect && fromRid) {
+			const roomFromRid = await getSubscriptionByRoomId(fromRid);
+			if (roomFromRid?.observe) {
+				const sub = roomFromRid.observe();
+				subscription.current = sub.subscribe(changes => {
+					setRoomFromRid(changes.asPlain());
+				});
+			}
+		} else if (subRoom?.observe) {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
@@ -164,8 +172,10 @@ const RoomInfoView = (): React.ReactElement => {
 			});
 		} else {
 			try {
-				const result = await Services.getRoomInfo(rid);
-				if (result.success) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
+				if (!isDirect) {
+					const result = await Services.getRoomInfo(rid);
+					if (result.success) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
+				}
 			} catch (e) {
 				log(e);
 			}
@@ -224,7 +234,6 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	const handleBlockUser = async () => {
-		const rid = room?.rid;
 		const userBlocked = roomUser._id;
 		const blocker = room?.blocker;
 		if (!rid) return;
@@ -237,8 +246,9 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	const handleIgnoreUser = () => {
-		const isIgnored = room?.ignored?.includes?.(roomUser._id);
-		if (room?.rid) handleIgnore(roomUser._id, !isIgnored, room.rid);
+		const r = roomFromRid || room;
+		const isIgnored = r?.ignored?.includes?.(roomUser._id);
+		if (r?.rid) handleIgnore(roomUser._id, !isIgnored, r?.rid);
 	};
 
 	return (
@@ -253,7 +263,13 @@ const RoomInfoView = (): React.ReactElement => {
 						showEdit={showEdit}
 						type={t}
 					/>
-					<RoomInfoViewTitle room={room} name={roomUser?.name} username={roomUser?.username} statusText={roomUser?.statusText} />
+					<RoomInfoViewTitle
+						type={t}
+						room={room || roomUser}
+						name={roomUser?.name}
+						username={roomUser?.username}
+						statusText={roomUser?.statusText}
+					/>
 					<RoomInfoButtons
 						rid={room?.rid || rid}
 						fromRid={fromRid}
@@ -261,8 +277,9 @@ const RoomInfoView = (): React.ReactElement => {
 						handleCreateDirectMessage={handleCreateDirectMessage}
 						handleIgnoreUser={handleIgnoreUser}
 						isDirect={isDirect}
-						room={room}
+						room={room || roomUser}
 						roomUserId={roomUser?._id}
+						roomFromRid={roomFromRid}
 					/>
 				</View>
 				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} />
