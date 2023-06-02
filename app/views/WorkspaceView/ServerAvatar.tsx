@@ -40,6 +40,4 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 	);
 });
 
-ServerAvatar.displayName = 'ServerAvatar';
-
 export default ServerAvatar;

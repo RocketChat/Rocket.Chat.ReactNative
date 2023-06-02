@@ -21,6 +21,18 @@ type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<OutsideModalParamList>
 >;
 
+const useWorkspaceViewSelector = () =>
+	useAppSelector(state => ({
+		server: state.server.server,
+		Site_Name: state.settings.Site_Name as string,
+		Site_Url: state.settings.Site_Url as string,
+		Assets_favicon_512: state.settings.Assets_favicon_512 as IAssetsFavicon512,
+		registrationForm: state.settings.Accounts_RegistrationForm as string,
+		Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean,
+		showLoginButton: getShowLoginButton(state),
+		inviteLinkToken: state.inviteLinks.token
+	}));
+
 const WorkspaceView = () => {
 	const navigation = useNavigation<TNavigation>();
 
@@ -35,16 +47,7 @@ const WorkspaceView = () => {
 		registrationForm,
 		server,
 		showLoginButton
-	} = useAppSelector(state => ({
-		server: state.server.server,
-		Site_Name: state.settings.Site_Name as string,
-		Site_Url: state.settings.Site_Url as string,
-		Assets_favicon_512: state.settings.Assets_favicon_512 as IAssetsFavicon512,
-		registrationForm: state.settings.Accounts_RegistrationForm as string,
-		Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean,
-		showLoginButton: getShowLoginButton(state),
-		inviteLinkToken: state.inviteLinks.token
-	}));
+	} = useWorkspaceViewSelector();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
