@@ -15,6 +15,7 @@ import { CallHeader } from '../../../VideoConf/CallHeader';
 import useStyle from './styles';
 import { ESounds, useVideoConfRinger } from '../../../../lib/hooks/useVideoConf';
 import { getUserSelector } from '../../../../selectors/login';
+import { SubscriptionType } from '../../../../definitions';
 
 const CAM_SIZE = { height: 220, width: 148 };
 
@@ -23,7 +24,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	const { playSound, stopSound } = useVideoConfRinger(ESounds.DIALTONE);
 
 	const { colors } = useTheme();
-	const [room, setRoom] = useState({ roomName: '', avatar: '', uid: '', direct: false });
+	const [callProps, setCallProps] = useState({ roomName: '', avatar: '', uid: '', direct: false });
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
 
@@ -36,7 +37,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 			const room = await getSubscriptionByRoomId(rid);
 			const uid = (await getUidDirectMessage(room)) as string;
 			const avt = getRoomAvatar(room);
-			setRoom({ uid, roomName: room?.name || '', avatar: avt, direct: room?.t === 'd' });
+			setCallProps({ uid, roomName: room?.name || '', avatar: avt, direct: room?.t === SubscriptionType.DIRECT });
 		})();
 	}, [rid]);
 
@@ -48,10 +49,10 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 				setCam={setCam}
 				mic={mic}
 				setMic={setMic}
-				avatar={room.avatar}
-				roomName={room.roomName}
-				uid={room.uid}
-				direct={room.direct}
+				avatar={callProps.avatar}
+				roomName={callProps.roomName}
+				uid={callProps.uid}
+				direct={callProps.direct}
 			/>
 			<View
 				style={[
@@ -71,7 +72,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 						dispatch(cancelCall({}));
 					} else {
 						playSound();
-						dispatch(initVideoCall({ cam, mic, direct: room.direct, rid, uid: room.uid }));
+						dispatch(initVideoCall({ cam, mic, direct: callProps.direct, rid, uid: callProps.uid }));
 					}
 				}}
 				title={calling ? i18n.t('Cancel') : i18n.t('Call')}
