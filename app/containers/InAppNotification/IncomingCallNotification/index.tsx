@@ -33,7 +33,7 @@ export interface INotifierComponent {
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const IncomingCallComponent = React.memo(
+const IncomingCallHeader = React.memo(
 	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
@@ -104,7 +104,7 @@ const IncomingCallComponent = React.memo(
 	}
 );
 
-const IncomingCallWrapper = ({
+const IncomingCallNotification = ({
 	notification: { rid, uid, callId }
 }: {
 	notification: { rid: string; uid: string; callId: string };
@@ -123,9 +123,9 @@ const IncomingCallWrapper = ({
 	}, [result?.success, rid]);
 
 	if (result?.success && roomInfo.roomName) {
-		return <IncomingCallComponent callId={callId} avatar={roomInfo.avatar} roomName={roomInfo.roomName} uid={roomInfo.uid} />;
+		return <IncomingCallHeader callId={callId} avatar={roomInfo.avatar} roomName={roomInfo.roomName} uid={roomInfo.uid} />;
 	}
 	return null;
 };
 
-export default IncomingCallWrapper;
+export default IncomingCallNotification;

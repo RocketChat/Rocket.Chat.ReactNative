@@ -5,7 +5,7 @@ import { call } from 'typed-redux-saga';
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { removeVideoConfCall, setCalling, setVideoConfCall, TCallProps } from '../actions/videoConf';
 import { hideActionSheetRef } from '../containers/ActionSheet';
-import IncomingCallComponent from '../containers/InAppNotification/IncomingCallComponent';
+import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
 import { appSelector } from '../lib/hooks';
@@ -53,7 +53,7 @@ function* onDirectCall(payload: ICallInfo) {
 	}
 	if (!currentCall) {
 		yield put(setVideoConfCall(payload));
-		showCustomNotification(IncomingCallComponent, payload, 30000);
+		showCustomNotification(IncomingCallNotification, payload, 30000);
 	}
 }
 
