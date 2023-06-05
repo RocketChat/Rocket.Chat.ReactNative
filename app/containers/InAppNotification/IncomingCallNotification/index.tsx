@@ -12,7 +12,7 @@ import { useAppSelector } from '../../../lib/hooks';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { ESounds, useVideoConfRinger } from '../../../lib/hooks/useVideoConf';
 import { getRoomAvatar } from '../../../lib/methods/helpers';
-import { hideCustomNotification } from '../../../lib/methods/helpers/notifications';
+import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { CustomIcon } from '../../CustomIcon';
 import { CallHeader } from '../../VideoConf/CallHeader';
 import { useStyle } from './style';
@@ -75,13 +75,13 @@ const IncomingCallHeader = React.memo(
 					direct={true}
 				/>
 				<View style={styles.row}>
-					<Touchable hitSlop={BUTTON_HIT_SLOP} onPress={hideCustomNotification} style={styles.closeButton}>
+					<Touchable hitSlop={BUTTON_HIT_SLOP} onPress={hideNotification} style={styles.closeButton}>
 						<CustomIcon name='close' size={20} color={colors.gray300} />
 					</Touchable>
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}
 						onPress={() => {
-							hideCustomNotification();
+							hideNotification();
 							dispatch(cancelCall({ callId }));
 						}}
 						style={styles.cancelButton}
@@ -91,7 +91,7 @@ const IncomingCallHeader = React.memo(
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}
 						onPress={() => {
-							hideCustomNotification();
+							hideNotification();
 							dispatch(acceptCall({ callId }));
 						}}
 						style={styles.acceptButton}
