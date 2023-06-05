@@ -3,7 +3,8 @@ export const STATUS_COLORS: any = {
 	busy: '#f5455c',
 	away: '#ffd21f',
 	offline: '#cbced1',
-	loading: '#9ea2a8'
+	loading: '#9ea2a8',
+	disabled: '#F38C39'
 };
 
 export const SWITCH_TRACK_COLOR = {
@@ -58,6 +59,7 @@ export const colors = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#EEEFF1',
 		passcodeButtonActive: '#E4E7EA',
+		editAndUploadButtonAvatar: '#E4E7EA',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#2F343D',
 		passcodeSecondary: '#6C727A',
@@ -127,6 +129,7 @@ export const colors = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#030C1B',
 		passcodeButtonActive: '#0B182C',
+		editAndUploadButtonAvatar: '#0B182C',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#FFFFFF',
 		passcodeSecondary: '#CBCED1',
@@ -196,6 +199,7 @@ export const colors = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#000000',
 		passcodeButtonActive: '#0E0D0D',
+		editAndUploadButtonAvatar: '#0E0D0D',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#FFFFFF',
 		passcodeSecondary: '#CBCED1',

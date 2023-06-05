@@ -70,5 +70,5 @@
 		"forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
 		"resolveJsonModule": true
 	},
-	"exclude": ["node_modules", "e2e/docker", "__mocks__"]
+	"exclude": ["node_modules", "__mocks__"]
 }
