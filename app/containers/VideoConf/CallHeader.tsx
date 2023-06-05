@@ -49,9 +49,9 @@ export const CallHeader = ({
 	};
 
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={style.container}>
 			<View style={style.actionSheetHeader}>
-				<View style={{ flexDirection: 'row' }}>
+				<View style={style.rowContainer}>
 					<Text style={style.actionSheetHeaderTitle}>{title}</Text>
 					{calling ? <DotsLoader /> : null}
 				</View>
@@ -76,7 +76,7 @@ export const CallHeader = ({
 			</View>
 			<View style={style.actionSheetUsernameContainer}>
 				<AvatarContainer text={avatar} size={36} />
-				{direct ? <StatusContainer size={16} id={uid} style={{ marginLeft: 8, marginRight: 6 }} /> : null}
+				{direct ? <StatusContainer size={16} id={uid} style={style.statusContainerMargin} /> : null}
 				<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
 					{roomName}
 				</Text>
@@ -105,6 +105,9 @@ function useStyle() {
 			...sharedStyles.textBold,
 			color: colors.passcodePrimary,
 			flexShrink: 1
-		}
+		},
+		container: { flex: 1 },
+		rowContainer: { flexDirection: 'row' },
+		statusContainerMargin: { marginLeft: 8, marginRight: 6 }
 	});
 }
