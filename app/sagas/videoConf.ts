@@ -5,14 +5,16 @@ import { call } from 'typed-redux-saga';
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { removeVideoConfCall, setCalling, setVideoConfCall, TCallProps } from '../actions/videoConf';
 import { hideActionSheetRef } from '../containers/ActionSheet';
+import { INAPP_NOTIFICATION_EMITTER } from '../containers/InAppNotification';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
 import { appSelector } from '../lib/hooks';
 import { callJitsi } from '../lib/methods';
 import { compareServerVersion, showErrorAlert } from '../lib/methods/helpers';
+import EventEmitter from '../lib/methods/helpers/events';
 import log from '../lib/methods/helpers/log';
-import { hideCustomNotification, showCustomNotification } from '../lib/methods/helpers/notifications';
+import { hideNotification } from '../lib/methods/helpers/notifications';
 import { showToast } from '../lib/methods/helpers/showToast';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { Services } from '../lib/services';
@@ -48,12 +50,16 @@ function* onDirectCall(payload: ICallInfo) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	const hasAnotherCall = calls.find(c => c.action === 'call');
-	if (hasAnotherCall && hasAnotherCall.callId !== payload.callId) {
-		return;
-	}
+	if (hasAnotherCall && hasAnotherCall.callId !== payload.callId) return;
 	if (!currentCall) {
 		yield put(setVideoConfCall(payload));
-		showCustomNotification(IncomingCallNotification, payload, 30000);
+		EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, {
+			// @ts-ignore - Component props do not match Event emitter props
+			customComponent: IncomingCallNotification,
+			customTime: 30000,
+			customNotification: true,
+			...payload
+		});
 	}
 }
 
@@ -62,7 +68,7 @@ function* onDirectCallCanceled(payload: ICallInfo) {
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	if (currentCall) {
 		yield put(removeVideoConfCall(currentCall));
-		hideCustomNotification();
+		hideNotification();
 	}
 }
 
@@ -108,7 +114,7 @@ function* onDirectCallEnded(payload: ICallInfo) {
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	if (currentCall) {
 		yield put(removeVideoConfCall(currentCall));
-		hideCustomNotification();
+		hideNotification();
 	}
 }
 
@@ -231,7 +237,7 @@ function* acceptCall({ payload: { callId } }: { payload: { callId: string } }) {
 			params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
 		});
 		yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
-		hideCustomNotification();
+		hideNotification();
 	}
 }
 

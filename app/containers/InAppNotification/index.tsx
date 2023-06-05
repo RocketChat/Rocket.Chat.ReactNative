@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { ElementType, memo, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 
 import NotifierComponent, { INotifierComponent } from './NotifierComponent';
@@ -15,27 +15,24 @@ const InAppNotification = memo(() => {
 		appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 	}));
 
-	const show = (notification: INotifierComponent['notification']) => {
-		if (appState !== 'foreground') {
-			return;
-		}
+	const show = (
+		notification: INotifierComponent['notification'] & { customComponent?: ElementType; customTime?: number; customNotification?: boolean }
+	) => {
+		if (appState !== 'foreground') return;
 
 		const { payload } = notification;
 		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
-		if (payload.rid) {
-			if (payload.rid === subscribedRoom || route?.name === 'JitsiMeetView') {
-				return;
-			}
-			if (payload?.message?.t === 'videoconf') {
-				return;
-			}
+		if (payload?.rid || notification.customNotification) {
+			if (payload?.rid === subscribedRoom || route?.name === 'JitsiMeetView' || payload?.message?.t === 'videoconf') return;
+
 			Notifier.showNotification({
 				showEasing: Easing.inOut(Easing.quad),
-				Component: NotifierComponent,
+				Component: notification.customComponent || NotifierComponent,
 				componentProps: {
 					notification
-				}
+				},
+				duration: notification.customTime || 3000 // default 3s
 			});
 		}
 	};
