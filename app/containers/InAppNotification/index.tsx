@@ -16,7 +16,11 @@ const InAppNotification = memo(() => {
 	}));
 
 	const show = (
-		notification: INotifierComponent['notification'] & { customComponent?: ElementType; customTime?: number; customNotification?: boolean }
+		notification: INotifierComponent['notification'] & {
+			customComponent?: ElementType;
+			customTime?: number;
+			customNotification?: boolean;
+		}
 	) => {
 		if (appState !== 'foreground') return;
 
