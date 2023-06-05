@@ -7,7 +7,7 @@ interface IActionsButton {
 }
 
 const ActionsButton = ({ onPress }: IActionsButton) => (
-	<BaseButton onPress={onPress} testID='messagebox-actions' accessibilityLabel='Message_actions' icon='add' />
+	<BaseButton onPress={onPress} testID='message-composer-actions' accessibilityLabel='Message_actions' icon='add' />
 );
 
 export default ActionsButton;

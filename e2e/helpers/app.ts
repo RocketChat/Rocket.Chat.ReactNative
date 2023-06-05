@@ -97,10 +97,10 @@ async function logout() {
 async function mockMessage(message: string, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
-	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
+	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
 	await element(by.id(input)).replaceText(message);
 	await sleep(300);
-	await element(by.id('messagebox-send-message')).tap();
+	await element(by.id('message-composer-send')).tap();
 	await sleep(2000);
 	await waitFor(element(by[textMatcher](message)))
 		.toExist()

@@ -24,6 +24,18 @@ index 4344724..2786051 100644
  #endif
  
  @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+index 97255d2..6171fce 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+@@ -364,6 +364,7 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
+ - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
+ {
+     _bottomViewHeight = kBottomViewHeightTemp;
++    _ObservingInputAccessoryViewTemp.height += -48;
+     [self updateBottomViewFrame];
+ }
+ 
 diff --git a/node_modules/react-native-ui-lib/src/commons/Constants.ts b/node_modules/react-native-ui-lib/src/commons/Constants.ts
 index c029d61..77f60f7 100644
 --- a/node_modules/react-native-ui-lib/src/commons/Constants.ts

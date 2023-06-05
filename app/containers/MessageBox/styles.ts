@@ -104,8 +104,7 @@ export default StyleSheet.create({
 		paddingRight: 8
 	},
 	emojiKeyboardContainer: {
-		flex: 1,
-		borderTopWidth: 1
+		flex: 1
 	},
 	slash: {
 		height: 30,

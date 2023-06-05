@@ -44,8 +44,8 @@ describe('ButtonTests', () => {
 	});
 
 	test('find button using accessibilityLabel', async () => {
-		const { findByA11yLabel } = render(<TestButton />);
-		const Button = await findByA11yLabel(testProps.title);
+		const { getByLabelText } = render(<TestButton />);
+		const Button = await getByLabelText(testProps.title);
 		expect(Button).toBeTruthy();
 	});
 

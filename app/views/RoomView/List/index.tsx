@@ -329,7 +329,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
-		listRef.current?.scrollToOffset({ offset: -100 });
+		listRef.current?.scrollToOffset({ offset: -200 });
 	};
 
 	renderFooter = () => {

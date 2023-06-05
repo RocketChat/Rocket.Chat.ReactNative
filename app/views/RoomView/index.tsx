@@ -15,7 +15,6 @@ import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
-import MessageBox, { MessageBoxType } from '../../containers/MessageBox';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
@@ -64,7 +63,6 @@ import {
 	TAnyMessageModel,
 	TMessageModel,
 	TSubscriptionModel,
-	TThreadModel,
 	ICustomEmojis,
 	IEmoji,
 	TGetCustomEmoji,
@@ -93,6 +91,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { IMessageComposerRef, MessageComposer } from '../../containers/MessageComposer';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -202,7 +201,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messagebox: React.RefObject<MessageBoxType>;
+	private messageComposerRef: React.RefObject<IMessageComposerRef>;
 	private list: React.RefObject<ListContainerType>;
 	private joinCode: React.RefObject<IJoinCode>;
 	private flatList: TListRef;
@@ -284,7 +283,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		this.setReadOnly();
 
-		this.messagebox = React.createRef();
+		this.messageComposerRef = React.createRef();
 		this.list = React.createRef();
 		this.joinCode = React.createRef();
 		this.flatList = React.createRef();
@@ -407,36 +406,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	async componentWillUnmount() {
-		const { editing, room } = this.state;
-		const db = database.active;
+	componentWillUnmount() {
 		this.mounted = false;
-		if (!editing && this.messagebox && this.messagebox.current) {
-			const { text } = this.messagebox.current;
-			let obj: TSubscriptionModel | TThreadModel | null = null;
-			if (this.tmid) {
-				try {
-					const threadsCollection = db.get('threads');
-					obj = await threadsCollection.find(this.tmid);
-				} catch (e) {
-					// Do nothing
-				}
-			} else {
-				obj = room as TSubscriptionModel;
-			}
-			if (obj) {
-				try {
-					const object = obj;
-					await db.write(async () => {
-						await object.update(r => {
-							r.draftMessage = text;
-						});
-					});
-				} catch (error) {
-					// Do nothing
-				}
-			}
-		}
 		this.unsubscribe();
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
@@ -769,8 +740,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	handleCloseEmoji = (action?: Function, params?: any) => {
-		if (this.messagebox?.current) {
-			return this.messagebox?.current.closeEmojiAndAction(action, params);
+		if (this.messageComposerRef?.current) {
+			return this.messageComposerRef?.current.closeEmojiKeyboardAndAction(action, params);
 		}
 		if (action) {
 			return action(params);
@@ -1374,11 +1345,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderFooter = () => {
-		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, loading, canViewCannedResponse } =
-			this.state;
-		const { navigation, theme, route } = this.props;
+		const {
+			joined,
+			room,
+			// selectedMessage,
+			editing,
+			// replying,
+			// replyWithMention,
+			readOnly,
+			loading
+			// canViewCannedResponse
+		} = this.state;
+		const {
+			// navigation,
+			theme
+			// route
+		} = this.props;
 
-		const usedCannedResponse = route?.params?.usedCannedResponse;
+		// const usedCannedResponse = route?.params?.usedCannedResponse;
 
 		if (!this.rid) {
 			return null;
@@ -1442,26 +1426,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			);
 		}
 		return (
-			<MessageBox
-				ref={this.messagebox}
-				goToCannedResponses={canViewCannedResponse ? this.goToCannedResponses : null}
-				onSubmit={this.handleSendMessage}
+			<MessageComposer
+				ref={this.messageComposerRef}
+				onSendMessage={this.handleSendMessage}
 				rid={this.rid}
 				tmid={this.tmid}
-				joined={joined}
-				roomType={room.t}
-				isFocused={navigation.isFocused}
-				theme={theme!}
-				message={selectedMessage}
 				editing={editing}
-				editRequest={this.onEditRequest}
-				editCancel={this.onEditCancel}
-				replying={replying}
-				replyWithMention={replyWithMention}
-				replyCancel={this.onReplyCancel}
-				getCustomEmoji={this.getCustomEmoji}
-				navigation={navigation}
-				usedCannedResponse={usedCannedResponse}
+				sharing={false}
 			/>
 		);
 	};
