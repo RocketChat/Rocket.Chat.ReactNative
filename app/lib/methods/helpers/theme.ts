@@ -7,6 +7,7 @@ import { themes, THEME_PREFERENCES_KEY } from '../../constants';
 import UserPreferences from '../userPreferences';
 import { TSupportedThemes } from '../../../theme';
 import { isAndroid } from './deviceInfo';
+import { debounce } from './debounce';
 
 let themeListener: { remove: () => void } | null;
 
@@ -68,12 +69,24 @@ export const unsubscribeTheme = () => {
 	}
 };
 
-export const subscribeTheme = (themePreferences: IThemePreference, setTheme: () => void): void => {
+type AppearancePreferences = {
+	colorScheme: 'light' | 'dark';
+};
+
+export const subscribeTheme = (themePreferences: IThemePreference, theme: TSupportedThemes, setTheme: () => void): void => {
 	const { currentTheme } = themePreferences;
-	if (!themeListener && currentTheme === 'automatic') {
-		// not use listener params because we use getTheme
-		themeListener = Appearance.addChangeListener(() => setTheme());
-	} else if (currentTheme !== 'automatic') {
+	if (currentTheme === 'automatic') {
+		unsubscribeTheme();
+		themeListener = Appearance.addChangeListener(
+			// listener issue https://github.com/facebook/react-native/issues/36713
+			debounce((appearance: AppearancePreferences) => {
+				const simplifiedTheme = theme === 'black' ? 'dark' : theme;
+				if (simplifiedTheme !== appearance.colorScheme) {
+					setTheme();
+				}
+			}, 300)
+		);
+	} else {
 		// unsubscribe appearance changes when automatic was disabled
 		unsubscribeTheme();
 	}

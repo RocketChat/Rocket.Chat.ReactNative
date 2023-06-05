@@ -39,7 +39,7 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 			.join(', ');
 	}
 	if (count > 3) {
-		displayNames = `${displayNames} ${I18n.t('and_more')} ${count - 3}`;
+		displayNames = `${displayNames} ${I18n.t('and_N_more', { count: count - 3 })}`;
 	} else {
 		displayNames = displayNames.replace(/,(?=[^,]*$)/, ` ${I18n.t('and')}`);
 	}

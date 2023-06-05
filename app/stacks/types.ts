@@ -3,16 +3,31 @@ import { TextInputProps } from 'react-native';
 
 import { IItem } from '../views/TeamChannelsView';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
-import { IServer } from '../definitions/IServer';
+import { TServerModel } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
-import { ModalStackParamList } from './MasterDetailStack/types';
+import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
 import { TThreadModel } from '../definitions';
 import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../definitions/ILivechatTag';
+import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+
+export type SetUsernameStackParamList = {
+	SetUsernameView: {
+		title: string;
+	};
+};
+
+export type StackParamList = {
+	AuthLoading: undefined;
+	OutsideStack: NavigatorScreenParams<OutsideParamList>;
+	InsideStack: NavigatorScreenParams<InsideStackParamList>;
+	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
+	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+};
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
@@ -128,7 +143,7 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: ISubscription;
-		roomUser: any; // TODO: Change
+		roomUser?: any; // TODO: Change
 	};
 	PickerView: {
 		title: string;
@@ -181,6 +196,12 @@ export type ChatsStackParamList = {
 		onlyAudio?: boolean;
 		videoConf?: boolean;
 	};
+	ChangeAvatarView: {
+		context: TChangeAvatarViewContext;
+		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
+	};
 };
 
 export type ProfileStackParamList = {
@@ -194,6 +215,12 @@ export type ProfileStackParamList = {
 		onChangeText?: TextInputProps['onChangeText'];
 		goBack?: Function;
 		onChangeValue: Function;
+	};
+	ChangeAvatarView: {
+		context: TChangeAvatarViewContext;
+		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
 	};
 };
 
@@ -253,7 +280,7 @@ export type E2ESaveYourPasswordStackParamList = {
 };
 
 export type E2EEnterYourPasswordStackParamList = {
-	E2EEnterYourPasswordView: undefined;
+	E2EEnterYourPasswordView?: undefined;
 };
 
 export type InsideStackParamList = {
@@ -266,10 +293,10 @@ export type InsideStackParamList = {
 		attachments: IAttachment[];
 		isShareView?: boolean;
 		isShareExtension: boolean;
-		serverInfo: IServer;
+		serverInfo: TServerModel;
 		text: string;
 		room: TSubscriptionModel;
-		thread: TThreadModel;
+		thread?: TThreadModel;
 		replying?: boolean;
 		replyingMessage?: IMessage;
 		closeReply?: Function;

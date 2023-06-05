@@ -26,7 +26,7 @@ async function openActionSheet(username: string) {
 async function navigateToRoomActions() {
 	await waitFor(element(by.id('room-view')))
 		.toExist()
-		.withTimeout(2000);
+		.withTimeout(5000);
 	await element(by.id('room-header')).atIndex(0).tap();
 	await waitFor(element(by.id('room-actions-view')))
 		.toExist()
@@ -92,14 +92,14 @@ describe('Team', () => {
 		await navigateToRoom(team);
 	});
 
-	describe.skip('Team Room', () => {
+	describe('Team Room', () => {
 		describe('Team Header', () => {
 			it('should have actions button ', async () => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
 
-			it('should have team channels button ', async () => {
-				await expect(element(by.id('room-view-header-team-channels'))).toExist();
+			it('should have call button ', async () => {
+				await expect(element(by.id('room-view-header-call'))).toExist();
 			});
 
 			it('should have threads button ', async () => {
@@ -111,9 +111,10 @@ describe('Team', () => {
 			});
 		});
 
-		describe('Team Header Usage', () => {
+		describe('Team Action Usage', () => {
 			it('should navigate to team channels view', async () => {
-				await element(by.id('room-view-header-team-channels')).tap();
+				await element(by.id('room-header')).tap();
+				await element(by.id('room-actions-teams')).tap();
 				await waitFor(element(by.id('team-channels-view')))
 					.toExist()
 					.withTimeout(5000);
@@ -183,8 +184,9 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(20000);
 				await expect(element(by.id('room-view'))).toExist();
-				await expect(element(by.id('room-view-header-team-channels'))).toExist();
-				await element(by.id('room-view-header-team-channels')).tap();
+				await element(by.id('room-header')).tap();
+				await expect(element(by.id('room-actions-teams'))).toExist();
+				await element(by.id('room-actions-teams')).tap();
 
 				await waitFor(element(by.id('team-channels-view')))
 					.toExist()
@@ -198,7 +200,7 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(60000);
 				await expect(element(by.id(`room-view-title-${room}`))).toExist();
-				await expect(element(by.id('room-view-header-team-channels')).atIndex(0)).toExist();
+				await expect(element(by.id('room-view-header-call')).atIndex(0)).toExist();
 				await expect(element(by.id('room-view-header-threads')).atIndex(0)).toExist();
 				await expect(element(by.id('room-view-search')).atIndex(0)).toExist();
 				await tapBack();
@@ -206,10 +208,9 @@ describe('Team', () => {
 
 			it('should add existing channel to team', async () => {
 				await navigateToRoom(team);
-				await waitFor(element(by.id('room-view-header-team-channels')))
-					.toExist()
-					.withTimeout(5000);
-				await element(by.id('room-view-header-team-channels')).tap();
+				await element(by.id('room-header')).tap();
+				await expect(element(by.id('room-actions-teams'))).toExist();
+				await element(by.id('room-actions-teams')).tap();
 				await waitFor(element(by.id('team-channels-view')))
 					.toExist()
 					.withTimeout(5000);
@@ -229,11 +230,9 @@ describe('Team', () => {
 					.withTimeout(6000);
 				await element(by.id('add-existing-channel-view-submit')).tap();
 				await checkRoomTitle(team);
-				await waitFor(element(by.id('room-view-header-team-channels')))
-					.toBeVisible()
-					.withTimeout(2000);
-				await element(by.id('room-view-header-team-channels')).tap();
-
+				await element(by.id('room-header')).tap();
+				await expect(element(by.id('room-actions-teams'))).toExist();
+				await element(by.id('room-actions-teams')).tap();
 				await waitFor(element(by.id(`rooms-list-view-item-${existingRoom}`)).atIndex(0))
 					.toExist()
 					.withTimeout(10000);
@@ -276,6 +275,7 @@ describe('Team', () => {
 				await waitFor(element(by.id(`rooms-list-view-item-${existingRoom}`)).atIndex(0))
 					.toExist()
 					.withTimeout(6000);
+				await tapBack();
 			});
 		});
 
@@ -383,10 +383,6 @@ describe('Team', () => {
 			describe('Room Members', () => {
 				beforeAll(async () => {
 					await tapAndWaitFor(element(by.id('room-actions-members')), element(by.id('room-members-view')), 2000);
-					// await element(by.id('room-actions-members')).tap();
-					// await waitFor(element(by.id('room-members-view')))
-					// 	.toBeVisible()
-					// 	.withTimeout(2000);
 				});
 
 				it('should show all users', async () => {

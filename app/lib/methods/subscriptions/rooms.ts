@@ -212,6 +212,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			if (messageRecord) {
 				batch.push(
 					messageRecord.prepareUpdate(() => {
+						// @ts-ignore
 						Object.assign(messageRecord, lastMessage);
 					})
 				);
@@ -291,7 +292,7 @@ export default function subscribeRooms() {
 		const [type, data] = ddpMessage.fields.args;
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/userData/.test(ev)) {
-			const [{ diff }] = ddpMessage.fields.args;
+			const [{ diff, unset }] = ddpMessage.fields.args;
 			if (diff?.statusLivechat) {
 				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
 			}
@@ -300,6 +301,12 @@ export default function subscribeRooms() {
 			}
 			if ((['settings.preferences.alsoSendThreadToChannel'] as any) in diff) {
 				store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+			}
+			if (diff?.avatarETag) {
+				store.dispatch(setUser({ avatarETag: diff.avatarETag }));
+			}
+			if (unset?.avatarETag) {
+				store.dispatch(setUser({ avatarETag: '' }));
 			}
 		}
 		if (/subscriptions/.test(ev)) {

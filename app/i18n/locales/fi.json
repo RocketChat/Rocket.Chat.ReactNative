@@ -876,5 +876,6 @@
   "Call": "Soita",
   "Reply_in_direct_message": "Vastaa suoralla viestillä",
   "room_archived": "arkistoi huoneen",
-  "room_unarchived": "palautti huoneen arkistosta"
+  "room_unarchived": "palautti huoneen arkistosta",
+  "and_N_more": "ja {{count}} lisää"
 }

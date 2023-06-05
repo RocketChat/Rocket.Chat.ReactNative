@@ -18,7 +18,7 @@
   <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
 </a>
 
-Check [our docs](https://docs.rocket.chat/installation/mobile-and-desktop-apps#mobile-apps) for  beta and Experimental versions.
+Check [our docs](https://docs.rocket.chat/use-rocket.chat/rocket.chat-mobile) for  beta and Experimental versions.
 
 ## Reporting an Issue
 
