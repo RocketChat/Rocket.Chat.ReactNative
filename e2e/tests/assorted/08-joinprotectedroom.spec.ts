@@ -1,9 +1,10 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, mockMessage, searchRoom } from '../../helpers/app';
+import { navigateToLogin, login, searchRoom, mockMessage } from '../../helpers/app';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
-const testuser = data.users.regular;
 const room = data.channels.detoxpublicprotected.name;
 const { joinCode } = data.channels.detoxpublicprotected;
 
@@ -20,6 +21,7 @@ async function openJoinCode() {
 		.toExist()
 		.withTimeout(2000);
 	let n = 0;
+	// FIXME: this while is always matching 3 loops
 	while (n < 3) {
 		try {
 			await element(by.id('room-view-join-button')).tap();
@@ -33,10 +35,13 @@ async function openJoinCode() {
 }
 
 describe('Join protected room', () => {
-	before(async () => {
+	let user: ITestUser;
+
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
+		await login(user.username, user.password);
 		await navigateToRoom();
 	});
 
@@ -67,7 +72,7 @@ describe('Join protected room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockMessage('message');
+			await mockMessage(`${random()}message`);
 		});
 	});
 });

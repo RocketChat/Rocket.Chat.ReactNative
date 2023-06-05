@@ -1,6 +1,5 @@
 import React from 'react';
 import { Keyboard, ViewStyle } from 'react-native';
-import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -50,7 +49,7 @@ interface IMessageContainerProps {
 	showAttachment: (file: IAttachment) => void;
 	onReactionLongPress?: (item: TAnyMessageModel) => void;
 	navToRoomInfo: (navParam: IRoomInfoParam) => void;
-	callJitsi?: () => void;
+	handleEnterCall?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
 	threadBadgeColor?: string;
@@ -69,7 +68,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
-		callJitsi: () => {},
 		blockAction: () => {},
 		archived: false,
 		broadcast: false,
@@ -79,13 +77,16 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	state = { isManualUnignored: false };
 
-	private subscription?: Subscription;
+	private subscription?: Function;
 
 	componentDidMount() {
 		const { item } = this.props;
-		if (item && item.observe) {
-			const observable = item.observe();
-			this.subscription = observable.subscribe(() => {
+		// @ts-ignore
+		if (item && item.experimentalSubscribe) {
+			// TODO: Update watermelonDB to recognize experimentalSubscribe at types
+			// experimentalSubscribe(subscriber: (isDeleted: boolean) => void, debugInfo?: any): Unsubscribe
+			// @ts-ignore
+			this.subscription = item.experimentalSubscribe(() => {
 				this.forceUpdate();
 			});
 		}
@@ -113,8 +114,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	}
 
 	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
+		if (this.subscription) {
+			this.subscription();
 		}
 	}
 
@@ -338,7 +339,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			navToRoomInfo,
 			getCustomEmoji,
 			isThreadRoom,
-			callJitsi,
+			handleEnterCall,
 			blockAction,
 			rid,
 			threadBadgeColor,
@@ -456,7 +457,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
 					navToRoomInfo={navToRoomInfo}
-					callJitsi={callJitsi}
+					handleEnterCall={handleEnterCall}
 					blockAction={blockAction}
 					highlighted={highlighted}
 					comment={comment}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
@@ -48,38 +48,34 @@ const styles = StyleSheet.create({
 		height: 150,
 		borderTopLeftRadius: 4,
 		borderTopRightRadius: 4
+	},
+	imageWithoutContent: {
+		borderRadius: 4
+	},
+	loading: {
+		height: 0,
+		borderWidth: 0
 	}
 });
 
-const UrlImage = React.memo(
-	({ image }: { image: string }) => {
-		const { baseUrl, user } = useContext(MessageContext);
-
-		if (!image) {
-			return null;
-		}
-
-		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
-	},
-	(prevProps, nextProps) => prevProps.image === nextProps.image
-);
-
 const UrlContent = React.memo(
-	({ title, description, theme }: { title: string; description: string; theme: TSupportedThemes }) => (
-		<View style={styles.textContainer}>
-			{title ? (
-				<Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>
-					{title}
-				</Text>
-			) : null}
-			{description ? (
-				<Text style={[styles.description, { color: themes[theme].auxiliaryText }]} numberOfLines={2}>
-					{description}
-				</Text>
-			) : null}
-		</View>
-	),
+	({ title, description }: { title: string; description: string }) => {
+		const { colors } = useTheme();
+		return (
+			<View style={styles.textContainer}>
+				{title ? (
+					<Text style={[styles.title, { color: colors.tintColor }]} numberOfLines={2}>
+						{title}
+					</Text>
+				) : null}
+				{description ? (
+					<Text style={[styles.description, { color: colors.auxiliaryText }]} numberOfLines={2}>
+						{description}
+					</Text>
+				) : null}
+			</View>
+		);
+	},
 	(prevProps, nextProps) => {
 		if (prevProps.title !== nextProps.title) {
 			return false;
@@ -87,16 +83,18 @@ const UrlContent = React.memo(
 		if (prevProps.description !== nextProps.description) {
 			return false;
 		}
-		if (prevProps.theme !== nextProps.theme) {
-			return false;
-		}
 		return true;
 	}
 );
 
+type TImageLoadedState = 'loading' | 'done' | 'error';
+
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
-		if (!url || url?.ignoreParse) {
+		const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
+		const { baseUrl, user } = useContext(MessageContext);
+
+		if (!url || url?.ignoreParse || imageLoadedState === 'error') {
 			return null;
 		}
 
@@ -106,6 +104,13 @@ const Url = React.memo(
 			Clipboard.setString(url.url);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		};
+
+		const hasContent = url.title || url.description;
+
+		let image = url.image || url.url;
+		if (image) {
+			image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+		}
 
 		return (
 			<Touchable
@@ -118,13 +123,22 @@ const Url = React.memo(
 					{
 						backgroundColor: themes[theme].chatComponentBackground,
 						borderColor: themes[theme].borderColor
-					}
+					},
+					imageLoadedState === 'loading' && styles.loading
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<>
-					<UrlImage image={url.image} />
-					<UrlContent title={url.title} description={url.description} theme={theme} />
+					{image ? (
+						<FastImage
+							source={{ uri: image }}
+							style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
+							resizeMode={FastImage.resizeMode.cover}
+							onError={() => setImageLoadedState('error')}
+							onLoad={() => setImageLoadedState('done')}
+						/>
+					) : null}
+					{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 				</>
 			</Touchable>
 		);
@@ -146,7 +160,6 @@ const Urls = React.memo(
 	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls)
 );
 
-UrlImage.displayName = 'MessageUrlImage';
 UrlContent.displayName = 'MessageUrlContent';
 Url.displayName = 'MessageUrl';
 Urls.displayName = 'MessageUrls';

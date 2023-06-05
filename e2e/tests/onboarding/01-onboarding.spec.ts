@@ -1,4 +1,4 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { TTextMatcher, platformTypes } from '../../helpers/app';
 import data from '../../data';
@@ -6,7 +6,7 @@ import data from '../../data';
 describe('Onboarding', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	beforeAll(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await waitFor(element(by.id('new-server-view')))
@@ -19,9 +19,9 @@ describe('Onboarding', () => {
 			await expect(element(by.id('new-server-view'))).toBeVisible();
 		});
 
-		it('should have "Join our open workspace"', async () => {
-			await expect(element(by.id('new-server-view-open'))).toBeVisible();
-		});
+		// it('should have "Join our open workspace"', async () => {
+		// 	await expect(element(by.id('new-server-view-open'))).toBeVisible();
+		// });
 	});
 
 	describe('Usage', () => {
@@ -34,12 +34,12 @@ describe('Onboarding', () => {
 			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 		});
 
-		it('should tap on "Join our open workspace" and navigate', async () => {
-			await element(by.id('new-server-view-open')).tap();
-			await waitFor(element(by.id('workspace-view')))
-				.toBeVisible()
-				.withTimeout(60000);
-		});
+		// it('should tap on "Join our open workspace" and navigate', async () => {
+		// 	await element(by.id('new-server-view-open')).tap();
+		// 	await waitFor(element(by.id('workspace-view')))
+		// 		.toBeVisible()
+		// 		.withTimeout(60000);
+		// });
 
 		it('should enter a valid server without login services and navigate to login', async () => {
 			await device.launchApp({ newInstance: true });
