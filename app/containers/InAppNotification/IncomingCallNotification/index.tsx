@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, View, useWindowDimensions } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,17 +7,15 @@ import { useDispatch } from 'react-redux';
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
-import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../lib/hooks';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { ESounds, useVideoConfRinger } from '../../../lib/hooks/useVideoConf';
-import { getRoomAvatar } from '../../../lib/methods/helpers';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
+import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
+import { useUserData } from '../../UIKit/VideoConferenceBlock/components/StartACallActionSheet';
 import { CallHeader } from '../../VideoConf/CallHeader';
 import { useStyle } from './style';
-import { useTheme } from '../../../theme';
-import { useUserData } from '../../UIKit/VideoConferenceBlock/components/StartACallActionSheet';
 
 export interface INotifierComponent {
 	notification: {
