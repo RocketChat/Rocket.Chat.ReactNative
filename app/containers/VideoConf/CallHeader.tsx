@@ -20,21 +20,11 @@ type TCallHeader = {
 	title: string;
 	avatar: string;
 	uid: string;
-	roomName: string;
+	name: string;
 	direct: boolean;
 };
 
-export const CallHeader = ({
-	mic,
-	cam,
-	setCam,
-	setMic,
-	title,
-	avatar,
-	uid,
-	roomName,
-	direct
-}: TCallHeader): React.ReactElement => {
+export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): React.ReactElement => {
 	const style = useStyle();
 	const { colors } = useTheme();
 	const calling = useAppSelector(state => state.videoConf.calling);
@@ -78,7 +68,7 @@ export const CallHeader = ({
 				<AvatarContainer text={avatar} size={36} />
 				{direct ? <StatusContainer size={16} id={uid} style={style.statusContainerMargin} /> : null}
 				<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
-					{roomName}
+					{name}
 				</Text>
 			</View>
 		</View>
