@@ -13,7 +13,7 @@ import { ESounds, useVideoConfRinger } from '../../../lib/hooks/useVideoConf';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
-import { CallHeader } from '../../VideoConf/CallHeader';
+import { CallHeader } from '../../CallHeader';
 import { useStyle } from './style';
 import useUserData from '../../../lib/hooks/useUserData';
 

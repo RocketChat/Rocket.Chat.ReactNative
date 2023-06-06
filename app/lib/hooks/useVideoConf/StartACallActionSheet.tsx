@@ -1,6 +1,6 @@
 import { Camera, CameraType } from 'expo-camera';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ESounds, useVideoConfRinger } from '.';
@@ -8,22 +8,19 @@ import { useAppSelector } from '..';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';
 import AvatarContainer from '../../../containers/Avatar';
 import Button from '../../../containers/Button';
-import useStyle from '../../../containers/UIKit/VideoConferenceBlock/components/styles';
-import { CallHeader } from '../../../containers/VideoConf/CallHeader';
+import { CallHeader } from '../../../containers/CallHeader';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import useUserData from '../useUserData';
 
-const CAM_SIZE = { height: 220, width: 148 };
-
 export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
-	const style = useStyle();
 	const { playSound, stopSound } = useVideoConfRinger(ESounds.DIALTONE, false);
 
 	const { colors } = useTheme();
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
+	const [containerWidth, setContainerWidth] = useState(0);
 
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const calling = useAppSelector(state => state.videoConf.calling);
@@ -32,7 +29,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	const user = useUserData(rid);
 
 	return (
-		<View style={style.actionSheetContainer}>
+		<View style={style.actionSheetContainer} onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
 			<CallHeader
 				title={calling ? i18n.t('Calling') : i18n.t('Start_a_call')}
 				cam={cam}
@@ -47,11 +44,14 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 			<View
 				style={[
 					style.actionSheetPhotoContainer,
-					CAM_SIZE,
-					{ backgroundColor: cam ? undefined : colors.conferenceCallPhotoBackground }
+					{ backgroundColor: cam ? undefined : colors.conferenceCallPhotoBackground, width: containerWidth }
 				]}
 			>
-				{cam ? <Camera type={CameraType.front} /> : <AvatarContainer size={62} text={username} rid={rid} type={user.type} />}
+				{cam ? (
+					<Camera style={[style.cameraContainer, { width: containerWidth }]} type={CameraType.front} />
+				) : (
+					<AvatarContainer size={62} text={username} rid={rid} type={user.type} />
+				)}
 			</View>
 			<Button
 				backgroundColor={calling ? colors.conferenceCallCallBackButton : colors.actionTintColor}
@@ -70,3 +70,22 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 		</View>
 	);
 }
+
+const style = StyleSheet.create({
+	actionSheetContainer: {
+		paddingHorizontal: 24,
+		flex: 1
+	},
+	actionSheetPhotoContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		alignSelf: 'center',
+		flex: 1,
+		marginVertical: 8,
+		borderRadius: 8,
+		overflow: 'hidden'
+	},
+	cameraContainer: {
+		flex: 1
+	}
+});

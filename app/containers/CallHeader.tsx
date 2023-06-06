@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { useAppSelector } from '../../lib/hooks';
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
-import { CustomIcon } from '../CustomIcon';
-import { BUTTON_HIT_SLOP } from '../message/utils';
-import AvatarContainer from '../Avatar';
-import StatusContainer from '../Status';
-import DotsLoader from '../DotsLoader';
+import { useAppSelector } from '../lib/hooks';
+import { useTheme } from '../theme';
+import sharedStyles from '../views/Styles';
+import { CustomIcon } from './CustomIcon';
+import { BUTTON_HIT_SLOP } from './message/utils';
+import AvatarContainer from './Avatar';
+import StatusContainer from './Status';
+import DotsLoader from './DotsLoader';
 
 type TCallHeader = {
 	mic: boolean;
@@ -38,7 +38,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 	};
 
 	return (
-		<View style={style.container}>
+		<View>
 			<View style={style.actionSheetHeader}>
 				<View style={style.rowContainer}>
 					<Text style={style.actionSheetHeaderTitle}>{title}</Text>
@@ -74,7 +74,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 	);
 };
 
-export function useStyle() {
+function useStyle() {
 	const { colors } = useTheme();
 	const style = StyleSheet.create({
 		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
@@ -100,7 +100,6 @@ export function useStyle() {
 			color: colors.passcodePrimary,
 			flexShrink: 1
 		},
-		container: { flex: 1 },
 		rowContainer: { flexDirection: 'row' },
 		statusContainerMargin: { marginLeft: 8, marginRight: 6 }
 	});
