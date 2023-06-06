@@ -1,0 +1,21 @@
+# Replace env first
+appId: chat.rocket.android
+env:
+    USERNAME: USERNAME
+    PASSWORD: PASSWORD # can be flaky on some Android devices
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: 'new-server-view-input'
+- inputText: 'open'
+- pressKey: 'Enter'
+- tapOn: 'Login'
+- tapOn:
+    id: 'login-view-email'
+- inputText: ${USERNAME}
+- pressKey: 'enter'
+- inputText: ${PASSWORD}
+- pressKey: 'enter'
+- assertVisible:
+    id: 'listheader-encryption'

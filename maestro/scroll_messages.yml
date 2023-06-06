@@ -1,0 +1,10 @@
+appId: chat.rocket.android
+---
+- launchApp
+- tapOn: 'support'
+- repeat:
+    times: 10
+    commands:
+      - swipe:
+          direction: 'down'
+          duration: 100

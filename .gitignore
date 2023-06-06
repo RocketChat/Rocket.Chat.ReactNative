@@ -45,6 +45,7 @@ npm-debug.log
 yarn-error.log
 
 coverage/
+maestro/results/
 
 # fastlane
 #
@@ -57,8 +58,6 @@ coverage/
 **/fastlane/Preview.html
 **/fastlane/screenshots
 **/fastlane/test_output
-
-coverage
 
 artifacts
 .vscode/

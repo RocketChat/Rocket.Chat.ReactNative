@@ -1,0 +1,4 @@
+appId: chat.rocket.android
+---
+- launchApp
+- assertVisible: 'Beyond Team Collaboration'
