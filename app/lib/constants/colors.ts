@@ -20,6 +20,11 @@ const mentions = {
 	mentionOtherColor: '#F3BE08'
 };
 
+const callButtons = {
+	cancelCallButton: '#F5455C',
+	acceptCallButton: '#158D65'
+};
+
 export const colors = {
 	light: {
 		backgroundColor: '#ffffff',
@@ -93,7 +98,8 @@ export const colors = {
 		dotActiveBg: '#1d74f5',
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
-		...mentions
+		...mentions,
+		...callButtons
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -167,7 +173,8 @@ export const colors = {
 		dotActiveBg: '#1d74f5',
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
-		...mentions
+		...mentions,
+		...callButtons
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -241,7 +248,8 @@ export const colors = {
 		dotActiveBg: '#1d74f5',
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
-		...mentions
+		...mentions,
+		...callButtons
 	}
 };
 

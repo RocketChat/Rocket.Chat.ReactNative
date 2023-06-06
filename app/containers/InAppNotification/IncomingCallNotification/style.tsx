@@ -35,7 +35,7 @@ export const useStyle = () => {
 		},
 		cancelButton: {
 			borderRadius: 4,
-			backgroundColor: '#F5455C',
+			backgroundColor: colors.cancelCallButton,
 			marginRight: 8,
 			flex: 2,
 			alignItems: 'center',
@@ -47,7 +47,7 @@ export const useStyle = () => {
 		},
 		acceptButton: {
 			borderRadius: 4,
-			backgroundColor: '#158D65',
+			backgroundColor: colors.acceptCallButton,
 			flex: 2,
 			alignItems: 'center',
 			justifyContent: 'center'
