@@ -20,7 +20,7 @@ import useStyle from './styles';
 
 const CAM_SIZE = { height: 220, width: 148 };
 
-const useUserData = (rid: string) => {
+export const useUserData = (rid: string) => {
 	const [user, setUser] = useState({ username: '', avatar: '', uid: '', type: '', direct: false });
 	useEffect(() => {
 		(async () => {
@@ -59,7 +59,7 @@ const useUserData = (rid: string) => {
 
 export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
 	const style = useStyle();
-	const { playSound, stopSound } = useVideoConfRinger(ESounds.DIALTONE);
+	const { playSound, stopSound } = useVideoConfRinger(ESounds.DIALTONE, false);
 
 	const { colors } = useTheme();
 	const [mic, setMic] = useState(true);

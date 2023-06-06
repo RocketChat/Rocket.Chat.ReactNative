@@ -105,7 +105,7 @@ export enum ESounds {
 	RINGTONE = 'ringtone'
 }
 
-export const useVideoConfRinger = (ringer: ESounds) => {
+export const useVideoConfRinger = (ringer: ESounds, autoPlay = true) => {
 	const sound = useRef<Audio.Sound | null>(null);
 	useEffect(() => {
 		(async () => {
@@ -122,6 +122,10 @@ export const useVideoConfRinger = (ringer: ESounds) => {
 					break;
 			}
 			sound.current = expo.sound;
+			if (autoPlay) {
+				await sound.current.playAsync();
+				await sound.current.setIsLoopingAsync(true);
+			}
 		})();
 	}, []);
 

@@ -17,6 +17,7 @@ import { CustomIcon } from '../../CustomIcon';
 import { CallHeader } from '../../VideoConf/CallHeader';
 import { useStyle } from './style';
 import { useTheme } from '../../../theme';
+import { useUserData } from '../../UIKit/VideoConferenceBlock/components/StartACallActionSheet';
 
 export interface INotifierComponent {
 	notification: {
@@ -38,7 +39,7 @@ const IncomingCallHeader = React.memo(
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
 		const dispatch = useDispatch();
-		const { playSound } = useVideoConfRinger(ESounds.DIALTONE);
+		useVideoConfRinger(ESounds.RINGTONE);
 
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const styles = useStyle();
@@ -46,10 +47,6 @@ const IncomingCallHeader = React.memo(
 		const insets = useSafeAreaInsets();
 		const { height, width } = useWindowDimensions();
 		const isLandscape = width > height;
-
-		useEffect(() => {
-			(() => playSound())();
-		}, []);
 
 		const { colors } = useTheme();
 
@@ -70,7 +67,7 @@ const IncomingCallHeader = React.memo(
 					mic={mic}
 					setMic={setMic}
 					avatar={avatar}
-					roomName={roomName}
+					name={roomName}
 					uid={uid}
 					direct={true}
 				/>
@@ -105,25 +102,16 @@ const IncomingCallHeader = React.memo(
 );
 
 const IncomingCallNotification = ({
-	notification: { rid, uid, callId }
+	notification: { rid, callId }
 }: {
-	notification: { rid: string; uid: string; callId: string };
+	notification: { rid: string; callId: string };
 }): React.ReactElement | null => {
-	const [roomInfo, setRoomInfo] = useState({ roomName: '', avatar: '', uid: '', direct: false });
 	const { result } = useEndpointData('video-conference.info', { callId });
 
-	useEffect(() => {
-		(async () => {
-			const room = await getSubscriptionByRoomId(rid);
-			if (room?.rid) {
-				const avt = getRoomAvatar(room);
-				setRoomInfo({ uid, roomName: room?.name || '', avatar: avt, direct: room?.t === 'd' });
-			}
-		})();
-	}, [result?.success, rid]);
+	const user = useUserData(rid);
 
-	if (result?.success && roomInfo.roomName) {
-		return <IncomingCallHeader callId={callId} avatar={roomInfo.avatar} roomName={roomInfo.roomName} uid={roomInfo.uid} />;
+	if (result?.success && user.username) {
+		return <IncomingCallHeader callId={callId} avatar={user.avatar} roomName={user.username} uid={user.uid} />;
 	}
 	return null;
 };
