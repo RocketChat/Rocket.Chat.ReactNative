@@ -29,6 +29,8 @@ const AdminPanelView = () => {
 		return null;
 	}
 
+	const str = `Meteor.loginWithToken('${token}', function() { })`;
+
 	return (
 		<SafeAreaView>
 			<StatusBar />
@@ -36,7 +38,7 @@ const AdminPanelView = () => {
 				// https://github.com/react-native-community/react-native-webview/issues/1311
 				onMessage={() => {}}
 				source={{ uri: `${baseUrl}/admin/info?layout=embedded` }}
-				injectedJavaScript={`Meteor.loginWithToken('${token}', function() { })`}
+				injectedJavaScript={str}
 			/>
 		</SafeAreaView>
 	);
