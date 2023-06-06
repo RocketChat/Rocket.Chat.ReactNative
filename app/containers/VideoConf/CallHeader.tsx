@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-unused-styles */
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
@@ -48,7 +47,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 				<View style={style.actionSheetHeaderButtons}>
 					<Touchable
 						onPress={() => setCam(!cam)}
-						style={[style.iconCallContainer, { backgroundColor: handleColors(cam).button }, { marginRight: 6 }]}
+						style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
 						disabled={calling}
 					>
@@ -75,9 +74,9 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 	);
 };
 
-function useStyle() {
+export function useStyle() {
 	const { colors } = useTheme();
-	return StyleSheet.create({
+	const style = StyleSheet.create({
 		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
 		actionSheetHeaderTitle: {
 			fontSize: 14,
@@ -88,6 +87,11 @@ function useStyle() {
 		iconCallContainer: {
 			padding: 6,
 			borderRadius: 4
+		},
+		iconCallContainerRight: {
+			padding: 6,
+			borderRadius: 4,
+			marginRight: 6
 		},
 		actionSheetUsernameContainer: { flexDirection: 'row', paddingTop: 8, alignItems: 'center' },
 		actionSheetUsername: {
@@ -100,4 +104,5 @@ function useStyle() {
 		rowContainer: { flexDirection: 'row' },
 		statusContainerMargin: { marginLeft: 8, marginRight: 6 }
 	});
+	return style;
 }
