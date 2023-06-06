@@ -13,9 +13,9 @@ import { ESounds, useVideoConfRinger } from '../../../lib/hooks/useVideoConf';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
-import { useUserData } from '../../UIKit/VideoConferenceBlock/components/StartACallActionSheet';
 import { CallHeader } from '../../VideoConf/CallHeader';
 import { useStyle } from './style';
+import useUserData from '../../../lib/hooks/useUserData';
 
 export interface INotifierComponent {
 	notification: {

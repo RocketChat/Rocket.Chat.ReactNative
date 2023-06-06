@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
-import StartACallActionSheet from '../../../containers/UIKit/VideoConferenceBlock/components/StartACallActionSheet';
+import StartACallActionSheet from './StartACallActionSheet';
 import { SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
