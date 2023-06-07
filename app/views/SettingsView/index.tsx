@@ -21,7 +21,7 @@ import { APP_STORE_LINK, FDROID_MARKET_LINK, isFDroidBuild, LICENSE_LINK, PLAY_M
 import database from '../../lib/database';
 import { useAppSelector } from '../../lib/hooks';
 import { clearCache } from '../../lib/methods';
-import { deleteMediaFiles, MediaTypes } from '../../lib/methods/handleMediaDownload';
+import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
 import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
@@ -99,9 +99,7 @@ const SettingsView = (): React.ReactElement => {
 			confirmationText: I18n.t('Clear'),
 			onPress: async () => {
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
-				await deleteMediaFiles(MediaTypes.image, server);
-				await deleteMediaFiles(MediaTypes.audio, server);
-				await deleteMediaFiles(MediaTypes.video, server);
+				await deleteMediaFiles(server);
 				await clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();

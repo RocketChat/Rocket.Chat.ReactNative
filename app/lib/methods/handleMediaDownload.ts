@@ -6,26 +6,23 @@ import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
 
-export enum MediaTypes {
-	audio = 'audio',
-	image = 'image',
-	video = 'video'
-}
+export type MediaTypes = 'audio' | 'image' | 'video';
+
 const typeString = {
-	[MediaTypes.audio]: 'audios/',
-	[MediaTypes.image]: 'images/',
-	[MediaTypes.video]: 'videos/'
+	audio: 'audios/',
+	image: 'images/',
+	video: 'videos/'
 };
 
 const defaultType = {
-	[MediaTypes.audio]: 'mp3',
-	[MediaTypes.image]: 'jpg',
-	[MediaTypes.video]: 'mp4'
+	audio: 'mp3',
+	image: 'jpg',
+	video: 'mp4'
 };
 
 const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
 
-export const mediaDownloadKey = (mediaType: MediaTypes, messageId: string) => `${mediaType}-${messageId}`;
+export const mediaDownloadKey = (mediaType: MediaTypes, downloadUrl: string) => `${mediaType}-${sanitizeString(downloadUrl)}`;
 
 export function isDownloadActive(mediaType: MediaTypes, messageId: string): boolean {
 	return !!downloadQueue[mediaDownloadKey(mediaType, messageId)];
@@ -45,18 +42,16 @@ export async function cancelDownload(mediaType: MediaTypes, messageId: string): 
 
 export function downloadMediaFile({
 	mediaType,
-	messageId,
 	downloadUrl,
 	path
 }: {
 	mediaType: MediaTypes;
-	messageId: string;
 	downloadUrl: string;
 	path: string;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const downloadKey = mediaDownloadKey(mediaType, messageId);
+			const downloadKey = mediaDownloadKey(mediaType, downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
 			if (result?.uri) {
@@ -71,7 +66,11 @@ export function downloadMediaFile({
 
 export const LOCAL_DOCUMENT_PATH = `${FileSystem.documentDirectory}`;
 
-const sanitizeString = (value: string) => sanitizeLikeString(value.substring(value.lastIndexOf('/') + 1));
+const sanitizeString = (value: string) => {
+	const urlWithoutQueryString = value.split('?')[0];
+	return sanitizeLikeString(urlWithoutQueryString.substring(urlWithoutQueryString.lastIndexOf('/') + 1));
+};
+const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeString(serverURL)}/`;
 
 const getExtension = (type: MediaTypes, mimeType?: string) => {
 	if (!mimeType) {
@@ -105,21 +104,22 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 export const searchMediaFileAsync = async ({
 	type,
 	mimeType,
-	messageId
+	urlToCache
 }: {
 	type: MediaTypes;
 	mimeType?: string;
-	messageId: string;
+	urlToCache: string;
 }) => {
 	let file;
 	let filePath = '';
 
 	try {
 		const serverUrl = store.getState().server.server;
-		const serverUrlParsed = sanitizeString(serverUrl);
-		const folderPath = `${LOCAL_DOCUMENT_PATH}${typeString[type]}${serverUrlParsed}`;
-		const filename = `${messageId}.${getExtension(type, mimeType)}`;
-		filePath = `${folderPath}/${filename}`;
+		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
+		const folderPath = `${LOCAL_DOCUMENT_PATH}${serverUrlParsed}${typeString[type]}`;
+		const fileUrlSanitized = sanitizeString(urlToCache);
+		const filename = `${fileUrlSanitized}.${getExtension(type, mimeType)}`;
+		filePath = `${folderPath}${filename}`;
 		await ensureDirAsync(folderPath);
 		file = await FileSystem.getInfoAsync(filePath);
 	} catch (e) {
@@ -128,10 +128,10 @@ export const searchMediaFileAsync = async ({
 	return { file, filePath };
 };
 
-export const deleteMediaFiles = async (type: MediaTypes, serverUrl: string): Promise<void> => {
+export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 	try {
-		const serverUrlParsed = sanitizeString(serverUrl);
-		const path = `${LOCAL_DOCUMENT_PATH}${typeString[type]}${serverUrlParsed}`;
+		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
+		const path = `${LOCAL_DOCUMENT_PATH}${serverUrlParsed}`;
 		await FileSystem.deleteAsync(path, { idempotent: true });
 	} catch (error) {
 		log(error);
