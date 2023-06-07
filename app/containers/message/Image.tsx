@@ -2,27 +2,18 @@ import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
-import { createImageProgress } from 'react-native-image-progress';
-import * as Progress from 'react-native-progress';
 import { BlurView } from '@react-native-community/blur';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import styles from './styles';
-import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
-import { TSupportedThemes, useTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import {
-	MediaTypes,
-	cancelDownload,
-	downloadMediaFile,
-	isDownloadActive,
-	searchMediaFileAsync
-} from '../../lib/methods/handleMediaDownload';
-import { isAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { cancelDownload, downloadMediaFile, isDownloadActive, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import RCActivityIndicator from '../ActivityIndicator';
 import { CustomIcon } from '../CustomIcon';
 
@@ -30,7 +21,6 @@ interface IMessageButton {
 	children: React.ReactElement;
 	disabled?: boolean;
 	onPress: () => void;
-	theme: TSupportedThemes;
 }
 
 interface IMessageImage {
@@ -41,25 +31,24 @@ interface IMessageImage {
 	isReply?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
 	author?: IUserMessage;
-	messageId: string;
 }
 
-const ImageProgress = createImageProgress(FastImage);
-
-const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButton) => (
-	<Touchable
-		disabled={disabled}
-		onPress={onPress}
-		style={styles.imageContainer}
-		background={Touchable.Ripple(themes[theme].bannerBackground)}
-	>
-		{children}
-	</Touchable>
-));
+const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
+	const { colors } = useTheme();
+	return (
+		<Touchable
+			disabled={disabled}
+			onPress={onPress}
+			style={styles.imageContainer}
+			background={Touchable.Ripple(colors.bannerBackground)}
+		>
+			{children}
+		</Touchable>
+	);
+});
 
 const BlurComponent = ({ loading = false }: { loading: boolean }) => {
 	const { theme, colors } = useTheme();
-
 	return (
 		<>
 			<BlurView
@@ -75,136 +64,126 @@ const BlurComponent = ({ loading = false }: { loading: boolean }) => {
 	);
 };
 
-export const MessageImage = React.memo(
-	({ imgUri, toDownload, loading }: { imgUri: string; toDownload: boolean; loading: boolean }) => {
-		const { colors } = useTheme();
-
-		return (
-			<>
-				<ImageProgress
-					style={[styles.image, { borderColor: colors.borderColor }]}
-					source={{ uri: encodeURI(imgUri) }}
-					resizeMode={FastImage.resizeMode.cover}
-					indicator={Progress.Pie}
-					indicatorProps={{
-						color: colors.actionTintColor
-					}}
-				/>
-				{toDownload ? <BlurComponent loading={loading} /> : null}
-			</>
-		);
-	}
-);
+export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: string; cached: boolean; loading: boolean }) => {
+	const { colors } = useTheme();
+	return (
+		<>
+			<FastImage
+				style={[styles.image, { borderColor: colors.borderColor }]}
+				source={{ uri: encodeURI(imgUri) }}
+				resizeMode={FastImage.resizeMode.cover}
+			/>
+			{!cached ? <BlurComponent loading={loading} /> : null}
+		</>
+	);
+});
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author, messageId }: IMessageImage) => {
-		const [newFile, setNewFile] = useState(file);
-		const [toDownload, setToDownload] = useState(true);
+	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author }: IMessageImage) => {
+		const [imageCached, setImageCached] = useState(file);
+		const [cached, setCached] = useState(false);
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
-		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		const filePath = useRef('');
+		const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
+		const img = getUrl(file.image_url);
+		// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
+		// And we cannot be certain whether the file.title_link actually exists.
+		const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
 
 		useLayoutEffect(() => {
-			const handleAutoDownload = async () => {
+			const handleImageSearchAndDownload = async () => {
 				if (img) {
 					const searchImageCached = await searchMediaFileAsync({
-						type: MediaTypes.image,
-						mimeType: newFile.image_type,
-						messageId
+						type: 'image',
+						mimeType: imageCached.image_type,
+						urlToCache: imgUrlToCache
 					});
 					filePath.current = searchImageCached.filePath;
 					if (searchImageCached.file?.exists) {
-						setNewFile(prev => ({
+						setImageCached(prev => ({
 							...prev,
 							title_link: searchImageCached.file?.uri
 						}));
-						return setToDownload(false);
+						return setCached(true);
 					}
-
-					if (isDownloadActive(MediaTypes.image, messageId)) {
+					if (isDownloadActive('image', imgUrlToCache)) {
 						return setLoading(true);
 					}
-
-					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload', { user, author });
-					if (autoDownload) {
-						await handleDownload();
-					}
+					await handleAutoDownload();
 				}
 			};
-			handleAutoDownload();
+			handleImageSearchAndDownload();
 		}, []);
 
 		if (!img) {
 			return null;
 		}
 
+		const handleAutoDownload = async () => {
+			const isCurrentUserAuthor = author?._id === user.id;
+			const autoDownload = fetchAutoDownloadEnabled('imagesPreferenceDownload');
+			if (autoDownload || isCurrentUserAuthor) {
+				await handleDownload();
+			}
+		};
+
 		const handleDownload = async () => {
 			setLoading(true);
 			try {
-				// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
-				// And we don't have sure that ever exists the file.title_link
-				const imgUrl = imageUrl || formatAttachmentUrl(newFile.title_link || newFile.image_url, user.id, user.token, baseUrl);
 				const imageUri = await downloadMediaFile({
-					downloadUrl: imgUrl,
-					mediaType: MediaTypes.image,
-					messageId,
+					downloadUrl: imgUrlToCache,
+					mediaType: 'image',
 					path: filePath.current
 				});
-
-				setNewFile(prev => ({
+				setImageCached(prev => ({
 					...prev,
 					title_link: imageUri
 				}));
-				setToDownload(false);
+				setCached(true);
 				setLoading(false);
 			} catch (e) {
 				setLoading(false);
-				return setToDownload(true);
+				return setCached(false);
 			}
 		};
 
 		const onPress = () => {
-			if (loading && isDownloadActive(MediaTypes.image, messageId)) {
-				cancelDownload(MediaTypes.image, messageId);
+			if (loading && isDownloadActive('image', imgUrlToCache)) {
+				cancelDownload('image', imgUrlToCache);
 				setLoading(false);
-				return setToDownload(true);
+				return setCached(false);
 			}
-
-			if (toDownload && !loading) {
+			if (!cached && !loading) {
 				return handleDownload();
 			}
-
 			if (!showAttachment) {
 				return;
 			}
-
-			return showAttachment(newFile);
+			return showAttachment(imageCached);
 		};
 
-		if (newFile.description) {
+		if (imageCached.description) {
 			return (
-				<Button disabled={isReply} theme={theme} onPress={onPress}>
+				<Button disabled={isReply} onPress={onPress}>
 					<View>
 						<Markdown
-							msg={newFile.description}
+							msg={imageCached.description}
 							style={[isReply && style]}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
 						/>
-						<MessageImage imgUri={img} toDownload={toDownload} loading={loading} />
+						<MessageImage imgUri={img} cached={cached} loading={loading} />
 					</View>
 				</Button>
 			);
 		}
 
 		return (
-			<Button disabled={isReply} theme={theme} onPress={onPress}>
-				<>
-					<MessageImage imgUri={img} toDownload={toDownload} loading={loading} />
-				</>
+			<Button disabled={isReply} onPress={onPress}>
+				<MessageImage imgUri={img} cached={cached} loading={loading} />
 			</Button>
 		);
 	},

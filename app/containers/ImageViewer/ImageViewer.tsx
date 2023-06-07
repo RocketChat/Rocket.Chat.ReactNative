@@ -109,7 +109,7 @@ export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...pr
 
 	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
-	const Component = ImageComponent(imageComponentType);
+	const Component = ImageComponent({ type: imageComponentType, uri });
 
 	const { colors } = useTheme();
 
