@@ -77,23 +77,20 @@ const getExtension = (type: MediaTypes, mimeType?: string) => {
 	if (!mimeType) {
 		return defaultType[type];
 	}
-	const extensionFromMime = () => {
-		// The library is returning mpag instead of mp3 for audio/mpeg
-		if (mimeType === 'audio/mpeg') {
-			return 'mp3';
-		}
-		// For older audios the server is returning the type audio/aac and we can't play it as mp3
-		if (mimeType === 'audio/aac') {
-			return 'm4a';
-		}
-		const extension = mime.extension(mimeType);
-		// The mime.extension can return false when there aren't any extension
-		if (!extension) {
-			return defaultType[type];
-		}
-		return extension;
-	};
-	return extensionFromMime();
+	// The library is returning mpag instead of mp3 for audio/mpeg
+	if (mimeType === 'audio/mpeg') {
+		return 'mp3';
+	}
+	// For older audios the server is returning the type audio/aac and we can't play it as mp3
+	if (mimeType === 'audio/aac') {
+		return 'm4a';
+	}
+	const extension = mime.extension(mimeType);
+	// The mime.extension can return false when there aren't any extension
+	if (!extension) {
+		return defaultType[type];
+	}
+	return extension;
 };
 
 const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> => {

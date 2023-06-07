@@ -178,13 +178,12 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		try {
 			if (url) {
 				const isCurrentUserAuthor = author?._id === user.id;
-				const autoDownload = fetchAutoDownloadEnabled('audioPreferenceDownload');
-				if (autoDownload || isCurrentUserAuthor) {
-					await this.startDownload();
+				const isAutoDownloadEnabled = fetchAutoDownloadEnabled('audioPreferenceDownload');
+				if (isAutoDownloadEnabled || isCurrentUserAuthor) {
+					await this.handleDownload();
 					return;
 				}
 
-				// MediaDownloadOption.NEVER or MediaDownloadOption.WIFI and the mobile is using mobile data
 				return this.setState({ loading: false, cached: false });
 			}
 		} catch {
@@ -286,7 +285,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ paused: !paused }, this.playPause);
 	};
 
-	startDownload = async () => {
+	handleDownload = async () => {
 		const { messageId } = this.props;
 		// @ts-ignore can't use declare to type this
 		const { user } = this.context;
@@ -311,7 +310,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	onPress = () => {
 		const { cached } = this.state;
-		return cached ? this.togglePlayPause() : this.startDownload();
+		return cached ? this.togglePlayPause() : this.handleDownload();
 	};
 
 	playPause = async () => {
