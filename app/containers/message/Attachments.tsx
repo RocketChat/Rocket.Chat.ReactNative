@@ -85,7 +85,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						isReply={isReply}
 						style={style}
 						theme={theme}
-						messageId={id}
 						author={author}
 					/>
 				);

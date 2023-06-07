@@ -19,7 +19,7 @@ import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
-import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
+import { downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
@@ -39,7 +39,6 @@ interface IMessageAudioProps {
 	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
-	messageId: string;
 	author?: IUserMessage;
 }
 
@@ -144,11 +143,11 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	async componentDidMount() {
-		const { messageId, file } = this.props;
+		const { file } = this.props;
 		const fileSearch = await searchMediaFileAsync({
-			type: MediaTypes.audio,
+			type: 'audio',
 			mimeType: file.audio_type,
-			messageId
+			urlToCache: this.getUrl()
 		});
 		this.filePath = fileSearch.filePath;
 		if (fileSearch?.file?.exists) {
@@ -167,7 +166,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		if (url && !url.startsWith('http')) {
 			url = `${baseUrl}${file.audio_url}`;
 		}
-		return url;
+		return url as string;
 	};
 
 	handleAutoDownload = async () => {
@@ -286,7 +285,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	handleDownload = async () => {
-		const { messageId } = this.props;
 		// @ts-ignore can't use declare to type this
 		const { user } = this.context;
 		this.setState({ loading: true });
@@ -295,8 +293,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			if (url && this.filePath) {
 				const audio = await downloadMediaFile({
 					downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-					mediaType: MediaTypes.audio,
-					messageId,
+					mediaType: 'audio',
 					path: this.filePath
 				});
 
