@@ -84,17 +84,17 @@ const Video = React.memo(
 		useEffect(() => {
 			const handleVideoSearchAndDownload = async () => {
 				if (video) {
-					const searchVideoCached = await searchMediaFileAsync({
+					const cachedVideoResult = await searchMediaFileAsync({
 						type: 'video',
 						mimeType: file.video_type,
 						urlToCache: video
 					});
-					filePath.current = searchVideoCached.filePath;
+					filePath.current = cachedVideoResult.filePath;
 					const downloadActive = isDownloadActive('video', video);
-					if (searchVideoCached.file?.exists) {
+					if (cachedVideoResult.file?.exists) {
 						setVideoCached(prev => ({
 							...prev,
-							video_url: searchVideoCached.file?.uri
+							video_url: cachedVideoResult.file?.uri
 						}));
 						if (downloadActive) {
 							cancelDownload('video', video);

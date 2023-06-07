@@ -95,16 +95,16 @@ const ImageContainer = React.memo(
 		useLayoutEffect(() => {
 			const handleImageSearchAndDownload = async () => {
 				if (img) {
-					const searchImageCached = await searchMediaFileAsync({
+					const cachedImageResult = await searchMediaFileAsync({
 						type: 'image',
 						mimeType: imageCached.image_type,
 						urlToCache: imgUrlToCache
 					});
-					filePath.current = searchImageCached.filePath;
-					if (searchImageCached.file?.exists) {
+					filePath.current = cachedImageResult.filePath;
+					if (cachedImageResult.file?.exists) {
 						setImageCached(prev => ({
 							...prev,
-							title_link: searchImageCached.file?.uri
+							title_link: cachedImageResult.file?.uri
 						}));
 						return setCached(true);
 					}

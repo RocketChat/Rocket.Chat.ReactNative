@@ -144,14 +144,14 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	async componentDidMount() {
 		const { file } = this.props;
-		const fileSearch = await searchMediaFileAsync({
+		const cachedAudioResult = await searchMediaFileAsync({
 			type: 'audio',
 			mimeType: file.audio_type,
 			urlToCache: this.getUrl()
 		});
-		this.filePath = fileSearch.filePath;
-		if (fileSearch?.file?.exists) {
-			await this.sound.loadAsync({ uri: fileSearch.file.uri });
+		this.filePath = cachedAudioResult.filePath;
+		if (cachedAudioResult?.file?.exists) {
+			await this.sound.loadAsync({ uri: cachedAudioResult.file.uri });
 			return this.setState({ loading: false });
 		}
 		await this.handleAutoDownload();
