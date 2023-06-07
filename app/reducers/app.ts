@@ -1,3 +1,5 @@
+import { NetInfoStateType } from '@react-native-community/netinfo';
+
 import { TActionApp } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { APP, APP_STATE } from '../actions/actionsTypes';
@@ -10,6 +12,7 @@ export interface IApp {
 	foreground: boolean;
 	background: boolean;
 	notificationPresenceCap: boolean;
+	internetType?: NetInfoStateType;
 }
 
 export const initialState: IApp = {
@@ -19,7 +22,8 @@ export const initialState: IApp = {
 	ready: false,
 	foreground: true,
 	background: false,
-	notificationPresenceCap: false
+	notificationPresenceCap: false,
+	internetType: undefined
 };
 
 export default function app(state = initialState, action: TActionApp): IApp {
@@ -61,6 +65,11 @@ export default function app(state = initialState, action: TActionApp): IApp {
 			return {
 				...state,
 				notificationPresenceCap: action.show
+			};
+		case APP.SET_INTERNET_TYPE:
+			return {
+				...state,
+				internetType: action.internetType
 			};
 		default:
 			return state;

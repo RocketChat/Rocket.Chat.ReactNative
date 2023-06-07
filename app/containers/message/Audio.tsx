@@ -18,19 +18,18 @@ import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
-import { TSupportedThemes } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
 import { MediaTypes, downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
-import { isAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 
 interface IButton {
 	loading: boolean;
 	paused: boolean;
-	theme: TSupportedThemes;
 	disabled?: boolean;
 	onPress: () => void;
-	toDownload: boolean;
+	cached: boolean;
 }
 
 interface IMessageAudioProps {
@@ -49,7 +48,7 @@ interface IMessageAudioState {
 	currentTime: number;
 	duration: number;
 	paused: boolean;
-	toDownload: boolean;
+	cached: boolean;
 }
 
 const mode = {
@@ -94,24 +93,25 @@ const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const Button = React.memo(({ loading, paused, onPress, disabled, theme, toDownload }: IButton) => {
-	const customIconName = () => {
-		if (toDownload) {
-			return 'arrow-down-circle';
-		}
-		return paused ? 'play-filled' : 'pause-filled';
-	};
+const Button = React.memo(({ loading, paused, onPress, disabled, cached }: IButton) => {
+	const { colors } = useTheme();
+
+	let customIconName: 'arrow-down-circle' | 'play-filled' | 'pause-filled' = 'arrow-down-circle';
+	if (cached) {
+		customIconName = paused ? 'play-filled' : 'pause-filled';
+	}
 	return (
 		<Touchable
 			style={styles.playPauseButton}
 			disabled={disabled}
 			onPress={onPress}
 			hitSlop={BUTTON_HIT_SLOP}
-			background={Touchable.SelectableBackgroundBorderless()}>
+			background={Touchable.SelectableBackgroundBorderless()}
+		>
 			{loading ? (
 				<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 			) : (
-				<CustomIcon name={customIconName()} size={36} color={disabled ? themes[theme].tintDisabled : themes[theme].tintColor} />
+				<CustomIcon name={customIconName} size={36} color={disabled ? colors.tintDisabled : colors.tintColor} />
 			)}
 		</Touchable>
 	);
@@ -131,7 +131,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			currentTime: 0,
 			duration: 0,
 			paused: true,
-			toDownload: false
+			cached: true
 		};
 
 		this.sound = new Audio.Sound();
@@ -177,14 +177,15 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const url = this.getUrl();
 		try {
 			if (url) {
-				const autoDownload = await isAutoDownloadEnabled('audioPreferenceDownload', { author, user });
-				if (autoDownload) {
+				const isCurrentUserAuthor = author?._id === user.id;
+				const autoDownload = fetchAutoDownloadEnabled('audioPreferenceDownload');
+				if (autoDownload || isCurrentUserAuthor) {
 					await this.startDownload();
 					return;
 				}
 
 				// MediaDownloadOption.NEVER or MediaDownloadOption.WIFI and the mobile is using mobile data
-				return this.setState({ loading: false, toDownload: true });
+				return this.setState({ loading: false, cached: false });
 			}
 		} catch {
 			// Do nothing
@@ -192,7 +193,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
-		const { currentTime, duration, paused, loading, toDownload } = this.state;
+		const { currentTime, duration, paused, loading, cached } = this.state;
 		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -212,7 +213,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (nextState.toDownload !== toDownload) {
+		if (nextState.cached !== cached) {
 			return true;
 		}
 		return false;
@@ -301,16 +302,16 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				});
 
 				await this.sound.loadAsync({ uri: audio });
-				return this.setState({ loading: false, toDownload: false });
+				return this.setState({ loading: false, cached: true });
 			}
 		} catch {
-			return this.setState({ loading: false, toDownload: true });
+			return this.setState({ loading: false, cached: false });
 		}
 	};
 
 	onPress = () => {
-		const { toDownload } = this.state;
-		return toDownload ? this.startDownload() : this.togglePlayPause();
+		const { cached } = this.state;
+		return cached ? this.togglePlayPause() : this.startDownload();
 	};
 
 	playPause = async () => {
@@ -340,7 +341,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	render() {
-		const { loading, paused, currentTime, duration, toDownload } = this.state;
+		const { loading, paused, currentTime, duration, cached } = this.state;
 		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
 		const { description } = file;
 		// @ts-ignore can't use declare to type this
@@ -370,15 +371,9 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					style={[
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-					]}>
-					<Button
-						disabled={isReply}
-						loading={loading}
-						paused={paused}
-						toDownload={toDownload}
-						onPress={this.onPress}
-						theme={theme}
-					/>
+					]}
+				>
+					<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={this.onPress} />
 					<Slider
 						disabled={isReply}
 						style={styles.slider}
