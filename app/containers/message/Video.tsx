@@ -19,13 +19,12 @@ import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import {
 	LOCAL_DOCUMENT_PATH,
-	MediaTypes,
 	cancelDownload,
 	downloadMediaFile,
 	isDownloadActive,
 	searchMediaFileAsync
 } from '../../lib/methods/handleMediaDownload';
-import { isAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import sharedStyles from '../../views/Styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
@@ -57,12 +56,10 @@ interface IMessageVideo {
 	getCustomEmoji: TGetCustomEmoji;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
-	messageId: string;
 }
 
 const DownloadIndicator = ({ handleCancelDownload }: { handleCancelDownload(): void }) => {
 	const { colors } = useTheme();
-
 	return (
 		<>
 			<View style={styles.cancelContainer}>
@@ -76,8 +73,8 @@ const DownloadIndicator = ({ handleCancelDownload }: { handleCancelDownload(): v
 };
 
 const Video = React.memo(
-	({ file, showAttachment, getCustomEmoji, style, isReply, messageId }: IMessageVideo) => {
-		const [newFile, setNewFile] = useState(file);
+	({ file, showAttachment, getCustomEmoji, style, isReply }: IMessageVideo) => {
+		const [videoCached, setVideoCached] = useState(file);
 		const [loading, setLoading] = useState(false);
 		const { baseUrl, user } = useContext(MessageContext);
 		const { theme } = useTheme();
@@ -85,51 +82,52 @@ const Video = React.memo(
 		const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
 		useEffect(() => {
-			const handleAutoDownload = async () => {
+			const handleVideoSearchAndDownload = async () => {
 				if (video) {
 					const searchVideoCached = await searchMediaFileAsync({
-						type: MediaTypes.video,
+						type: 'video',
 						mimeType: file.video_type,
-						messageId
+						urlToCache: video
 					});
 					filePath.current = searchVideoCached.filePath;
-					const downloadActive = isDownloadActive(MediaTypes.video, messageId);
+					const downloadActive = isDownloadActive('video', video);
 					if (searchVideoCached.file?.exists) {
-						setNewFile(prev => ({
+						setVideoCached(prev => ({
 							...prev,
 							video_url: searchVideoCached.file?.uri
 						}));
 						if (downloadActive) {
-							cancelDownload(MediaTypes.video, messageId);
+							cancelDownload('video', video);
 						}
 						return;
 					}
-
 					if (downloadActive) return setLoading(true);
-
-					const autoDownload = await isAutoDownloadEnabled('imagesPreferenceDownload');
-					if (autoDownload) {
-						await handleDownload();
-					}
+					await handleAutoDownload();
 				}
 			};
-			handleAutoDownload();
+			handleVideoSearchAndDownload();
 		}, []);
 
 		if (!baseUrl) {
 			return null;
 		}
 
+		const handleAutoDownload = async () => {
+			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagesPreferenceDownload');
+			if (isAutoDownloadEnabled) {
+				await handleDownload();
+			}
+		};
+
 		const handleDownload = async () => {
 			setLoading(true);
 			try {
 				const videoUri = await downloadMediaFile({
 					downloadUrl: video,
-					mediaType: MediaTypes.video,
-					messageId,
+					mediaType: 'video',
 					path: filePath.current
 				});
-				setNewFile(prev => ({
+				setVideoCached(prev => ({
 					...prev,
 					video_url: videoUri
 				}));
@@ -140,13 +138,12 @@ const Video = React.memo(
 
 		const onPress = async () => {
 			if (file.video_type && isTypeSupported(file.video_type) && showAttachment) {
-				if (!newFile.video_url?.startsWith(LOCAL_DOCUMENT_PATH) && !loading) {
+				if (!videoCached.video_url?.startsWith(LOCAL_DOCUMENT_PATH) && !loading) {
 					// Keep the video downloading while showing the video buffering
 					handleDownload();
 				}
-				return showAttachment(newFile);
+				return showAttachment(videoCached);
 			}
-
 			if (!isIOS && file.video_url) {
 				await downloadVideoToGallery(video);
 				return;
@@ -156,7 +153,7 @@ const Video = React.memo(
 
 		const handleCancelDownload = () => {
 			if (loading) {
-				cancelDownload(MediaTypes.video, messageId);
+				cancelDownload('video', video);
 				return setLoading(false);
 			}
 		};
@@ -186,7 +183,8 @@ const Video = React.memo(
 					disabled={isReply}
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}>
+					background={Touchable.Ripple(themes[theme].bannerBackground)}
+				>
 					{loading ? (
 						<DownloadIndicator handleCancelDownload={handleCancelDownload} />
 					) : (

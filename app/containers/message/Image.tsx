@@ -123,8 +123,8 @@ const ImageContainer = React.memo(
 
 		const handleAutoDownload = async () => {
 			const isCurrentUserAuthor = author?._id === user.id;
-			const autoDownload = fetchAutoDownloadEnabled('imagesPreferenceDownload');
-			if (autoDownload || isCurrentUserAuthor) {
+			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagesPreferenceDownload');
+			if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 				await handleDownload();
 			}
 		};
