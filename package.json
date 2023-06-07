@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.38.0",
+	"version": "4.39.0",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -132,7 +132,7 @@
 		"react-native-svg": "^13.8.0",
 		"react-native-ui-lib": "RocketChat/react-native-ui-lib#ef50151b8d9c1627ef527c620a1472868f9f4df8",
 		"react-native-vector-icons": "9.1.0",
-		"react-native-webview": "10.3.2",
+		"react-native-webview": "11.26.1",
 		"react-redux": "^8.0.5",
 		"reactotron-react-native": "^5.0.3",
 		"redux": "4.2.0",
@@ -144,6 +144,7 @@
 		"rn-fetch-blob": "^0.12.0",
 		"rn-root-view": "RocketChat/rn-root-view",
 		"semver": "^7.3.8",
+		"transliteration": "^2.3.5",
 		"ua-parser-js": "^1.0.32",
 		"uri-js": "^4.4.1",
 		"url-parse": "1.5.10",
