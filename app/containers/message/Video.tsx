@@ -113,7 +113,7 @@ const Video = React.memo(
 		}
 
 		const handleAutoDownload = async () => {
-			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagesPreferenceDownload');
+			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('videoPreferenceDownload');
 			if (isAutoDownloadEnabled) {
 				await handleDownload();
 			}

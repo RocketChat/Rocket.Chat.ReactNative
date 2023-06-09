@@ -13,10 +13,23 @@ type TMediaType = typeof IMAGES_PREFERENCE_DOWNLOAD | typeof AUDIO_PREFERENCE_DO
 
 export const fetchAutoDownloadEnabled = (mediaType: TMediaType) => {
 	const { internetType } = store.getState().app;
-	const mediaDownloadPreference = userPreferences.getString(mediaType);
+	const mediaDownloadPreference = userPreferences.getString<MediaDownloadOption>(mediaType);
+
+	let defaultValueByMediaType = false;
+	if (mediaDownloadPreference === null) {
+		if (mediaType === 'imagesPreferenceDownload') {
+			// The same as MediaDownloadOption.WIFI_MOBILE_DATA
+			defaultValueByMediaType = true;
+		}
+		if (mediaType === 'audioPreferenceDownload' || mediaType === 'videoPreferenceDownload') {
+			// The same as MediaDownloadOption.WIFI
+			defaultValueByMediaType = internetType === NetInfoStateType.wifi;
+		}
+	}
 
 	return (
-		(mediaDownloadPreference === MediaDownloadOption.WIFI && internetType === NetInfoStateType.wifi) ||
-		mediaDownloadPreference === MediaDownloadOption.WIFI_MOBILE_DATA
+		(mediaDownloadPreference === 'wifi' && internetType === NetInfoStateType.wifi) ||
+		mediaDownloadPreference === 'wifi_mobile_data' ||
+		defaultValueByMediaType
 	);
 };

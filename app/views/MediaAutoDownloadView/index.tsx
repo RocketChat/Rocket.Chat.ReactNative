@@ -15,16 +15,10 @@ import {
 const MediaAutoDownload = () => {
 	const [imagesPreference, setImagesPreference] = useUserPreferences<MediaDownloadOption>(
 		IMAGES_PREFERENCE_DOWNLOAD,
-		MediaDownloadOption.NEVER
+		'wifi_mobile_data'
 	);
-	const [videoPreference, setVideoPreference] = useUserPreferences<MediaDownloadOption>(
-		VIDEO_PREFERENCE_DOWNLOAD,
-		MediaDownloadOption.NEVER
-	);
-	const [audioPreference, setAudioPreference] = useUserPreferences<MediaDownloadOption>(
-		AUDIO_PREFERENCE_DOWNLOAD,
-		MediaDownloadOption.NEVER
-	);
+	const [videoPreference, setVideoPreference] = useUserPreferences<MediaDownloadOption>(VIDEO_PREFERENCE_DOWNLOAD, 'wifi');
+	const [audioPreference, setAudioPreference] = useUserPreferences<MediaDownloadOption>(AUDIO_PREFERENCE_DOWNLOAD, 'wifi');
 
 	return (
 		<SafeAreaView testID='security-privacy-view'>

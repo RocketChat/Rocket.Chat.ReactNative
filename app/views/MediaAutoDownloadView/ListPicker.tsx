@@ -13,18 +13,20 @@ const styles = StyleSheet.create({
 	title: { ...sharedStyles.textRegular, fontSize: 16 }
 });
 
-const OPTIONS: { label: string; value: MediaDownloadOption }[] = [
+type TOPTIONS = { label: string; value: MediaDownloadOption }[];
+
+const OPTIONS: TOPTIONS = [
 	{
 		label: 'Wi_Fi_and_mobile_data',
-		value: MediaDownloadOption.WIFI_MOBILE_DATA
+		value: 'wifi_mobile_data'
 	},
 	{
 		label: 'Wi_Fi',
-		value: MediaDownloadOption.WIFI
+		value: 'wifi'
 	},
 	{
 		label: 'Never',
-		value: MediaDownloadOption.NEVER
+		value: 'never'
 	}
 ];
 
@@ -44,7 +46,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const option = OPTIONS.find(option => option.value === value);
+	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS.map(i => ({
@@ -53,7 +55,7 @@ const ListPicker = ({
 				hideActionSheet();
 				onChangeValue(i.value);
 			},
-			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+			right: option.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
 		}));
 
 	return (
@@ -63,7 +65,7 @@ const ListPicker = ({
 			onPress={() => showActionSheet({ options: getOptions() })}
 			right={() => (
 				<Text style={[styles.title, { color: colors.actionTintColor }]}>
-					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label}
+					{option.label === 'Never' ? I18n.t('Off') : I18n.t(option.label)}
 				</Text>
 			)}
 		/>

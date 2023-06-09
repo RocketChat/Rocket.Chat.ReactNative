@@ -110,22 +110,20 @@ export const searchMediaFileAsync = async ({
 	mimeType?: string;
 	urlToCache: string;
 }) => {
-	let file;
-	let filePath = '';
-
 	try {
 		const serverUrl = store.getState().server.server;
 		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
 		const folderPath = `${LOCAL_DOCUMENT_PATH}${serverUrlParsed}${typeString[type]}`;
 		const fileUrlSanitized = sanitizeString(urlToCache);
 		const filename = `${fileUrlSanitized}.${getExtension(type, mimeType)}`;
-		filePath = `${folderPath}${filename}`;
+		const filePath = `${folderPath}${filename}`;
 		await ensureDirAsync(folderPath);
-		file = await FileSystem.getInfoAsync(filePath);
-	} catch (e) {
-		log(e);
+		const file = await FileSystem.getInfoAsync(filePath);
+		return { file, filePath };
+	} catch (error) {
+		log(error);
+		return { file: null, filePath: '' };
 	}
-	return { file, filePath };
 };
 
 export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
