@@ -1,5 +1,5 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { Keyboard, Text, View, TextInput as RNTextInput } from 'react-native';
+import React, { useEffect } from 'react';
+import { Keyboard, Text, View, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -28,44 +28,22 @@ const schema = yup.object().shape({
 	password: yup.string().required()
 });
 
-export interface UserFormRef {
-	getUser: () => string;
-}
-
-const useLoginViewSelector = () =>
-	useAppSelector(state => ({
-		Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm as string,
-		Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
-		isFetching: state.login.isFetching,
-		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
-		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
-		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
-		Site_Name: state.settings.Site_Name as string,
-		inviteLinkToken: state.inviteLinks.token
-	}));
-
-const UserForm = forwardRef<UserFormRef>((_, ref) => {
-	const passwordInputRef = useRef<RNTextInput | null>(null);
+const UserForm = () => {
+	const { colors } = useTheme();
+	const dispatch = useDispatch();
+	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'LoginView'>>();
 
 	const {
 		params: { username }
 	} = useRoute<RouteProp<OutsideParamList, 'LoginView'>>();
-	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'LoginView'>>();
 
 	const {
 		control,
 		handleSubmit,
 		formState: { isValid },
-		getValues
+		getValues,
+		setFocus
 	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema), defaultValues: { user: username || '' } });
-
-	const { colors } = useTheme();
-	const dispatch = useDispatch();
-
-	const getUser = () => getValues('user');
-	useImperativeHandle(ref, () => ({
-		getUser
-	}));
 
 	const {
 		Accounts_EmailOrUsernamePlaceholder,
@@ -75,8 +53,32 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 		isFetching,
 		Accounts_RegistrationForm,
 		Site_Name,
-		inviteLinkToken
-	} = useLoginViewSelector();
+		inviteLinkToken,
+		error,
+		failure
+	} = useAppSelector(state => ({
+		Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm as string,
+		Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
+		isFetching: state.login.isFetching,
+		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
+		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
+		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
+		Site_Name: state.settings.Site_Name as string,
+		inviteLinkToken: state.inviteLinks.token,
+		failure: state.login.failure,
+		error: state.login.error && state.login.error.data
+	}));
+
+	useEffect(() => {
+		if (failure) {
+			if (error?.error === 'error-invalid-email') {
+				const user = getValues('user');
+				navigation.navigate('SendEmailConfirmationView', { user });
+			} else {
+				Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
+			}
+		}
+	}, [error?.error, failure, getValues, navigation]);
 
 	const showRegistrationButton =
 		Accounts_RegistrationForm === 'Public' || (Accounts_RegistrationForm === 'Secret URL' && inviteLinkToken?.length);
@@ -108,7 +110,7 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 				placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 				keyboardType='email-address'
 				returnKeyType='next'
-				onSubmitEditing={() => passwordInputRef.current?.focus()}
+				onSubmitEditing={() => setFocus('password')}
 				testID='login-view-email'
 				textContentType='username'
 				autoComplete='username'
@@ -118,7 +120,6 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 				control={control}
 				label={I18n.t('Password')}
 				containerStyle={styles.inputContainer}
-				inputRef={passwordInputRef}
 				placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
 				returnKeyType='send'
 				secureTextEntry
@@ -165,6 +166,6 @@ const UserForm = forwardRef<UserFormRef>((_, ref) => {
 			<UGCRules styleContainer={styles.ugcContainer} />
 		</>
 	);
-});
+};
 
 export default UserForm;
