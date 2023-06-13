@@ -54,6 +54,10 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		borderColor: themes[theme].separatorColor,
 		backgroundColor: themes[theme].backgroundColor
 	};
+	const placeholderObject =
+		placeholder && !items.some(item => item.label === textParser([placeholder]))
+			? { label: textParser([placeholder]), value: null }
+			: {};
 
 	const Icon = () =>
 		loading ? (
@@ -66,7 +70,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		// @ts-ignore lib types issues. We need to fork it and maintain or find another lib
 		<RNPickerSelect
 			items={items}
-			placeholder={placeholder ? { label: textParser([placeholder]), value: null } : {}}
+			placeholder={placeholderObject}
 			useNativeAndroidPickerStyle={false}
 			value={selected}
 			disabled={disabled}
