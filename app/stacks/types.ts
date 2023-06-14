@@ -270,6 +270,9 @@ export type NewMessageStackParamList = {
 		message: IMessage;
 		showCloseModal: boolean;
 	};
+	ForwardMessageView: {
+		message: IMessage;
+	};
 };
 
 export type E2ESaveYourPasswordStackParamList = {

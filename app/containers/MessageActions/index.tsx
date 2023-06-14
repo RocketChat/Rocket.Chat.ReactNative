@@ -188,6 +188,15 @@ const MessageActions = React.memo(
 				}
 			};
 
+			const handleShareMessage = (message: TAnyMessageModel) => {
+				const params = { message };
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'ForwardMessageView', params });
+				} else {
+					Navigation.navigate('NewMessageStackNavigator', { screen: 'ForwardMessageView', params });
+				}
+			};
+
 			const handleUnread = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_UNREAD);
 				const { id: messageId, ts } = message;
@@ -387,6 +396,12 @@ const MessageActions = React.memo(
 					title: I18n.t('Start_a_Discussion'),
 					icon: 'discussions',
 					onPress: () => handleCreateDiscussion(message)
+				});
+
+				options.push({
+					title: I18n.t('Share_message'),
+					icon: 'arrow-forward',
+					onPress: () => handleShareMessage(message)
 				});
 
 				// Permalink
