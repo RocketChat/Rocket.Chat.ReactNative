@@ -58,6 +58,8 @@ function DotsLoader(): JSX.Element {
 	);
 }
 
-const styles = StyleSheet.create({ dotsContainer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } });
+const styles = StyleSheet.create({
+	dotsContainer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 6 }
+});
 
 export default DotsLoader;
