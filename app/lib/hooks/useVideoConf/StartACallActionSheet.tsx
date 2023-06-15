@@ -40,7 +40,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}
 		>
 			<CallHeader
-				title={calling ? i18n.t('Calling') : i18n.t('Start_a_call')}
+				title={calling && user.direct ? i18n.t('Calling') : i18n.t('Start_a_call')}
 				cam={cam}
 				mic={mic}
 				setCam={setCam}
@@ -70,7 +70,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 						stopSound();
 						dispatch(cancelCall({}));
 					} else {
-						playSound();
+						if (user.direct) playSound();
 						dispatch(initVideoCall({ cam, mic, direct: user.direct, rid, uid: user.uid }));
 					}
 				}}

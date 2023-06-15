@@ -42,7 +42,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 			<View style={style.actionSheetHeader}>
 				<View style={style.rowContainer}>
 					<Text style={style.actionSheetHeaderTitle}>{title}</Text>
-					{calling ? <DotsLoader /> : null}
+					{calling && direct ? <DotsLoader /> : null}
 				</View>
 				<View style={style.actionSheetHeaderButtons}>
 					<Touchable
