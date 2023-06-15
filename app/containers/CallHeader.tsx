@@ -81,7 +81,7 @@ function useStyle() {
 		actionSheetHeaderTitle: {
 			fontSize: 14,
 			...sharedStyles.textBold,
-			color: colors.passcodePrimary
+			color: colors.n900
 		},
 		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
 		iconCallContainer: {

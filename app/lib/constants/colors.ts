@@ -98,6 +98,7 @@ export const colors = {
 		dotActiveBg: '#1d74f5',
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
+		n900: '#1F2329',
 		...mentions,
 		...callButtons
 	},
@@ -173,6 +174,7 @@ export const colors = {
 		dotActiveBg: '#1d74f5',
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
+		n900: '#FFFFFF',
 		...mentions,
 		...callButtons
 	},
@@ -248,6 +250,7 @@ export const colors = {
 		dotActiveBg: '#1d74f5',
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
+		n900: '#FFFFFF',
 		...mentions,
 		...callButtons
 	}
