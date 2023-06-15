@@ -29,6 +29,8 @@ export default class Subscription extends Model {
 
 	@field('fname') fname;
 
+	@field('sanitized_fname') sanitizedFname;
+
 	@field('rid') rid;
 
 	@field('open') open;
