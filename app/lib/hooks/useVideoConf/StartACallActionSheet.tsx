@@ -2,6 +2,7 @@ import { Camera, CameraType } from 'expo-camera';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ESounds, useVideoConfRinger } from '.';
 import { useAppSelector } from '..';
@@ -12,6 +13,7 @@ import { CallHeader } from '../../../containers/CallHeader';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
+import { isIOS } from '../../methods/helpers';
 import useUserData from '../useUserData';
 
 export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
@@ -28,8 +30,15 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 
 	const user = useUserData(rid);
 
+	// fix safe area bottom padding on iOS
+	const insets = useSafeAreaInsets();
+	const paddingBottom = isIOS && insets.bottom ? 8 : 0;
+
 	return (
-		<View style={style.actionSheetContainer} onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
+		<View
+			style={[style.actionSheetContainer, { paddingBottom }]}
+			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}
+		>
 			<CallHeader
 				title={calling ? i18n.t('Calling') : i18n.t('Start_a_call')}
 				cam={cam}
