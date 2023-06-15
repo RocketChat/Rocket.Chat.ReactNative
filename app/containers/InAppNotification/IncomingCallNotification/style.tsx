@@ -22,7 +22,8 @@ export const useStyle = () => {
 			alignSelf: 'center'
 		},
 		row: {
-			flexDirection: 'row'
+			flexDirection: 'row',
+			marginTop: 12
 		},
 		closeButton: {
 			backgroundColor: colors.passcodeButtonActive,
