@@ -914,6 +914,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
+				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
 			/>
 		);
 	};
