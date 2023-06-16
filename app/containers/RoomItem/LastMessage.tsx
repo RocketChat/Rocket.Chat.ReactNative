@@ -68,7 +68,6 @@ const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, 
 			})}
 			style={[styles.markdownText, { color: alert ? colors.bodyText : colors.auxiliaryText }]}
 			numberOfLines={2}
-			testID='room-item-last-message'
 		/>
 	);
 }, arePropsEqual);

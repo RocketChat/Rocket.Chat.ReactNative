@@ -154,7 +154,8 @@ const getItemLayout = (data: ISubscription[] | null | undefined, index: number, 
 	offset: height * index,
 	index
 });
-const keyExtractor = (item: ISubscription) => item.rid;
+// isSearching is needed to trigger RoomItem's useEffect properly after searching
+const keyExtractor = (item: ISubscription, isSearching = false) => `${item.rid}-${isSearching}`;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
 	private animated: boolean;
@@ -899,7 +900,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
-				keyExtractor={keyExtractor}
+				keyExtractor={item => keyExtractor(item, searching)}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
