@@ -118,16 +118,21 @@ async function tapBack() {
 	await sleep(300); // Wait for animation to finish
 }
 
-async function searchRoom(room: string, roomTestID?: string) {
+async function searchRoom(
+	room: string,
+	nativeElementAction: keyof Pick<Detox.NativeElementActions, 'typeText' | 'replaceText'> = 'typeText',
+	roomTestID?: string
+) {
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(30000);
 	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	// to fix the replace text for iOS and type non-ASCII on Android
-	const roomFirstSlice = room.slice(0, room.length - 2);
-	await element(by.id('rooms-list-view-search-input')).replaceText(roomFirstSlice);
+	if (nativeElementAction === 'replaceText') {
+		// trigger the input's onChangeText
+		await element(by.id('rooms-list-view-search-input')).typeText(' ');
+	}
+	await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
 	await sleep(500);
-	await element(by.id('rooms-list-view-search-input')).replaceText(room);
 	await sleep(500);
 	await waitFor(element(by.id(roomTestID || `rooms-list-view-item-${room}`)))
 		.toBeVisible()
