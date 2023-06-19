@@ -7,7 +7,7 @@ import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
 import { IForwardMessageViewSelectRoom } from './interfaces';
-import { ISearchLocal, SubscriptionType } from '../../definitions';
+import { ISearchLocal } from '../../definitions';
 import { localSearchSubscription } from '../../lib/methods';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
@@ -44,12 +44,12 @@ const SelectPersonOrChannel = ({
 	const getAvatar = (item: ISearchLocal) =>
 		getAvatarURL({
 			text: getRoomAvatar(item),
-			type: 'rid' in item ? item.t : SubscriptionType.DIRECT,
+			type: item.t,
 			userId,
 			token,
 			server,
 			avatarETag: item.avatarETag,
-			rid: 'rid' in item ? item.rid : undefined,
+			rid: item.rid,
 			blockUnauthenticatedAccess,
 			serverVersion
 		});
