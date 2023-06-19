@@ -961,3 +961,5 @@ export const saveUserProfileMethod = (
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0
 	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });
+
+export const postMessage = (roomId: string, text: string) => sdk.post('chat.postMessage', { roomId, text });

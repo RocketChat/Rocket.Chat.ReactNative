@@ -6,9 +6,9 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
-import { ICreateDiscussionViewSelectUsers } from './interfaces';
-import { SubscriptionType, IUser, ISearchLocal } from '../../definitions';
-import { localSearchSubscription, search } from '../../lib/methods';
+import { IForwardMessageViewSelectRoom } from './interfaces';
+import { ISearchLocal, SubscriptionType } from '../../definitions';
+import { localSearchSubscription } from '../../lib/methods';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
@@ -16,40 +16,21 @@ const SelectPersonOrChannel = ({
 	server,
 	token,
 	userId,
-	selected,
-	onUserSelect,
+	onRoomSelect,
 	blockUnauthenticatedAccess,
 	serverVersion
-}: ICreateDiscussionViewSelectUsers): React.ReactElement => {
-	const [users, setUsers] = useState<any[]>([]);
-	const [channels, setChannels] = useState<ISearchLocal[]>([]);
+}: IForwardMessageViewSelectRoom): React.ReactElement => {
+	const [rooms, setRooms] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
 
-	const getUsers = async (keyword = '') => {
+	const getRooms = async (keyword = '') => {
 		try {
-			const res = await search({ text: keyword, filterRooms: false });
-			const selectedUsers = users.filter((u: IUser) => selected.includes(u.name));
-			const filteredUsers = res.filter(r => !selectedUsers.find((u: IUser) => u.name === r.name));
-			const items = [...selectedUsers, ...filteredUsers];
-			setUsers(items);
-			return items.map((user: IUser) => ({
-				value: user.name,
-				text: { text: getRoomTitle(user) },
-				imageUrl: getAvatar(user)
-			}));
-		} catch {
-			// do nothing
-		}
-	};
-
-	const getChannels = async (keyword = '') => {
-		try {
-			const res = (await localSearchSubscription({ text: keyword, filterUsers: false })) as ISearchLocal[];
-			setChannels(res);
-			return res.map(channel => ({
-				value: channel,
-				text: { text: getRoomTitle(channel) },
-				imageUrl: getAvatar(channel)
+			const res = await localSearchSubscription({ text: keyword });
+			setRooms(res);
+			return res.map(item => ({
+				value: item.rid,
+				text: { text: getRoomTitle(item) },
+				imageUrl: getAvatar(item)
 			}));
 		} catch {
 			// do nothing
@@ -57,14 +38,10 @@ const SelectPersonOrChannel = ({
 	};
 
 	useEffect(() => {
-		getChannels('');
+		getRooms('');
 	}, []);
 
-	useEffect(() => {
-		getUsers('');
-	}, []);
-
-	const getAvatar = (item: IUser | ISearchLocal) =>
+	const getAvatar = (item: ISearchLocal) =>
 		getAvatarURL({
 			text: getRoomAvatar(item),
 			type: 'rid' in item ? item.t : SubscriptionType.DIRECT,
@@ -82,12 +59,12 @@ const SelectPersonOrChannel = ({
 			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Person_or_channel')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
-				onSearch={getUsers}
-				onChange={onUserSelect}
-				options={users.map((user: IUser) => ({
-					value: user.name,
-					text: { text: getRoomTitle(user) },
-					imageUrl: getAvatar(user)
+				onSearch={getRooms}
+				onChange={onRoomSelect}
+				options={rooms.map(room => ({
+					value: room.rid,
+					text: { text: getRoomTitle(room) },
+					imageUrl: getAvatar(room)
 				}))}
 				placeholder={{ text: `${I18n.t('Select')}` }}
 				context={BlockContext.FORM}

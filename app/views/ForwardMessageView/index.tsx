@@ -1,8 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
+import { getPermalinkMessage } from '../../lib/methods';
 import { TGetCustomEmoji } from '../../definitions';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -18,14 +19,17 @@ import SelectPersonOrChannel from './SelectPersonOrChannel';
 import { useAppSelector } from '../../lib/hooks';
 import Message from '../../containers/message';
 import { NewMessageStackParamList } from '../../stacks/types';
+import { postMessage } from '../../lib/services/restApi';
 
 const ForwardMessageView = () => {
-	const [members, setMembers] = useState<string[]>([]);
+	const [roomsId, setRoomsId] = useState<string[]>([]);
+	const [sending, setSending] = useState(false);
 	const navigation = useNavigation();
+	const { theme, colors } = useTheme();
+
 	const {
 		params: { message }
 	} = useRoute<RouteProp<NewMessageStackParamList, 'ForwardMessageView'>>();
-	const { theme, colors } = useTheme();
 
 	const { blockUnauthenticatedAccess, server, serverVersion, user, baseUrl, Message_TimeFormat, customEmojis } = useAppSelector(
 		state => ({
@@ -40,27 +44,36 @@ const ForwardMessageView = () => {
 	);
 
 	useLayoutEffect(() => {
-		const isSendEnabled = members.length > 0;
+		const isSendButtonEnabled = roomsId.length > 0 && !sending;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item
 						title={I18n.t('Send')}
-						color={isSendEnabled ? colors.actionTintColor : colors.headerTintColor}
-						disabled={!isSendEnabled}
-						onPress={() => {}}
+						color={isSendButtonEnabled ? colors.actionTintColor : colors.headerTintColor}
+						disabled={!isSendButtonEnabled}
+						onPress={handlePostMessage}
 						testID='forward-message-view-send'
 					/>
 				</HeaderButton.Container>
 			),
 			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} />
 		} as StackNavigationOptions);
-	}, [members, navigation]);
+	}, [roomsId.length, navigation, sending]);
+
+	const handlePostMessage = async () => {
+		setSending(true);
+		const permalink = await getPermalinkMessage(message);
+		const msg = `[ ](${permalink})\n`;
+		await Promise.all(roomsId.map(roomId => postMessage(roomId, msg)));
+		setSending(false);
+		navigation.dispatch(StackActions.pop());
+	};
 
 	const selectUsers = ({ value }: { value: string[] }) => {
 		logEvent(events.CD_SELECT_USERS);
-		setMembers(prev => [...prev, ...value]);
+		setRoomsId(value);
 	};
 
 	const getCustomEmoji: TGetCustomEmoji = name => {
@@ -84,23 +97,21 @@ const ForwardMessageView = () => {
 						server={server}
 						userId={user.id}
 						token={user.token}
-						selected={members}
-						onUserSelect={selectUsers}
+						onRoomSelect={selectUsers}
 						blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 						serverVersion={serverVersion}
 					/>
-					<Message
-						item={message}
-						user={user}
-						rid={message.rid}
-						baseUrl={baseUrl}
-						isThreadRoom={false}
-						getCustomEmoji={getCustomEmoji}
-						showAttachment={() => {}}
-						navToRoomInfo={() => {}}
-						theme={theme}
-						timeFormat={Message_TimeFormat}
-					/>
+					<View pointerEvents='none'>
+						<Message
+							item={message}
+							user={user}
+							rid={message.rid}
+							baseUrl={baseUrl}
+							getCustomEmoji={getCustomEmoji}
+							theme={theme}
+							timeFormat={Message_TimeFormat}
+						/>
+					</View>
 				</ScrollView>
 			</SafeAreaView>
 		</KeyboardView>
