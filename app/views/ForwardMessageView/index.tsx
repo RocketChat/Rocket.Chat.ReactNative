@@ -71,7 +71,7 @@ const ForwardMessageView = () => {
 		navigation.dispatch(StackActions.pop());
 	};
 
-	const selectUsers = ({ value }: { value: string[] }) => {
+	const selectRooms = ({ value }: { value: string[] }) => {
 		logEvent(events.CD_SELECT_USERS);
 		setRoomsId(value);
 	};
@@ -97,7 +97,7 @@ const ForwardMessageView = () => {
 						server={server}
 						userId={user.id}
 						token={user.token}
-						onRoomSelect={selectUsers}
+						onRoomSelect={selectRooms}
 						blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 						serverVersion={serverVersion}
 					/>
