@@ -17,7 +17,7 @@ import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 export interface IMessageActionsProps {
@@ -30,6 +30,7 @@ export interface IMessageActionsProps {
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
+	serverVersion?: string | null;
 	Message_AllowDeleting?: boolean;
 	Message_AllowDeleting_BlockDeleteInMinutes?: number;
 	Message_AllowEditing?: boolean;
@@ -74,7 +75,8 @@ const MessageActions = React.memo(
 				forceDeleteMessagePermission,
 				deleteOwnMessagePermission,
 				pinMessagePermission,
-				createDirectMessagePermission
+				createDirectMessagePermission,
+				serverVersion
 			},
 			ref
 		) => {
@@ -398,11 +400,13 @@ const MessageActions = React.memo(
 					onPress: () => handleCreateDiscussion(message)
 				});
 
-				options.push({
-					title: I18n.t('Share_message'),
-					icon: 'arrow-forward',
-					onPress: () => handleShareMessage(message)
-				});
+				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0')) {
+					options.push({
+						title: I18n.t('Share_message'),
+						icon: 'arrow-forward',
+						onPress: () => handleShareMessage(message)
+					});
+				}
 
 				// Permalink
 				options.push({
@@ -523,6 +527,7 @@ const MessageActions = React.memo(
 );
 const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
+	serverVersion: state.server.version,
 	Message_AllowDeleting: state.settings.Message_AllowDeleting as boolean,
 	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes as number,
 	Message_AllowEditing: state.settings.Message_AllowEditing as boolean,
