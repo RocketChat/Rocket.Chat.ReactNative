@@ -313,7 +313,7 @@ describe('Create room screen', () => {
 					.toExist()
 					.withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${roomName}`))).toExist();
-				await searchRoom(roomNameLower, `rooms-list-view-item-${roomName}`);
+				await searchRoom(roomNameLower, 'replaceText', `rooms-list-view-item-${roomName}`);
 				await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 				await waitFor(element(by.id('room-view')))
 					.toBeVisible()

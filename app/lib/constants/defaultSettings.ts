@@ -213,6 +213,9 @@ export const defaultSettings = {
 	Accounts_AvatarExternalProviderUrl: {
 		type: 'valueAsString'
 	},
+	Accounts_RoomAvatarExternalProviderUrl: {
+		type: 'valueAsString'
+	},
 	VideoConf_Enable_DMs: {
 		type: 'valueAsBoolean'
 	},
