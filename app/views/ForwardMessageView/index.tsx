@@ -46,7 +46,7 @@ const ForwardMessageView = () => {
 	useLayoutEffect(() => {
 		const isSendButtonEnabled = roomsId.length > 0 && !sending;
 		navigation.setOptions({
-			title: I18n.t('Create_Discussion'),
+			title: I18n.t('Share_message'),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item
@@ -91,7 +91,7 @@ const ForwardMessageView = () => {
 			keyboardVerticalOffset={128}
 		>
 			<StatusBar />
-			<SafeAreaView testID='create-discussion-view' style={styles.container}>
+			<SafeAreaView testID='forward-message-view' style={styles.container}>
 				<ScrollView {...scrollPersistTaps}>
 					<SelectPersonOrChannel
 						server={server}
