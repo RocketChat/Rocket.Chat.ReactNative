@@ -515,12 +515,12 @@ jobs:
       - store_artifacts:
           path: ~/junit
 
-  ios-build-official:
+  ios-build:
     executor: mac-env
     steps:
       - ios-build
 
-  ios-testflight-official:
+  ios-testflight:
     executor: mac-env
     steps:
       - upload-to-testflight
@@ -609,21 +609,21 @@ workflows:
           requires:
             - e2e-build-android
 
-      # iOS Official
-      - ios-hold-build-official:
+      # iOS
+      - ios-hold-build:
           type: approval
           requires:
             - lint-testunit
-      - ios-build-official:
+      - ios-build:
           requires:
-            - ios-hold-build-official
-      - ios-hold-testflight-official:
+            - ios-hold-build
+      - ios-hold-testflight:
           type: approval
           requires:
-            - ios-build-official
-      - ios-testflight-official:
+            - ios-build
+      - ios-testflight:
           requires:
-            - ios-hold-testflight-official
+            - ios-hold-testflight
 
       # Android Experimental
       - android-hold-build-experimental:
