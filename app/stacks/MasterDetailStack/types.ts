@@ -2,7 +2,7 @@ import { TextInputProps } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/core';
 
 import { IAttachment } from '../../definitions/IAttachment';
-import { IMessage } from '../../definitions/IMessage';
+import { IMessage, TAnyMessageModel } from '../../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
@@ -118,6 +118,9 @@ export type ModalStackParamList = {
 	NotificationPrefView: {
 		rid: string;
 		room: ISubscription;
+	};
+	ForwardMessageView: {
+		message: TAnyMessageModel;
 	};
 	ForwardLivechatView: {
 		rid: string;
