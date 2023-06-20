@@ -106,7 +106,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     // Can't set this, since it causes issues to Official flavor
-    // namespace APPLICATION_ID 
+    namespace "chat.rocket.android"
     defaultConfig {
         applicationId APPLICATION_ID
         minSdkVersion rootProject.ext.minSdkVersion
@@ -118,7 +118,7 @@ android {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
-        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
+        resValue "string", "rn_config_reader_custom_package", APPLICATION_ID
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }

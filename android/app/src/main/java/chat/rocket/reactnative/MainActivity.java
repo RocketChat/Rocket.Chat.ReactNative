@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.android;
 
 import android.content.Intent;
 import android.content.res.Configuration;

@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.android;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
