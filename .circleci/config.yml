@@ -209,11 +209,7 @@ commands:
           name: Set Google Services
           command: |
             if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
-              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-                echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
-              else 
-                echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
-              fi
+              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
             fi
           working_directory: ios
       - run:
@@ -221,31 +217,12 @@ commands:
           no_output_timeout: 40m
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
-            if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
-            else
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ShareRocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
-            fi
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
 
             if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
               echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-                bundle exec fastlane ios build_official
-              else
-                if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
-                  bundle exec fastlane ios build_experimental
-                else
-                  bundle exec fastlane ios build_fork
-                fi
-              fi
+              bundle exec fastlane ios build_official
             fi
           working_directory: ios
       - save_cache: *save-npm-cache-mac
@@ -647,18 +624,6 @@ workflows:
       - e2e-test-android:
           requires:
             - e2e-build-android
-
-      # iOS Experimental
-      - ios-hold-build-experimental:
-          type: approval
-          requires:
-              - lint-testunit
-      - ios-build-experimental:
-          requires:
-            - ios-hold-build-experimental
-      - ios-testflight-experimental:
-          requires:
-            - ios-build-experimental
 
       # iOS Official
       - ios-hold-build-official:
