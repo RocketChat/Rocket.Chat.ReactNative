@@ -25,8 +25,7 @@ final class Database {
   init(server: String) {
     if let url = URL(string: server) {
       if let domain = url.domain, let directory = directory {
-        let isOfficial = Bundle.main.object(forInfoDictionaryKey: "IS_OFFICIAL") as? Bool ?? false
-        self.database = WatermelonDB.Database(path: "\(directory)/\(domain)\(isOfficial ? "" : "-experimental").db")
+        self.database = WatermelonDB.Database(path: "\(directory)/\(domain).db")
       }
     }
   }

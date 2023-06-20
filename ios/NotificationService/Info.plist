@@ -22,8 +22,6 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>IS_OFFICIAL</key>
-	<false/>
 	<key>KeychainGroup</key>
 	<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
 	<key>NSExtension</key>
