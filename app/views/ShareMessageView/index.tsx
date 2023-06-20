@@ -21,7 +21,7 @@ import Message from '../../containers/message';
 import { NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
 
-const ForwardMessageView = () => {
+const ShareMessageView = () => {
 	const [roomsId, setRoomsId] = useState<string[]>([]);
 	const [sending, setSending] = useState(false);
 	const navigation = useNavigation();
@@ -29,7 +29,7 @@ const ForwardMessageView = () => {
 
 	const {
 		params: { message }
-	} = useRoute<RouteProp<NewMessageStackParamList, 'ForwardMessageView'>>();
+	} = useRoute<RouteProp<NewMessageStackParamList, 'ShareMessageView'>>();
 
 	const { blockUnauthenticatedAccess, server, serverVersion, user, baseUrl, Message_TimeFormat, customEmojis } = useAppSelector(
 		state => ({
@@ -54,7 +54,7 @@ const ForwardMessageView = () => {
 						color={isSendButtonEnabled ? colors.actionTintColor : colors.headerTintColor}
 						disabled={!isSendButtonEnabled}
 						onPress={handlePostMessage}
-						testID='forward-message-view-send'
+						testID='share-message-view-send'
 					/>
 				</HeaderButton.Container>
 			),
@@ -91,7 +91,7 @@ const ForwardMessageView = () => {
 			keyboardVerticalOffset={128}
 		>
 			<StatusBar />
-			<SafeAreaView testID='forward-message-view' style={styles.container}>
+			<SafeAreaView testID='share-message-view' style={styles.container}>
 				<ScrollView {...scrollPersistTaps}>
 					<SelectPersonOrChannel
 						server={server}
@@ -118,4 +118,4 @@ const ForwardMessageView = () => {
 	);
 };
 
-export default ForwardMessageView;
+export default ShareMessageView;

@@ -119,7 +119,7 @@ export type ModalStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
-	ForwardMessageView: {
+	ShareMessageView: {
 		message: TAnyMessageModel;
 	};
 	ForwardLivechatView: {

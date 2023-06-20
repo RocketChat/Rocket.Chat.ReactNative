@@ -193,9 +193,9 @@ const MessageActions = React.memo(
 			const handleShareMessage = (message: TAnyMessageModel) => {
 				const params = { message };
 				if (isMasterDetail) {
-					Navigation.navigate('ModalStackNavigator', { screen: 'ForwardMessageView', params });
+					Navigation.navigate('ModalStackNavigator', { screen: 'ShareMessageView', params });
 				} else {
-					Navigation.navigate('NewMessageStackNavigator', { screen: 'ForwardMessageView', params });
+					Navigation.navigate('NewMessageStackNavigator', { screen: 'ShareMessageView', params });
 				}
 			};
 

@@ -1,4 +1,4 @@
-export interface IForwardMessageViewSelectRoom {
+export interface IShareMessageViewSelectRoom {
 	server: string;
 	token: string;
 	userId: string;
@@ -7,7 +7,7 @@ export interface IForwardMessageViewSelectRoom {
 	serverVersion: string;
 }
 
-export interface IForwardMessageViewSearchResult {
+export interface IShareMessageViewSearchResult {
 	value: string;
 	text: { text: string };
 	imageUrl: string;
