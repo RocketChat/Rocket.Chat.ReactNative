@@ -617,13 +617,9 @@ workflows:
       - ios-build:
           requires:
             - ios-hold-build
-      - ios-hold-testflight:
-          type: approval
-          requires:
-            - ios-build
       - ios-testflight:
           requires:
-            - ios-hold-testflight
+            - ios-build
 
       # Android Experimental
       - android-hold-build-experimental:
