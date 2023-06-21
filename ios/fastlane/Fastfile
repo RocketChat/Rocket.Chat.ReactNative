@@ -35,7 +35,9 @@ platform :ios do
     )
     pilot(
       ipa: 'ios/Rocket.Chat.ipa',
-      skip_waiting_for_build_processing: true
+      skip_waiting_for_build_processing: options[:distribute_external] ? false : true,
+      distribute_external: options[:distribute_external] ? true : false,
+      groups: options[:distribute_external] ? ["External Testers", "App Store Connect Users"] : ["App Store Connect Users"]
     )
     upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
     upload_symbols_to_bugsnag(
@@ -62,11 +64,6 @@ platform :ios do
       workspace: "RocketChatRN.xcworkspace",
       output_name: "Rocket.Chat"
     )
-  end
-
-  desc "Build fork app"
-  lane :build_fork do
-    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
   after_all do |lane|

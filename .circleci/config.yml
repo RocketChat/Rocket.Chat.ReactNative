@@ -80,7 +80,6 @@ restore_cache: &restore-gradle-cache
 
 # COMMANDS
 commands:
-
   manage-pods:
     description: "Restore/Get/Save cache of pods libs"
     steps:
@@ -99,26 +98,11 @@ commands:
             - ~/.pods
             - ios/Pods
 
-  # EXPERIMENTAL ONLY
-  # No plans to do it for Official
-  # upload-to-google-play-production:
-  #   description: "Upload to Google Play production"
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: android
-  #     - run:
-  #         name: Store the google service account key
-  #         command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
-  #         working_directory: android
-  #     - run: *update-fastlane-android
-  #     - run:
-  #         name: Fastlane Play Store Upload
-  #         command: bundle exec fastlane android production
-  #         working_directory: android
-
   upload-to-testflight:
     description: "Upload to TestFlight"
+    parameters:
+      distribute_external:
+        type: boolean
     steps:
       - checkout
       - attach_workspace:
@@ -131,9 +115,10 @@ commands:
           name: Fastlane Tesflight Upload
           command: |
             echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-            bundle exec fastlane ios beta
+            bundle exec fastlane ios beta distribute_external:<< parameters.distribute_external >>
           working_directory: ios
       - save_cache: *save-gems-cache
+
   create-e2e-account-file:
     description: "Create e2e account file"
     steps:
@@ -419,7 +404,14 @@ jobs:
   ios-testflight:
     executor: mac-env
     steps:
-      - upload-to-testflight
+      - upload-to-testflight:
+          distribute_external: false
+
+  ios-beta:
+    executor: mac-env
+    steps:
+      - upload-to-testflight:
+          distribute_external: true
 
   e2e-build-ios:
     executor: mac-env
@@ -516,6 +508,13 @@ workflows:
       - ios-testflight:
           requires:
             - ios-build
+      - ios-hold-beta:
+          type: approval
+          requires:
+            - ios-build
+      - ios-beta:
+          requires:
+            - ios-hold-beta
 
       # Android
       - android-build:
@@ -543,9 +542,18 @@ workflows:
             - lint-testunit
       - android-beta:
           name: android-beta-develop
+          requires:
+            - android-build-develop
+
+      - ios-build:
+          name: ios-build-develop
           filters:
             branches:
               only:
                 - develop
           requires:
-            - android-build-develop
+            - lint-testunit
+      - ios-beta:
+          name: ios-beta-develop
+          requires:
+            - ios-build-develop
