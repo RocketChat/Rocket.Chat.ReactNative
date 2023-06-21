@@ -37,7 +37,8 @@ platform :ios do
       ipa: 'ios/Rocket.Chat.ipa',
       skip_waiting_for_build_processing: options[:distribute_external] ? false : true,
       distribute_external: options[:distribute_external] ? true : false,
-      groups: options[:distribute_external] ? ["External Testers", "App Store Connect Users"] : ["App Store Connect Users"]
+      groups: options[:distribute_external] ? ["External Testers", "App Store Connect Users"] : ["App Store Connect Users"],
+      changelog: options[:distribute_external] ? "Minor bugs fixed" : ""
     )
     upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
     upload_symbols_to_bugsnag(
