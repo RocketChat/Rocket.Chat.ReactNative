@@ -1,4 +1,4 @@
-import { IMessage, TAnyMessageModel } from '../../definitions';
+import { IMessage } from '../../definitions';
 
 export interface IMessageComposerProps {
 	rid: string;
@@ -17,7 +17,7 @@ export interface IMessageComposerProps {
 	// // Message_AudioRecorderEnabled: boolean;
 	// getCustomEmoji: TGetCustomEmoji;
 	editCancel(): void;
-	editRequest(message: TAnyMessageModel): Promise<void>;
+	editRequest(message: Pick<IMessage, 'id' | 'msg' | 'rid'>): Promise<void>;
 	// TODO: discuss this prop name
 	onSendMessage(message: string, tmid?: string, tshow?: boolean): void;
 	// typing: Function;

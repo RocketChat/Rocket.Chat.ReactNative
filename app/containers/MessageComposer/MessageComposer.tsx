@@ -67,6 +67,15 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		}));
 
 		const sendMessage = () => {
+			if (editing && message?.id) {
+				const msg = composerInputComponentRef.current.sendMessage();
+				const {
+					id,
+					// @ts-ignore
+					subscription: { id: rid }
+				} = message;
+				return editRequest({ id, msg, rid });
+			}
 			onSendMessage(composerInputComponentRef.current.sendMessage());
 		};
 
