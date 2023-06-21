@@ -673,15 +673,15 @@ workflows:
       - e2e-test-android:
           requires:
             - e2e-build-android
-
-      # iOS
-      - ios-hold-build:
+      - hold-builds:
           type: approval
           requires:
             - lint-testunit
+
+      # iOS
       - ios-build:
           requires:
-            - ios-hold-build
+            - hold-builds
       - ios-testflight:
           requires:
             - ios-build
@@ -717,13 +717,9 @@ workflows:
       #       - android-hold-google-play-production-experimental
 
       # Android Official
-      - android-hold-build:
-          type: approval
-          requires:
-            - lint-testunit
       - android-build:
           requires:
-            - android-hold-build
+            - hold-builds
       - android-internal-app-sharing:
           requires:
             - android-build
