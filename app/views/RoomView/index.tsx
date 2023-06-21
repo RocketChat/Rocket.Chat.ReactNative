@@ -1259,11 +1259,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		const { room, lastOpen, canAutoTranslate } = this.state;
+		const { room, lastOpen, canAutoTranslate, selectedMessage, editing } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
+		const isBeingEdited = editing && item.id === selectedMessage?.id;
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
@@ -1328,6 +1329,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					highlighted={highlightedMessage === item.id}
 					theme={theme!}
 					closeEmojiAndAction={this.handleCloseEmoji}
+					isBeingEdited={isBeingEdited}
 				/>
 			);
 		}
@@ -1463,7 +1465,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading } = this.state;
+		const { room, loading, editing } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1486,6 +1488,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					tmid={this.tmid}
 					tunread={tunread}
 					ignored={ignored}
+					editing={editing}
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}

@@ -58,6 +58,7 @@ interface IMessageContainerProps {
 	onPress?: () => void;
 	theme: TSupportedThemes;
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
+	isBeingEdited?: boolean;
 }
 
 interface IMessageContainerState {
@@ -94,7 +95,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
-		const { threadBadgeColor, isIgnored, highlighted, previousItem } = this.props;
+		const { threadBadgeColor, isIgnored, highlighted, previousItem, isBeingEdited } = this.props;
 		if (nextProps.highlighted !== highlighted) {
 			return true;
 		}
@@ -108,6 +109,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			return true;
 		}
 		if (nextProps.previousItem?._id !== previousItem?._id) {
+			return true;
+		}
+		if (isBeingEdited !== nextProps.isBeingEdited) {
 			return true;
 		}
 		return false;
@@ -345,7 +349,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
-			highlighted
+			highlighted,
+			isBeingEdited
 		} = this.props;
 		const {
 			id,
@@ -462,6 +467,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					highlighted={highlighted}
 					comment={comment}
 					isTranslated={isTranslated}
+					isBeingEdited={isBeingEdited}
 				/>
 			</MessageContext.Provider>
 		);

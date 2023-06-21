@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle, useMemo } from 'react';
 import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
@@ -143,6 +143,11 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 		};
 
+		const backgroundColor = useMemo(
+			() => (editing ? colors.statusBackgroundWarning2 : colors.surfaceLight),
+			[colors.statusBackgroundWarning2, colors.surfaceLight, editing]
+		);
+
 		return (
 			<MessageComposerContext.Provider
 				value={{
@@ -171,10 +176,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				<KeyboardAccessoryView
 					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 					renderContent={() => (
-						<View
-							style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
-							testID='message-composer'
-						>
+						<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
 							<View style={styles.input}>
 								<Left />
 								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
@@ -192,7 +194,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					trackInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
-					bottomViewColor={colors.surfaceLight}
+					bottomViewColor={backgroundColor}
 					iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				/>
 			</MessageComposerContext.Provider>
