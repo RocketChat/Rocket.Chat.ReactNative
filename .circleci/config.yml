@@ -476,7 +476,7 @@ jobs:
             echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
-            echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+            echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
             echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
             echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
             echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
