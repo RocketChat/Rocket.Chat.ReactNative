@@ -18,35 +18,18 @@ default_platform(:android)
 platform :android do
   desc "Upload App to Play Store Internal"
   lane :beta do |options|
-    if options[:official]
-      upload_to_play_store(
-        package_name: 'chat.rocket.android',
-        track: 'internal',
-        aab: 'android/app/build/outputs/bundle/officialPlayRelease/app-official-play-release.aab'
-      )
-    else
-      upload_to_play_store(
-        package_name: 'chat.rocket.reactnative',
-        track: 'internal',
-        aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
-      )
-    end
+    upload_to_play_store(
+      package_name: 'chat.rocket.android',
+      track: 'internal',
+      aab: 'android/app/build/outputs/bundle/playRelease/app-play-release.aab'
+    )
   end
 
   desc "Upload App to Internal App Sharing"
   lane :internal_app_sharing do
     upload_to_play_store_internal_app_sharing(
-      package_name: 'chat.rocket.reactnative',
-      aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
-    )
-  end
-
-  desc "Upload App to Play Store Production"
-  lane :production do |options|
-    upload_to_play_store(
-      package_name: 'chat.rocket.reactnative',
-      track: 'production',
-      aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
+      package_name: 'chat.rocket.android',
+      aab: 'android/app/build/outputs/bundle/playRelease/app-play-release.aab'
     )
   end
 end
