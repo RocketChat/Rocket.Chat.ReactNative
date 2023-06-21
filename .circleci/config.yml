@@ -406,7 +406,7 @@ jobs:
                 --api-key=$BUGSNAG_KEY_OFFICIAL \
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/PlayRelease/index.android.bundle.map \
+                --source-map=android/app/build/generated/sourcemaps/react/playRelease/index.android.bundle.map \
                 --bundle android/app/build/ASSETS/createBundlePlayReleaseJsAndAssets/index.android.bundle
             fi
       - store_artifacts:
