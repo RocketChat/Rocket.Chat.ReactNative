@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -54,10 +54,14 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		borderColor: themes[theme].separatorColor,
 		backgroundColor: themes[theme].backgroundColor
 	};
-	const placeholderObject =
-		placeholder && !items.some(item => item.label === textParser([placeholder]))
-			? { label: textParser([placeholder]), value: null }
-			: {};
+
+	const placeholderObject = useMemo(
+		() =>
+			placeholder && !items.some(item => item.label === textParser([placeholder]))
+				? { label: textParser([placeholder]), value: null }
+				: {},
+		[items.length, placeholder?.text]
+	);
 
 	const Icon = () =>
 		loading ? (
