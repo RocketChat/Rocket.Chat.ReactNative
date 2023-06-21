@@ -304,7 +304,6 @@ commands:
             bundle exec fastlane ios beta
           working_directory: ios
       - save_cache: *save-gems-cache
-
   create-e2e-account-file:
     description: "Create e2e account file"
     steps:
@@ -331,29 +330,22 @@ jobs:
     resource_class: large
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
-
     steps:
       - checkout
-
       - restore_cache: *restore-npm-cache-linux
-
       - run: *install-npm-modules
-
       - run:
           name: Lint
           command: |
             yarn lint
-
       - run:
           name: Test
           command: |
             yarn test -w 8
-
       - run:
           name: Codecov
           command: |
             yarn codecov
-
       - save_cache: *save-npm-cache-linux
 
   # Android builds
@@ -576,7 +568,6 @@ jobs:
             agvtool new-version -all $CIRCLE_BUILD_NUM
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
-
             if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
               echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               bundle exec fastlane ios build_official
