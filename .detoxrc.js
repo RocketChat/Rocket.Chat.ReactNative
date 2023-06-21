@@ -17,28 +17,28 @@ module.exports = {
 	apps: {
 		'ios.debug': {
 			type: 'ios.app',
-			binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/Rocket.Chat Experimental.app',
+			binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/Rocket.Chat.app',
 			build:
-				'xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build'
+				'xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChat -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build'
 		},
 		'ios.release': {
 			type: 'ios.app',
-			binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app',
+			binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat.app',
 			build:
-				'xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build'
+				'xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChat -configuration Release -sdk iphonesimulator -derivedDataPath ios/build'
 		},
 		'android.debug': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk',
+			binaryPath: 'android/app/build/outputs/apk/play/debug/app-play-debug.apk',
 			build:
-				'cd android ; ./gradlew assembleExperimentalPlayDebug assembleExperimentalPlayDebugAndroidTest -DtestBuildType=debug ; cd -',
+				'cd android ; ./gradlew assemblePlayDebug assemblePlayDebugAndroidTest -DtestBuildType=debug ; cd -',
 			reversePorts: [8081]
 		},
 		'android.release': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk',
+			binaryPath: 'android/app/build/outputs/apk/play/release/app-play-release.apk',
 			build:
-				'cd android ; ./gradlew assembleExperimentalPlayRelease assembleExperimentalPlayReleaseAndroidTest -DtestBuildType=release ; cd -'
+				'cd android ; ./gradlew assemblePlayRelease assemblePlayReleaseAndroidTest -DtestBuildType=release ; cd -'
 		}
 	},
 	devices: {
