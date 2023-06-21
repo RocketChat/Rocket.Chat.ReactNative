@@ -99,38 +99,6 @@ commands:
             - ~/.pods
             - ios/Pods
 
-  upload-to-google-play-beta:
-    description: "Upload to Google Play beta"
-    steps:
-      - checkout
-      - attach_workspace:
-          at: android
-      - run:
-          name: Store the google service account key
-          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
-          working_directory: android
-      - run: *update-fastlane-android
-      - run:
-          name: Fastlane Play Store Upload
-          command: bundle exec fastlane android beta
-          working_directory: android
-
-  upload-to-internal-app-sharing:
-    description: "Upload to Internal App Sharing"
-    steps:
-      - checkout
-      - attach_workspace:
-          at: android
-      - run:
-          name: Store the google service account key
-          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
-          working_directory: android
-      - run: *update-fastlane-android
-      - run:
-          name: Fastlane Play Store Upload
-          command: bundle exec fastlane android internal_app_sharing
-          working_directory: android
-
   # EXPERIMENTAL ONLY
   # No plans to do it for Official
   # upload-to-google-play-production:
@@ -280,38 +248,39 @@ jobs:
           paths:
             - android/app/build/outputs
 
-  #   # Android automatic builds
-  # android-automatic-build-experimental:
-  #   <<: *defaults
-  #   <<: *android-img
-  #   environment:
-  #     <<: *android-env
-  #     <<: *bash-env
-  #   resource_class: xlarge
-  #   steps:
-  #     - android-build
-
-  # android-build-official:
-  #   <<: *defaults
-  #   <<: *android-img
-  #   environment:
-  #     <<: *android-env
-  #     <<: *bash-env
-  #   resource_class: xlarge
-  #   steps:
-  #     - android-build
-
   android-internal-app-sharing:
     <<: *defaults
     <<: *android-img
     steps:
-      - upload-to-internal-app-sharing
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android internal_app_sharing
+          working_directory: android
 
-  android-google-play-beta:
+  android-beta:
     <<: *defaults
     <<: *android-img
     steps:
-      - upload-to-google-play-beta
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android beta
+          working_directory: android
 
   e2e-build-android:
     <<: *defaults
@@ -548,59 +517,35 @@ workflows:
           requires:
             - ios-build
 
-      # Android Experimental
-      # - android-hold-build-experimental:
-      #     type: approval
-      #     requires:
-      #         - lint-testunit
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - develop
-      # - android-build-experimental:
-      #     requires:
-      #       - android-hold-build-experimental
-      # - android-internal-app-sharing-experimental:
-      #     requires:
-      #       - android-build-experimental
-      # - android-hold-google-play-beta-experimental:
-      #     type: approval
-      #     requires:
-      #       - android-build-experimental
-      # - android-google-play-beta-experimental:
-      #     requires:
-      #       - android-hold-google-play-beta-experimental
-      # - android-hold-google-play-production-experimental:
-      #     type: approval
-      #     requires:
-      #       - android-build-experimental
-      # - android-google-play-production-experimental:
-      #     requires:
-      #       - android-hold-google-play-production-experimental
-
-      # Android Official
+      # Android
       - android-build:
           requires:
             - build-hold
       - android-internal-app-sharing:
           requires:
             - android-build
-      # - android-hold-google-play-beta:
-      #     type: approval
-      #     requires:
-      #       - android-build
-      # - android-google-play-beta:
-      #     requires:
-      #       - android-hold-google-play-beta
+      - android-hold-beta:
+          type: approval
+          requires:
+            - android-build
+      - android-beta:
+          requires:
+            - android-hold-beta
 
-      # # Android Automatic Experimental
-      # - android-automatic-build-experimental:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - develop
-      #     requires:
-      #       - lint-testunit
-      # - android-google-play-production-experimental:
-      #     requires:
-      #       - android-automatic-build-experimental
+      # Deploy to beta after PR is merged to develop
+      - android-build:
+          name: android-build-develop
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - lint-testunit
+      - android-beta:
+          name: android-beta-develop
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - android-build-develop
