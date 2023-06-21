@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 import { TMicOrSend } from './interfaces';
-import { IEmoji } from '../../definitions';
+import { IEmoji, IMessage, TAnyMessageModel } from '../../definitions';
 
 type TMessageComposerContext = {
 	rid: string;
@@ -25,6 +25,9 @@ type TMessageComposerContext = {
 	chooseFromLibrary(): void;
 	chooseFile(): void;
 	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
+	message?: IMessage;
+	editCancel(): void;
+	editRequest(message: TAnyMessageModel): Promise<void>;
 };
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({
@@ -46,5 +49,8 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	takeVideo: () => {},
 	chooseFromLibrary: () => {},
 	chooseFile: () => {},
-	closeEmojiKeyboardAndAction: () => {}
+	closeEmojiKeyboardAndAction: () => {},
+	message: undefined,
+	editCancel: () => {},
+	editRequest: async () => {}
 });

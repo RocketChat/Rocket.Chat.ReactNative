@@ -1350,7 +1350,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const {
 			joined,
 			room,
-			// selectedMessage,
+			selectedMessage,
 			editing,
 			// replying,
 			// replyWithMention,
@@ -1435,6 +1435,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				tmid={this.tmid}
 				editing={editing}
 				sharing={false}
+				editRequest={this.onEditRequest}
+				editCancel={this.onEditCancel}
+				message={selectedMessage}
 			/>
 		);
 	};

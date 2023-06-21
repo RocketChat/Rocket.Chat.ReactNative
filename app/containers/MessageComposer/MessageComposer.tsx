@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 require('../MessageBox/EmojiKeyboard');
 
 export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerProps>(
-	({ onSendMessage, rid, tmid, sharing = false, editing = false }, ref): ReactElement => {
+	({ onSendMessage, rid, tmid, sharing = false, editing = false, message, editCancel, editRequest }, ref): ReactElement => {
 		// console.count('Message Composer');
 		const composerInputRef = useRef(null);
 		const composerInputComponentRef = useRef<IComposerInput>({
@@ -170,7 +170,10 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					takeVideo,
 					chooseFromLibrary,
 					chooseFile,
-					closeEmojiKeyboardAndAction
+					closeEmojiKeyboardAndAction,
+					message,
+					editCancel,
+					editRequest
 				}}
 			>
 				<KeyboardAccessoryView

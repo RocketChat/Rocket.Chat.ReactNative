@@ -6,19 +6,29 @@ import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
 
 export const MicOrSendButton = () => {
-	const { micOrSend, permissionToUpload, sendMessage } = useContext(MessageComposerContext);
+	const { micOrSend, permissionToUpload, sendMessage, editing, editCancel } = useContext(MessageComposerContext);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
 	const { colors } = useTheme();
 
 	if (micOrSend === 'send') {
 		return (
-			<BaseButton
-				onPress={() => sendMessage()}
-				testID='message-composer-send'
-				accessibilityLabel='Send_message'
-				icon='send-filled'
-				color={colors.buttonBackgroundPrimaryDefault}
-			/>
+			<>
+				{editing ? (
+					<BaseButton
+						onPress={() => editCancel()}
+						testID='message-composer-cancel-edit'
+						accessibilityLabel='Cancel_editing'
+						icon='close'
+					/>
+				) : null}
+				<BaseButton
+					onPress={() => sendMessage()}
+					testID='message-composer-send'
+					accessibilityLabel='Send_message'
+					icon='send-filled'
+					color={colors.buttonBackgroundPrimaryDefault}
+				/>
+			</>
 		);
 	}
 

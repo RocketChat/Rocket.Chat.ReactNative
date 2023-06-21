@@ -1163,7 +1163,7 @@ exports[`send message 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={14}
+          handlerTag={15}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -1299,7 +1299,7 @@ exports[`tap actions from toolbar 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={17}
+        handlerTag={18}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1359,7 +1359,7 @@ exports[`tap actions from toolbar 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={18}
+        handlerTag={19}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1419,7 +1419,7 @@ exports[`tap actions from toolbar 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={19}
+        handlerTag={20}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1479,7 +1479,7 @@ exports[`tap actions from toolbar 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={20}
+        handlerTag={21}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1546,7 +1546,7 @@ exports[`tap actions from toolbar 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={21}
+        handlerTag={22}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1681,7 +1681,7 @@ exports[`tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={24}
+        handlerTag={25}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1741,7 +1741,7 @@ exports[`tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={25}
+        handlerTag={26}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1808,7 +1808,7 @@ exports[`tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={29}
+        handlerTag={30}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -1943,7 +1943,7 @@ exports[`tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={32}
+        handlerTag={33}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2003,7 +2003,7 @@ exports[`tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={33}
+        handlerTag={34}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2063,7 +2063,7 @@ exports[`tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={34}
+        handlerTag={35}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2123,7 +2123,7 @@ exports[`tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={35}
+        handlerTag={36}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2190,7 +2190,7 @@ exports[`tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={36}
+        handlerTag={37}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2325,7 +2325,7 @@ exports[`tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={39}
+        handlerTag={40}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2385,7 +2385,7 @@ exports[`tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={40}
+        handlerTag={41}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2445,7 +2445,7 @@ exports[`tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={41}
+        handlerTag={42}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2505,7 +2505,7 @@ exports[`tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={42}
+        handlerTag={43}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2572,7 +2572,7 @@ exports[`tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={43}
+        handlerTag={44}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
