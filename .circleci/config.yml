@@ -99,144 +99,6 @@ commands:
             - ~/.pods
             - ios/Pods
 
-  # android-build:
-  #   description: "Build Android app"
-  #   steps:
-  #     - checkout
-
-  #     - restore_cache: *restore-npm-cache-linux
-
-  #     - run: *install-npm-modules
-
-  #     - restore_cache: *restore-gradle-cache
-
-  #     - run:
-  #         name: Configure Gradle
-  #         command: |
-  #           echo -e "" > ./gradle.properties
-  #           echo -e "android.useAndroidX=true" >> ./gradle.properties
-  #           echo -e "android.enableJetifier=true" >> ./gradle.properties
-  #           echo -e "newArchEnabled=false" >> ./gradle.properties
-  #           echo -e "hermesEnabled=true" >> ./gradle.properties
-  #           echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
-  #           echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
-
-  #           if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-  #             echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
-  #             echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
-  #             echo $KEYSTORE_OFFICIAL_BASE64 | base64 --decode > ./app/$KEYSTORE_OFFICIAL
-  #             echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
-  #             echo -e "KEYSTORE_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
-  #             echo -e "KEY_ALIAS=$KEYSTORE_OFFICIAL_ALIAS" >> ./gradle.properties
-  #             echo -e "KEY_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
-  #           else
-  #             echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-  #             echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
-  #             echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
-  #             echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
-  #             echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
-  #             echo -e "KEY_ALIAS=$KEYSTORE_EXPERIMENTAL_ALIAS" >> ./gradle.properties
-  #             echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
-  #           fi
-  #         working_directory: android
-
-  #     - run:
-  #         name: Set Google Services
-  #         command: |
-  #           if [[ $GOOGLE_SERVICES_ANDROID ]]; then
-  #             echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
-  #           fi
-  #         working_directory: android/app
-
-  #     - run:
-  #         name: Build App
-  #         no_output_timeout: 40m
-  #         command: |
-  #           sudo apt install -y libicu-dev
-  #           if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-  #             ./gradlew bundleOfficialPlayRelease
-  #           fi
-  #           if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-  #             ./gradlew bundleExperimentalPlayRelease
-  #           fi
-  #           if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
-  #             ./gradlew assembleExperimentalPlayDebug
-  #           fi
-  #         working_directory: android
-
-  #     - run:
-  #         name: Upload sourcemaps to Bugsnag
-  #         command: |
-  #           if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-  #             npx bugsnag-source-maps upload-react-native \
-  #               --api-key=$BUGSNAG_KEY_OFFICIAL \
-  #               --app-version-code=$CIRCLE_BUILD_NUM \
-  #               --platform android \
-  #               --source-map=android/app/build/generated/sourcemaps/react/officialPlayRelease/index.android.bundle.map \
-  #               --bundle android/app/build/ASSETS/createBundleOfficialPlayReleaseJsAndAssets/index.android.bundle
-  #           fi
-  #           if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-  #             npx bugsnag-source-maps upload-react-native \
-  #               --api-key=$BUGSNAG_KEY \
-  #               --app-version-code=$CIRCLE_BUILD_NUM \
-  #               --platform android \
-  #               --source-map=android/app/build/generated/sourcemaps/react/experimentalPlayRelease/index.android.bundle.map \
-  #               --bundle android/app/build/ASSETS/createBundleExperimentalPlayReleaseJsAndAssets/index.android.bundle
-  #           fi
-
-  #     - store_artifacts:
-  #         path: android/app/build/outputs
-
-  #     - save_cache: *save-npm-cache-linux
-
-  #     - save_cache: *save-gradle-cache
-
-  #     - persist_to_workspace:
-  #         root: .
-  #         paths:
-  #           - android/app/build/outputs
-
-  # ios-build:
-  #   description: "Build iOS app"
-  #   steps:
-  #     - checkout
-  #     - restore_cache: *restore-gems-cache
-  #     - restore_cache: *restore-npm-cache-mac
-  #     - run: *install-npm-modules
-  #     - run: *update-fastlane-ios
-  #     - manage-pods
-  #     - run:
-  #         name: Set Google Services
-  #         command: |
-  #           if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
-  #             echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
-  #           fi
-  #         working_directory: ios
-  #     - run:
-  #         name: Fastlane Build
-  #         no_output_timeout: 40m
-  #         command: |
-  #           agvtool new-version -all $CIRCLE_BUILD_NUM
-  #           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
-  #           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
-
-  #           if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
-  #             echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-  #             bundle exec fastlane ios build_official
-  #           fi
-  #         working_directory: ios
-  #     - save_cache: *save-npm-cache-mac
-  #     - save_cache: *save-gems-cache
-  #     - store_artifacts:
-  #         path: ios/Rocket.Chat.ipa
-  #     - store_artifacts:
-  #         path: ios/Rocket.Chat.app.dSYM.zip
-  #     - persist_to_workspace:
-  #         root: .
-  #         paths:
-  #           - ios/*.ipa
-  #           - ios/*.zip
-
   upload-to-google-play-beta:
     description: "Upload to Google Play beta"
     steps:
@@ -673,7 +535,7 @@ workflows:
       - e2e-test-android:
           requires:
             - e2e-build-android
-      - hold-builds:
+      - build-hold:
           type: approval
           requires:
             - lint-testunit
@@ -681,7 +543,7 @@ workflows:
       # iOS
       - ios-build:
           requires:
-            - hold-builds
+            - build-hold
       - ios-testflight:
           requires:
             - ios-build
@@ -719,7 +581,7 @@ workflows:
       # Android Official
       - android-build:
           requires:
-            - hold-builds
+            - build-hold
       - android-internal-app-sharing:
           requires:
             - android-build
