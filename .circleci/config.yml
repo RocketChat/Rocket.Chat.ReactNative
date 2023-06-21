@@ -492,9 +492,9 @@ jobs:
             yarn e2e:android-build
       - save_cache: *save-gradle-cache
       - store_artifacts:
-          path: android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk
+          path: android/app/build/outputs/apk/play/release/app-play-release.apk
       - store_artifacts:
-          path: android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
+          path: android/app/build/outputs/apk/androidTest/play/release/app-play-release-androidTest.apk
       - persist_to_workspace:
           root: /home/circleci/repo
           paths:
@@ -618,7 +618,7 @@ jobs:
       - persist_to_workspace:
           root: /Users/distiller/project
           paths:
-            - ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
+            - ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat.app
   
   e2e-test-ios:
     executor: mac-env
