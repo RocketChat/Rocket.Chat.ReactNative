@@ -94,7 +94,9 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 					userAgent={userAgent}
 					javaScriptEnabled
 					domStorageEnabled
-					mediaPlaybackRequiresUserAction={false}
+					// fix for ios webview
+					allowsInlineMediaPlayback={true}
+					mediaPlaybackRequiresUserAction={true}
 					mediaCapturePermissionGrantType={'grant'}
 				/>
 			</SafeAreaView>
