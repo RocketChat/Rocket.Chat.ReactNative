@@ -105,7 +105,6 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    // Can't set this, since it causes issues to Official flavor
     namespace "chat.rocket.android"
     defaultConfig {
         applicationId APPLICATION_ID

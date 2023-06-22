@@ -97,7 +97,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					avatarETag: userRecord.avatarETag
 				};
 			} catch {
-				// search credentials on shared credentials (Experimental/Official)
 				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
