@@ -3,7 +3,7 @@ import { PermissionsAndroid, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import CameraRoll from '@react-native-community/cameraroll';
+import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import * as mime from 'react-native-mime-types';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Video, ResizeMode } from 'expo-av';
