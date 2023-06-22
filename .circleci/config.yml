@@ -508,13 +508,6 @@ workflows:
       - ios-testflight:
           requires:
             - ios-build
-      - ios-hold-beta:
-          type: approval
-          requires:
-            - ios-build
-      - ios-beta:
-          requires:
-            - ios-hold-beta
 
       # Android
       - android-build:
@@ -554,6 +547,5 @@ workflows:
           requires:
             - lint-testunit
       - ios-beta:
-          name: ios-beta-develop
           requires:
             - ios-build-develop
