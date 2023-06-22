@@ -480,6 +480,14 @@ workflows:
   build-and-test:
     jobs:
       - lint-testunit
+      - build-hold:
+          type: approval
+          requires:
+            - lint-testunit
+          filters:
+            branches:
+              ignore:
+                - develop
 
       # E2E tests
       - e2e-hold:
@@ -496,10 +504,6 @@ workflows:
       - e2e-test-android:
           requires:
             - e2e-build-android
-      - build-hold:
-          type: approval
-          requires:
-            - lint-testunit
 
       # iOS
       - ios-build:
@@ -524,10 +528,10 @@ workflows:
           requires:
             - android-hold-beta
 
-      # Deploy to beta after PR is merged to develop
+      # Workflows to run when a PR is merged to develop
       - android-build:
           name: android-build-develop
-          filters:
+          filters: &filters-develop-only
             branches:
               only:
                 - develop
@@ -541,11 +545,24 @@ workflows:
       - ios-build:
           name: ios-build-develop
           filters:
-            branches:
-              only:
-                - develop
+            <<: *filters-develop-only
           requires:
             - lint-testunit
       - ios-beta:
           requires:
             - ios-build-develop
+
+      - e2e-build-ios:
+          name: e2e-build-ios-develop
+          filters:
+            <<: *filters-develop-only
+      - e2e-test-ios:
+          requires:
+            - e2e-build-ios
+      - e2e-build-android:
+          name: e2e-build-android-develop
+          filters:
+            <<: *filters-develop-only
+      - e2e-test-android:
+          requires:
+            - e2e-build-android
