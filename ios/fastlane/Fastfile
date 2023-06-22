@@ -25,7 +25,26 @@ platform :ios do
     )	
   end
 
-  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "Build"
+  lane :build do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: 'fastlane/app_store_connect_api_key.p8',
+      in_house: false
+    )
+    match(type: "appstore")
+    get_provisioning_profile(app_identifier: "chat.rocket.ios.Rocket-Chat-ShareExtension")
+    get_provisioning_profile(app_identifier: "chat.rocket.ios.NotificationService")
+    # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
+    gym(
+      scheme: "RocketChat",
+      workspace: "RocketChatRN.xcworkspace",
+      output_name: "Rocket.Chat"
+    )
+  end
+
+  desc "Upload build to TestFlight"
   lane :beta do |options|
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
@@ -45,25 +64,6 @@ platform :ios do
       config_file: "./RocketChatRN/Info.plist",
       dsym_path: "./ios/Rocket.Chat.app.dSYM.zip",
       api_key: ENV["BUGSNAG_KEY_OFFICIAL"]
-    )
-  end
-
-  desc "Build app"
-  lane :build_official do
-    api_key = app_store_connect_api_key(
-      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
-      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
-    match(type: "appstore")
-    get_provisioning_profile(app_identifier: "chat.rocket.ios.Rocket-Chat-ShareExtension")
-    get_provisioning_profile(app_identifier: "chat.rocket.ios.NotificationService")
-    # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
-    gym(
-      scheme: "RocketChat",
-      workspace: "RocketChatRN.xcworkspace",
-      output_name: "Rocket.Chat"
     )
   end
 
