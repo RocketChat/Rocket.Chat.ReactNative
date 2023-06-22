@@ -484,7 +484,7 @@ workflows:
           type: approval
           requires:
             - lint-testunit
-          filters:
+          filters: &filters-develop-ignore
             branches:
               ignore:
                 - develop
@@ -492,6 +492,8 @@ workflows:
       # E2E tests
       - e2e-hold:
           type: approval
+          filters:
+            <<: *filters-develop-ignore
       - e2e-build-ios:
           requires:
             - e2e-hold
@@ -557,12 +559,14 @@ workflows:
           filters:
             <<: *filters-develop-only
       - e2e-test-ios:
+          name: e2e-test-ios-develop
           requires:
-            - e2e-build-ios
+            - e2e-build-ios-develop
       - e2e-build-android:
           name: e2e-build-android-develop
           filters:
             <<: *filters-develop-only
       - e2e-test-android:
+          name: e2e-test-android-develop
           requires:
-            - e2e-build-android
+            - e2e-build-android-develop
