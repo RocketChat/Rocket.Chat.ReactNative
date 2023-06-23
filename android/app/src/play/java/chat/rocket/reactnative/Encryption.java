@@ -65,7 +65,7 @@ class Encryption {
     private ReactApplicationContext reactContext;
 
     public Room readRoom(final Ejson ejson) throws NoSuchFieldException {
-        dbName += ".db";
+        String dbName = ejson.serverURL().replace("https://", "") + ".db";
         Database database = new Database(dbName, reactContext, SQLiteDatabase.CREATE_IF_NECESSARY);
         String[] query = {ejson.rid};
         Cursor cursor = database.rawQuery("select * from subscriptions where id == ? limit 1", query);
