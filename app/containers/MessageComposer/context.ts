@@ -26,8 +26,8 @@ type TMessageComposerContext = {
 	chooseFile(): void;
 	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
 	message?: IMessage;
-	editCancel(): void;
-	editRequest(message: TAnyMessageModel): Promise<void>;
+	editCancel?: () => void;
+	editRequest?: (message: TAnyMessageModel) => Promise<void>;
 };
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({

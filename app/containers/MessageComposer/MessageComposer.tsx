@@ -67,7 +67,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		}));
 
 		const sendMessage = () => {
-			if (editing && message?.id) {
+			if (editing && message?.id && editRequest) {
 				const msg = composerInputComponentRef.current.sendMessage();
 				const {
 					id,

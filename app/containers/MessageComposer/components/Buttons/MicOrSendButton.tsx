@@ -13,7 +13,7 @@ export const MicOrSendButton = () => {
 	if (micOrSend === 'send') {
 		return (
 			<>
-				{editing ? (
+				{editing && editCancel ? (
 					<BaseButton
 						onPress={() => editCancel()}
 						testID='message-composer-cancel-edit'

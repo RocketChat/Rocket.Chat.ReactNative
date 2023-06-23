@@ -16,8 +16,8 @@ export interface IMessageComposerProps {
 	// FileUpload_MaxFileSize: number;
 	// // Message_AudioRecorderEnabled: boolean;
 	// getCustomEmoji: TGetCustomEmoji;
-	editCancel(): void;
-	editRequest(message: Pick<IMessage, 'id' | 'msg' | 'rid'>): Promise<void>;
+	editCancel?: () => void;
+	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => Promise<void>;
 	// TODO: discuss this prop name
 	onSendMessage(message: string, tmid?: string, tshow?: boolean): void;
 	// typing: Function;

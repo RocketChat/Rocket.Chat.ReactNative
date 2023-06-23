@@ -773,10 +773,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: undefined, editing: false });
 	};
 
-	onEditRequest = async (message: IMessage) => {
+	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 		this.setState({ selectedMessage: undefined, editing: false });
 		try {
-			await Services.editMessage(message);
+			await Services.editMessage(message as IMessage);
 		} catch (e) {
 			log(e);
 		}
