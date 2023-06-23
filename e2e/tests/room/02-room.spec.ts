@@ -6,10 +6,10 @@ import {
 	tapBack,
 	sleep,
 	searchRoom,
-	// tryTapping,
 	platformTypes,
 	TTextMatcher,
-	mockMessage
+	mockMessage,
+	tryTapping
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
@@ -407,23 +407,23 @@ describe('Room screen', () => {
 				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
 			});
 
-			// FIXME: implement before merging to develop
-			// it('should edit message', async () => {
-			// 	const editMessage = await mockMessage('edit');
-			// 	const editedMessage = `${editMessage}ed`;
-			// 	await tryTapping(element(by[textMatcher](editMessage)).atIndex(0), 2000, true);
-			// 	await waitFor(element(by.id('action-sheet')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-			// 	await element(by[textMatcher]('Edit')).atIndex(0).tap();
-			// 	await element(by.id('message-composer-input')).replaceText(editedMessage);
-			// 	await element(by.id('message-composer-send')).tap();
-			// 	await waitFor(element(by[textMatcher](editedMessage)).atIndex(0))
-			// 		.toExist()
-			// 		.withTimeout(60000);
-			// });
+			it('should edit message', async () => {
+				const editMessage = await mockMessage('edit');
+				const editedMessage = `${editMessage}ed`;
+				await tryTapping(element(by[textMatcher](editMessage)).atIndex(0), 2000, true);
+				await waitFor(element(by.id('action-sheet')))
+					.toExist()
+					.withTimeout(2000);
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by[textMatcher]('Edit')).atIndex(0).tap();
+				await sleep(300);
+				await element(by.id('message-composer-input')).replaceText(editedMessage);
+				await element(by.id('message-composer-send')).tap();
+				await waitFor(element(by[textMatcher](editedMessage)).atIndex(0))
+					.toExist()
+					.withTimeout(60000);
+			});
 
 			// FIXME: implement before merging to develop
 			// it('should quote message', async () => {
