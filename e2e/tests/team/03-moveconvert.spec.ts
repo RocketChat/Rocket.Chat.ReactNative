@@ -80,7 +80,7 @@ describe('Move/Convert Team', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-convert-to-team')).tap();
-			await waitFor(element(by[textMatcher]('You are converting this Channel to a Team. All Members will be kept.')))
+			await waitFor(element(by[textMatcher]('You are converting this channel to a team. All members will be kept.')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Convert').and(by.type(alertButtonType))).tap();
