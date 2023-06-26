@@ -1468,7 +1468,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, editing } = this.state;
+		const { room, loading, editing, selectedMessage } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1498,6 +1498,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
 					showMessageInMainThread={user.showMessageInMainThread ?? false}
 					serverVersion={serverVersion}
+					selectedMessageId={selectedMessage?.id}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
