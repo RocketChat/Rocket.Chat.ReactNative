@@ -67,7 +67,7 @@ const DownloadIndicator = ({ handleCancelDownload }: { handleCancelDownload(): v
 					<Text style={[styles.text, { color: colors.auxiliaryText }]}>{I18n.t('Cancel')}</Text>
 				</Touchable>
 			</View>
-			<RCActivityIndicator />
+			<RCActivityIndicator size={48} />
 		</>
 	);
 };
