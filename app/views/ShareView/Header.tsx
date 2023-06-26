@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 
 interface IHeader {
 	room: ISubscription;
-	thread: TThreadModel;
+	thread?: TThreadModel;
 }
 
 const Header = React.memo(({ room, thread }: IHeader) => {

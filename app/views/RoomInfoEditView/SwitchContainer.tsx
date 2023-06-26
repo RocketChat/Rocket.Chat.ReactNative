@@ -6,6 +6,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import styles from './styles';
 
 interface ISwitchContainer {
+	children?: JSX.Element | null;
 	value: boolean;
 	disabled?: boolean;
 	leftLabelPrimary: string;
@@ -19,7 +20,7 @@ interface ISwitchContainer {
 	leftLabelStyle?: TextStyle;
 }
 
-const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
+const SwitchContainer = React.memo(
 	({
 		children,
 		value,
@@ -33,7 +34,7 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 		testID,
 		labelContainerStyle,
 		leftLabelStyle
-	}) => (
+	}: ISwitchContainer) => (
 		<>
 			<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
 				{leftLabelPrimary && (

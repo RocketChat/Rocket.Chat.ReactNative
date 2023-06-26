@@ -114,7 +114,6 @@ Button.displayName = 'MessageAudioButton';
 
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
-
 	private sound: Sound;
 
 	constructor(props: IMessageAudioProps) {
@@ -137,6 +136,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	async componentDidMount() {
 		const { file, messageId } = this.props;
+		// @ts-ignore can't use declare to type this
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
@@ -277,6 +277,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const { loading, paused, currentTime, duration } = this.state;
 		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
 		const { description } = file;
+		// @ts-ignore can't use declare to type this
 		const { baseUrl, user } = this.context;
 
 		if (!baseUrl) {

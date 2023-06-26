@@ -438,9 +438,10 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(60000);
 			});
+			let quotedMessage = '';
 			it('should quote message', async () => {
 				const quoteMessage = await mockMessage('quote');
-				const quotedMessage = `${quoteMessage}d`;
+				quotedMessage = `${quoteMessage}d`;
 				await tryTapping(element(by[textMatcher](quoteMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
@@ -459,6 +460,15 @@ describe('Room screen', () => {
 				await waitFor(element(by.id(`reply-${user.name}-${quoteMessage}`).withDescendant(by[textMatcher](quoteMessage))))
 					.toBeVisible()
 					.withTimeout(3000);
+			});
+			it('should back to rooms list view and see the last message correctly and navigate again to room', async () => {
+				const expectedLastMessage = `You: ${quotedMessage}`;
+				await sleep(300);
+				await tapBack();
+				await waitFor(element(by.id(`markdown-preview-${expectedLastMessage}`)))
+					.toBeVisible()
+					.withTimeout(5000);
+				await element(by.id(`markdown-preview-${expectedLastMessage}`)).tap();
 			});
 
 			it('should delete message', async () => {
@@ -490,11 +500,11 @@ describe('Room screen', () => {
 				const { name: replyRoom } = await createRandomRoom(replyUser, 'c');
 				const originalMessage = 'Message to reply in DM';
 				const replyMessage = 'replied in dm';
+				await sendMessage(replyUser, replyRoom, originalMessage);
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(replyRoom);
-				await sendMessage(replyUser, replyRoom, originalMessage);
 				await waitFor(element(by[textMatcher](originalMessage)).atIndex(0))
 					.toBeVisible()
 					.withTimeout(10000);
@@ -502,16 +512,27 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('room-view-join-button')))
 					.not.toBeVisible()
 					.withTimeout(10000);
-				await element(by[textMatcher](originalMessage)).atIndex(0).tap();
 				await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
-				await sleep(300); // wait for animation
+				await sleep(600); // wait for animation
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by[textMatcher]('Reply in direct message')).atIndex(0))
+				await sleep(600); // wait for animation
+				// Fix android flaky test. Close the action sheet, then re-open again
+				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
+				await sleep(1000); // wait for animation
+				await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
+				await sleep(600); // wait for animation
+				await waitFor(element(by.id('action-sheet')))
 					.toExist()
+					.withTimeout(2000);
+				await sleep(600); // wait for animation
+				await waitFor(element(by[textMatcher]('Reply in direct message')).atIndex(0))
+					.toBeVisible()
 					.withTimeout(6000);
+				await sleep(600); // wait for animation
 				await element(by[textMatcher]('Reply in direct message')).atIndex(0).tap();
+				await sleep(600); // wait for animation
 				await waitFor(element(by.id(`room-view-title-${replyUser.username}`)))
 					.toExist()
 					.withTimeout(6000);

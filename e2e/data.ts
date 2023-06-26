@@ -31,7 +31,7 @@ const data = {
 		return {
 			username: `user${randomVal}`,
 			name: `user${randomVal}`, // FIXME: apply a different name
-			password: `password@123${randomVal}`,
+			password: `Password1@${randomVal}`,
 			email: `mobile+${randomVal}@rocket.chat`
 		};
 	}
