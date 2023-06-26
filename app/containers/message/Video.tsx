@@ -101,6 +101,7 @@ const Video = React.memo(
 						}
 						return;
 					}
+					if (isReply) return;
 					if (downloadActive) return setLoading(true);
 					await handleAutoDownload();
 				}

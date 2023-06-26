@@ -143,7 +143,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	async componentDidMount() {
-		const { file } = this.props;
+		const { file, isReply } = this.props;
 		const cachedAudioResult = await searchMediaFileAsync({
 			type: 'audio',
 			mimeType: file.audio_type,
@@ -154,6 +154,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			await this.sound.loadAsync({ uri: cachedAudioResult.file.uri });
 			return this.setState({ loading: false });
 		}
+		if (isReply) return;
 		await this.handleAutoDownload();
 	}
 

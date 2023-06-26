@@ -108,6 +108,7 @@ const ImageContainer = React.memo(
 						}));
 						return setCached(true);
 					}
+					if (isReply) return;
 					if (isDownloadActive('image', imgUrlToCache)) {
 						return setLoading(true);
 					}
