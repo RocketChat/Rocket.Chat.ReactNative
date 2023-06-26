@@ -53,7 +53,7 @@ describe('Deep linking', () => {
 				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`)
 			});
-			await waitFor(element(by[textMatcher]("You've been logged out by the server. Please log in again.")))
+			await waitFor(element(by[textMatcher]("You've been logged out by the workspace. Please log in again.")))
 				.toExist()
 				.withTimeout(30000); // TODO: we need to improve this message
 		});
