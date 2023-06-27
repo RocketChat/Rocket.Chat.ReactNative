@@ -10,7 +10,14 @@ import {
 	TTextMatcher,
 	expectValidRegisterOrRetry
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, login, sendMessage } from '../../helpers/data_setup';
+import {
+	IDeleteCreateUser,
+	createRandomRoom,
+	createRandomUser,
+	deleteCreatedUsers,
+	login,
+	sendMessage
+} from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
@@ -32,6 +39,8 @@ describe('Deep linking', () => {
 	let room: string;
 	const threadMessage = `to-thread-${random()}`;
 
+	const deleteUsersAfterAll: IDeleteCreateUser[] = [];
+
 	beforeAll(async () => {
 		const user = await createRandomUser();
 		({ _id: rid, name: room } = await createRandomRoom(user, 'p'));
@@ -44,6 +53,10 @@ describe('Deep linking', () => {
 		const result = await sendMessage(user, room, threadMessage);
 		threadId = result.message._id;
 		await sendMessage(user, result.message.rid, random(), threadId);
+	});
+
+	afterAll(async () => {
+		await deleteCreatedUsers(deleteUsersAfterAll);
 	});
 
 	describe('Authentication', () => {
@@ -91,6 +104,8 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
+			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
+
 			await authAndNavigate();
 		});
 	});
