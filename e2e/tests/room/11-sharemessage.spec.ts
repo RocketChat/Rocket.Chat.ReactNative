@@ -60,7 +60,7 @@ describe('Share a message with another user', () => {
 				await sleep(300);
 			});
 			it('should share the message', async () => {
-				await waitFor(element(by.id('share-message-view')))
+				await waitFor(element(by.id('forward-message-view')))
 					.toBeVisible()
 					.withTimeout(2000);
 				await element(by[textMatcher]('Select')).tap();
@@ -72,10 +72,10 @@ describe('Share a message with another user', () => {
 				await element(by.id(`multi-select-item-${otherUser.username.toLowerCase()}`)).tap();
 				await element(by.id('multi-select-search')).tapReturnKey();
 				await sleep(300);
-				await waitFor(element(by.id('share-message-view-send')))
+				await waitFor(element(by.id('forward-message-view-send')))
 					.toBeVisible()
 					.withTimeout(10000);
-				await element(by.id('share-message-view-send')).tap();
+				await element(by.id('forward-message-view-send')).tap();
 				await sleep(300);
 			});
 			it('should go to otherUser DM and verify if exist both messages', async () => {

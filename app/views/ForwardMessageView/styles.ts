@@ -4,15 +4,19 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		padding: 8
+		flex: 1
+	},
+	inputContainer: {
+		marginTop: 18,
+		paddingHorizontal: 15,
+		marginBottom: 8
 	},
 	label: {
-		marginBottom: 10,
+		marginBottom: 4,
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
-	inputStyle: {
-		marginBottom: 16
+	messageContainer: {
+		paddingVertical: 8
 	}
 });

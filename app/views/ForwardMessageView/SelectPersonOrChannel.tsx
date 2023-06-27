@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
@@ -55,10 +55,9 @@ const SelectPersonOrChannel = ({
 		});
 
 	return (
-		<>
-			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Person_or_channel')}</Text>
+		<View style={styles.inputContainer}>
+			<Text style={[styles.label, { color: colors.bodyText }]}>{I18n.t('Person_or_channel')}</Text>
 			<MultiSelect
-				inputStyle={styles.inputStyle}
 				onSearch={getRooms}
 				onChange={onRoomSelect}
 				options={rooms.map(room => ({
@@ -70,7 +69,7 @@ const SelectPersonOrChannel = ({
 				context={BlockContext.FORM}
 				multiselect
 			/>
-		</>
+		</View>
 	);
 };
 
