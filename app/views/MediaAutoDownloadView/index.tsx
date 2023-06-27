@@ -35,28 +35,28 @@ const MediaAutoDownload = () => {
 		<SafeAreaView testID='media-auto-download-view'>
 			<StatusBar />
 			<List.Container testID='media-auto-download-view-list'>
-				<List.Separator />
-				<ListPicker
-					onChangeValue={setImagesPreference}
-					value={imagesPreference}
-					title='Images'
-					testID='media-auto-download-view-images'
-				/>
-				<List.Separator />
-				<ListPicker
-					onChangeValue={setVideoPreference}
-					value={videoPreference}
-					title='Video'
-					testID='media-auto-download-view-video'
-				/>
-				<List.Separator />
-				<ListPicker
-					onChangeValue={setAudioPreference}
-					value={audioPreference}
-					title='Audio'
-					testID='media-auto-download-view-audio'
-				/>
-				<List.Separator />
+				<List.Section>
+					<ListPicker
+						onChangeValue={setImagesPreference}
+						value={imagesPreference}
+						title='Images'
+						testID='media-auto-download-view-images'
+					/>
+					<List.Separator />
+					<ListPicker
+						onChangeValue={setVideoPreference}
+						value={videoPreference}
+						title='Video'
+						testID='media-auto-download-view-video'
+					/>
+					<List.Separator />
+					<ListPicker
+						onChangeValue={setAudioPreference}
+						value={audioPreference}
+						title='Audio'
+						testID='media-auto-download-view-audio'
+					/>
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);
