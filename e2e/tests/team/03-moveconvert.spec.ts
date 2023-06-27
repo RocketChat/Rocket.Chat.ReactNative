@@ -80,7 +80,7 @@ describe('Move/Convert Team', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-convert-to-team')).tap();
-			await waitFor(element(by[textMatcher]('You are converting this Channel to a Team. All Members will be kept.')))
+			await waitFor(element(by[textMatcher]('You are converting this channel to a team. All members will be kept.')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Convert').and(by.type(alertButtonType))).tap();
@@ -100,7 +100,7 @@ describe('Move/Convert Team', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-convert-to-team')).tap();
-			await waitFor(element(by[textMatcher]('You are converting this Channel to a Team. All Members will be kept.')))
+			await waitFor(element(by[textMatcher]('You are converting this channel to a team. All members will be kept.')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Convert').and(by.type(alertButtonType))).tap();
@@ -172,11 +172,11 @@ describe('Move/Convert Team', () => {
 		it('should convert a team to a channel', async () => {
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
-			await waitFor(element(by[textMatcher]('Convert to Channel')))
+			await waitFor(element(by[textMatcher]('Convert to channel')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by[textMatcher]('Convert to Channel')).atIndex(0).tap();
-			await waitFor(element(by[textMatcher]('Converting Team to Channel')))
+			await element(by[textMatcher]('Convert to channel')).atIndex(0).tap();
+			await waitFor(element(by[textMatcher]('Converting team to channel')))
 				.toExist()
 				.withTimeout(2000);
 			await waitFor(element(by.id(`select-list-view-item-${toBeMoved}`)))
@@ -188,7 +188,7 @@ describe('Move/Convert Team', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('select-list-view-submit')).tap();
-			await waitFor(element(by[textMatcher]('You are converting this Team to a Channel')))
+			await waitFor(element(by[textMatcher]('You are converting this team to a channel')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Convert').and(by.type(alertButtonType))).tap();
