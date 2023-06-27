@@ -46,7 +46,7 @@ describe('Discussion', () => {
 			.toExist()
 			.withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by[textMatcher]('Select a Channel...')).tap();
+		await element(by[textMatcher]('Select a channel...')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${room}`);
 		await waitFor(element(by.id(`multi-select-item-${room}`)))
 			.toExist()
@@ -76,7 +76,7 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('action-sheet')))
 			.toBeVisible()
 			.withTimeout(2000);
-		await element(by[textMatcher]('Create Discussion')).atIndex(0).tap();
+		await element(by[textMatcher]('Create discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(2000);
@@ -108,7 +108,7 @@ describe('Discussion', () => {
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by[textMatcher]('Start a Discussion')).atIndex(0).tap();
+			await element(by[textMatcher]('Start a discussion')).atIndex(0).tap();
 			await sleep(1000); // wait for animation
 			await waitFor(element(by.id('create-discussion-view')))
 				.toBeVisible()
