@@ -18,11 +18,11 @@ export const fetchAutoDownloadEnabled = (mediaType: TMediaType) => {
 	let defaultValueByMediaType = false;
 	if (mediaDownloadPreference === null) {
 		if (mediaType === 'imagesPreferenceDownload') {
-			// The same as MediaDownloadOption.WIFI_MOBILE_DATA
+			// The same as 'wifi_mobile_data'
 			defaultValueByMediaType = true;
 		}
 		if (mediaType === 'audioPreferenceDownload' || mediaType === 'videoPreferenceDownload') {
-			// The same as MediaDownloadOption.WIFI
+			// The same as 'wifi'
 			defaultValueByMediaType = internetType === NetInfoStateType.wifi;
 		}
 	}
