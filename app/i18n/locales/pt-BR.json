@@ -887,7 +887,7 @@
   "Presence_Cap_Warning_Title": "Status do usuário desabilitado temporariamente",
   "Presence_Cap_Warning_Description": "O limite de conexões ativas para a workspace foi atingido, por isso o serviço responsável pela presença dos usuários está temporariamente desabilitado. Ele pode ser reabilitado manualmente nas configurações da workspace.",
   "and_N_more": "e mais {{count}}",
-  "Share_message": "Compartilhar messagem",
+  "Forward_message": "Encaminhar mensagem",
   "Person_or_channel": "Pessoa ou canal",
   "Select": "Selecionar"
 }

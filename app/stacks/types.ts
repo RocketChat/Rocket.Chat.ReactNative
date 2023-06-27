@@ -270,7 +270,7 @@ export type NewMessageStackParamList = {
 		message: IMessage;
 		showCloseModal: boolean;
 	};
-	ShareMessageView: {
+	ForwardMessageView: {
 		message: TAnyMessageModel;
 	};
 };

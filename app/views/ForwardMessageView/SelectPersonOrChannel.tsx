@@ -6,7 +6,7 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
-import { IShareMessageViewSelectRoom } from './interfaces';
+import { IForwardMessageViewSelectRoom } from './interfaces';
 import { ISearchLocal } from '../../definitions';
 import { localSearchSubscription } from '../../lib/methods';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
@@ -19,7 +19,7 @@ const SelectPersonOrChannel = ({
 	onRoomSelect,
 	blockUnauthenticatedAccess,
 	serverVersion
-}: IShareMessageViewSelectRoom): React.ReactElement => {
+}: IForwardMessageViewSelectRoom): React.ReactElement => {
 	const [rooms, setRooms] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
 

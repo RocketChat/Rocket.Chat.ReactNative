@@ -21,7 +21,7 @@ import Message from '../../containers/message';
 import { NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
 
-const ShareMessageView = () => {
+const ForwardMessageView = () => {
 	const [roomsId, setRoomsId] = useState<string[]>([]);
 	const [sending, setSending] = useState(false);
 	const navigation = useNavigation();
@@ -29,7 +29,7 @@ const ShareMessageView = () => {
 
 	const {
 		params: { message }
-	} = useRoute<RouteProp<NewMessageStackParamList, 'ShareMessageView'>>();
+	} = useRoute<RouteProp<NewMessageStackParamList, 'ForwardMessageView'>>();
 
 	const { blockUnauthenticatedAccess, server, serverVersion, user, baseUrl, Message_TimeFormat, customEmojis } = useAppSelector(
 		state => ({
@@ -46,7 +46,7 @@ const ShareMessageView = () => {
 	useLayoutEffect(() => {
 		const isSendButtonEnabled = roomsId.length > 0 && !sending;
 		navigation.setOptions({
-			title: I18n.t('Share_message'),
+			title: I18n.t('Forward_message'),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item
@@ -118,4 +118,4 @@ const ShareMessageView = () => {
 	);
 };
 
-export default ShareMessageView;
+export default ForwardMessageView;

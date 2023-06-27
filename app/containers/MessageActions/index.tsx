@@ -193,9 +193,9 @@ const MessageActions = React.memo(
 			const handleShareMessage = (message: TAnyMessageModel) => {
 				const params = { message };
 				if (isMasterDetail) {
-					Navigation.navigate('ModalStackNavigator', { screen: 'ShareMessageView', params });
+					Navigation.navigate('ModalStackNavigator', { screen: 'ForwardMessageView', params });
 				} else {
-					Navigation.navigate('NewMessageStackNavigator', { screen: 'ShareMessageView', params });
+					Navigation.navigate('NewMessageStackNavigator', { screen: 'ForwardMessageView', params });
 				}
 			};
 
@@ -400,9 +400,9 @@ const MessageActions = React.memo(
 					onPress: () => handleCreateDiscussion(message)
 				});
 
-				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0')) {
+				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
-						title: I18n.t('Share_message'),
+						title: I18n.t('Forward'),
 						icon: 'arrow-forward',
 						onPress: () => handleShareMessage(message)
 					});

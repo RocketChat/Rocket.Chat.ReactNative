@@ -63,7 +63,7 @@ import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
-import ShareMessageView from '../views/ShareMessageView';
+import ForwardMessageView from '../views/ForwardMessageView';
 import QueueListView from '../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../views/AddChannelTeamView';
 import AddExistingChannelView from '../views/AddExistingChannelView';
@@ -273,7 +273,7 @@ const NewMessageStackNavigator = () => {
 			<NewMessageStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			{/* @ts-ignore */}
 			<NewMessageStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
-			<NewMessageStack.Screen name='ShareMessageView' component={ShareMessageView} />
+			<NewMessageStack.Screen name='ForwardMessageView' component={ForwardMessageView} />
 		</NewMessageStack.Navigator>
 	);
 };
