@@ -1,5 +1,5 @@
-import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
+import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -38,12 +38,13 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			getSelection: () => ({ start: 0, end: 0 }),
 			setInput: () => {}
 		});
-		const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {} });
+		const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 		const { colors, theme } = useTheme();
 		const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
 		const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 		const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 		const [focused, setFocused] = useState(false);
+		const [trackingViewHeight, setTrackingViewHeight] = useState(0);
 		const permissionToUpload = useCanUploadFile(rid);
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 		const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -65,6 +66,29 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		useImperativeHandle(ref, () => ({
 			closeEmojiKeyboardAndAction
 		}));
+
+		useEffect(() => {
+			const showListener = Keyboard.addListener('keyboardWillShow', async () => {
+				if (trackingViewRef?.current) {
+					const props = await trackingViewRef.current.getNativeProps();
+					console.log('🚀 ~ file: MessageComposer.tsx:73 ~ show ~ props:', props);
+					setTrackingViewHeight(props.trackingViewHeight);
+				}
+			});
+
+			const hideListener = Keyboard.addListener('keyboardWillHide', async () => {
+				if (trackingViewRef?.current) {
+					const props = await trackingViewRef.current.getNativeProps();
+					console.log('🚀 ~ file: MessageComposer.tsx:73 ~ show ~ props:', props);
+					setTrackingViewHeight(props.trackingViewHeight);
+				}
+			});
+
+			return () => {
+				showListener.remove();
+				hideListener.remove();
+			};
+		}, []);
 
 		const sendMessage = () => {
 			onSendMessage(composerInputComponentRef.current.sendMessage());
@@ -171,18 +195,32 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				<KeyboardAccessoryView
 					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 					renderContent={() => (
-						<View
-							style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
-							testID='message-composer'
-						>
-							<View style={styles.input}>
-								<Left />
-								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-								<Right />
+						<>
+							<View
+								style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
+								testID='message-composer'
+							>
+								<View style={styles.input}>
+									<Left />
+									<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+									<Right />
+								</View>
+								<Toolbar />
+								<EmojiSearchbar />
 							</View>
-							<Toolbar />
-							<EmojiSearchbar />
-						</View>
+							{trackingViewHeight ? (
+								<View
+									style={{
+										height: 200,
+										left: 8,
+										right: 8,
+										backgroundColor: '#00000080',
+										position: 'absolute',
+										bottom: trackingViewHeight - 12
+									}}
+								/>
+							) : null}
+						</>
 					)}
 					kbInputRef={composerInputRef}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}

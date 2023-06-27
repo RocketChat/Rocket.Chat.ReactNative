@@ -60,4 +60,5 @@ export interface IComposerInputProps {
 
 export interface ITrackingView {
 	resetTracking: () => void;
+	getNativeProps: () => any;
 }
