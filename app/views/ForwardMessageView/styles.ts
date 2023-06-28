@@ -7,8 +7,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	inputContainer: {
-		marginTop: 18,
-		paddingHorizontal: 15,
+		marginTop: 16,
+		paddingHorizontal: 16,
 		marginBottom: 8
 	},
 	label: {
