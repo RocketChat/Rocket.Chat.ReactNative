@@ -1,9 +1,7 @@
 import { Camera } from 'expo-camera';
-import React, { useEffect, useRef, useState } from 'react';
-import { Audio } from 'expo-av';
+import React, { useEffect, useState } from 'react';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
-import StartACallActionSheet from './StartACallActionSheet';
 import { SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
@@ -13,6 +11,7 @@ import { handleAndroidBltPermission } from '../../methods/videoConf';
 import { Services } from '../../services';
 import { useAppSelector } from '../useAppSelector';
 import { useSnaps } from '../useSnaps';
+import StartACallActionSheet from './StartACallActionSheet';
 
 const availabilityErrors = {
 	NOT_CONFIGURED: 'video-conf-provider-not-configured',
@@ -98,51 +97,4 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	}, []);
 
 	return { showInitCallActionSheet, showCallOption };
-};
-
-export enum ESounds {
-	DIALTONE = 'dialtone',
-	RINGTONE = 'ringtone'
-}
-
-export const useVideoConfRinger = (ringer: ESounds, autoPlay = true) => {
-	const sound = useRef<Audio.Sound | null>(null);
-	useEffect(() => {
-		(async () => {
-			let expo = null;
-			switch (ringer) {
-				case ESounds.DIALTONE:
-					expo = await Audio.Sound.createAsync(require(`./dialtone.mp3`));
-					break;
-				case ESounds.RINGTONE:
-					expo = await Audio.Sound.createAsync(require(`./ringtone.mp3`));
-					break;
-				default:
-					expo = await Audio.Sound.createAsync(require(`./dialtone.mp3`));
-					break;
-			}
-			sound.current = expo.sound;
-			if (autoPlay) {
-				await sound.current.playAsync();
-				await sound.current.setIsLoopingAsync(true);
-			}
-		})();
-	}, []);
-
-	useEffect(() => () => stopSound(), []);
-
-	const playSound = async () => {
-		if (sound.current) {
-			await sound.current.playAsync();
-			await sound.current.setIsLoopingAsync(true);
-		}
-	};
-
-	const stopSound = () => {
-		if (sound.current?.unloadAsync) {
-			sound.current.unloadAsync();
-		}
-	};
-
-	return { playSound, stopSound };
 };

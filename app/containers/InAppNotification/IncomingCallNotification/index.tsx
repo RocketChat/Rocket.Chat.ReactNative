@@ -9,13 +9,13 @@ import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
-import { ESounds, useVideoConfRinger } from '../../../lib/hooks/useVideoConf';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 import { CallHeader } from '../../CallHeader';
 import { useStyle } from './style';
 import useUserData from '../../../lib/hooks/useUserData';
+import Ringer, { ERingerSounds } from '../../Ringer';
 
 export interface INotifierComponent {
 	notification: {
@@ -37,7 +37,6 @@ const IncomingCallHeader = React.memo(
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
 		const dispatch = useDispatch();
-		useVideoConfRinger(ESounds.RINGTONE);
 
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const styles = useStyle();
@@ -94,6 +93,7 @@ const IncomingCallHeader = React.memo(
 						<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
 					</Touchable>
 				</View>
+				<Ringer ringer={ERingerSounds.RINGTONE} />
 			</View>
 		);
 	}
