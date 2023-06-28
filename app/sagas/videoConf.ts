@@ -58,6 +58,8 @@ function* onDirectCall(payload: ICallInfo) {
 			customComponent: IncomingCallNotification,
 			customTime: 30000,
 			customNotification: true,
+			hideOnPress: false,
+			swipeEnabled: false,
 			...payload
 		});
 	}

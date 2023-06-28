@@ -20,6 +20,8 @@ const InAppNotification = memo(() => {
 			customComponent?: ElementType;
 			customTime?: number;
 			customNotification?: boolean;
+			hideOnPress?: boolean;
+			swipeEnabled?: boolean;
 		}
 	) => {
 		if (appState !== 'foreground') return;
@@ -36,7 +38,9 @@ const InAppNotification = memo(() => {
 				componentProps: {
 					notification
 				},
-				duration: notification.customTime || 3000 // default 3s
+				duration: notification.customTime || 3000, // default 3s,
+				hideOnPress: notification.hideOnPress ?? true,
+				swipeEnabled: notification.swipeEnabled ?? true
 			});
 		}
 	};
