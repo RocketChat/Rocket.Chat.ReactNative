@@ -58,6 +58,7 @@ interface IMessageContainerProps {
 	onPress?: () => void;
 	theme: TSupportedThemes;
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
+	isPreview?: boolean;
 }
 
 interface IMessageContainerState {
@@ -345,7 +346,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
-			highlighted
+			highlighted,
+			isPreview
 		} = this.props;
 		const {
 			id,
@@ -462,6 +464,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					highlighted={highlighted}
 					comment={comment}
 					isTranslated={isTranslated}
+					isPreview={isPreview}
 				/>
 			</MessageContext.Provider>
 		);

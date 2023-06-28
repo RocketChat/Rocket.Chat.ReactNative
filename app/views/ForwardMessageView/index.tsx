@@ -4,7 +4,6 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { getPermalinkMessage } from '../../lib/methods';
-import { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
@@ -16,31 +15,26 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import SelectPersonOrChannel from './SelectPersonOrChannel';
 import { useAppSelector } from '../../lib/hooks';
-import Message from '../../containers/message';
 import { NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
+import MessagePreview from '../../containers/message/Preview';
 
 const ForwardMessageView = () => {
 	const [rooms, setRooms] = useState<string[]>([]);
 	const [sending, setSending] = useState(false);
 	const navigation = useNavigation();
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 
 	const {
 		params: { message }
 	} = useRoute<RouteProp<NewMessageStackParamList, 'ForwardMessageView'>>();
 
-	const { blockUnauthenticatedAccess, server, serverVersion, user, baseUrl, Message_TimeFormat, customEmojis, useRealName } =
-		useAppSelector(state => ({
-			user: getUserSelector(state),
-			server: state.server.server,
-			blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
-			serverVersion: state.server.version as string,
-			baseUrl: state.server.server,
-			Message_TimeFormat: state.settings.Message_TimeFormat as string,
-			customEmojis: state.customEmojis,
-			useRealName: state.settings.UI_Use_Real_Name as boolean
-		}));
+	const { blockUnauthenticatedAccess, server, serverVersion, user } = useAppSelector(state => ({
+		user: getUserSelector(state),
+		server: state.server.server,
+		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+		serverVersion: state.server.version as string
+	}));
 
 	useLayoutEffect(() => {
 		const isSendButtonEnabled = rooms.length > 0 && !sending;
@@ -74,30 +68,6 @@ const ForwardMessageView = () => {
 		setRooms(value);
 	};
 
-	const getCustomEmoji: TGetCustomEmoji = name => {
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
-	const cleanUpMessage = () => {
-		const messageToBeCleaned = message.asPlain();
-		if (messageToBeCleaned.t === 'discussion-created') {
-			// set the message type as null to avoid show the discussion started
-			// @ts-ignore
-			messageToBeCleaned.t = null;
-		}
-		// set to undefined to avoid show the reactions
-		messageToBeCleaned.reactions = undefined;
-		// set to undefined to avoid show the button reply to a thread
-		messageToBeCleaned.tlm = undefined;
-		// set to undefined to avoid show as showing a thread sequential with small avatar and text
-		messageToBeCleaned.tmid = undefined;
-		return messageToBeCleaned as TAnyMessageModel;
-	};
-
 	return (
 		<KeyboardView
 			style={{ backgroundColor: colors.auxiliaryBackground }}
@@ -116,16 +86,7 @@ const ForwardMessageView = () => {
 						serverVersion={serverVersion}
 					/>
 					<View pointerEvents='none' style={[styles.messageContainer, { backgroundColor: colors.backgroundColor }]}>
-						<Message
-							item={cleanUpMessage()}
-							user={user}
-							rid={message.rid}
-							baseUrl={baseUrl}
-							getCustomEmoji={getCustomEmoji}
-							theme={theme}
-							timeFormat={Message_TimeFormat}
-							useRealName={useRealName}
-						/>
+						<MessagePreview message={message} />
 					</View>
 				</ScrollView>
 			</SafeAreaView>
