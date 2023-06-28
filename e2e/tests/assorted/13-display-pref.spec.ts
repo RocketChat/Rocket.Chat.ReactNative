@@ -73,14 +73,14 @@ describe('Display prefs', () => {
 			it('should appear the last message in RoomList when is Expanded', async () => {
 				await element(by.id('display-pref-view-expanded')).tap();
 				await goToRoomList();
-				await expect(element(by.id('room-item-last-message')).atIndex(0)).toBeVisible();
+				await expect(element(by.id('room-item-last-message-container')).atIndex(0)).toBeVisible();
 			});
 
 			it('should not appear the last message in RoomList when is Condensed', async () => {
 				await goToDisplayPref();
 				await element(by.id('display-pref-view-condensed')).tap();
 				await goToRoomList();
-				await expect(element(by.id('room-item-last-message'))).not.toBeVisible();
+				await expect(element(by.id('room-item-last-message-container'))).not.toBeVisible();
 			});
 		});
 

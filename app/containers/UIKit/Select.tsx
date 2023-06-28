@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -55,6 +55,14 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		backgroundColor: themes[theme].backgroundColor
 	};
 
+	const placeholderObject = useMemo(
+		() =>
+			placeholder && !items.some(item => item.label === textParser([placeholder]))
+				? { label: textParser([placeholder]), value: null }
+				: {},
+		[items.length, placeholder?.text]
+	);
+
 	const Icon = () =>
 		loading ? (
 			<ActivityIndicator style={styles.loading} />
@@ -66,7 +74,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		// @ts-ignore lib types issues. We need to fork it and maintain or find another lib
 		<RNPickerSelect
 			items={items}
-			placeholder={placeholder ? { label: textParser([placeholder]), value: null } : {}}
+			placeholder={placeholderObject}
 			useNativeAndroidPickerStyle={false}
 			value={selected}
 			disabled={disabled}
