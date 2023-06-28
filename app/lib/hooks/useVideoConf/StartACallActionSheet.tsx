@@ -32,6 +32,15 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	const insets = useSafeAreaInsets();
 	const paddingBottom = isIOS && insets.bottom ? 8 : 0;
 
+	React.useEffect(
+		() => () => {
+			if (calling) {
+				dispatch(cancelCall({}));
+			}
+		},
+		[calling, dispatch]
+	);
+
 	return (
 		<View
 			style={[style.actionSheetContainer, { paddingBottom }]}
