@@ -7,7 +7,14 @@ import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } fro
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
 import { useCanUploadFile, useChooseMedia } from './hooks';
-import { IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView, TMicOrSend } from './interfaces';
+import {
+	IComposerInput,
+	IMessageComposerProps,
+	IMessageComposerRef,
+	ITrackingView,
+	TAutocompleteType,
+	TMicOrSend
+} from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { useAppSelector } from '../../lib/hooks';
@@ -45,6 +52,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 		const [focused, setFocused] = useState(false);
 		const [trackingViewHeight, setTrackingViewHeight] = useState(0);
+		const [autocompleteType, setAutocompleteType] = useState<TAutocompleteType>(null);
+		const [autocompleteText, setAutocompleteText] = useState('');
 		const permissionToUpload = useCanUploadFile(rid);
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 		const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -158,6 +167,10 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					showEmojiSearchbar,
 					permissionToUpload,
 					trackingViewHeight,
+					autocompleteType,
+					setAutocompleteType,
+					autocompleteText,
+					setAutocompleteText,
 					setTrackingViewHeight,
 					setMicOrSend,
 					openEmojiKeyboard,

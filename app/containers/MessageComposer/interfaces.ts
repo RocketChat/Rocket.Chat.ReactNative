@@ -62,3 +62,5 @@ export interface ITrackingView {
 	resetTracking: () => void;
 	getNativeProps: () => any;
 }
+
+export type TAutocompleteType = '@' | '/' | '#' | '!' | ':' | null;

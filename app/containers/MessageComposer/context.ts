@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { TMicOrSend } from './interfaces';
+import { TAutocompleteType, TMicOrSend } from './interfaces';
 import { IEmoji } from '../../definitions';
 
 type TMessageComposerContext = {
@@ -15,6 +15,10 @@ type TMessageComposerContext = {
 	focused: boolean;
 	permissionToUpload: boolean;
 	trackingViewHeight: number;
+	autocompleteType: TAutocompleteType;
+	setAutocompleteType: (type: TAutocompleteType) => void;
+	autocompleteText: string;
+	setAutocompleteText: (text: string) => void;
 	setTrackingViewHeight: (height: number) => void;
 	setMicOrSend(type: TMicOrSend): void;
 	sendMessage(): void;
@@ -39,6 +43,10 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	focused: false,
 	permissionToUpload: false,
 	trackingViewHeight: 0,
+	autocompleteType: null,
+	autocompleteText: '',
+	setAutocompleteText: () => {},
+	setAutocompleteType: () => {},
 	setTrackingViewHeight: () => {},
 	setMicOrSend: () => {},
 	sendMessage: () => {},

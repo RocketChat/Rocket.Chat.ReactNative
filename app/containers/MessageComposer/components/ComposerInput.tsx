@@ -32,7 +32,17 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, sharing, setFocused, setMicOrSend, setTrackingViewHeight } = useContext(MessageComposerContext);
+	const {
+		rid,
+		tmid,
+		editing,
+		sharing,
+		setFocused,
+		setMicOrSend,
+		setTrackingViewHeight,
+		setAutocompleteType,
+		setAutocompleteText
+	} = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -98,16 +108,47 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setFocused(false);
 	};
 
-	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
+	const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
-		// if (isTextEmpty) {
-		// 	// this.stopTrackingMention();
-		// 	console.log('stopTrackingMention');
-		// 	return;
-		// }
-		// const { start, end } = selectionRef.current;
-		// console.log('🚀 ~ file: MessageComposerInput.tsx:73 ~ debouncedOnChangeText ~ start, end:', start, end);
+		if (isTextEmpty) {
+			setAutocompleteType(null);
+			setAutocompleteText('');
+			return;
+		}
+		const { start, end } = selectionRef.current;
+		const cursor = Math.max(start, end);
+		const whiteSpaceOrBreakLineRegex = /[\s\n]+/;
+		const txt =
+			cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
+		const lastWord = txt[txt.length - 1];
+		const result = lastWord.substring(1);
+		console.log('🚀 ~ file: ComposerInput.tsx:116 ~ debouncedOnChangeText ~ result:', result);
+
+		if (!lastWord) {
+			return;
+		}
+		if (text.match(/^\//)) {
+			// TODO: reducer?
+			setAutocompleteType('/');
+			setAutocompleteText(lastWord);
+		}
+		if (lastWord.match(/^#/)) {
+			setAutocompleteType('#');
+			setAutocompleteText(lastWord);
+		}
+		if (lastWord.match(/^@/)) {
+			setAutocompleteType('@');
+			setAutocompleteText(lastWord);
+		}
+		if (lastWord.match(/^:/)) {
+			setAutocompleteType(':');
+			setAutocompleteText(lastWord);
+		}
+		if (lastWord.match(/^!/)) {
+			setAutocompleteType('!');
+			setAutocompleteText(lastWord);
+		}
 	}, 300); // TODO: 300ms?
 
 	const handleTyping = (isTyping: boolean) => {
