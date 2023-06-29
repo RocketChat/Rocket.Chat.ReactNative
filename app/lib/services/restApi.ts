@@ -230,17 +230,23 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
-	const params = {
-		...(type === 'c'
-			? {
+	const serverVersion = reduxStore.getState().server.version;
+	let params;
+	if (type === 'c') {
+		// https://github.com/RocketChat/Rocket.Chat/pull/25279
+		params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
+			? { channelId: rid }
+			: {
 					channelId: rid,
 					channelName: name
-			  }
-			: {
-					roomId: rid,
-					roomName: name
-			  })
-	};
+			  };
+	} else {
+		params = {
+			roomId: rid,
+			roomName: name
+		};
+	}
+
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 };
 

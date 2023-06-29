@@ -1,4 +1,4 @@
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import React from 'react';
 import { BackHandler, Linking, NativeEventSubscription, SafeAreaView } from 'react-native';
 import WebView from 'react-native-webview';
@@ -7,6 +7,7 @@ import { WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
 import { IBaseScreen } from '../definitions';
 import { userAgent } from '../lib/constants';
 import { isIOS } from '../lib/methods/helpers';
+import { getRoomIdFromJitsiCallUrl } from '../lib/methods/helpers/getRoomIdFromJitsiCall';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../lib/methods/videoConfTimer';
 import { ChatsStackParamList } from '../stacks/types';
@@ -30,7 +31,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	componentDidMount() {
 		this.handleJitsiApp();
 		this.onConferenceJoined();
-		activateKeepAwake();
+		activateKeepAwakeAsync();
 	}
 
 	componentWillUnmount() {
@@ -67,11 +68,10 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 
 	onNavigationStateChange = (webViewState: WebViewNavigation) => {
 		const { navigation, route } = this.props;
-		const jitsiRoomId = route.params.url
-			?.split(/^https?:\/\//)[1]
-			?.split('#')[0]
-			?.split('/')[1];
-		if ((jitsiRoomId && !webViewState.url.includes(jitsiRoomId)) || webViewState.url.includes('close')) {
+
+		const roomId = getRoomIdFromJitsiCallUrl(route.params.url);
+
+		if ((roomId && !webViewState.url.includes(roomId)) || webViewState.url.includes('close')) {
 			if (isIOS) {
 				if (webViewState.navigationType) {
 					navigation.pop();
@@ -83,16 +83,19 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	};
 
 	render() {
+		const uri = `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true`;
 		return (
 			<SafeAreaView style={{ flex: 1 }}>
 				<WebView
-					source={{ uri: `${this.url}${this.url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true` }}
+					source={{ uri: uri.replace(/"/g, "'") }}
 					onNavigationStateChange={this.onNavigationStateChange}
-					style={{ flex: 1 }}
+					// Jitsi default background color
+					style={{ flex: 1, backgroundColor: 'rgb(62,62,62)' }}
 					userAgent={userAgent}
 					javaScriptEnabled
 					domStorageEnabled
 					mediaPlaybackRequiresUserAction={false}
+					mediaCapturePermissionGrantType={'grant'}
 				/>
 			</SafeAreaView>
 		);
