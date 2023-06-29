@@ -15,6 +15,7 @@ type TMessageComposerContext = {
 	focused: boolean;
 	permissionToUpload: boolean;
 	trackingViewHeight: number;
+	keyboardHeight: number;
 	autocompleteType: TAutocompleteType;
 	setAutocompleteType: (type: TAutocompleteType) => void;
 	autocompleteText: string;
@@ -43,6 +44,7 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	focused: false,
 	permissionToUpload: false,
 	trackingViewHeight: 0,
+	keyboardHeight: 0,
 	autocompleteType: null,
 	autocompleteText: '',
 	setAutocompleteText: () => {},

@@ -1,5 +1,5 @@
-import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
+import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -52,6 +52,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 		const [focused, setFocused] = useState(false);
 		const [trackingViewHeight, setTrackingViewHeight] = useState(0);
+		const [keyboardHeight, setKeyboardHeight] = useState(0);
 		const [autocompleteType, setAutocompleteType] = useState<TAutocompleteType>(null);
 		const [autocompleteText, setAutocompleteText] = useState('');
 		const permissionToUpload = useCanUploadFile(rid);
@@ -75,6 +76,24 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		useImperativeHandle(ref, () => ({
 			closeEmojiKeyboardAndAction
 		}));
+
+		useEffect(() => {
+			const showListener = Keyboard.addListener('keyboardWillShow', async () => {
+				if (trackingViewRef?.current) {
+					const props = await trackingViewRef.current.getNativeProps();
+					setKeyboardHeight(props.keyboardHeight);
+				}
+			});
+
+			const hideListener = Keyboard.addListener('keyboardWillHide', () => {
+				setKeyboardHeight(0);
+			});
+
+			return () => {
+				showListener.remove();
+				hideListener.remove();
+			};
+		}, [trackingViewRef]);
 
 		const sendMessage = () => {
 			onSendMessage(composerInputComponentRef.current.sendMessage());
@@ -167,6 +186,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					showEmojiSearchbar,
 					permissionToUpload,
 					trackingViewHeight,
+					keyboardHeight,
 					autocompleteType,
 					setAutocompleteType,
 					autocompleteText,
@@ -199,7 +219,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 								</View>
 								<Toolbar />
 								<EmojiSearchbar />
-								<Autocomplete />
 							</View>
 						</>
 					)}
@@ -214,6 +233,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					bottomViewColor={colors.surfaceLight}
 					iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				/>
+				<Autocomplete />
 			</MessageComposerContext.Provider>
 		);
 	}
