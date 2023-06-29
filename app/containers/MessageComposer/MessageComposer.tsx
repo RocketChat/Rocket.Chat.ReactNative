@@ -8,6 +8,7 @@ import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
 import { useCanUploadFile, useChooseMedia } from './hooks';
 import {
+	IAutocompleteItemProps,
 	IComposerInput,
 	IMessageComposerProps,
 	IMessageComposerRef,
@@ -153,7 +154,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		};
 
 		// FIXME: type this
-		const onAutocompleteItemSelected = (item: any) => {
+		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = item => {
 			const text = composerInputComponentRef.current.getText();
 			const { start, end } = composerInputComponentRef.current.getSelection();
 			const cursor = Math.max(start, end);
@@ -168,7 +169,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			// 	trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 			// 		? `${item.name || item}:`
 			// 		: item.username || item.name || item.command || item.text;
-			const mentionName = autocompleteType === '@' ? item.subtitle : item.title;
+			const mentionName = autocompleteType === '@' ? item.subtitle || item.title : item.title;
 			const newText = `${result}${mentionName} ${text.slice(cursor)}`;
 			// if (trackingType === MENTIONS_TRACKING_TYPE_COMMANDS && item.providesPreview) {
 			// 	this.setState({ showCommandPreview: true });

@@ -72,3 +72,9 @@ export interface IAutocompleteItem {
 	subtitle?: string;
 	notInChannel?: boolean;
 }
+
+export interface IAutocompleteItemProps {
+	item: IAutocompleteItem;
+	type: TAutocompleteType;
+	onPress: (item: IAutocompleteItem) => void;
+}

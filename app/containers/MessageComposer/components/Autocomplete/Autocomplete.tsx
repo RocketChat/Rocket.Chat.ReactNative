@@ -5,8 +5,9 @@ import { MessageComposerContext } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { useTheme } from '../../../../theme';
+import { IAutocompleteItemProps } from '../../interfaces';
 
-export const Autocomplete = ({ onPress }) => {
+export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }) => {
 	const { rid, trackingViewHeight, keyboardHeight, autocompleteType, autocompleteText } = useContext(MessageComposerContext);
 	console.log('🚀 ~ file: Autocomplete.tsx:8 ~ Autocomplete ~ autocompleteType:', autocompleteType, autocompleteText);
 	const items = useAutocomplete({ text: autocompleteText, type: autocompleteType, rid });

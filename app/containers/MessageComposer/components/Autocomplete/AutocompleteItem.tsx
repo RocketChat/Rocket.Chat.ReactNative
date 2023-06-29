@@ -3,21 +3,8 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { TAutocompleteType } from '../../interfaces';
+import { IAutocompleteItemProps } from '../../interfaces';
 import Avatar from '../../../Avatar';
-
-interface IAutocompleteItem {
-	id: string;
-	title: string;
-	subtitle: string;
-	notInChannel?: boolean;
-}
-
-interface IAutocompleteItemProps {
-	item: IAutocompleteItem;
-	type: TAutocompleteType;
-	onPress: (item: any) => void;
-}
 
 export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItemProps) => {
 	const { colors } = useTheme();
