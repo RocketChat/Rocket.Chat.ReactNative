@@ -6,18 +6,18 @@ import { search } from '../../../lib/methods';
 export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAutocompleteType; rid: string }) => {
 	const [items, setItems] = useState([
 		{
-			username: 'test',
-			name: 'test',
+			subtitle: 'test',
+			title: 'test',
 			id: 'test'
 		},
 		{
-			username: 'diego.mello',
-			name: 'Diego Mello',
+			subtitle: 'diego.mello',
+			title: 'Diego Mello',
 			id: 'dm'
 		},
 		{
-			username: 'rocket.cat',
-			name: 'Rocket Cat',
+			subtitle: 'rocket.cat',
+			title: 'Rocket Cat',
 			id: 'gato'
 		}
 	]);

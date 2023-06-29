@@ -3,8 +3,16 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
+import { TAutocompleteType } from '../../interfaces';
+import Avatar from '../../../Avatar';
 
-export const AutocompleteItem = ({ item, onPress }) => {
+interface IAutocompleteItem {
+	item: any;
+	type: TAutocompleteType;
+	onPress: (item: any) => void;
+}
+
+export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItem) => {
 	const { colors } = useTheme();
 	return (
 		<RectButton
@@ -16,20 +24,27 @@ export const AutocompleteItem = ({ item, onPress }) => {
 			<View
 				style={{
 					minHeight: 48,
-					borderWidth: 1,
 					flexDirection: 'row',
 					paddingHorizontal: 16,
 					paddingVertical: 6,
 					gap: 12
 				}}
 			>
-				<View style={{ width: 36, height: 36, backgroundColor: colors.surfaceNeutral, borderRadius: 4 }} />
-				<View style={{ flex: 1, justifyContent: 'center' }}>
-					<View style={{ flex: 1, flexDirection: 'row' }}>
-						<Text style={[sharedStyles.textBold, { fontSize: 14, color: colors.fontDefault }]}>Title</Text>
+				{type === '@' || type === '#' ? <Avatar text={item.subtitle} size={36} /> : null}
+				<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
+					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+						<Text style={[sharedStyles.textBold, { fontSize: 14, color: colors.fontDefault }]} numberOfLines={1}>
+							{item.title}
+						</Text>
 					</View>
-					<View style={{ flex: 1, flexDirection: 'row' }}>
-						<Text style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontSecondaryInfo }]}>Subtitle</Text>
+					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+						<Text
+							style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontSecondaryInfo, flex: 1 }]}
+							numberOfLines={type === '!' ? 0 : 1}
+						>
+							{item.subtitle}
+						</Text>
+						<Text style={[sharedStyles.textRegular, { fontSize: 12, color: colors.fontSecondaryInfo }]}>Not in channel</Text>
 					</View>
 				</View>
 			</View>
