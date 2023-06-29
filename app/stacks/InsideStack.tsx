@@ -113,8 +113,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='InviteUsersView' component={InviteUsersView} />
 			<ChatsStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 			<ChatsStack.Screen name='MessagesView' component={MessagesView} />
-			{/* @ts-ignore */}
-			<ChatsStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
+			<ChatsStack.Screen name='AutoTranslateView' component={AutoTranslateView} />
 			<ChatsStack.Screen name='DirectoryView' component={DirectoryView} options={DirectoryView.navigationOptions} />
 			<ChatsStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
 			{/* @ts-ignore */}
