@@ -1,35 +1,20 @@
 import { useEffect, useState } from 'react';
 
-import { TAutocompleteType } from '../interfaces';
+import { IAutocompleteItem, TAutocompleteType } from '../interfaces';
 import { search } from '../../../lib/methods';
 
 export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAutocompleteType; rid: string }) => {
-	const [items, setItems] = useState([
-		{
-			subtitle: 'test',
-			title: 'test',
-			id: 'test',
-			notInChannel: true
-		},
-		{
-			subtitle: 'diego.mello',
-			title: 'Diego Mello',
-			id: 'dm'
-		},
-		{
-			subtitle: 'rocket.cat',
-			title: 'Rocket Cat',
-			id: 'gato'
-		}
-	]);
-	// useEffect(() => {
-	// 	const getAutocomplete = async () => {
-	// 		if (type === '@') {
-	// 			const res = await search({ text, filterRooms: false, filterUsers: true, rid });
-	// 			setItems(res);
-	// 		}
-	// 	};
-	// 	getAutocomplete();
-	// }, [text, type, rid]);
+	const [items, setItems] = useState<IAutocompleteItem[]>([]);
+	useEffect(() => {
+		const getAutocomplete = async () => {
+			if (type === '@') {
+				const res = await search({ text, filterRooms: false, filterUsers: true, rid });
+				// @ts-ignore
+				const parsedRes = res.map(item => ({ id: item.rid || item._id, title: item.username, subtitle: item.name }));
+				setItems(parsedRes);
+			}
+		};
+		getAutocomplete();
+	}, [text, type, rid]);
 	return items;
 };

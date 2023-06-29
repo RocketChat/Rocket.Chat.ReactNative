@@ -65,3 +65,10 @@ export interface ITrackingView {
 }
 
 export type TAutocompleteType = '@' | '/' | '#' | '!' | ':' | null;
+
+export interface IAutocompleteItem {
+	id: string;
+	title: string;
+	subtitle?: string;
+	notInChannel?: boolean;
+}

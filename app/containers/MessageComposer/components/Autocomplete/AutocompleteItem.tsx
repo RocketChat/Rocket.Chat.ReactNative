@@ -7,12 +7,19 @@ import { TAutocompleteType } from '../../interfaces';
 import Avatar from '../../../Avatar';
 
 interface IAutocompleteItem {
-	item: any;
+	id: string;
+	title: string;
+	subtitle: string;
+	notInChannel?: boolean;
+}
+
+interface IAutocompleteItemProps {
+	item: IAutocompleteItem;
 	type: TAutocompleteType;
 	onPress: (item: any) => void;
 }
 
-export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItem) => {
+export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItemProps) => {
 	const { colors } = useTheme();
 	return (
 		<RectButton
