@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	textInput: {
 		flex: 1,
 		minHeight: MIN_HEIGHT,
-		maxHeight: 240,
+		maxHeight: 200,
 		paddingTop: 12,
 		// TODO: check glitch on iOS selector pin with several lines
 		paddingBottom: 12,
@@ -32,7 +32,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, sharing, setFocused, setMicOrSend } = useContext(MessageComposerContext);
+	const { rid, tmid, editing, sharing, setFocused, setMicOrSend, setTrackingViewHeight } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -117,8 +117,14 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		dispatch(userTyping(rid, isTyping));
 	};
 
+	const handleLayout = (e: any) => {
+		console.log(e.nativeEvent.layout.height);
+		setTrackingViewHeight(e.nativeEvent.layout.height);
+	};
+
 	return (
 		<TextInput
+			onLayout={handleLayout}
 			style={[styles.textInput, { color: colors.fontDefault }]}
 			placeholder={placeholder}
 			placeholderTextColor={colors.fontAnnotation}

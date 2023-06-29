@@ -14,6 +14,8 @@ type TMessageComposerContext = {
 	showEmojiSearchbar: boolean;
 	focused: boolean;
 	permissionToUpload: boolean;
+	trackingViewHeight: number;
+	setTrackingViewHeight: (height: number) => void;
 	setMicOrSend(type: TMicOrSend): void;
 	sendMessage(): void;
 	openEmojiKeyboard(): void;
@@ -36,6 +38,8 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	showEmojiSearchbar: false,
 	focused: false,
 	permissionToUpload: false,
+	trackingViewHeight: 0,
+	setTrackingViewHeight: () => {},
 	setMicOrSend: () => {},
 	sendMessage: () => {},
 	openEmojiKeyboard: () => {},

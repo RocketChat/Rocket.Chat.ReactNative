@@ -1,9 +1,9 @@
-import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
-import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
+import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle } from 'react';
+import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
+import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
 import { useCanUploadFile, useChooseMedia } from './hooks';
@@ -66,29 +66,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		useImperativeHandle(ref, () => ({
 			closeEmojiKeyboardAndAction
 		}));
-
-		useEffect(() => {
-			const showListener = Keyboard.addListener('keyboardWillShow', async () => {
-				if (trackingViewRef?.current) {
-					const props = await trackingViewRef.current.getNativeProps();
-					console.log('🚀 ~ file: MessageComposer.tsx:73 ~ show ~ props:', props);
-					setTrackingViewHeight(props.trackingViewHeight);
-				}
-			});
-
-			const hideListener = Keyboard.addListener('keyboardWillHide', async () => {
-				if (trackingViewRef?.current) {
-					const props = await trackingViewRef.current.getNativeProps();
-					console.log('🚀 ~ file: MessageComposer.tsx:73 ~ show ~ props:', props);
-					setTrackingViewHeight(props.trackingViewHeight);
-				}
-			});
-
-			return () => {
-				showListener.remove();
-				hideListener.remove();
-			};
-		}, []);
 
 		const sendMessage = () => {
 			onSendMessage(composerInputComponentRef.current.sendMessage());
@@ -180,6 +157,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					showEmojiKeyboard,
 					showEmojiSearchbar,
 					permissionToUpload,
+					trackingViewHeight,
+					setTrackingViewHeight,
 					setMicOrSend,
 					openEmojiKeyboard,
 					closeEmojiKeyboard,
@@ -207,19 +186,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 								</View>
 								<Toolbar />
 								<EmojiSearchbar />
+								<Autocomplete />
 							</View>
-							{trackingViewHeight ? (
-								<View
-									style={{
-										height: 200,
-										left: 8,
-										right: 8,
-										backgroundColor: '#00000080',
-										position: 'absolute',
-										bottom: trackingViewHeight - 12
-									}}
-								/>
-							) : null}
 						</>
 					)}
 					kbInputRef={composerInputRef}
