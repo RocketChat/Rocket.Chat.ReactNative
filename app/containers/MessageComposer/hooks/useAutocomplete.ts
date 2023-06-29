@@ -7,10 +7,18 @@ export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAuto
 	const [items, setItems] = useState<IAutocompleteItem[]>([]);
 	useEffect(() => {
 		const getAutocomplete = async () => {
-			if (type === '@') {
-				const res = await search({ text, filterRooms: false, filterUsers: true, rid });
-				// @ts-ignore
-				const parsedRes = res.map(item => ({ id: item.rid || item._id, title: item.username, subtitle: item.name }));
+			if (type === '@' || type === '#') {
+				const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
+				const parsedRes = res.map(item => ({
+					// @ts-ignore
+					id: item.rid || item._id,
+					// @ts-ignore
+					title: item.fname || item.name || item.username,
+					// @ts-ignore
+					subtitle: item.username || item.name,
+					// @ts-ignore
+					outside: item.outside
+				}));
 				setItems(parsedRes);
 			}
 		};

@@ -79,7 +79,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	}
 
 	let localSearchData = [];
-	if (rid) {
+	if (rid && filterUsers) {
 		localSearchData = await localSearchUsersMessageByRid({ text, rid });
 	} else {
 		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });

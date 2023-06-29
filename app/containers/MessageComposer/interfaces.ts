@@ -70,7 +70,7 @@ export interface IAutocompleteItem {
 	id: string;
 	title: string;
 	subtitle?: string;
-	notInChannel?: boolean;
+	outside?: boolean;
 }
 
 export interface IAutocompleteItemProps {
