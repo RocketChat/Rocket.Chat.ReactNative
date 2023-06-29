@@ -122,8 +122,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		const txt =
 			cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
 		const lastWord = txt[txt.length - 1];
-		const result = lastWord.substring(1);
-		console.log('🚀 ~ file: ComposerInput.tsx:116 ~ debouncedOnChangeText ~ result:', result);
+		const autocompleteText = lastWord.substring(1);
 
 		if (!lastWord) {
 			return;
@@ -131,23 +130,23 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		if (text.match(/^\//)) {
 			// TODO: reducer?
 			setAutocompleteType('/');
-			setAutocompleteText(lastWord);
+			setAutocompleteText(autocompleteText);
 		}
 		if (lastWord.match(/^#/)) {
 			setAutocompleteType('#');
-			setAutocompleteText(lastWord);
+			setAutocompleteText(autocompleteText);
 		}
 		if (lastWord.match(/^@/)) {
 			setAutocompleteType('@');
-			setAutocompleteText(lastWord);
+			setAutocompleteText(autocompleteText);
 		}
 		if (lastWord.match(/^:/)) {
 			setAutocompleteType(':');
-			setAutocompleteText(lastWord);
+			setAutocompleteText(autocompleteText);
 		}
 		if (lastWord.match(/^!/)) {
 			setAutocompleteType('!');
-			setAutocompleteText(lastWord);
+			setAutocompleteText(autocompleteText);
 		}
 	}, 300); // TODO: 300ms?
 
