@@ -108,12 +108,16 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setFocused(false);
 	};
 
+	const stopAutocomplete = () => {
+		setAutocompleteType(null);
+		setAutocompleteText('');
+	};
+
 	const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
 		if (isTextEmpty) {
-			setAutocompleteType(null);
-			setAutocompleteText('');
+			stopAutocomplete();
 			return;
 		}
 		const { start, end } = selectionRef.current;
@@ -131,23 +135,30 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			// TODO: reducer?
 			setAutocompleteType('/');
 			setAutocompleteText(autocompleteText);
+			return;
 		}
 		if (lastWord.match(/^#/)) {
 			setAutocompleteType('#');
 			setAutocompleteText(autocompleteText);
+			return;
 		}
 		if (lastWord.match(/^@/)) {
 			setAutocompleteType('@');
 			setAutocompleteText(autocompleteText);
+			return;
 		}
 		if (lastWord.match(/^:/)) {
 			setAutocompleteType(':');
 			setAutocompleteText(autocompleteText);
+			return;
 		}
 		if (lastWord.match(/^!/)) {
 			setAutocompleteType('!');
 			setAutocompleteText(autocompleteText);
+			return;
 		}
+
+		stopAutocomplete();
 	}, 300); // TODO: 300ms?
 
 	const handleTyping = (isTyping: boolean) => {

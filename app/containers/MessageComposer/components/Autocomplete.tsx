@@ -7,7 +7,7 @@ export const Autocomplete = () => {
 	const { trackingViewHeight, autocompleteType, autocompleteText } = useContext(MessageComposerContext);
 	console.log('🚀 ~ file: Autocomplete.tsx:8 ~ Autocomplete ~ autocompleteType:', autocompleteType, autocompleteText);
 
-	return trackingViewHeight ? (
+	return autocompleteType ? (
 		<View
 			style={{
 				height: 100,
