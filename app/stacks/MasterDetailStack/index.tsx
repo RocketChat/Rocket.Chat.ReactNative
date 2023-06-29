@@ -138,8 +138,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 				<ModalStack.Screen name='MessagesView' component={MessagesView} />
-				{/* @ts-ignore */}
-				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
+				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} />
 				<ModalStack.Screen
 					name='DirectoryView'
 					component={DirectoryView}
