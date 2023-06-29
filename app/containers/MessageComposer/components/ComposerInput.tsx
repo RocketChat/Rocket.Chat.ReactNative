@@ -120,7 +120,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setAutocompleteText('');
 	};
 
-	const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
+	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
 		if (isTextEmpty) {
