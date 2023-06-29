@@ -1,3 +1,4 @@
+import { IAttachment } from '../definitions';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 
 export type TNavigation = {
@@ -12,5 +13,8 @@ export type TNavigation = {
 	};
 	ForwardLivechatView: {
 		rid: string;
+	};
+	AttachmentView: {
+		attachment: IAttachment;
 	};
 };

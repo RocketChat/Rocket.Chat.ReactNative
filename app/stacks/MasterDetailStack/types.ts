@@ -195,9 +195,6 @@ export type ModalStackParamList = {
 export type MasterDetailInsideStackParamList = {
 	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Change
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
-	AttachmentView: {
-		attachment: IAttachment;
-	};
 	ModalBlockView: {
 		data: any; // TODO: Change
 	};

@@ -138,8 +138,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 				<ModalStack.Screen name='MessagesView' component={MessagesView} />
-				{/* @ts-ignore */}
-				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
+				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} />
 				<ModalStack.Screen
 					name='DirectoryView'
 					component={DirectoryView}
@@ -205,7 +204,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 });
 
 // InsideStackNavigator
-const InsideStack = createStackNavigator<MasterDetailInsideStackParamList>();
+const InsideStack = createStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
 const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
