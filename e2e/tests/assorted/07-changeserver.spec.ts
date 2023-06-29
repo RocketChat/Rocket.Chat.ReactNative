@@ -2,7 +2,7 @@ import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
 import { navigateToLogin, login, checkServer, expectValidRegisterOrRetry } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -16,12 +16,18 @@ describe('Change server', () => {
 	let user: ITestUser;
 	let room: string;
 
+	const deleteUsersAfterAll: IDeleteCreateUser[] = [];
+
 	beforeAll(async () => {
 		user = await createRandomUser();
 		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(user.username, user.password);
+	});
+
+	afterAll(async () => {
+		await deleteCreatedUsers(deleteUsersAfterAll);
 	});
 
 	it('should open the dropdown button, have the server add button and create workspace button', async () => {
@@ -72,6 +78,7 @@ describe('Change server', () => {
 		await element(by.id('register-view-password')).replaceText(randomUser.password);
 		await element(by.id('register-view-password')).tapReturnKey();
 		await expectValidRegisterOrRetry(device.getPlatform());
+		deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 
 		await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 			.toBeNotVisible()
