@@ -75,7 +75,8 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		},
 		getText: () => textRef.current,
 		getSelection: () => selectionRef.current,
-		setInput
+		setInput,
+		focus
 	}));
 
 	const setInput: TSetInput = (text, selection) => {
@@ -98,6 +99,12 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 
 	const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
 		selectionRef.current = e.nativeEvent.selection;
+	};
+
+	const focus = () => {
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
 	};
 
 	const onFocus: TextInputProps['onFocus'] = () => {

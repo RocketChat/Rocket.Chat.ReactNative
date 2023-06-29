@@ -44,7 +44,9 @@ export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItem) => 
 						>
 							{item.subtitle}
 						</Text>
-						<Text style={[sharedStyles.textRegular, { fontSize: 12, color: colors.fontSecondaryInfo }]}>Not in channel</Text>
+						{item.notInChannel ? (
+							<Text style={[sharedStyles.textRegular, { fontSize: 12, color: colors.fontSecondaryInfo }]}>Not in channel</Text>
+						) : null}
 					</View>
 				</View>
 			</View>

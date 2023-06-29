@@ -21,6 +21,7 @@ import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
+import getMentionRegexp from '../MessageBox/getMentionRegexp';
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,7 +44,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			sendMessage: () => '',
 			getText: () => '',
 			getSelection: () => ({ start: 0, end: 0 }),
-			setInput: () => {}
+			setInput: () => {},
+			focus: () => {}
 		});
 		const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 		const { colors, theme } = useTheme();
@@ -150,6 +152,37 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			}
 		};
 
+		// FIXME: type this
+		const onAutocompleteItemSelected = (item: any) => {
+			const text = composerInputComponentRef.current.getText();
+			const { start, end } = composerInputComponentRef.current.getSelection();
+			const cursor = Math.max(start, end);
+			const regexp = getMentionRegexp();
+			let result = text.substr(0, cursor).replace(regexp, '');
+			// Remove the ! after select the canned response
+			if (autocompleteType === '!') {
+				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
+				result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
+			}
+			// const mentionName =
+			// 	trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
+			// 		? `${item.name || item}:`
+			// 		: item.username || item.name || item.command || item.text;
+			const mentionName = autocompleteType === '@' ? item.subtitle : item.title;
+			const newText = `${result}${mentionName} ${text.slice(cursor)}`;
+			// if (trackingType === MENTIONS_TRACKING_TYPE_COMMANDS && item.providesPreview) {
+			// 	this.setState({ showCommandPreview: true });
+			// }
+
+			const newCursor = cursor + mentionName.length;
+			composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
+			composerInputComponentRef.current.focus();
+			requestAnimationFrame(() => {
+				setAutocompleteType(null);
+				setAutocompleteText('');
+			});
+		};
+
 		const openEmojiKeyboard = () => {
 			// logEvent(events.ROOM_OPEN_EMOJI);
 			setShowEmojiKeyboard(true);
@@ -233,7 +266,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					bottomViewColor={colors.surfaceLight}
 					iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				/>
-				<Autocomplete />
+				<Autocomplete onPress={onAutocompleteItemSelected} />
 			</MessageComposerContext.Provider>
 		);
 	}

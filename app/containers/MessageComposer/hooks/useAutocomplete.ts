@@ -8,7 +8,8 @@ export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAuto
 		{
 			subtitle: 'test',
 			title: 'test',
-			id: 'test'
+			id: 'test',
+			notInChannel: true
 		},
 		{
 			subtitle: 'diego.mello',

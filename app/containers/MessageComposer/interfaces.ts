@@ -52,6 +52,7 @@ export interface IComposerInput {
 	getText: () => string;
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
+	focus: () => void;
 }
 
 export interface IComposerInputProps {
