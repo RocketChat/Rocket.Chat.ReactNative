@@ -24,10 +24,24 @@ export const Autocomplete = () => {
 					position: 'absolute',
 					bottom: trackingViewHeight + keyboardHeight + 50,
 					borderRadius: 4,
-					overflow: 'hidden'
+					shadowColor: 'rgb(47, 52, 61)',
+					shadowOffset: {
+						width: 0,
+						height: 2
+					},
+					shadowOpacity: 0.1,
+					shadowRadius: 6,
+					elevation: 4
 				}}
 			>
-				<FlatList data={items} renderItem={({ item }) => <AutocompleteItem item={item} onPress={() => {}} />} />
+				<FlatList
+					contentContainerStyle={{
+						borderRadius: 4,
+						overflow: 'hidden'
+					}}
+					data={items}
+					renderItem={({ item }) => <AutocompleteItem item={item} type={autocompleteType} onPress={() => {}} />}
+				/>
 			</View>
 		);
 	}
