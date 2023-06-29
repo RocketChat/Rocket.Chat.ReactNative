@@ -288,9 +288,6 @@ export type InsideStackParamList = {
 	NewMessageStackNavigator: NavigatorScreenParams<NewMessageStackParamList>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
-	AttachmentView: {
-		attachment: IAttachment;
-	};
 	StatusView: undefined;
 	ShareView: {
 		attachments: IAttachment[];

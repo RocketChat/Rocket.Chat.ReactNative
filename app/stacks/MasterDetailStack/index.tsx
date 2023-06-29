@@ -73,6 +73,7 @@ import {
 	ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
+import { TNavigation } from '../stackType';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -206,7 +207,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 });
 
 // InsideStackNavigator
-const InsideStack = createStackNavigator<MasterDetailInsideStackParamList>();
+const InsideStack = createStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
 const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (

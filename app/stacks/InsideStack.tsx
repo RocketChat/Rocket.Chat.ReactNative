@@ -82,6 +82,7 @@ import {
 	SettingsStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
+import { TNavigation } from './stackType';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<ChatsStackParamList>();
@@ -306,7 +307,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 };
 
 // InsideStackNavigator
-const InsideStack = createStackNavigator<InsideStackParamList>();
+const InsideStack = createStackNavigator<InsideStackParamList & TNavigation>();
 const InsideStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
