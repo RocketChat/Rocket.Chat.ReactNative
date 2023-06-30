@@ -83,9 +83,10 @@ import {
 	SettingsStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
+import { TNavigation } from './stackType';
 
 // ChatsStackNavigator
-const ChatsStack = createStackNavigator<ChatsStackParamList>();
+const ChatsStack = createStackNavigator<ChatsStackParamList & TNavigation>();
 const ChatsStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
@@ -113,8 +114,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='InviteUsersView' component={InviteUsersView} />
 			<ChatsStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 			<ChatsStack.Screen name='MessagesView' component={MessagesView} />
-			{/* @ts-ignore */}
-			<ChatsStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
+			<ChatsStack.Screen name='AutoTranslateView' component={AutoTranslateView} />
 			<ChatsStack.Screen name='DirectoryView' component={DirectoryView} options={DirectoryView.navigationOptions} />
 			<ChatsStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
 			{/* @ts-ignore */}
@@ -123,14 +123,9 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='CloseLivechatView' component={CloseLivechatView} />
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
+			<ChatsStack.Screen name='PickerView' component={PickerView} />
 			{/* @ts-ignore */}
-			<ChatsStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
-			<ChatsStack.Screen
-				name='ThreadMessagesView'
-				// @ts-ignore
-				component={ThreadMessagesView}
-				options={ThreadMessagesView.navigationOptions}
-			/>
+			<ChatsStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 			<ChatsStack.Screen name='TeamChannelsView' component={TeamChannelsView} />
 			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<ChatsStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
@@ -157,7 +152,7 @@ const ChatsStackNavigator = () => {
 };
 
 // ProfileStackNavigator
-const ProfileStack = createStackNavigator<ProfileStackParamList>();
+const ProfileStack = createStackNavigator<ProfileStackParamList & TNavigation>();
 const ProfileStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
@@ -168,8 +163,7 @@ const ProfileStackNavigator = () => {
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
-			{/* @ts-ignore */}
-			<ProfileStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
+			<ProfileStack.Screen name='PickerView' component={PickerView} />
 		</ProfileStack.Navigator>
 	);
 };
@@ -308,7 +302,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 };
 
 // InsideStackNavigator
-const InsideStack = createStackNavigator<InsideStackParamList>();
+const InsideStack = createStackNavigator<InsideStackParamList & TNavigation>();
 const InsideStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
