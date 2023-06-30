@@ -1,14 +1,22 @@
-import { useDimensions } from '@react-native-community/hooks';
+import { StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { isIOS, isTablet } from '../methods/helpers';
 
 // Not sure if it's worth adding this here in the context of the actionSheet
 /**
  * Return the snaps based on the size you pass (aka: Size of action sheet)
- * @param  {Number[]} snaps Sizes you want to pass, pass only one if you want the action sheet to start at a specific size
+ * @param  {number} componentSize size of the component that will be rendered in the action sheet
  */
-export const useSnaps = (snaps: number[]): string[] => {
+export const useSnaps = (componentSize: number): number[] | string[] => {
 	const insets = useSafeAreaInsets();
-	const { screen } = useDimensions();
-	const percentage = insets.bottom + insets.top > 75 ? 110 : 100;
-	return snaps.map(snap => `${((percentage * snap) / (screen.height * screen.scale)).toFixed(2)}%`);
+	if (isIOS) {
+		const fixTabletInset = isTablet ? 2 : 1;
+		return [componentSize + (insets.bottom || insets.top) * fixTabletInset];
+	}
+	let statusHeight = 0;
+	if (StatusBar.currentHeight) {
+		statusHeight = StatusBar.currentHeight;
+	}
+	return [componentSize + statusHeight];
 };

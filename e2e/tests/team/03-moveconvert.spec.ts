@@ -6,8 +6,9 @@ import random from '../../helpers/random';
 
 const toBeConverted = `to-be-converted-${random()}`;
 const toBeMoved = `to-be-moved-${random()}`;
+const publicChannelToBeConverted = `channel-public-to-be-converted-${random()}`;
 
-const createChannel = async (room: string) => {
+const createChannel = async (room: string, publicChannel?: boolean) => {
 	await waitFor(element(by.id('rooms-list-view-create-channel')))
 		.toBeVisible()
 		.withTimeout(5000);
@@ -28,6 +29,9 @@ const createChannel = async (room: string) => {
 		.withTimeout(10000);
 	await element(by.id('create-channel-name')).replaceText(room);
 	await element(by.id('create-channel-name')).tapReturnKey();
+	if (publicChannel) {
+		await element(by.id('create-channel-type')).tap();
+	}
 	await waitFor(element(by.id('create-channel-submit')))
 		.toExist()
 		.withTimeout(10000);
@@ -68,18 +72,35 @@ describe('Move/Convert Team', () => {
 	});
 
 	describe('Convert', () => {
-		beforeAll(async () => {
-			await createChannel(toBeConverted);
+		it('should convert public channel to a team', async () => {
+			await createChannel(publicChannelToBeConverted, true);
+			await navigateToRoomActions(publicChannelToBeConverted);
+			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
+			await waitFor(element(by.id('room-actions-convert-to-team')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('room-actions-convert-to-team')).tap();
+			await waitFor(element(by[textMatcher]('You are converting this channel to a team. All members will be kept.')))
+				.toExist()
+				.withTimeout(2000);
+			await element(by[textMatcher]('Convert').and(by.type(alertButtonType))).tap();
+			await waitFor(element(by.id('room-view')))
+				.toExist()
+				.withTimeout(20000);
+			await waitFor(element(by.id(`room-view-title-${publicChannelToBeConverted}`)))
+				.toExist()
+				.withTimeout(6000);
 		});
 
-		it('should convert channel to a team', async () => {
+		it('should convert private channel to a team', async () => {
+			await createChannel(toBeConverted);
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 			await waitFor(element(by.id('room-actions-convert-to-team')))
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('room-actions-convert-to-team')).tap();
-			await waitFor(element(by[textMatcher]('You are converting this Channel to a Team. All Members will be kept.')))
+			await waitFor(element(by[textMatcher]('You are converting this channel to a team. All members will be kept.')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Convert').and(by.type(alertButtonType))).tap();
@@ -91,7 +112,7 @@ describe('Move/Convert Team', () => {
 				.withTimeout(6000);
 		});
 
-		afterAll(async () => {
+		afterEach(async () => {
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toExist()
@@ -151,11 +172,11 @@ describe('Move/Convert Team', () => {
 		it('should convert a team to a channel', async () => {
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
-			await waitFor(element(by[textMatcher]('Convert to Channel')))
+			await waitFor(element(by[textMatcher]('Convert to channel')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by[textMatcher]('Convert to Channel')).atIndex(0).tap();
-			await waitFor(element(by[textMatcher]('Converting Team to Channel')))
+			await element(by[textMatcher]('Convert to channel')).atIndex(0).tap();
+			await waitFor(element(by[textMatcher]('Converting team to channel')))
 				.toExist()
 				.withTimeout(2000);
 			await waitFor(element(by.id(`select-list-view-item-${toBeMoved}`)))
@@ -167,7 +188,7 @@ describe('Move/Convert Team', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('select-list-view-submit')).tap();
-			await waitFor(element(by[textMatcher]('You are converting this Team to a Channel')))
+			await waitFor(element(by[textMatcher]('You are converting this team to a channel')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Convert').and(by.type(alertButtonType))).tap();

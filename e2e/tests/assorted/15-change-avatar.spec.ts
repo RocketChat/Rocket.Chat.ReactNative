@@ -68,7 +68,7 @@ describe('Profile screen', () => {
 		it('should change the avatar through a base64 image mocked', async () => {
 			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
 			await element(by.id('avatar-edit-button')).tap();
-			const previousUserInfo = await getProfileInfo(userId);
+			const previousUserInfo = await getProfileInfo({ userId });
 			const previousAvatarEtag = previousUserInfo.avatarETag;
 			await sleep(500);
 			await waitFor(element(by.id('change-avatar-view-upload-image')))
@@ -83,7 +83,7 @@ describe('Profile screen', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await sleep(300);
-			const newUserInfo = await getProfileInfo(userId);
+			const newUserInfo = await getProfileInfo({ userId });
 			const newAvatarEtag = newUserInfo.avatarETag;
 			await sleep(500);
 			if (previousAvatarEtag === newAvatarEtag) {
