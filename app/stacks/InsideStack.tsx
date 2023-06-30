@@ -123,12 +123,8 @@ const ChatsStackNavigator = () => {
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 			<ChatsStack.Screen name='PickerView' component={PickerView} />
-			<ChatsStack.Screen
-				name='ThreadMessagesView'
-				// @ts-ignore
-				component={ThreadMessagesView}
-				options={ThreadMessagesView.navigationOptions}
-			/>
+			{/* @ts-ignore */}
+			<ChatsStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 			<ChatsStack.Screen name='TeamChannelsView' component={TeamChannelsView} />
 			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<ChatsStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
