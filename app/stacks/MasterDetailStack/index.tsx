@@ -104,7 +104,7 @@ export interface INavigation {
 	navigation: StackNavigationProp<ModalStackParamList>;
 }
 
-const ModalStack = createStackNavigator<ModalStackParamList>();
+const ModalStack = createStackNavigator<ModalStackParamList & TNavigation>();
 const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
@@ -155,8 +155,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
-				{/* @ts-ignore */}
-				<ModalStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
+				<ModalStack.Screen name='PickerView' component={PickerView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 				{/* @ts-ignore */}

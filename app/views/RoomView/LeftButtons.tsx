@@ -1,13 +1,12 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, Platform } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
+import React, { useCallback } from 'react';
+import { Platform, StyleSheet } from 'react-native';
 
-import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
-import { ChatsStackParamList } from '../../stacks/types';
-import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
+import { useAppNavigation } from '../../lib/hooks/navigation';
 import { isIOS } from '../../lib/methods/helpers';
+import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -27,7 +26,6 @@ interface ILeftButtonsProps {
 	rid?: string;
 	tmid?: string;
 	unreadsCount: number | null;
-	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
 	baseUrl: string;
 	userId?: string;
 	token?: string;
@@ -42,7 +40,6 @@ const LeftButtons = ({
 	rid,
 	tmid,
 	unreadsCount,
-	navigation,
 	baseUrl,
 	userId,
 	token,
@@ -52,10 +49,10 @@ const LeftButtons = ({
 	goRoomActionsView,
 	isMasterDetail
 }: ILeftButtonsProps): React.ReactElement | null => {
+	const { goBack } = useAppNavigation();
 	const onPress = useCallback(() => goRoomActionsView(), []);
 
 	if (!isMasterDetail || tmid) {
-		const onPress = () => navigation.goBack();
 		let label = ' ';
 		let labelLength = 1;
 		let marginLeft = 0;
@@ -70,7 +67,7 @@ const LeftButtons = ({
 			<HeaderBackButton
 				label={label}
 				labelVisible={isIOS}
-				onPress={onPress}
+				onPress={goBack}
 				tintColor={themes[theme].headerTintColor}
 				labelStyle={{ fontSize, marginLeft }}
 				style={styles.container}
