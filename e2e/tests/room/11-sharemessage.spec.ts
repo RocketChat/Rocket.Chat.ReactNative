@@ -12,7 +12,7 @@ import {
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
-describe('Share a message with another user', () => {
+describe('Forward a message with another user', () => {
 	let user: ITestUser;
 	let otherUser: ITestUser;
 	let room: string;
@@ -40,13 +40,13 @@ describe('Share a message with another user', () => {
 				await tapBack();
 			});
 		});
-		describe('Share a message from room to the otherUser', () => {
+		describe('Forward a message from room to the otherUser', () => {
 			it('should navigate to room and send a message', async () => {
 				await navigateToRoom(room);
 				messageToRoom = await mockMessage('Hello room');
 				await sleep(300);
 			});
-			it('should open the action sheet and tap Share message', async () => {
+			it('should open the action sheet and tap Forward', async () => {
 				await waitFor(element(by[textMatcher](messageToRoom)).atIndex(0))
 					.toBeVisible()
 					.withTimeout(2000);
@@ -56,10 +56,10 @@ describe('Share a message with another user', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Share message')).atIndex(0).tap();
+				await element(by[textMatcher]('Forward')).atIndex(0).tap();
 				await sleep(300);
 			});
-			it('should share the message', async () => {
+			it('should forward the message', async () => {
 				await waitFor(element(by.id('forward-message-view')))
 					.toBeVisible()
 					.withTimeout(2000);
