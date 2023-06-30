@@ -25,13 +25,13 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					position: 'absolute',
 					bottom: trackingViewHeight + keyboardHeight + 50,
 					borderRadius: 4,
-					shadowColor: 'rgb(47, 52, 61)',
+					shadowColor: '#000',
 					shadowOffset: {
 						width: 0,
 						height: 2
 					},
-					shadowOpacity: 0.1,
-					shadowRadius: 6,
+					shadowOpacity: 0.5,
+					shadowRadius: 2,
 					elevation: 4
 				}}
 			>
