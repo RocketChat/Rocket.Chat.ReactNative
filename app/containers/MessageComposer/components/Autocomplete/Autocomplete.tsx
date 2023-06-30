@@ -42,6 +42,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					}}
 					data={items}
 					renderItem={({ item }) => <AutocompleteItem item={item} type={autocompleteType} onPress={onPress} />}
+					keyboardShouldPersistTaps='always'
 				/>
 			</View>
 		);
