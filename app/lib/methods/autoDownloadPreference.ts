@@ -12,8 +12,8 @@ import { store } from '../store/auxStore';
 type TMediaType = typeof IMAGES_PREFERENCE_DOWNLOAD | typeof AUDIO_PREFERENCE_DOWNLOAD | typeof VIDEO_PREFERENCE_DOWNLOAD;
 
 export const fetchAutoDownloadEnabled = (mediaType: TMediaType) => {
-	const { internetType } = store.getState().app;
-	const mediaDownloadPreference = userPreferences.getString<MediaDownloadOption>(mediaType);
+	const { netInfoState } = store.getState().app;
+	const mediaDownloadPreference = userPreferences.getString(mediaType) as MediaDownloadOption;
 
 	let defaultValueByMediaType = false;
 	if (mediaDownloadPreference === null) {
@@ -23,12 +23,12 @@ export const fetchAutoDownloadEnabled = (mediaType: TMediaType) => {
 		}
 		if (mediaType === 'audioPreferenceDownload' || mediaType === 'videoPreferenceDownload') {
 			// The same as 'wifi'
-			defaultValueByMediaType = internetType === NetInfoStateType.wifi;
+			defaultValueByMediaType = netInfoState === NetInfoStateType.wifi;
 		}
 	}
 
 	return (
-		(mediaDownloadPreference === 'wifi' && internetType === NetInfoStateType.wifi) ||
+		(mediaDownloadPreference === 'wifi' && netInfoState === NetInfoStateType.wifi) ||
 		mediaDownloadPreference === 'wifi_mobile_data' ||
 		defaultValueByMediaType
 	);

@@ -18,7 +18,7 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import {
-	LOCAL_DOCUMENT_PATH,
+	LOCAL_DOCUMENT_DIRECTORY,
 	cancelDownload,
 	downloadMediaFile,
 	isDownloadActive,
@@ -139,7 +139,7 @@ const Video = React.memo(
 
 		const onPress = async () => {
 			if (file.video_type && isTypeSupported(file.video_type) && showAttachment) {
-				if (!videoCached.video_url?.startsWith(LOCAL_DOCUMENT_PATH) && !loading) {
+				if (LOCAL_DOCUMENT_DIRECTORY && !videoCached.video_url?.startsWith(LOCAL_DOCUMENT_DIRECTORY) && !loading) {
 					// Keep the video downloading while showing the video buffering
 					handleDownload();
 				}

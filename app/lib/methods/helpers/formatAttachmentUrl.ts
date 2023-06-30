@@ -1,7 +1,7 @@
-import { LOCAL_DOCUMENT_PATH } from '../handleMediaDownload';
+import { LOCAL_DOCUMENT_DIRECTORY } from '../handleMediaDownload';
 
 export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: string, token: string, server: string): string => {
-	if (attachmentUrl?.startsWith(LOCAL_DOCUMENT_PATH)) {
+	if (LOCAL_DOCUMENT_DIRECTORY && attachmentUrl?.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
 		return attachmentUrl;
 	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {

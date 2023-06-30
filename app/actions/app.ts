@@ -17,11 +17,11 @@ interface ISetNotificationPresenceCap extends Action {
 	show: boolean;
 }
 
-interface ISetInternetType extends Action {
-	internetType: NetInfoStateType;
+interface ISetNetInfoState extends Action {
+	netInfoState: NetInfoStateType;
 }
 
-export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap & ISetInternetType;
+export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap & ISetNetInfoState;
 
 interface Params {
 	root: RootEnum;
@@ -68,9 +68,9 @@ export function setNotificationPresenceCap(show: boolean): ISetNotificationPrese
 	};
 }
 
-export function setInternetType(internetType: NetInfoStateType): ISetInternetType {
+export function setNetInfoState(netInfoState: NetInfoStateType): ISetNetInfoState {
 	return {
 		type: APP.SET_INTERNET_TYPE,
-		internetType
+		netInfoState
 	};
 }

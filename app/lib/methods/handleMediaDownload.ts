@@ -64,7 +64,7 @@ export function downloadMediaFile({
 	});
 }
 
-export const LOCAL_DOCUMENT_PATH = `${FileSystem.documentDirectory}`;
+export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 
 const sanitizeString = (value: string) => {
 	const urlWithoutQueryString = value.split('?')[0];
@@ -113,7 +113,7 @@ export const searchMediaFileAsync = async ({
 	try {
 		const serverUrl = store.getState().server.server;
 		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
-		const folderPath = `${LOCAL_DOCUMENT_PATH}${serverUrlParsed}${typeString[type]}`;
+		const folderPath = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}${typeString[type]}`;
 		const fileUrlSanitized = sanitizeString(urlToCache);
 		const filename = `${fileUrlSanitized}.${getExtension(type, mimeType)}`;
 		const filePath = `${folderPath}${filename}`;
@@ -129,7 +129,7 @@ export const searchMediaFileAsync = async ({
 export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 	try {
 		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
-		const path = `${LOCAL_DOCUMENT_PATH}${serverUrlParsed}`;
+		const path = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}`;
 		await FileSystem.deleteAsync(path, { idempotent: true });
 	} catch (error) {
 		log(error);

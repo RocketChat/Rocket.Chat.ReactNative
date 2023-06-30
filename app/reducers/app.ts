@@ -12,7 +12,7 @@ export interface IApp {
 	foreground: boolean;
 	background: boolean;
 	notificationPresenceCap: boolean;
-	internetType?: NetInfoStateType;
+	netInfoState?: NetInfoStateType | null;
 }
 
 export const initialState: IApp = {
@@ -23,7 +23,7 @@ export const initialState: IApp = {
 	foreground: true,
 	background: false,
 	notificationPresenceCap: false,
-	internetType: undefined
+	netInfoState: null
 };
 
 export default function app(state = initialState, action: TActionApp): IApp {
@@ -69,7 +69,7 @@ export default function app(state = initialState, action: TActionApp): IApp {
 		case APP.SET_INTERNET_TYPE:
 			return {
 				...state,
-				internetType: action.internetType
+				netInfoState: action.netInfoState
 			};
 		default:
 			return state;
