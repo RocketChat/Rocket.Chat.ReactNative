@@ -9,15 +9,20 @@ export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAuto
 		const getAutocomplete = async () => {
 			if (type === '@' || type === '#') {
 				const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
+				console.log('🚀 ~ file: useAutocomplete.ts:12 ~ getAutocomplete ~ res:', res);
 				const parsedRes = res.map(item => ({
 					// @ts-ignore
-					id: item.rid || item._id,
+					id: item._id || item.rid,
 					// @ts-ignore
 					title: item.fname || item.name || item.username,
 					// @ts-ignore
 					subtitle: item.username || item.name,
 					// @ts-ignore
-					outside: item.outside
+					outside: item.outside,
+					// @ts-ignore
+					t: item.t ?? 'd',
+					// @ts-ignore
+					status: item.status
 				}));
 				setItems(parsedRes);
 			}

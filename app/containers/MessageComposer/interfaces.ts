@@ -71,6 +71,7 @@ export interface IAutocompleteItem {
 	title: string;
 	subtitle?: string;
 	outside?: boolean;
+	t?: string;
 }
 
 export interface IAutocompleteItemProps {

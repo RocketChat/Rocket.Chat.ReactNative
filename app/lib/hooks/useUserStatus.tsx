@@ -1,6 +1,6 @@
 import { TUserStatus } from '../../definitions';
-import { useAppSelector } from '../../lib/hooks';
-import { RoomTypes } from '../../lib/methods';
+import { useAppSelector } from './useAppSelector';
+import { RoomTypes } from '../methods';
 
 export const useUserStatus = (
 	type: RoomTypes,

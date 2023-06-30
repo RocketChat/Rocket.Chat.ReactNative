@@ -5,6 +5,7 @@ import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import { IAutocompleteItemProps } from '../../interfaces';
 import Avatar from '../../../Avatar';
+import { Icon } from './Icon';
 
 export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItemProps) => {
 	const { colors } = useTheme();
@@ -26,7 +27,8 @@ export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItemProps
 			>
 				{type === '@' || type === '#' ? <Avatar text={item.subtitle} size={36} /> : null}
 				<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
-					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+						<Icon item={item} type={type} />
 						<Text style={[sharedStyles.textBold, { fontSize: 14, color: colors.fontDefault }]} numberOfLines={1}>
 							{item.title}
 						</Text>
