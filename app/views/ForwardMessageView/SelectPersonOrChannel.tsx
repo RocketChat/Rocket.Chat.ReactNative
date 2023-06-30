@@ -25,7 +25,7 @@ const SelectPersonOrChannel = ({
 
 	const getRooms = async (keyword = '') => {
 		try {
-			const res = await localSearchSubscription({ text: keyword });
+			const res = await localSearchSubscription({ text: keyword, filterMessagingAllowed: true });
 			setRooms(res);
 			return res.map(item => ({
 				value: item.rid,
