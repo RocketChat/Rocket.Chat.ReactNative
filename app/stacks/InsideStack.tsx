@@ -234,7 +234,7 @@ const DrawerNavigator = () => {
 			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 			// Performance issues on Android when disabled
-			useLegacyImplementation
+			// useLegacyImplementation
 			screenOptions={{
 				swipeEnabled: false,
 				headerShown: false,
