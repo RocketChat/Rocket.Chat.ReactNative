@@ -22,7 +22,7 @@ import {
 	cancelDownload,
 	downloadMediaFile,
 	isDownloadActive,
-	searchMediaFileAsync
+	getMediaCache
 } from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import sharedStyles from '../../views/Styles';
@@ -84,20 +84,20 @@ const Video = React.memo(
 		useEffect(() => {
 			const handleVideoSearchAndDownload = async () => {
 				if (video) {
-					const cachedVideoResult = await searchMediaFileAsync({
+					const cachedVideoResult = await getMediaCache({
 						type: 'video',
 						mimeType: file.video_type,
 						urlToCache: video
 					});
 					filePath.current = cachedVideoResult.filePath;
-					const downloadActive = isDownloadActive('video', video);
+					const downloadActive = isDownloadActive(video);
 					if (cachedVideoResult.file?.exists) {
 						setVideoCached(prev => ({
 							...prev,
 							video_url: cachedVideoResult.file?.uri
 						}));
 						if (downloadActive) {
-							cancelDownload('video', video);
+							cancelDownload(video);
 						}
 						return;
 					}
@@ -125,7 +125,6 @@ const Video = React.memo(
 			try {
 				const videoUri = await downloadMediaFile({
 					downloadUrl: video,
-					mediaType: 'video',
 					path: filePath.current
 				});
 				setVideoCached(prev => ({
@@ -154,7 +153,7 @@ const Video = React.memo(
 
 		const handleCancelDownload = () => {
 			if (loading) {
-				cancelDownload('video', video);
+				cancelDownload(video);
 				return setLoading(false);
 			}
 		};

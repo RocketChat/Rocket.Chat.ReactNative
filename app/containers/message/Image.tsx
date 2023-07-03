@@ -12,7 +12,7 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { cancelDownload, downloadMediaFile, isDownloadActive, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
+import { cancelDownload, downloadMediaFile, isDownloadActive, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import RCActivityIndicator from '../ActivityIndicator';
 import { CustomIcon } from '../CustomIcon';
@@ -82,7 +82,7 @@ const ImageContainer = React.memo(
 	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, author }: IMessageImage) => {
 		const [imageCached, setImageCached] = useState(file);
 		const [cached, setCached] = useState(false);
-		const [loading, setLoading] = useState(false);
+		const [loading, setLoading] = useState(true);
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
 		const filePath = useRef('');
@@ -93,9 +93,9 @@ const ImageContainer = React.memo(
 		const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
 
 		useLayoutEffect(() => {
-			const handleImageSearchAndDownload = async () => {
+			const handleCache = async () => {
 				if (img) {
-					const cachedImageResult = await searchMediaFileAsync({
+					const cachedImageResult = await getMediaCache({
 						type: 'image',
 						mimeType: imageCached.image_type,
 						urlToCache: imgUrlToCache
@@ -106,16 +106,21 @@ const ImageContainer = React.memo(
 							...prev,
 							title_link: cachedImageResult.file?.uri
 						}));
-						return setCached(true);
+						setLoading(false);
+						setCached(true);
+						return;
 					}
-					if (isReply) return;
-					if (isDownloadActive('image', imgUrlToCache)) {
-						return setLoading(true);
+					if (isReply) {
+						setLoading(false);
+						return;
+					}
+					if (isDownloadActive(imgUrlToCache)) {
+						return;
 					}
 					await handleAutoDownload();
 				}
 			};
-			handleImageSearchAndDownload();
+			handleCache();
 		}, []);
 
 		if (!img) {
@@ -131,11 +136,9 @@ const ImageContainer = React.memo(
 		};
 
 		const handleDownload = async () => {
-			setLoading(true);
 			try {
 				const imageUri = await downloadMediaFile({
 					downloadUrl: imgUrlToCache,
-					mediaType: 'image',
 					path: filePath.current
 				});
 				setImageCached(prev => ({
@@ -146,23 +149,25 @@ const ImageContainer = React.memo(
 				setLoading(false);
 			} catch (e) {
 				setLoading(false);
-				return setCached(false);
+				setCached(false);
 			}
 		};
 
 		const onPress = () => {
-			if (loading && isDownloadActive('image', imgUrlToCache)) {
-				cancelDownload('image', imgUrlToCache);
+			if (loading && isDownloadActive(imgUrlToCache)) {
+				cancelDownload(imgUrlToCache);
 				setLoading(false);
-				return setCached(false);
+				setCached(false);
+				return;
 			}
 			if (!cached && !loading) {
-				return handleDownload();
+				handleDownload();
+				return;
 			}
 			if (!showAttachment) {
 				return;
 			}
-			return showAttachment(imageCached);
+			showAttachment(imageCached);
 		};
 
 		if (imageCached.description) {

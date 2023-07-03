@@ -15,21 +15,22 @@ export const fetchAutoDownloadEnabled = (mediaType: TMediaType) => {
 	const { netInfoState } = store.getState().app;
 	const mediaDownloadPreference = userPreferences.getString(mediaType) as MediaDownloadOption;
 
-	let defaultValueByMediaType = false;
+	if (mediaDownloadPreference === 'wifi_mobile_data') {
+		return true;
+	}
+
+	if (mediaDownloadPreference === 'wifi' && netInfoState === NetInfoStateType.wifi) {
+		return true;
+	}
+
 	if (mediaDownloadPreference === null) {
 		if (mediaType === 'imagesPreferenceDownload') {
-			// The same as 'wifi_mobile_data'
-			defaultValueByMediaType = true;
+			return true;
 		}
 		if (mediaType === 'audioPreferenceDownload' || mediaType === 'videoPreferenceDownload') {
-			// The same as 'wifi'
-			defaultValueByMediaType = netInfoState === NetInfoStateType.wifi;
+			return netInfoState === NetInfoStateType.wifi;
 		}
 	}
 
-	return (
-		(mediaDownloadPreference === 'wifi' && netInfoState === NetInfoStateType.wifi) ||
-		mediaDownloadPreference === 'wifi_mobile_data' ||
-		defaultValueByMediaType
-	);
+	return false;
 };

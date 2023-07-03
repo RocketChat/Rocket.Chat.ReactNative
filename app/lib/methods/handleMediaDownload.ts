@@ -22,14 +22,14 @@ const defaultType = {
 
 const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
 
-export const mediaDownloadKey = (mediaType: MediaTypes, downloadUrl: string) => `${mediaType}-${sanitizeString(downloadUrl)}`;
+export const mediaDownloadKey = (messageUrl: string) => `${sanitizeString(messageUrl)}`;
 
-export function isDownloadActive(mediaType: MediaTypes, messageId: string): boolean {
-	return !!downloadQueue[mediaDownloadKey(mediaType, messageId)];
+export function isDownloadActive(messageUrl: string): boolean {
+	return !!downloadQueue[mediaDownloadKey(messageUrl)];
 }
 
-export async function cancelDownload(mediaType: MediaTypes, messageId: string): Promise<void> {
-	const downloadKey = mediaDownloadKey(mediaType, messageId);
+export async function cancelDownload(messageUrl: string): Promise<void> {
+	const downloadKey = mediaDownloadKey(messageUrl);
 	if (!isEmpty(downloadQueue[downloadKey])) {
 		try {
 			await downloadQueue[downloadKey].cancelAsync();
@@ -40,18 +40,10 @@ export async function cancelDownload(mediaType: MediaTypes, messageId: string): 
 	}
 }
 
-export function downloadMediaFile({
-	mediaType,
-	downloadUrl,
-	path
-}: {
-	mediaType: MediaTypes;
-	downloadUrl: string;
-	path: string;
-}): Promise<string> {
+export function downloadMediaFile({ downloadUrl, path }: { downloadUrl: string; path: string }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const downloadKey = mediaDownloadKey(mediaType, downloadUrl);
+			const downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
 			if (result?.uri) {
@@ -101,15 +93,18 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	return ensureDirAsync(dir, intermediates);
 };
 
-export const searchMediaFileAsync = async ({
+export const getMediaCache = async ({
 	type,
 	mimeType,
 	urlToCache
 }: {
 	type: MediaTypes;
 	mimeType?: string;
-	urlToCache: string;
+	urlToCache?: string;
 }) => {
+	if (!urlToCache) {
+		return { file: null, filePath: '' };
+	}
 	try {
 		const serverUrl = store.getState().server.server;
 		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);

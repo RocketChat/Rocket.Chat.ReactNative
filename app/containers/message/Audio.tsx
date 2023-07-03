@@ -19,7 +19,7 @@ import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
-import { downloadMediaFile, searchMediaFileAsync } from '../../lib/methods/handleMediaDownload';
+import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
@@ -130,7 +130,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			currentTime: 0,
 			duration: 0,
 			paused: true,
-			cached: true
+			cached: false
 		};
 
 		this.sound = new Audio.Sound();
@@ -144,7 +144,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	async componentDidMount() {
 		const { file, isReply } = this.props;
-		const cachedAudioResult = await searchMediaFileAsync({
+		const cachedAudioResult = await getMediaCache({
 			type: 'audio',
 			mimeType: file.audio_type,
 			urlToCache: this.getUrl()
@@ -152,44 +152,15 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.filePath = cachedAudioResult.filePath;
 		if (cachedAudioResult?.file?.exists) {
 			await this.sound.loadAsync({ uri: cachedAudioResult.file.uri });
-			return this.setState({ loading: false });
+			this.setState({ loading: false, cached: true });
+			return;
 		}
-		if (isReply) return;
+		if (isReply) {
+			this.setState({ loading: false });
+			return;
+		}
 		await this.handleAutoDownload();
 	}
-
-	getUrl = () => {
-		const { file } = this.props;
-		// @ts-ignore can't use declare to type this
-		const { baseUrl } = this.context;
-
-		let url = file.audio_url;
-		if (url && !url.startsWith('http')) {
-			url = `${baseUrl}${file.audio_url}`;
-		}
-		return url as string;
-	};
-
-	handleAutoDownload = async () => {
-		const { author } = this.props;
-		// @ts-ignore can't use declare to type this
-		const { user } = this.context;
-		const url = this.getUrl();
-		try {
-			if (url) {
-				const isCurrentUserAuthor = author?._id === user.id;
-				const isAutoDownloadEnabled = fetchAutoDownloadEnabled('audioPreferenceDownload');
-				if (isAutoDownloadEnabled || isCurrentUserAuthor) {
-					await this.handleDownload();
-					return;
-				}
-
-				return this.setState({ loading: false, cached: false });
-			}
-		} catch {
-			// Do nothing
-		}
-	};
 
 	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
 		const { currentTime, duration, paused, loading, cached } = this.state;
@@ -235,6 +206,39 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			// Do nothing
 		}
 	}
+
+	getUrl = () => {
+		const { file } = this.props;
+		// @ts-ignore can't use declare to type this
+		const { baseUrl } = this.context;
+
+		let url = file.audio_url;
+		if (url && !url.startsWith('http')) {
+			url = `${baseUrl}${file.audio_url}`;
+		}
+		return url;
+	};
+
+	handleAutoDownload = async () => {
+		const { author } = this.props;
+		// @ts-ignore can't use declare to type this
+		const { user } = this.context;
+		const url = this.getUrl();
+		try {
+			if (url) {
+				const isCurrentUserAuthor = author?._id === user.id;
+				const isAutoDownloadEnabled = fetchAutoDownloadEnabled('audioPreferenceDownload');
+				if (isAutoDownloadEnabled || isCurrentUserAuthor) {
+					await this.handleDownload();
+					return;
+				}
+
+				this.setState({ loading: false, cached: false });
+			}
+		} catch {
+			// Do nothing
+		}
+	};
 
 	onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
@@ -294,21 +298,24 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			if (url && this.filePath) {
 				const audio = await downloadMediaFile({
 					downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-					mediaType: 'audio',
 					path: this.filePath
 				});
 
 				await this.sound.loadAsync({ uri: audio });
-				return this.setState({ loading: false, cached: true });
+				this.setState({ loading: false, cached: true });
 			}
 		} catch {
-			return this.setState({ loading: false, cached: false });
+			this.setState({ loading: false, cached: false });
 		}
 	};
 
 	onPress = () => {
 		const { cached } = this.state;
-		return cached ? this.togglePlayPause() : this.handleDownload();
+		if (cached) {
+			this.togglePlayPause();
+			return;
+		}
+		this.handleDownload();
 	};
 
 	playPause = async () => {
