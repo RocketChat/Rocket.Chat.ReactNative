@@ -171,7 +171,7 @@ export default StyleSheet.create({
 		flex: 1,
 		marginLeft: 12
 	},
-	imageBlur: {
+	blurView: {
 		position: 'absolute',
 		borderWidth: 0,
 		top: 0,
@@ -179,7 +179,7 @@ export default StyleSheet.create({
 		bottom: 0,
 		right: 0
 	},
-	imageIndicator: {
+	blurIndicator: {
 		position: 'absolute',
 		justifyContent: 'center',
 		alignItems: 'center',

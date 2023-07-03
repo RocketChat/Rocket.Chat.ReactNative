@@ -2,7 +2,6 @@ import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
-import { BlurView } from '@react-native-community/blur';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -14,8 +13,7 @@ import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import { cancelDownload, downloadMediaFile, isDownloadActive, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import RCActivityIndicator from '../ActivityIndicator';
-import { CustomIcon } from '../CustomIcon';
+import BlurComponent from './Components/BlurComponent';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -47,23 +45,6 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 	);
 });
 
-const BlurComponent = ({ loading = false }: { loading: boolean }) => {
-	const { theme, colors } = useTheme();
-	return (
-		<>
-			<BlurView
-				style={[styles.image, styles.imageBlur]}
-				blurType={theme === 'light' ? 'light' : 'dark'}
-				blurAmount={10}
-				reducedTransparencyFallbackColor='white'
-			/>
-			<View style={[styles.image, styles.imageIndicator]}>
-				{loading ? <RCActivityIndicator /> : <CustomIcon color={colors.buttonText} name='arrow-down-circle' size={54} />}
-			</View>
-		</>
-	);
-};
-
 export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: string; cached: boolean; loading: boolean }) => {
 	const { colors } = useTheme();
 	return (
@@ -73,7 +54,7 @@ export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: s
 				source={{ uri: encodeURI(imgUri) }}
 				resizeMode={FastImage.resizeMode.cover}
 			/>
-			{!cached ? <BlurComponent loading={loading} /> : null}
+			{!cached ? <BlurComponent loading={loading} style={styles.image} iconName='arrow-down-circle' /> : null}
 		</>
 	);
 });
