@@ -13,6 +13,23 @@ index f9c858b..94ea188 100644
  
  public abstract class NotificationManagerCompatFacade {
      public static NotificationManagerCompat from(@NonNull Context context) {
+diff --git a/node_modules/react-native-notifications/lib/android/app/build.gradle b/node_modules/react-native-notifications/lib/android/app/build.gradle
+index d049e84..9ad7004 100644
+--- a/node_modules/react-native-notifications/lib/android/app/build.gradle
++++ b/node_modules/react-native-notifications/lib/android/app/build.gradle
+@@ -96,9 +96,9 @@ android {
+ 
+     testOptions {
+         unitTests.all { t ->
+-            reports {
+-                html.enabled true
+-            }
++            // reports {
++            //     html.enabled true
++            // }
+             testLogging {
+                 events "PASSED", "SKIPPED", "FAILED", "standardOut", "standardError"
+             }
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java
 index 90969b2..4c00e69 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsModule.java

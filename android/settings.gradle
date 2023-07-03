@@ -11,14 +11,14 @@ apply from: file("../node_modules/@react-native-community/cli-platform-android/n
 include ':app'
 
 includeBuild('../node_modules/@react-native/gradle-plugin')
-includeBuild('../node_modules/react-native') {
-    dependencySubstitution {
-        substitute(module("com.facebook.react:react-android")).using(project(":ReactAndroid"))
-        substitute(module("com.facebook.react:react-native")).using(project(":ReactAndroid"))
-        substitute(module("com.facebook.react:hermes-android")).using(project(":ReactAndroid:hermes-engine"))
-        substitute(module("com.facebook.react:hermes-engine")).using(project(":ReactAndroid:hermes-engine"))
-    }
-}
+// includeBuild('../node_modules/react-native') {
+//     dependencySubstitution {
+//         substitute(module("com.facebook.react:react-android")).using(project(":ReactAndroid"))
+//         substitute(module("com.facebook.react:react-native")).using(project(":ReactAndroid"))
+//         substitute(module("com.facebook.react:hermes-android")).using(project(":ReactAndroid:hermes-engine"))
+//         substitute(module("com.facebook.react:hermes-engine")).using(project(":ReactAndroid:hermes-engine"))
+//     }
+// }
 
 apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
 useExpoModules()
