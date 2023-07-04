@@ -54,7 +54,7 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 };
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, id, author }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
 		const { theme } = useTheme();
 
 		if (!attachments || attachments.length === 0) {
@@ -112,16 +112,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			return (
-				<Reply
-					key={index}
-					index={index}
-					attachment={file}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					messageId={id}
-				/>
-			);
+			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 		});
 		return <>{attachmentsElements}</>;
 	},

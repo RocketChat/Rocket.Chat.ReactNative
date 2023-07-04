@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { dequal } from 'dequal';
 import FastImage from 'react-native-fast-image';
-import parse from 'url-parse';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -92,7 +91,6 @@ interface IMessageReply {
 	timeFormat?: string;
 	index: number;
 	getCustomEmoji: TGetCustomEmoji;
-	messageId: string;
 }
 
 const Title = React.memo(
@@ -199,7 +197,7 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji, messageId }: IMessageReply) => {
+	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
@@ -225,12 +223,6 @@ const Reply = React.memo(
 			}
 			openLink(url, theme);
 		};
-
-		let attachmentId = '';
-		if (attachment.message_link) {
-			const parsedUrl = parse(attachment.message_link, true);
-			attachmentId = parsedUrl.query.msg || messageId;
-		}
 
 		let { borderColor } = themes[theme];
 		if (attachment.color) {
@@ -264,7 +256,6 @@ const Reply = React.memo(
 							timeFormat={timeFormat}
 							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
 							isReply
-							id={attachmentId}
 						/>
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{loading ? (
