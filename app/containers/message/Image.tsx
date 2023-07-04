@@ -113,7 +113,9 @@ const ImageContainer = React.memo(
 			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagesPreferenceDownload');
 			if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 				await handleDownload();
+				return;
 			}
+			setLoading(false);
 		};
 
 		const handleDownload = async () => {
