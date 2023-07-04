@@ -22,6 +22,42 @@ const sanitizeString = (value: string) => {
 };
 const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeString(serverURL)}/`;
 
+export const getFilename = ({
+	title,
+	url,
+	type,
+	mimeType
+}: {
+	title?: string;
+	url?: string;
+	type: MediaTypes;
+	mimeType?: string;
+}) => {
+	const isTitleTyped = mime.lookup(title);
+	const extension = getExtension(type, mimeType);
+	if (isTitleTyped && title) {
+		if (isTitleTyped === mimeType) {
+			return title;
+		}
+		// removing any character sequence after the last dot
+		const filenameWithoutWrongExtension = title.replace(/\.\w+$/, '');
+		return `${filenameWithoutWrongExtension}.${extension}`;
+	}
+
+	const filenameFromUrl = url?.substring(url.lastIndexOf('/') + 1);
+	const isFileNameFromUrlTyped = mime.lookup(filenameFromUrl);
+	if (isFileNameFromUrlTyped && filenameFromUrl) {
+		if (isFileNameFromUrlTyped === mimeType) {
+			return filenameFromUrl;
+		}
+		// removing any character sequence after the last dot
+		const filenameWithoutWrongExtension = filenameFromUrl.replace(/\.\w+$/, '');
+		return `${filenameWithoutWrongExtension}.${extension}`;
+	}
+
+	return `${filenameFromUrl}.${extension}`;
+};
+
 const getExtension = (type: MediaTypes, mimeType?: string) => {
 	if (!mimeType) {
 		return defaultType[type];
@@ -33,6 +69,11 @@ const getExtension = (type: MediaTypes, mimeType?: string) => {
 	// For older audios the server is returning the type audio/aac and we can't play it as mp3
 	if (mimeType === 'audio/aac') {
 		return 'm4a';
+	}
+	// The return of mime.extension('video/quicktime') is .qt,
+	// this format the iOS isn't recognize and can't save on gallery
+	if (mimeType === 'video/quicktime') {
+		return 'mov';
 	}
 	const extension = mime.extension(mimeType);
 	// The mime.extension can return false when there aren't any extension

@@ -2,10 +2,8 @@ import CameraRoll from '@react-native-community/cameraroll';
 import { HeaderBackground, useHeaderHeight } from '@react-navigation/elements';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { ResizeMode, Video } from 'expo-av';
-import { sha256 } from 'js-sha256';
 import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
-import * as mime from 'react-native-mime-types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -24,6 +22,7 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
+import { getFilename } from '../lib/methods/handleMediaDownload';
 
 const RenderContent = ({
 	setLoading,
@@ -166,13 +165,14 @@ const AttachmentView = (): React.ReactElement => {
 
 		setLoading(true);
 		try {
-			const extension = image_url
-				? `.${mime.extension(image_type) || 'jpg'}`
-				: `.${(video_type === 'video/quicktime' && 'mov') || mime.extension(video_type) || 'mp4'}`;
-			// The return of mime.extension('video/quicktime') is .qt,
-			// this format the iOS isn't recognize and can't save on gallery
+			let filename = '';
+			if (image_url) {
+				filename = getFilename({ title: attachment.title, type: 'image', mimeType: image_type, url });
+			} else {
+				filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
+			}
 			const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
-			const path = `${documentDir + sha256(url) + extension}`;
+			const path = `${documentDir + filename}`;
 			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
 			await CameraRoll.save(path, { album: 'Rocket.Chat' });
 			file.flush();
