@@ -1,0 +1,162 @@
+diff --git a/node_modules/react-native-scrollable-tab-view/Example/yarn.lock b/node_modules/react-native-scrollable-tab-view/Example/yarn.lock
+index cca15d0..199c271 100644
+--- a/node_modules/react-native-scrollable-tab-view/Example/yarn.lock
++++ b/node_modules/react-native-scrollable-tab-view/Example/yarn.lock
+@@ -2,16 +2,6 @@
+ # yarn lockfile v1
+ 
+ 
+-"@react-native-community/viewpager@3.3.0":
+-  version "3.3.0"
+-  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-3.3.0.tgz#e613747a43a31a6f3278f817ba96fdaaa7941f23"
+-  integrity sha512-tyzh79l4t/hxiyS9QD3LRmWMs8KVkZzjrkQ8U8+8To1wmvVCBtp8BenvNsDLTBO7CpO/YmiThpmIdEZMr1WuVw==
+-
+-"@react-native/normalize-color@*":
+-  version "2.1.0"
+-  resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.1.0.tgz#939b87a9849e81687d3640c5efa2a486ac266f91"
+-  integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
+-
+ abab@^1.0.3:
+   version "1.0.4"
+   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
+@@ -1387,15 +1377,6 @@ depd@~1.1.0:
+   version "1.1.1"
+   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.1.tgz#5783b4e1c459f06fa5ca27f991f3d06e7a310359"
+ 
+-deprecated-react-native-prop-types@^2.3.0:
+-  version "2.3.0"
+-  resolved "https://registry.yarnpkg.com/deprecated-react-native-prop-types/-/deprecated-react-native-prop-types-2.3.0.tgz#c10c6ee75ff2b6de94bb127f142b814e6e08d9ab"
+-  integrity sha512-pWD0voFtNYxrVqvBMYf5gq3NA2GCpfodS1yNynTPc93AYA/KEMGeWDqqeUB6R2Z9ZofVhks2aeJXiuQqKNpesA==
+-  dependencies:
+-    "@react-native/normalize-color" "*"
+-    invariant "*"
+-    prop-types "*"
+-
+ destroy@~1.0.4:
+   version "1.0.4"
+   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
+@@ -2065,13 +2046,6 @@ inquirer@^3.0.6:
+     strip-ansi "^4.0.0"
+     through "^2.3.6"
+ 
+-invariant@*:
+-  version "2.2.4"
+-  resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
+-  integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
+-  dependencies:
+-    loose-envify "^1.0.0"
+-
+ invariant@^2.2.2:
+   version "2.2.2"
+   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
+@@ -2533,11 +2507,6 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
+   version "3.0.2"
+   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
+ 
+-"js-tokens@^3.0.0 || ^4.0.0":
+-  version "4.0.0"
+-  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
+-  integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
+-
+ js-yaml@^3.7.0:
+   version "3.10.0"
+   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
+@@ -2812,13 +2781,6 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1:
+   dependencies:
+     js-tokens "^3.0.0"
+ 
+-loose-envify@^1.4.0:
+-  version "1.4.0"
+-  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
+-  integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
+-  dependencies:
+-    js-tokens "^3.0.0 || ^4.0.0"
+-
+ lru-cache@^4.0.1:
+   version "4.1.1"
+   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.1.tgz#622e32e82488b49279114a4f9ecf45e7cd6bba55"
+@@ -3408,15 +3370,6 @@ promise@^7.1.1:
+   dependencies:
+     asap "~2.0.3"
+ 
+-prop-types@*:
+-  version "15.8.1"
+-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+-  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+-  dependencies:
+-    loose-envify "^1.4.0"
+-    object-assign "^4.1.1"
+-    react-is "^16.13.1"
+-
+ prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
+   version "15.6.0"
+   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
+@@ -3496,11 +3449,6 @@ react-devtools-core@^2.5.0:
+     shell-quote "^1.6.1"
+     ws "^2.0.3"
+ 
+-react-is@^16.13.1:
+-  version "16.13.1"
+-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+-  integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+-
+ react-native-dismiss-keyboard@1.0.0:
+   version "1.0.0"
+   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
+@@ -3518,11 +3466,9 @@ react-native-drawer-layout@1.3.2:
+     react-native-dismiss-keyboard "1.0.0"
+ 
+ "react-native-scrollable-tab-view@file:..":
+-  version "1.1.0"
++  version "0.10.0"
+   dependencies:
+-    "@react-native-community/viewpager" "3.3.0"
+     create-react-class "^15.6.2"
+-    deprecated-react-native-prop-types "^2.3.0"
+     prop-types "^15.6.0"
+     react-timer-mixin "^0.13.3"
+ 
+diff --git a/node_modules/react-native-scrollable-tab-view/index.js b/node_modules/react-native-scrollable-tab-view/index.js
+index 2f12ad2..dc9d4f4 100644
+--- a/node_modules/react-native-scrollable-tab-view/index.js
++++ b/node_modules/react-native-scrollable-tab-view/index.js
+@@ -13,9 +13,9 @@ const {
+   InteractionManager,
+ } = ReactNative;
+ 
+-// const ViewPagerAndroid = require('react-native-pager-view');
++const ViewPagerAndroid = require('@react-native-community/viewpager');
+ const TimerMixin = require('react-timer-mixin');
+-const ViewPager = require('react-native-pager-view');
++const ViewPager = require('@react-native-community/viewpager');
+ 
+ const SceneComponent = require('./SceneComponent');
+ const DefaultTabBar = require('./DefaultTabBar');
+diff --git a/node_modules/react-native-scrollable-tab-view/yarn.lock b/node_modules/react-native-scrollable-tab-view/yarn.lock
+index a4a529b..901e52c 100644
+--- a/node_modules/react-native-scrollable-tab-view/yarn.lock
++++ b/node_modules/react-native-scrollable-tab-view/yarn.lock
+@@ -2,6 +2,11 @@
+ # yarn lockfile v1
+ 
+ 
++"@react-native-community/viewpager@3.3.0":
++  version "3.3.0"
++  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-3.3.0.tgz#e613747a43a31a6f3278f817ba96fdaaa7941f23"
++  integrity sha512-tyzh79l4t/hxiyS9QD3LRmWMs8KVkZzjrkQ8U8+8To1wmvVCBtp8BenvNsDLTBO7CpO/YmiThpmIdEZMr1WuVw==
++
+ "@react-native/normalize-color@*":
+   version "2.0.0"
+   resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.0.0.tgz#da955909432474a9a0fe1cbffc66576a0447f567"
+@@ -887,11 +892,6 @@ react-is@^16.8.1:
+   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
+   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
+ 
+-react-native-pager-view@^6.2.0:
+-  version "6.2.0"
+-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.2.0.tgz#51380d93fbe47f6380dc71d613a787bf27a4ca37"
+-  integrity sha512-pf9OnL/Tkr+5s4Gjmsn7xh91PtJLDa6qxYa/bmtUhd/+s4cQdWQ8DIFoOFghwZIHHHwVdWtoXkp6HtpjN+r20g==
+-
+ react-timer-mixin@^0.13.3:
+   version "0.13.4"
+   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz#75a00c3c94c13abe29b43d63b4c65a88fc8264d3"
