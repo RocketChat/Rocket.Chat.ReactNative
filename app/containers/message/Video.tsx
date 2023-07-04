@@ -88,7 +88,12 @@ const Thumbnail = ({ loading, video, cached }: { loading: boolean; video: string
 	return (
 		<>
 			{thumbnailImage ? <FastImage style={styles.thumbnailImage} source={{ uri: thumbnailImage }} /> : null}
-			<BlurComponent iconName={cached ? 'play-filled' : 'arrow-down-circle'} loading={loading} style={styles.button} />
+			<BlurComponent
+				iconName={cached ? 'play-filled' : 'arrow-down-circle'}
+				loading={loading}
+				style={styles.button}
+				showOverlay={cached}
+			/>
 			{loading ? <CancelIndicator /> : null}
 		</>
 	);

@@ -11,24 +11,22 @@ const BlurComponent = ({
 	loading = false,
 	style = {},
 	iconName,
-	blurAmount = 2
+	showOverlay = false
 }: {
 	loading: boolean;
 	style: StyleProp<ViewStyle>;
 	iconName: TIconsName;
-	blurAmount?: number;
+	showOverlay?: boolean;
 }) => {
 	const { colors } = useTheme();
-	// const { theme, colors } = useTheme();
 
 	return (
 		<>
-			<BlurView
-				style={[style, styles.blurView]}
-				blurType={'dark'}
-				// blurType={theme === 'light' ? 'light' : 'dark'}
-				blurAmount={blurAmount}
-			/>
+			{!showOverlay ? (
+				<BlurView style={[style, styles.blurView]} blurType={'dark'} blurAmount={2} />
+			) : (
+				<View style={[style, styles.blurView, { backgroundColor: colors.overlayColor }]} />
+			)}
 			<View style={[style, styles.blurIndicator]}>
 				{loading ? <RCActivityIndicator size={54} /> : <CustomIcon color={colors.buttonText} name={iconName} size={54} />}
 			</View>

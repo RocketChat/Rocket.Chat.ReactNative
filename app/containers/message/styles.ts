@@ -105,6 +105,9 @@ export default StyleSheet.create({
 		borderWidth: 1,
 		overflow: 'hidden'
 	},
+	imageBlurContainer: {
+		height: '100%'
+	},
 	imagePressed: {
 		opacity: 0.5
 	},

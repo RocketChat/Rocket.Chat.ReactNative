@@ -54,7 +54,9 @@ export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: s
 				source={{ uri: encodeURI(imgUri) }}
 				resizeMode={FastImage.resizeMode.cover}
 			/>
-			{!cached ? <BlurComponent loading={loading} style={styles.image} iconName='arrow-down-circle' /> : null}
+			{!cached ? (
+				<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
+			) : null}
 		</>
 	);
 });
