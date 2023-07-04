@@ -8,53 +8,11 @@ import log from './helpers/log';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
-const typeString = {
-	audio: 'audios/',
-	image: 'images/',
-	video: 'videos/'
-};
-
 const defaultType = {
 	audio: 'mp3',
 	image: 'jpg',
 	video: 'mp4'
 };
-
-const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
-
-export const mediaDownloadKey = (messageUrl: string) => `${sanitizeString(messageUrl)}`;
-
-export function isDownloadActive(messageUrl: string): boolean {
-	return !!downloadQueue[mediaDownloadKey(messageUrl)];
-}
-
-export async function cancelDownload(messageUrl: string): Promise<void> {
-	const downloadKey = mediaDownloadKey(messageUrl);
-	if (!isEmpty(downloadQueue[downloadKey])) {
-		try {
-			await downloadQueue[downloadKey].cancelAsync();
-		} catch {
-			// Do nothing
-		}
-		delete downloadQueue[downloadKey];
-	}
-}
-
-export function downloadMediaFile({ downloadUrl, path }: { downloadUrl: string; path: string }): Promise<string> {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const downloadKey = mediaDownloadKey(downloadUrl);
-			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
-			const result = await downloadQueue[downloadKey].downloadAsync();
-			if (result?.uri) {
-				return resolve(result.uri);
-			}
-			reject();
-		} catch {
-			reject();
-		}
-	});
-}
 
 export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 
@@ -93,6 +51,24 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	return ensureDirAsync(dir, intermediates);
 };
 
+const getFilePath = ({ type, mimeType, urlToCache }: { type: MediaTypes; mimeType?: string; urlToCache?: string }) => {
+	if (!urlToCache) {
+		return;
+	}
+	const folderPath = getFolderPath();
+	const fileUrlSanitized = sanitizeString(urlToCache);
+	const filename = `${fileUrlSanitized}.${getExtension(type, mimeType)}`;
+	const filePath = `${folderPath}${filename}`;
+	return filePath;
+};
+
+const getFolderPath = () => {
+	const serverUrl = store.getState().server.server;
+	const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
+	const folderPath = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}`;
+	return folderPath;
+};
+
 export const getMediaCache = async ({
 	type,
 	mimeType,
@@ -103,21 +79,20 @@ export const getMediaCache = async ({
 	urlToCache?: string;
 }) => {
 	if (!urlToCache) {
-		return { file: null, filePath: '' };
+		return null;
 	}
 	try {
-		const serverUrl = store.getState().server.server;
-		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
-		const folderPath = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}${typeString[type]}`;
-		const fileUrlSanitized = sanitizeString(urlToCache);
-		const filename = `${fileUrlSanitized}.${getExtension(type, mimeType)}`;
-		const filePath = `${folderPath}${filename}`;
+		const folderPath = getFolderPath();
+		const filePath = getFilePath({ type, mimeType, urlToCache });
+		if (!filePath) {
+			return null;
+		}
 		await ensureDirAsync(folderPath);
 		const file = await FileSystem.getInfoAsync(filePath);
-		return { file, filePath };
+		return file;
 	} catch (error) {
 		log(error);
-		return { file: null, filePath: '' };
+		return null;
 	}
 };
 
@@ -130,3 +105,52 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 		log(error);
 	}
 };
+
+const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
+
+export const mediaDownloadKey = (messageUrl: string) => `${sanitizeString(messageUrl)}`;
+
+export function isDownloadActive(messageUrl: string): boolean {
+	return !!downloadQueue[mediaDownloadKey(messageUrl)];
+}
+
+export async function cancelDownload(messageUrl: string): Promise<void> {
+	const downloadKey = mediaDownloadKey(messageUrl);
+	if (!isEmpty(downloadQueue[downloadKey])) {
+		try {
+			await downloadQueue[downloadKey].cancelAsync();
+		} catch {
+			// Do nothing
+		}
+		delete downloadQueue[downloadKey];
+	}
+}
+
+export function downloadMediaFile({
+	type,
+	mimeType,
+	downloadUrl
+}: {
+	type: MediaTypes;
+	mimeType?: string;
+	downloadUrl: string;
+}): Promise<string> {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
+			if (!path) {
+				reject();
+				return;
+			}
+			const downloadKey = mediaDownloadKey(downloadUrl);
+			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
+			const result = await downloadQueue[downloadKey].downloadAsync();
+			if (result?.uri) {
+				return resolve(result.uri);
+			}
+			reject();
+		} catch {
+			reject();
+		}
+	});
+}

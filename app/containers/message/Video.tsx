@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, Text } from 'react-native';
 import { dequal } from 'dequal';
 import * as VideoThumbnails from 'expo-video-thumbnails';
@@ -106,7 +106,6 @@ const Video = React.memo(
 		const [cached, setCached] = useState(false);
 		const { baseUrl, user } = useContext(MessageContext);
 		const { theme } = useTheme();
-		const filePath = useRef('');
 		const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
 		useEffect(() => {
@@ -117,12 +116,11 @@ const Video = React.memo(
 						mimeType: file.video_type,
 						urlToCache: video
 					});
-					filePath.current = cachedVideoResult.filePath;
 					const downloadActive = isDownloadActive(video);
-					if (cachedVideoResult.file?.exists) {
+					if (cachedVideoResult?.exists) {
 						setVideoCached(prev => ({
 							...prev,
-							video_url: cachedVideoResult.file?.uri
+							video_url: cachedVideoResult?.uri
 						}));
 						setLoading(false);
 						setCached(true);
@@ -157,7 +155,8 @@ const Video = React.memo(
 			try {
 				const videoUri = await downloadMediaFile({
 					downloadUrl: video,
-					path: filePath.current
+					type: 'video',
+					mimeType: file.video_type
 				});
 				setVideoCached(prev => ({
 					...prev,

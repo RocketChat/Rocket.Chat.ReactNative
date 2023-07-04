@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
@@ -68,7 +68,6 @@ const ImageContainer = React.memo(
 		const [loading, setLoading] = useState(true);
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
-		const filePath = useRef('');
 		const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 		const img = getUrl(file.image_url);
 		// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
@@ -83,11 +82,10 @@ const ImageContainer = React.memo(
 						mimeType: imageCached.image_type,
 						urlToCache: imgUrlToCache
 					});
-					filePath.current = cachedImageResult.filePath;
-					if (cachedImageResult.file?.exists) {
+					if (cachedImageResult?.exists) {
 						setImageCached(prev => ({
 							...prev,
-							title_link: cachedImageResult.file?.uri
+							title_link: cachedImageResult?.uri
 						}));
 						setLoading(false);
 						setCached(true);
@@ -122,7 +120,8 @@ const ImageContainer = React.memo(
 			try {
 				const imageUri = await downloadMediaFile({
 					downloadUrl: imgUrlToCache,
-					path: filePath.current
+					type: 'image',
+					mimeType: imageCached.image_type
 				});
 				setImageCached(prev => ({
 					...prev,

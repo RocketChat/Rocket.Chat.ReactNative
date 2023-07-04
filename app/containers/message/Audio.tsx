@@ -121,7 +121,6 @@ Button.displayName = 'MessageAudioButton';
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
 	private sound: Sound;
-	private filePath?: string;
 
 	constructor(props: IMessageAudioProps) {
 		super(props);
@@ -149,9 +148,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			mimeType: file.audio_type,
 			urlToCache: this.getUrl()
 		});
-		this.filePath = cachedAudioResult.filePath;
-		if (cachedAudioResult?.file?.exists) {
-			await this.sound.loadAsync({ uri: cachedAudioResult.file.uri });
+		if (cachedAudioResult?.exists) {
+			await this.sound.loadAsync({ uri: cachedAudioResult.uri });
 			this.setState({ loading: false, cached: true });
 			return;
 		}
@@ -290,17 +288,18 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	handleDownload = async () => {
+		const { file } = this.props;
 		// @ts-ignore can't use declare to type this
 		const { user } = this.context;
 		this.setState({ loading: true });
 		try {
 			const url = this.getUrl();
-			if (url && this.filePath) {
+			if (url) {
 				const audio = await downloadMediaFile({
 					downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-					path: this.filePath
+					type: 'audio',
+					mimeType: file.audio_type
 				});
-
 				await this.sound.loadAsync({ uri: audio });
 				this.setState({ loading: false, cached: true });
 			}
