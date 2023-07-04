@@ -10,23 +10,27 @@ import { CustomIcon, TIconsName } from '../../../CustomIcon';
 const BlurComponent = ({
 	loading = false,
 	style = {},
-	iconName
+	iconName,
+	blurAmount = 2
 }: {
 	loading: boolean;
 	style: StyleProp<ViewStyle>;
 	iconName: TIconsName;
+	blurAmount?: number;
 }) => {
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
+	// const { theme, colors } = useTheme();
+
 	return (
 		<>
 			<BlurView
 				style={[style, styles.blurView]}
-				blurType={theme === 'light' ? 'light' : 'dark'}
-				blurAmount={10}
-				reducedTransparencyFallbackColor='white'
+				blurType={'dark'}
+				// blurType={theme === 'light' ? 'light' : 'dark'}
+				blurAmount={blurAmount}
 			/>
 			<View style={[style, styles.blurIndicator]}>
-				{loading ? <RCActivityIndicator /> : <CustomIcon color={colors.buttonText} name={iconName} size={54} />}
+				{loading ? <RCActivityIndicator size={54} /> : <CustomIcon color={colors.buttonText} name={iconName} size={54} />}
 			</View>
 		</>
 	);

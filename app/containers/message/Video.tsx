@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, Text } from 'react-native';
 import { dequal } from 'dequal';
+import * as VideoThumbnails from 'expo-video-thumbnails';
+import FastImage from 'react-native-fast-image';
 
+import messageStyles from './styles';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { isIOS } from '../../lib/methods/helpers';
-import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { fileDownload } from './helpers/fileDownload';
@@ -13,19 +15,13 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
 import I18n from '../../i18n';
 import { IAttachment } from '../../definitions/IAttachment';
-import RCActivityIndicator from '../ActivityIndicator';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import {
-	LOCAL_DOCUMENT_DIRECTORY,
-	cancelDownload,
-	downloadMediaFile,
-	isDownloadActive,
-	getMediaCache
-} from '../../lib/methods/handleMediaDownload';
+import { cancelDownload, downloadMediaFile, isDownloadActive, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import sharedStyles from '../../views/Styles';
+import BlurComponent from './Components/BlurComponent';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -47,6 +43,11 @@ const styles = StyleSheet.create({
 	text: {
 		...sharedStyles.textRegular,
 		fontSize: 12
+	},
+	thumbnailImage: {
+		borderRadius: 4,
+		width: '100%',
+		height: '100%'
 	}
 });
 
@@ -58,16 +59,37 @@ interface IMessageVideo {
 	isReply?: boolean;
 }
 
-const DownloadIndicator = ({ handleCancelDownload }: { handleCancelDownload(): void }) => {
+const CancelIndicator = () => {
 	const { colors } = useTheme();
 	return (
+		<View style={styles.cancelContainer}>
+			<Text style={[styles.text, { color: colors.auxiliaryText }]}>{I18n.t('Cancel')}</Text>
+		</View>
+	);
+};
+
+const Thumbnail = ({ loading, video, cached }: { loading: boolean; video: string; cached: boolean }) => {
+	const [thumbnailImage, setThumbnailImage] = useState('');
+
+	useEffect(() => {
+		const generateThumbnail = async () => {
+			try {
+				const { uri } = await VideoThumbnails.getThumbnailAsync(video, {
+					time: 1
+				});
+				setThumbnailImage(uri);
+			} catch (e) {
+				// do nothing
+			}
+		};
+		generateThumbnail();
+	}, []);
+
+	return (
 		<>
-			<View style={styles.cancelContainer}>
-				<Touchable background={Touchable.Ripple(colors.bannerBackground)} onPress={handleCancelDownload}>
-					<Text style={[styles.text, { color: colors.auxiliaryText }]}>{I18n.t('Cancel')}</Text>
-				</Touchable>
-			</View>
-			<RCActivityIndicator size={48} />
+			{thumbnailImage ? <FastImage style={styles.thumbnailImage} source={{ uri: thumbnailImage }} /> : null}
+			<BlurComponent iconName={cached ? 'play-filled' : 'arrow-down-circle'} loading={loading} style={styles.button} />
+			{loading ? <CancelIndicator /> : null}
 		</>
 	);
 };
@@ -75,7 +97,8 @@ const DownloadIndicator = ({ handleCancelDownload }: { handleCancelDownload(): v
 const Video = React.memo(
 	({ file, showAttachment, getCustomEmoji, style, isReply }: IMessageVideo) => {
 		const [videoCached, setVideoCached] = useState(file);
-		const [loading, setLoading] = useState(false);
+		const [loading, setLoading] = useState(true);
+		const [cached, setCached] = useState(false);
 		const { baseUrl, user } = useContext(MessageContext);
 		const { theme } = useTheme();
 		const filePath = useRef('');
@@ -96,13 +119,20 @@ const Video = React.memo(
 							...prev,
 							video_url: cachedVideoResult.file?.uri
 						}));
+						setCached(true);
+						setLoading(false);
 						if (downloadActive) {
 							cancelDownload(video);
 						}
 						return;
 					}
-					if (isReply) return;
-					if (downloadActive) return setLoading(true);
+					if (downloadActive && !isReply) {
+						return;
+					}
+					setLoading(false);
+					if (isReply) {
+						return;
+					}
 					await handleAutoDownload();
 				}
 			};
@@ -131,18 +161,24 @@ const Video = React.memo(
 					...prev,
 					video_url: videoUri
 				}));
+				setCached(true);
 			} finally {
 				setLoading(false);
 			}
 		};
 
 		const onPress = async () => {
-			if (file.video_type && isTypeSupported(file.video_type) && showAttachment) {
-				if (LOCAL_DOCUMENT_DIRECTORY && !videoCached.video_url?.startsWith(LOCAL_DOCUMENT_DIRECTORY) && !loading) {
-					// Keep the video downloading while showing the video buffering
-					handleDownload();
-				}
-				return showAttachment(videoCached);
+			if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment) {
+				showAttachment(videoCached);
+				return;
+			}
+			if (!loading) {
+				handleDownload();
+				return;
+			}
+			if (loading) {
+				handleCancelDownload();
+				return;
 			}
 			if (!isIOS && file.video_url) {
 				await downloadVideoToGallery(video);
@@ -154,7 +190,7 @@ const Video = React.memo(
 		const handleCancelDownload = () => {
 			if (loading) {
 				cancelDownload(video);
-				return setLoading(false);
+				setLoading(false);
 			}
 		};
 
@@ -182,14 +218,10 @@ const Video = React.memo(
 				<Touchable
 					disabled={isReply}
 					onPress={onPress}
-					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
+					style={[styles.button, messageStyles.mustWrapBlur, { backgroundColor: themes[theme].videoBackground }]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
 				>
-					{loading ? (
-						<DownloadIndicator handleCancelDownload={handleCancelDownload} />
-					) : (
-						<CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />
-					)}
+					<Thumbnail loading={loading} video={video} cached={cached} />
 				</Touchable>
 			</>
 		);

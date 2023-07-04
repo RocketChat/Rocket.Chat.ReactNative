@@ -96,9 +96,7 @@ export default StyleSheet.create({
 	},
 	imageContainer: {
 		flexDirection: 'column',
-		borderRadius: 4,
-		// https://github.com/Kureev/react-native-blur/issues/520#issuecomment-1378339192 Fix BlurView
-		overflow: isAndroid ? 'hidden' : 'visible'
+		borderRadius: 4
 	},
 	image: {
 		width: '100%',
@@ -184,5 +182,9 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderWidth: 0
+	},
+	mustWrapBlur: {
+		// https://github.com/Kureev/react-native-blur/issues/520#issuecomment-1378339192 Fix BlurView
+		overflow: isAndroid ? 'hidden' : 'visible'
 	}
 });
