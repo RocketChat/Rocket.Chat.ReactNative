@@ -5,20 +5,20 @@ PODS:
   - BVLinearGradient (2.6.2):
     - React-Core
   - DoubleConversion (1.1.6)
-  - EXAV (13.2.1):
+  - EXAV (13.4.0):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
-  - EXFileSystem (15.2.2):
+  - EXFileSystem (15.4.2):
     - ExpoModulesCore
   - Expo (49.0.0-beta.2):
     - ExpoModulesCore
   - ExpoAppleAuthentication (6.0.1):
     - ExpoModulesCore
-  - ExpoHaptics (12.2.1):
+  - ExpoHaptics (12.4.0):
     - ExpoModulesCore
-  - ExpoKeepAwake (12.0.1):
+  - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
-  - ExpoLocalAuthentication (13.3.0):
+  - ExpoLocalAuthentication (13.4.1):
     - ExpoModulesCore
   - ExpoModulesCore (1.5.3):
     - RCT-Folly (= 2021.07.22.00)
@@ -26,9 +26,9 @@ PODS:
     - React-NativeModulesApple
     - React-RCTAppDelegate
     - ReactCommon/turbomodule/core
-  - ExpoVideoThumbnails (7.2.1):
+  - ExpoVideoThumbnails (7.4.0):
     - ExpoModulesCore
-  - ExpoWebBrowser (12.1.1):
+  - ExpoWebBrowser (12.3.2):
     - ExpoModulesCore
   - FBLazyVector (0.72.1)
   - FBReactNativeSpec (0.72.1):
@@ -433,7 +433,7 @@ PODS:
     - React-Core
   - react-native-blur (4.1.0):
     - React-Core
-  - react-native-cameraroll (4.1.2):
+  - react-native-cameraroll (5.7.2):
     - React-Core
   - react-native-cookies (6.2.1):
     - React-Core
@@ -713,7 +713,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
-  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
+  - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
@@ -868,7 +868,7 @@ EXTERNAL SOURCES:
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-cameraroll:
-    :path: "../node_modules/@react-native-community/cameraroll"
+    :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
@@ -987,16 +987,16 @@ SPEC CHECKSUMS:
   BugsnagReactNative: fa312f53a83ca21c0afdfeaec98a9c5eeb8fc4ed
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
-  EXAV: f1f69397ecdcf44cfacd4ff5d338cd1b96891e87
-  EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
+  EXAV: 4e66adbd7803d487044ee1f19bf87d4de9112e76
+  EXFileSystem: d7f59869885cfeab3ac771e2a8d0f5ed98cd3fdb
   Expo: 9f361751c63d56c271546524d5151c1a773c6024
   ExpoAppleAuthentication: 7bd5e4150d59e8df37aa80b425850ae88adf9e65
-  ExpoHaptics: 5156bc5160d8e04c170dd6e645a71154951a2ad9
-  ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
-  ExpoLocalAuthentication: 32919307c66fb3661caefa07e7811a95a7539d7b
+  ExpoHaptics: 360af6898407ee4e8265d30a1a8fb16491a660eb
+  ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
+  ExpoLocalAuthentication: bd9d9037a96a11ccc456e327ddb404df02da10ca
   ExpoModulesCore: c7fc9558697e1dc7efef2b4841096cd6ab2b760f
-  ExpoVideoThumbnails: 0021303b614a89fcc5df8b59d9d37ddf14a7d4cf
-  ExpoWebBrowser: 033d34c478d9986da2f1679729041423837626e0
+  ExpoVideoThumbnails: 3b5ec2a802a67b6e1a22d38b4526ef4619dd3938
+  ExpoWebBrowser: 2c788f9c07718a780fe6d8bf2f6195c47609faaa
   FBLazyVector: 55cd4593d570bd9e5e227488d637ce6a9581ce51
   FBReactNativeSpec: 799b0e1a1561699cd0e424e24fe5624da38402f0
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
@@ -1035,7 +1035,7 @@ SPEC CHECKSUMS:
   React-logger: b8103c9b04e707b50cdd2b1aeb382483900cbb37
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-blur: ba2f37268542f8a26d809f48c5162705a3261fc6
-  react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
+  react-native-cameraroll: 134805127580aed23403b8c2cb1548920dd77b3a
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
   react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c

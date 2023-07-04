@@ -4840,6 +4840,11 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@react-native-camera-roll/camera-roll@^5.7.2":
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-5.7.2.tgz#db11525ae26c8a61630c424aebd323a7c784a921"
+  integrity sha512-s8VAUG1Kvi+tEJkLHObmOJdXAL/uclnXJ/IdnJtx2fCKiWA3Ho0ln9gDQqCYHHHHu+sXk7wovsH/I2/AYy0brg==
+
 "@react-native-clipboard/clipboard@^1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.8.5.tgz#b11276e38ef288b0fd70c0a38506e2deecc5fa5a"
@@ -4858,11 +4863,6 @@
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/blur/-/blur-4.1.0.tgz#ed1361a569150c2249aae9b734e278fd262b70cd"
   integrity sha512-esfuAjbAoeysfI3RhmCHlYwlXobXzcsVGZEHgDhVGB88aO9RktY6b13mYbo2FXZ8XnntcccuvXlgckvoIsggWg==
-
-"@react-native-community/cameraroll@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/cameraroll/-/cameraroll-4.1.2.tgz#489c6bb6137571540d93c543d5fcf8c652b548ec"
-  integrity sha512-jkdhMByMKD2CZ/5MPeBieYn8vkCfC4MOTouPpBpps3I8N6HUYJk+1JnDdktVYl2WINnqXpQptDA2YptVyifYAg==
 
 "@react-native-community/cli-clean@11.3.3":
   version "11.3.3"
@@ -5054,6 +5054,11 @@
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.4.2.tgz#1fea0eb3ae31841fe87bd6c4fc67569066e9cf4b"
   integrity sha512-D9bv+3Vd2gairAhnRPAghwccgEmoM7g562pm8i4qB3Esrms5mggF81G3UvCyc0w3jjtFHh8dpQkfEoKiP0NW/Q==
+
+"@react-native-community/viewpager@3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-3.3.0.tgz#e613747a43a31a6f3278f817ba96fdaaa7941f23"
+  integrity sha512-tyzh79l4t/hxiyS9QD3LRmWMs8KVkZzjrkQ8U8+8To1wmvVCBtp8BenvNsDLTBO7CpO/YmiThpmIdEZMr1WuVw==
 
 "@react-native-cookies/cookies@6.2.1":
   version "6.2.1"
@@ -17687,11 +17692,6 @@ react-native-orientation-locker@1.1.8:
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.8.tgz#45d1c9e002496b8d286ec8932d6e3e7d341f9c85"
   integrity sha512-+Vd7x6O/3zGqYIMXpeDlaw3ma074Dtnocm8ryT9v5SvaiEcWSzII4frPgXaUcc/MiCq4OWZ1JtVoyw75mdomQw==
 
-react-native-pager-view@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.2.0.tgz#51380d93fbe47f6380dc71d613a787bf27a4ca37"
-  integrity sha512-pf9OnL/Tkr+5s4Gjmsn7xh91PtJLDa6qxYa/bmtUhd/+s4cQdWQ8DIFoOFghwZIHHHwVdWtoXkp6HtpjN+r20g==
-
 react-native-picker-select@^8.0.4:
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-8.0.4.tgz#3f7f1f42df69b06e7d2c10338288332a6c40fd10"
@@ -17767,10 +17767,10 @@ react-native-scrollable-tab-view@RocketChat/react-native-scrollable-tab-view:
   version "1.1.0"
   resolved "https://codeload.github.com/RocketChat/react-native-scrollable-tab-view/tar.gz/1e5495e9ef9d634683a1afb7dd9293d2ea873a4d"
   dependencies:
+    "@react-native-community/viewpager" "3.3.0"
     create-react-class "^15.6.2"
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.6.0"
-    react-native-pager-view "^6.2.0"
     react-timer-mixin "^0.13.3"
 
 react-native-simple-crypto@RocketChat/react-native-simple-crypto#0.5.1:
