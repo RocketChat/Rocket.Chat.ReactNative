@@ -20,6 +20,11 @@ const mentions = {
 	mentionOtherColor: '#F3BE08'
 };
 
+const callButtons = {
+	cancelCallButton: '#F5455C',
+	acceptCallButton: '#158D65'
+};
+
 export const colors = {
 	light: {
 		backgroundColor: '#ffffff',
@@ -89,7 +94,13 @@ export const colors = {
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
 		textInputSecondaryBackground: '#E4E7EA',
-		...mentions
+		dotBg: '#a9cbff',
+		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
+		n900: '#1F2329',
+		...mentions,
+		...callButtons
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -158,8 +169,14 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
-		textInputSecondaryBackground: '#030b1b', // backgroundColor
-		...mentions
+		textInputSecondaryBackground: '#030b1b',
+		dotBg: '#a9cbff',
+		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
+		n900: '#FFFFFF',
+		...mentions,
+		...callButtons
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -228,8 +245,14 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
-		textInputSecondaryBackground: '#000000', // backgroundColor
-		...mentions
+		textInputSecondaryBackground: '#000000',
+		dotBg: '#a9cbff',
+		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
+		n900: '#FFFFFF',
+		...mentions,
+		...callButtons
 	}
 };
 

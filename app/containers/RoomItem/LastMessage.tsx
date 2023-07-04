@@ -50,6 +50,11 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 		prefix = `${useRealName ? name : lastMessage.u.username}: `;
 	}
 
+	if (lastMessage.t === 'videoconf') {
+		prefix = '';
+		lastMessage.msg = I18n.t('Call_started');
+	}
+
 	return `${prefix}${lastMessage.msg}`;
 };
 
