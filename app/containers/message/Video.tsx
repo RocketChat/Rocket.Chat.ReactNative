@@ -119,18 +119,15 @@ const Video = React.memo(
 							...prev,
 							video_url: cachedVideoResult.file?.uri
 						}));
-						setCached(true);
 						setLoading(false);
+						setCached(true);
 						if (downloadActive) {
 							cancelDownload(video);
 						}
 						return;
 					}
-					if (downloadActive && !isReply) {
-						return;
-					}
-					setLoading(false);
 					if (isReply) {
+						setLoading(false);
 						return;
 					}
 					await handleAutoDownload();
@@ -162,6 +159,8 @@ const Video = React.memo(
 					video_url: videoUri
 				}));
 				setCached(true);
+			} catch {
+				setCached(false);
 			} finally {
 				setLoading(false);
 			}

@@ -127,10 +127,10 @@ const ImageContainer = React.memo(
 					title_link: imageUri
 				}));
 				setCached(true);
-				setLoading(false);
 			} catch (e) {
-				setLoading(false);
 				setCached(false);
+			} finally {
+				setLoading(false);
 			}
 		};
 
