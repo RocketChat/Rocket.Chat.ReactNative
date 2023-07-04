@@ -192,7 +192,6 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':@react-native-community_viewpager')
     implementation "androidx.core:core-splashscreen:1.0.0"
     playImplementation project(':react-native-notifications')
 
