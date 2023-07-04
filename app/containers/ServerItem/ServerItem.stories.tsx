@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-native';
 
 import { themes } from '../../lib/constants';
 import ServerItemComponent, { IServerItem } from '.';
@@ -17,7 +18,7 @@ const defaultItem = {
 const ServerItem = ({
 	item,
 	theme = 'light',
-	onPress = () => alert('Press'),
+	onPress = () => Alert.alert('Press'),
 	onLongPress,
 	hasCheck
 }: {
@@ -56,7 +57,7 @@ export const Content = () => (
 
 export const Touchable = () => (
 	<>
-		<ServerItem onLongPress={() => alert('Long Press')} />
+		<ServerItem onLongPress={() => Alert.alert('Long Press')} />
 	</>
 );
 

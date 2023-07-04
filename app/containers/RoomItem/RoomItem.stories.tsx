@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 
 import { longText } from '../../../.storybook/utils';
 import { DisplayMode } from '../../lib/constants';
@@ -37,7 +37,7 @@ export default {
 
 export const Basic = () => <RoomItem />;
 
-export const Touch = () => <RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />;
+export const Touch = () => <RoomItem onPress={() => Alert.alert('on press')} onLongPress={() => Alert.alert('on long press')} />;
 
 export const User = () => (
 	<>

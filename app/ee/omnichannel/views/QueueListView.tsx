@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem, FlatListProps } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
@@ -27,7 +27,7 @@ type TNavigation = CompositeNavigationProp<
 >;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const getItemLayout = (data: IOmnichannelRoom[] | null | undefined, index: number) => ({
+const getItemLayout: FlatListProps<IOmnichannelRoom>['getItemLayout'] = (data, index) => ({
 	length: ROW_HEIGHT,
 	offset: ROW_HEIGHT * index,
 	index

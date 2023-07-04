@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 // 		{ useNativeDriver: true }
 // 	);
 
-export { IListProps };
+export { type IListProps };
 
 export interface IListContainerProps {
 	renderRow: Function;
@@ -352,7 +352,11 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { rid, tmid, listRef } = this.props;
+		const {
+			rid,
+			// tmid,
+			listRef
+		} = this.props;
 		const { messages, refreshing } = this.state;
 		return (
 			<>

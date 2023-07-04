@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 import * as List from '../../containers/List';
 import { colors } from '../../lib/constants';
@@ -43,7 +43,7 @@ const BaseItem = ({ item }: { item?: Partial<IItem['item']> }) => (
 			...defaultItem,
 			...item
 		}}
-		onPress={() => alert('pressed')}
+		onPress={() => Alert.alert('pressed')}
 	/>
 );
 

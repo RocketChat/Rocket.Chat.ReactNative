@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import React from 'react';
-import { Alert, FlatList, Keyboard } from 'react-native';
+import { Alert, FlatList, Keyboard, FlatListProps } from 'react-native';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
@@ -33,7 +33,7 @@ import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
 
-const getItemLayout = (data: IItem[] | null | undefined, index: number) => ({
+const getItemLayout: FlatListProps<IItem>['getItemLayout'] = (data, index) => ({
 	length: data?.length || 0,
 	offset: ROW_HEIGHT * index,
 	index

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';
@@ -54,8 +54,8 @@ const BaseItem = ({
 		useRealName={useRealName}
 		badgeColor={badgeColor}
 		user={{ id: 'abc' }}
-		toggleFollowThread={() => alert('toggleFollowThread')}
-		onPress={() => alert('pressed')}
+		toggleFollowThread={() => Alert.alert('toggleFollowThread')}
+		onPress={() => Alert.alert('pressed')}
 	/>
 );
 

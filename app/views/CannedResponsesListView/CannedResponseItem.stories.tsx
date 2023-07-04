@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-native';
 
 import CannedResponseItem from './CannedResponseItem';
 
@@ -48,8 +49,8 @@ export const Itens = () => (
 			shortcut={item[0].shortcut}
 			tags={item[0]?.tags}
 			text={item[0].text}
-			onPressDetail={() => alert('navigation to CannedResponseDetail')}
-			onPressUse={() => alert('Back to RoomView and wrote in MessageBox')}
+			onPressDetail={() => Alert.alert('navigation to CannedResponseDetail')}
+			onPressUse={() => Alert.alert('Back to RoomView and wrote in MessageBox')}
 		/>
 		<CannedResponseItem
 			theme={theme}
@@ -57,8 +58,8 @@ export const Itens = () => (
 			shortcut={item[1].shortcut}
 			tags={item[1]?.tags}
 			text={item[1].text}
-			onPressDetail={() => alert('navigation to CannedResponseDetail')}
-			onPressUse={() => alert('Back to RoomView and wrote in MessageBox')}
+			onPressDetail={() => Alert.alert('navigation to CannedResponseDetail')}
+			onPressUse={() => Alert.alert('Back to RoomView and wrote in MessageBox')}
 		/>
 	</>
 );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 
 import * as List from '.';
 import SafeAreaView from '../SafeAreaView';
@@ -24,7 +24,7 @@ export const TitleAndSubtitle = () => (
 	</List.Container>
 );
 
-export const Alert = () => (
+export const AlertTest = () => (
 	<List.Container>
 		<List.Separator />
 		<List.Item title='Chats' alert />
@@ -41,9 +41,9 @@ export const Alert = () => (
 export const Pressable = () => (
 	<List.Container>
 		<List.Separator />
-		<List.Item title='Press me' onPress={() => alert('Hi there!')} translateTitle={false} />
+		<List.Item title='Press me' onPress={() => Alert.alert('Hi there!')} translateTitle={false} />
 		<List.Separator />
-		<List.Item title={"I'm disabled"} onPress={() => alert('Hi there!')} disabled translateTitle={false} />
+		<List.Item title={"I'm disabled"} onPress={() => Alert.alert('Hi there!')} disabled translateTitle={false} />
 		<List.Separator />
 	</List.Container>
 );
@@ -133,7 +133,7 @@ export const WithCustomColors = () => (
 		<List.Item
 			title='Press me!'
 			color='white'
-			onPress={() => alert('Press')}
+			onPress={() => Alert.alert('Press')}
 			backgroundColor='red'
 			underlayColor='green'
 			translateTitle={false}
@@ -146,7 +146,7 @@ const ListItemFull = ({ ...props }) => (
 	<List.Item
 		title='Chats'
 		subtitle='All'
-		onPress={() => alert('Hi')}
+		onPress={() => Alert.alert('Hi')}
 		left={() => <List.Icon name='emoji' />}
 		right={() => <List.Icon name='emoji' />}
 		{...props}

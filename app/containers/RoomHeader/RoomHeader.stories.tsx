@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { Alert, Dimensions, View } from 'react-native';
 
 import { longText } from '../../../.storybook/utils';
 import { ThemeContext, TSupportedThemes } from '../../theme';
@@ -24,7 +24,7 @@ const RoomHeader = ({ ...props }) => (
 		title='title'
 		type='p'
 		testID={props.title}
-		onPress={() => alert('header pressed!')}
+		onPress={() => Alert.alert('header pressed!')}
 		status={props.status}
 		usersTyping={props.usersTyping}
 		{...props}

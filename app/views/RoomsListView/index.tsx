@@ -149,7 +149,7 @@ const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', '
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data: ISubscription[] | null | undefined, index: number, height: number) => ({
+const getItemLayout = (data: ArrayLike<IRoomItem> | null | undefined, index: number, height: number) => ({
 	length: height,
 	offset: height * index,
 	index

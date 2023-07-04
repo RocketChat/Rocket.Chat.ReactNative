@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
@@ -157,7 +157,7 @@ export const Encrypted = () => (
 			hasError
 			msg='This message has error and is encrypted'
 			status={messagesStatus.ERROR}
-			onErrorPress={() => alert('Error pressed')}
+			onErrorPress={() => Alert.alert('Error pressed')}
 			type='e2e'
 		/>
 		<Message msg='Read Receipt encrypted with Header' isReadReceiptEnabled read type='e2e' />
@@ -808,18 +808,23 @@ export const ColoredAttachments = () => (
 	/>
 );
 
-export const Broadcast = () => <Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />;
+export const Broadcast = () => <Message msg='Broadcasted message' broadcast replyBroadcast={() => Alert.alert('broadcast!')} />;
 
 export const Archived = () => <Message msg='This message is inside an archived room' archived />;
 
 export const Error = () => (
 	<>
-		<Message hasError msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
+		<Message
+			hasError
+			msg='This message has error'
+			status={messagesStatus.ERROR}
+			onErrorPress={() => Alert.alert('Error pressed')}
+		/>
 		<Message
 			hasError
 			msg='This message has error too'
 			status={messagesStatus.ERROR}
-			onErrorPress={() => alert('Error pressed')}
+			onErrorPress={() => Alert.alert('Error pressed')}
 			isHeader={false}
 		/>
 	</>
