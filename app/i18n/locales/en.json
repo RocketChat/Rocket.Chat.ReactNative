@@ -691,11 +691,12 @@
   "Waiting_for_answer": "Waiting for answer",
   "Call_ended": "Call ended",
   "Call_was_not_answered": "Call was not answered",
-  "Call_back": "Call back",
-  "Call_again": "Call again",
-  "Call_ongoing": "Call ongoing",
+  "Call_rejected": "Call rejected",
+  "Call_back": "Call Back",
+  "Call_again": "Call Again",
+  "Call_ongoing": "Call Ongoing",
   "Joined": "Joined",
-  "Calling": "Calling...",
+  "Calling": "Calling",
   "Start_a_call": "Start a call",
   "Call": "Call",
   "Reply_in_direct_message": "Reply in direct message",
@@ -724,5 +725,9 @@
   "Presence_Cap_Warning_Title": "User status temporarily disabled",
   "Presence_Cap_Warning_Description": "Active connections have reached the limit for the workspace, thus the service that handles user status is disabled. It can be re-enabled manually in workspace settings.",
   "Learn_more": "Learn more",
-  "and_N_more": "and {{count}} more"
+  "and_N_more": "and {{count}} more",
+  "decline": "Decline",
+  "accept": "Accept",
+  "Incoming_call_from": "Incoming call from",
+  "Call_started": "Call started"
 }
