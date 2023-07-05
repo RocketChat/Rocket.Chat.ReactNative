@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
@@ -74,7 +74,7 @@ const ImageContainer = React.memo(
 		// And we cannot be certain whether the file.title_link actually exists.
 		const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
 
-		useLayoutEffect(() => {
+		useEffect(() => {
 			const handleCache = async () => {
 				if (img) {
 					const cachedImageResult = await getMediaCache({
