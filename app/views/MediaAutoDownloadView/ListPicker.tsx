@@ -38,11 +38,9 @@ interface IBaseParams {
 const ListPicker = ({
 	value,
 	title,
-	testID,
 	onChangeValue
 }: {
 	title: string;
-	testID: string;
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
@@ -61,7 +59,6 @@ const ListPicker = ({
 	return (
 		<List.Item
 			title={title}
-			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
 			right={() => (
 				<Text style={[styles.title, { color: colors.actionTintColor }]}>
