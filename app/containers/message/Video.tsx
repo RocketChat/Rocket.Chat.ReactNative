@@ -177,11 +177,11 @@ const Video = React.memo(
 				showAttachment(videoCached);
 				return;
 			}
-			if (!loading) {
+			if (!loading && !cached) {
 				handleDownload();
 				return;
 			}
-			if (loading) {
+			if (loading && !cached) {
 				handleCancelDownload();
 				return;
 			}
