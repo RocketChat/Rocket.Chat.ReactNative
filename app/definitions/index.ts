@@ -2,37 +2,40 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Dispatch } from 'redux';
 
+import { TNavigation } from '../stacks/stackType';
 import { TColors, TSupportedThemes } from '../theme';
 
+export * from './ERoomType';
 export * from './IAttachment';
-export * from './INotification';
-export * from './IPreferences';
-export * from './ISubscription';
-export * from './IRoom';
-export * from './IMessage';
-export * from './IThread';
-export * from './IThreadMessage';
-export * from './IEmoji';
-export * from './IUpload';
-export * from './ISettings';
-export * from './IRole';
-export * from './IPermission';
-export * from './ISlashCommand';
-export * from './IUser';
-export * from './IServer';
-export * from './ILoggedUser';
-export * from './IServerHistory';
 export * from './ICertificate';
-export * from './IUrl';
 export * from './ICredentials';
-export * from './ISearch';
-export * from './TUserStatus';
+export * from './IEmoji';
+export * from './ILoggedUser';
+export * from './IMessage';
+export * from './INotification';
+export * from './IPermission';
+export * from './IPreferences';
 export * from './IProfile';
 export * from './IReaction';
-export * from './ERoomType';
+export * from './IRole';
+export * from './IRoom';
+export * from './ISearch';
+export * from './IServer';
+export * from './IServerHistory';
+export * from './ISettings';
+export * from './ISlashCommand';
+export * from './ISubscription';
+export * from './IThread';
+export * from './IThreadMessage';
+export * from './IUpload';
+export * from './IUrl';
+export * from './IUser';
+export * from './redux';
+export * from './redux/TRootEnum';
+export * from './TUserStatus';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
-	navigation: StackNavigationProp<T, S>;
+	navigation: StackNavigationProp<T & TNavigation, S>;
 	route: RouteProp<T, S>;
 	dispatch: Dispatch;
 	isMasterDetail: boolean;
@@ -40,6 +43,3 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 	theme?: TSupportedThemes;
 	colors: TColors;
 }
-
-export * from './redux';
-export * from './redux/TRootEnum';

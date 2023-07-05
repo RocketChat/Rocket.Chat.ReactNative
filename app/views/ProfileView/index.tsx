@@ -232,8 +232,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
-				params.name = params.realname;
-				delete params.realname;
+				if ('realname' in params) {
+					params.name = params.realname;
+					delete params.realname;
+				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
 				} else {

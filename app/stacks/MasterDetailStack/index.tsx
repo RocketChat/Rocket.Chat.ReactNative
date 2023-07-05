@@ -73,6 +73,7 @@ import {
 	ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
+import { TNavigation } from '../stackType';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -103,7 +104,7 @@ export interface INavigation {
 	navigation: StackNavigationProp<ModalStackParamList>;
 }
 
-const ModalStack = createStackNavigator<ModalStackParamList>();
+const ModalStack = createStackNavigator<ModalStackParamList & TNavigation>();
 const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
@@ -137,8 +138,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 				<ModalStack.Screen name='MessagesView' component={MessagesView} />
-				{/* @ts-ignore */}
-				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} options={AutoTranslateView.navigationOptions} />
+				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} />
 				<ModalStack.Screen
 					name='DirectoryView'
 					component={DirectoryView}
@@ -155,8 +155,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
-				{/* @ts-ignore */}
-				<ModalStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
+				<ModalStack.Screen name='PickerView' component={PickerView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 				{/* @ts-ignore */}
@@ -201,7 +200,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 });
 
 // InsideStackNavigator
-const InsideStack = createStackNavigator<MasterDetailInsideStackParamList>();
+const InsideStack = createStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
 const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
