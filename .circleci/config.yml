@@ -390,9 +390,9 @@ jobs:
   android-build-experimental:
     <<: *defaults
     <<: *android-img
-    environment:
-      <<: *android-env
-      <<: *bash-env
+    # environment:
+    #   <<: *android-env
+    #   <<: *bash-env
     resource_class: xlarge
     steps:
       - android-build
