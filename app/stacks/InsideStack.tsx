@@ -178,12 +178,7 @@ const SettingsStackNavigator = () => {
 		>
 			<SettingsStack.Screen name='SettingsView' component={SettingsView} />
 			<SettingsStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
-			<SettingsStack.Screen
-				name='E2EEncryptionSecurityView'
-				// @ts-ignore
-				component={E2EEncryptionSecurityView}
-				options={E2EEncryptionSecurityView.navigationOptions}
-			/>
+			<SettingsStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} />
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
