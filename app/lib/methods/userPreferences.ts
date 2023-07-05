@@ -14,7 +14,7 @@ class UserPreferences {
 		this.mmkv = MMKV;
 	}
 
-	getString(key: string) {
+	getString(key: string): string | null {
 		try {
 			return this.mmkv.getString(key) ?? null;
 		} catch {
