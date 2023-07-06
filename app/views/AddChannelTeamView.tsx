@@ -40,7 +40,9 @@ const setHeader = ({
 const AddChannelTeamView = () => {
 	const navigation = useNavigation<TNavigation>();
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
-	const { teamId } = useRoute<TRoute>().params;
+	const {
+		params: { teamId }
+	} = useRoute<TRoute>();
 
 	useEffect(() => {
 		setHeader({ navigation, isMasterDetail });

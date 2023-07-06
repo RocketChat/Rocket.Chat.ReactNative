@@ -34,7 +34,9 @@ const AddExistingChannelView = () => {
 	const { colors } = useTheme();
 
 	const navigation = useNavigation<TNavigation>();
-	const { teamId } = useRoute<TRoute>().params;
+	const {
+		params: { teamId }
+	} = useRoute<TRoute>();
 
 	const { addTeamChannelPermission, isMasterDetail } = useAppSelector(state => ({
 		isMasterDetail: state.app.isMasterDetail,
