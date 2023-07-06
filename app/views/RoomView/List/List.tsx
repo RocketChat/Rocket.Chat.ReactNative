@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatListProps, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
-
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+import NavBottomFAB, { SCROLL_LIMIT } from './NavBottomFAB';
 
 const styles = StyleSheet.create({
 	list: {
@@ -22,24 +21,45 @@ export type TListRef = React.RefObject<FlatList & { getNode: () => FlatList }>;
 
 export interface IListProps extends FlatListProps<any> {
 	listRef: TListRef;
+	jumpToBottom: () => void;
+	isThread: boolean;
 }
 
-const List = ({ listRef, ...props }: IListProps) => (
-	<AnimatedFlatList
-		testID='room-view-messages'
-		ref={listRef}
-		keyExtractor={(item: any) => item.id}
-		contentContainerStyle={styles.contentContainer}
-		style={styles.list}
-		removeClippedSubviews={isIOS}
-		initialNumToRender={7}
-		onEndReachedThreshold={0.5}
-		maxToRenderPerBatch={5}
-		windowSize={10}
-		{...props}
-		{...scrollPersistTaps}
-	/>
-);
+const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
+	const [visible, setVisible] = useState(false);
+
+	const scrollHandler = useAnimatedScrollHandler({
+		onScroll: event => {
+			if (event.contentOffset.y > SCROLL_LIMIT) {
+				runOnJS(setVisible)(true);
+			} else {
+				runOnJS(setVisible)(false);
+			}
+		}
+	});
+
+	return (
+		<>
+			<Animated.FlatList
+				testID='room-view-messages'
+				ref={listRef}
+				keyExtractor={(item: any) => item.id}
+				contentContainerStyle={styles.contentContainer}
+				style={styles.list}
+				removeClippedSubviews={isIOS}
+				initialNumToRender={7}
+				onEndReachedThreshold={0.5}
+				maxToRenderPerBatch={5}
+				windowSize={10}
+				scrollEventThrottle={16}
+				onScroll={scrollHandler}
+				{...props}
+				{...scrollPersistTaps}
+			/>
+			<NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} />
+		</>
+	);
+};
 
 List.propTypes = {
 	listRef: PropTypes.object

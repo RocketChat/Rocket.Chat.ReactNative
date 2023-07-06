@@ -354,7 +354,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		console.count(`${this.constructor.name}.render calls`);
 		const {
 			rid,
-			// tmid,
+			tmid,
 			listRef
 		} = this.props;
 		const { messages, refreshing } = this.state;
@@ -363,8 +363,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
 				<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh}>
 					<List
-						// onScroll={this.onScroll}
-						scrollEventThrottle={16}
 						listRef={listRef}
 						data={messages}
 						renderItem={this.renderItem}
@@ -373,9 +371,10 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 						onScrollToIndexFailed={this.handleScrollToIndexFailed}
 						onViewableItemsChanged={this.onViewableItemsChanged}
 						viewabilityConfig={this.viewabilityConfig}
+						jumpToBottom={this.jumpToBottom}
+						isThread={!!tmid}
 					/>
 				</RefreshControl>
-				{/* <NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} /> */}
 			</>
 		);
 	}
