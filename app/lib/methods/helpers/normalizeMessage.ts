@@ -9,19 +9,17 @@ function normalizeAttachments(msg: TMsg) {
 	if (typeof msg.attachments !== typeof [] || !msg.attachments || !msg.attachments.length) {
 		msg.attachments = [];
 	}
-	msg.attachments = msg.attachments.map(att => {
-		// The att could be as null and returning type error
-		// To fix this: https://app.bugsnag.com/rocket-dot-chat-1/mobile-1/errors/642f0f1c8ebe9f0007a932b8?pivot_tab=event
-		if (typeof att !== typeof Object) {
-			att = {};
-		}
-		att.fields = att.fields || [];
-		if (att.ts) {
-			att.ts = moment(att.ts).toDate();
-		}
-		att = normalizeAttachments(att as TMsg);
-		return att;
-	});
+
+	msg.attachments = msg.attachments
+		.filter(att => !!att)
+		.map(att => {
+			att.fields = att.fields || [];
+			if (att.ts) {
+				att.ts = moment(att.ts).toDate();
+			}
+			att = normalizeAttachments(att as TMsg);
+			return att;
+		});
 	return msg;
 }
 
