@@ -4,7 +4,7 @@ import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useR
 import { Keyboard } from 'react-native';
 import { Easing } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 
 import { useDimensions, useOrientation } from '../../dimensions';
 import { useTheme } from '../../theme';
@@ -107,7 +107,7 @@ const ActionSheet = React.memo(
 		};
 
 		const renderBackdrop = useCallback(
-			props => (
+			(props: BottomSheetBackdropProps) => (
 				<BottomSheetBackdrop
 					{...props}
 					appearsOnIndex={0}

@@ -79,10 +79,4 @@
             </intent-filter>
         </activity>
     </application>
-    <queries>
-        <package android:name="org.jitsi.meet" />
-            <intent>
-                <action android:name="android.intent.action.SEND" />
-            </intent>
-    </queries>
 </manifest>

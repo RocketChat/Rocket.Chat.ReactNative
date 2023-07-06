@@ -103,6 +103,7 @@ describe('Room actions screen', () => {
 
 			it('should have members', async () => {
 				await expect(element(by.id('room-actions-members'))).toExist();
+				await expect(element(by[textMatcher]('1 members'))).toExist();
 			});
 
 			it('should have files', async () => {
@@ -338,6 +339,9 @@ describe('Room actions screen', () => {
 				await element(by.id('selected-users-view-submit')).tap();
 				await sleep(300);
 				await backToActions();
+				await waitFor(element(by[textMatcher]('3 members')))
+					.toExist()
+					.withTimeout(5000);
 			});
 
 			describe('Room Members', () => {
@@ -345,6 +349,7 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id('room-actions-members')))
 						.toExist()
 						.withTimeout(2000);
+					await sleep(300); // wait for animation
 					await tapAndWaitFor(element(by.id('room-actions-members')), element(by.id('room-members-view')), 2000);
 				});
 

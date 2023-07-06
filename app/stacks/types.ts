@@ -1,21 +1,34 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
-import { TextInputProps } from 'react-native';
 
-import { IOptionsField } from '../views/NotificationPreferencesView/options';
-import { IServer } from '../definitions/IServer';
+import { TThreadModel } from '../definitions';
 import { IAttachment } from '../definitions/IAttachment';
-import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
-import { ModalStackParamList } from './MasterDetailStack/types';
-import { TThreadModel } from '../definitions';
 import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../definitions/ILivechatTag';
+import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
+import { TServerModel } from '../definitions/IServer';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
+import { TNavigation } from './stackType';
+
+export type SetUsernameStackParamList = {
+	SetUsernameView: {
+		title: string;
+	};
+};
+
+export type StackParamList = {
+	AuthLoading: undefined;
+	OutsideStack: NavigatorScreenParams<OutsideParamList>;
+	InsideStack: NavigatorScreenParams<InsideStackParamList>;
+	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
+	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+};
 
 export type ChatsStackParamList = {
-	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
+	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
 	SettingsView: any;
@@ -117,9 +130,6 @@ export type ChatsStackParamList = {
 		rid: string;
 		room: TSubscriptionModel;
 	};
-	ForwardLivechatView: {
-		rid: string;
-	};
 	CloseLivechatView: {
 		rid: string;
 		departmentId?: string;
@@ -128,17 +138,7 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: ISubscription;
-		roomUser: any; // TODO: Change
-	};
-	PickerView: {
-		title: string;
-		data: IOptionsField[];
-		value?: string;
-		onSearch?: (text?: string) => Promise<any>;
-		onEndReached?: (text: string, offset?: number) => Promise<any>;
-		total?: number;
-		goBack?: boolean;
-		onChangeValue: Function;
+		roomUser?: any; // TODO: Change
 	};
 	ThreadMessagesView: {
 		rid: string;
@@ -191,14 +191,6 @@ export type ProfileStackParamList = {
 	ProfileView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
-	PickerView: {
-		title: string;
-		data: IOptionsField[];
-		value: any; // TODO: Change
-		onChangeText?: TextInputProps['onChangeText'];
-		goBack?: Function;
-		onChangeValue: Function;
-	};
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
@@ -263,7 +255,7 @@ export type E2ESaveYourPasswordStackParamList = {
 };
 
 export type E2EEnterYourPasswordStackParamList = {
-	E2EEnterYourPasswordView: undefined;
+	E2EEnterYourPasswordView?: undefined;
 };
 
 export type InsideStackParamList = {
@@ -271,18 +263,15 @@ export type InsideStackParamList = {
 	NewMessageStackNavigator: NavigatorScreenParams<NewMessageStackParamList>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
-	AttachmentView: {
-		attachment: IAttachment;
-	};
 	StatusView: undefined;
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;
 		isShareExtension: boolean;
-		serverInfo: IServer;
+		serverInfo: TServerModel;
 		text: string;
 		room: TSubscriptionModel;
-		thread: TThreadModel;
+		thread?: TThreadModel;
 		replying?: boolean;
 		replyingMessage?: IMessage;
 		closeReply?: Function;

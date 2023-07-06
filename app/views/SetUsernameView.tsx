@@ -13,7 +13,6 @@ import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import { ControlledFormTextInput } from '../containers/TextInput';
-import { SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
@@ -23,6 +22,7 @@ import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 import { useAppSelector } from '../lib/hooks';
+import { SetUsernameStackParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
 	loginTitle: {

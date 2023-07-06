@@ -137,7 +137,61 @@ export const post = async (endpoint: string, body: any, user: ITestUser) => {
 	return rocketchat.post(endpoint, body);
 };
 
-export const getProfileInfo = async (userId: string) => {
-	const result = await get(`users.info?userId=${userId}`);
+interface UserId {
+	userId: string;
+}
+
+interface UserName {
+	username: string;
+}
+
+export const getProfileInfo = async (param: UserId | UserName) => {
+	let query = '';
+	if ('userId' in param) {
+		query += `userId=${param.userId}`;
+	} else if ('username' in param) {
+		query += `username=${param.username}`;
+	}
+	const result = await get(`users.info?${query}`);
 	return result.data.user;
+};
+
+export interface IDeleteCreateUser {
+	server: string;
+	username: string;
+}
+
+const deleteCreatedUser = async ({ server, username: usernameToDelete }: IDeleteCreateUser) => {
+	const serverConnection = axios.create({
+		baseURL: `${server}/api/v1/`,
+		headers: {
+			'Content-Type': 'application/json;charset=UTF-8'
+		}
+	});
+	console.log(`Logging in as admin in ${server}`);
+	const response = await serverConnection.post('login', {
+		user: data.adminUser,
+		password: data.adminPassword
+	});
+	const { authToken, userId } = response.data.data;
+	serverConnection.defaults.headers.common['X-User-Id'] = userId;
+	serverConnection.defaults.headers.common['X-Auth-Token'] = authToken;
+
+	console.log(`Get user info: users.info?username=${usernameToDelete}`);
+	const result = await serverConnection.get(`users.info?username=${usernameToDelete}`);
+	const userIdToDelete = result.data.user._id;
+
+	const body = { userId: userIdToDelete, confirmRelinquish: false };
+	console.log(`Delete user: users.delete ${JSON.stringify(body)}`);
+	const responsePost = await serverConnection.post('users.delete', body);
+	return responsePost.data;
+};
+
+// Delete created users to avoid use all the Seats Available on the server
+export const deleteCreatedUsers = async (deleteUsersAfterAll: IDeleteCreateUser[]) => {
+	if (deleteUsersAfterAll.length) {
+		for await (const deleteUser of deleteUsersAfterAll) {
+			await deleteCreatedUser(deleteUser);
+		}
+	}
 };

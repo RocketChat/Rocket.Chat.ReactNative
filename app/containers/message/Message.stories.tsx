@@ -508,6 +508,24 @@ export const MessageWithReply = () => (
 				}
 			]}
 		/>
+		<Message
+			msg='Yes, I am'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'Are you seeing this mario :marioparty: ?',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					],
+					text: ''
+				}
+			]}
+		/>
 	</>
 );
 
@@ -857,21 +875,38 @@ export const Ignored = () => <Message isIgnored />;
 export const CustomStyle = () => <Message msg='Message' style={[{ backgroundColor: '#ddd' }]} />;
 
 export const ShowButtonAsAttachment = () => (
-	<Message
-		attachments={[
-			{
-				text: 'Test Button',
-				actions: [
-					{
-						type: 'button',
-						text: 'Text button',
-						msg: 'Response message',
-						msg_in_chat_window: true
-					}
-				]
-			}
-		]}
-	/>
+	<>
+		<Message
+			attachments={[
+				{
+					text: 'Test Button',
+					actions: [
+						{
+							type: 'button',
+							text: 'Text button',
+							msg: 'Response message',
+							msg_in_chat_window: true
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			attachments={[
+				{
+					text: ':avocado: **Message with markdown**\n\n_Some text_\n\nThis is a test',
+					actions: [
+						{
+							type: 'button',
+							text: 'Text button',
+							msg: 'Response message',
+							msg_in_chat_window: true
+						}
+					]
+				}
+			]}
+		/>
+	</>
 );
 
 export const ThumbnailFromServer = () => (

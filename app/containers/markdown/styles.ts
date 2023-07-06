@@ -162,5 +162,8 @@ export default StyleSheet.create({
 	},
 	inline: {
 		flexShrink: 1
+	},
+	listPrefix: {
+		fontVariant: ['tabular-nums']
 	}
 });

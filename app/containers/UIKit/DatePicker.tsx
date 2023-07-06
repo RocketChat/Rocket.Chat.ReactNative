@@ -93,6 +93,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 			mode='date'
 			display={isAndroid ? 'default' : 'inline'}
 			value={currentDate}
+			// @ts-ignore
 			onChange={onChange}
 			textColor={themes[theme].titleText}
 		/>

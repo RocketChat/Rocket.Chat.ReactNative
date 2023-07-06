@@ -47,13 +47,13 @@ interface ILivechatEditViewProps {
 	user: IUser;
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	editOmnichannelContact: string[] | undefined;
 	editLivechatRoomCustomfields: string[] | undefined;
 }
 
 const Title = ({ title, theme }: ITitle) =>
-	title ? <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text> : null;
+	title ? <Text style={[styles.title, { color: themes[theme!].titleText }]}>{title}</Text> : null;
 
 const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
@@ -178,13 +178,13 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			style={{ backgroundColor: themes[theme!].auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
-					<Title title={visitor?.username} theme={theme} />
+					<Title title={visitor?.username} theme={theme!} />
 					<FormTextInput
 						label={I18n.t('Name')}
 						defaultValue={visitor?.name}
@@ -241,7 +241,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 							editable={!!editOmnichannelContactPermission}
 						/>
 					))}
-					<Title title={I18n.t('Conversation')} theme={theme} />
+					<Title title={I18n.t('Conversation')} theme={theme!} />
 					<FormTextInput
 						label={I18n.t('Topic')}
 						inputRef={e => {
@@ -252,7 +252,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						editable={!!editLivechatRoomCustomFieldsPermission}
 					/>
 
-					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
+					<Text style={[styles.label, { color: themes[theme!].titleText }]}>{I18n.t('Tags')}</Text>
 					<MultiSelect
 						options={tagParam.map((tag: string) => ({ text: { text: tag }, value: tag }))}
 						onChange={({ value }: { value: string[] }) => {

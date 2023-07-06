@@ -21,6 +21,7 @@ const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps): Reac
 	const allTabLabel = { emoji: I18n.t('All'), usernames: [], names: [], _id: 'All' };
 	return (
 		<View style={styles.container} testID='reactionsList'>
+			{/* @ts-ignore */}
 			<ScrollableTabView renderTabBar={() => <ReactionsTabBar getCustomEmoji={getCustomEmoji} />}>
 				<AllTab tabLabel={allTabLabel} reactions={sortedReactions} getCustomEmoji={getCustomEmoji} />
 				{sortedReactions?.map(reaction => (
