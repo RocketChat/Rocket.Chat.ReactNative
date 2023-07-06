@@ -173,7 +173,7 @@ commands:
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
                 --source-map=android/app/build/generated/sourcemaps/react/officialPlayRelease/index.android.bundle.map \
-                --bundle android/app/build/ASSETS/createBundleOfficialPlayReleaseJsAndAssets/index.android.bundle
+                --bundle android/app/build/generated/assets/createBundleOfficialPlayReleaseJsAndAssets/index.android.bundle
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               npx bugsnag-source-maps upload-react-native \
@@ -181,7 +181,7 @@ commands:
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
                 --source-map=android/app/build/generated/sourcemaps/react/experimentalPlayRelease/index.android.bundle.map \
-                --bundle android/app/build/ASSETS/createBundleExperimentalPlayReleaseJsAndAssets/index.android.bundle
+                --bundle android/app/build/generated/assets/createBundleExperimentalPlayReleaseJsAndAssets/index.android.bundle
             fi
 
       - store_artifacts:
