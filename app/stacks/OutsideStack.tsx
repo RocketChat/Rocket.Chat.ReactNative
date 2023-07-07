@@ -24,7 +24,7 @@ const _OutsideStack = () => {
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			{/* @ts-ignore */}
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
-			<Outside.Screen name='WorkspaceView' component={WorkspaceView} options={WorkspaceView.navigationOptions} />
+			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
 			{/* @ts-ignore */}
 			<Outside.Screen name='LoginView' component={LoginView} options={LoginView.navigationOptions} />
 			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} />
