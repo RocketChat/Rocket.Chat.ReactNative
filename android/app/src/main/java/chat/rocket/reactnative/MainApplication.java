@@ -11,6 +11,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.facebook.react.bridge.JSIModulePackage;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // packages.add(new SSLPinningPackage());
+          packages.add(new RNCViewPagerPackage());
           List<ReactPackage> additionalModules = new AdditionalModules().getAdditionalModules(MainApplication.this);
           packages.addAll(additionalModules);
           return packages;
