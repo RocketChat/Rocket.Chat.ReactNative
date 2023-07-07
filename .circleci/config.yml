@@ -3,7 +3,13 @@ defaults: &defaults
 
 android-img: &android-img
   docker:
-    - image: cimg/android:2023.04.1-node
+    - image: cimg/android:2023.06.1-node
+
+android-executor: &android-executor
+  executor:
+    name: android/android-machine
+    resource-class: xlarge
+    tag: 2023.06.1
 
 orbs:
   android: circleci/android@2.1.2
@@ -389,10 +395,7 @@ jobs:
   # Android builds
   android-build-experimental:
     <<: *defaults
-    executor:
-      name: android/android-machine
-      resource-class: xlarge
-      tag: 2023.04.1
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
@@ -402,21 +405,19 @@ jobs:
     # Android automatic builds
   android-automatic-build-experimental:
     <<: *defaults
-    <<: *android-img
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: xlarge
     steps:
       - android-build
 
   android-build-official:
     <<: *defaults
-    <<: *android-img
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: xlarge
     steps:
       - android-build
 
@@ -451,10 +452,7 @@ jobs:
 
   e2e-build-android:
     <<: *defaults
-    executor:
-      name: android/android-machine
-      resource-class: xlarge
-      tag: 2023.04.1
+    <<: *android-executor
     environment:
       <<: *android-env
     steps:
@@ -500,10 +498,7 @@ jobs:
 
   e2e-test-android:
     <<: *defaults
-    executor:
-      name: android/android-machine
-      resource-class: xlarge
-      tag: 2023.04.1
+    <<: *android-executor
     parallelism: 4
     steps:
       - checkout
