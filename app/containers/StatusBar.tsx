@@ -14,7 +14,7 @@ interface IStatusBar {
 	backgroundColor?: string;
 }
 
-const StatusBar = React.memo(({ barStyle, backgroundColor }: IStatusBar) => {
+const StatusBar = ({ barStyle, backgroundColor }: IStatusBar) => {
 	const { theme } = useTheme();
 	if (!barStyle) {
 		barStyle = 'light-content';
@@ -23,6 +23,6 @@ const StatusBar = React.memo(({ barStyle, backgroundColor }: IStatusBar) => {
 		}
 	}
 	return <StatusBarRN backgroundColor={backgroundColor ?? themes[theme].headerBackground} barStyle={barStyle} animated />;
-});
+};
 
 export default StatusBar;
