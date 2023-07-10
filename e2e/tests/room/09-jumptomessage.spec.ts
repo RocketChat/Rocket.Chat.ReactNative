@@ -154,14 +154,14 @@ describe('Room', () => {
 			try {
 				// it doesn't recognize this list
 				await element(by.id('room-view-messages')).scroll(500, 'up');
-				await expect(element(by[textMatcher]('Load Older'))).toBeVisible();
+				await expect(element(by[textMatcher]('Load older'))).toBeVisible();
 				await expect(element(by[textMatcher]('5'))).toExist();
 				found = true;
 			} catch {
 				//
 			}
 		}
-		await element(by[textMatcher]('Load Older')).atIndex(0).tap();
+		await element(by[textMatcher]('Load older')).atIndex(0).tap();
 		await waitFor(element(by[textMatcher]('4')))
 			.toExist()
 			.withTimeout(5000);
@@ -178,35 +178,35 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.3);
-		await waitFor(element(by[textMatcher]('Load Newer')))
+		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await element(by[textMatcher]('Load newer')).atIndex(0).tap();
 		await waitFor(element(by[textMatcher]('104')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by[textMatcher]('Load Newer')))
+		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await element(by[textMatcher]('Load newer')).atIndex(0).tap();
 		await waitFor(element(by[textMatcher]('154')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by[textMatcher]('Load Newer')))
+		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await element(by[textMatcher]('Load newer')).atIndex(0).tap();
 		await waitFor(element(by[textMatcher]('202')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by[textMatcher]('Load Newer')))
+		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
-		await waitFor(element(by[textMatcher]('Load Newer')))
+		await element(by[textMatcher]('Load newer')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('Load newer')))
 			.toNotExist()
 			.withTimeout(5000);
-		await expect(element(by[textMatcher]('Load More'))).toNotExist();
+		await expect(element(by[textMatcher]('Load more'))).toNotExist();
 		await expect(element(by[textMatcher]('252'))).toExist();
 		await expect(element(by[textMatcher]('253'))).toExist();
 		await tapBack();
