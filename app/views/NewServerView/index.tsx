@@ -95,7 +95,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		this.setHeader();
 
 		this.state = {
-			text: '',
+			text: 'https://client-ssl-cert.dev.rocket.chat/',
 			connectingOpen: false,
 			certificate: null,
 			serversHistory: []
