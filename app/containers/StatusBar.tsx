@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { StatusBar as StatusBarRN } from 'react-native';
 
-import { themes } from '../lib/constants';
 import { useTheme } from '../theme';
 
 const supportedStyles = {
@@ -15,7 +14,7 @@ interface IStatusBar {
 }
 
 const StatusBar = React.memo(({ barStyle, backgroundColor }: IStatusBar) => {
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
 
 	useEffect(() => {
 		if (!barStyle) {
@@ -24,7 +23,7 @@ const StatusBar = React.memo(({ barStyle, backgroundColor }: IStatusBar) => {
 				barStyle = 'dark-content';
 			}
 		}
-		StatusBarRN.setBackgroundColor(backgroundColor ?? themes[theme].headerBackground);
+		StatusBarRN.setBackgroundColor(backgroundColor ?? colors.headerBackground);
 		StatusBarRN.setBarStyle(barStyle, true);
 	}, [theme, barStyle, backgroundColor]);
 
