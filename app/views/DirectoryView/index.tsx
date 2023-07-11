@@ -27,6 +27,7 @@ import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../d
 import styles from './styles';
 import Options from './Options';
 import { Services } from '../../lib/services';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -163,7 +164,14 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			if (result.success) {
 				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 			}
-		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
+			return;
+		}
+		const subscription = await getSubscriptionByRoomId(item._id);
+		if (subscription) {
+			this.goRoom(subscription);
+			return;
+		}
+		if (['p', 'c'].includes(item.t) && !item.teamMain) {
 			const result = await Services.getRoomInfo(item._id);
 			if (result.success) {
 				this.goRoom({
