@@ -15,4 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface RCTHTTPRequestHandler (Challenge)
+
+@end
+
 NS_ASSUME_NONNULL_END

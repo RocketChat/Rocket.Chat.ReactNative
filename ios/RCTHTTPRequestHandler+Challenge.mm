@@ -11,10 +11,10 @@
 #import <MMKV/MMKV.h>
 #import <SDWebImage/SDWebImageDownloader.h>
 #import "SecureStorage.h"
+#import "SRWebSocket.h"
 
-@implementation RNFetchBlobRequest (Challenge)
-
--(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
+@implementation Challenge : NSObject
++(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
 {
   NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
   SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
@@ -69,7 +69,7 @@
   return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 }
 
-- (NSString *)stringToHex:(NSString *)string
++(NSString *)stringToHex:(NSString *)string
 {
   char *utf8 = (char *)[string UTF8String];
   NSMutableString *hex = [NSMutableString string];
@@ -78,7 +78,7 @@
   return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
 }
 
--(void)runChallenge:(NSURLSession *)session
++(void)runChallenge:(NSURLSession *)session
  didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
@@ -110,10 +110,24 @@
 
   completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 }
+@end
 
-- (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credantial))completionHandler
+@implementation RNFetchBlobRequest (Challenge)
+
+- (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credential))completionHandler
 {
-  [self runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
+  [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
 }
+
+@end
+
+@implementation RCTHTTPRequestHandler (Challenge)
+
+- (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credential))completionHandler
+{
+  [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
+}
+
+@end
 
 @end
