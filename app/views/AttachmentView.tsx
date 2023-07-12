@@ -1,10 +1,10 @@
-import CameraRoll from '@react-native-community/cameraroll';
+import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { HeaderBackground, useHeaderHeight } from '@react-navigation/elements';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { ResizeMode, Video } from 'expo-av';
 import { sha256 } from 'js-sha256';
 import React from 'react';
-import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
+import { PermissionsAndroid, View, useWindowDimensions } from 'react-native';
 import * as mime from 'react-native-mime-types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
