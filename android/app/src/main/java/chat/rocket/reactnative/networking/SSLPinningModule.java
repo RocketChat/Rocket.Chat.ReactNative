@@ -111,7 +111,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         // FastImage Glide network layer
         FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
         // Expo AV network layer
-        SharedCookiesDataSourceFactory.setOkHttpClient(getOkHttpClient());
+        // SharedCookiesDataSourceFactory.setOkHttpClient(getOkHttpClient());
 
         promise.resolve(null);
     }
