@@ -947,7 +947,9 @@ export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean
 
 export const videoConferenceGetCapabilities = () => sdk.get('video-conference.capabilities');
 
-export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId });
+export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId, allowRinging: true });
+
+export const videoConferenceCancel = (callId: string) => sdk.post('video-conference.cancel', { callId });
 
 export const saveUserProfileMethod = (
 	params: IProfileParams,
@@ -963,3 +965,6 @@ export const deleteOwnAccount = (password: string, confirmRelinquish = false): a
 	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });
 
 export const postMessage = (roomId: string, text: string) => sdk.post('chat.postMessage', { roomId, text });
+
+export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
+	sdk.methodCall('stream-notify-user', type, params);
