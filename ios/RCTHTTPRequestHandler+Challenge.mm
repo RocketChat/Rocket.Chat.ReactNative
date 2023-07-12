@@ -6,6 +6,7 @@
 //  Copyright © 2023 Facebook. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "RCTHTTPRequestHandler+Challenge.h"
 #import "RNFetchBlobRequest.h"
 #import <MMKV/MMKV.h>
@@ -129,5 +130,72 @@
 }
 
 @end
+
+@implementation SRWebSocket (Challenge)
+
+- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
+{
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
+      NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
+      CFArrayRef keyref = NULL;
+      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
+                                              (__bridge CFDictionaryRef)certOptions,
+                                              &keyref);
+      if (sanityChesk == noErr) {
+        CFDictionaryRef identityDict = (CFDictionaryRef)CFArrayGetValueAtIndex(keyref, 0);
+        SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
+        SecCertificateRef cert = NULL;
+        OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
+        if (!status) {
+          NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
+          [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
+        }
+      }
+    }
+}
+
++(void)load
+{
+    Method original, swizzled;
+
+    original = class_getInstanceMethod(objc_getClass("SRWebSocket"), @selector(_updateSecureStreamOptions));
+    swizzled = class_getInstanceMethod(self, @selector(xxx_updateSecureStreamOptions));
+    method_exchangeImplementations(original, swizzled);
+}
+
+#pragma mark - Method Swizzling
+                
+- (void)xxx_updateSecureStreamOptions {
+    [self xxx_updateSecureStreamOptions];
+    NSLog(@"_updateSecureStreamOptions: %@", self);
+  
+    // Read the clientSSL info from MMKV
+    NSMutableDictionary<NSString *, id> *SSLOptions = [NSMutableDictionary new];
+    __block NSString *clientSSL;
+    SecureStorage *secureStorage = [[SecureStorage alloc] init];
+
+    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
+    NSString *key = [secureStorage getSecureKey:[Challenge stringToHex:@"com.MMKV.default"]];
+
+    if (key != NULL) {
+      NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
+      MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
+      NSURLRequest *_urlRequest = [self valueForKey:@"_urlRequest"];
+
+      clientSSL = [mmkv getStringForKey:_urlRequest.URL.host];
+      if (clientSSL) {
+          NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
+          id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+          NSString *path = [dict objectForKey:@"path"];
+          NSString *password = [dict objectForKey:@"password"];
+          [self setClientSSL:path password:password options:SSLOptions];
+      }
+    }
+
+    id _outputStream = [self valueForKey:@"_outputStream"];
+    [_outputStream setProperty:SSLOptions forKey:(__bridge id)kCFStreamPropertySSLSettings];
+}
 
 @end
