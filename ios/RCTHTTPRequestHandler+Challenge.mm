@@ -169,7 +169,6 @@
                 
 - (void)xxx_updateSecureStreamOptions {
     [self xxx_updateSecureStreamOptions];
-    NSLog(@"_updateSecureStreamOptions: %@", self);
   
     // Read the clientSSL info from MMKV
     NSMutableDictionary<NSString *, id> *SSLOptions = [NSMutableDictionary new];
