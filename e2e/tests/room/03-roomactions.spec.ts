@@ -349,6 +349,7 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id('room-actions-members')))
 						.toExist()
 						.withTimeout(2000);
+					await sleep(300); // wait for animation
 					await tapAndWaitFor(element(by.id('room-actions-members')), element(by.id('room-members-view')), 2000);
 				});
 

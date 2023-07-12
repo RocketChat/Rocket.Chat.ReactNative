@@ -138,7 +138,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
 
         final Resources res = mContext.getResources();
         String packageName = mContext.getPackageName();
-        int smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
+        int smallIconResId = res.getIdentifier("ic_notification", "drawable", packageName);
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(channel);

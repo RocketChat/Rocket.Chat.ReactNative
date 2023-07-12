@@ -1,11 +1,11 @@
-import { TextInputProps } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/core';
 
+import { TServerModel, TThreadModel } from '../../definitions';
 import { IAttachment } from '../../definitions/IAttachment';
-import { IMessage } from '../../definitions/IMessage';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { IMessage } from '../../definitions/IMessage';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
 
 export type MasterDetailChatsStackParamList = {
@@ -118,9 +118,6 @@ export type ModalStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
-	ForwardLivechatView: {
-		rid: string;
-	};
 	CloseLivechatView: {
 		rid: string;
 		departmentId?: string;
@@ -142,14 +139,6 @@ export type ModalStackParamList = {
 	LivechatEditView: {
 		room: ISubscription;
 		roomUser: any; // TODO: Change
-	};
-	PickerView: {
-		title: string;
-		data: []; // TODO: Change
-		value: any; // TODO: Change
-		onChangeText: TextInputProps['onChangeText'];
-		goBack: Function;
-		onChangeValue: Function;
 	};
 	ThreadMessagesView: {
 		rid: string;
@@ -206,9 +195,6 @@ export type ModalStackParamList = {
 export type MasterDetailInsideStackParamList = {
 	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Change
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
-	AttachmentView: {
-		attachment: IAttachment;
-	};
 	ModalBlockView: {
 		data: any; // TODO: Change
 	};
@@ -216,13 +202,18 @@ export type MasterDetailInsideStackParamList = {
 		rid: string;
 		url: string;
 		onlyAudio?: boolean;
+		videoConf?: boolean;
 	};
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;
-		serverInfo: {};
+		isShareExtension: boolean;
+		serverInfo: TServerModel;
 		text: string;
-		room: ISubscription;
-		thread: any; // TODO: Change
+		room: TSubscriptionModel;
+		thread?: TThreadModel;
+		replying?: boolean;
+		replyingMessage?: IMessage;
+		closeReply?: Function;
 	};
 };

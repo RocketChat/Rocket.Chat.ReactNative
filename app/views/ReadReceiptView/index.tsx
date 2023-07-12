@@ -32,7 +32,7 @@ interface INavigationOption {
 
 interface IReadReceiptViewProps extends INavigationOption {
 	Message_TimeAndDateFormat: string;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 }
 
 class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {
@@ -106,10 +106,10 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		}
 		return (
 			<View
-				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
+				style={[styles.listEmptyContainer, { backgroundColor: themes[theme!].chatComponentBackground }]}
 				testID='read-receipt-view'
 			>
-				<Text style={[styles.emptyText, { color: themes[theme].auxiliaryTintColor }]}>{I18n.t('No_Read_Receipts')}</Text>
+				<Text style={[styles.emptyText, { color: themes[theme!].auxiliaryTintColor }]}>{I18n.t('No_Read_Receipts')}</Text>
 			</View>
 		);
 	};
@@ -121,18 +121,18 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 			return null;
 		}
 		return (
-			<View style={[styles.itemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.itemContainer, { backgroundColor: themes[theme!].backgroundColor }]}>
 				<Avatar text={item.user.username} size={40} />
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
-						<Text style={[styles.name, { color: themes[theme].titleText }]}>{item?.user?.name}</Text>
-						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.name, { color: themes[theme!].titleText }]}>{item?.user?.name}</Text>
+						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{time}</Text>
 					</View>
 					<Text
 						style={[
 							styles.username,
 							{
-								color: themes[theme].auxiliaryText
+								color: themes[theme!].auxiliaryText
 							}
 						]}
 					>{`@${item.user.username}`}</Text>
@@ -157,11 +157,11 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 					style={[
 						styles.list,
 						{
-							backgroundColor: themes[theme].chatComponentBackground,
-							borderColor: themes[theme].separatorColor
+							backgroundColor: themes[theme!].chatComponentBackground,
+							borderColor: themes[theme!].separatorColor
 						}
 					]}
-					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].auxiliaryText} />}
+					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme!].auxiliaryText} />}
 					keyExtractor={item => item._id}
 				/>
 			</SafeAreaView>

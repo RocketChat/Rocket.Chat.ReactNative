@@ -32,9 +32,10 @@ const AvatarContainer = ({
 		shallowEqual
 	);
 
-	const externalProviderUrl = useSelector(
-		(state: IApplicationState) => state.settings.Accounts_AvatarExternalProviderUrl as string
-	);
+	const { avatarExternalProviderUrl, roomAvatarExternalProviderUrl } = useSelector((state: IApplicationState) => ({
+		avatarExternalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string,
+		roomAvatarExternalProviderUrl: state.settings.Accounts_RoomAvatarExternalProviderUrl as string
+	}));
 	const blockUnauthenticatedAccess = useSelector(
 		(state: IApplicationState) =>
 			(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
@@ -62,7 +63,8 @@ const AvatarContainer = ({
 			isStatic={isStatic}
 			rid={rid}
 			blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-			externalProviderUrl={externalProviderUrl}
+			avatarExternalProviderUrl={avatarExternalProviderUrl}
+			roomAvatarExternalProviderUrl={roomAvatarExternalProviderUrl}
 			avatarETag={avatarETag}
 			serverVersion={serverVersion}
 		/>

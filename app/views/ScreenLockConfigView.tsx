@@ -25,7 +25,7 @@ interface IItem {
 }
 
 interface IScreenLockConfigViewProps {
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	server: string;
 	Force_Screen_Lock: boolean;
 	Force_Screen_Lock_After: number;
@@ -172,7 +172,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme].tintColor} />;
+		return <List.Icon name='check' color={themes[theme!].tintColor} />;
 	};
 
 	renderItem = ({ item }: { item: IItem }) => {
