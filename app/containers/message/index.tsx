@@ -56,7 +56,7 @@ interface IMessageContainerProps {
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
 	onPress?: () => void;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
 	isPreview?: boolean;
 }

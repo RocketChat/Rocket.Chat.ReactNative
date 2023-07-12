@@ -37,7 +37,7 @@ const ForwardMessageView = () => {
 	}));
 
 	useLayoutEffect(() => {
-		const isSendButtonEnabled = rooms.length > 0 && !sending;
+		const isSendButtonEnabled = rooms.length && !sending;
 		navigation.setOptions({
 			title: I18n.t('Forward_message'),
 			headerRight: () => (
@@ -51,7 +51,7 @@ const ForwardMessageView = () => {
 					/>
 				</HeaderButton.Container>
 			),
-			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} />
+			headerLeft: () => <HeaderButton.CloseModal />
 		} as StackNavigationOptions);
 	}, [rooms.length, navigation, sending]);
 
@@ -59,7 +59,7 @@ const ForwardMessageView = () => {
 		setSending(true);
 		const permalink = await getPermalinkMessage(message);
 		const msg = `[ ](${permalink})\n`;
-		await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
+		await Promise.allSettled(rooms.map(roomId => postMessage(roomId, msg)));
 		setSending(false);
 		navigation.dispatch(StackActions.pop());
 	};

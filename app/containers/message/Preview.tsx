@@ -4,10 +4,8 @@ import Message from './index';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserSelector } from '../../selectors/login';
 import { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
-import { useTheme } from '../../theme';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
-	const { theme } = useTheme();
 	const { user, baseUrl, Message_TimeFormat, customEmojis, useRealName } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		baseUrl: state.server.server,
@@ -18,10 +16,7 @@ const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 
 	const getCustomEmoji: TGetCustomEmoji = name => {
 		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
+		return emoji ?? null;
 	};
 	return (
 		<Message
@@ -30,7 +25,6 @@ const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 			rid={message.rid}
 			baseUrl={baseUrl}
 			getCustomEmoji={getCustomEmoji}
-			theme={theme}
 			timeFormat={Message_TimeFormat}
 			useRealName={useRealName}
 			isPreview
