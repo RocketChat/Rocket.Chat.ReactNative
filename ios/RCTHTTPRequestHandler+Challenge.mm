@@ -186,16 +186,17 @@
 
       clientSSL = [mmkv getStringForKey:_urlRequest.URL.host];
       if (clientSSL) {
-          NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
-          id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-          NSString *path = [dict objectForKey:@"path"];
-          NSString *password = [dict objectForKey:@"password"];
-          [self setClientSSL:path password:password options:SSLOptions];
+        NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSString *path = [dict objectForKey:@"path"];
+        NSString *password = [dict objectForKey:@"password"];
+        [self setClientSSL:path password:password options:SSLOptions];
+        if (SSLOptions) {
+          id _outputStream = [self valueForKey:@"_outputStream"];
+          [_outputStream setProperty:SSLOptions forKey:(__bridge id)kCFStreamPropertySSLSettings];
+        }
       }
     }
-
-    id _outputStream = [self valueForKey:@"_outputStream"];
-    [_outputStream setProperty:SSLOptions forKey:(__bridge id)kCFStreamPropertySSLSettings];
 }
 
 @end
