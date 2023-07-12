@@ -1,5 +1,5 @@
 //
-//  RCTHTTPRequestHandler+Challenge.m
+//  SSLPinning.m
 //  RocketChatRN
 //
 //  Created by Diego Mello on 11/07/23.
@@ -7,7 +7,7 @@
 //
 
 #import <objc/runtime.h>
-#import "RCTHTTPRequestHandler+Challenge.h"
+#import "SSLPinning.h"
 #import "RNFetchBlobRequest.h"
 #import <MMKV/MMKV.h>
 #import <SDWebImage/SDWebImageDownloader.h>

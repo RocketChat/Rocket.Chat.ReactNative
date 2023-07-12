@@ -1,5 +1,5 @@
 //
-//  RCTHTTPRequestHandler+Challenge.h
+//  SSLPinning.h
 //  RocketChatRN
 //
 //  Created by Diego Mello on 11/07/23.

@@ -86,10 +86,10 @@
 		7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */; };
 		7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */; };
 		7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
-		7A3B716D2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm */; };
-		7A3B716E2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm */; };
-		7A3B716F2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm */; };
-		7A3B71702A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm */; };
+		7A3B716D2A5D848300DF3341 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* SSLPinning.mm */; };
+		7A3B716E2A5D848300DF3341 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* SSLPinning.mm */; };
+		7A3B716F2A5D848300DF3341 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* SSLPinning.mm */; };
+		7A3B71702A5D848300DF3341 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B716C2A5D848300DF3341 /* SSLPinning.mm */; };
 		7A610CD227ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD327ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
@@ -274,8 +274,8 @@
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Experimental.xcassets; sourceTree = "<group>"; };
 		7A14FCF3257FEB59005BDCD4 /* Official.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Official.xcassets; sourceTree = "<group>"; };
-		7A3B716B2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTHTTPRequestHandler+Challenge.h"; sourceTree = "<group>"; };
-		7A3B716C2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RCTHTTPRequestHandler+Challenge.mm"; sourceTree = "<group>"; };
+		7A3B716B2A5D848300DF3341 /* SSLPinning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
+		7A3B716C2A5D848300DF3341 /* SSLPinning.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SSLPinning.mm; sourceTree = "<group>"; };
 		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A733BAB29CA14CF00CB412F /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
 		7A92554528777E0100EC3DA3 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = RocketChatRN/AppDelegate.mm; sourceTree = "<group>"; };
@@ -371,8 +371,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */,
 				7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */,
-				7A3B716B2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.h */,
-				7A3B716C2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm */,
+				7A3B716B2A5D848300DF3341 /* SSLPinning.h */,
+				7A3B716C2A5D848300DF3341 /* SSLPinning.mm */,
 				1ED00BB02513E04400A1331F /* ReplyNotification.swift */,
 			);
 			name = RocketChatRN;
@@ -1434,7 +1434,7 @@
 				1E76CBD725152C840067298C /* HTTPMethod.swift in Sources */,
 				1E76CBC725152BFF0067298C /* Payload.swift in Sources */,
 				1E76CBD225152C730067298C /* Data+Extensions.swift in Sources */,
-				7A3B716D2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */,
+				7A3B716D2A5D848300DF3341 /* SSLPinning.mm in Sources */,
 				1E76CBD125152C710067298C /* Date+Extensions.swift in Sources */,
 				1E76CBD425152C790067298C /* Database.swift in Sources */,
 				1E76CBC325152A460067298C /* String+Extensions.swift in Sources */,
@@ -1461,7 +1461,7 @@
 				1E068CFF24FD2DC700A0FFC1 /* AppGroup.swift in Sources */,
 				1E068D0224FD2E0500A0FFC1 /* AppGroup.m in Sources */,
 				D94D81FB9E10756FAA03F203 /* ExpoModulesProvider.swift in Sources */,
-				7A3B716E2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */,
+				7A3B716E2A5D848300DF3341 /* SSLPinning.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1475,7 +1475,7 @@
 				1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */,
 				1E470E832513A71E00E3DD1D /* RocketChat.swift in Sources */,
 				1E2F615D25128FA300871711 /* Response.swift in Sources */,
-				7A3B716F2A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */,
+				7A3B716F2A5D848300DF3341 /* SSLPinning.mm in Sources */,
 				1E01C82D2511337700FEF824 /* RoomKey.swift in Sources */,
 				1E01C8252511303100FEF824 /* Notification.swift in Sources */,
 				1E0426E7251A54B4008F022C /* RoomType.swift in Sources */,
@@ -1516,7 +1516,7 @@
 				7AAB3E20257E6A6E00707CF6 /* HTTPMethod.swift in Sources */,
 				7AAB3E21257E6A6E00707CF6 /* Payload.swift in Sources */,
 				7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */,
-				7A3B71702A5D848300DF3341 /* RCTHTTPRequestHandler+Challenge.mm in Sources */,
+				7A3B71702A5D848300DF3341 /* SSLPinning.mm in Sources */,
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
 				7AAB3E26257E6A6E00707CF6 /* String+Extensions.swift in Sources */,
