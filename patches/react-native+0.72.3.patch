@@ -166,7 +166,7 @@ index 1c4b373..d723b59 100644
      if (customClientBuilder != null) {
        customClientBuilder.apply(builder);
 diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
-index ee1b2c8..94bc974 100644
+index ee1b2c8..e37332c 100644
 --- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
 +++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
 @@ -35,6 +35,9 @@ import okhttp3.WebSocket;
@@ -198,7 +198,12 @@ index ee1b2c8..94bc974 100644
    public WebSocketModule(ReactApplicationContext context) {
      super(context);
      mCookieHandler = new ForwardingCookieHandler(context);
-@@ -88,8 +103,10 @@ public final class WebSocketModule extends NativeWebSocketModuleSpec {
+@@ -84,12 +99,14 @@ public final class WebSocketModule extends NativeWebSocketModuleSpec {
+       @Nullable final ReadableMap options,
+       final double socketID) {
+     final int id = (int) socketID;
+-    OkHttpClient client =
++    OkHttpClient.Builder clientBuilder =
          new OkHttpClient.Builder()
              .connectTimeout(10, TimeUnit.SECONDS)
              .writeTimeout(10, TimeUnit.SECONDS)
