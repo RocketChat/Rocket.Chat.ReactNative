@@ -165,3 +165,49 @@ index 1c4b373..d723b59 100644
    private static void applyCustomBuilder(OkHttpClient.Builder builder) {
      if (customClientBuilder != null) {
        customClientBuilder.apply(builder);
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+index ee1b2c8..94bc974 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+@@ -35,6 +35,9 @@ import okhttp3.WebSocket;
+ import okhttp3.WebSocketListener;
+ import okio.ByteString;
+ 
++import com.facebook.react.modules.network.OkHttpClientProvider;
++import com.facebook.react.modules.network.CustomClientBuilder;
++
+ @ReactModule(name = NativeWebSocketModuleSpec.NAME, hasConstants = false)
+ public final class WebSocketModule extends NativeWebSocketModuleSpec {
+   public interface ContentHandler {
+@@ -48,6 +51,18 @@ public final class WebSocketModule extends NativeWebSocketModuleSpec {
+ 
+   private ForwardingCookieHandler mCookieHandler;
+ 
++  private static @Nullable CustomClientBuilder customClientBuilder = null;
++
++  public static void setCustomClientBuilder(CustomClientBuilder ccb) {
++    customClientBuilder = ccb;
++  }
++
++  private static void applyCustomBuilder(OkHttpClient.Builder builder) {
++    if (customClientBuilder != null) {
++      customClientBuilder.apply(builder);
++    }
++  }
++
+   public WebSocketModule(ReactApplicationContext context) {
+     super(context);
+     mCookieHandler = new ForwardingCookieHandler(context);
+@@ -88,8 +103,10 @@ public final class WebSocketModule extends NativeWebSocketModuleSpec {
+         new OkHttpClient.Builder()
+             .connectTimeout(10, TimeUnit.SECONDS)
+             .writeTimeout(10, TimeUnit.SECONDS)
+-            .readTimeout(0, TimeUnit.MINUTES) // Disable timeouts for read
+-            .build();
++            .readTimeout(0, TimeUnit.MINUTES); // Disable timeouts for read
++
++    applyCustomBuilder(clientBuilder);
++    OkHttpClient client = clientBuilder.build();
+ 
+     Request.Builder builder = new Request.Builder().tag(id).url(url);
+ 
