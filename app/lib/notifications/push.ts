@@ -7,6 +7,7 @@ import {
 	NotificationAction,
 	NotificationCategory
 } from 'react-native-notifications';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 import { INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
@@ -36,9 +37,16 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		});
 		const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
 		Notifications.setCategories([notificationCategory]);
+	} else if (Platform.OS === 'android' && Platform.constants.Version >= 33) {
+		PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(permissionStatus => {
+			if (permissionStatus === 'granted') {
+				Notifications.registerRemoteNotifications();
+			} else {
+				// TODO: Ask user to enable notifications
+			}
+		});
 	} else {
-		// init
-		Notifications.android.registerRemoteNotifications();
+		Notifications.registerRemoteNotifications();
 	}
 
 	Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {
