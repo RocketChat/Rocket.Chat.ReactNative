@@ -130,12 +130,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='InviteUsersView' component={InviteUsersView} />
 				<ModalStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
-				<ModalStack.Screen
-					name='AddExistingChannelView'
-					// @ts-ignore
-					component={AddExistingChannelView}
-					options={AddExistingChannelView.navigationOptions}
-				/>
+				<ModalStack.Screen name='AddExistingChannelView' component={AddExistingChannelView} />
 				<ModalStack.Screen name='InviteUsersEditView' component={InviteUsersEditView} />
 				<ModalStack.Screen name='MessagesView' component={MessagesView} />
 				<ModalStack.Screen name='AutoTranslateView' component={AutoTranslateView} />
@@ -193,12 +188,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 				<ModalStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
-				<ModalStack.Screen
-					name='E2EEncryptionSecurityView'
-					// @ts-ignore
-					component={E2EEncryptionSecurityView}
-					options={E2EEncryptionSecurityView.navigationOptions}
-				/>
+				<ModalStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 			</ModalStack.Navigator>
 		</ModalContainer>
 	);
