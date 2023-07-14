@@ -45,14 +45,15 @@ const UserNotificationPreferencesView = () => {
 	}, [userId]);
 
 	const onValueChangePicker = async (param: { [key: string]: string }) => {
+		const previousPreferences = preferences;
 		try {
-			setPreferences({ ...preferences, ...param });
+			setPreferences({ ...previousPreferences, ...param });
 			const result = await Services.setUserPreferences(userId, param);
 			if (!result.success) {
-				setPreferences(preferences);
+				setPreferences(previousPreferences);
 			}
 		} catch (error) {
-			setPreferences(preferences);
+			setPreferences(previousPreferences);
 			log(error);
 		}
 	};
