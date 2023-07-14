@@ -109,10 +109,10 @@ commands:
     description: "Build Android app"
     steps:
       - checkout
-      - restore_cache: *restore-npm-cache-linux
+      # - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
-      - save_cache: *save-npm-cache-linux
-      - restore_cache: *restore-gradle-cache
+      # - save_cache: *save-npm-cache-linux
+      # - restore_cache: *restore-gradle-cache
       - run:
           name: Configure Gradle
           command: |
@@ -158,7 +158,7 @@ commands:
               ./gradlew bundleOfficialPlayRelease
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              ./gradlew bundleExperimentalPlayRelease --debug
+              ./gradlew bundleExperimentalPlayRelease --stacktrace
             fi
             if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
               ./gradlew assembleExperimentalPlayDebug
