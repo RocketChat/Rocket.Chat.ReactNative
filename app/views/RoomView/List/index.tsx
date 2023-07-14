@@ -3,7 +3,6 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
 import { FlatListProps, View, ViewToken, StyleSheet, Platform } from 'react-native';
-// import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
@@ -14,7 +13,6 @@ import { animateNextTransition } from '../../../lib/methods/helpers/layoutAnimat
 import log from '../../../lib/methods/helpers/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps, TListRef } from './List';
-// import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
 import RefreshControl from './RefreshControl';
@@ -30,18 +28,6 @@ const styles = StyleSheet.create({
 		})
 	}
 });
-
-// const onScroll = ({ y }: { y: Value<number> }) =>
-// 	event(
-// 		[
-// 			{
-// 				nativeEvent: {
-// 					contentOffset: { y }
-// 				}
-// 			}
-// 		],
-// 		{ useNativeDriver: true }
-// 	);
 
 export { type IListProps };
 
@@ -71,8 +57,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	private animated = false;
 	private jumping = false;
 	private cancelJump = false;
-	// private y = new Value(0);
-	// private onScroll = onScroll({ y: this.y });
 	private unsubscribeFocus: () => void;
 	private viewabilityConfig = {
 		itemVisiblePercentThreshold: 10

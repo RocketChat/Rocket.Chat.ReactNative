@@ -402,9 +402,7 @@ function disconnect() {
 async function getServerInfo(server: string) {
 	try {
 		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, { ...RocketChatSettings.customHeaders });
-		// const response = await fetch(`${server}/api/info`, { ...RocketChatSettings.customHeaders })
 		try {
-			console.log('🚀 ~ file: connect.ts:406 ~ getServerInfo ~ response:', response);
 			// Try to resolve as json
 			const jsonRes: { version?: string; success: boolean } = response.json();
 			if (!jsonRes?.success) {
