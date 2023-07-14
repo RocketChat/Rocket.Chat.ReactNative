@@ -70,7 +70,7 @@
 		"commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
 		"dequal": "^2.0.3",
 		"ejson": "^2.2.3",
-		"expo": "^49.0.0-beta",
+		"expo": "^49.0.3",
 		"expo-apple-authentication": "^6.0.1",
 		"expo-av": "^13.4.0",
 		"expo-file-system": "^15.4.2",

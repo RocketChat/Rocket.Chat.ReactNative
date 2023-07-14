@@ -10,7 +10,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - EXFileSystem (15.4.2):
     - ExpoModulesCore
-  - Expo (49.0.0-beta.2):
+  - Expo (49.0.3):
     - ExpoModulesCore
   - ExpoAppleAuthentication (6.0.1):
     - ExpoModulesCore
@@ -20,7 +20,7 @@ PODS:
     - ExpoModulesCore
   - ExpoLocalAuthentication (13.4.1):
     - ExpoModulesCore
-  - ExpoModulesCore (1.5.3):
+  - ExpoModulesCore (1.5.7):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - React-NativeModulesApple
@@ -990,12 +990,12 @@ SPEC CHECKSUMS:
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXAV: 4e66adbd7803d487044ee1f19bf87d4de9112e76
   EXFileSystem: d7f59869885cfeab3ac771e2a8d0f5ed98cd3fdb
-  Expo: 9f361751c63d56c271546524d5151c1a773c6024
+  Expo: d5956de70d4076190861f6730b93e75478b6faf8
   ExpoAppleAuthentication: 7bd5e4150d59e8df37aa80b425850ae88adf9e65
   ExpoHaptics: 360af6898407ee4e8265d30a1a8fb16491a660eb
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
   ExpoLocalAuthentication: bd9d9037a96a11ccc456e327ddb404df02da10ca
-  ExpoModulesCore: c7fc9558697e1dc7efef2b4841096cd6ab2b760f
+  ExpoModulesCore: f8f3cac222bb0f574c77664d7e05817eaa97434b
   ExpoVideoThumbnails: 3b5ec2a802a67b6e1a22d38b4526ef4619dd3938
   ExpoWebBrowser: 2c788f9c07718a780fe6d8bf2f6195c47609faaa
   FBLazyVector: 4cce221dd782d3ff7c4172167bba09d58af67ccb
