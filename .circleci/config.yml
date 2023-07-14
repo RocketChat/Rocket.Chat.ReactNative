@@ -109,13 +109,10 @@ commands:
     description: "Build Android app"
     steps:
       - checkout
-
       - restore_cache: *restore-npm-cache-linux
-
       - run: *install-npm-modules
-
+      - save_cache: *save-npm-cache-linux
       - restore_cache: *restore-gradle-cache
-
       - run:
           name: Configure Gradle
           command: |
@@ -145,7 +142,6 @@ commands:
               echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
             fi
           working_directory: android
-
       - run:
           name: Set Google Services
           command: |
@@ -153,12 +149,11 @@ commands:
               echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
             fi
           working_directory: android/app
-
       - run:
           name: Build App
           no_output_timeout: 40m
           command: |
-            sudo apt install -y libicu-dev
+            # sudo apt install -y libicu-dev
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
@@ -169,7 +164,6 @@ commands:
               ./gradlew assembleExperimentalPlayDebug
             fi
           working_directory: android
-
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
@@ -189,14 +183,9 @@ commands:
                 --source-map=android/app/build/generated/sourcemaps/react/experimentalPlayRelease/index.android.bundle.map \
                 --bundle android/app/build/generated/assets/createBundleExperimentalPlayReleaseJsAndAssets/index.android.bundle
             fi
-
       - store_artifacts:
           path: android/app/build/outputs
-
-      - save_cache: *save-npm-cache-linux
-
       - save_cache: *save-gradle-cache
-
       - persist_to_workspace:
           root: .
           paths:
@@ -398,7 +387,7 @@ jobs:
     <<: *android-executor
     environment:
       <<: *android-env
-      <<: *bash-env
+      # <<: *bash-env
     steps:
       - android-build
 
@@ -465,7 +454,6 @@ jobs:
           name: Configure Gradle
           command: |
             echo -e "" > ./gradle.properties
-            # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
