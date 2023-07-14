@@ -153,6 +153,7 @@ commands:
           name: Build App
           no_output_timeout: 40m
           command: |
+            chmod -R 777 /home/circleci/repo/
             # sudo apt install -y libicu-dev
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
