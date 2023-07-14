@@ -662,34 +662,34 @@ workflows:
             - ios-hold-testflight-official
 
       # Android Experimental
-      # - android-hold-build-experimental:
-      #     type: approval
-      #     requires:
-      #         - lint-testunit
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - develop
-      - android-build-experimental
-      #     requires:
-      #       - android-hold-build-experimental
-      # - android-internal-app-sharing-experimental:
-      #     requires:
-      #       - android-build-experimental
-      # - android-hold-google-play-beta-experimental:
-      #     type: approval
-      #     requires:
-      #       - android-build-experimental
-      # - android-google-play-beta-experimental:
-      #     requires:
-      #       - android-hold-google-play-beta-experimental
-      # - android-hold-google-play-production-experimental:
-      #     type: approval
-      #     requires:
-      #       - android-build-experimental
-      # - android-google-play-production-experimental:
-      #     requires:
-      #       - android-hold-google-play-production-experimental
+      - android-hold-build-experimental:
+          type: approval
+          requires:
+              - lint-testunit
+          filters:
+            branches:
+              ignore:
+                - develop
+      - android-build-experimental:
+          requires:
+            - android-hold-build-experimental
+      - android-internal-app-sharing-experimental:
+          requires:
+            - android-build-experimental
+      - android-hold-google-play-beta-experimental:
+          type: approval
+          requires:
+            - android-build-experimental
+      - android-google-play-beta-experimental:
+          requires:
+            - android-hold-google-play-beta-experimental
+      - android-hold-google-play-production-experimental:
+          type: approval
+          requires:
+            - android-build-experimental
+      - android-google-play-production-experimental:
+          requires:
+            - android-hold-google-play-production-experimental
 
       # Android Official
       - android-hold-build-official:
