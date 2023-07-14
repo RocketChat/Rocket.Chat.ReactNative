@@ -410,7 +410,6 @@ export default function subscribeRooms() {
 				log(e);
 			}
 		}
-		
 		if (/video-conference/.test(ev)) {
 			const [action, params] = ddpMessage.fields.args;
 			store.dispatch(handleVideoConfIncomingWebsocketMessages({ action, params }));
