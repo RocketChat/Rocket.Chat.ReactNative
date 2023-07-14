@@ -194,3 +194,5 @@ export const getMessageTranslation = (message: TMessageModel, autoTranslateLangu
 	}
 	return null;
 };
+
+export const DEFAULT_MESSAGE_HEIGHT = 150;

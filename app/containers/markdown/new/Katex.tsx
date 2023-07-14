@@ -5,6 +5,7 @@ import MathView, { MathText } from 'react-native-math-view';
 import Katex from 'react-native-katex';
 
 import { useTheme } from '../../../theme';
+import { DEFAULT_MESSAGE_HEIGHT } from '../../message/utils';
 
 interface IKaTeXProps {
 	value: KaTeXProps['value'];
@@ -16,7 +17,7 @@ export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 		<MathView
 			math={value}
 			style={{ color: colors.bodyText }}
-			renderError={() => <Katex expression={value} style={{ flex: 1, height: 50 }} />}
+			renderError={() => <Katex expression={value} style={{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }} />}
 		/>
 	);
 };

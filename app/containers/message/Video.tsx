@@ -17,6 +17,7 @@ import RCActivityIndicator from '../ActivityIndicator';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
+import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		borderRadius: 4,
-		height: 150,
+		height: DEFAULT_MESSAGE_HEIGHT,
 		marginBottom: 6,
 		alignItems: 'center',
 		justifyContent: 'center'
