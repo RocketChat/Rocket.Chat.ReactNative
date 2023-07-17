@@ -387,7 +387,7 @@ jobs:
     <<: *android-executor
     environment:
       <<: *android-env
-      # <<: *bash-env
+      <<: *bash-env
     steps:
       - android-build
 
