@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Alert, ScrollView, View } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -18,6 +18,8 @@ import { useAppSelector } from '../../lib/hooks';
 import { NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
 import MessagePreview from '../../containers/message/Preview';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { LISTENER } from '../../containers/Toast';
 
 const ForwardMessageView = () => {
 	const [rooms, setRooms] = useState<string[]>([]);
@@ -59,9 +61,14 @@ const ForwardMessageView = () => {
 		setSending(true);
 		const permalink = await getPermalinkMessage(message);
 		const msg = `[ ](${permalink})\n`;
-		await Promise.allSettled(rooms.map(roomId => postMessage(roomId, msg)));
+		try {
+			await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
+			EventEmitter.emit(LISTENER, { message: I18n.t('Message_has_been_shared') });
+			navigation.dispatch(StackActions.pop());
+		} catch (e: any) {
+			Alert.alert(I18n.t('Oops'), e.message);
+		}
 		setSending(false);
-		navigation.dispatch(StackActions.pop());
 	};
 
 	const selectRooms = ({ value }: { value: string[] }) => {
