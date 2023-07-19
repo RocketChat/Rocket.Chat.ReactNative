@@ -65,7 +65,7 @@ export const MultiSelect = React.memo(
 			if (Array.isArray(values)) {
 				select(values);
 			}
-		}, [values]);
+		}, []);
 
 		useEffect(() => {
 			if (values && values.length && !multiselect) {

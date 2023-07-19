@@ -455,6 +455,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		const values = Array.isArray(systemMessages)
 			? MESSAGE_TYPE_VALUES.filter((option: any) => systemMessages.includes(option.value))
 			: [];
+
 		return (
 			<MultiSelect
 				options={MESSAGE_TYPE_VALUES}
