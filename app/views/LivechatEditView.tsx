@@ -91,7 +91,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
 
 	const tagOptions = tagParam.map((tag: string) => ({ text: { text: tag }, value: tag }));
-	const values = Array.isArray(tagParamSelected)
+	const tagValues = Array.isArray(tagParamSelected)
 		? tagOptions.filter((option: any) => tagParamSelected.includes(option.value))
 		: [];
 
@@ -264,7 +264,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 							setTagParamSelected([...value]);
 						}}
 						placeholder={{ text: I18n.t('Tags') }}
-						value={values}
+						value={tagValues}
 						context={BlockContext.FORM}
 						multiselect
 						disabled={!editLivechatRoomCustomFieldsPermission}
