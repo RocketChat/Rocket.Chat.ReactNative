@@ -36,6 +36,10 @@ import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSh
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 
+// https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
+const MAX_BIO_LENGTH = 260;
+const MAX_NICKNAME_LENGTH = 120;
+
 interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
 	baseUrl: string;
@@ -509,6 +513,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 									this.bio?.focus();
 								}}
 								testID='profile-view-nickname'
+								maxLength={MAX_NICKNAME_LENGTH}
 							/>
 						) : null}
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
@@ -521,6 +526,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								label={I18n.t('Bio')}
 								inputStyle={styles.inputBio}
 								multiline
+								maxLength={MAX_BIO_LENGTH}
 								value={bio}
 								onChangeText={value => this.setState({ bio: value })}
 								onSubmitEditing={() => {
