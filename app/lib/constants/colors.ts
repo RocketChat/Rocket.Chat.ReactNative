@@ -17,6 +17,11 @@ const mentions = {
 	tunreadColor: '#1d74f5'
 };
 
+const callButtons = {
+	cancelCallButton: '#F5455C',
+	acceptCallButton: '#158D65'
+};
+
 export const colors = {
 	light: {
 		backgroundColor: '#ffffff',
@@ -91,7 +96,13 @@ export const colors = {
 		mentionGroupColor: '#F38C39',
 		mentionOthersBackground: '#E4E7EA',
 		mentionOthersColor: '#095AD2',
-		...mentions
+		dotBg: '#a9cbff',
+		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
+		n900: '#1F2329',
+		...mentions,
+		...callButtons
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -166,7 +177,13 @@ export const colors = {
 		mentionGroupColor: '#955828',
 		mentionOthersBackground: '#2F343D',
 		mentionOthersColor: '#739EDE',
-		...mentions
+		dotBg: '#a9cbff',
+		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
+		n900: '#FFFFFF',
+		...mentions,
+		...callButtons
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -241,7 +258,13 @@ export const colors = {
 		mentionGroupColor: '#955828',
 		mentionOthersBackground: '#2F343D',
 		mentionOthersColor: '#739EDE',
-		...mentions
+		dotBg: '#a9cbff',
+		dotActiveBg: '#1d74f5',
+		gray300: '#5f656e',
+		gray100: '#CBCED1',
+		n900: '#FFFFFF',
+		...mentions,
+		...callButtons
 	}
 };
 

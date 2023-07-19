@@ -50,6 +50,11 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 		prefix = `${useRealName ? name : lastMessage.u.username}: `;
 	}
 
+	if (lastMessage.t === 'videoconf') {
+		prefix = '';
+		lastMessage.msg = I18n.t('Call_started');
+	}
+
 	return `${prefix}${lastMessage.msg}`;
 };
 
@@ -68,7 +73,6 @@ const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, 
 			})}
 			style={[styles.markdownText, { color: alert ? colors.bodyText : colors.auxiliaryText }]}
 			numberOfLines={2}
-			testID='room-item-last-message'
 		/>
 	);
 }, arePropsEqual);

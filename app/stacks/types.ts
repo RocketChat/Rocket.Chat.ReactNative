@@ -1,19 +1,17 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
-import { TextInputProps } from 'react-native';
 
-import { IItem } from '../views/TeamChannelsView';
-import { IOptionsField } from '../views/NotificationPreferencesView/options';
-import { TServerModel } from '../definitions/IServer';
+import { TThreadModel } from '../definitions';
 import { IAttachment } from '../definitions/IAttachment';
-import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
-import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
-import { TThreadModel } from '../definitions';
 import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../definitions/ILivechatTag';
+import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
+import { TServerModel } from '../definitions/IServer';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
+import { TNavigation } from './stackType';
 
 export type SetUsernameStackParamList = {
 	SetUsernameView: {
@@ -30,7 +28,7 @@ export type StackParamList = {
 };
 
 export type ChatsStackParamList = {
-	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
+	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
 	SettingsView: any;
@@ -132,9 +130,6 @@ export type ChatsStackParamList = {
 		rid: string;
 		room: TSubscriptionModel;
 	};
-	ForwardLivechatView: {
-		rid: string;
-	};
 	CloseLivechatView: {
 		rid: string;
 		departmentId?: string;
@@ -144,16 +139,6 @@ export type ChatsStackParamList = {
 	LivechatEditView: {
 		room: ISubscription;
 		roomUser?: any; // TODO: Change
-	};
-	PickerView: {
-		title: string;
-		data: IOptionsField[];
-		value?: string;
-		onSearch?: (text?: string) => Promise<any>;
-		onEndReached?: (text: string, offset?: number) => Promise<any>;
-		total?: number;
-		goBack?: boolean;
-		onChangeValue: Function;
 	};
 	ThreadMessagesView: {
 		rid: string;
@@ -168,12 +153,10 @@ export type ChatsStackParamList = {
 		teamId?: string;
 	};
 	AddChannelTeamView: {
-		teamId?: string;
-		teamChannels: IItem[];
+		teamId: string;
 	};
 	AddExistingChannelView: {
-		teamId?: string;
-		teamChannels: IItem[];
+		teamId: string;
 	};
 	MarkdownTableView: {
 		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
@@ -208,14 +191,6 @@ export type ProfileStackParamList = {
 	ProfileView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
-	PickerView: {
-		title: string;
-		data: IOptionsField[];
-		value: any; // TODO: Change
-		onChangeText?: TextInputProps['onChangeText'];
-		goBack?: Function;
-		onChangeValue: Function;
-	};
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
@@ -288,9 +263,6 @@ export type InsideStackParamList = {
 	NewMessageStackNavigator: NavigatorScreenParams<NewMessageStackParamList>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
-	AttachmentView: {
-		attachment: IAttachment;
-	};
 	StatusView: undefined;
 	ShareView: {
 		attachments: IAttachment[];
