@@ -14,7 +14,7 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 
 		if ('endedAt' in result) return <VideoConferenceEnded createdBy={createdBy} rid={rid} type={type} users={users} />;
 
-		if (type === 'direct' && status === 0) return <VideoConferenceDirect blockId={blockId} />;
+		if (type === 'direct' && status === 0) return <VideoConferenceDirect />;
 
 		return <VideoConferenceOutgoing blockId={blockId} users={users} />;
 	}

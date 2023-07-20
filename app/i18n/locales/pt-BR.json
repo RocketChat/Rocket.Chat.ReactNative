@@ -695,7 +695,7 @@
   "Call_again": "Ligue novamente",
   "Call_ongoing": "Chamada em andamento",
   "Joined": "Ingressou",
-  "Calling": "Chamando...",
+  "Calling": "Chamando",
   "Start_a_call": "Inicie uma chamada",
   "Call": "Ligar",
   "Reply_in_direct_message": "Responder por mensagem direta",
@@ -719,5 +719,9 @@
   "Wi_Fi_and_mobile_data":"Wi-Fi e dados móveis",
   "Wi_Fi": "Wi-Fi",
   "Off": "Desativado",
-  "Audio": "Áudio"
+  "Audio": "Áudio",
+  "decline": "Recusar",
+  "accept": "Aceitar",
+  "Incoming_call_from": "Chamada recebida de",
+  "Call_started": "Chamada Iniciada"
 }
