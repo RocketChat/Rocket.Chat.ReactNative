@@ -15,6 +15,7 @@ const defaultType = {
 };
 
 export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
+export const LOCAL_CACHE_DIRECTORY = FileSystem.cacheDirectory;
 
 const sanitizeString = (value: string) => {
 	const urlWithoutQueryString = value.split('?')[0];
@@ -111,6 +112,11 @@ const getFolderPath = () => {
 	return folderPath;
 };
 
+export const getFileInfoAsync = async (filePath: string) => {
+	const file = await FileSystem.getInfoAsync(filePath);
+	return file;
+};
+
 export const getMediaCache = async ({
 	type,
 	mimeType,
@@ -130,11 +136,22 @@ export const getMediaCache = async ({
 			return null;
 		}
 		await ensureDirAsync(folderPath);
-		const file = await FileSystem.getInfoAsync(filePath);
+		const file = await getFileInfoAsync(filePath);
 		return file;
 	} catch (error) {
 		log(error);
 		return null;
+	}
+};
+
+const deleteVideoThumbnails = async () => {
+	try {
+		// https://github.com/expo/expo/blob/e8f02c96cf2613c7f3e2ab2b0171eb39da80032b/packages/expo-video-thumbnails/ios/VideoThumbnailsModule.swift#L51
+		// https://github.com/expo/expo/blob/e8f02c96cf2613c7f3e2ab2b0171eb39da80032b/packages/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/VideoThumbnailsModule.kt#L44C5-L44C5
+		const videoThumbnailPath = `${LOCAL_CACHE_DIRECTORY}/VideoThumbnails/`;
+		await FileSystem.deleteAsync(videoThumbnailPath, { idempotent: true });
+	} catch (error) {
+		log(error);
 	}
 };
 
@@ -143,6 +160,7 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 		const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
 		const path = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}`;
 		await FileSystem.deleteAsync(path, { idempotent: true });
+		await deleteVideoThumbnails();
 	} catch (error) {
 		log(error);
 	}

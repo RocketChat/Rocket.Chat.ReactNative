@@ -18,10 +18,17 @@ import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { cancelDownload, downloadMediaFile, isDownloadActive, getMediaCache } from '../../lib/methods/handleMediaDownload';
+import {
+	cancelDownload,
+	downloadMediaFile,
+	isDownloadActive,
+	getMediaCache,
+	getFileInfoAsync
+} from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import sharedStyles from '../../views/Styles';
 import BlurComponent from './Components/BlurComponent';
+import { useUserPreferences } from '../../lib/methods';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -69,7 +76,7 @@ const CancelIndicator = () => {
 };
 
 const Thumbnail = ({ loading, video, cached }: { loading: boolean; video: string; cached: boolean }) => {
-	const [thumbnailImage, setThumbnailImage] = useState('');
+	const [thumbnailImage, setThumbnailImage] = useUserPreferences(`thumbnail-${video}`, '');
 
 	useEffect(() => {
 		const generateThumbnail = async () => {
@@ -82,7 +89,19 @@ const Thumbnail = ({ loading, video, cached }: { loading: boolean; video: string
 				// do nothing
 			}
 		};
-		generateThumbnail();
+
+		const handleThumbnailSearch = async () => {
+			const file = await getFileInfoAsync(thumbnailImage);
+			if (!file.exists) {
+				generateThumbnail();
+			}
+		};
+
+		if (!thumbnailImage) {
+			generateThumbnail();
+		} else {
+			handleThumbnailSearch();
+		}
 	}, []);
 
 	return (
