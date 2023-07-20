@@ -70,7 +70,7 @@ export function setNotificationPresenceCap(show: boolean): ISetNotificationPrese
 
 export function setNetInfoState(netInfoState: NetInfoStateType): ISetNetInfoState {
 	return {
-		type: APP.SET_INTERNET_TYPE,
+		type: APP.SET_NET_INFO_STATE,
 		netInfoState
 	};
 }

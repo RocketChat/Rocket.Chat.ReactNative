@@ -47,7 +47,7 @@ export const APP = createRequestTypes('APP', [
 	'INIT_LOCAL_SETTINGS',
 	'SET_MASTER_DETAIL',
 	'SET_NOTIFICATION_PRESENCE_CAP',
-	'SET_INTERNET_TYPE'
+	'SET_NET_INFO_STATE'
 ]);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);

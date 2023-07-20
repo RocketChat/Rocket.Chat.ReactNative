@@ -66,7 +66,7 @@ export default function app(state = initialState, action: TActionApp): IApp {
 				...state,
 				notificationPresenceCap: action.show
 			};
-		case APP.SET_INTERNET_TYPE:
+		case APP.SET_NET_INFO_STATE:
 			return {
 				...state,
 				netInfoState: action.netInfoState
