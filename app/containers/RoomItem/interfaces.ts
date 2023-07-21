@@ -50,6 +50,7 @@ export interface IWrapperProps {
 }
 
 export interface ITypeIconProps {
+	userId: string;
 	type: string;
 	status: TUserStatus;
 	prid: string;
