@@ -39,7 +39,7 @@ const RoomHeaderContainer = React.memo(
 		visitor
 	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
-		let statusVisitor: TUserStatus | null = null;
+		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
 		const { width, height } = useDimensions();
 
