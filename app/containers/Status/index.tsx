@@ -14,6 +14,9 @@ const StatusContainer = ({ id, style, status, size = 32, ...props }: IStatus): R
 		if (state.meteor.connected && state.activeUsers[id]) {
 			return state.activeUsers[id].status;
 		}
+		if (!state.meteor.connected) {
+			return 'offline';
+		}
 		return 'loading';
 	});
 

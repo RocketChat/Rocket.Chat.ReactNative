@@ -36,10 +36,7 @@ const RoomTypeIcon = React.memo(
 		const iconStyle = [styles.icon, style];
 
 		if (type === 'd' && !isGroupChat && userId) {
-			if (!status) {
-				status = 'offline';
-			}
-			return <Status id={userId} style={iconStyle} size={size} />;
+			return <Status id={userId} style={iconStyle} size={size} status={status} />;
 		}
 
 		if (type === 'l') {

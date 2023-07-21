@@ -67,7 +67,7 @@ interface IRoomHeader {
 	prid?: string;
 	tmid?: string;
 	teamMain?: boolean;
-	status: TUserStatus;
+	status: TUserStatus | null;
 	usersTyping: [];
 	isGroupChat?: boolean;
 	parentTitle?: string;

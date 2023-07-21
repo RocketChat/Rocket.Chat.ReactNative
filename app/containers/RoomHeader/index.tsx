@@ -39,7 +39,7 @@ const RoomHeaderContainer = React.memo(
 		visitor
 	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
-		let status: TUserStatus = 'offline';
+		let statusVisitor: TUserStatus | null = null;
 		let statusText: string | undefined;
 		const { width, height } = useDimensions();
 
@@ -64,8 +64,7 @@ const RoomHeaderContainer = React.memo(
 				const { statusText: statusTextActiveUser } = activeUser;
 				statusText = statusTextActiveUser;
 			} else if (type === 'l' && visitor?.status) {
-				const { status: statusVisitor } = visitor;
-				status = statusVisitor;
+				({ status: statusVisitor } = visitor);
 			}
 		}
 
@@ -78,7 +77,7 @@ const RoomHeaderContainer = React.memo(
 				subtitle={type === 'd' ? statusText : subtitle}
 				type={type}
 				teamMain={teamMain}
-				status={status}
+				status={statusVisitor}
 				width={width}
 				height={height}
 				usersTyping={usersTyping}
