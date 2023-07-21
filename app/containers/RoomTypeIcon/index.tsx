@@ -3,7 +3,7 @@ import { StyleSheet, ViewStyle } from 'react-native';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon, TIconsName } from '../CustomIcon';
-import { STATUS_COLORS, themes } from '../../lib/constants';
+import { themes } from '../../lib/constants';
 import Status from '../Status';
 import { useTheme } from '../../theme';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomTypeIcon {
-	userId?: string;
+	userId?: string | null;
 	type: string;
 	isGroupChat?: boolean;
 	teamMain?: boolean;

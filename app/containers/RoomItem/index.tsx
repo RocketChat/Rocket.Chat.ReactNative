@@ -2,13 +2,11 @@ import React, { useEffect, useReducer, useRef } from 'react';
 import { Subscription } from 'rxjs';
 
 import I18n from '../../i18n';
-import { getUserPresence } from '../../lib/methods';
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
 import { IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
-import { useUserStatus } from './useUserStatus';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 
@@ -46,8 +44,6 @@ const RoomItemContainer = React.memo(
 		const roomSubscription = useRef<Subscription | null>(null);
 		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
 
-		// const { connected, status } = useUserStatus(item.t, item?.visitor?.status, id);
-
 		useEffect(() => {
 			const init = () => {
 				if (item?.observe) {
@@ -61,13 +57,6 @@ const RoomItemContainer = React.memo(
 
 			return () => roomSubscription.current?.unsubscribe();
 		}, []);
-
-		// useEffect(() => {
-		// 	const isDirect = !!(item.t === 'd' && id && !isGroupChat(item));
-		// 	if (connected && isDirect) {
-		// 		getUserPresence(id);
-		// 	}
-		// }, [connected]);
 
 		const handleOnPress = () => onPress(item);
 

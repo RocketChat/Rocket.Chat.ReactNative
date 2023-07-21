@@ -63,7 +63,7 @@ interface IRoomHeader {
 	type: string;
 	width: number;
 	height: number;
-	roomUserId?: string;
+	roomUserId?: string | null;
 	prid?: string;
 	tmid?: string;
 	teamMain?: boolean;

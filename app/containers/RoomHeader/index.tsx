@@ -13,7 +13,7 @@ interface IRoomHeaderContainerProps {
 	prid?: string;
 	tmid?: string;
 	teamMain?: boolean;
-	roomUserId?: string;
+	roomUserId?: string | null;
 	onPress: Function;
 	parentTitle?: string;
 	isGroupChat?: boolean;
