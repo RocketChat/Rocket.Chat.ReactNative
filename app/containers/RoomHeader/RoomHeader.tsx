@@ -63,6 +63,7 @@ interface IRoomHeader {
 	type: string;
 	width: number;
 	height: number;
+	roomUserId?: string;
 	prid?: string;
 	tmid?: string;
 	teamMain?: boolean;
@@ -130,6 +131,7 @@ const Header = React.memo(
 		status,
 		width,
 		height,
+		roomUserId,
 		prid,
 		tmid,
 		onPress,
@@ -154,7 +156,13 @@ const Header = React.memo(
 		if (tmid) {
 			renderFunc = () => (
 				<View style={styles.titleContainer}>
-					<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
+					<RoomTypeIcon
+						userId={roomUserId}
+						type={prid ? 'discussion' : type}
+						isGroupChat={isGroupChat}
+						status={status}
+						teamMain={teamMain}
+					/>
 					<Text style={[styles.subtitle, { color: colors.auxiliaryText }]} numberOfLines={1}>
 						{parentTitle}
 					</Text>
@@ -176,6 +184,7 @@ const Header = React.memo(
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon
+							userId={roomUserId}
 							type={prid ? 'discussion' : type}
 							isGroupChat={isGroupChat}
 							status={status}
