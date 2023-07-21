@@ -33,6 +33,7 @@ const getStories = () => {
     require("../app/containers/ReactionsList/ReactionsList.stories.tsx"),
     require("../app/containers/RoomHeader/RoomHeader.stories.tsx"),
     require("../app/containers/RoomItem/RoomItem.stories.tsx"),
+    require("../app/containers/RoomTypeIcon/RoomTypeIcon.stories.tsx"),
     require("../app/containers/SearchBox/SearchBox.stories.tsx"),
     require("../app/containers/ServerItem/ServerItem.stories.tsx"),
     require("../app/containers/TextInput/TextInput.stories.tsx"),
