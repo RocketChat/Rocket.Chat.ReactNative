@@ -36,6 +36,7 @@ const getStories = () => {
     require("../app/containers/RoomTypeIcon/RoomTypeIcon.stories.tsx"),
     require("../app/containers/SearchBox/SearchBox.stories.tsx"),
     require("../app/containers/ServerItem/ServerItem.stories.tsx"),
+    require("../app/containers/Status/Status.stories.tsx"),
     require("../app/containers/TextInput/TextInput.stories.tsx"),
     require("../app/containers/UIKit/UiKitMessage.stories.tsx"),
     require("../app/containers/UIKit/UiKitModal.stories.tsx"),
