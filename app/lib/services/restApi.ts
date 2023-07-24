@@ -8,7 +8,8 @@ import {
 	IUser,
 	IAvatarSuggestion,
 	IProfileParams,
-	RoomType
+	RoomType,
+	IServerRoom
 } from '../../definitions';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
@@ -335,7 +336,7 @@ export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0
 	sdk.get('rooms.info', { roomId });
 
-export const getRoomByTypeAndName = (roomType: RoomType, roomName: string) =>
+export const getRoomByTypeAndName = (roomType: RoomType, roomName: string): Promise<IServerRoom> =>
 	sdk.methodCallWrapper('getRoomByTypeAndName', roomType, roomName);
 
 export const getVisitorInfo = (visitorId: string) =>
