@@ -98,6 +98,7 @@ const ImageContainer = React.memo(
 					if (isDownloadActive(imgUrlToCache)) {
 						return;
 					}
+					setLoading(false);
 					await handleAutoDownload();
 				}
 			};
@@ -113,13 +114,12 @@ const ImageContainer = React.memo(
 			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagesPreferenceDownload');
 			if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 				await handleDownload();
-				return;
 			}
-			setLoading(false);
 		};
 
 		const handleDownload = async () => {
 			try {
+				setLoading(true);
 				const imageUri = await downloadMediaFile({
 					downloadUrl: imgUrlToCache,
 					type: 'image',
