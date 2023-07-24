@@ -172,12 +172,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			return;
 		}
 		if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const result = await Services.getRoomInfo(item._id);
-			if (result.success) {
+			const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+			if (result) {
 				this.goRoom({
 					rid: item._id,
 					name: item.name,
-					joinCodeRequired: result.room.joinCodeRequired,
+					joinCodeRequired: result.joinCodeRequired,
 					t: item.t as SubscriptionType,
 					search: true
 				});

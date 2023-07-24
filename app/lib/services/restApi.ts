@@ -7,7 +7,8 @@ import {
 	SubscriptionType,
 	IUser,
 	IAvatarSuggestion,
-	IProfileParams
+	IProfileParams,
+	RoomType
 } from '../../definitions';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
@@ -333,6 +334,9 @@ export const getUserPreferences = (userId: string) =>
 export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0
 	sdk.get('rooms.info', { roomId });
+
+export const getRoomByTypeAndName = (roomType: RoomType, roomName: string) =>
+	sdk.methodCallWrapper('getRoomByTypeAndName', roomType, roomName);
 
 export const getVisitorInfo = (visitorId: string) =>
 	// RC 2.3.0
