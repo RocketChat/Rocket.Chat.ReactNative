@@ -4647,10 +4647,10 @@
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-"@react-native-community/blur@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/blur/-/blur-4.1.0.tgz#ed1361a569150c2249aae9b734e278fd262b70cd"
-  integrity sha512-esfuAjbAoeysfI3RhmCHlYwlXobXzcsVGZEHgDhVGB88aO9RktY6b13mYbo2FXZ8XnntcccuvXlgckvoIsggWg==
+"@react-native-community/blur@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/blur/-/blur-4.3.2.tgz#185a2c7dd03ba168cc95069bc4742e9505fd6c6c"
+  integrity sha512-0ID+pyZKdC4RdgC7HePxUQ6JmsbNrgz03u+6SgqYpmBoK/rE+7JffqIw7IEsfoKitLEcRNLGekIBsfwCqiEkew==
 
 "@react-native-community/cli-clean@^10.1.1":
   version "10.1.1"
