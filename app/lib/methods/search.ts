@@ -95,7 +95,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	} else {
 		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });
 	}
-	const usernames = localSearchData.map(sub => sub.name as string);
+	const usernames = localSearchData.map(sub => ('username' in sub ? sub.username : sub.name) as string);
 
 	const data: TSearch[] = localSearchData;
 
