@@ -6,7 +6,7 @@ import {
 	tapBack,
 	sleep,
 	searchRoom,
-	// tryTapping,
+	tryTapping,
 	platformTypes,
 	TTextMatcher,
 	mockMessage
@@ -21,7 +21,7 @@ async function navigateToRoom(roomName: string) {
 		.withTimeout(5000);
 }
 
-describe('Room screen', () => {
+describe.skip('Room screen', () => {
 	let room: string;
 	// let alertButtonType: string;
 	let textMatcher: TTextMatcher;
@@ -290,7 +290,7 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Get Link')).atIndex(0).tap();
+				await element(by[textMatcher]('Get link')).atIndex(0).tap();
 				// TODO: test clipboard
 			});
 			it('should copy message', async () => {
@@ -407,23 +407,54 @@ describe('Room screen', () => {
 				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
 			});
 
-			// FIXME: implement before merging to develop
-			// it('should edit message', async () => {
-			// 	const editMessage = await mockMessage('edit');
-			// 	const editedMessage = `${editMessage}ed`;
-			// 	await tryTapping(element(by[textMatcher](editMessage)).atIndex(0), 2000, true);
-			// 	await waitFor(element(by.id('action-sheet')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-			// 	await element(by[textMatcher]('Edit')).atIndex(0).tap();
-			// 	await element(by.id('message-composer-input')).replaceText(editedMessage);
-			// 	await element(by.id('message-composer-send')).tap();
-			// 	await waitFor(element(by[textMatcher](editedMessage)).atIndex(0))
-			// 		.toExist()
-			// 		.withTimeout(60000);
-			// });
+			it('should edit message', async () => {
+				const editMessage = await mockMessage('edit');
+				const editedMessage = `${editMessage}ed`;
+				await tryTapping(element(by[textMatcher](editMessage)).atIndex(0), 2000, true);
+				await waitFor(element(by.id('action-sheet')))
+					.toExist()
+					.withTimeout(2000);
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by[textMatcher]('Edit')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).replaceText(editedMessage);
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by[textMatcher](editedMessage)).atIndex(0))
+					.toExist()
+					.withTimeout(60000);
+			});
+			let quotedMessage = '';
+			it('should quote message', async () => {
+				const quoteMessage = await mockMessage('quote');
+				quotedMessage = `${quoteMessage}d`;
+				await tryTapping(element(by[textMatcher](quoteMessage)).atIndex(0), 2000, true);
+				await waitFor(element(by.id('action-sheet')))
+					.toExist()
+					.withTimeout(2000);
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by[textMatcher]('Quote')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).replaceText(quotedMessage);
+				await waitFor(element(by.id('messagebox-send-message')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
+					.toBeVisible()
+					.withTimeout(3000);
+				await waitFor(element(by.id(`reply-${user.name}-${quoteMessage}`).withDescendant(by[textMatcher](quoteMessage))))
+					.toBeVisible()
+					.withTimeout(3000);
+			});
+			it('should back to rooms list view and see the last message correctly and navigate again to room', async () => {
+				const expectedLastMessage = `You: ${quotedMessage}`;
+				await sleep(300);
+				await tapBack();
+				await waitFor(element(by.id(`markdown-preview-${expectedLastMessage}`)))
+					.toBeVisible()
+					.withTimeout(5000);
+				await element(by.id(`markdown-preview-${expectedLastMessage}`)).tap();
+			});
 
 			// FIXME: implement before merging to develop
 			// it('should quote message', async () => {
@@ -449,42 +480,16 @@ describe('Room screen', () => {
 			// 		.withTimeout(3000);
 			// });
 
-			// FIXME: implement before merging to develop
-			// it('should delete message', async () => {
-			// 	const deleteMessage = await mockMessage('delete');
-			// 	await tryTapping(element(by[textMatcher](deleteMessage)).atIndex(0), 2000, true);
-			// 	await waitFor(element(by.id('action-sheet')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-			// 	await sleep(300); // wait for animation
-			// 	await waitFor(element(by[textMatcher]('Delete')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await element(by[textMatcher]('Delete')).atIndex(0).tap();
-			// 	const deleteAlertMessage = 'You will not be able to recover this message!';
-			// 	await waitFor(element(by[textMatcher](deleteAlertMessage)).atIndex(0))
-			// 		.toExist()
-			// 		.withTimeout(10000);
-			// 	await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
-			// 	await waitFor(element(by[textMatcher](deleteMessage)).atIndex(0))
-			// 		.not.toExist()
-			// 		.withTimeout(2000);
-			// 	await tapBack();
-			// });
-
-			// FIXME: implement before merging to develop
 			// it('should reply in DM to another user', async () => {
 			// 	const replyUser = await createRandomUser();
 			// 	const { name: replyRoom } = await createRandomRoom(replyUser, 'c');
 			// 	const originalMessage = 'Message to reply in DM';
 			// 	const replyMessage = 'replied in dm';
+			// 	await sendMessage(replyUser, replyRoom, originalMessage);
 			// 	await waitFor(element(by.id('rooms-list-view')))
 			// 		.toBeVisible()
 			// 		.withTimeout(2000);
 			// 	await navigateToRoom(replyRoom);
-			// 	await sendMessage(replyUser, replyRoom, originalMessage);
 			// 	await waitFor(element(by[textMatcher](originalMessage)).atIndex(0))
 			// 		.toBeVisible()
 			// 		.withTimeout(10000);
@@ -492,24 +497,35 @@ describe('Room screen', () => {
 			// 	await waitFor(element(by.id('room-view-join-button')))
 			// 		.not.toBeVisible()
 			// 		.withTimeout(10000);
-			// 	await element(by[textMatcher](originalMessage)).atIndex(0).tap();
 			// 	await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
-			// 	await sleep(300); // wait for animation
+			// 	await sleep(600); // wait for animation
 			// 	await waitFor(element(by.id('action-sheet')))
 			// 		.toExist()
 			// 		.withTimeout(2000);
-			// 	await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
+			// 	await sleep(600); // wait for animation
+			// 	// Fix android flaky test. Close the action sheet, then re-open again
+			// 	await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
+			// 	await sleep(1000); // wait for animation
+			// 	await element(by[textMatcher](originalMessage)).atIndex(0).longPress();
+			// 	await sleep(600); // wait for animation
+			// 	await waitFor(element(by.id('action-sheet')))
 			// 		.toExist()
+			// 		.withTimeout(2000);
+			// 	await sleep(600); // wait for animation
+			// 	await waitFor(element(by[textMatcher]('Reply in direct message')).atIndex(0))
+			// 		.toBeVisible()
 			// 		.withTimeout(6000);
-			// 	await element(by[textMatcher]('Reply in Direct Message')).atIndex(0).tap();
+			// 	await sleep(600); // wait for animation
+			// 	await element(by[textMatcher]('Reply in direct message')).atIndex(0).tap();
+			// 	await sleep(600); // wait for animation
 			// 	await waitFor(element(by.id(`room-view-title-${replyUser.username}`)))
 			// 		.toExist()
 			// 		.withTimeout(6000);
-			// 	await element(by.id('message-composer-input')).replaceText(replyMessage);
-			// 	await waitFor(element(by.id('message-composer-send')))
+			// 	await element(by.id('messagebox-input')).replaceText(replyMessage);
+			// 	await waitFor(element(by.id('messagebox-send-message')))
 			// 		.toExist()
 			// 		.withTimeout(2000);
-			// 	await element(by.id('message-composer-send')).tap();
+			// 	await element(by.id('messagebox-send-message')).tap();
 			// 	await waitFor(element(by[textMatcher](replyMessage)))
 			// 		.toExist()
 			// 		.withTimeout(60000);

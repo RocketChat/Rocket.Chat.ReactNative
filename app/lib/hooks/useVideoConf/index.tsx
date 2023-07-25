@@ -1,17 +1,17 @@
+import { Camera } from 'expo-camera';
 import React, { useEffect, useState } from 'react';
 
-import { useActionSheet } from '../../containers/ActionSheet';
-import StartACallActionSheet from '../../containers/UIKit/VideoConferenceBlock/components/StartACallActionSheet';
-import { ISubscription, SubscriptionType } from '../../definitions';
-import i18n from '../../i18n';
-import { getUserSelector } from '../../selectors/login';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { callJitsi } from '../methods';
-import { compareServerVersion, showErrorAlert } from '../methods/helpers';
-import { videoConfStartAndJoin } from '../methods/videoConf';
-import { Services } from '../services';
-import { useAppSelector } from './useAppSelector';
-import { useSnaps } from './useSnaps';
+import { useActionSheet } from '../../../containers/ActionSheet';
+import { SubscriptionType } from '../../../definitions';
+import i18n from '../../../i18n';
+import { getUserSelector } from '../../../selectors/login';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { compareServerVersion, showErrorAlert } from '../../methods/helpers';
+import { handleAndroidBltPermission } from '../../methods/videoConf';
+import { Services } from '../../services';
+import { useAppSelector } from '../useAppSelector';
+import { useSnaps } from '../useSnaps';
+import StartACallActionSheet from './StartACallActionSheet';
 
 const availabilityErrors = {
 	NOT_CONFIGURED: 'video-conf-provider-not-configured',
@@ -32,6 +32,8 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 	const jitsiEnableTeams = useAppSelector(state => state.settings.Jitsi_Enable_Teams);
 	const jitsiEnableChannels = useAppSelector(state => state.settings.Jitsi_Enable_Channels);
 	const user = useAppSelector(state => getUserSelector(state));
+
+	const [permission, requestPermission] = Camera.useCameraPermissions();
 
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 
@@ -76,19 +78,17 @@ export const useVideoConf = (rid: string): { showInitCallActionSheet: () => Prom
 		return true;
 	};
 
-	const initCall = async ({ cam, mic }: { cam: boolean; mic: boolean }) => {
-		if (isServer5OrNewer) return videoConfStartAndJoin({ rid, cam, mic });
-		const room = (await getSubscriptionByRoomId(rid)) as ISubscription;
-		callJitsi({ room, cam });
-	};
-
 	const showInitCallActionSheet = async () => {
 		const canInit = await canInitAnCall();
 		if (canInit) {
 			showActionSheet({
-				children: <StartACallActionSheet rid={rid} initCall={initCall} />,
+				children: <StartACallActionSheet rid={rid} />,
 				snaps
 			});
+			if (!permission?.granted) {
+				requestPermission();
+				handleAndroidBltPermission();
+			}
 		}
 	};
 
