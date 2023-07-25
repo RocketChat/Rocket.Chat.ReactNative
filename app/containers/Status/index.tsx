@@ -24,7 +24,7 @@ const StatusContainer = ({ id, style, status, size = 32, ...props }: IStatus): R
 		if (connected && statusState === 'loading') {
 			getUserPresence(id);
 		}
-	}, [connected]);
+	}, [connected, statusState]);
 
 	return <Status size={size} style={style} status={status ?? statusState} {...props} />;
 };

@@ -39,7 +39,7 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 			name={iconMap[sourceType?.type || 'other']}
 			size={size}
 			style={style}
-			color={STATUS_COLORS[status || 'offline'] ?? STATUS_COLORS.offline}
+			color={STATUS_COLORS[status || 'offline']}
 		/>
 	);
 
@@ -49,7 +49,7 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 				<SvgUri
 					height={size}
 					width={size}
-					color={STATUS_COLORS[status || 'offline'] ?? STATUS_COLORS.offline}
+					color={STATUS_COLORS[status || 'offline']}
 					uri={`${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}`}
 					style={style}
 					onError={() => setSvgError(true)}
