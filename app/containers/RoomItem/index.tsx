@@ -2,7 +2,6 @@ import React, { useEffect, useReducer, useRef } from 'react';
 import { Subscription } from 'rxjs';
 
 import I18n from '../../i18n';
-import { getUserPresence } from '../../lib/methods';
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
 import { useUserStatus } from '../../lib/hooks';
@@ -44,8 +43,7 @@ const RoomItemContainer = React.memo(
 		const alert = item.alert || item.tunread?.length;
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const roomSubscription = useRef<Subscription | null>(null);
-
-		const { connected, status } = useUserStatus(item.t, item?.visitor?.status, id);
+		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
 
 		useEffect(() => {
 			const init = () => {
@@ -60,13 +58,6 @@ const RoomItemContainer = React.memo(
 
 			return () => roomSubscription.current?.unsubscribe();
 		}, []);
-
-		useEffect(() => {
-			const isDirect = !!(item.t === 'd' && id && !isGroupChat(item));
-			if (connected && isDirect) {
-				getUserPresence(id);
-			}
-		}, [connected]);
 
 		const handleOnPress = () => onPress(item);
 
@@ -98,6 +89,7 @@ const RoomItemContainer = React.memo(
 				width={width}
 				favorite={item.f}
 				rid={item.rid}
+				userId={userId}
 				toggleFav={toggleFav}
 				toggleRead={toggleRead}
 				hideChannel={hideChannel}
@@ -105,7 +97,6 @@ const RoomItemContainer = React.memo(
 				type={item.t}
 				isFocused={isFocused}
 				prid={item.prid}
-				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
 				hideMentionStatus={item.hideMentionStatus}
 				alert={alert}
@@ -124,7 +115,8 @@ const RoomItemContainer = React.memo(
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
-				sourceType={item.source}
+				status={item.t === 'l' ? item?.visitor?.status : null}
+				sourceType={item.t === 'l' ? item.source : null}
 			/>
 		);
 	},
