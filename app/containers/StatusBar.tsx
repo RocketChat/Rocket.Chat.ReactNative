@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { StatusBar as StatusBarRN } from 'react-native';
 
 import { useTheme } from '../theme';
+import { isAndroid } from '../lib/methods/helpers';
 
 const supportedStyles = {
 	'light-content': 'light-content',
@@ -23,7 +24,9 @@ const StatusBar = React.memo(({ barStyle, backgroundColor }: IStatusBar) => {
 				barStyle = 'dark-content';
 			}
 		}
-		StatusBarRN.setBackgroundColor(backgroundColor ?? colors.headerBackground);
+		if (isAndroid) {
+			StatusBarRN.setBackgroundColor(backgroundColor ?? colors.headerBackground);
+		}
 		StatusBarRN.setBarStyle(barStyle, true);
 	}, [theme, barStyle, backgroundColor]);
 
