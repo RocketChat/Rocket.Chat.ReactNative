@@ -22,7 +22,7 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
-import { getFilename } from '../lib/methods/handleMediaDownload';
+import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
 
 const RenderContent = ({
 	setLoading,
@@ -144,13 +144,13 @@ const AttachmentView = (): React.ReactElement => {
 
 	const handleSave = async () => {
 		const { title_link, image_url, image_type, video_url, video_type } = attachment;
-		const url = title_link || image_url || video_url;
+		// When the attachment is a video, the video_url refers to local file and the title_link to the link
+		const url = video_url || title_link || image_url;
 
 		if (!url) {
 			return;
 		}
 
-		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 		if (isAndroid) {
 			const rationale = {
 				title: I18n.t('Write_External_Permission'),
@@ -165,17 +165,22 @@ const AttachmentView = (): React.ReactElement => {
 
 		setLoading(true);
 		try {
-			let filename = '';
-			if (image_url) {
-				filename = getFilename({ title: attachment.title, type: 'image', mimeType: image_type, url });
+			if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
+				await CameraRoll.save(url, { album: 'Rocket.Chat' });
 			} else {
-				filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
+				const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
+				let filename = '';
+				if (image_url) {
+					filename = getFilename({ title: attachment.title, type: 'image', mimeType: image_type, url });
+				} else {
+					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
+				}
+				const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
+				const path = `${documentDir + filename}`;
+				const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
+				await CameraRoll.save(path, { album: 'Rocket.Chat' });
+				file.flush();
 			}
-			const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
-			const path = `${documentDir + filename}`;
-			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
-			await CameraRoll.save(path, { album: 'Rocket.Chat' });
-			file.flush();
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
 			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
