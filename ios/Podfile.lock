@@ -8,6 +8,8 @@ PODS:
   - EXAV (13.2.1):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
+  - EXCamera (13.2.1):
+    - ExpoModulesCore
   - EXFileSystem (15.2.2):
     - ExpoModulesCore
   - Expo (48.0.9):
@@ -383,7 +385,7 @@ PODS:
     - React-Core
   - react-native-blur (4.1.0):
     - React-Core
-  - react-native-cameraroll (4.1.2):
+  - react-native-cameraroll (5.6.0):
     - React-Core
   - react-native-cookies (6.2.1):
     - React-Core
@@ -407,8 +409,8 @@ PODS:
     - React
   - react-native-slider (4.4.2):
     - React-Core
-  - react-native-webview (10.3.2):
-    - React
+  - react-native-webview (11.26.1):
+    - React-Core
   - React-perflogger (0.71.7)
   - React-RCTActionSheet (0.71.7):
     - React-Core/RCTActionSheetHeaders (= 0.71.7)
@@ -602,6 +604,7 @@ DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAV (from `../node_modules/expo-av/ios`)
+  - EXCamera (from `../node_modules/expo-camera/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
@@ -633,7 +636,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
-  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
+  - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
@@ -721,6 +724,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAV:
     :path: "../node_modules/expo-av/ios"
+  EXCamera:
+    :path: "../node_modules/expo-camera/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   Expo:
@@ -780,7 +785,7 @@ EXTERNAL SOURCES:
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-cameraroll:
-    :path: "../node_modules/@react-native-community/cameraroll"
+    :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
@@ -892,6 +897,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXAV: f1f69397ecdcf44cfacd4ff5d338cd1b96891e87
+  EXCamera: a323a5942b5e7fc8349e17d728e91c18840ad561
   EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
   Expo: 863488a600a4565698a79577117c70b170054d08
   ExpoAppleAuthentication: 7bd5e4150d59e8df37aa80b425850ae88adf9e65
@@ -938,7 +944,7 @@ SPEC CHECKSUMS:
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-blur: ba2f37268542f8a26d809f48c5162705a3261fc6
-  react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
+  react-native-cameraroll: 755bcc628148a90a7c9cf3f817a252be3a601bc5
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
   react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
@@ -949,7 +955,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-simple-crypto: a26121696064628b6cb92f52f653353114deb7f4
   react-native-slider: 33b8d190b59d4f67a541061bb91775d53d617d9d
-  react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
+  react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
   React-RCTActionSheet: 0e96e4560bd733c9b37efbf68f5b1a47615892fb
   React-RCTAnimation: fd138e26f120371c87e406745a27535e2c8a04ef

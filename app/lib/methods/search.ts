@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString } from '../database/utils';
+import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
@@ -15,10 +15,20 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
+	const slugifiedString = slugifyLikeString(searchText);
 	let subscriptions = await db
 		.get('subscriptions')
 		.query(
-			Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))),
+			Q.or(
+				// `sanitized_fname` is an optional column, so it's going to start null and it's going to get filled over time
+				Q.where('sanitized_fname', Q.like(`%${slugifiedString}%`)),
+				// TODO: Remove the conditionals below at some point. It is merged at 4.39
+				// the param 'name' is slugified by the server when the slugify setting is enable, just for channels and teams
+				Q.where('name', Q.like(`%${slugifiedString}%`)),
+				// Still need the below conditionals because at the first moment the the sanitized_fname won't be filled
+				Q.where('name', Q.like(`%${likeString}%`)),
+				Q.where('fname', Q.like(`%${likeString}%`))
+			),
 			Q.sortBy('room_updated_at', Q.desc)
 		)
 		.fetch();
@@ -39,7 +49,8 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		encrypted: item.encrypted,
 		lastMessage: item.lastMessage,
 		status: item.status,
-		teamMain: item.teamMain
+		teamMain: item.teamMain,
+		prid: item.prid
 	})) as ISearchLocal[];
 
 	return search;

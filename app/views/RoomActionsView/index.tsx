@@ -52,12 +52,15 @@ import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
+import { TNavigation } from '../../stacks/stackType';
+
+type StackType = ChatsStackParamList & TNavigation;
 
 interface IOnPressTouch {
-	<T extends keyof ChatsStackParamList>(item: { route?: T; params?: ChatsStackParamList[T]; event?: Function }): void;
+	<T extends keyof StackType>(item: { route?: T; params?: StackType[T]; event?: Function }): void;
 }
 
-interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
+interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackType, 'RoomActionsView'> {
 	userId: string;
 	jitsiEnabled: boolean;
 	jitsiEnableTeams: boolean;
@@ -76,7 +79,7 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	livechatRequestComment?: boolean;
 	navigation: CompositeNavigationProp<
 		StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList>
+		StackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	videoConf_Enable_DMs: boolean;
 	videoConf_Enable_Channels: boolean;
@@ -252,8 +255,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	onPressTouchable: IOnPressTouch = (item: {
-		route?: keyof ChatsStackParamList;
-		params?: ChatsStackParamList[keyof ChatsStackParamList];
+		route?: keyof StackType;
+		params?: StackType[keyof StackType];
 		event?: Function;
 	}) => {
 		const { route, event, params } = item;
