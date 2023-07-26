@@ -70,6 +70,20 @@ export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAuto
 				);
 				setItems(mergedEmojis);
 			}
+			if (type === '/') {
+				const db = database.active;
+				const commandsCollection = db.get('slash_commands');
+				const likeString = sanitizeLikeString(text);
+				const commands = await (
+					await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch()
+				).map(command => ({
+					id: command.id,
+					title: command.id,
+					subtitle: command.description,
+					type
+				}));
+				setItems(commands);
+			}
 		};
 		getAutocomplete();
 	}, [text, type, rid]);

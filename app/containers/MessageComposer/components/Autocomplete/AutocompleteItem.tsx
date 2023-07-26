@@ -5,6 +5,7 @@ import { useTheme } from '../../../../theme';
 import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompleteEmoji } from './AutocompleteEmoji';
 import { AutocompleteUserRoom } from './AutocompleteUserRoom';
+import { AutocompleteSlashCommand } from './AutocompleteSlashCommand';
 
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 	const { colors } = useTheme();
@@ -27,6 +28,7 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 			>
 				{item.type === '@' || item.type === '#' ? <AutocompleteUserRoom item={item} /> : null}
 				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}
+				{item.type === '/' ? <AutocompleteSlashCommand item={item} /> : null}
 			</View>
 		</RectButton>
 	);

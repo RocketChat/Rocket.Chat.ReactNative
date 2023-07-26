@@ -80,11 +80,19 @@ export interface IAutocompleteUserRoom {
 }
 
 export interface IAutocompleteEmoji {
+	id: string;
 	emoji: IEmoji;
 	type: ':';
 }
 
-export type TAutocompleteItem = IAutocompleteUserRoom | IAutocompleteEmoji;
+export interface IAutocompleteSlashCommand {
+	id: string;
+	title: string;
+	subtitle?: string;
+	type: '/';
+}
+
+export type TAutocompleteItem = IAutocompleteUserRoom | IAutocompleteEmoji | IAutocompleteSlashCommand;
 
 export interface IAutocompleteItemProps {
 	item: TAutocompleteItem;

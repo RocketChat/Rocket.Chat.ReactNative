@@ -164,10 +164,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
 				result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
 			}
-			// const mentionName =
-			// 	trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
-			// 		? `${item.name || item}:`
-			// 		: item.username || item.name || item.command || item.text;
 			let mention = '';
 			switch (item.type) {
 				case '@':
@@ -178,6 +174,9 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					break;
 				case ':':
 					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
+					break;
+				case '/':
+					mention = item.title;
 					break;
 				default:
 					mention = 'asd';
