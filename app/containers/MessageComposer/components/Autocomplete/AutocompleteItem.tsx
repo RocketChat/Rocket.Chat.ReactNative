@@ -25,7 +25,7 @@ export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItemProps
 					gap: 12
 				}}
 			>
-				{type === '@' || type === '#' ? <Avatar text={item.subtitle} size={36} /> : null}
+				{type === '@' || type === '#' ? <Avatar rid={item.id} text={item.subtitle} size={36} type={item.t} /> : null}
 				<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
 						<Icon item={item} type={type} />
