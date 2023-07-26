@@ -1,3 +1,5 @@
+import { IEmoji, TUserStatus } from '../../definitions';
+
 export interface IMessageComposerProps {
 	rid: string;
 	// baseUrl: string;
@@ -66,16 +68,25 @@ export interface ITrackingView {
 
 export type TAutocompleteType = '@' | '/' | '#' | '!' | ':' | null;
 
-export interface IAutocompleteItem {
+export interface IAutocompleteUserRoom {
 	id: string;
 	title: string;
 	subtitle?: string;
 	outside?: boolean;
-	t?: string;
+	t: string;
+	status?: TUserStatus;
+	teamMain?: boolean;
+	type: '@' | '#';
 }
 
+export interface IAutocompleteEmoji {
+	emoji: IEmoji;
+	type: ':';
+}
+
+export type TAutocompleteItem = IAutocompleteUserRoom | IAutocompleteEmoji;
+
 export interface IAutocompleteItemProps {
-	item: IAutocompleteItem;
-	type: TAutocompleteType;
-	onPress: (item: IAutocompleteItem) => void;
+	item: TAutocompleteItem;
+	onPress: (item: TAutocompleteItem) => void;
 }

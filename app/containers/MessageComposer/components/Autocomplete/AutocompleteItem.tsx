@@ -1,13 +1,12 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
 import { IAutocompleteItemProps } from '../../interfaces';
-import Avatar from '../../../Avatar';
-import { Icon } from './Icon';
+import { AutocompleteEmoji } from './AutocompleteEmoji';
+import { AutocompleteUserRoom } from './AutocompleteUserRoom';
 
-export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItemProps) => {
+export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 	const { colors } = useTheme();
 	return (
 		<RectButton
@@ -22,31 +21,12 @@ export const AutocompleteItem = ({ item, type, onPress }: IAutocompleteItemProps
 					flexDirection: 'row',
 					paddingHorizontal: 16,
 					paddingVertical: 6,
-					gap: 12
+					gap: 12,
+					alignItems: 'center'
 				}}
 			>
-				{type === '@' || type === '#' ? <Avatar rid={item.id} text={item.subtitle} size={36} type={item.t} /> : null}
-				<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
-					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-						<Icon item={item} type={type} />
-						<Text style={[sharedStyles.textBold, { fontSize: 14, color: colors.fontDefault }]} numberOfLines={1}>
-							{item.title}
-						</Text>
-					</View>
-					{type === '#' ? null : (
-						<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-							<Text
-								style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontSecondaryInfo, flex: 1 }]}
-								numberOfLines={type === '!' ? 0 : 1}
-							>
-								{item.subtitle}
-							</Text>
-							{item.outside ? (
-								<Text style={[sharedStyles.textRegular, { fontSize: 12, color: colors.fontSecondaryInfo }]}>Not in channel</Text>
-							) : null}
-						</View>
-					)}
-				</View>
+				{item.type === '@' || item.type === '#' ? <AutocompleteUserRoom item={item} /> : null}
+				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}
 			</View>
 		</RectButton>
 	);

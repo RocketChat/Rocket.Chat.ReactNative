@@ -153,7 +153,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			}
 		};
 
-		// FIXME: type this
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = item => {
 			const text = composerInputComponentRef.current.getText();
 			const { start, end } = composerInputComponentRef.current.getSelection();
@@ -169,13 +168,26 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			// 	trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 			// 		? `${item.name || item}:`
 			// 		: item.username || item.name || item.command || item.text;
-			const mentionName = autocompleteType === '@' ? item.subtitle || item.title : item.title;
-			const newText = `${result}${mentionName} ${text.slice(cursor)}`;
+			let mention = '';
+			switch (item.type) {
+				case '@':
+					mention = item.subtitle || item.title;
+					break;
+				case '#':
+					mention = item.subtitle || item.title;
+					break;
+				case ':':
+					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
+					break;
+				default:
+					mention = 'asd';
+			}
+			const newText = `${result}${mention} ${text.slice(cursor)}`;
 			// if (trackingType === MENTIONS_TRACKING_TYPE_COMMANDS && item.providesPreview) {
 			// 	this.setState({ showCommandPreview: true });
 			// }
 
-			const newCursor = cursor + mentionName.length;
+			const newCursor = cursor + mention.length;
 			composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
 			composerInputComponentRef.current.focus();
 			requestAnimationFrame(() => {

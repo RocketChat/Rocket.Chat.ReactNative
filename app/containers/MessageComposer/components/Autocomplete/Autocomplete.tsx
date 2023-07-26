@@ -41,7 +41,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 						overflow: 'hidden'
 					}}
 					data={items}
-					renderItem={({ item }) => <AutocompleteItem item={item} type={autocompleteType} onPress={onPress} />}
+					renderItem={({ item }) => <AutocompleteItem item={item} onPress={onPress} />}
 					keyboardShouldPersistTaps='always'
 				/>
 			</View>
