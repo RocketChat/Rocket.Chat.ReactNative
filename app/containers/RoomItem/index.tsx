@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import I18n from '../../i18n';
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
-import { useUserStatus } from '../../lib/hooks';
 import { IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
