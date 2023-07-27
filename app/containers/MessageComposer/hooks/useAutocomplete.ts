@@ -48,6 +48,11 @@ export const useAutocomplete = ({
 				if (!type) {
 					setItems([]);
 				}
+
+				// Add loading skeleton
+				items.unshift({ id: 'loading', type: 'loading' });
+				setItems(items);
+
 				if (type === '@' || type === '#') {
 					const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
 					const parsedRes: IAutocompleteUserRoom[] = res.map(item => ({

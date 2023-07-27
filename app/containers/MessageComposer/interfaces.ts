@@ -66,7 +66,7 @@ export interface ITrackingView {
 	getNativeProps: () => any;
 }
 
-export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | null;
+export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;
 
 export interface IAutocompleteUserRoom {
 	id: string;
@@ -105,12 +105,18 @@ export interface IAutocompleteCannedResponse {
 	type: '!';
 }
 
+export interface IAutocompleteLoading {
+	id: 'loading';
+	type: 'loading';
+}
+
 export type TAutocompleteItem =
 	| IAutocompleteUserRoom
 	| IAutocompleteEmoji
 	| IAutocompleteSlashCommand
 	| IAutocompleteSlashCommandPreview
-	| IAutocompleteCannedResponse;
+	| IAutocompleteCannedResponse
+	| IAutocompleteLoading;
 
 export interface IAutocompleteItemProps {
 	item: TAutocompleteItem;

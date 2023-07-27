@@ -7,6 +7,7 @@ import { AutocompleteUserRoom } from './AutocompleteUserRoom';
 import { AutocompleteEmoji } from './AutocompleteEmoji';
 import { AutocompleteSlashCommand } from './AutocompleteSlashCommand';
 import { AutocompleteCannedResponse } from './AutocompleteCannedResponse';
+import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 	const { colors } = useTheme();
@@ -31,6 +32,7 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}
 				{item.type === '/' ? <AutocompleteSlashCommand item={item} /> : null}
 				{item.type === '!' ? <AutocompleteCannedResponse item={item} /> : null}
+				{item.type === 'loading' ? <AutocompleteItemLoading /> : null}
 			</View>
 		</RectButton>
 	);
