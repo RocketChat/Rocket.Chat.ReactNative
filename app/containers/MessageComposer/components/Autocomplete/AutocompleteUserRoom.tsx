@@ -6,6 +6,7 @@ import { IAutocompleteUserRoom } from '../../interfaces';
 import Avatar from '../../../Avatar';
 import RoomTypeIcon from '../../../RoomTypeIcon';
 import { isAllOrHere } from '../../helpers/isAllOrHere';
+import I18n from '../../../../i18n';
 
 export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) => {
 	const { colors } = useTheme();
@@ -28,7 +29,9 @@ export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) 
 							{item.subtitle}
 						</Text>
 						{item.outside ? (
-							<Text style={[sharedStyles.textRegular, { fontSize: 12, color: colors.fontSecondaryInfo }]}>Not in channel</Text>
+							<Text style={[sharedStyles.textRegular, { fontSize: 12, color: colors.fontSecondaryInfo }]}>
+								{I18n.t('Not_in_channel')}
+							</Text>
 						) : null}
 					</View>
 				)}

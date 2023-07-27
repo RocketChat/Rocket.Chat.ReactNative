@@ -729,5 +729,6 @@
   "decline": "Decline",
   "accept": "Accept",
   "Incoming_call_from": "Incoming call from",
-  "Call_started": "Call started"
+  "Call_started": "Call started",
+  "Not_in_channel": "Not in channel"
 }
