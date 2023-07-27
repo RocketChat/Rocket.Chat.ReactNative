@@ -47,9 +47,16 @@ export const useAutocomplete = ({
 			try {
 				if (!type) {
 					setItems([]);
+					return;
 				}
 
-				// Add loading skeleton
+				// remove existing loading skeleton from items
+				const loadingIndex = items.findIndex(item => item.id === 'loading');
+				if (loadingIndex !== -1) {
+					items.splice(loadingIndex, 1);
+				}
+
+				// add loading skeleton
 				items.unshift({ id: 'loading', type: 'loading' });
 				setItems(items);
 
