@@ -34,6 +34,8 @@ public class Ejson {
     String senderName;
     String msg;
 
+    String tmid;
+
     private MMKV mmkv;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
