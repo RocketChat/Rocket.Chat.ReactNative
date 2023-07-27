@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
-import { IAutocompleteEmoji, TAutocompleteItem, TAutocompleteType } from '../interfaces';
+import { IAutocompleteEmoji, IAutocompleteUserRoom, TAutocompleteItem, TAutocompleteType } from '../interfaces';
 import { search } from '../../../lib/methods';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
@@ -9,6 +9,7 @@ import { emojis } from '../../../lib/constants';
 import { ICustomEmoji } from '../../../definitions';
 import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
+import I18n from '../../../i18n';
 
 const MENTIONS_COUNT_TO_DISPLAY = 4;
 
@@ -49,8 +50,7 @@ export const useAutocomplete = ({
 				}
 				if (type === '@' || type === '#') {
 					const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
-					console.log('🚀 ~ file: useAutocomplete.ts:12 ~ getAutocomplete ~ res:', res);
-					const parsedRes = res.map(item => ({
+					const parsedRes: IAutocompleteUserRoom[] = res.map(item => ({
 						// @ts-ignore
 						id: type === '@' ? item._id : item.rid,
 						// @ts-ignore
@@ -67,6 +67,26 @@ export const useAutocomplete = ({
 						teamMain: item.teamMain,
 						type
 					}));
+					if (type === '@') {
+						if ('all'.includes(text.toLocaleLowerCase())) {
+							parsedRes.push({
+								id: 'all',
+								title: 'all',
+								subtitle: I18n.t('Notify_all_in_this_room'),
+								type,
+								t: 'd'
+							});
+						}
+						if ('here'.includes(text.toLocaleLowerCase())) {
+							parsedRes.push({
+								id: 'here',
+								title: 'here',
+								subtitle: I18n.t('Notify_active_in_this_room'),
+								type,
+								t: 'd'
+							});
+						}
+					}
 					setItems(parsedRes);
 				}
 				if (type === ':') {

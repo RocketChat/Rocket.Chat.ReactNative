@@ -27,6 +27,7 @@ import database from '../../lib/database';
 import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
+import { isAllOrHere } from './helpers/isAllOrHere';
 
 const styles = StyleSheet.create({
 	container: {
@@ -193,7 +194,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			let mention = '';
 			switch (item.type) {
 				case '@':
-					mention = item.subtitle || item.title;
+					mention = isAllOrHere(item) ? item.title : item.subtitle || item.title;
 					break;
 				case '#':
 					mention = item.subtitle ? item.subtitle : '';

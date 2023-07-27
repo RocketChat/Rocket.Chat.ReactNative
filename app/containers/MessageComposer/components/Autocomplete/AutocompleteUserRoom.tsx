@@ -5,25 +5,26 @@ import sharedStyles from '../../../../views/Styles';
 import { IAutocompleteUserRoom } from '../../interfaces';
 import Avatar from '../../../Avatar';
 import RoomTypeIcon from '../../../RoomTypeIcon';
+import { isAllOrHere } from '../../helpers/isAllOrHere';
 
 export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) => {
 	const { colors } = useTheme();
+
 	return (
 		<>
-			<Avatar rid={item.id} text={item.subtitle} size={36} type={item.t} />
+			{!isAllOrHere(item) ? <Avatar rid={item.id} text={item.subtitle} size={36} type={item.t} /> : null}
 			<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
 				<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-					<RoomTypeIcon userId={item.id} type={item.t} status={item.status} size={16} teamMain={item.teamMain} />
+					{!isAllOrHere(item) ? (
+						<RoomTypeIcon userId={item.id} type={item.t} status={item.status} size={16} teamMain={item.teamMain} />
+					) : null}
 					<Text style={[sharedStyles.textBold, { fontSize: 14, color: colors.fontDefault }]} numberOfLines={1}>
-						{item.title}
+						{isAllOrHere(item) ? `@${item.title}` : item.title}
 					</Text>
 				</View>
 				{item.type === '#' ? null : (
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-						<Text
-							style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontSecondaryInfo, flex: 1 }]}
-							// numberOfLines={item.type === '!' ? 0 : 1}
-						>
+						<Text style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontSecondaryInfo, flex: 1 }]}>
 							{item.subtitle}
 						</Text>
 						{item.outside ? (
