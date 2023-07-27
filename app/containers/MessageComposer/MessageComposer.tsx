@@ -196,7 +196,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					mention = item.subtitle || item.title;
 					break;
 				case '#':
-					mention = item.subtitle || item.title;
+					mention = item.subtitle ? item.subtitle : '';
 					break;
 				case ':':
 					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
@@ -204,8 +204,11 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				case '/':
 					mention = item.title;
 					break;
+				case '!':
+					mention = item.subtitle ? item.subtitle : '';
+					break;
 				default:
-					mention = 'asd';
+					mention = '';
 			}
 			const newText = `${result}${mention} ${text.slice(cursor)}`;
 

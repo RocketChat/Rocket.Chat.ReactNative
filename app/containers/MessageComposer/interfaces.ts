@@ -98,11 +98,19 @@ export interface IAutocompleteSlashCommandPreview {
 	type: '/preview';
 }
 
+export interface IAutocompleteCannedResponse {
+	id: string;
+	title: string;
+	subtitle?: string;
+	type: '!';
+}
+
 export type TAutocompleteItem =
 	| IAutocompleteUserRoom
 	| IAutocompleteEmoji
 	| IAutocompleteSlashCommand
-	| IAutocompleteSlashCommandPreview;
+	| IAutocompleteSlashCommandPreview
+	| IAutocompleteCannedResponse;
 
 export interface IAutocompleteItemProps {
 	item: TAutocompleteItem;

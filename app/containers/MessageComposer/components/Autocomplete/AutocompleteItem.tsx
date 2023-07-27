@@ -3,9 +3,10 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../../../theme';
 import { IAutocompleteItemProps } from '../../interfaces';
-import { AutocompleteEmoji } from './AutocompleteEmoji';
 import { AutocompleteUserRoom } from './AutocompleteUserRoom';
+import { AutocompleteEmoji } from './AutocompleteEmoji';
 import { AutocompleteSlashCommand } from './AutocompleteSlashCommand';
+import { AutocompleteCannedResponse } from './AutocompleteCannedResponse';
 
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 	const { colors } = useTheme();
@@ -29,6 +30,7 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 				{item.type === '@' || item.type === '#' ? <AutocompleteUserRoom item={item} /> : null}
 				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}
 				{item.type === '/' ? <AutocompleteSlashCommand item={item} /> : null}
+				{item.type === '!' ? <AutocompleteCannedResponse item={item} /> : null}
 			</View>
 		</RectButton>
 	);
