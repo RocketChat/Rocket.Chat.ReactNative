@@ -23,6 +23,10 @@ import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
 import getMentionRegexp from '../MessageBox/getMentionRegexp';
+import database from '../../lib/database';
+import { generateTriggerId } from '../../lib/methods';
+import { Services } from '../../lib/services';
+import log from '../../lib/methods/helpers/log';
 
 const styles = StyleSheet.create({
 	container: {
@@ -58,6 +62,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		const [keyboardHeight, setKeyboardHeight] = useState(0);
 		const [autocompleteType, setAutocompleteType] = useState<TAutocompleteType>(null);
 		const [autocompleteText, setAutocompleteText] = useState('');
+		const [autocompleteParams, setAutocompleteParams] = useState('');
 		const permissionToUpload = useCanUploadFile(rid);
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 		const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -153,7 +158,28 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			}
 		};
 
-		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = item => {
+		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
+			// If the selected item is a slash command preview, we need to execute the command
+			if (item.type === '/preview') {
+				try {
+					const db = database.active;
+					const commandsCollection = db.get('slash_commands');
+					const commandRecord = await commandsCollection.find(autocompleteText);
+					const { appId } = commandRecord;
+					const triggerId = generateTriggerId(appId);
+					Services.executeCommandPreview(autocompleteText, autocompleteParams, rid, item.preview, triggerId, tmid);
+				} catch (e) {
+					log(e);
+				}
+				requestAnimationFrame(() => {
+					setAutocompleteType(null);
+					setAutocompleteText('');
+					setAutocompleteParams('');
+					composerInputComponentRef.current.setInput('', { start: 0, end: 0 });
+				});
+				return;
+			}
+
 			const text = composerInputComponentRef.current.getText();
 			const { start, end } = composerInputComponentRef.current.getSelection();
 			const cursor = Math.max(start, end);
@@ -182,9 +208,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					mention = 'asd';
 			}
 			const newText = `${result}${mention} ${text.slice(cursor)}`;
-			// if (trackingType === MENTIONS_TRACKING_TYPE_COMMANDS && item.providesPreview) {
-			// 	this.setState({ showCommandPreview: true });
-			// }
 
 			const newCursor = cursor + mention.length;
 			composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
@@ -236,6 +259,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					setAutocompleteType,
 					autocompleteText,
 					setAutocompleteText,
+					autocompleteParams,
+					setAutocompleteParams,
 					setTrackingViewHeight,
 					setMicOrSend,
 					openEmojiKeyboard,

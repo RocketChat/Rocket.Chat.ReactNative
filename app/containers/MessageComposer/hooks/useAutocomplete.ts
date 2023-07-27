@@ -6,7 +6,9 @@ import { search } from '../../../lib/methods';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
 import { emojis } from '../../../lib/constants';
-import { ICustomEmoji, IEmoji } from '../../../definitions';
+import { ICustomEmoji } from '../../../definitions';
+import { Services } from '../../../lib/services';
+import log from '../../../lib/methods/helpers/log';
 
 const MENTIONS_COUNT_TO_DISPLAY = 4;
 
@@ -27,10 +29,23 @@ const getCustomEmojis = async (keyword: string): Promise<ICustomEmoji[]> => {
 	return customEmojis;
 };
 
-export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAutocompleteType; rid: string }) => {
+export const useAutocomplete = ({
+	text,
+	type,
+	rid,
+	commandParams
+}: {
+	text: string;
+	type: TAutocompleteType;
+	rid: string;
+	commandParams: string;
+}): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
 	useEffect(() => {
 		const getAutocomplete = async () => {
+			if (!type) {
+				setItems([]);
+			}
 			if (type === '@' || type === '#') {
 				const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
 				console.log('🚀 ~ file: useAutocomplete.ts:12 ~ getAutocomplete ~ res:', res);
@@ -84,8 +99,23 @@ export const useAutocomplete = ({ text, type, rid }: { text: string; type: TAuto
 				}));
 				setItems(commands);
 			}
+			if (type === '/preview') {
+				try {
+					const response = await Services.getCommandPreview(text, rid, commandParams);
+					if (response.success) {
+						const previewItems = (response.preview?.items || []).map(item => ({
+							id: item.id,
+							preview: item,
+							type
+						}));
+						setItems(previewItems);
+					}
+				} catch (e) {
+					log(e);
+				}
+			}
 		};
 		getAutocomplete();
-	}, [text, type, rid]);
+	}, [text, type, rid, commandParams]);
 	return items;
 };

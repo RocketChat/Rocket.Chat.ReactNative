@@ -1,4 +1,4 @@
-import { IEmoji, TUserStatus } from '../../definitions';
+import { IEmoji, IPreviewItem, TUserStatus } from '../../definitions';
 
 export interface IMessageComposerProps {
 	rid: string;
@@ -66,7 +66,7 @@ export interface ITrackingView {
 	getNativeProps: () => any;
 }
 
-export type TAutocompleteType = '@' | '/' | '#' | '!' | ':' | null;
+export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | null;
 
 export interface IAutocompleteUserRoom {
 	id: string;
@@ -92,7 +92,17 @@ export interface IAutocompleteSlashCommand {
 	type: '/';
 }
 
-export type TAutocompleteItem = IAutocompleteUserRoom | IAutocompleteEmoji | IAutocompleteSlashCommand;
+export interface IAutocompleteSlashCommandPreview {
+	id: string;
+	preview: IPreviewItem;
+	type: '/preview';
+}
+
+export type TAutocompleteItem =
+	| IAutocompleteUserRoom
+	| IAutocompleteEmoji
+	| IAutocompleteSlashCommand
+	| IAutocompleteSlashCommandPreview;
 
 export interface IAutocompleteItemProps {
 	item: TAutocompleteItem;

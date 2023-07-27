@@ -19,7 +19,9 @@ type TMessageComposerContext = {
 	autocompleteType: TAutocompleteType;
 	setAutocompleteType: (type: TAutocompleteType) => void;
 	autocompleteText: string;
+	autocompleteParams: string;
 	setAutocompleteText: (text: string) => void;
+	setAutocompleteParams: (text: string) => void;
 	setTrackingViewHeight: (height: number) => void;
 	setMicOrSend(type: TMicOrSend): void;
 	sendMessage(): void;
@@ -47,8 +49,10 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	keyboardHeight: 0,
 	autocompleteType: null,
 	autocompleteText: '',
+	autocompleteParams: '',
 	setAutocompleteText: () => {},
 	setAutocompleteType: () => {},
+	setAutocompleteParams: () => {},
 	setTrackingViewHeight: () => {},
 	setMicOrSend: () => {},
 	sendMessage: () => {},

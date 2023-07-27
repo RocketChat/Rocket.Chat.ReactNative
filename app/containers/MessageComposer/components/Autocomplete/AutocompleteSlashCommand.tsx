@@ -16,10 +16,7 @@ export const AutocompleteSlashCommand = ({ item }: { item: IAutocompleteSlashCom
 				</View>
 				{item.subtitle ? (
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-						<Text
-							style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontSecondaryInfo, flex: 1 }]}
-							// numberOfLines={item.type === '!' ? 0 : 1}
-						>
+						<Text style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontSecondaryInfo, flex: 1 }]}>
 							{item.subtitle}
 						</Text>
 					</View>

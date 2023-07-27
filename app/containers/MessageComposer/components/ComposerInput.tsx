@@ -12,6 +12,7 @@ import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
 import { MIN_HEIGHT } from '../constants';
+import database from '../../../lib/database';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -41,7 +42,8 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setMicOrSend,
 		setTrackingViewHeight,
 		setAutocompleteType,
-		setAutocompleteText
+		setAutocompleteText,
+		setAutocompleteParams
 	} = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
@@ -120,7 +122,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setAutocompleteText('');
 	};
 
-	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
+	const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
 		if (isTextEmpty) {
@@ -139,7 +141,23 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			return;
 		}
 		if (text.match(/^\//)) {
-			// TODO: reducer?
+			const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+			if (commandParameter) {
+				const db = database.active;
+				const [, command, params] = commandParameter;
+				const commandsCollection = db.get('slash_commands');
+				try {
+					const commandRecord = await commandsCollection.find(command);
+					if (commandRecord.providesPreview) {
+						setAutocompleteParams(params);
+						setAutocompleteText(command);
+						setAutocompleteType('/preview');
+						return;
+					}
+				} catch (e) {
+					// do nothing
+				}
+			}
 			setAutocompleteType('/');
 			setAutocompleteText(autocompleteText);
 			return;
