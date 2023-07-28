@@ -10,6 +10,7 @@ import { ICustomEmoji } from '../../../definitions';
 import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
 import I18n from '../../../i18n';
+import { NO_CANNED_RESPONSES } from '../constants';
 
 const MENTIONS_COUNT_TO_DISPLAY = 4;
 
@@ -146,6 +147,17 @@ export const useAutocomplete = ({
 				if (type === '!') {
 					const res = await Services.getListCannedResponse({ text });
 					if (res.success) {
+						if (res.cannedResponses.length === 0) {
+							setItems([
+								{
+									id: NO_CANNED_RESPONSES,
+									title: NO_CANNED_RESPONSES,
+									type
+								}
+							]);
+							return;
+						}
+
 						const cannedResponses = res.cannedResponses.map(cannedResponse => ({
 							id: cannedResponse._id,
 							title: cannedResponse.shortcut,

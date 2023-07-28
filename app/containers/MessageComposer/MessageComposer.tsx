@@ -4,7 +4,7 @@ import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
-import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
+import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
 import { useCanUploadFile, useChooseMedia } from './hooks';
 import {
@@ -28,6 +28,7 @@ import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { isAllOrHere } from './helpers/isAllOrHere';
+import Navigation from '../../lib/navigation/appNavigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -73,6 +74,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			maxFileSize: FileUpload_MaxFileSize as number,
 			permissionToUpload
 		});
+		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 		useBackHandler(() => {
 			if (showEmojiSearchbar) {
@@ -160,7 +162,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
-			// If the selected item is a slash command preview, we need to execute the command
+			// If it's slash command preview, we need to execute the command
 			if (item.type === '/preview') {
 				try {
 					const db = database.active;
@@ -173,11 +175,21 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					log(e);
 				}
 				requestAnimationFrame(() => {
-					setAutocompleteType(null);
-					setAutocompleteText('');
-					setAutocompleteParams('');
+					stopAutocomplete();
 					composerInputComponentRef.current.setInput('', { start: 0, end: 0 });
 				});
+				return;
+			}
+
+			// If it's canned response, but there's no canned responses, we open the canned responses view
+			if (item.type === '!' && item.id === NO_CANNED_RESPONSES) {
+				const params = { rid };
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });
+				} else {
+					Navigation.navigate('CannedResponsesListView', params);
+				}
+				stopAutocomplete();
 				return;
 			}
 
@@ -217,9 +229,14 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
 			composerInputComponentRef.current.focus();
 			requestAnimationFrame(() => {
-				setAutocompleteType(null);
-				setAutocompleteText('');
+				stopAutocomplete();
 			});
+		};
+
+		const stopAutocomplete = () => {
+			setAutocompleteType(null);
+			setAutocompleteText('');
+			setAutocompleteParams('');
 		};
 
 		const openEmojiKeyboard = () => {

@@ -177,7 +177,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			setAutocompleteText(autocompleteText);
 			return;
 		}
-		if (lastWord.match(/^!/)) {
+		if (lastWord.match(/^!/) && subscription?.t === 'l') {
 			setAutocompleteType('!');
 			setAutocompleteText(autocompleteText);
 			return;

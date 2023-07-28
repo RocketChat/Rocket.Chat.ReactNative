@@ -3,9 +3,26 @@ import { View, Text } from 'react-native';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import { IAutocompleteCannedResponse } from '../../interfaces';
+import I18n from '../../../../i18n';
+import { CustomIcon } from '../../../CustomIcon';
+import { NO_CANNED_RESPONSES } from '../../constants';
 
 export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCannedResponse }) => {
 	const { colors } = useTheme();
+	if (item.id === NO_CANNED_RESPONSES) {
+		return (
+			<>
+				<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
+					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+						<Text style={[sharedStyles.textRegular, { fontSize: 14, color: colors.fontHint }]} numberOfLines={1}>
+							{I18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{I18n.t('Check_canned_responses')}</Text>
+						</Text>
+						<CustomIcon name='chevron-right' size={24} color={colors.fontHint} />
+					</View>
+				</View>
+			</>
+		);
+	}
 	return (
 		<>
 			<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
