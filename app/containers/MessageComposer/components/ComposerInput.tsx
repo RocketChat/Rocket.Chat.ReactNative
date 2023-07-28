@@ -38,6 +38,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		tmid,
 		editing,
 		sharing,
+		focused,
 		setFocused,
 		setMicOrSend,
 		setTrackingViewHeight,
@@ -92,6 +93,12 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setMicOrSend(text.length === 0 ? 'mic' : 'send');
 	};
 
+	const focus = () => {
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
+	};
+
 	const onChangeText: TextInputProps['onChangeText'] = text => {
 		const isTextEmpty = text.length === 0;
 		setMicOrSend(!isTextEmpty ? 'send' : 'mic');
@@ -103,12 +110,6 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		selectionRef.current = e.nativeEvent.selection;
 	};
 
-	const focus = () => {
-		if (inputRef.current) {
-			inputRef.current.focus();
-		}
-	};
-
 	const onFocus: TextInputProps['onFocus'] = () => {
 		setFocused(true);
 	};
@@ -117,6 +118,11 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setFocused(false);
 	};
 
+	const handleLayout: TextInputProps['onLayout'] = e => {
+		setTrackingViewHeight(e.nativeEvent.layout.height);
+	};
+
+	// TODO: duplicated
 	const stopAutocomplete = () => {
 		setAutocompleteType(null);
 		setAutocompleteText('');
@@ -125,7 +131,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 	const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
-		if (isTextEmpty) {
+		if (isTextEmpty || !focused) {
 			stopAutocomplete();
 			return;
 		}
@@ -191,11 +197,6 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			return;
 		}
 		dispatch(userTyping(rid, isTyping));
-	};
-
-	const handleLayout = (e: any) => {
-		console.log(e.nativeEvent.layout.height);
-		setTrackingViewHeight(e.nativeEvent.layout.height);
 	};
 
 	return (

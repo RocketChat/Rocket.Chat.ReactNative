@@ -233,6 +233,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			});
 		};
 
+		// TODO: duplicated
 		const stopAutocomplete = () => {
 			setAutocompleteType(null);
 			setAutocompleteText('');
