@@ -45,7 +45,7 @@ export const useVideoConf = (
 					await Services.videoConferenceGetCapabilities();
 					return true;
 				} catch (error: any) {
-					const isAdmin = !!['admin'].find(role => user.roles?.includes(role));
+					const isAdmin = !!user.roles?.includes('admin');
 					switch (error?.error) {
 						case availabilityErrors.NOT_CONFIGURED:
 							return handleErrors(isAdmin, availabilityErrors.NOT_CONFIGURED);
