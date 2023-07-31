@@ -162,6 +162,10 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
+			if (item.type === 'loading') {
+				return null;
+			}
+
 			// If it's slash command preview, we need to execute the command
 			if (item.type === '/preview') {
 				try {
