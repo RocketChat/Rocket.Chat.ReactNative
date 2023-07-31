@@ -24,6 +24,7 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	inputBio: {
-		height: 100
+		height: 100,
+		textAlignVertical: 'top'
 	}
 });
