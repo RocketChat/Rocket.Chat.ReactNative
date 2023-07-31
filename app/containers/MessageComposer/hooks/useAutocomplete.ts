@@ -37,10 +37,10 @@ export const useAutocomplete = ({
 	rid,
 	commandParams
 }: {
-	text: string;
-	type: TAutocompleteType;
 	rid: string;
-	commandParams: string;
+	type: TAutocompleteType;
+	text: string;
+	commandParams?: string;
 }): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
 	useEffect(() => {
@@ -134,12 +134,18 @@ export const useAutocomplete = ({
 					setItems(commands);
 				}
 				if (type === '/preview') {
+					if (!commandParams) {
+						setItems([]);
+						return;
+					}
 					const response = await Services.getCommandPreview(text, rid, commandParams);
 					if (response.success) {
 						const previewItems = (response.preview?.items || []).map(item => ({
 							id: item.id,
 							preview: item,
-							type
+							type,
+							text,
+							params: commandParams
 						}));
 						setItems(previewItems);
 					}
@@ -169,6 +175,7 @@ export const useAutocomplete = ({
 				}
 			} catch (e) {
 				log(e);
+				setItems([]);
 			}
 		};
 		getAutocomplete();

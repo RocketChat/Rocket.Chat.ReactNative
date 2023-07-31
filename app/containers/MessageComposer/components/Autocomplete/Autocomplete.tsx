@@ -1,24 +1,43 @@
 import { View, FlatList } from 'react-native';
-import { ReactElement, useContext } from 'react';
+import { ReactElement, useContext, useEffect, useState } from 'react';
 
 import { MessageComposerContext } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { useTheme } from '../../../../theme';
-import { IAutocompleteItemProps } from '../../interfaces';
+import { IAutocompleteItemProps, TAutocompleteType } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
+import { emitter } from '../../emitter';
+
+interface IAutocompleteData {
+	type: TAutocompleteType;
+	text: string;
+	params?: string;
+}
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
-	const { rid, trackingViewHeight, keyboardHeight, autocompleteType, autocompleteText, autocompleteParams } =
-		useContext(MessageComposerContext);
-	const items = useAutocomplete({ text: autocompleteText, type: autocompleteType, rid, commandParams: autocompleteParams });
+	const { rid, trackingViewHeight, keyboardHeight } = useContext(MessageComposerContext);
+	const [autocompleteData, setAutocompleteData] = useState<IAutocompleteData>({ type: null, text: '', params: '' });
+	const items = useAutocomplete({
+		rid,
+		text: autocompleteData.text,
+		type: autocompleteData.type,
+		commandParams: autocompleteData.params
+	});
 	const { colors } = useTheme();
 
-	if (items.length === 0 || !autocompleteType) {
+	useEffect(() => {
+		emitter.on('setAutocomplete', ({ text, type, params = '' }) => {
+			setAutocompleteData({ text, type, params });
+		});
+		return () => emitter.off('setAutocomplete');
+	}, [rid]);
+
+	if (items.length === 0 || !autocompleteData.type) {
 		return null;
 	}
 
-	if (autocompleteType !== '/preview') {
+	if (autocompleteData.type !== '/preview') {
 		return (
 			<View
 				style={{
@@ -52,7 +71,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		);
 	}
 
-	if (autocompleteType === '/preview') {
+	if (autocompleteData.type === '/preview') {
 		return (
 			<View
 				style={{

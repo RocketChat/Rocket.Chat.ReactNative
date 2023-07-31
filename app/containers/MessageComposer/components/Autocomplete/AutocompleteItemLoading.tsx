@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { View } from 'react-native';
 
 import { useTheme } from '../../../../theme';
-import { MessageComposerContext } from '../../context';
 
-export const AutocompleteItemLoading = (): React.ReactElement => {
+export const AutocompleteItemLoading = ({ preview = false }: { preview?: boolean }): React.ReactElement => {
 	const { colors } = useTheme();
-	const { autocompleteType } = useContext(MessageComposerContext);
-	if (autocompleteType === '/preview') {
+	if (preview) {
 		return (
 			<View style={{ flex: 1 }}>
 				<SkeletonPlaceholder borderRadius={4} backgroundColor={colors.surfaceNeutral}>

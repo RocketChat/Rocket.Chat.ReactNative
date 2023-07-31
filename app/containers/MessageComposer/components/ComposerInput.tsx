@@ -13,6 +13,7 @@ import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
 import { MIN_HEIGHT } from '../constants';
 import database from '../../../lib/database';
+import { emitter } from '../emitter';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -33,19 +34,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const {
-		rid,
-		tmid,
-		editing,
-		sharing,
-		focused,
-		setFocused,
-		setMicOrSend,
-		setTrackingViewHeight,
-		setAutocompleteType,
-		setAutocompleteText,
-		setAutocompleteParams
-	} = useContext(MessageComposerContext);
+	const { rid, tmid, editing, sharing, focused, setFocused, setTrackingViewHeight } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -90,7 +79,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		if (inputRef.current) {
 			inputRef.current.setNativeProps({ text });
 		}
-		setMicOrSend(text.length === 0 ? 'mic' : 'send');
+		emitter.emit('setMicOrSend', text.length === 0 ? 'mic' : 'send');
 	};
 
 	const focus = () => {
@@ -124,8 +113,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 
 	// TODO: duplicated
 	const stopAutocomplete = () => {
-		setAutocompleteType(null);
-		setAutocompleteText('');
+		emitter.emit('setAutocomplete', { text: '', type: null, params: '' });
 	};
 
 	const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
@@ -144,6 +132,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		const autocompleteText = lastWord.substring(1);
 
 		if (!lastWord) {
+			stopAutocomplete();
 			return;
 		}
 		if (text.match(/^\//)) {
@@ -155,37 +144,30 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 				try {
 					const commandRecord = await commandsCollection.find(command);
 					if (commandRecord.providesPreview) {
-						setAutocompleteParams(params);
-						setAutocompleteText(command);
-						setAutocompleteType('/preview');
+						emitter.emit('setAutocomplete', { params, text: command, type: '/preview' });
 						return;
 					}
 				} catch (e) {
 					// do nothing
 				}
 			}
-			setAutocompleteType('/');
-			setAutocompleteText(autocompleteText);
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '/' });
 			return;
 		}
 		if (lastWord.match(/^#/)) {
-			setAutocompleteType('#');
-			setAutocompleteText(autocompleteText);
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '#' });
 			return;
 		}
 		if (lastWord.match(/^@/)) {
-			setAutocompleteType('@');
-			setAutocompleteText(autocompleteText);
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '@' });
 			return;
 		}
 		if (lastWord.match(/^:/)) {
-			setAutocompleteType(':');
-			setAutocompleteText(autocompleteText);
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: ':' });
 			return;
 		}
 		if (lastWord.match(/^!/) && subscription?.t === 'l') {
-			setAutocompleteType('!');
-			setAutocompleteText(autocompleteText);
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '!' });
 			return;
 		}
 

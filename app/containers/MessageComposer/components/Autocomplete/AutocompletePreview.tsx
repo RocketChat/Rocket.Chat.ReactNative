@@ -11,7 +11,7 @@ export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) =
 
 	let content;
 	if (item.type === 'loading') {
-		content = <AutocompleteItemLoading />;
+		content = <AutocompleteItemLoading preview />;
 	}
 	if (item.type === '/preview') {
 		content =

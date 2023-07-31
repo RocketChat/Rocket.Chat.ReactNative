@@ -7,15 +7,7 @@ import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } fro
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
 import { useCanUploadFile, useChooseMedia } from './hooks';
-import {
-	IAutocompleteItemProps,
-	IComposerInput,
-	IMessageComposerProps,
-	IMessageComposerRef,
-	ITrackingView,
-	TAutocompleteType,
-	TMicOrSend
-} from './interfaces';
+import { IAutocompleteItemProps, IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { useAppSelector } from '../../lib/hooks';
@@ -29,6 +21,7 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { isAllOrHere } from './helpers/isAllOrHere';
 import Navigation from '../../lib/navigation/appNavigation';
+import { emitter } from './emitter';
 
 const styles = StyleSheet.create({
 	container: {
@@ -45,7 +38,7 @@ require('../MessageBox/EmojiKeyboard');
 
 export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerProps>(
 	({ onSendMessage, rid, tmid, sharing = false, editing = false }, ref): ReactElement => {
-		// console.count('Message Composer');
+		console.count('Message Composer');
 		const composerInputRef = useRef(null);
 		const composerInputComponentRef = useRef<IComposerInput>({
 			sendMessage: () => '',
@@ -56,15 +49,11 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		});
 		const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 		const { colors, theme } = useTheme();
-		const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
 		const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 		const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 		const [focused, setFocused] = useState(false);
 		const [trackingViewHeight, setTrackingViewHeight] = useState(0);
 		const [keyboardHeight, setKeyboardHeight] = useState(0);
-		const [autocompleteType, setAutocompleteType] = useState<TAutocompleteType>(null);
-		const [autocompleteText, setAutocompleteText] = useState('');
-		const [autocompleteParams, setAutocompleteParams] = useState('');
 		const permissionToUpload = useCanUploadFile(rid);
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 		const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -171,10 +160,10 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				try {
 					const db = database.active;
 					const commandsCollection = db.get('slash_commands');
-					const commandRecord = await commandsCollection.find(autocompleteText);
+					const commandRecord = await commandsCollection.find(item.text);
 					const { appId } = commandRecord;
 					const triggerId = generateTriggerId(appId);
-					Services.executeCommandPreview(autocompleteText, autocompleteParams, rid, item.preview, triggerId, tmid);
+					Services.executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
 				} catch (e) {
 					log(e);
 				}
@@ -203,7 +192,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			const regexp = getMentionRegexp();
 			let result = text.substr(0, cursor).replace(regexp, '');
 			// Remove the ! after select the canned response
-			if (autocompleteType === '!') {
+			if (item.type === '!') {
 				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
 				result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
 			}
@@ -239,9 +228,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 
 		// TODO: duplicated
 		const stopAutocomplete = () => {
-			setAutocompleteType(null);
-			setAutocompleteText('');
-			setAutocompleteParams('');
+			emitter.emit('setAutocomplete', { type: null, text: '', params: '' });
 		};
 
 		const openEmojiKeyboard = () => {
@@ -269,7 +256,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		return (
 			<MessageComposerContext.Provider
 				value={{
-					micOrSend,
 					rid,
 					tmid,
 					editing,
@@ -281,14 +267,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					permissionToUpload,
 					trackingViewHeight,
 					keyboardHeight,
-					autocompleteType,
-					setAutocompleteType,
-					autocompleteText,
-					setAutocompleteText,
-					autocompleteParams,
-					setAutocompleteParams,
 					setTrackingViewHeight,
-					setMicOrSend,
 					openEmojiKeyboard,
 					closeEmojiKeyboard,
 					onEmojiSelected,

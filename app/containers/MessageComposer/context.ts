@@ -1,6 +1,5 @@
 import { createContext } from 'react';
 
-import { TAutocompleteType, TMicOrSend } from './interfaces';
 import { IEmoji } from '../../definitions';
 
 type TMessageComposerContext = {
@@ -9,21 +8,13 @@ type TMessageComposerContext = {
 	editing: boolean;
 	// TODO: Refactor to "origin"? ShareView | RoomView?
 	sharing: boolean;
-	micOrSend: TMicOrSend;
 	showEmojiKeyboard: boolean;
 	showEmojiSearchbar: boolean;
 	focused: boolean;
 	permissionToUpload: boolean;
 	trackingViewHeight: number;
 	keyboardHeight: number;
-	autocompleteType: TAutocompleteType;
-	setAutocompleteType: (type: TAutocompleteType) => void;
-	autocompleteText: string;
-	autocompleteParams: string;
-	setAutocompleteText: (text: string) => void;
-	setAutocompleteParams: (text: string) => void;
 	setTrackingViewHeight: (height: number) => void;
-	setMicOrSend(type: TMicOrSend): void;
 	sendMessage(): void;
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
@@ -38,7 +29,6 @@ type TMessageComposerContext = {
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({
 	rid: '',
-	micOrSend: 'mic',
 	editing: false,
 	sharing: false,
 	showEmojiKeyboard: false,
@@ -47,14 +37,7 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	permissionToUpload: false,
 	trackingViewHeight: 0,
 	keyboardHeight: 0,
-	autocompleteType: null,
-	autocompleteText: '',
-	autocompleteParams: '',
-	setAutocompleteText: () => {},
-	setAutocompleteType: () => {},
-	setAutocompleteParams: () => {},
 	setTrackingViewHeight: () => {},
-	setMicOrSend: () => {},
 	sendMessage: () => {},
 	openEmojiKeyboard: () => {},
 	closeEmojiKeyboard: () => {},

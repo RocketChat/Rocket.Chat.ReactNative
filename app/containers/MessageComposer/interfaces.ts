@@ -68,6 +68,12 @@ export interface ITrackingView {
 
 export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;
 
+export interface IAutocompleteBase {
+	type: TAutocompleteType;
+	text: string;
+	params?: string;
+}
+
 export interface IAutocompleteUserRoom {
 	id: string;
 	title: string;
@@ -96,6 +102,8 @@ export interface IAutocompleteSlashCommandPreview {
 	id: string;
 	preview: IPreviewItem;
 	type: '/preview';
+	text: string;
+	params: string;
 }
 
 export interface IAutocompleteCannedResponse {
