@@ -100,8 +100,8 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 	};
 
 	const onChangeText: TextInputProps['onChangeText'] = text => {
-		const isTextEmpty = text.length === 0;
-		setMicOrSend(!isTextEmpty ? 'send' : 'mic');
+		// const isTextEmpty = text.length === 0;
+		// setMicOrSend(!isTextEmpty ? 'send' : 'mic');
 		debouncedOnChangeText(text);
 		setInput(text);
 	};
