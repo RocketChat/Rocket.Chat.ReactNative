@@ -14,11 +14,17 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	if (roles?.length) {
 		return (
 			<View style={styles.item}>
-				<Text style={[styles.itemLabel, { color: colors.titleText }]}>{I18n.t('Roles')}</Text>
+				<Text testID='user-roles' style={[styles.itemLabel, { color: colors.titleText }]}>
+					{I18n.t('Roles')}
+				</Text>
 				<View style={styles.rolesContainer}>
 					{roles.map(role =>
 						role ? (
-							<View style={[styles.roleBadge, { backgroundColor: colors.chatComponentBackground }]} key={role}>
+							<View
+								testID={`user-role-${role.replace(/ /g, '-')}`}
+								style={[styles.roleBadge, { backgroundColor: colors.chatComponentBackground }]}
+								key={role}
+							>
 								<Text style={[styles.role, { color: colors.titleText }]}>{role}</Text>
 							</View>
 						) : null
