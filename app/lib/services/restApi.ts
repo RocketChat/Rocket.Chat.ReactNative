@@ -966,3 +966,5 @@ export const deleteOwnAccount = (password: string, confirmRelinquish = false): a
 
 export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
 	sdk.methodCall('stream-notify-user', type, params);
+
+export const getUsersRoles = (): Promise<boolean> => sdk.methodCall('getUserRoles');

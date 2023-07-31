@@ -36,6 +36,7 @@ import {
 	subscribeUsersPresence
 } from '../lib/methods';
 import { Services } from '../lib/services';
+import { setUsersRoles } from '../actions/usersRoles';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
@@ -141,6 +142,13 @@ const fetchRoomsFork = function* fetchRoomsFork() {
 	yield put(roomsRequest());
 };
 
+const fetchUsersRoles = function* fetchRoomsFork() {
+	const roles = yield Services.getUsersRoles();
+	if (roles.length) {
+		yield put(setUsersRoles(roles));
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -156,6 +164,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield put(encryptionInit());
+		yield fork(fetchUsersRoles);
 
 		setLanguage(user?.language);
 
