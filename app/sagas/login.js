@@ -171,7 +171,9 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			roles: user.roles,
 			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
-			avatarETag: user.avatarETag
+			avatarETag: user.avatarETag,
+			bio: user.bio,
+			nickname: user.nickname
 		};
 		yield serversDB.action(async () => {
 			try {
