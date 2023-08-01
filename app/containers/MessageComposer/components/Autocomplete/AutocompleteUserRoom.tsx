@@ -5,7 +5,7 @@ import sharedStyles from '../../../../views/Styles';
 import { IAutocompleteUserRoom } from '../../interfaces';
 import Avatar from '../../../Avatar';
 import RoomTypeIcon from '../../../RoomTypeIcon';
-import { isAllOrHere } from '../../helpers/isAllOrHere';
+import { isAllOrHere } from '../../helpers';
 import I18n from '../../../../i18n';
 
 export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) => {

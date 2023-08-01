@@ -19,7 +19,7 @@ import database from '../../lib/database';
 import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
-import { isAllOrHere } from './helpers/isAllOrHere';
+import { isAllOrHere } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { emitter } from './emitter';
 
@@ -282,20 +282,18 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				<KeyboardAccessoryView
 					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 					renderContent={() => (
-						<>
-							<View
-								style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
-								testID='message-composer'
-							>
-								<View style={styles.input}>
-									<Left />
-									<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-									<Right />
-								</View>
-								<Toolbar />
-								<EmojiSearchbar />
+						<View
+							style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
+							testID='message-composer'
+						>
+							<View style={styles.input}>
+								<Left />
+								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+								<Right />
 							</View>
-						</>
+							<Toolbar />
+							<EmojiSearchbar />
+						</View>
 					)}
 					kbInputRef={composerInputRef}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
