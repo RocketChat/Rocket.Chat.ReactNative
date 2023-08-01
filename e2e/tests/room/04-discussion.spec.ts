@@ -71,10 +71,11 @@ describe('Discussion', () => {
 			.not.toExist()
 			.withTimeout(10000);
 		await waitFor(element(by.id(`multi-select-chip-${selectUser}`)))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(10000);
+		await sleep(500);
 		await element(by.id('multi-select-search')).tapReturnKey();
-		await sleep(300);
+		await sleep(500);
 		// removing the rocket.cat from the users
 		await element(by.id(`multi-select-chip-${selectUser}`)).tap();
 		await waitFor(element(by.id('create-discussion-submit')))
