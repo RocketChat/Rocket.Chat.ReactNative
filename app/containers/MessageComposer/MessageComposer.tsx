@@ -2,6 +2,7 @@ import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle,
 import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
+import { Q } from '@nozbe/watermelondb';
 
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
@@ -16,9 +17,10 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
 import getMentionRegexp from '../MessageBox/getMentionRegexp';
 import database from '../../lib/database';
+import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
-import log from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { isAllOrHere } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { emitter } from './emitter';
@@ -41,7 +43,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		console.count('Message Composer');
 		const composerInputRef = useRef(null);
 		const composerInputComponentRef = useRef<IComposerInput>({
-			sendMessage: () => '',
+			getTextAndClear: () => '',
 			getText: () => '',
 			getSelection: () => ({ start: 0, end: 0 }),
 			setInput: () => {},
@@ -95,8 +97,33 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			};
 		}, [trackingViewRef]);
 
-		const sendMessage = () => {
-			onSendMessage(composerInputComponentRef.current.sendMessage());
+		const sendMessage = async () => {
+			const message = composerInputComponentRef.current.getTextAndClear();
+
+			// Slash command
+			if (message[0] === '/') {
+				const db = database.active;
+				const commandsCollection = db.get('slash_commands');
+				const command = message.replace(/ .*/, '').slice(1);
+				const likeString = sanitizeLikeString(command);
+				const slashCommand = await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch();
+				if (slashCommand.length > 0) {
+					logEvent(events.COMMAND_RUN);
+					try {
+						const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
+						const [{ appId }] = slashCommand;
+						const triggerId = generateTriggerId(appId);
+						await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid); // || messageTmid);
+						// replyCancel();
+					} catch (e) {
+						log(e);
+					}
+					return;
+				}
+			}
+
+			// Text message
+			onSendMessage(message);
 		};
 
 		const onKeyboardResigned = () => {

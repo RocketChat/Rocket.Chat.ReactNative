@@ -60,7 +60,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 	}, []);
 
 	useImperativeHandle(ref, () => ({
-		sendMessage: () => {
+		getTextAndClear: () => {
 			const text = textRef.current;
 			setInput('');
 			return text;

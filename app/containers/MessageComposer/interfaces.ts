@@ -50,7 +50,7 @@ export type TSetInput = (text: string, selection?: IInputSelection) => void;
 export type TMicOrSend = 'mic' | 'send';
 
 export interface IComposerInput {
-	sendMessage: () => string;
+	getTextAndClear: () => string;
 	getText: () => string;
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
