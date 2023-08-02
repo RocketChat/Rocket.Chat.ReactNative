@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-reanimated/package.json b/node_modules/react-native-reanimated/package.json
+index 0ffa9d3..00d6cd1 100644
+--- a/node_modules/react-native-reanimated/package.json
++++ b/node_modules/react-native-reanimated/package.json
+@@ -34,8 +34,8 @@
+   },
+   "main": "lib/module/index",
+   "module": "lib/module/index",
+-  "react-native": "src/index",
+-  "source": "src/index",
++  "react-native": "lib/module/index",
++  "source": "lib/module/index",
+   "types": "lib/typescript/index",
+   "files": [
+     "Common/",
