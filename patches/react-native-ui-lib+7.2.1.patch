@@ -183,6 +183,27 @@ index 7847d78..79063d5 100644
  export interface ModalProps extends RNModalProps {
    /**
     * Blurs the modal background when transparent (iOS only)
+diff --git a/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx b/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx
+index 542a16a..b23336e 100644
+--- a/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx
+@@ -7,7 +7,6 @@ import Reanimated, {
+   useAnimatedStyle,
+   useSharedValue,
+   withTiming,
+-  WithTimingConfig,
+   runOnJS
+ } from 'react-native-reanimated';
+ import {Colors, BorderRadiuses, Spacings} from '../../style';
+@@ -16,7 +15,7 @@ import View from '../view';
+ import Segment, {SegmentedControlItemProps as SegmentProps} from './segment';
+ 
+ const BORDER_WIDTH = 1;
+-const TIMING_CONFIG: WithTimingConfig = {
++const TIMING_CONFIG = {
+   duration: 300,
+   easing: Easing.bezier(0.33, 1, 0.68, 1)
+ };
 diff --git a/node_modules/react-native-ui-lib/src/components/stateScreen/index.tsx b/node_modules/react-native-ui-lib/src/components/stateScreen/index.tsx
 index 29bf95a..347a78e 100644
 --- a/node_modules/react-native-ui-lib/src/components/stateScreen/index.tsx
@@ -196,6 +217,18 @@ index 29bf95a..347a78e 100644
  export default asBaseComponent<StateScreenProps>(StateScreen);
  
  function createStyles(isRemoteImage: boolean) {
+diff --git a/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx b/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx
+index 7bb9245..16440be 100644
+--- a/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx
++++ b/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx
+@@ -99,6 +99,7 @@ export interface TabControllerItemProps {
+ interface Props extends TabControllerItemProps {
+   index: number;
+   targetPage: any; // TODO: typescript?
++  // @ts-ignore
+   currentPage: Reanimated.Adaptable<number>;
+   onLayout?: (event: LayoutChangeEvent, index: number) => void;
+ }
 diff --git a/node_modules/react-native-ui-lib/src/components/timeline/index.tsx b/node_modules/react-native-ui-lib/src/components/timeline/index.tsx
 index 158406a..456f56c 100644
 --- a/node_modules/react-native-ui-lib/src/components/timeline/index.tsx
@@ -285,6 +318,24 @@ index 0ba2020..0965094 100644
    ValidationMessagePosition as TextFieldValidationMessagePosition
  };
  export default asBaseComponent<TextFieldProps, StaticMembers>(forwardRef(TextField as any), {
+diff --git a/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx b/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
+index cb3d69d..5084ec8 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
++++ b/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
+@@ -148,13 +148,11 @@ function TouchableOpacity(props: Props) {
+ 
+   return (
+     <TapGestureHandler
+-      // @ts-expect-error
+       onGestureEvent={tapGestureHandler}
+       shouldCancelWhenOutside
+       enabled={!disabled}
+     >
+       <Reanimated.View>
+-        {/* @ts-expect-error */}
+         <Container onGestureEvent={longPressGestureHandler} shouldCancelWhenOutside>
+           <Reanimated.View
+             {...others}
 diff --git a/node_modules/react-native-ui-lib/src/incubator/index.ts b/node_modules/react-native-ui-lib/src/incubator/index.ts
 index 916d8ab..3711486 100644
 --- a/node_modules/react-native-ui-lib/src/incubator/index.ts
