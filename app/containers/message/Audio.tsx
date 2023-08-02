@@ -1,9 +1,8 @@
-import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { StyleProp, StyleSheet, Text, TextStyle, View, useWindowDimensions } from 'react-native';
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
-import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
 
@@ -15,10 +14,9 @@ import { themes } from '../../lib/constants';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
-import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
-import { TSupportedThemes, useTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
@@ -36,18 +34,8 @@ interface IMessageAudioProps {
 	file: IAttachment;
 	isReply?: boolean;
 	style?: StyleProp<TextStyle>[];
-	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
-	scale?: number;
 	author?: IUserMessage;
-}
-
-interface IMessageAudioState {
-	loading: boolean;
-	currentTime: number;
-	duration: number;
-	paused: boolean;
-	cached: boolean;
 }
 
 const mode = {
@@ -118,98 +106,33 @@ const Button = React.memo(({ loading, paused, onPress, disabled, cached }: IButt
 
 Button.displayName = 'MessageAudioButton';
 
-class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
-	static contextType = MessageContext;
-	private sound: Sound;
+const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessageAudioProps) => {
+	const [loading, setLoading] = useState(true);
+	const [currentTime, setCurrentTime] = useState(0);
+	const [duration, setDuration] = useState(0);
+	const [paused, setPaused] = useState(true);
+	const [cached, setCached] = useState(false);
 
-	constructor(props: IMessageAudioProps) {
-		super(props);
-		this.state = {
-			loading: true,
-			currentTime: 0,
-			duration: 0,
-			paused: true,
-			cached: false
-		};
+	const { baseUrl, user } = useContext(MessageContext);
+	const { scale } = useWindowDimensions();
+	const { theme } = useTheme();
 
-		this.sound = new Audio.Sound();
-		this.sound.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate);
-	}
+	const sound = useRef<Sound | null>(null);
 
-	pauseSound = () => {
-		EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
-		this.togglePlayPause();
+	const pauseSound = () => {
+		EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+		togglePlayPause();
 	};
 
-	async componentDidMount() {
-		const { file, isReply } = this.props;
-		const cachedAudioResult = await getMediaCache({
-			type: 'audio',
-			mimeType: file.audio_type,
-			urlToCache: this.getUrl()
-		});
-		if (cachedAudioResult?.exists) {
-			await this.sound.loadAsync({ uri: cachedAudioResult.uri });
-			this.setState({ loading: false, cached: true });
-			return;
+	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+		if (status) {
+			onLoad(status);
+			onProgress(status);
+			onEnd(status);
 		}
-		if (isReply) {
-			this.setState({ loading: false });
-			return;
-		}
-		await this.handleAutoDownload();
-	}
+	};
 
-	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
-		const { currentTime, duration, paused, loading, cached } = this.state;
-		const { file, theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextState.currentTime !== currentTime) {
-			return true;
-		}
-		if (nextState.duration !== duration) {
-			return true;
-		}
-		if (nextState.paused !== paused) {
-			return true;
-		}
-		if (!dequal(nextProps.file, file)) {
-			return true;
-		}
-		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextState.cached !== cached) {
-			return true;
-		}
-		return false;
-	}
-
-	componentDidUpdate() {
-		const { paused } = this.state;
-		if (paused) {
-			deactivateKeepAwake();
-		} else {
-			activateKeepAwake();
-		}
-	}
-
-	async componentWillUnmount() {
-		EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
-		try {
-			await this.sound.stopAsync();
-		} catch {
-			// Do nothing
-		}
-	}
-
-	getUrl = () => {
-		const { file } = this.props;
-		// @ts-ignore can't use declare to type this
-		const { baseUrl } = this.context;
-
+	const getUrl = () => {
 		let url = file.audio_url;
 		if (url && !url.startsWith('http')) {
 			url = `${baseUrl}${file.audio_url}`;
@@ -217,59 +140,30 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		return url;
 	};
 
-	handleAutoDownload = async () => {
-		const { author } = this.props;
-		// @ts-ignore can't use declare to type this
-		const { user } = this.context;
-		const url = this.getUrl();
-		try {
-			if (url) {
-				const isCurrentUserAuthor = author?._id === user.id;
-				const isAutoDownloadEnabled = fetchAutoDownloadEnabled('audioPreferenceDownload');
-				if (isAutoDownloadEnabled || isCurrentUserAuthor) {
-					await this.handleDownload();
-					return;
-				}
-
-				this.setState({ loading: false, cached: false });
-			}
-		} catch {
-			// Do nothing
-		}
-	};
-
-	onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-		if (status) {
-			this.onLoad(status);
-			this.onProgress(status);
-			this.onEnd(status);
-		}
-	};
-
-	onLoad = (data: AVPlaybackStatus) => {
+	const onLoad = (data: AVPlaybackStatus) => {
 		if (data.isLoaded && data.durationMillis) {
 			const duration = data.durationMillis / 1000;
-			this.setState({ duration: duration > 0 ? duration : 0 });
+			setDuration(duration > 0 ? duration : 0);
 		}
 	};
 
-	onProgress = (data: AVPlaybackStatus) => {
+	const onProgress = (data: AVPlaybackStatus) => {
 		if (data.isLoaded) {
-			const { duration } = this.state;
 			const currentTime = data.positionMillis / 1000;
 			if (currentTime <= duration) {
-				this.setState({ currentTime });
+				setCurrentTime(currentTime);
 			}
 		}
 	};
 
-	onEnd = async (data: AVPlaybackStatus) => {
+	const onEnd = async (data: AVPlaybackStatus) => {
 		if (data.isLoaded) {
 			if (data.didJustFinish) {
 				try {
-					await this.sound.stopAsync();
-					this.setState({ paused: true, currentTime: 0 });
-					EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
+					await sound.current?.stopAsync();
+					setPaused(true);
+					setCurrentTime(0);
+					EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
 				} catch {
 					// do nothing
 				}
@@ -277,123 +171,169 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	get duration() {
-		const { currentTime, duration } = this.state;
-		return formatTime(currentTime || duration);
-	}
+	const getDuration = () => formatTime(currentTime || duration);
 
-	togglePlayPause = () => {
-		const { paused } = this.state;
-		this.setState({ paused: !paused }, this.playPause);
+	const togglePlayPause = () => {
+		setPaused(!paused);
 	};
 
-	handleDownload = async () => {
-		const { file } = this.props;
-		// @ts-ignore can't use declare to type this
-		const { user } = this.context;
-		this.setState({ loading: true });
+	const handleDownload = async () => {
+		setLoading(true);
 		try {
-			const url = this.getUrl();
+			const url = getUrl();
 			if (url) {
 				const audio = await downloadMediaFile({
 					downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
 					type: 'audio',
 					mimeType: file.audio_type
 				});
-				await this.sound.loadAsync({ uri: audio });
-				this.setState({ loading: false, cached: true });
+				await sound.current?.loadAsync({ uri: audio });
+				setLoading(false);
+				setCached(true);
 			}
 		} catch {
-			this.setState({ loading: false, cached: false });
+			setLoading(false);
+			setCached(false);
 		}
 	};
 
-	onPress = () => {
-		const { cached } = this.state;
+	const handleAutoDownload = async () => {
+		const url = getUrl();
+		try {
+			if (url) {
+				const isCurrentUserAuthor = author?._id === user.id;
+				const isAutoDownloadEnabled = fetchAutoDownloadEnabled('audioPreferenceDownload');
+				if (isAutoDownloadEnabled || isCurrentUserAuthor) {
+					await handleDownload();
+					return;
+				}
+				setLoading(false);
+				setCached(false);
+			}
+		} catch {
+			// Do nothing
+		}
+	};
+
+	const onPress = () => {
 		if (cached) {
-			this.togglePlayPause();
+			togglePlayPause();
 			return;
 		}
-		this.handleDownload();
+		handleDownload();
 	};
 
-	playPause = async () => {
-		const { paused } = this.state;
+	const onValueChange = async (value: number) => {
 		try {
-			if (paused) {
-				await this.sound.pauseAsync();
-				EventEmitter.removeListener(PAUSE_AUDIO, this.pauseSound);
-			} else {
-				EventEmitter.emit(PAUSE_AUDIO);
-				EventEmitter.addEventListener(PAUSE_AUDIO, this.pauseSound);
-				await Audio.setAudioModeAsync(mode);
-				await this.sound.playAsync();
+			setCurrentTime(value);
+			await sound.current?.setPositionAsync(value * 1000);
+		} catch {
+			// Do nothing
+		}
+	};
+
+	useEffect(() => {
+		sound.current = new Audio.Sound();
+		sound.current?.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+		return () => {
+			EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+			try {
+				sound.current?.stopAsync();
+			} catch {
+				// Do nothing
 			}
-		} catch {
-			// Do nothing
+		};
+	}, []);
+
+	useEffect(() => {
+		const handleCache = async () => {
+			const cachedAudioResult = await getMediaCache({
+				type: 'audio',
+				mimeType: file.audio_type,
+				urlToCache: getUrl()
+			});
+			if (cachedAudioResult?.exists) {
+				await sound.current?.loadAsync({ uri: cachedAudioResult.uri });
+				setLoading(false);
+				setCached(true);
+				return;
+			}
+			if (isReply) {
+				setLoading(false);
+				return;
+			}
+			await handleAutoDownload();
+		};
+		handleCache();
+	}, []);
+
+	useEffect(() => {
+		const playPause = async () => {
+			try {
+				if (paused) {
+					await sound.current?.pauseAsync();
+					EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+				} else {
+					EventEmitter.emit(PAUSE_AUDIO);
+					EventEmitter.addEventListener(PAUSE_AUDIO, pauseSound);
+					await Audio.setAudioModeAsync(mode);
+					await sound.current?.playAsync();
+				}
+			} catch {
+				// Do nothing
+			}
+		};
+		playPause();
+		if (paused) {
+			deactivateKeepAwake();
+		} else {
+			activateKeepAwake();
 		}
-	};
+	}, [paused]);
 
-	onValueChange = async (value: number) => {
-		try {
-			this.setState({ currentTime: value });
-			await this.sound.setPositionAsync(value * 1000);
-		} catch {
-			// Do nothing
-		}
-	};
-
-	render() {
-		const { loading, paused, currentTime, duration, cached } = this.state;
-		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
-		const { description } = file;
-		// @ts-ignore can't use declare to type this
-		const { baseUrl, user } = this.context;
-
-		if (!baseUrl) {
-			return null;
-		}
-
-		let thumbColor;
-		if (isAndroid && isReply) {
-			thumbColor = themes[theme].tintDisabled;
-		} else if (isAndroid) {
-			thumbColor = themes[theme].tintColor;
-		}
-
-		return (
-			<>
-				<Markdown
-					msg={description}
-					style={[isReply && style]}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
-				<View
-					style={[
-						styles.audioContainer,
-						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
-					]}
-				>
-					<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={this.onPress} />
-					<Slider
-						disabled={isReply}
-						style={styles.slider}
-						value={currentTime}
-						maximumValue={duration}
-						minimumValue={0}
-						thumbTintColor={thumbColor}
-						minimumTrackTintColor={themes[theme].tintColor}
-						maximumTrackTintColor={themes[theme].auxiliaryText}
-						onValueChange={this.onValueChange}
-						thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
-					/>
-					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
-				</View>
-			</>
-		);
+	if (!baseUrl) {
+		return null;
 	}
-}
 
-export default withDimensions(MessageAudio);
+	let thumbColor;
+	if (isAndroid && isReply) {
+		thumbColor = themes[theme].tintDisabled;
+	} else if (isAndroid) {
+		thumbColor = themes[theme].tintColor;
+	}
+
+	return (
+		<>
+			<Markdown
+				msg={file.description}
+				style={[isReply && style]}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+			<View
+				style={[
+					styles.audioContainer,
+					{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
+				]}
+			>
+				<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
+				<Slider
+					disabled={isReply}
+					style={styles.slider}
+					value={currentTime}
+					maximumValue={duration}
+					minimumValue={0}
+					thumbTintColor={thumbColor}
+					minimumTrackTintColor={themes[theme].tintColor}
+					maximumTrackTintColor={themes[theme].auxiliaryText}
+					onValueChange={onValueChange}
+					thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
+				/>
+				<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{getDuration()}</Text>
+			</View>
+		</>
+	);
+};
+
+export default MessageAudio;
