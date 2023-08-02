@@ -1,5 +1,6 @@
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -248,10 +249,16 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		);
 
 	setUser = async (user: IUser) => {
-		const { usersRoles } = this.props;
-		const userRoles = usersRoles.find(u => u?.username === user.username);
-		if (userRoles?.roles?.length) {
-			const parsedRoles = await this.parseRoles(userRoles.roles);
+		const roles = (() => {
+			const { usersRoles } = this.props;
+			const userRoles = usersRoles.find(u => u?.username === user.username);
+			let r: string[] = [];
+			if (userRoles?.roles?.length) r = userRoles.roles;
+			if (user.roles?.length) r = [...r, ...user.roles];
+			return uniq(r);
+		})();
+		if (roles.length) {
+			const parsedRoles = await this.parseRoles(roles);
 			this.setState({ roomUser: { ...user, parsedRoles } });
 		} else {
 			this.setState({ roomUser: user });
