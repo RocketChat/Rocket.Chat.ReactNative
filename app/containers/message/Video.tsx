@@ -127,7 +127,7 @@ const Video = React.memo(
 
 		const handleAutoDownload = async () => {
 			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('videoPreferenceDownload');
-			if (isAutoDownloadEnabled) {
+			if (isAutoDownloadEnabled && file.video_type && isTypeSupported(file.video_type)) {
 				await handleDownload();
 				return;
 			}
@@ -159,7 +159,7 @@ const Video = React.memo(
 				showAttachment(videoCached);
 				return;
 			}
-			if (!loading && !cached) {
+			if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
 				handleDownload();
 				return;
 			}
