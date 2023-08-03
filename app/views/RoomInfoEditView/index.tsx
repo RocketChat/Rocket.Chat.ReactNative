@@ -78,6 +78,11 @@ interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | Modal
 	deleteTeamPermission: string[];
 }
 
+const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
+	value: m.value,
+	text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
+}));
+
 class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfoEditViewState> {
 	randomValue = random(15);
 	private querySubscription: Subscription | undefined;
@@ -447,15 +452,16 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			return null;
 		}
 
+		const values = Array.isArray(systemMessages)
+			? MESSAGE_TYPE_VALUES.filter((option: any) => systemMessages.includes(option.value))
+			: [];
+
 		return (
 			<MultiSelect
-				options={MessageTypeValues.map(m => ({
-					value: m.value,
-					text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
-				}))}
-				onChange={({ value }: { value: boolean }) => this.setState({ systemMessages: value })}
+				options={MESSAGE_TYPE_VALUES}
+				onChange={({ value }) => this.setState({ systemMessages: value })}
 				placeholder={{ text: I18n.t('Hide_System_Messages') }}
-				value={systemMessages as string[]}
+				value={values}
 				context={BlockContext.FORM}
 				multiselect
 			/>

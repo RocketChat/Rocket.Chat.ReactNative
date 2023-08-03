@@ -220,36 +220,37 @@ export const SectionMultiSelect = () =>
 			},
 			accessory: {
 				type: 'multi_static_select',
+				appId: 'app-id',
+				blockId: 'block-id',
+				actionId: 'action-id',
+				initialValue: ['option_1', 'option_2'],
 				options: [
 					{
+						value: 'option_1',
 						text: {
 							type: 'plain_text',
-							text: 'button'
-						},
-						value: 1
+							text: 'lorem ipsum 🚀',
+							emoji: true
+						}
 					},
 					{
+						value: 'option_2',
 						text: {
 							type: 'plain_text',
-							text: 'opt 1'
-						},
-						value: 2
-					},
-					{
-						text: {
-							type: 'plain_text',
-							text: 'opt 2'
-						},
-						value: 3
-					},
-					{
-						text: {
-							type: 'plain_text',
-							text: 'opt 3'
-						},
-						value: 4
+							text: 'lorem ipsum 🚀',
+							emoji: true
+						}
 					}
-				]
+				],
+				placeholder: {
+					type: 'plain_text',
+					text: 'Select an item'
+				},
+				label: {
+					type: 'plain_text',
+					text: 'Label',
+					emoji: true
+				}
 			}
 		}
 	]);

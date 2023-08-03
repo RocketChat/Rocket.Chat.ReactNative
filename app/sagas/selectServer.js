@@ -94,7 +94,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					status: userRecord.status,
 					statusText: userRecord.statusText,
 					roles: userRecord.roles,
-					avatarETag: userRecord.avatarETag
+					avatarETag: userRecord.avatarETag,
+					bio: userRecord.bio,
+					nickname: userRecord.nickname
 				};
 			} catch {
 				// search credentials on shared credentials (Experimental/Official)
