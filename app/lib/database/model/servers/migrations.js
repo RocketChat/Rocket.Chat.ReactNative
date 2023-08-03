@@ -103,6 +103,18 @@ export default schemaMigrations({
 					columns: [{ name: 'enable_message_parser_early_adoption', type: 'boolean', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 13,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'nickname', type: 'string', isOptional: true },
+						{ name: 'bio', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
