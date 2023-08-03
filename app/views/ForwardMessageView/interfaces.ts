@@ -2,7 +2,7 @@ export interface IForwardMessageViewSelectRoom {
 	server: string;
 	token: string;
 	userId: string;
-	onRoomSelect: Function;
+	onRoomSelect: ({ value }: { value: string[] }) => void;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
 }
