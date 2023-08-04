@@ -726,10 +726,14 @@
   "Presence_Cap_Warning_Description": "Active connections have reached the limit for the workspace, thus the service that handles user status is disabled. It can be re-enabled manually in workspace settings.",
   "Learn_more": "Learn more",
   "and_N_more": "and {{count}} more",
+  "Forward_message": "Forward message",
+  "Person_or_channel": "Person or channel",
+  "Select": "Select",
   "Nickname": "Nickname",
   "Bio":"Bio",
   "decline": "Decline",
   "accept": "Accept",
   "Incoming_call_from": "Incoming call from",
-  "Call_started": "Call started"
+  "Call_started": "Call started",
+  "Message_has_been_shared":"Message has been shared"
 }

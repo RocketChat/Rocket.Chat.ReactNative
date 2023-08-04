@@ -245,6 +245,9 @@ export type NewMessageStackParamList = {
 		message: IMessage;
 		showCloseModal: boolean;
 	};
+	ForwardMessageView: {
+		message: TAnyMessageModel;
+	};
 };
 
 export type E2ESaveYourPasswordStackParamList = {
