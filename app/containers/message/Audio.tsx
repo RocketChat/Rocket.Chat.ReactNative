@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, Text, TextStyle, View, useWindowDimensions } fro
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
 
 import Touchable from './Touchable';
@@ -175,6 +175,23 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 
 	const togglePlayPause = () => {
 		setPaused(!paused);
+		playPause(!paused);
+	};
+
+	const playPause = async (isPaused: boolean) => {
+		try {
+			if (isPaused) {
+				await sound.current?.pauseAsync();
+				EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+			} else {
+				EventEmitter.emit(PAUSE_AUDIO);
+				EventEmitter.addEventListener(PAUSE_AUDIO, pauseSound);
+				await Audio.setAudioModeAsync(mode);
+				await sound.current?.playAsync();
+			}
+		} catch {
+			// Do nothing
+		}
 	};
 
 	const handleDownload = async () => {
@@ -235,17 +252,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	useEffect(() => {
 		sound.current = new Audio.Sound();
 		sound.current?.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-		return () => {
-			EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
-			try {
-				sound.current?.stopAsync();
-			} catch {
-				// Do nothing
-			}
-		};
-	}, []);
 
-	useEffect(() => {
 		const handleCache = async () => {
 			const cachedAudioResult = await getMediaCache({
 				type: 'audio',
@@ -265,29 +272,22 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 			await handleAutoDownload();
 		};
 		handleCache();
-	}, []);
 
-	useEffect(() => {
-		const playPause = async () => {
+		return () => {
+			EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
 			try {
-				if (paused) {
-					await sound.current?.pauseAsync();
-					EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
-				} else {
-					EventEmitter.emit(PAUSE_AUDIO);
-					EventEmitter.addEventListener(PAUSE_AUDIO, pauseSound);
-					await Audio.setAudioModeAsync(mode);
-					await sound.current?.playAsync();
-				}
+				sound.current?.stopAsync();
 			} catch {
 				// Do nothing
 			}
 		};
-		playPause();
+	}, []);
+
+	useEffect(() => {
 		if (paused) {
 			deactivateKeepAwake();
 		} else {
-			activateKeepAwake();
+			activateKeepAwakeAsync();
 		}
 	}, [paused]);
 
