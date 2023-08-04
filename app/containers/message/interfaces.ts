@@ -108,6 +108,7 @@ export interface IMessageInner
 	type: MessageType;
 	blocks: [];
 	urls?: IUrl[];
+	isPreview?: boolean;
 }
 
 export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {
