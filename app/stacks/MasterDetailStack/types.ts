@@ -195,6 +195,7 @@ export type ModalStackParamList = {
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
 	SecurityPrivacyView: undefined;
+	MediaAutoDownloadView: undefined;
 	E2EEncryptionSecurityView: undefined;
 };
 

@@ -46,6 +46,7 @@ import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
 import DefaultBrowserView from '../views/DefaultBrowserView';
 import ScreenLockConfigView from '../views/ScreenLockConfigView';
+import MediaAutoDownloadView from '../views/MediaAutoDownloadView';
 // Admin Stack
 import AdminPanelView from '../views/AdminPanelView';
 // NewMessage Stack
@@ -179,6 +180,7 @@ const SettingsStackNavigator = () => {
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} />
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
+			<SettingsStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 			<SettingsStack.Screen
 				name='ScreenLockConfigView'
 				component={ScreenLockConfigView}
