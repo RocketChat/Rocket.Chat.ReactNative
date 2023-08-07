@@ -723,5 +723,11 @@
   "decline": "Recusar",
   "accept": "Aceitar",
   "Incoming_call_from": "Chamada recebida de",
-  "Call_started": "Chamada Iniciada"
+  "Call_started": "Chamada Iniciada",
+  "Forward_message": "Encaminhar mensagem",
+  "Person_or_channel": "Pessoa ou canal",
+  "Select": "Selecionar",
+  "Nickname": "Apelido",
+  "Bio": "Biografia",
+  "Message_has_been_shared":"Menssagem foi compartilhada"
 }

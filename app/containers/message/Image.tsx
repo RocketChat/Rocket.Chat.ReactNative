@@ -156,18 +156,18 @@ const ImageContainer = React.memo(
 
 		if (imageCached.description) {
 			return (
-				<Button disabled={isReply} onPress={onPress}>
-					<View>
-						<Markdown
-							msg={imageCached.description}
-							style={[isReply && style]}
-							username={user.username}
-							getCustomEmoji={getCustomEmoji}
-							theme={theme}
-						/>
+				<View>
+					<Markdown
+						msg={imageCached.description}
+						style={[isReply && style]}
+						username={user.username}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+					<Button disabled={isReply} onPress={onPress}>
 						<MessageImage imgUri={img} cached={cached} loading={loading} />
-					</View>
-				</Button>
+					</Button>
+				</View>
 			);
 		}
 

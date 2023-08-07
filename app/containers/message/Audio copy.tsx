@@ -309,7 +309,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	};
 
 	onPress = () => {
-		const { cached } = this.state;
+		const { cached, loading } = this.state;
+		if (loading) {
+			return;
+		}
 		if (cached) {
 			this.togglePlayPause();
 			return;
