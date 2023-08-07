@@ -730,10 +730,10 @@
   "Person_or_channel": "Person or channel",
   "Select": "Select",
   "Nickname": "Nickname",
-  "Bio":"Bio",
+  "Bio": "Bio",
   "decline": "Decline",
   "accept": "Accept",
   "Incoming_call_from": "Incoming call from",
   "Call_started": "Call started",
-  "Message_has_been_shared":"Message has been shared"
+  "Message_has_been_shared": "Message has been shared"
 }
