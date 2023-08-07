@@ -1,17 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View, useWindowDimensions } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import Slider from '@react-native-community/slider';
-import moment from 'moment';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
 
 import Touchable from '../../Touchable';
 import Markdown from '../../../markdown';
 import { CustomIcon } from '../../../CustomIcon';
-import sharedStyles from '../../../../views/Styles';
 import { themes } from '../../../../lib/constants';
-import { isAndroid, isIOS } from '../../../../lib/methods/helpers';
 import MessageContext from '../../Context';
 import ActivityIndicator from '../../../ActivityIndicator';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
@@ -21,6 +17,8 @@ import { downloadMediaFile, getMediaCache } from '../../../../lib/methods/handle
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from '../../constants';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
+import styles from './styles';
+import Slider from './Slider';
 
 interface IButton {
 	loading: boolean;
@@ -47,36 +45,6 @@ const mode = {
 	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
 	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
-
-const styles = StyleSheet.create({
-	audioContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		height: 56,
-		borderWidth: 1,
-		borderRadius: 4,
-		marginBottom: 6
-	},
-	playPauseButton: {
-		marginHorizontal: 10,
-		alignItems: 'center',
-		backgroundColor: 'transparent'
-	},
-	audioLoading: {
-		marginHorizontal: 8
-	},
-	slider: {
-		flex: 1
-	},
-	duration: {
-		marginHorizontal: 12,
-		fontSize: 14,
-		...sharedStyles.textRegular
-	}
-});
-
-const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss');
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
@@ -114,7 +82,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	const [cached, setCached] = useState(false);
 
 	const { baseUrl, user } = useContext(MessageContext);
-	const { scale } = useWindowDimensions();
 	const { theme } = useTheme();
 
 	const sound = useRef<Sound | null>(null);
@@ -150,6 +117,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	const onProgress = (data: AVPlaybackStatus) => {
 		if (data.isLoaded) {
 			const currentTime = data.positionMillis / 1000;
+			console.log('🚀 ~ file: index.tsx:120 ~ onProgress ~ currentTime:', currentTime);
 			if (currentTime <= duration) {
 				setCurrentTime(currentTime);
 			}
@@ -170,8 +138,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 			}
 		}
 	};
-
-	const getDuration = () => formatTime(currentTime || duration);
 
 	const togglePlayPause = () => {
 		setPaused(!paused);
@@ -240,15 +206,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		handleDownload();
 	};
 
-	const onValueChange = async (value: number) => {
-		try {
-			setCurrentTime(value);
-			await sound.current?.setPositionAsync(value * 1000);
-		} catch {
-			// Do nothing
-		}
-	};
-
 	useEffect(() => {
 		sound.current = new Audio.Sound();
 		sound.current?.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
@@ -296,9 +253,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	}
 
 	let thumbColor;
-	if (isAndroid && isReply) {
+	if (isReply) {
 		thumbColor = themes[theme].tintDisabled;
-	} else if (isAndroid) {
+	} else {
 		thumbColor = themes[theme].tintColor;
 	}
 
@@ -318,19 +275,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 				]}
 			>
 				<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
-				<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{getDuration()}</Text>
-				<Slider
-					disabled={isReply}
-					style={styles.slider}
-					value={currentTime}
-					maximumValue={duration}
-					minimumValue={0}
-					thumbTintColor={thumbColor}
-					minimumTrackTintColor={themes[theme].tintColor}
-					maximumTrackTintColor={themes[theme].auxiliaryText}
-					onValueChange={onValueChange}
-					thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
-				/>
+				<Slider currentTime={currentTime} duration={duration} thumbColor={thumbColor} />
+				<View style={{ width: 36, height: 24, backgroundColor: '#999', borderRadius: 4, marginRight: 16 }} />
 			</View>
 		</>
 	);
