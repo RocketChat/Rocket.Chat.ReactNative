@@ -3,12 +3,11 @@ import { dequal } from 'dequal';
 
 import { IMessageAttachments } from './interfaces';
 import Image from './Image';
-import Audio from './Audio';
+import Audio from './Components/Audio';
 import Video from './Video';
 import Reply from './Reply';
 import Button from '../Button';
 import MessageContext from './Context';
-import { useTheme } from '../../theme';
 import { IAttachment, TGetCustomEmoji } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
 import openLink from '../../lib/methods/helpers/openLink';
@@ -55,8 +54,6 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
-		const { theme } = useTheme();
-
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
@@ -84,7 +81,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						isReply={isReply}
 						style={style}
-						theme={theme}
 						author={author}
 					/>
 				);

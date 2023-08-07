@@ -6,21 +6,21 @@ import moment from 'moment';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
 
-import Touchable from './Touchable';
-import Markdown from '../markdown';
-import { CustomIcon } from '../CustomIcon';
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
-import MessageContext from './Context';
-import ActivityIndicator from '../ActivityIndicator';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IUserMessage } from '../../definitions';
-import { useTheme } from '../../theme';
-import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { PAUSE_AUDIO } from './constants';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import Touchable from '../../Touchable';
+import Markdown from '../../../markdown';
+import { CustomIcon } from '../../../CustomIcon';
+import sharedStyles from '../../../../views/Styles';
+import { themes } from '../../../../lib/constants';
+import { isAndroid, isIOS } from '../../../../lib/methods/helpers';
+import MessageContext from '../../Context';
+import ActivityIndicator from '../../../ActivityIndicator';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { IAttachment, IUserMessage } from '../../../../definitions';
+import { useTheme } from '../../../../theme';
+import { downloadMediaFile, getMediaCache } from '../../../../lib/methods/handleMediaDownload';
+import EventEmitter from '../../../../lib/methods/helpers/events';
+import { PAUSE_AUDIO } from '../../constants';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 
 interface IButton {
 	loading: boolean;
@@ -318,6 +318,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 				]}
 			>
 				<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
+				<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{getDuration()}</Text>
 				<Slider
 					disabled={isReply}
 					style={styles.slider}
@@ -330,7 +331,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 					onValueChange={onValueChange}
 					thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 				/>
-				<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{getDuration()}</Text>
 			</View>
 		</>
 	);
