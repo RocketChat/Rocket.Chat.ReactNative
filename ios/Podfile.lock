@@ -359,7 +359,7 @@ PODS:
     - React-Core
   - react-native-blur (4.3.2):
     - React-Core
-  - react-native-cameraroll (5.7.2):
+  - react-native-cameraroll (5.6.1):
     - React-Core
   - react-native-cookies (6.2.1):
     - React-Core
@@ -936,7 +936,7 @@ SPEC CHECKSUMS:
   React-logger: cec52b3f8fb0be0d47b2cb75dec69de60f2de3b6
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
-  react-native-cameraroll: 134805127580aed23403b8c2cb1548920dd77b3a
+  react-native-cameraroll: 2f08db1ecc9b73dbc01f89335d6d5179fac2894c
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
   react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
