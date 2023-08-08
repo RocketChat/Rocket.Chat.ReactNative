@@ -77,7 +77,6 @@ Button.displayName = 'MessageAudioButton';
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessageAudioProps) => {
 	const [loading, setLoading] = useState(true);
 	const [currentTime, setCurrentTime] = useState(0);
-	const [duration, setDuration] = useState(0);
 	const [paused, setPaused] = useState(true);
 	const [cached, setCached] = useState(false);
 
@@ -93,8 +92,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 
 	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
-			onLoad(status);
-			onProgress(status);
+			// onLoad(status);
+			// onProgress(status);
 			onEnd(status);
 		}
 	};
@@ -105,23 +104,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 			url = `${baseUrl}${file.audio_url}`;
 		}
 		return url;
-	};
-
-	const onLoad = (data: AVPlaybackStatus) => {
-		if (data.isLoaded && data.durationMillis) {
-			const duration = data.durationMillis / 1000;
-			setDuration(duration > 0 ? duration : 0);
-		}
-	};
-
-	const onProgress = (data: AVPlaybackStatus) => {
-		if (data.isLoaded) {
-			const currentTime = data.positionMillis / 1000;
-			console.log('🚀 ~ file: index.tsx:120 ~ onProgress ~ currentTime:', currentTime);
-			if (currentTime <= duration) {
-				setCurrentTime(currentTime);
-			}
-		}
 	};
 
 	const onEnd = async (data: AVPlaybackStatus) => {
@@ -275,11 +257,11 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 				]}
 			>
 				<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
-				<Slider currentTime={currentTime} duration={duration} thumbColor={thumbColor} />
+				<Slider sound={sound.current} currentTime={currentTime} thumbColor={thumbColor} />
 				<View style={{ width: 36, height: 24, backgroundColor: '#999', borderRadius: 4, marginRight: 16 }} />
 			</View>
 		</>
 	);
-};
+};;
 
 export default MessageAudio;
