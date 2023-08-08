@@ -15,13 +15,11 @@ async function clearCache() {
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
-	await sleep(300); // wait animation
-	await waitFor(element(by.id('sidebar-settings')))
+	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
-	await sleep(300); // wait animation
-	await waitFor(element(by.id('settings-view-clear-cache')))
+	await waitFor(element(by.id('settings-view')))
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('settings-view-clear-cache')).tap();

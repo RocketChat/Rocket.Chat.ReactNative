@@ -17,7 +17,7 @@ export const useFrequentlyUsedEmoji = (
 	useEffect(() => {
 		const getFrequentlyUsedEmojis = async () => {
 			const db = database.active;
-			const frequentlyUsedRecords = await db.get('frequently_used_emojis').query(Q.sortBy('count', Q.desc)).fetch();
+			const frequentlyUsedRecords = await db.get('frequently_used_emojis').query(Q.experimentalSortBy('count', Q.desc)).fetch();
 			let frequentlyUsedEmojis = frequentlyUsedRecords.map(item => {
 				if (item.isCustom) {
 					return { name: item.content, extension: item.extension! }; // if isCustom is true, extension is not null

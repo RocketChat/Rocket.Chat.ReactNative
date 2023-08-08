@@ -75,7 +75,6 @@ const EmojiPicker = ({
 					parentWidth={parentWidth}
 				/>
 			) : (
-				// @ts-ignore
 				<ScrollableTabView
 					renderTabBar={() => <TabBar />}
 					contentProps={{

@@ -144,14 +144,14 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme!].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
 				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
-						<Text style={[styles.description, { color: themes[theme!].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
+						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
 							server={server}
 							userId={user.id}
@@ -180,7 +180,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 						/>
 						{this.isEncryptionEnabled ? (
 							<>
-								<Text style={[styles.label, { color: themes[theme!].titleText }]}>{I18n.t('Encrypted')}</Text>
+								<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
 								<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
 							</>
 						) : null}

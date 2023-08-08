@@ -268,7 +268,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			// @ts-ignore
 			logEvent(events[`RA_GO_${route.replace('View', '').toUpperCase()}${params.name ? params.name.toUpperCase() : ''}`]);
 			const { navigation } = this.props;
-			// @ts-ignore
 			navigation.navigate(route, params);
 		}
 		if (event) {
@@ -730,8 +729,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				.query(
 					Q.where('team_main', true),
 					Q.where('name', Q.like(`%${onChangeText}%`)),
-					Q.take(QUERY_SIZE),
-					Q.sortBy('room_updated_at', Q.desc)
+					Q.experimentalTake(QUERY_SIZE),
+					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
 
@@ -780,7 +779,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							}
 						})
 					}
-					style={{ backgroundColor: themes[theme!].backgroundColor }}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'
@@ -788,14 +787,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
 							{t === 'd' && member._id ? (
-								<View style={[sharedStyles.status, { backgroundColor: themes[theme!].backgroundColor }]}>
+								<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
 									<Status size={16} id={member._id} />
 								</View>
 							) : undefined}
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
-								<Text style={[styles.roomTitle, { color: themes[theme!].titleText }]} numberOfLines={1}>
+								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
 									{room.fname}
 								</Text>
 							) : (
@@ -806,19 +805,19 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										status={room.visitor?.status}
 										sourceType={source}
 									/>
-									<Text style={[styles.roomTitle, { color: themes[theme!].titleText }]} numberOfLines={1}>
+									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
 										{getRoomTitle(room)}
 									</Text>
 								</View>
 							)}
 							<MarkdownPreview
 								msg={t === 'd' ? `@${name}` : topic}
-								style={[styles.roomDescription, { color: themes[theme!].auxiliaryText }]}
+								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
 							/>
 							{room.t === 'd' && (
 								<MarkdownPreview
 									msg={member.statusText}
-									style={[styles.roomDescription, { color: themes[theme!].auxiliaryText }]}
+									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
 								/>
 							)}
 						</View>
@@ -874,9 +873,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							})
 						}
 						testID='room-actions-block-user'
-						left={() => <List.Icon name='ignore' color={themes[theme!].dangerColor} />}
+						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
 						showActionIndicator
-						color={themes[theme!].dangerColor}
+						color={themes[theme].dangerColor}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -896,9 +895,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							})
 						}
 						testID='room-actions-leave-channel'
-						left={() => <List.Icon name='logout' color={themes[theme!].dangerColor} />}
+						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
 						showActionIndicator
-						color={themes[theme!].dangerColor}
+						color={themes[theme].dangerColor}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -999,7 +998,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									params: { rid }
 								})
 							}
-							left={() => <List.Icon name='chat-forward' color={themes[theme!].titleText} />}
+							left={() => <List.Icon name='chat-forward' color={themes[theme].titleText} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1015,7 +1014,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.placeOnHoldLivechat
 								})
 							}
-							left={() => <List.Icon name='pause' color={themes[theme!].titleText} />}
+							left={() => <List.Icon name='pause' color={themes[theme].titleText} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1031,7 +1030,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.returnLivechat
 								})
 							}
-							left={() => <List.Icon name='move-to-the-queue' color={themes[theme!].titleText} />}
+							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].titleText} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1041,13 +1040,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<>
 					<List.Item
 						title='Close'
-						color={themes[theme!].dangerColor}
+						color={themes[theme].dangerColor}
 						onPress={() =>
 							this.onPressTouchable({
 								event: this.closeLivechat
 							})
 						}
-						left={() => <List.Icon name='chat-close' color={themes[theme!].dangerColor} />}
+						left={() => <List.Icon name='chat-close' color={themes[theme].dangerColor} />}
 						showActionIndicator
 					/>
 					<List.Separator />

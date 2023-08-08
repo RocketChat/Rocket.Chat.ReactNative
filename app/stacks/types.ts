@@ -13,20 +13,6 @@ import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContex
 import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
 
-export type SetUsernameStackParamList = {
-	SetUsernameView: {
-		title: string;
-	};
-};
-
-export type StackParamList = {
-	AuthLoading: undefined;
-	OutsideStack: NavigatorScreenParams<OutsideParamList>;
-	InsideStack: NavigatorScreenParams<InsideStackParamList>;
-	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
-	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
-};
-
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
@@ -138,7 +124,7 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: ISubscription;
-		roomUser?: any; // TODO: Change
+		roomUser: any; // TODO: Change
 	};
 	ThreadMessagesView: {
 		rid: string;
@@ -259,7 +245,7 @@ export type E2ESaveYourPasswordStackParamList = {
 };
 
 export type E2EEnterYourPasswordStackParamList = {
-	E2EEnterYourPasswordView?: undefined;
+	E2EEnterYourPasswordView: undefined;
 };
 
 export type InsideStackParamList = {
@@ -272,10 +258,10 @@ export type InsideStackParamList = {
 		attachments: IAttachment[];
 		isShareView?: boolean;
 		isShareExtension: boolean;
-		serverInfo: TServerModel;
+		serverInfo: IServer;
 		text: string;
 		room: TSubscriptionModel;
-		thread?: TThreadModel;
+		thread: TThreadModel;
 		replying?: boolean;
 		replyingMessage?: IMessage;
 		closeReply?: Function;
