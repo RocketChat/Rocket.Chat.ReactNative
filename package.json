@@ -73,7 +73,7 @@
 		"expo": "^46.0.9",
 		"expo-apple-authentication": "4.2.1",
 		"expo-av": "11.2.3",
-		"expo-camera": "^13.2.1",
+		"expo-camera": "12.3.0",
 		"expo-file-system": "14.0.0",
 		"expo-haptics": "11.2.0",
 		"expo-keep-awake": "10.1.1",

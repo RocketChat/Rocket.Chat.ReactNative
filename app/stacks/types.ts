@@ -7,10 +7,10 @@ import { TDataSelect } from '../definitions/IDataSelect';
 import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../definitions/ILivechatTag';
 import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
-import { TServerModel } from '../definitions/IServer';
+import { IServer } from '../definitions/IServer';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
-import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
+import { ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
 
 export type ChatsStackParamList = {

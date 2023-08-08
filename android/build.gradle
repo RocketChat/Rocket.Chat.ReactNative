@@ -6,12 +6,7 @@ buildscript {
     def isPlay = !taskRequests.contains("foss")
 
     ext {
-<<<<<<< HEAD
-        // TODO: target 33
         buildToolsVersion = "33.0.0"
-=======
-        buildToolsVersion = "31.0.0"
->>>>>>> parent of 0079229a3 (chore: Upgrade React Native to 0.71.7 (#4984))
         minSdkVersion = 23
         compileSdkVersion = 33
         targetSdkVersion = 33

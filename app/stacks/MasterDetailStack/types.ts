@@ -1,6 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 
-import { TServerModel, TThreadModel } from '../../definitions';
 import { IAttachment } from '../../definitions/IAttachment';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
