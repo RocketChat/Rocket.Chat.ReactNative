@@ -164,7 +164,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 					type: 'audio/aac',
 					store: 'Uploads',
 					path: fileURI,
-					size: fileData.size
+					size: fileData.exists ? fileData.size : null
 				};
 
 				onFinish(fileInfo);
