@@ -101,6 +101,7 @@ export const colors = {
 		n900: '#1F2329',
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
+		overlayColor: '#1F2329B2',
 		...mentions,
 		...callButtons
 	},
@@ -179,6 +180,7 @@ export const colors = {
 		n900: '#FFFFFF',
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
+		overlayColor: '#1F2329B2',
 		...mentions,
 		...callButtons
 	},
@@ -257,6 +259,7 @@ export const colors = {
 		n900: '#FFFFFF',
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
+		overlayColor: '#1F2329B2',
 		...mentions,
 		...callButtons
 	}
