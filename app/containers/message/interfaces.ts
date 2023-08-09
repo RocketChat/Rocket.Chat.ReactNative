@@ -14,7 +14,7 @@ export interface IMessageAttachments {
 	isReply?: boolean;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
-	id: string;
+	author?: IUserMessage;
 }
 
 export interface IMessageAvatar {
@@ -108,6 +108,7 @@ export interface IMessageInner
 	type: MessageType;
 	blocks: [];
 	urls?: IUrl[];
+	isPreview?: boolean;
 }
 
 export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {

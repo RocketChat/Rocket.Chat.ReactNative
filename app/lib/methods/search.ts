@@ -4,14 +4,19 @@ import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, IUserMessage, SubscriptionType } from '../../definitions';
-import { isGroupChat } from './helpers';
+import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { isGroupChat, isReadOnly } from './helpers';
 
 export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearchSubscription = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
+export const localSearchSubscription = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	filterMessagingAllowed = false
+}): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -37,6 +42,17 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		subscriptions = subscriptions.filter(item => item.t === 'd' && !isGroupChat(item));
 	} else if (!filterUsers && filterRooms) {
 		subscriptions = subscriptions.filter(item => item.t !== 'd' || isGroupChat(item));
+	}
+
+	if (filterMessagingAllowed) {
+		const username = reduxStore.getState().login.user.username as string;
+		const filteredSubscriptions = await Promise.all(
+			subscriptions.map(async item => {
+				const isItemReadOnly = await isReadOnly(item, username);
+				return isItemReadOnly ? null : item;
+			})
+		);
+		subscriptions = filteredSubscriptions.filter(item => item !== null) as TSubscriptionModel[];
 	}
 
 	const search = subscriptions.slice(0, 7).map(item => ({

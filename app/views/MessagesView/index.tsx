@@ -10,7 +10,7 @@ import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import getFileUrlFromMessage from './getFileUrlFromMessage';
+import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
@@ -204,7 +204,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 								{
 									title: item.name,
 									description: item.description,
-									...getFileUrlFromMessage(item)
+									...getFileUrlAndTypeFromMessage(item)
 								}
 							]
 						}}

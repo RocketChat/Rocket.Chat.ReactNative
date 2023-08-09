@@ -1,5 +1,9 @@
 export const mappedIcons = {
+	'arrow-forward': 59841,
 	'status-disabled': 59837,
+	'arrow-right': 59838,
+	'text-format': 59839,
+	'code-block': 59840,
 	'lamp-bulb': 59836,
 	'phone-in': 59835,
 	'basketball': 59776,

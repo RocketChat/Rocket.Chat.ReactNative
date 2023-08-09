@@ -209,6 +209,7 @@ export type SettingsStackParamList = {
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
+	MediaAutoDownloadView: undefined;
 };
 
 export type AdminPanelStackParamList = {
@@ -244,6 +245,9 @@ export type NewMessageStackParamList = {
 		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
+	};
+	ForwardMessageView: {
+		message: TAnyMessageModel;
 	};
 };
 
