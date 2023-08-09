@@ -55,7 +55,7 @@ const NewMessageView = () => {
 				const db = database.active;
 				const c = await db
 					.get('subscriptions')
-					.query(Q.where('t', 'd'), Q.take(QUERY_SIZE), Q.sortBy('room_updated_at', Q.desc))
+					.query(Q.where('t', 'd'), Q.experimentalTake(QUERY_SIZE), Q.experimentalSortBy('room_updated_at', Q.desc))
 					.fetch();
 				setChats(c);
 			} catch (e) {

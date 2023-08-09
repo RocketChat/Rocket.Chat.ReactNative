@@ -32,9 +32,9 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		});
 	}, [navigation]);
 
-	const navigateToScreen = () => {
+	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
 		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
-		navigation.navigate('UserNotificationPrefView');
+		navigation.navigate(screen);
 	};
 
 	const toggleMessageParser = async (value: boolean) => {
@@ -68,7 +68,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					<List.Separator />
 					<List.Item
 						title='Notifications'
-						onPress={() => navigateToScreen()}
+						onPress={() => navigateToScreen('UserNotificationPrefView')}
 						showActionIndicator
 						testID='preferences-view-notifications'
 					/>

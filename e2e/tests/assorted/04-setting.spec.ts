@@ -61,6 +61,10 @@ describe('Settings screen', () => {
 			await expect(element(by.id('settings-view-security-privacy'))).toExist();
 		});
 
+		it('should have media auto-download', async () => {
+			await expect(element(by.id('settings-view-media-auto-download'))).toExist();
+		});
+
 		it('should have licence', async () => {
 			await expect(element(by.id('settings-view-license'))).toExist();
 		});
