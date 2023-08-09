@@ -18,13 +18,12 @@ import { useTheme } from '../../../../theme';
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface ISlider {
-	currentTime: number;
-	duration: number;
 	thumbColor: string;
 	sound: Sound | null;
+	onEndCallback: () => void;
 }
 
-const Slider = ({ thumbColor = '', sound }: ISlider) => {
+const Slider = ({ thumbColor = '', sound, onEndCallback }: ISlider) => {
 	const [loaded, setLoaded] = useState(false);
 
 	const { colors } = useTheme();
@@ -39,7 +38,6 @@ const Slider = ({ thumbColor = '', sound }: ISlider) => {
 	const onEndGestureHandler = useSharedValue(false);
 
 	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-		console.log('🚀 ~ file: Slider.tsx:42 ~ onPlaybackStatusUpdate ~ status:', status);
 		if (status) {
 			onLoad(status);
 			onProgress(status);
@@ -51,7 +49,7 @@ const Slider = ({ thumbColor = '', sound }: ISlider) => {
 		if (sound) {
 			sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 		}
-	}, [onPlaybackStatusUpdate, sound]);
+	}, [sound]);
 
 	const onLoad = (data: AVPlaybackStatus) => {
 		if (data.isLoaded && data.durationMillis) {
@@ -65,15 +63,18 @@ const Slider = ({ thumbColor = '', sound }: ISlider) => {
 		if (data.isLoaded) {
 			const currentSecond = data.positionMillis / 1000;
 			if (currentSecond <= duration.value) {
-				console.log('🚀 ~ file: Slider.tsx:68 ~ onProgress ~ duration.value:', duration.value);
-				console.log('🚀 ~ file: Slider.tsx:70 ~ onProgress ~ currentTime.value:', currentTime.value);
 				currentTime.value = currentSecond;
 			}
 		}
 	};
 
 	const onEnd = (data: AVPlaybackStatus) => {
-		// FIX HERE
+		if (data.isLoaded) {
+			if (data.didJustFinish) {
+				onEndCallback();
+				currentTime.value = 0;
+			}
+		}
 	};
 
 	const styleLine = useAnimatedStyle(() => ({
@@ -111,7 +112,6 @@ const Slider = ({ thumbColor = '', sound }: ISlider) => {
 			scale.value = 1;
 			isHandlePan.value = false;
 			onEndGestureHandler.value = true;
-			// SEND A CALLBACK TO CHANGE THE PROGRESS OF THE AUDIO
 		}
 	});
 
