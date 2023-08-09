@@ -89,7 +89,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 
 	const pauseSound = () => {
 		EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
-		togglePlayPause();
+		setPaused(true);
+		playPause(true);
 	};
 
 	const getUrl = () => {
@@ -170,6 +171,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	};
 
 	const onPress = () => {
+		if (loading) {
+			return;
+		}
 		if (cached) {
 			togglePlayPause();
 			return;
@@ -178,8 +182,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	};
 
 	useEffect(() => {
-		sound.current = new Audio.Sound();
-
 		const handleCache = async () => {
 			const cachedAudioResult = await getMediaCache({
 				type: 'audio',
@@ -187,7 +189,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 				urlToCache: getUrl()
 			});
 			if (cachedAudioResult?.exists) {
-				await sound.current?.loadAsync({ uri: cachedAudioResult.uri });
+				const { sound: soundLoaded } = await Audio.Sound.createAsync({ uri: cachedAudioResult.uri });
+				sound.current = soundLoaded;
 				setLoading(false);
 				setCached(true);
 				return;
@@ -202,11 +205,14 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 
 		return () => {
 			EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
-			try {
-				sound.current?.stopAsync();
-			} catch {
-				// Do nothing
-			}
+			const unloadAsync = async () => {
+				try {
+					await sound.current?.unloadAsync();
+				} catch {
+					// Do nothing
+				}
+			};
+			unloadAsync();
 		};
 	}, []);
 
