@@ -162,8 +162,8 @@ const Slider = ({ thumbColor = '', sound, onEndCallback }: ISlider) => {
 				animatedProps={getCurrentTime}
 			/>
 			<View style={styles.slider} onLayout={onLayout}>
-				<View style={[styles.line, { backgroundColor: colors.auxiliaryText }]} />
-				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.tintColor }]} />
+				<View style={[styles.line, { backgroundColor: colors.audioPlayerSecondary }]} />
+				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.audioPlayerPrimary }]} />
 				<PanGestureHandler enabled={loaded} onGestureEvent={gestureHandler}>
 					<Animated.View style={[styles.thumbSlider, { backgroundColor: thumbColor }, styleThumb]} />
 				</PanGestureHandler>
