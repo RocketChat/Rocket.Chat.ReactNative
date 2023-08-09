@@ -5,7 +5,7 @@ export class MMKVLoader {
 
 	setProcessingMode = jest.fn().mockImplementation(() => ({
 		withEncryption: jest.fn().mockImplementation(() => ({
-			initialize: jest.fn().mockImplementation(() => {})
+			encryptWithCustomKey: jest.fn().mockImplementation(() => ({ initialize: jest.fn().mockImplementation(() => {}) }))
 		}))
 	}));
 }

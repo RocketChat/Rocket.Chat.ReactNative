@@ -4,6 +4,7 @@ const MMKV = new MMKVLoader()
 	// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
 	.setProcessingMode(ProcessingModes.MULTI_PROCESS)
 	.withEncryption()
+	.encryptWithCustomKey('rocket-chat') // JUST A TEST KEY
 	.initialize();
 
 export const useUserPreferences = create(MMKV);
