@@ -102,6 +102,9 @@ export const colors = {
 		overlayColor: '#1F2329B2',
 		audioPlayerPrimary: '#156FF5',
 		audioPlayerSecondary: '#CBCED1',
+		audioRateBackground: '#E4E7EA',
+		audioRateText: '#1F2329',
+		audioTimeText: '#2F343D',
 		...mentions,
 		...callButtons
 	},
@@ -181,6 +184,9 @@ export const colors = {
 		overlayColor: '#1F2329B2',
 		audioPlayerPrimary: '#3976D1',
 		audioPlayerSecondary: '#404754',
+		audioRateBackground: '#353B45',
+		audioRateText: '#E4E7EA',
+		audioTimeText: '#E4E7EA',
 		...mentions,
 		...callButtons
 	},
@@ -260,6 +266,9 @@ export const colors = {
 		overlayColor: '#1F2329B2',
 		audioPlayerPrimary: '#3976D1',
 		audioPlayerSecondary: '#404754',
+		audioRateBackground: '#353B45',
+		audioRateText: '#E4E7EA',
+		audioTimeText: '#E4E7EA',
 		...mentions,
 		...callButtons
 	}

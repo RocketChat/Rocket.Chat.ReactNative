@@ -19,6 +19,7 @@ import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPr
 import styles from './styles';
 import Slider from './Slider';
 import Loading from './Loading';
+import AudioRate from './AudioRate';
 
 interface IButton {
 	loading: boolean;
@@ -127,6 +128,10 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		} catch {
 			// Do nothing
 		}
+	};
+
+	const setRate = async (value = 1.0) => {
+		await sound.current?.setRateAsync(value, true);
 	};
 
 	const handleDownload = async () => {
@@ -249,7 +254,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 			>
 				<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
 				<Slider sound={sound.current} thumbColor={thumbColor} onEndCallback={onEnd} />
-				<View style={{ width: 36, height: 24, backgroundColor: '#999', borderRadius: 4, marginRight: 16 }} />
+				<AudioRate onChange={setRate} />
 			</View>
 		</>
 	);

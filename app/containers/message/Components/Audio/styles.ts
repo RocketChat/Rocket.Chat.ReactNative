@@ -50,6 +50,19 @@ const styles = StyleSheet.create({
 		width: 12,
 		borderRadius: 6,
 		zIndex: 3
+	},
+	containerAudioRate: {
+		width: 36,
+		height: 24,
+		borderRadius: 4,
+		marginRight: 16,
+		justifyContent: 'center',
+		alignItems: 'center',
+		overflow: 'hidden'
+	},
+	audioRateText: {
+		fontSize: 14,
+		...sharedStyles.textBold
 	}
 });
 
