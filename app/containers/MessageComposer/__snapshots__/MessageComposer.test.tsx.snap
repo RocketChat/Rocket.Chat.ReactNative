@@ -103,6 +103,7 @@ exports[`renders correctly 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -115,7 +116,7 @@ exports[`renders correctly 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -308,6 +309,7 @@ exports[`renders correctly with audio recorder disabled 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -320,7 +322,7 @@ exports[`renders correctly with audio recorder disabled 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -452,6 +454,7 @@ exports[`renders correctly with audio recorder disabled and without audio upload
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -464,7 +467,7 @@ exports[`renders correctly with audio recorder disabled and without audio upload
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -596,6 +599,7 @@ exports[`renders correctly without audio upload permissions 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -608,7 +612,7 @@ exports[`renders correctly without audio upload permissions 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -670,6 +674,7 @@ exports[`renders toolbar when focused 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -682,7 +687,7 @@ exports[`renders toolbar when focused 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -1122,6 +1127,7 @@ exports[`send message 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -1134,7 +1140,7 @@ exports[`send message 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -1257,6 +1263,7 @@ exports[`tap actions from toolbar 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -1269,7 +1276,7 @@ exports[`tap actions from toolbar 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -1639,6 +1646,7 @@ exports[`tap emoji 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -1651,7 +1659,7 @@ exports[`tap emoji 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -1901,6 +1909,7 @@ exports[`tap markdown 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -1913,7 +1922,7 @@ exports[`tap markdown 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,
@@ -2283,6 +2292,7 @@ exports[`tap mention 1`] = `
         onBlur={[Function]}
         onChangeText={[Function]}
         onFocus={[Function]}
+        onLayout={[Function]}
         onSelectionChange={[Function]}
         placeholder="Message "
         placeholderTextColor="#9EA2A8"
@@ -2295,7 +2305,7 @@ exports[`tap mention 1`] = `
               "fontSize": 16,
               "fontWeight": "400",
               "lineHeight": 22,
-              "maxHeight": 240,
+              "maxHeight": 200,
               "minHeight": 48,
               "paddingBottom": 12,
               "paddingTop": 12,

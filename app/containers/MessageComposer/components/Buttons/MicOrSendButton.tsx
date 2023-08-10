@@ -1,14 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { BaseButton } from './BaseButton';
 import { MessageComposerContext } from '../../context';
 import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
+import { emitter } from '../../emitter';
+import { TMicOrSend } from '../../interfaces';
 
 export const MicOrSendButton = () => {
-	const { micOrSend, permissionToUpload, sendMessage } = useContext(MessageComposerContext);
+	const { permissionToUpload, sendMessage } = useContext(MessageComposerContext);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
 	const { colors } = useTheme();
+	const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
+
+	useEffect(() => {
+		emitter.on('setMicOrSend', value => setMicOrSend(value));
+		return () => emitter.off('setMicOrSend');
+	}, []);
 
 	if (micOrSend === 'send') {
 		return (

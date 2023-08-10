@@ -12,12 +12,14 @@ import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
 import { MIN_HEIGHT } from '../constants';
+import database from '../../../lib/database';
+import { emitter } from '../emitter';
 
 const styles = StyleSheet.create({
 	textInput: {
 		flex: 1,
 		minHeight: MIN_HEIGHT,
-		maxHeight: 240,
+		maxHeight: 200,
 		paddingTop: 12,
 		// TODO: check glitch on iOS selector pin with several lines
 		paddingBottom: 12,
@@ -32,7 +34,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, sharing, setFocused, setMicOrSend } = useContext(MessageComposerContext);
+	const { rid, tmid, editing, sharing, focused, setFocused, setTrackingViewHeight } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -58,14 +60,15 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 	}, []);
 
 	useImperativeHandle(ref, () => ({
-		sendMessage: () => {
+		getTextAndClear: () => {
 			const text = textRef.current;
 			setInput('');
 			return text;
 		},
 		getText: () => textRef.current,
 		getSelection: () => selectionRef.current,
-		setInput
+		setInput,
+		focus
 	}));
 
 	const setInput: TSetInput = (text, selection) => {
@@ -76,12 +79,18 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		if (inputRef.current) {
 			inputRef.current.setNativeProps({ text });
 		}
-		setMicOrSend(text.length === 0 ? 'mic' : 'send');
+		emitter.emit('setMicOrSend', text.length === 0 ? 'mic' : 'send');
+	};
+
+	const focus = () => {
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
 	};
 
 	const onChangeText: TextInputProps['onChangeText'] = text => {
-		const isTextEmpty = text.length === 0;
-		setMicOrSend(!isTextEmpty ? 'send' : 'mic');
+		// const isTextEmpty = text.length === 0;
+		// setMicOrSend(!isTextEmpty ? 'send' : 'mic');
 		debouncedOnChangeText(text);
 		setInput(text);
 	};
@@ -98,16 +107,71 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		setFocused(false);
 	};
 
-	const debouncedOnChangeText = useDebouncedCallback((text: string) => {
+	const handleLayout: TextInputProps['onLayout'] = e => {
+		setTrackingViewHeight(e.nativeEvent.layout.height);
+	};
+
+	// TODO: duplicated
+	const stopAutocomplete = () => {
+		emitter.emit('setAutocomplete', { text: '', type: null, params: '' });
+	};
+
+	const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
 		const isTextEmpty = text.length === 0;
 		handleTyping(!isTextEmpty);
-		// if (isTextEmpty) {
-		// 	// this.stopTrackingMention();
-		// 	console.log('stopTrackingMention');
-		// 	return;
-		// }
-		// const { start, end } = selectionRef.current;
-		// console.log('🚀 ~ file: MessageComposerInput.tsx:73 ~ debouncedOnChangeText ~ start, end:', start, end);
+		if (isTextEmpty || !focused) {
+			stopAutocomplete();
+			return;
+		}
+		const { start, end } = selectionRef.current;
+		const cursor = Math.max(start, end);
+		const whiteSpaceOrBreakLineRegex = /[\s\n]+/;
+		const txt =
+			cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
+		const lastWord = txt[txt.length - 1];
+		const autocompleteText = lastWord.substring(1);
+
+		if (!lastWord) {
+			stopAutocomplete();
+			return;
+		}
+		if (text.match(/^\//)) {
+			const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+			if (commandParameter) {
+				const db = database.active;
+				const [, command, params] = commandParameter;
+				const commandsCollection = db.get('slash_commands');
+				try {
+					const commandRecord = await commandsCollection.find(command);
+					if (commandRecord.providesPreview) {
+						emitter.emit('setAutocomplete', { params, text: command, type: '/preview' });
+						return;
+					}
+				} catch (e) {
+					// do nothing
+				}
+			}
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '/' });
+			return;
+		}
+		if (lastWord.match(/^#/)) {
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '#' });
+			return;
+		}
+		if (lastWord.match(/^@/)) {
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '@' });
+			return;
+		}
+		if (lastWord.match(/^:/)) {
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: ':' });
+			return;
+		}
+		if (lastWord.match(/^!/) && subscription?.t === 'l') {
+			emitter.emit('setAutocomplete', { text: autocompleteText, type: '!' });
+			return;
+		}
+
+		stopAutocomplete();
 	}, 300); // TODO: 300ms?
 
 	const handleTyping = (isTyping: boolean) => {
@@ -119,6 +183,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 
 	return (
 		<TextInput
+			onLayout={handleLayout}
 			style={[styles.textInput, { color: colors.fontDefault }]}
 			placeholder={placeholder}
 			placeholderTextColor={colors.fontAnnotation}
