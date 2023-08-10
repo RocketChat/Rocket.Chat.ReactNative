@@ -5,7 +5,7 @@ import styles from './styles';
 import { useTheme } from '../../../../theme';
 import Touchable from '../../Touchable';
 
-const AudioRate = ({ onChange }: { onChange: (value: number) => void }) => {
+const AudioRate = ({ onChange, loaded = false }: { onChange: (value: number) => void; loaded: boolean }) => {
 	const [rate, setRate] = useState(1.0);
 	const { colors } = useTheme();
 
@@ -16,7 +16,11 @@ const AudioRate = ({ onChange }: { onChange: (value: number) => void }) => {
 	};
 
 	return (
-		<Touchable onPress={onPress} style={[styles.containerAudioRate, { backgroundColor: colors.audioRateBackground }]}>
+		<Touchable
+			disabled={!loaded}
+			onPress={onPress}
+			style={[styles.containerAudioRate, { backgroundColor: colors.audioRateBackground }]}
+		>
 			<Text style={[styles.audioRateText, { color: colors.audioRateText }]}>{rate}x</Text>
 		</Touchable>
 	);

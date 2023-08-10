@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { LayoutChangeEvent, View, TextInput } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
+	SharedValue,
 	runOnJS,
 	useAnimatedGestureHandler,
 	useAnimatedProps,
@@ -9,8 +10,6 @@ import Animated, {
 	useDerivedValue,
 	useSharedValue
 } from 'react-native-reanimated';
-import { Sound } from 'expo-av/build/Audio/Sound';
-import { AVPlaybackStatus } from 'expo-av';
 
 import styles from './styles';
 import { useTheme } from '../../../../theme';
@@ -18,64 +17,21 @@ import { useTheme } from '../../../../theme';
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface ISlider {
-	thumbColor: string;
-	sound: Sound | null;
-	onEndCallback: () => void;
+	duration: SharedValue<number>;
+	currentTime: SharedValue<number>;
+	loaded: boolean;
+	onChangeTime: (time: number) => Promise<void>;
 }
 
-const Slider = ({ thumbColor = '', sound, onEndCallback }: ISlider) => {
-	const [loaded, setLoaded] = useState(false);
-
+const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider) => {
 	const { colors } = useTheme();
 
-	const duration = useSharedValue(0);
-	const currentTime = useSharedValue(0);
 	const maxWidth = useSharedValue(1);
 	const x = useSharedValue(0);
 	const current = useSharedValue('00:00');
 	const scale = useSharedValue(1);
 	const isHandlePan = useSharedValue(false);
 	const onEndGestureHandler = useSharedValue(false);
-
-	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-		if (status) {
-			onLoad(status);
-			onProgress(status);
-			onEnd(status);
-		}
-	};
-
-	useEffect(() => {
-		if (sound) {
-			sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-		}
-	}, [sound]);
-
-	const onLoad = (data: AVPlaybackStatus) => {
-		if (data.isLoaded && data.durationMillis) {
-			const durationSeconds = data.durationMillis / 1000;
-			duration.value = durationSeconds > 0 ? durationSeconds : 0;
-			setLoaded(true);
-		}
-	};
-
-	const onProgress = (data: AVPlaybackStatus) => {
-		if (data.isLoaded) {
-			const currentSecond = data.positionMillis / 1000;
-			if (currentSecond <= duration.value) {
-				currentTime.value = currentSecond;
-			}
-		}
-	};
-
-	const onEnd = (data: AVPlaybackStatus) => {
-		if (data.isLoaded) {
-			if (data.didJustFinish) {
-				onEndCallback();
-				currentTime.value = 0;
-			}
-		}
-	};
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: x.value,
@@ -116,7 +72,7 @@ const Slider = ({ thumbColor = '', sound, onEndCallback }: ISlider) => {
 	});
 
 	const wrapper = async (time: number) => {
-		await sound?.setPositionAsync(Math.round(time * 1000));
+		await onChangeTime(Math.round(time * 1000));
 		onEndGestureHandler.value = false;
 	};
 
@@ -152,6 +108,8 @@ const Slider = ({ thumbColor = '', sound, onEndCallback }: ISlider) => {
 			} as any),
 		[current]
 	);
+
+	const thumbColor = loaded ? colors.audioPlayerPrimary : colors.tintDisabled;
 
 	return (
 		<View style={styles.sliderContainer}>
