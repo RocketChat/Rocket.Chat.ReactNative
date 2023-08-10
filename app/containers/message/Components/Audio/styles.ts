@@ -20,9 +20,6 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		justifyContent: 'center'
 	},
-	audioLoading: {
-		marginHorizontal: 8
-	},
 	sliderContainer: {
 		flexDirection: 'row',
 		flex: 1,

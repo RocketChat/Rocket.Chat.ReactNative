@@ -9,7 +9,6 @@ import Markdown from '../../../markdown';
 import { CustomIcon } from '../../../CustomIcon';
 import { themes } from '../../../../lib/constants';
 import MessageContext from '../../Context';
-// import ActivityIndicator from '../../../ActivityIndicator';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { useTheme } from '../../../../theme';
@@ -19,6 +18,7 @@ import { PAUSE_AUDIO } from '../../constants';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import styles from './styles';
 import Slider from './Slider';
+import Loading from './Loading';
 
 interface IButton {
 	loading: boolean;
@@ -51,12 +51,9 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 const Button = React.memo(({ loading, paused, onPress, disabled, cached }: IButton) => {
 	const { colors } = useTheme();
 
-	let customIconName: 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled' | 'loading' = 'arrow-down';
+	let customIconName: 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled' = 'arrow-down';
 	if (cached) {
 		customIconName = paused ? 'play-shape-filled' : 'pause-shape-filled';
-	}
-	if (loading) {
-		customIconName = 'loading';
 	}
 	return (
 		<Touchable
@@ -66,11 +63,11 @@ const Button = React.memo(({ loading, paused, onPress, disabled, cached }: IButt
 			hitSlop={BUTTON_HIT_SLOP}
 			background={Touchable.SelectableBackgroundBorderless()}
 		>
-			<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonText} />
-			{/* {loading ? (
-				<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
+			{loading ? (
+				<Loading />
 			) : (
-			)} */}
+				<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonText} />
+			)}
 		</Touchable>
 	);
 });
