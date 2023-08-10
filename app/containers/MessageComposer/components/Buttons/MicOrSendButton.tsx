@@ -8,7 +8,7 @@ import { emitter } from '../../emitter';
 import { TMicOrSend } from '../../interfaces';
 
 export const MicOrSendButton = () => {
-	const { permissionToUpload, sendMessage } = useContext(MessageComposerContext);
+	const { permissionToUpload, sendMessage, editing, editCancel } = useContext(MessageComposerContext);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
 	const { colors } = useTheme();
 	const [micOrSend, setMicOrSend] = useState<TMicOrSend>('mic');
@@ -20,13 +20,23 @@ export const MicOrSendButton = () => {
 
 	if (micOrSend === 'send') {
 		return (
-			<BaseButton
-				onPress={() => sendMessage()}
-				testID='message-composer-send'
-				accessibilityLabel='Send_message'
-				icon='send-filled'
-				color={colors.buttonBackgroundPrimaryDefault}
-			/>
+			<>
+				{editing && editCancel ? (
+					<BaseButton
+						onPress={() => editCancel()}
+						testID='message-composer-cancel-edit'
+						accessibilityLabel='Cancel_editing'
+						icon='close'
+					/>
+				) : null}
+				<BaseButton
+					onPress={() => sendMessage()}
+					testID='message-composer-send'
+					accessibilityLabel='Send_message'
+					icon='send-filled'
+					color={colors.buttonBackgroundPrimaryDefault}
+				/>
+			</>
 		);
 	}
 

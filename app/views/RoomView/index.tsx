@@ -772,10 +772,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: undefined, editing: false });
 	};
 
-	onEditRequest = async (message: TAnyMessageModel) => {
+	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 		this.setState({ selectedMessage: undefined, editing: false });
 		try {
-			await Services.editMessage(message);
+			await Services.editMessage(message as IMessage);
 		} catch (e) {
 			log(e);
 		}
@@ -1258,11 +1258,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		const { room, lastOpen, canAutoTranslate } = this.state;
+		const { room, lastOpen, canAutoTranslate, selectedMessage, editing } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
+		const isBeingEdited = editing && item.id === selectedMessage?.id;
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
@@ -1327,6 +1328,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					highlighted={highlightedMessage === item.id}
 					theme={theme!}
 					closeEmojiAndAction={this.handleCloseEmoji}
+					isBeingEdited={isBeingEdited}
 				/>
 			);
 		}
@@ -1347,7 +1349,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const {
 			joined,
 			room,
-			// selectedMessage,
+			selectedMessage,
 			editing,
 			// replying,
 			// replyWithMention,
@@ -1432,6 +1434,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				tmid={this.tmid}
 				editing={editing}
 				sharing={false}
+				editRequest={this.onEditRequest}
+				editCancel={this.onEditCancel}
+				message={selectedMessage}
 			/>
 		);
 	};
@@ -1462,7 +1467,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading } = this.state;
+		const { room, loading, editing, selectedMessage } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1485,12 +1490,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					tmid={this.tmid}
 					tunread={tunread}
 					ignored={ignored}
+					editing={editing}
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
 					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
 					showMessageInMainThread={user.showMessageInMainThread ?? false}
 					serverVersion={serverVersion}
+					selectedMessageId={selectedMessage?.id}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}

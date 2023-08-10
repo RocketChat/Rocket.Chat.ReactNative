@@ -1,9 +1,9 @@
-import { IEmoji, IPreviewItem, TUserStatus } from '../../definitions';
+import { IEmoji, IPreviewItem, TUserStatus, IMessage } from '../../definitions';
 
 export interface IMessageComposerProps {
 	rid: string;
 	// baseUrl: string;
-	// // message: IMessage;
+	message?: IMessage;
 	// // replying: boolean;
 	editing: boolean;
 	// threadsEnabled: boolean;
@@ -16,8 +16,8 @@ export interface IMessageComposerProps {
 	// FileUpload_MaxFileSize: number;
 	// // Message_AudioRecorderEnabled: boolean;
 	// getCustomEmoji: TGetCustomEmoji;
-	// // editCancel: Function;
-	// // editRequest: Function;
+	editCancel?: () => void;
+	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => Promise<void>;
 	// TODO: discuss this prop name
 	onSendMessage(message: string, tmid?: string, tshow?: boolean): void;
 	// typing: Function;

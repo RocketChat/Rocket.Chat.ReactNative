@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
 require('../MessageBox/EmojiKeyboard');
 
 export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerProps>(
-	({ onSendMessage, rid, tmid, sharing = false, editing = false }, ref): ReactElement => {
-		console.count('Message Composer');
+	({ onSendMessage, rid, tmid, sharing = false, editing = false, message, editCancel, editRequest }, ref): ReactElement => {
+		// console.count('Message Composer');
 		const composerInputRef = useRef(null);
 		const composerInputComponentRef = useRef<IComposerInput>({
 			getTextAndClear: () => '',
@@ -98,19 +98,28 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		}, [trackingViewRef]);
 
 		const sendMessage = async () => {
-			const message = composerInputComponentRef.current.getTextAndClear();
+			const textFromInput = composerInputComponentRef.current.getTextAndClear();
+
+			if (editing && message?.id && editRequest) {
+				const {
+					id,
+					// @ts-ignore
+					subscription: { id: rid }
+				} = message;
+				return editRequest({ id, msg: textFromInput, rid });
+			}
 
 			// Slash command
-			if (message[0] === '/') {
+			if (textFromInput[0] === '/') {
 				const db = database.active;
 				const commandsCollection = db.get('slash_commands');
-				const command = message.replace(/ .*/, '').slice(1);
+				const command = textFromInput.replace(/ .*/, '').slice(1);
 				const likeString = sanitizeLikeString(command);
 				const slashCommand = await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch();
 				if (slashCommand.length > 0) {
 					logEvent(events.COMMAND_RUN);
 					try {
-						const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
+						const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 						const [{ appId }] = slashCommand;
 						const triggerId = generateTriggerId(appId);
 						await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid); // || messageTmid);
@@ -123,7 +132,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			}
 
 			// Text message
-			onSendMessage(message);
+			onSendMessage(textFromInput);
 		};
 
 		const onKeyboardResigned = () => {
@@ -280,6 +289,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 			onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 		};
 
+		const backgroundColor = editing ? colors.statusBackgroundWarning2 : colors.surfaceLight;
+
 		return (
 			<MessageComposerContext.Provider
 				value={{
@@ -287,6 +298,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					tmid,
 					editing,
 					sharing,
+					message,
 					focused,
 					setFocused,
 					showEmojiKeyboard,
@@ -303,16 +315,15 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					takeVideo,
 					chooseFromLibrary,
 					chooseFile,
-					closeEmojiKeyboardAndAction
+					closeEmojiKeyboardAndAction,
+					editCancel,
+					editRequest
 				}}
 			>
 				<KeyboardAccessoryView
 					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 					renderContent={() => (
-						<View
-							style={[styles.container, { backgroundColor: colors.surfaceLight, borderTopColor: colors.strokeLight }]}
-							testID='message-composer'
-						>
+						<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
 							<View style={styles.input}>
 								<Left />
 								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
@@ -330,7 +341,7 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					trackInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
-					bottomViewColor={colors.surfaceLight}
+					bottomViewColor={backgroundColor}
 					iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				/>
 				<Autocomplete onPress={onAutocompleteItemSelected} />
