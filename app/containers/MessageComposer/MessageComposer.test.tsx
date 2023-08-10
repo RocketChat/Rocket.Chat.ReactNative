@@ -9,6 +9,9 @@ import { selectServerRequest } from '../../actions/server';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
+import { TAnyMessageModel } from '../../definitions';
+import { colors } from '../../lib/constants';
+import { emitter } from './emitter';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -135,4 +138,58 @@ test('tap mention', async () => {
 		// await fireEvent.press(screen.getByTestId('message-composer-mention'));
 	});
 	expect(screen.toJSON()).toMatchSnapshot();
+});
+
+describe('edit message', () => {
+	const onSendMessage = jest.fn();
+	const editCancel = jest.fn();
+	const editRequest = jest.fn();
+	const msg = 'to edit';
+	const id = 'messageId';
+	const rid = 'subscriptionId';
+	beforeEach(() => {
+		const messageToEdit = {
+			id,
+			subscription: {
+				// @ts-ignore TODO: we can remove this after we merge a PR separating IMessage vs IMessageFromServer
+				id: rid
+			},
+			msg
+		} as TAnyMessageModel;
+		render(
+			<Provider store={mockedStore}>
+				<MessageComposer
+					rid={''}
+					editing={true}
+					message={messageToEdit}
+					editCancel={editCancel}
+					onSendMessage={onSendMessage}
+					editRequest={editRequest}
+					sharing={false}
+				/>
+			</Provider>
+		);
+
+		// TODO: This is not cool, but it was the only way I could find to properly trigger the event
+		// We can think of a better way to do this before merging to develop
+		act(() => emitter.emit('setMicOrSend', 'send'));
+	});
+	test('init', () => {
+		// screen.debug();
+		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
+		expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
+		expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
+		expect(screen.getByTestId('message-composer-cancel-edit')).toBeOnTheScreen();
+	});
+	test('cancel', () => {
+		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
+		fireEvent.press(screen.getByTestId('message-composer-cancel-edit'));
+		expect(editCancel).toHaveBeenCalledTimes(1);
+	});
+	test('send', () => {
+		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
+		fireEvent.press(screen.getByTestId('message-composer-send'));
+		expect(editRequest).toHaveBeenCalledTimes(1);
+		expect(editRequest).toHaveBeenCalledWith({ id, msg, rid });
+	});
 });

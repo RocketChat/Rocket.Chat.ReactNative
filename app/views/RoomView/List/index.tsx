@@ -57,6 +57,8 @@ export interface IListContainerProps {
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
+	editing: boolean;
+	selectedMessageId?: string;
 }
 
 interface IListContainerState {
@@ -106,7 +108,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
-		const { hideSystemMessages, tunread, ignored, loading } = this.props;
+		const { hideSystemMessages, tunread, ignored, loading, editing, selectedMessageId } = this.props;
 		if (loading !== nextProps.loading) {
 			return true;
 		}
@@ -114,6 +116,12 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			return true;
 		}
 		if (refreshing !== nextState.refreshing) {
+			return true;
+		}
+		if (editing !== nextProps.editing) {
+			return true;
+		}
+		if (selectedMessageId !== nextProps.selectedMessageId) {
 			return true;
 		}
 		if (!dequal(hideSystemMessages, nextProps.hideSystemMessages)) {

@@ -34,7 +34,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, sharing, focused, setFocused, setTrackingViewHeight } = useContext(MessageComposerContext);
+	const { rid, tmid, editing, sharing, focused, setFocused, setTrackingViewHeight, message } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -50,14 +50,23 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			const draftMessage = await loadDraftMessage({ rid, tmid });
 			setInput(draftMessage);
 		};
-		setDraftMessage();
+		if (!editing) {
+			setDraftMessage();
+		}
 
 		return () => {
 			if (!editing) {
 				saveDraftMessage({ rid, tmid, draftMessage: textRef.current });
 			}
 		};
-	}, []);
+	}, [editing]);
+
+	useEffect(() => {
+		if (editing && message?.id) {
+			focus();
+			setInput(message?.msg || '');
+		}
+	}, [editing, message?.id, message?.msg]);
 
 	useImperativeHandle(ref, () => ({
 		getTextAndClear: () => {
