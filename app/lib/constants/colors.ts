@@ -105,6 +105,8 @@ export const colors = {
 		audioRateBackground: '#E4E7EA',
 		audioRateText: '#1F2329',
 		audioTimeText: '#2F343D',
+		audioBorderColor: '#EBECEF',
+		audioComponentBackground: '#F7F8FA',
 		...mentions,
 		...callButtons
 	},
@@ -187,6 +189,8 @@ export const colors = {
 		audioRateBackground: '#353B45',
 		audioRateText: '#E4E7EA',
 		audioTimeText: '#E4E7EA',
+		audioBorderColor: '#2F343D',
+		audioComponentBackground: '#1F2329',
 		...mentions,
 		...callButtons
 	},
@@ -269,6 +273,8 @@ export const colors = {
 		audioRateBackground: '#353B45',
 		audioRateText: '#E4E7EA',
 		audioTimeText: '#E4E7EA',
+		audioBorderColor: '#2F343D',
+		audioComponentBackground: '#1F2329',
 		...mentions,
 		...callButtons
 	}

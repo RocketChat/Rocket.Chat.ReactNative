@@ -158,7 +158,7 @@ const Slider = ({ thumbColor = '', sound, onEndCallback }: ISlider) => {
 			<AnimatedTextInput
 				defaultValue={'00:00'}
 				editable={false}
-				style={[styles.duration, { color: colors.bodyText }]}
+				style={[styles.duration, { color: colors.audioTimeText }]}
 				animatedProps={getCurrentTime}
 			/>
 			<View style={styles.slider} onLayout={onLayout}>

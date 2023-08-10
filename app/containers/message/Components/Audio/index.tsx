@@ -7,7 +7,6 @@ import { Sound } from 'expo-av/build/Audio/Sound';
 import Touchable from '../../Touchable';
 import Markdown from '../../../markdown';
 import { CustomIcon } from '../../../CustomIcon';
-import { themes } from '../../../../lib/constants';
 import MessageContext from '../../Context';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../../../definitions';
@@ -81,7 +80,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	const [cached, setCached] = useState(false);
 
 	const { baseUrl, user } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	const sound = useRef<Sound | null>(null);
 
@@ -232,24 +231,18 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 
 	let thumbColor;
 	if (isReply) {
-		thumbColor = themes[theme].tintDisabled;
+		thumbColor = colors.tintDisabled;
 	} else {
-		thumbColor = themes[theme].audioPlayerPrimary;
+		thumbColor = colors.audioPlayerPrimary;
 	}
 
 	return (
 		<>
-			<Markdown
-				msg={file.description}
-				style={[isReply && style]}
-				username={user.username}
-				getCustomEmoji={getCustomEmoji}
-				theme={theme}
-			/>
+			<Markdown msg={file.description} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
 			<View
 				style={[
 					styles.audioContainer,
-					{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
+					{ backgroundColor: colors.audioComponentBackground, borderColor: colors.audioBorderColor }
 				]}
 			>
 				<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
