@@ -21,4 +21,4 @@ export function ImageComponent({
 		Component = FastImage;
 	}
 	return Component;
-};
+}
