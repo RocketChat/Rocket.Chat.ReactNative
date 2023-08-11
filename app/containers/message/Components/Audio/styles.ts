@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	duration: {
-		width: 40,
 		marginHorizontal: 12,
+		fontVariant: ['tabular-nums'],
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},
