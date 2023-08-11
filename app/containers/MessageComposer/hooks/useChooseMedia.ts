@@ -10,20 +10,20 @@ import log from '../../../lib/methods/helpers/log';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
+import { useAppSelector } from '../../../lib/hooks';
 
 export const useChooseMedia = ({
 	rid,
 	tmid,
-	allowList,
-	maxFileSize,
 	permissionToUpload
 }: {
 	rid: string;
 	tmid?: string;
-	allowList: string;
-	maxFileSize: number;
 	permissionToUpload: boolean;
 }) => {
+	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
+	const allowList = FileUpload_MediaTypeWhiteList as string;
+	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {
 		cropperChooseText: I18n.t('Choose'),
 		cropperCancelText: I18n.t('Cancel'),

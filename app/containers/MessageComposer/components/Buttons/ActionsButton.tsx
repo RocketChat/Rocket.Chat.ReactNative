@@ -7,10 +7,16 @@ import { MessageComposerContext } from '../../context';
 import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../../lib/hooks';
+import { useCanUploadFile, useChooseMedia } from '../../hooks';
 
 export const ActionsButton = () => {
-	const { rid, permissionToUpload, takePhoto, takeVideo, chooseFromLibrary, chooseFile, closeEmojiKeyboardAndAction } =
-		useContext(MessageComposerContext);
+	const { rid, tmid, closeEmojiKeyboardAndAction } = useContext(MessageComposerContext);
+	const permissionToUpload = useCanUploadFile(rid);
+	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
+		rid,
+		tmid,
+		permissionToUpload
+	});
 	const { showActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 

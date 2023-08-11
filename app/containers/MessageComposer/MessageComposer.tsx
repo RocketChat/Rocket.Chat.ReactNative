@@ -7,7 +7,6 @@ import { Q } from '@nozbe/watermelondb';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext } from './context';
-import { useCanUploadFile, useChooseMedia } from './hooks';
 import { IAutocompleteItemProps, IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -56,15 +55,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		const [focused, setFocused] = useState(false);
 		const [trackingViewHeight, setTrackingViewHeight] = useState(0);
 		const [keyboardHeight, setKeyboardHeight] = useState(0);
-		const permissionToUpload = useCanUploadFile(rid);
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
-		const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
-			rid,
-			tmid,
-			allowList: FileUpload_MediaTypeWhiteList as string,
-			maxFileSize: FileUpload_MaxFileSize as number,
-			permissionToUpload
-		});
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 		useBackHandler(() => {
@@ -303,7 +293,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					setFocused,
 					showEmojiKeyboard,
 					showEmojiSearchbar,
-					permissionToUpload,
 					trackingViewHeight,
 					keyboardHeight,
 					setTrackingViewHeight,
@@ -311,10 +300,6 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 					closeEmojiKeyboard,
 					onEmojiSelected,
 					sendMessage,
-					takePhoto,
-					takeVideo,
-					chooseFromLibrary,
-					chooseFile,
 					closeEmojiKeyboardAndAction,
 					editCancel,
 					editRequest

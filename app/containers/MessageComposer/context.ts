@@ -11,7 +11,6 @@ type TMessageComposerContext = {
 	showEmojiKeyboard: boolean;
 	showEmojiSearchbar: boolean;
 	focused: boolean;
-	permissionToUpload: boolean;
 	trackingViewHeight: number;
 	keyboardHeight: number;
 	setTrackingViewHeight: (height: number) => void;
@@ -20,10 +19,6 @@ type TMessageComposerContext = {
 	closeEmojiKeyboard(): void;
 	setFocused(focused: boolean): void;
 	onEmojiSelected(emoji: IEmoji): void;
-	takePhoto(): void;
-	takeVideo(): void;
-	chooseFromLibrary(): void;
-	chooseFile(): void;
 	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
 	message?: IMessage;
 	editCancel?: () => void;
@@ -37,7 +32,6 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	showEmojiKeyboard: false,
 	showEmojiSearchbar: false,
 	focused: false,
-	permissionToUpload: false,
 	trackingViewHeight: 0,
 	keyboardHeight: 0,
 	setTrackingViewHeight: () => {},
@@ -46,10 +40,6 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	closeEmojiKeyboard: () => {},
 	setFocused: () => {},
 	onEmojiSelected: () => {},
-	takePhoto: () => {},
-	takeVideo: () => {},
-	chooseFromLibrary: () => {},
-	chooseFile: () => {},
 	closeEmojiKeyboardAndAction: () => {},
 	message: undefined,
 	editCancel: () => {},
