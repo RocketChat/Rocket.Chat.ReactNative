@@ -5,9 +5,7 @@ import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
 import { useSharedValue } from 'react-native-reanimated';
 
-import Touchable from '../../Touchable';
 import Markdown from '../../../markdown';
-import { CustomIcon } from '../../../CustomIcon';
 import MessageContext from '../../Context';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../../../definitions';
@@ -18,16 +16,8 @@ import { PAUSE_AUDIO } from '../../constants';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import styles from './styles';
 import Slider from './Slider';
-import Loading from './Loading';
 import AudioRate from './AudioRate';
-
-interface IButton {
-	loading: boolean;
-	paused: boolean;
-	disabled?: boolean;
-	onPress: () => void;
-	cached: boolean;
-}
+import PlayButton from './PlayButton';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -46,34 +36,6 @@ const mode = {
 	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
 	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
-
-const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
-
-const Button = React.memo(({ loading, paused, onPress, disabled, cached }: IButton) => {
-	const { colors } = useTheme();
-
-	let customIconName: 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled' = 'arrow-down';
-	if (cached) {
-		customIconName = paused ? 'play-shape-filled' : 'pause-shape-filled';
-	}
-	return (
-		<Touchable
-			style={[styles.playPauseButton, { backgroundColor: colors.audioPlayerPrimary }]}
-			disabled={disabled}
-			onPress={onPress}
-			hitSlop={BUTTON_HIT_SLOP}
-			background={Touchable.SelectableBackgroundBorderless()}
-		>
-			{loading ? (
-				<Loading />
-			) : (
-				<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonText} />
-			)}
-		</Touchable>
-	);
-});
-
-Button.displayName = 'MessageAudioButton';
 
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessageAudioProps) => {
 	const [loading, setLoading] = useState(true);
@@ -124,7 +86,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 				try {
 					await sound.current?.stopAsync();
 					setPaused(true);
-					EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+					EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
 					currentTime.value = 0;
 				} catch {
 					// do nothing
@@ -137,12 +99,11 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		await sound.current?.setPositionAsync(time);
 	};
 
-	const pauseSound = () => {
-		console.log('🚀🚀🚀🚀🚀🚀🚀 ~ file: index.tsx:141 ~ pauseSound ~ pauseSound:');
-		EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+	const pauseSound = useRef(() => {
+		EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
 		setPaused(true);
 		playPause(true);
-	};
+	});
 
 	const getUrl = () => {
 		let url = file.audio_url;
@@ -153,7 +114,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	};
 
 	const togglePlayPause = () => {
-		console.log('🚀 ~ file: index.tsx:156 ~ togglePlayPause ~ paused:', paused);
 		setPaused(!paused);
 		playPause(!paused);
 	};
@@ -162,10 +122,10 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		try {
 			if (isPaused) {
 				await sound.current?.pauseAsync();
-				EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+				EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
 			} else {
 				EventEmitter.emit(PAUSE_AUDIO);
-				EventEmitter.addEventListener(PAUSE_AUDIO, pauseSound);
+				EventEmitter.addEventListener(PAUSE_AUDIO, pauseSound.current);
 				await Audio.setAudioModeAsync(mode);
 				await sound.current?.playAsync();
 			}
@@ -249,7 +209,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		handleCache();
 
 		return () => {
-			EventEmitter.removeListener(PAUSE_AUDIO, pauseSound);
+			EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
 			const unloadAsync = async () => {
 				try {
 					await sound.current?.unloadAsync();
@@ -281,7 +241,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 					{ backgroundColor: colors.audioComponentBackground, borderColor: colors.audioBorderColor }
 				]}
 			>
-				<Button disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
+				<PlayButton disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
 				<Slider currentTime={currentTime} duration={duration} loaded={!isReply && cached} onChangeTime={setPosition} />
 				<AudioRate onChange={setRate} loaded={!isReply && cached} />
 			</View>
