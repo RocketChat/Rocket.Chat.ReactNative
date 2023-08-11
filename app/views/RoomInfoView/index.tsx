@@ -1,5 +1,6 @@
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -11,12 +12,12 @@ import UAParser from 'ua-parser-js';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
+import { MarkdownPreview } from '../../containers/markdown';
 import { IApplicationState, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
 import I18n from '../../i18n';
@@ -29,14 +30,15 @@ import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
 import { Services } from '../../lib/services';
+import { TUsersRoles } from '../../reducers/usersRoles';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes, withTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import Channel from './Channel';
-import { CallButton } from './components/UserInfoButton';
 import Direct from './Direct';
 import Livechat from './Livechat';
+import { CallButton } from './components/UserInfoButton';
 import styles from './styles';
 
 interface IGetRoomTitle {
@@ -95,6 +97,7 @@ interface IRoomInfoViewProps {
 	editOmnichannelContact?: string[];
 	editLivechatRoomCustomfields?: string[];
 	roles: { [key: string]: string };
+	usersRoles: TUsersRoles;
 }
 
 export interface IUserParsed extends IUser {
@@ -245,6 +248,23 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			})
 		);
 
+	setUser = async (user: IUser) => {
+		const roles = (() => {
+			const { usersRoles } = this.props;
+			const userRoles = usersRoles.find(u => u?.username === user.username);
+			let r: string[] = [];
+			if (userRoles?.roles?.length) r = userRoles.roles;
+			if (user.roles?.length) r = [...r, ...user.roles];
+			return uniq(r);
+		})();
+		if (roles.length) {
+			const parsedRoles = await this.parseRoles(roles);
+			this.setState({ roomUser: { ...user, parsedRoles } });
+		} else {
+			this.setState({ roomUser: user });
+		}
+	};
+
 	loadUser = async () => {
 		const { room, roomUser } = this.state;
 
@@ -254,29 +274,13 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
-					const { roles } = user;
-					const parsedRoles: { parsedRoles?: string[] } = {};
-					if (roles && roles.length) {
-						parsedRoles.parsedRoles = await this.parseRoles(roles);
-					}
-
-					this.setState({ roomUser: { ...user, ...parsedRoles } as IUserParsed });
+					this.setUser(user as IUser);
 				}
 			} catch {
 				// do nothing
 			}
 		} else {
-			try {
-				const { roles } = roomUser as IUserParsed;
-				if (roles && roles.length) {
-					const parsedRoles = await this.parseRoles(roles);
-					this.setState({ roomUser: { ...roomUser, parsedRoles } });
-				} else {
-					this.setState({ roomUser });
-				}
-			} catch (e) {
-				// do nothing
-			}
+			this.setUser(roomUser as IUser);
 		}
 	};
 
@@ -523,7 +527,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	editRoomPermission: state.permissions['edit-room'],
 	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
 	editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
-	roles: state.roles
+	roles: state.roles,
+	usersRoles: state.usersRoles
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));
