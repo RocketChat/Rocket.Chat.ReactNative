@@ -62,6 +62,14 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 		}
 
 		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
+			// Fixed issue for gif and audio sent from iOS
+			const fileExt = file.title_link?.split('.').pop();
+			if (fileExt === 'm4a' && file.audio_url === undefined) {
+				file.audio_url = file.title_link;
+			} else if (fileExt?.toLocaleLowerCase() === 'gif' && file.image_url === undefined) {
+				file.image_url = file.title_link;
+			}
+
 			if (file && file.image_url) {
 				return (
 					<Image
