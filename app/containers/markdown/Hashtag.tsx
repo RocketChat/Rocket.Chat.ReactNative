@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { StyleProp, Text, TextStyle, View } from 'react-native';
 
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
@@ -8,6 +8,8 @@ import styles from './styles';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
+import sharedStyles from '../../views/Styles';
+import { isIOS } from '../../lib/methods/helpers';
 
 interface IHashtag {
 	hashtag: string;
@@ -38,17 +40,28 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
-			<Text
-				style={[
-					styles.mention,
-					{
-						color: themes[theme].mentionOtherColor
-					},
-					...style
-				]}
-				onPress={handlePress}
-			>
-				{`#${hashtag}`}
+			<Text style={[styles.plainText, styles.text]}>
+				<View style={{ marginBottom: isIOS ? -2 : 0 }}>
+					<Text
+						style={[
+							styles.plainText,
+							styles.text,
+							{
+								fontSize: 16,
+								...sharedStyles.textMedium,
+								borderRadius: 4,
+								overflow: 'hidden',
+								marginBottom: isIOS ? 0 : -5,
+								color: themes[theme].mentionOthersColor,
+								backgroundColor: themes[theme].mentionOthersBackground,
+								lineHeight: 23
+							}
+						]}
+						onPress={handlePress}
+					>
+						{` #${hashtag} `}
+					</Text>
+				</View>
 			</Text>
 		);
 	}

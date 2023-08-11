@@ -136,25 +136,21 @@ const allMentionTokens = [
 					type: 'PLAIN_TEXT',
 					value: 'rocket.cat'
 				}
-			}
-		]
-	}
-];
-
-const multipleMentionTokens = [
-	{
-		type: 'PARAGRAPH',
-		value: [
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
 			{
 				type: 'MENTION_USER',
 				value: {
 					type: 'PLAIN_TEXT',
-					value: 'name'
+					value: 'all'
 				}
 			},
 			{
 				type: 'PLAIN_TEXT',
-				value: ' '
+				value: ' testing '
 			},
 			{
 				type: 'MENTION_USER',
@@ -165,29 +161,7 @@ const multipleMentionTokens = [
 			},
 			{
 				type: 'PLAIN_TEXT',
-				value: ' '
-			},
-			{
-				type: 'MENTION_USER',
-				value: {
-					type: 'PLAIN_TEXT',
-					value: 'not_a_user'
-				}
-			},
-			{
-				type: 'PLAIN_TEXT',
-				value: ' '
-			},
-			{
-				type: 'MENTION_USER',
-				value: {
-					type: 'PLAIN_TEXT',
-					value: 'here'
-				}
-			},
-			{
-				type: 'PLAIN_TEXT',
-				value: ' '
+				value: ' testing '
 			},
 			{
 				type: 'MENTION_USER',
@@ -195,7 +169,172 @@ const multipleMentionTokens = [
 					type: 'PLAIN_TEXT',
 					value: 'all'
 				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' testing '
 			}
+		]
+	}
+];
+
+const shortText = 'Lorem ipsum dolor sit amet consectetur adipiscing elit';
+
+const startingWithMention = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'all'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ` ${shortText} `
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket.cat'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ` ${shortText} `
+			},
+			{
+				type: 'MENTION_USER',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'name'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ` ${shortText} `
+			},
+			{
+				type: 'MENTION_CHANNEL',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'text_channel'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ` ${shortText} `
+			},
+			{
+				type: 'MENTION_CHANNEL',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'not_a_channel'
+				}
+			}
+		]
+	}
+];
+const startingWithoutMention = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'PLAIN_TEXT',
+				value: `${shortText} `
+			},
+			...startingWithMention[0].value.slice(2, startingWithMention[0].value.length)
 		]
 	}
 ];
@@ -229,7 +368,20 @@ const multipleMentions = [
 export const Mentions = () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={allMentionTokens} mentions={allMentions} navToRoomInfo={() => {}} style={[]} />
-		<NewMarkdown tokens={multipleMentionTokens} mentions={multipleMentions} navToRoomInfo={() => {}} style={[]} />
+		<NewMarkdown
+			tokens={startingWithMention}
+			mentions={multipleMentions}
+			channels={channelMention}
+			navToRoomInfo={() => {}}
+			style={[]}
+		/>
+		<NewMarkdown
+			tokens={startingWithoutMention}
+			mentions={multipleMentions}
+			channels={channelMention}
+			navToRoomInfo={() => {}}
+			style={[]}
+		/>
 	</View>
 );
 
