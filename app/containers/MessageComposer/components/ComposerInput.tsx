@@ -118,7 +118,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 	};
 
 	const handleLayout: TextInputProps['onLayout'] = e => {
-		setTrackingViewHeight(e.nativeEvent.layout.height);
+		// setTrackingViewHeight(e.nativeEvent.layout.height);
 	};
 
 	// TODO: duplicated
