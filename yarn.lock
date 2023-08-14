@@ -4628,10 +4628,10 @@
   dependencies:
     merge-options "^3.0.4"
 
-"@react-native-camera-roll/camera-roll@^5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-5.6.0.tgz#385082d57d694f3fd5ae386f8b8ce24b0969c5f9"
-  integrity sha512-a/GYwnBTxj1yKWB9m/qy8GzjowSocML8NbLT81wdMh0JzZYXCLze51BR2cb8JNDgRPzA9xe7KpD3j9qQOSOjag==
+"@react-native-camera-roll/camera-roll@^5.7.2":
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-5.7.2.tgz#db11525ae26c8a61630c424aebd323a7c784a921"
+  integrity sha512-s8VAUG1Kvi+tEJkLHObmOJdXAL/uclnXJ/IdnJtx2fCKiWA3Ho0ln9gDQqCYHHHHu+sXk7wovsH/I2/AYy0brg==
 
 "@react-native-clipboard/clipboard@^1.8.5":
   version "1.8.5"
@@ -4647,10 +4647,10 @@
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-"@react-native-community/blur@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/blur/-/blur-4.1.0.tgz#ed1361a569150c2249aae9b734e278fd262b70cd"
-  integrity sha512-esfuAjbAoeysfI3RhmCHlYwlXobXzcsVGZEHgDhVGB88aO9RktY6b13mYbo2FXZ8XnntcccuvXlgckvoIsggWg==
+"@react-native-community/blur@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/blur/-/blur-4.3.2.tgz#185a2c7dd03ba168cc95069bc4742e9505fd6c6c"
+  integrity sha512-0ID+pyZKdC4RdgC7HePxUQ6JmsbNrgz03u+6SgqYpmBoK/rE+7JffqIw7IEsfoKitLEcRNLGekIBsfwCqiEkew==
 
 "@react-native-community/cli-clean@^10.1.1":
   version "10.1.1"

@@ -27,6 +27,7 @@ import AutoTranslateView from '../../views/AutoTranslateView';
 import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
+import ForwardMessageView from '../../views/ForwardMessageView';
 import CloseLivechatView from '../../views/CloseLivechatView';
 import CannedResponsesListView from '../../views/CannedResponsesListView';
 import CannedResponseDetail from '../../views/CannedResponseDetail';
@@ -49,6 +50,7 @@ import CreateChannelView from '../../views/CreateChannelView';
 import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 import SecurityPrivacyView from '../../views/SecurityPrivacyView';
+import MediaAutoDownloadView from '../../views/MediaAutoDownloadView';
 import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -141,6 +143,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='QueueListView' component={QueueListView} />
 				<ModalStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
+				<ModalStack.Screen name='ForwardMessageView' component={ForwardMessageView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 				{/* @ts-ignore */}
@@ -188,6 +191,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 				<ModalStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
+				<ModalStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 				<ModalStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 			</ModalStack.Navigator>
 		</ModalContainer>
