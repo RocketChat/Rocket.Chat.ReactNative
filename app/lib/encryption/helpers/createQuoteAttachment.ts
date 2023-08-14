@@ -1,5 +1,5 @@
 import { store } from '../../store/auxStore';
-import { IAttachment, IMessage } from '../../../definitions';
+import { IAttachment, IAttachmentTranslations, IMessage } from '../../../definitions';
 import { getAvatarURL } from '../../methods/helpers';
 
 export function createQuoteAttachment(message: IMessage, messageLink: string): IAttachment {
@@ -8,7 +8,8 @@ export function createQuoteAttachment(message: IMessage, messageLink: string): I
 
 	return {
 		text: message.msg,
-		...('translations' in message && { translations: message?.translations }),
+		// this type is wrong
+		...('translations' in message && { translations: message?.translations as unknown as IAttachmentTranslations }),
 		message_link: messageLink,
 		author_name: message.alias || message.u.username,
 		author_icon: getAvatarURL({
