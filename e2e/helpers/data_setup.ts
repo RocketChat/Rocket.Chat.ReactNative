@@ -165,10 +165,10 @@ const deleteCreatedUser = async ({ username: usernameToDelete }: IDeleteCreateUs
 	try {
 		const api = await initApi(data.adminUser, data.adminPassword);
 		const result = await api.get(`users.info?username=${usernameToDelete}`);
-		const responsePost = await api.post('users.delete', { userId: result.data.user._id, confirmRelinquish: false });
+		const responsePost = await api.post('users.delete', { userId: result.data.user._id, confirmRelinquish: true });
 		return responsePost.data;
 	} catch (error) {
-		return false;
+		console.log(JSON.stringify(error));
 	}
 };
 
