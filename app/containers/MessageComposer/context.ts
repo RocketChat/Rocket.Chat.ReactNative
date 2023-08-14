@@ -32,6 +32,7 @@ type TMessageComposerContext = {
 	trackingViewHeight: number;
 	keyboardHeight: number;
 	// sendMessage(): void;
+	setKeyboardHeight: (height: number) => void;
 	setTrackingViewHeight: (height: number) => void;
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
@@ -47,6 +48,7 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	trackingViewHeight: 0,
 	keyboardHeight: 0,
 	// sendMessage: () => {},
+	setKeyboardHeight: () => {},
 	setTrackingViewHeight: () => {},
 	openEmojiKeyboard: () => {},
 	closeEmojiKeyboard: () => {},

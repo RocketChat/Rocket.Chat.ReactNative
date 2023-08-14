@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef, forwardRef, useImperativeHandle, useReducer, useContext } from 'react';
+import React, { ReactElement, useRef, forwardRef, useImperativeHandle, useReducer, useContext, useEffect } from 'react';
 import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
@@ -101,6 +101,7 @@ const MessageComposerProvider = ({ children, forwardedRef }: { children: ReactEl
 				showEmojiSearchbar: state.showEmojiSearchbar,
 				trackingViewHeight: state.trackingViewHeight,
 				keyboardHeight: state.keyboardHeight,
+				setKeyboardHeight: (keyboardHeight: number) => dispatch({ type: 'updateKeyboardHeight', keyboardHeight }),
 				setTrackingViewHeight: (trackingViewHeight: number) => dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight }),
 				openEmojiKeyboard: () => dispatch({ type: 'openEmojiKeyboard' }),
 				closeEmojiKeyboard: () => dispatch({ type: 'closeEmojiKeyboard' }),
@@ -124,8 +125,27 @@ const Inner = (): ReactElement => {
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
 	const { rid, tmid, editing, message, editRequest, onSendMessage } = useContext(MessageComposerContextProps);
-	const { showEmojiKeyboard, showEmojiSearchbar, openSearchEmojiKeyboard, closeEmojiKeyboard } =
+	const { showEmojiKeyboard, showEmojiSearchbar, setKeyboardHeight, openSearchEmojiKeyboard, closeEmojiKeyboard } =
 		useContext(MessageComposerContext);
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+
+	useEffect(() => {
+		const showListener = Keyboard.addListener('keyboardWillShow', async () => {
+			if (trackingViewRef?.current) {
+				const props = await trackingViewRef.current.getNativeProps();
+				setKeyboardHeight(props.keyboardHeight);
+			}
+		});
+
+		const hideListener = Keyboard.addListener('keyboardWillHide', () => {
+			setKeyboardHeight(0);
+		});
+
+		return () => {
+			showListener.remove();
+			hideListener.remove();
+		};
+	}, [trackingViewRef]);
 
 	const sendMessage = async () => {
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
@@ -220,6 +240,87 @@ const Inner = (): ReactElement => {
 		}
 	};
 
+	const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
+		if (item.type === 'loading') {
+			return null;
+		}
+
+		// If it's slash command preview, we need to execute the command
+		if (item.type === '/preview') {
+			try {
+				const db = database.active;
+				const commandsCollection = db.get('slash_commands');
+				const commandRecord = await commandsCollection.find(item.text);
+				const { appId } = commandRecord;
+				const triggerId = generateTriggerId(appId);
+				Services.executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
+			} catch (e) {
+				log(e);
+			}
+			requestAnimationFrame(() => {
+				stopAutocomplete();
+				composerInputComponentRef.current.setInput('', { start: 0, end: 0 });
+			});
+			return;
+		}
+
+		// If it's canned response, but there's no canned responses, we open the canned responses view
+		if (item.type === '!' && item.id === NO_CANNED_RESPONSES) {
+			const params = { rid };
+			if (isMasterDetail) {
+				Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });
+			} else {
+				Navigation.navigate('CannedResponsesListView', params);
+			}
+			stopAutocomplete();
+			return;
+		}
+
+		const text = composerInputComponentRef.current.getText();
+		const { start, end } = composerInputComponentRef.current.getSelection();
+		const cursor = Math.max(start, end);
+		const regexp = getMentionRegexp();
+		let result = text.substr(0, cursor).replace(regexp, '');
+		// Remove the ! after select the canned response
+		if (item.type === '!') {
+			const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
+			result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
+		}
+		let mention = '';
+		switch (item.type) {
+			case '@':
+				mention = isAllOrHere(item) ? item.title : item.subtitle || item.title;
+				break;
+			case '#':
+				mention = item.subtitle ? item.subtitle : '';
+				break;
+			case ':':
+				mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
+				break;
+			case '/':
+				mention = item.title;
+				break;
+			case '!':
+				mention = item.subtitle ? item.subtitle : '';
+				break;
+			default:
+				mention = '';
+		}
+		const newText = `${result}${mention} ${text.slice(cursor)}`;
+
+		const newCursor = cursor + mention.length;
+		composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
+		composerInputComponentRef.current.focus();
+		requestAnimationFrame(() => {
+			stopAutocomplete();
+		});
+	};
+
+	// TODO: duplicated
+	const stopAutocomplete = () => {
+		emitter.emit('setAutocomplete', { type: null, text: '', params: '' });
+	};
+
 	const backgroundColor = editing ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected }}>
@@ -247,7 +348,7 @@ const Inner = (): ReactElement => {
 				bottomViewColor={backgroundColor}
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 			/>
-			{/* <Autocomplete onPress={onAutocompleteItemSelected} /> */}
+			<Autocomplete onPress={onAutocompleteItemSelected} />
 		</MessageInnerContext.Provider>
 	);
 };
