@@ -56,7 +56,10 @@ type Actions =
 	| { type: 'updateEmojiSearchbar'; showEmojiSearchbar: boolean }
 	| { type: 'updateFocused'; focused: boolean }
 	| { type: 'updateTrackingViewHeight'; trackingViewHeight: number }
-	| { type: 'updateKeyboardHeight'; keyboardHeight: number };
+	| { type: 'updateKeyboardHeight'; keyboardHeight: number }
+	| { type: 'openEmojiKeyboard' }
+	| { type: 'closeEmojiKeyboard' }
+	| { type: 'openSearchEmojiKeyboard' };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -70,6 +73,12 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, trackingViewHeight: action.trackingViewHeight };
 		case 'updateKeyboardHeight':
 			return { ...state, keyboardHeight: action.keyboardHeight };
+		case 'openEmojiKeyboard':
+			return { ...state, showEmojiKeyboard: true, showEmojiSearchbar: false };
+		case 'openSearchEmojiKeyboard':
+			return { ...state, showEmojiKeyboard: false, showEmojiSearchbar: true };
+		case 'closeEmojiKeyboard':
+			return { ...state, showEmojiKeyboard: false, showEmojiSearchbar: false };
 	}
 };
 
@@ -92,12 +101,10 @@ const MessageComposerProvider = ({ children, forwardedRef }: { children: ReactEl
 				showEmojiSearchbar: state.showEmojiSearchbar,
 				trackingViewHeight: state.trackingViewHeight,
 				keyboardHeight: state.keyboardHeight,
-				// sendMessage,
-				setTrackingViewHeight: (trackingViewHeight: number) => dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight })
-				// openEmojiKeyboard,
-				// closeEmojiKeyboard,
-				// onEmojiSelected,
-				// closeEmojiKeyboardAndAction
+				setTrackingViewHeight: (trackingViewHeight: number) => dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight }),
+				openEmojiKeyboard: () => dispatch({ type: 'openEmojiKeyboard' }),
+				closeEmojiKeyboard: () => dispatch({ type: 'closeEmojiKeyboard' }),
+				openSearchEmojiKeyboard: () => dispatch({ type: 'openSearchEmojiKeyboard' })
 			}}
 		>
 			{children}
@@ -117,7 +124,8 @@ const Inner = (): ReactElement => {
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
 	const { rid, tmid, editing, message, editRequest, onSendMessage } = useContext(MessageComposerContextProps);
-	const { showEmojiKeyboard } = useContext(MessageComposerContext);
+	const { showEmojiKeyboard, showEmojiSearchbar, openSearchEmojiKeyboard, closeEmojiKeyboard } =
+		useContext(MessageComposerContext);
 
 	const sendMessage = async () => {
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
@@ -158,9 +166,63 @@ const Inner = (): ReactElement => {
 		onSendMessage(textFromInput);
 	};
 
+	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
+		const { eventType, emoji } = params;
+		const text = composerInputComponentRef.current.getText();
+		let newText = '';
+		// if messagebox has an active cursor
+		const { start, end } = composerInputComponentRef.current.getSelection();
+		const cursor = Math.max(start, end);
+		let newCursor;
+
+		switch (eventType) {
+			case EventTypes.BACKSPACE_PRESSED:
+				// logEvent(events.MB_BACKSPACE);
+				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
+				let charsToRemove = 1;
+				const lastEmoji = text.substr(cursor > 0 ? cursor - 2 : text.length - 2, cursor > 0 ? cursor : text.length);
+				// Check if last character is an emoji
+				if (emojiRegex.test(lastEmoji)) charsToRemove = 2;
+				newText =
+					text.substr(0, (cursor > 0 ? cursor : text.length) - charsToRemove) + text.substr(cursor > 0 ? cursor : text.length);
+				newCursor = cursor - charsToRemove;
+				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
+				break;
+			case EventTypes.EMOJI_PRESSED:
+				// logEvent(events.MB_EMOJI_SELECTED);
+				let emojiText = '';
+				if (typeof emoji === 'string') {
+					const shortname = `:${emoji}:`;
+					emojiText = shortnameToUnicode(shortname);
+				} else {
+					emojiText = `:${emoji.name}:`;
+				}
+				newText = `${text.substr(0, cursor)}${emojiText}${text.substr(cursor)}`;
+				newCursor = cursor + emojiText.length;
+				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
+				break;
+			case EventTypes.SEARCH_PRESSED:
+				// logEvent(events.MB_EMOJI_SEARCH_PRESSED);
+				openSearchEmojiKeyboard();
+				break;
+			default:
+			// Do nothing
+		}
+	};
+
+	const onEmojiSelected = (emoji: IEmoji) => {
+		onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
+	};
+
+	const onKeyboardResigned = () => {
+		if (!showEmojiSearchbar) {
+			closeEmojiKeyboard();
+		}
+	};
+
 	const backgroundColor = editing ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 	return (
-		<MessageInnerContext.Provider value={{ sendMessage }}>
+		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected }}>
 			<KeyboardAccessoryView
 				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 				renderContent={() => (
@@ -177,8 +239,8 @@ const Inner = (): ReactElement => {
 				kbInputRef={composerInputRef}
 				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 				kbInitialProps={{ theme }}
-				// onKeyboardResigned={onKeyboardResigned}
-				// onItemSelected={onKeyboardItemSelected}
+				onKeyboardResigned={onKeyboardResigned}
+				onItemSelected={onKeyboardItemSelected}
 				trackInteractive
 				requiresSameParentToManageScrollView
 				addBottomView
