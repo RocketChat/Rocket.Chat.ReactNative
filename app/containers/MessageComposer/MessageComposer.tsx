@@ -43,12 +43,6 @@ type State = {
 	focused: boolean;
 	trackingViewHeight: number;
 	keyboardHeight: number;
-	// sendMessage,
-	// setTrackingViewHeight
-	// openEmojiKeyboard,
-	// closeEmojiKeyboard,
-	// onEmojiSelected,
-	// closeEmojiKeyboardAndAction
 };
 
 type Actions =
@@ -59,7 +53,8 @@ type Actions =
 	| { type: 'updateKeyboardHeight'; keyboardHeight: number }
 	| { type: 'openEmojiKeyboard' }
 	| { type: 'closeEmojiKeyboard' }
-	| { type: 'openSearchEmojiKeyboard' };
+	| { type: 'openSearchEmojiKeyboard' }
+	| { type: 'closeSearchEmojiKeyboard' };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -79,6 +74,8 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, showEmojiKeyboard: false, showEmojiSearchbar: true };
 		case 'closeEmojiKeyboard':
 			return { ...state, showEmojiKeyboard: false, showEmojiSearchbar: false };
+		case 'closeSearchEmojiKeyboard':
+			return { ...state, showEmojiSearchbar: false };
 	}
 };
 
@@ -86,26 +83,37 @@ const MessageComposerProvider = ({ children, forwardedRef }: { children: ReactEl
 	const [state, dispatch] = useReducer(reducer, {} as State);
 
 	useImperativeHandle(forwardedRef, () => ({
-		closeEmojiKeyboardAndAction: (action?: Function, params?: any) => {
-			// closeEmojiKeyboard(); TODO: close it
-			setTimeout(() => action && action(params), state.showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
-		}
+		closeEmojiKeyboardAndAction
 	}));
+
+	useBackHandler(() => {
+		if (state.showEmojiSearchbar) {
+			dispatch({ type: 'closeSearchEmojiKeyboard' });
+			return true;
+		}
+		return false;
+	});
+
+	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
+		dispatch({ type: 'closeEmojiKeyboard' });
+		setTimeout(() => action && action(params), state.showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
+	};
 
 	return (
 		<MessageComposerContext.Provider
 			value={{
 				focused: state.focused,
-				setFocused: (focused: boolean) => dispatch({ type: 'updateFocused', focused }),
 				showEmojiKeyboard: state.showEmojiKeyboard,
 				showEmojiSearchbar: state.showEmojiSearchbar,
 				trackingViewHeight: state.trackingViewHeight,
 				keyboardHeight: state.keyboardHeight,
+				setFocused: (focused: boolean) => dispatch({ type: 'updateFocused', focused }),
 				setKeyboardHeight: (keyboardHeight: number) => dispatch({ type: 'updateKeyboardHeight', keyboardHeight }),
 				setTrackingViewHeight: (trackingViewHeight: number) => dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight }),
 				openEmojiKeyboard: () => dispatch({ type: 'openEmojiKeyboard' }),
 				closeEmojiKeyboard: () => dispatch({ type: 'closeEmojiKeyboard' }),
-				openSearchEmojiKeyboard: () => dispatch({ type: 'openSearchEmojiKeyboard' })
+				openSearchEmojiKeyboard: () => dispatch({ type: 'openSearchEmojiKeyboard' }),
+				closeEmojiKeyboardAndAction
 			}}
 		>
 			{children}
@@ -355,8 +363,6 @@ const Inner = (): ReactElement => {
 
 export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerProps>(
 	({ onSendMessage, rid, tmid, sharing = false, editing = false, message, editCancel, editRequest }, ref): ReactElement => (
-		// console.count('Message Composer');
-
 		<MessageComposerContextProps.Provider
 			value={{
 				rid,

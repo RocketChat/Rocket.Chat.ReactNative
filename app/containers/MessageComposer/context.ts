@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 
 import { IEmoji, IMessage, TAnyMessageModel } from '../../definitions';
-import { EventTypes } from '../EmojiPicker/interfaces';
 
 type TMessageComposerContextProps = {
 	rid: string;
@@ -31,7 +30,6 @@ type TMessageComposerContext = {
 	focused: boolean;
 	trackingViewHeight: number;
 	keyboardHeight: number;
-	// sendMessage(): void;
 	setKeyboardHeight: (height: number) => void;
 	setTrackingViewHeight: (height: number) => void;
 	openEmojiKeyboard(): void;
@@ -47,14 +45,13 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	focused: false,
 	trackingViewHeight: 0,
 	keyboardHeight: 0,
-	// sendMessage: () => {},
 	setKeyboardHeight: () => {},
 	setTrackingViewHeight: () => {},
 	openEmojiKeyboard: () => {},
 	closeEmojiKeyboard: () => {},
 	setFocused: () => {},
-	closeEmojiKeyboardAndAction: () => {},
-	openSearchEmojiKeyboard: () => {}
+	openSearchEmojiKeyboard: () => {},
+	closeEmojiKeyboardAndAction: () => {}
 });
 
 type TMessageInnerContext = {
