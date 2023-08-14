@@ -162,10 +162,14 @@ export interface IDeleteCreateUser {
 }
 
 const deleteCreatedUser = async ({ username: usernameToDelete }: IDeleteCreateUser) => {
-	const api = await initApi(data.adminUser, data.adminPassword);
-	const result = await api.get(`users.info?username=${usernameToDelete}`);
-	const responsePost = await api.post('users.delete', { userId: result.data.user._id, confirmRelinquish: false });
-	return responsePost.data;
+	try {
+		const api = await initApi(data.adminUser, data.adminPassword);
+		const result = await api.get(`users.info?username=${usernameToDelete}`);
+		const responsePost = await api.post('users.delete', { userId: result.data.user._id, confirmRelinquish: false });
+		return responsePost.data;
+	} catch (error) {
+		return false;
+	}
 };
 
 // Delete created users to avoid use all the Seats Available on the server
