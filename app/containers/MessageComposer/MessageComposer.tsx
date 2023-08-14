@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
-import { MessageComposerContext } from './context';
+import { MessageComposerContext, MessageComposerContextProps } from './context';
 import { IAutocompleteItemProps, IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -282,55 +282,59 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 		const backgroundColor = editing ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 		return (
-			<MessageComposerContext.Provider
+			<MessageComposerContextProps.Provider
 				value={{
 					rid,
 					tmid,
 					editing,
 					sharing,
 					message,
-					focused,
-					setFocused,
-					showEmojiKeyboard,
-					showEmojiSearchbar,
-					trackingViewHeight,
-					keyboardHeight,
-					setTrackingViewHeight,
-					openEmojiKeyboard,
-					closeEmojiKeyboard,
-					onEmojiSelected,
-					sendMessage,
-					closeEmojiKeyboardAndAction,
-					editCancel,
-					editRequest
+					editCancel
 				}}
 			>
-				<KeyboardAccessoryView
-					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
-					renderContent={() => (
-						<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
-							<View style={styles.input}>
-								<Left />
-								<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-								<Right />
+				<MessageComposerContext.Provider
+					value={{
+						focused,
+						setFocused,
+						showEmojiKeyboard,
+						showEmojiSearchbar,
+						trackingViewHeight,
+						keyboardHeight,
+						sendMessage,
+						setTrackingViewHeight,
+						openEmojiKeyboard,
+						closeEmojiKeyboard,
+						onEmojiSelected,
+						closeEmojiKeyboardAndAction
+					}}
+				>
+					<KeyboardAccessoryView
+						ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
+						renderContent={() => (
+							<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
+								<View style={styles.input}>
+									<Left />
+									<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+									<Right />
+								</View>
+								<Toolbar />
+								<EmojiSearchbar />
 							</View>
-							<Toolbar />
-							<EmojiSearchbar />
-						</View>
-					)}
-					kbInputRef={composerInputRef}
-					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-					kbInitialProps={{ theme }}
-					onKeyboardResigned={onKeyboardResigned}
-					onItemSelected={onKeyboardItemSelected}
-					trackInteractive
-					requiresSameParentToManageScrollView
-					addBottomView
-					bottomViewColor={backgroundColor}
-					iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
-				/>
-				<Autocomplete onPress={onAutocompleteItemSelected} />
-			</MessageComposerContext.Provider>
+						)}
+						kbInputRef={composerInputRef}
+						kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+						kbInitialProps={{ theme }}
+						onKeyboardResigned={onKeyboardResigned}
+						onItemSelected={onKeyboardItemSelected}
+						trackInteractive
+						requiresSameParentToManageScrollView
+						addBottomView
+						bottomViewColor={backgroundColor}
+						iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
+					/>
+					<Autocomplete onPress={onAutocompleteItemSelected} />
+				</MessageComposerContext.Provider>
+			</MessageComposerContextProps.Provider>
 		);
 	}
 );

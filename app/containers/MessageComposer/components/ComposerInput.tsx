@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 
 import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
-import { MessageComposerContext } from '../context';
+import { MessageComposerContext, MessageComposerContextProps } from '../context';
 import { loadDraftMessage, saveDraftMessage } from '../helpers';
 import { useSubscription } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -34,7 +34,8 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, sharing, focused, setFocused, setTrackingViewHeight, message } = useContext(MessageComposerContext);
+	const { rid, tmid, editing, sharing, message } = useContext(MessageComposerContextProps);
+	const { focused, setFocused, setTrackingViewHeight } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
