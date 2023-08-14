@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, Text } from 'react-native';
-import { dequal } from 'dequal';
 import FastImage from 'react-native-fast-image';
 
 import messageStyles from './styles';
