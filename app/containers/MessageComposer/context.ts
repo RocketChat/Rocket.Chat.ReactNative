@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { IEmoji, IMessage } from '../../definitions';
+import { IEmoji, IMessage, TAnyMessageModel } from '../../definitions';
 
 type TMessageComposerContextProps = {
 	rid: string;
@@ -9,7 +9,9 @@ type TMessageComposerContextProps = {
 	// TODO: Refactor to "origin"? ShareView | RoomView?
 	sharing: boolean;
 	message?: IMessage;
+	editRequest?: (message: TAnyMessageModel) => Promise<void>;
 	editCancel?: () => void;
+	onSendMessage: (message: string, tmid?: string) => void;
 };
 
 export const MessageComposerContextProps = createContext<TMessageComposerContextProps>({
@@ -17,7 +19,9 @@ export const MessageComposerContextProps = createContext<TMessageComposerContext
 	editing: false,
 	sharing: false,
 	message: undefined,
-	editCancel: () => {}
+	editRequest: () => Promise.resolve(),
+	editCancel: () => {},
+	onSendMessage: () => {}
 });
 
 type TMessageComposerContext = {
@@ -26,7 +30,7 @@ type TMessageComposerContext = {
 	focused: boolean;
 	trackingViewHeight: number;
 	keyboardHeight: number;
-	sendMessage(): void;
+	// sendMessage(): void;
 	setTrackingViewHeight: (height: number) => void;
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
@@ -41,11 +45,19 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	focused: false,
 	trackingViewHeight: 0,
 	keyboardHeight: 0,
-	sendMessage: () => {},
+	// sendMessage: () => {},
 	setTrackingViewHeight: () => {},
 	openEmojiKeyboard: () => {},
 	closeEmojiKeyboard: () => {},
 	setFocused: () => {},
 	onEmojiSelected: () => {},
 	closeEmojiKeyboardAndAction: () => {}
+});
+
+type TMessageInnerContext = {
+	sendMessage(): void;
+};
+
+export const MessageInnerContext = createContext<TMessageInnerContext>({
+	sendMessage: () => {}
 });

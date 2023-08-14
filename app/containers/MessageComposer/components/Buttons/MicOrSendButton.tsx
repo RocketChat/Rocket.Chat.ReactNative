@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { BaseButton } from './BaseButton';
-import { MessageComposerContext, MessageComposerContextProps } from '../../context';
+import { MessageComposerContextProps, MessageInnerContext } from '../../context';
 import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
 import { emitter } from '../../emitter';
@@ -10,7 +10,7 @@ import { useCanUploadFile } from '../../hooks';
 
 export const MicOrSendButton = () => {
 	const { rid, editing, editCancel } = useContext(MessageComposerContextProps);
-	const { sendMessage } = useContext(MessageComposerContext);
+	const { sendMessage } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
 	const { colors } = useTheme();

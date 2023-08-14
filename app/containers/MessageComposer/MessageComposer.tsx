@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, useRef, forwardRef, useImperativeHandle, useEffect, useReducer, useContext } from 'react';
+import React, { ReactElement, useRef, forwardRef, useImperativeHandle, useReducer, useContext } from 'react';
 import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
-import { MessageComposerContext, MessageComposerContextProps } from './context';
+import { MessageComposerContext, MessageComposerContextProps, MessageInnerContext } from './context';
 import { IAutocompleteItemProps, IComposerInput, IMessageComposerProps, IMessageComposerRef, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -41,12 +41,22 @@ type State = {
 	showEmojiKeyboard: boolean;
 	showEmojiSearchbar: boolean;
 	focused: boolean;
+	trackingViewHeight: number;
+	keyboardHeight: number;
+	// sendMessage,
+	// setTrackingViewHeight
+	// openEmojiKeyboard,
+	// closeEmojiKeyboard,
+	// onEmojiSelected,
+	// closeEmojiKeyboardAndAction
 };
 
 type Actions =
 	| { type: 'updateEmojiKeyboard'; showEmojiKeyboard: boolean }
 	| { type: 'updateEmojiSearchbar'; showEmojiSearchbar: boolean }
-	| { type: 'updateFocused'; focused: boolean };
+	| { type: 'updateFocused'; focused: boolean }
+	| { type: 'updateTrackingViewHeight'; trackingViewHeight: number }
+	| { type: 'updateKeyboardHeight'; keyboardHeight: number };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -56,11 +66,22 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, showEmojiSearchbar: action.showEmojiSearchbar };
 		case 'updateFocused':
 			return { ...state, focused: action.focused };
+		case 'updateTrackingViewHeight':
+			return { ...state, trackingViewHeight: action.trackingViewHeight };
+		case 'updateKeyboardHeight':
+			return { ...state, keyboardHeight: action.keyboardHeight };
 	}
 };
 
-const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
+const MessageComposerProvider = ({ children, forwardedRef }: { children: ReactElement; forwardedRef: any }): ReactElement => {
 	const [state, dispatch] = useReducer(reducer, {} as State);
+
+	useImperativeHandle(forwardedRef, () => ({
+		closeEmojiKeyboardAndAction: (action?: Function, params?: any) => {
+			// closeEmojiKeyboard(); TODO: close it
+			setTimeout(() => action && action(params), state.showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
+		}
+	}));
 
 	return (
 		<MessageComposerContext.Provider
@@ -68,11 +89,11 @@ const MessageComposerProvider = ({ children }: { children: ReactElement }): Reac
 				focused: state.focused,
 				setFocused: (focused: boolean) => dispatch({ type: 'updateFocused', focused }),
 				showEmojiKeyboard: state.showEmojiKeyboard,
-				showEmojiSearchbar: state.showEmojiSearchbar
-				// trackingViewHeight,
-				// keyboardHeight,
+				showEmojiSearchbar: state.showEmojiSearchbar,
+				trackingViewHeight: state.trackingViewHeight,
+				keyboardHeight: state.keyboardHeight,
 				// sendMessage,
-				// setTrackingViewHeight
+				setTrackingViewHeight: (trackingViewHeight: number) => dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight })
 				// openEmojiKeyboard,
 				// closeEmojiKeyboard,
 				// onEmojiSelected,
@@ -95,11 +116,51 @@ const Inner = (): ReactElement => {
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
+	const { rid, tmid, editing, message, editRequest, onSendMessage } = useContext(MessageComposerContextProps);
 	const { showEmojiKeyboard } = useContext(MessageComposerContext);
 
-	const backgroundColor = 'red'; // editing ? colors.statusBackgroundWarning2 : colors.surfaceLight;
+	const sendMessage = async () => {
+		const textFromInput = composerInputComponentRef.current.getTextAndClear();
+
+		if (editing && message?.id && editRequest) {
+			const {
+				id,
+				// @ts-ignore
+				subscription: { id: rid }
+			} = message;
+			// @ts-ignore
+			return editRequest({ id, msg: textFromInput, rid });
+		}
+
+		// Slash command
+		if (textFromInput[0] === '/') {
+			const db = database.active;
+			const commandsCollection = db.get('slash_commands');
+			const command = textFromInput.replace(/ .*/, '').slice(1);
+			const likeString = sanitizeLikeString(command);
+			const slashCommand = await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch();
+			if (slashCommand.length > 0) {
+				logEvent(events.COMMAND_RUN);
+				try {
+					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
+					const [{ appId }] = slashCommand;
+					const triggerId = generateTriggerId(appId);
+					await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid); // || messageTmid);
+					// replyCancel();
+				} catch (e) {
+					log(e);
+				}
+				return;
+			}
+		}
+
+		// Text message
+		onSendMessage(textFromInput);
+	};
+
+	const backgroundColor = editing ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 	return (
-		<>
+		<MessageInnerContext.Provider value={{ sendMessage }}>
 			<KeyboardAccessoryView
 				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 				renderContent={() => (
@@ -125,15 +186,13 @@ const Inner = (): ReactElement => {
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 			/>
 			{/* <Autocomplete onPress={onAutocompleteItemSelected} /> */}
-		</>
+		</MessageInnerContext.Provider>
 	);
 };
 
 export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerProps>(
 	({ onSendMessage, rid, tmid, sharing = false, editing = false, message, editCancel, editRequest }, ref): ReactElement => (
 		// console.count('Message Composer');
-		// const [trackingViewHeight, setTrackingViewHeight] = useState(0);
-		// const keyboardHeight = 0;
 
 		<MessageComposerContextProps.Provider
 			value={{
@@ -142,10 +201,12 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				editing,
 				sharing,
 				message,
-				editCancel
+				editCancel,
+				editRequest,
+				onSendMessage
 			}}
 		>
-			<MessageComposerProvider>
+			<MessageComposerProvider forwardedRef={ref}>
 				<Inner />
 			</MessageComposerProvider>
 		</MessageComposerContextProps.Provider>
