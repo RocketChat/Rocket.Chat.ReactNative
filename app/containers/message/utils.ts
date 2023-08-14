@@ -1,4 +1,5 @@
 /* eslint-disable complexity */
+import { IAttachment } from '../../definitions';
 import { MessageTypesValues, TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
@@ -193,4 +194,15 @@ export const getMessageTranslation = (message: TMessageModel, autoTranslateLangu
 		return translation?.value || null;
 	}
 	return null;
+};
+
+export const getMessageFromAttachment = (attachment: IAttachment, translateLanguage?: string): string | undefined => {
+	let msg = attachment.description;
+	if (translateLanguage) {
+		const translatedMessage = attachment.translations?.[translateLanguage];
+		if (translatedMessage) {
+			msg = translatedMessage;
+		}
+	}
+	return msg;
 };
