@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 import data from '../data';
 import random from './random';
@@ -161,30 +161,15 @@ export interface IDeleteCreateUser {
 	username: string;
 }
 
-const deleteCreatedUser = async ({ server, username: usernameToDelete }: IDeleteCreateUser) => {
-	const serverConnection = axios.create({
-		baseURL: `${server}/api/v1/`,
-		headers: {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-	});
-	console.log(`Logging in as admin in ${server}`);
-	const response = await serverConnection.post('login', {
-		user: data.adminUser,
-		password: data.adminPassword
-	});
-	const { authToken, userId } = response.data.data;
-	serverConnection.defaults.headers.common['X-User-Id'] = userId;
-	serverConnection.defaults.headers.common['X-Auth-Token'] = authToken;
-
-	console.log(`Get user info: users.info?username=${usernameToDelete}`);
-	const result = await serverConnection.get(`users.info?username=${usernameToDelete}`);
-	const userIdToDelete = result.data.user._id;
-
-	const body = { userId: userIdToDelete, confirmRelinquish: false };
-	console.log(`Delete user: users.delete ${JSON.stringify(body)}`);
-	const responsePost = await serverConnection.post('users.delete', body);
-	return responsePost.data;
+const deleteCreatedUser = async ({ username: usernameToDelete }: IDeleteCreateUser) => {
+	try {
+		const api = await initApi(data.adminUser, data.adminPassword);
+		const result = await api.get(`users.info?username=${usernameToDelete}`);
+		const responsePost = await api.post('users.delete', { userId: result.data.user._id, confirmRelinquish: true });
+		return responsePost.data;
+	} catch (error) {
+		console.log(JSON.stringify(error));
+	}
 };
 
 // Delete created users to avoid use all the Seats Available on the server
@@ -194,4 +179,21 @@ export const deleteCreatedUsers = async (deleteUsersAfterAll: IDeleteCreateUser[
 			await deleteCreatedUser(deleteUser);
 		}
 	}
+};
+
+export const initApi = async (user: string, password: string): Promise<AxiosInstance> => {
+	const api = axios.create({
+		baseURL: `${server}/api/v1/`,
+		headers: {
+			'Content-Type': 'application/json;charset=UTF-8'
+		}
+	});
+	const response = await api.post('login', {
+		user,
+		password
+	});
+	const { authToken, userId } = response.data.data;
+	api.defaults.headers.common['X-User-Id'] = userId;
+	api.defaults.headers.common['X-Auth-Token'] = authToken;
+	return api;
 };
