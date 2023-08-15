@@ -256,5 +256,17 @@ describe('Room info screen', () => {
 					.withTimeout(60000);
 			});
 		});
+
+		describe('Navigate to random user', () => {
+			it('should see user role correctly', async () => {
+				await navigateToRoomInfo('roles-test');
+				await waitFor(element(by.id(`user-roles`)))
+					.toBeVisible()
+					.withTimeout(10000);
+				await waitFor(element(by.id(`user-role-Livechat-Agent`)))
+					.toBeVisible()
+					.withTimeout(10000);
+			});
+		});
 	});
 });

@@ -973,3 +973,5 @@ export const postMessage = (roomId: string, text: string) => sdk.post('chat.post
 
 export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
 	sdk.methodCall('stream-notify-user', type, params);
+
+export const getUsersRoles = (): Promise<boolean> => sdk.methodCall('getUserRoles');
