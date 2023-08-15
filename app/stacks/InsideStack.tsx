@@ -46,6 +46,7 @@ import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
 import DefaultBrowserView from '../views/DefaultBrowserView';
 import ScreenLockConfigView from '../views/ScreenLockConfigView';
+import MediaAutoDownloadView from '../views/MediaAutoDownloadView';
 // Admin Stack
 import AdminPanelView from '../views/AdminPanelView';
 // NewMessage Stack
@@ -63,6 +64,7 @@ import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
+import ForwardMessageView from '../views/ForwardMessageView';
 import QueueListView from '../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../views/AddChannelTeamView';
 import AddExistingChannelView from '../views/AddExistingChannelView';
@@ -178,6 +180,7 @@ const SettingsStackNavigator = () => {
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} />
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
+			<SettingsStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 			<SettingsStack.Screen
 				name='ScreenLockConfigView'
 				component={ScreenLockConfigView}
@@ -257,6 +260,7 @@ const NewMessageStackNavigator = () => {
 			<NewMessageStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			{/* @ts-ignore */}
 			<NewMessageStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
+			<NewMessageStack.Screen name='ForwardMessageView' component={ForwardMessageView} />
 		</NewMessageStack.Navigator>
 	);
 };

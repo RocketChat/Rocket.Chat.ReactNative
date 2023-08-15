@@ -22,5 +22,9 @@ export default StyleSheet.create({
 		marginRight: 15,
 		marginBottom: 15,
 		borderRadius: 4
+	},
+	inputBio: {
+		height: 100,
+		textAlignVertical: 'top'
 	}
 });
