@@ -1,4 +1,5 @@
 import { IUser } from './IUser';
+import { IAttachmentTranslations } from './IMessage';
 
 export interface IAttachment {
 	ts?: string | Date;
@@ -29,6 +30,7 @@ export interface IAttachment {
 	thumb_url?: string;
 	collapsed?: boolean;
 	audio_type?: string;
+	translations?: IAttachmentTranslations;
 }
 
 export interface IServerAttachment {
