@@ -2,7 +2,7 @@ import React, { ReactElement, forwardRef } from 'react';
 
 import { MessageComposerContextProps, MessageComposerProvider } from './context';
 import { IMessageComposerProps, IMessageComposerRef } from './interfaces';
-import { Inner } from './Inner';
+import { MessageComposerInner } from './MessageComposerInner';
 
 export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerProps>(
 	({ onSendMessage, rid, tmid, sharing = false, editing = false, message, editCancel, editRequest }, ref): ReactElement => (
@@ -18,8 +18,8 @@ export const MessageComposer = forwardRef<IMessageComposerRef, IMessageComposerP
 				onSendMessage
 			}}
 		>
-			<MessageComposerProvider forwardedRef={ref}>
-				<Inner />
+			<MessageComposerProvider>
+				<MessageComposerInner forwardedRef={ref} />
 			</MessageComposerProvider>
 		</MessageComposerContextProps.Provider>
 	)

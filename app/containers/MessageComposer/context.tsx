@@ -1,8 +1,5 @@
-import { createContext, ReactElement, useImperativeHandle, useReducer } from 'react';
-import { useBackHandler } from '@react-native-community/hooks';
+import { createContext, ReactElement, useReducer } from 'react';
 
-import { TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
-import { isIOS } from '../../lib/methods/helpers';
 import { IEmoji, IMessage, TAnyMessageModel } from '../../definitions';
 
 type TMessageComposerContextProps = {
@@ -38,8 +35,8 @@ type TMessageComposerContext = {
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
 	openSearchEmojiKeyboard(): void;
+	closeSearchEmojiKeyboard(): void;
 	setFocused(focused: boolean): void;
-	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
 };
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({
@@ -54,17 +51,20 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	closeEmojiKeyboard: () => {},
 	setFocused: () => {},
 	openSearchEmojiKeyboard: () => {},
-	closeEmojiKeyboardAndAction: () => {}
+	closeSearchEmojiKeyboard: () => {}
 });
 
 type TMessageInnerContext = {
 	sendMessage(): void;
 	onEmojiSelected(emoji: IEmoji): void;
+	// TODO: action should be required
+	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
 };
 
 export const MessageInnerContext = createContext<TMessageInnerContext>({
 	sendMessage: () => {},
-	onEmojiSelected: () => {}
+	onEmojiSelected: () => {},
+	closeEmojiKeyboardAndAction: () => {}
 });
 
 type State = {
@@ -109,31 +109,23 @@ const reducer = (state: State, action: Actions): State => {
 	}
 };
 
-export const MessageComposerProvider = ({
-	children,
-	forwardedRef
-}: {
-	children: ReactElement;
-	forwardedRef: any;
-}): ReactElement => {
+export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
 	const [state, dispatch] = useReducer(reducer, {} as State);
 
-	useImperativeHandle(forwardedRef, () => ({
-		closeEmojiKeyboardAndAction
-	}));
+	const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
 
-	useBackHandler(() => {
-		if (state.showEmojiSearchbar) {
-			dispatch({ type: 'closeSearchEmojiKeyboard' });
-			return true;
-		}
-		return false;
-	});
+	const setKeyboardHeight = (keyboardHeight: number) => dispatch({ type: 'updateKeyboardHeight', keyboardHeight });
 
-	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
-		dispatch({ type: 'closeEmojiKeyboard' });
-		setTimeout(() => action && action(params), state.showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
-	};
+	const setTrackingViewHeight = (trackingViewHeight: number) =>
+		dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight });
+
+	const openEmojiKeyboard = () => dispatch({ type: 'openEmojiKeyboard' });
+
+	const closeEmojiKeyboard = () => dispatch({ type: 'closeEmojiKeyboard' });
+
+	const openSearchEmojiKeyboard = () => dispatch({ type: 'openSearchEmojiKeyboard' });
+
+	const closeSearchEmojiKeyboard = () => dispatch({ type: 'closeSearchEmojiKeyboard' });
 
 	return (
 		<MessageComposerContext.Provider
@@ -143,13 +135,13 @@ export const MessageComposerProvider = ({
 				showEmojiSearchbar: state.showEmojiSearchbar,
 				trackingViewHeight: state.trackingViewHeight,
 				keyboardHeight: state.keyboardHeight,
-				setFocused: (focused: boolean) => dispatch({ type: 'updateFocused', focused }),
-				setKeyboardHeight: (keyboardHeight: number) => dispatch({ type: 'updateKeyboardHeight', keyboardHeight }),
-				setTrackingViewHeight: (trackingViewHeight: number) => dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight }),
-				openEmojiKeyboard: () => dispatch({ type: 'openEmojiKeyboard' }),
-				closeEmojiKeyboard: () => dispatch({ type: 'closeEmojiKeyboard' }),
-				openSearchEmojiKeyboard: () => dispatch({ type: 'openSearchEmojiKeyboard' }),
-				closeEmojiKeyboardAndAction
+				setFocused,
+				setKeyboardHeight,
+				setTrackingViewHeight,
+				openEmojiKeyboard,
+				closeEmojiKeyboard,
+				openSearchEmojiKeyboard,
+				closeSearchEmojiKeyboard
 			}}
 		>
 			{children}
