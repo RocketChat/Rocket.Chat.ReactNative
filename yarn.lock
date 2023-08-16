@@ -17055,6 +17055,13 @@ react-native-iphone-x-helper@^1.0.3:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
+react-native-katex@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-katex/-/react-native-katex-0.5.1.tgz#516428ddc10b71e2f219869880222b1d3a1fc5eb"
+  integrity sha512-71Hi66DsTsCHnxKcT0BtmylJvl8q285qbmSPJRzLM05Lu4qtgNwx2htb+k+nNaFv0KJl67n/irdd3uktpkXPsg==
+  dependencies:
+    react-native-webview "^11.18.2"
+
 react-native-linear-gradient@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz#56598a76832724b2afa7889747635b5c80948f38"
@@ -17262,7 +17269,7 @@ react-native-vector-icons@^9.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-webview@11.26.1:
+react-native-webview@11.26.1, react-native-webview@^11.18.2:
   version "11.26.1"
   resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.26.1.tgz#658c09ed5162dc170b361e48c2dd26c9712879da"
   integrity sha512-hC7BkxOpf+z0UKhxFSFTPAM4shQzYmZHoELa6/8a/MspcjEP7ukYKpuSUTLDywQditT8yI9idfcKvfZDKQExGw==
