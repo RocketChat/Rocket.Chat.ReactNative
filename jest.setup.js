@@ -69,3 +69,8 @@ jest.mock('react-native-math-view', () => {
 		MathText: react.View // {...} Named export
 	};
 });
+
+jest.mock('expo-av', () => ({
+	InterruptionModeIOS: { DoNotMix: 1 },
+	InterruptionModeAndroid: { DoNotMix: 1 }
+}));

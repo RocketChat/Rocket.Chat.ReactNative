@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
-import { AVPlaybackStatus, Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { Sound } from 'expo-av/build/Audio/Sound';
 import { useSharedValue } from 'react-native-reanimated';
 
 import Markdown from '../../../markdown';
@@ -11,13 +10,12 @@ import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { useTheme } from '../../../../theme';
 import { downloadMediaFile, getMediaCache } from '../../../../lib/methods/handleMediaDownload';
-import EventEmitter from '../../../../lib/methods/helpers/events';
-import { PAUSE_AUDIO } from '../../constants';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import styles from './styles';
 import Slider from './Slider';
 import AudioRate from './AudioRate';
 import PlayButton from './PlayButton';
+import handleAudioMedia from '../../../../lib/methods/handleAudioMedia';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -26,16 +24,6 @@ interface IMessageAudioProps {
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 }
-
-const mode = {
-	allowsRecordingIOS: false,
-	playsInSilentModeIOS: true,
-	staysActiveInBackground: true,
-	shouldDuckAndroid: true,
-	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
-};
 
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessageAudioProps) => {
 	const [loading, setLoading] = useState(true);
@@ -48,10 +36,12 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	const { baseUrl, user } = useContext(MessageContext);
 	const { colors } = useTheme();
 
-	const sound = useRef<Sound | null>(null);
+	const audioUri = useRef<string>('');
+	const rate = useRef<number>(1);
 
 	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
+			onPlaying(status);
 			onLoad(status);
 			onProgress(status);
 			onEnd(status);
@@ -59,15 +49,24 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	};
 
 	const loadAudio = async (audio: string) => {
-		const { sound: soundLoaded } = await Audio.Sound.createAsync({ uri: audio });
-		sound.current = soundLoaded;
-		sound.current.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+		await handleAudioMedia.loadAudio(audio);
+		audioUri.current = audio;
+		handleAudioMedia.setOnPlaybackStatusUpdate(audio, onPlaybackStatusUpdate);
+	};
+
+	const onPlaying = (data: AVPlaybackStatus) => {
+		if (data.isLoaded && data.isPlaying) {
+			setPaused(false);
+		} else {
+			setPaused(true);
+		}
 	};
 
 	const onLoad = (data: AVPlaybackStatus) => {
 		if (data.isLoaded && data.durationMillis) {
 			const durationSeconds = data.durationMillis / 1000;
 			duration.value = durationSeconds > 0 ? durationSeconds : 0;
+			rate.current = data.rate;
 		}
 	};
 
@@ -80,13 +79,11 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		}
 	};
 
-	const onEnd = async (data: AVPlaybackStatus) => {
+	const onEnd = (data: AVPlaybackStatus) => {
 		if (data.isLoaded) {
 			if (data.didJustFinish) {
 				try {
-					await sound.current?.stopAsync();
 					setPaused(true);
-					EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
 					currentTime.value = 0;
 				} catch {
 					// do nothing
@@ -96,14 +93,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	};
 
 	const setPosition = async (time: number) => {
-		await sound.current?.setPositionAsync(time);
+		await handleAudioMedia.setPositionAsync(audioUri.current, time);
 	};
-
-	const pauseSound = useRef(() => {
-		EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
-		setPaused(true);
-		playPause(true);
-	});
 
 	const getUrl = () => {
 		let url = file.audio_url;
@@ -113,21 +104,12 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		return url;
 	};
 
-	const togglePlayPause = () => {
-		setPaused(!paused);
-		playPause(!paused);
-	};
-
-	const playPause = async (isPaused: boolean) => {
+	const togglePlayPause = async () => {
 		try {
-			if (isPaused) {
-				await sound.current?.pauseAsync();
-				EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
+			if (!paused) {
+				await handleAudioMedia.pauseAudio(audioUri.current);
 			} else {
-				EventEmitter.emit(PAUSE_AUDIO);
-				EventEmitter.addEventListener(PAUSE_AUDIO, pauseSound.current);
-				await Audio.setAudioModeAsync(mode);
-				await sound.current?.playAsync();
+				await handleAudioMedia.playAudio(audioUri.current);
 			}
 		} catch {
 			// Do nothing
@@ -135,7 +117,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	};
 
 	const setRate = async (value = 1.0) => {
-		await sound.current?.setRateAsync(value, true);
+		await handleAudioMedia.setRateAsync(audioUri.current, value);
 	};
 
 	const handleDownload = async () => {
@@ -207,18 +189,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 			await handleAutoDownload();
 		};
 		handleCache();
-
-		return () => {
-			EventEmitter.removeListener(PAUSE_AUDIO, pauseSound.current);
-			const unloadAsync = async () => {
-				try {
-					await sound.current?.unloadAsync();
-				} catch {
-					// Do nothing
-				}
-			};
-			unloadAsync();
-		};
 	}, []);
 
 	useEffect(() => {
@@ -243,7 +213,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 			>
 				<PlayButton disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
 				<Slider currentTime={currentTime} duration={duration} loaded={!isReply && cached} onChangeTime={setPosition} />
-				<AudioRate onChange={setRate} loaded={!isReply && cached} />
+				<AudioRate onChange={setRate} loaded={!isReply && cached} rate={rate.current} />
 			</View>
 		</>
 	);
