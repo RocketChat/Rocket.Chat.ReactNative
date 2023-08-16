@@ -7,6 +7,8 @@ export interface IProfileParams {
 	email: string | null;
 	newPassword: string;
 	currentPassword: string;
+	bio?: string;
+	nickname?: string;
 }
 
 export interface IAvatarButton {

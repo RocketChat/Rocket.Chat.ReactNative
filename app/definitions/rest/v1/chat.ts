@@ -82,4 +82,10 @@ export type ChatEndpoints = {
 	'chat.getMessageReadReceipts': {
 		GET: (params: { messageId: string }) => { receipts: IReadReceipts[] };
 	};
+	'chat.postMessage': {
+		POST: (params: { roomId: string; text: string }) => {
+			message: IMessage;
+			success: boolean;
+		};
+	};
 };

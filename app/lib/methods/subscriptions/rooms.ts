@@ -309,6 +309,12 @@ export default function subscribeRooms() {
 			if (unset?.avatarETag) {
 				store.dispatch(setUser({ avatarETag: '' }));
 			}
+			if (diff?.bio) {
+				store.dispatch(setUser({ bio: diff.bio }));
+			}
+			if (diff?.nickname) {
+				store.dispatch(setUser({ nickname: diff.nickname }));
+			}
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
