@@ -72,7 +72,6 @@ class HandleAudioMedia {
 			await this.audioQueue[uri]?.setPositionAsync(time);
 		} catch {
 			// Do nothing
-			// It's returning a error with this code: E_AV_SEEKING, however it's working as expected
 		}
 	}
 
