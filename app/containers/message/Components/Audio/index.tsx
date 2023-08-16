@@ -29,6 +29,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	const [loading, setLoading] = useState(true);
 	const [paused, setPaused] = useState(true);
 	const [cached, setCached] = useState(false);
+	const [rate, setRate] = useState(1);
 
 	const duration = useSharedValue(0);
 	const currentTime = useSharedValue(0);
@@ -37,7 +38,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	const { colors } = useTheme();
 
 	const audioUri = useRef<string>('');
-	const rate = useRef<number>(1);
 
 	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
@@ -66,7 +66,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		if (data.isLoaded && data.durationMillis) {
 			const durationSeconds = data.durationMillis / 1000;
 			duration.value = durationSeconds > 0 ? durationSeconds : 0;
-			rate.current = data.rate;
+			setRate(data.rate);
 		}
 	};
 
@@ -116,7 +116,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		}
 	};
 
-	const setRate = async (value = 1.0) => {
+	const onChangeRate = async (value = 1.0) => {
 		await handleAudioMedia.setRateAsync(audioUri.current, value);
 	};
 
@@ -213,7 +213,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 			>
 				<PlayButton disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
 				<Slider currentTime={currentTime} duration={duration} loaded={!isReply && cached} onChangeTime={setPosition} />
-				<AudioRate onChange={setRate} loaded={!isReply && cached} rate={rate.current} />
+				<AudioRate onChange={onChangeRate} loaded={!isReply && cached} rate={rate} />
 			</View>
 		</>
 	);

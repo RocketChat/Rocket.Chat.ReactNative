@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
@@ -8,18 +8,16 @@ import Touchable from '../../Touchable';
 const AudioRate = ({
 	onChange,
 	loaded = false,
-	rate: rateProps = 1
+	rate = 1
 }: {
 	onChange: (value: number) => void;
 	loaded: boolean;
 	rate: number;
 }) => {
-	const [rate, setRate] = useState(rateProps);
 	const { colors } = useTheme();
 
 	const onPress = () => {
 		const nextRate = rate === 2 ? 0.5 : rate + 0.5;
-		setRate(nextRate);
 		onChange(nextRate);
 	};
 
