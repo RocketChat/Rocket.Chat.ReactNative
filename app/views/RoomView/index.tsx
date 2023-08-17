@@ -1307,15 +1307,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		let content = null;
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
-			content = (
-				<LoadMore
-					rid={room.rid}
-					t={room.t as RoomType}
-					loaderId={item.id}
-					type={item.t}
-					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}
-				/>
-			);
+			const runOnRender = () => {
+				if (item.t === MessageTypeLoad.MORE) {
+					if (!previousItem) return true;
+					if (previousItem?.tmid) return true;
+				}
+				return false;
+			};
+			content = <LoadMore rid={room.rid} t={room.t as RoomType} loaderId={item.id} type={item.t} runOnRender={runOnRender()} />;
 		} else {
 			content = (
 				<Message
