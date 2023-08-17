@@ -4,6 +4,7 @@ import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 
+import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import { MessageComposerContext, MessageComposerContextProps, MessageInnerContext } from './context';
@@ -23,6 +24,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { isAllOrHere } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { emitter } from './emitter';
+import { Quotes } from './components/Quotes';
 
 const styles = StyleSheet.create({
 	container: {
@@ -58,6 +60,9 @@ export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): R
 		closeSearchEmojiKeyboard
 	} = useContext(MessageComposerContext);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+
+	const { selectedMessages } = useRoomContext();
+	console.log('🚀 ~ file: MessageComposerInner.tsx:64 ~ MessageComposerInner ~ selectedMessages:', selectedMessages);
 
 	useEffect(() => {
 		const showListener = Keyboard.addListener('keyboardWillShow', async () => {
@@ -282,6 +287,7 @@ export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): R
 							<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 							<Right />
 						</View>
+						<Quotes />
 						<Toolbar />
 						<EmojiSearchbar />
 					</View>

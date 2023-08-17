@@ -92,6 +92,7 @@ import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposer } from '../../containers/MessageComposer';
+import { RoomContext } from './context';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -185,6 +186,8 @@ interface IRoomViewState {
 	lastOpen: Date | null;
 	reactionsModalVisible: boolean;
 	selectedMessage?: TAnyMessageModel;
+	selectedMessages: string[];
+	action: 'reply' | 'quote' | 'edit' | null;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	editing: boolean;
@@ -257,6 +260,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			lastOpen: null,
 			reactionsModalVisible: false,
 			selectedMessage,
+			selectedMessages: [],
+			action: null,
 			canAutoTranslate: false,
 			loading: true,
 			editing: false,
@@ -348,6 +353,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
 		if (stateUpdated) {
+			return true;
+		}
+		if (!dequal(nextState.selectedMessages, state.selectedMessages)) {
 			return true;
 		}
 		if (!dequal(nextProps.insets, insets)) {
@@ -795,6 +803,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReplyCancel = () => {
 		this.setState({ selectedMessage: undefined, replying: false, replyWithMention: false });
+	};
+
+	// TODO: implement multiple quotes
+	onQuoteInit = (messageId: string) => {
+		const { action } = this.state;
+		console.log('🚀 ~ file: index.tsx:807 ~ RoomView ~ messageId:', messageId, action);
+		// TODO: if there's another action running, we should replace it
+		if (action) {
+			return;
+		}
+		this.setState({ selectedMessages: [messageId], action: 'quote' });
 	};
 
 	showReactionPicker = () => {
@@ -1456,6 +1475,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					user={user}
 					editInit={this.onEditInit}
 					replyInit={this.onReplyInit}
+					quoteInit={this.onQuoteInit}
 					reactionInit={this.onReactionInit}
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
@@ -1467,7 +1487,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, editing, selectedMessage } = this.state;
+		const { room, loading, editing, selectedMessage, selectedMessages } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1480,30 +1500,36 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='room-view'>
-				<StatusBar />
-				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
-				<List
-					ref={this.list}
-					listRef={this.flatList}
-					rid={rid}
-					tmid={this.tmid}
-					tunread={tunread}
-					ignored={ignored}
-					editing={editing}
-					renderRow={this.renderItem}
-					loading={loading}
-					navigation={navigation}
-					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
-					showMessageInMainThread={user.showMessageInMainThread ?? false}
-					serverVersion={serverVersion}
-					selectedMessageId={selectedMessage?.id}
-				/>
-				{this.renderFooter()}
-				{this.renderActions()}
-				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme!} />
-			</SafeAreaView>
+			<RoomContext.Provider
+				value={{
+					selectedMessages
+				}}
+			>
+				<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='room-view'>
+					<StatusBar />
+					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
+					<List
+						ref={this.list}
+						listRef={this.flatList}
+						rid={rid}
+						tmid={this.tmid}
+						tunread={tunread}
+						ignored={ignored}
+						editing={editing}
+						renderRow={this.renderItem}
+						loading={loading}
+						navigation={navigation}
+						hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
+						showMessageInMainThread={user.showMessageInMainThread ?? false}
+						serverVersion={serverVersion}
+						selectedMessageId={selectedMessage?.id}
+					/>
+					{this.renderFooter()}
+					{this.renderActions()}
+					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme!} />
+				</SafeAreaView>
+			</RoomContext.Provider>
 		);
 	}
 }

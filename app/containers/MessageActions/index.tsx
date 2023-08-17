@@ -28,6 +28,7 @@ export interface IMessageActionsProps {
 	reactionInit: (message: TAnyMessageModel) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
+	quoteInit: (messageId: string) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
 	Message_AllowDeleting?: boolean;
@@ -60,6 +61,7 @@ const MessageActions = React.memo(
 				reactionInit,
 				onReactionPress,
 				replyInit,
+				quoteInit,
 				isReadOnly,
 				Message_AllowDeleting,
 				Message_AllowDeleting_BlockDeleteInMinutes,
@@ -242,9 +244,10 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleQuote = (message: TAnyMessageModel) => {
+			const handleQuote = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_QUOTE);
-				replyInit(message, false);
+				// replyInit(message, false);
+				quoteInit(messageId);
 			};
 
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
@@ -360,7 +363,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
-						onPress: () => handleQuote(message)
+						onPress: () => handleQuote(message.id)
 					});
 				}
 
