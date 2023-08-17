@@ -1,11 +1,27 @@
 import { View, Text } from 'react-native';
+import moment from 'moment';
 
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import { BaseButton } from '../Buttons';
+import { useMessage } from '../../hooks/useMessage';
+import { useAppSelector } from '../../../../lib/hooks';
 
-export const Quote = () => {
+export const Quote = ({ messageId }: { messageId: string }) => {
 	const { colors } = useTheme();
+	const message = useMessage(messageId);
+	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
+
+	let username = '';
+	let msg = '';
+	let time = '';
+
+	if (message) {
+		username = useRealName ? message.u?.name || message.u?.username || '' : message.u?.username || '';
+		msg = message.msg || '';
+		time = message.ts ? moment(message.ts).format('LT') : '';
+	}
+
 	return (
 		<View
 			style={{
@@ -33,7 +49,7 @@ export const Quote = () => {
 						}}
 						numberOfLines={1}
 					>
-						Jocelyn Bergson
+						{username}
 					</Text>
 					<Text
 						style={{
@@ -43,7 +59,7 @@ export const Quote = () => {
 							lineHeight: 16
 						}}
 					>
-						03:34 PM
+						{time}
 					</Text>
 				</View>
 				<BaseButton
@@ -63,7 +79,7 @@ export const Quote = () => {
 				}}
 				numberOfLines={1}
 			>
-				Hi everyone, how is everything asdha sdashd asdiuh asdasdiuha sdasdouiha sda
+				{msg}
 			</Text>
 		</View>
 	);

@@ -1,9 +1,16 @@
 import { FlatList } from 'react-native';
 
-import { useTheme } from '../../../../theme';
 import { Quote } from './Quote';
+import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const Quotes = () => {
-	const { colors } = useTheme();
-	return <FlatList data={[1, 2]} contentContainerStyle={{ gap: 8 }} renderItem={() => <Quote />} horizontal />;
+	const { selectedMessages } = useRoomContext();
+	return (
+		<FlatList
+			data={selectedMessages}
+			contentContainerStyle={{ gap: 8 }}
+			renderItem={({ item }) => <Quote messageId={item} />}
+			horizontal
+		/>
+	);
 };
