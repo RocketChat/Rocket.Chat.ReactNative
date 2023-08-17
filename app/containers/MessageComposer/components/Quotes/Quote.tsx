@@ -7,6 +7,7 @@ import { useRoomContext } from '../../../../views/RoomView/context';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks';
+import { MarkdownPreview } from '../../../markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
 	const { colors } = useTheme();
@@ -72,17 +73,19 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 					testID='TODO'
 				/>
 			</View>
-			<Text
-				style={{
-					...sharedStyles.textRegular,
-					color: colors.fontDefault,
-					fontSize: 14,
-					lineHeight: 20
-				}}
+			<MarkdownPreview
+				style={[
+					{
+						...sharedStyles.textRegular,
+						// @ts-ignore
+						color: colors.fontDefault,
+						fontSize: 14,
+						lineHeight: 20
+					}
+				]}
 				numberOfLines={1}
-			>
-				{msg}
-			</Text>
+				msg={msg}
+			/>
 		</View>
 	);
 };
