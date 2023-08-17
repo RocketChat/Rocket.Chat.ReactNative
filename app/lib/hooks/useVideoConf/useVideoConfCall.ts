@@ -47,6 +47,7 @@ export const useVideoConfCall = (rid: string): { callEnabled: boolean; disabledT
 					}
 					return setCallEnabled(true);
 				}
+				return;
 			}
 			// OLD SERVERS VERSIONS
 			const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
