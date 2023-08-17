@@ -14,7 +14,7 @@ export const useMessage = (messageId: string): IMessage | undefined => {
 			}
 		};
 		load();
-	}, []);
+	}, [messageId]);
 
 	return message;
 };
