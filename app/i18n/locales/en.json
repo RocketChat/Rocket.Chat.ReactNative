@@ -752,5 +752,6 @@
   "Displays_action_text": "Displays action text",
   "Direct_message_someone": "Direct message someone",
   "Mute_someone_in_room": "Mute someone in the room",
-  "Unmute_someone_in_room": "Unmute someone in the room"
+  "Unmute_someone_in_room": "Unmute someone in the room",
+  "Remove_quote_message": "Remove quote message"
 }

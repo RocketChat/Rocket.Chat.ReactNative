@@ -69,8 +69,8 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 					icon='close'
 					color={colors.fontDefault}
 					onPress={() => onRemoveQuoteMessage(messageId)}
-					accessibilityLabel='TODO'
-					testID='TODO'
+					accessibilityLabel='Remove_quote_message'
+					testID={`quote-remove-${messageId}`}
 				/>
 			</View>
 			<MarkdownPreview
