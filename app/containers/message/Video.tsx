@@ -1,25 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleProp, StyleSheet, TextStyle, View, Text } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import messageStyles from './styles';
-import Touchable from './Touchable';
-import Markdown from '../markdown';
-import { isIOS } from '../../lib/methods/helpers';
-import { themes } from '../../lib/constants';
-import MessageContext from './Context';
-import { fileDownload } from './helpers/fileDownload';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { LISTENER } from '../Toast';
-import I18n from '../../i18n';
 import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { useTheme } from '../../theme';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { cancelDownload, downloadMediaFile, isDownloadActive, getMediaCache } from '../../lib/methods/handleMediaDownload';
+import I18n from '../../i18n';
+import { themes } from '../../lib/constants';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../lib/methods/handleMediaDownload';
+import { isIOS } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
+import { LISTENER } from '../Toast';
+import Markdown from '../markdown';
 import BlurComponent from './Components/BlurComponent';
+import MessageContext from './Context';
+import Touchable from './Touchable';
+import { fileDownload } from './helpers/fileDownload';
+import messageStyles from './styles';
+import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		borderRadius: 4,
-		height: 150,
+		height: DEFAULT_MESSAGE_HEIGHT,
 		marginBottom: 6,
 		alignItems: 'center',
 		justifyContent: 'center'
