@@ -123,7 +123,9 @@ public class ReplyBroadcast extends BroadcastReceiver {
         if (msg != message) {
             msgMap.put("t", "e2e");
         }
-        msgMap.put("tmid", null);
+        if(ejson.tmid != null) {
+            msgMap.put("tmid", ejson.tmid);
+        }
 
         Map m = new HashMap();
         m.put("message", msgMap);

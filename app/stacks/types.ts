@@ -10,7 +10,6 @@ import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessa
 import { TServerModel } from '../definitions/IServer';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
-import { IItem } from '../views/TeamChannelsView';
 import { MasterDetailInsideStackParamList, ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
 
@@ -154,12 +153,10 @@ export type ChatsStackParamList = {
 		teamId?: string;
 	};
 	AddChannelTeamView: {
-		teamId?: string;
-		teamChannels: IItem[];
+		teamId: string;
 	};
 	AddExistingChannelView: {
-		teamId?: string;
-		teamChannels: IItem[];
+		teamId: string;
 	};
 	MarkdownTableView: {
 		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
@@ -212,6 +209,7 @@ export type SettingsStackParamList = {
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
+	MediaAutoDownloadView: undefined;
 };
 
 export type AdminPanelStackParamList = {
@@ -247,6 +245,9 @@ export type NewMessageStackParamList = {
 		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
+	};
+	ForwardMessageView: {
+		message: TAnyMessageModel;
 	};
 };
 

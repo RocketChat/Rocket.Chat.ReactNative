@@ -1,8 +1,9 @@
-import { create, MMKVLoader, MMKVInstance, ProcessingModes } from 'react-native-mmkv-storage';
+import { create, MMKVLoader, MMKVInstance, ProcessingModes, IOSAccessibleStates } from 'react-native-mmkv-storage';
 
 const MMKV = new MMKVLoader()
 	// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
 	.setProcessingMode(ProcessingModes.MULTI_PROCESS)
+	.setAccessibleIOS(IOSAccessibleStates.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY)
 	.withEncryption()
 	.initialize();
 

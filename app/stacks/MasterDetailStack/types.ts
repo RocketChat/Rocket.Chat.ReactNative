@@ -4,7 +4,7 @@ import { TServerModel, TThreadModel } from '../../definitions';
 import { IAttachment } from '../../definitions/IAttachment';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
-import { IMessage } from '../../definitions/IMessage';
+import { IMessage, TAnyMessageModel } from '../../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
 
@@ -118,6 +118,12 @@ export type ModalStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
+	ForwardMessageView: {
+		message: TAnyMessageModel;
+	};
+	ForwardLivechatView: {
+		rid: string;
+	};
 	CloseLivechatView: {
 		rid: string;
 		departmentId?: string;
@@ -189,6 +195,7 @@ export type ModalStackParamList = {
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
 	SecurityPrivacyView: undefined;
+	MediaAutoDownloadView: undefined;
 	E2EEncryptionSecurityView: undefined;
 };
 

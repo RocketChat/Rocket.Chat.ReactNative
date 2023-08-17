@@ -100,15 +100,20 @@ const AutoTranslateView = (): React.ReactElement => {
 			title={name || language}
 			onPress={() => saveAutoTranslateLanguage(language)}
 			testID={`auto-translate-view-${language}`}
-			right={() => (selectedLanguage === language ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+			right={() =>
+				selectedLanguage === language ? (
+					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.tintColor} />
+				) : null
+			}
 			translateTitle={false}
 		/>
 	));
 
 	return (
-		<SafeAreaView testID='auto-translate-view'>
+		<SafeAreaView>
 			<StatusBar />
 			<FlatList
+				testID='auto-translate-view'
 				data={languages}
 				keyExtractor={item => item.name || item.language}
 				renderItem={({ item: { language, name } }) => <LanguageItem language={language} name={name} />}
@@ -117,9 +122,13 @@ const AutoTranslateView = (): React.ReactElement => {
 						<List.Separator />
 						<List.Item
 							title='Enable_Auto_Translate'
-							testID='auto-translate-view-switch'
 							right={() => (
-								<Switch value={enableAutoTranslate} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleAutoTranslate} />
+								<Switch
+									testID='auto-translate-view-switch'
+									value={enableAutoTranslate}
+									trackColor={SWITCH_TRACK_COLOR}
+									onValueChange={toggleAutoTranslate}
+								/>
 							)}
 						/>
 						<List.Separator />
