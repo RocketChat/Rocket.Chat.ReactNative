@@ -809,7 +809,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	onQuoteInit = (messageId: string) => {
 		const { action } = this.state;
 		if (action === 'quote') {
-			this.setState(({ selectedMessages }) => ({ selectedMessages: [...selectedMessages, messageId] }));
+			if (!this.state.selectedMessages.includes(messageId)) {
+				this.setState(({ selectedMessages }) => ({ selectedMessages: [...selectedMessages, messageId] }));
+			}
 			return;
 		}
 		// TODO: if there's another action running, we should replace it
