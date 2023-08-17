@@ -9,7 +9,6 @@ import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks';
 import { MarkdownPreview } from '../../../markdown';
 
-// TODO: this component is very similar to the one rendered on Message quote. We could unify them.
 export const Quote = ({ messageId }: { messageId: string }) => {
 	const { colors } = useTheme();
 	const message = useMessage(messageId);
@@ -31,7 +30,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 			style={{
 				backgroundColor: colors.surfaceTint,
 				height: 64,
-				width: 250, // TODO: how can we calculate this? It can be % only, because it would be too big on tablets
+				width: 320,
 				borderColor: colors.strokeExtraLight,
 				borderLeftColor: colors.strokeMedium,
 				borderWidth: 1,
