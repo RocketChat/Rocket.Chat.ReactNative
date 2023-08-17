@@ -1,9 +1,12 @@
 import { getPermalinkMessage } from '../../../lib/methods';
 import { getMessageById } from '../../../lib/database/services/Message';
+import store from '../../../lib/store';
+import { compareServerVersion } from '../../../lib/methods/helpers';
 
 export const prepareQuoteMessage = async (textFromInput: string, selectedMessages: string[]): Promise<string> => {
 	let quoteText = '';
-	const connectionString = '\n';
+	const { version: serverVersion } = store.getState().server;
+	const connectionString = compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ? ' ' : '\n';
 
 	if (selectedMessages.length > 0) {
 		for (let i = 0; i < selectedMessages.length; i += 1) {
