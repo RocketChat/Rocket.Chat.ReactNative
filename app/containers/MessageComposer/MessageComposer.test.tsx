@@ -13,11 +13,10 @@ import { IMessage, TAnyMessageModel } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { emitter } from './emitter';
 import { RoomContext } from '../../views/RoomView/context';
-import * as hooks from './hooks/useMessage';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
-	mockedStore.dispatch(selectServerRequest(baseUrl));
+	mockedStore.dispatch(selectServerRequest(baseUrl, '6.4.0'));
 	mockedStore.dispatch(setUser({ id: 'abc', username: 'rocket.cat', name: 'Rocket Cat', roles: ['user'] }));
 
 	const permissions: IPermissionsState = { 'mobile-upload-file': ['user'] };
@@ -213,43 +212,58 @@ jest.mock('./hooks/useMessage', () => ({
 	}
 }));
 
-test('quote', () => {
-	const onRemoveQuoteMessage = jest.fn();
+jest.mock('../../lib/store/auxStore', () => ({
+	store: {
+		getState: () => mockedStore.getState()
+	}
+}));
 
-	const { rerender } = render(
-		<Provider store={mockedStore}>
-			<RoomContext.Provider value={{ action: null, selectedMessages: [], onRemoveQuoteMessage }}>
-				<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
-			</RoomContext.Provider>
-		</Provider>
-	);
-	expect(screen.queryByTestId('composer-quote-abc')).toBeNull();
-	expect(screen.queryByTestId('composer-quote-def')).toBeNull();
-	expect(screen.toJSON()).toMatchSnapshot();
+describe('Quote', () => {
+	test('Adding/removing quotes', () => {
+		const onRemoveQuoteMessage = jest.fn();
 
-	rerender(
-		<Provider store={mockedStore}>
-			<RoomContext.Provider value={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }}>
-				<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
-			</RoomContext.Provider>
-		</Provider>
-	);
-	expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-	expect(screen.queryByTestId('composer-quote-def')).toBeNull();
-	expect(screen.toJSON()).toMatchSnapshot();
+		// Render without quotes
+		const { rerender } = render(
+			<Provider store={mockedStore}>
+				<RoomContext.Provider value={{ action: null, selectedMessages: [], onRemoveQuoteMessage }}>
+					<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
+				</RoomContext.Provider>
+			</Provider>
+		);
+		expect(screen.queryByTestId('composer-quote-abc')).toBeNull();
+		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
+		expect(screen.toJSON()).toMatchSnapshot();
 
-	rerender(
-		<Provider store={mockedStore}>
-			<RoomContext.Provider value={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }}>
-				<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
-			</RoomContext.Provider>
-		</Provider>
-	);
-	expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-	expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen();
-	expect(screen.toJSON()).toMatchSnapshot();
+		// Add a quote
+		rerender(
+			<Provider store={mockedStore}>
+				<RoomContext.Provider value={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }}>
+					<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
+				</RoomContext.Provider>
+			</Provider>
+		);
+		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
+		expect(screen.toJSON()).toMatchSnapshot();
 
-	fireEvent.press(screen.getByTestId('composer-quote-remove-def'));
-	expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
-	expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
+		// Add another quote
+		rerender(
+			<Provider store={mockedStore}>
+				<RoomContext.Provider value={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }}>
+					<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
+				</RoomContext.Provider>
+			</Provider>
+		);
+		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+		expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen();
+		expect(screen.toJSON()).toMatchSnapshot();
+
+		// Remove a quote
+		fireEvent.press(screen.getByTestId('composer-quote-remove-def'));
+		expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
+		expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
+	});
+
+	// TODO: need to create proper mocks for getMessageById and getPermalinkMessage
+	// test('Send message with a quote', async () => {});
 });
