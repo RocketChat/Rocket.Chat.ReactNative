@@ -808,12 +808,21 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	// TODO: implement multiple quotes
 	onQuoteInit = (messageId: string) => {
 		const { action } = this.state;
-		console.log('🚀 ~ file: index.tsx:807 ~ RoomView ~ messageId:', messageId, action);
+		if (action === 'quote') {
+			this.setState(({ selectedMessages }) => ({ selectedMessages: [...selectedMessages, messageId] }));
+			return;
+		}
 		// TODO: if there's another action running, we should replace it
 		if (action) {
 			return;
 		}
 		this.setState({ selectedMessages: [messageId], action: 'quote' });
+	};
+
+	onRemoveQuoteMessage = (messageId: string) => {
+		const { selectedMessages } = this.state;
+		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
+		this.setState({ selectedMessages: newSelectedMessages });
 	};
 
 	showReactionPicker = () => {
@@ -1502,7 +1511,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<RoomContext.Provider
 				value={{
-					selectedMessages
+					selectedMessages,
+					onRemoveQuoteMessage: this.onRemoveQuoteMessage
 				}}
 			>
 				<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='room-view'>

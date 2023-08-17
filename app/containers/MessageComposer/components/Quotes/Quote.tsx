@@ -3,14 +3,16 @@ import moment from 'moment';
 
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
+import { useRoomContext } from '../../../../views/RoomView/context';
 import { BaseButton } from '../Buttons';
-import { useMessage } from '../../hooks/useMessage';
+import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
 	const { colors } = useTheme();
 	const message = useMessage(messageId);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
+	const { onRemoveQuoteMessage } = useRoomContext();
 
 	let username = '';
 	let msg = '';
@@ -65,7 +67,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 				<BaseButton
 					icon='close'
 					color={colors.fontDefault}
-					onPress={() => alert('remove quote')}
+					onPress={() => onRemoveQuoteMessage(messageId)}
 					accessibilityLabel='TODO'
 					testID='TODO'
 				/>
