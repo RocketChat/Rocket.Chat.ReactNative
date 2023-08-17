@@ -1,6 +1,6 @@
 import { getPermalinkMessage } from '../../../lib/methods';
 import { getMessageById } from '../../../lib/database/services/Message';
-import store from '../../../lib/store';
+import { store } from '../../../lib/store/auxStore';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 
 export const prepareQuoteMessage = async (textFromInput: string, selectedMessages: string[]): Promise<string> => {

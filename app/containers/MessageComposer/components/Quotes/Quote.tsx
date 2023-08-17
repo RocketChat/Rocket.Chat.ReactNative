@@ -25,6 +25,10 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 		time = message.ts ? moment(message.ts).format('LT') : '';
 	}
 
+	if (!message) {
+		return null;
+	}
+
 	return (
 		<View
 			style={{
@@ -39,6 +43,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 				paddingLeft: 16,
 				padding: 8
 			}}
+			testID={`composer-quote-${message.id}`}
 		>
 			<View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
 				<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', gap: 4 }}>
@@ -68,9 +73,9 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 				<BaseButton
 					icon='close'
 					color={colors.fontDefault}
-					onPress={() => onRemoveQuoteMessage(messageId)}
+					onPress={() => onRemoveQuoteMessage(message.id)}
 					accessibilityLabel='Remove_quote_message'
-					testID={`quote-remove-${messageId}`}
+					testID={`composer-quote-remove-${message.id}`}
 				/>
 			</View>
 			<MarkdownPreview

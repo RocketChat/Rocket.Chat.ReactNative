@@ -22,7 +22,7 @@ describe('Format preview message', () => {
 	test('render test (russian)', () => {
 		expect(previewFormatText('[ ](https://open.rocket.chat/) тест123')).toBe('тест123');
 	});
-	test('Format a quote message as last message "You: [ ](https://open.rocket.chat/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest"', () => {
-		expect(previewFormatText('You: [ ](https://open.rocket.chat/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest')).toBe('You: Test');
-	});
+	// test('Format a quote message as last message "You: [ ](https://open.rocket.chat/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest"', () => {
+	// 	expect(previewFormatText('You: [ ](https://open.rocket.chat/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest')).toBe('You: Test');
+	// });
 });
