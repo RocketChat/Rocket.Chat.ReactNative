@@ -9,6 +9,7 @@ import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks';
 import { MarkdownPreview } from '../../../markdown';
 
+// TODO: this component is very similar to the one rendered on Message quote. We could unify them.
 export const Quote = ({ messageId }: { messageId: string }) => {
 	const { colors } = useTheme();
 	const message = useMessage(messageId);

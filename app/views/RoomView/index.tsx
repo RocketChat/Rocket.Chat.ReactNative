@@ -92,7 +92,7 @@ import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposer } from '../../containers/MessageComposer';
-import { RoomContext } from './context';
+import { RoomContext, TMessageAction } from './context';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -187,7 +187,7 @@ interface IRoomViewState {
 	reactionsModalVisible: boolean;
 	selectedMessage?: TAnyMessageModel;
 	selectedMessages: string[];
-	action: 'reply' | 'quote' | 'edit' | null;
+	action: TMessageAction;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	editing: boolean;
@@ -827,6 +827,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessages: newSelectedMessages });
 	};
 
+	resetActions = () => {
+		this.setState({ action: null, selectedMessages: [] });
+	};
+
 	showReactionPicker = () => {
 		const { showActionSheet } = this.props;
 		const { selectedMessage } = this.state;
@@ -1051,6 +1055,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});
+		this.resetActions();
 	};
 
 	getCustomEmoji: TGetCustomEmoji = name => {
@@ -1498,7 +1503,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, editing, selectedMessage, selectedMessages } = this.state;
+		const { room, loading, editing, action, selectedMessage, selectedMessages } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1513,6 +1518,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<RoomContext.Provider
 				value={{
+					action,
 					selectedMessages,
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage
 				}}

@@ -25,6 +25,7 @@ import { isAllOrHere } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { emitter } from './emitter';
 import { Quotes } from './components/Quotes';
+import { prepareQuoteMessage } from './helpers/prepareQuoteMessage';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,6 +52,7 @@ export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): R
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
 	const { rid, tmid, editing, message, editRequest, onSendMessage } = useContext(MessageComposerContextProps);
+	const { action, selectedMessages } = useRoomContext();
 	const {
 		showEmojiKeyboard,
 		showEmojiSearchbar,
@@ -60,9 +62,6 @@ export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): R
 		closeSearchEmojiKeyboard
 	} = useContext(MessageComposerContext);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-
-	const { selectedMessages } = useRoomContext();
-	console.log('🚀 ~ file: MessageComposerInner.tsx:64 ~ MessageComposerInner ~ selectedMessages:', selectedMessages);
 
 	useEffect(() => {
 		const showListener = Keyboard.addListener('keyboardWillShow', async () => {
@@ -112,6 +111,13 @@ export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): R
 			} = message;
 			// @ts-ignore
 			return editRequest({ id, msg: textFromInput, rid });
+		}
+
+		if (action === 'quote') {
+			// TODO: missing threads and threads enabled implementation
+			const quoteMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
+			onSendMessage(quoteMessage);
+			return;
 		}
 
 		// Slash command
