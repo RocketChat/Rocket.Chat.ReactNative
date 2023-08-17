@@ -8,10 +8,12 @@ export const previewFormatText = (msg: string) => {
 	let m = formatText(msg);
 	m = formatHyperlink(m);
 	m = shortnameToUnicode(m);
-	// Removes sequential empty spaces
-	// TODO: undoes https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/5064/files#diff-acf5acde58285628166dc989f5f1b1f4b7a4a928f0a46d2b0405045eb01aaf26L30-L31
+	// Removes sequential empty spaces before to use removeMarkdown,
+	// because with some edge cases the library takes a long time to finish the process
 	m = m.replace(/\s+/g, ' ');
 	m = removeMarkdown(m);
+	// Removes sequential empty spaces to remove leading empty space on quotes at the rooms list view
+	m = m.replace(/\s+/g, ' ');
 	m = m.replace(/\n+/g, ' ');
 	return m;
 };
