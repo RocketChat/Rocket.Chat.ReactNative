@@ -7,7 +7,7 @@ import { CustomIcon, TIconsName } from '../../../CustomIcon';
 import useStyle from './styles';
 
 type VideoConfMessageIconProps = {
-	variant: 'ended' | 'incoming' | 'outgoing';
+	variant: 'ended' | 'incoming' | 'outgoing' | 'issue';
 	children: React.ReactElement | React.ReactElement[];
 };
 
@@ -33,6 +33,12 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 			color: colors.conferenceCallOngoingPhoneIcon,
 			backgroundColor: colors.conferenceCallOngoingPhoneBackground,
 			label: i18n.t('Call_ongoing')
+		},
+		issue: {
+			icon: 'phone-issue',
+			color: colors.statusFontOnWarning,
+			backgroundColor: colors.statusBackgroundWarning,
+			label: i18n.t('Call_issue')
 		}
 	};
 
@@ -45,7 +51,7 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 						backgroundColor: iconStyle[variant].backgroundColor
 					}}
 				>
-					<CustomIcon name={iconStyle[variant].icon} size={variant === 'incoming' ? 16 : 24} color={iconStyle[variant].color} />
+					<CustomIcon name={iconStyle[variant].icon} size={24} color={iconStyle[variant].color} />
 				</View>
 				<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
 			</View>
