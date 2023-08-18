@@ -38,7 +38,8 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
 		Notifications.setCategories([notificationCategory]);
 	} else if (Platform.OS === 'android' && Platform.constants.Version >= 33) {
-		PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(permissionStatus => {
+		// @ts-ignore
+		PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS').then(permissionStatus => {
 			if (permissionStatus === 'granted') {
 				Notifications.registerRemoteNotifications();
 			} else {
