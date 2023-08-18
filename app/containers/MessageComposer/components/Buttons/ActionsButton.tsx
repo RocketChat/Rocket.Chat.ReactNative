@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';

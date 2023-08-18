@@ -173,9 +173,9 @@
 		"@storybook/addon-storyshots": "6.3",
 		"@storybook/react": "6.3",
 		"@storybook/react-native": "^6.0.1-beta.7",
-		"@testing-library/jest-native": "^5.4.2",
+		"@testing-library/jest-native": "^4.0.4",
 		"@testing-library/react-hooks": "^8.0.1",
-		"@testing-library/react-native": "^12.1.2",
+		"@testing-library/react-native": "^9.0.0",
 		"@types/bytebuffer": "^5.0.44",
 		"@types/ejson": "^2.1.3",
 		"@types/i18n-js": "^3.8.3",
@@ -241,9 +241,6 @@
 			".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
 			".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
 		},
-		"setupFiles": [
-			"./node_modules/react-native-gesture-handler/jestSetup.js"
-		],
 		"setupFilesAfterEnv": [
 			"@testing-library/jest-native/extend-expect",
 			"./jest.setup.js"

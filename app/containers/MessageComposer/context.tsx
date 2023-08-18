@@ -1,4 +1,4 @@
-import { createContext, ReactElement, useReducer } from 'react';
+import React, { createContext, ReactElement, useReducer } from 'react';
 
 import { IEmoji, IMessage, TAnyMessageModel } from '../../definitions';
 
