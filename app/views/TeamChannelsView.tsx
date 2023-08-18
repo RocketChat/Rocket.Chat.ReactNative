@@ -221,7 +221,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				<HeaderBackButton
 					labelVisible={false}
 					onPress={() => navigation.pop()}
-					tintColor={themes[theme!].headerTintColor}
+					tintColor={themes[theme].headerTintColor}
 					testID='header-back'
 				/>
 			),
@@ -436,7 +436,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		} = this.props;
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
-		const autoJoinIconColor = isAutoJoinChecked ? themes[theme!].tintActive : themes[theme!].auxiliaryTintColor;
+		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
 
 		const options: TActionSheetOptionsItem[] = [];
 

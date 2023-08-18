@@ -121,6 +121,7 @@ Button.displayName = 'MessageAudioButton';
 
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
+
 	private sound: Sound;
 
 	constructor(props: IMessageAudioProps) {
@@ -366,13 +367,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		return (
 			<>
-				<Markdown
-					msg={msg}
-					style={[isReply && style]}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
+				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				<View
 					style={[
 						styles.audioContainer,

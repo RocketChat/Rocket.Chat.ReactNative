@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
+import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../CustomIcon';
 import ActivityIndicator from '../../ActivityIndicator';
@@ -9,9 +9,9 @@ import { useTheme } from '../../../theme';
 
 interface IInput {
 	children?: JSX.Element;
-	onPress: PlatformTouchableProps['onPress'];
+	onPress: () => void;
 	inputStyle?: object;
-	disabled?: PlatformTouchableProps['disabled'];
+	disabled?: boolean | null;
 	placeholder?: string;
 	loading?: boolean;
 	innerInputStyle?: object;

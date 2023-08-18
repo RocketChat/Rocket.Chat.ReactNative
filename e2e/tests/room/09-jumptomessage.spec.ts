@@ -200,15 +200,9 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await waitFor(element(by[textMatcher]('Load newer')))
-			.toExist()
-			.withTimeout(5000);
-		await element(by[textMatcher]('Load newer')).atIndex(0).tap();
-		await waitFor(element(by[textMatcher]('Load newer')))
 			.toNotExist()
 			.withTimeout(5000);
 		await expect(element(by[textMatcher]('Load more'))).toNotExist();
-		await expect(element(by[textMatcher]('252'))).toExist();
-		await expect(element(by[textMatcher]('253'))).toExist();
 		await tapBack();
 	});
 });

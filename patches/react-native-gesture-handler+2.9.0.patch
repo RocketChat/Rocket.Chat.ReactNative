@@ -1,9 +1,0 @@
-diff --git a/node_modules/react-native-gesture-handler/lib/typescript/gestureHandlerRootHOC.d.ts b/node_modules/react-native-gesture-handler/lib/typescript/gestureHandlerRootHOC.d.ts
-index 8007709..6e53b01 100644
---- a/node_modules/react-native-gesture-handler/lib/typescript/gestureHandlerRootHOC.d.ts
-+++ b/node_modules/react-native-gesture-handler/lib/typescript/gestureHandlerRootHOC.d.ts
-@@ -1,3 +1,3 @@
- import * as React from 'react';
- import { StyleProp, ViewStyle } from 'react-native';
--export default function gestureHandlerRootHOC<P extends JSX.IntrinsicAttributes>(Component: React.ComponentType<P>, containerStyles?: StyleProp<ViewStyle>): React.ComponentType<P>;
-+export default function gestureHandlerRootHOC<P extends any>(Component: React.ComponentType<P>, containerStyles?: StyleProp<ViewStyle>): React.ComponentType<P>;

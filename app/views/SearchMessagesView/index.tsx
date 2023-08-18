@@ -72,7 +72,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	customEmojis: {
 		[key: string]: ICustomEmoji;
 	};
-	theme?: TSupportedThemes;
+	theme: TSupportedThemes;
 	useRealName: boolean;
 }
 class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
@@ -272,8 +272,8 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme!].backgroundColor }]}>
-				<Text style={[styles.noDataFound, { color: themes[theme!].titleText }]}>{I18n.t('No_results_found')}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
 			</View>
 		);
 	};
@@ -292,7 +292,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				useRealName={useRealName}
-				theme={theme!}
+				theme={theme}
 				onPress={() => this.jumpToMessage({ item })}
 				jumpToMessage={() => this.jumpToMessage({ item })}
 				rid={message.rid}
@@ -312,7 +312,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			<FlatList
 				data={messages}
 				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme!].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
@@ -326,7 +326,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='search-messages-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
 				<StatusBar />
 				<View style={styles.searchContainer}>
 					<FormTextInput
@@ -336,8 +336,8 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme!} />
-					<View style={[styles.divider, { backgroundColor: themes[theme!].separatorColor }]} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
+					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 				</View>
 				{this.renderList()}
 			</SafeAreaView>
