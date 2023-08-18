@@ -246,7 +246,6 @@ const MessageActions = React.memo(
 
 			const handleQuote = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_QUOTE);
-				// replyInit(message, false);
 				quoteInit(messageId);
 			};
 

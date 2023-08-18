@@ -805,7 +805,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessage: undefined, replying: false, replyWithMention: false });
 	};
 
-	// TODO: implement multiple quotes
 	onQuoteInit = (messageId: string) => {
 		const { action } = this.state;
 		if (action === 'quote') {
