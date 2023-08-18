@@ -1,4 +1,4 @@
-app_identifier "chat.rocket.reactnative" # The bundle identifier of your app
+app_identifier "chat.rocket.ios" # The bundle identifier of your app
 apple_id "diegolmello@gmail.com" # Your Apple email address
 
 team_id "S6UPZG7ZR3" # Developer Portal Team ID

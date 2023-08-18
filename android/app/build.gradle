@@ -30,7 +30,7 @@ react {
     //   The list of variants to that are debuggable. For those we're going to
     //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
     //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
-    debuggableVariants = ["experimentalPlayDebug", "officialPlayDebug", "experimentalFossDebug", "officialFossDebug"]
+    debuggableVariants = ["playDebug", "fossDebug"]
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
     // nodeExecutableAndArgs = ["node"]
@@ -105,8 +105,7 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    // Can't set this, since it causes issues to Official flavor
-    // namespace APPLICATION_ID 
+    namespace "chat.rocket.android"
     defaultConfig {
         applicationId APPLICATION_ID
         minSdkVersion rootProject.ext.minSdkVersion
@@ -118,7 +117,7 @@ android {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
-        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
+        resValue "string", "rn_config_reader_custom_package", APPLICATION_ID
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -158,17 +157,8 @@ android {
     }
 
     // applicationVariants are e.g. debug, release
-
-    flavorDimensions "app", "type"
+    flavorDimensions "type"
     productFlavors {
-        official {
-            dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "true"
-        }
-        experimental {
-            dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "false"
-        }
         foss {
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
@@ -180,19 +170,11 @@ android {
     }
     sourceSets {
         // TODO: refactor making sure notifications are working properly both on debug and release
-        experimentalPlayDebug {
+        playDebug {
             java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
-        experimentalPlayRelease {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        officialPlayDebug {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        officialPlayRelease {
+        playRelease {
             java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }

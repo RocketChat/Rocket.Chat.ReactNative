@@ -3,7 +3,6 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
 import { appGroupPath } from './appGroup';
-import { isOfficial } from '../constants';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
 import Message from './model/Message';
@@ -30,7 +29,7 @@ if (__DEV__) {
 	console.log(`📂 ${appGroupPath}`);
 }
 
-const getDatabasePath = (name: string) => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
+const getDatabasePath = (name: string) => `${appGroupPath}${name}.db`;
 
 export const getDatabase = (database = ''): Database => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');

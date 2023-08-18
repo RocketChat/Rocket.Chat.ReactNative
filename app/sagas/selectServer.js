@@ -99,7 +99,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					nickname: userRecord.nickname
 				};
 			} catch {
-				// search credentials on shared credentials (Experimental/Official)
 				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
