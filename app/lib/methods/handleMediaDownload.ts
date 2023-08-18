@@ -193,13 +193,14 @@ export function downloadMediaFile({
 	downloadUrl: string;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
+		let downloadKey = '';
 		try {
 			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 			if (!path) {
 				reject();
 				return;
 			}
-			const downloadKey = mediaDownloadKey(downloadUrl);
+			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
 			if (result?.uri) {
@@ -208,6 +209,8 @@ export function downloadMediaFile({
 			reject();
 		} catch {
 			reject();
+		} finally {
+			delete downloadQueue[downloadKey];
 		}
 	});
 }
