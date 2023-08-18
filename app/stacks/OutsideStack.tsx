@@ -22,17 +22,13 @@ const _OutsideStack = () => {
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
-			{/* @ts-ignore */}
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
 			{/* @ts-ignore */}
 			<Outside.Screen name='LoginView' component={LoginView} options={LoginView.navigationOptions} />
 			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} />
-			{/* @ts-ignore */}
 			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} />
-			{/* @ts-ignore */}
 			<Outside.Screen name='RegisterView' component={RegisterView} options={RegisterView.navigationOptions} />
-			{/* @ts-ignore */}
 			<Outside.Screen name='LegalView' component={LegalView} />
 		</Outside.Navigator>
 	);

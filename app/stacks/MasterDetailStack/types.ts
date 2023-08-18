@@ -1,6 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 
-import { TServerModel, TThreadModel } from '../../definitions';
 import { IAttachment } from '../../definitions/IAttachment';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
@@ -209,18 +208,13 @@ export type MasterDetailInsideStackParamList = {
 		rid: string;
 		url: string;
 		onlyAudio?: boolean;
-		videoConf?: boolean;
 	};
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;
-		isShareExtension: boolean;
-		serverInfo: TServerModel;
+		serverInfo: {};
 		text: string;
-		room: TSubscriptionModel;
-		thread?: TThreadModel;
-		replying?: boolean;
-		replyingMessage?: IMessage;
-		closeReply?: Function;
+		room: ISubscription;
+		thread: any; // TODO: Change
 	};
 };

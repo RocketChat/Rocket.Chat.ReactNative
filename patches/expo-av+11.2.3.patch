@@ -1,8 +1,21 @@
+diff --git a/node_modules/expo-av/android/build.gradle b/node_modules/expo-av/android/build.gradle
+index e6e3424..f1a6ddc 100644
+--- a/node_modules/expo-av/android/build.gradle
++++ b/node_modules/expo-av/android/build.gradle
+@@ -113,7 +113,7 @@ android {
+   packagingOptions {
+     // Gradle will add cmake target dependencies into packaging.
+     // Theses files are intermediated linking files to build reanimated and should not be in final package.
+-    excludes = [
++    excludes += [
+         "**/libc++_shared.so",
+         "**/libreactnativejni.so",
+         "**/libglog.so",
 diff --git a/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java b/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
-index 19818bc..7a7053b 100644
+index 19818bc..ae4f631 100644
 --- a/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
 +++ b/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
-@@ -16,13 +16,26 @@ import okhttp3.OkHttpClient;
+@@ -16,13 +16,21 @@ import okhttp3.OkHttpClient;
  public class SharedCookiesDataSourceFactory implements DataSource.Factory {
    private final DataSource.Factory mDataSourceFactory;
  
@@ -17,11 +30,6 @@ index 19818bc..7a7053b 100644
 -    OkHttpClient.Builder builder = new OkHttpClient.Builder();
 -    if (cookieHandler != null) {
 -      builder.cookieJar(new JavaNetCookieJar(cookieHandler));
-+    // OkHttpClient.Builder builder = new OkHttpClient.Builder();
-+    // if (cookieHandler != null) {
-+    //   builder.cookieJar(new JavaNetCookieJar(cookieHandler));
-+    // }
-+    // OkHttpClient client = builder.build();
 +    if (this.client == null) {
 +      OkHttpClient.Builder builder = new OkHttpClient.Builder();
 +      if (cookieHandler != null) {
