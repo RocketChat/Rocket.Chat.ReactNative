@@ -13,6 +13,7 @@ export interface IHeaderButtonItem extends Omit<ICustomIcon, 'name' | 'size' | '
 	testID?: string;
 	badge?(): void;
 	color?: string;
+	disabled?: boolean;
 }
 
 export const BUTTON_HIT_SLOP = {

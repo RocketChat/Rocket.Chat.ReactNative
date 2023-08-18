@@ -9,6 +9,7 @@ import { RouteProp } from '@react-navigation/core';
 import { OutsideModalParamList } from '../stacks/types';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
+import { TSupportedThemes, withTheme } from '../theme';
 import { userAgent } from '../lib/constants';
 import { debounce } from '../lib/methods/helpers';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -48,6 +49,7 @@ interface IAuthenticationWebView extends INavigationOption {
 	server: string;
 	Accounts_Iframe_api_url: string;
 	Accounts_Iframe_api_method: string;
+	theme: TSupportedThemes;
 }
 
 interface IState {
@@ -198,9 +200,9 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	server: state.server.server as string,
+	server: state.server.server,
 	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url as string,
 	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method as string
 });
 
-export default connect(mapStateToProps)(AuthenticationWebView);
+export default connect(mapStateToProps)(withTheme(AuthenticationWebView));

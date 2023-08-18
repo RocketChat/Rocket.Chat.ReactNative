@@ -1,4 +1,4 @@
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React from 'react';
 import { BackHandler, Linking, NativeEventSubscription, SafeAreaView } from 'react-native';
 import WebView from 'react-native-webview';
@@ -31,7 +31,7 @@ class JitsiMeetView extends React.Component<TJitsiMeetViewProps> {
 	componentDidMount() {
 		this.handleJitsiApp();
 		this.onConferenceJoined();
-		activateKeepAwakeAsync();
+		activateKeepAwake();
 	}
 
 	componentWillUnmount() {
