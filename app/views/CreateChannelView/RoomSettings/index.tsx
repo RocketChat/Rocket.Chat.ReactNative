@@ -22,12 +22,17 @@ export const RoomSettings = ({
 }) => {
 	const [type, setType] = useState(true);
 	const [readOnly, setReadOnly] = useState(false);
-	const [encrypted, setEncrypted] = useState(false);
-	const [broadcast, setBroadcast] = useState(false);
 
-	const { encryptionEnabled } = useAppSelector(state => ({
-		encryptionEnabled: state.encryption.enabled
-	}));
+	const { encryptionEnabled, defaultEncryptionOn } = useAppSelector(state => {
+		const defaultEncryptionOn = state.settings.E2E_Enabled_Default_PrivateRooms;
+		return {
+			encryptionEnabled: state.encryption.enabled,
+			defaultEncryptionOn
+		};
+	});
+
+	const [encrypted, setEncrypted] = useState(defaultEncryptionOn);
+	const [broadcast, setBroadcast] = useState(false);
 
 	const onValueChangeType = useCallback(
 		(value: boolean) => {
