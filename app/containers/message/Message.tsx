@@ -22,6 +22,19 @@ import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	if (props.isPreview) {
+		return (
+			<>
+				<User {...props} />
+				<>
+					<Content {...props} />
+					<Attachments {...props} />
+				</>
+				<Urls {...props} />
+			</>
+		);
+	}
+
 	if (props.type === 'discussion-created') {
 		return (
 			<>

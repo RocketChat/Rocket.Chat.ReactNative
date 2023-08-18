@@ -1,7 +1,6 @@
 package chat.rocket.reactnative;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
 import android.util.Log;
 
@@ -81,7 +80,7 @@ class Encryption {
             dbName += "-experimental";
         }
         dbName += ".db";
-        Database database = new Database(dbName, reactContext, SQLiteDatabase.CREATE_IF_NECESSARY);
+        Database database = new Database(dbName, reactContext);
         String[] query = {ejson.rid};
         Cursor cursor = database.rawQuery("select * from subscriptions where id == ? limit 1", query);
 

@@ -17,16 +17,16 @@ interface IMultiSelectContentProps {
 	options?: IItemData[];
 	multiselect: boolean;
 	select: React.Dispatch<any>;
-	onChange: Function;
+	onChange: ({ value }: { value: string[] }) => void;
 	setCurrentValue: React.Dispatch<React.SetStateAction<string>>;
 	onHide: Function;
-	selectedItems: string[];
+	selectedItems: IItemData[];
 }
 
 export const MultiSelectContent = React.memo(
 	({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) => {
 		const { colors } = useTheme();
-		const [selected, setSelected] = useState<string[]>(Array.isArray(selectedItems) ? selectedItems : []);
+		const [selected, setSelected] = useState<IItemData[]>(Array.isArray(selectedItems) ? selectedItems : []);
 		const [items, setItems] = useState<IItemData[] | undefined>(options);
 		const { hideActionSheet } = useActionSheet();
 
@@ -37,14 +37,14 @@ export const MultiSelectContent = React.memo(
 			} = item;
 			if (multiselect) {
 				let newSelect = [];
-				if (!selected.includes(value)) {
-					newSelect = [...selected, value];
+				if (!selected.find(s => s.value === value)) {
+					newSelect = [...selected, item];
 				} else {
-					newSelect = selected.filter((s: any) => s !== value);
+					newSelect = selected.filter((s: any) => s.value !== value);
 				}
 				setSelected(newSelect);
 				select(newSelect);
-				onChange({ value: newSelect });
+				onChange({ value: newSelect.map(s => s.value) });
 			} else {
 				onChange({ value });
 				setCurrentValue(text);

@@ -304,7 +304,9 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			isFromWebView,
 			showMessageInMainThread,
 			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel
+			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
+			bio: result.me.bio,
+			nickname: result.me.nickname
 		};
 		return user;
 	}

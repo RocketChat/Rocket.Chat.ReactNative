@@ -24,19 +24,19 @@ const RECORDING_EXTENSION = '.m4a';
 const RECORDING_SETTINGS = {
 	android: {
 		extension: RECORDING_EXTENSION,
-		outputFormat: Audio.AndroidOutputFormat.MPEG_4,
-		audioEncoder: Audio.AndroidAudioEncoder.AAC,
-		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.sampleRate,
-		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.android.numberOfChannels,
-		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.bitRate
+		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
+		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
+		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate
 	},
 	ios: {
 		extension: RECORDING_EXTENSION,
-		audioQuality: Audio.IOSAudioQuality.MIN,
-		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.sampleRate,
-		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.numberOfChannels,
-		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.bitRate,
-		outputFormat: Audio.IOSOutputFormat.MPEG4AAC
+		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MIN,
+		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.sampleRate,
+		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate,
+		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC
 	},
 	web: {}
 };

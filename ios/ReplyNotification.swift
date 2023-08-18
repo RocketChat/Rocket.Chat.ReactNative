@@ -34,7 +34,7 @@ class ReplyNotification: RNNotificationEventHandler {
             if let msg = (response as? UNTextInputNotificationResponse)?.userText {
               let rocketchat = RocketChat.instanceForServer(server: payload.host.removeTrailingSlash())
               let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-              rocketchat.sendMessage(rid: rid, message: msg) { response in
+              rocketchat.sendMessage(rid: rid, message: msg, threadIdentifier: payload.tmid) { response in
                 guard let response = response, response.success else {
                   let content = UNMutableNotificationContent()
                   content.body = "Failed to reply message."
