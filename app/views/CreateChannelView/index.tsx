@@ -69,7 +69,7 @@ const CreateChannelView = () => {
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
 	const { defaultEncryptionOn } = useAppSelector(state => {
-		const defaultEncryptionOn = state.encryption.enabled && state.settings.E2E_Enabled_Default_PrivateRooms;
+		const defaultEncryptionOn = state.encryption.enabled && (state.settings.E2E_Enabled_Default_PrivateRooms as boolean);
 		return {
 			defaultEncryptionOn
 		};
