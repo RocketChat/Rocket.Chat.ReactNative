@@ -68,13 +68,20 @@ export interface IFormData {
 const CreateChannelView = () => {
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
+	const { defaultEncryptionOn } = useAppSelector(state => {
+		const defaultEncryptionOn = state.encryption.enabled && state.settings.E2E_Enabled_Default_PrivateRooms;
+		return {
+			defaultEncryptionOn
+		};
+	});
+
 	const {
 		control,
 		handleSubmit,
 		formState: { isDirty },
 		setValue
 	} = useForm<IFormData>({
-		defaultValues: { channelName: '', broadcast: false, encrypted: false, readOnly: false, type: createPrivateChannelPermission }
+		defaultValues: { channelName: '', broadcast: false, encrypted: defaultEncryptionOn, readOnly: false, type: createPrivateChannelPermission }
 	});
 
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
@@ -154,6 +161,7 @@ const CreateChannelView = () => {
 							createPrivateChannelPermission={createPrivateChannelPermission}
 							isTeam={isTeam}
 							setValue={setValue}
+							defaultEncryptionOn={defaultEncryptionOn}
 						/>
 					</View>
 					{users.length > 0 ? (
