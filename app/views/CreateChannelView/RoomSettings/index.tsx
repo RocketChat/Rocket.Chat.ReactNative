@@ -20,6 +20,7 @@ export const RoomSettings = ({
 	setValue: UseFormSetValue<IFormData>;
 	createChannelPermission: boolean;
 	createPrivateChannelPermission: boolean;
+	defaultEncryptionOn: boolean;
 }) => {
 	const [type, setType] = useState(true);
 	const [readOnly, setReadOnly] = useState(false);
