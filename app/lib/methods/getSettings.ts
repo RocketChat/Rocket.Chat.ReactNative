@@ -152,7 +152,7 @@ export async function getSettings(): Promise<void> {
 		// RC 0.60.0
 		let offset = 0;
 		let remaining;
-		let settings = [];
+		let settings: IData[] = [];
 
 		// Iterate over paginated results to retrieve all settings
 		do {
