@@ -168,24 +168,22 @@ describe('edit message', () => {
 				</RoomContext.Provider>
 			</Provider>
 		);
-
-		// TODO: This is not cool, but it was the only way I could find to properly trigger the event
-		// We can think of a better way to do this before merging to develop
-		// act(() => emitter.emit('setMicOrSend', 'send'));
 	});
-	test('init', () => {
-		// screen.debug();
+	test('init', async () => {
+		await screen.findByTestId('message-composer');
 		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
 		expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
 		expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
 		expect(screen.getByTestId('message-composer-cancel-edit')).toBeOnTheScreen();
 	});
-	test('cancel', () => {
+	test('cancel', async () => {
+		await screen.findByTestId('message-composer');
 		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
 		fireEvent.press(screen.getByTestId('message-composer-cancel-edit'));
 		expect(editCancel).toHaveBeenCalledTimes(1);
 	});
-	test('send', () => {
+	test('send', async () => {
+		await screen.findByTestId('message-composer');
 		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
 		fireEvent.press(screen.getByTestId('message-composer-send'));
 		expect(editRequest).toHaveBeenCalledTimes(1);

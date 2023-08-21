@@ -102,7 +102,6 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
 		if (action === 'edit') {
-			console.log('editRequest', { id: selectedMessages[0], msg: textFromInput, rid });
 			return editRequest({ id: selectedMessages[0], msg: textFromInput, rid });
 		}
 

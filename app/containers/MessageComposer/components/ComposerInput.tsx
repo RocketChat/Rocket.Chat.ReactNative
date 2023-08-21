@@ -37,7 +37,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
 	const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
-	const { focused, setFocused, setTrackingViewHeight } = useContext(MessageComposerContext);
+	const { focused, setFocused, setTrackingViewHeight, setMicOrSend } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -68,7 +68,6 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		const fetchMessageAndSetInput = async () => {
 			const message = await getMessageById(selectedMessages[0]);
 			if (message) {
-				console.log('🚀 ~ file: ComposerInput.tsx:70 ~ fetchMessageAndSetInput ~ message:', selectedMessages, message);
 				setInput(message?.msg || '');
 			}
 		};
@@ -99,7 +98,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		if (inputRef.current) {
 			inputRef.current.setNativeProps({ text });
 		}
-		emitter.emit('setMicOrSend', text.length === 0 ? 'mic' : 'send');
+		setMicOrSend(text.length === 0 ? 'mic' : 'send');
 	};
 
 	const focus = () => {
