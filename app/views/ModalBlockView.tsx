@@ -54,7 +54,7 @@ interface IModalBlockViewState {
 interface IModalBlockViewProps {
 	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
-	theme?: TSupportedThemes;
+	theme: TSupportedThemes;
 	language: string;
 	user: {
 		id: string;
@@ -256,7 +256,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 
 		return (
 			<KeyboardAwareScrollView
-				style={[styles.container, { backgroundColor: themes[theme!].auxiliaryBackground }]}
+				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				keyboardShouldPersistTaps='always'
 			>
 				<View style={styles.content}>

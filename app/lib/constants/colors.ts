@@ -285,6 +285,9 @@ export const colors = {
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
 		n900: '#1F2329',
+		statusBackgroundWarning: '#FFECAD',
+		statusFontOnWarning: '#B88D00',
+		overlayColor: '#1F2329B2',
 		...mentions,
 		...callButtons
 	},
@@ -363,6 +366,9 @@ export const colors = {
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
 		n900: '#FFFFFF',
+		statusBackgroundWarning: '#FFECAD',
+		statusFontOnWarning: '#B88D00',
+		overlayColor: '#1F2329B2',
 		...mentions,
 		...callButtons
 	},
@@ -441,6 +447,9 @@ export const colors = {
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
 		n900: '#FFFFFF',
+		statusBackgroundWarning: '#FFECAD',
+		statusFontOnWarning: '#B88D00',
+		overlayColor: '#1F2329B2',
 		...mentions,
 		...callButtons
 	}

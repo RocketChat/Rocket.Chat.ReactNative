@@ -1,3 +1,4 @@
+import React from 'react';
 import '@testing-library/jest-native/extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
@@ -27,9 +28,7 @@ jest.mock('react-native-file-viewer', () => ({
 
 jest.mock('expo-haptics', () => jest.fn(() => null));
 
-jest.mock('./app/lib/database', () => ({
-	active: { get: jest.fn(() => null) }
-}));
+jest.mock('./app/lib/database', () => jest.fn(() => null));
 
 jest.mock('./app/containers/MessageBox/EmojiKeyboard', () => jest.fn(() => null));
 
@@ -81,10 +80,10 @@ jest.mock('react-native-math-view', () => {
 });
 
 jest.mock('react-native-ui-lib/keyboard', () => {
-	const { forwardRef } = jest.requireActual('react');
+	const react = jest.requireActual('react');
 	return {
 		__esModule: true,
-		KeyboardAccessoryView: forwardRef((props, ref) => {
+		KeyboardAccessoryView: react.forwardRef((props, ref) => {
 			const MockName = 'keyboard-accessory-view-mock';
 			return <MockName>{props.renderContent()}</MockName>;
 		})

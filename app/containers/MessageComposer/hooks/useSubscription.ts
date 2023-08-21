@@ -14,7 +14,7 @@ export const useSubscription = (rid: string) => {
 			}
 		};
 		loadRoom();
-	}, []);
+	}, [rid]);
 
 	return subscription;
 };

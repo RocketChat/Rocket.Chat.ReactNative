@@ -27,6 +27,7 @@ import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../d
 import styles from './styles';
 import Options from './Options';
 import { Services } from '../../lib/services';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -36,7 +37,7 @@ interface IDirectoryViewProps {
 	baseUrl: string;
 	isFederationEnabled: boolean;
 	user: IUser;
-	theme?: TSupportedThemes;
+	theme: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
 }
@@ -163,13 +164,20 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			if (result.success) {
 				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 			}
-		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const result = await Services.getRoomInfo(item._id);
-			if (result.success) {
+			return;
+		}
+		const subscription = await getSubscriptionByRoomId(item._id);
+		if (subscription) {
+			this.goRoom(subscription);
+			return;
+		}
+		if (['p', 'c'].includes(item.t) && !item.teamMain) {
+			const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+			if (result) {
 				this.goRoom({
 					rid: item._id,
 					name: item.name,
-					joinCodeRequired: result.room.joinCodeRequired,
+					joinCodeRequired: result.joinCodeRequired,
 					t: item.t as SubscriptionType,
 					search: true
 				});
@@ -210,15 +218,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						style={[
 							sharedStyles.separatorVertical,
 							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme!].separatorColor }
+							{ borderColor: themes[theme].separatorColor }
 						]}
 					>
-						<CustomIcon name={icon} size={20} color={themes[theme!].tintColor} style={styles.toggleDropdownIcon} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme!].tintColor }]}>{I18n.t(text)}</Text>
+						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
+						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
 						<CustomIcon
 							name='chevron-down'
 							size={20}
-							color={themes[theme!].auxiliaryTintColor}
+							color={themes[theme].auxiliaryTintColor}
 							style={styles.toggleDropdownArrow}
 						/>
 					</View>
@@ -235,7 +243,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		if (index === data.length - 1) {
 			style = {
 				...sharedStyles.separatorBottom,
-				borderColor: themes[theme!].separatorColor
+				borderColor: themes[theme].separatorColor
 			};
 		}
 
@@ -289,7 +297,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='directory-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -306,7 +314,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				/>
 				{showOptionsDropdown ? (
 					<Options
-						theme={theme!}
+						theme={theme}
 						type={type}
 						globalUsers={globalUsers}
 						close={this.toggleDropdown}

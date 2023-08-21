@@ -17,7 +17,7 @@ import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 export interface IMessageActionsProps {
@@ -28,8 +28,10 @@ export interface IMessageActionsProps {
 	reactionInit: (message: TAnyMessageModel) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
+	quoteInit: (messageId: string) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
+	serverVersion?: string | null;
 	Message_AllowDeleting?: boolean;
 	Message_AllowDeleting_BlockDeleteInMinutes?: number;
 	Message_AllowEditing?: boolean;
@@ -60,6 +62,7 @@ const MessageActions = React.memo(
 				reactionInit,
 				onReactionPress,
 				replyInit,
+				quoteInit,
 				isReadOnly,
 				Message_AllowDeleting,
 				Message_AllowDeleting_BlockDeleteInMinutes,
@@ -74,7 +77,8 @@ const MessageActions = React.memo(
 				forceDeleteMessagePermission,
 				deleteOwnMessagePermission,
 				pinMessagePermission,
-				createDirectMessagePermission
+				createDirectMessagePermission,
+				serverVersion
 			},
 			ref
 		) => {
@@ -188,6 +192,15 @@ const MessageActions = React.memo(
 				}
 			};
 
+			const handleShareMessage = (message: TAnyMessageModel) => {
+				const params = { message };
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'ForwardMessageView', params });
+				} else {
+					Navigation.navigate('NewMessageStackNavigator', { screen: 'ForwardMessageView', params });
+				}
+			};
+
 			const handleUnread = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_UNREAD);
 				const { id: messageId, ts } = message;
@@ -242,9 +255,9 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleQuote = (message: TAnyMessageModel) => {
+			const handleQuote = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_QUOTE);
-				replyInit(message, false);
+				quoteInit(messageId);
 			};
 
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
@@ -311,7 +324,7 @@ const MessageActions = React.memo(
 					const db = database.active;
 					await db.write(async () => {
 						await message.update(m => {
-							m.autoTranslate = !m.autoTranslate;
+							m.autoTranslate = m.autoTranslate !== null ? !m.autoTranslate : false;
 							m._updatedAt = new Date();
 						});
 					});
@@ -360,7 +373,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
-						onPress: () => handleQuote(message)
+						onPress: () => handleQuote(message.id)
 					});
 				}
 
@@ -388,6 +401,14 @@ const MessageActions = React.memo(
 					icon: 'discussions',
 					onPress: () => handleCreateDiscussion(message)
 				});
+
+				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
+					options.push({
+						title: I18n.t('Forward'),
+						icon: 'arrow-forward',
+						onPress: () => handleShareMessage(message)
+					});
+				}
 
 				// Permalink
 				options.push({
@@ -460,7 +481,7 @@ const MessageActions = React.memo(
 				// Toggle Auto-translate
 				if (room.autoTranslate && message.u && message.u._id !== user.id) {
 					options.push({
-						title: I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'),
+						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
 						onPress: () => handleToggleTranslation(message)
 					});
@@ -508,6 +529,7 @@ const MessageActions = React.memo(
 );
 const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
+	serverVersion: state.server.version,
 	Message_AllowDeleting: state.settings.Message_AllowDeleting as boolean,
 	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes as number,
 	Message_AllowEditing: state.settings.Message_AllowEditing as boolean,

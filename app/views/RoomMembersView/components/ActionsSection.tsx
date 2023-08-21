@@ -46,7 +46,6 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 		route: keyof ChatsStackParamList;
 		params: ChatsStackParamList[keyof ChatsStackParamList];
 	}) => {
-		// @ts-ignore
 		navigate(route, params);
 		// @ts-ignore
 		logEvent(events[`RM_GO_${route.replace('View', '').toUpperCase()}`]);

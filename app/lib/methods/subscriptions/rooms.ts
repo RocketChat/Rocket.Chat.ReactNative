@@ -213,7 +213,6 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			if (messageRecord) {
 				batch.push(
 					messageRecord.prepareUpdate(() => {
-						// @ts-ignore
 						Object.assign(messageRecord, lastMessage);
 					})
 				);
@@ -308,6 +307,12 @@ export default function subscribeRooms() {
 			}
 			if (unset?.avatarETag) {
 				store.dispatch(setUser({ avatarETag: '' }));
+			}
+			if (diff?.bio) {
+				store.dispatch(setUser({ bio: diff.bio }));
+			}
+			if (diff?.nickname) {
+				store.dispatch(setUser({ nickname: diff.nickname }));
 			}
 		}
 		if (/subscriptions/.test(ev)) {

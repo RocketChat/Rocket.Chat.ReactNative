@@ -1,3 +1,4 @@
+import React from 'react';
 import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -24,7 +25,6 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 					flexDirection: 'row',
 					paddingHorizontal: 16,
 					paddingVertical: 6,
-					gap: 12,
 					alignItems: 'center'
 				}}
 			>

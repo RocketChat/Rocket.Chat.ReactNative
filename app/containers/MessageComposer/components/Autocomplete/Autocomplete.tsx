@@ -1,7 +1,7 @@
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
-import { ReactElement, useContext, useEffect, useState } from 'react';
 
-import { MessageComposerContext } from '../../context';
+import { MessageComposerContext, MessageComposerContextProps } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { useTheme } from '../../../../theme';
@@ -16,7 +16,8 @@ interface IAutocompleteData {
 }
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
-	const { rid, trackingViewHeight, keyboardHeight } = useContext(MessageComposerContext);
+	const { rid } = useContext(MessageComposerContextProps);
+	const { trackingViewHeight, keyboardHeight } = useContext(MessageComposerContext);
 	const [autocompleteData, setAutocompleteData] = useState<IAutocompleteData>({ type: null, text: '', params: '' });
 	const items = useAutocomplete({
 		rid,
@@ -95,8 +96,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 				<FlatList
 					contentContainerStyle={{
 						borderRadius: 4,
-						overflow: 'hidden',
-						gap: 4
+						overflow: 'hidden'
 					}}
 					style={{ margin: 8 }}
 					horizontal

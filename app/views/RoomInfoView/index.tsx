@@ -1,5 +1,6 @@
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -11,12 +12,12 @@ import UAParser from 'ua-parser-js';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
+import { MarkdownPreview } from '../../containers/markdown';
 import { IApplicationState, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
 import I18n from '../../i18n';
@@ -29,14 +30,15 @@ import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
 import { Services } from '../../lib/services';
+import { TUsersRoles } from '../../reducers/usersRoles';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes, withTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import Channel from './Channel';
-import { CallButton } from './components/UserInfoButton';
 import Direct from './Direct';
 import Livechat from './Livechat';
+import { CallButton } from './components/UserInfoButton';
 import styles from './styles';
 
 interface IGetRoomTitle {
@@ -51,18 +53,18 @@ interface IGetRoomTitle {
 const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
 	type === SubscriptionType.DIRECT ? (
 		<>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme!].titleText }]}>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>
 				{name}
 			</Text>
 			{username && (
 				<Text
 					testID='room-info-view-username'
-					style={[styles.roomUsername, { color: themes[theme!].auxiliaryText }]}
+					style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}
 				>{`@${username}`}</Text>
 			)}
 			{!!statusText && (
 				<View testID='room-info-view-custom-status'>
-					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme!].auxiliaryText }]} />
+					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} />
 				</View>
 			)}
 		</>
@@ -75,7 +77,7 @@ const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGet
 				status={room.visitor?.status}
 				sourceType={room.source}
 			/>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme!].titleText }]} key='room-info-name'>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
 				{getRoomTitle(room)}
 			</Text>
 		</View>
@@ -88,13 +90,14 @@ interface IRoomInfoViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 	subscribedRoom: string;
-	theme?: TSupportedThemes;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
 	editRoomPermission?: string[];
 	editOmnichannelContact?: string[];
 	editLivechatRoomCustomfields?: string[];
 	roles: { [key: string]: string };
+	usersRoles: TUsersRoles;
 }
 
 export interface IUserParsed extends IUser {
@@ -189,7 +192,6 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 								onPress={() => {
 									const isLivechat = t === SubscriptionType.OMNICHANNEL;
 									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-									// @ts-ignore
 									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
 								}}
 								testID='room-info-view-edit-button'
@@ -245,6 +247,23 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			})
 		);
 
+	setUser = async (user: IUser) => {
+		const roles = (() => {
+			const { usersRoles } = this.props;
+			const userRoles = usersRoles.find(u => u?.username === user.username);
+			let r: string[] = [];
+			if (userRoles?.roles?.length) r = userRoles.roles;
+			if (user.roles?.length) r = [...r, ...user.roles];
+			return uniq(r);
+		})();
+		if (roles.length) {
+			const parsedRoles = await this.parseRoles(roles);
+			this.setState({ roomUser: { ...user, parsedRoles } });
+		} else {
+			this.setState({ roomUser: user });
+		}
+	};
+
 	loadUser = async () => {
 		const { room, roomUser } = this.state;
 
@@ -254,29 +273,13 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
-					const { roles } = user;
-					const parsedRoles: { parsedRoles?: string[] } = {};
-					if (roles && roles.length) {
-						parsedRoles.parsedRoles = await this.parseRoles(roles);
-					}
-
-					this.setState({ roomUser: { ...user, ...parsedRoles } as IUserParsed });
+					this.setUser(user as IUser);
 				}
 			} catch {
 				// do nothing
 			}
 		} else {
-			try {
-				const { roles } = roomUser as IUserParsed;
-				if (roles && roles.length) {
-					const parsedRoles = await this.parseRoles(roles);
-					this.setState({ roomUser: { ...roomUser, parsedRoles } });
-				} else {
-					this.setState({ roomUser });
-				}
-			} catch (e) {
-				// do nothing
-			}
+			this.setUser(roomUser as IUser);
 		}
 	};
 
@@ -416,7 +419,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				handleEdit={showAvatarEdit ? this.handleEditAvatar : undefined}
 			>
 				{this.t === SubscriptionType.DIRECT && roomUser._id ? (
-					<View style={[sharedStyles.status, { backgroundColor: themes[theme!].auxiliaryBackground }]}>
+					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						<Status size={20} id={roomUser._id} />
 					</View>
 				) : null}
@@ -426,7 +429,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	renderButton = (onPress: () => void, iconName: TIconsName, text: string, danger?: boolean) => {
 		const { theme } = this.props;
-		const color = danger ? themes[theme!].dangerColor : themes[theme!].actionTintColor;
+		const color = danger ? themes[theme].dangerColor : themes[theme].actionTintColor;
 		return (
 			<BorderlessButton testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
@@ -492,10 +495,10 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const roomUserParsed = roomUser as IUserParsed;
 
 		return (
-			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme!].backgroundColor }]}>
+			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />
-				<SafeAreaView style={{ backgroundColor: themes[theme!].backgroundColor }} testID='room-info-view'>
-					<View style={[styles.avatarContainer, { backgroundColor: themes[theme!].auxiliaryBackground }]}>
+				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-info-view'>
+					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUserParsed)}
 						<View style={styles.roomTitleContainer}>
 							{renderRoomTitle({
@@ -504,7 +507,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 								name: roomUserParsed?.name,
 								username: roomUserParsed?.username,
 								statusText: roomUserParsed?.statusText,
-								theme: theme!
+								theme
 							})}
 						</View>
 						{this.renderButtons()}
@@ -523,7 +526,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	editRoomPermission: state.permissions['edit-room'],
 	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
 	editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
-	roles: state.roles
+	roles: state.roles,
+	usersRoles: state.usersRoles
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));
