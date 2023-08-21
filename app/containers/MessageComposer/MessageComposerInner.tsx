@@ -21,11 +21,10 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { isAllOrHere } from './helpers';
+import { fetchIsAllOrHere, prepareQuoteMessage } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { emitter } from './emitter';
 import { Quotes } from './components/Quotes';
-import { prepareQuoteMessage } from './helpers/prepareQuoteMessage';
 
 const styles = StyleSheet.create({
 	container: {
@@ -249,7 +248,7 @@ export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): R
 		let mention = '';
 		switch (item.type) {
 			case '@':
-				mention = isAllOrHere(item) ? item.title : item.subtitle || item.title;
+				mention = fetchIsAllOrHere(item) ? item.title : item.subtitle || item.title;
 				break;
 			case '#':
 				mention = item.subtitle ? item.subtitle : '';

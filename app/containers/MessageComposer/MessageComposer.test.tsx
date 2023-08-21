@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { act, fireEvent, render, waitFor, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 

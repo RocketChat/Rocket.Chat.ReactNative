@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, Text } from 'react-native';
 import moment from 'moment';
 
@@ -41,19 +42,21 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 				borderTopRightRadius: 4,
 				borderBottomRightRadius: 4,
 				paddingLeft: 16,
-				padding: 8
+				padding: 8,
+				marginRight: 8
 			}}
 			testID={`composer-quote-${message.id}`}
 		>
-			<View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-				<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', gap: 4 }}>
+			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+				<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
 					<Text
 						style={{
 							...sharedStyles.textBold,
 							color: colors.fontTitlesLabels,
 							fontSize: 14,
 							lineHeight: 20,
-							flexShrink: 1
+							flexShrink: 1,
+							paddingRight: 4
 						}}
 						numberOfLines={1}
 					>

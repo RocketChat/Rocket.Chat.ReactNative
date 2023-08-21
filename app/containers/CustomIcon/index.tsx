@@ -16,5 +16,8 @@ export interface ICustomIcon extends TextProps {
 	color: string;
 }
 
-const CustomIcon = ({ name, size, color, ...props }: ICustomIcon) => <IconSet name={name} size={size} color={color} {...props} />;
+const CustomIcon = ({ name, size, color, ...props }: ICustomIcon) => (
+	// @ts-ignore
+	<IconSet name={name} size={size} color={color} {...props} />
+);
 export { CustomIcon };

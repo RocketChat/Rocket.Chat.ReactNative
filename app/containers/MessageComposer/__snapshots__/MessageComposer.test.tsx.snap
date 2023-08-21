@@ -38,8 +38,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
-          handlerTag={54}
+          handlerTag={55}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -144,8 +143,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
-          handlerTag={55}
+          handlerTag={56}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -203,11 +201,6 @@ exports[`Quote Adding/removing quotes 1`] = `
       </View>
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -270,8 +263,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
-          handlerTag={54}
+          handlerTag={55}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -376,8 +368,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
-          handlerTag={55}
+          handlerTag={56}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -435,11 +426,6 @@ exports[`Quote Adding/removing quotes 2`] = `
       </View>
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={
         Array [
           "abc",
@@ -464,7 +450,6 @@ exports[`Quote Adding/removing quotes 2`] = `
     >
       <View>
         <View
-          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             Array [
@@ -485,6 +470,7 @@ exports[`Quote Adding/removing quotes 2`] = `
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
                 "height": 64,
+                "marginRight": 8,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -497,7 +483,6 @@ exports[`Quote Adding/removing quotes 2`] = `
                 Object {
                   "alignItems": "center",
                   "flexDirection": "row",
-                  "gap": 4,
                 }
               }
             >
@@ -507,7 +492,6 @@ exports[`Quote Adding/removing quotes 2`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
-                    "gap": 4,
                   }
                 }
               >
@@ -522,6 +506,7 @@ exports[`Quote Adding/removing quotes 2`] = `
                       "fontSize": 14,
                       "fontWeight": "700",
                       "lineHeight": 20,
+                      "paddingRight": 4,
                       "textAlign": "left",
                     }
                   }
@@ -540,14 +525,15 @@ exports[`Quote Adding/removing quotes 2`] = `
                       "textAlign": "left",
                     }
                   }
-                />
+                >
+                  
+                </Text>
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                delayLongPress={600}
-                handlerTag={56}
+                handlerTag={57}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -679,8 +665,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
-          handlerTag={54}
+          handlerTag={55}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -785,8 +770,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
-          handlerTag={55}
+          handlerTag={56}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -844,11 +828,6 @@ exports[`Quote Adding/removing quotes 3`] = `
       </View>
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={
         Array [
           "abc",
@@ -874,7 +853,6 @@ exports[`Quote Adding/removing quotes 3`] = `
     >
       <View>
         <View
-          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             Array [
@@ -895,6 +873,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
                 "height": 64,
+                "marginRight": 8,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -907,7 +886,6 @@ exports[`Quote Adding/removing quotes 3`] = `
                 Object {
                   "alignItems": "center",
                   "flexDirection": "row",
-                  "gap": 4,
                 }
               }
             >
@@ -917,7 +895,6 @@ exports[`Quote Adding/removing quotes 3`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
-                    "gap": 4,
                   }
                 }
               >
@@ -932,6 +909,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                       "fontSize": 14,
                       "fontWeight": "700",
                       "lineHeight": 20,
+                      "paddingRight": 4,
                       "textAlign": "left",
                     }
                   }
@@ -950,14 +928,15 @@ exports[`Quote Adding/removing quotes 3`] = `
                       "textAlign": "left",
                     }
                   }
-                />
+                >
+                  
+                </Text>
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                delayLongPress={600}
-                handlerTag={56}
+                handlerTag={57}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -1046,7 +1025,6 @@ exports[`Quote Adding/removing quotes 3`] = `
           </View>
         </View>
         <View
-          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             Array [
@@ -1067,6 +1045,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
                 "height": 64,
+                "marginRight": 8,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -1079,7 +1058,6 @@ exports[`Quote Adding/removing quotes 3`] = `
                 Object {
                   "alignItems": "center",
                   "flexDirection": "row",
-                  "gap": 4,
                 }
               }
             >
@@ -1089,7 +1067,6 @@ exports[`Quote Adding/removing quotes 3`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
-                    "gap": 4,
                   }
                 }
               >
@@ -1104,6 +1081,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                       "fontSize": 14,
                       "fontWeight": "700",
                       "lineHeight": 20,
+                      "paddingRight": 4,
                       "textAlign": "left",
                     }
                   }
@@ -1122,14 +1100,15 @@ exports[`Quote Adding/removing quotes 3`] = `
                       "textAlign": "left",
                     }
                   }
-                />
+                >
+                  
+                </Text>
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                delayLongPress={600}
-                handlerTag={57}
+                handlerTag={58}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -1217,6 +1196,13 @@ exports[`Quote Adding/removing quotes 3`] = `
             </Text>
           </View>
         </View>
+        <View
+          style={
+            Object {
+              "width": 0,
+            }
+          }
+        />
       </View>
     </RCTScrollView>
   </View>
@@ -1261,7 +1247,6 @@ exports[`renders correctly 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
           handlerTag={1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -1367,7 +1352,6 @@ exports[`renders correctly 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
           handlerTag={2}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -1426,11 +1410,6 @@ exports[`renders correctly 1`] = `
       </View>
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -1493,7 +1472,6 @@ exports[`renders correctly with audio recorder disabled 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
           handlerTag={3}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -1597,11 +1575,6 @@ exports[`renders correctly with audio recorder disabled 1`] = `
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -1664,7 +1637,6 @@ exports[`renders correctly with audio recorder disabled and without audio upload
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
           handlerTag={5}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -1768,11 +1740,6 @@ exports[`renders correctly with audio recorder disabled and without audio upload
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -1835,7 +1802,6 @@ exports[`renders correctly without audio upload permissions 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
           handlerTag={4}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -1939,11 +1905,6 @@ exports[`renders correctly without audio upload permissions 1`] = `
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -2031,11 +1992,6 @@ exports[`renders toolbar when focused 1`] = `
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -2060,7 +2016,6 @@ exports[`renders toolbar when focused 1`] = `
       style={
         Object {
           "flexDirection": "row",
-          "gap": 12,
           "paddingVertical": 12,
         }
       }
@@ -2069,7 +2024,6 @@ exports[`renders toolbar when focused 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={8}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2125,11 +2079,17 @@ exports[`renders toolbar when focused 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={9}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2185,11 +2145,17 @@ exports[`renders toolbar when focused 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={10}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2245,11 +2211,17 @@ exports[`renders toolbar when focused 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={11}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2316,7 +2288,6 @@ exports[`renders toolbar when focused 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={12}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2415,7 +2386,6 @@ exports[`send message 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
           handlerTag={13}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -2521,7 +2491,6 @@ exports[`send message 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          delayLongPress={600}
           handlerTag={15}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -2580,11 +2549,6 @@ exports[`send message 1`] = `
       </View>
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -2672,11 +2636,6 @@ exports[`tap actions from toolbar 1`] = `
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -2701,7 +2660,6 @@ exports[`tap actions from toolbar 1`] = `
       style={
         Object {
           "flexDirection": "row",
-          "gap": 12,
           "paddingVertical": 12,
         }
       }
@@ -2710,7 +2668,6 @@ exports[`tap actions from toolbar 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={18}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2766,11 +2723,17 @@ exports[`tap actions from toolbar 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={19}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2826,11 +2789,17 @@ exports[`tap actions from toolbar 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={20}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2886,11 +2855,17 @@ exports[`tap actions from toolbar 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={21}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2957,7 +2932,6 @@ exports[`tap actions from toolbar 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={22}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3081,11 +3055,6 @@ exports[`tap emoji 1`] = `
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -3110,7 +3079,6 @@ exports[`tap emoji 1`] = `
       style={
         Object {
           "flexDirection": "row",
-          "gap": 12,
           "paddingVertical": 12,
         }
       }
@@ -3119,7 +3087,6 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
         handlerTag={25}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3179,8 +3146,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={26}
+        handlerTag={30}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3246,8 +3212,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={30}
+        handlerTag={31}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3370,11 +3335,6 @@ exports[`tap markdown 1`] = `
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -3399,7 +3359,6 @@ exports[`tap markdown 1`] = `
       style={
         Object {
           "flexDirection": "row",
-          "gap": 12,
           "paddingVertical": 12,
         }
       }
@@ -3408,8 +3367,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={33}
+        handlerTag={34}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3464,12 +3422,18 @@ exports[`tap markdown 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={34}
+        handlerTag={35}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3524,12 +3488,18 @@ exports[`tap markdown 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={35}
+        handlerTag={36}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3584,12 +3554,18 @@ exports[`tap markdown 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={36}
+        handlerTag={37}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3655,8 +3631,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={37}
+        handlerTag={38}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3779,11 +3754,6 @@ exports[`tap mention 1`] = `
       />
     </View>
     <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "gap": 8,
-        }
-      }
       data={Array []}
       getItem={[Function]}
       getItemCount={[Function]}
@@ -3808,7 +3778,6 @@ exports[`tap mention 1`] = `
       style={
         Object {
           "flexDirection": "row",
-          "gap": 12,
           "paddingVertical": 12,
         }
       }
@@ -3817,8 +3786,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={40}
+        handlerTag={41}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3873,12 +3841,18 @@ exports[`tap mention 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={41}
+        handlerTag={42}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3933,12 +3907,18 @@ exports[`tap mention 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={42}
+        handlerTag={43}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3993,12 +3973,18 @@ exports[`tap mention 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={43}
+        handlerTag={44}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -4064,8 +4050,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        delayLongPress={600}
-        handlerTag={44}
+        handlerTag={45}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {

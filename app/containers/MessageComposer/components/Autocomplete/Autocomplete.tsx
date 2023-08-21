@@ -1,5 +1,5 @@
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
-import { ReactElement, useContext, useEffect, useState } from 'react';
 
 import { MessageComposerContext, MessageComposerContextProps } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
@@ -96,8 +96,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 				<FlatList
 					contentContainerStyle={{
 						borderRadius: 4,
-						overflow: 'hidden',
-						gap: 4
+						overflow: 'hidden'
 					}}
 					style={{ margin: 8 }}
 					horizontal

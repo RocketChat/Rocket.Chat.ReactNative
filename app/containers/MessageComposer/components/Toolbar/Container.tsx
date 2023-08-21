@@ -5,7 +5,6 @@ export const Container = ({ children }: { children: ReactElement[] }): ReactElem
 	<View
 		style={{
 			flexDirection: 'row',
-			gap: 12,
 			paddingVertical: 12
 		}}
 	>

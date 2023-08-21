@@ -1,3 +1,4 @@
+import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 
@@ -30,7 +31,7 @@ export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) =
 		<RectButton
 			onPress={() => onPress(item)}
 			underlayColor={colors.buttonBackgroundPrimaryPress}
-			style={{ backgroundColor: colors.surfaceLight }}
+			style={{ backgroundColor: colors.surfaceLight, paddingRight: 4 }}
 			rippleColor={colors.buttonBackgroundPrimaryPress}
 		>
 			{content}
