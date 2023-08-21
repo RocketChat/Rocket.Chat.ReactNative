@@ -66,7 +66,8 @@ export const localSearchSubscription = async ({
 		lastMessage: item.lastMessage,
 		status: item.status,
 		teamMain: item.teamMain,
-		prid: item.prid
+		prid: item.prid,
+		f: item.f
 	})) as ISearchLocal[];
 
 	return search;

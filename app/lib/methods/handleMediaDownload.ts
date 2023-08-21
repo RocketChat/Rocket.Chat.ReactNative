@@ -20,7 +20,14 @@ const sanitizeString = (value: string) => {
 	const urlWithoutQueryString = value.split('?')[0];
 	return sanitizeLikeString(urlWithoutQueryString.substring(urlWithoutQueryString.lastIndexOf('/') + 1));
 };
+
 const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeString(serverURL)}/`;
+
+const sanitizeFileName = (value: string) => {
+	const extension = value.substring(value.lastIndexOf('.') + 1);
+	const toSanitize = value.substring(0, value.lastIndexOf('.'));
+	return `${sanitizeString(toSanitize)}.${extension}`;
+};
 
 export const getFilename = ({
 	title,
@@ -97,17 +104,20 @@ const getFilePath = ({ type, mimeType, urlToCache }: { type: MediaTypes; mimeTyp
 	if (!urlToCache) {
 		return;
 	}
-	const folderPath = getFolderPath();
-	const fileUrlSanitized = sanitizeString(urlToCache);
-	const filename = `${fileUrlSanitized}.${getExtension(type, mimeType)}`;
+	const folderPath = getFolderPath(urlToCache);
+	const urlWithoutQueryString = urlToCache.split('?')[0];
+	const filename = sanitizeFileName(getFilename({ type, mimeType, url: urlWithoutQueryString }));
 	const filePath = `${folderPath}${filename}`;
 	return filePath;
 };
 
-const getFolderPath = () => {
+const getFolderPath = (fileUrl: string) => {
 	const serverUrl = store.getState().server.server;
 	const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
-	const folderPath = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}`;
+	const fileUrlWithoutQueryString = fileUrl.split('?')[0];
+	const fileUrlSplitted = fileUrlWithoutQueryString.split('/');
+	const messageId = fileUrlSplitted[fileUrlSplitted.length - 2];
+	const folderPath = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}${messageId}/`;
 	return folderPath;
 };
 
@@ -129,7 +139,7 @@ export const getMediaCache = async ({
 		return null;
 	}
 	try {
-		const folderPath = getFolderPath();
+		const folderPath = getFolderPath(urlToCache);
 		const filePath = getFilePath({ type, mimeType, urlToCache });
 		if (!filePath) {
 			return null;
@@ -183,13 +193,14 @@ export function downloadMediaFile({
 	downloadUrl: string;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
+		let downloadKey = '';
 		try {
 			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 			if (!path) {
 				reject();
 				return;
 			}
-			const downloadKey = mediaDownloadKey(downloadUrl);
+			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
 			if (result?.uri) {
@@ -198,6 +209,8 @@ export function downloadMediaFile({
 			reject();
 		} catch {
 			reject();
+		} finally {
+			delete downloadQueue[downloadKey];
 		}
 	});
 }
