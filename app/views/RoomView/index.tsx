@@ -837,7 +837,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		this.setState({ selectedMessages: newSelectedMessages });
+		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
 	};
 
 	resetActions = () => {
