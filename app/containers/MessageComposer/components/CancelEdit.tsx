@@ -5,9 +5,9 @@ import { useRoomContext } from '../../../views/RoomView/context';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {
-	const { editing, editCancel } = useRoomContext();
+	const { action, editCancel } = useRoomContext();
 
-	if (!editing) {
+	if (action !== 'edit') {
 		return null;
 	}
 	return (

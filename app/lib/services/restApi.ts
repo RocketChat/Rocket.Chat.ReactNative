@@ -842,8 +842,8 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
 }
 
-export const editMessage = async (message: IMessage) => {
-	const { rid, msg } = await Encryption.encryptMessage(message);
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 };

@@ -69,7 +69,6 @@ import {
 	IVisitor,
 	SubscriptionType,
 	TAnyMessageModel,
-	TMessageModel,
 	TSubscriptionModel,
 	ICustomEmojis,
 	IEmoji,
@@ -784,26 +783,35 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, options);
 	};
 
-	onEditInit = (message: TAnyMessageModel) => {
-		const newMessage = {
-			id: message.id,
-			subscription: {
-				// @ts-ignore TODO: we can remove this after we merge a PR separating IMessage vs IMessageFromServer
-				id: message.subscription.id
-			},
-			msg: message?.attachments?.[0]?.description || message.msg
-		} as TMessageModel;
-		this.setState({ selectedMessage: newMessage, editing: true });
+	// onEditInit = (message: TAnyMessageModel) => {
+	// 	const newMessage = {
+	// 		id: message.id,
+	// 		subscription: {
+	// 			// @ts-ignore TODO: we can remove this after we merge a PR separating IMessage vs IMessageFromServer
+	// 			id: message.subscription.id
+	// 		},
+	// 		msg: message?.attachments?.[0]?.description || message.msg
+	// 	} as TMessageModel;
+	// 	// this.setState({ selectedMessage: newMessage, editing: true });
+	// };
+
+	onEditInit = (messageId: string) => {
+		const { action } = this.state;
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
+		if (action) {
+			return;
+		}
+		this.setState({ selectedMessages: [messageId], action: 'edit' });
 	};
 
 	onEditCancel = () => {
-		this.setState({ selectedMessage: undefined, editing: false });
+		this.setState({ selectedMessages: [], action: null });
 	};
 
 	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
-		this.setState({ selectedMessage: undefined, editing: false });
 		try {
-			await Services.editMessage(message as IMessage);
+			this.setState({ selectedMessages: [], action: null });
+			await Services.editMessage(message);
 		} catch (e) {
 			log(e);
 		}
@@ -833,7 +841,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			return;
 		}
-		// TODO: if there's another action running, we should replace it
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action) {
 			return;
 		}
@@ -1546,9 +1554,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				value={{
 					rid,
 					tmid: this.tmid,
-					editing,
 					sharing: false,
-					message: selectedMessage,
 					action,
 					selectedMessages,
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage,

@@ -39,6 +39,14 @@ jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	})
 }));
 
+jest.mock('./app/lib/database/services/Message', () => ({
+	getMessageById: messageId => ({
+		id: messageId,
+		rid: 'rid',
+		msg: `Message ${messageId}`
+	})
+}));
+
 const mockedNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({

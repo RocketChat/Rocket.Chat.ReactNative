@@ -9,7 +9,7 @@ import { selectServerRequest } from '../../actions/server';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
-import { IMessage, TAnyMessageModel } from '../../definitions';
+import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { emitter } from './emitter';
 import { RoomContext, initialContext } from '../../views/RoomView/context';
@@ -149,22 +149,20 @@ describe('edit message', () => {
 	const onSendMessage = jest.fn();
 	const editCancel = jest.fn();
 	const editRequest = jest.fn();
-	const msg = 'to edit';
 	const id = 'messageId';
-	const rid = 'subscriptionId';
 	beforeEach(() => {
-		const messageToEdit = {
-			id,
-			subscription: {
-				// @ts-ignore TODO: we can remove this after we merge a PR separating IMessage vs IMessageFromServer
-				id: rid
-			},
-			msg
-		} as TAnyMessageModel;
 		render(
 			<Provider store={mockedStore}>
 				<RoomContext.Provider
-					value={{ ...initialContext, message: messageToEdit, editing: true, onSendMessage, editCancel, editRequest }}
+					value={{
+						...initialContext,
+						rid: 'rid',
+						selectedMessages: [id],
+						action: 'edit',
+						onSendMessage,
+						editCancel,
+						editRequest
+					}}
 				>
 					<MessageComposerContainer />
 				</RoomContext.Provider>
@@ -173,7 +171,7 @@ describe('edit message', () => {
 
 		// TODO: This is not cool, but it was the only way I could find to properly trigger the event
 		// We can think of a better way to do this before merging to develop
-		act(() => emitter.emit('setMicOrSend', 'send'));
+		// act(() => emitter.emit('setMicOrSend', 'send'));
 	});
 	test('init', () => {
 		// screen.debug();
@@ -191,7 +189,7 @@ describe('edit message', () => {
 		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
 		fireEvent.press(screen.getByTestId('message-composer-send'));
 		expect(editRequest).toHaveBeenCalledTimes(1);
-		expect(editRequest).toHaveBeenCalledWith({ id, msg, rid });
+		expect(editRequest).toHaveBeenCalledWith({ id, msg: `Message ${id}`, rid: 'rid' });
 	});
 });
 

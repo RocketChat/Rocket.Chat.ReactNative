@@ -1,28 +1,6 @@
 import React, { createContext, ReactElement, useReducer } from 'react';
 
-import { IEmoji, IMessage, TAnyMessageModel } from '../../definitions';
-
-type TMessageComposerContextProps = {
-	rid: string;
-	tmid?: string;
-	editing: boolean;
-	// TODO: Refactor to "origin"? ShareView | RoomView?
-	sharing: boolean;
-	message?: IMessage;
-	editRequest?: (message: TAnyMessageModel) => Promise<void>;
-	editCancel?: () => void;
-	onSendMessage: (message: string, tmid?: string) => void;
-};
-
-export const MessageComposerContextProps = createContext<TMessageComposerContextProps>({
-	rid: '',
-	editing: false,
-	sharing: false,
-	message: undefined,
-	editRequest: () => Promise.resolve(),
-	editCancel: () => {},
-	onSendMessage: () => {}
-});
+import { IEmoji } from '../../definitions';
 
 type TMessageComposerContext = {
 	showEmojiKeyboard: boolean;
