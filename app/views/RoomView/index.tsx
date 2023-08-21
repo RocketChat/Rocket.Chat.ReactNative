@@ -791,7 +791,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onEditCancel = () => {
-		this.setState({ selectedMessages: [], action: null });
+		this.resetActions();
 	};
 
 	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
@@ -875,7 +875,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionClose = () => {
 		const { hideActionSheet } = this.props;
-		this.setState({ selectedMessages: [], action: null }, hideActionSheet);
+		this.resetActions();
+		hideActionSheet();
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
