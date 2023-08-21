@@ -201,27 +201,6 @@ exports[`Quote Adding/removing quotes 1`] = `
         </RNGestureHandlerButton>
       </View>
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
   </View>
 </keyboard-accessory-view-mock>
 `;
@@ -1413,27 +1392,6 @@ exports[`renders correctly 1`] = `
         </RNGestureHandlerButton>
       </View>
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
   </View>
 </keyboard-accessory-view-mock>
 `;
@@ -1579,27 +1537,6 @@ exports[`renders correctly with audio recorder disabled 1`] = `
         }
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
   </View>
 </keyboard-accessory-view-mock>
 `;
@@ -1745,27 +1682,6 @@ exports[`renders correctly with audio recorder disabled and without audio upload
         }
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
   </View>
 </keyboard-accessory-view-mock>
 `;
@@ -1911,27 +1827,6 @@ exports[`renders correctly without audio upload permissions 1`] = `
         }
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
   </View>
 </keyboard-accessory-view-mock>
 `;
@@ -1998,27 +1893,6 @@ exports[`renders toolbar when focused 1`] = `
         underlineColorAndroid="transparent"
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
     <View
       style={
         Object {
@@ -2556,27 +2430,6 @@ exports[`send message 1`] = `
         </RNGestureHandlerButton>
       </View>
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
   </View>
 </keyboard-accessory-view-mock>
 `;
@@ -2643,27 +2496,6 @@ exports[`tap actions from toolbar 1`] = `
         underlineColorAndroid="transparent"
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
     <View
       style={
         Object {
@@ -3062,27 +2894,6 @@ exports[`tap emoji 1`] = `
         underlineColorAndroid="transparent"
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
     <View
       style={
         Object {
@@ -3342,27 +3153,6 @@ exports[`tap markdown 1`] = `
         underlineColorAndroid="transparent"
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
     <View
       style={
         Object {
@@ -3761,27 +3551,6 @@ exports[`tap mention 1`] = `
         underlineColorAndroid="transparent"
       />
     </View>
-    <RCTScrollView
-      data={Array []}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      viewabilityConfigCallbackPairs={Array []}
-    >
-      <View />
-    </RCTScrollView>
     <View
       style={
         Object {

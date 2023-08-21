@@ -69,7 +69,6 @@ import {
 	IVisitor,
 	SubscriptionType,
 	TAnyMessageModel,
-	TMessageModel,
 	TSubscriptionModel,
 	ICustomEmojis,
 	IEmoji,
@@ -201,7 +200,6 @@ interface IRoomViewState {
 	action: TMessageAction;
 	canAutoTranslate: boolean;
 	loading: boolean;
-	editing: boolean;
 	replying: boolean;
 	replyWithMention: boolean;
 	readOnly: boolean;
@@ -278,7 +276,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			action: null,
 			canAutoTranslate: false,
 			loading: true,
-			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
 			readOnly: false,
@@ -784,26 +781,23 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, options);
 	};
 
-	onEditInit = (message: TAnyMessageModel) => {
-		const newMessage = {
-			id: message.id,
-			subscription: {
-				// @ts-ignore TODO: we can remove this after we merge a PR separating IMessage vs IMessageFromServer
-				id: message.subscription.id
-			},
-			msg: message?.attachments?.[0]?.description || message.msg
-		} as TMessageModel;
-		this.setState({ selectedMessage: newMessage, editing: true });
+	onEditInit = (messageId: string) => {
+		const { action } = this.state;
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
+		if (action) {
+			return;
+		}
+		this.setState({ selectedMessages: [messageId], action: 'edit' });
 	};
 
 	onEditCancel = () => {
-		this.setState({ selectedMessage: undefined, editing: false });
+		this.resetActions();
 	};
 
 	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
-		this.setState({ selectedMessage: undefined, editing: false });
 		try {
-			await Services.editMessage(message as IMessage);
+			this.setState({ selectedMessages: [], action: null });
+			await Services.editMessage(message);
 		} catch (e) {
 			log(e);
 		}
@@ -833,7 +827,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			return;
 		}
-		// TODO: if there's another action running, we should replace it
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action) {
 			return;
 		}
@@ -843,7 +837,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		this.setState({ selectedMessages: newSelectedMessages });
+		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
 	};
 
 	resetActions = () => {
@@ -852,11 +846,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	showReactionPicker = () => {
 		const { showActionSheet } = this.props;
-		const { selectedMessage } = this.state;
+		const { selectedMessages } = this.state;
 		setTimeout(() => {
 			showActionSheet({
 				children: (
-					<ReactionPicker message={selectedMessage} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
+					<ReactionPicker
+						messageId={selectedMessages[0]}
+						onEmojiSelected={this.onReactionPress}
+						reactionClose={this.onReactionClose}
+					/>
 				),
 				snaps: [400],
 				enableContentPanningGesture: false
@@ -864,18 +862,29 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}, 100);
 	};
 
-	onReactionInit = (message: TAnyMessageModel) => {
+	onReactionInit = (messageId: string) => {
+		const { action } = this.state;
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
+		if (action) {
+			return;
+		}
 		this.handleCloseEmoji(() => {
-			this.setState({ selectedMessage: message }, this.showReactionPicker);
+			this.setState({ selectedMessages: [messageId], action: 'react' }, this.showReactionPicker);
 		});
 	};
 
 	onReactionClose = () => {
 		const { hideActionSheet } = this.props;
-		this.setState({ selectedMessage: undefined }, hideActionSheet);
+		this.resetActions();
+		hideActionSheet();
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
+		const { action } = this.state;
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
+		if (action && action !== 'quote') {
+			return;
+		}
 		// if it's a thread message on main room, we disable the long press
 		if (message.tmid && !this.tmid) {
 			return;
@@ -1334,12 +1343,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		const { room, lastOpen, canAutoTranslate, selectedMessage, editing } = this.state;
+		const { room, lastOpen, canAutoTranslate, selectedMessages, action } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
-		const isBeingEdited = editing && item.id === selectedMessage?.id;
+		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
@@ -1529,7 +1538,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, editing, action, selectedMessage, selectedMessages, canAutoTranslate } = this.state;
+		const { room, loading, action, selectedMessages, canAutoTranslate } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1546,9 +1555,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				value={{
 					rid,
 					tmid: this.tmid,
-					editing,
 					sharing: false,
-					message: selectedMessage,
 					action,
 					selectedMessages,
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
@@ -1567,7 +1574,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						tmid={this.tmid}
 						tunread={tunread}
 						ignored={ignored}
-						editing={editing}
 						renderRow={this.renderItem}
 						loading={loading}
 						navigation={navigation}
@@ -1576,7 +1582,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						serverVersion={serverVersion}
 						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
-						selectedMessageId={selectedMessage?.id}
+						selectedMessageId={selectedMessages[0]}
 					/>
 					{this.renderFooter()}
 					{this.renderActions()}

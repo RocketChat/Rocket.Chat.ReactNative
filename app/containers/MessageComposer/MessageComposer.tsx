@@ -50,7 +50,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, message, action, selectedMessages, editRequest, onSendMessage } = useRoomContext();
+	const { rid, tmid, action, selectedMessages, editRequest, onSendMessage } = useRoomContext();
 	const {
 		showEmojiKeyboard,
 		showEmojiSearchbar,
@@ -101,14 +101,8 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const sendMessage = async () => {
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
-		if (editing && message?.id && editRequest) {
-			const {
-				id,
-				// @ts-ignore
-				subscription: { id: rid }
-			} = message;
-			// @ts-ignore
-			return editRequest({ id, msg: textFromInput, rid });
+		if (action === 'edit') {
+			return editRequest({ id: selectedMessages[0], msg: textFromInput, rid });
 		}
 
 		if (action === 'quote') {
@@ -279,7 +273,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 		emitter.emit('setAutocomplete', { type: null, text: '', params: '' });
 	};
 
-	const backgroundColor = editing ? colors.statusBackgroundWarning2 : colors.surfaceLight;
+	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<KeyboardAccessoryView

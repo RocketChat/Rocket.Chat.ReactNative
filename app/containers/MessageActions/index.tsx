@@ -24,8 +24,8 @@ export interface IMessageActionsProps {
 	room: TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
-	editInit: (message: TAnyMessageModel) => void;
-	reactionInit: (message: TAnyMessageModel) => void;
+	editInit: (messageId: string) => void;
+	reactionInit: (messageId: string) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	quoteInit: (messageId: string) => void;
@@ -177,9 +177,9 @@ const MessageActions = React.memo(
 				replyInit(message, true);
 			};
 
-			const handleEdit = (message: TAnyMessageModel) => {
+			const handleEdit = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_EDIT);
-				editInit(message);
+				editInit(messageId);
 			};
 
 			const handleCreateDiscussion = (message: TAnyMessageModel) => {
@@ -303,7 +303,7 @@ const MessageActions = React.memo(
 				if (emoji) {
 					onReactionPress(emoji, message.id);
 				} else {
-					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
+					setTimeout(() => reactionInit(message.id), ACTION_SHEET_ANIMATION_DURATION);
 				}
 				hideActionSheet();
 			};
@@ -438,7 +438,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Edit'),
 						icon: 'edit',
-						onPress: () => handleEdit(message)
+						onPress: () => handleEdit(message.id)
 					});
 				}
 

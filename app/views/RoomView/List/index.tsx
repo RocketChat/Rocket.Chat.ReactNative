@@ -57,7 +57,6 @@ export interface IListContainerProps {
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
-	editing: boolean;
 	selectedMessageId?: string;
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
@@ -110,16 +109,8 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
-		const {
-			hideSystemMessages,
-			tunread,
-			ignored,
-			loading,
-			autoTranslateLanguage,
-			autoTranslateRoom,
-			editing,
-			selectedMessageId
-		} = this.props;
+		const { hideSystemMessages, tunread, ignored, loading, autoTranslateLanguage, autoTranslateRoom, selectedMessageId } =
+			this.props;
 		if (loading !== nextProps.loading) {
 			return true;
 		}
@@ -127,9 +118,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			return true;
 		}
 		if (refreshing !== nextState.refreshing) {
-			return true;
-		}
-		if (editing !== nextProps.editing) {
 			return true;
 		}
 		if (selectedMessageId !== nextProps.selectedMessageId) {

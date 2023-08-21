@@ -15,6 +15,7 @@ import { MIN_HEIGHT } from '../constants';
 import database from '../../../lib/database';
 import { emitter } from '../emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
+import { getMessageById } from '../../../lib/database/services/Message';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -35,8 +36,8 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, sharing, message } = useRoomContext();
-	const { focused, setFocused, setTrackingViewHeight } = useContext(MessageComposerContext);
+	const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
+	const { focused, setFocused, setTrackingViewHeight, setMicOrSend } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 	const dispatch = useDispatch();
@@ -52,23 +53,30 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			const draftMessage = await loadDraftMessage({ rid, tmid });
 			setInput(draftMessage);
 		};
-		if (!editing) {
+		if (action !== 'edit') {
 			setDraftMessage();
 		}
 
 		return () => {
-			if (!editing) {
+			if (action !== 'edit') {
 				saveDraftMessage({ rid, tmid, draftMessage: textRef.current });
 			}
 		};
-	}, [editing]);
+	}, [action, rid, tmid]);
 
 	useEffect(() => {
-		if (editing && message?.id) {
+		const fetchMessageAndSetInput = async () => {
+			const message = await getMessageById(selectedMessages[0]);
+			if (message) {
+				setInput(message?.msg || '');
+			}
+		};
+
+		if (action === 'edit' && selectedMessages[0]) {
 			focus();
-			setInput(message?.msg || '');
+			fetchMessageAndSetInput();
 		}
-	}, [editing, message?.id, message?.msg]);
+	}, [action, selectedMessages]);
 
 	useImperativeHandle(ref, () => ({
 		getTextAndClear: () => {
@@ -90,7 +98,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		if (inputRef.current) {
 			inputRef.current.setNativeProps({ text });
 		}
-		emitter.emit('setMicOrSend', text.length === 0 ? 'mic' : 'send');
+		setMicOrSend(text.length === 0 ? 'mic' : 'send');
 	};
 
 	const focus = () => {

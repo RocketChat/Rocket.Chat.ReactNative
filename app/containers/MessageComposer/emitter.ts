@@ -1,9 +1,8 @@
 import mitt from 'mitt';
 
-import { TAutocompleteType, TMicOrSend } from './interfaces';
+import { TAutocompleteType } from './interfaces';
 
 type Events = {
-	setMicOrSend: TMicOrSend;
 	setAutocomplete: {
 		type: TAutocompleteType;
 		text: string;
