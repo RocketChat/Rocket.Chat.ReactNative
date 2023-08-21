@@ -846,11 +846,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	showReactionPicker = () => {
 		const { showActionSheet } = this.props;
-		const { selectedMessage } = this.state;
+		const { selectedMessages } = this.state;
 		setTimeout(() => {
 			showActionSheet({
 				children: (
-					<ReactionPicker message={selectedMessage} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
+					<ReactionPicker
+						messageId={selectedMessages[0]}
+						onEmojiSelected={this.onReactionPress}
+						reactionClose={this.onReactionClose}
+					/>
 				),
 				snaps: [400],
 				enableContentPanningGesture: false
@@ -858,18 +862,28 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}, 100);
 	};
 
-	onReactionInit = (message: TAnyMessageModel) => {
+	onReactionInit = (messageId: string) => {
+		const { action } = this.state;
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
+		if (action) {
+			return;
+		}
 		this.handleCloseEmoji(() => {
-			this.setState({ selectedMessage: message }, this.showReactionPicker);
+			this.setState({ selectedMessages: [messageId], action: 'react' }, this.showReactionPicker);
 		});
 	};
 
 	onReactionClose = () => {
 		const { hideActionSheet } = this.props;
-		this.setState({ selectedMessage: undefined }, hideActionSheet);
+		this.setState({ selectedMessages: [], action: null }, hideActionSheet);
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
+		const { action } = this.state;
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
+		if (action && action !== 'quote') {
+			return;
+		}
 		// if it's a thread message on main room, we disable the long press
 		if (message.tmid && !this.tmid) {
 			return;

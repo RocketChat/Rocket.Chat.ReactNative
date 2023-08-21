@@ -25,7 +25,7 @@ export interface IMessageActionsProps {
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
 	editInit: (messageId: string) => void;
-	reactionInit: (message: TAnyMessageModel) => void;
+	reactionInit: (messageId: string) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	quoteInit: (messageId: string) => void;
@@ -303,7 +303,7 @@ const MessageActions = React.memo(
 				if (emoji) {
 					onReactionPress(emoji, message.id);
 				} else {
-					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
+					setTimeout(() => reactionInit(message.id), ACTION_SHEET_ANIMATION_DURATION);
 				}
 				hideActionSheet();
 			};

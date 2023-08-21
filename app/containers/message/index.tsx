@@ -44,7 +44,7 @@ interface IMessageContainerProps {
 	onThreadPress?: (item: TAnyMessageModel) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
 	replyBroadcast?: (item: TAnyMessageModel) => void;
-	reactionInit?: (item: TAnyMessageModel) => void;
+	reactionInit?: (messageId: string) => void;
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	showAttachment?: (file: IAttachment) => void;
 	onReactionLongPress?: (item: TAnyMessageModel) => void;
@@ -314,7 +314,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	reactionInit = () => {
 		const { reactionInit, item } = this.props;
 		if (reactionInit) {
-			reactionInit(item);
+			reactionInit(item.id);
 		}
 	};
 
