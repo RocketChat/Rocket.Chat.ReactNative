@@ -11,7 +11,6 @@ import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
-import { emitter } from './emitter';
 import { RoomContext, initialContext } from '../../views/RoomView/context';
 
 const initialStoreState = () => {
