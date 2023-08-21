@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { View } from 'react-native';
 
-export const Container = ({ children }: { children: ReactElement[] }): ReactElement => (
+export const Container = ({ children }: { children: (ReactElement | null)[] }): ReactElement => (
 	<View
 		style={{
 			flexDirection: 'row',

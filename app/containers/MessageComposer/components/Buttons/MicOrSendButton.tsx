@@ -10,7 +10,7 @@ import { useCanUploadFile } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const MicOrSendButton = () => {
-	const { rid, editing, editCancel } = useRoomContext();
+	const { rid } = useRoomContext();
 	const { sendMessage } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
@@ -24,23 +24,13 @@ export const MicOrSendButton = () => {
 
 	if (micOrSend === 'send') {
 		return (
-			<>
-				{editing && editCancel ? (
-					<BaseButton
-						onPress={() => editCancel()}
-						testID='message-composer-cancel-edit'
-						accessibilityLabel='Cancel_editing'
-						icon='close'
-					/>
-				) : null}
-				<BaseButton
-					onPress={() => sendMessage()}
-					testID='message-composer-send'
-					accessibilityLabel='Send_message'
-					icon='send-filled'
-					color={colors.buttonBackgroundPrimaryDefault}
-				/>
-			</>
+			<BaseButton
+				onPress={() => sendMessage()}
+				testID='message-composer-send'
+				accessibilityLabel='Send_message'
+				icon='send-filled'
+				color={colors.buttonBackgroundPrimaryDefault}
+			/>
 		);
 	}
 

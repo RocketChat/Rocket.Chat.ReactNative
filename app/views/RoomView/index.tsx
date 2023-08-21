@@ -1424,8 +1424,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const {
 			joined,
 			room,
-			selectedMessage,
-			editing,
 			// replying,
 			// replyWithMention,
 			readOnly,
@@ -1501,19 +1499,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		return (
-			<MessageComposerContainer
-				ref={this.messageComposerRef}
-				onSendMessage={this.handleSendMessage}
-				rid={this.rid}
-				tmid={this.tmid}
-				editing={editing}
-				sharing={false}
-				editRequest={this.onEditRequest}
-				editCancel={this.onEditCancel}
-				message={selectedMessage}
-			/>
-		);
+		return <MessageComposerContainer ref={this.messageComposerRef} />;
 	};
 
 	renderActions = () => {

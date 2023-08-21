@@ -38,7 +38,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={55}
+          handlerTag={54}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -133,8 +133,9 @@ exports[`Quote Adding/removing quotes 1`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -143,7 +144,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={56}
+          handlerTag={55}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -263,7 +264,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={57}
+          handlerTag={56}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -358,8 +359,9 @@ exports[`Quote Adding/removing quotes 2`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -368,7 +370,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={58}
+          handlerTag={57}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -533,7 +535,7 @@ exports[`Quote Adding/removing quotes 2`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={59}
+                handlerTag={58}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -665,7 +667,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={57}
+          handlerTag={56}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -760,8 +762,9 @@ exports[`Quote Adding/removing quotes 3`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -770,7 +773,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={58}
+          handlerTag={57}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -936,7 +939,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={59}
+                handlerTag={58}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -1108,7 +1111,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={60}
+                handlerTag={59}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -1342,8 +1345,9 @@ exports[`renders correctly 1`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -1567,8 +1571,9 @@ exports[`renders correctly with audio recorder disabled 1`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -1732,8 +1737,9 @@ exports[`renders correctly with audio recorder disabled and without audio upload
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -1897,8 +1903,9 @@ exports[`renders correctly without audio upload permissions 1`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -2481,8 +2488,9 @@ exports[`send message 1`] = `
       <View
         style={
           Object {
+            "alignItems": "center",
+            "flexDirection": "row",
             "height": 48,
-            "justifyContent": "center",
             "paddingLeft": 12,
           }
         }
@@ -2491,7 +2499,7 @@ exports[`send message 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={15}
+          handlerTag={14}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -2668,7 +2676,7 @@ exports[`tap actions from toolbar 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={18}
+        handlerTag={17}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2734,7 +2742,7 @@ exports[`tap actions from toolbar 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={19}
+        handlerTag={18}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2800,7 +2808,7 @@ exports[`tap actions from toolbar 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={20}
+        handlerTag={19}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2866,7 +2874,7 @@ exports[`tap actions from toolbar 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={21}
+        handlerTag={20}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2932,7 +2940,7 @@ exports[`tap actions from toolbar 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={22}
+        handlerTag={21}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3087,7 +3095,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={25}
+        handlerTag={24}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3146,7 +3154,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={30}
+        handlerTag={29}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3212,7 +3220,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={31}
+        handlerTag={30}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3367,7 +3375,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={34}
+        handlerTag={33}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3433,7 +3441,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={35}
+        handlerTag={34}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3499,7 +3507,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={36}
+        handlerTag={35}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3565,7 +3573,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={37}
+        handlerTag={36}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3631,7 +3639,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={38}
+        handlerTag={37}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3786,7 +3794,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={41}
+        handlerTag={40}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3852,7 +3860,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={42}
+        handlerTag={41}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3918,7 +3926,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={43}
+        handlerTag={42}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3984,7 +3992,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={44}
+        handlerTag={43}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -4050,7 +4058,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={45}
+        handlerTag={44}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
