@@ -1,40 +1,4 @@
-import { IEmoji, IPreviewItem, TUserStatus, IMessage } from '../../definitions';
-
-export interface IMessageComposerProps {
-	rid: string;
-	// baseUrl: string;
-	message?: IMessage;
-	// // replying: boolean;
-	editing: boolean;
-	// threadsEnabled: boolean;
-	// // isFocused(): boolean;
-	// // user: IUser;
-	// roomType: string;
-	tmid?: string;
-	// // replyWithMention: boolean;
-	// FileUpload_MediaTypeWhiteList: string;
-	// FileUpload_MaxFileSize: number;
-	// // Message_AudioRecorderEnabled: boolean;
-	// getCustomEmoji: TGetCustomEmoji;
-	editCancel?: () => void;
-	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => Promise<void>;
-	// TODO: discuss this prop name
-	onSendMessage(message: string, tmid?: string, tshow?: boolean): void;
-	// typing: Function;
-	// // theme: TSupportedThemes;
-	// // replyCancel(): void;
-	// showSend: boolean;
-	// children: JSX.Element;
-	// isMasterDetail: boolean;
-	// showActionSheet: Function;
-	// // iOSScrollBehavior: number;
-	sharing: boolean;
-	// isActionsEnabled: boolean;
-	// // usedCannedResponse: string;
-	// // uploadFilePermission: string[];
-	// // goToCannedResponses: () => void | null;
-	// serverVersion: string;
-}
+import { IEmoji, IPreviewItem, TUserStatus } from '../../definitions';
 
 export interface IMessageComposerRef {
 	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => void;

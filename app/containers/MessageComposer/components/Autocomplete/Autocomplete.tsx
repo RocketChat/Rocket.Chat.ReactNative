@@ -1,13 +1,14 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 
-import { MessageComposerContext, MessageComposerContextProps } from '../../context';
+import { MessageComposerContext } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { useTheme } from '../../../../theme';
 import { IAutocompleteItemProps, TAutocompleteType } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { emitter } from '../../emitter';
+import { useRoomContext } from '../../../../views/RoomView/context';
 
 interface IAutocompleteData {
 	type: TAutocompleteType;
@@ -16,7 +17,7 @@ interface IAutocompleteData {
 }
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
-	const { rid } = useContext(MessageComposerContextProps);
+	const { rid } = useRoomContext();
 	const { trackingViewHeight, keyboardHeight } = useContext(MessageComposerContext);
 	const [autocompleteData, setAutocompleteData] = useState<IAutocompleteData>({ type: null, text: '', params: '' });
 	const items = useAutocomplete({

@@ -100,7 +100,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { IMessageComposerRef, MessageComposer } from '../../containers/MessageComposer';
+import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext, TMessageAction } from './context';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
@@ -1424,8 +1424,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const {
 			joined,
 			room,
-			selectedMessage,
-			editing,
 			// replying,
 			// replyWithMention,
 			readOnly,
@@ -1501,19 +1499,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		return (
-			<MessageComposer
-				ref={this.messageComposerRef}
-				onSendMessage={this.handleSendMessage}
-				rid={this.rid}
-				tmid={this.tmid}
-				editing={editing}
-				sharing={false}
-				editRequest={this.onEditRequest}
-				editCancel={this.onEditCancel}
-				message={selectedMessage}
-			/>
-		);
+		return <MessageComposerContainer ref={this.messageComposerRef} />;
 	};
 
 	renderActions = () => {
@@ -1558,9 +1544,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<RoomContext.Provider
 				value={{
+					rid,
+					tmid: this.tmid,
+					editing,
+					sharing: false,
+					message: selectedMessage,
 					action,
 					selectedMessages,
-					onRemoveQuoteMessage: this.onRemoveQuoteMessage
+					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
+					editCancel: this.onEditCancel,
+					editRequest: this.onEditRequest,
+					onSendMessage: this.handleSendMessage
 				}}
 			>
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>

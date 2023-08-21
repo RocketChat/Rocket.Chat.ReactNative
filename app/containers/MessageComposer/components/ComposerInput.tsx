@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 
 import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
-import { MessageComposerContext, MessageComposerContextProps } from '../context';
+import { MessageComposerContext } from '../context';
 import { loadDraftMessage, saveDraftMessage } from '../helpers';
 import { useSubscription } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -14,6 +14,7 @@ import { getRoomTitle } from '../../../lib/methods/helpers';
 import { MIN_HEIGHT } from '../constants';
 import database from '../../../lib/database';
 import { emitter } from '../emitter';
+import { useRoomContext } from '../../../views/RoomView/context';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -34,7 +35,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, sharing, message } = useContext(MessageComposerContextProps);
+	const { rid, tmid, editing, sharing, message } = useRoomContext();
 	const { focused, setFocused, setTrackingViewHeight } = useContext(MessageComposerContext);
 	const textRef = React.useRef('');
 	const selectionRef = React.useRef<IInputSelection>(defaultSelection);

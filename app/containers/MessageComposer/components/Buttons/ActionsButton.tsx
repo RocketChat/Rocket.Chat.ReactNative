@@ -3,14 +3,15 @@ import React, { useContext } from 'react';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
 import { TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
-import { MessageComposerContextProps, MessageInnerContext } from '../../context';
+import { MessageInnerContext } from '../../context';
 import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
+import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const ActionsButton = () => {
-	const { rid, tmid } = useContext(MessageComposerContextProps);
+	const { rid, tmid } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({

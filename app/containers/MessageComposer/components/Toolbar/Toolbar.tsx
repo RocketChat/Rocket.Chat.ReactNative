@@ -4,7 +4,8 @@ import { MicOrSendButton, ActionsButton, BaseButton } from '..';
 import { MessageComposerContext } from '../../context';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
-import { Gap } from './Gap';
+import { Gap } from '../Gap';
+import { CancelEdit } from '../CancelEdit';
 
 export const Toolbar = (): ReactElement | null => {
 	const { openEmojiKeyboard, closeEmojiKeyboard, focused, showEmojiKeyboard, showEmojiSearchbar } =
@@ -51,6 +52,7 @@ export const Toolbar = (): ReactElement | null => {
 			<Gap />
 			<BaseButton onPress={() => alert('tbd')} testID='message-composer-mention' accessibilityLabel='TBD' icon='mention' />
 			<EmptySpace />
+			<CancelEdit />
 			<MicOrSendButton />
 		</Container>
 	);

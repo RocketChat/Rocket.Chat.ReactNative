@@ -2,7 +2,7 @@ import React from 'react';
 import { act, fireEvent, render, waitFor, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { MessageComposer } from './MessageComposer';
+import { MessageComposerContainer } from './MessageComposerContainer';
 import { setPermissions } from '../../actions/permissions';
 import { addSettings } from '../../actions/settings';
 import { selectServerRequest } from '../../actions/server';
@@ -12,7 +12,7 @@ import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage, TAnyMessageModel } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { emitter } from './emitter';
-import { RoomContext } from '../../views/RoomView/context';
+import { RoomContext, initialContext } from '../../views/RoomView/context';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -27,7 +27,9 @@ initialStoreState();
 
 const Render = () => (
 	<Provider store={mockedStore}>
-		<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
+		<RoomContext.Provider value={initialContext}>
+			<MessageComposerContainer />
+		</RoomContext.Provider>
 	</Provider>
 );
 
@@ -85,7 +87,9 @@ test('send message', async () => {
 	const onSendMessage = jest.fn();
 	render(
 		<Provider store={mockedStore}>
-			<MessageComposer rid={''} editing={false} onSendMessage={onSendMessage} sharing={false} />
+			<RoomContext.Provider value={{ ...initialContext, onSendMessage }}>
+				<MessageComposerContainer />
+			</RoomContext.Provider>
 		</Provider>
 	);
 	expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
@@ -159,15 +163,11 @@ describe('edit message', () => {
 		} as TAnyMessageModel;
 		render(
 			<Provider store={mockedStore}>
-				<MessageComposer
-					rid={''}
-					editing={true}
-					message={messageToEdit}
-					editCancel={editCancel}
-					onSendMessage={onSendMessage}
-					editRequest={editRequest}
-					sharing={false}
-				/>
+				<RoomContext.Provider
+					value={{ ...initialContext, message: messageToEdit, editing: true, onSendMessage, editCancel, editRequest }}
+				>
+					<MessageComposerContainer />
+				</RoomContext.Provider>
 			</Provider>
 		);
 
@@ -225,8 +225,8 @@ describe('Quote', () => {
 		// Render without quotes
 		const { rerender } = render(
 			<Provider store={mockedStore}>
-				<RoomContext.Provider value={{ action: null, selectedMessages: [], onRemoveQuoteMessage }}>
-					<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
+				<RoomContext.Provider value={{ ...initialContext, selectedMessages: [], onRemoveQuoteMessage }}>
+					<MessageComposerContainer />
 				</RoomContext.Provider>
 			</Provider>
 		);
@@ -237,9 +237,11 @@ describe('Quote', () => {
 		// Add a quote
 		rerender(
 			<Provider store={mockedStore}>
-				<RoomContext.Provider value={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }}>
-					<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
-				</RoomContext.Provider>
+				<Provider store={mockedStore}>
+					<RoomContext.Provider value={{ ...initialContext, action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }}>
+						<MessageComposerContainer />
+					</RoomContext.Provider>
+				</Provider>
 			</Provider>
 		);
 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
@@ -249,9 +251,13 @@ describe('Quote', () => {
 		// Add another quote
 		rerender(
 			<Provider store={mockedStore}>
-				<RoomContext.Provider value={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }}>
-					<MessageComposer rid={''} editing={false} onSendMessage={jest.fn()} sharing={false} />
-				</RoomContext.Provider>
+				<Provider store={mockedStore}>
+					<RoomContext.Provider
+						value={{ ...initialContext, action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }}
+					>
+						<MessageComposerContainer />
+					</RoomContext.Provider>
+				</Provider>
 			</Provider>
 		);
 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
