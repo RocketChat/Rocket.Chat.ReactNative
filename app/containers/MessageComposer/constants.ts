@@ -1,5 +1,7 @@
 import { Options } from 'react-native-image-crop-picker';
 
+import { TMarkdownStyle } from './interfaces';
+
 export const imagePickerConfig = {
 	cropping: true,
 	avoidEmptySpaceAroundImage: false,
@@ -23,3 +25,11 @@ export const TIMEOUT_CLOSE_EMOJI_KEYBOARD = 300;
 export const MIN_HEIGHT = 48;
 
 export const NO_CANNED_RESPONSES = 'no-canned-responses';
+
+export const markdownStyle: Record<TMarkdownStyle, string> = {
+	bold: '*',
+	italic: '_',
+	strike: '~',
+	code: '`',
+	'code-block': '```'
+};
