@@ -8,8 +8,15 @@ import { Gap } from '../Gap';
 import { CancelEdit } from '../CancelEdit';
 
 export const Toolbar = (): ReactElement | null => {
-	const { openEmojiKeyboard, closeEmojiKeyboard, focused, showEmojiKeyboard, showEmojiSearchbar } =
-		useContext(MessageComposerContext);
+	const {
+		openEmojiKeyboard,
+		closeEmojiKeyboard,
+		setMarkdownToolbar,
+		focused,
+		showEmojiKeyboard,
+		showEmojiSearchbar,
+		showMarkdownToolbar
+	} = useContext(MessageComposerContext);
 
 	if (showEmojiSearchbar) {
 		return null;
@@ -35,7 +42,36 @@ export const Toolbar = (): ReactElement | null => {
 		return null;
 	}
 
-	// TODO: Markdown state?
+	if (showMarkdownToolbar) {
+		return (
+			<Container>
+				<BaseButton
+					onPress={() => setMarkdownToolbar(false)}
+					testID='message-composer-close-markdown'
+					accessibilityLabel='TBD'
+					icon='close'
+				/>
+				<Gap />
+				<BaseButton onPress={() => openEmojiKeyboard()} testID='message-composer-bold' accessibilityLabel='TBD' icon='bold' />
+				<Gap />
+				<BaseButton onPress={() => openEmojiKeyboard()} testID='message-composer-italic' accessibilityLabel='TBD' icon='italic' />
+				<Gap />
+				<BaseButton onPress={() => alert('tbd')} testID='message-composer-strike' accessibilityLabel='TBD' icon='strike' />
+				<Gap />
+				<BaseButton onPress={() => alert('tbd')} testID='message-composer-code' accessibilityLabel='TBD' icon='code' />
+				<Gap />
+				<BaseButton
+					onPress={() => alert('tbd')}
+					testID='message-composer-code-block'
+					accessibilityLabel='TBD'
+					icon='code-block'
+				/>
+				<EmptySpace />
+				<CancelEdit />
+				<MicOrSendButton />
+			</Container>
+		);
+	}
 
 	return (
 		<Container>
@@ -48,7 +84,12 @@ export const Toolbar = (): ReactElement | null => {
 				icon='emoji'
 			/>
 			<Gap />
-			<BaseButton onPress={() => alert('tbd')} testID='message-composer-markdown' accessibilityLabel='TBD' icon='text-format' />
+			<BaseButton
+				onPress={() => setMarkdownToolbar(true)}
+				testID='message-composer-open-markdown'
+				accessibilityLabel='TBD'
+				icon='text-format'
+			/>
 			<Gap />
 			<BaseButton onPress={() => alert('tbd')} testID='message-composer-mention' accessibilityLabel='TBD' icon='mention' />
 			<EmptySpace />

@@ -10,6 +10,7 @@ type TMessageComposerContext = {
 	trackingViewHeight: number;
 	keyboardHeight: number;
 	micOrSend: TMicOrSend;
+	showMarkdownToolbar: boolean;
 	setKeyboardHeight: (height: number) => void;
 	setTrackingViewHeight: (height: number) => void;
 	openEmojiKeyboard(): void;
@@ -18,6 +19,7 @@ type TMessageComposerContext = {
 	closeSearchEmojiKeyboard(): void;
 	setFocused(focused: boolean): void;
 	setMicOrSend(micOrSend: TMicOrSend): void;
+	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
 };
 
 export const MessageComposerContext = createContext<TMessageComposerContext>({
@@ -27,6 +29,7 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	trackingViewHeight: 0,
 	keyboardHeight: 0,
 	micOrSend: 'mic',
+	showMarkdownToolbar: false,
 	setKeyboardHeight: () => {},
 	setTrackingViewHeight: () => {},
 	openEmojiKeyboard: () => {},
@@ -34,7 +37,8 @@ export const MessageComposerContext = createContext<TMessageComposerContext>({
 	setFocused: () => {},
 	openSearchEmojiKeyboard: () => {},
 	closeSearchEmojiKeyboard: () => {},
-	setMicOrSend: () => {}
+	setMicOrSend: () => {},
+	setMarkdownToolbar: () => {}
 });
 
 type TMessageInnerContext = {
@@ -57,6 +61,7 @@ type State = {
 	trackingViewHeight: number;
 	keyboardHeight: number;
 	micOrSend: TMicOrSend;
+	showMarkdownToolbar: boolean;
 };
 
 type Actions =
@@ -69,7 +74,8 @@ type Actions =
 	| { type: 'closeEmojiKeyboard' }
 	| { type: 'openSearchEmojiKeyboard' }
 	| { type: 'closeSearchEmojiKeyboard' }
-	| { type: 'setMicOrSend'; micOrSend: TMicOrSend };
+	| { type: 'setMicOrSend'; micOrSend: TMicOrSend }
+	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -93,6 +99,8 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, showEmojiSearchbar: false };
 		case 'setMicOrSend':
 			return { ...state, micOrSend: action.micOrSend };
+		case 'setMarkdownToolbar':
+			return { ...state, showMarkdownToolbar: action.showMarkdownToolbar };
 	}
 };
 
@@ -116,6 +124,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 	const setMicOrSend = (micOrSend: TMicOrSend) => dispatch({ type: 'setMicOrSend', micOrSend });
 
+	const setMarkdownToolbar = (showMarkdownToolbar: boolean) => dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
+
 	return (
 		<MessageComposerContext.Provider
 			value={{
@@ -125,6 +135,7 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 				trackingViewHeight: state.trackingViewHeight,
 				keyboardHeight: state.keyboardHeight,
 				micOrSend: state.micOrSend,
+				showMarkdownToolbar: state.showMarkdownToolbar,
 				setFocused,
 				setKeyboardHeight,
 				setTrackingViewHeight,
@@ -132,7 +143,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 				closeEmojiKeyboard,
 				openSearchEmojiKeyboard,
 				closeSearchEmojiKeyboard,
-				setMicOrSend
+				setMicOrSend,
+				setMarkdownToolbar
 			}}
 		>
 			{children}
