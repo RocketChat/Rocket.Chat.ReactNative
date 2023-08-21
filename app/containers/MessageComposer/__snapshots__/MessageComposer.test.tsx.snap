@@ -263,7 +263,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={55}
+          handlerTag={57}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -368,7 +368,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={56}
+          handlerTag={58}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -533,7 +533,7 @@ exports[`Quote Adding/removing quotes 2`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={57}
+                handlerTag={59}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -665,7 +665,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={55}
+          handlerTag={57}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -770,7 +770,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={56}
+          handlerTag={58}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -936,7 +936,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={57}
+                handlerTag={59}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -1108,7 +1108,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={58}
+                handlerTag={60}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {

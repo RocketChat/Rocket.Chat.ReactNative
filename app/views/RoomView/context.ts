@@ -17,7 +17,7 @@ interface IRoomContext {
 	onRemoveQuoteMessage: (messageId: string) => void;
 }
 
-export const RoomContext = createContext<IRoomContext>({
+export const initialContext = {
 	rid: '',
 	tmid: undefined,
 	editing: false,
@@ -30,6 +30,8 @@ export const RoomContext = createContext<IRoomContext>({
 	editRequest: () => {},
 	onSendMessage: () => {},
 	onRemoveQuoteMessage: () => {}
-});
+};
+
+export const RoomContext = createContext<IRoomContext>(initialContext);
 
 export const useRoomContext = () => useContext(RoomContext);

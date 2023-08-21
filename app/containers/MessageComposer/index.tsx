@@ -1,2 +1,2 @@
 export * from './interfaces';
-export * from './MessageComposer';
+export * from './MessageComposerContainer';

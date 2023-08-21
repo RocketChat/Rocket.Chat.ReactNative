@@ -100,7 +100,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { IMessageComposerRef, MessageComposer } from '../../containers/MessageComposer';
+import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext, TMessageAction } from './context';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
@@ -1502,7 +1502,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			);
 		}
 		return (
-			<MessageComposer
+			<MessageComposerContainer
 				ref={this.messageComposerRef}
 				onSendMessage={this.handleSendMessage}
 				rid={this.rid}
