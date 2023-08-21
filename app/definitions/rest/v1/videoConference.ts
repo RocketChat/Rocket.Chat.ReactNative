@@ -1,4 +1,5 @@
 import {
+	VideoConfCall,
 	VideoConfCancelProps,
 	VideoConference,
 	VideoConferenceCapabilities,
@@ -24,7 +25,7 @@ export type VideoConferenceEndpoints = {
 	};
 
 	'video-conference.info': {
-		GET: (params: VideoConfInfoProps) => VideoConference & { capabilities: VideoConferenceCapabilities };
+		GET: (params: VideoConfInfoProps) => VideoConfCall;
 	};
 
 	'video-conference.list': {

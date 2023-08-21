@@ -1,0 +1,49 @@
+diff --git a/node_modules/react-native-notifier/src/Notifier.tsx b/node_modules/react-native-notifier/src/Notifier.tsx
+index 56c5819..4f31e78 100644
+--- a/node_modules/react-native-notifier/src/Notifier.tsx
++++ b/node_modules/react-native-notifier/src/Notifier.tsx
+@@ -44,6 +44,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+       Component: NotificationComponent,
+       swipeEnabled: DEFAULT_SWIPE_ENABLED,
+       componentProps: {},
++      visible: false,
+     };
+     this.isShown = false;
+     this.isHiding = false;
+@@ -146,6 +147,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+       Component: Component ?? NotificationComponent,
+       swipeEnabled: swipeEnabled ?? DEFAULT_SWIPE_ENABLED,
+       componentProps: componentProps,
++      visible: true,
+     });
+ 
+     this.showParams = restParams;
+@@ -188,6 +190,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+   }
+ 
+   private onHidden() {
++    this.setState({ visible: false })
+     this.showParams?.onHidden?.();
+     this.isShown = false;
+     this.isHiding = false;
+@@ -259,7 +262,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+         >
+           <TouchableWithoutFeedback onPress={this.onPress}>
+             <View onLayout={this.onLayout}>
+-              <Component title={title} description={description} {...componentProps} />
++             {this.state.visible? <Component title={title} description={description} {...componentProps} /> : null}
+             </View>
+           </TouchableWithoutFeedback>
+         </Animated.View>
+diff --git a/node_modules/react-native-notifier/src/types.ts b/node_modules/react-native-notifier/src/types.ts
+index 229e19c..e16a943 100644
+--- a/node_modules/react-native-notifier/src/types.ts
++++ b/node_modules/react-native-notifier/src/types.ts
+@@ -95,6 +95,7 @@ export interface StateInterface {
+   swipeEnabled: boolean;
+   Component: ElementType;
+   componentProps: Record<string, any>;
++  visible: boolean;
+ }
+ 
+ export interface NotifierInterface {

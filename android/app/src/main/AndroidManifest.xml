@@ -13,7 +13,10 @@
 
     <!-- permissions related to jitsi call -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    
+
+    <!-- android 13 notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <application
         android:name="chat.rocket.reactnative.MainApplication"
         android:allowBackup="false"

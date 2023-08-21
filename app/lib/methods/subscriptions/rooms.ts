@@ -34,6 +34,7 @@ import { E2E_MESSAGE_TYPE } from '../../constants';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
+import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/videoConf';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -212,7 +213,6 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			if (messageRecord) {
 				batch.push(
 					messageRecord.prepareUpdate(() => {
-						// @ts-ignore
 						Object.assign(messageRecord, lastMessage);
 					})
 				);
@@ -307,6 +307,12 @@ export default function subscribeRooms() {
 			}
 			if (unset?.avatarETag) {
 				store.dispatch(setUser({ avatarETag: '' }));
+			}
+			if (diff?.bio) {
+				store.dispatch(setUser({ bio: diff.bio }));
+			}
+			if (diff?.nickname) {
+				store.dispatch(setUser({ nickname: diff.nickname }));
 			}
 		}
 		if (/subscriptions/.test(ev)) {
@@ -408,6 +414,10 @@ export default function subscribeRooms() {
 			} catch (e) {
 				log(e);
 			}
+		}
+		if (/video-conference/.test(ev)) {
+			const [action, params] = ddpMessage.fields.args;
+			store.dispatch(handleVideoConfIncomingWebsocketMessages({ action, params }));
 		}
 	});
 

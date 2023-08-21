@@ -10,7 +10,7 @@ import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import getFileUrlFromMessage from './getFileUrlFromMessage';
+import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
@@ -33,6 +33,7 @@ import {
 	ICustomEmoji
 } from '../../definitions';
 import { Services } from '../../lib/services';
+import { TNavigation } from '../../stacks/stackType';
 
 interface IMessagesViewProps {
 	user: {
@@ -43,7 +44,7 @@ interface IMessagesViewProps {
 	baseUrl: string;
 	navigation: CompositeNavigationProp<
 		StackNavigationProp<ChatsStackParamList, 'MessagesView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList>
+		StackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: ICustomEmoji };
@@ -203,7 +204,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 								{
 									title: item.name,
 									description: item.description,
-									...getFileUrlFromMessage(item)
+									...getFileUrlAndTypeFromMessage(item)
 								}
 							]
 						}}

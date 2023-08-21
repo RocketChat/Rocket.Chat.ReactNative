@@ -57,6 +57,8 @@ export interface IListContainerProps {
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
+	autoTranslateRoom?: boolean;
+	autoTranslateLanguage?: string;
 }
 
 interface IListContainerState {
@@ -106,7 +108,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
-		const { hideSystemMessages, tunread, ignored, loading } = this.props;
+		const { hideSystemMessages, tunread, ignored, loading, autoTranslateLanguage, autoTranslateRoom } = this.props;
 		if (loading !== nextProps.loading) {
 			return true;
 		}
@@ -123,6 +125,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			return true;
 		}
 		if (!dequal(ignored, nextProps.ignored)) {
+			return true;
+		}
+		if (autoTranslateLanguage !== nextProps.autoTranslateLanguage || autoTranslateRoom !== nextProps.autoTranslateRoom) {
 			return true;
 		}
 		return false;
@@ -171,13 +176,15 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			}
 			this.messagesObservable = db
 				.get('thread_messages')
-				.query(Q.where('rid', tmid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(this.count))
+				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
 				.observe();
 		} else if (rid) {
-			const whereClause = [Q.where('rid', rid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(this.count)] as (
-				| Q.WhereDescription
-				| Q.Or
-			)[];
+			const whereClause = [
+				Q.where('rid', rid),
+				Q.experimentalSortBy('ts', Q.desc),
+				Q.experimentalSkip(0),
+				Q.experimentalTake(this.count)
+			] as (Q.WhereDescription | Q.Or)[];
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
@@ -264,6 +271,14 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
 			this.messagesSubscription.unsubscribe();
 		}
+	};
+
+	getLastMessage = (): TMessageModel | TThreadMessageModel | null => {
+		const { messages } = this.state;
+		if (messages.length > 0) {
+			return messages[0];
+		}
+		return null;
 	};
 
 	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
