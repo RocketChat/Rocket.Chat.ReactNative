@@ -200,7 +200,6 @@ interface IRoomViewState {
 	action: TMessageAction;
 	canAutoTranslate: boolean;
 	loading: boolean;
-	editing: boolean;
 	replying: boolean;
 	replyWithMention: boolean;
 	readOnly: boolean;
@@ -277,7 +276,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			action: null,
 			canAutoTranslate: false,
 			loading: true,
-			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
 			readOnly: false,
@@ -782,18 +780,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { showActionSheet } = this.props;
 		this.handleCloseEmoji(showActionSheet, options);
 	};
-
-	// onEditInit = (message: TAnyMessageModel) => {
-	// 	const newMessage = {
-	// 		id: message.id,
-	// 		subscription: {
-	// 			// @ts-ignore TODO: we can remove this after we merge a PR separating IMessage vs IMessageFromServer
-	// 			id: message.subscription.id
-	// 		},
-	// 		msg: message?.attachments?.[0]?.description || message.msg
-	// 	} as TMessageModel;
-	// 	// this.setState({ selectedMessage: newMessage, editing: true });
-	// };
 
 	onEditInit = (messageId: string) => {
 		const { action } = this.state;
@@ -1342,12 +1328,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		const { room, lastOpen, canAutoTranslate, selectedMessage, editing } = this.state;
+		const { room, lastOpen, canAutoTranslate, selectedMessages, action } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
-		const isBeingEdited = editing && item.id === selectedMessage?.id;
+		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
@@ -1537,7 +1523,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, editing, action, selectedMessage, selectedMessages, canAutoTranslate } = this.state;
+		const { room, loading, action, selectedMessages, canAutoTranslate } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1573,7 +1559,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						tmid={this.tmid}
 						tunread={tunread}
 						ignored={ignored}
-						editing={editing}
 						renderRow={this.renderItem}
 						loading={loading}
 						navigation={navigation}
@@ -1582,7 +1567,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						serverVersion={serverVersion}
 						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
-						selectedMessageId={selectedMessage?.id}
+						selectedMessageId={selectedMessages[0]}
 					/>
 					{this.renderFooter()}
 					{this.renderActions()}
