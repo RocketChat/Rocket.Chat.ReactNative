@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { BaseButton } from './BaseButton';
-import { MessageComposerContextProps, MessageInnerContext } from '../../context';
+import { MessageInnerContext } from '../../context';
 import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
 import { emitter } from '../../emitter';
 import { TMicOrSend } from '../../interfaces';
 import { useCanUploadFile } from '../../hooks';
+import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const MicOrSendButton = () => {
-	const { rid, editing, editCancel } = useContext(MessageComposerContextProps);
+	const { rid, editing, editCancel } = useRoomContext();
 	const { sendMessage } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);

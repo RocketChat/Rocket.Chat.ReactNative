@@ -1558,9 +1558,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<RoomContext.Provider
 				value={{
+					rid,
+					tmid: this.tmid,
+					editing,
+					sharing: false,
+					message: selectedMessage,
 					action,
 					selectedMessages,
-					onRemoveQuoteMessage: this.onRemoveQuoteMessage
+					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
+					editCancel: this.onEditCancel,
+					editRequest: this.onEditRequest,
+					onSendMessage: this.handleSendMessage
 				}}
 			>
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>

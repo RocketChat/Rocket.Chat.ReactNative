@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
-import { MessageComposerContext, MessageComposerContextProps, MessageInnerContext } from './context';
+import { MessageComposerContext, MessageInnerContext } from './context';
 import { IAutocompleteItemProps, IComposerInput, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 
 require('../MessageBox/EmojiKeyboard');
 
-export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): ReactElement => {
+export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): ReactElement | null => {
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
@@ -50,8 +50,7 @@ export const MessageComposerInner = ({ forwardedRef }: { forwardedRef: any }): R
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
-	const { rid, tmid, editing, message, editRequest, onSendMessage } = useContext(MessageComposerContextProps);
-	const { action, selectedMessages } = useRoomContext();
+	const { rid, tmid, editing, message, action, selectedMessages, editRequest, onSendMessage } = useRoomContext();
 	const {
 		showEmojiKeyboard,
 		showEmojiSearchbar,
