@@ -111,7 +111,7 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		}
 		if (selection) {
 			selectionRef.current = selection;
-			inputRef.current.setSelection(selection.start, selection.end);
+			inputRef.current.setSelection?.(selection.start, selection.end);
 		}
 		setMicOrSend(text.length === 0 ? 'mic' : 'send');
 	};
