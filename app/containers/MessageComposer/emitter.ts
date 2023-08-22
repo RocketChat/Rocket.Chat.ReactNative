@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 
-import { TAutocompleteType } from './interfaces';
+import { TAutocompleteType, TMarkdownStyle } from './interfaces';
 
 type Events = {
 	setAutocomplete: {
@@ -8,8 +8,11 @@ type Events = {
 		text: string;
 		params?: string;
 	};
+	addMarkdown: {
+		style: TMarkdownStyle;
+	};
 };
 
 export const emitter = mitt<Events>();
 
-// emitter.on('*', (type, e) => console.log(type, e));
+emitter.on('*', (type, e) => console.log(type, e));

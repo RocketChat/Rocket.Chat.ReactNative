@@ -11,7 +11,7 @@ import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
-import { MIN_HEIGHT } from '../constants';
+import { MIN_HEIGHT, markdownStyle } from '../constants';
 import database from '../../../lib/database';
 import { emitter } from '../emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
@@ -78,6 +78,20 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		}
 	}, [action, selectedMessages]);
 
+	useEffect(() => {
+		emitter.on('addMarkdown', ({ style }) => {
+			const { start, end } = selectionRef.current;
+			const text = textRef.current;
+			const markdown = markdownStyle[style];
+			const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+			setInput(newText, {
+				start: start + markdown.length,
+				end: start === end ? start + markdown.length : end + markdown.length
+			});
+		});
+		return () => emitter.off('addMarkdown');
+	}, [rid]);
+
 	useImperativeHandle(ref, () => ({
 		getTextAndClear: () => {
 			const text = textRef.current;
@@ -92,11 +106,12 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 
 	const setInput: TSetInput = (text, selection) => {
 		textRef.current = text;
-		if (selection) {
-			selectionRef.current = selection;
-		}
 		if (inputRef.current) {
 			inputRef.current.setNativeProps({ text });
+		}
+		if (selection) {
+			selectionRef.current = selection;
+			inputRef.current.setSelection?.(selection.start, selection.end);
 		}
 		setMicOrSend(text.length === 0 ? 'mic' : 'send');
 	};

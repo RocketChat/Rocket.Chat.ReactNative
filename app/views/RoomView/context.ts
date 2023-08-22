@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
 
-interface IRoomContext {
+export interface IRoomContext {
 	rid: string;
 	tmid?: string;
 	sharing: boolean;
@@ -15,7 +15,7 @@ interface IRoomContext {
 	onRemoveQuoteMessage: (messageId: string) => void;
 }
 
-export const initialContext = {
+const initialContext = {
 	rid: '',
 	tmid: undefined,
 	sharing: false,
