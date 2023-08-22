@@ -147,8 +147,6 @@ export interface IUser extends IRocketChatRecord, ILoggedUser {
 	muted?: boolean;
 }
 
-export type TUserParsed = IUser & { parsedRoles?: string[] };
-
 export interface IRegisterUser extends IUser {
 	username: string;
 	name: string;

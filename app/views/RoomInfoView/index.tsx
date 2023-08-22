@@ -1,5 +1,6 @@
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -10,10 +11,10 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
-import { ISubscription, SubscriptionType } from '../../definitions';
+import { ISubscription, IUser, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
@@ -53,15 +54,18 @@ const RoomInfoView = (): React.ReactElement => {
 
 	const subscription = useRef<Subscription | undefined>(undefined);
 
-	const { editLivechatRoomCustomfields, editOmnichannelContact, editRoomPermission, isMasterDetail, roles, subscribedRoom } =
-		useAppSelector(state => ({
-			subscribedRoom: state.room.subscribedRoom,
-			isMasterDetail: state.app.isMasterDetail,
-			editRoomPermission: state.permissions['edit-room'],
-			editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
-			editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
-			roles: state.roles
-		}));
+	const { isMasterDetail, subscribedRoom, usersRoles, roles } = useAppSelector(state => ({
+		subscribedRoom: state.room.subscribedRoom,
+		isMasterDetail: state.app.isMasterDetail,
+		roles: state.roles,
+		usersRoles: state.usersRoles
+	}));
+
+	const [editRoomPermission, editOmnichannelContact, editLivechatRoomCustomfields] = usePermissions([
+		'edit-room',
+		'edit-omnichannel-contact',
+		'edit-livechat-room-customfields'
+	]);
 
 	const { colors } = useTheme();
 
@@ -129,6 +133,20 @@ const RoomInfoView = (): React.ReactElement => {
 
 	const parseRoles = (roleArray: string[]) => roleArray.map(role => roles[role]);
 
+	const handleRoles = (user: Pick<IUser, 'username' | 'roles'>) => {
+		const rrr = (() => {
+			const userRoles = usersRoles.find(u => u?.username === user.username);
+			let r: string[] = [];
+			if (userRoles?.roles?.length) r = userRoles.roles;
+			if (user.roles?.length) r = [...r, ...user.roles];
+			return uniq(r);
+		})();
+		if (rrr.length) {
+			const parsedRoles = parseRoles(rrr);
+			return parsedRoles;
+		}
+	};
+
 	const loadUser = async () => {
 		if (isEmpty(roomUser)) {
 			try {
@@ -136,19 +154,15 @@ const RoomInfoView = (): React.ReactElement => {
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
-					let parsedRoles: string[] | {} = {};
-					if (user.roles?.length) {
-						parsedRoles = parseRoles(user.roles);
-					}
-					setRoomUser({ ...user, parsedRoles });
+					const r = handleRoles(user);
+					setRoomUser({ ...user, roles: r });
 				}
 			} catch {
 				// do nothing
 			}
-		} else if (roomUser?.roles?.length) {
-			const parsedRoles = parseRoles(roomUser.roles);
-			setRoomUser({ ...roomUser, parsedRoles });
 		}
+		const r = handleRoles(roomUser);
+		if (r) setRoomUser({ ...roomUser, roles: r });
 	};
 
 	const loadRoom = async () => {

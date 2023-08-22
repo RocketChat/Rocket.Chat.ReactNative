@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { TUserParsed } from '../../definitions';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import CustomFields from './CustomFields';
 import Timezone from './Timezone';
 import styles from './styles';
+import { IUser } from '../../definitions';
 
 const Roles = ({ roles }: { roles?: string[] }) => {
 	const { colors } = useTheme();
@@ -14,17 +14,11 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	if (roles?.length) {
 		return (
 			<View style={styles.item}>
-				<Text testID='user-roles' style={[styles.itemLabel, { color: colors.titleText }]}>
-					{I18n.t('Roles')}
-				</Text>
+				<Text style={[styles.itemLabel, { color: colors.titleText }]}>{I18n.t('Roles')}</Text>
 				<View style={styles.rolesContainer}>
 					{roles.map(role =>
 						role ? (
-							<View
-								testID={`user-role-${role.replace(/ /g, '-')}`}
-								style={[styles.roleBadge, { backgroundColor: colors.chatComponentBackground }]}
-								key={role}
-							>
+							<View style={[styles.roleBadge, { backgroundColor: colors.chatComponentBackground }]} key={role}>
 								<Text style={[styles.role, { color: colors.titleText }]}>{role}</Text>
 							</View>
 						) : null
@@ -37,9 +31,9 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	return null;
 };
 
-const Direct = ({ roomUser }: { roomUser: TUserParsed }): React.ReactElement => (
+const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => (
 	<>
-		<Roles roles={roomUser.parsedRoles} />
+		<Roles roles={roomUser.roles} />
 		<Timezone utcOffset={roomUser.utcOffset} />
 		<CustomFields customFields={roomUser.customFields} />
 	</>
