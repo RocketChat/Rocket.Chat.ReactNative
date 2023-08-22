@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, waitFor, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
@@ -12,7 +12,6 @@ import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
-import { TMarkdownStyle } from './interfaces';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -97,13 +96,7 @@ test('renders toolbar when focused', async () => {
 
 test('send message', async () => {
 	const onSendMessage = jest.fn();
-	render(
-		<Provider store={mockedStore}>
-			<RoomContext.Provider value={{ ...initialContext, onSendMessage }}>
-				<MessageComposerContainer />
-			</RoomContext.Provider>
-		</Provider>
-	);
+	render(<Render context={{ onSendMessage }} />);
 	expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 	await act(async () => {
 		await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
@@ -341,23 +334,7 @@ describe('edit message', () => {
 	const editRequest = jest.fn();
 	const id = 'messageId';
 	beforeEach(() => {
-		render(
-			<Provider store={mockedStore}>
-				<RoomContext.Provider
-					value={{
-						...initialContext,
-						rid: 'rid',
-						selectedMessages: [id],
-						action: 'edit',
-						onSendMessage,
-						editCancel,
-						editRequest
-					}}
-				>
-					<MessageComposerContainer />
-				</RoomContext.Provider>
-			</Provider>
-		);
+		render(<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', onSendMessage, editCancel, editRequest }} />);
 	});
 	test('init', async () => {
 		await screen.findByTestId('message-composer');
@@ -409,43 +386,19 @@ describe('Quote', () => {
 		const onRemoveQuoteMessage = jest.fn();
 
 		// Render without quotes
-		const { rerender } = render(
-			<Provider store={mockedStore}>
-				<RoomContext.Provider value={{ ...initialContext, selectedMessages: [], onRemoveQuoteMessage }}>
-					<MessageComposerContainer />
-				</RoomContext.Provider>
-			</Provider>
-		);
+		const { rerender } = render(<Render context={{ selectedMessages: [], onRemoveQuoteMessage }} />);
 		expect(screen.queryByTestId('composer-quote-abc')).toBeNull();
 		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
 		expect(screen.toJSON()).toMatchSnapshot();
 
 		// Add a quote
-		rerender(
-			<Provider store={mockedStore}>
-				<Provider store={mockedStore}>
-					<RoomContext.Provider value={{ ...initialContext, action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }}>
-						<MessageComposerContainer />
-					</RoomContext.Provider>
-				</Provider>
-			</Provider>
-		);
+		rerender(<Render context={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }} />);
 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
 		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
 		expect(screen.toJSON()).toMatchSnapshot();
 
 		// Add another quote
-		rerender(
-			<Provider store={mockedStore}>
-				<Provider store={mockedStore}>
-					<RoomContext.Provider
-						value={{ ...initialContext, action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }}
-					>
-						<MessageComposerContainer />
-					</RoomContext.Provider>
-				</Provider>
-			</Provider>
-		);
+		rerender(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }} />);
 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
 		expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen();
 		expect(screen.toJSON()).toMatchSnapshot();
