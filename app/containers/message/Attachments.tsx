@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { dequal } from 'dequal';
-import { Text } from 'react-native';
 
 import { IMessageAttachments } from './interfaces';
 import Image from './Image';
@@ -8,13 +7,13 @@ import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
 import Button from '../Button';
-import styles from './styles';
 import MessageContext from './Context';
 import { useTheme } from '../../theme';
-import { IAttachment } from '../../definitions';
+import { IAttachment, TGetCustomEmoji } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
 import openLink from '../../lib/methods/helpers/openLink';
-import { themes } from '../../lib/constants';
+import Markdown from '../markdown';
+import { getMessageFromAttachment } from './utils';
 
 export type TElement = {
 	type: string;
@@ -23,9 +22,8 @@ export type TElement = {
 	text: string;
 };
 
-const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
+const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
-	const { theme } = useTheme();
 
 	if (!attachment.actions) {
 		return null;
@@ -50,21 +48,23 @@ const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 	});
 	return (
 		<>
-			<Text style={[styles.text, { color: themes[theme].bodyText }]}>{attachment.text}</Text>
+			<Markdown msg={attachment.text} getCustomEmoji={getCustomEmoji} />
 			{attachedButtons}
 		</>
 	);
 };
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, id }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
 		const { theme } = useTheme();
+		const { translateLanguage } = useContext(MessageContext);
 
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
 
 		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
+			const msg = getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
 				return (
 					<Image
@@ -74,6 +74,8 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
+						author={author}
+						msg={msg}
 					/>
 				);
 			}
@@ -87,7 +89,8 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						isReply={isReply}
 						style={style}
 						theme={theme}
-						messageId={id}
+						author={author}
+						msg={msg}
 					/>
 				);
 			}
@@ -101,12 +104,13 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
+						msg={msg}
 					/>
 				);
 			}
 
 			if (file && file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} />;
+				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return (
@@ -115,14 +119,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 
 			return (
-				<Reply
-					key={index}
-					index={index}
-					attachment={file}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					messageId={id}
-				/>
+				<Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} msg={msg} />
 			);
 		});
 		return <>{attachmentsElements}</>;

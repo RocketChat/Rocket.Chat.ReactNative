@@ -10,12 +10,13 @@ import {
 	TTextMatcher,
 	expectValidRegisterOrRetry
 } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Delete server', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
+	const deleteUsersAfterAll: IDeleteCreateUser[] = [];
 
 	beforeAll(async () => {
 		user = await createRandomUser();
@@ -23,6 +24,10 @@ describe('Delete server', () => {
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(user.username, user.password);
+	});
+
+	afterAll(async () => {
+		await deleteCreatedUsers(deleteUsersAfterAll);
 	});
 
 	it('should be logged in main server', async () => {
@@ -58,6 +63,7 @@ describe('Delete server', () => {
 		await element(by.id('register-view-password')).replaceText(randomUser.password);
 		await element(by.id('register-view-password')).tapReturnKey();
 		await expectValidRegisterOrRetry(device.getPlatform());
+		deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 
 		await checkServer(data.alternateServer);
 	});

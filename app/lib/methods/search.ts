@@ -1,24 +1,39 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString } from '../database/utils';
+import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, IUserMessage, SubscriptionType } from '../../definitions';
-import { isGroupChat } from './helpers';
+import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { isGroupChat, isReadOnly } from './helpers';
 
 export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearchSubscription = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
+export const localSearchSubscription = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	filterMessagingAllowed = false
+}): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
+	const slugifiedString = slugifyLikeString(searchText);
 	let subscriptions = await db
 		.get('subscriptions')
 		.query(
-			Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))),
+			Q.or(
+				// `sanitized_fname` is an optional column, so it's going to start null and it's going to get filled over time
+				Q.where('sanitized_fname', Q.like(`%${slugifiedString}%`)),
+				// TODO: Remove the conditionals below at some point. It is merged at 4.39
+				// the param 'name' is slugified by the server when the slugify setting is enable, just for channels and teams
+				Q.where('name', Q.like(`%${slugifiedString}%`)),
+				// Still need the below conditionals because at the first moment the the sanitized_fname won't be filled
+				Q.where('name', Q.like(`%${likeString}%`)),
+				Q.where('fname', Q.like(`%${likeString}%`))
+			),
 			Q.experimentalSortBy('room_updated_at', Q.desc)
 		)
 		.fetch();
@@ -27,6 +42,17 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		subscriptions = subscriptions.filter(item => item.t === 'd' && !isGroupChat(item));
 	} else if (!filterUsers && filterRooms) {
 		subscriptions = subscriptions.filter(item => item.t !== 'd' || isGroupChat(item));
+	}
+
+	if (filterMessagingAllowed) {
+		const username = reduxStore.getState().login.user.username as string;
+		const filteredSubscriptions = await Promise.all(
+			subscriptions.map(async item => {
+				const isItemReadOnly = await isReadOnly(item, username);
+				return isItemReadOnly ? null : item;
+			})
+		);
+		subscriptions = filteredSubscriptions.filter(item => item !== null) as TSubscriptionModel[];
 	}
 
 	const search = subscriptions.slice(0, 7).map(item => ({
@@ -39,7 +65,9 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		encrypted: item.encrypted,
 		lastMessage: item.lastMessage,
 		status: item.status,
-		teamMain: item.teamMain
+		teamMain: item.teamMain,
+		prid: item.prid,
+		f: item.f
 	})) as ISearchLocal[];
 
 	return search;
@@ -104,6 +132,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 							...user,
 							rid: user.username,
 							name: user.username,
+							fname: user.name,
 							t: SubscriptionType.DIRECT,
 							search: true
 						});

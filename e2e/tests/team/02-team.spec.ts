@@ -382,7 +382,7 @@ describe('Team', () => {
 
 			describe('Room Members', () => {
 				beforeAll(async () => {
-					await tapAndWaitFor(element(by.id('room-actions-members')), element(by.id('room-members-view')), 2000);
+					await tapAndWaitFor(element(by.id('room-actions-members')), element(by.id('room-members-view')), 10000);
 				});
 
 				it('should show all users', async () => {

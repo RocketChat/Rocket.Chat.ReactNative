@@ -7,7 +7,7 @@ orbs:
 macos: &macos
   macos:
     xcode: "14.2.0"
-  resource_class: large
+  resource_class: macos.m1.large.gen1
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"

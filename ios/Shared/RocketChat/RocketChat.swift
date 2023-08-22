@@ -52,7 +52,7 @@ final class RocketChat {
     }
   }
   
-  func sendMessage(rid: String, message: String, completion: @escaping((MessageResponse?) -> Void)) {
+  func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping((MessageResponse?) -> Void)) {
     let id = String.random(length: 17)
     
     var msg = message
@@ -61,7 +61,7 @@ final class RocketChat {
       msg = encryptMessage(rid: rid, id: id, message: message)
     }
     
-    api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, messageType: encrypted ? .e2e : nil )) { response in
+    api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, threadIdentifier: threadIdentifier, messageType: encrypted ? .e2e : nil )) { response in
       switch response {
       case .resource(let response):
         completion(response)
