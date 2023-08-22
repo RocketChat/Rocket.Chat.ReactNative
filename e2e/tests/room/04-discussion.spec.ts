@@ -31,6 +31,7 @@ describe('Discussion', () => {
 	});
 
 	it('should create discussion from NewMessageView', async () => {
+		const selectUser = 'rocket.cat';
 		await waitFor(element(by.id('rooms-list-view-create-channel')))
 			.toExist()
 			.withTimeout(2000);
@@ -46,13 +47,37 @@ describe('Discussion', () => {
 			.toExist()
 			.withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by[textMatcher]('Select a Channel...')).tap();
+		await element(by[textMatcher]('Select a channel...')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${room}`);
 		await waitFor(element(by.id(`multi-select-item-${room}`)))
 			.toExist()
 			.withTimeout(10000);
 		await element(by.id(`multi-select-item-${room}`)).tap();
 		await element(by.id('multi-select-discussion-name')).replaceText(discussionFromNewMessage);
+		await element(by[textMatcher]('Select users...')).tap();
+		await element(by.id('multi-select-search')).replaceText(`${selectUser}`);
+		await waitFor(element(by.id(`multi-select-item-${selectUser}`)))
+			.toExist()
+			.withTimeout(10000);
+		await element(by.id(`multi-select-item-${selectUser}`)).tap();
+		await sleep(300);
+		// checking if the chip was placed properly
+		await waitFor(element(by.id(`multi-select-chip-${selectUser}`)))
+			.toExist()
+			.withTimeout(10000);
+		// should keep the same chip even when the user does a new research
+		await element(by.id('multi-select-search')).replaceText(`user`);
+		await waitFor(element(by.id(`multi-select-item-${selectUser}`)))
+			.not.toExist()
+			.withTimeout(10000);
+		await waitFor(element(by.id(`multi-select-chip-${selectUser}`)))
+			.toExist()
+			.withTimeout(10000);
+		await sleep(500);
+		await element(by.id('multi-select-search')).tapReturnKey();
+		await sleep(500);
+		// removing the rocket.cat from the users
+		await element(by.id(`multi-select-chip-${selectUser}`)).tap();
 		await waitFor(element(by.id('create-discussion-submit')))
 			.toExist()
 			.withTimeout(10000);
@@ -76,7 +101,7 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('action-sheet')))
 			.toBeVisible()
 			.withTimeout(2000);
-		await element(by[textMatcher]('Create Discussion')).atIndex(0).tap();
+		await element(by[textMatcher]('Create discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(2000);
@@ -108,7 +133,7 @@ describe('Discussion', () => {
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by[textMatcher]('Start a Discussion')).atIndex(0).tap();
+			await element(by[textMatcher]('Start a discussion')).atIndex(0).tap();
 			await sleep(1000); // wait for animation
 			await waitFor(element(by.id('create-discussion-view')))
 				.toBeVisible()

@@ -8,12 +8,14 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <RCTAppDelegate.h>
+#import <React/RCTBridgeDelegate.h>
 #import <Expo/Expo.h>
 // https://github.com/expo/expo/issues/17705#issuecomment-1196251146
 #import "ExpoModulesCore-Swift.h"
 #import "RocketChatRN-Swift.h"
 
-@interface AppDelegate : EXAppDelegateWrapper
+@interface AppDelegate : EXAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate>
+
+@property (nonatomic, strong) UIWindow *window;
 
 @end

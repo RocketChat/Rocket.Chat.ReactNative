@@ -15,6 +15,8 @@ import ServerItem from '../../containers/ServerItem';
 import database from '../../lib/database';
 import { themes, TOKEN_KEY } from '../../lib/constants';
 import { withTheme } from '../../theme';
+import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
+import { isTablet } from '../../lib/methods/helpers';
 import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -67,6 +69,9 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 			easing: Easing.inOut(Easing.quad),
 			useNativeDriver: true
 		}).start();
+		if (isTablet) {
+			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
 	}
 
 	componentDidUpdate(prevProps: IServerDropdownProps) {
@@ -83,6 +88,9 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 		}
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+		if (isTablet) {
+			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
 
@@ -159,6 +167,18 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 			}
 		});
 
+	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
+		const { servers } = this.state;
+		const { navigation } = this.props;
+		const { input } = event as unknown as { input: number };
+		if (handleCommandSelectServer(event)) {
+			if (servers[input - 1]) {
+				this.select(servers[input - 1].id);
+				navigation.navigate('RoomView');
+			}
+		}
+	};
+
 	renderServer = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => {
 		const { server } = this.props;
 
@@ -185,7 +205,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, themes[theme!].backdropOpacity]
+			outputRange: [0, themes[theme].backdropOpacity]
 		});
 		return (
 			<>
@@ -194,7 +214,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						style={[
 							styles.backdrop,
 							{
-								backgroundColor: themes[theme!].backdropColor,
+								backgroundColor: themes[theme].backdropColor,
 								opacity: backdropOpacity,
 								top: heightDestination
 							}
@@ -206,16 +226,16 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						styles.dropdownContainer,
 						{
 							transform: [{ translateY }],
-							backgroundColor: themes[theme!].backgroundColor,
-							borderColor: themes[theme!].separatorColor
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
 						}
 					]}
 					testID='rooms-list-header-server-dropdown'
 				>
-					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme!].separatorColor }]}>
-						<Text style={[styles.serverHeaderText, { color: themes[theme!].auxiliaryText }]}>{I18n.t('Server')}</Text>
+					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme].separatorColor }]}>
+						<Text style={[styles.serverHeaderText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>
-							<Text style={[styles.serverHeaderAdd, { color: themes[theme!].tintColor }]}>{I18n.t('Add_Server')}</Text>
+							<Text style={[styles.serverHeaderAdd, { color: themes[theme].tintColor }]}>{I18n.t('Add_Server')}</Text>
 						</TouchableOpacity>
 					</View>
 					<FlatList
@@ -233,7 +253,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						onPress={this.createWorkspace}
 						testID='rooms-list-header-create-workspace-button'
 						style={styles.buttonCreateWorkspace}
-						color={themes[theme!].tintColor}
+						color={themes[theme].tintColor}
 						styleText={[styles.serverHeaderAdd, { textAlign: 'center' }]}
 					/>
 				</Animated.View>

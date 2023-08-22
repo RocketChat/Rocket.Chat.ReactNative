@@ -31,6 +31,7 @@ const List = ({ listRef, ...props }: IListProps) => (
 		keyExtractor={(item: any) => item.id}
 		contentContainerStyle={styles.contentContainer}
 		style={styles.list}
+		inverted={isIOS}
 		removeClippedSubviews={isIOS}
 		initialNumToRender={7}
 		onEndReachedThreshold={0.5}

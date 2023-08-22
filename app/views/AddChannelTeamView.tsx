@@ -40,7 +40,9 @@ const setHeader = ({
 const AddChannelTeamView = () => {
 	const navigation = useNavigation<TNavigation>();
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
-	const { teamChannels, teamId } = useRoute<TRoute>().params;
+	const {
+		params: { teamId }
+	} = useRoute<TRoute>();
 
 	useEffect(() => {
 		setHeader({ navigation, isMasterDetail });
@@ -70,7 +72,7 @@ const AddChannelTeamView = () => {
 				<List.Separator />
 				<List.Item
 					title='Add_Existing'
-					onPress={() => navigation.navigate('AddExistingChannelView', { teamId, teamChannels })}
+					onPress={() => navigation.navigate('AddExistingChannelView', { teamId })}
 					testID='add-channel-team-view-add-existing'
 					left={() => <List.Icon name='channel-public' />}
 					right={() => <List.Icon name='chevron-right' />}

@@ -305,7 +305,7 @@ describe('Room screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Get Link')).atIndex(0).tap();
+				await element(by[textMatcher]('Get link')).atIndex(0).tap();
 				// TODO: test clipboard
 			});
 			it('should copy message', async () => {
@@ -438,9 +438,10 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(60000);
 			});
+			let quotedMessage = '';
 			it('should quote message', async () => {
 				const quoteMessage = await mockMessage('quote');
-				const quotedMessage = `${quoteMessage}d`;
+				quotedMessage = `${quoteMessage}d`;
 				await tryTapping(element(by[textMatcher](quoteMessage)).atIndex(0), 2000, true);
 				await waitFor(element(by.id('action-sheet')))
 					.toExist()
@@ -459,6 +460,15 @@ describe('Room screen', () => {
 				await waitFor(element(by.id(`reply-${user.name}-${quoteMessage}`).withDescendant(by[textMatcher](quoteMessage))))
 					.toBeVisible()
 					.withTimeout(3000);
+			});
+			it('should back to rooms list view and see the last message correctly and navigate again to room', async () => {
+				const expectedLastMessage = `You: ${quotedMessage}`;
+				await sleep(300);
+				await tapBack();
+				await waitFor(element(by.id(`markdown-preview-${expectedLastMessage}`)))
+					.toBeVisible()
+					.withTimeout(5000);
+				await element(by.id(`markdown-preview-${expectedLastMessage}`)).tap();
 			});
 
 			it('should delete message', async () => {
@@ -517,11 +527,11 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await sleep(600); // wait for animation
-				await waitFor(element(by[textMatcher]('Reply in Direct Message')).atIndex(0))
+				await waitFor(element(by[textMatcher]('Reply in direct message')).atIndex(0))
 					.toBeVisible()
 					.withTimeout(6000);
 				await sleep(600); // wait for animation
-				await element(by[textMatcher]('Reply in Direct Message')).atIndex(0).tap();
+				await element(by[textMatcher]('Reply in direct message')).atIndex(0).tap();
 				await sleep(600); // wait for animation
 				await waitFor(element(by.id(`room-view-title-${replyUser.username}`)))
 					.toExist()
