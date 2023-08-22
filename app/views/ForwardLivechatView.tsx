@@ -6,12 +6,13 @@ import { useDispatch } from 'react-redux';
 import { forwardRoom, ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { IBaseScreen, IServerRoom } from '../definitions';
+import { IServerRoom } from '../definitions';
 import I18n from '../i18n';
-import { ChatsStackParamList } from '../stacks/types';
+import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
+import { Services } from '../lib/services';
+import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { IOptionsField } from './NotificationPreferencesView/options';
-import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,15 +21,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IParsedData {
-	label: string;
-	value: string;
-}
-
 const COUNT_DEPARTMENT = 50;
 
-const ForwardLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamList, 'ForwardLivechatView'>) => {
-	const [departments, setDepartments] = useState<IParsedData[]>([]);
+const ForwardLivechatView = (): React.ReactElement => {
+	const { navigate, setOptions } = useAppNavigation<TNavigation, 'PickerView'>();
+	const {
+		params: { rid }
+	} = useAppRoute<TNavigation, 'ForwardLivechatView'>();
+	const [departments, setDepartments] = useState<IOptionsField[]>([]);
 	const [departmentId, setDepartment] = useState('');
 	const [departmentTotal, setDepartmentTotal] = useState(0);
 	const [users, setUsers] = useState<IOptionsField[]>([]);
@@ -36,8 +36,6 @@ const ForwardLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamL
 	const [room, setRoom] = useState({} as IServerRoom);
 	const dispatch = useDispatch();
 	const { theme, colors } = useTheme();
-
-	const rid = route.params?.rid;
 
 	const getDepartments = async (text = '', offset = 0) => {
 		try {
@@ -106,7 +104,7 @@ const ForwardLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamL
 	};
 
 	useEffect(() => {
-		navigation.setOptions({
+		setOptions({
 			title: I18n.t('Forward_Chat')
 		});
 		getRoom();
@@ -126,25 +124,23 @@ const ForwardLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamL
 	}, [departmentId, userId]);
 
 	const onPressDepartment = () => {
-		navigation.navigate('PickerView', {
+		navigate('PickerView', {
 			title: I18n.t('Forward_to_department'),
 			value: room?.departmentId,
 			data: departments,
 			onChangeValue: setDepartment,
 			onSearch: getDepartments,
 			onEndReached: getDepartments,
-			total: departmentTotal,
-			goBack: false
+			total: departmentTotal
 		});
 	};
 
 	const onPressUser = () => {
-		navigation.navigate('PickerView', {
+		navigate('PickerView', {
 			title: I18n.t('Forward_to_user'),
 			data: users,
 			onChangeValue: setUser,
-			onSearch: getUsers,
-			goBack: false
+			onSearch: getUsers
 		});
 	};
 
