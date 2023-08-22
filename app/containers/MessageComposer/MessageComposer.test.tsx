@@ -68,7 +68,7 @@ test('renders toolbar when focused', async () => {
 	expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
 	expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 	expect(screen.queryByTestId('message-composer-open-emoji')).toBeNull();
-	expect(screen.queryByTestId('message-composer-markdown')).toBeNull();
+	expect(screen.queryByTestId('message-composer-open-markdown')).toBeNull();
 	expect(screen.queryByTestId('message-composer-mention')).toBeNull();
 
 	await act(async () => {
@@ -77,7 +77,7 @@ test('renders toolbar when focused', async () => {
 	expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
 	expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 	expect(screen.getByTestId('message-composer-open-emoji')).toBeOnTheScreen();
-	expect(screen.getByTestId('message-composer-markdown')).toBeOnTheScreen();
+	expect(screen.getByTestId('message-composer-open-markdown')).toBeOnTheScreen();
 	expect(screen.getByTestId('message-composer-mention')).toBeOnTheScreen();
 	expect(screen.toJSON()).toMatchSnapshot();
 });
@@ -98,7 +98,7 @@ test('send message', async () => {
 		expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
 		await fireEvent.press(screen.getByTestId('message-composer-send'));
 	});
-	await waitFor(() => expect(onSendMessage).toHaveBeenCalledTimes(1));
+	expect(onSendMessage).toHaveBeenCalledTimes(1);
 	expect(onSendMessage).toHaveBeenCalledWith('test');
 	expect(screen.toJSON()).toMatchSnapshot();
 });

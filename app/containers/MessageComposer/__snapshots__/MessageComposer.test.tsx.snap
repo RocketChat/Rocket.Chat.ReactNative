@@ -38,7 +38,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={54}
+          handlerTag={55}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -144,7 +144,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={55}
+          handlerTag={56}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -243,7 +243,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={56}
+          handlerTag={57}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -349,7 +349,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={57}
+          handlerTag={58}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -514,7 +514,7 @@ exports[`Quote Adding/removing quotes 2`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={58}
+                handlerTag={59}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -646,7 +646,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={56}
+          handlerTag={57}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -752,7 +752,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={57}
+          handlerTag={58}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -918,7 +918,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={58}
+                handlerTag={59}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -1090,7 +1090,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={59}
+                handlerTag={60}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -2062,7 +2062,7 @@ exports[`renders toolbar when focused 1`] = `
             "width": 24,
           }
         }
-        testID="message-composer-markdown"
+        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="[missing \\"en.TBD\\" translation]"
@@ -2665,7 +2665,7 @@ exports[`tap actions from toolbar 1`] = `
             "width": 24,
           }
         }
-        testID="message-composer-markdown"
+        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="[missing \\"en.TBD\\" translation]"
@@ -2906,7 +2906,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={24}
+        handlerTag={29}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -2965,7 +2965,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={29}
+        handlerTag={30}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3031,7 +3031,7 @@ exports[`tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={30}
+        handlerTag={31}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3165,7 +3165,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={33}
+        handlerTag={34}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3231,7 +3231,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={34}
+        handlerTag={35}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3297,7 +3297,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={35}
+        handlerTag={36}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3322,7 +3322,7 @@ exports[`tap markdown 1`] = `
             "width": 24,
           }
         }
-        testID="message-composer-markdown"
+        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="[missing \\"en.TBD\\" translation]"
@@ -3363,7 +3363,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={36}
+        handlerTag={37}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3429,7 +3429,7 @@ exports[`tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={37}
+        handlerTag={38}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3563,7 +3563,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={40}
+        handlerTag={41}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3629,7 +3629,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={41}
+        handlerTag={42}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3695,7 +3695,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={42}
+        handlerTag={43}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3720,7 +3720,7 @@ exports[`tap mention 1`] = `
             "width": 24,
           }
         }
-        testID="message-composer-markdown"
+        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="[missing \\"en.TBD\\" translation]"
@@ -3761,7 +3761,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={43}
+        handlerTag={44}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3827,7 +3827,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={44}
+        handlerTag={45}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
