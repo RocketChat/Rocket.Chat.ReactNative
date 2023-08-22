@@ -1,5 +1,535 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Markdown tap markdown 1`] = `
+<keyboard-accessory-view-mock>
+  <View
+    style={
+      Array [
+        Object {
+          "borderTopWidth": 1,
+          "minHeight": 48,
+          "paddingHorizontal": 16,
+        },
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderTopColor": "#CBCED1",
+        },
+      ]
+    }
+    testID="message-composer"
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <TextInput
+        blurOnSubmit={false}
+        defaultValue=""
+        keyboardAppearance="light"
+        multiline={true}
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        onLayout={[Function]}
+        onSelectionChange={[Function]}
+        placeholder="Message "
+        placeholderTextColor="#9EA2A8"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flex": 1,
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "maxHeight": 200,
+              "minHeight": 48,
+              "paddingBottom": 12,
+              "paddingTop": 12,
+              "textAlign": "left",
+              "textAlignVertical": "center",
+            },
+            Object {
+              "color": "#2F343D",
+            },
+          ]
+        }
+        testID="message-composer-input"
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "paddingVertical": 12,
+        }
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={39}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 8,
+            "left": 8,
+            "right": 8,
+            "top": 8,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-close-markdown"
+      >
+        <View
+          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={40}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 8,
+            "left": 8,
+            "right": 8,
+            "top": 8,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-bold"
+      >
+        <View
+          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={41}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 8,
+            "left": 8,
+            "right": 8,
+            "top": 8,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-italic"
+      >
+        <View
+          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={42}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 8,
+            "left": 8,
+            "right": 8,
+            "top": 8,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-strike"
+      >
+        <View
+          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={43}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 8,
+            "left": 8,
+            "right": 8,
+            "top": 8,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-code"
+      >
+        <View
+          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={44}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 8,
+            "left": 8,
+            "right": 8,
+            "top": 8,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-code-block"
+      >
+        <View
+          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={45}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 8,
+            "left": 8,
+            "right": 8,
+            "top": 8,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-send-audio"
+      >
+        <View
+          accessibilityLabel="Send audio message"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</keyboard-accessory-view-mock>
+`;
+
 exports[`Quote Adding/removing quotes 1`] = `
 <keyboard-accessory-view-mock>
   <View
@@ -38,7 +568,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={55}
+          handlerTag={62}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -144,7 +674,7 @@ exports[`Quote Adding/removing quotes 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={56}
+          handlerTag={63}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -243,7 +773,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={57}
+          handlerTag={64}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -349,7 +879,7 @@ exports[`Quote Adding/removing quotes 2`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={58}
+          handlerTag={65}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -514,7 +1044,7 @@ exports[`Quote Adding/removing quotes 2`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={59}
+                handlerTag={66}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -646,7 +1176,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={57}
+          handlerTag={64}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -752,7 +1282,7 @@ exports[`Quote Adding/removing quotes 3`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
-          handlerTag={58}
+          handlerTag={65}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             Object {
@@ -918,7 +1448,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={59}
+                handlerTag={66}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -1090,7 +1620,7 @@ exports[`Quote Adding/removing quotes 3`] = `
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
-                handlerTag={60}
+                handlerTag={67}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   Object {
@@ -3091,404 +3621,6 @@ exports[`tap emoji 1`] = `
 </keyboard-accessory-view-mock>
 `;
 
-exports[`tap markdown 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      Array [
-        Object {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        Object {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onLayout={[Function]}
-        onSelectionChange={[Function]}
-        placeholder="Message "
-        placeholderTextColor="#9EA2A8"
-        style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            Object {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-    </View>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
-          "paddingVertical": 12,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        handlerTag={34}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          Object {
-            "bottom": 8,
-            "left": 8,
-            "right": 8,
-            "top": 8,
-          }
-        }
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "height": 24,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 24,
-          }
-        }
-        testID="message-composer-actions"
-      >
-        <View
-          accessibilityLabel="Message actions"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#6C727A",
-                  "fontSize": 24,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          Object {
-            "width": 12,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        handlerTag={35}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          Object {
-            "bottom": 8,
-            "left": 8,
-            "right": 8,
-            "top": 8,
-          }
-        }
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "height": 24,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 24,
-          }
-        }
-        testID="message-composer-open-emoji"
-      >
-        <View
-          accessibilityLabel="Open emoji selector"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#6C727A",
-                  "fontSize": 24,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          Object {
-            "width": 12,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        handlerTag={36}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          Object {
-            "bottom": 8,
-            "left": 8,
-            "right": 8,
-            "top": 8,
-          }
-        }
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "height": 24,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 24,
-          }
-        }
-        testID="message-composer-open-markdown"
-      >
-        <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#6C727A",
-                  "fontSize": 24,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          Object {
-            "width": 12,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        handlerTag={37}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          Object {
-            "bottom": 8,
-            "left": 8,
-            "right": 8,
-            "top": 8,
-          }
-        }
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "height": 24,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 24,
-          }
-        }
-        testID="message-composer-mention"
-      >
-        <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#6C727A",
-                  "fontSize": 24,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          Object {
-            "flex": 1,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        handlerTag={38}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          Object {
-            "bottom": 8,
-            "left": 8,
-            "right": 8,
-            "top": 8,
-          }
-        }
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "height": 24,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 24,
-          }
-        }
-        testID="message-composer-send-audio"
-      >
-        <View
-          accessibilityLabel="Send audio message"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#6C727A",
-                  "fontSize": 24,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-    </View>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
 exports[`tap mention 1`] = `
 <keyboard-accessory-view-mock>
   <View
@@ -3563,7 +3695,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={41}
+        handlerTag={48}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3629,7 +3761,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={42}
+        handlerTag={49}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3695,7 +3827,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={43}
+        handlerTag={50}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3761,7 +3893,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={44}
+        handlerTag={51}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {
@@ -3827,7 +3959,7 @@ exports[`tap mention 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
-        handlerTag={45}
+        handlerTag={52}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           Object {

@@ -11,7 +11,7 @@ import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
-import { RoomContext, initialContext } from '../../views/RoomView/context';
+import { RoomContext } from '../../views/RoomView/context';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -23,6 +23,18 @@ const initialStoreState = () => {
 	mockedStore.dispatch(addSettings({ Message_AudioRecorderEnabled: true }));
 };
 initialStoreState();
+
+const initialContext = {
+	rid: '',
+	tmid: undefined,
+	sharing: false,
+	action: null,
+	selectedMessages: [],
+	editCancel: jest.fn(),
+	editRequest: jest.fn(),
+	onSendMessage: jest.fn(),
+	onRemoveQuoteMessage: jest.fn()
+};
 
 const Render = () => (
 	<Provider store={mockedStore}>
@@ -124,14 +136,22 @@ test('tap emoji', async () => {
 	expect(screen.toJSON()).toMatchSnapshot();
 });
 
-test('tap markdown', async () => {
-	render(<Render />);
+describe('Markdown', () => {
+	test('tap markdown', async () => {
+		render(<Render />);
 
-	await act(async () => {
-		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-		// await fireEvent.press(screen.getByTestId('message-composer-markdown'));
+		await act(async () => {
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+		});
+		expect(screen.getByTestId('message-composer-close-markdown')).toBeOnTheScreen();
+		expect(screen.getByTestId('message-composer-bold')).toBeOnTheScreen();
+		expect(screen.getByTestId('message-composer-italic')).toBeOnTheScreen();
+		expect(screen.getByTestId('message-composer-strike')).toBeOnTheScreen();
+		expect(screen.getByTestId('message-composer-code')).toBeOnTheScreen();
+		expect(screen.getByTestId('message-composer-code-block')).toBeOnTheScreen();
+		expect(screen.toJSON()).toMatchSnapshot();
 	});
-	expect(screen.toJSON()).toMatchSnapshot();
 });
 
 test('tap mention', async () => {
