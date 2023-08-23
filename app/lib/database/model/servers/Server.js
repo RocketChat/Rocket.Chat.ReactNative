@@ -33,4 +33,6 @@ export default class Server extends Model {
 	@field('enterprise_modules') enterpriseModules;
 
 	@field('e2e_enable') E2E_Enable;
+
+	@field('supported_versions') supportedVersions;
 }

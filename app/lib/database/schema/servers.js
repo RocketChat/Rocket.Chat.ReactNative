@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 13,
+	version: 14,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -38,7 +38,8 @@ export default appSchema({
 				{ name: 'biometry', type: 'boolean', isOptional: true }, // deprecated
 				{ name: 'unique_id', type: 'string', isOptional: true },
 				{ name: 'enterprise_modules', type: 'string', isOptional: true },
-				{ name: 'e2e_enable', type: 'boolean', isOptional: true }
+				{ name: 'e2e_enable', type: 'boolean', isOptional: true },
+				{ name: 'supported_versions', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

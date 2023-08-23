@@ -115,6 +115,15 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 14,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [{ name: 'supported_versions', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });
