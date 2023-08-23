@@ -1,12 +1,13 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 
-import { MessageComposerContext } from '../../context';
+import { useMessageComposerState } from '../../context';
 import { Markdown } from './Markdown';
 import { Default } from './Default';
 import { EmojiKeyboard } from './EmojiKeyboard';
 
 export const Toolbar = (): ReactElement | null => {
-	const { focused, showEmojiKeyboard, showEmojiSearchbar, showMarkdownToolbar } = useContext(MessageComposerContext);
+	console.count('[MessageComposer] Toolbar');
+	const { focused, showEmojiKeyboard, showEmojiSearchbar, showMarkdownToolbar } = useMessageComposerState();
 
 	if (showEmojiSearchbar) {
 		return null;

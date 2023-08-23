@@ -1,7 +1,7 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 
 import { MicOrSendButton, BaseButton } from '..';
-import { MessageComposerContext } from '../../context';
+import { useMessageComposerApi } from '../../context';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
 import { Gap } from '../Gap';
@@ -10,7 +10,7 @@ import { TMarkdownStyle } from '../../interfaces';
 import { emitter } from '../../emitter';
 
 export const Markdown = (): ReactElement => {
-	const { setMarkdownToolbar } = useContext(MessageComposerContext);
+	const { setMarkdownToolbar } = useMessageComposerApi();
 
 	const onPress = (style: TMarkdownStyle) => emitter.emit('addMarkdown', { style });
 

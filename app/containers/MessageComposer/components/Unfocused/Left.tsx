@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
-import { MessageComposerContext } from '../../context';
+import { useMessageComposerState } from '../../context';
 import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 
 export const Left = () => {
-	const { focused, showEmojiKeyboard, showEmojiSearchbar } = useContext(MessageComposerContext);
+	console.count('[MessageComposer] Left');
+	const { focused, showEmojiKeyboard, showEmojiSearchbar } = useMessageComposerState();
 	if (focused || showEmojiKeyboard || showEmojiSearchbar) {
 		return null;
 	}

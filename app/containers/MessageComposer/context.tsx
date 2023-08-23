@@ -1,9 +1,9 @@
-import React, { createContext, ReactElement, useReducer } from 'react';
+import React, { createContext, ReactElement, useContext, useMemo, useReducer } from 'react';
 
 import { IEmoji } from '../../definitions';
 import { TMicOrSend } from './interfaces';
 
-type TMessageComposerContext = {
+type TMessageComposerContextState = {
 	showEmojiKeyboard: boolean;
 	showEmojiSearchbar: boolean;
 	focused: boolean;
@@ -11,6 +11,9 @@ type TMessageComposerContext = {
 	keyboardHeight: number;
 	micOrSend: TMicOrSend;
 	showMarkdownToolbar: boolean;
+};
+
+type TMessageComposerContextApi = {
 	setKeyboardHeight: (height: number) => void;
 	setTrackingViewHeight: (height: number) => void;
 	openEmojiKeyboard(): void;
@@ -22,25 +25,13 @@ type TMessageComposerContext = {
 	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
 };
 
-export const MessageComposerContext = createContext<TMessageComposerContext>({
-	showEmojiKeyboard: false,
-	showEmojiSearchbar: false,
-	focused: false,
-	trackingViewHeight: 0,
-	keyboardHeight: 0,
-	micOrSend: 'mic',
-	showMarkdownToolbar: false,
-	setKeyboardHeight: () => {},
-	setTrackingViewHeight: () => {},
-	openEmojiKeyboard: () => {},
-	closeEmojiKeyboard: () => {},
-	setFocused: () => {},
-	openSearchEmojiKeyboard: () => {},
-	closeSearchEmojiKeyboard: () => {},
-	setMicOrSend: () => {},
-	setMarkdownToolbar: () => {}
-});
+const MessageComposerContextState = createContext<TMessageComposerContextState>({} as TMessageComposerContextState);
+const MessageComposerContextApi = createContext<TMessageComposerContextApi>({} as TMessageComposerContextApi);
 
+export const useMessageComposerState = (): TMessageComposerContextState => useContext(MessageComposerContextState);
+export const useMessageComposerApi = (): TMessageComposerContextApi => useContext(MessageComposerContextApi);
+
+// TODO: rename
 type TMessageInnerContext = {
 	sendMessage(): void;
 	onEmojiSelected(emoji: IEmoji): void;
@@ -48,6 +39,7 @@ type TMessageInnerContext = {
 	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
 };
 
+// TODO: rename
 export const MessageInnerContext = createContext<TMessageInnerContext>({
 	sendMessage: () => {},
 	onEmojiSelected: () => {},
@@ -106,48 +98,44 @@ const reducer = (state: State, action: Actions): State => {
 
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
 	const [state, dispatch] = useReducer(reducer, {} as State);
+	console.log('🚀 ~ file: context.tsx:101 ~ MessageComposerProvider ~ state:', state);
 
-	const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
+	const api = useMemo(() => {
+		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
 
-	const setKeyboardHeight = (keyboardHeight: number) => dispatch({ type: 'updateKeyboardHeight', keyboardHeight });
+		const setKeyboardHeight = (keyboardHeight: number) => dispatch({ type: 'updateKeyboardHeight', keyboardHeight });
 
-	const setTrackingViewHeight = (trackingViewHeight: number) =>
-		dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight });
+		const setTrackingViewHeight = (trackingViewHeight: number) =>
+			dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight });
 
-	const openEmojiKeyboard = () => dispatch({ type: 'openEmojiKeyboard' });
+		const openEmojiKeyboard = () => dispatch({ type: 'openEmojiKeyboard' });
 
-	const closeEmojiKeyboard = () => dispatch({ type: 'closeEmojiKeyboard' });
+		const closeEmojiKeyboard = () => dispatch({ type: 'closeEmojiKeyboard' });
 
-	const openSearchEmojiKeyboard = () => dispatch({ type: 'openSearchEmojiKeyboard' });
+		const openSearchEmojiKeyboard = () => dispatch({ type: 'openSearchEmojiKeyboard' });
 
-	const closeSearchEmojiKeyboard = () => dispatch({ type: 'closeSearchEmojiKeyboard' });
+		const closeSearchEmojiKeyboard = () => dispatch({ type: 'closeSearchEmojiKeyboard' });
 
-	const setMicOrSend = (micOrSend: TMicOrSend) => dispatch({ type: 'setMicOrSend', micOrSend });
+		const setMicOrSend = (micOrSend: TMicOrSend) => dispatch({ type: 'setMicOrSend', micOrSend });
 
-	const setMarkdownToolbar = (showMarkdownToolbar: boolean) => dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
+		const setMarkdownToolbar = (showMarkdownToolbar: boolean) => dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
+
+		return {
+			setFocused,
+			setKeyboardHeight,
+			setTrackingViewHeight,
+			openEmojiKeyboard,
+			closeEmojiKeyboard,
+			openSearchEmojiKeyboard,
+			closeSearchEmojiKeyboard,
+			setMicOrSend,
+			setMarkdownToolbar
+		};
+	}, []);
 
 	return (
-		<MessageComposerContext.Provider
-			value={{
-				focused: state.focused,
-				showEmojiKeyboard: state.showEmojiKeyboard,
-				showEmojiSearchbar: state.showEmojiSearchbar,
-				trackingViewHeight: state.trackingViewHeight,
-				keyboardHeight: state.keyboardHeight,
-				micOrSend: state.micOrSend,
-				showMarkdownToolbar: state.showMarkdownToolbar,
-				setFocused,
-				setKeyboardHeight,
-				setTrackingViewHeight,
-				openEmojiKeyboard,
-				closeEmojiKeyboard,
-				openSearchEmojiKeyboard,
-				closeSearchEmojiKeyboard,
-				setMicOrSend,
-				setMarkdownToolbar
-			}}
-		>
-			{children}
-		</MessageComposerContext.Provider>
+		<MessageComposerContextApi.Provider value={api}>
+			<MessageComposerContextState.Provider value={state}>{children}</MessageComposerContextState.Provider>
+		</MessageComposerContextApi.Provider>
 	);
 };

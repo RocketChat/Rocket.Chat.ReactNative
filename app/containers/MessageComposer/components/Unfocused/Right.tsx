@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
-import { MessageComposerContext } from '../../context';
+import { useMessageComposerState } from '../../context';
 import { MicOrSendButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 import { CancelEdit } from '../CancelEdit';
 
 export const Right = () => {
-	const { focused, showEmojiKeyboard, showEmojiSearchbar } = useContext(MessageComposerContext);
+	const { focused, showEmojiKeyboard, showEmojiSearchbar } = useMessageComposerState();
 	if (focused || showEmojiKeyboard || showEmojiSearchbar) {
 		return null;
 	}

@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef, useImperativeHandle, useContext, useEffect } from 'react';
+import React, { ReactElement, useRef, useImperativeHandle, useEffect, useCallback } from 'react';
 import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
-import { MessageComposerContext, MessageInnerContext } from './context';
+import { MessageInnerContext, useMessageComposerApi, useMessageComposerState } from './context';
 import { IAutocompleteItemProps, IComposerInput, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 require('../MessageBox/EmojiKeyboard');
 
 export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactElement | null => {
+	console.count('[MessageComposer] MessageComposer');
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
@@ -51,14 +52,8 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
 	const { rid, tmid, action, selectedMessages, editRequest, onSendMessage } = useRoomContext();
-	const {
-		showEmojiKeyboard,
-		showEmojiSearchbar,
-		setKeyboardHeight,
-		openSearchEmojiKeyboard,
-		closeEmojiKeyboard,
-		closeSearchEmojiKeyboard
-	} = useContext(MessageComposerContext);
+	const { showEmojiKeyboard, showEmojiSearchbar } = useMessageComposerState();
+	const { setKeyboardHeight, openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	useEffect(() => {
@@ -274,22 +269,28 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	};
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
+
+	const renderContent = useCallback(() => {
+		console.count('[MessageComposer] renderContent');
+		return (
+			<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
+				<View style={styles.input}>
+					<Left />
+					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+					<Right />
+				</View>
+				<Quotes />
+				<Toolbar />
+				<EmojiSearchbar />
+			</View>
+		);
+	}, []);
+
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<KeyboardAccessoryView
 				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
-				renderContent={() => (
-					<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
-						<View style={styles.input}>
-							<Left />
-							<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-							<Right />
-						</View>
-						<Quotes />
-						<Toolbar />
-						<EmojiSearchbar />
-					</View>
-				)}
+				renderContent={renderContent}
 				kbInputRef={composerInputRef}
 				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 				kbInitialProps={{ theme }}

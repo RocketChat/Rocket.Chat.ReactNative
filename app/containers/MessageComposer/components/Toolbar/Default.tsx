@@ -1,14 +1,14 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 
 import { MicOrSendButton, ActionsButton, BaseButton } from '..';
-import { MessageComposerContext } from '../../context';
+import { useMessageComposerApi } from '../../context';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
 import { Gap } from '../Gap';
 import { CancelEdit } from '../CancelEdit';
 
 export const Default = (): ReactElement | null => {
-	const { openEmojiKeyboard, setMarkdownToolbar } = useContext(MessageComposerContext);
+	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
 
 	return (
 		<Container>
