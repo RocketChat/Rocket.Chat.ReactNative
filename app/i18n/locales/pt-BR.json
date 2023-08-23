@@ -731,5 +731,6 @@
   "Select": "Selecionar",
   "Nickname": "Apelido",
   "Bio": "Biografia",
-  "Message_has_been_shared":"Menssagem foi compartilhada"
+  "Message_has_been_shared":"Menssagem foi compartilhada",
+  "No_channels_in_team": "Nenhum canal nesta equipe"
 }

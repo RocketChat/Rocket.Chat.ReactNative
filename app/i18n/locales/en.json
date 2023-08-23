@@ -744,5 +744,6 @@
   "accept": "Accept",
   "Incoming_call_from": "Incoming call from",
   "Call_started": "Call started",
-  "Message_has_been_shared":"Message has been shared"
+  "Message_has_been_shared":"Message has been shared",
+  "No_channels_in_team": "No Channels on this Team"
 }
