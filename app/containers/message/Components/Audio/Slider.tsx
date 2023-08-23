@@ -23,6 +23,13 @@ interface ISlider {
 	onChangeTime: (time: number) => Promise<void>;
 }
 
+const BUTTON_HIT_SLOP = {
+	top: 8,
+	right: 8,
+	bottom: 8,
+	left: 8
+};
+
 const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider) => {
 	const { colors } = useTheme();
 
@@ -32,6 +39,7 @@ const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider
 	const scale = useSharedValue(1);
 	const isHandlePan = useSharedValue(false);
 	const onEndGestureHandler = useSharedValue(false);
+	const isTimeChanged = useSharedValue(false);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: x.value,
@@ -61,7 +69,7 @@ const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider
 			} else {
 				x.value = moveInX;
 			}
-
+			isTimeChanged.value = true;
 			scale.value = 1.3;
 		},
 		onEnd: () => {
@@ -82,32 +90,41 @@ const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider
 		}
 	});
 
+	const formatTime = (ms: number) => {
+		'worklet';
+
+		const minutes = Math.floor(ms / 60);
+		const remainingSeconds = Math.floor(ms % 60);
+		const formattedMinutes = String(minutes).padStart(2, '0');
+		const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+		return `${formattedMinutes}:${formattedSeconds}`;
+	};
+
 	useDerivedValue(() => {
-		let minutes;
-		let remainingSeconds;
 		if (isHandlePan.value) {
 			const cTime = (x.value * duration.value) / maxWidth.value || 0;
 			currentTime.value = cTime;
-			minutes = Math.floor(cTime / 60);
-			remainingSeconds = Math.floor(cTime % 60);
+			current.value = formatTime(cTime);
 		} else {
 			const xTime = (currentTime.value * maxWidth.value) / duration.value || 0;
 			x.value = xTime;
-			minutes = Math.floor(currentTime.value / 60);
-			remainingSeconds = Math.floor(currentTime.value % 60);
+			current.value = formatTime(currentTime.value);
+			if (currentTime.value !== 0) {
+				isTimeChanged.value = true;
+			}
 		}
-		const formattedMinutes = String(minutes).padStart(2, '0');
-		const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-		current.value = `${formattedMinutes}:${formattedSeconds}`;
 	}, [x, maxWidth, duration, isHandlePan, currentTime]);
 
-	const getCurrentTime = useAnimatedProps(
-		() =>
-			({
+	const getCurrentTime = useAnimatedProps(() => {
+		if (isTimeChanged.value) {
+			return {
 				text: current.value
-			} as any),
-		[current]
-	);
+			} as any;
+		}
+		return {
+			text: formatTime(duration.value)
+		} as any;
+	}, [current, isTimeChanged, duration]);
 
 	const thumbColor = loaded ? colors.audioPlayerPrimary : colors.tintDisabled;
 
@@ -123,7 +140,7 @@ const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider
 				<View style={[styles.line, { backgroundColor: colors.audioPlayerSecondary }]} />
 				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.audioPlayerPrimary }]} />
 				<PanGestureHandler enabled={loaded} onGestureEvent={gestureHandler}>
-					<Animated.View style={[styles.thumbSlider, { backgroundColor: thumbColor }, styleThumb]} />
+					<Animated.View hitSlop={BUTTON_HIT_SLOP} style={[styles.thumbSlider, { backgroundColor: thumbColor }, styleThumb]} />
 				</PanGestureHandler>
 			</View>
 		</View>

@@ -82,17 +82,22 @@ class HandleAudioMedia {
 	async unloadAudio(uri: string) {
 		await this.audioQueue[uri]?.stopAsync();
 		await this.audioQueue[uri]?.unloadAsync();
+		delete this.audioQueue[uri];
 		this.audioPlaying = '';
 	}
 
 	async unloadAllAudios() {
 		const audiosLoaded = Object.values(this.audioQueue);
-		await Promise.allSettled(
-			audiosLoaded.map(async audio => {
-				await audio?.stopAsync();
-				await audio?.unloadAsync();
-			})
-		);
+		try {
+			await Promise.all(
+				audiosLoaded.map(async audio => {
+					await audio?.stopAsync();
+					await audio?.unloadAsync();
+				})
+			);
+		} catch {
+			// Do nothing
+		}
 		this.audioPlaying = '';
 		this.audioQueue = {};
 	}
