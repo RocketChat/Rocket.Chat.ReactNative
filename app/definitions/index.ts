@@ -40,6 +40,6 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 	dispatch: Dispatch;
 	isMasterDetail: boolean;
 	// TODO: remove after migrating all Class components
-	theme?: TSupportedThemes;
+	theme: TSupportedThemes;
 	colors: TColors;
 }

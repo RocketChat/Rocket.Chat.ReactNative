@@ -517,16 +517,16 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			encrypted
 		} = this.state;
 		const { serverVersion, encryptionEnabled, theme } = this.props;
-		const { dangerColor } = themes[theme!];
+		const { dangerColor } = themes[theme];
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme!].backgroundColor }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme!].backgroundColor }}>
+				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='room-info-edit-view-list'
@@ -615,7 +615,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									: I18n.t('Just_invited_people_can_access_this_channel')
 							}
 							onValueChange={this.toggleRoomType}
-							theme={theme!}
+							theme={theme}
 							testID='room-info-edit-view-t'
 						/>
 						<SwitchContainer
@@ -630,7 +630,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={this.toggleReadOnly}
 							disabled={!permissions['set-readonly'] || room.broadcast}
-							theme={theme!}
+							theme={theme}
 							testID='room-info-edit-view-ro'
 						/>
 						{ro && !room.broadcast ? (
@@ -642,14 +642,14 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								rightLabelSecondary={I18n.t('Reactions_are_enabled')}
 								onValueChange={this.toggleReactions}
 								disabled={!permissions['set-react-when-readonly']}
-								theme={theme!}
+								theme={theme}
 								testID='room-info-edit-view-react-when-ro'
 							/>
 						) : null}
 						{room.broadcast
 							? [
 									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
-									<View style={[styles.divider, { borderColor: themes[theme!].separatorColor }]} />
+									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 							  ]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
@@ -661,7 +661,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 										? I18n.t('Overwrites_the_server_configuration_and_use_room_config')
 										: I18n.t('Uses_server_configuration')
 								}
-								theme={theme!}
+								theme={theme}
 								testID='room-info-edit-switch-system-messages'
 								onValueChange={this.toggleHideSystemMessages}
 								labelContainerStyle={styles.hideSystemMessages}
@@ -676,7 +676,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								disabled={!t}
 								leftLabelPrimary={I18n.t('Encrypted')}
 								leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
-								theme={theme!}
+								theme={theme}
 								testID='room-info-edit-switch-encrypted'
 								onValueChange={this.toggleEncrypted}
 								labelContainerStyle={styles.hideSystemMessages}
@@ -686,14 +686,14 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
-								{ backgroundColor: themes[theme!].buttonBackground },
+								{ backgroundColor: themes[theme].buttonBackground },
 								!this.formIsChanged() && styles.buttonContainerDisabled
 							]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
 							testID='room-info-edit-view-submit'
 						>
-							<Text style={[styles.button, { color: themes[theme!].buttonText }]} accessibilityRole='button'>
+							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityRole='button'>
 								{I18n.t('SAVE')}
 							</Text>
 						</TouchableOpacity>
@@ -702,7 +702,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								style={[
 									styles.buttonContainer_inverted,
 									styles.buttonInverted,
-									{ flex: 1, borderColor: themes[theme!].auxiliaryText },
+									{ flex: 1, borderColor: themes[theme].auxiliaryText },
 									!this.formIsChanged() && styles.buttonContainerDisabled
 								]}
 								onPress={this.reset}
@@ -710,7 +710,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								testID='room-info-edit-view-reset'
 							>
 								<Text
-									style={[styles.button, styles.button_inverted, { color: themes[theme!].bodyText }]}
+									style={[styles.button, styles.button_inverted, { color: themes[theme].bodyText }]}
 									accessibilityRole='button'
 								>
 									{I18n.t('RESET')}
@@ -734,7 +734,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								</Text>
 							</TouchableOpacity>
 						</View>
-						<View style={[styles.divider, { borderColor: themes[theme!].separatorColor }]} />
+						<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer_inverted,
@@ -760,7 +760,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version as string,
-	encryptionEnabled: state.encryption.enabled as boolean,
+	encryptionEnabled: state.encryption.enabled,
 	setReadOnlyPermission: state.permissions['set-readonly'] as string[],
 	setReactWhenReadOnlyPermission: state.permissions['set-react-when-readonly'] as string[],
 	archiveRoomPermission: state.permissions['archive-room'] as string[],
@@ -768,7 +768,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	deleteCPermission: state.permissions['delete-c'] as string[],
 	deletePPermission: state.permissions['delete-p'] as string[],
 	deleteTeamPermission: state.permissions['delete-team'] as string[],
-	isMasterDetail: state.app.isMasterDetail as boolean
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoEditView));

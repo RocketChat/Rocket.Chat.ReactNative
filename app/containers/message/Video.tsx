@@ -1,26 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleProp, StyleSheet, TextStyle, View, Text } from 'react-native';
-import { dequal } from 'dequal';
+import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import messageStyles from './styles';
-import Touchable from './Touchable';
-import Markdown from '../markdown';
-import { isIOS } from '../../lib/methods/helpers';
-import { themes } from '../../lib/constants';
-import MessageContext from './Context';
-import { fileDownload } from './helpers/fileDownload';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { LISTENER } from '../Toast';
-import I18n from '../../i18n';
 import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { useTheme } from '../../theme';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { cancelDownload, downloadMediaFile, isDownloadActive, getMediaCache } from '../../lib/methods/handleMediaDownload';
+import I18n from '../../i18n';
+import { themes } from '../../lib/constants';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../lib/methods/handleMediaDownload';
+import { isIOS } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
+import { LISTENER } from '../Toast';
+import Markdown from '../markdown';
 import BlurComponent from './Components/BlurComponent';
+import MessageContext from './Context';
+import Touchable from './Touchable';
+import { fileDownload } from './helpers/fileDownload';
+import messageStyles from './styles';
+import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		borderRadius: 4,
-		height: 150,
+		height: DEFAULT_MESSAGE_HEIGHT,
 		marginBottom: 6,
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -56,6 +56,7 @@ interface IMessageVideo {
 	getCustomEmoji: TGetCustomEmoji;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
+	msg?: string;
 }
 
 const CancelIndicator = () => {
@@ -81,139 +82,130 @@ const Thumbnail = ({ loading, thumbnailUrl, cached }: { loading: boolean; thumbn
 	</>
 );
 
-const Video = React.memo(
-	({ file, showAttachment, getCustomEmoji, style, isReply }: IMessageVideo) => {
-		const [videoCached, setVideoCached] = useState(file);
-		const [loading, setLoading] = useState(true);
-		const [cached, setCached] = useState(false);
-		const { baseUrl, user } = useContext(MessageContext);
-		const { theme } = useTheme();
-		const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
+const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IMessageVideo): React.ReactElement | null => {
+	const [videoCached, setVideoCached] = useState(file);
+	const [loading, setLoading] = useState(true);
+	const [cached, setCached] = useState(false);
+	const { baseUrl, user } = useContext(MessageContext);
+	const { theme } = useTheme();
+	const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
-		useEffect(() => {
-			const handleVideoSearchAndDownload = async () => {
-				if (video) {
-					const cachedVideoResult = await getMediaCache({
-						type: 'video',
-						mimeType: file.video_type,
-						urlToCache: video
-					});
-					const downloadActive = isDownloadActive(video);
-					if (cachedVideoResult?.exists) {
-						setVideoCached(prev => ({
-							...prev,
-							video_url: cachedVideoResult?.uri
-						}));
-						setLoading(false);
-						setCached(true);
-						if (downloadActive) {
-							cancelDownload(video);
-						}
-						return;
-					}
-					if (isReply) {
-						setLoading(false);
-						return;
-					}
-					await handleAutoDownload();
-				}
-			};
-			handleVideoSearchAndDownload();
-		}, []);
-
-		if (!baseUrl) {
-			return null;
-		}
-
-		const handleAutoDownload = async () => {
-			const isAutoDownloadEnabled = fetchAutoDownloadEnabled('videoPreferenceDownload');
-			if (isAutoDownloadEnabled && file.video_type && isTypeSupported(file.video_type)) {
-				await handleDownload();
-				return;
-			}
-			setLoading(false);
-		};
-
-		const handleDownload = async () => {
-			setLoading(true);
-			try {
-				const videoUri = await downloadMediaFile({
-					downloadUrl: video,
+	useEffect(() => {
+		const handleVideoSearchAndDownload = async () => {
+			if (video) {
+				const cachedVideoResult = await getMediaCache({
 					type: 'video',
-					mimeType: file.video_type
+					mimeType: file.video_type,
+					urlToCache: video
 				});
-				setVideoCached(prev => ({
-					...prev,
-					video_url: videoUri
-				}));
-				setCached(true);
-			} catch {
-				setCached(false);
-			} finally {
-				setLoading(false);
+				const downloadActive = isDownloadActive(video);
+				if (cachedVideoResult?.exists) {
+					setVideoCached(prev => ({
+						...prev,
+						video_url: cachedVideoResult?.uri
+					}));
+					setLoading(false);
+					setCached(true);
+					if (downloadActive) {
+						cancelDownload(video);
+					}
+					return;
+				}
+				if (isReply) {
+					setLoading(false);
+					return;
+				}
+				await handleAutoDownload();
 			}
 		};
+		handleVideoSearchAndDownload();
+	}, []);
 
-		const onPress = async () => {
-			if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment) {
-				showAttachment(videoCached);
-				return;
-			}
-			if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
-				handleDownload();
-				return;
-			}
-			if (loading && !cached) {
-				handleCancelDownload();
-				return;
-			}
-			if (!isIOS && file.video_url) {
-				await downloadVideoToGallery(video);
-				return;
-			}
-			EventEmitter.emit(LISTENER, { message: I18n.t('Unsupported_format') });
-		};
+	if (!baseUrl) {
+		return null;
+	}
 
-		const handleCancelDownload = () => {
-			if (loading) {
-				cancelDownload(video);
-				setLoading(false);
-			}
-		};
+	const handleAutoDownload = async () => {
+		const isAutoDownloadEnabled = fetchAutoDownloadEnabled('videoPreferenceDownload');
+		if (isAutoDownloadEnabled && file.video_type && isTypeSupported(file.video_type)) {
+			await handleDownload();
+			return;
+		}
+		setLoading(false);
+	};
 
-		const downloadVideoToGallery = async (uri: string) => {
-			setLoading(true);
-			const fileDownloaded = await fileDownload(uri, file);
+	const handleDownload = async () => {
+		setLoading(true);
+		try {
+			const videoUri = await downloadMediaFile({
+				downloadUrl: video,
+				type: 'video',
+				mimeType: file.video_type
+			});
+			setVideoCached(prev => ({
+				...prev,
+				video_url: videoUri
+			}));
+			setCached(true);
+		} catch {
+			setCached(false);
+		} finally {
 			setLoading(false);
+		}
+	};
 
-			if (fileDownloaded) {
-				EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
-				return;
-			}
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
-		};
+	const onPress = async () => {
+		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment) {
+			showAttachment(videoCached);
+			return;
+		}
+		if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
+			handleDownload();
+			return;
+		}
+		if (loading && !cached) {
+			handleCancelDownload();
+			return;
+		}
+		if (!isIOS && file.video_url) {
+			await downloadVideoToGallery(video);
+			return;
+		}
+		EventEmitter.emit(LISTENER, { message: I18n.t('Unsupported_format') });
+	};
 
-		return (
-			<>
-				<Markdown
-					msg={file.description}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					style={[isReply && style]}
-					theme={theme}
-				/>
-				<Touchable
-					disabled={isReply}
-					onPress={onPress}
-					style={[styles.button, messageStyles.mustWrapBlur, { backgroundColor: themes[theme].videoBackground }]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
-				>
-					<Thumbnail loading={loading} cached={cached} />
-				</Touchable>
-			</>
-		);
-	},
-	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file)
-);
+	const handleCancelDownload = () => {
+		if (loading) {
+			cancelDownload(video);
+			setLoading(false);
+		}
+	};
+
+	const downloadVideoToGallery = async (uri: string) => {
+		setLoading(true);
+		const fileDownloaded = await fileDownload(uri, file);
+		setLoading(false);
+
+		if (fileDownloaded) {
+			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+			return;
+		}
+		EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
+	};
+
+	return (
+		<>
+			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
+			<Touchable
+				disabled={isReply}
+				onPress={onPress}
+				style={[styles.button, messageStyles.mustWrapBlur, { backgroundColor: themes[theme].videoBackground }]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
+				<Thumbnail loading={loading} cached={cached} />
+			</Touchable>
+		</>
+	);
+};
 
 export default Video;

@@ -36,6 +36,8 @@ import { IInquiry } from '../../ee/omnichannel/reducers/inquiry';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IEnterpriseModules } from '../../reducers/enterpriseModules';
 import { IVideoConf } from '../../reducers/videoConf';
+import { TActionUsersRoles } from '../../actions/usersRoles';
+import { TUsersRoles } from '../../reducers/usersRoles';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -60,6 +62,7 @@ export interface IApplicationState {
 	permissions: IPermissionsState;
 	roles: IRoles;
 	videoConf: IVideoConf;
+	usersRoles: TUsersRoles;
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -79,4 +82,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionInquiry &
 	TActionPermissions &
 	TActionEnterpriseModules &
-	TActionVideoConf;
+	TActionVideoConf &
+	TActionUsersRoles;

@@ -36,7 +36,7 @@ interface IMultiSelect {
 	onClose?: () => void;
 	inputStyle?: TextStyle;
 	value?: any[];
-	disabled?: boolean;
+	disabled?: boolean | null;
 	innerInputStyle?: object;
 }
 

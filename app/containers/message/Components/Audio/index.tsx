@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import { AVPlaybackStatus } from 'expo-av';
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 
 import Markdown from '../../../markdown';
@@ -23,9 +23,10 @@ interface IMessageAudioProps {
 	style?: StyleProp<TextStyle>[];
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
+	msg?: string;
 }
 
-const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessageAudioProps) => {
+const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMessageAudioProps) => {
 	const [loading, setLoading] = useState(true);
 	const [paused, setPaused] = useState(true);
 	const [cached, setCached] = useState(false);
@@ -195,7 +196,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 		if (paused) {
 			deactivateKeepAwake();
 		} else {
-			activateKeepAwakeAsync();
+			activateKeepAwake();
 		}
 	}, [paused]);
 
@@ -204,13 +205,12 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style }: IMessage
 	}
 	return (
 		<>
-			<Markdown msg={file.description} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
+			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
 			<View
 				style={[
 					styles.audioContainer,
 					{ backgroundColor: colors.audioComponentBackground, borderColor: colors.audioBorderColor }
-				]}
-			>
+				]}>
 				<PlayButton disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
 				<Slider currentTime={currentTime} duration={duration} loaded={!isReply && cached} onChangeTime={setPosition} />
 				<AudioRate onChange={onChangeRate} loaded={!isReply && cached} rate={rate} />

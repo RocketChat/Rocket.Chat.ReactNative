@@ -14,6 +14,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
+import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: '100%',
-		height: 150,
+		height: DEFAULT_MESSAGE_HEIGHT,
 		borderTopLeftRadius: 4,
 		borderTopRightRadius: 4
 	},
