@@ -1,7 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, SUPPORTED_VERSIONS_KEY, TOKEN_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
@@ -35,6 +35,14 @@ const restore = function* restore() {
 			const isBiometryEnabled = servers.some(server => !!server.biometry);
 			UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
 			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
+		}
+
+		const supportedVersions = UserPreferences.getMap(SUPPORTED_VERSIONS_KEY);
+		console.log('🚀 ~ file: init.js:41 ~ restore ~ supportedVersions:', supportedVersions);
+		if (!supportedVersions) {
+			const supportedVersionsJson = require('../../app-supportedversions.json');
+			console.log('🚀 ~ file: init.js:44 ~ supportedVersionsJson:', supportedVersionsJson);
+			UserPreferences.setMap(SUPPORTED_VERSIONS_KEY, supportedVersionsJson);
 		}
 
 		if (!server) {

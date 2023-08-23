@@ -22,3 +22,4 @@ export const MIN_ROCKETCHAT_VERSION = '0.70.0';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
 export const CURRENT_SERVER = 'currentServer';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
+export const SUPPORTED_VERSIONS_KEY = 'RC_SUPPORTED_VERSIONS_KEY';
