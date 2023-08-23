@@ -12,6 +12,7 @@ import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods';
+import supportedVersionsBuild from '../../app-supportedversions.json';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
@@ -39,10 +40,17 @@ const restore = function* restore() {
 
 		const supportedVersions = UserPreferences.getMap(SUPPORTED_VERSIONS_KEY);
 		console.log('🚀 ~ file: init.js:41 ~ restore ~ supportedVersions:', supportedVersions);
+		console.log('🚀 ~ file: init.js:44 ~ supportedVersionsJson:', supportedVersionsBuild);
 		if (!supportedVersions) {
-			const supportedVersionsJson = require('../../app-supportedversions.json');
-			console.log('🚀 ~ file: init.js:44 ~ supportedVersionsJson:', supportedVersionsJson);
-			UserPreferences.setMap(SUPPORTED_VERSIONS_KEY, supportedVersionsJson);
+			UserPreferences.setMap(SUPPORTED_VERSIONS_KEY, supportedVersionsBuild);
+			console.log('🚀 ~ file: init.js:53 ~ restore ~ no supported versions yet. Saving now.', supportedVersionsBuild);
+		} else {
+			const { timestamp: storedTimestamp } = supportedVersions;
+			const { timestamp: buildTimestamp } = supportedVersionsBuild;
+			if (buildTimestamp > storedTimestamp) {
+				UserPreferences.setMap(SUPPORTED_VERSIONS_KEY, supportedVersionsBuild);
+				console.log('🚀 ~ file: init.js:53 ~ restore ~ update timestamp with build', supportedVersionsBuild);
+			}
 		}
 
 		if (!server) {
