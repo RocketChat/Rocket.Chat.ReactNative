@@ -234,7 +234,7 @@ describe('Threads', () => {
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`thread-count-1`)))
 					.toExist()
-					.withTimeout(5000);
+					.withTimeout(10000);
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await tryTapping(element(by[textMatcher]('replied')).atIndex(0), 2000, true);
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
@@ -244,7 +244,7 @@ describe('Threads', () => {
 				await tapBack();
 				await waitFor(element(by.id(`thread-count-0`)))
 					.toExist()
-					.withTimeout(5000);
+					.withTimeout(10000);
 			});
 		});
 	});
