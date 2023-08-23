@@ -5,9 +5,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
-import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 
@@ -46,14 +44,15 @@ function CallButton({
 	isDirect: boolean;
 	roomFromRid: boolean;
 }): React.ReactElement | null {
-	const { showCallOption, showInitCallActionSheet } = useVideoConf(rid);
-	const serverVersion = useAppSelector(state => state.server.version);
-	const greaterThanFive = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
-
-	const showIcon = greaterThanFive ? showCallOption : showCallOption && isDirect;
+	const { callEnabled, showInitCallActionSheet } = useVideoConf(rid);
 
 	return (
-		<BaseButton onPress={showInitCallActionSheet} iconName='phone' label={i18n.t('Call')} showIcon={showIcon && !roomFromRid} />
+		<BaseButton
+			onPress={showInitCallActionSheet}
+			iconName='phone'
+			label={i18n.t('Call')}
+			showIcon={callEnabled && isDirect && !roomFromRid}
+		/>
 	);
 }
 
