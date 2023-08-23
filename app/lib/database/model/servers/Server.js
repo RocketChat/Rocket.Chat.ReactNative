@@ -1,5 +1,6 @@
 import { Model } from '@nozbe/watermelondb';
-import { date, field } from '@nozbe/watermelondb/decorators';
+import { date, field, json } from '@nozbe/watermelondb/decorators';
+import { sanitizer } from '../../utils';
 
 export const SERVERS_TABLE = 'servers';
 
@@ -34,5 +35,5 @@ export default class Server extends Model {
 
 	@field('e2e_enable') E2E_Enable;
 
-	@field('supported_versions') supportedVersions;
+	@json('supported_versions', sanitizer) supportedVersions;
 }

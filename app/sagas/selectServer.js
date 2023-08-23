@@ -53,11 +53,13 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update(record => {
+					Object.assign(record, serverInfo);
 					record.version = serverVersion;
 				});
 			} catch (e) {
 				await serversCollection.create(record => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
+					Object.assign(record, serverInfo);
 					record.version = serverVersion;
 				});
 			}

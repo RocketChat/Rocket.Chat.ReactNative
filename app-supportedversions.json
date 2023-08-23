@@ -1,12 +1,5 @@
 {
 	"timestamp": "2023-07-12T00:00:00.000Z",
-	"messages": [
-		{
-			"remainingDays": 15,
-			"message": "message_token",
-			"type": "info"
-		}
-	],
 	"i18n": {
 		"en": {
 			"message_token": "Your server is about to be deprecated. Please update to the latest version."
