@@ -21,8 +21,16 @@ import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
+import { CERTIFICATE_KEY, CURRENT_SERVER, SUPPORTED_VERSIONS_KEY, TOKEN_KEY } from '../lib/constants';
+import {
+	getLoginSettings,
+	setCustomEmojis,
+	setEnterpriseModules,
+	setPermissions,
+	setRoles,
+	setSettings,
+	updateCurrentSupportedVersions
+} from '../lib/methods';
 import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 
@@ -33,6 +41,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 		if (raiseError) {
 			websocketInfo = yield Services.getWebsocketInfo({ server });
 		}
+
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
 				const info = serverInfo.success ? websocketInfo : serverInfo;
@@ -46,6 +55,44 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 		if (!serverVersion) {
 			({ version: serverVersion } = coerce(serverInfo.version));
 		}
+
+		if (!serverInfo.supportedVersions) {
+			Alert.alert('Oops', 'No supported versions found');
+			yield put(serverFailure());
+			return;
+		}
+
+		const supportedVersions = updateCurrentSupportedVersions(serverInfo.supportedVersions);
+		// TODO: compare patch
+		const serverVersionInfo = supportedVersions.versions.find(({ version }) => version === serverVersion);
+		if (!serverVersionInfo) {
+			Alert.alert('Oops', 'Server version not supported');
+			yield put(serverFailure());
+			return;
+		}
+		if (new Date(serverVersionInfo.expiration) < new Date()) {
+			Alert.alert('Oops', 'Server version expired');
+			yield put(serverFailure());
+			return;
+		}
+
+		// const supportedVersion = versions.find(({ version }) => version === serverInfo.version);
+
+		// if (supportedVersion) {
+		// 	// check the expiration date
+		// 	if (supportedVersion.expiration > new Date()) {
+		// 		return true;
+		// 	}
+		// }
+		// // Check if there's an exception
+		// const exception = exceptions.find(({ version }) => version === serverInfo.version);
+
+		// if (exception) {
+		// 	// check the expiration date
+		// 	if (exception.expiration > new Date()) {
+		// 		return true;
+		// 	}
+		// }
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');

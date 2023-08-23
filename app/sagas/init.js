@@ -11,7 +11,7 @@ import database from '../lib/database';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
-import { getSortPreferences } from '../lib/methods';
+import { getSortPreferences, updateCurrentSupportedVersions } from '../lib/methods';
 import supportedVersionsBuild from '../../app-supportedversions.json';
 
 export const initLocalSettings = function* initLocalSettings() {
@@ -38,20 +38,7 @@ const restore = function* restore() {
 			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
 		}
 
-		const supportedVersions = UserPreferences.getMap(SUPPORTED_VERSIONS_KEY);
-		console.log('🚀 ~ file: init.js:41 ~ restore ~ supportedVersions:', supportedVersions);
-		console.log('🚀 ~ file: init.js:44 ~ supportedVersionsJson:', supportedVersionsBuild);
-		if (!supportedVersions) {
-			UserPreferences.setMap(SUPPORTED_VERSIONS_KEY, supportedVersionsBuild);
-			console.log('🚀 ~ file: init.js:53 ~ restore ~ no supported versions yet. Saving now.', supportedVersionsBuild);
-		} else {
-			const { timestamp: storedTimestamp } = supportedVersions;
-			const { timestamp: buildTimestamp } = supportedVersionsBuild;
-			if (buildTimestamp > storedTimestamp) {
-				UserPreferences.setMap(SUPPORTED_VERSIONS_KEY, supportedVersionsBuild);
-				console.log('🚀 ~ file: init.js:53 ~ restore ~ update timestamp with build', supportedVersionsBuild);
-			}
-		}
+		updateCurrentSupportedVersions(supportedVersionsBuild);
 
 		if (!server) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
