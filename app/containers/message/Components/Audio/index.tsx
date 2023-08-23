@@ -206,11 +206,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<View
-				style={[
-					styles.audioContainer,
-					{ backgroundColor: colors.audioComponentBackground, borderColor: colors.audioBorderColor }
-				]}>
+			<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 				<PlayButton disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
 				<Slider currentTime={currentTime} duration={duration} loaded={!isReply && cached} onChangeTime={setPosition} />
 				<AudioRate onChange={onChangeRate} loaded={!isReply && cached} rate={rate} />

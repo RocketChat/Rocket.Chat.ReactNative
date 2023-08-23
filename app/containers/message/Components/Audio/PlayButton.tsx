@@ -16,16 +16,18 @@ interface IButton {
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
+type TCustomIconName = 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled';
+
 const PlayButton = React.memo(({ loading, paused, onPress, disabled, cached }: IButton) => {
 	const { colors } = useTheme();
 
-	let customIconName: 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled' = 'arrow-down';
+	let customIconName: TCustomIconName = 'arrow-down';
 	if (cached) {
 		customIconName = paused ? 'play-shape-filled' : 'pause-shape-filled';
 	}
 	return (
 		<Touchable
-			style={[styles.playPauseButton, { backgroundColor: colors.audioPlayerPrimary }]}
+			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
 			disabled={disabled}
 			onPress={onPress}
 			hitSlop={BUTTON_HIT_SLOP}
@@ -34,7 +36,7 @@ const PlayButton = React.memo(({ loading, paused, onPress, disabled, cached }: I
 			{loading ? (
 				<Loading />
 			) : (
-				<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonText} />
+				<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonFontOnPrimary} />
 			)}
 		</Touchable>
 	);

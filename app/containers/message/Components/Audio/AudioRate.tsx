@@ -25,9 +25,9 @@ const AudioRate = ({
 		<Touchable
 			disabled={!loaded}
 			onPress={onPress}
-			style={[styles.containerAudioRate, { backgroundColor: colors.audioRateBackground }]}
+			style={[styles.containerAudioRate, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
-			<Text style={[styles.audioRateText, { color: colors.audioRateText }]}>{rate}x</Text>
+			<Text style={[styles.audioRateText, { color: colors.buttonFontOnSecondary }]}>{rate}x</Text>
 		</Touchable>
 	);
 };

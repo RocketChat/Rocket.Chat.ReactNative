@@ -126,19 +126,19 @@ const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider
 		} as any;
 	}, [current, isTimeChanged, duration]);
 
-	const thumbColor = loaded ? colors.audioPlayerPrimary : colors.tintDisabled;
+	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
 
 	return (
 		<View style={styles.sliderContainer}>
 			<AnimatedTextInput
 				defaultValue={'00:00'}
 				editable={false}
-				style={[styles.duration, { color: colors.audioTimeText }]}
+				style={[styles.duration, { color: colors.fontDefault }]}
 				animatedProps={getCurrentTime}
 			/>
 			<View style={styles.slider} onLayout={onLayout}>
-				<View style={[styles.line, { backgroundColor: colors.audioPlayerSecondary }]} />
-				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.audioPlayerPrimary }]} />
+				<View style={[styles.line, { backgroundColor: colors.strokeLight }]} />
+				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
 				<PanGestureHandler enabled={loaded} onGestureEvent={gestureHandler}>
 					<Animated.View hitSlop={BUTTON_HIT_SLOP} style={[styles.thumbSlider, { backgroundColor: thumbColor }, styleThumb]} />
 				</PanGestureHandler>
