@@ -30,34 +30,18 @@ import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
+import {
+	checkServerVersionCompatibility,
+	getLoginSettings,
+	setCustomEmojis,
+	setEnterpriseModules,
+	setPermissions,
+	setRoles,
+	setSettings
+} from '../lib/methods';
 import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
-import supportedVersionsBuild from '../../app-supportedversions.json';
 import { appSelector } from '../lib/hooks';
-
-const checkServerVersionCompatibility = function (server: TServerModel) {
-	if (!server.supportedVersions || server.supportedVersions.timestamp < supportedVersionsBuild.timestamp) {
-		const versionInfo = supportedVersionsBuild.versions.find(({ version }) => version === server.version);
-		if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
-			return false;
-		}
-	}
-
-	const versionInfo = server.supportedVersions.versions.find(({ version }) => version === server.version);
-	if (!versionInfo) {
-		return false;
-	}
-
-	if (new Date(versionInfo.expiration) < new Date()) {
-		const exception = server.supportedVersions.exceptions?.versions.find(({ version }) => version === server.version);
-		if (!exception || new Date(exception.expiration) < new Date()) {
-			return false;
-		}
-	}
-
-	return true;
-};
 
 const getServerById = async function (server: string) {
 	const serversDB = database.servers;
@@ -144,7 +128,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 		}
 
 		const serverRecord = yield* call(upsertServer, { server, serverInfo: serverInfoResult });
-		const isCompatible = yield* call(checkServerVersionCompatibility, serverRecord);
+		const isCompatible = yield* call(checkServerVersionCompatibility, serverRecord.supportedVersions, serverRecord.version);
 		if (!isCompatible) {
 			// if (raiseError) {
 			Alert.alert(I18n.t('Oops'), 'Nope');

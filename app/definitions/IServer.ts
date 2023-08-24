@@ -19,7 +19,6 @@ type Version = {
 	messages?: Messages[];
 };
 
-// TODO: export used on mock only. Remove before merge.
 export interface ISupportedVersions {
 	timestamp: string;
 	messages?: Messages[];
