@@ -70,7 +70,7 @@ export interface IServer {
 	uniqueID: string;
 	enterpriseModules: IEnterpriseModules;
 	E2E_Enable: boolean;
-	supportedVersions: ISupportedVersions;
+	supportedVersions?: ISupportedVersions;
 }
 
 export type TServerModel = IServer & Model;

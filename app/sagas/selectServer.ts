@@ -70,7 +70,6 @@ const getServerVersion = function (version: string | null) {
 };
 
 const upsertServer = async function ({ server, serverInfo }: { server: string; serverInfo: IServerInfo }): Promise<TServerModel> {
-	console.log('🚀 ~ file: selectServer.ts:72 ~ upsertServer ~ serverInfo:', serverInfo);
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 
@@ -80,9 +79,7 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 		await serversDB.write(async () => {
 			await record.update(r => {
 				r.version = serverVersion;
-				if (serverInfo.supportedVersions?.timestamp && serverInfo.supportedVersions.timestamp > r.supportedVersions?.timestamp) {
-					r.supportedVersions = serverInfo.supportedVersions;
-				}
+				r.supportedVersions = serverInfo.supportedVersions;
 			});
 		});
 		return record;
@@ -92,9 +89,7 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 	await serversDB.write(async () => {
 		newRecord = await serversCollection.create(r => {
 			r._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-			if (serverInfo.supportedVersions) {
-				r.supportedVersions = serverInfo.supportedVersions;
-			}
+			r.supportedVersions = serverInfo.supportedVersions;
 			r.version = serverVersion;
 		});
 	});
@@ -128,7 +123,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 		}
 
 		const serverRecord = yield* call(upsertServer, { server, serverInfo: serverInfoResult });
-		const isCompatible = yield* call(checkServerVersionCompatibility, serverRecord.supportedVersions, serverRecord.version);
+		const isCompatible = yield* call(checkServerVersionCompatibility, {
+			supportedVersions: serverRecord.supportedVersions,
+			serverVersion: serverRecord.version
+		});
 		if (!isCompatible) {
 			// if (raiseError) {
 			Alert.alert(I18n.t('Oops'), 'Nope');
