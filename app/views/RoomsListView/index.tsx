@@ -56,7 +56,8 @@ import {
 	isRead,
 	debounce,
 	isIOS,
-	isTablet
+	isTablet,
+	compareServerVersion
 } from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
@@ -103,6 +104,7 @@ interface IRoomsListViewProps {
 	createPublicChannelPermission: [];
 	createPrivateChannelPermission: [];
 	createDiscussionPermission: [];
+	serverVersion: string;
 }
 
 interface IRoomsListViewState {
@@ -703,9 +705,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	toggleRead = async (rid: string, tIsRead: boolean) => {
 		logEvent(tIsRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
+		const { serverVersion } = this.props;
 		try {
 			const db = database.active;
-			const result = await Services.toggleRead(tIsRead, rid);
+			const includeThreads = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0');
+			const result = await Services.toggleReadStatus(tIsRead, rid, includeThreads);
 
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
@@ -1064,7 +1068,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDirectMessagePermission: state.permissions['create-d'],
 	createPublicChannelPermission: state.permissions['create-c'],
 	createPrivateChannelPermission: state.permissions['create-p'],
-	createDiscussionPermission: state.permissions['start-discussion']
+	createDiscussionPermission: state.permissions['start-discussion'],
+	serverVersion: state.server.version
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
