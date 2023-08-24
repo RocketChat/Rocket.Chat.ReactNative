@@ -1182,6 +1182,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return;
 		}
 
+		// TODO: Refactor when audio becomes global
+		await audioPlayer.pauseCurrentAudio();
+
 		if (item.tmid) {
 			let name = '';
 			let jumpToMessageId = '';
