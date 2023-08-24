@@ -15,7 +15,7 @@ import styles from './styles';
 import Slider from './Slider';
 import AudioRate from './AudioRate';
 import PlayButton from './PlayButton';
-import handleAudioMedia from '../../../../lib/methods/handleAudioMedia';
+import audioPlayer from '../../../../lib/methods/audioPlayer';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -43,16 +43,15 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
 			onPlaying(status);
-			onLoad(status);
-			onProgress(status);
+			handlePlaybackStatusUpdate(status);
 			onEnd(status);
 		}
 	};
 
 	const loadAudio = async (audio: string) => {
-		await handleAudioMedia.loadAudio(audio);
+		await audioPlayer.loadAudio(audio);
 		audioUri.current = audio;
-		handleAudioMedia.setOnPlaybackStatusUpdate(audio, onPlaybackStatusUpdate);
+		audioPlayer.setOnPlaybackStatusUpdate(audio, onPlaybackStatusUpdate);
 	};
 
 	const onPlaying = (data: AVPlaybackStatus) => {
@@ -63,20 +62,15 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		}
 	};
 
-	const onLoad = (data: AVPlaybackStatus) => {
+	const handlePlaybackStatusUpdate = (data: AVPlaybackStatus) => {
 		if (data.isLoaded && data.durationMillis) {
 			const durationSeconds = data.durationMillis / 1000;
 			duration.value = durationSeconds > 0 ? durationSeconds : 0;
-			setRate(data.rate);
-		}
-	};
-
-	const onProgress = (data: AVPlaybackStatus) => {
-		if (data.isLoaded) {
 			const currentSecond = data.positionMillis / 1000;
-			if (currentSecond <= duration.value) {
+			if (currentSecond <= durationSeconds) {
 				currentTime.value = currentSecond;
 			}
+			setRate(data.rate);
 		}
 	};
 
@@ -94,7 +88,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	};
 
 	const setPosition = async (time: number) => {
-		await handleAudioMedia.setPositionAsync(audioUri.current, time);
+		await audioPlayer.setPositionAsync(audioUri.current, time);
 	};
 
 	const getUrl = () => {
@@ -108,9 +102,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const togglePlayPause = async () => {
 		try {
 			if (!paused) {
-				await handleAudioMedia.pauseAudio(audioUri.current);
+				await audioPlayer.pauseAudio(audioUri.current);
 			} else {
-				await handleAudioMedia.playAudio(audioUri.current);
+				await audioPlayer.playAudio(audioUri.current);
 			}
 		} catch {
 			// Do nothing
@@ -118,7 +112,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	};
 
 	const onChangeRate = async (value = 1.0) => {
-		await handleAudioMedia.setRateAsync(audioUri.current, value);
+		await audioPlayer.setRateAsync(audioUri.current, value);
 	};
 
 	const handleDownload = async () => {

@@ -11,7 +11,7 @@ const mode = {
 	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
 
-class HandleAudioMedia {
+class AudioPlayer {
 	private audioQueue: { [uri: string]: Sound };
 	private audioPlaying: string;
 
@@ -67,6 +67,12 @@ class HandleAudioMedia {
 		this.audioPlaying = '';
 	}
 
+	async pauseCurrentAudio() {
+		if (this.audioPlaying) {
+			await this.pauseAudio(this.audioPlaying);
+		}
+	}
+
 	async setPositionAsync(uri: string, time: number) {
 		try {
 			await this.audioQueue[uri]?.setPositionAsync(time);
@@ -86,6 +92,12 @@ class HandleAudioMedia {
 		this.audioPlaying = '';
 	}
 
+	async unloadCurrentAudio() {
+		if (this.audioPlaying) {
+			await this.unloadAudio(this.audioPlaying);
+		}
+	}
+
 	async unloadAllAudios() {
 		const audiosLoaded = Object.values(this.audioQueue);
 		try {
@@ -103,5 +115,5 @@ class HandleAudioMedia {
 	}
 }
 
-const handleAudioMedia = new HandleAudioMedia();
-export default handleAudioMedia;
+const audioPlayer = new AudioPlayer();
+export default audioPlayer;
