@@ -9,7 +9,7 @@ import { MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers';
 
 const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
-	timestamp: '2023-07-14T00:00:00.000Z',
+	timestamp: '2023-07-18T00:00:00.000Z',
 	messages: [
 		{
 			remainingDays: 15,
@@ -25,13 +25,28 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 	versions: [
 		{
 			version: '6.5.0',
-			expiration: '2023-09-11T00:00:00.000Z'
+			expiration: '2022-09-11T00:00:00.000Z'
 		},
 		{
 			version: '6.4.0',
-			expiration: '2023-08-22T00:00:00.000Z'
+			expiration: '2022-08-22T00:00:00.000Z'
 		}
-	]
+	],
+	exceptions: {
+		// domain: string;
+		// uniqueId: string;
+		// messages?: Messages[];
+		versions: [
+			{
+				version: '6.5.0',
+				expiration: '2023-09-11T00:00:00.000Z'
+			},
+			{
+				version: '6.4.0',
+				expiration: '2023-08-29T00:00:00.000Z'
+			}
+		]
+	}
 };
 
 interface IServerInfoFailure {
@@ -69,6 +84,7 @@ export async function getServerInfo(server: string): Promise<IServerInfoResult> 
 			}
 
 			// if backend doesn't have supported versions, get from cloud
+			// TODO: check JWT and call cloud if needed
 			if (!jsonRes.supportedVersions) {
 				const cloudInfo = await getCloudInfo();
 				return {

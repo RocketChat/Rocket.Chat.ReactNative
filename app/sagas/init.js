@@ -1,7 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, SUPPORTED_VERSIONS_KEY, TOKEN_KEY } from '../lib/constants';
+import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
@@ -11,8 +11,7 @@ import database from '../lib/database';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
-import { getSortPreferences, updateCurrentSupportedVersions } from '../lib/methods';
-import supportedVersionsBuild from '../../app-supportedversions.json';
+import { getSortPreferences } from '../lib/methods';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
@@ -37,8 +36,6 @@ const restore = function* restore() {
 			UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
 			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
 		}
-
-		updateCurrentSupportedVersions(supportedVersionsBuild);
 
 		if (!server) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));

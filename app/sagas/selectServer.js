@@ -21,98 +21,110 @@ import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, SUPPORTED_VERSIONS_KEY, TOKEN_KEY } from '../lib/constants';
-import {
-	getLoginSettings,
-	setCustomEmojis,
-	setEnterpriseModules,
-	setPermissions,
-	setRoles,
-	setSettings,
-	updateCurrentSupportedVersions
-} from '../lib/methods';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
 import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
+import supportedVersionsBuild from '../../app-supportedversions.json';
+
+const checkServerVersionCompatibility = function* (serverInfo) {
+	if (!serverInfo.supportedVersions || serverInfo.supportedVersions.timestamp < supportedVersionsBuild.timestamp) {
+		const versionInfo = supportedVersionsBuild.versions.find(({ version }) => version === serverInfo.version);
+		if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
+			return false;
+		}
+	}
+
+	const versionInfo = serverInfo.supportedVersions.versions.find(({ version }) => version === serverInfo.version);
+	if (!versionInfo) {
+		return false;
+	}
+
+	if (new Date(versionInfo.expiration) < new Date()) {
+		const exception = serverInfo.supportedVersions.exceptions.versions.find(({ version }) => version === serverInfo.version);
+		if (!exception || new Date(exception.expiration) < new Date()) {
+			return false;
+		}
+	}
+
+	return true;
+};
+
+const getServerById = function* (server) {
+	const serversDB = database.servers;
+	const serversCollection = serversDB.get('servers');
+	try {
+		const record = yield serversCollection.find(server);
+		return record;
+	} catch (error) {
+		return null;
+	}
+};
+
+const upsertServer = function* ({ serverInfo }) {
+	let serverVersion = valid(serverInfo.version);
+	if (!serverVersion) {
+		({ version: serverVersion } = coerce(serverInfo.version));
+	}
+	const serversDB = database.servers;
+	const serversCollection = serversDB.get('servers');
+
+	let record = yield getServerById(serverInfo.server);
+	try {
+		if (record) {
+			yield serversDB.action(async () => {
+				await record.update(record => {
+					record.version = serverVersion;
+					if (serverInfo.supportedVersions?.timestamp > record.supportedVersions?.timestamp) {
+						record.supportedVersions = serverInfo.supportedVersions;
+					}
+				});
+			});
+			return record;
+		}
+
+		yield serversDB.action(async () => {
+			record = await serversCollection.create(record => {
+				record._raw = sanitizedRaw({ id: serverInfo.server }, serversCollection.schema);
+				record.supportedVersions = serverInfo.supportedVersions;
+				record.version = serverVersion;
+			});
+		});
+		return record;
+	} catch (e) {
+		console.error(e);
+	}
+};
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
-		const serverInfo = yield Services.getServerInfo(server);
+		const serverInfoResult = yield Services.getServerInfo(server);
 		let websocketInfo = { success: true };
 		if (raiseError) {
 			websocketInfo = yield Services.getWebsocketInfo({ server });
 		}
 
-		if (!serverInfo.success || !websocketInfo.success) {
+		if (!serverInfoResult.success || !websocketInfo.success) {
 			if (raiseError) {
-				const info = serverInfo.success ? websocketInfo : serverInfo;
+				const info = serverInfoResult.success ? websocketInfo : serverInfoResult;
 				Alert.alert(I18n.t('Oops'), info.message);
 			}
 			yield put(serverFailure());
 			return;
 		}
 
-		let serverVersion = valid(serverInfo.version);
-		if (!serverVersion) {
-			({ version: serverVersion } = coerce(serverInfo.version));
-		}
+		const serverRecord = yield upsertServer({ serverInfo: serverInfoResult });
 
-		if (!serverInfo.supportedVersions) {
-			Alert.alert('Oops', 'No supported versions found');
+		const isCompatible = yield checkServerVersionCompatibility(serverRecord);
+		if (!isCompatible) {
+			// if (raiseError) {
+			Alert.alert(I18n.t('Oops'), 'Nope');
+			// }
 			yield put(serverFailure());
 			return;
 		}
 
-		const supportedVersions = updateCurrentSupportedVersions(serverInfo.supportedVersions);
-		// TODO: compare patch
-		const serverVersionInfo = supportedVersions.versions.find(({ version }) => version === serverVersion);
-		if (!serverVersionInfo) {
-			Alert.alert('Oops', 'Server version not supported');
-			yield put(serverFailure());
-			return;
-		}
-		if (new Date(serverVersionInfo.expiration) < new Date()) {
-			Alert.alert('Oops', 'Server version expired');
-			yield put(serverFailure());
-			return;
-		}
-
-		// const supportedVersion = versions.find(({ version }) => version === serverInfo.version);
-
-		// if (supportedVersion) {
-		// 	// check the expiration date
-		// 	if (supportedVersion.expiration > new Date()) {
-		// 		return true;
-		// 	}
-		// }
-		// // Check if there's an exception
-		// const exception = exceptions.find(({ version }) => version === serverInfo.version);
-
-		// if (exception) {
-		// 	// check the expiration date
-		// 	if (exception.expiration > new Date()) {
-		// 		return true;
-		// 	}
-		// }
-
-		const serversDB = database.servers;
-		const serversCollection = serversDB.get('servers');
-		yield serversDB.action(async () => {
-			try {
-				const serverRecord = await serversCollection.find(server);
-				await serverRecord.update(record => {
-					Object.assign(record, serverInfo);
-					record.version = serverVersion;
-				});
-			} catch (e) {
-				await serversCollection.create(record => {
-					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-					Object.assign(record, serverInfo);
-					record.version = serverVersion;
-				});
-			}
-		});
-
-		return serverInfo;
+		return serverInfoResult;
 	} catch (e) {
 		log(e);
 	}
