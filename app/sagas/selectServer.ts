@@ -1,13 +1,21 @@
-import { put, takeLatest, select } from 'redux-saga/effects';
+import { put, select, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
+import { call } from 'typed-redux-saga';
 
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
-import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
+import {
+	ISelectServerAction,
+	IServerRequestAction,
+	selectServerFailure,
+	selectServerRequest,
+	selectServerSuccess,
+	serverFailure
+} from '../actions/server';
 import { clearSettings } from '../actions/settings';
 import { clearUser, setUser } from '../actions/login';
 import { clearActiveUsers } from '../actions/activeUsers';
@@ -20,28 +28,28 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { RootEnum } from '../definitions';
+import { IServerInfo, RootEnum, TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
 import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 import supportedVersionsBuild from '../../app-supportedversions.json';
 
-const checkServerVersionCompatibility = function* (serverInfo) {
-	if (!serverInfo.supportedVersions || serverInfo.supportedVersions.timestamp < supportedVersionsBuild.timestamp) {
-		const versionInfo = supportedVersionsBuild.versions.find(({ version }) => version === serverInfo.version);
+const checkServerVersionCompatibility = function* (server: TServerModel) {
+	if (!server.supportedVersions || server.supportedVersions.timestamp < supportedVersionsBuild.timestamp) {
+		const versionInfo = supportedVersionsBuild.versions.find(({ version }) => version === server.version);
 		if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
 			return false;
 		}
 	}
 
-	const versionInfo = serverInfo.supportedVersions.versions.find(({ version }) => version === serverInfo.version);
+	const versionInfo = server.supportedVersions.versions.find(({ version }) => version === server.version);
 	if (!versionInfo) {
 		return false;
 	}
 
 	if (new Date(versionInfo.expiration) < new Date()) {
-		const exception = serverInfo.supportedVersions.exceptions.versions.find(({ version }) => version === serverInfo.version);
+		const exception = server.supportedVersions.exceptions?.versions.find(({ version }) => version === server.version);
 		if (!exception || new Date(exception.expiration) < new Date()) {
 			return false;
 		}
@@ -50,76 +58,92 @@ const checkServerVersionCompatibility = function* (serverInfo) {
 	return true;
 };
 
-const getServerById = function* (server) {
+const getServerById = async function (server: string) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 	try {
-		const record = yield serversCollection.find(server);
+		const record = await serversCollection.find(server);
 		return record;
 	} catch (error) {
 		return null;
 	}
 };
 
-const upsertServer = function* ({ serverInfo }) {
-	let serverVersion = valid(serverInfo.version);
-	if (!serverVersion) {
-		({ version: serverVersion } = coerce(serverInfo.version));
+const getServerVersion = function (version: string | null) {
+	let validVersion = valid(version);
+	if (validVersion) {
+		return validVersion;
 	}
+	const coercedVersion = coerce(version);
+	if (coercedVersion) {
+		validVersion = valid(coercedVersion);
+	}
+	if (validVersion) {
+		return validVersion;
+	}
+	throw new Error('Server version not found');
+};
+
+const upsertServer = async function ({ server, serverInfo }: { server: string; serverInfo: IServerInfo }): Promise<TServerModel> {
+	console.log('🚀 ~ file: selectServer.ts:72 ~ upsertServer ~ serverInfo:', serverInfo);
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 
-	let record = yield getServerById(serverInfo.server);
-	try {
-		if (record) {
-			yield serversDB.action(async () => {
-				await record.update(record => {
-					record.version = serverVersion;
-					if (serverInfo.supportedVersions?.timestamp > record.supportedVersions?.timestamp) {
-						record.supportedVersions = serverInfo.supportedVersions;
-					}
-				});
-			});
-			return record;
-		}
-
-		yield serversDB.action(async () => {
-			record = await serversCollection.create(record => {
-				record._raw = sanitizedRaw({ id: serverInfo.server }, serversCollection.schema);
-				record.supportedVersions = serverInfo.supportedVersions;
-				record.version = serverVersion;
+	const serverVersion = getServerVersion(serverInfo.version);
+	const record = await getServerById(server);
+	if (record) {
+		await serversDB.write(async () => {
+			await record.update(r => {
+				r.version = serverVersion;
+				if (serverInfo.supportedVersions?.timestamp && serverInfo.supportedVersions.timestamp > r.supportedVersions?.timestamp) {
+					r.supportedVersions = serverInfo.supportedVersions;
+				}
 			});
 		});
 		return record;
-	} catch (e) {
-		console.error(e);
 	}
+
+	let newRecord;
+	await serversDB.write(async () => {
+		newRecord = await serversCollection.create(r => {
+			r._raw = sanitizedRaw({ id: server }, serversCollection.schema);
+			if (serverInfo.supportedVersions) {
+				r.supportedVersions = serverInfo.supportedVersions;
+			}
+			r.version = serverVersion;
+		});
+	});
+	if (newRecord) {
+		return newRecord;
+	}
+	throw new Error('Error creating server record');
 };
 
-const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
+const getServerInfo = function* getServerInfo({ server, raiseError = true }: { server: string; raiseError?: boolean }) {
 	try {
-		const serverInfoResult = yield Services.getServerInfo(server);
-		let websocketInfo = { success: true };
+		const serverInfoResult = yield* call(Services.getServerInfo, server);
 		if (raiseError) {
-			websocketInfo = yield Services.getWebsocketInfo({ server });
-		}
-
-		if (!serverInfoResult.success || !websocketInfo.success) {
-			if (raiseError) {
-				const info = serverInfoResult.success ? websocketInfo : serverInfoResult;
-				Alert.alert(I18n.t('Oops'), info.message);
+			if (!serverInfoResult.success) {
+				Alert.alert(I18n.t('Oops'), serverInfoResult.message);
+			} else {
+				const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
+				if (!websocketInfo.success) {
+					Alert.alert(I18n.t('Oops'), websocketInfo.message);
+				}
 			}
+			// @ts-ignore TODO: type this
 			yield put(serverFailure());
 			return;
 		}
 
-		const serverRecord = yield upsertServer({ serverInfo: serverInfoResult });
+		const serverRecord = yield* call(upsertServer, { server, serverInfo: serverInfoResult });
 
 		const isCompatible = yield checkServerVersionCompatibility(serverRecord);
 		if (!isCompatible) {
 			// if (raiseError) {
 			Alert.alert(I18n.t('Oops'), 'Nope');
 			// }
+			// @ts-ignore TODO: type this
 			yield put(serverFailure());
 			return;
 		}
@@ -130,7 +154,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	}
 };
 
-const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
+const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
@@ -208,7 +232,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
+const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
@@ -243,13 +267,14 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {
+		// @ts-ignore TODO: type this
 		yield put(serverFailure());
 		log(e);
 	}
 };
 
 const root = function* root() {
-	yield takeLatest(SERVER.REQUEST, handleServerRequest);
-	yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
+	yield takeLatest<IServerRequestAction>(SERVER.REQUEST, handleServerRequest);
+	yield takeLatest<ISelectServerAction>(SERVER.SELECT_REQUEST, handleSelectServer);
 };
 export default root;

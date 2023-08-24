@@ -2,7 +2,7 @@ import { Action } from 'redux';
 
 import { SERVER } from './actionsTypes';
 
-interface ISelectServer extends Action {
+export interface ISelectServerAction extends Action {
 	server: string;
 	version?: string;
 	fetchVersion: boolean;
@@ -14,7 +14,7 @@ interface ISelectServerSuccess extends Action {
 	version: string;
 }
 
-interface IServer extends Action {
+export interface IServerRequestAction extends Action {
 	server: string;
 	username: string | null;
 	fromServerHistory: boolean;
@@ -28,9 +28,14 @@ interface IServerFailure extends Action {
 	err: any;
 }
 
-export type TActionServer = ISelectServer & ISelectServerSuccess & IServer & IServerInit & IServerFailure;
+export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServerRequestAction & IServerInit & IServerFailure;
 
-export function selectServerRequest(server: string, version?: string, fetchVersion = true, changeServer = false): ISelectServer {
+export function selectServerRequest(
+	server: string,
+	version?: string,
+	fetchVersion = true,
+	changeServer = false
+): ISelectServerAction {
 	return {
 		type: SERVER.SELECT_REQUEST,
 		server,
@@ -54,7 +59,7 @@ export function selectServerFailure(): Action {
 	};
 }
 
-export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServer {
+export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServerRequestAction {
 	return {
 		type: SERVER.REQUEST,
 		server,

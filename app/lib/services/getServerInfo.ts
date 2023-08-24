@@ -9,7 +9,7 @@ import { MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers';
 
 const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
-	timestamp: '2023-07-18T00:00:00.000Z',
+	timestamp: '2023-07-19T00:00:00.000Z',
 	messages: [
 		{
 			remainingDays: 15,
@@ -43,7 +43,7 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 			},
 			{
 				version: '6.4.0',
-				expiration: '2023-08-29T00:00:00.000Z'
+				expiration: '2023-08-23T00:00:00.000Z'
 			}
 		]
 	}

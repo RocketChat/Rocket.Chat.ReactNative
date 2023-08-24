@@ -399,7 +399,11 @@ function disconnect() {
 	return sdk.disconnect();
 }
 
-async function getWebsocketInfo({ server }: { server: string }) {
+async function getWebsocketInfo({
+	server
+}: {
+	server: string;
+}): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
 	try {

@@ -33,7 +33,6 @@ export * from './IUser';
 export * from './redux';
 export * from './redux/TRootEnum';
 export * from './TUserStatus';
-export * from './IServerInfo';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T & TNavigation, S>;
