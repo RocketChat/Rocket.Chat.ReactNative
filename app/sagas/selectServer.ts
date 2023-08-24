@@ -1,4 +1,4 @@
-import { put, select, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
@@ -34,8 +34,9 @@ import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions
 import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 import supportedVersionsBuild from '../../app-supportedversions.json';
+import { appSelector } from '../lib/hooks';
 
-const checkServerVersionCompatibility = function* (server: TServerModel) {
+const checkServerVersionCompatibility = function (server: TServerModel) {
 	if (!server.supportedVersions || server.supportedVersions.timestamp < supportedVersionsBuild.timestamp) {
 		const versionInfo = supportedVersionsBuild.versions.find(({ version }) => version === server.version);
 		if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
@@ -125,26 +126,30 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 		if (raiseError) {
 			if (!serverInfoResult.success) {
 				Alert.alert(I18n.t('Oops'), serverInfoResult.message);
-			} else {
-				const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
-				if (!websocketInfo.success) {
-					Alert.alert(I18n.t('Oops'), websocketInfo.message);
-				}
+				yield put(serverFailure(serverInfoResult.message));
+				return;
 			}
-			// @ts-ignore TODO: type this
-			yield put(serverFailure());
+			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
+			if (!websocketInfo.success) {
+				Alert.alert(I18n.t('Oops'), websocketInfo.message);
+				yield put(serverFailure(websocketInfo.message));
+				return;
+			}
+		}
+
+		// TODO: Review raiseError logic
+		if (!serverInfoResult.success) {
+			yield put(serverFailure('TBD 1'));
 			return;
 		}
 
 		const serverRecord = yield* call(upsertServer, { server, serverInfo: serverInfoResult });
-
-		const isCompatible = yield checkServerVersionCompatibility(serverRecord);
+		const isCompatible = yield* call(checkServerVersionCompatibility, serverRecord);
 		if (!isCompatible) {
 			// if (raiseError) {
 			Alert.alert(I18n.t('Oops'), 'Nope');
 			// }
-			// @ts-ignore TODO: type this
-			yield put(serverFailure());
+			yield put(serverFailure('TBD 2'));
 			return;
 		}
 
@@ -158,7 +163,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		SSLPinning.setCertificate(certificate, server);
+		if (certificate) {
+			SSLPinning?.setCertificate(certificate, server);
+		}
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
@@ -169,7 +176,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		if (userId) {
 			try {
 				// search credentials on database
-				const userRecord = yield userCollections.find(userId);
+				const userRecord = yield* call(userCollections.find, userId);
 				user = {
 					id: userRecord.id,
 					token: userRecord.token,
@@ -217,11 +224,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		let serverInfo;
 		if (fetchVersion) {
-			serverInfo = yield getServerInfo({ server, raiseError: false });
+			serverInfo = yield* getServerInfo({ server, raiseError: false });
 		}
 
 		// Return server version even when offline
-		const serverVersion = (serverInfo && serverInfo.version) || version;
+		const serverVersion = (serverInfo && serverInfo.version) || (version as string);
 
 		// we'll set serverVersion as metadata for bugsnag
 		logServerVersion(serverVersion);
@@ -236,9 +243,11 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		SSLPinning.setCertificate(certificate, server);
+		if (certificate) {
+			SSLPinning?.setCertificate(certificate, server);
+		}
 
-		const serverInfo = yield getServerInfo({ server });
+		const serverInfo = yield* getServerInfo({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
@@ -247,12 +256,12 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 
-			const Accounts_iframe_enabled = yield select(state => state.settings.Accounts_iframe_enabled);
+			const Accounts_iframe_enabled = yield* appSelector(state => state.settings.Accounts_iframe_enabled);
 			if (fromServerHistory && !Accounts_iframe_enabled) {
 				Navigation.navigate('LoginView', { username });
 			}
 
-			yield serversDB.action(async () => {
+			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (!serversHistory?.length) {
@@ -267,8 +276,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {
-		// @ts-ignore TODO: type this
-		yield put(serverFailure());
+		yield put(serverFailure(e));
 		log(e);
 	}
 };

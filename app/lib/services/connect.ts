@@ -47,7 +47,7 @@ let notifyAllListener: any;
 let rolesListener: any;
 let notifyLoggedListener: any;
 
-function connect({ server, logoutOnError = false }: { server: string; logoutOnError: boolean }): Promise<void> {
+function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
