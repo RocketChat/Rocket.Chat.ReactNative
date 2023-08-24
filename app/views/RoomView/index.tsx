@@ -102,7 +102,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import handleAudioMedia from '../../lib/methods/handleAudioMedia';
+import audioPlayer from '../../lib/methods/audioPlayer';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -429,7 +429,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { editing, room } = this.state;
 		const db = database.active;
 		this.mounted = false;
-		await handleAudioMedia.unloadAllAudios();
+		// TODO: Refactor when audio becomes global
+		await audioPlayer.pauseCurrentAudio();
 		if (!editing && this.messagebox && this.messagebox.current) {
 			const { text } = this.messagebox.current;
 			let obj: TSubscriptionModel | TThreadModel | null = null;

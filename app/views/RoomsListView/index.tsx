@@ -60,6 +60,7 @@ import {
 } from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
+import audioPlayer from '../../lib/methods/audioPlayer';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -228,6 +229,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				this.shouldUpdate = false;
 			}
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+			// TODO: Refactor when audio becomes global
+			audioPlayer.unloadAllAudios();
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
