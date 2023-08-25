@@ -133,7 +133,7 @@ export const colors = {
 		headerTintColor: '#f9f9f9',
 		headerTitleColor: '#f9f9f9',
 		headerSecondaryText: '#9297a2',
-		toastBackground: '#0C0D0F',
+		toastBackground: '#54585e',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
 		hideBackground: '#54585e',
