@@ -555,7 +555,6 @@
   "Enabled_E2E_Encryption_for_this_room": "enabled E2E encryption for this room",
   "Disabled_E2E_Encryption_for_this_room": "disabled E2E encryption for this room",
   "Teams": "Teams",
-  "No_team_channels_found": "No channels found",
   "Team_not_found": "Team not found",
   "Create_Team": "Create team",
   "Team_Name": "Team name",
@@ -745,5 +744,5 @@
   "Incoming_call_from": "Incoming call from",
   "Call_started": "Call started",
   "Message_has_been_shared":"Message has been shared",
-  "No_channels_in_team": "No Channels on this Team"
+  "No_channels_in_team": "No Channels on this team"
 }
