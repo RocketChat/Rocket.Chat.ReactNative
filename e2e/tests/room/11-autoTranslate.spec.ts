@@ -1,10 +1,17 @@
 import { by, device, element, expect, waitFor } from 'detox';
 
-import { TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, tapBack, tryTapping } from '../../helpers/app';
+import { TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, sleep, tapBack, tryTapping } from '../../helpers/app';
 import { ITestUser, createRandomRoom, createRandomUser, initApi } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const roomId = '64b846e4760e618aa9f91ab7';
+
+function getIndex() {
+	if (device.getPlatform() === 'android') {
+		return 1;
+	}
+	return 0;
+}
 
 const sendMessageOnTranslationTestRoom = async (msg: string): Promise<{ user: ITestUser; msgId: string }> => {
 	const user = await createRandomUser();
@@ -34,6 +41,21 @@ async function navigateToRoom(roomName: string) {
 	await waitFor(element(by.id('room-view')))
 		.toBeVisible()
 		.withTimeout(5000);
+}
+
+async function searchMessage(msg: string, textMatcher: TTextMatcher) {
+	await sleep(1000); // wait for proper load the room
+	await element(by.id('room-view-search')).tap();
+	await waitFor(element(by.id('search-messages-view')))
+		.toExist()
+		.withTimeout(5000);
+	await element(by.id('search-message-view-input')).replaceText(msg);
+	await waitFor(element(by[textMatcher](msg)).atIndex(getIndex()))
+		.toExist()
+		.withTimeout(30000);
+	await sleep(1000);
+	await element(by[textMatcher](msg)).atIndex(getIndex()).tap();
+	await sleep(10000);
 }
 
 export function waitForVisible(id: string) {
@@ -97,6 +119,7 @@ describe('Auto Translate', () => {
 	});
 
 	it('should see old message not translated before enable auto translate', async () => {
+		await searchMessage(oldMessage[languages.default] as string, textMatcher);
 		await waitForVisibleTextMatcher(oldMessage[languages.default] as string, textMatcher);
 		await waitForVisibleTextMatcher(attachmentMessage[languages.default] as string, textMatcher);
 	});
@@ -141,6 +164,7 @@ describe('Auto Translate', () => {
 	});
 
 	it('should see old message translated after enable auto translate', async () => {
+		await searchMessage(oldMessage[languages.default] as string, textMatcher);
 		await waitForVisibleTextMatcher(oldMessage[languages.translated] as string, textMatcher);
 		await waitForVisibleTextMatcher(attachmentMessage[languages.translated] as string, textMatcher);
 	});
