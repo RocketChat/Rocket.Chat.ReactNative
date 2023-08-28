@@ -68,12 +68,15 @@ export interface IFormData {
 const CreateChannelView = () => {
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
-	const { defaultEncryptionOn } = useAppSelector(state => {
-		const defaultEncryptionOn = state.encryption.enabled && (state.settings.E2E_Enabled_Default_PrivateRooms as boolean);
-		return {
-			defaultEncryptionOn
-		};
-	});
+	const { isFetching, useRealName, users, e2eEnabledDefaultPrivateRooms } = useAppSelector(
+		state => ({
+			isFetching: state.createChannel.isFetching,
+			users: state.selectedUsers.users,
+			useRealName: state.settings.UI_Use_Real_Name as boolean,
+			e2eEnabledDefaultPrivateRooms: state.encryption.enabled && (state.settings.E2E_Enabled_Default_PrivateRooms as boolean)
+		}),
+		shallowEqual
+	);
 
 	const {
 		control,
@@ -81,7 +84,13 @@ const CreateChannelView = () => {
 		formState: { isDirty },
 		setValue
 	} = useForm<IFormData>({
-		defaultValues: { channelName: '', broadcast: false, encrypted: defaultEncryptionOn, readOnly: false, type: createPrivateChannelPermission }
+		defaultValues: {
+			channelName: '',
+			broadcast: false,
+			encrypted: e2eEnabledDefaultPrivateRooms,
+			readOnly: false,
+			type: createPrivateChannelPermission
+		}
 	});
 
 	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
@@ -90,15 +99,6 @@ const CreateChannelView = () => {
 	const teamId = params?.teamId;
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-
-	const { isFetching, useRealName, users } = useAppSelector(
-		state => ({
-			isFetching: state.createChannel.isFetching,
-			users: state.selectedUsers.users,
-			useRealName: state.settings.UI_Use_Real_Name as boolean
-		}),
-		shallowEqual
-	);
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: isFetching });
@@ -161,7 +161,7 @@ const CreateChannelView = () => {
 							createPrivateChannelPermission={createPrivateChannelPermission}
 							isTeam={isTeam}
 							setValue={setValue}
-							defaultEncryptionOn={defaultEncryptionOn}
+							e2eEnabledDefaultPrivateRooms={e2eEnabledDefaultPrivateRooms}
 						/>
 					</View>
 					{users.length > 0 ? (
