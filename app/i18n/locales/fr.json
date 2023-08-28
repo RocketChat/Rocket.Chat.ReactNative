@@ -617,5 +617,6 @@
   "Omnichannel_queue": "File d'attente omnicanale",
   "Empty": "Vide",
   "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre.",
-  "and_N_more": "et {{count}} de plus"
+  "and_N_more": "et {{count}} de plus",
+  "Audio": "Audio"
 }
