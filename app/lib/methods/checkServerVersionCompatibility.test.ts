@@ -100,6 +100,21 @@ describe('checkServerVersionCompatibility', () => {
 		).toBe(true);
 	});
 
+	it('should ignore the patch and compare as minor', () => {
+		expect(
+			checkServerVersionCompatibility({
+				supportedVersions: MOCK,
+				serverVersion: '1.4.1'
+			})
+		).toBe(true);
+		expect(
+			checkServerVersionCompatibility({
+				supportedVersions: MOCK,
+				serverVersion: '1.2.1'
+			})
+		).toBe(false);
+	});
+
 	it('should return true if server version is expired and has a valid exception', () => {
 		expect(
 			checkServerVersionCompatibility({
