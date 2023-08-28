@@ -28,34 +28,40 @@ export const checkServerVersionCompatibility = function ({
 		const versionInfo = builtInSupportedVersions.versions.find(({ version }) =>
 			satisfies(version, serverVersionTilde)
 		) as LTSVersion;
-		if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
+		if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
 			return {
-				success: false,
+				success: true,
 				messages: versionInfo?.messages
 			};
 		}
-
 		return {
-			success: true,
+			success: false,
 			messages: versionInfo?.messages
 		};
 	}
 
 	// Backend/Cloud
 	const versionInfo = supportedVersions.versions.find(({ version }) => satisfies(version, serverVersionTilde));
-	if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
-		// Exceptions
-		const exception = supportedVersions.exceptions?.versions.find(({ version }) => satisfies(version, serverVersionTilde));
-		if (!exception || new Date(exception.expiration) < new Date()) {
-			return {
-				success: false,
-				messages: versionInfo?.messages
-			};
-		}
+	console.log('🚀 ~ file: checkServerVersionCompatibility.ts:46 ~ versionInfo:', versionInfo);
+	if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
+		return {
+			success: true,
+			messages: versionInfo?.messages
+		};
+	}
+
+	// Exceptions
+	const exception = supportedVersions.exceptions?.versions.find(({ version }) => satisfies(version, serverVersionTilde));
+	console.log('🚀 ~ file: checkServerVersionCompatibility.ts:50 ~ exception:', exception, new Date());
+	if (exception && new Date(exception.expiration) >= new Date()) {
+		return {
+			success: true,
+			messages: exception?.messages
+		};
 	}
 
 	return {
-		success: true,
-		messages: versionInfo?.messages
+		success: false,
+		messages: exception?.messages ?? versionInfo?.messages
 	};
 };

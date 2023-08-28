@@ -127,6 +127,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 			supportedVersions: serverRecord.supportedVersions,
 			serverVersion: serverRecord.version
 		});
+		console.log('🚀 ~ file: selectServer.ts:130 ~ getServerInfo ~ isCompatible:', isCompatible);
 		if (!isCompatible) {
 			// if (raiseError) {
 			Alert.alert(I18n.t('Oops'), 'Nope');

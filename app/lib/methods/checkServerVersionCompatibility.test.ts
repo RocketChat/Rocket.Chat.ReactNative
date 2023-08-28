@@ -47,7 +47,8 @@ const MOCK: ISupportedVersions = {
 			},
 			{
 				version: '1.2.0',
-				expiration: '2023-03-10T00:00:00.000Z'
+				expiration: '2023-03-10T00:00:00.000Z',
+				messages: []
 			}
 		]
 	}
@@ -215,5 +216,7 @@ describe('checkServerVersionCompatibility', () => {
 				success: false
 			});
 		});
+
+		// TODO: missing test actual messages and order of priority
 	});
 });
