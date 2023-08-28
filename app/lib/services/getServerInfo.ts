@@ -41,7 +41,6 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 	exceptions: {
 		domain: 'https://open.rocket.chat',
 		uniqueId: '123',
-		// messages?: Messages[];
 		versions: [
 			{
 				version: '6.5.0',
@@ -49,7 +48,7 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 			},
 			{
 				version: '6.4.0',
-				expiration: '2023-08-25T00:00:00.000Z'
+				expiration: '2023-08-30T00:00:00.000Z'
 			}
 		]
 	}
@@ -93,7 +92,8 @@ export async function getServerInfo(server: string): Promise<IServerInfoResult> 
 			}
 
 			// Makes use of signed JWT to get supported versions
-			const supportedVersions = verifyJWT(jsonRes.signed); // verifyJWT(MOCKED_SIGNED);
+			const supportedVersions = verifyJWT(jsonRes.signed);
+			// const supportedVersions = verifyJWT(MOCKED_SIGNED);
 			console.log('🚀 ~ file: getServerInfo.ts:96 ~ getServerInfo ~ supportedVersions:', supportedVersions);
 
 			// if backend doesn't have supported versions or JWT is invalid, request from cloud

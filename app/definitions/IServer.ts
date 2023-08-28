@@ -2,34 +2,34 @@ import Model from '@nozbe/watermelondb/Model';
 
 import { IEnterpriseModules } from '../reducers/enterpriseModules';
 
-type Dictionary = {
+export type LTSDictionary = {
 	[lng: string]: Record<string, string>;
 };
 
-type Messages = {
+export type LTSMessage = {
 	remainingDays: number;
 	message: 'message_token';
 	type: 'info' | 'alert' | 'error';
 	params?: Record<string, unknown>;
 };
 
-type Version = {
+export type LTSVersion = {
 	version: string;
 	expiration: string; // Date;
-	messages?: Messages[];
+	messages?: LTSMessage[];
 };
 
 export interface ISupportedVersions {
 	timestamp: string;
-	messages?: Messages[];
-	versions: Version[];
+	messages?: LTSMessage[];
+	versions: LTSVersion[];
 	exceptions?: {
 		domain: string;
 		uniqueId: string;
-		messages?: Messages[];
-		versions: Version[];
+		messages?: LTSMessage[];
+		versions: LTSVersion[];
 	};
-	i18n?: Dictionary;
+	i18n?: LTSDictionary;
 }
 
 export interface IServerInfo {
@@ -46,13 +46,13 @@ export interface IServerInfo {
 export interface ICloudInfo {
 	signed: string; // FIXME: find a good type SerializedJWT<SupportedVersions>
 	timestamp: string;
-	messages?: Messages[];
-	versions: Version[];
+	messages?: LTSMessage[];
+	versions: LTSVersion[];
 	exceptions?: {
 		domain: string;
 		uniqueId: string;
-		messages?: Messages[];
-		versions: Version[];
+		messages?: LTSMessage[];
+		versions: LTSVersion[];
 	};
 }
 

@@ -19,7 +19,8 @@ const MOCK: ISupportedVersions = {
 	versions: [
 		{
 			version: '1.4.0',
-			expiration: '2023-04-10T00:00:00.000Z'
+			expiration: '2023-04-10T00:00:00.000Z',
+			messages: []
 		},
 		{
 			version: '1.3.0',
@@ -27,7 +28,8 @@ const MOCK: ISupportedVersions = {
 		},
 		{
 			version: '1.2.0',
-			expiration: '2023-02-10T00:00:00.000Z'
+			expiration: '2023-02-10T00:00:00.000Z',
+			messages: []
 		},
 		{
 			version: '1.1.0',
@@ -60,7 +62,17 @@ jest.mock('../../../app-supportedversions.json', () => ({
 		},
 		{
 			version: '1.4.0',
-			expiration: '2023-04-10T00:00:00.000Z'
+			expiration: '2023-04-10T00:00:00.000Z',
+			messages: []
+		},
+		{
+			version: '1.3.0',
+			expiration: '2023-03-10T00:00:00.000Z',
+			messages: []
+		},
+		{
+			version: '1.2.0',
+			expiration: '2023-02-10T00:00:00.000Z'
 		}
 	]
 }));
@@ -69,85 +81,139 @@ jest.useFakeTimers('modern');
 jest.setSystemTime(new Date(TODAY));
 
 describe('checkServerVersionCompatibility', () => {
-	it('should return false if supported versions is undefined', () => {
-		expect(checkServerVersionCompatibility({ supportedVersions: undefined, serverVersion: '1.5.0' })).toBe(false);
+	describe('General', () => {
+		test('supported versions is undefined', () => {
+			expect(checkServerVersionCompatibility({ supportedVersions: undefined, serverVersion: '1.5.0' })).toMatchObject({
+				success: false
+			});
+		});
+
+		test('ignore the patch and compare as minor', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: MOCK,
+					serverVersion: '1.4.1'
+				})
+			).toMatchObject({
+				success: true,
+				messages: []
+			});
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: MOCK,
+					serverVersion: '1.2.1'
+				})
+			).toMatchObject({
+				success: false,
+				messages: []
+			});
+		});
 	});
 
-	it('should return false using built-in supported versions comparison for an invalid version', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
-				serverVersion: '1.3.0'
-			})
-		).toBe(false);
+	describe('Built-in supported versions', () => {
+		test('invalid version', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
+					serverVersion: '1.2.0'
+				})
+			).toMatchObject({
+				success: false
+			});
+		});
+
+		test('valid version', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
+					serverVersion: '1.5.0'
+				})
+			).toMatchObject({
+				success: true
+			});
+		});
+
+		test('invalid version with message', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
+					serverVersion: '1.3.0'
+				})
+			).toMatchObject({
+				success: false,
+				messages: []
+			});
+		});
+
+		test('valid version with message', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
+					serverVersion: '1.4.0'
+				})
+			).toMatchObject({
+				success: true,
+				messages: []
+			});
+		});
 	});
 
-	it('should return true using built-in supported versions comparison for a valid version', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
-				serverVersion: '1.5.0'
-			})
-		).toBe(false);
-	});
+	describe('Backend/Cloud and exceptions', () => {
+		test('valid version with message returning message', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: MOCK,
+					serverVersion: '1.4.0'
+				})
+			).toMatchObject({
+				success: true,
+				messages: []
+			});
+		});
 
-	it('should return true if server version is valid', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: MOCK,
-				serverVersion: '1.4.0'
-			})
-		).toBe(true);
-	});
+		test('expired version and valid exception', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: MOCK,
+					serverVersion: '1.3.0'
+				})
+			).toMatchObject({
+				success: true
+			});
+		});
 
-	it('should ignore the patch and compare as minor', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: MOCK,
-				serverVersion: '1.4.1'
-			})
-		).toBe(true);
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: MOCK,
-				serverVersion: '1.2.1'
-			})
-		).toBe(false);
-	});
+		test('expired version and expired exception', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: MOCK,
+					serverVersion: '1.2.0'
+				})
+			).toMatchObject({
+				success: false,
+				messages: []
+			});
+		});
 
-	it('should return true if server version is expired and has a valid exception', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: MOCK,
-				serverVersion: '1.3.0'
-			})
-		).toBe(true);
-	});
+		test('should return false if server version is expired and has no exception', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: MOCK,
+					serverVersion: '1.1.0'
+				})
+			).toMatchObject({
+				success: false
+			});
+		});
 
-	it('should return false if server version is expired and has an expired exception', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: MOCK,
-				serverVersion: '1.2.0'
-			})
-		).toBe(false);
-	});
-
-	it('should return false if server version is expired and has no exception', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: MOCK,
-				serverVersion: '1.1.0'
-			})
-		).toBe(false);
-	});
-
-	it('should return false if server version is not supported', () => {
-		expect(
-			checkServerVersionCompatibility({
-				supportedVersions: MOCK,
-				serverVersion: '1.0.0'
-			})
-		).toBe(false);
+		it('should return false if server version is not supported', () => {
+			expect(
+				checkServerVersionCompatibility({
+					supportedVersions: MOCK,
+					serverVersion: '1.0.0'
+				})
+			).toMatchObject({
+				success: false
+			});
+		});
 	});
 });

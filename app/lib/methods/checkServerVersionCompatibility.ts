@@ -1,7 +1,13 @@
 import { satisfies } from 'semver';
 
-import { ISupportedVersions } from '../../definitions';
-import supportedVersionsBuild from '../../../app-supportedversions.json';
+import { ISupportedVersions, LTSDictionary, LTSMessage, LTSVersion } from '../../definitions';
+import builtInSupportedVersions from '../../../app-supportedversions.json';
+
+interface IServerVersionCompatibilityResult {
+	success: boolean;
+	messages?: LTSMessage[];
+	i18n?: LTSDictionary;
+}
 
 export const checkServerVersionCompatibility = function ({
 	supportedVersions,
@@ -9,32 +15,47 @@ export const checkServerVersionCompatibility = function ({
 }: {
 	supportedVersions?: ISupportedVersions;
 	serverVersion: string;
-}): boolean {
+}): IServerVersionCompatibilityResult {
 	// 1.2.3 -> ~1.2
 	const serverVersionTilde = `~${serverVersion.split('.').slice(0, 2).join('.')}`;
 
 	if (!supportedVersions) {
-		return false;
+		return { success: false };
 	}
 
-	if (supportedVersions.timestamp < supportedVersionsBuild.timestamp) {
-		const versionInfo = supportedVersionsBuild.versions.find(({ version }) => satisfies(version, serverVersionTilde));
+	// Built-in suported versions
+	if (supportedVersions.timestamp < builtInSupportedVersions.timestamp) {
+		const versionInfo = builtInSupportedVersions.versions.find(({ version }) =>
+			satisfies(version, serverVersionTilde)
+		) as LTSVersion;
 		if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
-			return false;
+			return {
+				success: false,
+				messages: versionInfo?.messages
+			};
 		}
+
+		return {
+			success: true,
+			messages: versionInfo?.messages
+		};
 	}
 
+	// Backend/Cloud
 	const versionInfo = supportedVersions.versions.find(({ version }) => satisfies(version, serverVersionTilde));
-	if (!versionInfo) {
-		return false;
-	}
-
-	if (new Date(versionInfo.expiration) < new Date()) {
+	if (!versionInfo || new Date(versionInfo.expiration) < new Date()) {
+		// Exceptions
 		const exception = supportedVersions.exceptions?.versions.find(({ version }) => satisfies(version, serverVersionTilde));
 		if (!exception || new Date(exception.expiration) < new Date()) {
-			return false;
+			return {
+				success: false,
+				messages: versionInfo?.messages
+			};
 		}
 	}
 
-	return true;
+	return {
+		success: true,
+		messages: versionInfo?.messages
+	};
 };
