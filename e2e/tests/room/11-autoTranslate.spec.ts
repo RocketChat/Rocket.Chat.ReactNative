@@ -172,6 +172,7 @@ describe('Auto Translate', () => {
 	it('should see new message translated', async () => {
 		const randomMatcher = random();
 		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]} - ${randomMatcher}`);
+		await searchMessage(`${newMessage[languages.default]} - ${randomMatcher}`, textMatcher); // will scroll the messages list to the last one
 		await waitForVisibleTextMatcher(`${newMessage[languages.translated]} - ${randomMatcher}`, textMatcher);
 		await deleteMessageOnTranslationTestRoom(data);
 	});
