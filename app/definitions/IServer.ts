@@ -35,6 +35,7 @@ export interface ISupportedVersions {
 export interface IServerInfo {
 	version: string;
 	success: boolean;
+	signed?: string; // FIXME: find a good type SerializedJWT<SupportedVersions>
 	supportedVersions?: ISupportedVersions; // SerializedJWT<ISupportedVersions>;
 	minimumClientVersions?: {
 		desktop: string;
@@ -43,7 +44,7 @@ export interface IServerInfo {
 }
 
 export interface ICloudInfo {
-	signed: ISupportedVersions; // SerializedJWT<SupportedVersions>
+	signed: string; // FIXME: find a good type SerializedJWT<SupportedVersions>
 	timestamp: string;
 	messages?: Messages[];
 	versions: Version[];
