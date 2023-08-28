@@ -134,8 +134,11 @@ export async function getServerInfo(server: string): Promise<IServerInfoResult> 
 	};
 }
 
-export const getCloudInfo = (): Promise<ICloudInfo> =>
-	Promise.resolve({
+export const getCloudInfo = (): Promise<ICloudInfo> => {
+	const uniqueId = store.getState().settings.uniqueID;
+	console.log('🚀 ~ file: getServerInfo.ts:139 ~ getCloudInfo ~ uniqueId:', uniqueId);
+	return Promise.resolve({
 		signed: MOCKED_SIGNED,
 		...MOCKED_SUPPORTED_VERSIONS
 	});
+};
