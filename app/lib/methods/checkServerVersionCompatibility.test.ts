@@ -51,8 +51,18 @@ const MOCK: ISupportedVersions = {
 	}
 };
 
+const MOCK_BUILTIN_I18N = {
+	en: {
+		builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
+	}
+};
 jest.mock('../../../app-supportedversions.json', () => ({
 	timestamp: '2023-03-20T00:00:00.000Z',
+	i18n: {
+		en: {
+			builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
+		}
+	},
 	versions: [
 		{
 			version: '1.5.0',
@@ -159,7 +169,7 @@ describe('checkServerVersionCompatibility', () => {
 						type: 'info'
 					}
 				],
-				i18n: MOCK_I18N
+				i18n: MOCK_BUILTIN_I18N
 			});
 		});
 
@@ -178,7 +188,7 @@ describe('checkServerVersionCompatibility', () => {
 						type: 'info'
 					}
 				],
-				i18n: MOCK_I18N
+				i18n: MOCK_BUILTIN_I18N
 			});
 		});
 	});

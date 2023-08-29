@@ -24,11 +24,11 @@ export const checkServerVersionCompatibility = function ({
 		const versionInfo = builtInSupportedVersions.versions.find(({ version }) =>
 			satisfies(version, serverVersionTilde)
 		) as LTSVersion;
-		const messages = versionInfo?.messages || supportedVersions?.messages;
+		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as LTSMessage[]);
 		return {
 			success: !!(versionInfo && new Date(versionInfo.expiration) >= new Date()),
 			messages,
-			i18n: messages?.length ? supportedVersions?.i18n : undefined
+			i18n: messages?.length ? builtInSupportedVersions?.i18n : undefined
 		};
 	}
 
