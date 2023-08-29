@@ -8,7 +8,7 @@ export type LTSDictionary = {
 
 export type LTSMessage = {
 	remainingDays: number;
-	message: 'message_token';
+	message: string;
 	type: 'info' | 'alert' | 'error';
 	params?: Record<string, unknown>;
 };
