@@ -719,6 +719,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						await subRecord.update(sub => {
 							sub.alert = tIsRead;
 							sub.unread = 0;
+							if (includeThreads) {
+								sub.tunread = [];
+							}
 						});
 					} catch (e) {
 						log(e);
