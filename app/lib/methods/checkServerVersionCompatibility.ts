@@ -24,25 +24,32 @@ export const checkServerVersionCompatibility = function ({
 		const versionInfo = builtInSupportedVersions.versions.find(({ version }) =>
 			satisfies(version, serverVersionTilde)
 		) as LTSVersion;
+		const messages = versionInfo?.messages || supportedVersions?.messages;
 		return {
 			success: !!(versionInfo && new Date(versionInfo.expiration) >= new Date()),
-			messages: versionInfo?.messages || supportedVersions?.messages
+			messages,
+			i18n: messages?.length ? supportedVersions?.i18n : undefined
 		};
 	}
 
 	// Backend/Cloud
 	const versionInfo = supportedVersions.versions.find(({ version }) => satisfies(version, serverVersionTilde));
 	if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
+		const messages = versionInfo?.messages || supportedVersions?.messages;
 		return {
 			success: true,
-			messages: versionInfo?.messages || supportedVersions.messages
+			messages,
+			i18n: messages?.length ? supportedVersions?.i18n : undefined
 		};
 	}
 
 	// Exceptions
 	const exception = supportedVersions.exceptions?.versions.find(({ version }) => satisfies(version, serverVersionTilde));
+	const messages =
+		exception?.messages || supportedVersions.exceptions?.messages || versionInfo?.messages || supportedVersions.messages;
 	return {
 		success: !!(exception && new Date(exception.expiration) >= new Date()),
-		messages: exception?.messages || supportedVersions.exceptions?.messages || versionInfo?.messages || supportedVersions.messages
+		messages,
+		i18n: messages?.length ? supportedVersions?.i18n : undefined
 	};
 };

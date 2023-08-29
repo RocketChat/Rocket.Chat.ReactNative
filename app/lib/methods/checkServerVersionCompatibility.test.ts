@@ -1,6 +1,11 @@
 import { ISupportedVersions, LTSMessage } from '../../definitions';
 import { checkServerVersionCompatibility } from './checkServerVersionCompatibility';
 
+const MOCK_I18N = {
+	en: {
+		message_token: 'Your server is about to be deprecated. Please update to the latest version.'
+	}
+};
 const TODAY = '2023-04-01T00:00:00.000Z';
 const MOCK: ISupportedVersions = {
 	timestamp: TODAY,
@@ -11,11 +16,7 @@ const MOCK: ISupportedVersions = {
 			type: 'info'
 		}
 	],
-	i18n: {
-		en: {
-			message_token: 'Your server is about to be deprecated. Please update to the latest version.'
-		}
-	},
+	i18n: MOCK_I18N,
 	versions: [
 		{
 			version: '1.4.0',
@@ -157,7 +158,8 @@ describe('checkServerVersionCompatibility', () => {
 						message: '1.3',
 						type: 'info'
 					}
-				]
+				],
+				i18n: MOCK_I18N
 			});
 		});
 
@@ -175,7 +177,8 @@ describe('checkServerVersionCompatibility', () => {
 						message: '1.4',
 						type: 'info'
 					}
-				]
+				],
+				i18n: MOCK_I18N
 			});
 		});
 	});
@@ -321,7 +324,8 @@ describe('checkServerVersionCompatibility', () => {
 						...MOCK_MESSAGE_BASE,
 						message: 'exception_version'
 					}
-				]
+				],
+				i18n: MOCK_I18N
 			});
 		});
 
@@ -338,7 +342,8 @@ describe('checkServerVersionCompatibility', () => {
 						...MOCK_MESSAGE_BASE,
 						message: 'exception'
 					}
-				]
+				],
+				i18n: MOCK_I18N
 			});
 		});
 
@@ -355,7 +360,8 @@ describe('checkServerVersionCompatibility', () => {
 						...MOCK_MESSAGE_BASE,
 						message: 'supported_version'
 					}
-				]
+				],
+				i18n: MOCK_I18N
 			});
 		});
 
@@ -372,7 +378,8 @@ describe('checkServerVersionCompatibility', () => {
 						...MOCK_MESSAGE_BASE,
 						message: 'root'
 					}
-				]
+				],
+				i18n: MOCK_I18N
 			});
 		});
 	});
