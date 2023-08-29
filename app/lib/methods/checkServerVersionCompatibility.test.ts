@@ -160,7 +160,7 @@ describe('checkServerVersionCompatibility', () => {
 	});
 
 	describe('Backend/Cloud and exceptions', () => {
-		test('valid version with message returning message', () => {
+		test('valid version with message', () => {
 			expect(
 				checkServerVersionCompatibility({
 					supportedVersions: MOCK,
@@ -195,7 +195,7 @@ describe('checkServerVersionCompatibility', () => {
 			});
 		});
 
-		test('should return false if server version is expired and has no exception', () => {
+		test('expired version and no exception', () => {
 			expect(
 				checkServerVersionCompatibility({
 					supportedVersions: MOCK,
@@ -206,7 +206,7 @@ describe('checkServerVersionCompatibility', () => {
 			});
 		});
 
-		it('should return false if server version is not supported', () => {
+		it('server version is not supported', () => {
 			expect(
 				checkServerVersionCompatibility({
 					supportedVersions: MOCK,
