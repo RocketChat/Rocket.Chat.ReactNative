@@ -13,13 +13,13 @@ import { CustomIcon } from '../../CustomIcon';
 
 interface IItem {
 	item: IItemData;
-	selected?: string;
+	selected: boolean;
 	onSelect: Function;
 }
 
 interface IItems {
 	items: IItemData[];
-	selected: string[];
+	selected: IItemData[];
 	onSelect: Function;
 }
 
@@ -54,7 +54,7 @@ const Items = ({ items, selected, onSelect }: IItems) => (
 		keyboardShouldPersistTaps='always'
 		ItemSeparatorComponent={List.Separator}
 		keyExtractor={keyExtractor}
-		renderItem={({ item }) => <Item item={item} onSelect={onSelect} selected={selected.find(s => s === item.value)} />}
+		renderItem={({ item }) => <Item item={item} onSelect={onSelect} selected={!!selected.find(s => s.value === item.value)} />}
 	/>
 );
 

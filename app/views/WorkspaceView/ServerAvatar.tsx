@@ -2,9 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { themes } from '../../lib/constants';
 import { isTablet } from '../../lib/methods/helpers';
-import { TSupportedThemes } from '../../theme';
+import { useTheme } from '../../theme';
 
 const SIZE = 96;
 const MARGIN_TOP = isTablet ? 0 : 64;
@@ -26,20 +25,19 @@ const styles = StyleSheet.create({
 });
 
 interface IServerAvatar {
-	theme: TSupportedThemes;
 	url: string;
 	image: string;
 }
 
 // TODO: missing skeleton
-const ServerAvatar = React.memo(({ theme, url, image }: IServerAvatar) => (
-	<View style={styles.container}>
-		{image && (
-			<FastImage style={[styles.image, { borderColor: themes[theme].borderColor }]} source={{ uri: `${url}/${image}` }} />
-		)}
-	</View>
-));
+const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
+	const { colors } = useTheme();
 
-ServerAvatar.displayName = 'ServerAvatar';
+	return (
+		<View style={styles.container}>
+			{image && <FastImage style={[styles.image, { borderColor: colors.borderColor }]} source={{ uri: `${url}/${image}` }} />}
+		</View>
+	);
+});
 
 export default ServerAvatar;

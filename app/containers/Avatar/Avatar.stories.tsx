@@ -67,3 +67,26 @@ export const Children = () => (
 export const WrongServer = () => <Avatar text='Avatar' server='https://google.com' size={56} />;
 
 export const CustomStyle = () => <Avatar text='Avatar' server={server} size={56} style={styles.custom} />;
+
+export const AvatarExternalProviderUrl = () => (
+	<Avatar
+		text='Avatar'
+		server={server}
+		size={56}
+		avatarExternalProviderUrl={
+			'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*'
+		}
+	/>
+);
+
+export const RoomAvatarExternalProviderUrl = () => (
+	<Avatar
+		server={server}
+		size={56}
+		roomAvatarExternalProviderUrl={'https://cdn.pensador.com/img/authors/ho/me/homer-simpson-l.jpg'}
+		// obligatory pass type, serverVersion and rid
+		type='c'
+		serverVersion={'3.8.0'}
+		rid='devWBbYr7inwupPqK'
+	/>
+);

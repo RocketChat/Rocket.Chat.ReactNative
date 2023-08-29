@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.39.0",
+	"version": "4.40.0",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -33,7 +33,7 @@
 		"*.{js,ts,tsx}": [
 			"prettier --write",
 			"eslint",
-			"jest --bail --findRelatedTests"
+			"jest --bail --findRelatedTests --passWithNoTests"
 		]
 	},
 	"dependencies": {
@@ -43,10 +43,10 @@
 		"@hookform/resolvers": "^2.9.10",
 		"@nozbe/watermelondb": "0.23.0",
 		"@react-native-async-storage/async-storage": "^1.17.11",
+		"@react-native-camera-roll/camera-roll": "5.6.1",
 		"@react-native-clipboard/clipboard": "^1.8.5",
 		"@react-native-community/art": "^1.2.0",
 		"@react-native-community/blur": "^4.1.0",
-		"@react-native-community/cameraroll": "4.1.2",
 		"@react-native-community/datetimepicker": "3.5.2",
 		"@react-native-community/hooks": "2.6.0",
 		"@react-native-community/netinfo": "6.0.0",
@@ -73,6 +73,7 @@
 		"expo": "^46.0.9",
 		"expo-apple-authentication": "4.2.1",
 		"expo-av": "11.2.3",
+		"expo-camera": "12.3.0",
 		"expo-file-system": "14.0.0",
 		"expo-haptics": "11.2.0",
 		"expo-keep-awake": "10.1.1",
@@ -105,6 +106,7 @@
 		"react-native-gesture-handler": "2.4.2",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
 		"react-native-image-progress": "^1.1.1",
+		"react-native-katex": "^0.5.1",
 		"react-native-keycommands": "2.0.3",
 		"react-native-linear-gradient": "^2.6.2",
 		"react-native-localize": "2.1.1",
@@ -145,6 +147,7 @@
 		"rn-root-view": "RocketChat/rn-root-view",
 		"semver": "^7.3.8",
 		"transliteration": "^2.3.5",
+		"typed-redux-saga": "^1.5.0",
 		"ua-parser-js": "^1.0.32",
 		"uri-js": "^4.4.1",
 		"url-parse": "1.5.10",

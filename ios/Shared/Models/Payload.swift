@@ -19,4 +19,5 @@ struct Payload: Codable {
   let messageType: MessageType?
   let msg: String?
   let senderName: String?
+  let tmid: String?
 }

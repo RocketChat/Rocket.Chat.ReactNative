@@ -101,7 +101,7 @@ const RoomItem = ({
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
 						<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					</View>
-					<View style={styles.row}>
+					<View style={styles.row} testID='room-item-last-message-container'>
 						<LastMessage
 							lastMessage={lastMessage}
 							type={type}

@@ -4,14 +4,19 @@ import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, IUserMessage, SubscriptionType } from '../../definitions';
-import { isGroupChat } from './helpers';
+import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { isGroupChat, isReadOnly } from './helpers';
 
 export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearchSubscription = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
+export const localSearchSubscription = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	filterMessagingAllowed = false
+}): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -39,6 +44,17 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		subscriptions = subscriptions.filter(item => item.t !== 'd' || isGroupChat(item));
 	}
 
+	if (filterMessagingAllowed) {
+		const username = reduxStore.getState().login.user.username as string;
+		const filteredSubscriptions = await Promise.all(
+			subscriptions.map(async item => {
+				const isItemReadOnly = await isReadOnly(item, username);
+				return isItemReadOnly ? null : item;
+			})
+		);
+		subscriptions = filteredSubscriptions.filter(item => item !== null) as TSubscriptionModel[];
+	}
+
 	const search = subscriptions.slice(0, 7).map(item => ({
 		_id: item._id,
 		rid: item.rid,
@@ -50,7 +66,8 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		lastMessage: item.lastMessage,
 		status: item.status,
 		teamMain: item.teamMain,
-		prid: item.prid
+		prid: item.prid,
+		f: item.f
 	})) as ISearchLocal[];
 
 	return search;
@@ -103,7 +120,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 		if (searchText && localSearchData.length < 7) {
 			const { users, rooms } = (await Promise.race([
 				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }, rid),
-				new Promise((resolve, reject) => debounce = reject)
+				new Promise((resolve, reject) => (debounce = reject))
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
 			if (filterUsers) {
