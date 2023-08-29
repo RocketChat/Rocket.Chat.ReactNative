@@ -1,4 +1,4 @@
-import { ISupportedVersions } from '../../definitions';
+import { ISupportedVersions, LTSMessage } from '../../definitions';
 import { checkServerVersionCompatibility } from './checkServerVersionCompatibility';
 
 const TODAY = '2023-04-01T00:00:00.000Z';
@@ -238,7 +238,7 @@ describe('checkServerVersionCompatibility', () => {
 	});
 
 	describe('Messages', () => {
-		const MOCK_MESSAGE_BASE = {
+		const MOCK_MESSAGE_BASE: LTSMessage = {
 			remainingDays: 15,
 			message: 'supported_version',
 			type: 'info'
@@ -247,9 +247,8 @@ describe('checkServerVersionCompatibility', () => {
 			timestamp: TODAY,
 			messages: [
 				{
-					remainingDays: 15,
-					message: 'root',
-					type: 'info'
+					...MOCK_MESSAGE_BASE,
+					message: 'root'
 				}
 			],
 			i18n: {
@@ -267,9 +266,8 @@ describe('checkServerVersionCompatibility', () => {
 					expiration: '2023-04-10T00:00:00.000Z',
 					messages: [
 						{
-							remainingDays: 15,
-							message: 'supported_version',
-							type: 'info'
+							...MOCK_MESSAGE_BASE,
+							message: 'supported_version'
 						}
 					]
 				},
@@ -287,9 +285,8 @@ describe('checkServerVersionCompatibility', () => {
 				uniqueId: '123',
 				messages: [
 					{
-						remainingDays: 15,
-						message: 'exception',
-						type: 'info'
+						...MOCK_MESSAGE_BASE,
+						message: 'exception'
 					}
 				],
 				versions: [
@@ -298,9 +295,8 @@ describe('checkServerVersionCompatibility', () => {
 						expiration: '2023-05-01T00:00:00.000Z',
 						messages: [
 							{
-								remainingDays: 15,
-								message: 'exception_version',
-								type: 'info'
+								...MOCK_MESSAGE_BASE,
+								message: 'exception_version'
 							}
 						]
 					},
