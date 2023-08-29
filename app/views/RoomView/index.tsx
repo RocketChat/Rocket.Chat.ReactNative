@@ -147,7 +147,9 @@ const roomAttrsUpdate = [
 	'status',
 	'lastMessage',
 	'onHold',
-	't'
+	't',
+	'autoTranslate',
+	'autoTranslateLanguage'
 ] as TRoomUpdate[];
 
 interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -1345,15 +1347,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		let content = null;
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
-			content = (
-				<LoadMore
-					rid={room.rid}
-					t={room.t as RoomType}
-					loaderId={item.id}
-					type={item.t}
-					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}
-				/>
-			);
+			const runOnRender = () => {
+				if (item.t === MessageTypeLoad.MORE) {
+					if (!previousItem) return true;
+					if (previousItem?.tmid) return true;
+				}
+				return false;
+			};
+			content = <LoadMore rid={room.rid} t={room.t as RoomType} loaderId={item.id} type={item.t} runOnRender={runOnRender()} />;
 		} else {
 			content = (
 				<Message
@@ -1531,7 +1532,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading } = this.state;
+		const { room, loading, canAutoTranslate } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let sysMes;
@@ -1560,6 +1561,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
 					showMessageInMainThread={user.showMessageInMainThread ?? false}
 					serverVersion={serverVersion}
+					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}

@@ -555,7 +555,6 @@
   "Enabled_E2E_Encryption_for_this_room": "enabled E2E encryption for this room",
   "Disabled_E2E_Encryption_for_this_room": "disabled E2E encryption for this room",
   "Teams": "Teams",
-  "No_team_channels_found": "No channels found",
   "Team_not_found": "Team not found",
   "Create_Team": "Create team",
   "Team_Name": "Team name",
@@ -689,12 +688,14 @@
   "Also_send_thread_message_to_channel_behavior": "Also send thread message to channel",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Allow users to select the 'Also send to channel' behavior",
   "Waiting_for_answer": "Waiting for answer",
+  "Waiting_for_server_connection": "Waiting for server connection",
   "Call_ended": "Call ended",
   "Call_was_not_answered": "Call was not answered",
   "Call_rejected": "Call rejected",
   "Call_back": "Call Back",
   "Call_again": "Call Again",
   "Call_ongoing": "Call Ongoing",
+  "Call_issue": "Call issue",
   "Joined": "Joined",
   "Calling": "Calling",
   "Start_a_call": "Start a call",
@@ -742,5 +743,6 @@
   "accept": "Accept",
   "Incoming_call_from": "Incoming call from",
   "Call_started": "Call started",
-  "Message_has_been_shared":"Message has been shared"
+  "Message_has_been_shared":"Message has been shared",
+  "No_channels_in_team": "No Channels on this team"
 }

@@ -57,6 +57,8 @@ export interface IListContainerProps {
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
+	autoTranslateRoom?: boolean;
+	autoTranslateLanguage?: string;
 }
 
 interface IListContainerState {
@@ -106,7 +108,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
-		const { hideSystemMessages, tunread, ignored, loading } = this.props;
+		const { hideSystemMessages, tunread, ignored, loading, autoTranslateLanguage, autoTranslateRoom } = this.props;
 		if (loading !== nextProps.loading) {
 			return true;
 		}
@@ -123,6 +125,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			return true;
 		}
 		if (!dequal(ignored, nextProps.ignored)) {
+			return true;
+		}
+		if (autoTranslateLanguage !== nextProps.autoTranslateLanguage || autoTranslateRoom !== nextProps.autoTranslateRoom) {
 			return true;
 		}
 		return false;
