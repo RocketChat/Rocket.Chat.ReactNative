@@ -5,7 +5,7 @@ import sharedStyles from '../../../../views/Styles';
 
 export default function useStyle() {
 	const { colors } = useTheme();
-	return StyleSheet.create({
+	const style = StyleSheet.create({
 		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 4, marginTop: 8, borderColor: colors.conferenceCallBorder },
 		callInfoContainer: { flex: 1, alignItems: 'center', paddingLeft: 16, flexDirection: 'row' },
 		infoContainerText: {
@@ -88,40 +88,10 @@ export default function useStyle() {
 			...sharedStyles.textRegular,
 			color: colors.passcodeSecondary
 		},
-		actionSheetContainer: {
-			paddingHorizontal: 24,
-			flex: 1
-		},
-		actionSheetHeaderTitle: {
-			fontSize: 14,
-			...sharedStyles.textBold,
-			color: colors.passcodePrimary
-		},
-		actionSheetUsername: {
-			fontSize: 16,
-			...sharedStyles.textBold,
-			color: colors.passcodePrimary,
-			flexShrink: 1
-		},
 		enabledBackground: {
 			backgroundColor: colors.conferenceCallEnabledIconBackground
-		},
-		iconCallContainer: {
-			padding: 6,
-			borderRadius: 4
-		},
-		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
-		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
-		actionSheetUsernameContainer: { flexDirection: 'row', paddingTop: 8, alignItems: 'center' },
-		actionSheetPhotoContainer: {
-			height: 220,
-			width: 148,
-			backgroundColor: colors.conferenceCallPhotoBackground,
-			borderRadius: 8,
-			margin: 24,
-			alignSelf: 'center',
-			justifyContent: 'center',
-			alignItems: 'center'
 		}
 	});
+
+	return style;
 }

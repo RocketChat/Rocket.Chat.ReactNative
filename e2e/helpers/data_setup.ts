@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 import data from '../data';
 import random from './random';
@@ -137,7 +137,63 @@ export const post = async (endpoint: string, body: any, user: ITestUser) => {
 	return rocketchat.post(endpoint, body);
 };
 
-export const getProfileInfo = async (userId: string) => {
-	const result = await get(`users.info?userId=${userId}`);
+interface UserId {
+	userId: string;
+}
+
+interface UserName {
+	username: string;
+}
+
+export const getProfileInfo = async (param: UserId | UserName) => {
+	let query = '';
+	if ('userId' in param) {
+		query += `userId=${param.userId}`;
+	} else if ('username' in param) {
+		query += `username=${param.username}`;
+	}
+	const result = await get(`users.info?${query}`);
 	return result.data.user;
+};
+
+export interface IDeleteCreateUser {
+	server: string;
+	username: string;
+}
+
+const deleteCreatedUser = async ({ username: usernameToDelete }: IDeleteCreateUser) => {
+	try {
+		const api = await initApi(data.adminUser, data.adminPassword);
+		const result = await api.get(`users.info?username=${usernameToDelete}`);
+		const responsePost = await api.post('users.delete', { userId: result.data.user._id, confirmRelinquish: true });
+		return responsePost.data;
+	} catch (error) {
+		console.log(JSON.stringify(error));
+	}
+};
+
+// Delete created users to avoid use all the Seats Available on the server
+export const deleteCreatedUsers = async (deleteUsersAfterAll: IDeleteCreateUser[]) => {
+	if (deleteUsersAfterAll.length) {
+		for await (const deleteUser of deleteUsersAfterAll) {
+			await deleteCreatedUser(deleteUser);
+		}
+	}
+};
+
+export const initApi = async (user: string, password: string): Promise<AxiosInstance> => {
+	const api = axios.create({
+		baseURL: `${server}/api/v1/`,
+		headers: {
+			'Content-Type': 'application/json;charset=UTF-8'
+		}
+	});
+	const response = await api.post('login', {
+		user,
+		password
+	});
+	const { authToken, userId } = response.data.data;
+	api.defaults.headers.common['X-User-Id'] = userId;
+	api.defaults.headers.common['X-Auth-Token'] = authToken;
+	return api;
 };
