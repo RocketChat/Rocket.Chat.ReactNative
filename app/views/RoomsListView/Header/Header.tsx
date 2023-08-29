@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityPro
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { CustomIcon } from '../../../containers/CustomIcon';
+// import { CustomIcon } from '../../../containers/CustomIcon';
 import { isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';
@@ -49,11 +49,11 @@ const Header = React.memo(
 		isFetching,
 		serverName = 'Rocket.Chat',
 		server,
-		showServerDropdown,
+		// showServerDropdown,
 		showSearchHeader,
-		onSearchChangeText,
-		onPress
-	}: IRoomHeader) => {
+		onSearchChangeText
+	}: // onPress
+	IRoomHeader) => {
 		const { colors } = useTheme();
 		const { isLandscape } = useOrientation();
 		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -75,28 +75,28 @@ const Header = React.memo(
 		}
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
-					<View style={styles.button}>
-						<Text style={[styles.title, { fontSize: titleFontSize, color: colors.headerTitleColor }]} numberOfLines={1}>
-							{serverName}
-						</Text>
-						<CustomIcon
-							name='chevron-down'
-							color={colors.headerTintColor}
-							style={[showServerDropdown && styles.upsideDown]}
-							size={18}
-						/>
-					</View>
-					{subtitle ? (
-						<Text
-							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: colors.auxiliaryText, fontSize: subTitleFontSize }]}
-							numberOfLines={1}
-						>
-							{subtitle}
-						</Text>
-					) : null}
-				</TouchableOpacity>
+				{/* <TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'> */}
+				<View style={styles.button}>
+					<Text style={[styles.title, { fontSize: titleFontSize, color: colors.headerTitleColor }]} numberOfLines={1}>
+						{serverName}
+					</Text>
+					{/* <CustomIcon
+						name='chevron-down'
+						color={colors.headerTintColor}
+						style={[showServerDropdown && styles.upsideDown]}
+						size={18}
+					/> */}
+				</View>
+				{subtitle ? (
+					<Text
+						testID='rooms-list-header-server-subtitle'
+						style={[styles.subtitle, { color: colors.auxiliaryText, fontSize: subTitleFontSize }]}
+						numberOfLines={1}
+					>
+						{subtitle}
+					</Text>
+				) : null}
+				{/* </TouchableOpacity> */}
 			</View>
 		);
 	}
