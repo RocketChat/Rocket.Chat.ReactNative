@@ -14,7 +14,7 @@ const Thread = React.memo(
 		const { theme } = useTheme();
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 
-		if (!tlm || isThreadRoom || tcount === 0) {
+		if (!tlm || isThreadRoom || tcount === null) {
 			return null;
 		}
 
