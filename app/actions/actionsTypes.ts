@@ -96,3 +96,4 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 	'ACCEPT_CALL',
 	'SET_CALLING'
 ]);
+export const LTS = createRequestTypes('LTS', ['SET']);

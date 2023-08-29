@@ -24,6 +24,7 @@ import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
+import { setLTS } from '../actions/lts';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
@@ -123,18 +124,11 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 		}
 
 		const serverRecord = yield* call(upsertServer, { server, serverInfo: serverInfoResult });
-		const isCompatible = yield* call(checkServerVersionCompatibility, {
+		const compatibilityResult = yield* call(checkServerVersionCompatibility, {
 			supportedVersions: serverRecord.supportedVersions,
 			serverVersion: serverRecord.version
 		});
-		console.log('🚀 ~ file: selectServer.ts:130 ~ getServerInfo ~ isCompatible:', isCompatible);
-		if (!isCompatible) {
-			// if (raiseError) {
-			Alert.alert(I18n.t('Oops'), 'Nope');
-			// }
-			yield put(serverFailure('TBD 2'));
-			return;
-		}
+		yield put(setLTS(compatibilityResult));
 
 		return serverInfoResult;
 	} catch (e) {
