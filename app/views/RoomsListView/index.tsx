@@ -11,7 +11,6 @@ import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
-import { CustomIcon } from '../../containers/CustomIcon';
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
@@ -69,7 +68,7 @@ import {
 } from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
-import Button from '../../containers/Button';
+import { LTSExpired } from '../../containers/LTS';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -1038,20 +1037,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		if (ltsStatus === 'expired') {
-			// TODO: i18n
-			return (
-				<View style={{ flex: 1, paddingTop: 120, padding: 16 }}>
-					<View style={{ alignItems: 'center', padding: 24 }}>
-						<CustomIcon name='warning' size={36} color={themes[theme].dangerColor} />
-					</View>
-					<Text style={styles.ltsTitle}>Workspace is running an unsupported version of Rocket.Chat</Text>
-					<Text style={styles.ltsDescription}>
-						An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop
-						apps.
-					</Text>
-					<Button title='Learn more' type='secondary' backgroundColor={'#EEEFF1'} onPress={() => alert('Go to docs!')} />
-				</View>
-			);
+			return <LTSExpired />;
 		}
 
 		return (

@@ -25,7 +25,7 @@ import { IApplicationState, IUser, LTSStatus } from '../../definitions';
 import * as List from '../../containers/List';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
-import { LTSWarning } from './LTSWarning';
+import { LTSWarning } from '../../containers/LTS';
 
 interface ISidebarState {
 	showStatus: boolean;

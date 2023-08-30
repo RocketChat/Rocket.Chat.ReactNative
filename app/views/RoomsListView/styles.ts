@@ -54,19 +54,5 @@ export default StyleSheet.create({
 		height: 46,
 		justifyContent: 'center',
 		marginBottom: 0
-	},
-
-	// TODO: reuse
-	ltsTitle: {
-		fontSize: 20,
-		lineHeight: 30,
-		marginBottom: 24,
-		...sharedStyles.textBold
-	},
-	ltsDescription: {
-		fontSize: 16,
-		lineHeight: 24,
-		marginBottom: 24,
-		...sharedStyles.textRegular
 	}
 });
