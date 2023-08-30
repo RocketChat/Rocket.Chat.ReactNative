@@ -23,7 +23,9 @@ import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import { IApplicationState, IUser, LTSStatus } from '../../definitions';
 import * as List from '../../containers/List';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
+import { LTSWarning } from './LTSWarning';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -48,6 +50,7 @@ interface ISidebarProps {
 	viewRoomAdministrationPermission: string[];
 	viewUserAdministrationPermission: string[];
 	viewPrivilegedSettingPermission: string[];
+	showActionSheet: IActionSheetProvider['showActionSheet'];
 }
 
 class Sidebar extends Component<ISidebarProps, ISidebarState> {
@@ -288,15 +291,15 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	renderLTSWarn = () => {
-		const { theme, ltsStatus } = this.props;
+		const { theme, ltsStatus, showActionSheet } = this.props;
 		if (ltsStatus === 'warn') {
 			return (
 				<SidebarItem
-					text={'Update required'}
+					text={'Update required'} // TODO: i18n
 					textColor={themes[theme!].dangerColor}
 					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
 					theme={theme!}
-					onPress={() => alert('bottom sheet')}
+					onPress={() => showActionSheet({ children: <LTSWarning />, snaps: [600] })}
 					testID={`sidebar-lts-warn`}
 				/>
 			);
@@ -379,4 +382,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting'] as string[]
 });
 
-export default connect(mapStateToProps)(withTheme(Sidebar));
+export default connect(mapStateToProps)(withActionSheet(withTheme(Sidebar)));
