@@ -479,16 +479,32 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							  () => navigation.toggleDrawer()
 					}
 					badge={() => getBadge()}
+					disabled={ltsStatus === 'expired'}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
 			headerRight: () => (
 				<HeaderButton.Container>
 					{canCreateRoom ? (
-						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
+						<HeaderButton.Item
+							iconName='create'
+							onPress={this.goToNewMessage}
+							testID='rooms-list-view-create-channel'
+							disabled={ltsStatus === 'expired'}
+						/>
 					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
-					<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
+					<HeaderButton.Item
+						iconName='search'
+						onPress={this.initSearching}
+						testID='rooms-list-view-search'
+						disabled={ltsStatus === 'expired'}
+					/>
+					<HeaderButton.Item
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
+						disabled={ltsStatus === 'expired'}
+					/>
 				</HeaderButton.Container>
 			)
 		};
@@ -1011,12 +1027,20 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode } = this.props;
+		const { theme, refreshing, displayMode, ltsStatus } = this.props;
 
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
 			return <ActivityIndicator />;
+		}
+
+		if (ltsStatus === 'expired') {
+			return (
+				<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+					<Text>Expired</Text>
+				</View>
+			);
 		}
 
 		return (
