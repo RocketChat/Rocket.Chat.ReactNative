@@ -21,7 +21,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
-import { IApplicationState, IUser } from '../../definitions';
+import { IApplicationState, IUser, LTSStatus } from '../../definitions';
 import * as List from '../../containers/List';
 import { setNotificationPresenceCap } from '../../actions/app';
 
@@ -42,6 +42,7 @@ interface ISidebarProps {
 	allowStatusMessage: boolean;
 	notificationPresenceCap: boolean;
 	Presence_broadcast_disabled: boolean;
+	ltsStatus: LTSStatus;
 	isMasterDetail: boolean;
 	viewStatisticsPermission: string[];
 	viewRoomAdministrationPermission: string[];
@@ -286,6 +287,23 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
+	renderLTSWarn = () => {
+		const { theme, ltsStatus } = this.props;
+		if (ltsStatus === 'warn') {
+			return (
+				<SidebarItem
+					text={'Update required'}
+					textColor={themes[theme!].dangerColor}
+					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
+					theme={theme!}
+					onPress={() => alert('bottom sheet')}
+					testID={`sidebar-lts-warn`}
+				/>
+			);
+		}
+		return null;
+	};
+
 	render() {
 		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
 
@@ -324,6 +342,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					</TouchableWithoutFeedback>
 
 					<List.Separator />
+					{this.renderLTSWarn()}
+
+					<List.Separator />
 
 					{allowStatusMessage ? this.renderCustomStatus() : null}
 					{!isMasterDetail ? (
@@ -350,6 +371,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
 	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled as boolean,
 	notificationPresenceCap: state.app.notificationPresenceCap,
+	ltsStatus: state.lts.status,
 	isMasterDetail: state.app.isMasterDetail,
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],
