@@ -2,6 +2,8 @@ import Model from '@nozbe/watermelondb/Model';
 
 import { IEnterpriseModules } from '../reducers/enterpriseModules';
 
+export type LTSStatus = 'valid' | 'expired' | 'warn';
+
 export type LTSDictionary = {
 	[lng: string]: Record<string, string>;
 };

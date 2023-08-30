@@ -41,7 +41,15 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { IApplicationState, ISubscription, IUser, RootEnum, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import {
+	IApplicationState,
+	ISubscription,
+	IUser,
+	LTSStatus,
+	RootEnum,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
@@ -58,7 +66,7 @@ import {
 	isIOS,
 	isTablet
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
+import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
 
 type TNavigation = CompositeNavigationProp<
@@ -87,6 +95,7 @@ interface IRoomsListViewProps {
 	useRealName: boolean;
 	isMasterDetail: boolean;
 	notificationPresenceCap: boolean;
+	ltsStatus: LTSStatus;
 	subscribedRoom: string;
 	width: number;
 	insets: {
@@ -156,7 +165,8 @@ const shouldUpdateProps = [
 	'createDirectMessagePermission',
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
-	'createDiscussionPermission'
+	'createDiscussionPermission',
+	'ltsStatus'
 ];
 
 const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
@@ -347,7 +357,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDirectMessagePermission,
 			createDiscussionPermission,
 			showAvatar,
-			displayMode
+			displayMode,
+			ltsStatus
 		} = this.props;
 		const { item } = this.state;
 
@@ -370,7 +381,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
-			notificationPresenceCap !== prevProps.notificationPresenceCap
+			notificationPresenceCap !== prevProps.notificationPresenceCap ||
+			ltsStatus !== prevProps.ltsStatus
 		) {
 			this.setHeader();
 		}
@@ -426,7 +438,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap } = this.props;
+		const { navigation, isMasterDetail, notificationPresenceCap, ltsStatus, theme } = this.props;
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
@@ -442,6 +454,16 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			};
 		}
 
+		const getBadge = () => {
+			if (ltsStatus === 'warn') {
+				return <HeaderButton.BadgeWarn color={colors[theme].dangerColor} />;
+			}
+			if (notificationPresenceCap) {
+				return <HeaderButton.BadgeWarn color={STATUS_COLORS.disabled} />;
+			}
+			return null;
+		};
+
 		return {
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
@@ -456,7 +478,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
-					badge={() => (notificationPresenceCap ? <HeaderButton.BadgeWarn /> : null)}
+					badge={() => getBadge()}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
@@ -1042,6 +1064,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	notificationPresenceCap: state.app.notificationPresenceCap,
+	ltsStatus: state.lts.status,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,

@@ -48,7 +48,7 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 			},
 			{
 				version: '6.4.0',
-				expiration: '2023-08-30T00:00:00.000Z',
+				expiration: '2023-08-31T00:00:00.000Z',
 				messages: [
 					{
 						remainingDays: 15,
