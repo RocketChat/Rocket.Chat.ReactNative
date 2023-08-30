@@ -8,6 +8,7 @@ import { isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
+import { useAppSelector } from '../../../lib/hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,6 +55,7 @@ const Header = React.memo(
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
+		const { status: ltsStatus } = useAppSelector(state => state.lts);
 		const { colors } = useTheme();
 		const { isLandscape } = useOrientation();
 		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -64,7 +66,9 @@ const Header = React.memo(
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 		}
 		let subtitle;
-		if (connecting) {
+		if (ltsStatus === 'expired') {
+			subtitle = 'Cannot connect';
+		} else if (connecting) {
 			subtitle = I18n.t('Connecting');
 		} else if (isFetching) {
 			subtitle = I18n.t('Updating');
