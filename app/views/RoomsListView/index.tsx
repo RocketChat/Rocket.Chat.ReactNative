@@ -952,7 +952,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showAvatar,
 			displayMode
 		} = this.props;
-		const id = getUidDirectMessage(item);
+		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
 		const swipeEnabled = this.isSwipeEnabled(item);
 
 		return (

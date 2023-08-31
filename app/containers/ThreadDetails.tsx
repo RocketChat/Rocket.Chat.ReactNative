@@ -69,7 +69,11 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name='threads' size={24} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<Text
+						testID={`thread-count-${count}`}
+						style={[styles.detailText, { color: themes[theme].auxiliaryText }]}
+						numberOfLines={1}
+					>
 						{count}
 					</Text>
 				</View>
