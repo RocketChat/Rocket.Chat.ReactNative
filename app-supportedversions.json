@@ -8,7 +8,11 @@
 	"messages": [
 		{
 			"remainingDays": 15,
-			"message": "message_token",
+			"message": {
+				"title": "title",
+				"subtitle": "subtitle",
+				"description": "description"
+			},
 			"type": "info"
 		}
 	],

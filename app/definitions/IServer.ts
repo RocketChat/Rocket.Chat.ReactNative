@@ -10,7 +10,11 @@ export type LTSDictionary = {
 
 export type LTSMessage = {
 	remainingDays: number;
-	message: string;
+	message: {
+		title: string;
+		subtitle: string;
+		description: string;
+	};
 	type: 'info' | 'alert' | 'error';
 	params?: Record<string, unknown>;
 };

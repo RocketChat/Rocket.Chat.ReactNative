@@ -12,7 +12,11 @@ const MOCK: ISupportedVersions = {
 	messages: [
 		{
 			remainingDays: 15,
-			message: 'message_token',
+			message: {
+				title: 'title_token',
+				subtitle: 'subtitle_token',
+				description: 'description_token'
+			},
 			type: 'info'
 		}
 	],
@@ -253,7 +257,11 @@ describe('checkServerVersionCompatibility', () => {
 	describe('Messages', () => {
 		const MOCK_MESSAGE_BASE: LTSMessage = {
 			remainingDays: 15,
-			message: 'supported_version',
+			message: {
+				title: 'title_token',
+				subtitle: 'subtitle_token',
+				description: 'description_token'
+			},
 			type: 'info'
 		};
 		const MOCK_MESSAGES: ISupportedVersions = {
@@ -261,7 +269,11 @@ describe('checkServerVersionCompatibility', () => {
 			messages: [
 				{
 					...MOCK_MESSAGE_BASE,
-					message: 'root'
+					message: {
+						title: 'title_root',
+						subtitle: 'subtitle_root',
+						description: 'description_root'
+					}
 				}
 			],
 			i18n: {
@@ -280,7 +292,11 @@ describe('checkServerVersionCompatibility', () => {
 					messages: [
 						{
 							...MOCK_MESSAGE_BASE,
-							message: 'supported_version'
+							message: {
+								title: 'title_version',
+								subtitle: 'subtitle_version',
+								description: 'description_version'
+							}
 						}
 					]
 				},
@@ -299,7 +315,11 @@ describe('checkServerVersionCompatibility', () => {
 				messages: [
 					{
 						...MOCK_MESSAGE_BASE,
-						message: 'exception'
+						message: {
+							title: 'title_exception',
+							subtitle: 'subtitle_exception',
+							description: 'description_exception'
+						}
 					}
 				],
 				versions: [
@@ -309,7 +329,11 @@ describe('checkServerVersionCompatibility', () => {
 						messages: [
 							{
 								...MOCK_MESSAGE_BASE,
-								message: 'exception_version'
+								message: {
+									title: 'title_exception_version',
+									subtitle: 'subtitle_exception_version',
+									description: 'description_exception_version'
+								}
 							}
 						]
 					},
@@ -332,7 +356,11 @@ describe('checkServerVersionCompatibility', () => {
 				messages: [
 					{
 						...MOCK_MESSAGE_BASE,
-						message: 'exception_version'
+						message: {
+							title: 'title_exception_version',
+							subtitle: 'subtitle_exception_version',
+							description: 'description_exception_version'
+						}
 					}
 				],
 				i18n: MOCK_I18N
@@ -350,7 +378,11 @@ describe('checkServerVersionCompatibility', () => {
 				messages: [
 					{
 						...MOCK_MESSAGE_BASE,
-						message: 'exception'
+						message: {
+							title: 'title_exception',
+							subtitle: 'subtitle_exception',
+							description: 'description_exception'
+						}
 					}
 				],
 				i18n: MOCK_I18N
@@ -368,7 +400,11 @@ describe('checkServerVersionCompatibility', () => {
 				messages: [
 					{
 						...MOCK_MESSAGE_BASE,
-						message: 'supported_version'
+						message: {
+							title: 'title_version',
+							subtitle: 'subtitle_version',
+							description: 'description_version'
+						}
 					}
 				],
 				i18n: MOCK_I18N
@@ -386,7 +422,11 @@ describe('checkServerVersionCompatibility', () => {
 				messages: [
 					{
 						...MOCK_MESSAGE_BASE,
-						message: 'root'
+						message: {
+							title: 'title_root',
+							subtitle: 'subtitle_root',
+							description: 'description_root'
+						}
 					}
 				],
 				i18n: MOCK_I18N
