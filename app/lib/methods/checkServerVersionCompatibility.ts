@@ -1,13 +1,28 @@
 import { satisfies } from 'semver';
+import moment from 'moment';
 
 import { ISupportedVersions, LTSDictionary, LTSMessage, LTSVersion } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
 interface IServerVersionCompatibilityResult {
 	success: boolean;
-	messages?: LTSMessage[];
+	message?: LTSMessage;
 	i18n?: LTSDictionary;
 }
+
+export const getMessage = ({
+	messages,
+	expiration
+}: {
+	messages?: LTSMessage[];
+	expiration?: string;
+}): LTSMessage | undefined => {
+	if (!messages?.length || !expiration || moment(expiration).diff(new Date(), 'days') < 0) {
+		return;
+	}
+	const sortedMessages = messages.sort((a, b) => a.remainingDays - b.remainingDays);
+	return sortedMessages.find(({ remainingDays }) => moment(expiration).diff(new Date(), 'days') <= remainingDays);
+};
 
 export const checkServerVersionCompatibility = function ({
 	supportedVersions,
@@ -25,10 +40,11 @@ export const checkServerVersionCompatibility = function ({
 			satisfies(version, serverVersionTilde)
 		) as LTSVersion;
 		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as LTSMessage[]);
+		const message = getMessage({ messages, expiration: versionInfo?.expiration });
 		return {
 			success: !!(versionInfo && new Date(versionInfo.expiration) >= new Date()),
-			messages,
-			i18n: messages?.length ? builtInSupportedVersions?.i18n : undefined
+			message,
+			i18n: message ? builtInSupportedVersions?.i18n : undefined
 		};
 	}
 
@@ -36,10 +52,11 @@ export const checkServerVersionCompatibility = function ({
 	const versionInfo = supportedVersions.versions.find(({ version }) => satisfies(version, serverVersionTilde));
 	if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
 		const messages = versionInfo?.messages || supportedVersions?.messages;
+		const message = getMessage({ messages, expiration: versionInfo.expiration });
 		return {
 			success: true,
-			messages,
-			i18n: messages?.length ? supportedVersions?.i18n : undefined
+			message,
+			i18n: message ? supportedVersions?.i18n : undefined
 		};
 	}
 
@@ -47,9 +64,10 @@ export const checkServerVersionCompatibility = function ({
 	const exception = supportedVersions.exceptions?.versions.find(({ version }) => satisfies(version, serverVersionTilde));
 	const messages =
 		exception?.messages || supportedVersions.exceptions?.messages || versionInfo?.messages || supportedVersions.messages;
+	const message = getMessage({ messages, expiration: exception?.expiration });
 	return {
 		success: !!(exception && new Date(exception.expiration) >= new Date()),
-		messages,
-		i18n: messages?.length ? supportedVersions?.i18n : undefined
+		message,
+		i18n: message ? supportedVersions?.i18n : undefined
 	};
 };

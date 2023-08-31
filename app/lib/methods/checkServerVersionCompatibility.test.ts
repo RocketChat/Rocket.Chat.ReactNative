@@ -1,5 +1,5 @@
-import { ISupportedVersions, LTSMessage } from '../../definitions';
-import { checkServerVersionCompatibility } from './checkServerVersionCompatibility';
+import { ISupportedVersions } from '../../definitions';
+import { checkServerVersionCompatibility, getMessage } from './checkServerVersionCompatibility';
 
 const MOCK_I18N = {
 	en: {
@@ -61,7 +61,7 @@ const MOCK_BUILTIN_I18N = {
 	}
 };
 jest.mock('../../../app-supportedversions.json', () => ({
-	timestamp: '2023-03-20T00:00:00.000Z',
+	timestamp: '2023-04-01T00:00:00.000Z',
 	i18n: {
 		en: {
 			builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
@@ -77,7 +77,7 @@ jest.mock('../../../app-supportedversions.json', () => ({
 			expiration: '2023-04-10T00:00:00.000Z',
 			messages: [
 				{
-					remainingDays: 15,
+					remainingDays: 10,
 					message: '1.4',
 					type: 'info'
 				}
@@ -158,25 +158,6 @@ describe('checkServerVersionCompatibility', () => {
 			});
 		});
 
-		test('deprecated version with message', () => {
-			expect(
-				checkServerVersionCompatibility({
-					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
-					serverVersion: '1.3.0'
-				})
-			).toMatchObject({
-				success: false,
-				messages: [
-					{
-						remainingDays: 15,
-						message: '1.3',
-						type: 'info'
-					}
-				],
-				i18n: MOCK_BUILTIN_I18N
-			});
-		});
-
 		test('valid version with message', () => {
 			expect(
 				checkServerVersionCompatibility({
@@ -185,13 +166,11 @@ describe('checkServerVersionCompatibility', () => {
 				})
 			).toMatchObject({
 				success: true,
-				messages: [
-					{
-						remainingDays: 15,
-						message: '1.4',
-						type: 'info'
-					}
-				],
+				message: {
+					remainingDays: 10,
+					message: '1.4',
+					type: 'info'
+				},
 				i18n: MOCK_BUILTIN_I18N
 			});
 		});
@@ -255,25 +234,17 @@ describe('checkServerVersionCompatibility', () => {
 	});
 
 	describe('Messages', () => {
-		const MOCK_MESSAGE_BASE: LTSMessage = {
-			remainingDays: 15,
-			message: {
-				title: 'title_token',
-				subtitle: 'subtitle_token',
-				description: 'description_token'
-			},
-			type: 'info'
-		};
 		const MOCK_MESSAGES: ISupportedVersions = {
 			timestamp: TODAY,
 			messages: [
 				{
-					...MOCK_MESSAGE_BASE,
+					remainingDays: 60,
 					message: {
 						title: 'title_root',
 						subtitle: 'subtitle_root',
 						description: 'description_root'
-					}
+					},
+					type: 'info'
 				}
 			],
 			i18n: {
@@ -291,12 +262,22 @@ describe('checkServerVersionCompatibility', () => {
 					expiration: '2023-04-10T00:00:00.000Z',
 					messages: [
 						{
-							...MOCK_MESSAGE_BASE,
+							remainingDays: 15,
 							message: {
 								title: 'title_version',
 								subtitle: 'subtitle_version',
 								description: 'description_version'
-							}
+							},
+							type: 'info'
+						},
+						{
+							remainingDays: 30,
+							message: {
+								title: 'title_version',
+								subtitle: 'subtitle_version',
+								description: 'description_version'
+							},
+							type: 'info'
 						}
 					]
 				},
@@ -314,12 +295,13 @@ describe('checkServerVersionCompatibility', () => {
 				uniqueId: '123',
 				messages: [
 					{
-						...MOCK_MESSAGE_BASE,
+						remainingDays: 15,
 						message: {
 							title: 'title_exception',
 							subtitle: 'subtitle_exception',
 							description: 'description_exception'
-						}
+						},
+						type: 'info'
 					}
 				],
 				versions: [
@@ -328,12 +310,13 @@ describe('checkServerVersionCompatibility', () => {
 						expiration: '2023-05-01T00:00:00.000Z',
 						messages: [
 							{
-								...MOCK_MESSAGE_BASE,
+								remainingDays: 15,
 								message: {
 									title: 'title_exception_version',
 									subtitle: 'subtitle_exception_version',
 									description: 'description_exception_version'
-								}
+								},
+								type: 'info'
 							}
 						]
 					},
@@ -352,18 +335,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.3.0'
 				})
 			).toMatchObject({
-				success: true,
-				messages: [
-					{
-						...MOCK_MESSAGE_BASE,
-						message: {
-							title: 'title_exception_version',
-							subtitle: 'subtitle_exception_version',
-							description: 'description_exception_version'
-						}
-					}
-				],
-				i18n: MOCK_I18N
+				success: true
 			});
 		});
 
@@ -374,18 +346,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.2.0'
 				})
 			).toMatchObject({
-				success: false,
-				messages: [
-					{
-						...MOCK_MESSAGE_BASE,
-						message: {
-							title: 'title_exception',
-							subtitle: 'subtitle_exception',
-							description: 'description_exception'
-						}
-					}
-				],
-				i18n: MOCK_I18N
+				success: false
 			});
 		});
 
@@ -397,16 +358,15 @@ describe('checkServerVersionCompatibility', () => {
 				})
 			).toMatchObject({
 				success: true,
-				messages: [
-					{
-						...MOCK_MESSAGE_BASE,
-						message: {
-							title: 'title_version',
-							subtitle: 'subtitle_version',
-							description: 'description_version'
-						}
-					}
-				],
+				message: {
+					remainingDays: 15,
+					message: {
+						title: 'title_version',
+						subtitle: 'subtitle_version',
+						description: 'description_version'
+					},
+					type: 'info'
+				},
 				i18n: MOCK_I18N
 			});
 		});
@@ -419,18 +379,83 @@ describe('checkServerVersionCompatibility', () => {
 				})
 			).toMatchObject({
 				success: true,
-				messages: [
-					{
-						...MOCK_MESSAGE_BASE,
-						message: {
-							title: 'title_root',
-							subtitle: 'subtitle_root',
-							description: 'description_root'
-						}
-					}
-				],
+				message: {
+					remainingDays: 60,
+					message: {
+						title: 'title_root',
+						subtitle: 'subtitle_root',
+						description: 'description_root'
+					},
+					type: 'info'
+				},
 				i18n: MOCK_I18N
 			});
+		});
+	});
+});
+
+describe('getMessage', () => {
+	test('no messages', () => {
+		expect(getMessage({ messages: undefined, expiration: '2023-04-10T00:00:00.000Z' })).toBeUndefined();
+	});
+
+	test('no expiration or already expired', () => {
+		expect(getMessage({ messages: undefined, expiration: undefined })).toBeUndefined();
+		expect(getMessage({ messages: undefined, expiration: '2023-01-10T00:00:00.000Z' })).toBeUndefined();
+	});
+
+	test('receives a message that should not be triggered yet', () => {
+		expect(
+			getMessage({
+				messages: [
+					{
+						remainingDays: 1,
+						message: {
+							title: 'title_token',
+							subtitle: 'subtitle_token',
+							description: 'description_token'
+						},
+						type: 'info'
+					}
+				],
+				expiration: '2023-04-10T00:00:00.000Z'
+			})
+		).toBeUndefined();
+	});
+
+	test('receives two messages and returns the appropriate one', () => {
+		expect(
+			getMessage({
+				messages: [
+					{
+						remainingDays: 11,
+						message: {
+							title: 'title_token',
+							subtitle: 'subtitle_token',
+							description: 'description_token'
+						},
+						type: 'info'
+					},
+					{
+						remainingDays: 10,
+						message: {
+							title: 'title_token',
+							subtitle: 'subtitle_token',
+							description: 'description_token'
+						},
+						type: 'info'
+					}
+				],
+				expiration: '2023-04-10T00:00:00.000Z'
+			})
+		).toMatchObject({
+			remainingDays: 10,
+			message: {
+				title: 'title_token',
+				subtitle: 'subtitle_token',
+				description: 'description_token'
+			},
+			type: 'info'
 		});
 	});
 });
