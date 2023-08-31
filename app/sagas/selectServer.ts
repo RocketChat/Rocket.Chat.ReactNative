@@ -43,17 +43,7 @@ import {
 import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 import { appSelector } from '../lib/hooks';
-
-const getServerById = async function (server: string) {
-	const serversDB = database.servers;
-	const serversCollection = serversDB.get('servers');
-	try {
-		const record = await serversCollection.find(server);
-		return record;
-	} catch (error) {
-		return null;
-	}
-};
+import { getServerById } from '../lib/database/services/Server';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -73,7 +63,6 @@ const getServerVersion = function (version: string | null) {
 const upsertServer = async function ({ server, serverInfo }: { server: string; serverInfo: IServerInfo }): Promise<TServerModel> {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
-
 	const serverVersion = getServerVersion(serverInfo.version);
 	const record = await getServerById(server);
 	if (record) {
