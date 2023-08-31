@@ -183,6 +183,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
+		let serverInfo;
+		if (fetchVersion) {
+			serverInfo = yield* getServerInfo({ server, raiseError: false });
+		}
+
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
 		setSettings();
@@ -190,11 +195,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setPermissions();
 		setRoles();
 		setEnterpriseModules();
-
-		let serverInfo;
-		if (fetchVersion) {
-			serverInfo = yield* getServerInfo({ server, raiseError: false });
-		}
 
 		// Return server version even when offline
 		const serverVersion = (serverInfo && serverInfo.version) || (version as string);
