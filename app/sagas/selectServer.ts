@@ -106,33 +106,36 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 		if (raiseError) {
 			if (!serverInfoResult.success) {
 				Alert.alert(I18n.t('Oops'), serverInfoResult.message);
-				yield put(serverFailure(serverInfoResult.message));
+				yield put(serverFailure());
 				return;
 			}
 			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
 				Alert.alert(I18n.t('Oops'), websocketInfo.message);
-				yield put(serverFailure(websocketInfo.message));
+				yield put(serverFailure());
 				return;
 			}
 		}
 
-		// TODO: Review raiseError logic
-		if (!serverInfoResult.success) {
-			yield put(serverFailure('TBD 1'));
-			return;
+		let serverRecord: TServerModel | null;
+		if (serverInfoResult.success) {
+			serverRecord = yield* call(upsertServer, { server, serverInfo: serverInfoResult });
+		} else {
+			serverRecord = yield* call(getServerById, server);
 		}
-
-		const serverRecord = yield* call(upsertServer, { server, serverInfo: serverInfoResult });
+		if (!serverRecord) {
+			throw new Error('Server not found');
+		}
 		const compatibilityResult = yield* call(checkServerVersionCompatibility, {
 			supportedVersions: serverRecord.supportedVersions,
 			serverVersion: serverRecord.version
 		});
 		yield put(setLTS(compatibilityResult));
 
-		return serverInfoResult;
+		return serverRecord;
 	} catch (e) {
 		log(e);
+		yield put(serverFailure());
 	}
 };
 
@@ -253,7 +256,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {
-		yield put(serverFailure(e));
+		yield put(serverFailure());
 		log(e);
 	}
 };

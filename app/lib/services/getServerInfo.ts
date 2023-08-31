@@ -81,7 +81,7 @@ interface IServerInfoSuccess extends IServerInfo {
 	success: true;
 }
 
-type IServerInfoResult = IServerInfoSuccess | IServerInfoFailure;
+export type TServerInfoResult = IServerInfoSuccess | IServerInfoFailure;
 
 // Verifies if JWT is valid and returns the payload
 const verifyJWT = (jwt?: string): ISupportedVersions | null => {
@@ -97,7 +97,7 @@ const verifyJWT = (jwt?: string): ISupportedVersions | null => {
 	return payloadObj as ISupportedVersions;
 };
 
-export async function getServerInfo(server: string): Promise<IServerInfoResult> {
+export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
 		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, { ...RocketChatSettings.customHeaders });
 		try {

@@ -24,11 +24,7 @@ interface IServerInit extends Action {
 	previousServer: string;
 }
 
-interface IServerFailure extends Action {
-	err: any;
-}
-
-export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServerRequestAction & IServerInit & IServerFailure;
+export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServerRequestAction & IServerInit;
 
 export function selectServerRequest(
 	server: string,
@@ -74,10 +70,9 @@ export function serverSuccess(): Action {
 	};
 }
 
-export function serverFailure(err: any): IServerFailure {
+export function serverFailure(): Action {
 	return {
-		type: SERVER.FAILURE,
-		err
+		type: SERVER.FAILURE
 	};
 }
 
