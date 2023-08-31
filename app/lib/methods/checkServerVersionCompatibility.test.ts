@@ -9,19 +9,12 @@ const MOCK_I18N = {
 const TODAY = '2023-04-01T00:00:00.000Z';
 const MOCK: ISupportedVersions = {
 	timestamp: TODAY,
-	messages: [
-		{
-			remainingDays: 15,
-			message: {
-				title: 'title_token',
-				subtitle: 'subtitle_token',
-				description: 'description_token'
-			},
-			type: 'info'
-		}
-	],
 	i18n: MOCK_I18N,
 	versions: [
+		{
+			version: '1.5.0',
+			expiration: '2023-05-10T00:00:00.000Z'
+		},
 		{
 			version: '1.4.0',
 			expiration: '2023-04-10T00:00:00.000Z'
@@ -110,10 +103,10 @@ describe('checkServerVersionCompatibility', () => {
 			expect(
 				checkServerVersionCompatibility({
 					supportedVersions: MOCK,
-					serverVersion: '1.4.1'
+					serverVersion: '1.5.1'
 				})
 			).toMatchObject({
-				success: true
+				status: 'supported'
 			});
 			expect(
 				checkServerVersionCompatibility({
@@ -121,7 +114,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.2.1'
 				})
 			).toMatchObject({
-				success: false
+				status: 'expired'
 			});
 		});
 	});
@@ -129,10 +122,10 @@ describe('checkServerVersionCompatibility', () => {
 	describe('Built-in supported versions', () => {
 		test('no supported versions', () => {
 			expect(checkServerVersionCompatibility({ supportedVersions: undefined, serverVersion: '1.5.0' })).toMatchObject({
-				success: true
+				status: 'supported'
 			});
 			expect(checkServerVersionCompatibility({ supportedVersions: undefined, serverVersion: '1.1.0' })).toMatchObject({
-				success: false
+				status: 'expired'
 			});
 		});
 
@@ -143,7 +136,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.2.0'
 				})
 			).toMatchObject({
-				success: false
+				status: 'expired'
 			});
 		});
 
@@ -154,7 +147,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.5.0'
 				})
 			).toMatchObject({
-				success: true
+				status: 'supported'
 			});
 		});
 
@@ -165,7 +158,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.4.0'
 				})
 			).toMatchObject({
-				success: true,
+				status: 'warn',
 				message: {
 					remainingDays: 10,
 					message: '1.4',
@@ -184,7 +177,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.4.0'
 				})
 			).toMatchObject({
-				success: true
+				status: 'supported'
 			});
 		});
 
@@ -195,7 +188,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.3.0'
 				})
 			).toMatchObject({
-				success: true
+				status: 'supported'
 			});
 		});
 
@@ -206,7 +199,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.2.0'
 				})
 			).toMatchObject({
-				success: false
+				status: 'expired'
 			});
 		});
 
@@ -217,7 +210,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.1.0'
 				})
 			).toMatchObject({
-				success: false
+				status: 'expired'
 			});
 		});
 
@@ -228,7 +221,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.0.0'
 				})
 			).toMatchObject({
-				success: false
+				status: 'expired'
 			});
 		});
 	});
@@ -310,7 +303,7 @@ describe('checkServerVersionCompatibility', () => {
 						expiration: '2023-05-01T00:00:00.000Z',
 						messages: [
 							{
-								remainingDays: 15,
+								remainingDays: 30,
 								message: {
 									title: 'title_exception_version',
 									subtitle: 'subtitle_exception_version',
@@ -322,7 +315,7 @@ describe('checkServerVersionCompatibility', () => {
 					},
 					{
 						version: '1.2.0',
-						expiration: '2023-03-10T00:00:00.000Z'
+						expiration: '2023-04-10T00:00:00.000Z'
 					}
 				]
 			}
@@ -335,7 +328,16 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.3.0'
 				})
 			).toMatchObject({
-				success: true
+				status: 'warn',
+				message: {
+					remainingDays: 30,
+					message: {
+						title: 'title_exception_version',
+						subtitle: 'subtitle_exception_version',
+						description: 'description_exception_version'
+					},
+					type: 'info'
+				}
 			});
 		});
 
@@ -346,7 +348,16 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.2.0'
 				})
 			).toMatchObject({
-				success: false
+				status: 'warn',
+				message: {
+					remainingDays: 15,
+					message: {
+						title: 'title_exception',
+						subtitle: 'subtitle_exception',
+						description: 'description_exception'
+					},
+					type: 'info'
+				}
 			});
 		});
 
@@ -357,7 +368,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.4.0'
 				})
 			).toMatchObject({
-				success: true,
+				status: 'warn',
 				message: {
 					remainingDays: 15,
 					message: {
@@ -378,7 +389,7 @@ describe('checkServerVersionCompatibility', () => {
 					serverVersion: '1.5.0'
 				})
 			).toMatchObject({
-				success: true,
+				status: 'warn',
 				message: {
 					remainingDays: 60,
 					message: {

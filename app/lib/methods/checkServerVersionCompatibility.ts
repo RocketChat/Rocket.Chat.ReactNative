@@ -1,11 +1,11 @@
 import { satisfies } from 'semver';
 import moment from 'moment';
 
-import { ISupportedVersions, LTSDictionary, LTSMessage, LTSVersion } from '../../definitions';
+import { ISupportedVersions, LTSDictionary, LTSMessage, LTSStatus, LTSVersion } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
 interface IServerVersionCompatibilityResult {
-	success: boolean;
+	status: LTSStatus;
 	message?: LTSMessage;
 	i18n?: LTSDictionary;
 }
@@ -22,6 +22,16 @@ export const getMessage = ({
 	}
 	const sortedMessages = messages.sort((a, b) => a.remainingDays - b.remainingDays);
 	return sortedMessages.find(({ remainingDays }) => moment(expiration).diff(new Date(), 'days') <= remainingDays);
+};
+
+const getStatus = ({ expiration, message }: { expiration?: string; message?: LTSMessage }): LTSStatus => {
+	if (!(expiration && new Date(expiration) >= new Date())) {
+		return 'expired';
+	}
+	if (message) {
+		return 'warn';
+	}
+	return 'supported';
 };
 
 export const checkServerVersionCompatibility = function ({
@@ -42,7 +52,7 @@ export const checkServerVersionCompatibility = function ({
 		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as LTSMessage[]);
 		const message = getMessage({ messages, expiration: versionInfo?.expiration });
 		return {
-			success: !!(versionInfo && new Date(versionInfo.expiration) >= new Date()),
+			status: getStatus({ expiration: versionInfo?.expiration, message }),
 			message,
 			i18n: message ? builtInSupportedVersions?.i18n : undefined
 		};
@@ -54,7 +64,7 @@ export const checkServerVersionCompatibility = function ({
 		const messages = versionInfo?.messages || supportedVersions?.messages;
 		const message = getMessage({ messages, expiration: versionInfo.expiration });
 		return {
-			success: true,
+			status: getStatus({ expiration: versionInfo?.expiration, message }),
 			message,
 			i18n: message ? supportedVersions?.i18n : undefined
 		};
@@ -66,7 +76,7 @@ export const checkServerVersionCompatibility = function ({
 		exception?.messages || supportedVersions.exceptions?.messages || versionInfo?.messages || supportedVersions.messages;
 	const message = getMessage({ messages, expiration: exception?.expiration });
 	return {
-		success: !!(exception && new Date(exception.expiration) >= new Date()),
+		status: getStatus({ expiration: exception?.expiration, message }),
 		message,
 		i18n: message ? supportedVersions?.i18n : undefined
 	};
