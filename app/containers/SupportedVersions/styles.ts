@@ -3,6 +3,14 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 
 export const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		padding: 16
+	},
+	iconContainer: {
+		alignItems: 'center',
+		padding: 24
+	},
 	title: {
 		fontSize: 20,
 		lineHeight: 30,

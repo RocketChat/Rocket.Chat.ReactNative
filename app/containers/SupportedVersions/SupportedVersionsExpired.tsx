@@ -10,12 +10,12 @@ export const SupportedVersionsExpired = () => {
 	const { colors } = useTheme();
 	// TODO: i18n
 	return (
-		<View style={{ flex: 1, paddingTop: 120, padding: 16 }}>
-			<View style={{ alignItems: 'center', padding: 24 }}>
+		<View style={[styles.container, { paddingTop: 120 }]}>
+			<View style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
-			<Text style={styles.title}>Workspace is running an unsupported version of Rocket.Chat</Text>
-			<Text style={styles.description}>
+			<Text style={[styles.title, { color: colors.bodyText }]}>Workspace is running an unsupported version of Rocket.Chat</Text>
+			<Text style={[styles.description, { color: colors.bodyText }]}>
 				An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.
 			</Text>
 			<Button title='Learn more' type='secondary' backgroundColor={'#EEEFF1'} onPress={() => alert('Go to docs!')} />
