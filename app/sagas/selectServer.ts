@@ -32,7 +32,7 @@ import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import {
-	checkServerVersionCompatibility,
+	checkSupportedVersions,
 	getLoginSettings,
 	setCustomEmojis,
 	setEnterpriseModules,
@@ -115,11 +115,11 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 		if (!serverRecord) {
 			throw new Error('Server not found');
 		}
-		const compatibilityResult = yield* call(checkServerVersionCompatibility, {
+		const supportedVersionsResult = yield* call(checkSupportedVersions, {
 			supportedVersions: serverRecord.supportedVersions,
 			serverVersion: serverRecord.version
 		});
-		yield put(setSupportedVersions(compatibilityResult));
+		yield put(setSupportedVersions(supportedVersionsResult));
 
 		return serverRecord;
 	} catch (e) {

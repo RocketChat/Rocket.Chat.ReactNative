@@ -4,12 +4,6 @@ import moment from 'moment';
 import { ISupportedVersions, TSVDictionary, TSVMessage, TSVStatus, TSVVersion } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
-interface IServerVersionCompatibilityResult {
-	status: TSVStatus;
-	message?: TSVMessage;
-	i18n?: TSVDictionary;
-}
-
 export const getMessage = ({
 	messages,
 	expiration
@@ -34,13 +28,17 @@ const getStatus = ({ expiration, message }: { expiration?: string; message?: TSV
 	return 'supported';
 };
 
-export const checkServerVersionCompatibility = function ({
+export const checkSupportedVersions = function ({
 	supportedVersions,
 	serverVersion
 }: {
 	supportedVersions?: ISupportedVersions;
 	serverVersion: string;
-}): IServerVersionCompatibilityResult {
+}): {
+	status: TSVStatus;
+	message?: TSVMessage;
+	i18n?: TSVDictionary;
+} {
 	// 1.2.3 -> ~1.2
 	const serverVersionTilde = `~${serverVersion.split('.').slice(0, 2).join('.')}`;
 

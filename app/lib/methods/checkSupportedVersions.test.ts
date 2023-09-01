@@ -1,5 +1,5 @@
 import { ISupportedVersions } from '../../definitions';
-import { checkServerVersionCompatibility, getMessage } from './checkServerVersionCompatibility';
+import { checkSupportedVersions, getMessage } from './checkSupportedVersions';
 
 const MOCK_I18N = {
 	en: {
@@ -97,11 +97,11 @@ jest.mock('../../../app-supportedversions.json', () => ({
 jest.useFakeTimers('modern');
 jest.setSystemTime(new Date(TODAY));
 
-describe('checkServerVersionCompatibility', () => {
+describe('checkSupportedVersions', () => {
 	describe('General', () => {
 		test('ignore the patch and compare as minor', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK,
 					serverVersion: '1.5.1'
 				})
@@ -109,7 +109,7 @@ describe('checkServerVersionCompatibility', () => {
 				status: 'supported'
 			});
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK,
 					serverVersion: '1.2.1'
 				})
@@ -121,17 +121,17 @@ describe('checkServerVersionCompatibility', () => {
 
 	describe('Built-in supported versions', () => {
 		test('no supported versions', () => {
-			expect(checkServerVersionCompatibility({ supportedVersions: undefined, serverVersion: '1.5.0' })).toMatchObject({
+			expect(checkSupportedVersions({ supportedVersions: undefined, serverVersion: '1.5.0' })).toMatchObject({
 				status: 'supported'
 			});
-			expect(checkServerVersionCompatibility({ supportedVersions: undefined, serverVersion: '1.1.0' })).toMatchObject({
+			expect(checkSupportedVersions({ supportedVersions: undefined, serverVersion: '1.1.0' })).toMatchObject({
 				status: 'expired'
 			});
 		});
 
 		test('deprecated version', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
 					serverVersion: '1.2.0'
 				})
@@ -142,7 +142,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('valid version', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
 					serverVersion: '1.5.0'
 				})
@@ -153,7 +153,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('valid version with message', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: { ...MOCK, timestamp: '2023-03-01T00:00:00.000Z' },
 					serverVersion: '1.4.0'
 				})
@@ -172,7 +172,7 @@ describe('checkServerVersionCompatibility', () => {
 	describe('Backend/Cloud and exceptions', () => {
 		test('valid version', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK,
 					serverVersion: '1.4.0'
 				})
@@ -183,7 +183,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('expired version and valid exception', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK,
 					serverVersion: '1.3.0'
 				})
@@ -194,7 +194,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('expired version and expired exception', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK,
 					serverVersion: '1.2.0'
 				})
@@ -205,7 +205,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('expired version and no exception', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK,
 					serverVersion: '1.1.0'
 				})
@@ -216,7 +216,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('server version is not supported', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK,
 					serverVersion: '1.0.0'
 				})
@@ -318,7 +318,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('from exception version', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK_MESSAGES,
 					serverVersion: '1.3.0'
 				})
@@ -337,7 +337,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('from exception', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK_MESSAGES,
 					serverVersion: '1.2.0'
 				})
@@ -356,7 +356,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('from supported version', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK_MESSAGES,
 					serverVersion: '1.4.0'
 				})
@@ -376,7 +376,7 @@ describe('checkServerVersionCompatibility', () => {
 
 		test('from root node', () => {
 			expect(
-				checkServerVersionCompatibility({
+				checkSupportedVersions({
 					supportedVersions: MOCK_MESSAGES,
 					serverVersion: '1.5.0'
 				})
