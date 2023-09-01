@@ -19,13 +19,21 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 	messages: [
 		{
 			remainingDays: 15,
-			message: 'message_token',
-			type: 'info'
+			message: {
+				title: 'title',
+				subtitle: 'subtitle',
+				description: 'description'
+			},
+			type: 'info',
+			link: 'Docs page'
 		}
 	],
 	i18n: {
 		en: {
-			message_token: 'Your server is about to be deprecated. Please update to the latest version.'
+			title: '{{workspace-name}} is running an unsupported version of Rocket.Chat',
+			subtitle: 'Mobile and desktop app access to {{workspace-name}} will be cut off in XX days.',
+			description:
+				'An automatic 30-day warning period has been applied to allow time for a workspace admin to update workspace to a supported software version.'
 		}
 	},
 	versions: [
@@ -48,14 +56,7 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 			},
 			{
 				version: '6.4.0',
-				expiration: '2023-08-30T00:00:00.000Z',
-				messages: [
-					{
-						remainingDays: 15,
-						message: 'message_token',
-						type: 'info'
-					}
-				]
+				expiration: '2023-08-30T00:00:00.000Z'
 			},
 			{
 				version: '6.2.0',
@@ -63,8 +64,13 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 				messages: [
 					{
 						remainingDays: 30,
-						message: 'message_token',
-						type: 'info'
+						message: {
+							title: 'title',
+							subtitle: 'subtitle',
+							description: 'description'
+						},
+						type: 'info',
+						link: 'Docs page'
 					}
 				]
 			}

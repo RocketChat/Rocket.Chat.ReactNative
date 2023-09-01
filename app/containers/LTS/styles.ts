@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
 		marginBottom: 24,
 		...sharedStyles.textBold
 	},
-	ltsDescriptionBold: {
+	ltsSubtitle: {
 		fontSize: 16,
 		lineHeight: 24,
 		marginBottom: 24,

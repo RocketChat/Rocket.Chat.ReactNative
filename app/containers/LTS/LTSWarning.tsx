@@ -5,22 +5,27 @@ import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
+import { useAppSelector } from '../../lib/hooks';
 
 export const LTSWarning = () => {
 	const { colors } = useTheme();
+	const { message, i18n } = useAppSelector(state => state.lts);
+	const lang = 'en';
+
+	if (!message) {
+		return null;
+	}
+
 	// TODO: i18n
 	return (
 		<View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
 			<View style={{ alignItems: 'center', padding: 24 }}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
-			<Text style={styles.ltsTitle}>Workspace is running an unsupported version of Rocket.Chat</Text>
-			<Text style={styles.ltsDescriptionBold}>Mobile and desktop app access to workspace-name will by cyt off in XX days</Text>
-			<Text style={styles.ltsDescription}>
-				An automatic 30-day warning period has been applied to allow time for a workspace admin to update workspace to a supported
-				software version.
-			</Text>
-			<Button title='Learn more' type='secondary' backgroundColor={'#EEEFF1'} onPress={() => alert('Go to docs!')} />
+			{message.message.title ? <Text style={styles.ltsTitle}>{i18n![lang][message.message.title]}</Text> : null}
+			{message.message.subtitle ? <Text style={styles.ltsSubtitle}>{i18n![lang][message.message.subtitle]}</Text> : null}
+			{message.message.description ? <Text style={styles.ltsDescription}>{i18n![lang][message.message.description]}</Text> : null}
+			<Button title='Learn more' type='secondary' backgroundColor={'#EEEFF1'} onPress={() => alert(message.link)} />
 		</View>
 	);
 };

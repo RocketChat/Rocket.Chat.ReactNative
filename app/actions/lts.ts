@@ -1,29 +1,29 @@
 import { Action } from 'redux';
 
 import { LTS } from './actionsTypes';
-import { LTSDictionary, LTSMessage } from '../definitions';
+import { LTSDictionary, LTSMessage, LTSStatus } from '../definitions';
 
 interface ISetLTSAction extends Action {
-	success: boolean;
-	messages?: LTSMessage[];
+	status: LTSStatus;
+	message?: LTSMessage;
 	i18n?: LTSDictionary;
 }
 
 export type TActionLTS = ISetLTSAction;
 
 export function setLTS({
-	success,
-	messages,
+	status,
+	message,
 	i18n
 }: {
-	success: boolean;
-	messages?: LTSMessage[];
+	status: LTSStatus;
+	message?: LTSMessage;
 	i18n?: LTSDictionary;
 }): ISetLTSAction {
 	return {
 		type: LTS.SET,
-		success,
-		messages,
+		status,
+		message,
 		i18n
 	};
 }

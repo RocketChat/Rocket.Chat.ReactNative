@@ -11,12 +11,13 @@ export type LTSDictionary = {
 export type LTSMessage = {
 	remainingDays: number;
 	message: {
-		title: string;
-		subtitle: string;
-		description: string;
+		title?: string;
+		subtitle?: string;
+		description?: string;
 	};
 	type: 'info' | 'alert' | 'error';
 	params?: Record<string, unknown>;
+	link: string;
 };
 
 export type LTSVersion = {
