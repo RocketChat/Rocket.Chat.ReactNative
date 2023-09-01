@@ -232,11 +232,9 @@ describe('checkServerVersionCompatibility', () => {
 			messages: [
 				{
 					remainingDays: 60,
-					message: {
-						title: 'title_root',
-						subtitle: 'subtitle_root',
-						description: 'description_root'
-					},
+					title: 'title_root',
+					subtitle: 'subtitle_root',
+					description: 'description_root',
 					type: 'info',
 					link: 'Docs page'
 				}
@@ -257,21 +255,17 @@ describe('checkServerVersionCompatibility', () => {
 					messages: [
 						{
 							remainingDays: 15,
-							message: {
-								title: 'title_version',
-								subtitle: 'subtitle_version',
-								description: 'description_version'
-							},
+							title: 'title_version',
+							subtitle: 'subtitle_version',
+							description: 'description_version',
 							type: 'info',
 							link: 'Docs page'
 						},
 						{
 							remainingDays: 30,
-							message: {
-								title: 'title_version',
-								subtitle: 'subtitle_version',
-								description: 'description_version'
-							},
+							title: 'title_version',
+							subtitle: 'subtitle_version',
+							description: 'description_version',
 							type: 'info',
 							link: 'Docs page'
 						}
@@ -292,11 +286,9 @@ describe('checkServerVersionCompatibility', () => {
 				messages: [
 					{
 						remainingDays: 15,
-						message: {
-							title: 'title_exception',
-							subtitle: 'subtitle_exception',
-							description: 'description_exception'
-						},
+						title: 'title_exception',
+						subtitle: 'subtitle_exception',
+						description: 'description_exception',
 						type: 'info',
 						link: 'Docs page'
 					}
@@ -308,11 +300,9 @@ describe('checkServerVersionCompatibility', () => {
 						messages: [
 							{
 								remainingDays: 30,
-								message: {
-									title: 'title_exception_version',
-									subtitle: 'subtitle_exception_version',
-									description: 'description_exception_version'
-								},
+								title: 'title_exception_version',
+								subtitle: 'subtitle_exception_version',
+								description: 'description_exception_version',
 								type: 'info',
 								link: 'Docs page'
 							}
@@ -336,11 +326,9 @@ describe('checkServerVersionCompatibility', () => {
 				status: 'warn',
 				message: {
 					remainingDays: 30,
-					message: {
-						title: 'title_exception_version',
-						subtitle: 'subtitle_exception_version',
-						description: 'description_exception_version'
-					},
+					title: 'title_exception_version',
+					subtitle: 'subtitle_exception_version',
+					description: 'description_exception_version',
 					type: 'info',
 					link: 'Docs page'
 				}
@@ -357,11 +345,9 @@ describe('checkServerVersionCompatibility', () => {
 				status: 'warn',
 				message: {
 					remainingDays: 15,
-					message: {
-						title: 'title_exception',
-						subtitle: 'subtitle_exception',
-						description: 'description_exception'
-					},
+					title: 'title_exception',
+					subtitle: 'subtitle_exception',
+					description: 'description_exception',
 					type: 'info',
 					link: 'Docs page'
 				}
@@ -378,11 +364,9 @@ describe('checkServerVersionCompatibility', () => {
 				status: 'warn',
 				message: {
 					remainingDays: 15,
-					message: {
-						title: 'title_version',
-						subtitle: 'subtitle_version',
-						description: 'description_version'
-					},
+					title: 'title_version',
+					subtitle: 'subtitle_version',
+					description: 'description_version',
 					type: 'info',
 					link: 'Docs page'
 				},
@@ -400,11 +384,9 @@ describe('checkServerVersionCompatibility', () => {
 				status: 'warn',
 				message: {
 					remainingDays: 60,
-					message: {
-						title: 'title_root',
-						subtitle: 'subtitle_root',
-						description: 'description_root'
-					},
+					title: 'title_root',
+					subtitle: 'subtitle_root',
+					description: 'description_root',
 					type: 'info',
 					link: 'Docs page'
 				},
@@ -430,11 +412,9 @@ describe('getMessage', () => {
 				messages: [
 					{
 						remainingDays: 1,
-						message: {
-							title: 'title_token',
-							subtitle: 'subtitle_token',
-							description: 'description_token'
-						},
+						title: 'title_token',
+						subtitle: 'subtitle_token',
+						description: 'description_token',
 						type: 'info',
 						link: 'Docs page'
 					}
@@ -450,21 +430,17 @@ describe('getMessage', () => {
 				messages: [
 					{
 						remainingDays: 11,
-						message: {
-							title: 'title_token',
-							subtitle: 'subtitle_token',
-							description: 'description_token'
-						},
+						title: 'title_token',
+						subtitle: 'subtitle_token',
+						description: 'description_token',
 						type: 'info',
 						link: 'Docs page'
 					},
 					{
 						remainingDays: 10,
-						message: {
-							title: 'title_token',
-							subtitle: 'subtitle_token',
-							description: 'description_token'
-						},
+						title: 'title_token',
+						subtitle: 'subtitle_token',
+						description: 'description_token',
 						type: 'info',
 						link: 'Docs page'
 					}
@@ -473,11 +449,9 @@ describe('getMessage', () => {
 			})
 		).toMatchObject({
 			remainingDays: 10,
-			message: {
-				title: 'title_token',
-				subtitle: 'subtitle_token',
-				description: 'description_token'
-			},
+			title: 'title_token',
+			subtitle: 'subtitle_token',
+			description: 'description_token',
 			type: 'info',
 			link: 'Docs page'
 		});

@@ -26,9 +26,9 @@ export const SupportedVersionsWarning = () => {
 			<View style={{ alignItems: 'center', padding: 24 }}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
-			{message.message.title ? <Text style={styles.title}>{i18n![lang][message.message.title]}</Text> : null}
-			{message.message.subtitle ? <Text style={styles.subtitle}>{i18n![lang][message.message.subtitle]}</Text> : null}
-			{message.message.description ? <Text style={styles.description}>{i18n![lang][message.message.description]}</Text> : null}
+			{message.title ? <Text style={styles.title}>{i18n![lang][message.title]}</Text> : null}
+			{message.subtitle ? <Text style={styles.subtitle}>{i18n![lang][message.subtitle]}</Text> : null}
+			{message.description ? <Text style={styles.description}>{i18n![lang][message.description]}</Text> : null}
 			<Button title='Learn more' type='secondary' backgroundColor={'#EEEFF1'} onPress={() => alert(message.link)} />
 		</View>
 	);

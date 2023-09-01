@@ -10,11 +10,9 @@ export type TSVDictionary = {
 
 export type TSVMessage = {
 	remainingDays: number;
-	message: {
-		title?: string;
-		subtitle?: string;
-		description?: string;
-	};
+	title?: string;
+	subtitle?: string;
+	description?: string;
 	type: 'info' | 'alert' | 'error';
 	params?: Record<string, unknown>;
 	link: string;

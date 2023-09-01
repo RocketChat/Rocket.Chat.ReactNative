@@ -8,12 +8,11 @@
 	"messages": [
 		{
 			"remainingDays": 15,
-			"message": {
-				"title": "title",
-				"subtitle": "subtitle",
-				"description": "description"
-			},
-			"type": "info"
+			"title": "title",
+			"subtitle": "subtitle",
+			"description": "description",
+			"type": "info",
+			"link": "Docs page"
 		}
 	],
 	"versions": [

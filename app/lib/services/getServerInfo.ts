@@ -19,11 +19,9 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 	messages: [
 		{
 			remainingDays: 15,
-			message: {
-				title: 'title',
-				subtitle: 'subtitle',
-				description: 'description'
-			},
+			title: 'title',
+			subtitle: 'subtitle',
+			description: 'description',
 			type: 'info',
 			link: 'Docs page'
 		}
@@ -64,11 +62,9 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 				messages: [
 					{
 						remainingDays: 30,
-						message: {
-							title: 'title',
-							subtitle: 'subtitle',
-							description: 'description'
-						},
+						title: 'title',
+						subtitle: 'subtitle',
+						description: 'description',
 						type: 'info',
 						link: 'Docs page'
 					}
