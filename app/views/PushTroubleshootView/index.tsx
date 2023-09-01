@@ -7,6 +7,7 @@ import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
+import CustomListSection from './components/CustomListSection';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
@@ -25,7 +26,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		<SafeAreaView testID='push-troubleshoot-view'>
 			<StatusBar />
 			<List.Container testID='push-troubleshoot-view-list'>
-				<List.Section title='Device_notification_settings'>
+				<CustomListSection title='Device_notification_settings' statusColor='#f00'>
 					<List.Separator />
 					<List.Item
 						title='Allow_push_notifications_for_rocket_chat'
@@ -33,7 +34,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 						testID='push-troubleshoot-view-allow-push-notifications'
 					/>
 					<List.Separator />
-				</List.Section>
+				</CustomListSection>
 
 				<List.Section title='Community_edition_push_quota'>
 					<List.Separator />
@@ -42,12 +43,12 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 					<List.Info info='Workspace_consumption_description' />
 				</List.Section>
 
-				<List.Section title='Push_gateway_connection'>
+				<CustomListSection title='Push_gateway_connection' statusColor='#0f0'>
 					<List.Separator />
 					<List.Item title='Test_push_notification' onPress={() => {}} testID='push-troubleshoot-view-push-gateway-connection' />
 					<List.Separator />
 					<List.Info info='Push_gateway_connection_description' />
-				</List.Section>
+				</CustomListSection>
 
 				<List.Section title='Notification_delay'>
 					<List.Separator />
