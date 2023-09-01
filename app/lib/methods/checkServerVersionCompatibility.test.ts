@@ -237,7 +237,8 @@ describe('checkServerVersionCompatibility', () => {
 						subtitle: 'subtitle_root',
 						description: 'description_root'
 					},
-					type: 'info'
+					type: 'info',
+					link: 'Docs page'
 				}
 			],
 			i18n: {
@@ -261,7 +262,8 @@ describe('checkServerVersionCompatibility', () => {
 								subtitle: 'subtitle_version',
 								description: 'description_version'
 							},
-							type: 'info'
+							type: 'info',
+							link: 'Docs page'
 						},
 						{
 							remainingDays: 30,
@@ -270,7 +272,8 @@ describe('checkServerVersionCompatibility', () => {
 								subtitle: 'subtitle_version',
 								description: 'description_version'
 							},
-							type: 'info'
+							type: 'info',
+							link: 'Docs page'
 						}
 					]
 				},
@@ -294,7 +297,8 @@ describe('checkServerVersionCompatibility', () => {
 							subtitle: 'subtitle_exception',
 							description: 'description_exception'
 						},
-						type: 'info'
+						type: 'info',
+						link: 'Docs page'
 					}
 				],
 				versions: [
@@ -309,7 +313,8 @@ describe('checkServerVersionCompatibility', () => {
 									subtitle: 'subtitle_exception_version',
 									description: 'description_exception_version'
 								},
-								type: 'info'
+								type: 'info',
+								link: 'Docs page'
 							}
 						]
 					},
@@ -336,7 +341,8 @@ describe('checkServerVersionCompatibility', () => {
 						subtitle: 'subtitle_exception_version',
 						description: 'description_exception_version'
 					},
-					type: 'info'
+					type: 'info',
+					link: 'Docs page'
 				}
 			});
 		});
@@ -356,7 +362,8 @@ describe('checkServerVersionCompatibility', () => {
 						subtitle: 'subtitle_exception',
 						description: 'description_exception'
 					},
-					type: 'info'
+					type: 'info',
+					link: 'Docs page'
 				}
 			});
 		});
@@ -376,7 +383,8 @@ describe('checkServerVersionCompatibility', () => {
 						subtitle: 'subtitle_version',
 						description: 'description_version'
 					},
-					type: 'info'
+					type: 'info',
+					link: 'Docs page'
 				},
 				i18n: MOCK_I18N
 			});
@@ -397,7 +405,8 @@ describe('checkServerVersionCompatibility', () => {
 						subtitle: 'subtitle_root',
 						description: 'description_root'
 					},
-					type: 'info'
+					type: 'info',
+					link: 'Docs page'
 				},
 				i18n: MOCK_I18N
 			});
@@ -426,7 +435,8 @@ describe('getMessage', () => {
 							subtitle: 'subtitle_token',
 							description: 'description_token'
 						},
-						type: 'info'
+						type: 'info',
+						link: 'Docs page'
 					}
 				],
 				expiration: '2023-04-10T00:00:00.000Z'
@@ -445,7 +455,8 @@ describe('getMessage', () => {
 							subtitle: 'subtitle_token',
 							description: 'description_token'
 						},
-						type: 'info'
+						type: 'info',
+						link: 'Docs page'
 					},
 					{
 						remainingDays: 10,
@@ -454,7 +465,8 @@ describe('getMessage', () => {
 							subtitle: 'subtitle_token',
 							description: 'description_token'
 						},
-						type: 'info'
+						type: 'info',
+						link: 'Docs page'
 					}
 				],
 				expiration: '2023-04-10T00:00:00.000Z'
@@ -466,7 +478,8 @@ describe('getMessage', () => {
 				subtitle: 'subtitle_token',
 				description: 'description_token'
 			},
-			type: 'info'
+			type: 'info',
+			link: 'Docs page'
 		});
 	});
 });
