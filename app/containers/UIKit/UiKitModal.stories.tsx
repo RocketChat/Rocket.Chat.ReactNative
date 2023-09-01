@@ -201,6 +201,34 @@ export const ModalFormInput = () =>
 				text: 'Share with...',
 				emoji: true
 			}
+		},
+		{
+			type: 'input',
+			element: {
+				type: 'multi_static_select',
+				initialValue: [1],
+				options: [
+					{
+						text: {
+							type: 'plain_text',
+							text: 'John'
+						},
+						value: 1
+					},
+					{
+						text: {
+							type: 'plain_text',
+							text: 'Dog'
+						},
+						value: 2
+					}
+				]
+			},
+			label: {
+				type: 'plain_text',
+				text: 'Share with...',
+				emoji: true
+			}
 		}
 	]);
 ModalFormInput.storyName = 'Modal - Form Input';
