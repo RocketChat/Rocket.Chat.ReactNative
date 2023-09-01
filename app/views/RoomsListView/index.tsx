@@ -45,7 +45,7 @@ import {
 	IApplicationState,
 	ISubscription,
 	IUser,
-	LTSStatus,
+	TSVStatus,
 	RootEnum,
 	SubscriptionType,
 	TSubscriptionModel
@@ -68,7 +68,7 @@ import {
 } from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
-import { LTSExpired } from '../../containers/LTS';
+import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -96,7 +96,7 @@ interface IRoomsListViewProps {
 	useRealName: boolean;
 	isMasterDetail: boolean;
 	notificationPresenceCap: boolean;
-	ltsStatus: LTSStatus;
+	supportedVersionsStatus: TSVStatus;
 	subscribedRoom: string;
 	width: number;
 	insets: {
@@ -167,7 +167,7 @@ const shouldUpdateProps = [
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
 	'createDiscussionPermission',
-	'ltsStatus'
+	'supportedVersionsStatus'
 ];
 
 const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
@@ -359,7 +359,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDiscussionPermission,
 			showAvatar,
 			displayMode,
-			ltsStatus
+			supportedVersionsStatus
 		} = this.props;
 		const { item } = this.state;
 
@@ -383,7 +383,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
 			notificationPresenceCap !== prevProps.notificationPresenceCap ||
-			ltsStatus !== prevProps.ltsStatus
+			supportedVersionsStatus !== prevProps.supportedVersionsStatus
 		) {
 			this.setHeader();
 		}
@@ -439,7 +439,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, ltsStatus, theme } = this.props;
+		const { navigation, isMasterDetail, notificationPresenceCap, supportedVersionsStatus, theme } = this.props;
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
@@ -456,7 +456,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		const getBadge = () => {
-			if (ltsStatus === 'warn') {
+			if (supportedVersionsStatus === 'warn') {
 				return <HeaderButton.BadgeWarn color={colors[theme].dangerColor} />;
 			}
 			if (notificationPresenceCap) {
@@ -480,7 +480,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							  () => navigation.toggleDrawer()
 					}
 					badge={() => getBadge()}
-					disabled={ltsStatus === 'expired'}
+					disabled={supportedVersionsStatus === 'expired'}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
@@ -491,20 +491,20 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							iconName='create'
 							onPress={this.goToNewMessage}
 							testID='rooms-list-view-create-channel'
-							disabled={ltsStatus === 'expired'}
+							disabled={supportedVersionsStatus === 'expired'}
 						/>
 					) : null}
 					<HeaderButton.Item
 						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
-						disabled={ltsStatus === 'expired'}
+						disabled={supportedVersionsStatus === 'expired'}
 					/>
 					<HeaderButton.Item
 						iconName='directory'
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
-						disabled={ltsStatus === 'expired'}
+						disabled={supportedVersionsStatus === 'expired'}
 					/>
 				</HeaderButton.Container>
 			)
@@ -1028,7 +1028,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode, ltsStatus } = this.props;
+		const { theme, refreshing, displayMode, supportedVersionsStatus } = this.props;
 
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
@@ -1036,8 +1036,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return <ActivityIndicator />;
 		}
 
-		if (ltsStatus === 'expired') {
-			return <LTSExpired />;
+		if (supportedVersionsStatus === 'expired') {
+			return <SupportedVersionsExpired />;
 		}
 
 		return (
@@ -1085,7 +1085,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	notificationPresenceCap: state.app.notificationPresenceCap,
-	ltsStatus: state.lts.status,
+	supportedVersionsStatus: state.supportedVersions.status,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,

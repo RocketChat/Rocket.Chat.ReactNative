@@ -55,7 +55,7 @@ const Header = React.memo(
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
-		const { status: ltsStatus } = useAppSelector(state => state.lts);
+		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
 		const { isLandscape } = useOrientation();
 		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -66,7 +66,7 @@ const Header = React.memo(
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 		}
 		let subtitle;
-		if (ltsStatus === 'expired') {
+		if (supportedVersionsStatus === 'expired') {
 			subtitle = 'Cannot connect';
 		} else if (connecting) {
 			subtitle = I18n.t('Connecting');

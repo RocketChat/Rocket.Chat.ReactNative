@@ -9,11 +9,11 @@ import { useAppSelector } from '../../lib/hooks';
 import { showActionSheetRef } from '../ActionSheet';
 
 // Action sheet snaps
-export const LTSWarningSnaps = [600];
+export const SupportedVersionsWarningSnaps = [600];
 
-export const LTSWarning = () => {
+export const SupportedVersionsWarning = () => {
 	const { colors } = useTheme();
-	const { message, i18n } = useAppSelector(state => state.lts);
+	const { message, i18n } = useAppSelector(state => state.supportedVersions);
 	const lang = 'en';
 
 	if (!message) {
@@ -26,12 +26,13 @@ export const LTSWarning = () => {
 			<View style={{ alignItems: 'center', padding: 24 }}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
-			{message.message.title ? <Text style={styles.ltsTitle}>{i18n![lang][message.message.title]}</Text> : null}
-			{message.message.subtitle ? <Text style={styles.ltsSubtitle}>{i18n![lang][message.message.subtitle]}</Text> : null}
-			{message.message.description ? <Text style={styles.ltsDescription}>{i18n![lang][message.message.description]}</Text> : null}
+			{message.message.title ? <Text style={styles.title}>{i18n![lang][message.message.title]}</Text> : null}
+			{message.message.subtitle ? <Text style={styles.subtitle}>{i18n![lang][message.message.subtitle]}</Text> : null}
+			{message.message.description ? <Text style={styles.description}>{i18n![lang][message.message.description]}</Text> : null}
 			<Button title='Learn more' type='secondary' backgroundColor={'#EEEFF1'} onPress={() => alert(message.link)} />
 		</View>
 	);
 };
 
-export const showLTSWarningActionSheet = () => showActionSheetRef({ children: <LTSWarning />, snaps: LTSWarningSnaps });
+export const showSVWarningActionSheet = () =>
+	showActionSheetRef({ children: <SupportedVersionsWarning />, snaps: SupportedVersionsWarningSnaps });

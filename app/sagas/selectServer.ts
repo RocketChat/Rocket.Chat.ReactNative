@@ -24,7 +24,7 @@ import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
-import { setLTS } from '../actions/lts';
+import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
@@ -44,7 +44,7 @@ import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
-import { showLTSWarningActionSheet } from '../containers/LTS';
+import { showSVWarningActionSheet } from '../containers/SupportedVersions';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -120,10 +120,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 			supportedVersions: serverRecord.supportedVersions,
 			serverVersion: serverRecord.version
 		});
-		yield put(setLTS(compatibilityResult));
+		yield put(setSupportedVersions(compatibilityResult));
 
 		if (compatibilityResult.status === 'warn') {
-			showLTSWarningActionSheet();
+			showSVWarningActionSheet();
 		}
 
 		return serverRecord;

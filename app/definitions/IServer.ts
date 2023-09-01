@@ -2,13 +2,13 @@ import Model from '@nozbe/watermelondb/Model';
 
 import { IEnterpriseModules } from '../reducers/enterpriseModules';
 
-export type LTSStatus = 'supported' | 'expired' | 'warn';
+export type TSVStatus = 'supported' | 'expired' | 'warn';
 
-export type LTSDictionary = {
+export type TSVDictionary = {
 	[lng: string]: Record<string, string>;
 };
 
-export type LTSMessage = {
+export type TSVMessage = {
 	remainingDays: number;
 	message: {
 		title?: string;
@@ -20,23 +20,23 @@ export type LTSMessage = {
 	link: string;
 };
 
-export type LTSVersion = {
+export type TSVVersion = {
 	version: string;
 	expiration: string; // Date;
-	messages?: LTSMessage[];
+	messages?: TSVMessage[];
 };
 
 export interface ISupportedVersions {
 	timestamp: string;
-	messages?: LTSMessage[];
-	versions: LTSVersion[];
+	messages?: TSVMessage[];
+	versions: TSVVersion[];
 	exceptions?: {
 		domain: string;
 		uniqueId: string;
-		messages?: LTSMessage[];
-		versions: LTSVersion[];
+		messages?: TSVMessage[];
+		versions: TSVVersion[];
 	};
-	i18n?: LTSDictionary;
+	i18n?: TSVDictionary;
 }
 
 export interface IServerInfo {
@@ -53,13 +53,13 @@ export interface IServerInfo {
 export interface ICloudInfo {
 	signed: string; // FIXME: find a good type SerializedJWT<SupportedVersions>
 	timestamp: string;
-	messages?: LTSMessage[];
-	versions: LTSVersion[];
+	messages?: TSVMessage[];
+	versions: TSVVersion[];
 	exceptions?: {
 		domain: string;
 		uniqueId: string;
-		messages?: LTSMessage[];
-		versions: LTSVersion[];
+		messages?: TSVMessage[];
+		versions: TSVVersion[];
 	};
 }
 

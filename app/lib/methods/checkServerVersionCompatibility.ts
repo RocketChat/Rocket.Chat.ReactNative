@@ -1,22 +1,22 @@
 import { satisfies } from 'semver';
 import moment from 'moment';
 
-import { ISupportedVersions, LTSDictionary, LTSMessage, LTSStatus, LTSVersion } from '../../definitions';
+import { ISupportedVersions, TSVDictionary, TSVMessage, TSVStatus, TSVVersion } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
 interface IServerVersionCompatibilityResult {
-	status: LTSStatus;
-	message?: LTSMessage;
-	i18n?: LTSDictionary;
+	status: TSVStatus;
+	message?: TSVMessage;
+	i18n?: TSVDictionary;
 }
 
 export const getMessage = ({
 	messages,
 	expiration
 }: {
-	messages?: LTSMessage[];
+	messages?: TSVMessage[];
 	expiration?: string;
-}): LTSMessage | undefined => {
+}): TSVMessage | undefined => {
 	if (!messages?.length || !expiration || moment(expiration).diff(new Date(), 'days') < 0) {
 		return;
 	}
@@ -24,7 +24,7 @@ export const getMessage = ({
 	return sortedMessages.find(({ remainingDays }) => moment(expiration).diff(new Date(), 'days') <= remainingDays);
 };
 
-const getStatus = ({ expiration, message }: { expiration?: string; message?: LTSMessage }): LTSStatus => {
+const getStatus = ({ expiration, message }: { expiration?: string; message?: TSVMessage }): TSVStatus => {
 	if (!(expiration && new Date(expiration) >= new Date())) {
 		return 'expired';
 	}
@@ -48,8 +48,8 @@ export const checkServerVersionCompatibility = function ({
 	if (!supportedVersions || supportedVersions.timestamp < builtInSupportedVersions.timestamp) {
 		const versionInfo = builtInSupportedVersions.versions.find(({ version }) =>
 			satisfies(version, serverVersionTilde)
-		) as LTSVersion;
-		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as LTSMessage[]);
+		) as TSVVersion;
+		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as TSVMessage[]);
 		const message = getMessage({ messages, expiration: versionInfo?.expiration });
 		return {
 			status: getStatus({ expiration: versionInfo?.expiration, message }),

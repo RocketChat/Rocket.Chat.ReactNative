@@ -23,7 +23,7 @@ import permissions from './permissions';
 import roles from './roles';
 import videoConf from './videoConf';
 import usersRoles from './usersRoles';
-import lts from './lts';
+import supportedVersions from './supportedVersions';
 
 export default combineReducers({
 	settings,
@@ -49,5 +49,5 @@ export default combineReducers({
 	roles,
 	videoConf,
 	usersRoles,
-	lts
+	supportedVersions
 });

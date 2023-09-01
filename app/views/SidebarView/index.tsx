@@ -21,11 +21,11 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
-import { IApplicationState, IUser, LTSStatus } from '../../definitions';
+import { IApplicationState, IUser, TSVStatus } from '../../definitions';
 import * as List from '../../containers/List';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
-import { LTSWarning, LTSWarningSnaps } from '../../containers/LTS';
+import { SupportedVersionsWarning, SupportedVersionsWarningSnaps } from '../../containers/SupportedVersions';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -44,7 +44,7 @@ interface ISidebarProps {
 	allowStatusMessage: boolean;
 	notificationPresenceCap: boolean;
 	Presence_broadcast_disabled: boolean;
-	ltsStatus: LTSStatus;
+	supportedVersionsStatus: TSVStatus;
 	isMasterDetail: boolean;
 	viewStatisticsPermission: string[];
 	viewRoomAdministrationPermission: string[];
@@ -290,17 +290,17 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
-	renderLTSWarn = () => {
-		const { theme, ltsStatus, showActionSheet } = this.props;
-		if (ltsStatus === 'warn') {
+	renderSupportedVersionsWarn = () => {
+		const { theme, supportedVersionsStatus, showActionSheet } = this.props;
+		if (supportedVersionsStatus === 'warn') {
 			return (
 				<SidebarItem
 					text={'Update required'} // TODO: i18n
 					textColor={themes[theme!].dangerColor}
 					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
 					theme={theme!}
-					onPress={() => showActionSheet({ children: <LTSWarning />, snaps: LTSWarningSnaps })}
-					testID={`sidebar-lts-warn`}
+					onPress={() => showActionSheet({ children: <SupportedVersionsWarning />, snaps: SupportedVersionsWarningSnaps })}
+					testID={`sidebar-supported-versions-warn`}
 				/>
 			);
 		}
@@ -345,7 +345,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					</TouchableWithoutFeedback>
 
 					<List.Separator />
-					{this.renderLTSWarn()}
+					{this.renderSupportedVersionsWarn()}
 
 					<List.Separator />
 
@@ -374,7 +374,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
 	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled as boolean,
 	notificationPresenceCap: state.app.notificationPresenceCap,
-	ltsStatus: state.lts.status,
+	supportedVersionsStatus: state.supportedVersions.status,
 	isMasterDetail: state.app.isMasterDetail,
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],

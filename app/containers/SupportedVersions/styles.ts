@@ -3,19 +3,19 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 
 export const styles = StyleSheet.create({
-	ltsTitle: {
+	title: {
 		fontSize: 20,
 		lineHeight: 30,
 		marginBottom: 24,
 		...sharedStyles.textBold
 	},
-	ltsSubtitle: {
+	subtitle: {
 		fontSize: 16,
 		lineHeight: 24,
 		marginBottom: 24,
 		...sharedStyles.textBold
 	},
-	ltsDescription: {
+	description: {
 		fontSize: 16,
 		lineHeight: 24,
 		marginBottom: 24,

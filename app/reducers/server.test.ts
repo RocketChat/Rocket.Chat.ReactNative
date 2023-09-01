@@ -61,7 +61,7 @@ describe('test server reducer', () => {
 	});
 
 	it('should return modified store after serverRequestFailure', () => {
-		mockedStore.dispatch(serverFailure('error'));
+		mockedStore.dispatch(serverFailure());
 		const state = mockedStore.getState().server;
 		expect(state.failure).toEqual(true);
 	});
