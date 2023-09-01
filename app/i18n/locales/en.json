@@ -744,5 +744,17 @@
   "Incoming_call_from": "Incoming call from",
   "Call_started": "Call started",
   "Message_has_been_shared":"Message has been shared",
-  "No_channels_in_team": "No Channels on this team"
+  "No_channels_in_team": "No Channels on this team",
+  "Push_Troubleshooting": "Push Troubleshooting",
+  "Device_notification_settings": "Device notification settings",
+  "Allow_push_notifications_for_rocket_chat": "Allow push notifications for Rocket.Chat",
+  "Community_edition_push_quota": "Community Edition push quota",
+  "Workspace_consumption": "Workspace consumption",
+  "Workspace_consumption_description": "There's a set amount of push of allowed push notifications per month",
+  "Push_gateway_connection": "Push Gateway Connection",
+  "Test_push_notification": "Test push notification",
+  "Push_gateway_connection_description": "Send a push notification to yourself to check if the gateway is working",
+  "Notification_delay": "Notification delay",
+  "Documentation": "Documentation",
+  "Notification_delay_description": "There are factors that can contribute to delayed notifications. Learn more in Rocket.Chat's docs."
 }

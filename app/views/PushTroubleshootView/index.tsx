@@ -1,120 +1,65 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useEffect, useState } from 'react';
-import { Switch } from 'react-native';
+import React, { useEffect } from 'react';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../../lib/constants';
-import { useAppSelector } from '../../lib/hooks';
-import useServer from '../../lib/methods/useServer';
 import { SettingsStackParamList } from '../../stacks/types';
-import { handleLocalAuthentication } from '../../lib/methods/helpers/localAuthentication';
-import {
-	events,
-	getReportAnalyticsEventsValue,
-	getReportCrashErrorsValue,
-	logEvent,
-	toggleAnalyticsEventsReport,
-	toggleCrashErrorsReport
-} from '../../lib/methods/helpers/log';
+import { useTheme } from '../../theme';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
 }
 
 const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {
-	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
-	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
-	const [server] = useServer();
-
-	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
+	const { colors } = useTheme();
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Security_and_privacy')
+			title: I18n.t('Push_Troubleshooting')
 		});
 	}, [navigation]);
 
-	const toggleCrashReport = (value: boolean) => {
-		logEvent(events.SP_TOGGLE_CRASH_REPORT);
-		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
-		setCrashReportState(value);
-		toggleCrashErrorsReport(value);
-	};
-
-	const toggleAnalyticsEvents = (value: boolean) => {
-		logEvent(events.SP_TOGGLE_ANALYTICS_EVENTS);
-		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
-		setAnalyticsEventsState(value);
-		toggleAnalyticsEventsReport(value);
-	};
-
-	const navigateToScreen = (screen: 'E2EEncryptionSecurityView' | 'ScreenLockConfigView') => {
-		// @ts-ignore
-		logEvent(events[`SP_GO_${screen.replace('View', '').toUpperCase()}`]);
-		navigation.navigate(screen);
-	};
-
-	const navigateToScreenLockConfigView = async () => {
-		if (server?.autoLock) {
-			await handleLocalAuthentication(true);
-		}
-		navigateToScreen('ScreenLockConfigView');
-	};
-
 	return (
-		<SafeAreaView testID='security-privacy-view'>
+		<SafeAreaView testID='push-troubleshoot-view'>
 			<StatusBar />
-			<List.Container testID='security-privacy-view-list'>
-				<List.Section>
+			<List.Container testID='push-troubleshoot-view-list'>
+				<List.Section title='Device_notification_settings'>
 					<List.Separator />
-					{e2eEnabled ? (
-						<>
-							<List.Item
-								title='E2E_Encryption'
-								showActionIndicator
-								onPress={() => navigateToScreen('E2EEncryptionSecurityView')}
-								testID='security-privacy-view-e2e-encryption'
-							/>
-							<List.Separator />
-						</>
-					) : null}
 					<List.Item
-						title='Screen_lock'
-						showActionIndicator
-						onPress={navigateToScreenLockConfigView}
-						testID='security-privacy-view-screen-lock'
+						title='Allow_push_notifications_for_rocket_chat'
+						onPress={() => {}}
+						testID='push-troubleshoot-view-allow-push-notifications'
 					/>
 					<List.Separator />
 				</List.Section>
 
-				{!isFDroidBuild ? (
-					<>
-						<List.Section>
-							<List.Separator />
-							<List.Item
-								title='Log_analytics_events'
-								testID='security-privacy-view-analytics-events'
-								right={() => (
-									<Switch value={analyticsEventsState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleAnalyticsEvents} />
-								)}
-							/>
-							<List.Separator />
-							<List.Item
-								title='Send_crash_report'
-								testID='security-privacy-view-crash-report'
-								right={() => (
-									<Switch value={crashReportState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleCrashReport} />
-								)}
-							/>
-							<List.Separator />
-							<List.Info info='Crash_report_disclaimer' />
-						</List.Section>
-					</>
-				) : null}
+				<List.Section title='Community_edition_push_quota'>
+					<List.Separator />
+					<List.Item title='Workspace_consumption' onPress={() => {}} testID='push-troubleshoot-view-workspace-consumption' />
+					<List.Separator />
+					<List.Info info='Workspace_consumption_description' />
+				</List.Section>
+
+				<List.Section title='Push_gateway_connection'>
+					<List.Separator />
+					<List.Item title='Test_push_notification' onPress={() => {}} testID='push-troubleshoot-view-push-gateway-connection' />
+					<List.Separator />
+					<List.Info info='Push_gateway_connection_description' />
+				</List.Section>
+
+				<List.Section title='Notification_delay'>
+					<List.Separator />
+					<List.Item
+						title='Documentation'
+						onPress={() => {}}
+						right={() => <List.Icon size={32} name='new-window' color={colors.fontAnnotation} />}
+						testID='push-troubleshoot-view-notification-delay'
+					/>
+					<List.Separator />
+					<List.Info info='Notification_delay_description' />
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);
