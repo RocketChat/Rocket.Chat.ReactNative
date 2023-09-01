@@ -25,7 +25,7 @@ import { IApplicationState, IUser, LTSStatus } from '../../definitions';
 import * as List from '../../containers/List';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
-import { LTSWarning } from '../../containers/LTS';
+import { LTSWarning, LTSWarningSnaps } from '../../containers/LTS';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -299,7 +299,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					textColor={themes[theme!].dangerColor}
 					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
 					theme={theme!}
-					onPress={() => showActionSheet({ children: <LTSWarning />, snaps: [600] })}
+					onPress={() => showActionSheet({ children: <LTSWarning />, snaps: LTSWarningSnaps })}
 					testID={`sidebar-lts-warn`}
 				/>
 			);

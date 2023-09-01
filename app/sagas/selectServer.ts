@@ -44,6 +44,7 @@ import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
+import { showLTSWarningActionSheet } from '../containers/LTS';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -120,6 +121,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 			serverVersion: serverRecord.version
 		});
 		yield put(setLTS(compatibilityResult));
+
+		if (compatibilityResult.status === 'warn') {
+			showLTSWarningActionSheet();
+		}
 
 		return serverRecord;
 	} catch (e) {

@@ -68,6 +68,10 @@ export const ActionSheetProvider = React.memo(({ children }: { children: React.R
 	);
 });
 
+export const showActionSheetRef = (options: TActionSheetOptions): void => {
+	actionSheetRef?.current?.showActionSheet(options);
+};
+
 export const hideActionSheetRef = (): void => {
 	actionSheetRef?.current?.hideActionSheet();
 };

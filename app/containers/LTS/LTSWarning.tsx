@@ -6,6 +6,10 @@ import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
 import { useAppSelector } from '../../lib/hooks';
+import { showActionSheetRef } from '../ActionSheet';
+
+// Action sheet snaps
+export const LTSWarningSnaps = [600];
 
 export const LTSWarning = () => {
 	const { colors } = useTheme();
@@ -29,3 +33,5 @@ export const LTSWarning = () => {
 		</View>
 	);
 };
+
+export const showLTSWarningActionSheet = () => showActionSheetRef({ children: <LTSWarning />, snaps: LTSWarningSnaps });
