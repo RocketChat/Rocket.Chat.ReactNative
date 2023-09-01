@@ -37,6 +37,7 @@ import {
 } from '../lib/methods';
 import { Services } from '../lib/services';
 import { setUsersRoles } from '../actions/usersRoles';
+import { showSVWarningActionSheet } from '../containers/SupportedVersions';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
@@ -208,6 +209,11 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));
+		}
+
+		const { status: supportedVersionsStatus } = yield select(state => state.supportedVersions);
+		if (supportedVersionsStatus === 'warn') {
+			showSVWarningActionSheet();
 		}
 	} catch (e) {
 		log(e);

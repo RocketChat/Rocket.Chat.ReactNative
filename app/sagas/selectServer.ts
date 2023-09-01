@@ -44,7 +44,6 @@ import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
-import { showSVWarningActionSheet } from '../containers/SupportedVersions';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -121,10 +120,6 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }: { s
 			serverVersion: serverRecord.version
 		});
 		yield put(setSupportedVersions(compatibilityResult));
-
-		if (compatibilityResult.status === 'warn') {
-			showSVWarningActionSheet();
-		}
 
 		return serverRecord;
 	} catch (e) {
