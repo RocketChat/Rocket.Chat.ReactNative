@@ -41,6 +41,7 @@ import DisplayPrefsView from '../views/DisplayPrefsView';
 // Settings Stack
 import SettingsView from '../views/SettingsView';
 import SecurityPrivacyView from '../views/SecurityPrivacyView';
+import PushTroubleshootView from '../views/PushTroubleshootView';
 import E2EEncryptionSecurityView from '../views/E2EEncryptionSecurityView';
 import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
@@ -115,6 +116,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='AutoTranslateView' component={AutoTranslateView} />
 			<ChatsStack.Screen name='DirectoryView' component={DirectoryView} options={DirectoryView.navigationOptions} />
 			<ChatsStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
+			<ChatsStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<ChatsStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 			<ChatsStack.Screen name='CloseLivechatView' component={CloseLivechatView} />
 			<ChatsStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
@@ -152,6 +154,7 @@ const ProfileStackNavigator = () => {
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
+			<ProfileStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<ProfileStack.Screen name='PickerView' component={PickerView} />
 		</ProfileStack.Navigator>
 	);
@@ -168,6 +171,7 @@ const SettingsStackNavigator = () => {
 		>
 			<SettingsStack.Screen name='SettingsView' component={SettingsView} />
 			<SettingsStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
+			<SettingsStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<SettingsStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} />
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
