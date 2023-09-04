@@ -1,8 +1,27 @@
 import { useAppSelector } from '../../lib/hooks';
 
+const applyParams = (message: string, params: Record<string, unknown>) => {
+	const keys = Object.keys(params);
+	const regex = new RegExp(`{{(${keys.join('|')})}}`, 'g');
+	return message.replace(regex, (match, p1) => params[p1] as string);
+};
+
+const useUser = () => {
+	const { username, name, emails, language } = useAppSelector(state => state.login.user);
+	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
+	const user = useRealName ? name : username;
+	return { user, email: emails?.[0]?.address, language };
+};
+
 export const useSupportedVersionMessage = () => {
 	const { message, i18n } = useAppSelector(state => state.supportedVersions);
-	const { language = 'en' } = useAppSelector(state => state.login.user);
+	const { language = 'en', user, email } = useUser();
+
+	// const defaultParams = ['instance_ws_name', 'instance_domain', 'remaining_days'];
+	const params = {
+		instance_username: user,
+		instance_email: email
+	};
 
 	if (!message || !i18n) {
 		return null;
@@ -10,10 +29,12 @@ export const useSupportedVersionMessage = () => {
 
 	const i18nLang = i18n[language] ?? i18n.en;
 
+	const getTranslation = (key: string | undefined) => (key && i18nLang[key] ? applyParams(i18nLang[key], params) : undefined);
+
 	return {
-		title: i18nLang.title,
-		subtitle: i18nLang.subtitle,
-		description: i18nLang.description,
+		title: getTranslation(message.title),
+		subtitle: getTranslation(message.subtitle),
+		description: getTranslation(message.description),
 		link: message.link
 	};
 };

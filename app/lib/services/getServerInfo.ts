@@ -30,8 +30,11 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 		en: {
 			title: '{{workspace-name}} is running an unsupported version of Rocket.Chat',
 			subtitle: 'Mobile and desktop app access to {{workspace-name}} will be cut off in XX days.',
-			description:
-				'An automatic 30-day warning period has been applied to allow time for a workspace admin to update workspace to a supported software version.'
+			description: 'User {{instance_username}}, Email {{instance_email}}'
+		},
+		'pt-BR': {
+			title: 'alo title',
+			subtitle: 'asiudhasodhasoiudhoaidasd'
 		}
 	},
 	versions: [
