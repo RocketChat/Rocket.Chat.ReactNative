@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
-import 'react-native-url-polyfill/auto';
 import { AppRegistry } from 'react-native';
 
 import { name as appName, share as shareName } from './app.json';

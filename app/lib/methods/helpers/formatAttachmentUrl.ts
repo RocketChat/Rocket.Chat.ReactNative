@@ -1,3 +1,5 @@
+import { URL } from 'react-native-url-polyfill';
+
 import { LOCAL_DOCUMENT_DIRECTORY } from '../handleMediaDownload';
 
 function setParamInUrl({ url, token, userId }: { url: string; token: string; userId: string }) {
