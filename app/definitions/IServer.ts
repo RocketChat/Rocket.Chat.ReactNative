@@ -77,6 +77,7 @@ export interface IServer {
 	enterpriseModules: IEnterpriseModules;
 	E2E_Enable: boolean;
 	supportedVersions?: ISupportedVersions;
+	supportedVersionsWarningAt?: Date;
 }
 
 export type TServerModel = IServer & Model;

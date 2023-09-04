@@ -37,7 +37,7 @@ import {
 } from '../lib/methods';
 import { Services } from '../lib/services';
 import { setUsersRoles } from '../actions/usersRoles';
-import { showSVWarningActionSheet } from '../containers/SupportedVersions';
+import { showSupportedVersionsWarningActionSheet } from '../containers/SupportedVersions';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
@@ -213,7 +213,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		const { status: supportedVersionsStatus } = yield select(state => state.supportedVersions);
 		if (supportedVersionsStatus === 'warn') {
-			showSVWarningActionSheet();
+			showSupportedVersionsWarningActionSheet(server);
 		}
 	} catch (e) {
 		log(e);

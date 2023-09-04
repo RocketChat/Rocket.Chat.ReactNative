@@ -5,7 +5,6 @@ import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
-import { showActionSheetRef } from '../ActionSheet';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
 
 export const SupportedVersionsWarningSnaps = [600];
@@ -48,6 +47,3 @@ export const SupportedVersionsWarning = () => {
 		</View>
 	);
 };
-
-export const showSVWarningActionSheet = () =>
-	showActionSheetRef({ children: <SupportedVersionsWarning />, snaps: SupportedVersionsWarningSnaps });

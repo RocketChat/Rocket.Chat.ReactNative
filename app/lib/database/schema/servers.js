@@ -39,7 +39,8 @@ export default appSchema({
 				{ name: 'unique_id', type: 'string', isOptional: true },
 				{ name: 'enterprise_modules', type: 'string', isOptional: true },
 				{ name: 'e2e_enable', type: 'boolean', isOptional: true },
-				{ name: 'supported_versions', type: 'string', isOptional: true }
+				{ name: 'supported_versions', type: 'string', isOptional: true },
+				{ name: 'supported_versions_warning_at', type: 'number', isOptional: true }
 			]
 		}),
 		tableSchema({
