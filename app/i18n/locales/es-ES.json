@@ -276,5 +276,6 @@
   "Search_messages": "Buscar mensajes",
   "Add_server": "Añadir servidor",
   "Broadcast_hint": "Sólo los usuarios autorizados pueden escribir nuevos mensajes, el resto podrán responder sobre los mismos.",
-  "and_N_more": "y {{count}} más"
+  "and_N_more": "y {{count}} más",
+  "Audio": "Audio"
 }
