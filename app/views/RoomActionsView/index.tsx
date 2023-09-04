@@ -1109,7 +1109,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						{teamId && isTeamRoom({ teamId, joined }) ? (
 							<>
 								<List.Item
-									title='Teams'
+									title='Channels'
 									onPress={() => {
 										logEvent(events.ROOM_GO_TEAM_CHANNELS);
 										if (isMasterDetail) {
