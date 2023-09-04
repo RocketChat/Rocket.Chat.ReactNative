@@ -44,6 +44,7 @@ import { Services } from '../lib/services';
 import { connect } from '../lib/services/connect';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
+import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -138,14 +139,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		const serversDB = database.servers;
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
-		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {
-			try {
-				// search credentials on database
-				const userRecord = yield* call(userCollections.find, userId);
+			// search credentials on database
+			const userRecord = yield* call(getLoggedUserById, userId);
+			if (userRecord) {
 				user = {
 					id: userRecord.id,
 					token: userRecord.token,
@@ -159,8 +158,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					bio: userRecord.bio,
 					nickname: userRecord.nickname
 				};
-			} catch {
-				// search credentials on shared credentials (Experimental/Official)
+			} else {
 				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
