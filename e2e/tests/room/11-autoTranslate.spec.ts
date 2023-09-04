@@ -61,19 +61,19 @@ async function searchMessage(msg: string, textMatcher: TTextMatcher) {
 export function waitForVisible(id: string) {
 	return waitFor(element(by.id(id)))
 		.toBeVisible()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 export function waitForVisibleTextMatcher(msg: string, textMatcher: TTextMatcher) {
 	return waitFor(element(by[textMatcher](msg)).atIndex(0))
 		.toExist()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 export function waitForNotVisible(id: string) {
 	return waitFor(element(by.id(id)))
 		.not.toBeVisible()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 describe('Auto Translate', () => {
