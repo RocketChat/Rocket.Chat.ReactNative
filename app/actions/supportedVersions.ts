@@ -3,27 +3,22 @@ import { Action } from 'redux';
 import { SUPPORTED_VERSIONS } from './actionsTypes';
 import { TSVDictionary, TSVMessage, TSVStatus } from '../definitions';
 
-interface ISetSupportedVersionsAction extends Action {
+type TSetSupportedVersions = {
 	status: TSVStatus;
 	message?: TSVMessage;
 	i18n?: TSVDictionary;
-}
+	expiration?: string;
+};
+type TSetSupportedVersionsAction = Action & TSetSupportedVersions;
 
-export type TActionSupportedVersions = ISetSupportedVersionsAction;
+export type TActionSupportedVersions = TSetSupportedVersionsAction;
 
-export function setSupportedVersions({
-	status,
-	message,
-	i18n
-}: {
-	status: TSVStatus;
-	message?: TSVMessage;
-	i18n?: TSVDictionary;
-}): ISetSupportedVersionsAction {
+export function setSupportedVersions({ status, message, i18n, expiration }: TSetSupportedVersions): TSetSupportedVersionsAction {
 	return {
 		type: SUPPORTED_VERSIONS.SET,
 		status,
 		message,
-		i18n
+		i18n,
+		expiration
 	};
 }

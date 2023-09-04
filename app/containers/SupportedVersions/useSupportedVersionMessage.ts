@@ -1,9 +1,11 @@
+import moment from 'moment';
+
 import { useAppSelector } from '../../lib/hooks';
 
 const applyParams = (message: string, params: Record<string, unknown>) => {
 	const keys = Object.keys(params);
 	const regex = new RegExp(`{{(${keys.join('|')})}}`, 'g');
-	return message.replace(regex, (match, p1) => params[p1] as string);
+	return message.replace(regex, (_, p1) => params[p1] as string);
 };
 
 const useUser = () => {
@@ -14,13 +16,17 @@ const useUser = () => {
 };
 
 export const useSupportedVersionMessage = () => {
-	const { message, i18n } = useAppSelector(state => state.supportedVersions);
+	const { message, i18n, expiration } = useAppSelector(state => state.supportedVersions);
+	const { name, server } = useAppSelector(state => state.server);
 	const { language = 'en', user, email } = useUser();
 
-	// const defaultParams = ['instance_ws_name', 'instance_domain', 'remaining_days'];
 	const params = {
 		instance_username: user,
-		instance_email: email
+		instance_email: email,
+		instance_ws_name: name,
+		instance_domain: server,
+		remaining_days: moment(expiration).diff(new Date(), 'days'),
+		...message?.params
 	};
 
 	if (!message || !i18n) {

@@ -28,9 +28,9 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 	],
 	i18n: {
 		en: {
-			title: '{{workspace-name}} is running an unsupported version of Rocket.Chat',
-			subtitle: 'Mobile and desktop app access to {{workspace-name}} will be cut off in XX days.',
-			description: 'User {{instance_username}}, Email {{instance_email}}'
+			title: '{{instance_ws_name}} is running an unsupported version of Rocket.Chat',
+			subtitle: 'Mobile and desktop app access to {{instance_domain}} will be cut off in {{remaining_days}} days.',
+			description: 'User: {{instance_username}}\nEmail: {{instance_email}}\nExtra params: {{test_a}} {{test_b}}'
 		},
 		'pt-BR': {
 			title: 'alo title',
@@ -69,7 +69,11 @@ const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 						subtitle: 'subtitle',
 						description: 'description',
 						type: 'info',
-						link: 'Docs page'
+						link: 'Docs page',
+						params: {
+							test_a: 'test A works',
+							test_b: ':)'
+						}
 					}
 				]
 			}

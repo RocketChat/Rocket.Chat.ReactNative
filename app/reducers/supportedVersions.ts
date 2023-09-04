@@ -6,9 +6,10 @@ export interface ISupportedVersionsState {
 	status: TSVStatus;
 	message?: TSVMessage;
 	i18n?: TSVDictionary;
+	expiration?: string;
 }
 
-export const initialState: ISupportedVersionsState = { message: undefined, i18n: undefined, status: 'supported' };
+export const initialState: ISupportedVersionsState = { status: 'supported' };
 
 export default (state = initialState, action: TActionSupportedVersions): ISupportedVersionsState => {
 	switch (action.type) {
@@ -17,7 +18,8 @@ export default (state = initialState, action: TActionSupportedVersions): ISuppor
 				...state,
 				status: action.status,
 				message: action.message,
-				i18n: action.i18n
+				i18n: action.i18n,
+				expiration: action.expiration
 			};
 		default:
 			return state;

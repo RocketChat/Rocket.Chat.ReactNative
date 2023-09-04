@@ -38,6 +38,7 @@ export const checkSupportedVersions = function ({
 	status: TSVStatus;
 	message?: TSVMessage;
 	i18n?: TSVDictionary;
+	expiration?: string;
 } {
 	// 1.2.3 -> ~1.2
 	const serverVersionTilde = `~${serverVersion.split('.').slice(0, 2).join('.')}`;
@@ -52,7 +53,8 @@ export const checkSupportedVersions = function ({
 		return {
 			status: getStatus({ expiration: versionInfo?.expiration, message }),
 			message,
-			i18n: message ? builtInSupportedVersions?.i18n : undefined
+			i18n: message ? builtInSupportedVersions?.i18n : undefined,
+			expiration: versionInfo?.expiration
 		};
 	}
 
@@ -64,7 +66,8 @@ export const checkSupportedVersions = function ({
 		return {
 			status: getStatus({ expiration: versionInfo?.expiration, message }),
 			message,
-			i18n: message ? supportedVersions?.i18n : undefined
+			i18n: message ? supportedVersions?.i18n : undefined,
+			expiration: versionInfo?.expiration
 		};
 	}
 
@@ -76,6 +79,7 @@ export const checkSupportedVersions = function ({
 	return {
 		status: getStatus({ expiration: exception?.expiration, message }),
 		message,
-		i18n: message ? supportedVersions?.i18n : undefined
+		i18n: message ? supportedVersions?.i18n : undefined,
+		expiration: exception?.expiration
 	};
 };

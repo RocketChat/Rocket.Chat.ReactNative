@@ -12,6 +12,7 @@ export interface ISelectServerAction extends Action {
 interface ISelectServerSuccess extends Action {
 	server: string;
 	version: string;
+	name: string;
 }
 
 export interface IServerRequestAction extends Action {
@@ -41,11 +42,20 @@ export function selectServerRequest(
 	};
 }
 
-export function selectServerSuccess(server: string, version: string): ISelectServerSuccess {
+export function selectServerSuccess({
+	server,
+	version,
+	name
+}: {
+	server: string;
+	version: string;
+	name: string;
+}): ISelectServerSuccess {
 	return {
 		type: SERVER.SELECT_SUCCESS,
 		server,
-		version
+		version,
+		name
 	};
 }
 
