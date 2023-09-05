@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement, useLayoutEffect } from 'react';
 import { View, Text } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -6,12 +6,25 @@ import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
+import * as HeaderButton from '../HeaderButton';
 
 export const SupportedVersionsWarningSnaps = [600];
 
-export const SupportedVersionsWarning = () => {
+export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: any; route?: any }): ReactElement | null => {
 	const { colors } = useTheme();
 	const message = useSupportedVersionMessage();
+
+	useLayoutEffect(() => {
+		navigation?.setOptions({
+			title: 'TBD'
+		});
+
+		if (route?.params?.showCloseButton) {
+			navigation?.setOptions({
+				headerLeft: () => <HeaderButton.CloseModal />
+			});
+		}
+	}, [navigation, route]);
 
 	if (!message) {
 		return null;

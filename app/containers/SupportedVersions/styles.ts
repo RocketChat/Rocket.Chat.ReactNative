@@ -5,7 +5,8 @@ import sharedStyles from '../../views/Styles';
 export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 16
+		padding: 16,
+		backgroundColor: '#fff'
 	},
 	iconContainer: {
 		alignItems: 'center',

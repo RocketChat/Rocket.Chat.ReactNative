@@ -23,7 +23,7 @@ import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import { IApplicationState, IUser, TSVStatus } from '../../definitions';
 import * as List from '../../containers/List';
-import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import { IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
 import { SupportedVersionsWarning, SupportedVersionsWarningSnaps } from '../../containers/SupportedVersions';
 
@@ -201,6 +201,15 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
+	onPressSupportedVersionsWarning = () => {
+		const { isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning' });
+		} else {
+			showActionSheetRef({ children: <SupportedVersionsWarning />, snaps: SupportedVersionsWarningSnaps });
+		}
+	};
+
 	renderAdmin = () => {
 		const { theme, isMasterDetail } = this.props;
 		if (!this.getIsAdmin()) {
@@ -291,7 +300,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	renderSupportedVersionsWarn = () => {
-		const { theme, supportedVersionsStatus, showActionSheet } = this.props;
+		const { theme, supportedVersionsStatus } = this.props;
 		if (supportedVersionsStatus === 'warn') {
 			return (
 				<SidebarItem
@@ -299,7 +308,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					textColor={themes[theme!].dangerColor}
 					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
 					theme={theme!}
-					onPress={() => showActionSheet({ children: <SupportedVersionsWarning />, snaps: SupportedVersionsWarningSnaps })}
+					onPress={() => this.onPressSupportedVersionsWarning()}
 					testID={`sidebar-supported-versions-warn`}
 				/>
 			);
