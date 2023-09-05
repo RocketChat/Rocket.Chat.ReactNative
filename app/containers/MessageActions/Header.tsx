@@ -32,7 +32,6 @@ interface THeaderFooter {
 	theme: TSupportedThemes;
 }
 
-export const HEADER_HEIGHT = 36;
 const ITEM_SIZE = 36;
 const CONTAINER_MARGIN = 8;
 const ITEM_MARGIN = 8;
