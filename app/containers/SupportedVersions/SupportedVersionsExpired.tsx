@@ -18,7 +18,12 @@ export const SupportedVersionsExpired = () => {
 			<Text style={[styles.description, { color: colors.bodyText }]}>
 				An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.
 			</Text>
-			<Button title='Learn more' type='secondary' backgroundColor={'#EEEFF1'} onPress={() => alert('Go to docs!')} />
+			<Button
+				title='Learn more'
+				type='secondary'
+				backgroundColor={colors.chatComponentBackground}
+				onPress={() => alert('Go to docs!')}
+			/>
 		</View>
 	);
 };

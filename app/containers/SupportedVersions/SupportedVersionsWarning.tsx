@@ -41,7 +41,7 @@ export const SupportedVersionsWarning = () => {
 				testID='sv-warn-button'
 				title='Learn more'
 				type='secondary'
-				backgroundColor={'#EEEFF1'}
+				backgroundColor={colors.chatComponentBackground}
 				onPress={() => alert(message.link)}
 			/>
 		</View>
