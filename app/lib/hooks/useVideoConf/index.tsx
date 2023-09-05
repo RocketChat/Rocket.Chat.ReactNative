@@ -8,7 +8,6 @@ import { compareServerVersion, showErrorAlert } from '../../methods/helpers';
 import { handleAndroidBltPermission } from '../../methods/videoConf';
 import { Services } from '../../services';
 import { useAppSelector } from '../useAppSelector';
-import { useSnaps } from '../useSnaps';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
 
@@ -34,7 +33,6 @@ export const useVideoConf = (
 	const [permission, requestPermission] = Camera.useCameraPermissions();
 
 	const { showActionSheet } = useActionSheet();
-	const snaps = useSnaps(404);
 
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 
@@ -67,8 +65,7 @@ export const useVideoConf = (
 		const canInit = await canInitAnCall();
 		if (canInit) {
 			showActionSheet({
-				children: <StartACallActionSheet rid={rid} />,
-				snaps
+				children: <StartACallActionSheet rid={rid} />
 			});
 			if (!permission?.granted) {
 				requestPermission();

@@ -1,7 +1,6 @@
 import { Camera, CameraType } from 'expo-camera';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
 import { useAppSelector } from '..';
@@ -13,7 +12,6 @@ import Ringer, { ERingerSounds } from '../../../containers/Ringer';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
-import { isIOS } from '../../methods/helpers';
 import useUserData from '../useUserData';
 
 export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
@@ -28,10 +26,6 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 
 	const user = useUserData(rid);
 
-	// fix safe area bottom padding on iOS
-	const insets = useSafeAreaInsets();
-	const paddingBottom = isIOS && insets.bottom ? 8 : 0;
-
 	React.useEffect(
 		() => () => {
 			if (calling) {
@@ -42,10 +36,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	);
 
 	return (
-		<View
-			style={[style.actionSheetContainer, { paddingBottom }]}
-			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}
-		>
+		<View style={[style.actionSheetContainer]} onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
 			{calling ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
 				title={calling && user.direct ? i18n.t('Calling') : i18n.t('Start_a_call')}
@@ -98,7 +89,8 @@ const style = StyleSheet.create({
 		flex: 1,
 		marginVertical: 8,
 		borderRadius: 8,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		paddingVertical: 80
 	},
 	cameraContainer: {
 		flex: 1
