@@ -1,11 +1,10 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, useWindowDimensions } from 'react-native';
 import { Easing, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 
-import { useOrientation } from '../../dimensions';
 import { useTheme } from '../../theme';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
@@ -27,7 +26,8 @@ const ActionSheet = React.memo(
 		const bottomSheetRef = useRef<BottomSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
-		const { isLandscape } = useOrientation();
+		const { width, height } = useWindowDimensions();
+		const isLandscape = width > height;
 		const animatedContentHeight = useSharedValue(0);
 		const animatedHandleHeight = useSharedValue(0);
 		const animatedSnapPoints = useDerivedValue(() => {
