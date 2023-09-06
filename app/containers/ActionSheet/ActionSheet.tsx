@@ -30,16 +30,18 @@ const ActionSheet = React.memo(
 		const isLandscape = width > height;
 		const animatedContentHeight = useSharedValue(0);
 		const animatedHandleHeight = useSharedValue(0);
+		const animatedDataSnaps = useSharedValue<TActionSheetOptions['snaps']>([]);
 		const animatedSnapPoints = useDerivedValue(() => {
-			if (data?.snaps) {
-				return data.snaps;
+			if (animatedDataSnaps.value?.length) {
+				return animatedDataSnaps.value;
 			}
 			const contentWithHandleHeight = animatedContentHeight.value + animatedHandleHeight.value;
+			// Bottom sheet requires a default value to work
 			if (contentWithHandleHeight === 0) {
 				return ['25%'];
 			}
 			return [contentWithHandleHeight];
-		}, []);
+		}, [data]);
 
 		const handleContentLayout = useCallback(
 			({
@@ -60,6 +62,9 @@ const ActionSheet = React.memo(
 
 		const show = (options: TActionSheetOptions) => {
 			setData(options);
+			if (options.snaps?.length) {
+				animatedDataSnaps.value = options.snaps;
+			}
 			toggleVisible();
 		};
 
@@ -126,7 +131,8 @@ const ActionSheet = React.memo(
 						ref={bottomSheetRef}
 						snapPoints={animatedSnapPoints}
 						handleHeight={animatedHandleHeight}
-						contentHeight={animatedContentHeight}
+						// We need undefined to enable vertical swipe gesture inside the bottom sheet like in reaction picker
+						contentHeight={data.snaps?.length ? undefined : animatedContentHeight}
 						animationConfigs={ANIMATION_CONFIG}
 						animateOnMount={true}
 						backdropComponent={renderBackdrop}
