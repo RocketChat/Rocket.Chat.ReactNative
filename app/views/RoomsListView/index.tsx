@@ -2,7 +2,6 @@ import React from 'react';
 import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
 import { batch, connect } from 'react-redux';
 import { dequal } from 'dequal';
-import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
@@ -217,7 +216,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			Orientation.unlockAllOrientations();
 			this.animated = true;
 			// Check if there were changes with sort preference, then call getSubscription to remount the list
 			if (this.sortPreferencesChanged) {
