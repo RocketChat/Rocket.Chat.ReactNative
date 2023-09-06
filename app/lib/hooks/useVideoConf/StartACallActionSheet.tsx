@@ -36,7 +36,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	);
 
 	return (
-		<View style={[style.actionSheetContainer]} onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
+		<View style={style.actionSheetContainer} onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
 			{calling ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
 				title={calling && user.direct ? i18n.t('Calling') : i18n.t('Start_a_call')}
@@ -89,8 +89,7 @@ const style = StyleSheet.create({
 		flex: 1,
 		marginVertical: 8,
 		borderRadius: 8,
-		overflow: 'hidden',
-		paddingVertical: 80
+		overflow: 'hidden'
 	},
 	cameraContainer: {
 		flex: 1

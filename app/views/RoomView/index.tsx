@@ -854,7 +854,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				children: (
 					<ReactionPicker message={selectedMessage} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
 				),
-				snaps: [400],
+				snaps: ['50%'],
 				enableContentPanningGesture: false
 			});
 		}, 100);

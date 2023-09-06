@@ -65,7 +65,8 @@ export const useVideoConf = (
 		const canInit = await canInitAnCall();
 		if (canInit) {
 			showActionSheet({
-				children: <StartACallActionSheet rid={rid} />
+				children: <StartACallActionSheet rid={rid} />,
+				snaps: [480]
 			});
 			if (!permission?.granted) {
 				requestPermission();
