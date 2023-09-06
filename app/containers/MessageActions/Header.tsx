@@ -86,11 +86,10 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 );
 
 const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
-	const { width, height } = useDimensions();
+	const { width } = useDimensions();
 	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);
-	const isLandscape = width > height;
-	const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
+	const size = (isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
 	const quantity = Math.trunc(size / (ITEM_SIZE + ITEM_MARGIN * 2) - 1);
 
 	const onReaction: TOnReaction = ({ emoji }) => {
