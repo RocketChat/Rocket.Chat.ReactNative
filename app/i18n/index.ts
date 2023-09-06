@@ -50,6 +50,11 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/fr.json')
 	},
 	{
+		label: 'Hungarian',
+		value: 'hu'
+		file: () => require('./locales/hu.json')
+	},
+	{
 		label: 'Italiano',
 		value: 'it',
 		file: () => require('./locales/it.json')
