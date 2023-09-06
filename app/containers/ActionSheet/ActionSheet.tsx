@@ -102,6 +102,7 @@ const ActionSheet = React.memo(
 		const onClose = () => {
 			toggleVisible();
 			data?.onClose && data?.onClose();
+			animatedDataSnaps.value = [];
 		};
 
 		const renderBackdrop = useCallback(
