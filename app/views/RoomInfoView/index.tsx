@@ -273,6 +273,7 @@ const RoomInfoView = (): React.ReactElement => {
 				<View style={[styles.avatarContainer, { backgroundColor: colors.auxiliaryBackground }]}>
 					<RoomInfoViewAvatar
 						username={room?.name || roomUser.username}
+						rid={room?.rid}
 						userId={roomUser?._id}
 						handleEditAvatar={() => navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' })}
 						showEdit={showEdit}
