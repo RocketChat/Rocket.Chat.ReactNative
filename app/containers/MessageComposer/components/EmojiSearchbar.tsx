@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
-import { MessageInnerContext, useMessageComposerApi, useMessageComposerState } from '../context';
+import { MessageInnerContext, useMessageComposerApi, useShowEmojiSearchbar } from '../context';
 import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 export const EmojiSearchbar = (): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
-	const { showEmojiSearchbar } = useMessageComposerState();
+	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);

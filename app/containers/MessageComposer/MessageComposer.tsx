@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
-import { MessageInnerContext, useMessageComposerApi, useMessageComposerState } from './context';
+import { MessageInnerContext, useMessageComposerApi, useShowEmojiKeyboard, useShowEmojiSearchbar } from './context';
 import { IAutocompleteItemProps, IComposerInput, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -52,7 +52,8 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
 	const { rid, tmid, action, selectedMessages, editRequest, onSendMessage } = useRoomContext();
-	const { showEmojiKeyboard, showEmojiSearchbar } = useMessageComposerState();
+	const showEmojiKeyboard = useShowEmojiKeyboard();
+	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const { setKeyboardHeight, openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 

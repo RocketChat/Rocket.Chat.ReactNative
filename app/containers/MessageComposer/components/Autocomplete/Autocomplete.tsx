@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 
-import { useMessageComposerState } from '../../context';
+import { useKeyboardHeight, useTrackingViewHeight } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { useTheme } from '../../../../theme';
@@ -18,7 +18,8 @@ interface IAutocompleteData {
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
 	const { rid } = useRoomContext();
-	const { trackingViewHeight, keyboardHeight } = useMessageComposerState();
+	const trackingViewHeight = useTrackingViewHeight();
+	const keyboardHeight = useKeyboardHeight();
 	const [autocompleteData, setAutocompleteData] = useState<IAutocompleteData>({ type: null, text: '', params: '' });
 	const items = useAutocomplete({
 		rid,

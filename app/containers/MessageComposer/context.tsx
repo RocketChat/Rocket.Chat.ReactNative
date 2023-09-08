@@ -3,16 +3,6 @@ import React, { createContext, ReactElement, useContext, useMemo, useReducer } f
 import { IEmoji } from '../../definitions';
 import { TMicOrSend } from './interfaces';
 
-type TMessageComposerContextState = {
-	showEmojiKeyboard: boolean;
-	showEmojiSearchbar: boolean;
-	focused: boolean;
-	trackingViewHeight: number;
-	keyboardHeight: number;
-	micOrSend: TMicOrSend;
-	showMarkdownToolbar: boolean;
-};
-
 type TMessageComposerContextApi = {
 	setKeyboardHeight: (height: number) => void;
 	setTrackingViewHeight: (height: number) => void;
@@ -25,11 +15,23 @@ type TMessageComposerContextApi = {
 	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
 };
 
-const MessageComposerContextState = createContext<TMessageComposerContextState>({} as TMessageComposerContextState);
+const FocusedContext = createContext<State['focused']>({} as State['focused']);
+const MicOrSendContext = createContext<State['micOrSend']>({} as State['micOrSend']);
+const ShowMarkdownToolbarContext = createContext<State['showMarkdownToolbar']>({} as State['showMarkdownToolbar']);
+const ShowEmojiKeyboardContext = createContext<State['showEmojiKeyboard']>({} as State['showEmojiKeyboard']);
+const ShowEmojiSearchbarContext = createContext<State['showEmojiSearchbar']>({} as State['showEmojiSearchbar']);
+const KeyboardHeightContext = createContext<State['keyboardHeight']>({} as State['keyboardHeight']);
+const TrackingViewHeightContext = createContext<State['trackingViewHeight']>({} as State['trackingViewHeight']);
 const MessageComposerContextApi = createContext<TMessageComposerContextApi>({} as TMessageComposerContextApi);
 
-export const useMessageComposerState = (): TMessageComposerContextState => useContext(MessageComposerContextState);
 export const useMessageComposerApi = (): TMessageComposerContextApi => useContext(MessageComposerContextApi);
+export const useFocused = (): State['focused'] => useContext(FocusedContext);
+export const useMicOrSend = (): State['micOrSend'] => useContext(MicOrSendContext);
+export const useShowMarkdownToolbar = (): State['showMarkdownToolbar'] => useContext(ShowMarkdownToolbarContext);
+export const useShowEmojiKeyboard = (): State['showEmojiKeyboard'] => useContext(ShowEmojiKeyboardContext);
+export const useShowEmojiSearchbar = (): State['showEmojiSearchbar'] => useContext(ShowEmojiSearchbarContext);
+export const useKeyboardHeight = (): State['keyboardHeight'] => useContext(KeyboardHeightContext);
+export const useTrackingViewHeight = (): State['trackingViewHeight'] => useContext(TrackingViewHeightContext);
 
 // TODO: rename
 type TMessageInnerContext = {
@@ -98,7 +100,6 @@ const reducer = (state: State, action: Actions): State => {
 
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
 	const [state, dispatch] = useReducer(reducer, {} as State);
-	console.log('🚀 ~ file: context.tsx:101 ~ MessageComposerProvider ~ state:', state);
 
 	const api = useMemo(() => {
 		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
@@ -135,7 +136,19 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 	return (
 		<MessageComposerContextApi.Provider value={api}>
-			<MessageComposerContextState.Provider value={state}>{children}</MessageComposerContextState.Provider>
+			<ShowEmojiKeyboardContext.Provider value={state.showEmojiKeyboard}>
+				<ShowEmojiSearchbarContext.Provider value={state.showEmojiSearchbar}>
+					<FocusedContext.Provider value={state.focused}>
+						<KeyboardHeightContext.Provider value={state.keyboardHeight}>
+							<TrackingViewHeightContext.Provider value={state.trackingViewHeight}>
+								<ShowMarkdownToolbarContext.Provider value={state.showMarkdownToolbar}>
+									<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+								</ShowMarkdownToolbarContext.Provider>
+							</TrackingViewHeightContext.Provider>
+						</KeyboardHeightContext.Provider>
+					</FocusedContext.Provider>
+				</ShowEmojiSearchbarContext.Provider>
+			</ShowEmojiKeyboardContext.Provider>
 		</MessageComposerContextApi.Provider>
 	);
 };

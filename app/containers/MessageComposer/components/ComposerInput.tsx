@@ -1,10 +1,10 @@
-import React, { forwardRef, memo, useContext, useEffect, useImperativeHandle } from 'react';
+import React, { forwardRef, memo, useEffect, useImperativeHandle } from 'react';
 import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 
-import { IComposerInput, IComposerInputProps, IInputSelection, TAutocompleteType, TSetInput } from '../interfaces';
-import { useMessageComposerApi, useMessageComposerState } from '../context';
+import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
+import { useFocused, useMessageComposerApi } from '../context';
 import { loadDraftMessage, saveDraftMessage } from '../helpers';
 import { useSubscription } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -39,8 +39,7 @@ export const ComposerInput = memo(
 		console.count('[MessageComposer] ComposerInput');
 		const { colors, theme } = useTheme();
 		const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
-		// const { focused } = useMessageComposerState();
-		const focused = true;
+		const focused = useFocused();
 		const { setFocused, setTrackingViewHeight, setMicOrSend } = useMessageComposerApi();
 		const textRef = React.useRef('');
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
