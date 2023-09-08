@@ -14,7 +14,7 @@ import { LISTENER } from '../../containers/Toast';
 import { ISubscription, IUser, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
@@ -54,18 +54,25 @@ const RoomInfoView = (): React.ReactElement => {
 
 	const subscription = useRef<Subscription | undefined>(undefined);
 
-	const { isMasterDetail, subscribedRoom, usersRoles, roles } = useAppSelector(state => ({
+	const {
+		isMasterDetail,
+		subscribedRoom,
+		usersRoles,
+		roles,
+		// permissions
+		editRoomPermission,
+		editOmnichannelContact,
+		editLivechatRoomCustomfields
+	} = useAppSelector(state => ({
 		subscribedRoom: state.room.subscribedRoom,
 		isMasterDetail: state.app.isMasterDetail,
 		roles: state.roles,
-		usersRoles: state.usersRoles
+		usersRoles: state.usersRoles,
+		// permissions
+		editRoomPermission: state.permissions['edit-room'],
+		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
+		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
 	}));
-
-	const [editRoomPermission, editOmnichannelContact, editLivechatRoomCustomfields] = usePermissions([
-		'edit-room',
-		'edit-omnichannel-contact',
-		'edit-livechat-room-customfields'
-	]);
 
 	const { colors } = useTheme();
 
@@ -199,37 +206,34 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	const createDirect = () =>
-		new Promise<void>(async (resolve, reject) => {
+		new Promise<void | ISubscription>(async (resolve, reject) => {
 			// We don't need to create a direct
 			if (!isEmpty(member)) return resolve();
-
-			// TODO: Check if some direct with the user already exists on database
 			try {
-				const result = await Services.createDirectMessage(roomUser.userName);
-				if (result.success && room) {
-					setRoom({ ...room, rid: result.room.rid });
-					return resolve();
-				}
+				const result = await Services.createDirectMessage(roomUser.username);
+				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
 			} catch {
 				reject();
 			}
 		});
 
-	const handleGoRoom = () => {
+	const handleGoRoom = (r?: ISubscription) => {
 		logEvent(events.RI_GO_ROOM_USER);
 		const params = {
-			rid: room?.rid,
-			name: getRoomTitle(room),
-			t: room?.t,
-			roomUserId: getUidDirectMessage(room)
+			rid: r?.rid,
+			name: getRoomTitle(r),
+			t: r?.t,
+			roomUserId: getUidDirectMessage(r)
 		};
 
-		if (room?.rid) {
-			if (room.rid === subscribedRoom) {
+		if (r?.rid) {
+			if (r.rid === subscribedRoom) {
 				if (isMasterDetail) {
 					return navigate('DrawerNavigator');
 				}
-				return goBack();
+				goBack();
+				goBack();
+				return;
 			}
 			// if it's on master detail layout, we close the modal and replace RoomView
 			goRoom({ item: params, isMasterDetail, popToRoot: true });
@@ -238,8 +242,12 @@ const RoomInfoView = (): React.ReactElement => {
 
 	const handleCreateDirectMessage = async () => {
 		try {
-			if (isDirect) await createDirect();
-			handleGoRoom();
+			let r = room;
+			if (isDirect) {
+				const direct = await createDirect();
+				if (direct) r = direct;
+			}
+			handleGoRoom(r);
 		} catch {
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
