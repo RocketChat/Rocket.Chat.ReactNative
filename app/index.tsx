@@ -5,6 +5,7 @@ import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-c
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Orientation from 'react-native-orientation-locker';
 
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -104,6 +105,9 @@ export default class Root extends React.Component<{}, IState> {
 		};
 		if (isTablet) {
 			this.initTablet();
+			Orientation.unlockAllOrientations();
+		} else {
+			Orientation.lockToPortrait();
 		}
 		setNativeTheme(theme);
 	}

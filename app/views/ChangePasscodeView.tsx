@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import Orientation from 'react-native-orientation-locker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../theme';
-import { hasNotch, isTablet } from '../lib/methods/helpers';
+import { hasNotch } from '../lib/methods/helpers';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../containers/CustomIcon';
@@ -65,14 +64,8 @@ const ChangePasscodeView = React.memo(() => {
 	};
 
 	useEffect(() => {
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 		const listener = EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
 		return () => {
-			if (!isTablet) {
-				Orientation.unlockAllOrientations();
-			}
 			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
 		};
 	}, []);
