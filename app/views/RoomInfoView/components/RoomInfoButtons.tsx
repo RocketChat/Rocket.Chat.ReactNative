@@ -14,20 +14,22 @@ function BaseButton({
 	iconName,
 	onPress,
 	label,
-	showIcon = true
+	showIcon = true,
+	enabled = true
 }: {
 	danger?: boolean;
 	iconName: TIconsName;
 	onPress?: (prop: any) => void;
 	label: string;
 	showIcon?: boolean;
+	enabled?: boolean;
 }): React.ReactElement | null {
 	const { colors } = useTheme();
 	const color = danger ? colors.dangerColor : colors.actionTintColor;
 
 	if (showIcon)
 		return (
-			<BorderlessButton testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
+			<BorderlessButton enabled={enabled} testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
 				<Text style={[styles.roomButtonText, { color }]}>{label}</Text>
 			</BorderlessButton>
@@ -35,23 +37,15 @@ function BaseButton({
 	return null;
 }
 
-function CallButton({
-	rid,
-	isDirect,
-	roomFromRid
-}: {
-	rid: string;
-	isDirect: boolean;
-	roomFromRid: boolean;
-}): React.ReactElement | null {
-	const { callEnabled, showInitCallActionSheet } = useVideoConf(rid);
-
+function CallButton({ rid, roomFromRid }: { rid: string; isDirect: boolean; roomFromRid: boolean }): React.ReactElement | null {
+	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
 	return (
 		<BaseButton
 			onPress={showInitCallActionSheet}
 			iconName='phone'
 			label={i18n.t('Call')}
-			showIcon={callEnabled && isDirect && !roomFromRid}
+			enabled={!disabledTooltip}
+			showIcon={callEnabled && !roomFromRid}
 		/>
 	);
 }
