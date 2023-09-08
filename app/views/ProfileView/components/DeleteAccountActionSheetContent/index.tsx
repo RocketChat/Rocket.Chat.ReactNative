@@ -1,7 +1,6 @@
 import { sha256 } from 'js-sha256';
 import React from 'react';
 import { Keyboard, Text } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
 import { deleteAccount } from '../../../../actions/login';
@@ -18,7 +17,6 @@ import sharedStyles from '../../../Styles';
 export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
-	const insets = useSafeAreaInsets();
 	const { colors } = useTheme();
 
 	const handleDeleteAccount = async (password: string) => {
@@ -40,8 +38,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 								removedRooms={removedRooms}
 								password={sha256(password)}
 							/>
-						),
-						headerHeight: 225 + insets.bottom
+						)
 					});
 				}, 250); // timeout for hide effect
 			} else if (error.data.errorType === 'error-invalid-password') {

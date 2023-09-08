@@ -1,22 +1,16 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
-import { Keyboard } from 'react-native';
-import { Easing } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Keyboard, useWindowDimensions } from 'react-native';
+import { Easing, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 
-import { useDimensions, useOrientation } from '../../dimensions';
 import { useTheme } from '../../theme';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import styles, { ITEM_HEIGHT } from './styles';
-
-const HANDLE_HEIGHT = isIOS ? 40 : 56;
-const MIN_SNAP_HEIGHT = 16;
-const CANCEL_HEIGHT = 64;
+import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
 
@@ -32,32 +26,33 @@ const ActionSheet = React.memo(
 		const bottomSheetRef = useRef<BottomSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
-		const { height } = useDimensions();
-		const { isLandscape } = useOrientation();
-		const insets = useSafeAreaInsets();
+		const { width, height } = useWindowDimensions();
+		const isLandscape = width > height;
+		const animatedContentHeight = useSharedValue(0);
+		const animatedHandleHeight = useSharedValue(0);
+		const animatedDataSnaps = useSharedValue<TActionSheetOptions['snaps']>([]);
+		const animatedSnapPoints = useDerivedValue(() => {
+			if (animatedDataSnaps.value?.length) {
+				return animatedDataSnaps.value;
+			}
+			const contentWithHandleHeight = animatedContentHeight.value + animatedHandleHeight.value;
+			// Bottom sheet requires a default value to work
+			if (contentWithHandleHeight === 0) {
+				return ['25%'];
+			}
+			return [contentWithHandleHeight];
+		}, [data]);
 
-		const maxSnap = Math.min(
-			// Items height
-			ITEM_HEIGHT * (data?.options?.length || 0) +
-				// Handle height
-				HANDLE_HEIGHT +
-				// Custom header height
-				(data?.headerHeight || 0) +
-				// Insets bottom height (Notch devices)
-				insets.bottom +
-				// Cancel button height
-				(data?.hasCancel ? CANCEL_HEIGHT : 0),
-			height - MIN_SNAP_HEIGHT
+		const handleContentLayout = useCallback(
+			({
+				nativeEvent: {
+					layout: { height }
+				}
+			}) => {
+				animatedContentHeight.value = height;
+			},
+			[animatedContentHeight]
 		);
-
-		/*
-		 * if the action sheet cover more
-		 * than 60% of the whole screen
-		 * and it's not at the landscape mode
-		 * we'll provide more one snap
-		 * that point 50% of the whole screen
-		 */
-		const snaps = maxSnap > height * 0.6 && !isLandscape && !data.snaps ? [height * 0.5, maxSnap] : [maxSnap];
 
 		const toggleVisible = () => setVisible(!isVisible);
 
@@ -67,6 +62,9 @@ const ActionSheet = React.memo(
 
 		const show = (options: TActionSheetOptions) => {
 			setData(options);
+			if (options.snaps?.length) {
+				animatedDataSnaps.value = options.snaps;
+			}
 			toggleVisible();
 		};
 
@@ -104,6 +102,7 @@ const ActionSheet = React.memo(
 		const onClose = () => {
 			toggleVisible();
 			data?.onClose && data?.onClose();
+			animatedDataSnaps.value = [];
 		};
 
 		const renderBackdrop = useCallback(
@@ -131,7 +130,10 @@ const ActionSheet = React.memo(
 				{isVisible && (
 					<BottomSheet
 						ref={bottomSheetRef}
-						snapPoints={data?.snaps ? data.snaps : snaps}
+						snapPoints={animatedSnapPoints}
+						handleHeight={animatedHandleHeight}
+						// We need undefined to enable vertical swipe gesture inside the bottom sheet like in reaction picker
+						contentHeight={data.snaps?.length ? undefined : animatedContentHeight}
 						animationConfigs={ANIMATION_CONFIG}
 						animateOnMount={true}
 						backdropComponent={renderBackdrop}
@@ -144,7 +146,13 @@ const ActionSheet = React.memo(
 						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}
 						{...androidTablet}
 					>
-						<BottomSheetContent options={data?.options} hide={hide} children={data?.children} hasCancel={data?.hasCancel} />
+						<BottomSheetContent
+							options={data?.options}
+							hide={hide}
+							children={data?.children}
+							hasCancel={data?.hasCancel}
+							onLayout={handleContentLayout}
+						/>
 					</BottomSheet>
 				)}
 			</>
