@@ -555,7 +555,6 @@
   "Enabled_E2E_Encryption_for_this_room": "enabled E2E encryption for this room",
   "Disabled_E2E_Encryption_for_this_room": "disabled E2E encryption for this room",
   "Teams": "Teams",
-  "No_team_channels_found": "No channels found",
   "Team_not_found": "Team not found",
   "Create_Team": "Create team",
   "Team_Name": "Team name",
@@ -768,5 +767,6 @@
   "Mute_someone_in_room": "Mute someone in the room",
   "Unmute_someone_in_room": "Unmute someone in the room",
   "Remove_quote_message": "Remove quote message",
-  "Message_has_been_shared":"Message has been shared"
+  "Message_has_been_shared":"Message has been shared",
+  "No_channels_in_team": "No Channels on this team"
 }

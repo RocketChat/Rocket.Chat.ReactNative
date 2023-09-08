@@ -1,26 +1,28 @@
 import {
+	IAvatarSuggestion,
 	IMessage,
 	INotificationPreferences,
 	IPreviewItem,
+	IProfileParams,
 	IRoom,
 	IRoomNotifications,
-	SubscriptionType,
+	IServerRoom,
 	IUser,
-	IAvatarSuggestion,
-	IProfileParams,
 	RoomType,
-	IServerRoom
+	SubscriptionType
 } from '../../definitions';
+import { TParams } from '../../definitions/ILivechatEditView';
+import { ILivechatTag } from '../../definitions/ILivechatTag';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
+import { OperationParams, ResultFor } from '../../definitions/rest/helpers';
+import { SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
-import { TParams } from '../../definitions/ILivechatEditView';
-import { store as reduxStore } from '../store/auxStore';
-import { getDeviceToken } from '../notifications';
 import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
-import sdk from './sdk';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
-import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { getDeviceToken } from '../notifications';
+import { store as reduxStore } from '../store/auxStore';
+import sdk from './sdk';
 
 export const createChannel = ({
 	name,
@@ -310,11 +312,33 @@ export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
 	sdk.post('chat.react', { emoji, messageId });
 
-export const toggleRead = (read: boolean, roomId: string) => {
-	if (read) {
-		return sdk.post('subscriptions.unread', { roomId });
+/**
+ * Toggles the read status of a room.
+ *
+ * @param isRead - Whether to mark the room as read or unread.
+ * @param roomId - The ID of the room.
+ * @param includeThreads - Optional flag to include threads when marking as read.
+ * @returns A promise from the sdk post method.
+ */
+export const toggleReadStatus = (
+	isRead: boolean,
+	roomId: string,
+	includeThreads?: boolean
+): Promise<ResultFor<'POST', keyof SubscriptionsEndpoints>> => {
+	let endpoint: keyof SubscriptionsEndpoints;
+	let payload: OperationParams<'POST', keyof SubscriptionsEndpoints> = { roomId };
+
+	if (isRead) {
+		endpoint = 'subscriptions.unread';
+	} else {
+		endpoint = 'subscriptions.read';
+		payload = { rid: roomId };
+		if (includeThreads) {
+			payload.readThreads = includeThreads;
+		}
 	}
-	return sdk.post('subscriptions.read', { rid: roomId });
+
+	return sdk.post(endpoint, payload);
 };
 
 export const getRoomCounters = (

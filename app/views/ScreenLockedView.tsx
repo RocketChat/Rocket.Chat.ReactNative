@@ -2,7 +2,6 @@ import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import Orientation from 'react-native-orientation-locker';
 import Touchable from 'react-native-platform-touchable';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
@@ -10,7 +9,7 @@ import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
 import { CustomIcon } from '../containers/CustomIcon';
 import { useTheme } from '../theme';
-import { hasNotch, isTablet } from '../lib/methods/helpers';
+import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 
 interface IData {
@@ -46,14 +45,8 @@ const ScreenLockedView = (): JSX.Element => {
 	};
 
 	useEffect(() => {
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 		const listener = EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
 		return () => {
-			if (!isTablet) {
-				Orientation.unlockAllOrientations();
-			}
 			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER, listener);
 		};
 	}, []);

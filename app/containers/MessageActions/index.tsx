@@ -13,7 +13,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
-import Header, { HEADER_HEIGHT, IHeader } from './Header';
+import Header, { IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
@@ -513,7 +513,6 @@ const MessageActions = React.memo(
 				await getPermissions();
 				showActionSheet({
 					options: getOptions(message),
-					headerHeight: HEADER_HEIGHT,
 					customHeader:
 						!isReadOnly || room.reactWhenReadOnly ? (
 							<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />

@@ -14,6 +14,8 @@ exports[`Storyshots UIKit/UiKitModal Modal - Images 1`] = `"{\\"type\\":\\"RCTSc
 
 exports[`Storyshots UIKit/UiKitModal Modal - Input with error 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
 
+exports[`Storyshots UIKit/UiKitModal Modal - Multi Select Input 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
+
 exports[`Storyshots UIKit/UiKitModal Modal - Multilne with error 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
 
 exports[`Storyshots UIKit/UiKitModal Modal - Section and Accessories 1`] = `"{\\"type\\":\\"RCTScrollView\\",\\"props\\":{\\"style\\":[{\\"flex\\":1,\\"backgroundColor\\":\\"#fff\\"},{\\"paddingHorizontal\\":16}],\\"keyboardShouldPersistTaps\\":\\"always\\"},\\"children\\":[{\\"type\\":\\"View\\",\\"props\\":{},\\"children\\":null}]}"`;
