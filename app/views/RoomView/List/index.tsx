@@ -34,7 +34,8 @@ const RoomViewList = ({
 	renderRow,
 	showMessageInMainThread,
 	serverVersion,
-	hideSystemMessages
+	hideSystemMessages,
+	listRef
 }: IListContainerProps) => {
 	console.count('RoomViewList');
 	const [refreshing, setRefreshing] = useState(false);
@@ -63,6 +64,10 @@ const RoomViewList = ({
 		setCount(prevCount => prevCount + QUERY_SIZE);
 	}, 300);
 
+	const jumpToBottom = () => {
+		listRef.current?.scrollToOffset({ offset: -100 });
+	};
+
 	const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
 		// const { messages, highlightedMessage } = this.state;
 		// const { renderRow } = this.props;
@@ -76,9 +81,7 @@ const RoomViewList = ({
 			<EmptyRoom rid={rid} length={messages.length} />
 			<RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
 				<List
-					// onScroll={this.onScroll}
-					// scrollEventThrottle={16}
-					// listRef={listRef}
+					listRef={listRef}
 					data={messages}
 					renderItem={renderItem}
 					onEndReached={onEndReached}
@@ -86,6 +89,8 @@ const RoomViewList = ({
 					// onScrollToIndexFailed={this.handleScrollToIndexFailed}
 					// onViewableItemsChanged={this.onViewableItemsChanged}
 					// viewabilityConfig={this.viewabilityConfig}
+					jumpToBottom={jumpToBottom}
+					isThread={!!tmid}
 				/>
 			</RefreshControl>
 		</>
