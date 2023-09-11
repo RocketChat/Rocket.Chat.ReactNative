@@ -1,22 +1,25 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
-import { TAnyMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { TAnyMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { getThreadById } from '../../../lib/database/services/Thread';
+import { compareServerVersion } from '../../../lib/methods/helpers';
 
 export const useMessages = ({
 	rid,
 	tmid,
 	showMessageInMainThread,
 	serverVersion,
-	count
+	count,
+	hideSystemMessages
 }: {
 	rid: string;
 	tmid?: string;
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
 	count: number;
+	hideSystemMessages: string[];
 }): TAnyMessageModel[] => {
 	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
 	const thread = useRef<TThreadModel | null>(null);
@@ -24,7 +27,7 @@ export const useMessages = ({
 	useLayoutEffect(() => {
 		const fetchMessages = async () => {
 			console.count('RoomViewList useEffect');
-			console.log(rid, tmid, showMessageInMainThread, serverVersion, count);
+			console.log(rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages);
 
 			if (!rid) {
 				return;
@@ -57,10 +60,19 @@ export const useMessages = ({
 			}
 
 			const subscription = observable.subscribe(result => {
-				const messages: TAnyMessageModel[] = result;
+				let messages: TAnyMessageModel[] = result;
 				if (tmid && thread.current) {
 					messages.push(thread.current);
 				}
+
+				/**
+				 * Since 3.16.0 server version, the backend don't response with messages if
+				 * hide system message is enabled
+				 */
+				if (compareServerVersion(serverVersion, 'lowerThan', '3.16.0') || hideSystemMessages.length) {
+					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+				}
+
 				setMessages(messages);
 			});
 
@@ -69,7 +81,7 @@ export const useMessages = ({
 			};
 		};
 		fetchMessages();
-	}, [rid, tmid, showMessageInMainThread, serverVersion, count]);
+	}, [rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages]);
 
 	return messages;
 };

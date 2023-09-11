@@ -532,6 +532,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return room.t === 'l';
 	}
 
+	get hideSystemMessages() {
+		const { sysMes } = this.state.room;
+		const { Hide_System_Messages } = this.props;
+
+		// FIXME: handle servers with version < 3.0.0
+		let hideSystemMessages = Array.isArray(sysMes) ? sysMes : Hide_System_Messages;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
+		return hideSystemMessages ?? [];
+	}
+
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
@@ -1533,15 +1545,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, loading, canAutoTranslate } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
+		const { user, baseUrl, theme, navigation, width, serverVersion } = this.props;
 		const { rid, t } = room;
-		let sysMes;
 		let bannerClosed;
 		let announcement;
 		let tunread;
 		let ignored;
 		if ('id' in room) {
-			({ sysMes, bannerClosed, announcement, tunread, ignored } = room);
+			({ bannerClosed, announcement, tunread, ignored } = room);
 		}
 
 		return (
@@ -1558,7 +1569,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
-					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
+					hideSystemMessages={this.hideSystemMessages}
 					showMessageInMainThread={user.showMessageInMainThread ?? false}
 					serverVersion={serverVersion}
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}

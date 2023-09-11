@@ -10,7 +10,7 @@ export interface IListContainerProps {
 	tmid?: string;
 	loading: boolean;
 	listRef: TListRef;
-	hideSystemMessages?: string[];
+	hideSystemMessages: string[];
 	tunread?: string[];
 	ignored?: string[];
 	navigation: any; // TODO: type me
@@ -22,10 +22,17 @@ export interface IListContainerProps {
 
 const QUERY_SIZE = 50;
 
-const RoomViewList = ({ rid, tmid, renderRow, showMessageInMainThread, serverVersion }: IListContainerProps) => {
+const RoomViewList = ({
+	rid,
+	tmid,
+	renderRow,
+	showMessageInMainThread,
+	serverVersion,
+	hideSystemMessages
+}: IListContainerProps) => {
 	console.count('RoomViewList');
 	const [count, setCount] = React.useState(QUERY_SIZE);
-	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count });
+	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages });
 
 	const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
 		// const { messages, highlightedMessage } = this.state;
