@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatListProps, View, Platform, StyleSheet } from 'react-native';
+import moment from 'moment';
 
 import List, { TListRef } from './List';
 import { useMessages } from './useMessages';
 import EmptyRoom from '../EmptyRoom';
 import { useDebounce } from '../../../lib/methods/helpers';
+import log from '../../../lib/methods/helpers/log';
+import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
+import RefreshControl from './RefreshControl';
 
 export interface IListContainerProps {
 	renderRow: Function;
@@ -33,8 +37,31 @@ const RoomViewList = ({
 	hideSystemMessages
 }: IListContainerProps) => {
 	console.count('RoomViewList');
-	const [count, setCount] = React.useState(QUERY_SIZE);
+	const [refreshing, setRefreshing] = useState(false);
+	const [count, setCount] = useState(QUERY_SIZE);
 	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages });
+
+	const onRefresh = async () => {
+		setRefreshing(true);
+		if (messages.length) {
+			try {
+				if (tmid) {
+					await loadThreadMessages({ tmid, rid });
+				} else {
+					await loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		setRefreshing(false);
+	};
+
+	const onEndReached = useDebounce(() => {
+		console.count('RoomViewList.onEndReached');
+		setCount(prevCount => prevCount + QUERY_SIZE);
+	}, 300);
 
 	const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
 		// const { messages, highlightedMessage } = this.state;
@@ -44,26 +71,23 @@ const RoomViewList = ({
 		<View style={styles.inverted}>{renderRow(item, messages[index + 1], null)}</View>
 	);
 
-	const onEndReached = useDebounce(() => {
-		console.count('RoomViewList.onEndReached');
-		setCount(prevCount => prevCount + QUERY_SIZE);
-	}, 300);
-
 	return (
 		<>
 			<EmptyRoom rid={rid} length={messages.length} />
-			<List
-				// onScroll={this.onScroll}
-				// scrollEventThrottle={16}
-				// listRef={listRef}
-				data={messages}
-				renderItem={renderItem}
-				onEndReached={onEndReached}
-				// ListFooterComponent={this.renderFooter}
-				// onScrollToIndexFailed={this.handleScrollToIndexFailed}
-				// onViewableItemsChanged={this.onViewableItemsChanged}
-				// viewabilityConfig={this.viewabilityConfig}
-			/>
+			<RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
+				<List
+					// onScroll={this.onScroll}
+					// scrollEventThrottle={16}
+					// listRef={listRef}
+					data={messages}
+					renderItem={renderItem}
+					onEndReached={onEndReached}
+					// ListFooterComponent={this.renderFooter}
+					// onScrollToIndexFailed={this.handleScrollToIndexFailed}
+					// onViewableItemsChanged={this.onViewableItemsChanged}
+					// viewabilityConfig={this.viewabilityConfig}
+				/>
+			</RefreshControl>
 		</>
 	);
 };
