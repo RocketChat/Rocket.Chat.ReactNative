@@ -20,9 +20,12 @@ export interface IListContainerProps {
 	autoTranslateLanguage?: string;
 }
 
+const QUERY_SIZE = 50;
+
 const RoomViewList = ({ rid, tmid, renderRow, showMessageInMainThread, serverVersion }: IListContainerProps) => {
 	console.count('RoomViewList');
-	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion });
+	const [count, setCount] = React.useState(QUERY_SIZE);
+	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count });
 
 	const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
 		// const { messages, highlightedMessage } = this.state;
@@ -32,6 +35,11 @@ const RoomViewList = ({ rid, tmid, renderRow, showMessageInMainThread, serverVer
 		<View style={styles.inverted}>{renderRow(item, messages[index + 1], null)}</View>
 	);
 
+	const onEndReached = () => {
+		console.count('RoomViewList.onEndReached');
+		setCount(prevCount => prevCount + QUERY_SIZE);
+	};
+
 	return (
 		<List
 			// onScroll={this.onScroll}
@@ -39,7 +47,7 @@ const RoomViewList = ({ rid, tmid, renderRow, showMessageInMainThread, serverVer
 			// listRef={listRef}
 			data={messages}
 			renderItem={renderItem}
-			// onEndReached={this.onEndReached}
+			onEndReached={onEndReached}
 			// ListFooterComponent={this.renderFooter}
 			// onScrollToIndexFailed={this.handleScrollToIndexFailed}
 			// onViewableItemsChanged={this.onViewableItemsChanged}

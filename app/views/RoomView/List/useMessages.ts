@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
 import { TAnyMessageModel } from '../../../definitions';
@@ -8,12 +8,14 @@ export const useMessages = ({
 	rid,
 	tmid,
 	showMessageInMainThread,
-	serverVersion
+	serverVersion,
+	count
 }: {
 	rid: string;
 	tmid?: string;
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
+	count: number;
 }): TAnyMessageModel[] => {
 	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
 
@@ -28,9 +30,9 @@ export const useMessages = ({
 		if (rid) {
 			const whereClause = [
 				Q.where('rid', rid),
-				Q.experimentalSortBy('ts', Q.desc)
-				// Q.experimentalSkip(0),
-				// Q.experimentalTake(this.count)
+				Q.experimentalSortBy('ts', Q.desc),
+				Q.experimentalSkip(0),
+				Q.experimentalTake(count)
 			] as (Q.WhereDescription | Q.Or)[];
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
@@ -48,7 +50,7 @@ export const useMessages = ({
 				subscription.unsubscribe();
 			};
 		}
-	}, [rid, tmid, showMessageInMainThread, serverVersion]);
+	}, [rid, tmid, showMessageInMainThread, serverVersion, count]);
 
 	return messages;
 };
