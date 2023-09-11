@@ -3,6 +3,7 @@ import { FlatListProps, View, Platform, StyleSheet } from 'react-native';
 
 import List, { TListRef } from './List';
 import { useMessages } from './useMessages';
+import EmptyRoom from '../EmptyRoom';
 
 export interface IListContainerProps {
 	renderRow: Function;
@@ -33,6 +34,7 @@ const RoomViewList = ({
 	console.count('RoomViewList');
 	const [count, setCount] = React.useState(QUERY_SIZE);
 	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages });
+	console.log('🚀 ~ file: index.tsx:36 ~ hideSystemMessages:', hideSystemMessages);
 
 	const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
 		// const { messages, highlightedMessage } = this.state;
@@ -48,18 +50,21 @@ const RoomViewList = ({
 	};
 
 	return (
-		<List
-			// onScroll={this.onScroll}
-			// scrollEventThrottle={16}
-			// listRef={listRef}
-			data={messages}
-			renderItem={renderItem}
-			onEndReached={onEndReached}
-			// ListFooterComponent={this.renderFooter}
-			// onScrollToIndexFailed={this.handleScrollToIndexFailed}
-			// onViewableItemsChanged={this.onViewableItemsChanged}
-			// viewabilityConfig={this.viewabilityConfig}
-		/>
+		<>
+			<EmptyRoom rid={rid} length={messages.length} />
+			<List
+				// onScroll={this.onScroll}
+				// scrollEventThrottle={16}
+				// listRef={listRef}
+				data={messages}
+				renderItem={renderItem}
+				onEndReached={onEndReached}
+				// ListFooterComponent={this.renderFooter}
+				// onScrollToIndexFailed={this.handleScrollToIndexFailed}
+				// onViewableItemsChanged={this.onViewableItemsChanged}
+				// viewabilityConfig={this.viewabilityConfig}
+			/>
+		</>
 	);
 };
 
