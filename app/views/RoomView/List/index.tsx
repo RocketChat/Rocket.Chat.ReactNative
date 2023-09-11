@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FlatListProps, View, Platform, StyleSheet } from 'react-native';
 
 import List, { TListRef } from './List';
 import { useMessages } from './useMessages';
 import EmptyRoom from '../EmptyRoom';
+import { useDebounce } from '../../../lib/methods/helpers';
 
 export interface IListContainerProps {
 	renderRow: Function;
@@ -34,7 +35,6 @@ const RoomViewList = ({
 	console.count('RoomViewList');
 	const [count, setCount] = React.useState(QUERY_SIZE);
 	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages });
-	console.log('🚀 ~ file: index.tsx:36 ~ hideSystemMessages:', hideSystemMessages);
 
 	const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
 		// const { messages, highlightedMessage } = this.state;
@@ -44,10 +44,10 @@ const RoomViewList = ({
 		<View style={styles.inverted}>{renderRow(item, messages[index + 1], null)}</View>
 	);
 
-	const onEndReached = () => {
+	const onEndReached = useDebounce(() => {
 		console.count('RoomViewList.onEndReached');
 		setCount(prevCount => prevCount + QUERY_SIZE);
-	};
+	}, 300);
 
 	return (
 		<>
