@@ -56,7 +56,7 @@ import styles from './styles';
 import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
-import List, { ListContainerType } from './List';
+import List from './List';
 import { ChatsStackParamList } from '../../stacks/types';
 import {
 	IApplicationState,
@@ -214,7 +214,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
 	private messagebox: React.RefObject<MessageBoxType>;
-	private list: React.RefObject<ListContainerType>;
+	private list: React.RefObject<any>;
 	private joinCode: React.RefObject<IJoinCode>;
 	private flatList: TListRef;
 	private mounted: boolean;
@@ -1560,6 +1560,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<StatusBar />
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
+					// @ts-ignore
 					ref={this.list}
 					listRef={this.flatList}
 					rid={rid}
