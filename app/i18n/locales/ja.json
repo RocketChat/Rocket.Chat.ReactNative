@@ -386,5 +386,6 @@
   "Clear": "クリア",
   "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
   "Broadcast_hint": "許可されたユーザーのみが新しいメッセージを書き込めます。他のユーザーは返信することができます",
-  "and_N_more": "さらに{{count}}つ"
+  "and_N_more": "さらに{{count}}つ",
+  "Audio": "音声"
 }

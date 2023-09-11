@@ -504,5 +504,6 @@
   "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat",
   "Open_Livechats": "Devam Eden Sohbetler",
   "Broadcast_hint": "Yalnızca yetkili kullanıcılar yeni ileti yazabilir, ancak diğer kullanıcılar yanıt verebilir",
-  "and_N_more": "ve {{count}} daha"
+  "and_N_more": "ve {{count}} daha",
+  "Audio": "Ses"
 }
