@@ -21,7 +21,8 @@ const serverInfoKeys = [
 	'Force_Screen_Lock',
 	'Force_Screen_Lock_After',
 	'uniqueID',
-	'E2E_Enable'
+	'E2E_Enable',
+	'E2E_Enabled_Default_PrivateRooms'
 ];
 
 // these settings are used only on onboarding process
@@ -84,6 +85,9 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 		}
 		if (setting._id === 'E2E_Enable') {
 			return { ...allSettings, E2E_Enable: setting.valueAsBoolean };
+		}
+		if (setting._id === 'E2E_Enabled_Default_PrivateRooms') {
+			return { ...allSettings, E2E_Enabled_Default_PrivateRooms: setting.valueAsBoolean };
 		}
 		return allSettings;
 	}, {});
