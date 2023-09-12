@@ -29,7 +29,6 @@ export interface IListContainerProps {
 	autoTranslateLanguage?: string;
 }
 
-const QUERY_SIZE = 50;
 const VIEWABILITY_CONFIG = {
 	itemVisiblePercentThreshold: 10
 };
@@ -37,8 +36,7 @@ const VIEWABILITY_CONFIG = {
 const RoomViewList = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef }, ref) => {
 		console.count('RoomViewList');
-		const [count, setCount] = useState(QUERY_SIZE);
-		const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages });
+		const [messages, fetchMessages] = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages });
 		const [refreshing, refresh] = useRefresh({ rid, tmid, messagesLength: messages.length });
 		const cancelJump = useRef(false);
 		const jumping = useRef(false);
@@ -46,7 +44,7 @@ const RoomViewList = forwardRef<IListContainerRef, IListContainerProps>(
 
 		const onEndReached = useDebounce(() => {
 			console.count('RoomViewList.onEndReached');
-			setCount(prevCount => prevCount + QUERY_SIZE);
+			fetchMessages();
 		});
 
 		const jumpToBottom = () => {
