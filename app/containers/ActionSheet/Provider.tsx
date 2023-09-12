@@ -15,7 +15,6 @@ export type TActionSheetOptionsItem = {
 
 export type TActionSheetOptions = {
 	options?: TActionSheetOptionsItem[];
-	headerHeight?: number;
 	customHeader?: React.ReactElement | null;
 	hasCancel?: boolean;
 	type?: string;

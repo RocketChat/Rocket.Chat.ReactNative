@@ -1,10 +1,9 @@
-import React, { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import range from 'lodash/range';
 import { View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
-import Orientation from 'react-native-orientation-locker';
 
 import styles from './styles';
 import Button from './Button';
@@ -16,7 +15,6 @@ import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
 import { useDimensions } from '../../../dimensions';
-import { isTablet } from '../../../lib/methods/helpers';
 
 interface IPasscodeBase {
 	type: string;
@@ -37,18 +35,6 @@ export interface IBase {
 
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
-		useLayoutEffect(() => {
-			if (!isTablet) {
-				Orientation.lockToPortrait();
-			}
-
-			return () => {
-				if (!isTablet) {
-					Orientation.unlockAllOrientations();
-				}
-			};
-		}, []);
-
 		const { theme } = useTheme();
 		const { height } = useDimensions();
 
