@@ -27,7 +27,6 @@ export const useMessages = ({
 	useLayoutEffect(() => {
 		const fetchMessages = async () => {
 			console.count('RoomViewList useEffect');
-			console.log(rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages);
 
 			if (!rid) {
 				return;
