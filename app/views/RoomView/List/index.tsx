@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { FlatListProps, View, Platform, StyleSheet, ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
 
 import List, { TListRef } from './List';
@@ -41,6 +41,11 @@ const RoomViewList = forwardRef<IListContainerRef, IListContainerProps>(
 		const cancelJump = useRef(false);
 		const jumping = useRef(false);
 		const viewableItems = useRef<ViewToken[] | null>(null);
+		const messagesIds = useRef<string[]>([]);
+
+		useEffect(() => {
+			messagesIds.current = messages.map(m => m.id);
+		}, [messages]);
 
 		const onEndReached = useDebounce(() => {
 			console.count('RoomViewList.onEndReached');
@@ -73,8 +78,7 @@ const RoomViewList = forwardRef<IListContainerRef, IListContainerProps>(
 				jumping.current = true;
 
 				// look for the message on the state
-				const index = messages.findIndex(item => item.id === messageId);
-				console.log(messages.length);
+				const index = messagesIds.current.findIndex(item => item === messageId);
 
 				// if found message, scroll to it
 				if (index > -1) {
