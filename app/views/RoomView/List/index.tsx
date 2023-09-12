@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { FlatListProps, View, Platform, StyleSheet } from 'react-native';
-import moment from 'moment';
 
 import List, { TListRef } from './List';
 import { useMessages } from './useMessages';
 import EmptyRoom from '../EmptyRoom';
 import { useDebounce } from '../../../lib/methods/helpers';
-import log from '../../../lib/methods/helpers/log';
-import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
 import RefreshControl from './RefreshControl';
+import { useRefresh } from './useRefresh';
 
 export interface IListContainerProps {
 	renderRow: Function;
@@ -38,26 +36,9 @@ const RoomViewList = ({
 	listRef
 }: IListContainerProps) => {
 	console.count('RoomViewList');
-	const [refreshing, setRefreshing] = useState(false);
 	const [count, setCount] = useState(QUERY_SIZE);
 	const messages = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, count, hideSystemMessages });
-
-	const onRefresh = async () => {
-		setRefreshing(true);
-		if (messages.length) {
-			try {
-				if (tmid) {
-					await loadThreadMessages({ tmid, rid });
-				} else {
-					await loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
-				}
-			} catch (e) {
-				log(e);
-			}
-		}
-
-		setRefreshing(false);
-	};
+	const [refreshing, refresh] = useRefresh({ rid, tmid, messagesLength: messages.length });
 
 	const onEndReached = useDebounce(() => {
 		console.count('RoomViewList.onEndReached');
@@ -79,7 +60,7 @@ const RoomViewList = ({
 	return (
 		<>
 			<EmptyRoom rid={rid} length={messages.length} />
-			<RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
+			<RefreshControl refreshing={refreshing} onRefresh={refresh}>
 				<List
 					listRef={listRef}
 					data={messages}
