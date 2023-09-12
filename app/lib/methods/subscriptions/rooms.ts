@@ -254,6 +254,8 @@ const debouncedUpdate = (subscription: ISubscription) => {
 					if (batch[key]) {
 						if (/SUB/.test(key)) {
 							const sub = batch[key] as ISubscription;
+							// When calling the api subscriptions.read passing readThreads as true it does not return this prop
+							if (!sub.tunread) sub.tunread = [];
 							const roomQueueId = getRoomQueueId(sub.rid);
 							const room = batch[roomQueueId] as IRoom;
 							delete batch[roomQueueId];

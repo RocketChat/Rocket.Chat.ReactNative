@@ -237,8 +237,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						}}
 						onCancel={this.props.hideActionSheet}
 					/>
-				),
-				headerHeight: 225
+				)
 			});
 			return;
 		}
@@ -417,8 +416,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	deleteOwnAccount = () => {
 		logEvent(events.DELETE_OWN_ACCOUNT);
 		this.props.showActionSheet({
-			children: <DeleteAccountActionSheetContent />,
-			headerHeight: 225
+			children: <DeleteAccountActionSheetContent />
 		});
 	};
 

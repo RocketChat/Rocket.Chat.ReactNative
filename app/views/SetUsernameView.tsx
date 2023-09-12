@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import Orientation from 'react-native-orientation-locker';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -18,7 +17,7 @@ import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { useTheme } from '../theme';
-import { isTablet, showErrorAlert } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
@@ -56,9 +55,6 @@ const SetUsernameView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: server });
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 	}, [navigation, server]);
 
 	useEffect(() => {

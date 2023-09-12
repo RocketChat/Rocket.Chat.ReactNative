@@ -174,7 +174,12 @@ export const ModalFormInput = () =>
 				text: 'Set a date',
 				emoji: true
 			}
-		},
+		}
+	]);
+ModalFormInput.storyName = 'Modal - Form Input';
+
+export const ModalMultiSelect = () =>
+	UiKitModal([
 		{
 			type: 'input',
 			element: {
@@ -200,10 +205,48 @@ export const ModalFormInput = () =>
 				type: 'plain_text',
 				text: 'Share with...',
 				emoji: true
+			},
+			hint: {
+				type: 'plain_text',
+				text: 'Initial Value Undefined',
+				emoji: true
+			}
+		},
+		{
+			type: 'input',
+			element: {
+				type: 'multi_static_select',
+				initialValue: [1],
+				options: [
+					{
+						text: {
+							type: 'plain_text',
+							text: 'John'
+						},
+						value: 1
+					},
+					{
+						text: {
+							type: 'plain_text',
+							text: 'Dog'
+						},
+						value: 2
+					}
+				]
+			},
+			label: {
+				type: 'plain_text',
+				text: 'Share with...',
+				emoji: true
+			},
+			hint: {
+				type: 'plain_text',
+				text: 'Initial Value as John',
+				emoji: true
 			}
 		}
 	]);
-ModalFormInput.storyName = 'Modal - Form Input';
+ModalMultiSelect.storyName = 'Modal - Multi Select Input';
 
 export const ModalFormTextArea = () =>
 	UiKitModal([

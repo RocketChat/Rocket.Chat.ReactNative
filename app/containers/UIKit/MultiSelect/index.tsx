@@ -87,8 +87,7 @@ export const MultiSelect = React.memo(
 						selectedItems={selected}
 					/>
 				),
-				onClose,
-				headerHeight: 275
+				onClose
 			});
 		};
 		const onHide = () => {

@@ -3,7 +3,6 @@ import { Base64 } from 'js-base64';
 import React from 'react';
 import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Orientation from 'react-native-orientation-locker';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 
@@ -88,9 +87,6 @@ interface ISubmitParams {
 class NewServerView extends React.Component<INewServerViewProps, INewServerViewState> {
 	constructor(props: INewServerViewProps) {
 		super(props);
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 		this.setHeader();
 
 		this.state = {
