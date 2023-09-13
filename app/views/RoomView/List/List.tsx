@@ -5,8 +5,9 @@ import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanim
 
 import { isIOS } from '../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
-import NavBottomFAB, { SCROLL_LIMIT } from './NavBottomFAB';
+import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from './definitions';
+import { SCROLL_LIMIT } from './constants';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 

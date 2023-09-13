@@ -2,10 +2,7 @@ import { useRef } from 'react';
 import { FlatListProps, ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
 
 import { TListRef, TMessagesIdsRef } from './definitions';
-
-const VIEWABILITY_CONFIG = {
-	itemVisiblePercentThreshold: 10
-};
+import { VIEWABILITY_CONFIG } from './constants';
 
 export const useJump = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
 	const cancelJump = useRef(false);

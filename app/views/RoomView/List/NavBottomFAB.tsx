@@ -6,8 +6,6 @@ import { CustomIcon } from '../../../containers/CustomIcon';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 
-export const SCROLL_LIMIT = 200;
-
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',

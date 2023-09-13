@@ -6,8 +6,7 @@ import { TAnyMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { getThreadById } from '../../../lib/database/services/Thread';
 import { compareServerVersion } from '../../../lib/methods/helpers';
-
-const QUERY_SIZE = 50;
+import { QUERY_SIZE } from './constants';
 
 export const useMessages = ({
 	rid,
