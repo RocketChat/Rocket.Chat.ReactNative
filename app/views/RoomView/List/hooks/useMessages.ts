@@ -27,7 +27,6 @@ export const useMessages = ({
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
 	const messagesIds = useRef<string[]>([]);
-	messagesIds.current = messages.map(m => m.id);
 
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
@@ -64,9 +63,9 @@ export const useMessages = ({
 		}
 
 		subscription.current = observable.subscribe(result => {
-			let messages: TAnyMessageModel[] = result;
+			let newMessages: TAnyMessageModel[] = result;
 			if (tmid && thread.current) {
-				messages.push(thread.current);
+				newMessages.push(thread.current);
 			}
 
 			/**
@@ -74,12 +73,13 @@ export const useMessages = ({
 			 * hide system message is enabled
 			 */
 			if (compareServerVersion(serverVersion, 'lowerThan', '3.16.0') || hideSystemMessages.length) {
-				messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+				newMessages = newMessages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 			}
 
 			readThread();
 			animateNextTransition();
-			setMessages(messages);
+			setMessages(newMessages);
+			messagesIds.current = newMessages.map(m => m.id);
 		});
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages]);
 
