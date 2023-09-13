@@ -29,7 +29,6 @@ import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
 import {
 	KEY_COMMAND,
-	handleCommandReplyLatest,
 	handleCommandRoomActions,
 	handleCommandScroll,
 	handleCommandSearchMessages,
@@ -101,7 +100,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { TListRef } from './List/definitions';
+import { IListContainerRef, TListRef } from './List/definitions';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -154,7 +153,6 @@ const roomAttrsUpdate = [
 
 interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
-	appState: string;
 	useRealName?: boolean;
 	isAuthenticated: boolean;
 	Message_GroupingPeriod?: number;
@@ -214,8 +212,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
 	private messagebox: React.RefObject<MessageBoxType>;
-	private list: React.RefObject<any>;
 	private joinCode: React.RefObject<IJoinCode>;
+	// ListContainer component
+	private list: React.RefObject<IListContainerRef>;
+	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
 	private offset = 0;
@@ -224,8 +224,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
-	private retryFindCount = 0;
-	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	private replyInDM?: TAnyMessageModel;
@@ -351,11 +349,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
 		const { roomUpdate, member, isOnHold } = state;
-		const { appState, theme, insets, route } = this.props;
+		const { theme, insets, route } = this.props;
 		if (theme !== nextProps.theme) {
-			return true;
-		}
-		if (appState !== nextProps.appState) {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
@@ -379,7 +374,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
 		const { roomUpdate, joined } = this.state;
-		const { appState, insets, route } = this.props;
+		const { insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
@@ -389,12 +384,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.navToThread({ tmid: route?.params?.jumpToThreadId });
 		}
 
-		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
-			// Fire List.query() just to keep observables working
-			if (this.list && this.list.current && !isIOS) {
-				this.list.current?.query();
-			}
-		}
 		// If it's a livechat room
 		if (this.t === 'l') {
 			if (
@@ -1076,9 +1065,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { rid } = this.state.room;
 		const { user } = this.props;
 		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
-			if (this.list && this.list.current) {
-				this.list.current?.update();
-			}
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});
@@ -1272,13 +1258,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.goRoomActionsView();
 			} else if (handleCommandSearchMessages(event)) {
 				this.goRoomActionsView('SearchMessagesView');
-			} else if (handleCommandReplyLatest(event)) {
-				if (this.list && this.list.current) {
-					const message = this.list.current.getLastMessage();
-					if (message) {
-						this.onReplyInit(message, false);
-					}
-				}
 			}
 		}
 	};
@@ -1558,7 +1537,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<StatusBar />
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
-					// @ts-ignore
 					ref={this.list}
 					listRef={this.flatList}
 					rid={rid}
@@ -1581,7 +1559,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
