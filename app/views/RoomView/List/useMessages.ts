@@ -5,8 +5,9 @@ import { Subscription } from 'rxjs';
 import { TAnyMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { getThreadById } from '../../../lib/database/services/Thread';
-import { animateNextTransition, compareServerVersion } from '../../../lib/methods/helpers';
+import { animateNextTransition, compareServerVersion, useDebounce } from '../../../lib/methods/helpers';
 import { QUERY_SIZE } from './constants';
+import { Services } from '../../../lib/services';
 
 export const useMessages = ({
 	rid,
@@ -79,17 +80,28 @@ export const useMessages = ({
 				messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 			}
 
+			readThread();
 			animateNextTransition();
 			setMessages(messages);
 		});
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages]);
+
+	const readThread = useDebounce(async () => {
+		if (tmid) {
+			try {
+				await Services.readThreads(tmid);
+			} catch {
+				// Do nothing
+			}
+		}
+	}, 1000);
 
 	useLayoutEffect(() => {
 		fetchMessages();
 
 		return () => {
 			unsubscribe();
-			console.countReset(`useMessages ${rid} ${tmid} }`);
+			console.countReset(`useMessages ${rid} ${tmid}`);
 			console.countReset(`useMessages fetchMessages ${rid} ${tmid}`);
 			console.countReset(`useMessages subscribe ${rid} ${tmid}`);
 		};
