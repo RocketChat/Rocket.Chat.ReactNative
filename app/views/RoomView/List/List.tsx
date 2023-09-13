@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { FlatListProps, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
 import NavBottomFAB, { SCROLL_LIMIT } from './NavBottomFAB';
+import { IListProps } from './definitions';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -18,14 +18,6 @@ const styles = StyleSheet.create({
 		paddingTop: 10
 	}
 });
-
-export type TListRef = React.RefObject<FlatList & { getNode: () => FlatList }>;
-
-export interface IListProps extends FlatListProps<any> {
-	listRef: TListRef;
-	jumpToBottom: () => void;
-	isThread: boolean;
-}
 
 const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
@@ -62,10 +54,6 @@ const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} />
 		</>
 	);
-};
-
-List.propTypes = {
-	listRef: PropTypes.object
 };
 
 export default List;
