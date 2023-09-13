@@ -2,12 +2,12 @@ import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { Subscription } from 'rxjs';
 
-import { TAnyMessageModel, TThreadModel } from '../../../definitions';
-import database from '../../../lib/database';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import { animateNextTransition, compareServerVersion, useDebounce } from '../../../lib/methods/helpers';
-import { QUERY_SIZE } from './constants';
-import { Services } from '../../../lib/services';
+import { TAnyMessageModel, TThreadModel } from '../../../../definitions';
+import database from '../../../../lib/database';
+import { getThreadById } from '../../../../lib/database/services/Thread';
+import { animateNextTransition, compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
+import { Services } from '../../../../lib/services';
+import { QUERY_SIZE } from '../constants';
 
 export const useMessages = ({
 	rid,
@@ -22,7 +22,6 @@ export const useMessages = ({
 	serverVersion: string | null;
 	hideSystemMessages: string[];
 }) => {
-	console.count(`useMessages ${rid} ${tmid}`);
 	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
 	const thread = useRef<TThreadModel | null>(null);
 	const count = useRef(0);
@@ -31,7 +30,6 @@ export const useMessages = ({
 	messagesIds.current = messages.map(m => m.id);
 
 	const fetchMessages = useCallback(async () => {
-		console.count(`useMessages fetchMessages ${rid} ${tmid}`);
 		unsubscribe();
 		count.current += QUERY_SIZE;
 
@@ -66,7 +64,6 @@ export const useMessages = ({
 		}
 
 		subscription.current = observable.subscribe(result => {
-			console.count(`useMessages subscribe ${rid} ${tmid}`);
 			let messages: TAnyMessageModel[] = result;
 			if (tmid && thread.current) {
 				messages.push(thread.current);
@@ -101,9 +98,6 @@ export const useMessages = ({
 
 		return () => {
 			unsubscribe();
-			console.countReset(`useMessages ${rid} ${tmid}`);
-			console.countReset(`useMessages fetchMessages ${rid} ${tmid}`);
-			console.countReset(`useMessages subscribe ${rid} ${tmid}`);
 		};
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages, fetchMessages]);
 

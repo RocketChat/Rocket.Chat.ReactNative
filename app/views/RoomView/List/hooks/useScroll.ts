@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { FlatListProps, ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
 
-import { TListRef, TMessagesIdsRef } from './definitions';
-import { VIEWABILITY_CONFIG } from './constants';
+import { TListRef, TMessagesIdsRef } from '../definitions';
+import { VIEWABILITY_CONFIG } from '../constants';
 
-export const useJump = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
+export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const cancelJump = useRef(false);
 	const jumping = useRef(false);
