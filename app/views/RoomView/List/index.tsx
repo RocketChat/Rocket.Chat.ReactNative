@@ -1,6 +1,7 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import { FlatListProps, View, Platform, StyleSheet } from 'react-native';
 
+import ActivityIndicator from '../../../containers/ActivityIndicator';
 import List from './List';
 import { useMessages } from './useMessages';
 import EmptyRoom from '../EmptyRoom';
@@ -11,7 +12,7 @@ import { useJump } from './useJump';
 import { IListContainerProps, IListContainerRef } from './definitions';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
-	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef }, ref) => {
+	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef, loading }, ref) => {
 		console.count(`ListContainer ${rid} ${tmid}`);
 		const [messages, messagesIds, fetchMessages] = useMessages({
 			rid,
@@ -49,8 +50,14 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			cancelJumpToMessage
 		}));
 
+		const renderFooter = () => {
+			if (loading && rid) {
+				return <ActivityIndicator />;
+			}
+			return null;
+		};
+
 		const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
-			// TODO: reevaluate second argument
 			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);
 
@@ -63,7 +70,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 						data={messages}
 						renderItem={renderItem}
 						onEndReached={onEndReached}
-						// ListFooterComponent={this.renderFooter}
+						ListFooterComponent={renderFooter}
 						onScrollToIndexFailed={handleScrollToIndexFailed}
 						viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
 						jumpToBottom={jumpToBottom}
