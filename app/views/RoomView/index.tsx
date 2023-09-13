@@ -237,8 +237,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	constructor(props: IRoomViewProps) {
 		super(props);
-		console.time(`${this.constructor.name} init`);
-		console.time(`${this.constructor.name} mount`);
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		/**
@@ -310,7 +308,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.rid && !this.tmid) {
 			this.sub = new RoomClass(this.rid);
 		}
-		console.timeEnd(`${this.constructor.name} init`);
 	}
 
 	componentDidMount() {
@@ -343,7 +340,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
-		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -465,7 +461,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
-		console.countReset(`${this.constructor.name}.render ${room.rid} ${this.tmid} calls`);
 	}
 
 	canForwardGuest = async () => {
@@ -1525,7 +1520,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, loading } = this.state;
 		const { user, baseUrl, theme, width, serverVersion } = this.props;
 		const { rid, t } = room;
-		console.count(`${this.constructor.name}.render ${rid} ${this.tmid} calls`);
 		let bannerClosed;
 		let announcement;
 		if ('id' in room) {
