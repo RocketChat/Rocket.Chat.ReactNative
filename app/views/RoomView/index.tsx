@@ -79,7 +79,6 @@ import {
 	RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { TListRef } from './List/List';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
@@ -102,6 +101,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { TListRef } from './List/definitions';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
