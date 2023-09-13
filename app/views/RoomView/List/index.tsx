@@ -7,6 +7,16 @@ import { useDebounce } from '../../../lib/methods/helpers';
 import { RefreshControl, EmptyRoom, List } from './components';
 import { IListContainerProps, IListContainerRef } from './definitions';
 
+const styles = StyleSheet.create({
+	inverted: {
+		...Platform.select({
+			android: {
+				scaleY: -1
+			}
+		})
+	}
+});
+
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef, loading }, ref) => {
 		const [messages, messagesIds, fetchMessages] = useMessages({
@@ -66,15 +76,5 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		);
 	}
 );
-
-const styles = StyleSheet.create({
-	inverted: {
-		...Platform.select({
-			android: {
-				scaleY: -1
-			}
-		})
-	}
-});
 
 export default ListContainer;
