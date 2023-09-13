@@ -38,7 +38,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();
-		});
+		}, 300);
 
 		useImperativeHandle(ref, () => ({
 			jumpToMessage,
