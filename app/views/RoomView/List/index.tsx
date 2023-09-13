@@ -13,9 +13,14 @@ import { IListContainerProps, IListContainerRef } from './definitions';
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef }, ref) => {
 		console.count(`ListContainer ${rid} ${tmid}`);
-		const [messages, fetchMessages] = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages });
+		const [messages, messagesIds, fetchMessages] = useMessages({
+			rid,
+			tmid,
+			showMessageInMainThread,
+			serverVersion,
+			hideSystemMessages
+		});
 		const [refreshing, refresh] = useRefresh({ rid, tmid, messagesLength: messages.length });
-		const messagesIds = useRef<string[]>([]);
 		const {
 			jumpToBottom,
 			jumpToMessage,
@@ -34,10 +39,6 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			[]
 		);
 
-		useEffect(() => {
-			messagesIds.current = messages.map(m => m.id);
-		}, [messages]);
-
 		const onEndReached = useDebounce(() => {
 			console.count(`ListContainer.onEndReached ${rid} ${tmid}`);
 			fetchMessages();
@@ -49,9 +50,6 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		}));
 
 		const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
-			// const { messages, highlightedMessage } = this.state;
-			// const { renderRow } = this.props;
-			// <View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessage)}</View>
 			// TODO: reevaluate second argument
 			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);

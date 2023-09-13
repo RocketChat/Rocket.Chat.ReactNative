@@ -26,6 +26,8 @@ export const useMessages = ({
 	const thread = useRef<TThreadModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
+	const messagesIds = useRef<string[]>([]);
+	messagesIds.current = messages.map(m => m.id);
 
 	const fetchMessages = useCallback(async () => {
 		console.count(`useMessages fetchMessages ${rid} ${tmid}`);
@@ -96,5 +98,5 @@ export const useMessages = ({
 		subscription.current?.unsubscribe();
 	};
 
-	return [messages, fetchMessages] as const;
+	return [messages, messagesIds, fetchMessages] as const;
 };
