@@ -33,9 +33,9 @@ const VIEWABILITY_CONFIG = {
 	itemVisiblePercentThreshold: 10
 };
 
-const RoomViewList = forwardRef<IListContainerRef, IListContainerProps>(
+const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef }, ref) => {
-		console.count('RoomViewList');
+		console.count(`ListContainer ${rid} ${tmid}`);
 		const [messages, fetchMessages] = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages });
 		const [refreshing, refresh] = useRefresh({ rid, tmid, messagesLength: messages.length });
 		const cancelJump = useRef(false);
@@ -43,12 +43,21 @@ const RoomViewList = forwardRef<IListContainerRef, IListContainerProps>(
 		const viewableItems = useRef<ViewToken[] | null>(null);
 		const messagesIds = useRef<string[]>([]);
 
+		// TODO: remove
+		useEffect(
+			() => () => {
+				console.countReset(`ListContainer ${rid} ${tmid}`);
+				console.countReset(`ListContainer.onEndReached ${rid} ${tmid}`);
+			},
+			[]
+		);
+
 		useEffect(() => {
 			messagesIds.current = messages.map(m => m.id);
 		}, [messages]);
 
 		const onEndReached = useDebounce(() => {
-			console.count('RoomViewList.onEndReached');
+			console.count(`ListContainer.onEndReached ${rid} ${tmid}`);
 			fetchMessages();
 		});
 
@@ -165,4 +174,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default RoomViewList;
+export default ListContainer;

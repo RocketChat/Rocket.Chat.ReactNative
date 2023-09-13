@@ -22,13 +22,14 @@ export const useMessages = ({
 	serverVersion: string | null;
 	hideSystemMessages: string[];
 }) => {
+	console.count(`useMessages ${rid} ${tmid}`);
 	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
 	const thread = useRef<TThreadModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
 
 	const fetchMessages = useCallback(async () => {
-		console.count('RoomViewList useEffect');
+		console.count(`useMessages fetchMessages ${rid} ${tmid}`);
 		unsubscribe();
 		count.current += QUERY_SIZE;
 
@@ -63,6 +64,7 @@ export const useMessages = ({
 		}
 
 		subscription.current = observable.subscribe(result => {
+			console.count(`useMessages subscribe ${rid} ${tmid}`);
 			let messages: TAnyMessageModel[] = result;
 			if (tmid && thread.current) {
 				messages.push(thread.current);
@@ -85,6 +87,9 @@ export const useMessages = ({
 
 		return () => {
 			unsubscribe();
+			console.countReset(`useMessages ${rid} ${tmid} }`);
+			console.countReset(`useMessages fetchMessages ${rid} ${tmid}`);
+			console.countReset(`useMessages subscribe ${rid} ${tmid}`);
 		};
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages, fetchMessages]);
 

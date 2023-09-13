@@ -476,7 +476,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
-		console.countReset(`${this.constructor.name}.render calls`);
+		console.countReset(`${this.constructor.name}.render ${room.rid} ${this.tmid} calls`);
 	}
 
 	canForwardGuest = async () => {
@@ -1543,10 +1543,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	render() {
-		console.count(`${this.constructor.name}.render calls`);
 		const { room, loading, canAutoTranslate } = this.state;
 		const { user, baseUrl, theme, navigation, width, serverVersion } = this.props;
 		const { rid, t } = room;
+		console.count(`${this.constructor.name}.render ${rid} ${this.tmid} calls`);
 		let bannerClosed;
 		let announcement;
 		let tunread;
