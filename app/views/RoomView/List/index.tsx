@@ -1,11 +1,11 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { FlatListProps, View, Platform, StyleSheet } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { useMessages, useRefresh, useScroll } from './hooks';
 import { useDebounce } from '../../../lib/methods/helpers';
 import { RefreshControl, EmptyRoom, List } from './components';
-import { IListContainerProps, IListContainerRef } from './definitions';
+import { IListContainerProps, IListContainerRef, IListProps } from './definitions';
 
 const styles = StyleSheet.create({
 	inverted: {
@@ -52,7 +52,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			return null;
 		};
 
-		const renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => (
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
 			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);
 

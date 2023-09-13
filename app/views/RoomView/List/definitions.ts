@@ -2,11 +2,13 @@ import { RefObject } from 'react';
 import { FlatListProps } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-export type TListRef = RefObject<FlatList & { getNode: () => FlatList }>;
+import { TAnyMessageModel } from '../../../definitions';
+
+export type TListRef = RefObject<FlatList<TAnyMessageModel>>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
-export interface IListProps extends FlatListProps<any> {
+export interface IListProps extends FlatListProps<TAnyMessageModel> {
 	listRef: TListRef;
 	jumpToBottom: () => void;
 	isThread: boolean;
