@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
-import { isIOS } from '../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../lib/methods/helpers/scrollPersistTaps';
+import { isIOS } from '../../../../lib/methods/helpers';
+import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import NavBottomFAB from './NavBottomFAB';
-import { IListProps } from './definitions';
-import { SCROLL_LIMIT } from './constants';
+import { IListProps } from '../definitions';
+import { SCROLL_LIMIT } from '../constants';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
+export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
 
 	const scrollHandler = useAnimatedScrollHandler({
@@ -56,5 +56,3 @@ const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 		</>
 	);
 };
-
-export default List;

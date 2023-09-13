@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 
-import { themes } from '../../../lib/constants';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import { useTheme } from '../../../theme';
-import Touch from '../../../containers/Touch';
+import { themes } from '../../../../lib/constants';
+import { CustomIcon } from '../../../../containers/CustomIcon';
+import { useTheme } from '../../../../theme';
+import Touch from '../../../../containers/Touch';
 
 const styles = StyleSheet.create({
 	container: {

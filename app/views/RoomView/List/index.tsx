@@ -2,11 +2,9 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { FlatListProps, View, Platform, StyleSheet } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
-import List from './List';
 import { useMessages, useRefresh, useScroll } from './hooks';
-import EmptyRoom from '../EmptyRoom';
 import { useDebounce } from '../../../lib/methods/helpers';
-import RefreshControl from './RefreshControl';
+import { RefreshControl, EmptyRoom, List } from './components';
 import { IListContainerProps, IListContainerRef } from './definitions';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
