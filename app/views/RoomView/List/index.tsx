@@ -16,8 +16,14 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		const [messages, fetchMessages] = useMessages({ rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages });
 		const [refreshing, refresh] = useRefresh({ rid, tmid, messagesLength: messages.length });
 		const messagesIds = useRef<string[]>([]);
-		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, viewabilityConfigCallbackPairs, handleScrollToIndexFailed } =
-			useJump({ listRef, messagesIds });
+		const {
+			jumpToBottom,
+			jumpToMessage,
+			cancelJumpToMessage,
+			viewabilityConfigCallbackPairs,
+			handleScrollToIndexFailed,
+			highlightedMessageId
+		} = useJump({ listRef, messagesIds });
 
 		// TODO: remove
 		useEffect(
@@ -47,7 +53,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			// const { renderRow } = this.props;
 			// <View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessage)}</View>
 			// TODO: reevaluate second argument
-			<View style={styles.inverted}>{renderRow(item, messages[index + 1], null)}</View>
+			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);
 
 		return (

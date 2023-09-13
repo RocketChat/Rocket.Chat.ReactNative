@@ -1,13 +1,21 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FlatListProps, ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
 
 import { TListRef, TMessagesIdsRef } from './definitions';
 import { VIEWABILITY_CONFIG } from './constants';
 
 export const useJump = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
+	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const cancelJump = useRef(false);
 	const jumping = useRef(false);
 	const viewableItems = useRef<ViewToken[] | null>(null);
+	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	useEffect(() => () => {
+		if (highlightTimeout.current) {
+			clearTimeout(highlightTimeout.current);
+		}
+	});
 
 	const jumpToBottom = () => {
 		listRef.current?.scrollToOffset({ offset: -100 });
@@ -23,6 +31,15 @@ export const useJump = ({ listRef, messagesIds }: { listRef: TListRef; messagesI
 
 	const handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
 		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+	};
+
+	const setHighlightTimeout = () => {
+		if (highlightTimeout.current) {
+			clearTimeout(highlightTimeout.current);
+		}
+		highlightTimeout.current = setTimeout(() => {
+			setHighlightedMessageId(null);
+		}, 5000);
 	};
 
 	const jumpToMessage: (messageId: string) => Promise<void> = messageId =>
@@ -50,12 +67,8 @@ export const useJump = ({ listRef, messagesIds }: { listRef: TListRef; messagesI
 					return;
 				}
 				// if message is visible, highlight it
-				// this.setState({ highlightedMessage: messageId });
-				// this.clearHighlightedMessageTimeout();
-				// // clears highlighted message after some time
-				// this.highlightedMessageTimeout = setTimeout(() => {
-				// 	this.setState({ highlightedMessage: null });
-				// }, 5000);
+				setHighlightedMessageId(messageId);
+				setHighlightTimeout();
 				resetJumpToMessage();
 				resolve();
 			} else {
@@ -83,6 +96,7 @@ export const useJump = ({ listRef, messagesIds }: { listRef: TListRef; messagesI
 		jumpToMessage,
 		cancelJumpToMessage,
 		viewabilityConfigCallbackPairs,
-		handleScrollToIndexFailed
+		handleScrollToIndexFailed,
+		highlightedMessageId
 	};
 };
