@@ -24,11 +24,6 @@ export interface IListContainerProps {
 	loading: boolean;
 	listRef: TListRef;
 	hideSystemMessages: string[];
-	tunread?: string[];
-	ignored?: string[];
-	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
-	autoTranslateRoom?: boolean;
-	autoTranslateLanguage?: string;
 }

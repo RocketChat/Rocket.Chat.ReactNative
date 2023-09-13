@@ -1543,16 +1543,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	render() {
-		const { room, loading, canAutoTranslate } = this.state;
-		const { user, baseUrl, theme, navigation, width, serverVersion } = this.props;
+		const { room, loading } = this.state;
+		const { user, baseUrl, theme, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		console.count(`${this.constructor.name}.render ${rid} ${this.tmid} calls`);
 		let bannerClosed;
 		let announcement;
-		let tunread;
-		let ignored;
 		if ('id' in room) {
-			({ bannerClosed, announcement, tunread, ignored } = room);
+			({ bannerClosed, announcement } = room);
 		}
 
 		return (
@@ -1565,16 +1563,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					listRef={this.flatList}
 					rid={rid}
 					tmid={this.tmid}
-					tunread={tunread}
-					ignored={ignored}
 					renderRow={this.renderItem}
 					loading={loading}
-					navigation={navigation}
 					hideSystemMessages={this.hideSystemMessages}
 					showMessageInMainThread={user.showMessageInMainThread ?? false}
 					serverVersion={serverVersion}
-					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
