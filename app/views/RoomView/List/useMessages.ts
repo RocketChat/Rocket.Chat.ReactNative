@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { TAnyMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { getThreadById } from '../../../lib/database/services/Thread';
-import { compareServerVersion } from '../../../lib/methods/helpers';
+import { animateNextTransition, compareServerVersion } from '../../../lib/methods/helpers';
 import { QUERY_SIZE } from './constants';
 
 export const useMessages = ({
@@ -79,6 +79,7 @@ export const useMessages = ({
 				messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 			}
 
+			animateNextTransition();
 			setMessages(messages);
 		});
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages]);
