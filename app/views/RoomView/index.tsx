@@ -27,14 +27,6 @@ import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/help
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
-import {
-	KEY_COMMAND,
-	handleCommandReplyLatest,
-	handleCommandRoomActions,
-	handleCommandScroll,
-	handleCommandSearchMessages,
-	IKeyCommandEvent
-} from '../../commands';
 import { Review } from '../../lib/methods/helpers/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
@@ -79,7 +71,6 @@ import {
 	RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { TListRef } from './List/List';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
@@ -96,7 +87,6 @@ import {
 	canAutoTranslate as canAutoTranslateMethod,
 	debounce,
 	isIOS,
-	isTablet,
 	hasPermission
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
@@ -216,7 +206,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private messagebox: React.RefObject<MessageBoxType>;
 	private list: React.RefObject<ListContainerType>;
 	private joinCode: React.RefObject<IJoinCode>;
-	private flatList: TListRef;
 	private mounted: boolean;
 	private offset = 0;
 	private subObserveQuery?: Subscription;
@@ -301,7 +290,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.joinCode = React.createRef();
-		this.flatList = React.createRef();
 		this.mounted = false;
 
 		if (this.t === 'l') {
@@ -341,9 +329,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.onReplyInit(this.replyInDM, false);
 			}
 		});
-		if (isTablet) {
-			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
-		}
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
@@ -472,9 +457,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			clearTimeout(this.retryInitTimeout);
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
-		if (isTablet) {
-			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
-		}
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
@@ -1249,28 +1231,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
-		if (this.rid) {
-			const { input } = event;
-			if (handleCommandScroll(event)) {
-				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
-				this.offset += offset;
-				this.flatList?.current?.scrollToOffset({ offset: this.offset });
-			} else if (handleCommandRoomActions(event)) {
-				this.goRoomActionsView();
-			} else if (handleCommandSearchMessages(event)) {
-				this.goRoomActionsView('SearchMessagesView');
-			} else if (handleCommandReplyLatest(event)) {
-				if (this.list && this.list.current) {
-					const message = this.list.current.getLastMessage();
-					if (message) {
-						this.onReplyInit(message, false);
-					}
-				}
-			}
-		}
-	};
-
 	blockAction = ({
 		actionId,
 		appId,
@@ -1550,7 +1510,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 				<List
 					ref={this.list}
-					listRef={this.flatList}
 					rid={rid}
 					tmid={this.tmid}
 					tunread={tunread}

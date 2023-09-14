@@ -109,8 +109,6 @@ PODS:
     - GoogleUtilities/Logger
   - hermes-engine (0.11.0)
   - iosMath (0.9.4)
-  - KeyCommands (2.0.3):
-    - React
   - libevent (2.1.12)
   - libwebp (1.2.4):
     - libwebp/demux (= 1.2.4)
@@ -604,7 +602,6 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (~> 0.11.0)
-  - KeyCommands (from `../node_modules/react-native-keycommands`)
   - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -740,8 +737,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  KeyCommands:
-    :path: "../node_modules/react-native-keycommands"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -912,7 +907,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   hermes-engine: 84e3af1ea01dd7351ac5d8689cbbea1f9903ffc3
   iosMath: f7a6cbadf9d836d2149c2a84c435b1effc244cba
-  KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
   MMKV: aac95d817a100479445633f2b3ed8961b4ac5043

@@ -50,7 +50,6 @@ export interface IListContainerProps {
 	rid: string;
 	tmid?: string;
 	loading: boolean;
-	listRef: TListRef;
 	hideSystemMessages?: string[];
 	tunread?: string[];
 	ignored?: string[];
@@ -68,6 +67,7 @@ interface IListContainerState {
 }
 
 class ListContainer extends React.Component<IListContainerProps, IListContainerState> {
+	private listRef: TListRef = React.createRef();
 	private count = 0;
 	private mounted = false;
 	private animated = false;
@@ -282,14 +282,12 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	};
 
 	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
-		const { listRef } = this.props;
-		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+		this.listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
 
 	jumpToMessage = (messageId: string) =>
 		new Promise<void>(async resolve => {
 			const { messages } = this.state;
-			const { listRef } = this.props;
 
 			// if jump to message was cancelled, reset variables and stop
 			if (this.cancelJump) {
@@ -303,7 +301,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 			// if found message, scroll to it
 			if (index > -1) {
-				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				this.listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 
 				// wait for scroll animation to finish
 				await new Promise(res => setTimeout(res, 300));
@@ -324,7 +322,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				resolve();
 			} else {
 				// if message not found, wait for scroll to top and then jump to message
-				listRef.current?.scrollToIndex({ index: messages.length - 1, animated: true });
+				this.listRef.current?.scrollToIndex({ index: messages.length - 1, animated: true });
 				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 			}
 		});
@@ -343,8 +341,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	};
 
 	jumpToBottom = () => {
-		const { listRef } = this.props;
-		listRef.current?.scrollToOffset({ offset: -100 });
+		this.listRef.current?.scrollToOffset({ offset: -100 });
 	};
 
 	renderFooter = () => {
@@ -367,7 +364,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { rid, tmid, listRef } = this.props;
+		const { rid, tmid } = this.props;
 		const { messages, refreshing } = this.state;
 		return (
 			<>
@@ -376,7 +373,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					<List
 						onScroll={this.onScroll}
 						scrollEventThrottle={16}
-						listRef={listRef}
+						listRef={this.listRef}
 						data={messages}
 						renderItem={this.renderItem}
 						onEndReached={this.onEndReached}
