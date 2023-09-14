@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { TAnyMessageModel, TThreadModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getThreadById } from '../../../../lib/database/services/Thread';
-import { animateNextTransition, compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
+import { animateNextTransition, compareServerVersion, isIOS, useDebounce } from '../../../../lib/methods/helpers';
 import { Services } from '../../../../lib/services';
 import { QUERY_SIZE } from '../constants';
 
@@ -77,7 +77,9 @@ export const useMessages = ({
 			}
 
 			readThread();
-			animateNextTransition();
+			if (isIOS) {
+				animateNextTransition();
+			}
 			setMessages(newMessages);
 			messagesIds.current = newMessages.map(m => m.id);
 		});
