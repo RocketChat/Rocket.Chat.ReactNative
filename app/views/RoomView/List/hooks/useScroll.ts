@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { FlatListProps, ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
+import { ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
 
-import { TListRef, TMessagesIdsRef } from '../definitions';
+import { IListContainerRef, IListProps, TListRef, TMessagesIdsRef } from '../definitions';
 import { VIEWABILITY_CONFIG } from '../constants';
 
 export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
@@ -21,7 +21,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		listRef.current?.scrollToOffset({ offset: -100 });
 	};
 
-	const onViewableItemsChanged: FlatListProps<any>['onViewableItemsChanged'] = ({ viewableItems: vi }) => {
+	const onViewableItemsChanged: IListProps['onViewableItemsChanged'] = ({ viewableItems: vi }) => {
 		viewableItems.current = vi;
 	};
 
@@ -29,7 +29,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		{ onViewableItemsChanged, viewabilityConfig: VIEWABILITY_CONFIG }
 	]);
 
-	const handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
+	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
 		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
 
@@ -42,7 +42,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		}, 5000);
 	};
 
-	const jumpToMessage: (messageId: string) => Promise<void> = messageId =>
+	const jumpToMessage: IListContainerRef['jumpToMessage'] = messageId =>
 		new Promise<void>(async resolve => {
 			// if jump to message was cancelled, reset variables and stop
 			if (cancelJump.current) {
@@ -83,7 +83,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		jumping.current = false;
 	};
 
-	const cancelJumpToMessage: () => void = () => {
+	const cancelJumpToMessage: IListContainerRef['cancelJumpToMessage'] = () => {
 		if (jumping.current) {
 			cancelJump.current = true;
 			return;
