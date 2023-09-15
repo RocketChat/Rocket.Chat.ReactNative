@@ -1183,7 +1183,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			isTablet && isAndroid
 				? {
 						multiline: false,
-						onSubmitEditing: this.submit,
+						// onSubmitEditing: this.submit,
 						returnKeyType: 'send'
 				  }
 				: {};
@@ -1228,9 +1228,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				<TextInput
 					ref={component => (this.component = component)}
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
-					returnKeyType='default'
-					keyboardType='twitter'
-					blurOnSubmit={false}
+					// returnKeyType='default'
+					// keyboardType='twitter'
+					// onKeyPress={console.log}
+					onSubmitEditing={() => {}}
+					// blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
 					placeholderTextColor={themes[theme].auxiliaryText}
 					onChangeText={this.onChangeText}

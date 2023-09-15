@@ -9,6 +9,7 @@ import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/s
 import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
+import HWKeyboardEvent from 'react-native-hw-keyboard-event';
 
 import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
@@ -220,8 +221,22 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				this.backHandler.remove();
 			}
 		});
+		// @ts-ignore
+		HWKeyboardEvent.onHWKeyPressed(this.handleHardwareEnterPress);
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
+
+	// @ts-ignore
+	handleHardwareEnterPress = keyEvent => {
+		console.log('🚀 ~ file: index.tsx:229 ~ RoomsListView ~ keyEvent:', keyEvent);
+		switch (keyEvent.pressedKey) {
+			case 'enter':
+				alert('pressed enter');
+				break;
+			case 'shift-enter':
+				alert('pressed shift-enter');
+		}
+	};
 
 	UNSAFE_componentWillReceiveProps(nextProps: IRoomsListViewProps) {
 		const { loadingServer, searchText, server, changingServer } = this.props;

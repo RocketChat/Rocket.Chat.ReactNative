@@ -9,6 +9,7 @@
 #import <Firebase.h>
 #import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
+#import <RNHWKeyboardEvent.h>
 
 #import <React/RCTAppSetupUtils.h>
 #if RCT_NEW_ARCH_ENABLED
@@ -141,4 +142,29 @@
 {
   return [Orientation getOrientation];
 }
+
+RNHWKeyboardEvent *hwKeyEvent = nil;
+- (NSMutableArray<UIKeyCommand *> *)keyCommands {
+  NSMutableArray *keys = [NSMutableArray new];
+  if (hwKeyEvent == nil) {
+    hwKeyEvent = [[RNHWKeyboardEvent alloc] init];
+  }
+  if ([hwKeyEvent isListening]) {
+    [keys addObject: [UIKeyCommand keyCommandWithInput:@"\r" modifierFlags:0 action:@selector(sendEnter:)]];
+    [keys addObject: [UIKeyCommand keyCommandWithInput:@"\r" modifierFlags:UIKeyModifierShift action:@selector(sendShiftEnter:)]];
+  }
+  return keys;
+}
+
+- (void)sendEnter:(UIKeyCommand *)sender {
+  // Detects user pressing the enter key
+  NSString *selected = sender.input;
+  [hwKeyEvent sendHWKeyEvent:@"enter"];
+}
+- (void)sendShiftEnter:(UIKeyCommand *)sender {
+// Detects user pressing the shift-enter combination
+  NSString *selected = sender.input;
+  [hwKeyEvent sendHWKeyEvent:@"shift-enter"];
+}
+
 @end
