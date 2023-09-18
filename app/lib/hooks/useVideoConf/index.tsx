@@ -5,6 +5,7 @@ import { useActionSheet } from '../../../containers/ActionSheet';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
 import { compareServerVersion, showErrorAlert } from '../../methods/helpers';
+import log from '../../methods/helpers/log';
 import { handleAndroidBltPermission } from '../../methods/videoConf';
 import { Services } from '../../services';
 import { useAppSelector } from '../useAppSelector';
@@ -66,7 +67,7 @@ export const useVideoConf = (
 				}
 			}
 		} catch (error) {
-			console.error('Failed to initialize call:', error);
+			log(error);
 		}
 	};
 
