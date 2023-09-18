@@ -467,14 +467,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						onPress={this.goPushTroubleshoot}
 						testID='rooms-list-view-push-troubleshoot'
 					/>
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
 					{canCreateRoom ? (
 						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
 					) : null}
-					{/* 
-					Todo: check if will remove the directory from here with jose
+					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
 					<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
-					*/}
 				</HeaderButton.Container>
 			)
 		};
