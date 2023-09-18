@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
+import { Alert, Linking } from 'react-native';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -8,12 +9,19 @@ import I18n from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import CustomListSection from './components/CustomListSection';
+import ListPercentage from './components/ListPercentage';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
 }
 
 const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {
+	const deviceNotificationEnabled = false;
+	const isCommunityEdition = true;
+	const isPushGatewayConnected = true;
+	const isCustomPushGateway = true;
+	const consumptionPercentage = 50;
+
 	const { colors } = useTheme();
 
 	useEffect(() => {
@@ -22,39 +30,84 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		});
 	}, [navigation]);
 
+	const openNotificationDocumentation = async () => {
+		await Linking.openURL('https://docs.rocket.chat/use-rocket.chat/rocket.chat-mobile/push-notifications');
+	};
+
+	const alertDeviceNotificationSettings = () => {
+		Alert.alert(I18n.t('Device_notifications_alert_title'), I18n.t('Device_notifications_alert_description'));
+	};
+
+	const alertWorkspaceConsumption = () => {
+		Alert.alert(I18n.t('Push_consumption_alert_title'), I18n.t('Push_consumption_alert_description'));
+	};
+
+	const handleTestPushNotification = () => {
+		// do nothing
+	};
+
+	let pushGatewayInfoDescription = 'Push_gateway_not_connected_description';
+	let pushGatewayStatusColor = colors.pushTroubleshootingDanger;
+	if (isPushGatewayConnected) {
+		pushGatewayStatusColor = colors.pushTroubleshootingSuccess;
+		pushGatewayInfoDescription = 'Push_gateway_connected_description';
+	}
+	if (isPushGatewayConnected && isCustomPushGateway) {
+		pushGatewayStatusColor = colors.pushTroubleshootingWarning;
+		pushGatewayInfoDescription = 'Custom_push_gateway_connected_description';
+	}
+
 	return (
 		<SafeAreaView testID='push-troubleshoot-view'>
 			<StatusBar />
 			<List.Container testID='push-troubleshoot-view-list'>
-				<CustomListSection title='Device_notification_settings' statusColor='#f00'>
+				<CustomListSection
+					title='Device_notification_settings'
+					statusColor={!deviceNotificationEnabled ? colors.pushTroubleshootingDanger : colors.pushConsumptionOnSuccess}
+				>
 					<List.Separator />
 					<List.Item
-						title='Allow_push_notifications_for_rocket_chat'
-						onPress={() => {}}
+						title={!deviceNotificationEnabled ? 'Allow_push_notifications_for_rocket_chat' : 'Go_to_device_settings'}
+						onPress={!deviceNotificationEnabled ? alertDeviceNotificationSettings : undefined}
 						testID='push-troubleshoot-view-allow-push-notifications'
 					/>
 					<List.Separator />
 				</CustomListSection>
 
-				<List.Section title='Community_edition_push_quota'>
-					<List.Separator />
-					<List.Item title='Workspace_consumption' onPress={() => {}} testID='push-troubleshoot-view-workspace-consumption' />
-					<List.Separator />
-					<List.Info info='Workspace_consumption_description' />
-				</List.Section>
+				{isCommunityEdition ? (
+					<List.Section title='Community_edition_push_quota'>
+						<List.Separator />
+						<ListPercentage
+							title='Workspace_consumption'
+							onPress={alertWorkspaceConsumption}
+							testID='push-troubleshoot-view-workspace-consumption'
+							value={consumptionPercentage}
+						/>
+						<List.Separator />
+						<List.Info info='Workspace_consumption_description' />
+					</List.Section>
+				) : null}
 
-				<CustomListSection title='Push_gateway_connection' statusColor='#0f0'>
+				<CustomListSection
+					title={isCustomPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
+					statusColor={pushGatewayStatusColor}
+				>
 					<List.Separator />
-					<List.Item title='Test_push_notification' onPress={() => {}} testID='push-troubleshoot-view-push-gateway-connection' />
+					<List.Item
+						title='Test_push_notification'
+						disabled={!isPushGatewayConnected}
+						onPress={handleTestPushNotification}
+						testID='push-troubleshoot-view-push-gateway-connection'
+					/>
 					<List.Separator />
-					<List.Info info='Push_gateway_connection_description' />
+					<List.Info info={pushGatewayInfoDescription} />
 				</CustomListSection>
 
 				<List.Section title='Notification_delay'>
 					<List.Separator />
 					<List.Item
 						title='Documentation'
-						onPress={() => {}}
+						onPress={openNotificationDocumentation}
 						right={() => <List.Icon size={32} name='new-window' color={colors.fontAnnotation} />}
 						testID='push-troubleshoot-view-notification-delay'
 					/>
