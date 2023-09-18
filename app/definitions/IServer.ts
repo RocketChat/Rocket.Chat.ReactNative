@@ -37,11 +37,20 @@ export interface ISupportedVersions {
 	i18n?: TSVDictionary;
 }
 
+export interface IServerApiInfo {
+	version: string;
+	success: boolean;
+	supportedVersions?: string;
+	minimumClientVersions?: {
+		desktop: string;
+		mobile: string;
+	};
+}
+
 export interface IServerInfo {
 	version: string;
 	success: boolean;
-	signed?: string; // FIXME: find a good type SerializedJWT<SupportedVersions>
-	supportedVersions?: ISupportedVersions; // SerializedJWT<ISupportedVersions>;
+	supportedVersions?: ISupportedVersions;
 	minimumClientVersions?: {
 		desktop: string;
 		mobile: string;

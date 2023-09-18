@@ -2,17 +2,15 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 
-import { ICloudInfo, IServerInfo, ISupportedVersions } from '../../definitions';
+import { ICloudInfo, IServerApiInfo, IServerInfo, ISupportedVersions } from '../../definitions';
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 
 const MOCKED_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
-MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArbSdeyXHhgBAX93ndDDxCuMhIh9XYCJUHG+vGNKzl4i16W5Fj5bua5gSxbIdhl0S7BtYJM3trpp7vnf3Cp6+tFoyKREYr8D/sdznSv7nRgZGgcuwZpXwf3bPN69dPPZvKS9exhlQ13nn1kOUYOgRwOrdZ8sFzJTasKeTCEjEZa4UFU4Q5lvJGOQt7hA3TvFmH4RUQC7Cu8GgHfUQD4fDuRqG4KFteTOJABpvXqJJG7DWiX6N5ssh2qRoaoapK7E+bTYWAzQnR9eAFV1ajCjhm2TqmUbAKWCM2X27ArsCJ9SWzDIj7sAm0G3DtbUKnzCDmZQHXlxcXcMDqWb8w+JQFs8b4pf56SmZn1Bro7TxdXBEgRQCTck1hginBTKciuh8gbv71bLyjPxOxnAQaukxhYpZPJAFrsfps0vKp1EPwNTboDLHHeuGSeaBP/c8ipHqPmraFLR78O07EdsCzJpBvggG7GcgSikjWDjK/eIdsUro7BKFmxjrmT72dmr7Ero9cmtd1aO/6PAenwHafCKnaxGcIGLUCNOXhk+uTPoV2LrN4L5LN75NNu6hd5L4++ngjwVsGsX3JP3seFPaZ2C76TD+Rd6OT+8guZFCGjPzXbDAb6ScQUJb11pyyLooPkz7Xdy5fCBRoeIWtjs6UwH4n57SJ/gkzkmUykX0WT3wqhkCAwEAAQ==
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEVs/o5+uQbTjL3chynL4wXgUg2R9
+q9UU8I5mEovUf86QZ7kOBIjJwqnzD1omageEHWwHdBO6B+dFabmdT9POxg==
 -----END PUBLIC KEY-----`;
-
-const MOCKED_SIGNED =
-	'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lc3RhbXAiOiIyMDIzLTA5LTEyVDAwOjAwOjAwLjAwMFoiLCJpMThuIjp7ImVuIjp7Im1lc3NhZ2VfdG9rZW4iOiJZb3VyIHNlcnZlciBpcyBhYm91dCB0byBiZSBkZXByZWNhdGVkLiBQbGVhc2UgdXBkYXRlIHRvIHRoZSBsYXRlc3QgdmVyc2lvbi4ifX0sInZlcnNpb25zIjpbeyJ2ZXJzaW9uIjoiNi41LjAiLCJleHBpcmF0aW9uIjoiMjAyMy0wOS0xMVQwMDowMDowMC4wMDBaIn0seyJ2ZXJzaW9uIjoiNi40LjAiLCJleHBpcmF0aW9uIjoiMjAyMy0wOC0yOVQwMDowMDowMC4wMDBaIn1dfQ.GzkUMsZPaVMEfVQxNC64QCUdNdU7h58qLvbjAff7zZ51Payo5WLxswdc5zgcbkrqg6TS3V4HjQM4u1yzO9muM_4GLfOXez67koKd9tLpX4CXtOwIQXyZ3bznPxiET8YWGUCEomzJexi1xtGT7r7iemaQNyJB3FBUl616yts4UiFiF0FjVd-iahwAYhJjmQUzW3PY2pMH1msY9x3O1-0r-w23CSHSZULi0Qv0QyDPANRqWGRJAB4Nh8EuVnbHb_K7qcT3nufBZFqZpf9BSTiFobShBT9H6Is3xq1Kl-6tkdpF0NHGsIGxGvX6DeXUshjbTvWh1CXYQpvnmSAY5Ik20gr0StMine7tciUhTeuBIv8UrMta0bm9RrLUSe2_sJx5dsbL9GlEQ7IDsg08bRRkNFQunnZEAbVkmzfTv0cjx3eCPwBWeTbUcdlQLR-k9qzIzOFCkYTBkWgEtTYEHzP8q51MV-HNWzI-HpGbt6Tuf_AeRh1Pjlf_As34pnR1_Az4X3W6VLsL6yvm-wsDDehIZY32Vk2W4jGDwxf8iwipc04T83QtCKaJWiJf5E-ofHNfgywKispUSQZnQgl4JYiprOCpjH_iT1hNOcL1wXy6wd3T9ohDw3j38KROslDQ4ENQdmnzcr-NWTPq3hl8ECcmkaPR0QypbS77fdSNHOpRVHw';
 
 const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
 	timestamp: '2023-09-20T00:00:00.000Z',
@@ -97,7 +95,7 @@ const verifyJWT = (jwt?: string): ISupportedVersions | null => {
 	if (!jwt) {
 		return null;
 	}
-	const isValid = KJUR.jws.JWS.verify(jwt, MOCKED_PUBLIC_KEY, ['RS256']);
+	const isValid = KJUR.jws.JWS.verify(jwt, MOCKED_PUBLIC_KEY, ['ES256']);
 	if (!isValid) {
 		return null;
 	}
@@ -108,9 +106,11 @@ const verifyJWT = (jwt?: string): ISupportedVersions | null => {
 
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
-		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, { ...RocketChatSettings.customHeaders });
+		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, {
+			...RocketChatSettings.customHeaders
+		});
 		try {
-			const jsonRes: IServerInfo = response.json();
+			const jsonRes: IServerApiInfo = response.json();
 			if (!jsonRes?.success) {
 				return {
 					success: false,
@@ -119,9 +119,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			}
 
 			// Makes use of signed JWT to get supported versions
-			const supportedVersions = verifyJWT(jsonRes.signed);
-			// const supportedVersions = verifyJWT(MOCKED_SIGNED);
-			console.log('🚀 ~ file: getServerInfo.ts:96 ~ getServerInfo ~ supportedVersions:', supportedVersions);
+			const supportedVersions = verifyJWT(jsonRes.supportedVersions);
 
 			// if backend doesn't have supported versions or JWT is invalid, request from cloud
 			if (!supportedVersions) {
@@ -165,7 +163,6 @@ export const getCloudInfo = (): Promise<ICloudInfo> => {
 	const uniqueId = store.getState().settings.uniqueID;
 	console.log('🚀 ~ file: getServerInfo.ts:139 ~ getCloudInfo ~ uniqueId:', uniqueId);
 	return Promise.resolve({
-		signed: MOCKED_SIGNED,
 		...MOCKED_SUPPORTED_VERSIONS
 	});
 };

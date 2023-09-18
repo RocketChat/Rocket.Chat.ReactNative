@@ -1,5 +1,5 @@
 {
-	"timestamp": "2023-07-12T00:00:00.000Z",
+	"timestamp": "2022-07-12T00:00:00.000Z",
 	"i18n": {
 		"en": {
 			"message_token": "Your server is about to be deprecated. Please update to the latest version."
@@ -18,11 +18,15 @@
 	"versions": [
 		{
 			"version": "6.5.0",
-			"expiration": "2023-09-11T00:00:00.000Z"
+			"expiration": "2024-02-28T00:00:00.000Z"
 		},
 		{
 			"version": "6.4.0",
-			"expiration": "2023-08-11T00:00:00.000Z"
+			"expiration": "2023-12-31T00:00:00.000Z"
+		},
+		{
+			"version": "6.3.0",
+			"expiration": "2023-11-30T00:00:00.000Z"
 		}
 	]
 }
