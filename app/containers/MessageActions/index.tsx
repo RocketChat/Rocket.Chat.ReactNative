@@ -44,6 +44,7 @@ export interface IMessageActionsProps {
 	deleteOwnMessagePermission?: string[];
 	pinMessagePermission?: string[];
 	createDirectMessagePermission?: string[];
+	createDiscussionPermission?: string[];
 }
 
 export interface IMessageActions {
@@ -76,6 +77,7 @@ const MessageActions = React.memo(
 				deleteOwnMessagePermission,
 				pinMessagePermission,
 				createDirectMessagePermission,
+				createDiscussionPermission,
 				serverVersion
 			},
 			ref
@@ -85,7 +87,9 @@ const MessageActions = React.memo(
 				hasDeletePermission: false,
 				hasForceDeletePermission: false,
 				hasPinPermission: false,
-				hasDeleteOwnPermission: false
+				hasDeleteOwnPermission: false,
+				hasCreateDirectMessagePermission: false,
+				hasCreateDiscussionPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
 
@@ -96,7 +100,9 @@ const MessageActions = React.memo(
 						deleteMessagePermission,
 						forceDeleteMessagePermission,
 						pinMessagePermission,
-						deleteOwnMessagePermission
+						deleteOwnMessagePermission,
+						createDirectMessagePermission,
+						createDiscussionPermission
 					];
 					const result = await hasPermission(permission, room.rid);
 					permissions = {
@@ -104,7 +110,9 @@ const MessageActions = React.memo(
 						hasDeletePermission: result[1],
 						hasForceDeletePermission: result[2],
 						hasPinPermission: result[3],
-						hasDeleteOwnPermission: result[4]
+						hasDeleteOwnPermission: result[4],
+						hasCreateDiscussionPermission: result[5],
+						hasCreateDirectMessagePermission: result[6]
 					};
 				} catch {
 					// Do nothing
@@ -385,7 +393,7 @@ const MessageActions = React.memo(
 				}
 
 				// Reply in DM
-				if (room.t !== 'd' && room.t !== 'l' && createDirectMessagePermission && !videoConfBlock) {
+				if (room.t !== 'd' && room.t !== 'l' && permissions.hasCreateDirectMessagePermission && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
@@ -394,11 +402,13 @@ const MessageActions = React.memo(
 				}
 
 				// Create Discussion
-				options.push({
-					title: I18n.t('Start_a_Discussion'),
-					icon: 'discussions',
-					onPress: () => handleCreateDiscussion(message)
-				});
+				if (permissions.hasCreateDiscussionPermission) {
+					options.push({
+						title: I18n.t('Start_a_Discussion'),
+						icon: 'discussions',
+						onPress: () => handleCreateDiscussion(message)
+					});
+				}
 
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
@@ -540,7 +550,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	deleteOwnMessagePermission: state.permissions['delete-own-message'],
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
 	pinMessagePermission: state.permissions['pin-message'],
-	createDirectMessagePermission: state.permissions['create-d']
+	createDirectMessagePermission: state.permissions['create-d'],
+	createDiscussionPermission: state.permissions['create-d']
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);
