@@ -90,8 +90,8 @@ describe('Auto Translate', () => {
 	};
 
 	const newMessage = {
-		[languages.default]: 'cat',
-		[languages.translated]: 'gato'
+		[languages.default]: 'Cat',
+		[languages.translated]: 'Gato'
 	};
 
 	const attachmentMessage = {
@@ -171,18 +171,18 @@ describe('Auto Translate', () => {
 
 	it('should see new message translated', async () => {
 		const randomMatcher = random();
-		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]} - ${randomMatcher}`);
-		await searchMessage(`${newMessage[languages.default]} - ${randomMatcher}`, textMatcher); // will scroll the messages list to the last one
-		await waitForVisibleTextMatcher(`${newMessage[languages.translated]} - ${randomMatcher}`, textMatcher);
+		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
+		await searchMessage(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher); // will scroll the messages list to the last one
+		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 		await deleteMessageOnTranslationTestRoom(data);
 	});
 
 	it('should see original message', async () => {
 		const randomMatcher = random();
-		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]} - ${randomMatcher}`);
-		await waitForVisibleTextMatcher(`${newMessage[languages.translated]} - ${randomMatcher}`, textMatcher);
+		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
+		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 
-		await tryTapping(element(by[textMatcher](`${newMessage[languages.translated]} - ${randomMatcher}`)).atIndex(0), 2000, true);
+		await tryTapping(element(by[textMatcher](`${newMessage[languages.translated]}. Rc${randomMatcher}`)).atIndex(0), 2000, true);
 
 		await waitForVisible('action-sheet-handle');
 		await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
@@ -190,16 +190,16 @@ describe('Auto Translate', () => {
 		await waitForVisibleTextMatcher('View original', textMatcher);
 		await element(by[textMatcher]('View original')).atIndex(0).tap();
 
-		await waitForVisibleTextMatcher(`${newMessage[languages.default]} - ${randomMatcher}`, textMatcher);
+		await waitForVisibleTextMatcher(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher);
 
 		await deleteMessageOnTranslationTestRoom(data);
 	});
 
 	it('disable auto translate and see original message', async () => {
 		const randomMatcher = random();
-		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]} - ${randomMatcher}`);
+		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
 
-		await waitForVisibleTextMatcher(`${newMessage[languages.translated]} - ${randomMatcher}`, textMatcher);
+		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 
 		await element(by.id('room-header')).tap();
 		await waitForVisible('room-actions-view');
@@ -214,7 +214,7 @@ describe('Auto Translate', () => {
 		await tapBack();
 		await tapBack();
 
-		await waitForVisibleTextMatcher(`${newMessage[languages.default]} - ${randomMatcher}`, textMatcher);
+		await waitForVisibleTextMatcher(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher);
 
 		await deleteMessageOnTranslationTestRoom(data);
 	});
