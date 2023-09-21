@@ -17991,9 +17991,9 @@ react-native-webview@11.26.1, react-native-webview@^11.18.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@RocketChat/react-native#e8b6e065065d0b8cfbfa034a96668747885c678a:
-  version "0.68.6"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/e8b6e065065d0b8cfbfa034a96668747885c678a"
+react-native@RocketChat/react-native#2a4de94a0a7125abb16957ffbb5a663985a5ec86:
+  version "0.68.7"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/2a4de94a0a7125abb16957ffbb5a663985a5ec86"
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^7.0.3"
