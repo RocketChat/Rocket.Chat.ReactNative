@@ -26,14 +26,6 @@ import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/help
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
-import {
-	KEY_COMMAND,
-	handleCommandReplyLatest,
-	handleCommandRoomActions,
-	handleCommandScroll,
-	handleCommandSearchMessages,
-	IKeyCommandEvent
-} from '../../commands';
 import { Review } from '../../lib/methods/helpers/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
@@ -55,7 +47,7 @@ import styles from './styles';
 import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
-import List, { ListContainerType } from './List';
+import List from './List';
 import { ChatsStackParamList } from '../../stacks/types';
 import {
 	IApplicationState,
@@ -76,7 +68,6 @@ import {
 	RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { TListRef } from './List/List';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
@@ -93,7 +84,6 @@ import {
 	canAutoTranslate as canAutoTranslateMethod,
 	debounce,
 	isIOS,
-	isTablet,
 	hasPermission
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
@@ -101,6 +91,7 @@ import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSh
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext, TMessageAction } from './context';
+import { IListContainerRef, TListRef } from './List/definitions';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -153,7 +144,6 @@ const roomAttrsUpdate = [
 
 interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
-	appState: string;
 	useRealName?: boolean;
 	isAuthenticated: boolean;
 	Message_GroupingPeriod?: number;
@@ -214,8 +204,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
 	private messageComposerRef: React.RefObject<IMessageComposerRef>;
-	private list: React.RefObject<ListContainerType>;
 	private joinCode: React.RefObject<IJoinCode>;
+	// ListContainer component
+	private list: React.RefObject<IListContainerRef>;
+	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
 	private offset = 0;
@@ -224,8 +216,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
-	private retryFindCount = 0;
-	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	private replyInDM?: TAnyMessageModel;
@@ -239,8 +229,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	constructor(props: IRoomViewProps) {
 		super(props);
-		console.time(`${this.constructor.name} init`);
-		console.time(`${this.constructor.name} mount`);
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		/**
@@ -301,8 +289,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		this.messageComposerRef = React.createRef();
 		this.list = React.createRef();
-		this.joinCode = React.createRef();
 		this.flatList = React.createRef();
+		this.joinCode = React.createRef();
 		this.mounted = false;
 
 		if (this.t === 'l') {
@@ -313,7 +301,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.rid && !this.tmid) {
 			this.sub = new RoomClass(this.rid);
 		}
-		console.timeEnd(`${this.constructor.name} init`);
 	}
 
 	componentDidMount() {
@@ -342,21 +329,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.onReplyInit(this.replyInDM, false);
 			}
 		});
-		if (isTablet) {
-			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
-		}
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
-		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
 		const { roomUpdate, member, isOnHold } = state;
-		const { appState, theme, insets, route } = this.props;
+		const { theme, insets, route } = this.props;
 		if (theme !== nextProps.theme) {
-			return true;
-		}
-		if (appState !== nextProps.appState) {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
@@ -383,7 +363,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
 		const { roomUpdate, joined } = this.state;
-		const { appState, insets, route } = this.props;
+		const { insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
@@ -393,12 +373,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.navToThread({ tmid: route?.params?.jumpToThreadId });
 		}
 
-		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
-			// Fire List.query() just to keep observables working
-			if (this.list && this.list.current && !isIOS) {
-				this.list.current?.query();
-			}
-		}
 		// If it's a livechat room
 		if (this.t === 'l') {
 			if (
@@ -448,11 +422,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			clearTimeout(this.retryInitTimeout);
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
-		if (isTablet) {
-			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
-		}
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
-		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
 	canForwardGuest = async () => {
@@ -506,6 +476,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	get isOmnichannel() {
 		const { room } = this.state;
 		return room.t === 'l';
+	}
+
+	get hideSystemMessages() {
+		const { sysMes } = this.state.room;
+		const { Hide_System_Messages } = this.props;
+
+		// FIXME: handle servers with version < 3.0.0
+		let hideSystemMessages = Array.isArray(sysMes) ? sysMes : Hide_System_Messages;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
+		return hideSystemMessages ?? [];
 	}
 
 	setHeader = () => {
@@ -1077,9 +1059,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { rid } = this.state.room;
 		const { user } = this.props;
 		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
-			if (this.list && this.list.current) {
-				this.list.current?.update();
-			}
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});
@@ -1259,28 +1238,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
 				callJitsi({ room });
-			}
-		}
-	};
-
-	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
-		if (this.rid) {
-			const { input } = event;
-			if (handleCommandScroll(event)) {
-				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
-				this.offset += offset;
-				this.flatList?.current?.scrollToOffset({ offset: this.offset });
-			} else if (handleCommandRoomActions(event)) {
-				this.goRoomActionsView();
-			} else if (handleCommandSearchMessages(event)) {
-				this.goRoomActionsView('SearchMessagesView');
-			} else if (handleCommandReplyLatest(event)) {
-				if (this.list && this.list.current) {
-					const message = this.list.current.getLastMessage();
-					if (message) {
-						this.onReplyInit(message, false);
-					}
-				}
 			}
 		}
 	};
@@ -1538,16 +1495,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, action, selectedMessages, canAutoTranslate } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, serverVersion } = this.props;
+		const { room, loading, action, selectedMessages } = this.state;
+		const { user, baseUrl, theme, width, serverVersion } = this.props;
 		const { rid, t } = room;
-		let sysMes;
 		let bannerClosed;
 		let announcement;
-		let tunread;
-		let ignored;
 		if ('id' in room) {
-			({ sysMes, bannerClosed, announcement, tunread, ignored } = room);
+			({ bannerClosed, announcement } = room);
 		}
 
 		return (
@@ -1572,17 +1526,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						listRef={this.flatList}
 						rid={rid}
 						tmid={this.tmid}
-						tunread={tunread}
-						ignored={ignored}
 						renderRow={this.renderItem}
 						loading={loading}
-						navigation={navigation}
-						hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
+						hideSystemMessages={this.hideSystemMessages}
 						showMessageInMainThread={user.showMessageInMainThread ?? false}
 						serverVersion={serverVersion}
-						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
-						selectedMessageId={selectedMessages[0]}
 					/>
 					{this.renderFooter()}
 					{this.renderActions()}
@@ -1597,7 +1545,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
