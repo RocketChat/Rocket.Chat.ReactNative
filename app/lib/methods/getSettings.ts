@@ -150,16 +150,31 @@ export async function getSettings(): Promise<void> {
 		const db = database.active;
 		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
-		const result = await fetch(
-			`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}&count=${
-				settingsParams.length
-			}`
-		).then(response => response.json());
+		let offset = 0;
+		let remaining;
+		let settings: IData[] = [];
 
-		if (!result.success) {
-			return;
-		}
-		const data: IData[] = result.settings || [];
+		// Iterate over paginated results to retrieve all settings
+		do {
+			// TODO: why is no-await-in-loop enforced in the first place?
+			/* eslint-disable no-await-in-loop */
+			const response = await fetch(
+				`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}
+				&offset=${offset}`);
+
+			const result = await response.json();
+
+			if (!result.success) {
+				return;
+			}
+
+			offset += result.settings.length;
+			settings = [...settings, ...result.settings];
+			remaining = result.total - settings.length;
+			/* eslint-enable no-await-in-loop */
+		} while(remaining > 0);
+
+		const data: IData[] = settings;
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 		const parsedSettings = parseSettings(filteredSettings);
