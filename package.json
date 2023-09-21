@@ -91,7 +91,7 @@
 		"prop-types": "15.7.2",
 		"react": "17.0.2",
 		"react-hook-form": "^7.34.2",
-		"react-native": "RocketChat/react-native#2a4de94a0a7125abb16957ffbb5a663985a5ec86",
+		"react-native": "RocketChat/react-native#6cf729c196f0f043ac6e7444e73f5a560d7a8a8a",
 		"react-native-animatable": "^1.3.3",
 		"react-native-background-timer": "2.4.1",
 		"react-native-bootsplash": "^4.3.3",
