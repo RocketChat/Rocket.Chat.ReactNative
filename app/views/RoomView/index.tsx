@@ -92,6 +92,7 @@ import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext, TMessageAction } from './context';
 import { IListContainerRef, TListRef } from './List/definitions';
+import { getMessageById } from '../../lib/database/services/Message';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -785,15 +786,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
+	onReplyInit = async (messageId: string) => {
+		const message = await getMessageById(messageId);
+		if (!message || !this.rid) {
+			return;
+		}
+
 		// If there's a thread already, we redirect to it
-		if (mention && !!message.tlm) {
+		if (message.tlm) {
 			return this.onThreadPress(message);
 		}
-		this.setState({
-			selectedMessage: message,
-			replying: true,
-			replyWithMention: mention
+		const { roomUserId } = this.state;
+		const { navigation } = this.props;
+		navigation.push('RoomView', {
+			rid: this.rid,
+			tmid: messageId,
+			name: makeThreadName(message),
+			t: SubscriptionType.THREAD,
+			roomUserId
 		});
 	};
 

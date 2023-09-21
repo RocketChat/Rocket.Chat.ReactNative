@@ -27,7 +27,7 @@ export interface IMessageActionsProps {
 	editInit: (messageId: string) => void;
 	reactionInit: (messageId: string) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
-	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
+	replyInit: (messageId: string) => void;
 	quoteInit: (messageId: string) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
@@ -172,9 +172,9 @@ const MessageActions = React.memo(
 
 			const getPermalink = (message: TAnyMessageModel) => getPermalinkMessage(message);
 
-			const handleReply = (message: TAnyMessageModel) => {
+			const handleReply = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_REPLY);
-				replyInit(message, true);
+				replyInit(messageId);
 			};
 
 			const handleEdit = (messageId: string) => {
@@ -382,7 +382,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Reply_in_Thread'),
 						icon: 'threads',
-						onPress: () => handleReply(message)
+						onPress: () => handleReply(message.id)
 					});
 				}
 
