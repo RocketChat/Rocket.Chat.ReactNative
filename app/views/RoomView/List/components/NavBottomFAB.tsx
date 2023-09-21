@@ -34,7 +34,6 @@ const NavBottomFAB = ({
 	isThread: boolean;
 }): React.ReactElement | null => {
 	const { theme } = useTheme();
-	const handleOnPress = () => onPress();
 
 	if (!visible) {
 		return null;
@@ -58,7 +57,7 @@ const NavBottomFAB = ({
 			]}
 			testID='nav-jump-to-bottom'
 		>
-			<Touch onPress={handleOnPress} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}>
+			<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}>
 				<View style={[styles.content, { borderColor: themes[theme].borderColor }]}>
 					<CustomIcon name='chevron-down' color={themes[theme].auxiliaryTintColor} size={36} />
 				</View>
