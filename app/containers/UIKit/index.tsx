@@ -138,7 +138,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 
 	multiStaticSelect(element: IElement, context: BlockContext) {
 		const [{ loading, value }, action] = useBlockContext(element, context);
-		const valueFiltered = element.options?.filter(option => value.includes(option.value));
+		const valueFiltered = element?.options?.filter(option => value?.includes(option.value));
 		return <MultiSelect {...element} value={valueFiltered} onChange={action} context={context} loading={loading} multiselect />;
 	}
 
