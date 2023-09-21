@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useIsFocused } from '@react-navigation/native';
+import React from 'react';
 import { createStackNavigator, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -62,7 +61,6 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 import E2ESaveYourPasswordView from '../../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../../views/E2EHowItWorksView';
 import E2EEnterYourPasswordView from '../../views/E2EEnterYourPasswordView';
-import { deleteKeyCommands, setKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
 import QueueListView from '../../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../../views/AddChannelTeamView';
@@ -83,18 +81,6 @@ import { TNavigation } from '../stackType';
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
 const ChatsStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
-
-	const isFocused = useIsFocused();
-	useEffect(() => {
-		if (isFocused) {
-			setKeyCommands();
-		} else {
-			deleteKeyCommands();
-		}
-		return () => {
-			deleteKeyCommands();
-		};
-	}, [isFocused]);
 
 	return (
 		<ChatsStack.Navigator
