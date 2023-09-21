@@ -42,6 +42,10 @@ export default StyleSheet.create({
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
 	},
+	userInfoStatus: {
+		...sharedStyles.textAlignCenter,
+		fontSize: 18
+	},
 	roomTitleRow: {
 		flexDirection: 'row',
 		alignItems: 'center'
