@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 
-import { themes } from '../../../../lib/constants';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import Touch from '../../../../containers/Touch';
@@ -33,7 +32,7 @@ const NavBottomFAB = ({
 	onPress: Function;
 	isThread: boolean;
 }): React.ReactElement | null => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	if (!visible) {
 		return null;
@@ -57,9 +56,9 @@ const NavBottomFAB = ({
 			]}
 			testID='nav-jump-to-bottom'
 		>
-			<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}>
-				<View style={[styles.content, { borderColor: themes[theme].borderColor }]}>
-					<CustomIcon name='chevron-down' color={themes[theme].auxiliaryTintColor} size={36} />
+			<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: colors.backgroundColor }]}>
+				<View style={[styles.content, { borderColor: colors.borderColor }]}>
+					<CustomIcon name='chevron-down' color={colors.auxiliaryTintColor} size={36} />
 				</View>
 			</Touch>
 		</View>
