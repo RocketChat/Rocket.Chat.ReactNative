@@ -1,7 +1,7 @@
 import { by, device, element, expect, waitFor } from 'detox';
 
 import { TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, sleep, tapBack, tryTapping } from '../../helpers/app';
-import { ITestUser, createRandomRoom, createRandomUser, initApi } from '../../helpers/data_setup';
+import { ITestUser, createRandomUser, initApi } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const roomId = '64b846e4760e618aa9f91ab7';
@@ -101,7 +101,6 @@ describe('Auto Translate', () => {
 
 	beforeAll(async () => {
 		const user = await createRandomUser();
-		await createRandomRoom(user);
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
