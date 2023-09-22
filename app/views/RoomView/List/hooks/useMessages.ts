@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { TAnyMessageModel, TThreadModel } from '../../../../definitions';
 import database from '../../../../lib/database';
+import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
 import { animateNextTransition, compareServerVersion, isIOS, useDebounce } from '../../../../lib/methods/helpers';
 import { Services } from '../../../../lib/services';
@@ -23,7 +24,7 @@ export const useMessages = ({
 	hideSystemMessages: string[];
 }) => {
 	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
-	const thread = useRef<TThreadModel | null>(null);
+	const thread = useRef<TAnyMessageModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
 	const messagesIds = useRef<string[]>([]);
@@ -39,8 +40,13 @@ export const useMessages = ({
 		const db = database.active;
 		let observable;
 		if (tmid) {
-			if (!thread.current) {
+			// If the thread doesn't exist yet, we fetch it from messages, but trying to get it from threads when possible.
+			// As soon as we have it from threads table, we use it from cache only and never query again.
+			if (!thread.current || thread.current.collection.table !== 'threads') {
 				thread.current = await getThreadById(tmid);
+				if (!thread.current) {
+					thread.current = await getMessageById(tmid);
+				}
 			}
 			observable = db
 				.get('thread_messages')
