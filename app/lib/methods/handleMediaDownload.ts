@@ -73,8 +73,6 @@ const getExtension = (type: MediaTypes, mimeType?: string) => {
 	if (mimeType === 'audio/mpeg') {
 		return 'mp3';
 	}
-	// Audios sent by Android devices are in the audio/aac format, which cannot be converted to mp3 by iOS.
-	// However, both platforms support the m4a format, so they can maintain the same behavior.
 	if (mimeType === 'audio/aac') {
 		return 'aac';
 	}
