@@ -5,9 +5,15 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 
 import { useRoomContext } from '../../views/RoomView/context';
-import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right } from './components';
+import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel } from './components';
 import { MIN_HEIGHT, NO_CANNED_RESPONSES, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
-import { MessageInnerContext, useMessageComposerApi, useShowEmojiKeyboard, useShowEmojiSearchbar } from './context';
+import {
+	MessageInnerContext,
+	useAlsoSendThreadToChannel,
+	useMessageComposerApi,
+	useShowEmojiKeyboard,
+	useShowEmojiSearchbar
+} from './context';
 import { IAutocompleteItemProps, IComposerInput, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -24,7 +30,6 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { fetchIsAllOrHere, prepareQuoteMessage } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { emitter } from './emitter';
-import { Quotes } from './components/Quotes';
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,6 +59,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const { rid, tmid, action, selectedMessages, editRequest, onSendMessage } = useRoomContext();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
+	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { setKeyboardHeight, openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
@@ -121,8 +127,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid); // || messageTmid);
-					// replyCancel();
+					await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
 				} catch (e) {
 					log(e);
 				}
@@ -131,7 +136,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 		}
 
 		// Text message
-		onSendMessage(textFromInput);
+		onSendMessage(textFromInput, alsoSendThreadToChannel);
 	};
 
 	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
@@ -283,6 +288,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				<Quotes />
 				<Toolbar />
 				<EmojiSearchbar />
+				<SendThreadToChannel />
 			</View>
 		);
 	}, []);

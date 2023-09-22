@@ -90,7 +90,7 @@ import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { RoomContext, TMessageAction } from './context';
+import { IRoomContext, RoomContext, TMessageAction } from './context';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 
@@ -1064,11 +1064,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState(...args);
 	};
 
-	handleSendMessage = (message: string, tmid?: string, tshow?: boolean) => {
+	handleSendMessage: IRoomContext['onSendMessage'] = (message, tshow) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
 		const { rid } = this.state.room;
 		const { user } = this.props;
-		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
+		sendMessage(rid, message, this.tmid, user, tshow).then(() => {
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});
