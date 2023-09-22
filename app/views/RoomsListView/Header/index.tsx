@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
-import { isTablet } from '../../../lib/methods/helpers';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import Header from './Header';
 import { IApplicationState } from '../../../definitions';
@@ -22,25 +19,6 @@ interface IRoomsListHeaderViewProps {
 }
 
 class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> {
-	componentDidMount() {
-		if (isTablet) {
-			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
-		}
-	}
-
-	componentWillUnmount() {
-		if (isTablet) {
-			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
-		}
-	}
-
-	// eslint-disable-next-line react/sort-comp
-	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
-		if (handleCommandOpenServerDropdown(event)) {
-			this.onPress();
-		}
-	};
-
 	onSearchChangeText = (text: string) => {
 		const { dispatch } = this.props;
 		dispatch(setSearch(text.trim()));
