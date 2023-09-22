@@ -76,7 +76,7 @@ const getExtension = (type: MediaTypes, mimeType?: string) => {
 	// Audios sent by Android devices are in the audio/aac format, which cannot be converted to mp3 by iOS.
 	// However, both platforms support the m4a format, so they can maintain the same behavior.
 	if (mimeType === 'audio/aac') {
-		return 'm4a';
+		return 'aac';
 	}
 	// The return of mime.extension('video/quicktime') is .qt,
 	// this format the iOS isn't recognize and can't save on gallery
