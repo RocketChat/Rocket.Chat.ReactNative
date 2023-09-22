@@ -403,8 +403,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { editing, room } = this.state;
 		const db = database.active;
 		this.mounted = false;
-		// TODO: Refactor when audio becomes global
-		await audioPlayer.pauseCurrentAudio();
 		if (!editing && this.messagebox && this.messagebox.current) {
 			const { text } = this.messagebox.current;
 			let obj: TSubscriptionModel | TThreadModel | null = null;
@@ -450,6 +448,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
+		// TODO: Refactor when audio becomes global
+		await audioPlayer.pauseCurrentAudio();
 	}
 
 	canForwardGuest = async () => {
