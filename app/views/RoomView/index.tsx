@@ -211,7 +211,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
-	private offset = 0;
 	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
@@ -219,7 +218,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
-	private replyInDM?: TAnyMessageModel;
+	private replyInDM?: string;
 	// Type of InteractionManager.runAfterInteractions
 	private didMountInteraction?: {
 		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
@@ -327,7 +326,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.updateUnreadCount();
 			}
 			if (this.replyInDM) {
-				this.onReplyInit(this.replyInDM, false);
+				this.onQuoteInit(this.replyInDM);
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);

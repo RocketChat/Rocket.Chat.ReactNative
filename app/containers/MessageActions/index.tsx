@@ -270,7 +270,7 @@ const MessageActions = React.memo(
 							name: getRoomTitle(room),
 							t: room.t,
 							roomUserId: getUidDirectMessage(room),
-							replyInDM: message
+							replyInDM: message.id
 						};
 						Navigation.replace('RoomView', params);
 					}
