@@ -807,10 +807,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	onReplyCancel = () => {
-		this.setState({ selectedMessage: undefined, replying: false, replyWithMention: false });
-	};
-
 	onQuoteInit = (messageId: string) => {
 		const { action } = this.state;
 		if (action === 'quote') {
