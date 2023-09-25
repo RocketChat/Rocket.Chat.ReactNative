@@ -151,7 +151,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			urlToCache: this.getUrl()
 		});
 		if (cachedAudioResult?.exists) {
-			await this.sound.loadAsync({ uri: cachedAudioResult.uri });
+			await this.sound.loadAsync({ uri: cachedAudioResult.uri }, { androidImplementation: 'MediaPlayer' });
 			this.setState({ loading: false, cached: true });
 			return;
 		}
