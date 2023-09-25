@@ -44,7 +44,7 @@ export interface IMessageActionsProps {
 	deleteOwnMessagePermission?: string[];
 	pinMessagePermission?: string[];
 	createDirectMessagePermission?: string[];
-	createDiscussionPermission?: string[];
+	createDiscussionOtherUserPermission?: string[];
 }
 
 export interface IMessageActions {
@@ -77,7 +77,7 @@ const MessageActions = React.memo(
 				deleteOwnMessagePermission,
 				pinMessagePermission,
 				createDirectMessagePermission,
-				createDiscussionPermission,
+				createDiscussionOtherUserPermission,
 				serverVersion
 			},
 			ref
@@ -89,7 +89,7 @@ const MessageActions = React.memo(
 				hasPinPermission: false,
 				hasDeleteOwnPermission: false,
 				hasCreateDirectMessagePermission: false,
-				hasCreateDiscussionPermission: false
+				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
 
@@ -102,7 +102,7 @@ const MessageActions = React.memo(
 						pinMessagePermission,
 						deleteOwnMessagePermission,
 						createDirectMessagePermission,
-						createDiscussionPermission
+						createDiscussionOtherUserPermission
 					];
 					const result = await hasPermission(permission, room.rid);
 					permissions = {
@@ -111,8 +111,8 @@ const MessageActions = React.memo(
 						hasForceDeletePermission: result[2],
 						hasPinPermission: result[3],
 						hasDeleteOwnPermission: result[4],
-						hasCreateDiscussionPermission: result[5],
-						hasCreateDirectMessagePermission: result[6]
+						hasCreateDirectMessagePermission: result[5],
+						hasCreateDiscussionOtherUserPermission: result[6]
 					};
 				} catch {
 					// Do nothing
@@ -402,7 +402,7 @@ const MessageActions = React.memo(
 				}
 
 				// Create Discussion
-				if (permissions.hasCreateDiscussionPermission) {
+				if (permissions.hasCreateDiscussionOtherUserPermission) {
 					options.push({
 						title: I18n.t('Start_a_Discussion'),
 						icon: 'discussions',
@@ -551,7 +551,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
 	pinMessagePermission: state.permissions['pin-message'],
 	createDirectMessagePermission: state.permissions['create-d'],
-	createDiscussionPermission: state.permissions['create-d']
+	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);

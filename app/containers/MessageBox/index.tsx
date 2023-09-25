@@ -1361,7 +1361,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
 	uploadFilePermission: state.permissions['mobile-upload-file'],
-	createDiscussionPermission: state.permissions['create-d'],
+	createDiscussionPermission: state.permissions['start-discussion'],
 	serverVersion: state.server.version
 });
 
