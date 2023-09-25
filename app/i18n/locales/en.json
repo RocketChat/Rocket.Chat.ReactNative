@@ -746,8 +746,8 @@
   "Message_has_been_shared":"Message has been shared",
   "No_channels_in_team": "No Channels on this team",
   "Jitsi_may_require_authentication": "Jitsi may require authentication",
-  "Jitsi_authentication_before_making_calls_admin": "Jitsi may requires authentication before making calls. To learn more about their policies, visit the Jitsi website. You can also update the default app for video calls in the preferences.",
-  "Jitsi_authentication_before_making_calls": "Jitsi may requires authentication before making calls. To learn more about their policies, visit the Jitsi website.",
+  "Jitsi_authentication_before_making_calls_admin": "Jitsi may require authentication before making calls. To learn more about their policies, visit the Jitsi website. You can also update the default app for video calls in the preferences.",
+  "Jitsi_authentication_before_making_calls": "Jitsi may require authentication before making calls. To learn more about their policies, visit the Jitsi website.",
   "Jitsi_authentication_before_making_calls_ask_admin": "If you believe there are problems with Jitsi and its authentication, ask a workspace administrator for help.",
   "Continue": "Continue"
 }
