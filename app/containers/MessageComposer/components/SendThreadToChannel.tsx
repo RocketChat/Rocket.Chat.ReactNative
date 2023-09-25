@@ -32,7 +32,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				testID={alsoSendThreadToChannel ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
 				name={alsoSendThreadToChannel ? 'checkbox-checked' : 'checkbox-unchecked'}
 				size={24}
-				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault}
+				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.strokeDark}
 			/>
 			<Text style={{ fontSize: 14, marginLeft: 8, ...sharedStyles.textRegular, color: colors.fontSecondaryInfo }}>
 				{I18n.t('Messagebox_Send_to_channel')}
