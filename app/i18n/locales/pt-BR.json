@@ -732,5 +732,10 @@
   "Nickname": "Apelido",
   "Bio": "Biografia",
   "Message_has_been_shared":"Menssagem foi compartilhada",
-  "No_channels_in_team": "Nenhum canal nesta equipe"
+  "No_channels_in_team": "Nenhum canal nesta equipe",
+  "Jitsi_may_requires_authentication": "Jitsi pode exigir autenticação",
+  "Jitsi_authentication_before_making_calls_admin": "Jitsi pode exigir autenticação antes de fazer chamadas. Para saber mais sobre as políticas deles, visite o site do Jitsi. Você também pode atualizar o aplicativo padrão para chamadas de vídeo nas preferências.",
+  "Jitsi_authentication_before_making_calls": "Jitsi pode exigir autenticação antes de fazer chamadas. Para saber mais sobre suas políticas, visite o site do Jitsi.",
+  "Jitsi_authentication_before_making_calls_ask_admin": "Se você acredita que há problemas com o Jitsi e sua autenticação, peça ajuda a um administrador do espaço de trabalho.",
+  "Continue": "Continuar"
 }
