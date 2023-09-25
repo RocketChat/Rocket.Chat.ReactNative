@@ -9,6 +9,7 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
 import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { IRoomContext } from '../../views/RoomView/context';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
 interface IMessageContainerProps {
@@ -51,7 +52,7 @@ interface IMessageContainerProps {
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	handleEnterCall?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
-	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
+	onAnswerButtonPress?: IRoomContext['onSendMessage'];
 	threadBadgeColor?: string;
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
@@ -225,7 +226,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	onAnswerButtonPress = (msg: string) => {
 		const { onAnswerButtonPress } = this.props;
 		if (onAnswerButtonPress) {
-			onAnswerButtonPress(msg, undefined, false);
+			onAnswerButtonPress(msg, false);
 		}
 	};
 
