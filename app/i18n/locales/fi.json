@@ -555,7 +555,6 @@
   "Enabled_E2E_Encryption_for_this_room": "otti täyden salauksen käyttöön tässä huoneessa",
   "Disabled_E2E_Encryption_for_this_room": "poisti täyden salauksen käytöstä tässä huoneessa",
   "Teams": "Tiimit",
-  "No_team_channels_found": "Kanavia ei löydy",
   "Team_not_found": "Tiimiä ei löydy",
   "Create_Team": "Luo tiimi",
   "Team_Name": "Tiimin nimi",
@@ -701,5 +700,6 @@
   "Reply_in_direct_message": "Vastaa suoralla viestillä",
   "room_archived": "arkistoi huoneen",
   "room_unarchived": "palautti huoneen arkistosta",
-  "and_N_more": "ja {{count}} lisää"
+  "and_N_more": "ja {{count}} lisää",
+  "Audio": "Ääni"
 }
