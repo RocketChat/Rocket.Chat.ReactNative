@@ -49,7 +49,7 @@ const JitsiAuthModal = ({
 	return (
 		<Modal isVisible>
 			<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
-				<Text style={styles.title}>{i18n.t('Jitsi_may_requires_authentication')}</Text>
+				<Text style={styles.title}>{i18n.t('Jitsi_may_require_authentication')}</Text>
 				{isAdmin ? (
 					<Text style={styles.regular}>{i18n.t('Jitsi_authentication_before_making_calls_admin')}</Text>
 				) : (
