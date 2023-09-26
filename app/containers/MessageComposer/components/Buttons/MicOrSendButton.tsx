@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { BaseButton } from './BaseButton';
-import { MessageInnerContext, useMicOrSend } from '../../context';
+import { MessageInnerContext, useMessageComposerApi, useMicOrSend } from '../../context';
 import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
@@ -14,6 +14,7 @@ export const MicOrSendButton = () => {
 	const permissionToUpload = useCanUploadFile(rid);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
 	const { colors } = useTheme();
+	const { setRecordingAudio } = useMessageComposerApi();
 
 	if (micOrSend === 'send') {
 		return (
@@ -30,7 +31,7 @@ export const MicOrSendButton = () => {
 	if (Message_AudioRecorderEnabled && permissionToUpload) {
 		return (
 			<BaseButton
-				onPress={() => alert('tbd')}
+				onPress={() => setRecordingAudio(true)}
 				testID='message-composer-send-audio'
 				accessibilityLabel='Send_audio_message'
 				icon='microphone'

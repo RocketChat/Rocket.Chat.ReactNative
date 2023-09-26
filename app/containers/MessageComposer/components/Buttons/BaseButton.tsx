@@ -23,7 +23,7 @@ interface IBaseButton {
 	onPress(): void;
 }
 
-const hitSlop = {
+export const hitSlop = {
 	top: 8,
 	right: 8,
 	bottom: 8,

@@ -14,6 +14,7 @@ type TMessageComposerContextApi = {
 	setMicOrSend(micOrSend: TMicOrSend): void;
 	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
 	setAlsoSendThreadToChannel(alsoSendThreadToChannel: boolean): void;
+	setRecordingAudio(recordingAudio: boolean): void;
 };
 
 const FocusedContext = createContext<State['focused']>({} as State['focused']);
@@ -24,6 +25,7 @@ const ShowEmojiSearchbarContext = createContext<State['showEmojiSearchbar']>({} 
 const KeyboardHeightContext = createContext<State['keyboardHeight']>({} as State['keyboardHeight']);
 const TrackingViewHeightContext = createContext<State['trackingViewHeight']>({} as State['trackingViewHeight']);
 const AlsoSendThreadToChannelContext = createContext<State['alsoSendThreadToChannel']>({} as State['alsoSendThreadToChannel']);
+const RecordingAudioContext = createContext<State['recordingAudio']>({} as State['recordingAudio']);
 const MessageComposerContextApi = createContext<TMessageComposerContextApi>({} as TMessageComposerContextApi);
 
 export const useMessageComposerApi = (): TMessageComposerContextApi => useContext(MessageComposerContextApi);
@@ -35,6 +37,7 @@ export const useShowEmojiSearchbar = (): State['showEmojiSearchbar'] => useConte
 export const useKeyboardHeight = (): State['keyboardHeight'] => useContext(KeyboardHeightContext);
 export const useTrackingViewHeight = (): State['trackingViewHeight'] => useContext(TrackingViewHeightContext);
 export const useAlsoSendThreadToChannel = (): State['alsoSendThreadToChannel'] => useContext(AlsoSendThreadToChannelContext);
+export const useRecordingAudio = (): State['recordingAudio'] => useContext(RecordingAudioContext);
 
 // TODO: rename
 type TMessageInnerContext = {
@@ -60,6 +63,7 @@ type State = {
 	micOrSend: TMicOrSend;
 	showMarkdownToolbar: boolean;
 	alsoSendThreadToChannel: boolean;
+	recordingAudio: boolean;
 };
 
 type Actions =
@@ -74,7 +78,8 @@ type Actions =
 	| { type: 'closeSearchEmojiKeyboard' }
 	| { type: 'setMicOrSend'; micOrSend: TMicOrSend }
 	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean }
-	| { type: 'setAlsoSendThreadToChannel'; alsoSendThreadToChannel: boolean };
+	| { type: 'setAlsoSendThreadToChannel'; alsoSendThreadToChannel: boolean }
+	| { type: 'setRecordingAudio'; recordingAudio: boolean };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -102,6 +107,8 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, showMarkdownToolbar: action.showMarkdownToolbar };
 		case 'setAlsoSendThreadToChannel':
 			return { ...state, alsoSendThreadToChannel: action.alsoSendThreadToChannel };
+		case 'setRecordingAudio':
+			return { ...state, recordingAudio: action.recordingAudio };
 	}
 };
 
@@ -131,6 +138,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 		const setAlsoSendThreadToChannel = (alsoSendThreadToChannel: boolean) =>
 			dispatch({ type: 'setAlsoSendThreadToChannel', alsoSendThreadToChannel });
 
+		const setRecordingAudio = (recordingAudio: boolean) => dispatch({ type: 'setRecordingAudio', recordingAudio });
+
 		return {
 			setFocused,
 			setKeyboardHeight,
@@ -141,7 +150,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 			closeSearchEmojiKeyboard,
 			setMicOrSend,
 			setMarkdownToolbar,
-			setAlsoSendThreadToChannel
+			setAlsoSendThreadToChannel,
+			setRecordingAudio
 		};
 	}, []);
 
@@ -154,7 +164,9 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 							<TrackingViewHeightContext.Provider value={state.trackingViewHeight}>
 								<ShowMarkdownToolbarContext.Provider value={state.showMarkdownToolbar}>
 									<AlsoSendThreadToChannelContext.Provider value={state.alsoSendThreadToChannel}>
-										<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+										<RecordingAudioContext.Provider value={state.recordingAudio}>
+											<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+										</RecordingAudioContext.Provider>
 									</AlsoSendThreadToChannelContext.Provider>
 								</ShowMarkdownToolbarContext.Provider>
 							</TrackingViewHeightContext.Provider>

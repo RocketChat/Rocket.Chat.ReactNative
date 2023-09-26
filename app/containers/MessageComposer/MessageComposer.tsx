@@ -11,6 +11,7 @@ import {
 	MessageInnerContext,
 	useAlsoSendThreadToChannel,
 	useMessageComposerApi,
+	useRecordingAudio,
 	useShowEmojiKeyboard,
 	useShowEmojiSearchbar
 } from './context';
@@ -30,6 +31,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { fetchIsAllOrHere, prepareQuoteMessage } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { emitter } from './emitter';
+import { RecordAudio } from './components/RecordAudio';
 
 const styles = StyleSheet.create({
 	container: {
@@ -62,6 +64,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { setKeyboardHeight, openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const recordingAudio = useRecordingAudio();
 
 	useEffect(() => {
 		const showListener = Keyboard.addListener('keyboardWillShow', async () => {
@@ -278,6 +281,9 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 
 	const renderContent = useCallback(() => {
 		console.count('[MessageComposer] renderContent');
+		if (recordingAudio) {
+			return <RecordAudio />;
+		}
 		return (
 			<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
 				<View style={styles.input}>
@@ -291,7 +297,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				<SendThreadToChannel />
 			</View>
 		);
-	}, []);
+	}, [recordingAudio]);
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
