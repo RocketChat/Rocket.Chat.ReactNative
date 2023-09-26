@@ -105,7 +105,7 @@ test('send message', async () => {
 		await fireEvent.press(screen.getByTestId('message-composer-send'));
 	});
 	expect(onSendMessage).toHaveBeenCalledTimes(1);
-	expect(onSendMessage).toHaveBeenCalledWith('test');
+	expect(onSendMessage).toHaveBeenCalledWith('test', undefined);
 	expect(screen.toJSON()).toMatchSnapshot();
 });
 
@@ -158,7 +158,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('**');
+		expect(onSendMessage).toHaveBeenCalledWith('**', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -177,7 +177,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('*test*');
+		expect(onSendMessage).toHaveBeenCalledWith('*test*', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -192,7 +192,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('__');
+		expect(onSendMessage).toHaveBeenCalledWith('__', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -211,7 +211,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('_test_');
+		expect(onSendMessage).toHaveBeenCalledWith('_test_', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -226,7 +226,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('~~');
+		expect(onSendMessage).toHaveBeenCalledWith('~~', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -245,7 +245,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('~test~');
+		expect(onSendMessage).toHaveBeenCalledWith('~test~', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -260,7 +260,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('``');
+		expect(onSendMessage).toHaveBeenCalledWith('``', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -279,7 +279,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('`test`');
+		expect(onSendMessage).toHaveBeenCalledWith('`test`', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -294,7 +294,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('``````');
+		expect(onSendMessage).toHaveBeenCalledWith('``````', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 
@@ -313,7 +313,7 @@ describe('Markdown', () => {
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('```test```');
+		expect(onSendMessage).toHaveBeenCalledWith('```test```', undefined);
 		expect(screen.toJSON()).toMatchSnapshot();
 	});
 });

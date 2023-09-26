@@ -11,7 +11,7 @@ export interface IRoomContext {
 
 	editCancel: () => void;
 	editRequest: (message: any) => void;
-	onSendMessage: (message: any) => void;
+	onSendMessage: (message: string, tshow?: boolean) => void;
 	onRemoveQuoteMessage: (messageId: string) => void;
 }
 

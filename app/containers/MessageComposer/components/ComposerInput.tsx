@@ -45,8 +45,9 @@ export const ComposerInput = memo(
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
-		let placeholder = 'Message ';
-		if (subscription) {
+		// TODO: i18n
+		let placeholder = tmid ? 'Add thread reply' : 'Message ';
+		if (subscription && !tmid) {
 			placeholder += subscription.t === 'd' ? '@' : '#';
 			placeholder += getRoomTitle(subscription);
 		}

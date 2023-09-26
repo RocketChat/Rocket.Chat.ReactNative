@@ -90,8 +90,9 @@ import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { RoomContext, TMessageAction } from './context';
+import { IRoomContext, RoomContext, TMessageAction } from './context';
 import { IListContainerRef, TListRef } from './List/definitions';
+import { getMessageById } from '../../lib/database/services/Message';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -210,7 +211,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
-	private offset = 0;
 	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
@@ -218,7 +218,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
-	private replyInDM?: TAnyMessageModel;
+	private replyInDM?: string;
 	// Type of InteractionManager.runAfterInteractions
 	private didMountInteraction?: {
 		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
@@ -326,7 +326,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.updateUnreadCount();
 			}
 			if (this.replyInDM) {
-				this.onReplyInit(this.replyInDM, false);
+				this.onQuoteInit(this.replyInDM);
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -785,20 +785,25 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
+	onReplyInit = async (messageId: string) => {
+		const message = await getMessageById(messageId);
+		if (!message || !this.rid) {
+			return;
+		}
+
 		// If there's a thread already, we redirect to it
-		if (mention && !!message.tlm) {
+		if (message.tlm) {
 			return this.onThreadPress(message);
 		}
-		this.setState({
-			selectedMessage: message,
-			replying: true,
-			replyWithMention: mention
+		const { roomUserId } = this.state;
+		const { navigation } = this.props;
+		navigation.push('RoomView', {
+			rid: this.rid,
+			tmid: messageId,
+			name: makeThreadName(message),
+			t: SubscriptionType.THREAD,
+			roomUserId
 		});
-	};
-
-	onReplyCancel = () => {
-		this.setState({ selectedMessage: undefined, replying: false, replyWithMention: false });
 	};
 
 	onQuoteInit = (messageId: string) => {
@@ -1054,11 +1059,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState(...args);
 	};
 
-	handleSendMessage = (message: string, tmid?: string, tshow?: boolean) => {
+	handleSendMessage: IRoomContext['onSendMessage'] = (message, tshow) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
 		const { rid } = this.state.room;
 		const { user } = this.props;
-		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
+		sendMessage(rid, message, this.tmid, user, tshow).then(() => {
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});

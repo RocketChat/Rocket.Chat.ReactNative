@@ -13,6 +13,7 @@ type TMessageComposerContextApi = {
 	setFocused(focused: boolean): void;
 	setMicOrSend(micOrSend: TMicOrSend): void;
 	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
+	setAlsoSendThreadToChannel(alsoSendThreadToChannel: boolean): void;
 };
 
 const FocusedContext = createContext<State['focused']>({} as State['focused']);
@@ -22,6 +23,7 @@ const ShowEmojiKeyboardContext = createContext<State['showEmojiKeyboard']>({} as
 const ShowEmojiSearchbarContext = createContext<State['showEmojiSearchbar']>({} as State['showEmojiSearchbar']);
 const KeyboardHeightContext = createContext<State['keyboardHeight']>({} as State['keyboardHeight']);
 const TrackingViewHeightContext = createContext<State['trackingViewHeight']>({} as State['trackingViewHeight']);
+const AlsoSendThreadToChannelContext = createContext<State['alsoSendThreadToChannel']>({} as State['alsoSendThreadToChannel']);
 const MessageComposerContextApi = createContext<TMessageComposerContextApi>({} as TMessageComposerContextApi);
 
 export const useMessageComposerApi = (): TMessageComposerContextApi => useContext(MessageComposerContextApi);
@@ -32,6 +34,7 @@ export const useShowEmojiKeyboard = (): State['showEmojiKeyboard'] => useContext
 export const useShowEmojiSearchbar = (): State['showEmojiSearchbar'] => useContext(ShowEmojiSearchbarContext);
 export const useKeyboardHeight = (): State['keyboardHeight'] => useContext(KeyboardHeightContext);
 export const useTrackingViewHeight = (): State['trackingViewHeight'] => useContext(TrackingViewHeightContext);
+export const useAlsoSendThreadToChannel = (): State['alsoSendThreadToChannel'] => useContext(AlsoSendThreadToChannelContext);
 
 // TODO: rename
 type TMessageInnerContext = {
@@ -56,6 +59,7 @@ type State = {
 	keyboardHeight: number;
 	micOrSend: TMicOrSend;
 	showMarkdownToolbar: boolean;
+	alsoSendThreadToChannel: boolean;
 };
 
 type Actions =
@@ -69,7 +73,8 @@ type Actions =
 	| { type: 'openSearchEmojiKeyboard' }
 	| { type: 'closeSearchEmojiKeyboard' }
 	| { type: 'setMicOrSend'; micOrSend: TMicOrSend }
-	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean };
+	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean }
+	| { type: 'setAlsoSendThreadToChannel'; alsoSendThreadToChannel: boolean };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -95,6 +100,8 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, micOrSend: action.micOrSend };
 		case 'setMarkdownToolbar':
 			return { ...state, showMarkdownToolbar: action.showMarkdownToolbar };
+		case 'setAlsoSendThreadToChannel':
+			return { ...state, alsoSendThreadToChannel: action.alsoSendThreadToChannel };
 	}
 };
 
@@ -121,6 +128,9 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 		const setMarkdownToolbar = (showMarkdownToolbar: boolean) => dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
 
+		const setAlsoSendThreadToChannel = (alsoSendThreadToChannel: boolean) =>
+			dispatch({ type: 'setAlsoSendThreadToChannel', alsoSendThreadToChannel });
+
 		return {
 			setFocused,
 			setKeyboardHeight,
@@ -130,7 +140,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 			openSearchEmojiKeyboard,
 			closeSearchEmojiKeyboard,
 			setMicOrSend,
-			setMarkdownToolbar
+			setMarkdownToolbar,
+			setAlsoSendThreadToChannel
 		};
 	}, []);
 
@@ -142,7 +153,9 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 						<KeyboardHeightContext.Provider value={state.keyboardHeight}>
 							<TrackingViewHeightContext.Provider value={state.trackingViewHeight}>
 								<ShowMarkdownToolbarContext.Provider value={state.showMarkdownToolbar}>
-									<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+									<AlsoSendThreadToChannelContext.Provider value={state.alsoSendThreadToChannel}>
+										<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+									</AlsoSendThreadToChannelContext.Provider>
 								</ShowMarkdownToolbarContext.Provider>
 							</TrackingViewHeightContext.Provider>
 						</KeyboardHeightContext.Provider>
