@@ -4,6 +4,7 @@ import { MicOrSendButton, ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
+import { Gap } from '../Gap';
 
 export const EmojiKeyboard = (): ReactElement => {
 	const { closeEmojiKeyboard } = useMessageComposerApi();
@@ -11,6 +12,7 @@ export const EmojiKeyboard = (): ReactElement => {
 	return (
 		<Container>
 			<ActionsButton />
+			<Gap />
 			<BaseButton
 				onPress={() => closeEmojiKeyboard()}
 				testID='message-composer-close-emoji'
