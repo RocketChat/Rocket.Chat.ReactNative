@@ -3,13 +3,11 @@ import React, { ReactElement } from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../../../theme';
-import { useMessageComposerApi } from '../../context';
 import { CustomIcon } from '../../../CustomIcon';
 import { hitSlop } from '../Buttons';
 
-export const SendButton = (): ReactElement => {
+export const SendButton = ({ onPress }: { onPress: Function }): ReactElement => {
 	const { colors } = useTheme();
-	const { setRecordingAudio } = useMessageComposerApi();
 	return (
 		<BorderlessButton
 			style={{
@@ -20,7 +18,7 @@ export const SendButton = (): ReactElement => {
 				borderRadius: 16,
 				backgroundColor: colors.buttonBackgroundPrimaryDefault
 			}}
-			onPress={() => setRecordingAudio(false)}
+			onPress={() => onPress()}
 			testID={'tbd'}
 			hitSlop={hitSlop}
 		>
