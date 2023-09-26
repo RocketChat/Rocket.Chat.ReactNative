@@ -8791,6 +8791,13 @@ exports[`tap emoji 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "width": 12,
+          }
+        }
+      />
       <RNGestureHandlerButton
         activeOpacity={0.3}
         borderless={true}
