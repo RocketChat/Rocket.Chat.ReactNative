@@ -151,7 +151,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			urlToCache: this.getUrl()
 		});
 		if (cachedAudioResult?.exists) {
-			await this.sound.loadAsync({ uri: cachedAudioResult.uri });
+			await this.sound.loadAsync({ uri: cachedAudioResult.uri }, { androidImplementation: 'MediaPlayer' });
 			this.setState({ loading: false, cached: true });
 			return;
 		}
@@ -302,7 +302,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					type: 'audio',
 					mimeType: file.audio_type
 				});
-				await this.sound.loadAsync({ uri: audio });
+				await this.sound.loadAsync({ uri: audio }, { androidImplementation: 'MediaPlayer' });
 				this.setState({ loading: false, cached: true });
 			}
 		} catch {
@@ -341,7 +341,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	onValueChange = async (value: number) => {
 		try {
-			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
 		} catch {
 			// Do nothing
