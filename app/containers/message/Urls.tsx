@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
 	},
 	loading: {
 		height: 0,
-		borderWidth: 0
+		borderWidth: 0,
+		marginTop: 0
 	}
 });
 
