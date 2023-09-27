@@ -12,15 +12,6 @@ export const SWITCH_TRACK_COLOR = {
 	true: '#2de0a5'
 };
 
-const pushTroubleshooting = {
-	pushConsumptionOnSuccess: '#148660',
-	pushConsumptionOnWarning: '#8E6300',
-	pushConsumptionOnDanger: '#9B1325',
-	pushTroubleshootingSuccess: '#2DE0A5',
-	pushTroubleshootingDanger: '#F5455C',
-	pushTroubleshootingWarning: '#FFD031'
-};
-
 const mentions = {
 	unreadColor: '#6C727A',
 	tunreadColor: '#1d74f5',
@@ -112,9 +103,13 @@ export const colors = {
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
 		fontAnnotation: '#9EA2A8',
+		userPresenceBusy: '#D40C26',
+		userPresenceOnline: '#148660',
+		badgeBackgroundLevel3: '#F38C39',
+		statusFontOnDanger: '#9B1325',
+		statusFontOnSuccess: '#148660',
 		...mentions,
-		...callButtons,
-		...pushTroubleshooting
+		...callButtons
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -193,9 +188,13 @@ export const colors = {
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
 		fontAnnotation: '#9EA2A8',
+		userPresenceBusy: '#D40C26',
+		userPresenceOnline: '#148660',
+		badgeBackgroundLevel3: '#F38C39',
+		statusFontOnDanger: '#9B1325',
+		statusFontOnSuccess: '#148660',
 		...mentions,
-		...callButtons,
-		...pushTroubleshooting
+		...callButtons
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -274,9 +273,13 @@ export const colors = {
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
 		fontAnnotation: '#9EA2A8',
+		userPresenceBusy: '#D40C26',
+		userPresenceOnline: '#148660',
+		badgeBackgroundLevel3: '#F38C39',
+		statusFontOnDanger: '#9B1325',
+		statusFontOnSuccess: '#148660',
 		...mentions,
-		...callButtons,
-		...pushTroubleshooting
+		...callButtons
 	}
 };
 

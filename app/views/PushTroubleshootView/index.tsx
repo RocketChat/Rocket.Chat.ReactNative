@@ -47,13 +47,13 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	};
 
 	let pushGatewayInfoDescription = 'Push_gateway_not_connected_description';
-	let pushGatewayStatusColor = colors.pushTroubleshootingDanger;
+	let pushGatewayStatusColor = colors.userPresenceBusy;
 	if (isPushGatewayConnected) {
-		pushGatewayStatusColor = colors.pushTroubleshootingSuccess;
+		pushGatewayStatusColor = colors.userPresenceOnline;
 		pushGatewayInfoDescription = 'Push_gateway_connected_description';
 	}
 	if (isPushGatewayConnected && isCustomPushGateway) {
-		pushGatewayStatusColor = colors.pushTroubleshootingWarning;
+		pushGatewayStatusColor = colors.badgeBackgroundLevel3;
 		pushGatewayInfoDescription = 'Custom_push_gateway_connected_description';
 	}
 
@@ -63,7 +63,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 			<List.Container testID='push-troubleshoot-view-list'>
 				<CustomListSection
 					title='Device_notification_settings'
-					statusColor={!deviceNotificationEnabled ? colors.pushTroubleshootingDanger : colors.pushConsumptionOnSuccess}
+					statusColor={!deviceNotificationEnabled ? colors.userPresenceBusy : colors.userPresenceOnline}
 				>
 					<List.Separator />
 					<List.Item

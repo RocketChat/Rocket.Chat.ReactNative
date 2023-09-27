@@ -26,12 +26,12 @@ const ListPercentage = ({
 	const { colors } = useTheme();
 
 	const percentage = `${Math.floor(value)}%`;
-	let percentageTextColor = colors.pushConsumptionOnSuccess;
+	let percentageTextColor = colors.statusFontOnSuccess;
 	if (value > 70 && value < 90) {
-		percentageTextColor = colors.pushConsumptionOnWarning;
+		percentageTextColor = colors.statusFontOnWarning;
 	}
 	if (value >= 90) {
-		percentageTextColor = colors.pushConsumptionOnDanger;
+		percentageTextColor = colors.statusFontOnDanger;
 	}
 
 	return (
