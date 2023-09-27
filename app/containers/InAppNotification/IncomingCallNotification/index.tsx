@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, useWindowDimensions } from 'react-native';
+import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -37,21 +37,16 @@ const IncomingCallHeader = React.memo(
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
 		const dispatch = useDispatch();
-
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const styles = useStyle();
-
 		const insets = useSafeAreaInsets();
-		const { height, width } = useWindowDimensions();
-		const isLandscape = width > height;
-
 		const { colors } = useTheme();
 
 		return (
 			<View
 				style={[
 					styles.container,
-					(isMasterDetail || isLandscape) && styles.small,
+					isMasterDetail && styles.small,
 					{
 						marginTop: insets.top
 					}

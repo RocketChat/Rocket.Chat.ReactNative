@@ -66,14 +66,6 @@ export const Typing = () => (
 	</>
 );
 
-export const Landscape = () => (
-	<>
-		<HeaderExample title={() => <RoomHeader width={height} height={width} />} />
-		<HeaderExample title={() => <RoomHeader width={height} height={width} subtitle='subtitle' />} />
-		<HeaderExample title={() => <RoomHeader width={height} height={width} title={longText} subtitle={longText} />} />
-	</>
-);
-
 export const Thread = () => (
 	<>
 		<HeaderExample title={() => <RoomHeader tmid='123' parentTitle='parent title' />} />

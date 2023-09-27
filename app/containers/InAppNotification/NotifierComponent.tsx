@@ -11,7 +11,6 @@ import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { useOrientation } from '../../dimensions';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 
@@ -76,8 +75,6 @@ const styles = StyleSheet.create({
 const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
-	const { isLandscape } = useOrientation();
-
 	const { text, payload } = notification;
 	const { type, rid } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
@@ -104,7 +101,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 		<View
 			style={[
 				styles.container,
-				(isMasterDetail || isLandscape) && styles.small,
+				isMasterDetail && styles.small,
 				{
 					backgroundColor: themes[theme].focusedBackground,
 					borderColor: themes[theme].separatorColor,
