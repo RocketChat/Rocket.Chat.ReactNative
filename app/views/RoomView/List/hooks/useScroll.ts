@@ -11,11 +11,14 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	const viewableItems = useRef<ViewToken[] | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	useEffect(() => () => {
-		if (highlightTimeout.current) {
-			clearTimeout(highlightTimeout.current);
-		}
-	});
+	useEffect(
+		() => () => {
+			if (highlightTimeout.current) {
+				clearTimeout(highlightTimeout.current);
+			}
+		},
+		[]
+	);
 
 	const jumpToBottom = () => {
 		listRef.current?.scrollToOffset({ offset: -100 });
