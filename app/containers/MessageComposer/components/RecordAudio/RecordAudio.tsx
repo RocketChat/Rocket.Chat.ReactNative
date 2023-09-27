@@ -43,28 +43,51 @@ export const RecordAudio = (): ReactElement => {
 	}, []);
 
 	const cancelRecording = async () => {
+		// try {
+		// 	await recordingRef.current?.stopAndUnloadAsync();
+		// 	// Do something with the URI, like upload it to firebase
+		// } catch (error) {
+		// 	// Do something with the error or handle it
+		// 	console.error(error);
+		// } finally {
+		// 	setRecordingAudio(false);
+		// }
+		await recordingRef.current?.pauseAsync();
+		const uri = recordingRef.current?.getURI();
+		console.log('🚀 ~ file: RecordAudio.tsx:57 ~ cancelRecording ~ uri:', uri);
+
 		try {
-			await recordingRef.current?.stopAndUnloadAsync();
-			// Do something with the URI, like upload it to firebase
+			const sound = new Audio.Sound();
+			console.log('🚀 ~ file: RecordAudio.tsx:61 ~ cancelRecording ~ sound:', sound);
+			await sound.loadAsync({ uri: uri! });
+			await sound.playAsync();
+			// Your sound is playing!
+
+			// Don't forget to unload the sound from memory
+			// when you are done using the Sound object
+			await sound.unloadAsync();
 		} catch (error) {
-			// Do something with the error or handle it
+			// An error occurred!
 			console.error(error);
-		} finally {
-			setRecordingAudio(false);
 		}
 	};
 
 	const stopRecording = async () => {
+		// try {
+		// 	await recordingRef.current?.stopAndUnloadAsync();
+		// 	const uri = recordingRef.current?.getURI();
+		// 	console.log('🚀 ~ file: RecordAudio.tsx:46 ~ stopRecording ~ uri', uri);
+		// 	// Do something with the URI, like upload it to firebase
+		// } catch (error) {
+		// 	// Do something with the error or handle it
+		// 	console.error(error);
+		// } finally {
+		// 	setRecordingAudio(false);
+		// }
 		try {
-			await recordingRef.current?.stopAndUnloadAsync();
-			const uri = recordingRef.current?.getURI();
-			console.log('🚀 ~ file: RecordAudio.tsx:46 ~ stopRecording ~ uri', uri);
-			// Do something with the URI, like upload it to firebase
+			await recordingRef.current?.startAsync();
 		} catch (error) {
-			// Do something with the error or handle it
 			console.error(error);
-		} finally {
-			setRecordingAudio(false);
 		}
 	};
 
