@@ -81,5 +81,13 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="chat.rocket.reactnative.CustomCallActivity"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true"
+            android:theme="@style/AppTheme"
+        />
     </application>
 </manifest>
