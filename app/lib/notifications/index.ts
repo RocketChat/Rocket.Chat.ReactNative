@@ -1,10 +1,11 @@
 import EJSON from 'ejson';
 
-import { store } from '../store/auxStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
-import { isFDroidBuild } from '../constants';
-import { deviceToken, pushNotificationConfigure, setNotificationsBadgeCount, removeAllNotifications } from './push';
 import { INotification, SubscriptionType } from '../../definitions';
+import { isFDroidBuild } from '../constants';
+import { store } from '../store/auxStore';
+import { deviceToken, pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
+import { backgroundNotificationHandler } from './backgroundNotificationHandler';
 
 interface IEjson {
 	rid: string;
@@ -56,6 +57,7 @@ export const removeNotificationsAndBadge = () => {
 export const initializePushNotifications = (): Promise<INotification> | undefined => {
 	if (!isFDroidBuild) {
 		setBadgeCount();
+		backgroundNotificationHandler();
 		return pushNotificationConfigure(onNotification);
 	}
 };

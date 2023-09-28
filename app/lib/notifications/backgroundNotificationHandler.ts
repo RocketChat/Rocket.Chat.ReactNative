@@ -53,6 +53,7 @@ export const backgroundNotificationHandler = async (): Promise<void> => {
 			{ cancelable: false }
 		);
 
+		// videoConf channel
 		await notifee.createChannel({
 			id: 'call',
 			name: 'Video Call',
@@ -63,16 +64,9 @@ export const backgroundNotificationHandler = async (): Promise<void> => {
 		});
 	}
 
-	notifee.registerForegroundService(
-		notification =>
-			new Promise(() => {
-				console.log('registerForegroundService', notification);
-			})
-	);
+	notifee.registerForegroundService(notification => new Promise(() => {}));
 
-	notifee.onBackgroundEvent(async event => {
-		console.log('onBackgroundEvent', event);
-	});
+	notifee.onBackgroundEvent(e => new Promise(() => {}));
 };
 
 const setBackgroundNotificationHandler = async (): Promise<void> => {
