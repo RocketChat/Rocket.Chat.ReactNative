@@ -1,8 +1,7 @@
 import notifee, { AndroidCategory, AndroidImportance, AndroidVisibility } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import { Alert } from 'react-native';
-
-import { INotification } from '../../definitions';
+import ejson from 'ejson';
 
 export const backgroundNotificationHandler = async (): Promise<void> => {
 	// 1. get info on the device and the Power Manager settings
@@ -52,62 +51,71 @@ export const backgroundNotificationHandler = async (): Promise<void> => {
 			],
 			{ cancelable: false }
 		);
-
-		// videoConf channel
-		await notifee.createChannel({
-			id: 'call',
-			name: 'Video Call',
-			lights: true,
-			vibration: true,
-			importance: AndroidImportance.HIGH,
-			vibrationPattern: [300, 500]
-		});
 	}
 
-	notifee.registerForegroundService(notification => new Promise(() => {}));
+	// videoConf channel
+	await notifee.createChannel({
+		id: 'video-conf-call',
+		name: 'Video Call',
+		lights: true,
+		vibration: true,
+		importance: AndroidImportance.HIGH
+	});
 
-	notifee.onBackgroundEvent(e => new Promise(() => {}));
+	notifee.registerForegroundService(
+		notification =>
+			new Promise(() => {
+				console.log('registerForegroundService', notification);
+			})
+	);
+
+	notifee.onBackgroundEvent(
+		event =>
+			new Promise(() => {
+				console.log('onBackgroundEvent', event);
+			})
+	);
 };
 
 const setBackgroundNotificationHandler = async (): Promise<void> => {
-	messaging().setBackgroundMessageHandler(async (notification: INotification) => {
-		console.log('backgroundMessageHandler', notification);
-		await notifee.displayNotification({
-			title: '(21) 1234-1234',
-			body: 'Incoming call',
-			android: {
-				channelId: 'call',
-				category: AndroidCategory.CALL,
-				visibility: AndroidVisibility.PUBLIC,
-				importance: AndroidImportance.HIGH,
-				smallIcon: 'ic_launcher',
-				timestamp: Date.now(),
-				showTimestamp: true,
-				pressAction: {
-					id: 'default',
-					launchActivity: 'chat.rocket.reactnative.CustomCallActivity'
-				},
-				actions: [
-					{
-						title: 'Accept',
-						pressAction: {
-							id: 'accept',
-							launchActivity: 'default'
+	messaging().setBackgroundMessageHandler(async (n: any) => {
+		const notification = ejson.parse(n.data.ejson);
+		console.log('setBackgroundMessageHandler', notification, n);
+		if (notification) {
+			await notifee.displayNotification({
+				title: notification.sender?.name || notification.sender.username || 'Rocket.Chat',
+				body: 'Incoming call',
+				android: {
+					channelId: 'video-conf-call',
+					category: AndroidCategory.CALL,
+					visibility: AndroidVisibility.PUBLIC,
+					importance: AndroidImportance.HIGH,
+					smallIcon: 'ic_notification',
+					timestamp: Date.now(),
+					color: '#F5455C',
+					actions: [
+						{
+							title: 'Accept',
+							pressAction: {
+								id: 'accept',
+								launchActivity: 'default'
+							}
+						},
+						{
+							title: 'Decline',
+							pressAction: {
+								id: 'reject'
+							}
 						}
+					],
+					fullScreenAction: {
+						id: 'full-screen',
+						launchActivity: 'chat.rocket.reactnative.CustomCallActivity'
 					},
-					{
-						title: 'Decline',
-						pressAction: {
-							id: 'reject'
-						}
-					}
-				],
-				fullScreenAction: {
-					id: 'default',
-					launchActivity: 'chat.rocket.reactnative.CustomCallActivity'
+					lightUpScreen: true
 				}
-			}
-		});
+			});
+		}
 	});
 };
 
