@@ -28,6 +28,7 @@
             android:launchMode="singleTop"
             android:showOnLockScreen="true"
             android:theme="@style/AppTheme"
+			android:screenOrientation="portrait"
         />
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
           android:resource="@drawable/ic_notification" />
