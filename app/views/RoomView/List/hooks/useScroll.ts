@@ -55,10 +55,10 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 			jumping.current = true;
 
 			// look for the message on the state
-			const index = messagesIds.current?.findIndex(item => item === messageId);
+			const index = messagesIds.current?.findIndex(item => item === messageId) ?? -1;
 
 			// if found message, scroll to it
-			if (index !== undefined && index !== -1) {
+			if (index !== -1) {
 				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 
 				// wait for scroll animation to finish
