@@ -26,6 +26,7 @@ import MessagesView from '../../views/MessagesView';
 import AutoTranslateView from '../../views/AutoTranslateView';
 import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
+import PushTroubleshootView from '../../views/PushTroubleshootView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
 import ForwardMessageView from '../../views/ForwardMessageView';
 import CloseLivechatView from '../../views/CloseLivechatView';
@@ -184,6 +185,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 				<ModalStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 				<ModalStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
+				<ModalStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			</ModalStack.Navigator>
 		</ModalContainer>
 	);

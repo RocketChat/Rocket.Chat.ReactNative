@@ -102,6 +102,12 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
+		fontAnnotation: '#9EA2A8',
+		userPresenceBusy: '#D40C26',
+		userPresenceOnline: '#148660',
+		badgeBackgroundLevel3: '#F38C39',
+		statusFontOnDanger: '#9B1325',
+		statusFontOnSuccess: '#148660',
 		...mentions,
 		...callButtons
 	},
@@ -181,6 +187,12 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
+		fontAnnotation: '#9EA2A8',
+		userPresenceBusy: '#D40C26',
+		userPresenceOnline: '#148660',
+		badgeBackgroundLevel3: '#F38C39',
+		statusFontOnDanger: '#9B1325',
+		statusFontOnSuccess: '#148660',
 		...mentions,
 		...callButtons
 	},
@@ -260,6 +272,12 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
+		fontAnnotation: '#9EA2A8',
+		userPresenceBusy: '#D40C26',
+		userPresenceOnline: '#148660',
+		badgeBackgroundLevel3: '#F38C39',
+		statusFontOnDanger: '#9B1325',
+		statusFontOnSuccess: '#148660',
 		...mentions,
 		...callButtons
 	}

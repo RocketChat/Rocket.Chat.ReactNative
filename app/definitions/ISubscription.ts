@@ -111,9 +111,10 @@ export interface ISubscription {
 	uploads: RelationModified<TUploadModel>;
 }
 
-export type TSubscriptionModel = ISubscription & Model & {
-	asPlain: () => ISubscription;
-};
+export type TSubscriptionModel = ISubscription &
+	Model & {
+		asPlain: () => ISubscription;
+	};
 export type TSubscription = TSubscriptionModel | ISubscription;
 
 // https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8

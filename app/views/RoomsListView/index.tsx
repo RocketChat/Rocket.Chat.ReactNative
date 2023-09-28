@@ -442,6 +442,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			headerTitle: () => <RoomsListHeaderView />,
 			headerRight: () => (
 				<HeaderButton.Container>
+					<HeaderButton.Item
+						iconName='notification-disabled'
+						onPress={this.goPushTroubleshoot}
+						testID='rooms-list-view-push-troubleshoot'
+					/>
 					{canCreateRoom ? (
 						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
 					) : null}
@@ -741,6 +746,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
 		} else {
 			navigation.navigate('DirectoryView');
+		}
+	};
+
+	goPushTroubleshoot = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
+		} else {
+			navigation.navigate('PushTroubleshootView');
 		}
 	};
 
