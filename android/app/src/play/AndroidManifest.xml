@@ -21,6 +21,16 @@
 		<meta-data
 				android:name="com.bugsnag.android.API_KEY"
 				android:value="${BugsnagAPIKey}" />
+	    <activity
+            android:name="chat.rocket.reactnative.CustomCallActivity"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true"
+            android:theme="@style/AppTheme"
+        />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+          android:resource="@drawable/ic_notification" />
 	</application>
 
 </manifest>
