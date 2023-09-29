@@ -14,7 +14,7 @@
 #import "ExpoModulesCore-Swift.h"
 #import "RocketChatRN-Swift.h"
 
-@interface AppDelegate : EXAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate>
+@interface AppDelegate : EXAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate, KeyCommandHandler>
 
 @property (nonatomic, strong) UIWindow *window;
 
