@@ -21,6 +21,8 @@ import { getUserSelector } from '../../selectors/login';
 import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
 import HeaderCallButton from './components/HeaderCallButton';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -43,6 +45,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	showActionSheet: Function;
 	departmentId?: string;
 	rid?: string;
+	theme: TSupportedThemes;
 }
 
 interface IRigthButtonsState {
@@ -52,9 +55,12 @@ interface IRigthButtonsState {
 	tunreadGroup: string[];
 }
 
+const notificationIsEnabled = true;
+
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
 	private threadSubscription?: Subscription;
 	private subSubscription?: Subscription;
+	private room?: TSubscriptionModel;
 
 	constructor(props: IRightButtonsProps) {
 		super(props);
@@ -80,8 +86,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (rid) {
 			try {
 				const subCollection = db.get('subscriptions');
-				const subRecord = await subCollection.find(rid);
-				this.observeSubscription(subRecord);
+				this.room = await subCollection.find(rid);
+				this.observeSubscription(this.room);
 			} catch (e) {
 				console.log("Can't find subscription to observe.");
 			}
@@ -90,7 +96,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -98,6 +104,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextProps.joined !== joined) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
@@ -288,6 +297,20 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		showActionSheet({ options });
 	};
 
+	goToNotification = () => {
+		const { room } = this;
+		const { rid, navigation } = this.props;
+
+		if (!rid || !room) {
+			return;
+		}
+		if (notificationIsEnabled && room) {
+			navigation.navigate('NotificationPrefView', { rid, room });
+		} else {
+			navigation.navigate('PushTroubleshootView');
+		}
+	};
+
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
 		const { rid, t, navigation, isMasterDetail, encrypted } = this.props;
@@ -321,7 +344,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid } = this.props;
+		const { t, tmid, threadsEnabled, rid, theme } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -346,6 +369,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
+				<HeaderButton.Item
+					color={notificationIsEnabled ? themes[theme].headerTintColor : themes[theme].fontDanger}
+					iconName='notification-disabled'
+					onPress={this.goToNotification}
+					testID='room-view-push-troubleshoot'
+				/>
 				{rid ? <HeaderCallButton rid={rid} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
