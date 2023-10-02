@@ -19,9 +19,9 @@ export type TActionSheetOptions = {
 	hasCancel?: boolean;
 	type?: string;
 	children?: React.ReactElement | null;
+	/** Required if your action sheet needs vertical scroll */
 	snaps?: (string | number)[];
 	onClose?: () => void;
-	enableContentPanningGesture?: boolean;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;

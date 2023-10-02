@@ -1,7 +1,6 @@
 import { Text, ViewProps } from 'react-native';
 import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -21,7 +20,6 @@ interface IBottomSheetContentProps {
 
 const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
 	const { colors } = useTheme();
-	const { bottom } = useSafeAreaInsets();
 
 	const renderFooter = () =>
 		hasCancel ? (
@@ -45,7 +43,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				keyExtractor={item => item.title}
 				bounces={true}
 				renderItem={renderItem}
-				style={{ backgroundColor: colors.focusedBackground, paddingBottom: bottom }}
+				style={{ backgroundColor: colors.focusedBackground }}
 				keyboardDismissMode='interactive'
 				indicatorStyle='black'
 				contentContainerStyle={styles.content}
@@ -57,7 +55,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 		);
 	}
 	return (
-		<BottomSheetView testID='action-sheet' style={[styles.contentContainer, { paddingBottom: bottom }]} onLayout={onLayout}>
+		<BottomSheetView testID='action-sheet' style={styles.contentContainer} onLayout={onLayout}>
 			{children}
 		</BottomSheetView>
 	);

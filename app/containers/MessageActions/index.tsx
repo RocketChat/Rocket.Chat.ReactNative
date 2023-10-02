@@ -511,6 +511,7 @@ const MessageActions = React.memo(
 				await getPermissions();
 				showActionSheet({
 					options: getOptions(message),
+					snaps: ['50%', '80%'],
 					customHeader:
 						!isReadOnly || room.reactWhenReadOnly ? (
 							<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />

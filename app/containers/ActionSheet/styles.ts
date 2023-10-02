@@ -20,7 +20,8 @@ export default StyleSheet.create({
 		marginHorizontal: 16
 	},
 	content: {
-		paddingTop: 16
+		paddingTop: 16,
+		paddingBottom: 30
 	},
 	titleContainer: {
 		flex: 1

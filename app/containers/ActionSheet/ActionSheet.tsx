@@ -23,11 +23,10 @@ const ANIMATION_CONFIG = {
 const ActionSheet = React.memo(
 	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
 		const { colors } = useTheme();
+		const { height: windowHeight } = useWindowDimensions();
 		const bottomSheetRef = useRef<BottomSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
-		const { width, height } = useWindowDimensions();
-		const isLandscape = width > height;
 		const animatedContentHeight = useSharedValue(0);
 		const animatedHandleHeight = useSharedValue(0);
 		const animatedDataSnaps = useSharedValue<TActionSheetOptions['snaps']>([]);
@@ -49,9 +48,13 @@ const ActionSheet = React.memo(
 					layout: { height }
 				}
 			}) => {
-				animatedContentHeight.value = height;
+				/**
+				 * This logic is only necessary to prevent the action sheet from
+				 * occupying the entire screen when the dynamic content is too big.
+				 */
+				animatedContentHeight.value = Math.min(height, windowHeight * 0.8);
 			},
-			[animatedContentHeight]
+			[animatedContentHeight, windowHeight]
 		);
 
 		const toggleVisible = () => setVisible(!isVisible);
@@ -81,11 +84,6 @@ const ActionSheet = React.memo(
 				Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			}
 		}, [isVisible]);
-
-		// Hides action sheet when orientation changes
-		useEffect(() => {
-			setVisible(false);
-		}, [isLandscape]);
 
 		useImperativeHandle(ref, () => ({
 			showActionSheet: show,
@@ -118,11 +116,11 @@ const ActionSheet = React.memo(
 			[]
 		);
 
-		const bottomSheet = isLandscape || isTablet ? styles.bottomSheet : {};
+		const bottomSheet = isTablet ? styles.bottomSheet : {};
 
 		// Must need this prop to avoid keyboard dismiss
 		// when is android tablet and the input text is focused
-		const androidTablet: any = isTablet && isLandscape && !isIOS ? { android_keyboardInputMode: 'adjustResize' } : {};
+		const androidTablet: any = isTablet && !isIOS ? { android_keyboardInputMode: 'adjustResize' } : {};
 
 		return (
 			<>
@@ -142,8 +140,6 @@ const ActionSheet = React.memo(
 						style={{ ...styles.container, ...bottomSheet }}
 						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
 						onChange={index => index === -1 && onClose()}
-						// We need this to allow horizontal swipe gesture inside the bottom sheet like in reaction picker
-						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}
 						{...androidTablet}
 					>
 						<BottomSheetContent
