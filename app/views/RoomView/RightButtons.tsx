@@ -299,13 +299,24 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	goToNotification = () => {
 		const { room } = this;
-		const { rid, navigation } = this.props;
+		const { rid, navigation, isMasterDetail } = this.props;
 
 		if (!rid || !room) {
 			return;
 		}
 		if (notificationIsEnabled && room) {
-			navigation.navigate('NotificationPrefView', { rid, room });
+			if (isMasterDetail) {
+				navigation.navigate('ModalStackNavigator', {
+					screen: 'NotificationPrefView',
+					params: { rid, room }
+				});
+			} else {
+				navigation.navigate('NotificationPrefView', { rid, room });
+			}
+		} else if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'PushTroubleshootView'
+			});
 		} else {
 			navigation.navigate('PushTroubleshootView');
 		}
