@@ -23,6 +23,7 @@ export type TActionSheetOptions = {
 	/** Required if your action sheet needs vertical scroll */
 	snaps?: (string | number)[];
 	onClose?: () => void;
+	enableContentPanningGesture?: boolean;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
