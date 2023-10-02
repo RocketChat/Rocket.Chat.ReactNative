@@ -4,15 +4,18 @@ import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useR
 import { Keyboard, useWindowDimensions } from 'react-native';
 import { Easing, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import styles from './styles';
+import styles, { ITEM_HEIGHT } from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
+const HANDLE_HEIGHT = 28;
+const CANCEL_HEIGHT = 64;
 
 const ANIMATION_CONFIG = {
 	duration: ACTION_SHEET_ANIMATION_DURATION,
@@ -24,6 +27,7 @@ const ActionSheet = React.memo(
 	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
 		const { colors } = useTheme();
 		const { height: windowHeight } = useWindowDimensions();
+		const { bottom } = useSafeAreaInsets();
 		const bottomSheetRef = useRef<BottomSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
@@ -56,6 +60,24 @@ const ActionSheet = React.memo(
 			},
 			[animatedContentHeight, windowHeight]
 		);
+
+		const maxSnap = Math.min(
+			(ITEM_HEIGHT + 0.5) * (data?.options?.length || 0) +
+				HANDLE_HEIGHT +
+				// Custom header height
+				(data?.headerHeight || 0) +
+				// Insets bottom height (Notch devices)
+				bottom +
+				// Cancel button height
+				(data?.hasCancel ? CANCEL_HEIGHT : 0),
+			windowHeight * 0.8
+		);
+
+		/*
+		 * if the action sheet cover more than 60% of the screen height,
+		 * we'll provide more one snap of 50%
+		 */
+		const snaps = maxSnap > windowHeight * 0.6 && !data.snaps ? ['50%', maxSnap] : [maxSnap];
 
 		const toggleVisible = () => setVisible(!isVisible);
 
@@ -128,10 +150,11 @@ const ActionSheet = React.memo(
 				{isVisible && (
 					<BottomSheet
 						ref={bottomSheetRef}
-						snapPoints={animatedSnapPoints}
+						// If data.options exist, we calculate snaps to be precise, otherwise we cal
+						snapPoints={data.options?.length ? snaps : animatedSnapPoints}
 						handleHeight={animatedHandleHeight}
 						// We need undefined to enable vertical swipe gesture inside the bottom sheet like in reaction picker
-						contentHeight={data.snaps?.length ? undefined : animatedContentHeight}
+						contentHeight={data.snaps?.length || data.options?.length ? undefined : animatedContentHeight}
 						animationConfigs={ANIMATION_CONFIG}
 						animateOnMount={true}
 						backdropComponent={renderBackdrop}
