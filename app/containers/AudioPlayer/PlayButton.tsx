@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Touchable from '../../Touchable';
-import { CustomIcon } from '../../../CustomIcon';
-import { useTheme } from '../../../../theme';
+import Touchable from '../message/Touchable';
+import { CustomIcon } from '../CustomIcon';
+import { useTheme } from '../../theme';
 import styles from './styles';
 import Loading from './Loading';
 

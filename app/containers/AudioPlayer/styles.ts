@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../../../views/Styles';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		justifyContent: 'center'
 	},
-	sliderContainer: {
+	seekContainer: {
 		flexDirection: 'row',
 		flex: 1,
 		alignItems: 'center',
 		height: '100%'
 	},
-	slider: {
+	seek: {
 		marginRight: 12,
 		height: '100%',
 		justifyContent: 'center',
@@ -45,13 +45,13 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},
-	thumbSlider: {
+	thumbSeek: {
 		height: 12,
 		width: 12,
 		borderRadius: 6,
 		zIndex: 3
 	},
-	containerAudioRate: {
+	containerPlaybackSpeed: {
 		width: 36,
 		height: 24,
 		borderRadius: 4,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		overflow: 'hidden'
 	},
-	audioRateText: {
+	playbackSpeedText: {
 		fontSize: 14,
 		...sharedStyles.textBold
 	}

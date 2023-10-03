@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
-import { CustomIcon } from '../../../CustomIcon';
-import { useTheme } from '../../../../theme';
+import { CustomIcon } from '../CustomIcon';
+import { useTheme } from '../../theme';
 
 const Loading = () => {
 	const rotation = useSharedValue(0);

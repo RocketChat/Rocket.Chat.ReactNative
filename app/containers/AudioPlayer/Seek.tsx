@@ -12,11 +12,11 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import styles from './styles';
-import { useTheme } from '../../../../theme';
+import { useTheme } from '../../theme';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
-interface ISlider {
+interface ISeek {
 	duration: SharedValue<number>;
 	currentTime: SharedValue<number>;
 	loaded: boolean;
@@ -30,7 +30,7 @@ const BUTTON_HIT_SLOP = {
 	left: 8
 };
 
-const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider) => {
+const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
 
 	const maxWidth = useSharedValue(1);
@@ -90,6 +90,7 @@ const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider
 		}
 	});
 
+	// https://docs.swmansion.com/react-native-reanimated/docs/2.x/fundamentals/worklets/
 	const formatTime = (ms: number) => {
 		'worklet';
 
@@ -129,22 +130,22 @@ const Slider = ({ currentTime, duration, loaded = false, onChangeTime }: ISlider
 	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
 
 	return (
-		<View style={styles.sliderContainer}>
+		<View style={styles.seekContainer}>
 			<AnimatedTextInput
 				defaultValue={'00:00'}
 				editable={false}
 				style={[styles.duration, { color: colors.fontDefault }]}
 				animatedProps={getCurrentTime}
 			/>
-			<View style={styles.slider} onLayout={onLayout}>
+			<View style={styles.seek} onLayout={onLayout}>
 				<View style={[styles.line, { backgroundColor: colors.strokeLight }]} />
 				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
 				<PanGestureHandler enabled={loaded} onGestureEvent={gestureHandler}>
-					<Animated.View hitSlop={BUTTON_HIT_SLOP} style={[styles.thumbSlider, { backgroundColor: thumbColor }, styleThumb]} />
+					<Animated.View hitSlop={BUTTON_HIT_SLOP} style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]} />
 				</PanGestureHandler>
 			</View>
 		</View>
 	);
 };
 
-export default Slider;
+export default Seek;

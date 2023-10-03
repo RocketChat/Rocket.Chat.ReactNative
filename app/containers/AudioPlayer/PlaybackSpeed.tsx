@@ -2,10 +2,10 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
-import { useTheme } from '../../../../theme';
-import Touchable from '../../Touchable';
+import { useTheme } from '../../theme';
+import Touchable from '../message/Touchable';
 
-const AudioRate = ({
+const PlaybackSpeed = ({
 	onChange,
 	loaded = false,
 	rate = 1
@@ -25,11 +25,11 @@ const AudioRate = ({
 		<Touchable
 			disabled={!loaded}
 			onPress={onPress}
-			style={[styles.containerAudioRate, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
+			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
-			<Text style={[styles.audioRateText, { color: colors.buttonFontOnSecondary }]}>{rate}x</Text>
+			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontOnSecondary }]}>{rate}x</Text>
 		</Touchable>
 	);
 };
 
-export default AudioRate;
+export default PlaybackSpeed;
