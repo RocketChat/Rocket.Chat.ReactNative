@@ -749,5 +749,6 @@
   "Jitsi_authentication_before_making_calls_ask_admin": "If you believe there are problems with Jitsi and its authentication, ask a workspace administrator for help.",
   "Continue": "Continue",
   "Message_has_been_shared": "Message has been shared",
-  "No_channels_in_team": "No Channels on this team"
+  "No_channels_in_team": "No Channels on this team",
+  "conference_call": "Conference call"
 }
