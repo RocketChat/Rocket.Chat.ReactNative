@@ -15,10 +15,12 @@ export type TActionSheetOptionsItem = {
 
 export type TActionSheetOptions = {
 	options?: TActionSheetOptionsItem[];
+	headerHeight?: number;
 	customHeader?: React.ReactElement | null;
 	hasCancel?: boolean;
-	type?: string;
+	// children can both use snaps or dynamic
 	children?: React.ReactElement | null;
+	/** Required if your action sheet needs vertical scroll */
 	snaps?: (string | number)[];
 	onClose?: () => void;
 	enableContentPanningGesture?: boolean;
