@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { View } from 'react-native';
 import { AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 
-import { IAttachment, IUserMessage } from '../../definitions';
 import { useTheme } from '../../theme';
-import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import styles from './styles';
 import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
@@ -15,19 +12,21 @@ import PlayButton from './PlayButton';
 import audioPlayer from '../../lib/methods/audioPlayer';
 
 interface IAudioPlayerProps {
-	file: IAttachment;
-	isReply?: boolean;
-	style?: StyleProp<TextStyle>[];
-	author?: IUserMessage;
-	msg?: string;
-	baseUrl: string;
-	user: any;
+	fileUri: string;
+	loading: boolean;
+	isReadyToPlay: boolean;
+	disabled?: boolean;
+	onPressCallback?: Function;
 }
 
-const AudioPlayer = ({ file, author, isReply = false, baseUrl, user }: IAudioPlayerProps) => {
-	const [loading, setLoading] = useState(true);
+const AudioPlayer = ({
+	fileUri,
+	disabled = false,
+	loading = true,
+	isReadyToPlay = false,
+	onPressCallback = () => {}
+}: IAudioPlayerProps) => {
 	const [paused, setPaused] = useState(true);
-	const [cached, setCached] = useState(false);
 	const [rate, setRate] = useState(1);
 
 	const duration = useSharedValue(0);
@@ -43,12 +42,6 @@ const AudioPlayer = ({ file, author, isReply = false, baseUrl, user }: IAudioPla
 			handlePlaybackStatusUpdate(status);
 			onEnd(status);
 		}
-	};
-
-	const loadAudio = async (audio: string) => {
-		await audioPlayer.loadAudio(audio);
-		audioUri.current = audio;
-		audioPlayer.setOnPlaybackStatusUpdate(audio, onPlaybackStatusUpdate);
 	};
 
 	const onPlaying = (data: AVPlaybackStatus) => {
@@ -88,14 +81,6 @@ const AudioPlayer = ({ file, author, isReply = false, baseUrl, user }: IAudioPla
 		await audioPlayer.setPositionAsync(audioUri.current, time);
 	};
 
-	const getUrl = () => {
-		let url = file.audio_url;
-		if (url && !url.startsWith('http')) {
-			url = `${baseUrl}${file.audio_url}`;
-		}
-		return url;
-	};
-
 	const togglePlayPause = async () => {
 		try {
 			if (!paused) {
@@ -112,76 +97,24 @@ const AudioPlayer = ({ file, author, isReply = false, baseUrl, user }: IAudioPla
 		await audioPlayer.setRateAsync(audioUri.current, value);
 	};
 
-	const handleDownload = async () => {
-		setLoading(true);
-		try {
-			const url = getUrl();
-			if (url) {
-				const audio = await downloadMediaFile({
-					downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
-					type: 'audio',
-					mimeType: file.audio_type
-				});
-				await loadAudio(audio);
-				setLoading(false);
-				setCached(true);
-			}
-		} catch {
-			setLoading(false);
-			setCached(false);
-		}
-	};
-
-	const handleAutoDownload = async () => {
-		const url = getUrl();
-		try {
-			if (url) {
-				const isCurrentUserAuthor = author?._id === user.id;
-				const isAutoDownloadEnabled = fetchAutoDownloadEnabled('audioPreferenceDownload');
-				if (isAutoDownloadEnabled || isCurrentUserAuthor) {
-					await handleDownload();
-					return;
-				}
-				setLoading(false);
-				setCached(false);
-			}
-		} catch {
-			// Do nothing
-		}
-	};
-
 	const onPress = () => {
+		onPressCallback();
 		if (loading) {
 			return;
 		}
-		if (cached) {
+		if (isReadyToPlay) {
 			togglePlayPause();
-			return;
 		}
-		handleDownload();
 	};
 
 	useEffect(() => {
-		const handleCache = async () => {
-			const cachedAudioResult = await getMediaCache({
-				type: 'audio',
-				mimeType: file.audio_type,
-				urlToCache: getUrl()
-			});
-			if (cachedAudioResult?.exists) {
-				await loadAudio(cachedAudioResult.uri);
-				setLoading(false);
-				setCached(true);
-				return;
-			}
-			if (isReply) {
-				setLoading(false);
-				return;
-			}
-			await handleAutoDownload();
+		const loadAudio = async (audio: string) => {
+			await audioPlayer.loadAudio(audio);
+			audioUri.current = audio;
+			audioPlayer.setOnPlaybackStatusUpdate(audio, onPlaybackStatusUpdate);
 		};
-		handleCache();
-	}, []);
+		loadAudio(fileUri);
+	}, [fileUri]);
 
 	useEffect(() => {
 		if (paused) {
@@ -191,15 +124,12 @@ const AudioPlayer = ({ file, author, isReply = false, baseUrl, user }: IAudioPla
 		}
 	}, [paused]);
 
-	if (!baseUrl) {
-		return null;
-	}
 	return (
 		<>
 			<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
-				<PlayButton disabled={isReply} loading={loading} paused={paused} cached={cached} onPress={onPress} />
-				<Seek currentTime={currentTime} duration={duration} loaded={!isReply && cached} onChangeTime={setPosition} />
-				<PlaybackSpeed onChange={onChangeRate} loaded={!isReply && cached} rate={rate} />
+				<PlayButton disabled={disabled} loading={loading} paused={paused} isReadyToPlay={isReadyToPlay} onPress={onPress} />
+				<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
+				<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} rate={rate} />
 			</View>
 		</>
 	);
