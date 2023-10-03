@@ -24,9 +24,9 @@
 	    <activity
             android:name="chat.rocket.reactnative.CustomCallActivity"
             android:showWhenLocked="true"
+            android:showOnLockScreen="true"
             android:turnScreenOn="true"
             android:launchMode="singleTop"
-            android:showOnLockScreen="true"
             android:theme="@style/AppTheme"
 			android:screenOrientation="portrait"
         />
