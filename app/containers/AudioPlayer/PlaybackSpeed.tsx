@@ -27,7 +27,7 @@ const PlaybackSpeed = ({
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
-			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontOnSecondary }]}>{rate}x</Text>
+			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{rate}x</Text>
 		</Touchable>
 	);
 };

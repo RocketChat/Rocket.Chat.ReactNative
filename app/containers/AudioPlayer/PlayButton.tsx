@@ -36,7 +36,7 @@ const PlayButton = React.memo(({ loading, paused, onPress, disabled, isReadyToPl
 			{loading ? (
 				<RCActivityIndicator />
 			) : (
-				<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonFontOnPrimary} />
+				<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonFontPrimary} />
 			)}
 		</Touchable>
 	);
