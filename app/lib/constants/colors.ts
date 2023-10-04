@@ -1,3 +1,5 @@
+export const BACKGROUND_PUSH_COLOR = '#F5455C';
+
 export const STATUS_COLORS: any = {
 	online: '#2de0a5',
 	busy: '#f5455c',
