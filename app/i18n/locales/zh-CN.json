@@ -482,5 +482,6 @@
   "Messagebox_Send_to_channel": "发送至频道",
   "Open_Livechats": "打开即时聊天",
   "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复",
-  "and_N_more": "另外{{count}}个"
+  "and_N_more": "另外{{count}}个",
+  "Audio": "音讯"
 }

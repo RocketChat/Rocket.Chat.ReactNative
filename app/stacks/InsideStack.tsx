@@ -98,7 +98,8 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='RoomView' component={RoomView} />
 			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 			<ChatsStack.Screen name='SelectListView' component={SelectListView} options={SelectListView.navigationOptions} />
-			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
+			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} />
+			{/* @ts-ignore */}
 			<ChatsStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
 			<ChatsStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ChatsStack.Screen name='RoomMembersView' component={RoomMembersView} />

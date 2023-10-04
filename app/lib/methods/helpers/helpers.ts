@@ -4,7 +4,7 @@ import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 
 export function isGroupChat(room): boolean {
-	return ((room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2)) ?? false;
+	return ((room?.uids && room.uids.length > 2) || (room?.usernames && room.usernames.length > 2)) ?? false;
 }
 
 export function getRoomAvatar(room) {
@@ -49,7 +49,7 @@ export function getRoomTitle(room) {
 	if (allowSpecialChars && room.t !== 'd') {
 		return room.fname || room.name;
 	}
-	return ((room.prid || useRealName) && room.fname) || room.name;
+	return ((room?.prid || useRealName) && room?.fname) || room?.name;
 }
 
 export function getSenderName(sender) {
