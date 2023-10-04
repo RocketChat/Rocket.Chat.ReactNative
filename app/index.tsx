@@ -1,21 +1,19 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
-import { KeyCommandsEmitter } from 'react-native-keycommands';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Orientation from 'react-native-orientation-locker';
 
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import AppContainer from './AppContainer';
-import { KEY_COMMAND } from './commands';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import Loading from './containers/Loading';
-import { ICommand } from './definitions/ICommand';
 import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
 import { colors, isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT, themes } from './lib/constants';
@@ -26,7 +24,6 @@ import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { ThemeContext, TSupportedThemes } from './theme';
 import { debounce, isTablet } from './lib/methods/helpers';
-import EventEmitter from './lib/methods/helpers/events';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import {
 	getTheme,
@@ -84,8 +81,6 @@ const parseDeepLinking = (url: string) => {
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
 
-	private onKeyCommands: any;
-
 	constructor(props: any) {
 		super(props);
 		this.init();
@@ -104,6 +99,9 @@ export default class Root extends React.Component<{}, IState> {
 		};
 		if (isTablet) {
 			this.initTablet();
+			Orientation.unlockAllOrientations();
+		} else {
+			Orientation.lockToPortrait();
 		}
 		setNativeTheme(theme);
 	}
@@ -125,10 +123,6 @@ export default class Root extends React.Component<{}, IState> {
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
 
 		unsubscribeTheme();
-
-		if (this.onKeyCommands && this.onKeyCommands.remove) {
-			this.onKeyCommands.remove();
-		}
 	}
 
 	init = async () => {
@@ -195,9 +189,6 @@ export default class Root extends React.Component<{}, IState> {
 	initTablet = () => {
 		const { width } = this.state;
 		this.setMasterDetail(width);
-		this.onKeyCommands = KeyCommandsEmitter.addListener('onKeyCommand', (command: ICommand) => {
-			EventEmitter.emit(KEY_COMMAND, { event: command });
-		});
 	};
 
 	initCrashReport = () => {

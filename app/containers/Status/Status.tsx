@@ -3,9 +3,9 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { CustomIcon, IconSet, TIconsName } from '../CustomIcon';
 import { STATUS_COLORS } from '../../lib/constants';
-import { IStatus } from './definition';
+import { IStatusComponentProps } from './definition';
 
-const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: Omit<IStatus, 'id'>) => {
+const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {
 	const name: TIconsName = `status-${status}`;
 	const isNameValid = IconSet.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';

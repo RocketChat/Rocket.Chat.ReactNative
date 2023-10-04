@@ -37,6 +37,7 @@ export interface IWrapperProps {
 	accessibilityLabel: string;
 	avatar: string;
 	type: string;
+	userId: string | null;
 	rid: string;
 	children: React.ReactElement;
 	displayMode: string;
@@ -50,6 +51,7 @@ export interface IWrapperProps {
 }
 
 export interface ITypeIconProps {
+	userId: string | null;
 	type: string;
 	status: TUserStatus;
 	prid: string;
@@ -144,6 +146,7 @@ export interface IIconOrAvatar {
 	avatar: string;
 	type: string;
 	rid: string;
+	userId: string | null;
 	showAvatar: boolean;
 	displayMode: string;
 	prid: string;
