@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
-import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import * as Haptics from 'expo-haptics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { AnimatedRinger } from './containers/AnimatedRinger';
 import { CustomIcon, TIconsName } from './containers/CustomIcon';
-import { colors } from './lib/constants';
+import i18n from './i18n';
+import { PUSH_DATA_KEY, colors } from './lib/constants';
 import { getTheme, initialTheme } from './lib/methods/helpers/theme';
 import customStyle from './views/Styles';
 
@@ -30,14 +32,19 @@ const CallButton = ({
 );
 
 const Call = () => {
+	const [pushData, setPushData] = useState({});
+
 	const iTheme = initialTheme();
 	const theme = getTheme(iTheme);
 	const color = colors[theme];
 
 	useEffect(() => {
 		(async () => {
+			const data = await AsyncStorage.getItem(PUSH_DATA_KEY);
+			setPushData(data ? JSON.parse(data) : {});
 			await RNBootSplash.hide({ fade: true });
 			changeNavigationBarColor(color.callBackgroundColor, true, true);
+			await AsyncStorage.removeItem(PUSH_DATA_KEY);
 		})();
 	}, []);
 
@@ -55,6 +62,8 @@ const Call = () => {
 		return () => clearInterval(interval);
 	}, []);
 
+	const avatar = pushData?.host?.slice(0, -1) + pushData?.avatar;
+
 	return (
 		<>
 			<StatusBar backgroundColor={color.callBackgroundColor} barStyle={'dark-content'} />
@@ -62,7 +71,7 @@ const Call = () => {
 				<View style={{ flex: 2 }}>
 					<View style={styles.topContainer}>
 						<View style={styles.imageContainer}>
-							<Image source={{ uri: 'https://i.ibb.co/VBsqb1k/download.jpg' }} style={styles.image} />
+							<Image source={{ uri: avatar }} style={styles.image} />
 						</View>
 						<Text style={styles.incomingCall}>Incoming Call</Text>
 						<AnimatedRinger delay={0} />
@@ -73,8 +82,13 @@ const Call = () => {
 					</View>
 				</View>
 				<View style={styles.buttonsContainer}>
-					<CallButton backgroundColor={color.cancelCallButton} iconName='phone-end' label='Reject' onPress={() => {}} />
-					<CallButton backgroundColor={color.acceptCallButton} iconName='phone' label='Accept' onPress={() => {}} />
+					<CallButton
+						backgroundColor={color.cancelCallButton}
+						iconName='phone-end'
+						label={i18n.t('decline')}
+						onPress={() => BackHandler.exitApp()}
+					/>
+					<CallButton backgroundColor={color.acceptCallButton} iconName='phone' label={i18n.t('accept')} onPress={() => {}} />
 				</View>
 			</View>
 		</>
