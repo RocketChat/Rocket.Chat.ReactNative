@@ -1,6 +1,6 @@
 import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
-import { TextProps, StyleSheet } from 'react-native';
+import { TextProps } from 'react-native';
 
 import { mappedIcons } from './mappedIcons';
 
