@@ -4,7 +4,7 @@ import Touchable from '../message/Touchable';
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import styles from './styles';
-import Loading from './Loading';
+import RCActivityIndicator from '../ActivityIndicator';
 
 interface IButton {
 	loading: boolean;
@@ -34,7 +34,7 @@ const PlayButton = React.memo(({ loading, paused, onPress, disabled, isReadyToPl
 			background={Touchable.SelectableBackgroundBorderless()}
 		>
 			{loading ? (
-				<Loading />
+				<RCActivityIndicator />
 			) : (
 				<CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonFontOnPrimary} />
 			)}
