@@ -20,26 +20,31 @@ interface IMessageBoxRecordAudioProps {
 	onStart: Function;
 }
 
-const RECORDING_EXTENSION = '.m4a';
+const RECORDING_EXTENSION = '.aac';
 const RECORDING_SETTINGS = {
 	android: {
+		// Settings related to audio encoding.
 		extension: RECORDING_EXTENSION,
-		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
+		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
 		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+		// Settings related to audio quality.
 		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
 		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate
 	},
 	ios: {
+		// Settings related to audio encoding.
 		extension: RECORDING_EXTENSION,
-		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MIN,
+		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MEDIUM,
+		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
+		// Settings related to audio quality.
 		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.sampleRate,
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate,
-		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate
 	},
 	web: {}
 };
+
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
 	playsInSilentModeIOS: true,
@@ -159,7 +164,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 				const fileURI = this.recording.getURI();
 				const fileData = await getInfoAsync(fileURI as string);
 				const fileInfo = {
-					name: `${Date.now()}.m4a`,
+					name: `${Date.now()}.aac`,
 					mime: 'audio/aac',
 					type: 'audio/aac',
 					store: 'Uploads',
