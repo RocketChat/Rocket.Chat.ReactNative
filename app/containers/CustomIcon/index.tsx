@@ -1,6 +1,6 @@
 import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
-import { TextProps, StyleSheet } from 'react-native';
+import { TextProps } from 'react-native';
 
 import { mappedIcons } from './mappedIcons';
 
@@ -18,6 +18,6 @@ export interface ICustomIcon extends TextProps {
 
 const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon) => (
 	// @ts-ignore TODO remove this after update @types/react-native to 0.65.0
-	<IconSet name={name} size={size} color={color} style={StyleSheet.flatten({ lineHeight: size }, style)} {...props} />
+	<IconSet name={name} size={size} color={color} style={[{ lineHeight: size }, style]} {...props} />
 );
 export { CustomIcon };
