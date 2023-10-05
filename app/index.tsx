@@ -5,9 +5,10 @@ import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Orientation from 'react-native-orientation-locker';
+import notifee from '@notifee/react-native';
 
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
-import { deepLinkingOpen } from './actions/deepLinking';
+import { deepLinkingClickCallPush, deepLinkingOpen } from './actions/deepLinking';
 import AppContainer from './AppContainer';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
@@ -133,6 +134,11 @@ export default class Root extends React.Component<{}, IState> {
 		if (notification) {
 			onNotification(notification);
 			return;
+		}
+
+		const initialNotification = await notifee.getInitialNotification();
+		if (initialNotification?.notification?.data?.notificationType === 'videoconf') {
+			store.dispatch(deepLinkingClickCallPush(initialNotification?.notification?.data));
 		}
 
 		// Open app from deep linking
