@@ -16,6 +16,7 @@ import { IRoomItemProps } from './interfaces';
 
 const RoomItem = ({
 	rid,
+	userId,
 	type,
 	prid,
 	name,
@@ -74,6 +75,7 @@ const RoomItem = ({
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
 			type={type}
+			userId={userId}
 			rid={rid}
 			prid={prid}
 			status={status}
@@ -89,6 +91,7 @@ const RoomItem = ({
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
 							<TypeIcon
+								userId={userId}
 								type={type}
 								prid={prid}
 								status={status}
@@ -125,6 +128,7 @@ const RoomItem = ({
 			) : (
 				<View style={[styles.titleContainer, styles.flex]}>
 					<TypeIcon
+						userId={userId}
 						type={type}
 						prid={prid}
 						status={status}

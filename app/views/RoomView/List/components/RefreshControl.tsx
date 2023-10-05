@@ -1,8 +1,8 @@
 import React from 'react';
 import { RefreshControl as RNRefreshControl, RefreshControlProps, StyleSheet } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import { isAndroid } from '../../../lib/methods/helpers';
+import { useTheme } from '../../../../theme';
+import { isAndroid } from '../../../../lib/methods/helpers';
 
 const style = StyleSheet.create({
 	container: {
@@ -17,7 +17,7 @@ interface IRefreshControl extends RefreshControlProps {
 	children: React.ReactElement;
 }
 
-const RefreshControl = ({ children, onRefresh, refreshing }: IRefreshControl): React.ReactElement => {
+export const RefreshControl = ({ children, onRefresh, refreshing }: IRefreshControl): React.ReactElement => {
 	const { colors } = useTheme();
 	if (isAndroid) {
 		return (
@@ -36,5 +36,3 @@ const RefreshControl = ({ children, onRefresh, refreshing }: IRefreshControl): R
 
 	return React.cloneElement(children, { refreshControl });
 };
-
-export default RefreshControl;

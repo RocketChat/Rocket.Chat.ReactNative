@@ -4,8 +4,6 @@ import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityPro
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { CustomIcon } from '../../../containers/CustomIcon';
-import { isIOS, isTablet } from '../../../lib/methods/helpers';
-import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
 import { useAppSelector } from '../../../lib/hooks';
@@ -21,9 +19,11 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
+		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	subtitle: {
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	upsideDown: {
@@ -57,10 +57,6 @@ const Header = React.memo(
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
-		const { isLandscape } = useOrientation();
-		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
-		const titleFontSize = 16 * scale;
-		const subTitleFontSize = 14 * scale;
 
 		if (showSearchHeader) {
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
@@ -81,7 +77,7 @@ const Header = React.memo(
 			<View style={styles.container}>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 					<View style={styles.button}>
-						<Text style={[styles.title, { fontSize: titleFontSize, color: colors.headerTitleColor }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
 							{serverName}
 						</Text>
 						<CustomIcon
@@ -94,7 +90,7 @@ const Header = React.memo(
 					{subtitle ? (
 						<Text
 							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: colors.auxiliaryText, fontSize: subTitleFontSize }]}
+							style={[styles.subtitle, { color: colors.auxiliaryText }]}
 							numberOfLines={1}
 						>
 							{subtitle}

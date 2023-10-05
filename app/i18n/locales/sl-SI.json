@@ -528,7 +528,6 @@
   "Enter_workspace_URL": "Vnesite URL delovnega prostora",
   "Workspace_URL_Example": "Npr. your-company.rocket.chat",
   "Teams": "Ekipe",
-  "No_team_channels_found": "Kanalov ni mogoče najti",
   "Team_not_found": "Ekipa ni bila najdena",
   "Create_Team": "Ustvari ekipo",
   "Team_Name": "Ime ekipe",
@@ -634,5 +633,6 @@
   "totp-invalid": "Koda ali geslo neveljavno",
   "Close_Chat": "Zaprite klepet",
   "Select_tags": "Izberite oznake",
-  "and_N_more": "in še {{count}}"
+  "and_N_more": "in še {{count}}",
+  "Audio": "Zvok"
 }

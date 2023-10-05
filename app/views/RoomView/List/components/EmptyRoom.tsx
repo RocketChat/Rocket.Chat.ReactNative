@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '../../../../theme';
 
 const styles = StyleSheet.create({
 	image: {
@@ -11,12 +11,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmptyRoom = React.memo(({ length, mounted, rid }: { length: number; mounted: boolean; rid: string }) => {
+export const EmptyRoom = React.memo(({ length, rid }: { length: number; rid: string }) => {
 	const { theme } = useTheme();
-	if ((length === 0 && mounted) || !rid) {
+	if (length === 0 || !rid) {
 		return <ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />;
 	}
 	return null;
 });
-
-export default EmptyRoom;
