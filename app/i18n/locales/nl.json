@@ -520,7 +520,6 @@
   "Enter_workspace_URL": "Voer de werkruimte-URL in",
   "Workspace_URL_Example": "Vb. uw-bedrijf.rocket.chat",
   "Teams": "Teams",
-  "No_team_channels_found": "Geen kanalen gevonden",
   "Team_not_found": "Team niet gevonden",
   "Create_Team": "Team aanmaken",
   "Team_Name": "Teamnaam",
@@ -617,5 +616,6 @@
   "Omnichannel_queue": "Omnichannel-wachtrij",
   "Empty": "Leeg",
   "Broadcast_hint": "Alleen geautoriseerde gebruikers kunnen nieuwe berichten schrijven, maar de andere gebruikers zullen kunnen antwoorden",
-  "and_N_more": "en nog {{count}}"
+  "and_N_more": "en nog {{count}}",
+  "Audio": "Audio"
 }

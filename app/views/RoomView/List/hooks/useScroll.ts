@@ -11,11 +11,14 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	const viewableItems = useRef<ViewToken[] | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	useEffect(() => () => {
-		if (highlightTimeout.current) {
-			clearTimeout(highlightTimeout.current);
-		}
-	});
+	useEffect(
+		() => () => {
+			if (highlightTimeout.current) {
+				clearTimeout(highlightTimeout.current);
+			}
+		},
+		[]
+	);
 
 	const jumpToBottom = () => {
 		listRef.current?.scrollToOffset({ offset: -100 });
@@ -52,10 +55,10 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 			jumping.current = true;
 
 			// look for the message on the state
-			const index = messagesIds.current?.findIndex(item => item === messageId);
+			const index = messagesIds.current?.findIndex(item => item === messageId) ?? -1;
 
 			// if found message, scroll to it
-			if (index && index > -1) {
+			if (index !== -1) {
 				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 
 				// wait for scroll animation to finish

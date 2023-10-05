@@ -520,7 +520,6 @@
   "Enter_workspace_URL": "Entrez l'URL de l'espace de travail",
   "Workspace_URL_Example": "Ex. votre-société.rocket.chat",
   "Teams": "Equipes",
-  "No_team_channels_found": "Aucun canal trouvé",
   "Team_not_found": "Equipe non trouvée",
   "Create_Team": "Créer une équipe",
   "Team_Name": "Nom de l'équipe",
@@ -617,5 +616,6 @@
   "Omnichannel_queue": "File d'attente omnicanale",
   "Empty": "Vide",
   "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre.",
-  "and_N_more": "et {{count}} de plus"
+  "and_N_more": "et {{count}} de plus",
+  "Audio": "Audio"
 }
