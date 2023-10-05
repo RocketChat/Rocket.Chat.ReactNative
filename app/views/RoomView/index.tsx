@@ -227,6 +227,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		cancel: () => void;
 	};
 	private sub?: RoomClass;
+	private unsubscribeBlur?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -304,6 +305,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
+		const { navigation } = this.props;
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
@@ -330,6 +332,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
+		// TODO: Refactor when audio becomes global
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			audioPlayer.pauseCurrentAudio();
+		});
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -446,10 +452,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.retryInitTimeout) {
 			clearTimeout(this.retryInitTimeout);
 		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
+		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
-		// TODO: Refactor when audio becomes global
-		await audioPlayer.pauseCurrentAudio();
 	}
 
 	canForwardGuest = async () => {
@@ -1160,9 +1167,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (!this.rid) {
 			return;
 		}
-
-		// TODO: Refactor when audio becomes global
-		await audioPlayer.pauseCurrentAudio();
 
 		if (item.tmid) {
 			let name = '';
