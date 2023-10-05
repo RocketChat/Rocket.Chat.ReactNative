@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '../../theme';
 import styles from './styles';
@@ -35,6 +36,8 @@ const AudioPlayer = ({
 	const { colors } = useTheme();
 
 	const audioUri = useRef<string>('');
+
+	const navigation = useNavigation();
 
 	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
@@ -123,6 +126,16 @@ const AudioPlayer = ({
 			activateKeepAwake();
 		}
 	}, [paused]);
+
+	useEffect(() => {
+		const unsubscribeFocus = navigation.addListener('focus', () => {
+			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+		});
+
+		return () => {
+			unsubscribeFocus();
+		};
+	}, [navigation]);
 
 	return (
 		<>

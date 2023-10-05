@@ -32,7 +32,15 @@ const mockedNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
-	useNavigation: () => mockedNavigate
+	useNavigation: () => ({
+		navigate: jest.fn(),
+		addListener: jest.fn().mockImplementation((event, callback) => {
+			callback();
+			return {
+				remove: jest.fn()
+			};
+		})
+	})
 }));
 
 jest.mock('react-native-notifications', () => ({
