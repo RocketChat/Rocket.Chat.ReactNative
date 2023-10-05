@@ -3,7 +3,7 @@ import { dequal } from 'dequal';
 
 import { IMessageAttachments } from './interfaces';
 import Image from './Image';
-import Audio from './Components/Audio';
+import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
 import Button from '../Button';

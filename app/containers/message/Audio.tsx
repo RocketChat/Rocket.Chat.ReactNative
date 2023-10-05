@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
-import Markdown from '../../../markdown';
-import MessageContext from '../../Context';
-import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
-import { IAttachment, IUserMessage } from '../../../../definitions';
-import { downloadMediaFile, getMediaCache } from '../../../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
-import AudioPlayer from '../../../AudioPlayer';
+import Markdown from '../markdown';
+import MessageContext from './Context';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment, IUserMessage } from '../../definitions';
+import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import AudioPlayer from '../AudioPlayer';
 
 interface IMessageAudioProps {
 	file: IAttachment;
