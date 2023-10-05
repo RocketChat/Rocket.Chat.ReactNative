@@ -24,7 +24,7 @@ class AudioPlayer {
 		if (this.audioQueue[uri]) {
 			return this.audioQueue[uri];
 		}
-		const { sound } = await Audio.Sound.createAsync({ uri });
+		const { sound } = await Audio.Sound.createAsync({ uri }, { androidImplementation: 'MediaPlayer' });
 		this.audioQueue[uri] = sound;
 		return sound;
 	}
