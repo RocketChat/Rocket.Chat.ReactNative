@@ -237,6 +237,8 @@ describe('Threads', () => {
 					.withTimeout(5000);
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await tryTapping(element(by[textMatcher]('replied')).atIndex(0), 2000, true);
+				// open the action-sheet, then swipe the scroll inside the action-sheet
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.id('action-sheet')).swipe('up', 'fast', 0.5);
 				await sleep(300); // wait for animation
 				await element(by[textMatcher]('Delete')).atIndex(0).tap();
