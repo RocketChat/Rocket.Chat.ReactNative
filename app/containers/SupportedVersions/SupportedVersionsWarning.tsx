@@ -1,5 +1,5 @@
 import React, { ReactElement, useLayoutEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
@@ -8,6 +8,7 @@ import { styles } from './styles';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
 import * as HeaderButton from '../HeaderButton';
 import I18n from '../../i18n';
+import { LEARN_MORE_URL } from './constants';
 
 export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: any; route?: any }): ReactElement | null => {
 	const { colors } = useTheme();
@@ -54,7 +55,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 				title='Learn more'
 				type='secondary'
 				backgroundColor={colors.chatComponentBackground}
-				onPress={() => alert(message.link)}
+				onPress={() => Linking.openURL(message.link || LEARN_MORE_URL)}
 			/>
 		</View>
 	);

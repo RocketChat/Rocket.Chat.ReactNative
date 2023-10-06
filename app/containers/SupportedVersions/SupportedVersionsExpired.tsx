@@ -7,9 +7,7 @@ import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
-
-const LEARN_MORE_URL =
-	'https://docs.rocket.chat/resources/rocket.chats-support-structure/enterprise-support-and-version-durability';
+import { LEARN_MORE_URL } from './constants';
 
 export const SupportedVersionsExpired = () => {
 	const { colors } = useTheme();
