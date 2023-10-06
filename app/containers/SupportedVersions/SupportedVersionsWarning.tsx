@@ -9,8 +9,6 @@ import { useSupportedVersionMessage } from './useSupportedVersionMessage';
 import * as HeaderButton from '../HeaderButton';
 import I18n from '../../i18n';
 
-export const SupportedVersionsWarningSnaps = [600];
-
 export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: any; route?: any }): ReactElement | null => {
 	const { colors } = useTheme();
 	const message = useSupportedVersionMessage();

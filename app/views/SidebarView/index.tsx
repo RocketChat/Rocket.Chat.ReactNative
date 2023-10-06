@@ -25,7 +25,7 @@ import { IApplicationState, IUser, TSVStatus } from '../../definitions';
 import * as List from '../../containers/List';
 import { IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
-import { SupportedVersionsWarning, SupportedVersionsWarningSnaps } from '../../containers/SupportedVersions';
+import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -206,7 +206,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (isMasterDetail) {
 			Navigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning' });
 		} else {
-			showActionSheetRef({ children: <SupportedVersionsWarning />, snaps: SupportedVersionsWarningSnaps });
+			showActionSheetRef({ children: <SupportedVersionsWarning /> });
 		}
 	};
 

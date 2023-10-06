@@ -70,7 +70,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	if (isMasterDetail) {
 		appNavigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning', params: { showCloseButton: true } });
 	} else {
-		showActionSheetRef({ children: <SupportedVersionsWarning />, snaps: [600] });
+		showActionSheetRef({ children: <SupportedVersionsWarning /> });
 	}
 };
 
