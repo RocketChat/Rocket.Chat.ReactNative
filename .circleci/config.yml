@@ -99,7 +99,9 @@ commands:
   fetch-supported-versions:
     description: "Fetch supported versions from Cloud"
     steps:
-      - run: sh ./scripts/fetch-supported-versions.sh
+      - run:
+          name: "Fetch supported versions from Cloud"
+          command: sh ./scripts/fetch-supported-versions.sh
       - store_artifacts:
           path: ./app-supportedversions.json
 
