@@ -752,5 +752,5 @@
   "No_channels_in_team": "No Channels on this team",
   "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
   "Supported_versions_expired_description": "An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.",
-  "Supported_versions_warning_modal_title": "Update required"
+  "Supported_versions_warning_update_required": "Update required"
 }

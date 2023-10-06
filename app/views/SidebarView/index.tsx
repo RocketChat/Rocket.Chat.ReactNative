@@ -304,7 +304,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (supportedVersionsStatus === 'warn') {
 			return (
 				<SidebarItem
-					text={'Update required'} // TODO: i18n
+					text={I18n.t('Supported_versions_warning_update_required')}
 					textColor={themes[theme!].dangerColor}
 					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
 					theme={theme!}

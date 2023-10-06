@@ -17,7 +17,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
-			title: I18n.t('Supported_versions_warning_modal_title')
+			title: I18n.t('Supported_versions_warning_update_required')
 		});
 
 		if (route?.params?.showCloseButton) {

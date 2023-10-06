@@ -77,7 +77,7 @@ describe('SupportedVersionsWarning', () => {
 		expect(screen.getByText('Alô título')).toBeOnTheScreen();
 		expect(screen.getByText('Test Server https://example.com 30 rocket.cat test@test.com test A works :)')).toBeOnTheScreen();
 		expect(screen.queryByTestId('sv-warn-description')).toBeNull();
-		expect(screen.getByText('Learn more')).toBeOnTheScreen(); // TODO: i18n
+		expect(screen.getByText('Learn more')).toBeOnTheScreen();
 	});
 
 	test('user on unsupported language and fallback to en', () => {
@@ -88,6 +88,6 @@ describe('SupportedVersionsWarning', () => {
 			screen.getByText('Mobile and desktop app access to https://example.com will be cut off in 30 days.')
 		).toBeOnTheScreen();
 		expect(screen.getByText('User: rocket.cat Email: test@test.com Extra params: test A works :)')).toBeOnTheScreen();
-		expect(screen.getByText('Learn more')).toBeOnTheScreen(); // TODO: i18n
+		expect(screen.getByText('Learn more')).toBeOnTheScreen();
 	});
 });

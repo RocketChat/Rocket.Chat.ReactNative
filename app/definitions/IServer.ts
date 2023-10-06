@@ -20,7 +20,7 @@ export type TSVMessage = {
 
 export type TSVVersion = {
 	version: string;
-	expiration: string; // Date;
+	expiration: string;
 	messages?: TSVMessage[];
 };
 

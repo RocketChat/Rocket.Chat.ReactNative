@@ -3,6 +3,7 @@ import { call, cancel, delay, fork, put, race, select, take, takeLatest } from '
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
+import moment from 'moment';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
@@ -56,9 +57,9 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	const serverRecord = yield getServerById(server);
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
 
-	// if (!serverRecord || moment(serverRecord?.supportedVersionsWarningAt).diff(new Date(), 'hours') <= 12) {
-	// 	return;
-	// }
+	if (!serverRecord || moment(serverRecord?.supportedVersionsWarningAt).diff(new Date(), 'hours') <= 12) {
+		return;
+	}
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
