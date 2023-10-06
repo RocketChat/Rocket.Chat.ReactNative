@@ -24,7 +24,7 @@ export type TSVVersion = {
 	messages?: TSVMessage[];
 };
 
-export interface ISupportedVersions {
+export interface ISupportedVersionsData {
 	timestamp: string;
 	messages?: TSVMessage[];
 	versions: TSVVersion[];
@@ -37,17 +37,11 @@ export interface ISupportedVersions {
 	i18n?: TSVDictionary;
 }
 
-export interface IServerApiInfo {
-	version: string;
-	success: boolean;
-	supportedVersions?: string;
-	minimumClientVersions?: {
-		desktop: string;
-		mobile: string;
-	};
+export interface ISupportedVersions extends ISupportedVersionsData {
+	signed: string;
 }
 
-export interface IServerInfo {
+export interface IApiServerInfo {
 	version: string;
 	success: boolean;
 	supportedVersions?: ISupportedVersions;
@@ -57,18 +51,17 @@ export interface IServerInfo {
 	};
 }
 
-export interface ICloudInfo {
-	signed: string; // FIXME: find a good type SerializedJWT<SupportedVersions>
-	timestamp: string;
-	messages?: TSVMessage[];
-	versions: TSVVersion[];
-	exceptions?: {
-		domain: string;
-		uniqueId: string;
-		messages?: TSVMessage[];
-		versions: TSVVersion[];
+export interface IServerInfo {
+	version: string;
+	success: boolean;
+	supportedVersions?: ISupportedVersionsData | null; // no signed
+	minimumClientVersions?: {
+		desktop: string;
+		mobile: string;
 	};
 }
+
+export type TCloudInfo = ISupportedVersions;
 
 export interface IServer {
 	name: string;
@@ -85,7 +78,7 @@ export interface IServer {
 	uniqueID: string;
 	enterpriseModules: IEnterpriseModules;
 	E2E_Enable: boolean;
-	supportedVersions?: ISupportedVersions;
+	supportedVersions?: ISupportedVersionsData;
 	supportedVersionsWarningAt?: Date;
 }
 

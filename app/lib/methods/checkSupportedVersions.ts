@@ -1,7 +1,7 @@
 import { satisfies } from 'semver';
 import moment from 'moment';
 
-import { ISupportedVersions, TSVDictionary, TSVMessage, TSVStatus, TSVVersion } from '../../definitions';
+import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus, TSVVersion } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
 export const getMessage = ({
@@ -32,7 +32,7 @@ export const checkSupportedVersions = function ({
 	supportedVersions,
 	serverVersion
 }: {
-	supportedVersions?: ISupportedVersions;
+	supportedVersions?: ISupportedVersionsData;
 	serverVersion: string;
 }): {
 	status: TSVStatus;

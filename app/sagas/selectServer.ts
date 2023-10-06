@@ -70,7 +70,9 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 		await serversDB.write(async () => {
 			await record.update(r => {
 				r.version = serverVersion;
-				r.supportedVersions = serverInfo.supportedVersions;
+				if (serverInfo.supportedVersions) {
+					r.supportedVersions = serverInfo.supportedVersions;
+				}
 			});
 		});
 		return record;
@@ -80,7 +82,9 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 	await serversDB.write(async () => {
 		newRecord = await serversCollection.create(r => {
 			r._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-			r.supportedVersions = serverInfo.supportedVersions;
+			if (serverInfo.supportedVersions) {
+				r.supportedVersions = serverInfo.supportedVersions;
+			}
 			r.version = serverVersion;
 		});
 	});

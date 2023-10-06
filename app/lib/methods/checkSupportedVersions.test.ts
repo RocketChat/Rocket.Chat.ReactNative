@@ -1,4 +1,4 @@
-import { ISupportedVersions } from '../../definitions';
+import { ISupportedVersionsData } from '../../definitions';
 import { checkSupportedVersions, getMessage } from './checkSupportedVersions';
 
 const MOCK_I18N = {
@@ -7,7 +7,7 @@ const MOCK_I18N = {
 	}
 };
 const TODAY = '2023-04-01T00:00:00.000Z';
-const MOCK: ISupportedVersions = {
+const MOCK: ISupportedVersionsData = {
 	timestamp: TODAY,
 	i18n: MOCK_I18N,
 	versions: [
@@ -227,7 +227,7 @@ describe('checkSupportedVersions', () => {
 	});
 
 	describe('Messages', () => {
-		const MOCK_MESSAGES: ISupportedVersions = {
+		const MOCK_MESSAGES: ISupportedVersionsData = {
 			timestamp: TODAY,
 			messages: [
 				{

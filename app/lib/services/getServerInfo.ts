@@ -2,82 +2,20 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 
-import { ICloudInfo, IServerApiInfo, IServerInfo, ISupportedVersions } from '../../definitions';
+import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IApiServerInfo } from '../../definitions';
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 
 const MOCKED_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEVs/o5+uQbTjL3chynL4wXgUg2R9
-q9UU8I5mEovUf86QZ7kOBIjJwqnzD1omageEHWwHdBO6B+dFabmdT9POxg==
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvZ/T/RHOr6+yo/iMLUlf
+agMiMLFxQR/5Qtc85ykMBvKZqbBGb9zU68VB9n54alrbZG5FdcHkSJXgJIBXF2bk
+TGTfBi58JmltZirSWzvXoXnT4ieGNZv+BqnP9zzj9HXOVhVncbRmJPEIJOZfL9AQ
+beix3rPgZx3ZepAaoMQnz11dZKDGzkMN75WkTdf324X3DeFgLVmjsYuAcLl/AJMA
+uPKSSt0XOQUsfrT7rEqXIrj8rIJcWxIHICMRrwfjw2Qh+3pfIrh7XSzxlW4zCKBN
+RpavrrCnpOFRfkC5T9eMKLgyapjufOtbjuzu25N3urBsg6oRFNzsGXWp1C7DwUO2
+kwIDAQAB
 -----END PUBLIC KEY-----`;
-
-const MOCKED_SUPPORTED_VERSIONS: ISupportedVersions = {
-	timestamp: '2023-09-20T00:00:00.000Z',
-	messages: [
-		{
-			remainingDays: 15,
-			title: 'title',
-			subtitle: 'subtitle',
-			description: 'description',
-			type: 'info',
-			link: 'Docs page'
-		}
-	],
-	i18n: {
-		en: {
-			title: '{{instance_ws_name}} is running an unsupported version of Rocket.Chat',
-			subtitle: 'Mobile and desktop app access to {{instance_domain}} will be cut off in {{remaining_days}} days.',
-			description: 'User: {{instance_username}}\nEmail: {{instance_email}}\nExtra params: {{test_a}} {{test_b}}'
-		},
-		'pt-BR': {
-			title: 'alo title',
-			subtitle: 'asiudhasodhasoiudhoaidasd'
-		}
-	},
-	versions: [
-		{
-			version: '6.5.0',
-			expiration: '2022-09-11T00:00:00.000Z'
-		},
-		{
-			version: '6.4.0',
-			expiration: '2022-08-22T00:00:00.000Z'
-		}
-	],
-	exceptions: {
-		domain: 'https://open.rocket.chat',
-		uniqueId: '123',
-		versions: [
-			{
-				version: '6.5.0',
-				expiration: '2023-09-11T00:00:00.000Z'
-			},
-			{
-				version: '6.4.0',
-				expiration: '2023-08-30T00:00:00.000Z'
-			},
-			{
-				version: '6.2.0',
-				expiration: '2023-09-30T00:00:00.000Z',
-				messages: [
-					{
-						remainingDays: 30,
-						title: 'title',
-						subtitle: 'subtitle',
-						description: 'description',
-						type: 'info',
-						link: 'Docs page',
-						params: {
-							test_a: 'test A works',
-							test_b: ':)'
-						}
-					}
-				]
-			}
-		]
-	}
-};
 
 interface IServerInfoFailure {
 	success: false;
@@ -91,17 +29,21 @@ interface IServerInfoSuccess extends IServerInfo {
 export type TServerInfoResult = IServerInfoSuccess | IServerInfoFailure;
 
 // Verifies if JWT is valid and returns the payload
-const verifyJWT = (jwt?: string): ISupportedVersions | null => {
-	if (!jwt) {
-		return null;
-	}
-	const isValid = KJUR.jws.JWS.verify(jwt, MOCKED_PUBLIC_KEY, ['ES256']);
-	if (!isValid) {
-		return null;
-	}
+const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
+	try {
+		if (!jwt) {
+			return null;
+		}
+		const isValid = KJUR.jws.JWS.verify(jwt, MOCKED_PUBLIC_KEY, ['RS256']);
+		if (!isValid) {
+			return null;
+		}
 
-	const { payloadObj } = KJUR.jws.JWS.parse(jwt);
-	return payloadObj as ISupportedVersions;
+		const { payloadObj } = KJUR.jws.JWS.parse(jwt);
+		return payloadObj as ISupportedVersions;
+	} catch {
+		return null;
+	}
 };
 
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
@@ -110,7 +52,8 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			...RocketChatSettings.customHeaders
 		});
 		try {
-			const jsonRes: IServerApiInfo = response.json();
+			const jsonRes: IApiServerInfo = response.json();
+			console.log('🚀 ~ file: getServerInfo.ts:123 ~ getServerInfo ~ jsonRes:', jsonRes);
 			if (!jsonRes?.success) {
 				return {
 					success: false,
@@ -119,16 +62,19 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			}
 
 			// Makes use of signed JWT to get supported versions
-			const supportedVersions = verifyJWT(jsonRes.supportedVersions);
+			const supportedVersions = verifyJWT(jsonRes.supportedVersions?.signed);
 
 			// if backend doesn't have supported versions or JWT is invalid, request from cloud
 			if (!supportedVersions) {
-				// TODO: if cloud response is too different from `/api/info`, we'll have to call it on another place
 				const cloudInfo = await getCloudInfo();
+
+				// Makes use of signed JWT to get supported versions
+				const supportedVersionsCloud = verifyJWT(cloudInfo?.signed);
+
 				return {
 					...jsonRes,
 					success: true,
-					supportedVersions: cloudInfo
+					supportedVersions: supportedVersionsCloud
 				};
 			}
 
@@ -159,10 +105,12 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 	};
 }
 
-export const getCloudInfo = (): Promise<ICloudInfo> => {
+export const getCloudInfo = async (): Promise<TCloudInfo | null> => {
 	const uniqueId = store.getState().settings.uniqueID;
 	console.log('🚀 ~ file: getServerInfo.ts:139 ~ getCloudInfo ~ uniqueId:', uniqueId);
-	return Promise.resolve({
-		...MOCKED_SUPPORTED_VERSIONS
-	});
+	const response = await RNFetchBlob.fetch(
+		'GET',
+		`https://releases.rocket.chat/v2/server/supportedVersions?workspaceId=${uniqueId}&source=mobile`
+	);
+	return response.json() as TCloudInfo;
 };
