@@ -1,4 +1,4 @@
-const imageBase64RegExp = new RegExp(/^data:image\/[bmp,gif,ico,jpg,png,svg,webp,x\-icon,svg+xml]+;base64,/);
+export const imageBase64RegExp = new RegExp(/^data:image\/[bmp,gif,ico,jpg,png,svg,webp,x\-icon,svg+xml]+;base64,/);
 const regExpOf120Characters = new RegExp(/^data:image\/[bmp,gif,ico,jpg,png,svg,webp,x\-icon,svg+xml]+;base64,([\w+\/=]{1,120})/);
 const mimeTypeBase64RegExp = new RegExp(/^data:(.+);base64,/);
 

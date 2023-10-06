@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
-import { getBase64MimeType, isImageBase64, valueOfFirst120CharactersOfImageBase64 } from './handleBase64';
+import { getBase64MimeType, imageBase64RegExp, isImageBase64, valueOfFirst120CharactersOfImageBase64 } from './handleBase64';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
@@ -221,18 +221,23 @@ export function downloadMediaFile({
 		try {
 			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 			if (!path) {
-				reject();
-				return;
+				return reject();
 			}
 			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
+			if (isImageBase64(downloadUrl)) {
+				// https://stackoverflow.com/a/63186487
+				downloadUrl = downloadUrl.replace(imageBase64RegExp, '');
+				await FileSystem.writeAsStringAsync(path, downloadUrl, { encoding: FileSystem.EncodingType.Base64 });
+				return resolve(path);
+			}
 			const result = await downloadQueue[downloadKey].downloadAsync();
 			if (result?.uri) {
 				return resolve(result.uri);
 			}
-			reject();
-		} catch {
-			reject();
+			return reject();
+		} catch (e) {
+			return reject();
 		} finally {
 			delete downloadQueue[downloadKey];
 		}
