@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks';
@@ -7,6 +7,9 @@ import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
+
+const LEARN_MORE_URL =
+	'https://docs.rocket.chat/resources/rocket.chats-support-structure/enterprise-support-and-version-durability';
 
 export const SupportedVersionsExpired = () => {
 	const { colors } = useTheme();
@@ -25,7 +28,7 @@ export const SupportedVersionsExpired = () => {
 				title={I18n.t('Learn_more')}
 				type='secondary'
 				backgroundColor={colors.chatComponentBackground}
-				onPress={() => alert('Go to docs!')}
+				onPress={() => Linking.openURL(LEARN_MORE_URL)}
 			/>
 		</View>
 	);
