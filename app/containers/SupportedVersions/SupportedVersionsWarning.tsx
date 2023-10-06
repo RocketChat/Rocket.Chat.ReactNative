@@ -7,6 +7,7 @@ import Button from '../Button';
 import { styles } from './styles';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
 import * as HeaderButton from '../HeaderButton';
+import I18n from '../../i18n';
 
 export const SupportedVersionsWarningSnaps = [600];
 
@@ -16,7 +17,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
-			title: 'TBD'
+			title: I18n.t('Supported_versions_warning_modal_title')
 		});
 
 		if (route?.params?.showCloseButton) {
