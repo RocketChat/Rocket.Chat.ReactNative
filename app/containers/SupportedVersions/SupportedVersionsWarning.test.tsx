@@ -51,12 +51,13 @@ describe('SupportedVersionsWarning', () => {
 					en: {
 						title_token: '{{instance_ws_name}} is running an unsupported version of Rocket.Chat',
 						subtitle_token: 'Mobile and desktop app access to {{instance_domain}} will be cut off in {{remaining_days}} days.',
-						description_token: 'User: {{instance_username}} Email: {{instance_email}} Extra params: {{test_a}} {{test_b}}'
+						description_token:
+							'User: {{instance_username}} Email: {{instance_email}} Version: {{instance_version}} Extra params: {{test_a}} {{test_b}}'
 					},
 					'pt-BR': {
 						title_token: 'Alô título',
 						subtitle_token:
-							'{{instance_ws_name}} {{instance_domain}} {{remaining_days}} {{instance_username}} {{instance_email}} {{test_a}} {{test_b}}'
+							'{{instance_ws_name}} {{instance_domain}} {{remaining_days}} {{instance_username}} {{instance_email}} {{instance_version}} {{test_a}} {{test_b}}'
 					}
 				},
 				expiration: '2023-05-01T00:00:00.000Z'
@@ -67,7 +68,9 @@ describe('SupportedVersionsWarning', () => {
 		expect(
 			screen.getByText('Mobile and desktop app access to https://example.com will be cut off in 30 days.')
 		).toBeOnTheScreen();
-		expect(screen.getByText('User: rocket.cat Email: test@test.com Extra params: test A works :)')).toBeOnTheScreen();
+		expect(
+			screen.getByText('User: rocket.cat Email: test@test.com Version: 1.0 Extra params: test A works :)')
+		).toBeOnTheScreen();
 		expect(screen.getByText('Learn more')).toBeOnTheScreen();
 	});
 
@@ -75,7 +78,7 @@ describe('SupportedVersionsWarning', () => {
 		mockedStore.dispatch(setUser({ language: 'pt-BR' }));
 		render(<Render />);
 		expect(screen.getByText('Alô título')).toBeOnTheScreen();
-		expect(screen.getByText('Test Server https://example.com 30 rocket.cat test@test.com test A works :)')).toBeOnTheScreen();
+		expect(screen.getByText('Test Server https://example.com 30 rocket.cat test@test.com 1.0 test A works :)')).toBeOnTheScreen();
 		expect(screen.queryByTestId('sv-warn-description')).toBeNull();
 		expect(screen.getByText('Learn more')).toBeOnTheScreen();
 	});
@@ -87,7 +90,9 @@ describe('SupportedVersionsWarning', () => {
 		expect(
 			screen.getByText('Mobile and desktop app access to https://example.com will be cut off in 30 days.')
 		).toBeOnTheScreen();
-		expect(screen.getByText('User: rocket.cat Email: test@test.com Extra params: test A works :)')).toBeOnTheScreen();
+		expect(
+			screen.getByText('User: rocket.cat Email: test@test.com Version: 1.0 Extra params: test A works :)')
+		).toBeOnTheScreen();
 		expect(screen.getByText('Learn more')).toBeOnTheScreen();
 	});
 });

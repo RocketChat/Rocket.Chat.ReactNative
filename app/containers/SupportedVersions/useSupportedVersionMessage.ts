@@ -17,7 +17,7 @@ const useUser = () => {
 
 export const useSupportedVersionMessage = () => {
 	const { message, i18n, expiration } = useAppSelector(state => state.supportedVersions);
-	const { name, server } = useAppSelector(state => state.server);
+	const { name, server, version } = useAppSelector(state => state.server);
 	const { language = 'en', user, email } = useUser();
 
 	const params = {
@@ -26,6 +26,7 @@ export const useSupportedVersionMessage = () => {
 		instance_ws_name: name,
 		instance_domain: server,
 		remaining_days: moment(expiration).diff(new Date(), 'days'),
+		instance_version: version,
 		...message?.params
 	};
 
