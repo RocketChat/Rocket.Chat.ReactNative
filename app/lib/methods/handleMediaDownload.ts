@@ -5,6 +5,7 @@ import { isEmpty } from 'lodash';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
+import { getBase64MimeType, isImageBase64, valueOfFirst120CharactersOfImageBase64 } from './handleBase64';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
@@ -23,6 +24,8 @@ const sanitizeString = (value: string) => {
 
 const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeString(serverURL)}/`;
 
+const sanitizeImageBase64 = (data: string) => sanitizeLikeString(valueOfFirst120CharactersOfImageBase64(data));
+
 const sanitizeFileName = (value: string) => {
 	const extension = value.substring(value.lastIndexOf('.') + 1);
 	const toSanitize = value.substring(0, value.lastIndexOf('.'));
@@ -40,6 +43,14 @@ export const getFilename = ({
 	type: MediaTypes;
 	mimeType?: string;
 }) => {
+	if (url && isImageBase64(url)) {
+		const sanitizedData = sanitizeImageBase64(url);
+		const mimeType = getBase64MimeType(url);
+		const extension = getExtension(type, mimeType);
+
+		return `${sanitizedData}.${extension}`;
+	}
+
 	const isTitleTyped = mime.lookup(title);
 	const extension = getExtension(type, mimeType, url);
 	if (isTitleTyped && title) {
@@ -116,11 +127,17 @@ const getFilePath = ({ type, mimeType, urlToCache }: { type: MediaTypes; mimeTyp
 const getFolderPath = (fileUrl: string) => {
 	const serverUrl = store.getState().server.server;
 	const serverUrlParsed = serverUrlParsedAsPath(serverUrl);
+	const folderPath = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}`;
+
+	if (isImageBase64(fileUrl)) {
+		const sanitizedData = sanitizeImageBase64(fileUrl);
+		return `${folderPath}${sanitizedData}/`;
+	}
+
 	const fileUrlWithoutQueryString = fileUrl.split('?')[0];
 	const fileUrlSplitted = fileUrlWithoutQueryString.split('/');
 	const messageId = fileUrlSplitted[fileUrlSplitted.length - 2];
-	const folderPath = `${LOCAL_DOCUMENT_DIRECTORY}${serverUrlParsed}${messageId}/`;
-	return folderPath;
+	return `${folderPath}${messageId}/`;
 };
 
 export const getFileInfoAsync = async (filePath: string) => {
@@ -167,7 +184,12 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 
 const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
 
-export const mediaDownloadKey = (messageUrl: string) => `${sanitizeString(messageUrl)}`;
+export const mediaDownloadKey = (messageUrl: string) => {
+	if (isImageBase64(messageUrl)) {
+		return `${sanitizeImageBase64(messageUrl)}`;
+	}
+	return `${sanitizeString(messageUrl)}`;
+};
 
 export function isDownloadActive(messageUrl: string): boolean {
 	return !!downloadQueue[mediaDownloadKey(messageUrl)];
