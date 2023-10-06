@@ -7,7 +7,7 @@ import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 
-const MOCKED_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
+const PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvZ/T/RHOr6+yo/iMLUlf
 agMiMLFxQR/5Qtc85ykMBvKZqbBGb9zU68VB9n54alrbZG5FdcHkSJXgJIBXF2bk
 TGTfBi58JmltZirSWzvXoXnT4ieGNZv+BqnP9zzj9HXOVhVncbRmJPEIJOZfL9AQ
@@ -34,7 +34,7 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 		if (!jwt) {
 			return null;
 		}
-		const isValid = KJUR.jws.JWS.verify(jwt, MOCKED_PUBLIC_KEY, ['RS256']);
+		const isValid = KJUR.jws.JWS.verify(jwt, PUBLIC_KEY, ['RS256']);
 		if (!isValid) {
 			return null;
 		}
@@ -53,7 +53,6 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 		});
 		try {
 			const jsonRes: IApiServerInfo = response.json();
-			console.log('🚀 ~ file: getServerInfo.ts:123 ~ getServerInfo ~ jsonRes:', jsonRes);
 			if (!jsonRes?.success) {
 				return {
 					success: false,
@@ -107,7 +106,6 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 
 export const getCloudInfo = async (): Promise<TCloudInfo | null> => {
 	const uniqueId = store.getState().settings.uniqueID;
-	console.log('🚀 ~ file: getServerInfo.ts:139 ~ getCloudInfo ~ uniqueId:', uniqueId);
 	const response = await RNFetchBlob.fetch(
 		'GET',
 		`https://releases.rocket.chat/v2/server/supportedVersions?workspaceId=${uniqueId}&source=mobile`
