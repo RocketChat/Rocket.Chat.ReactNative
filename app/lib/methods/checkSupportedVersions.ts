@@ -1,4 +1,3 @@
-import { satisfies } from 'semver';
 import moment from 'moment';
 
 import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus, TSVVersion } from '../../definitions';
@@ -40,14 +39,9 @@ export const checkSupportedVersions = function ({
 	i18n?: TSVDictionary;
 	expiration?: string;
 } {
-	// 1.2.3 -> ~1.2
-	const serverVersionTilde = `~${serverVersion.split('.').slice(0, 2).join('.')}`;
-
 	// Built-in suported versions
 	if (!supportedVersions || supportedVersions.timestamp < builtInSupportedVersions.timestamp) {
-		const versionInfo = builtInSupportedVersions.versions.find(({ version }) =>
-			satisfies(version, serverVersionTilde)
-		) as TSVVersion;
+		const versionInfo = builtInSupportedVersions.versions.find(({ version }) => version === serverVersion) as TSVVersion;
 		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as TSVMessage[]);
 		const message = getMessage({ messages, expiration: versionInfo?.expiration });
 		return {
@@ -59,7 +53,7 @@ export const checkSupportedVersions = function ({
 	}
 
 	// Backend/Cloud
-	const versionInfo = supportedVersions.versions.find(({ version }) => satisfies(version, serverVersionTilde));
+	const versionInfo = supportedVersions.versions.find(({ version }) => version === serverVersion);
 	if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
 		const messages = versionInfo?.messages || supportedVersions?.messages;
 		const message = getMessage({ messages, expiration: versionInfo.expiration });
@@ -72,7 +66,7 @@ export const checkSupportedVersions = function ({
 	}
 
 	// Exceptions
-	const exception = supportedVersions.exceptions?.versions.find(({ version }) => satisfies(version, serverVersionTilde));
+	const exception = supportedVersions.exceptions?.versions.find(({ version }) => version === serverVersion);
 	const messages =
 		exception?.messages || supportedVersions.exceptions?.messages || versionInfo?.messages || supportedVersions.messages;
 	const message = getMessage({ messages, expiration: exception?.expiration });
