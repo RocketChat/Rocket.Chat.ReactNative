@@ -39,3 +39,4 @@ export * from './subscribeRooms';
 export * from './serializeAsciiUrl';
 export * from './isRoomFederated';
 export * from './checkSupportedVersions';
+export * from './getServerInfo';

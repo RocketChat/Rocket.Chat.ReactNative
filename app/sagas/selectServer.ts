@@ -34,6 +34,7 @@ import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import {
 	checkSupportedVersions,
 	getLoginSettings,
+	getServerInfo,
 	setCustomEmojis,
 	setEnterpriseModules,
 	setPermissions,
@@ -94,9 +95,9 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 	throw new Error('Error creating server record');
 };
 
-const getServerInfo = function* getServerInfo({ server, raiseError = true }: { server: string; raiseError?: boolean }) {
+const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = true }: { server: string; raiseError?: boolean }) {
 	try {
-		const serverInfoResult = yield* call(Services.getServerInfo, server);
+		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
 				Alert.alert(I18n.t('Oops'), serverInfoResult.message);
@@ -187,7 +188,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		let serverInfo;
 		if (fetchVersion) {
-			serverInfo = yield* getServerInfo({ server, raiseError: false });
+			serverInfo = yield* getServerInfoSaga({ server, raiseError: false });
 		}
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
@@ -218,7 +219,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			SSLPinning?.setCertificate(certificate, server);
 		}
 
-		const serverInfo = yield* getServerInfo({ server });
+		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
