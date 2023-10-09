@@ -7,16 +7,7 @@ import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IA
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';
-
-const PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvZ/T/RHOr6+yo/iMLUlf
-agMiMLFxQR/5Qtc85ykMBvKZqbBGb9zU68VB9n54alrbZG5FdcHkSJXgJIBXF2bk
-TGTfBi58JmltZirSWzvXoXnT4ieGNZv+BqnP9zzj9HXOVhVncbRmJPEIJOZfL9AQ
-beix3rPgZx3ZepAaoMQnz11dZKDGzkMN75WkTdf324X3DeFgLVmjsYuAcLl/AJMA
-uPKSSt0XOQUsfrT7rEqXIrj8rIJcWxIHICMRrwfjw2Qh+3pfIrh7XSzxlW4zCKBN
-RpavrrCnpOFRfkC5T9eMKLgyapjufOtbjuzu25N3urBsg6oRFNzsGXWp1C7DwUO2
-kwIDAQAB
------END PUBLIC KEY-----`;
+import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 
 interface IServerInfoFailure {
 	success: false;
@@ -35,7 +26,7 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 		if (!jwt) {
 			return null;
 		}
-		const isValid = KJUR.jws.JWS.verify(jwt, PUBLIC_KEY, ['RS256']);
+		const isValid = KJUR.jws.JWS.verify(jwt, SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY, ['RS256']);
 		if (!isValid) {
 			return null;
 		}
