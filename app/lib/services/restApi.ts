@@ -999,3 +999,6 @@ export const notifyUser = (type: string, params: Record<string, any>): Promise<b
 	sdk.methodCall('stream-notify-user', type, params);
 
 export const getUsersRoles = (): Promise<boolean> => sdk.methodCall('getUserRoles');
+
+export const getSupportedVersionsCloud = (uniqueId?: string) =>
+	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?workspaceId=${uniqueId}&source=mobile`);

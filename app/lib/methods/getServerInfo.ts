@@ -2,6 +2,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 
+import { getSupportedVersionsCloud } from '../services/restApi';
 import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IApiServerInfo } from '../../definitions';
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
@@ -105,10 +106,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 }
 
 export const getCloudInfo = async (): Promise<TCloudInfo | null> => {
-	const uniqueId = store.getState().settings.uniqueID;
-	const response = await RNFetchBlob.fetch(
-		'GET',
-		`https://releases.rocket.chat/v2/server/supportedVersions?workspaceId=${uniqueId}&source=mobile`
-	);
-	return response.json() as TCloudInfo;
+	const uniqueId = store.getState().settings.uniqueID as string;
+	const response = await getSupportedVersionsCloud(uniqueId);
+	return response.json() as unknown as TCloudInfo;
 };

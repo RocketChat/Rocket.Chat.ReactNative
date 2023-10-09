@@ -186,11 +186,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
-		let serverInfo;
-		if (fetchVersion) {
-			serverInfo = yield* getServerInfoSaga({ server, raiseError: false });
-		}
-
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
 		setSettings();
@@ -198,6 +193,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setPermissions();
 		setRoles();
 		setEnterpriseModules();
+
+		// We need uniqueId from settings to get cloud info, so setSettings needs to be called first
+		let serverInfo;
+		if (fetchVersion) {
+			serverInfo = yield* getServerInfoSaga({ server, raiseError: false });
+		}
 
 		// Return server version even when offline
 		const serverVersion = (serverInfo && serverInfo.version) || (version as string);
