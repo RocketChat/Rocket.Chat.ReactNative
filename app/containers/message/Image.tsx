@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { createImageProgress } from 'react-native-image-progress';
+import * as Progress from 'react-native-progress';
 
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -13,6 +15,7 @@ import BlurComponent from './Components/BlurComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import styles from './styles';
+import { isImageBase64 } from '../../lib/methods/handleImageBase64';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -30,6 +33,8 @@ interface IMessageImage {
 	author?: IUserMessage;
 	msg?: string;
 }
+
+const ImageProgress = createImageProgress(FastImage);
 
 const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 	const { colors } = useTheme();
@@ -61,6 +66,21 @@ export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: s
 	);
 });
 
+const MessageImageBase64 = React.memo(({ imgUri }: { imgUri: string }) => {
+	const { colors } = useTheme();
+	return (
+		<ImageProgress
+			style={[styles.image, { borderColor: colors.borderColor }]}
+			source={{ uri: encodeURI(imgUri) }}
+			resizeMode={FastImage.resizeMode.cover}
+			indicator={Progress.Pie}
+			indicatorProps={{
+				color: colors.actionTintColor
+			}}
+		/>
+	);
+});
+
 const ImageContainer = ({
 	file,
 	imageUrl,
@@ -81,6 +101,7 @@ const ImageContainer = ({
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
 	// And we cannot be certain whether the file.title_link actually exists.
 	const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
+	const isBase64 = isImageBase64(imgUrlToCache);
 
 	useEffect(() => {
 		const handleCache = async () => {
@@ -110,6 +131,18 @@ const ImageContainer = ({
 				await handleAutoDownload();
 			}
 		};
+
+		const handleImageBase64 = () => {
+			setLoading(false);
+			setCached(true);
+		};
+
+		if (isBase64) {
+			handleImageBase64();
+		} else {
+			handleCache();
+		}
+
 		handleCache();
 	}, []);
 
@@ -167,7 +200,7 @@ const ImageContainer = ({
 			<View>
 				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				<Button disabled={isReply} onPress={onPress}>
-					<MessageImage imgUri={img} cached={cached} loading={loading} />
+					{isBase64 ? <MessageImageBase64 imgUri={img} /> : <MessageImage imgUri={img} cached={cached} loading={loading} />}
 				</Button>
 			</View>
 		);
@@ -175,7 +208,7 @@ const ImageContainer = ({
 
 	return (
 		<Button disabled={isReply} onPress={onPress}>
-			<MessageImage imgUri={img} cached={cached} loading={loading} />
+			{isBase64 ? <MessageImageBase64 imgUri={img} /> : <MessageImage imgUri={img} cached={cached} loading={loading} />}
 		</Button>
 	);
 };
