@@ -86,6 +86,7 @@ const JitsiMeetView = (): React.ReactElement => {
 				domStorageEnabled
 				allowsInlineMediaPlayback
 				mediaCapturePermissionGrantType={'grant'}
+				mediaPlaybackRequiresUserAction={isIOS}
 			/>
 		</SafeAreaView>
 	);
