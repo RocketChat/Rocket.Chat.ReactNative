@@ -110,7 +110,7 @@ const AttachmentView = (): React.ReactElement => {
 
 	const setHeader = () => {
 		let { title } = attachment;
-		const isImageUrlBase64 = attachment.image_url && isImageBase64(attachment.image_url);
+		const isBase64Image = attachment.image_url && isImageBase64(attachment.image_url);
 		try {
 			if (title) {
 				title = decodeURI(title);
