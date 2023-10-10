@@ -82,7 +82,6 @@ const ImageContainer = ({
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
 	// And we cannot be certain whether the file.title_link actually exists.
 	const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
-	const isBase64Image = isImageBase64(imgUrlToCache);
 
 	useEffect(() => {
 		const handleCache = async () => {
@@ -112,12 +111,9 @@ const ImageContainer = ({
 				await handleAutoDownload();
 			}
 		};
-		const handleImageBase64 = () => {
+		if (isImageBase64(imgUrlToCache)) {
 			setLoading(false);
 			setCached(true);
-		};
-		if (isBase64) {
-			handleImageBase64();
 		} else {
 			handleCache();
 		}
