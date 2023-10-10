@@ -1,4 +1,4 @@
-import { isImageBase64 } from './handleImageBase64';
+import { isImageBase64 } from './isImageBase64';
 
 // We aren't testing the content, only the header
 const base64 =

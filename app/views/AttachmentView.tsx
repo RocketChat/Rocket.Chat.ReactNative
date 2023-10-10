@@ -110,7 +110,7 @@ const AttachmentView = (): React.ReactElement => {
 
 	const setHeader = () => {
 		let { title } = attachment;
-		const isBase64Image = attachment.image_url && isImageBase64(attachment.image_url);
+
 		try {
 			if (title) {
 				title = decodeURI(title);
@@ -130,7 +130,7 @@ const AttachmentView = (): React.ReactElement => {
 				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.previewTintColor} />
 			),
 			headerRight: () =>
-				Allow_Save_Media_to_Gallery && !isBase64Image ? (
+				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url) ? (
 					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.previewTintColor} />
 				) : null,
 			headerBackground: () => (

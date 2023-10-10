@@ -1,7 +1,7 @@
 import { URL } from 'react-native-url-polyfill';
 
 import { LOCAL_DOCUMENT_DIRECTORY } from '../handleMediaDownload';
-import { isImageBase64 } from '../handleImageBase64';
+import { isImageBase64 } from '../isImageBase64';
 
 function setParamInUrl({ url, token, userId }: { url: string; token: string; userId: string }) {
 	const urlObj = new URL(url);
