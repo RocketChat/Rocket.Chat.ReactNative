@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { createImageProgress } from 'react-native-image-progress';
-import * as Progress from 'react-native-progress';
 
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -34,8 +32,6 @@ interface IMessageImage {
 	msg?: string;
 }
 
-const ImageProgress = createImageProgress(FastImage);
-
 const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 	const { colors } = useTheme();
 	return (
@@ -63,21 +59,6 @@ export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: s
 				<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
 			) : null}
 		</>
-	);
-});
-
-const MessageImageBase64 = React.memo(({ imgUri }: { imgUri: string }) => {
-	const { colors } = useTheme();
-	return (
-		<ImageProgress
-			style={[styles.image, { borderColor: colors.borderColor }]}
-			source={{ uri: encodeURI(imgUri) }}
-			resizeMode={FastImage.resizeMode.cover}
-			indicator={Progress.Pie}
-			indicatorProps={{
-				color: colors.actionTintColor
-			}}
-		/>
 	);
 });
 
@@ -196,7 +177,7 @@ const ImageContainer = ({
 			<View>
 				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				<Button disabled={isReply} onPress={onPress}>
-					{isBase64 ? <MessageImageBase64 imgUri={img} /> : <MessageImage imgUri={img} cached={cached} loading={loading} />}
+					<MessageImage imgUri={img} cached={cached} loading={loading} />
 				</Button>
 			</View>
 		);
@@ -204,7 +185,7 @@ const ImageContainer = ({
 
 	return (
 		<Button disabled={isReply} onPress={onPress}>
-			{isBase64 ? <MessageImageBase64 imgUri={img} /> : <MessageImage imgUri={img} cached={cached} loading={loading} />}
+			<MessageImage imgUri={img} cached={cached} loading={loading} />
 		</Button>
 	);
 };
