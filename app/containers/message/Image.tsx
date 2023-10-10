@@ -13,7 +13,7 @@ import BlurComponent from './Components/BlurComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import styles from './styles';
-import { isImageBase64 } from '../../lib/methods/handleImageBase64';
+import { isImageBase64 } from '../../lib/methods';
 
 interface IMessageButton {
 	children: React.ReactElement;
