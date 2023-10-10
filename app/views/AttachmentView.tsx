@@ -130,7 +130,7 @@ const AttachmentView = (): React.ReactElement => {
 				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.previewTintColor} />
 			),
 			headerRight: () =>
-				Allow_Save_Media_to_Gallery && !isImageUrlBase64 ? (
+				Allow_Save_Media_to_Gallery && !isBase64Image ? (
 					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.previewTintColor} />
 				) : null,
 			headerBackground: () => (
