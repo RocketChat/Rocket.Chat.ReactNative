@@ -131,19 +131,15 @@ const ImageContainer = ({
 				await handleAutoDownload();
 			}
 		};
-
 		const handleImageBase64 = () => {
 			setLoading(false);
 			setCached(true);
 		};
-
 		if (isBase64) {
 			handleImageBase64();
 		} else {
 			handleCache();
 		}
-
-		handleCache();
 	}, []);
 
 	if (!img) {
