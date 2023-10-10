@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
 
-import { isImageBase64 } from '../lib/methods/handleImageBase64';
+import { isImageBase64 } from '../lib/methods';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
