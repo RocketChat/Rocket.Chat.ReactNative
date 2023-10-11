@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
-import { useDebounce } from '../../../lib/methods/helpers';
+import { isAndroid, useDebounce } from '../../../lib/methods/helpers';
 import { EmptyRoom, List } from './components';
 import { IListContainerProps, IListContainerRef, IListProps } from './definitions';
 import { useMessages, useScroll } from './hooks';
@@ -14,16 +14,11 @@ const styles = StyleSheet.create({
 				scaleY: -1
 			}
 		})
-	},
-	container: {
-		...Platform.select({
-			android: {
-				flex: 1,
-				scaleY: -1
-			}
-		})
 	}
 });
+
+const Container = ({ children }: { children: React.ReactElement }) =>
+	isAndroid ? <View style={{ flex: 1, scaleY: -1 }}>{children}</View> : <>{children}</>;
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef, loading }, ref) => {
@@ -66,7 +61,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
-				<View style={styles.container}>
+				<Container>
 					<List
 						listRef={listRef}
 						data={messages}
@@ -78,7 +73,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 						jumpToBottom={jumpToBottom}
 						isThread={!!tmid}
 					/>
-				</View>
+				</Container>
 			</>
 		);
 	}
