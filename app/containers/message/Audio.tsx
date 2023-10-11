@@ -41,6 +41,7 @@ interface IMessageAudioProps {
 	scale?: number;
 	author?: IUserMessage;
 	msg?: string;
+	cdnPrefix?: string;
 }
 
 interface IMessageAudioState {
@@ -208,13 +209,13 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	getUrl = () => {
-		const { file } = this.props;
+		const { file, cdnPrefix } = this.props;
 		// @ts-ignore can't use declare to type this
 		const { baseUrl } = this.context;
 
 		let url = file.audio_url;
 		if (url && !url.startsWith('http')) {
-			url = `${baseUrl}${file.audio_url}`;
+			url = `${cdnPrefix || baseUrl}${file.audio_url}`;
 		}
 		return url;
 	};

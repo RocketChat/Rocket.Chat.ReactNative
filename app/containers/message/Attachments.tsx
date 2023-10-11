@@ -14,6 +14,7 @@ import CollapsibleQuote from './Components/CollapsibleQuote';
 import openLink from '../../lib/methods/helpers/openLink';
 import Markdown from '../markdown';
 import { getMessageFromAttachment } from './utils';
+import { useAppSelector } from '../../lib/hooks';
 
 export type TElement = {
 	type: string;
@@ -58,6 +59,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
 		const { theme } = useTheme();
 		const { translateLanguage } = useContext(MessageContext);
+		const cdnPrefix = useAppSelector(state => state.settings.CDN_PREFIX as string);
 
 		if (!attachments || attachments.length === 0) {
 			return null;
@@ -76,6 +78,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						isReply={isReply}
 						author={author}
 						msg={msg}
+						cdnPrefix={cdnPrefix}
 					/>
 				);
 			}
@@ -91,6 +94,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						theme={theme}
 						author={author}
 						msg={msg}
+						cdnPrefix={cdnPrefix}
 					/>
 				);
 			}
@@ -105,6 +109,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						style={style}
 						isReply={isReply}
 						msg={msg}
+						cdnPrefix={cdnPrefix}
 					/>
 				);
 			}
