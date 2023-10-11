@@ -1,12 +1,29 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { RefreshControl } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
-import { useMessages, useRefresh, useScroll } from './hooks';
-import { isIOS, useDebounce } from '../../../lib/methods/helpers';
+import { useDebounce } from '../../../lib/methods/helpers';
 import { EmptyRoom, List } from './components';
 import { IListContainerProps, IListContainerRef, IListProps } from './definitions';
-import { useTheme } from '../../../theme';
+import { useMessages, useScroll } from './hooks';
+
+const styles = StyleSheet.create({
+	inverted: {
+		...Platform.select({
+			android: {
+				scaleY: -1
+			}
+		})
+	},
+	container: {
+		...Platform.select({
+			android: {
+				flex: 1,
+				scaleY: -1
+			}
+		})
+	}
+});
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef, loading }, ref) => {
@@ -17,8 +34,6 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
-		const { colors } = useTheme();
-		const [refreshing, refresh] = useRefresh({ rid, tmid, messagesLength: messages.length });
 		const {
 			jumpToBottom,
 			jumpToMessage,
@@ -44,25 +59,26 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			return null;
 		};
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
+			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
+		);
 
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
-				<List
-					listRef={listRef}
-					data={messages}
-					renderItem={renderItem}
-					onEndReached={onEndReached}
-					ListFooterComponent={renderFooter}
-					onScrollToIndexFailed={handleScrollToIndexFailed}
-					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-					jumpToBottom={jumpToBottom}
-					isThread={!!tmid}
-					refreshControl={
-						isIOS ? <RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={colors.auxiliaryText} /> : undefined
-					}
-				/>
+				<View style={styles.container}>
+					<List
+						listRef={listRef}
+						data={messages}
+						renderItem={renderItem}
+						onEndReached={onEndReached}
+						ListFooterComponent={renderFooter}
+						onScrollToIndexFailed={handleScrollToIndexFailed}
+						viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+						jumpToBottom={jumpToBottom}
+						isThread={!!tmid}
+					/>
+				</View>
 			</>
 		);
 	}
