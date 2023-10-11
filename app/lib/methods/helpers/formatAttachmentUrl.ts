@@ -9,7 +9,13 @@ function setParamInUrl({ url, token, userId }: { url: string; token: string; use
 	return urlObj.toString();
 }
 
-export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: string, token: string, server: string): string => {
+export const formatAttachmentUrl = (
+	attachmentUrl: string | undefined,
+	userId: string,
+	token: string,
+	server: string,
+	cdnPrefix?: string
+): string => {
 	if (LOCAL_DOCUMENT_DIRECTORY && attachmentUrl?.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
 		return attachmentUrl;
 	}
@@ -18,6 +24,9 @@ export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: s
 			return encodeURI(attachmentUrl);
 		}
 		return setParamInUrl({ url: attachmentUrl, token, userId });
+	}
+	if (cdnPrefix) {
+		server = cdnPrefix.trim().replace(/\/+$/, '');
 	}
 	return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
 };
