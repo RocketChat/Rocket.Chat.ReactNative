@@ -1,6 +1,7 @@
 import { URL } from 'react-native-url-polyfill';
 
 import { LOCAL_DOCUMENT_DIRECTORY } from '../handleMediaDownload';
+import { isImageBase64 } from '../isImageBase64';
 
 function setParamInUrl({ url, token, userId }: { url: string; token: string; userId: string }) {
 	const urlObj = new URL(url);
@@ -16,7 +17,10 @@ export const formatAttachmentUrl = (
 	server: string,
 	cdnPrefix?: string
 ): string => {
-	if (LOCAL_DOCUMENT_DIRECTORY && attachmentUrl?.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
+	if (
+		(attachmentUrl && isImageBase64(attachmentUrl)) ||
+		(LOCAL_DOCUMENT_DIRECTORY && attachmentUrl?.startsWith(LOCAL_DOCUMENT_DIRECTORY))
+	) {
 		return attachmentUrl;
 	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {
