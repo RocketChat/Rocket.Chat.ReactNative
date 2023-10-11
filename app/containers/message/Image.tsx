@@ -13,6 +13,7 @@ import BlurComponent from './Components/BlurComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import styles from './styles';
+import { isImageBase64 } from '../../lib/methods';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -110,7 +111,12 @@ const ImageContainer = ({
 				await handleAutoDownload();
 			}
 		};
-		handleCache();
+		if (isImageBase64(imgUrlToCache)) {
+			setLoading(false);
+			setCached(true);
+		} else {
+			handleCache();
+		}
 	}, []);
 
 	if (!img) {

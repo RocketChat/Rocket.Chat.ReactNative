@@ -199,8 +199,7 @@ export function downloadMediaFile({
 		try {
 			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 			if (!path) {
-				reject();
-				return;
+				return reject();
 			}
 			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
@@ -208,9 +207,9 @@ export function downloadMediaFile({
 			if (result?.uri) {
 				return resolve(result.uri);
 			}
-			reject();
+			return reject();
 		} catch {
-			reject();
+			return reject();
 		} finally {
 			delete downloadQueue[downloadKey];
 		}
