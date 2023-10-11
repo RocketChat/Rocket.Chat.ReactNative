@@ -14,11 +14,11 @@ export const SupportedVersionsExpired = () => {
 	const { name } = useAppSelector(state => state.server);
 
 	return (
-		<View style={[styles.container, { paddingTop: 120 }]}>
+		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.focusedBackground }]}>
 			<View style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
-			<Text style={[styles.title, { color: colors.bodyText }]}>
+			<Text style={[styles.title, { color: colors.titleText }]}>
 				{I18n.t('Supported_versions_expired_title', { workspace_name: name })}
 			</Text>
 			<Text style={[styles.description, { color: colors.bodyText }]}>{I18n.t('Supported_versions_expired_description')}</Text>

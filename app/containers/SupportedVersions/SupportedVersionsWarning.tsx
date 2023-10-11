@@ -31,12 +31,12 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 	}
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { backgroundColor: colors.focusedBackground }]}>
 			<View style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
 			{message.title ? (
-				<Text testID='sv-warn-title' style={[styles.title, { color: colors.bodyText }]}>
+				<Text testID='sv-warn-title' style={[styles.title, { color: colors.titleText }]}>
 					{message.title}
 				</Text>
 			) : null}
