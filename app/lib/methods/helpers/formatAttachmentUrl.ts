@@ -2,6 +2,7 @@ import { URL } from 'react-native-url-polyfill';
 
 import { LOCAL_DOCUMENT_DIRECTORY } from '../handleMediaDownload';
 import { isImageBase64 } from '../isImageBase64';
+import { store } from '../../store/auxStore';
 
 function setParamInUrl({ url, token, userId }: { url: string; token: string; userId: string }) {
 	const urlObj = new URL(url);
@@ -10,13 +11,7 @@ function setParamInUrl({ url, token, userId }: { url: string; token: string; use
 	return urlObj.toString();
 }
 
-export const formatAttachmentUrl = (
-	attachmentUrl: string | undefined,
-	userId: string,
-	token: string,
-	server: string,
-	cdnPrefix?: string
-): string => {
+export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: string, token: string, server: string): string => {
 	if (
 		(attachmentUrl && isImageBase64(attachmentUrl)) ||
 		(LOCAL_DOCUMENT_DIRECTORY && attachmentUrl?.startsWith(LOCAL_DOCUMENT_DIRECTORY))
@@ -29,6 +24,7 @@ export const formatAttachmentUrl = (
 		}
 		return setParamInUrl({ url: attachmentUrl, token, userId });
 	}
+	const cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
 	if (cdnPrefix) {
 		server = cdnPrefix.trim().replace(/\/+$/, '');
 	}

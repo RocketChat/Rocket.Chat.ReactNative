@@ -57,7 +57,6 @@ interface IMessageVideo {
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
 	msg?: string;
-	cdnPrefix?: string;
 }
 
 const CancelIndicator = () => {
@@ -83,21 +82,13 @@ const Thumbnail = ({ loading, thumbnailUrl, cached }: { loading: boolean; thumbn
 	</>
 );
 
-const Video = ({
-	file,
-	showAttachment,
-	getCustomEmoji,
-	style,
-	isReply,
-	msg,
-	cdnPrefix
-}: IMessageVideo): React.ReactElement | null => {
+const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IMessageVideo): React.ReactElement | null => {
 	const [videoCached, setVideoCached] = useState(file);
 	const [loading, setLoading] = useState(true);
 	const [cached, setCached] = useState(false);
 	const { baseUrl, user } = useContext(MessageContext);
 	const { theme } = useTheme();
-	const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl, cdnPrefix);
+	const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
 	useEffect(() => {
 		const handleVideoSearchAndDownload = async () => {

@@ -30,7 +30,6 @@ interface IMessageImage {
 	getCustomEmoji?: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
-	cdnPrefix?: string;
 }
 
 const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
@@ -71,15 +70,14 @@ const ImageContainer = ({
 	style,
 	isReply,
 	author,
-	msg,
-	cdnPrefix
+	msg
 }: IMessageImage): React.ReactElement | null => {
 	const [imageCached, setImageCached] = useState(file);
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const { theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
-	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl, cdnPrefix);
+	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
 	// And we cannot be certain whether the file.title_link actually exists.

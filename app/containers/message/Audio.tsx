@@ -23,6 +23,7 @@ import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaD
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { store } from '../../lib/store/auxStore';
 
 interface IButton {
 	loading: boolean;
@@ -41,7 +42,6 @@ interface IMessageAudioProps {
 	scale?: number;
 	author?: IUserMessage;
 	msg?: string;
-	cdnPrefix?: string;
 }
 
 interface IMessageAudioState {
@@ -209,10 +209,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	getUrl = () => {
-		const { file, cdnPrefix } = this.props;
+		const { file } = this.props;
 		// @ts-ignore can't use declare to type this
 		const { baseUrl } = this.context;
-
+		const cdnPrefix = store.getState().settings.CDN_PREFIX as string;
 		let url = file.audio_url;
 		if (url && !url.startsWith('http')) {
 			url = `${cdnPrefix || baseUrl}${file.audio_url}`;
