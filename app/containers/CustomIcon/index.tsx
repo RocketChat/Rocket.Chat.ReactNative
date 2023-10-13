@@ -16,8 +16,8 @@ export interface ICustomIcon extends TextProps {
 	color: string;
 }
 
-const CustomIcon = ({ name, size, color, ...props }: ICustomIcon) => (
+const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon) => (
 	// @ts-ignore TODO remove this after update @types/react-native to 0.65.0
-	<IconSet name={name} size={size} color={color} {...props} />
+	<IconSet name={name} size={size} color={color} style={[{ lineHeight: size }, style]} {...props} />
 );
 export { CustomIcon };

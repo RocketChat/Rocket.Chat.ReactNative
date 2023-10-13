@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, NativeModules, Text, View, BackHandler } from 'react-native';
+import { Alert, NativeModules, Text, View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker, { Image, ImageOrVideo, Options } from 'react-native-image-crop-picker';
@@ -21,8 +21,6 @@ import { themes, emojis } from '../../lib/constants';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { canUploadFile } from '../../lib/methods/helpers/media';
-import EventEmiter from '../../lib/methods/helpers/events';
-import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
 import getMentionRegexp from './getMentionRegexp';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
@@ -142,8 +140,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	private selection: { start: number; end: number };
 
-	private focused: boolean;
-
 	private imagePickerConfig: Options;
 
 	private libraryPickerConfig: Options;
@@ -195,7 +191,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
-		this.focused = false;
 
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -269,10 +264,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (msg) {
 			this.setInput(msg);
 			this.setShowSend(true);
-		}
-
-		if (isTablet) {
-			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
 		if (usedCannedResponse) {
@@ -461,9 +452,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
-		}
-		if (isTablet) {
-			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
@@ -1129,21 +1117,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			commandPreview: [],
 			showCommandPreview: false
 		});
-	};
-
-	handleCommands = ({ event }: { event: any }) => {
-		if (handleCommandTyping(event)) {
-			if (this.focused) {
-				Keyboard.dismiss();
-			} else {
-				this.component.focus();
-			}
-			this.focused = !this.focused;
-		} else if (handleCommandSubmit(event)) {
-			this.submit();
-		} else if (handleCommandShowUpload(event)) {
-			this.showMessageBoxActions();
-		}
 	};
 
 	onPressSendToChannel = () => this.setState(({ tshow }) => ({ tshow: !tshow }));
