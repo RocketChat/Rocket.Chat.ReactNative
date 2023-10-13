@@ -617,7 +617,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					toggleFollowThread={this.toggleFollowThread}
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
-					theme={theme}
 				/>
 			)
 		});

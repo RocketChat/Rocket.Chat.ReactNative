@@ -21,8 +21,7 @@ import { getUserSelector } from '../../selectors/login';
 import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
 import HeaderCallButton from './components/HeaderCallButton';
-import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { TColors, TSupportedThemes, withTheme } from '../../theme';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -45,7 +44,8 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	showActionSheet: Function;
 	departmentId?: string;
 	rid?: string;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
+	colors?: TColors;
 }
 
 interface IRigthButtonsState {
@@ -55,7 +55,7 @@ interface IRigthButtonsState {
 	tunreadGroup: string[];
 }
 
-const notificationIsEnabled = true;
+const deviceNotificationEnabled = true;
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
 	private threadSubscription?: Subscription;
@@ -304,7 +304,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (!rid || !room) {
 			return;
 		}
-		if (notificationIsEnabled && room) {
+		if (deviceNotificationEnabled && room) {
 			if (isMasterDetail) {
 				navigation.navigate('ModalStackNavigator', {
 					screen: 'NotificationPrefView',
@@ -355,7 +355,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, theme } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -381,7 +381,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return (
 			<HeaderButton.Container>
 				<HeaderButton.Item
-					color={notificationIsEnabled ? themes[theme].headerTintColor : themes[theme].fontDanger}
+					color={deviceNotificationEnabled ? colors!.headerTintColor : colors!.fontDanger}
 					iconName='notification-disabled'
 					onPress={this.goToNotification}
 					testID='room-view-push-troubleshoot'
@@ -408,4 +408,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
-export default connect(mapStateToProps)(RightButtonsContainer);
+export default connect(mapStateToProps)(withTheme(RightButtonsContainer));
