@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
@@ -43,7 +43,15 @@ const NavBottomFAB = ({
 			style={[
 				styles.container,
 				{
-					bottom: 100 + (isThread ? 40 : 0)
+					...Platform.select({
+						ios: {
+							bottom: 100 + (isThread ? 40 : 0)
+						},
+						android: {
+							top: 15,
+							scaleY: -1
+						}
+					})
 				}
 			]}
 			testID='nav-jump-to-bottom'
