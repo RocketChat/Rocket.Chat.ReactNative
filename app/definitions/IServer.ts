@@ -26,6 +26,7 @@ export type TSVVersion = {
 
 export interface ISupportedVersionsData {
 	timestamp: string;
+	enforcementStartDate: string;
 	messages?: TSVMessage[];
 	versions: TSVVersion[];
 	exceptions?: {

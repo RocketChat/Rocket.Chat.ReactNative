@@ -47,6 +47,7 @@ export const checkSupportedVersions = function ({
 		) as TSVVersion;
 		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as TSVMessage[]);
 		const message = getMessage({ messages, expiration: versionInfo?.expiration });
+
 		return {
 			status: getStatus({ expiration: versionInfo?.expiration, message }),
 			message,
@@ -73,6 +74,26 @@ export const checkSupportedVersions = function ({
 	const messages =
 		exception?.messages || supportedVersions.exceptions?.messages || versionInfo?.messages || supportedVersions.messages;
 	const message = getMessage({ messages, expiration: exception?.expiration });
+	const status = getStatus({ expiration: exception?.expiration, message });
+
+	// TODO: enforcement start date is temp only. Remove after a few releases.
+	if (
+		status === 'expired' &&
+		supportedVersions?.enforcementStartDate &&
+		new Date(supportedVersions.enforcementStartDate) > new Date()
+	) {
+		const enforcementMessage = getMessage({
+			messages,
+			expiration: supportedVersions.enforcementStartDate
+		});
+		return {
+			status: 'warn',
+			message: enforcementMessage,
+			i18n: enforcementMessage ? supportedVersions?.i18n : undefined,
+			expiration: supportedVersions.enforcementStartDate
+		};
+	}
+
 	return {
 		status: getStatus({ expiration: exception?.expiration, message }),
 		message,

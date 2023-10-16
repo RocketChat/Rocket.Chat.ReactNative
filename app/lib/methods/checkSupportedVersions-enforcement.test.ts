@@ -9,7 +9,17 @@ const MOCK_I18N = {
 const TODAY = '2023-04-01T00:00:00.000Z';
 const MOCK: ISupportedVersionsData = {
 	timestamp: TODAY,
-	enforcementStartDate: TODAY,
+	enforcementStartDate: '2023-04-02T00:00:00.000Z',
+	messages: [
+		{
+			remainingDays: 15,
+			title: 'message_token',
+			subtitle: 'message_token',
+			description: 'message_token',
+			type: 'info',
+			link: 'Docs page'
+		}
+	],
 	i18n: MOCK_I18N,
 	versions: [
 		{
@@ -56,7 +66,7 @@ const MOCK_BUILTIN_I18N = {
 };
 jest.mock('../../../app-supportedversions.json', () => ({
 	timestamp: '2023-04-01T00:00:00.000Z',
-	enforcementStartDate: TODAY,
+	enforcementStartDate: '2023-04-02T00:00:00.000Z',
 	i18n: {
 		en: {
 			builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
@@ -158,7 +168,16 @@ describe('checkSupportedVersions', () => {
 					serverVersion: '1.4.0'
 				})
 			).toMatchObject({
-				status: 'supported'
+				status: 'warn',
+				i18n: MOCK_I18N,
+				message: {
+					remainingDays: 15,
+					title: 'message_token',
+					subtitle: 'message_token',
+					description: 'message_token',
+					type: 'info',
+					link: 'Docs page'
+				}
 			});
 		});
 
@@ -180,7 +199,16 @@ describe('checkSupportedVersions', () => {
 					serverVersion: '1.2.0'
 				})
 			).toMatchObject({
-				status: 'expired'
+				status: 'warn',
+				i18n: MOCK_I18N,
+				message: {
+					remainingDays: 15,
+					title: 'message_token',
+					subtitle: 'message_token',
+					description: 'message_token',
+					type: 'info',
+					link: 'Docs page'
+				}
 			});
 		});
 
@@ -191,7 +219,16 @@ describe('checkSupportedVersions', () => {
 					serverVersion: '1.1.0'
 				})
 			).toMatchObject({
-				status: 'expired'
+				status: 'warn',
+				i18n: MOCK_I18N,
+				message: {
+					remainingDays: 15,
+					title: 'message_token',
+					subtitle: 'message_token',
+					description: 'message_token',
+					type: 'info',
+					link: 'Docs page'
+				}
 			});
 		});
 
@@ -202,7 +239,16 @@ describe('checkSupportedVersions', () => {
 					serverVersion: '1.0.0'
 				})
 			).toMatchObject({
-				status: 'expired'
+				status: 'warn',
+				i18n: MOCK_I18N,
+				message: {
+					remainingDays: 15,
+					title: 'message_token',
+					subtitle: 'message_token',
+					description: 'message_token',
+					type: 'info',
+					link: 'Docs page'
+				}
 			});
 		});
 	});
@@ -210,7 +256,7 @@ describe('checkSupportedVersions', () => {
 	describe('Messages', () => {
 		const MOCK_MESSAGES: ISupportedVersionsData = {
 			timestamp: TODAY,
-			enforcementStartDate: TODAY,
+			enforcementStartDate: '2023-04-02T00:00:00.000Z',
 			messages: [
 				{
 					remainingDays: 60,
