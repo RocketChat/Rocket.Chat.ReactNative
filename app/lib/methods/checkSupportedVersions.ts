@@ -82,7 +82,7 @@ export const checkSupportedVersions = function ({
 	}
 
 	return {
-		status: getStatus({ expiration: exception?.expiration, message }),
+		status,
 		message,
 		i18n: message ? sv?.i18n : undefined,
 		expiration: exception?.expiration
