@@ -1000,5 +1000,5 @@ export const notifyUser = (type: string, params: Record<string, any>): Promise<b
 
 export const getUsersRoles = (): Promise<boolean> => sdk.methodCall('getUserRoles');
 
-export const getSupportedVersionsCloud = (uniqueId?: string) =>
-	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?workspaceId=${uniqueId}&source=mobile`);
+export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
+	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);

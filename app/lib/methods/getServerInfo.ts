@@ -98,6 +98,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 
 export const getCloudInfo = async (): Promise<TCloudInfo | null> => {
 	const uniqueId = store.getState().settings.uniqueID as string;
-	const response = await getSupportedVersionsCloud(uniqueId);
+	const domain = store.getState().server.server;
+	const response = await getSupportedVersionsCloud(uniqueId, domain);
 	return response.json() as unknown as TCloudInfo;
 };
