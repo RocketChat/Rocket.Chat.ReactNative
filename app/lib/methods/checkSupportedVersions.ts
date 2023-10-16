@@ -1,7 +1,7 @@
 import moment from 'moment';
 import coerce from 'semver/functions/coerce';
 
-import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus, TSVVersion } from '../../definitions';
+import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
 export const getMessage = ({
@@ -40,64 +40,51 @@ export const checkSupportedVersions = function ({
 	i18n?: TSVDictionary;
 	expiration?: string;
 } {
-	// Built-in suported versions
+	let sv: ISupportedVersionsData;
 	if (!supportedVersions || supportedVersions.timestamp < builtInSupportedVersions.timestamp) {
-		const versionInfo = builtInSupportedVersions.versions.find(
-			({ version }) => coerce(version)?.version === serverVersion
-		) as TSVVersion;
-		const messages = versionInfo?.messages || (builtInSupportedVersions?.messages as TSVMessage[]);
-		const message = getMessage({ messages, expiration: versionInfo?.expiration });
-
-		return {
-			status: getStatus({ expiration: versionInfo?.expiration, message }),
-			message,
-			i18n: message ? builtInSupportedVersions?.i18n : undefined,
-			expiration: versionInfo?.expiration
-		};
+		// Built-in supported versions
+		sv = builtInSupportedVersions as ISupportedVersionsData;
+	} else {
+		// Backend/Cloud
+		sv = supportedVersions;
 	}
 
-	// Backend/Cloud
-	const versionInfo = supportedVersions.versions.find(({ version }) => coerce(version)?.version === serverVersion);
+	const versionInfo = sv.versions.find(({ version }) => coerce(version)?.version === serverVersion);
 	if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
-		const messages = versionInfo?.messages || supportedVersions?.messages;
+		const messages = versionInfo?.messages || sv?.messages;
 		const message = getMessage({ messages, expiration: versionInfo.expiration });
 		return {
 			status: getStatus({ expiration: versionInfo?.expiration, message }),
 			message,
-			i18n: message ? supportedVersions?.i18n : undefined,
+			i18n: message ? sv?.i18n : undefined,
 			expiration: versionInfo?.expiration
 		};
 	}
 
 	// Exceptions
-	const exception = supportedVersions.exceptions?.versions.find(({ version }) => coerce(version)?.version === serverVersion);
-	const messages =
-		exception?.messages || supportedVersions.exceptions?.messages || versionInfo?.messages || supportedVersions.messages;
+	const exception = sv.exceptions?.versions.find(({ version }) => coerce(version)?.version === serverVersion);
+	const messages = exception?.messages || sv.exceptions?.messages || versionInfo?.messages || sv.messages;
 	const message = getMessage({ messages, expiration: exception?.expiration });
 	const status = getStatus({ expiration: exception?.expiration, message });
 
 	// TODO: enforcement start date is temp only. Remove after a few releases.
-	if (
-		status === 'expired' &&
-		supportedVersions?.enforcementStartDate &&
-		new Date(supportedVersions.enforcementStartDate) > new Date()
-	) {
+	if (status === 'expired' && sv?.enforcementStartDate && new Date(sv.enforcementStartDate) > new Date()) {
 		const enforcementMessage = getMessage({
 			messages,
-			expiration: supportedVersions.enforcementStartDate
+			expiration: sv.enforcementStartDate
 		});
 		return {
 			status: 'warn',
 			message: enforcementMessage,
-			i18n: enforcementMessage ? supportedVersions?.i18n : undefined,
-			expiration: supportedVersions.enforcementStartDate
+			i18n: enforcementMessage ? sv?.i18n : undefined,
+			expiration: sv.enforcementStartDate
 		};
 	}
 
 	return {
 		status: getStatus({ expiration: exception?.expiration, message }),
 		message,
-		i18n: message ? supportedVersions?.i18n : undefined,
+		i18n: message ? sv?.i18n : undefined,
 		expiration: exception?.expiration
 	};
 };

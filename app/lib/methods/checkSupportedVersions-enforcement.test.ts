@@ -72,6 +72,16 @@ jest.mock('../../../app-supportedversions.json', () => ({
 			builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
 		}
 	},
+	messages: [
+		{
+			remainingDays: 15,
+			title: 'builtin_i18n',
+			subtitle: 'builtin_i18n',
+			description: 'builtin_i18n',
+			type: 'info',
+			link: 'Docs page'
+		}
+	],
 	versions: [
 		{
 			version: '1.5.0',
@@ -116,7 +126,20 @@ describe('checkSupportedVersions', () => {
 				status: 'supported'
 			});
 			expect(checkSupportedVersions({ supportedVersions: undefined, serverVersion: '1.1.0' })).toMatchObject({
-				status: 'expired'
+				status: 'warn',
+				i18n: {
+					en: {
+						builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
+					}
+				},
+				message: {
+					remainingDays: 15,
+					title: 'builtin_i18n',
+					subtitle: 'builtin_i18n',
+					description: 'builtin_i18n',
+					type: 'info',
+					link: 'Docs page'
+				}
 			});
 		});
 
@@ -127,7 +150,20 @@ describe('checkSupportedVersions', () => {
 					serverVersion: '1.2.0'
 				})
 			).toMatchObject({
-				status: 'expired'
+				status: 'warn',
+				i18n: {
+					en: {
+						builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
+					}
+				},
+				message: {
+					remainingDays: 15,
+					title: 'builtin_i18n',
+					subtitle: 'builtin_i18n',
+					description: 'builtin_i18n',
+					type: 'info',
+					link: 'Docs page'
+				}
 			});
 		});
 

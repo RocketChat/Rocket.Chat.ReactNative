@@ -10,6 +10,16 @@ const TODAY = '2023-04-01T00:00:00.000Z';
 const MOCK: ISupportedVersionsData = {
 	timestamp: TODAY,
 	enforcementStartDate: TODAY,
+	messages: [
+		{
+			remainingDays: 15,
+			title: 'message_token',
+			subtitle: 'message_token',
+			description: 'message_token',
+			type: 'info',
+			link: 'Docs page'
+		}
+	],
 	i18n: MOCK_I18N,
 	versions: [
 		{
@@ -57,6 +67,16 @@ const MOCK_BUILTIN_I18N = {
 jest.mock('../../../app-supportedversions.json', () => ({
 	timestamp: '2023-04-01T00:00:00.000Z',
 	enforcementStartDate: TODAY,
+	messages: [
+		{
+			remainingDays: 15,
+			title: 'builtin_i18n',
+			subtitle: 'builtin_i18n',
+			description: 'builtin_i18n',
+			type: 'info',
+			link: 'Docs page'
+		}
+	],
 	i18n: {
 		en: {
 			builtin_i18n: 'Your server is about to be deprecated. Please update to the latest version.'
@@ -155,10 +175,30 @@ describe('checkSupportedVersions', () => {
 			expect(
 				checkSupportedVersions({
 					supportedVersions: MOCK,
-					serverVersion: '1.4.0'
+					serverVersion: '1.5.0'
 				})
 			).toMatchObject({
 				status: 'supported'
+			});
+		});
+
+		test('warning version', () => {
+			expect(
+				checkSupportedVersions({
+					supportedVersions: MOCK,
+					serverVersion: '1.4.0'
+				})
+			).toMatchObject({
+				status: 'warn',
+				message: {
+					remainingDays: 15,
+					title: 'message_token',
+					subtitle: 'message_token',
+					description: 'message_token',
+					type: 'info',
+					link: 'Docs page'
+				},
+				i18n: MOCK_I18N
 			});
 		});
 
