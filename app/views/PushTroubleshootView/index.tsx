@@ -10,6 +10,7 @@ import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import CustomListSection from './components/CustomListSection';
 import ListPercentage from './components/ListPercentage';
+import { isIOS, showErrorAlert } from '../../lib/methods/helpers';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
@@ -35,11 +36,21 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	};
 
 	const alertDeviceNotificationSettings = () => {
-		Alert.alert(I18n.t('Device_notifications_alert_title'), I18n.t('Device_notifications_alert_description'));
+		showErrorAlert(
+			I18n.t('Device_notifications_alert_description'),
+			I18n.t('Device_notifications_alert_title'),
+			goToNotificationSettings
+		);
 	};
 
 	const alertWorkspaceConsumption = () => {
 		Alert.alert(I18n.t('Push_consumption_alert_title'), I18n.t('Push_consumption_alert_description'));
+	};
+
+	const goToNotificationSettings = () => {
+		if (isIOS) {
+			Linking.openURL('app-settings:');
+		}
 	};
 
 	const handleTestPushNotification = () => {
