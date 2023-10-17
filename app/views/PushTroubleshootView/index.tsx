@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, NativeModules } from 'react-native';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -50,6 +50,8 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	const goToNotificationSettings = () => {
 		if (isIOS) {
 			Linking.openURL('app-settings:');
+		} else {
+			NativeModules.NotificationSettings.open();
 		}
 	};
 
