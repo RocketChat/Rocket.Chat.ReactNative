@@ -6,6 +6,7 @@ import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
+import { connect } from 'react-redux';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -17,13 +18,12 @@ import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IUserMessage } from '../../definitions';
+import { IApplicationState, IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { PAUSE_AUDIO } from './constants';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import { store } from '../../lib/store/auxStore';
 
 interface IButton {
 	loading: boolean;
@@ -42,6 +42,7 @@ interface IMessageAudioProps {
 	scale?: number;
 	author?: IUserMessage;
 	msg?: string;
+	cdnPrefix?: string;
 }
 
 interface IMessageAudioState {
@@ -209,10 +210,9 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	getUrl = () => {
-		const { file } = this.props;
+		const { file, cdnPrefix } = this.props;
 		// @ts-ignore can't use declare to type this
 		const { baseUrl } = this.context;
-		const cdnPrefix = store.getState().settings.CDN_PREFIX as string;
 		let url = file.audio_url;
 		if (url && !url.startsWith('http')) {
 			url = `${cdnPrefix || baseUrl}${file.audio_url}`;
@@ -394,4 +394,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 }
 
-export default withDimensions(MessageAudio);
+const mapStateToProps = (state: IApplicationState) => ({
+	cdnPrefix: state.settings.CDN_PREFIX as string
+});
+
+export default connect(mapStateToProps)(withDimensions(MessageAudio));
