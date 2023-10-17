@@ -749,5 +749,7 @@
   "Jitsi_authentication_before_making_calls_ask_admin": "If you believe there are problems with Jitsi and its authentication, ask a workspace administrator for help.",
   "Continue": "Continue",
   "Message_has_been_shared": "Message has been shared",
-  "No_channels_in_team": "No Channels on this team"
+  "No_channels_in_team": "No Channels on this team",
+  "Room_not_found": "Room not found",
+  "The_room_does_not_exist": "The room does not exist or you may not have access permission"
 }

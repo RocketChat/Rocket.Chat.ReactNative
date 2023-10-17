@@ -736,5 +736,7 @@
   "decline": "Recusar",
   "accept": "Aceitar",
   "Incoming_call_from": "Chamada recebida de",
-  "Call_started": "Chamada Iniciada"
+  "Call_started": "Chamada Iniciada",
+  "Room_not_found": "Sala não encontrada",
+  "The_room_does_not_exist": "O sala não existe ou você pode não ter permissão de acesso"  
 }
