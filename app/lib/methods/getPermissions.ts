@@ -23,6 +23,7 @@ export const SUPPORTED_PERMISSIONS = [
 	'create-p',
 	'create-d',
 	'start-discussion',
+	'start-discussion-other-user',
 	'create-team',
 	'delete-c',
 	'delete-message',
