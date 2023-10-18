@@ -43,12 +43,12 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				data={options}
 				refreshing={false}
 				keyExtractor={item => item.title}
-				bounces={true}
+				bounces={false}
 				renderItem={renderItem}
-				style={{ backgroundColor: colors.focusedBackground, paddingBottom: bottom }}
+				style={{ backgroundColor: colors.focusedBackground }}
 				keyboardDismissMode='interactive'
 				indicatorStyle='black'
-				contentContainerStyle={styles.content}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={renderFooter}
@@ -57,7 +57,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 		);
 	}
 	return (
-		<BottomSheetView testID='action-sheet' style={[styles.contentContainer, { paddingBottom: bottom }]} onLayout={onLayout}>
+		<BottomSheetView testID='action-sheet' style={styles.contentContainer} onLayout={onLayout}>
 			{children}
 		</BottomSheetView>
 	);
