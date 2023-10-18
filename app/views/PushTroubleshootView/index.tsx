@@ -2,6 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { Alert, Linking } from 'react-native';
 import notifee from '@notifee/react-native';
+import { useDispatch } from 'react-redux';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -12,6 +13,7 @@ import { useTheme } from '../../theme';
 import CustomListSection from './components/CustomListSection';
 import ListPercentage from './components/ListPercentage';
 import { isIOS, showErrorAlert } from '../../lib/methods/helpers';
+import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
@@ -25,6 +27,8 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	const consumptionPercentage = 50;
 
 	const { colors } = useTheme();
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -56,10 +60,9 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		}
 	};
 
-	const handleTestPushNotification = async () => {
+	const handleTestPushNotification = () => {
 		// do nothing
-		const settings = await notifee.getNotificationSettings();
-		console.log('🚀 ~ file: index.tsx:62 ~ handleTestPushNotification ~ settings:', settings);
+		dispatch(requestTroubleshootingNotification());
 	};
 
 	let pushGatewayInfoDescription = 'Push_gateway_not_connected_description';
