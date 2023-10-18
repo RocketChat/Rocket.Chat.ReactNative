@@ -8,7 +8,7 @@ import { useTheme } from '../../theme';
 export const Handle = React.memo(() => {
 	const { theme } = useTheme();
 	return (
-		<View style={[styles.handle]} testID='action-sheet-handle'>
+		<View style={styles.handle} testID='action-sheet-handle'>
 			<View style={[styles.handleIndicator, { backgroundColor: themes[theme].auxiliaryText }]} />
 		</View>
 	);

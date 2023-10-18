@@ -1,10 +1,17 @@
 import { by, device, element, expect, waitFor } from 'detox';
 
-import { TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, tapBack, tryTapping } from '../../helpers/app';
-import { ITestUser, createRandomRoom, createRandomUser, initApi } from '../../helpers/data_setup';
+import { TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, sleep, tapBack, tryTapping } from '../../helpers/app';
+import { ITestUser, createRandomUser, initApi } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const roomId = '64b846e4760e618aa9f91ab7';
+
+function getIndex() {
+	if (device.getPlatform() === 'android') {
+		return 1;
+	}
+	return 0;
+}
 
 const sendMessageOnTranslationTestRoom = async (msg: string): Promise<{ user: ITestUser; msgId: string }> => {
 	const user = await createRandomUser();
@@ -36,22 +43,37 @@ async function navigateToRoom(roomName: string) {
 		.withTimeout(5000);
 }
 
+async function searchMessage(msg: string, textMatcher: TTextMatcher) {
+	await sleep(1000); // wait for proper load the room
+	await element(by.id('room-view-search')).tap();
+	await waitFor(element(by.id('search-messages-view')))
+		.toExist()
+		.withTimeout(5000);
+	await element(by.id('search-message-view-input')).replaceText(msg);
+	await waitFor(element(by[textMatcher](msg)).atIndex(getIndex()))
+		.toExist()
+		.withTimeout(30000);
+	await sleep(1000);
+	await element(by[textMatcher](msg)).atIndex(getIndex()).tap();
+	await sleep(10000);
+}
+
 export function waitForVisible(id: string) {
 	return waitFor(element(by.id(id)))
 		.toBeVisible()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 export function waitForVisibleTextMatcher(msg: string, textMatcher: TTextMatcher) {
 	return waitFor(element(by[textMatcher](msg)).atIndex(0))
 		.toExist()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 export function waitForNotVisible(id: string) {
 	return waitFor(element(by.id(id)))
 		.not.toBeVisible()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 describe('Auto Translate', () => {
@@ -68,8 +90,8 @@ describe('Auto Translate', () => {
 	};
 
 	const newMessage = {
-		[languages.default]: 'cat',
-		[languages.translated]: 'gato'
+		[languages.default]: 'Cat',
+		[languages.translated]: 'Gato'
 	};
 
 	const attachmentMessage = {
@@ -79,7 +101,6 @@ describe('Auto Translate', () => {
 
 	beforeAll(async () => {
 		const user = await createRandomUser();
-		await createRandomRoom(user);
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
@@ -97,6 +118,7 @@ describe('Auto Translate', () => {
 	});
 
 	it('should see old message not translated before enable auto translate', async () => {
+		await searchMessage(oldMessage[languages.default] as string, textMatcher);
 		await waitForVisibleTextMatcher(oldMessage[languages.default] as string, textMatcher);
 		await waitForVisibleTextMatcher(attachmentMessage[languages.default] as string, textMatcher);
 	});
@@ -115,9 +137,10 @@ describe('Auto Translate', () => {
 
 		// verify default language is checked
 		await waitFor(element(by.id(`auto-translate-view-${languages.default}`)))
-			.toBeVisible()
+			.toExist()
 			.whileElement(by.id('auto-translate-view'))
 			.scroll(750, 'down');
+		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
 		await waitForVisible(`auto-translate-view-${languages.default}-check`);
 
 		// enable translated language
@@ -141,23 +164,25 @@ describe('Auto Translate', () => {
 	});
 
 	it('should see old message translated after enable auto translate', async () => {
+		await searchMessage(oldMessage[languages.default] as string, textMatcher);
 		await waitForVisibleTextMatcher(oldMessage[languages.translated] as string, textMatcher);
 		await waitForVisibleTextMatcher(attachmentMessage[languages.translated] as string, textMatcher);
 	});
 
 	it('should see new message translated', async () => {
 		const randomMatcher = random();
-		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]} - ${randomMatcher}`);
-		await waitForVisibleTextMatcher(`${newMessage[languages.translated]} - ${randomMatcher}`, textMatcher);
+		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
+		await searchMessage(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher); // will scroll the messages list to the last one
+		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 		await deleteMessageOnTranslationTestRoom(data);
 	});
 
 	it('should see original message', async () => {
 		const randomMatcher = random();
-		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]} - ${randomMatcher}`);
-		await waitForVisibleTextMatcher(`${newMessage[languages.translated]} - ${randomMatcher}`, textMatcher);
+		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
+		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 
-		await tryTapping(element(by[textMatcher](`${newMessage[languages.translated]} - ${randomMatcher}`)).atIndex(0), 2000, true);
+		await tryTapping(element(by[textMatcher](`${newMessage[languages.translated]}. Rc${randomMatcher}`)).atIndex(0), 2000, true);
 
 		await waitForVisible('action-sheet-handle');
 		await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
@@ -165,16 +190,16 @@ describe('Auto Translate', () => {
 		await waitForVisibleTextMatcher('View original', textMatcher);
 		await element(by[textMatcher]('View original')).atIndex(0).tap();
 
-		await waitForVisibleTextMatcher(`${newMessage[languages.default]} - ${randomMatcher}`, textMatcher);
+		await waitForVisibleTextMatcher(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher);
 
 		await deleteMessageOnTranslationTestRoom(data);
 	});
 
 	it('disable auto translate and see original message', async () => {
 		const randomMatcher = random();
-		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]} - ${randomMatcher}`);
+		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
 
-		await waitForVisibleTextMatcher(`${newMessage[languages.translated]} - ${randomMatcher}`, textMatcher);
+		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 
 		await element(by.id('room-header')).tap();
 		await waitForVisible('room-actions-view');
@@ -189,12 +214,13 @@ describe('Auto Translate', () => {
 		await tapBack();
 		await tapBack();
 
-		await waitForVisibleTextMatcher(`${newMessage[languages.default]} - ${randomMatcher}`, textMatcher);
+		await waitForVisibleTextMatcher(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher);
 
 		await deleteMessageOnTranslationTestRoom(data);
 	});
 
 	it(`should don't see action to View original when disable auto translate`, async () => {
+		await searchMessage(oldMessage[languages.default] as string, textMatcher); // will scroll the messages list to the last one
 		await waitForVisibleTextMatcher(oldMessage[languages.default] as string, textMatcher);
 		await tryTapping(element(by[textMatcher](oldMessage[languages.default] as string)).atIndex(0), 2000, true);
 

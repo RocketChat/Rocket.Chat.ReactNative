@@ -199,10 +199,16 @@ class Encryption {
 
 		// Encode the private key
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId as string);
+
+		// This public key is already encoded using EJSON.stringify in the `persistKeys` method
 		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
+		if (!publicKey) {
+			throw new Error('Public key not found in local storage, password not changed');
+		}
+
 		// Send the new keys to the server
-		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey);
 	};
 
 	// get a encryption room instance

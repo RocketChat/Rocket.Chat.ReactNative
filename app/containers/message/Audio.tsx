@@ -6,6 +6,7 @@ import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Sound } from 'expo-av/build/Audio/Sound';
+import { connect } from 'react-redux';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -17,7 +18,7 @@ import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IUserMessage } from '../../definitions';
+import { IApplicationState, IAttachment, IUserMessage } from '../../definitions';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -41,6 +42,7 @@ interface IMessageAudioProps {
 	scale?: number;
 	author?: IUserMessage;
 	msg?: string;
+	cdnPrefix?: string;
 }
 
 interface IMessageAudioState {
@@ -151,7 +153,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			urlToCache: this.getUrl()
 		});
 		if (cachedAudioResult?.exists) {
-			await this.sound.loadAsync({ uri: cachedAudioResult.uri });
+			await this.sound.loadAsync({ uri: cachedAudioResult.uri }, { androidImplementation: 'MediaPlayer' });
 			this.setState({ loading: false, cached: true });
 			return;
 		}
@@ -208,13 +210,12 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	getUrl = () => {
-		const { file } = this.props;
+		const { file, cdnPrefix } = this.props;
 		// @ts-ignore can't use declare to type this
 		const { baseUrl } = this.context;
-
 		let url = file.audio_url;
 		if (url && !url.startsWith('http')) {
-			url = `${baseUrl}${file.audio_url}`;
+			url = `${cdnPrefix || baseUrl}${file.audio_url}`;
 		}
 		return url;
 	};
@@ -302,7 +303,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					type: 'audio',
 					mimeType: file.audio_type
 				});
-				await this.sound.loadAsync({ uri: audio });
+				await this.sound.loadAsync({ uri: audio }, { androidImplementation: 'MediaPlayer' });
 				this.setState({ loading: false, cached: true });
 			}
 		} catch {
@@ -341,7 +342,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	onValueChange = async (value: number) => {
 		try {
-			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
 		} catch {
 			// Do nothing
@@ -394,4 +394,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 }
 
-export default withDimensions(MessageAudio);
+const mapStateToProps = (state: IApplicationState) => ({
+	cdnPrefix: state.settings.CDN_PREFIX as string
+});
+
+export default connect(mapStateToProps)(withDimensions(MessageAudio));

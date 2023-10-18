@@ -520,10 +520,10 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			return <BackgroundContainer loading />;
 		}
 		if (isSearching && !search.length) {
-			return <BackgroundContainer text={searchText ? I18n.t('No_team_channels_found') : ''} />;
+			return <BackgroundContainer text={searchText ? I18n.t('No_channels_in_team') : ''} />;
 		}
 		if (!isSearching && !data.length) {
-			return <BackgroundContainer text={I18n.t('No_team_channels_found')} />;
+			return <BackgroundContainer text={I18n.t('No_channels_in_team')} />;
 		}
 
 		return (
