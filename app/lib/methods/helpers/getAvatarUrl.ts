@@ -22,7 +22,8 @@ export const getAvatarURL = ({
 	blockUnauthenticatedAccess,
 	serverVersion,
 	avatarExternalProviderUrl,
-	roomAvatarExternalProviderUrl
+	roomAvatarExternalProviderUrl,
+	cdnPrefix
 }: IAvatar): string => {
 	let room;
 	if (type === SubscriptionType.DIRECT) {
@@ -46,6 +47,10 @@ export const getAvatarURL = ({
 	}
 	if (avatarETag) {
 		query += `&etag=${avatarETag}`;
+	}
+
+	if (cdnPrefix) {
+		server = cdnPrefix.trim().replace(/\/+$/, '');
 	}
 
 	if (avatar) {
