@@ -21,6 +21,7 @@ import { getUserSelector } from '../../selectors/login';
 import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
 import HeaderCallButton from './components/HeaderCallButton';
+import { TColors, TSupportedThemes, withTheme } from '../../theme';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -43,6 +44,8 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	showActionSheet: Function;
 	departmentId?: string;
 	rid?: string;
+	theme?: TSupportedThemes;
+	colors?: TColors;
 }
 
 interface IRigthButtonsState {
@@ -52,9 +55,12 @@ interface IRigthButtonsState {
 	tunreadGroup: string[];
 }
 
+const deviceNotificationEnabled = true;
+
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
 	private threadSubscription?: Subscription;
 	private subSubscription?: Subscription;
+	private room?: TSubscriptionModel;
 
 	constructor(props: IRightButtonsProps) {
 		super(props);
@@ -80,8 +86,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (rid) {
 			try {
 				const subCollection = db.get('subscriptions');
-				const subRecord = await subCollection.find(rid);
-				this.observeSubscription(subRecord);
+				this.room = await subCollection.find(rid);
+				this.observeSubscription(this.room);
 			} catch (e) {
 				console.log("Can't find subscription to observe.");
 			}
@@ -90,7 +96,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -98,6 +104,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextProps.joined !== joined) {
+			return true;
+		}
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
@@ -288,6 +297,31 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		showActionSheet({ options });
 	};
 
+	goToNotification = () => {
+		const { room } = this;
+		const { rid, navigation, isMasterDetail } = this.props;
+
+		if (!rid || !room) {
+			return;
+		}
+		if (deviceNotificationEnabled && room) {
+			if (isMasterDetail) {
+				navigation.navigate('ModalStackNavigator', {
+					screen: 'NotificationPrefView',
+					params: { rid, room }
+				});
+			} else {
+				navigation.navigate('NotificationPrefView', { rid, room });
+			}
+		} else if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'PushTroubleshootView'
+			});
+		} else {
+			navigation.navigate('PushTroubleshootView');
+		}
+	};
+
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
 		const { rid, t, navigation, isMasterDetail, encrypted } = this.props;
@@ -321,7 +355,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -346,6 +380,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
+				<HeaderButton.Item
+					color={deviceNotificationEnabled ? colors!.headerTintColor : colors!.fontDanger}
+					iconName='notification-disabled'
+					onPress={this.goToNotification}
+					testID='room-view-push-troubleshoot'
+				/>
 				{rid ? <HeaderCallButton rid={rid} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
@@ -368,4 +408,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
-export default connect(mapStateToProps)(RightButtonsContainer);
+export default connect(mapStateToProps)(withTheme(RightButtonsContainer));

@@ -108,6 +108,7 @@ export const colors = {
 		badgeBackgroundLevel3: '#F38C39',
 		statusFontOnDanger: '#9B1325',
 		statusFontOnSuccess: '#148660',
+		fontDanger: '#D40C26',
 		...mentions,
 		...callButtons
 	},
@@ -193,6 +194,7 @@ export const colors = {
 		badgeBackgroundLevel3: '#F38C39',
 		statusFontOnDanger: '#9B1325',
 		statusFontOnSuccess: '#148660',
+		fontDanger: '#D40C26',
 		...mentions,
 		...callButtons
 	},
@@ -278,6 +280,7 @@ export const colors = {
 		badgeBackgroundLevel3: '#F38C39',
 		statusFontOnDanger: '#9B1325',
 		statusFontOnSuccess: '#148660',
+		fontDanger: '#D40C26',
 		...mentions,
 		...callButtons
 	}
