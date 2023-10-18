@@ -102,6 +102,9 @@ export const defaultSettings = {
 	E2E_Enable: {
 		type: 'valueAsBoolean'
 	},
+	E2E_Enabled_Default_PrivateRooms: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
 	},
@@ -242,6 +245,9 @@ export const defaultSettings = {
 	},
 	Omnichannel_call_provider: {
 		type: 'valueAsBoolean'
+	},
+	CDN_PREFIX: {
+		type: 'valueAsString'
 	},
 	...deprecatedSettings
 } as const;
