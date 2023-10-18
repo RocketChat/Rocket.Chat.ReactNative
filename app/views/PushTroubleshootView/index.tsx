@@ -1,6 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { Alert, Linking, NativeModules } from 'react-native';
+import { Alert, Linking } from 'react-native';
+import notifee from '@notifee/react-native';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -51,12 +52,14 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		if (isIOS) {
 			Linking.openURL('app-settings:');
 		} else {
-			NativeModules.NotificationSettings.open();
+			notifee.openNotificationSettings();
 		}
 	};
 
-	const handleTestPushNotification = () => {
+	const handleTestPushNotification = async () => {
 		// do nothing
+		const settings = await notifee.getNotificationSettings();
+		console.log('🚀 ~ file: index.tsx:62 ~ handleTestPushNotification ~ settings:', settings);
 	};
 
 	let pushGatewayInfoDescription = 'Push_gateway_not_connected_description';
