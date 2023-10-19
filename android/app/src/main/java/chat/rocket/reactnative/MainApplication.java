@@ -16,8 +16,6 @@ import com.facebook.react.bridge.JSIModulePackage;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import android.content.Context;
 import android.content.res.Configuration;
-
-import chat.rocket.reactnative.notification.NotificationSettingsPackage;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
 import java.lang.reflect.InvocationTargetException;
@@ -41,8 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new RNCViewPagerPackage());
-      packages.add(new SSLPinningPackage());
-      packages.add(new NotificationSettingsPackage());
+			packages.add(new SSLPinningPackage());
       List<ReactPackage> additionalModules = new AdditionalModules().getAdditionalModules(MainApplication.this);
       packages.addAll(additionalModules);
       return packages;
