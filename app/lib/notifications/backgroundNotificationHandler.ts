@@ -7,57 +7,17 @@ import { BACKGROUND_PUSH_COLOR } from '../constants';
 import { store } from '../store/auxStore';
 import { deepLinkingClickCallPush } from '../../actions/deepLinking';
 
+interface NotificationData {
+	notificationType?: string;
+	status?: number;
+	rid?: string;
+	caller?: {
+		_id?: string;
+		name?: string;
+	};
+}
+
 export const backgroundNotificationHandler = async (): Promise<void> => {
-	// // 1. get info on the device and the Power Manager settings
-	// const powerManagerInfo = await notifee.getPowerManagerInfo();
-	// if (powerManagerInfo.activity) {
-	// 	// 2. ask your users to adjust their settings
-	// 	Alert.alert(
-	// 		'Restrictions Detected',
-	// 		'To ensure notifications are delivered, please adjust your settings to prevent the app from being killed',
-	// 		[
-	// 			// 3. launch intent to navigate the user to the appropriate screen
-	// 			{
-	// 				text: 'OK, open settings',
-	// 				onPress: notifee.openPowerManagerSettings
-	// 			},
-	// 			{
-	// 				text: 'Cancel',
-	// 				onPress: () => {
-	// 					// TODO: handle cancel
-	// 				},
-	// 				style: 'cancel'
-	// 			}
-	// 		],
-	// 		{ cancelable: false }
-	// 	);
-	// }
-
-	// const batteryOptimizationEnabled = await notifee.isBatteryOptimizationEnabled();
-	// if (batteryOptimizationEnabled) {
-	// 	// 2. ask your users to disable the feature
-	// 	Alert.alert(
-	// 		'Restrictions Detected',
-	// 		'To ensure notifications are delivered, please disable battery optimization for the app.',
-	// 		[
-	// 			// 3. launch intent to navigate the user to the appropriate screen
-	// 			{
-	// 				text: 'OK, open settings',
-	// 				onPress: notifee.openBatteryOptimizationSettings
-	// 			},
-	// 			{
-	// 				text: 'Cancel',
-	// 				onPress: () => {
-	// 					// TODO: handle cancel
-	// 				},
-	// 				style: 'cancel'
-	// 			}
-	// 		],
-	// 		{ cancelable: false }
-	// 	);
-	// }
-
-	// videoConf channel
 	await notifee.createChannel({
 		id: 'video-conf-call',
 		name: 'Video Call',
@@ -67,35 +27,35 @@ export const backgroundNotificationHandler = async (): Promise<void> => {
 		sound: 'ringtone'
 	});
 
-	notifee.onBackgroundEvent(
-		event =>
-			new Promise(() => {
-				console.log('event', event);
-				if (event.detail.pressAction?.id === 'accept' || event.detail.pressAction?.id === 'decline') {
-					store.dispatch(deepLinkingClickCallPush(event.detail?.notification?.data));
-					notifee.cancelNotification(
-						getNumbersAndLettersOnly(event.detail?.notification?.data.rid + event.detail?.notification?.data.caller._id)
-					);
-				}
-			})
-	);
+	notifee.onBackgroundEvent(async event => {
+		if (event.detail.pressAction?.id === 'accept' || event.detail.pressAction?.id === 'decline') {
+			const notificationData = event.detail?.notification?.data;
+			if (typeof notificationData?.caller === 'object' && (notificationData.caller as any)._id) {
+				store.dispatch(deepLinkingClickCallPush({ ...notificationData, event: event.detail.pressAction?.id }));
+				await notifee.cancelNotification(
+					getNumbersAndLettersOnly(`${notificationData.rid}${(notificationData.caller as any)._id}`)
+				);
+			}
+		}
+	});
 };
 
-function getNumbersAndLettersOnly(inputString: string) {
-	// Replace all characters that are NOT (A-Z, a-z, or 0-9) with an empty string
+function getNumbersAndLettersOnly(inputString: string): string {
 	return inputString.replace(/[^A-Za-z0-9]/g, '');
 }
 
 const setBackgroundNotificationHandler = (): void => {
-	messaging().setBackgroundMessageHandler(async (n: any) => {
-		const notification = ejson.parse(n.data.ejson);
+	messaging().setBackgroundMessageHandler(async message => {
+		const notification: NotificationData = ejson.parse(message?.data?.ejson as string);
+
 		if (notification?.notificationType === 'videoconf') {
+			const id = getNumbersAndLettersOnly(`${notification?.rid}${notification?.caller?._id}`);
 			if (notification.status === 0) {
 				await notifee.displayNotification({
-					id: getNumbersAndLettersOnly(notification.rid + notification.caller._id),
+					id,
 					title: i18n.t('conference_call'),
-					body: `${i18n.t('Incoming_call_from')} ${notification.caller.name}`,
-					data: notification,
+					body: `${i18n.t('Incoming_call_from')} ${notification?.caller?.name}`,
+					data: notification as { [key: string]: string | number | object },
 					android: {
 						channelId: 'video-conf-call',
 						category: AndroidCategory.CALL,
@@ -126,10 +86,8 @@ const setBackgroundNotificationHandler = (): void => {
 						ongoing: true
 					}
 				});
-			}
-			if (notification.status === 4) {
-				const notification = ejson.parse(n.data.ejson);
-				await notifee.cancelNotification(getNumbersAndLettersOnly(notification.rid + notification.caller._id));
+			} else if (notification.status === 4) {
+				await notifee.cancelNotification(id);
 			}
 		}
 		return null;
