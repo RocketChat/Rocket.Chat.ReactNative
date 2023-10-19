@@ -2,6 +2,7 @@ import { Camera, CameraType } from 'expo-camera';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppSelector } from '..';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';
@@ -19,6 +20,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
 	const [containerWidth, setContainerWidth] = useState(0);
+	const { bottom } = useSafeAreaInsets();
 
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const calling = useAppSelector(state => state.videoConf.calling);
@@ -36,7 +38,10 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 	);
 
 	return (
-		<View style={style.actionSheetContainer} onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
+		<View
+			style={[style.actionSheetContainer, { paddingBottom: bottom }]}
+			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}
+		>
 			{calling ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
 				title={calling && user.direct ? i18n.t('Calling') : i18n.t('Start_a_call')}
