@@ -46,7 +46,6 @@
 		1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
 		1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
 		1E680ED92512990700C9257A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
-		1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		1E76CBC2251529560067298C /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8EF712510F1EE00F352B7 /* Storage.swift */; };
 		1E76CBC325152A460067298C /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
 		1E76CBC725152BFF0067298C /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8262511303900FEF824 /* Payload.swift */; };
@@ -74,7 +73,6 @@
 		1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1EC6ACF622CBA01500A41C61 /* ShareRocketChatRN.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */; };
 		1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED00BB02513E04400A1331F /* ReplyNotification.swift */; };
-		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
 		1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5FBD0250C109E00614FEA /* Encryption.swift */; };
 		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
 		1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -258,7 +256,6 @@
 		1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareRocketChatRN.m; sourceTree = "<group>"; };
 		1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRocketChatRN.entitlements; sourceTree = "<group>"; };
 		1ED00BB02513E04400A1331F /* ReplyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyNotification.swift; sourceTree = "<group>"; };
-		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1EF5FBD0250C109E00614FEA /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		1EFEB5952493B6640072EDC0 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -358,7 +355,6 @@
 		13B07FAE1A68108700A75B9A /* RocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
-				7A006F13229C83B600803143 /* GoogleService-Info.plist */,
 				60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -457,7 +453,6 @@
 		1EC6ACB122CB9FC300A41C61 /* ShareRocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
-				1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */,
 				1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */,
 				1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */,
 				1EC6ACB822CB9FC300A41C61 /* Info.plist */,
