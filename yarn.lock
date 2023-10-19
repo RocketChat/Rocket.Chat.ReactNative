@@ -11288,12 +11288,13 @@ expo-video-thumbnails@6.3.0:
   resolved "https://registry.yarnpkg.com/expo-video-thumbnails/-/expo-video-thumbnails-6.3.0.tgz#07daa798ad175242fef4e62c8f2040b11606a41b"
   integrity sha512-oVy9XlzNxnpXFDz3FiWOrMOBWmYtZrNYnXc3XaVyj8ayRqwDNvW4P95kQeUhB04uwaMDOm4vIxc5SQxDAyxPGg==
 
-expo-web-browser@10.2.1:
-  version "10.2.1"
-  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-10.2.1.tgz#4bd9214f7aefcd1af6ea26ae068a0e3e25a1e0bd"
-  integrity sha512-om34EL7OX5ouBM/hq2PrjHDLKmjVhAy+1H7YqRY6nS8dWsewnLFdLq4d8GPwWQBYb6kHKYVzwFRj+WLTfpAOBQ==
+expo-web-browser@12.5.0:
+  version "12.5.0"
+  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-12.5.0.tgz#69949c50ef0ef8d2889435ed9e595206cfbcf68b"
+  integrity sha512-3uDzP19DqcEicLOB4ZH6pGWzxlCQ8mLHSmWMmfXEBhZjooUkHUrysbzkNvQQa24ijy3uoUybX4jW0xPss594kA==
   dependencies:
     compare-urls "^2.0.0"
+    url "^0.11.0"
 
 expo@^46.0.9:
   version "46.0.9"
