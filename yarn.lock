@@ -11246,10 +11246,10 @@ expo-haptics@11.2.0:
   resolved "https://registry.yarnpkg.com/expo-haptics/-/expo-haptics-11.2.0.tgz#0ffb9f82395e88f9f66ceebb0f3279739311412c"
   integrity sha512-ijuWU2ljLBGjIf7OQCvnBQIu/chezndnWkfi518XxvK0hudA4+fAe98mqHO6hom9GexNRxhQZbXc0hcVnxkaiA==
 
-expo-keep-awake@10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-10.1.1.tgz#03023c130f7e3824b738e3fdd5353b8a2c0c1980"
-  integrity sha512-9zC0sdhQljUeMr2yQ7o4kzEZXVAy82fFOAZE1+TwPL7qR0b0sphe7OJ5T1GX1qLcwuVaJ8YewaPoLSHRk79+Rg==
+expo-keep-awake@12.5.0:
+  version "12.5.0"
+  resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-12.5.0.tgz#39f2728b378d65741008967be70f5171dbd6b6d3"
+  integrity sha512-rSmO0auHuT9YkRdKfYIdJrtXRKO0uaHNxfQx7+DTY6YTFWTrrhnQDD3aRRqvOabfpq9WBNy5u+wdNEHRdrCzDw==
 
 expo-keep-awake@~10.2.0:
   version "10.2.0"
