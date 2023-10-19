@@ -30,7 +30,8 @@ const Avatar = React.memo(
 		borderRadius = 4,
 		type = SubscriptionType.DIRECT,
 		avatarExternalProviderUrl,
-		roomAvatarExternalProviderUrl
+		roomAvatarExternalProviderUrl,
+		cdnPrefix
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
@@ -61,7 +62,8 @@ const Avatar = React.memo(
 					rid,
 					blockUnauthenticatedAccess,
 					avatarExternalProviderUrl,
-					roomAvatarExternalProviderUrl
+					roomAvatarExternalProviderUrl,
+					cdnPrefix
 				});
 			}
 
