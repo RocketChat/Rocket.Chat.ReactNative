@@ -96,4 +96,8 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 	'ACCEPT_CALL',
 	'SET_CALLING'
 ]);
-export const TROUBLESHOOTING_NOTIFICATION = createRequestTypes('TROUBLESHOOTING_NOTIFICATION', ['REQUEST', 'SET']);
+export const TROUBLESHOOTING_NOTIFICATION = createRequestTypes('TROUBLESHOOTING_NOTIFICATION', [
+	'REQUEST',
+	'SET',
+	'SET_IN_ALERT'
+]);

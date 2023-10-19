@@ -5,7 +5,8 @@ import notifee from '@notifee/react-native';
 
 import { ITroubleshootingNotification } from '../reducers/troubleshootingNotification';
 import { TROUBLESHOOTING_NOTIFICATION } from '../actions/actionsTypes';
-import { setTroubleshootingNotification } from '../actions/troubleshootingNotification';
+import { setInAlertTroubleshootingNotification, setTroubleshootingNotification } from '../actions/troubleshootingNotification';
+import { appSelector } from '../lib/hooks';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -21,7 +22,11 @@ function* request() {
 }
 
 function* setNotification({ payload }: { payload: ITroubleshootingNotification }) {
-	console.log('🚀 ~ file: troubleshootingNotification.ts:20 ~ function*setNotification ~ payload:', payload);
+	const troubleshootingNotifcation = yield* appSelector(state => state.troubleshootingNotifcation);
+	const newState = { ...troubleshootingNotifcation, ...payload };
+
+	const inAlert = !newState.deviceNotificationEnabled;
+	yield put(setInAlertTroubleshootingNotification({ inAlert }));
 }
 
 export default function* root(): Generator {

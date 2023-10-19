@@ -5,7 +5,11 @@ import { ITroubleshootingNotification } from '../reducers/troubleshootingNotific
 
 type TSetTroubleshootingNotification = Action & { payload: Partial<ITroubleshootingNotification> };
 
-export type TActionTroubleshootingNotification = Action & TSetTroubleshootingNotification;
+type TSetInAlertTroubleshootingNotification = Action & { payload: Pick<ITroubleshootingNotification, 'inAlert'> };
+
+export type TActionTroubleshootingNotification = Action &
+	TSetTroubleshootingNotification &
+	TSetInAlertTroubleshootingNotification;
 
 export function requestTroubleshootingNotification(): Action {
 	return {
@@ -16,6 +20,15 @@ export function requestTroubleshootingNotification(): Action {
 export function setTroubleshootingNotification(payload: Partial<ITroubleshootingNotification>): TSetTroubleshootingNotification {
 	return {
 		type: TROUBLESHOOTING_NOTIFICATION.SET,
+		payload
+	};
+}
+
+export function setInAlertTroubleshootingNotification(
+	payload: Pick<ITroubleshootingNotification, 'inAlert'>
+): TSetInAlertTroubleshootingNotification {
+	return {
+		type: TROUBLESHOOTING_NOTIFICATION.SET_IN_ALERT,
 		payload
 	};
 }

@@ -26,6 +26,11 @@ export default (state = initialState, action: TActionTroubleshootingNotification
 				...state,
 				...action.payload
 			};
+		case TROUBLESHOOTING_NOTIFICATION.SET_IN_ALERT:
+			return {
+				...state,
+				...action.payload
+			};
 		default:
 			return state;
 	}
