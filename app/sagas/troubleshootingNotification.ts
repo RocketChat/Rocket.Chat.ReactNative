@@ -22,11 +22,11 @@ function* request() {
 }
 
 function* setNotification({ payload }: { payload: ITroubleshootingNotification }) {
-	const troubleshootingNotifcation = yield* appSelector(state => state.troubleshootingNotifcation);
-	const newState = { ...troubleshootingNotifcation, ...payload };
+	const troubleshootingNotification = yield* appSelector(state => state.troubleshootingNotification);
+	const newState = { ...troubleshootingNotification, ...payload };
 
-	const inAlert = !newState.deviceNotificationEnabled;
-	yield put(setInAlertTroubleshootingNotification({ inAlert }));
+	const inAlertNotification = !newState.deviceNotificationEnabled;
+	yield put(setInAlertTroubleshootingNotification({ inAlertNotification }));
 }
 
 export default function* root(): Generator {

@@ -90,6 +90,7 @@ interface IRoomsListViewProps {
 	createPrivateChannelPermission: [];
 	createDiscussionPermission: [];
 	serverVersion: string;
+	inAlertNotification: boolean;
 }
 
 interface IRoomsListViewState {
@@ -986,7 +987,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createPublicChannelPermission: state.permissions['create-c'],
 	createPrivateChannelPermission: state.permissions['create-p'],
 	createDiscussionPermission: state.permissions['start-discussion'],
-	serverVersion: state.server.version
+	serverVersion: state.server.version,
+	inAlertNotification: state.troubleshootingNotification.inAlertNotification
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));

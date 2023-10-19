@@ -14,26 +14,36 @@ import CustomListSection from './components/CustomListSection';
 import ListPercentage from './components/ListPercentage';
 import { isIOS, showErrorAlert } from '../../lib/methods/helpers';
 import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
+import { useAppSelector } from '../../lib/hooks';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
 }
 
 const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {
-	const deviceNotificationEnabled = false;
-	const isCommunityEdition = true;
-	const isPushGatewayConnected = true;
-	const isCustomPushGateway = true;
-	const consumptionPercentage = 50;
-
 	const { colors } = useTheme();
 
 	const dispatch = useDispatch();
+	const { consumptionPercentage, deviceNotificationEnabled, isCommunityEdition, isCustomPushGateway, isPushGatewayConnected } =
+		useAppSelector(state => ({
+			deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
+			isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
+			isPushGatewayConnected: state.troubleshootingNotification.isPushGatewayConnected,
+			isCustomPushGateway: state.troubleshootingNotification.isCustomPushGateway,
+			consumptionPercentage: state.troubleshootingNotification.consumptionPercentage
+		}));
 
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Push_Troubleshooting')
 		});
+
+		const unsubscribeFocus = navigation.addListener('focus', () => {
+			dispatch(requestTroubleshootingNotification());
+		});
+		return () => {
+			unsubscribeFocus();
+		};
 	}, [navigation]);
 
 	const openNotificationDocumentation = async () => {
@@ -62,7 +72,6 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 
 	const handleTestPushNotification = () => {
 		// do nothing
-		dispatch(requestTroubleshootingNotification());
 	};
 
 	let pushGatewayInfoDescription = 'Push_gateway_not_connected_description';

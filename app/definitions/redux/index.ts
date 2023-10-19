@@ -65,7 +65,7 @@ export interface IApplicationState {
 	roles: IRoles;
 	videoConf: IVideoConf;
 	usersRoles: TUsersRoles;
-	troubleshootingNotifcation: ITroubleshootingNotification;
+	troubleshootingNotification: ITroubleshootingNotification;
 }
 
 export type TApplicationActions = TActionActiveUsers &

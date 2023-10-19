@@ -12,7 +12,7 @@ describe('test troubleshootingNotification reducer', () => {
 		const payload: ITroubleshootingNotification = {
 			consumptionPercentage: 50,
 			deviceNotificationEnabled: true,
-			inAlert: false,
+			inAlertNotification: false,
 			isCommunityEdition: true,
 			isCustomPushGateway: true,
 			isPushGatewayConnected: true
@@ -22,12 +22,12 @@ describe('test troubleshootingNotification reducer', () => {
 		expect(state).toEqual(payload);
 	});
 	it('should return correctly the inAlert value after call setInAlert action', () => {
-		const previousInAlertState = mockedStore.getState().troubleshootingNotification.inAlert;
-		const payload: Pick<ITroubleshootingNotification, 'inAlert'> = {
-			inAlert: !previousInAlertState
+		const previousInAlertState = mockedStore.getState().troubleshootingNotification.inAlertNotification;
+		const payload: Pick<ITroubleshootingNotification, 'inAlertNotification'> = {
+			inAlertNotification: !previousInAlertState
 		};
 		mockedStore.dispatch(setInAlertTroubleshootingNotification(payload));
-		const newInAlertState = mockedStore.getState().troubleshootingNotification.inAlert;
-		expect(newInAlertState).toEqual(payload.inAlert);
+		const newInAlertState = mockedStore.getState().troubleshootingNotification.inAlertNotification;
+		expect(newInAlertState).toEqual(payload.inAlertNotification);
 	});
 });

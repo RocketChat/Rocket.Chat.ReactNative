@@ -5,7 +5,7 @@ import { ITroubleshootingNotification } from '../reducers/troubleshootingNotific
 
 type TSetTroubleshootingNotification = Action & { payload: Partial<ITroubleshootingNotification> };
 
-type TSetInAlertTroubleshootingNotification = Action & { payload: Pick<ITroubleshootingNotification, 'inAlert'> };
+type TSetInAlertTroubleshootingNotification = Action & { payload: Pick<ITroubleshootingNotification, 'inAlertNotification'> };
 
 export type TActionTroubleshootingNotification = Action &
 	TSetTroubleshootingNotification &
@@ -25,7 +25,7 @@ export function setTroubleshootingNotification(payload: Partial<ITroubleshooting
 }
 
 export function setInAlertTroubleshootingNotification(
-	payload: Pick<ITroubleshootingNotification, 'inAlert'>
+	payload: Pick<ITroubleshootingNotification, 'inAlertNotification'>
 ): TSetInAlertTroubleshootingNotification {
 	return {
 		type: TROUBLESHOOTING_NOTIFICATION.SET_IN_ALERT,

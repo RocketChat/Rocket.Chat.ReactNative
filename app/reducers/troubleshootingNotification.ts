@@ -7,7 +7,7 @@ export interface ITroubleshootingNotification {
 	isPushGatewayConnected: boolean;
 	isCustomPushGateway: boolean;
 	consumptionPercentage: number;
-	inAlert: boolean;
+	inAlertNotification: boolean;
 }
 
 export const initialState: ITroubleshootingNotification = {
@@ -16,7 +16,7 @@ export const initialState: ITroubleshootingNotification = {
 	isCommunityEdition: false,
 	isPushGatewayConnected: false,
 	isCustomPushGateway: false,
-	inAlert: false
+	inAlertNotification: false
 };
 
 export default (state = initialState, action: TActionTroubleshootingNotification): ITroubleshootingNotification => {
