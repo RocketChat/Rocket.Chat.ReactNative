@@ -57,7 +57,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 
 			// if backend doesn't have supported versions or JWT is invalid, request from cloud
 			if (!supportedVersions) {
-				const cloudInfo = await getCloudInfo();
+				const cloudInfo = await getCloudInfo(server);
 
 				// Makes use of signed JWT to get supported versions
 				const supportedVersionsCloud = verifyJWT(cloudInfo?.signed);
@@ -96,9 +96,14 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 	};
 }
 
-export const getCloudInfo = async (): Promise<TCloudInfo | null> => {
-	const uniqueId = store.getState().settings.uniqueID as string;
-	const domain = store.getState().server.server;
+const getUniqueId = async (server: string): Promise<string> => {
+	const response = await fetch(`${server}/api/v1/settings.public?query={"_id": "uniqueID"}`);
+	const result = await response.json();
+	return result?.settings?.[0]?.value;
+};
+
+export const getCloudInfo = async (domain: string): Promise<TCloudInfo | null> => {
+	const uniqueId = await getUniqueId(domain);
 	const response = await getSupportedVersionsCloud(uniqueId, domain);
 	return response.json() as unknown as TCloudInfo;
 };
