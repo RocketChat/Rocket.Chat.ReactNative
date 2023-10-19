@@ -64,7 +64,7 @@ export const checkSupportedVersions = function ({
 	}
 
 	// Exceptions
-	const exception = sv.exceptions?.versions.find(({ version }) => satisfies(coerce(version)?.version ?? '', serverVersionTilde));
+	const exception = sv.exceptions?.versions?.find(({ version }) => satisfies(coerce(version)?.version ?? '', serverVersionTilde));
 	const messages = exception?.messages || sv.exceptions?.messages || versionInfo?.messages || sv.messages;
 	const message = getMessage({ messages, expiration: exception?.expiration });
 	const status = getStatus({ expiration: exception?.expiration, message });
