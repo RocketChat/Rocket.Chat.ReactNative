@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
@@ -14,13 +14,22 @@ import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+
+type TNavigation = CompositeNavigationProp<
+	StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
+	StackNavigationProp<MasterDetailInsideStackParamList>
+>;
 
 const UserNotificationPreferencesView = () => {
 	const [preferences, setPreferences] = useState({} as INotificationPreferences);
 	const [loading, setLoading] = useState(true);
 
-	const navigation = useNavigation<StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>>();
-	const userId = useAppSelector(state => getUserSelector(state).id);
+	const navigation = useNavigation<TNavigation>();
+	const { userId, isMasterDetail } = useAppSelector(state => ({
+		userId: getUserSelector(state).id,
+		isMasterDetail: state.app.isMasterDetail
+	}));
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -58,6 +67,14 @@ const UserNotificationPreferencesView = () => {
 		}
 	};
 
+	const goPushTroubleshoot = () => {
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
+		} else {
+			navigation.navigate('PushTroubleshootView');
+		}
+	};
+
 	return (
 		<SafeAreaView testID='user-notification-preference-view'>
 			<StatusBar />
@@ -87,6 +104,13 @@ const UserNotificationPreferencesView = () => {
 								title='Alert'
 								testID='user-notification-preference-view-push-notification'
 								value={preferences.pushNotifications}
+							/>
+							<List.Separator />
+							<List.Item
+								title='Troubleshooting'
+								onPress={goPushTroubleshoot}
+								testID='user-notification-preference-view-troubleshooting'
+								showActionIndicator
 							/>
 							<List.Separator />
 							<List.Info info='Push_Notifications_Alert_Info' />
