@@ -7,6 +7,7 @@ export interface IServer {
 	failure: boolean;
 	server: string;
 	version: string | null;
+	name: string | null;
 	loading: boolean;
 	previousServer: string | null;
 	changingServer: boolean;
@@ -18,6 +19,7 @@ export const initialState: IServer = {
 	failure: false,
 	server: '',
 	version: null,
+	name: null,
 	loading: true,
 	previousServer: null,
 	changingServer: false
@@ -53,6 +55,7 @@ export default function server(state = initialState, action: TActionServer): ISe
 				...state,
 				server: action.server,
 				version: action.version,
+				name: action.name,
 				connecting: false,
 				connected: true,
 				loading: false,

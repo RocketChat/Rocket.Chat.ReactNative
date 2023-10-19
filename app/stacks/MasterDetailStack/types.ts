@@ -196,6 +196,9 @@ export type ModalStackParamList = {
 	SecurityPrivacyView: undefined;
 	MediaAutoDownloadView: undefined;
 	E2EEncryptionSecurityView: undefined;
+	SupportedVersionsWarning: {
+		showCloseButton?: boolean;
+	};
 };
 
 export type MasterDetailInsideStackParamList = {
