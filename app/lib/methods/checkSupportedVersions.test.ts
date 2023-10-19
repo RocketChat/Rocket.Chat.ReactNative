@@ -120,6 +120,27 @@ jest.useFakeTimers('modern');
 jest.setSystemTime(new Date(TODAY));
 
 describe('checkSupportedVersions', () => {
+	describe('General', () => {
+		test('ignore the patch and compare as minor', () => {
+			expect(
+				checkSupportedVersions({
+					supportedVersions: MOCK,
+					serverVersion: '1.5.1'
+				})
+			).toMatchObject({
+				status: 'supported'
+			});
+			expect(
+				checkSupportedVersions({
+					supportedVersions: MOCK,
+					serverVersion: '1.2.1'
+				})
+			).toMatchObject({
+				status: 'expired'
+			});
+		});
+	});
+
 	describe('Built-in supported versions', () => {
 		test('no supported versions', () => {
 			expect(checkSupportedVersions({ supportedVersions: undefined, serverVersion: '1.5.0' })).toMatchObject({
