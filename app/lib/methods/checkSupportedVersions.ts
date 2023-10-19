@@ -1,5 +1,6 @@
 import moment from 'moment';
 import coerce from 'semver/functions/coerce';
+import satisfies from 'semver/functions/satisfies';
 
 import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
@@ -40,6 +41,7 @@ export const checkSupportedVersions = function ({
 	i18n?: TSVDictionary;
 	expiration?: string;
 } {
+	const serverVersionTilde = `~${serverVersion.split('.').slice(0, 2).join('.')}`;
 	let sv: ISupportedVersionsData;
 	if (!supportedVersions || supportedVersions.timestamp < builtInSupportedVersions.timestamp) {
 		// Built-in supported versions
@@ -49,7 +51,7 @@ export const checkSupportedVersions = function ({
 		sv = supportedVersions;
 	}
 
-	const versionInfo = sv.versions.find(({ version }) => coerce(version)?.version === serverVersion);
+	const versionInfo = sv.versions.find(({ version }) => satisfies(coerce(version)?.version ?? '', serverVersionTilde));
 	if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
 		const messages = versionInfo?.messages || sv?.messages;
 		const message = getMessage({ messages, expiration: versionInfo.expiration });
@@ -62,7 +64,7 @@ export const checkSupportedVersions = function ({
 	}
 
 	// Exceptions
-	const exception = sv.exceptions?.versions.find(({ version }) => coerce(version)?.version === serverVersion);
+	const exception = sv.exceptions?.versions.find(({ version }) => satisfies(coerce(version)?.version ?? '', serverVersionTilde));
 	const messages = exception?.messages || sv.exceptions?.messages || versionInfo?.messages || sv.messages;
 	const message = getMessage({ messages, expiration: exception?.expiration });
 	const status = getStatus({ expiration: exception?.expiration, message });
