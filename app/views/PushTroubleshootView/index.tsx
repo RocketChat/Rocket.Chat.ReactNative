@@ -24,26 +24,32 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	const { colors } = useTheme();
 
 	const dispatch = useDispatch();
-	const { consumptionPercentage, deviceNotificationEnabled, isCommunityEdition, isCustomPushGateway, isPushGatewayConnected } =
-		useAppSelector(state => ({
-			deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
-			isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
-			isPushGatewayConnected: state.troubleshootingNotification.isPushGatewayConnected,
-			isCustomPushGateway: state.troubleshootingNotification.isCustomPushGateway,
-			consumptionPercentage: state.troubleshootingNotification.consumptionPercentage
-		}));
+	const {
+		consumptionPercentage,
+		deviceNotificationEnabled,
+		isCommunityEdition,
+		isCustomPushGateway,
+		isPushGatewayConnected,
+		foreground
+	} = useAppSelector(state => ({
+		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
+		isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
+		isPushGatewayConnected: state.troubleshootingNotification.isPushGatewayConnected,
+		isCustomPushGateway: state.troubleshootingNotification.isCustomPushGateway,
+		consumptionPercentage: state.troubleshootingNotification.consumptionPercentage,
+		foreground: state.app.foreground
+	}));
+
+	useEffect(() => {
+		if (foreground) {
+			dispatch(requestTroubleshootingNotification());
+		}
+	}, [dispatch, foreground]);
 
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Push_Troubleshooting')
 		});
-
-		const unsubscribeFocus = navigation.addListener('focus', () => {
-			dispatch(requestTroubleshootingNotification());
-		});
-		return () => {
-			unsubscribeFocus();
-		};
 	}, [navigation]);
 
 	const openNotificationDocumentation = async () => {

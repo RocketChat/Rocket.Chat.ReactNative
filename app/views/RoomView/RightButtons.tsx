@@ -46,6 +46,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	rid?: string;
 	theme?: TSupportedThemes;
 	colors?: TColors;
+	inAlertNotification: boolean;
 }
 
 interface IRigthButtonsState {
@@ -54,8 +55,6 @@ interface IRigthButtonsState {
 	tunreadUser: string[];
 	tunreadGroup: string[];
 }
-
-const deviceNotificationEnabled = true;
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
 	private threadSubscription?: Subscription;
@@ -96,7 +95,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions, theme } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme, inAlertNotification } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -110,6 +109,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
+			return true;
+		}
+		if (nextProps.inAlertNotification !== inAlertNotification) {
 			return true;
 		}
 		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
@@ -299,12 +301,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	goToNotification = () => {
 		const { room } = this;
-		const { rid, navigation, isMasterDetail } = this.props;
+		const { rid, navigation, isMasterDetail, inAlertNotification } = this.props;
 
 		if (!rid || !room) {
 			return;
 		}
-		if (deviceNotificationEnabled && room) {
+		if (!inAlertNotification && room) {
 			if (isMasterDetail) {
 				navigation.navigate('ModalStackNavigator', {
 					screen: 'NotificationPrefView',
@@ -355,7 +357,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, inAlertNotification } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -381,7 +383,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return (
 			<HeaderButton.Container>
 				<HeaderButton.Item
-					color={deviceNotificationEnabled ? colors!.headerTintColor : colors!.fontDanger}
+					color={inAlertNotification ? colors!.fontDanger : colors!.headerTintColor}
 					iconName='notification-disabled'
 					onPress={this.goToNotification}
 					testID='room-view-push-troubleshoot'
@@ -405,7 +407,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled as boolean,
 	isMasterDetail: state.app.isMasterDetail,
-	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
+	inAlertNotification: state.troubleshootingNotification.inAlertNotification
 });
 
 export default connect(mapStateToProps)(withTheme(RightButtonsContainer));

@@ -144,7 +144,8 @@ const shouldUpdateProps = [
 	'createDirectMessagePermission',
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
-	'createDiscussionPermission'
+	'createDiscussionPermission',
+	'inAlertNotification'
 ];
 
 const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
@@ -331,7 +332,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDirectMessagePermission,
 			createDiscussionPermission,
 			showAvatar,
-			displayMode
+			displayMode,
+			inAlertNotification
 		} = this.props;
 		const { item } = this.state;
 
@@ -354,7 +356,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
-			notificationPresenceCap !== prevProps.notificationPresenceCap
+			notificationPresenceCap !== prevProps.notificationPresenceCap ||
+			inAlertNotification !== prevProps.inAlertNotification
 		) {
 			this.setHeader();
 		}
@@ -407,7 +410,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap } = this.props;
+		const { navigation, isMasterDetail, notificationPresenceCap, inAlertNotification, theme } = this.props;
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
@@ -447,6 +450,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						iconName='notification-disabled'
 						onPress={this.goPushTroubleshoot}
 						testID='rooms-list-view-push-troubleshoot'
+						color={inAlertNotification ? themes[theme].fontDanger : themes[theme].headerTintColor}
 					/>
 					{canCreateRoom ? (
 						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
