@@ -24,7 +24,8 @@ function* request() {
 function* setNotification({ payload }: { payload: ITroubleshootingNotification }) {
 	const troubleshootingNotification = yield* appSelector(state => state.troubleshootingNotification);
 	const newState = { ...troubleshootingNotification, ...payload };
-
+	// TODO: add properly the conditions to set inAlertNotification bias on each expected settings
+	// For now there is only the deviceNotificationEnabled properly, waiting for the next settings to fix
 	const inAlertNotification = !newState.deviceNotificationEnabled;
 	yield put(setInAlertTroubleshootingNotification({ inAlertNotification }));
 }
