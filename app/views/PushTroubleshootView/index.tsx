@@ -1,6 +1,8 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { Alert, Linking } from 'react-native';
+import notifee from '@notifee/react-native';
+import { useDispatch } from 'react-redux';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -10,19 +12,39 @@ import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import CustomListSection from './components/CustomListSection';
 import ListPercentage from './components/ListPercentage';
+import { isIOS, showErrorAlert } from '../../lib/methods/helpers';
+import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
+import { useAppSelector } from '../../lib/hooks';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
 }
 
 const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {
-	const deviceNotificationEnabled = false;
-	const isCommunityEdition = true;
-	const isPushGatewayConnected = true;
-	const isCustomPushGateway = true;
-	const consumptionPercentage = 50;
-
 	const { colors } = useTheme();
+
+	const dispatch = useDispatch();
+	const {
+		consumptionPercentage,
+		deviceNotificationEnabled,
+		isCommunityEdition,
+		isCustomPushGateway,
+		isPushGatewayConnected,
+		foreground
+	} = useAppSelector(state => ({
+		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
+		isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
+		isPushGatewayConnected: state.troubleshootingNotification.isPushGatewayConnected,
+		isCustomPushGateway: state.troubleshootingNotification.isCustomPushGateway,
+		consumptionPercentage: state.troubleshootingNotification.consumptionPercentage,
+		foreground: state.app.foreground
+	}));
+
+	useEffect(() => {
+		if (foreground) {
+			dispatch(requestTroubleshootingNotification());
+		}
+	}, [dispatch, foreground]);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -35,11 +57,23 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	};
 
 	const alertDeviceNotificationSettings = () => {
-		Alert.alert(I18n.t('Device_notifications_alert_title'), I18n.t('Device_notifications_alert_description'));
+		showErrorAlert(
+			I18n.t('Device_notifications_alert_description'),
+			I18n.t('Device_notifications_alert_title'),
+			goToNotificationSettings
+		);
 	};
 
 	const alertWorkspaceConsumption = () => {
 		Alert.alert(I18n.t('Push_consumption_alert_title'), I18n.t('Push_consumption_alert_description'));
+	};
+
+	const goToNotificationSettings = () => {
+		if (isIOS) {
+			Linking.openURL('app-settings:');
+		} else {
+			notifee.openNotificationSettings();
+		}
 	};
 
 	const handleTestPushNotification = () => {

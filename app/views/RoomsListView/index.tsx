@@ -15,6 +15,7 @@ import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/Roo
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
+import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -90,6 +91,7 @@ interface IRoomsListViewProps {
 	createPrivateChannelPermission: [];
 	createDiscussionPermission: [];
 	serverVersion: string;
+	inAlertNotification: boolean;
 }
 
 interface IRoomsListViewState {
@@ -143,7 +145,8 @@ const shouldUpdateProps = [
 	'createDirectMessagePermission',
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
-	'createDiscussionPermission'
+	'createDiscussionPermission',
+	'inAlertNotification'
 ];
 
 const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
@@ -198,6 +201,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.handleHasPermission();
 		this.mounted = true;
 
+		dispatch(requestTroubleshootingNotification());
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			this.animated = true;
 			// Check if there were changes with sort preference, then call getSubscription to remount the list
@@ -330,7 +334,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDirectMessagePermission,
 			createDiscussionPermission,
 			showAvatar,
-			displayMode
+			displayMode,
+			inAlertNotification
 		} = this.props;
 		const { item } = this.state;
 
@@ -353,7 +358,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
-			notificationPresenceCap !== prevProps.notificationPresenceCap
+			notificationPresenceCap !== prevProps.notificationPresenceCap ||
+			inAlertNotification !== prevProps.inAlertNotification
 		) {
 			this.setHeader();
 		}
@@ -406,7 +412,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap } = this.props;
+		const { navigation, isMasterDetail, notificationPresenceCap, inAlertNotification, theme } = this.props;
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
@@ -446,6 +452,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						iconName='notification-disabled'
 						onPress={this.goPushTroubleshoot}
 						testID='rooms-list-view-push-troubleshoot'
+						color={inAlertNotification ? themes[theme].fontDanger : themes[theme].headerTintColor}
 					/>
 					{canCreateRoom ? (
 						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
@@ -986,7 +993,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createPublicChannelPermission: state.permissions['create-c'],
 	createPrivateChannelPermission: state.permissions['create-p'],
 	createDiscussionPermission: state.permissions['start-discussion'],
-	serverVersion: state.server.version
+	serverVersion: state.server.version,
+	inAlertNotification: state.troubleshootingNotification.inAlertNotification
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
