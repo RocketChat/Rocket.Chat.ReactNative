@@ -1,6 +1,5 @@
 {
 	"name": "RocketChatRN",
 	"share": "ShareRocketChatRN",
-	"displayName": "RocketChatRN",
-	"call": "CallRocketChatRN"
+	"displayName": "RocketChatRN"
 }

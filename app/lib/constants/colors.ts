@@ -22,10 +22,9 @@ const mentions = {
 	mentionOtherColor: '#F3BE08'
 };
 
-const videoConfColors = {
+const callButtons = {
 	cancelCallButton: '#F5455C',
-	acceptCallButton: '#158D65',
-	callBackgroundColor: '#151c2e'
+	acceptCallButton: '#158D65'
 };
 
 export const colors = {
@@ -106,7 +105,7 @@ export const colors = {
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
 		...mentions,
-		...videoConfColors
+		...callButtons
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -185,7 +184,7 @@ export const colors = {
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
 		...mentions,
-		...videoConfColors
+		...callButtons
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -264,7 +263,7 @@ export const colors = {
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329B2',
 		...mentions,
-		...videoConfColors
+		...callButtons
 	}
 };
 
