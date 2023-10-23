@@ -11,6 +11,7 @@ import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
 import audioPlayer from '../../lib/methods/audioPlayer';
+import { AVAILABLE_SPEEDS } from './utils';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -28,7 +29,7 @@ const AudioPlayer = ({
 	onPressCallback = () => {}
 }: IAudioPlayerProps) => {
 	const [paused, setPaused] = useState(true);
-	const [rate, setRate] = useState(1);
+	const [rateIndex, setRateIndex] = useState(0);
 
 	const duration = useSharedValue(0);
 	const currentTime = useSharedValue(0);
@@ -63,7 +64,7 @@ const AudioPlayer = ({
 			if (currentSecond <= durationSeconds) {
 				currentTime.value = currentSecond;
 			}
-			setRate(data.rate);
+			setRateIndex(AVAILABLE_SPEEDS.indexOf(data.rate));
 		}
 	};
 
@@ -142,7 +143,7 @@ const AudioPlayer = ({
 			<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 				<PlayButton disabled={disabled} loading={loading} paused={paused} isReadyToPlay={isReadyToPlay} onPress={onPress} />
 				<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
-				<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} rate={rate} />
+				<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} rateIndex={rateIndex} />
 			</View>
 		</>
 	);
