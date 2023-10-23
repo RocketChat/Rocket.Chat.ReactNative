@@ -38,4 +38,6 @@ export default class Server extends Model {
 	@json('supported_versions', sanitizer) supportedVersions;
 
 	@date('supported_versions_warning_at') supportedVersionsWarningAt;
+
+	@date('supported_versions_updated_at') supportedVersionsUpdatedAt;
 }

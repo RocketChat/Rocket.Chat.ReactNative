@@ -1,6 +1,7 @@
 import RNFetchBlob from 'rn-fetch-blob';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
+import moment from 'moment';
 
 import { getSupportedVersionsCloud } from '../services/restApi';
 import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IApiServerInfo } from '../../definitions';
@@ -8,6 +9,7 @@ import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
+import { getServerById } from '../database/services/Server';
 
 interface IServerInfoFailure {
 	success: false;
@@ -19,6 +21,8 @@ interface IServerInfoSuccess extends IServerInfo {
 }
 
 export type TServerInfoResult = IServerInfoSuccess | IServerInfoFailure;
+
+const SV_CLOUD_UPDATE_INTERVAL = 12; // hours
 
 // Verifies if JWT is valid and returns the payload
 const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
@@ -57,6 +61,18 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 
 			// if backend doesn't have supported versions or JWT is invalid, request from cloud
 			if (!supportedVersions) {
+				// fetches from cloud only every 12h
+				const serverRecord = await getServerById(server);
+				if (
+					serverRecord?.supportedVersionsUpdatedAt &&
+					moment(new Date()).diff(serverRecord?.supportedVersionsUpdatedAt, 'hours') <= SV_CLOUD_UPDATE_INTERVAL
+				) {
+					return {
+						...jsonRes,
+						success: true
+					};
+				}
+
 				const cloudInfo = await getCloudInfo(server);
 
 				// Makes use of signed JWT to get supported versions
