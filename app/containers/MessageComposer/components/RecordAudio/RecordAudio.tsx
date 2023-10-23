@@ -1,6 +1,8 @@
 import { View, Text } from 'react-native';
 import React, { ReactElement, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
+import { getInfoAsync } from 'expo-file-system';
+import { shallowEqual } from 'react-redux';
 
 import { useTheme } from '../../../../theme';
 import { BaseButton } from '../Buttons';
@@ -8,15 +10,26 @@ import { CustomIcon } from '../../../CustomIcon';
 import sharedStyles from '../../../../views/Styles';
 import { ReviewButton } from './ReviewButton';
 import { useMessageComposerApi } from '../../context';
+import { sendFileMessage } from '../../../../lib/methods';
+import { IUpload } from '../../../../definitions';
+import log from '../../../../lib/methods/helpers/log';
+import { useRoomContext } from '../../../../views/RoomView/context';
+import { useAppSelector } from '../../../../lib/hooks';
+import { useCanUploadFile } from '../../hooks';
 
 export const RecordAudio = (): ReactElement => {
 	const { colors } = useTheme();
 	const recordingRef = useRef<Audio.Recording>();
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
-	console.log('🚀 ~ file: RecordAudio.tsx:14 ~ RecordAudio ~ recordingRef:', recordingRef.current);
 	const [permissionResponse, requestPermission] = Audio.usePermissions();
-	console.log('🚀 ~ file: RecordAudio.tsx:16 ~ RecordAudio ~ permissionResponse:', permissionResponse);
 	const { setRecordingAudio } = useMessageComposerApi();
+	const { rid, tmid } = useRoomContext();
+	const server = useAppSelector(state => state.server.server);
+	const user = useAppSelector(state => ({ id: state.login.user.id, token: state.login.user.token }), shallowEqual);
+	const permissionToUpload = useCanUploadFile(rid);
+	console.log('🚀 ~ file: RecordAudio.tsx:28 ~ RecordAudio ~ user:', user);
+	console.log('🚀 ~ file: RecordAudio.tsx:14 ~ RecordAudio ~ recordingRef:', recordingRef.current);
+	console.log('🚀 ~ file: RecordAudio.tsx:16 ~ RecordAudio ~ permissionResponse:', permissionResponse);
 
 	useEffect(() => {
 		const record = async () => {
@@ -75,8 +88,28 @@ export const RecordAudio = (): ReactElement => {
 		}
 	};
 
-	const sendAudio = () => {
-		alert('send audio');
+	const sendAudio = async () => {
+		try {
+			setRecordingAudio(false);
+			const fileURI = recordingRef.current?.getURI();
+			const fileData = await getInfoAsync(fileURI as string);
+			const fileInfo = {
+				name: `${Date.now()}.m4a`,
+				mime: 'audio/aac',
+				type: 'audio/aac',
+				store: 'Uploads',
+				path: fileURI,
+				size: fileData.exists ? fileData.size : null
+			} as IUpload;
+
+			if (fileInfo) {
+				if (permissionToUpload) {
+					await sendFileMessage(rid, fileInfo, tmid, server, user);
+				}
+			}
+		} catch (e) {
+			log(e);
+		}
 	};
 
 	if (status === 'reviewing') {
