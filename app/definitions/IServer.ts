@@ -81,6 +81,7 @@ export interface IServer {
 	E2E_Enable: boolean;
 	supportedVersions?: ISupportedVersionsData;
 	supportedVersionsWarningAt?: Date;
+	supportedVersionsUpdatedAt?: Date;
 }
 
 export type TServerModel = IServer & Model;
