@@ -51,8 +51,8 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 const actionSheetRef: React.Ref<IActionSheetProvider> = createRef();
 
 export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
-	const getContext = () => ({
-		showActionSheet: (options: TActionSheetOptions) => {
+	const getContext = (): IActionSheetProvider => ({
+		showActionSheet: options => {
 			actionSheetRef.current?.showActionSheet(options);
 		},
 		hideActionSheet: () => {
@@ -69,6 +69,10 @@ export const ActionSheetProvider = React.memo(({ children }: { children: React.R
 	);
 });
 
-export const hideActionSheetRef = (): void => {
+export const showActionSheetRef: IActionSheetProvider['showActionSheet'] = options => {
+	actionSheetRef?.current?.showActionSheet(options);
+};
+
+export const hideActionSheetRef: IActionSheetProvider['hideActionSheet'] = () => {
 	actionSheetRef?.current?.hideActionSheet();
 };

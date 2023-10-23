@@ -1,8 +1,22 @@
+import '@testing-library/jest-native/extend-expect';
+// @ts-ignore
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
+jest.mock('react-native-safe-area-context', () => {
+	const inset = { top: 0, right: 0, bottom: 0, left: 0 };
+	return {
+		...jest.requireActual('react-native-safe-area-context'),
+		SafeAreaProvider: jest.fn(({ children }) => children),
+		SafeAreaConsumer: jest.fn(({ children }) => children(inset)),
+		useSafeAreaInsets: jest.fn(() => inset),
+		useSafeAreaFrame: jest.fn(() => ({ x: 0, y: 0, width: 390, height: 844 }))
+	};
+});
+
+// @ts-ignore
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
@@ -27,8 +41,6 @@ jest.mock('react-native-file-viewer', () => ({
 jest.mock('expo-haptics', () => jest.fn(() => null));
 
 jest.mock('./app/lib/database', () => jest.fn(() => null));
-
-const mockedNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),

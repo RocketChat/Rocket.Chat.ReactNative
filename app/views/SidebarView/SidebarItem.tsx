@@ -10,13 +10,14 @@ interface SidebarItemProps {
 	left: JSX.Element;
 	right?: JSX.Element;
 	text: string;
+	textColor?: string;
 	current?: boolean;
 	onPress(): void;
 	testID: string;
 	theme: TSupportedThemes;
 }
 
-const Item = React.memo(({ left, right, text, onPress, testID, current, theme }: SidebarItemProps) => (
+const Item = React.memo(({ left, right, text, onPress, testID, current, theme, textColor }: SidebarItemProps) => (
 	<Touch
 		key={testID}
 		testID={testID}
@@ -25,7 +26,11 @@ const Item = React.memo(({ left, right, text, onPress, testID, current, theme }:
 	>
 		<View style={styles.itemHorizontal}>{left}</View>
 		<View style={styles.itemCenter}>
-			<Text style={[styles.itemText, { color: themes[theme].titleText }]} numberOfLines={1} accessibilityLabel={text}>
+			<Text
+				style={[styles.itemText, { color: textColor || themes[theme].titleText }]}
+				numberOfLines={1}
+				accessibilityLabel={text}
+			>
 				{text}
 			</Text>
 		</View>

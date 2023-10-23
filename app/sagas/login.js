@@ -1,7 +1,9 @@
+import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
+import moment from 'moment';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
@@ -37,11 +39,39 @@ import {
 } from '../lib/methods';
 import { Services } from '../lib/services';
 import { setUsersRoles } from '../actions/usersRoles';
+import { getServerById } from '../lib/database/services/Server';
+import appNavigation from '../lib/navigation/appNavigation';
+import { showActionSheetRef } from '../containers/ActionSheet';
+import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
 const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
 const logoutCall = args => logout(args);
+
+const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
+	const { status: supportedVersionsStatus } = yield select(state => state.supportedVersions);
+	if (supportedVersionsStatus !== 'warn') {
+		return;
+	}
+	const serverRecord = yield getServerById(server);
+	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	if (!serverRecord || moment(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
+		return;
+	}
+
+	const serversDB = database.servers;
+	yield serversDB.write(async () => {
+		await serverRecord.update(r => {
+			r.supportedVersionsWarningAt = new Date();
+		});
+	});
+	if (isMasterDetail) {
+		appNavigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning', params: { showCloseButton: true } });
+	} else {
+		showActionSheetRef({ children: <SupportedVersionsWarning /> });
+	}
+};
 
 const handleLoginRequest = function* handleLoginRequest({
 	credentials,
@@ -209,6 +239,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));
 		}
+		yield showSupportedVersionsWarning(server);
 	} catch (e) {
 		log(e);
 	}

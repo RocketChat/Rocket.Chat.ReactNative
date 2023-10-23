@@ -8,6 +8,7 @@ import { IAttachment, IUserMessage } from '../../definitions';
 import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import AudioPlayer from '../AudioPlayer';
+import { useAppSelector } from '../../lib/hooks';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -16,6 +17,7 @@ interface IMessageAudioProps {
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
+	cdnPrefix?: string;
 }
 
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMessageAudioProps) => {
@@ -25,10 +27,14 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 
 	const { baseUrl, user } = useContext(MessageContext);
 
+	const { cdnPrefix } = useAppSelector(state => ({
+		cdnPrefix: state.settings.CDN_PREFIX as string
+	}));
+
 	const getUrl = () => {
 		let url = file.audio_url;
 		if (url && !url.startsWith('http')) {
-			url = `${baseUrl}${file.audio_url}`;
+			url = `${cdnPrefix || baseUrl}${file.audio_url}`;
 		}
 		return url;
 	};

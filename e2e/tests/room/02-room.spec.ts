@@ -478,7 +478,7 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				// open the action-sheet, then swipe the scroll inside the action-sheet
+				// Fix android flaky test. Close the action sheet, then re-open again
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.id('action-sheet')).swipe('up', 'fast', 0.5);
 				await sleep(300); // wait for animation

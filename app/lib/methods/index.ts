@@ -39,3 +39,6 @@ export * from './subscribeRooms';
 export * from './serializeAsciiUrl';
 export * from './audioPlayer';
 export * from './isRoomFederated';
+export * from './checkSupportedVersions';
+export * from './getServerInfo';
+export * from './isImageBase64';
