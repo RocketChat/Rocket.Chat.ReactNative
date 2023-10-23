@@ -6,7 +6,7 @@ import { useTheme } from '../../../../theme';
 import { CustomIcon } from '../../../CustomIcon';
 import { hitSlop } from '../Buttons';
 
-export const SendButton = ({ onPress }: { onPress: Function }): ReactElement => {
+export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<BorderlessButton

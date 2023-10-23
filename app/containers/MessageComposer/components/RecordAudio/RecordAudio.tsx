@@ -6,12 +6,13 @@ import { useTheme } from '../../../../theme';
 import { BaseButton } from '../Buttons';
 import { CustomIcon } from '../../../CustomIcon';
 import sharedStyles from '../../../../views/Styles';
-import { SendButton } from './SendButton';
+import { ReviewButton } from './ReviewButton';
 import { useMessageComposerApi } from '../../context';
 
 export const RecordAudio = (): ReactElement => {
 	const { colors } = useTheme();
 	const recordingRef = useRef<Audio.Recording>();
+	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
 	console.log('🚀 ~ file: RecordAudio.tsx:14 ~ RecordAudio ~ recordingRef:', recordingRef.current);
 	const [permissionResponse, requestPermission] = Audio.usePermissions();
 	console.log('🚀 ~ file: RecordAudio.tsx:16 ~ RecordAudio ~ permissionResponse:', permissionResponse);
@@ -43,53 +44,75 @@ export const RecordAudio = (): ReactElement => {
 	}, []);
 
 	const cancelRecording = async () => {
-		// try {
-		// 	await recordingRef.current?.stopAndUnloadAsync();
-		// 	// Do something with the URI, like upload it to firebase
-		// } catch (error) {
-		// 	// Do something with the error or handle it
-		// 	console.error(error);
-		// } finally {
-		// 	setRecordingAudio(false);
-		// }
-		await recordingRef.current?.pauseAsync();
-		const uri = recordingRef.current?.getURI();
-		console.log('🚀 ~ file: RecordAudio.tsx:57 ~ cancelRecording ~ uri:', uri);
-
 		try {
-			const sound = new Audio.Sound();
-			console.log('🚀 ~ file: RecordAudio.tsx:61 ~ cancelRecording ~ sound:', sound);
-			await sound.loadAsync({ uri: uri! });
-			await sound.playAsync();
-			// Your sound is playing!
+			await recordingRef.current?.stopAndUnloadAsync();
+			// await recordingRef.current?.pauseAsync();
+			// Do something with the URI, like upload it to firebase
+		} catch (error) {
+			// Do something with the error or handle it
+			console.error(error);
+		} finally {
+			setRecordingAudio(false);
+		}
+	};
 
+	const goReview = async () => {
+		try {
+			await recordingRef.current?.stopAndUnloadAsync();
+			setStatus('reviewing');
+			// const uri = recordingRef.current?.getURI();
+
+			// // TODO: temp only. Remove after new player is implemented
+			// const sound = new Audio.Sound();
+			// await sound.loadAsync({ uri: uri! });
+			// await sound.playAsync();
 			// Don't forget to unload the sound from memory
 			// when you are done using the Sound object
-			await sound.unloadAsync();
+			// await sound.unloadAsync();
 		} catch (error) {
 			// An error occurred!
 			console.error(error);
 		}
 	};
 
-	const stopRecording = async () => {
-		// try {
-		// 	await recordingRef.current?.stopAndUnloadAsync();
-		// 	const uri = recordingRef.current?.getURI();
-		// 	console.log('🚀 ~ file: RecordAudio.tsx:46 ~ stopRecording ~ uri', uri);
-		// 	// Do something with the URI, like upload it to firebase
-		// } catch (error) {
-		// 	// Do something with the error or handle it
-		// 	console.error(error);
-		// } finally {
-		// 	setRecordingAudio(false);
-		// }
-		try {
-			await recordingRef.current?.startAsync();
-		} catch (error) {
-			console.error(error);
-		}
+	const sendAudio = () => {
+		alert('send audio');
 	};
+
+	if (status === 'reviewing') {
+		return (
+			<View
+				style={{
+					borderTopWidth: 1,
+					paddingHorizontal: 16,
+					backgroundColor: colors.surfaceLight,
+					borderTopColor: colors.strokeLight
+				}}
+			>
+				<Text style={{ marginLeft: 12, fontSize: 16, ...sharedStyles.textRegular, color: colors.fontDefault }}>REVIEW</Text>
+				<View style={{ flexDirection: 'row' }}>
+					<BaseButton
+						onPress={() => cancelRecording()}
+						testID='message-composer-delete-audio'
+						accessibilityLabel='tbd'
+						icon='delete'
+					/>
+					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+						<Text style={{ fontSize: 14, ...sharedStyles.textRegular, color: colors.fontSecondaryInfo }}>
+							Recording audio message
+						</Text>
+					</View>
+					<BaseButton
+						onPress={() => sendAudio()}
+						testID='message-composer-send'
+						accessibilityLabel='Send_message'
+						icon='send-filled'
+						color={colors.buttonBackgroundPrimaryDefault}
+					/>
+				</View>
+			</View>
+		);
+	}
 
 	return (
 		<View
@@ -116,7 +139,7 @@ export const RecordAudio = (): ReactElement => {
 						Recording audio message
 					</Text>
 				</View>
-				<SendButton onPress={stopRecording} />
+				<ReviewButton onPress={goReview} />
 			</View>
 		</View>
 	);
