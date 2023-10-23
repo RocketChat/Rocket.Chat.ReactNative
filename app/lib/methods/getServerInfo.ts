@@ -22,6 +22,8 @@ interface IServerInfoSuccess extends IServerInfo {
 
 export type TServerInfoResult = IServerInfoSuccess | IServerInfoFailure;
 
+const SV_CLOUD_UPDATE_INTERVAL = 12; // hours
+
 // Verifies if JWT is valid and returns the payload
 const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 	try {
@@ -63,7 +65,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 				const serverRecord = await getServerById(server);
 				if (
 					serverRecord?.supportedVersionsUpdatedAt &&
-					moment(new Date()).diff(serverRecord?.supportedVersionsUpdatedAt, 'hours') <= 12
+					moment(new Date()).diff(serverRecord?.supportedVersionsUpdatedAt, 'hours') <= SV_CLOUD_UPDATE_INTERVAL
 				) {
 					return {
 						...jsonRes,
