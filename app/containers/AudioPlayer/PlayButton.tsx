@@ -18,7 +18,7 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 type TCustomIconName = 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled';
 
-const PlayButton = React.memo(({ loading, paused, onPress, disabled, isReadyToPlay }: IButton) => {
+const PlayButton = ({ loading, paused, onPress, disabled, isReadyToPlay }: IButton) => {
 	const { colors } = useTheme();
 
 	let customIconName: TCustomIconName = 'arrow-down';
@@ -40,6 +40,6 @@ const PlayButton = React.memo(({ loading, paused, onPress, disabled, isReadyToPl
 			)}
 		</Touchable>
 	);
-});
+};
 
 export default PlayButton;
