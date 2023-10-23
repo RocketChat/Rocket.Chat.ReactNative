@@ -1,31 +1,26 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
-import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
-import RNScreens from 'react-native-screens';
-import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Orientation from 'react-native-orientation-locker';
-import notifee from '@notifee/react-native';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import RNScreens from 'react-native-screens';
+import { Provider } from 'react-redux';
 
-import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
-import { deepLinkingClickCallPush, deepLinkingOpen } from './actions/deepLinking';
 import AppContainer from './AppContainer';
+import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
+import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
+import Loading from './containers/Loading';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
-import Loading from './containers/Loading';
 import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { colors, isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT, themes } from './lib/constants';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
-import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './lib/notifications';
-import store from './lib/store';
-import { initStore } from './lib/store/auxStore';
-import { ThemeContext, TSupportedThemes } from './theme';
-import { debounce, isTablet } from './lib/methods/helpers';
+import { debounce, isAndroid, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import parseQuery from './lib/methods/helpers/parseQuery';
 import {
 	getTheme,
 	initialTheme,
@@ -34,14 +29,19 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
+import { initializePushNotifications, onNotification } from './lib/notifications';
+import { getInitialNotification } from './lib/notifications/videoConf/getInitialNotification';
+import store from './lib/store';
+import { initStore } from './lib/store/auxStore';
+import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
 RNScreens.enableScreens();
 initStore(store);
 
-if (!isFDroidBuild) {
-	require('./lib/notifications/backgroundNotificationHandler');
+if (!isFDroidBuild && isAndroid) {
+	require('./lib/notifications/videoConf/backgroundNotificationHandler');
 }
 
 interface IDimensions {
@@ -140,10 +140,7 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		const initialNotification = await notifee.getInitialNotification();
-		if (initialNotification?.notification?.data?.notificationType === 'videoconf') {
-			store.dispatch(deepLinkingClickCallPush(initialNotification?.notification?.data));
-		}
+		await getInitialNotification();
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();

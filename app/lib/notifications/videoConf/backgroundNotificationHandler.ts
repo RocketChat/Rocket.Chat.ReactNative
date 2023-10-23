@@ -2,22 +2,12 @@ import notifee, { AndroidCategory, AndroidImportance, AndroidVisibility } from '
 import messaging from '@react-native-firebase/messaging';
 import ejson from 'ejson';
 
-import i18n from '../../i18n';
-import { BACKGROUND_PUSH_COLOR } from '../constants';
-import { store } from '../store/auxStore';
-import { deepLinkingClickCallPush } from '../../actions/deepLinking';
+import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
+import i18n from '../../../i18n';
+import { BACKGROUND_PUSH_COLOR } from '../../constants';
+import { store } from '../../store/auxStore';
 
-interface NotificationData {
-	notificationType?: string;
-	status?: number;
-	rid?: string;
-	caller?: {
-		_id?: string;
-		name?: string;
-	};
-}
-
-export const backgroundNotificationHandler = async (): Promise<void> => {
+const backgroundNotificationHandler = async (): Promise<void> => {
 	await notifee.createChannel({
 		id: 'video-conf-call',
 		name: 'Video Call',
@@ -33,15 +23,21 @@ export const backgroundNotificationHandler = async (): Promise<void> => {
 			if (typeof notificationData?.caller === 'object' && (notificationData.caller as any)._id) {
 				store.dispatch(deepLinkingClickCallPush({ ...notificationData, event: event.detail.pressAction?.id }));
 				await notifee.cancelNotification(
-					getNumbersAndLettersOnly(`${notificationData.rid}${(notificationData.caller as any)._id}`)
+					`${notificationData.rid}${(notificationData.caller as any)._id}`.replace(/[^A-Za-z0-9]/g, '')
 				);
 			}
 		}
 	});
 };
 
-function getNumbersAndLettersOnly(inputString: string): string {
-	return inputString.replace(/[^A-Za-z0-9]/g, '');
+interface NotificationData {
+	notificationType?: string;
+	status?: number;
+	rid?: string;
+	caller?: {
+		_id?: string;
+		name?: string;
+	};
 }
 
 const setBackgroundNotificationHandler = (): void => {
@@ -49,7 +45,7 @@ const setBackgroundNotificationHandler = (): void => {
 		const notification: NotificationData = ejson.parse(message?.data?.ejson as string);
 
 		if (notification?.notificationType === 'videoconf') {
-			const id = getNumbersAndLettersOnly(`${notification?.rid}${notification?.caller?._id}`);
+			const id = `${notification?.rid}${notification?.caller?._id}`.replace(/[^A-Za-z0-9]/g, '');
 			if (notification.status === 0) {
 				await notifee.displayNotification({
 					id,
@@ -95,3 +91,4 @@ const setBackgroundNotificationHandler = (): void => {
 };
 
 setBackgroundNotificationHandler();
+backgroundNotificationHandler();
