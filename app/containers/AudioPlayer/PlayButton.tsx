@@ -1,6 +1,6 @@
 import React from 'react';
+import Touchable from 'react-native-platform-touchable';
 
-import Touchable from '../message/Touchable';
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import styles from './styles';

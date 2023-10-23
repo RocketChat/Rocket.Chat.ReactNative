@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text } from 'react-native';
+import Touchable from 'react-native-platform-touchable';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
-import Touchable from '../message/Touchable';
 
 const PlaybackSpeed = ({
 	onChange,
