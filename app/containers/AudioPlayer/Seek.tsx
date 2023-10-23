@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutChangeEvent, View, TextInput } from 'react-native';
+import { LayoutChangeEvent, View, TextInput, TextInputProps } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
 	SharedValue,
@@ -114,11 +114,11 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		if (isTimeChanged.value) {
 			return {
 				text: current.value
-			} as any;
+			} as TextInputProps;
 		}
 		return {
 			text: formatTime(duration.value)
-		} as any;
+		} as TextInputProps;
 	}, [current, isTimeChanged, duration]);
 
 	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
