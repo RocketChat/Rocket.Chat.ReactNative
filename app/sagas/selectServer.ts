@@ -73,6 +73,7 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 				r.version = serverVersion;
 				if (serverInfo.supportedVersions) {
 					r.supportedVersions = serverInfo.supportedVersions;
+					r.supportedVersionsUpdatedAt = new Date();
 				}
 			});
 		});
@@ -83,10 +84,11 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 	await serversDB.write(async () => {
 		newRecord = await serversCollection.create(r => {
 			r._raw = sanitizedRaw({ id: server }, serversCollection.schema);
+			r.version = serverVersion;
 			if (serverInfo.supportedVersions) {
 				r.supportedVersions = serverInfo.supportedVersions;
+				r.supportedVersionsUpdatedAt = new Date();
 			}
-			r.version = serverVersion;
 		});
 	});
 	if (newRecord) {
