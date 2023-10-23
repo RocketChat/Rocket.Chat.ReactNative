@@ -13,6 +13,7 @@ import Animated, {
 
 import styles from './styles';
 import { useTheme } from '../../theme';
+import { AUDIO_BUTTON_HIT_SLOP } from './utils';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
@@ -22,13 +23,6 @@ interface ISeek {
 	loaded: boolean;
 	onChangeTime: (time: number) => Promise<void>;
 }
-
-const BUTTON_HIT_SLOP = {
-	top: 8,
-	right: 8,
-	bottom: 8,
-	left: 8
-};
 
 const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
@@ -141,7 +135,10 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 				<View style={[styles.line, { backgroundColor: colors.strokeLight }]} />
 				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
 				<PanGestureHandler enabled={loaded} onGestureEvent={gestureHandler}>
-					<Animated.View hitSlop={BUTTON_HIT_SLOP} style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]} />
+					<Animated.View
+						hitSlop={AUDIO_BUTTON_HIT_SLOP}
+						style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]}
+					/>
 				</PanGestureHandler>
 			</View>
 		</View>

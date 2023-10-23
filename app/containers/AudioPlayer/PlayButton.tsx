@@ -5,6 +5,7 @@ import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import RCActivityIndicator from '../ActivityIndicator';
+import { AUDIO_BUTTON_HIT_SLOP } from './utils';
 
 interface IButton {
 	loading: boolean;
@@ -13,8 +14,6 @@ interface IButton {
 	onPress: () => void;
 	isReadyToPlay: boolean;
 }
-
-const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 type TCustomIconName = 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled';
 
@@ -30,7 +29,7 @@ const PlayButton = ({ loading, paused, onPress, disabled, isReadyToPlay }: IButt
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
 			disabled={disabled}
 			onPress={onPress}
-			hitSlop={BUTTON_HIT_SLOP}
+			hitSlop={AUDIO_BUTTON_HIT_SLOP}
 			background={Touchable.SelectableBackgroundBorderless()}
 		>
 			{loading ? (
