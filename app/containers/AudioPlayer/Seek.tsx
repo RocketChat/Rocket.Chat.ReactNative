@@ -13,7 +13,7 @@ import Animated, {
 
 import styles from './styles';
 import { useTheme } from '../../theme';
-import { AUDIO_BUTTON_HIT_SLOP } from './utils';
+import { AUDIO_BUTTON_HIT_SLOP, THUMB_SEEK_SIZE } from './utils';
 
 const DEFAULT_TIME_LABEL = '00:00';
 
@@ -47,7 +47,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	const onLayout = (event: LayoutChangeEvent) => {
 		const { width } = event.nativeEvent.layout;
-		maxWidth.value = width - 12;
+		maxWidth.value = width - THUMB_SEEK_SIZE;
 	};
 
 	const onGestureEvent = useAnimatedGestureHandler({
