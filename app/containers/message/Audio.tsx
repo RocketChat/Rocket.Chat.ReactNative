@@ -111,7 +111,13 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<AudioPlayer fileUri={fileUri} isReadyToPlay={cached} loading={loading} disabled={isReply} onPressCallback={onPress} />
+			<AudioPlayer
+				fileUri={fileUri}
+				isReadyToPlay={cached}
+				loading={loading}
+				disabled={isReply}
+				onPlayButtonPressCallback={onPress}
+			/>
 		</>
 	);
 };

@@ -30,7 +30,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const { colors } = useTheme();
 
 	const maxWidth = useSharedValue(1);
-	const timeValue = useSharedValue(0);
+	const timePosition = useSharedValue(0);
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
 	const isHandlePan = useSharedValue(false);
@@ -38,12 +38,11 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const isTimeChanged = useSharedValue(false);
 
 	const styleLine = useAnimatedStyle(() => ({
-		width: timeValue.value,
-		zIndex: 2
+		width: timePosition.value
 	}));
 
 	const styleThumb = useAnimatedStyle(() => ({
-		transform: [{ translateX: timeValue.value }, { scale: scale.value }]
+		transform: [{ translateX: timePosition.value }, { scale: scale.value }]
 	}));
 
 	const onLayout = (event: LayoutChangeEvent) => {
@@ -53,17 +52,17 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	const onGestureEvent = useAnimatedGestureHandler({
 		onStart: (_, ctx: any) => {
-			ctx.startX = timeValue.value;
+			ctx.startX = timePosition.value;
 			isHandlePan.value = true;
 		},
 		onActive: (event, ctx: any) => {
 			const moveInX: number = ctx.startX + event.translationX;
 			if (moveInX < 0) {
-				timeValue.value = 0;
+				timePosition.value = 0;
 			} else if (moveInX > maxWidth.value) {
-				timeValue.value = maxWidth.value;
+				timePosition.value = maxWidth.value;
 			} else {
-				timeValue.value = moveInX;
+				timePosition.value = moveInX;
 			}
 			isTimeChanged.value = true;
 			scale.value = 1.3;
@@ -99,18 +98,18 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	useDerivedValue(() => {
 		if (isHandlePan.value) {
-			const timeSelected = (timeValue.value * duration.value) / maxWidth.value || 0;
+			const timeSelected = (timePosition.value * duration.value) / maxWidth.value || 0;
 			currentTime.value = timeSelected;
 			timeLabel.value = formatTime(timeSelected);
 		} else {
 			const timeInProgress = (currentTime.value * maxWidth.value) / duration.value || 0;
-			timeValue.value = timeInProgress;
+			timePosition.value = timeInProgress;
 			timeLabel.value = formatTime(currentTime.value);
 			if (currentTime.value !== 0) {
 				isTimeChanged.value = true;
 			}
 		}
-	}, [timeValue, maxWidth, duration, isHandlePan, currentTime]);
+	}, [timePosition, maxWidth, duration, isHandlePan, currentTime]);
 
 	const getCurrentTime = useAnimatedProps(() => {
 		if (isTimeChanged.value) {
@@ -134,8 +133,9 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 				animatedProps={getCurrentTime}
 			/>
 			<View style={styles.seek} onLayout={onLayout}>
-				<View style={[styles.line, { backgroundColor: colors.strokeLight }]} />
-				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
+				<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
+					<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
+				</View>
 				<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent}>
 					<Animated.View
 						hitSlop={AUDIO_BUTTON_HIT_SLOP}

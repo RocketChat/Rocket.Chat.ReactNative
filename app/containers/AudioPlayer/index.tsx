@@ -18,7 +18,7 @@ interface IAudioPlayerProps {
 	loading: boolean;
 	isReadyToPlay: boolean;
 	disabled?: boolean;
-	onPressCallback?: Function;
+	onPlayButtonPressCallback?: Function;
 }
 
 const AudioPlayer = ({
@@ -26,18 +26,14 @@ const AudioPlayer = ({
 	disabled = false,
 	loading = true,
 	isReadyToPlay = false,
-	onPressCallback = () => {}
+	onPlayButtonPressCallback = () => {}
 }: IAudioPlayerProps) => {
 	const [paused, setPaused] = useState(true);
 	const [rateIndex, setRateIndex] = useState(0);
-
 	const duration = useSharedValue(0);
 	const currentTime = useSharedValue(0);
-
 	const { colors } = useTheme();
-
 	const audioUri = useRef<string>('');
-
 	const navigation = useNavigation();
 
 	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
@@ -100,7 +96,7 @@ const AudioPlayer = ({
 	};
 
 	const onPress = () => {
-		onPressCallback();
+		onPlayButtonPressCallback();
 		if (loading) {
 			return;
 		}
