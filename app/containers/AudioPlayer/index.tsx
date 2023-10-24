@@ -69,14 +69,12 @@ const AudioPlayer = ({
 	};
 
 	const onEnd = (data: AVPlaybackStatus) => {
-		if (data.isLoaded) {
-			if (data.didJustFinish) {
-				try {
-					setPaused(true);
-					currentTime.value = 0;
-				} catch {
-					// do nothing
-				}
+		if (data.isLoaded && data.didJustFinish) {
+			try {
+				setPaused(true);
+				currentTime.value = 0;
+			} catch {
+				// do nothing
 			}
 		}
 	};
