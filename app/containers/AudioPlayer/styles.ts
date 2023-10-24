@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
 	line: {
 		height: 4,
 		borderRadius: 2,
-		zIndex: 1,
-		position: 'absolute',
 		width: '100%'
 	},
 	duration: {
@@ -49,7 +47,7 @@ const styles = StyleSheet.create({
 		height: 12,
 		width: 12,
 		borderRadius: 6,
-		zIndex: 3
+		position: 'absolute'
 	},
 	containerPlaybackSpeed: {
 		width: 36,
