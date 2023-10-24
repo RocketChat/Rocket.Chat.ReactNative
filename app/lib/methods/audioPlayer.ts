@@ -1,7 +1,7 @@
 import { AVPlaybackStatus, Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio/Sound';
 
-const mode = {
+const AUDIO_MODE = {
 	allowsRecordingIOS: false,
 	playsInSilentModeIOS: true,
 	staysActiveInBackground: true,
@@ -57,7 +57,7 @@ class AudioPlayer {
 		if (this.audioPlaying) {
 			await this.pauseAudio(this.audioPlaying);
 		}
-		await Audio.setAudioModeAsync(mode);
+		await Audio.setAudioModeAsync(AUDIO_MODE);
 		await this.audioQueue[uri]?.playAsync();
 		this.audioPlaying = uri;
 	}

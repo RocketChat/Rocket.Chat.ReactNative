@@ -139,13 +139,11 @@ const AudioPlayer = ({
 	}, [navigation]);
 
 	return (
-		<>
-			<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
-				<PlayButton disabled={disabled} loading={loading} paused={paused} isReadyToPlay={isReadyToPlay} onPress={onPress} />
-				<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
-				<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} rateIndex={rateIndex} />
-			</View>
-		</>
+		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
+			<PlayButton disabled={disabled} loading={loading} paused={paused} isReadyToPlay={isReadyToPlay} onPress={onPress} />
+			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
+			<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} rateIndex={rateIndex} />
+		</View>
 	);
 };
 

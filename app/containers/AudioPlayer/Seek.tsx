@@ -15,6 +15,8 @@ import styles from './styles';
 import { useTheme } from '../../theme';
 import { AUDIO_BUTTON_HIT_SLOP } from './utils';
 
+const DEFAULT_TIME_LABEL = '00:00';
+
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface ISeek {
@@ -28,20 +30,20 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const { colors } = useTheme();
 
 	const maxWidth = useSharedValue(1);
-	const x = useSharedValue(0);
-	const current = useSharedValue('00:00');
+	const timeValue = useSharedValue(0);
+	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
 	const isHandlePan = useSharedValue(false);
 	const onEndGestureHandler = useSharedValue(false);
 	const isTimeChanged = useSharedValue(false);
 
 	const styleLine = useAnimatedStyle(() => ({
-		width: x.value,
+		width: timeValue.value,
 		zIndex: 2
 	}));
 
 	const styleThumb = useAnimatedStyle(() => ({
-		transform: [{ translateX: x.value }, { scale: scale.value }]
+		transform: [{ translateX: timeValue.value }, { scale: scale.value }]
 	}));
 
 	const onLayout = (event: LayoutChangeEvent) => {
@@ -49,19 +51,19 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		maxWidth.value = width - 12;
 	};
 
-	const gestureHandler = useAnimatedGestureHandler({
+	const onGestureEvent = useAnimatedGestureHandler({
 		onStart: (_, ctx: any) => {
-			ctx.startX = x.value;
+			ctx.startX = timeValue.value;
 			isHandlePan.value = true;
 		},
 		onActive: (event, ctx: any) => {
 			const moveInX: number = ctx.startX + event.translationX;
 			if (moveInX < 0) {
-				x.value = 0;
+				timeValue.value = 0;
 			} else if (moveInX > maxWidth.value) {
-				x.value = maxWidth.value;
+				timeValue.value = maxWidth.value;
 			} else {
-				x.value = moveInX;
+				timeValue.value = moveInX;
 			}
 			isTimeChanged.value = true;
 			scale.value = 1.3;
@@ -97,36 +99,36 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	useDerivedValue(() => {
 		if (isHandlePan.value) {
-			const cTime = (x.value * duration.value) / maxWidth.value || 0;
-			currentTime.value = cTime;
-			current.value = formatTime(cTime);
+			const timeSelected = (timeValue.value * duration.value) / maxWidth.value || 0;
+			currentTime.value = timeSelected;
+			timeLabel.value = formatTime(timeSelected);
 		} else {
-			const xTime = (currentTime.value * maxWidth.value) / duration.value || 0;
-			x.value = xTime;
-			current.value = formatTime(currentTime.value);
+			const timeInProgress = (currentTime.value * maxWidth.value) / duration.value || 0;
+			timeValue.value = timeInProgress;
+			timeLabel.value = formatTime(currentTime.value);
 			if (currentTime.value !== 0) {
 				isTimeChanged.value = true;
 			}
 		}
-	}, [x, maxWidth, duration, isHandlePan, currentTime]);
+	}, [timeValue, maxWidth, duration, isHandlePan, currentTime]);
 
 	const getCurrentTime = useAnimatedProps(() => {
 		if (isTimeChanged.value) {
 			return {
-				text: current.value
+				text: timeLabel.value
 			} as TextInputProps;
 		}
 		return {
 			text: formatTime(duration.value)
 		} as TextInputProps;
-	}, [current, isTimeChanged, duration]);
+	}, [timeLabel, isTimeChanged, duration]);
 
 	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
 
 	return (
 		<View style={styles.seekContainer}>
 			<AnimatedTextInput
-				defaultValue={'00:00'}
+				defaultValue={DEFAULT_TIME_LABEL}
 				editable={false}
 				style={[styles.duration, { color: colors.fontDefault }]}
 				animatedProps={getCurrentTime}
@@ -134,7 +136,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			<View style={styles.seek} onLayout={onLayout}>
 				<View style={[styles.line, { backgroundColor: colors.strokeLight }]} />
 				<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
-				<PanGestureHandler enabled={loaded} onGestureEvent={gestureHandler}>
+				<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent}>
 					<Animated.View
 						hitSlop={AUDIO_BUTTON_HIT_SLOP}
 						style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]}
