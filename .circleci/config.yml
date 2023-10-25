@@ -96,16 +96,23 @@ commands:
             - ~/.pods
             - ios/Pods
 
+  fetch-supported-versions:
+    description: "Fetch supported versions from Cloud"
+    steps:
+      - run:
+          name: "Fetch supported versions from Cloud"
+          command: sh ./scripts/fetch-supported-versions.sh
+      - store_artifacts:
+          path: ./app-supportedversions.json
+
   android-build:
     description: "Build Android app"
     steps:
       - checkout
-
       - restore_cache: *restore-npm-cache-linux
-
       - run: *install-npm-modules
-
       - restore_cache: *restore-gradle-cache
+      - fetch-supported-versions
 
       - run:
           name: Configure Gradle
@@ -200,6 +207,7 @@ commands:
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
+      - fetch-supported-versions
       - run:
           name: Set Google Services
           command: |
@@ -320,6 +328,7 @@ commands:
           at: ios
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
       - run:
