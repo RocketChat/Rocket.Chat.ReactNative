@@ -26,7 +26,7 @@ export function deepLinkingOpen(params: Partial<IParams>): IDeepLinkingOpen {
 
 export function deepLinkingClickCallPush(params: any): IDeepLinkingOpen {
 	return {
-		type: DEEP_LINKING.CLICK_CALL_PUSH_NOTIFICATION,
+		type: DEEP_LINKING.OPEN_VIDEO_CONF,
 		params
 	};
 }

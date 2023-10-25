@@ -270,6 +270,6 @@ const handleClickCallPush = function* handleOpen({ params }) {
 
 const root = function* root() {
 	yield takeLatest(types.DEEP_LINKING.OPEN, handleOpen);
-	yield takeLatest(types.DEEP_LINKING.CLICK_CALL_PUSH_NOTIFICATION, handleClickCallPush);
+	yield takeLatest(types.DEEP_LINKING.OPEN_VIDEO_CONF, handleClickCallPush);
 };
 export default root;
