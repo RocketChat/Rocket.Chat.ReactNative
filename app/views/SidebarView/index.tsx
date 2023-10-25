@@ -73,6 +73,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			useRealName,
 			theme,
 			Presence_broadcast_disabled,
+			supportedVersionsStatus,
 			viewStatisticsPermission,
 			viewRoomAdministrationPermission,
 			viewUserAdministrationPermission,
@@ -110,6 +111,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return true;
 		}
 		if (nextProps.Presence_broadcast_disabled !== Presence_broadcast_disabled) {
+			return true;
+		}
+		if (nextProps.supportedVersionsStatus !== supportedVersionsStatus) {
 			return true;
 		}
 		if (!dequal(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
