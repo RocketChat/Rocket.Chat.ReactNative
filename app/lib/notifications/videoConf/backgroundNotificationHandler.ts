@@ -1,4 +1,4 @@
-import notifee, { AndroidCategory, AndroidImportance, AndroidVisibility } from '@notifee/react-native';
+import notifee, { AndroidCategory, AndroidImportance, AndroidVisibility, Event } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import ejson from 'ejson';
 
@@ -7,9 +7,24 @@ import i18n from '../../../i18n';
 import { BACKGROUND_PUSH_COLOR } from '../../constants';
 import { store } from '../../store/auxStore';
 
-const backgroundNotificationHandler = async (): Promise<void> => {
-	await notifee.createChannel({
-		id: 'video-conf-call',
+const VIDEO_CONF_CHANNEL = 'video-conf-call';
+const VIDEO_CONF_TYPE = 'videoconf';
+
+interface Caller {
+	_id?: string;
+	name?: string;
+}
+
+interface NotificationData {
+	notificationType?: string;
+	status?: number;
+	rid?: string;
+	caller?: Caller;
+}
+
+const createChannel = () =>
+	notifee.createChannel({
+		id: VIDEO_CONF_CHANNEL,
 		name: 'Video Call',
 		lights: true,
 		vibration: true,
@@ -17,75 +32,79 @@ const backgroundNotificationHandler = async (): Promise<void> => {
 		sound: 'ringtone'
 	});
 
-	notifee.onBackgroundEvent(async event => {
-		if (event.detail.pressAction?.id === 'accept' || event.detail.pressAction?.id === 'decline') {
-			const notificationData = event.detail?.notification?.data;
-			if (typeof notificationData?.caller === 'object' && (notificationData.caller as any)._id) {
-				store.dispatch(deepLinkingClickCallPush({ ...notificationData, event: event.detail.pressAction?.id }));
-				await notifee.cancelNotification(
-					`${notificationData.rid}${(notificationData.caller as any)._id}`.replace(/[^A-Za-z0-9]/g, '')
-				);
+const handleBackgroundEvent = async (event: Event) => {
+	const { pressAction, notification } = event.detail;
+
+	if (pressAction?.id === 'accept' || pressAction?.id === 'decline') {
+		const notificationData = notification?.data;
+		if (typeof notificationData?.caller === 'object' && (notificationData.caller as Caller)._id) {
+			store.dispatch(deepLinkingClickCallPush({ ...notificationData, event: pressAction?.id }));
+			await notifee.cancelNotification(
+				`${notificationData.rid}${(notificationData.caller as Caller)._id}`.replace(/[^A-Za-z0-9]/g, '')
+			);
+		}
+	}
+};
+
+const backgroundNotificationHandler = () => {
+	createChannel();
+	notifee.onBackgroundEvent(handleBackgroundEvent);
+};
+
+const displayVideoConferenceNotification = async (notification: NotificationData) => {
+	const id = `${notification.rid}${notification.caller?._id}`.replace(/[^A-Za-z0-9]/g, '');
+	const actions = [
+		{
+			title: i18n.t('accept'),
+			pressAction: {
+				id: 'accept',
+				launchActivity: 'default'
 			}
+		},
+		{
+			title: i18n.t('decline'),
+			pressAction: {
+				id: 'decline',
+				launchActivity: 'default'
+			}
+		}
+	];
+
+	await notifee.displayNotification({
+		id,
+		title: i18n.t('conference_call'),
+		body: `${i18n.t('Incoming_call_from')} ${notification.caller?.name}`,
+		data: notification as { [key: string]: string | number | object },
+		android: {
+			channelId: VIDEO_CONF_CHANNEL,
+			category: AndroidCategory.CALL,
+			visibility: AndroidVisibility.PUBLIC,
+			importance: AndroidImportance.HIGH,
+			smallIcon: 'ic_notification',
+			color: BACKGROUND_PUSH_COLOR,
+			actions,
+			lightUpScreen: true,
+			loopSound: true,
+			sound: 'ringtone',
+			autoCancel: false,
+			ongoing: true
 		}
 	});
 };
 
-interface NotificationData {
-	notificationType?: string;
-	status?: number;
-	rid?: string;
-	caller?: {
-		_id?: string;
-		name?: string;
-	};
-}
-
-const setBackgroundNotificationHandler = (): void => {
+const setBackgroundNotificationHandler = () => {
 	messaging().setBackgroundMessageHandler(async message => {
 		const notification: NotificationData = ejson.parse(message?.data?.ejson as string);
 
-		if (notification?.notificationType === 'videoconf') {
-			const id = `${notification?.rid}${notification?.caller?._id}`.replace(/[^A-Za-z0-9]/g, '');
+		if (notification?.notificationType === VIDEO_CONF_TYPE) {
 			if (notification.status === 0) {
-				await notifee.displayNotification({
-					id,
-					title: i18n.t('conference_call'),
-					body: `${i18n.t('Incoming_call_from')} ${notification?.caller?.name}`,
-					data: notification as { [key: string]: string | number | object },
-					android: {
-						channelId: 'video-conf-call',
-						category: AndroidCategory.CALL,
-						visibility: AndroidVisibility.PUBLIC,
-						importance: AndroidImportance.HIGH,
-						smallIcon: 'ic_notification',
-						color: BACKGROUND_PUSH_COLOR,
-						actions: [
-							{
-								title: i18n.t('accept'),
-								pressAction: {
-									id: 'accept',
-									launchActivity: 'default'
-								}
-							},
-							{
-								title: i18n.t('decline'),
-								pressAction: {
-									id: 'decline',
-									launchActivity: 'default'
-								}
-							}
-						],
-						lightUpScreen: true,
-						loopSound: true,
-						sound: 'ringtone',
-						autoCancel: false,
-						ongoing: true
-					}
-				});
+				await displayVideoConferenceNotification(notification);
 			} else if (notification.status === 4) {
+				const id = `${notification.rid}${notification.caller?._id}`.replace(/[^A-Za-z0-9]/g, '');
 				await notifee.cancelNotification(id);
 			}
 		}
+
 		return null;
 	});
 };
