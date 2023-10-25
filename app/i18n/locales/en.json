@@ -752,5 +752,9 @@
   "No_channels_in_team": "No Channels on this team",
   "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
   "Supported_versions_expired_description": "An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.",
-  "Supported_versions_warning_update_required": "Update required"
+  "Supported_versions_warning_update_required": "Update required",
+  "The_user_wont_be_able_to_type_in_roomName": "The user won't be able to type in {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "The user will be able to type in {{roomName}}",
+  "Enable_writing_in_room": "Enable writing in room",
+  "Disable_writing_in_room": "Disable writing in room"
 }
