@@ -260,11 +260,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
+					this.setState({ ...this.state, customFields, ...params });
 				} else {
 					dispatch(setUser({ ...params }));
+					this.setState({ ...this.state, ...params });
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
-				this.init();
 			}
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
 		} catch (e: any) {
