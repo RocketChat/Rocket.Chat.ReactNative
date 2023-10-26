@@ -33,14 +33,23 @@ function clamp(value: number, min: number, max: number) {
 	return Math.min(Math.max(value, min), max);
 }
 
+// https://docs.swmansion.com/react-native-reanimated/docs/2.x/fundamentals/worklets/
+const formatTime = (ms: number) => {
+	'worklet';
+
+	const minutes = Math.floor(ms / 60);
+	const remainingSeconds = Math.floor(ms % 60);
+	const formattedMinutes = String(minutes).padStart(2, '0');
+	const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+	return `${formattedMinutes}:${formattedSeconds}`;
+};
+
 const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
-
 	const maxWidth = useSharedValue(1);
 	const translateX = useSharedValue(0);
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
-	const isTimeChanged = useSharedValue(false);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -61,7 +70,6 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		},
 		onActive: ({ translationX }, ctx) => {
 			translateX.value = clamp(ctx.offsetX + translationX + (THUMB_SEEK_SIZE / 2) * Math.sign(translationX), 0, maxWidth.value);
-			isTimeChanged.value = true;
 			scale.value = 1.3;
 			currentTime.value = (translateX.value * duration.value) / maxWidth.value || 0;
 		},
@@ -71,28 +79,14 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		}
 	});
 
-	// https://docs.swmansion.com/react-native-reanimated/docs/2.x/fundamentals/worklets/
-	const formatTime = (ms: number) => {
-		'worklet';
-
-		const minutes = Math.floor(ms / 60);
-		const remainingSeconds = Math.floor(ms % 60);
-		const formattedMinutes = String(minutes).padStart(2, '0');
-		const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-		return `${formattedMinutes}:${formattedSeconds}`;
-	};
-
 	useDerivedValue(() => {
 		const timeInProgress = (currentTime.value * maxWidth.value) / duration.value || 0;
 		translateX.value = timeInProgress;
-		if (currentTime.value !== 0) {
-			isTimeChanged.value = true;
-		}
 		timeLabel.value = formatTime(currentTime.value);
 	}, [translateX, maxWidth, duration, currentTime]);
 
 	const getCurrentTime = useAnimatedProps(() => {
-		if (isTimeChanged.value) {
+		if (currentTime.value !== 0) {
 			return {
 				text: timeLabel.value
 			} as TextInputProps;
@@ -100,7 +94,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		return {
 			text: formatTime(duration.value)
 		} as TextInputProps;
-	}, [timeLabel, isTimeChanged, duration]);
+	}, [timeLabel, duration, currentTime]);
 
 	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
 
