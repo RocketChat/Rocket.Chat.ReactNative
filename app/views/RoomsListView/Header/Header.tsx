@@ -6,6 +6,7 @@ import sharedStyles from '../../Styles';
 // import { CustomIcon } from '../../../containers/CustomIcon';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
+import { useAppSelector } from '../../../lib/hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,13 +55,16 @@ const Header = React.memo(
 		onSearchChangeText
 	}: // onPress
 	IRoomHeader) => {
+		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
 
 		if (showSearchHeader) {
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 		}
 		let subtitle;
-		if (connecting) {
+		if (supportedVersionsStatus === 'expired') {
+			subtitle = 'Cannot connect';
+		} else if (connecting) {
 			subtitle = I18n.t('Connecting');
 		} else if (isFetching) {
 			subtitle = I18n.t('Updating');

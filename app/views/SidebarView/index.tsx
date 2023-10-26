@@ -21,9 +21,11 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
-import { IApplicationState, IUser } from '../../definitions';
+import { IApplicationState, IUser, TSVStatus } from '../../definitions';
 import * as List from '../../containers/List';
+import { IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
+import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -42,11 +44,13 @@ interface ISidebarProps {
 	allowStatusMessage: boolean;
 	notificationPresenceCap: boolean;
 	Presence_broadcast_disabled: boolean;
+	supportedVersionsStatus: TSVStatus;
 	isMasterDetail: boolean;
 	viewStatisticsPermission: string[];
 	viewRoomAdministrationPermission: string[];
 	viewUserAdministrationPermission: string[];
 	viewPrivilegedSettingPermission: string[];
+	showActionSheet: IActionSheetProvider['showActionSheet'];
 }
 
 class Sidebar extends Component<ISidebarProps, ISidebarState> {
@@ -69,6 +73,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			useRealName,
 			theme,
 			Presence_broadcast_disabled,
+			supportedVersionsStatus,
 			viewStatisticsPermission,
 			viewRoomAdministrationPermission,
 			viewUserAdministrationPermission,
@@ -106,6 +111,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return true;
 		}
 		if (nextProps.Presence_broadcast_disabled !== Presence_broadcast_disabled) {
+			return true;
+		}
+		if (nextProps.supportedVersionsStatus !== supportedVersionsStatus) {
 			return true;
 		}
 		if (!dequal(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
@@ -197,6 +205,15 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
+	onPressSupportedVersionsWarning = () => {
+		const { isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning' });
+		} else {
+			showActionSheetRef({ children: <SupportedVersionsWarning /> });
+		}
+	};
+
 	renderAdmin = () => {
 		const { theme, isMasterDetail } = this.props;
 		if (!this.getIsAdmin()) {
@@ -286,6 +303,23 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
+	renderSupportedVersionsWarn = () => {
+		const { theme, supportedVersionsStatus } = this.props;
+		if (supportedVersionsStatus === 'warn') {
+			return (
+				<SidebarItem
+					text={I18n.t('Supported_versions_warning_update_required')}
+					textColor={themes[theme!].dangerColor}
+					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
+					theme={theme!}
+					onPress={() => this.onPressSupportedVersionsWarning()}
+					testID={`sidebar-supported-versions-warn`}
+				/>
+			);
+		}
+		return null;
+	};
+
 	render() {
 		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
 
@@ -324,6 +358,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					</TouchableWithoutFeedback>
 
 					<List.Separator />
+					{this.renderSupportedVersionsWarn()}
+
+					<List.Separator />
 
 					{allowStatusMessage ? this.renderCustomStatus() : null}
 					{!isMasterDetail ? (
@@ -350,6 +387,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
 	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled as boolean,
 	notificationPresenceCap: state.app.notificationPresenceCap,
+	supportedVersionsStatus: state.supportedVersions.status,
 	isMasterDetail: state.app.isMasterDetail,
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],
@@ -357,4 +395,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting'] as string[]
 });
 
-export default connect(mapStateToProps)(withTheme(Sidebar));
+export default connect(mapStateToProps)(withActionSheet(withTheme(Sidebar)));
