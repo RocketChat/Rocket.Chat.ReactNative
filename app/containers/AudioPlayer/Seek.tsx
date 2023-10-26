@@ -60,7 +60,11 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			ctx.startX = timePosition.value;
 		},
 		onActive: (event, ctx: any) => {
-			timePosition.value = clamp(ctx.startX + event.translationX, 0, maxWidth.value);
+			timePosition.value = clamp(
+				ctx.startX + event.translationX + (THUMB_SEEK_SIZE / 2) * Math.sign(event.translationX),
+				0,
+				maxWidth.value
+			);
 			isTimeChanged.value = true;
 			scale.value = 1.3;
 			currentTime.value = (timePosition.value * duration.value) / maxWidth.value || 0;
