@@ -33,7 +33,6 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const timePosition = useSharedValue(0);
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
-	const isHandlePan = useSharedValue(false);
 	const onEndGestureHandler = useSharedValue(false);
 	const isTimeChanged = useSharedValue(false);
 
@@ -53,7 +52,6 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const onGestureEvent = useAnimatedGestureHandler({
 		onStart: (_, ctx: any) => {
 			ctx.startX = timePosition.value;
-			isHandlePan.value = true;
 		},
 		onActive: (event, ctx: any) => {
 			const moveInX: number = ctx.startX + event.translationX;
@@ -66,10 +64,10 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			}
 			isTimeChanged.value = true;
 			scale.value = 1.3;
+			currentTime.value = (timePosition.value * duration.value) / maxWidth.value || 0;
 		},
 		onEnd: () => {
 			scale.value = 1;
-			isHandlePan.value = false;
 			onEndGestureHandler.value = true;
 		}
 	});
@@ -97,19 +95,13 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	};
 
 	useDerivedValue(() => {
-		if (isHandlePan.value) {
-			const timeSelected = (timePosition.value * duration.value) / maxWidth.value || 0;
-			currentTime.value = timeSelected;
-			timeLabel.value = formatTime(timeSelected);
-		} else {
-			const timeInProgress = (currentTime.value * maxWidth.value) / duration.value || 0;
-			timePosition.value = timeInProgress;
-			timeLabel.value = formatTime(currentTime.value);
-			if (currentTime.value !== 0) {
-				isTimeChanged.value = true;
-			}
+		const timeInProgress = (currentTime.value * maxWidth.value) / duration.value || 0;
+		timePosition.value = timeInProgress;
+		if (currentTime.value !== 0) {
+			isTimeChanged.value = true;
 		}
-	}, [timePosition, maxWidth, duration, isHandlePan, currentTime]);
+		timeLabel.value = formatTime(currentTime.value);
+	}, [timePosition, maxWidth, duration, currentTime]);
 
 	const getCurrentTime = useAnimatedProps(() => {
 		if (isTimeChanged.value) {
