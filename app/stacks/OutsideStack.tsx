@@ -50,11 +50,7 @@ const OutsideStackModal = () => {
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}
 		>
 			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false }} />
-			<OutsideModal.Screen
-				name='AuthenticationWebView'
-				component={AuthenticationWebView}
-				options={AuthenticationWebView.navigationOptions}
-			/>
+			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} />
 		</OutsideModal.Navigator>
 	);
 };

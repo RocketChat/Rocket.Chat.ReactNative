@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import { isImageBase64 } from '../lib/methods';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
@@ -109,6 +110,7 @@ const AttachmentView = (): React.ReactElement => {
 
 	const setHeader = () => {
 		let { title } = attachment;
+
 		try {
 			if (title) {
 				title = decodeURI(title);
@@ -128,7 +130,7 @@ const AttachmentView = (): React.ReactElement => {
 				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.previewTintColor} />
 			),
 			headerRight: () =>
-				Allow_Save_Media_to_Gallery ? (
+				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url) ? (
 					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.previewTintColor} />
 				) : null,
 			headerBackground: () => (

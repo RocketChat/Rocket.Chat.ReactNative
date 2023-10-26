@@ -137,9 +137,10 @@ describe('Auto Translate', () => {
 
 		// verify default language is checked
 		await waitFor(element(by.id(`auto-translate-view-${languages.default}`)))
-			.toBeVisible()
+			.toExist()
 			.whileElement(by.id('auto-translate-view'))
 			.scroll(750, 'down');
+		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
 		await waitForVisible(`auto-translate-view-${languages.default}-check`);
 
 		// enable translated language
@@ -219,6 +220,7 @@ describe('Auto Translate', () => {
 	});
 
 	it(`should don't see action to View original when disable auto translate`, async () => {
+		await searchMessage(oldMessage[languages.default] as string, textMatcher); // will scroll the messages list to the last one
 		await waitForVisibleTextMatcher(oldMessage[languages.default] as string, textMatcher);
 		await tryTapping(element(by[textMatcher](oldMessage[languages.default] as string)).atIndex(0), 2000, true);
 
