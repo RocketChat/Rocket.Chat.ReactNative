@@ -40,7 +40,6 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const timePosition = useSharedValue(0);
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
-	const onEndGestureHandler = useSharedValue(false);
 	const isTimeChanged = useSharedValue(false);
 
 	const styleLine = useAnimatedStyle(() => ({
@@ -68,18 +67,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		},
 		onEnd: () => {
 			scale.value = 1;
-			onEndGestureHandler.value = true;
-		}
-	});
-
-	const wrapper = async (time: number) => {
-		await onChangeTime(Math.round(time * 1000));
-		onEndGestureHandler.value = false;
-	};
-
-	useDerivedValue(() => {
-		if (onEndGestureHandler.value) {
-			runOnJS(wrapper)(currentTime.value);
+			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
 		}
 	});
 
