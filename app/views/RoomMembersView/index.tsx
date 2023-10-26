@@ -250,17 +250,16 @@ const RoomMembersView = (): React.ReactElement => {
 		if (muteUserPermission) {
 			const { muted = [], ro: readOnly, unmuted = [] } = room;
 			let userIsMuted = !!muted.find?.(m => m === selectedUser.username);
-			if (readOnly && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0')) {
-				userIsMuted = !unmuted?.find?.(m => m === selectedUser.username);
-			}
-			selectedUser.muted = !!userIsMuted;
-
 			let icon: TIconsName = userIsMuted ? 'audio' : 'audio-disabled';
 			let title = I18n.t(userIsMuted ? 'Unmute' : 'Mute');
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0')) {
+				if (readOnly) {
+					userIsMuted = !unmuted?.find?.(m => m === selectedUser.username);
+				}
 				icon = userIsMuted ? 'message' : 'message-disabled';
 				title = I18n.t(userIsMuted ? 'Enable_writing_in_room' : 'Disable_writing_in_room');
 			}
+			selectedUser.muted = !!userIsMuted;
 			options.push({
 				icon,
 				title,
