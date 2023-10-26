@@ -26,6 +26,13 @@ interface ISeek {
 	onChangeTime: (time: number) => Promise<void>;
 }
 
+// Could use from react-native-redash. We have it as dev dep already.
+function clamp(value: number, min: number, max: number) {
+	'worklet';
+
+	return Math.min(Math.max(value, min), max);
+}
+
 const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
 
@@ -54,14 +61,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			ctx.startX = timePosition.value;
 		},
 		onActive: (event, ctx: any) => {
-			const moveInX: number = ctx.startX + event.translationX;
-			if (moveInX < 0) {
-				timePosition.value = 0;
-			} else if (moveInX > maxWidth.value) {
-				timePosition.value = maxWidth.value;
-			} else {
-				timePosition.value = moveInX;
-			}
+			timePosition.value = clamp(ctx.startX + event.translationX, 0, maxWidth.value);
 			isTimeChanged.value = true;
 			scale.value = 1.3;
 			currentTime.value = (timePosition.value * duration.value) / maxWidth.value || 0;
