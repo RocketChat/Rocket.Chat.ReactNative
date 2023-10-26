@@ -47,12 +47,12 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	}));
 
 	const styleThumb = useAnimatedStyle(() => ({
-		transform: [{ translateX: timePosition.value }, { scale: scale.value }]
+		transform: [{ translateX: timePosition.value - THUMB_SEEK_SIZE / 2 }, { scale: scale.value }]
 	}));
 
 	const onLayout = (event: LayoutChangeEvent) => {
 		const { width } = event.nativeEvent.layout;
-		maxWidth.value = width - THUMB_SEEK_SIZE;
+		maxWidth.value = width;
 	};
 
 	const onGestureEvent = useAnimatedGestureHandler({
