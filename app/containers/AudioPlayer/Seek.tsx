@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutChangeEvent, View, TextInput, TextInputProps } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, {
 	SharedValue,
 	runOnJS,
@@ -37,17 +37,17 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const { colors } = useTheme();
 
 	const maxWidth = useSharedValue(1);
-	const timePosition = useSharedValue(0);
+	const translateX = useSharedValue(0);
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
 	const isTimeChanged = useSharedValue(false);
 
 	const styleLine = useAnimatedStyle(() => ({
-		width: timePosition.value
+		width: translateX.value
 	}));
 
 	const styleThumb = useAnimatedStyle(() => ({
-		transform: [{ translateX: timePosition.value - THUMB_SEEK_SIZE / 2 }, { scale: scale.value }]
+		transform: [{ translateX: translateX.value - THUMB_SEEK_SIZE / 2 }, { scale: scale.value }]
 	}));
 
 	const onLayout = (event: LayoutChangeEvent) => {
@@ -55,19 +55,15 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		maxWidth.value = width;
 	};
 
-	const onGestureEvent = useAnimatedGestureHandler({
-		onStart: (_, ctx: any) => {
-			ctx.startX = timePosition.value;
+	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
+		onStart: (_, ctx) => {
+			ctx.offsetX = translateX.value;
 		},
-		onActive: (event, ctx: any) => {
-			timePosition.value = clamp(
-				ctx.startX + event.translationX + (THUMB_SEEK_SIZE / 2) * Math.sign(event.translationX),
-				0,
-				maxWidth.value
-			);
+		onActive: ({ translationX }, ctx) => {
+			translateX.value = clamp(ctx.offsetX + translationX + (THUMB_SEEK_SIZE / 2) * Math.sign(translationX), 0, maxWidth.value);
 			isTimeChanged.value = true;
 			scale.value = 1.3;
-			currentTime.value = (timePosition.value * duration.value) / maxWidth.value || 0;
+			currentTime.value = (translateX.value * duration.value) / maxWidth.value || 0;
 		},
 		onEnd: () => {
 			scale.value = 1;
@@ -88,12 +84,12 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	useDerivedValue(() => {
 		const timeInProgress = (currentTime.value * maxWidth.value) / duration.value || 0;
-		timePosition.value = timeInProgress;
+		translateX.value = timeInProgress;
 		if (currentTime.value !== 0) {
 			isTimeChanged.value = true;
 		}
 		timeLabel.value = formatTime(currentTime.value);
-	}, [timePosition, maxWidth, duration, currentTime]);
+	}, [translateX, maxWidth, duration, currentTime]);
 
 	const getCurrentTime = useAnimatedProps(() => {
 		if (isTimeChanged.value) {
