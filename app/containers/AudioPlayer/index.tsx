@@ -26,7 +26,7 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 	const isReadyToPlay = downloadState === 'downloaded';
 
 	const [paused, setPaused] = useState(true);
-	const [rateIndex, setRateIndex] = useState(0);
+	const [speedIndex, setSpeedIndex] = useState(1);
 	const duration = useSharedValue(0);
 	const currentTime = useSharedValue(0);
 	const { colors } = useTheme();
@@ -57,7 +57,7 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 			if (currentSecond <= durationSeconds) {
 				currentTime.value = currentSecond;
 			}
-			setRateIndex(AVAILABLE_SPEEDS.indexOf(data.rate));
+			setSpeedIndex(AVAILABLE_SPEEDS.indexOf(data.rate));
 		}
 	};
 
@@ -144,7 +144,7 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
-			<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} rateIndex={rateIndex} />
+			<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} speedIndex={speedIndex} />
 		</View>
 	);
 };

@@ -8,17 +8,17 @@ import { AVAILABLE_SPEEDS } from './constants';
 const PlaybackSpeed = ({
 	onChange,
 	loaded = false,
-	rateIndex = 0
+	speedIndex = 0
 }: {
 	onChange: (value: number) => void;
 	loaded: boolean;
-	rateIndex: number;
+	speedIndex: number;
 }) => {
 	const { colors } = useTheme();
 
 	const onPress = () => {
-		const nextRateIndex = rateIndex >= AVAILABLE_SPEEDS.length ? 0 : rateIndex + 1;
-		onChange(AVAILABLE_SPEEDS[nextRateIndex]);
+		const nextSpeedIndex = speedIndex + 1 >= AVAILABLE_SPEEDS.length ? 0 : speedIndex + 1;
+		onChange(AVAILABLE_SPEEDS[nextSpeedIndex]);
 	};
 
 	return (
@@ -27,7 +27,7 @@ const PlaybackSpeed = ({
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
-			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{AVAILABLE_SPEEDS[rateIndex]}x</Text>
+			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{AVAILABLE_SPEEDS[speedIndex]}x</Text>
 		</TouchableOpacity>
 	);
 };
