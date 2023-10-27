@@ -2,6 +2,7 @@ import { View, Text } from 'react-native';
 import React, { ReactElement, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system';
+import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
 
 import { useTheme } from '../../../../theme';
@@ -29,6 +30,7 @@ export const RecordAudio = (): ReactElement => {
 	const server = useAppSelector(state => state.server.server);
 	const user = useAppSelector(state => ({ id: state.login.user.id, token: state.login.user.token }), shallowEqual);
 	const permissionToUpload = useCanUploadFile(rid);
+	useKeepAwake();
 	console.log('🚀 ~ file: RecordAudio.tsx:28 ~ RecordAudio ~ user:', user);
 	console.log('🚀 ~ file: RecordAudio.tsx:14 ~ RecordAudio ~ recordingRef:', recordingRef.current);
 	console.log('🚀 ~ file: RecordAudio.tsx:16 ~ RecordAudio ~ permissionResponse:', permissionResponse);
