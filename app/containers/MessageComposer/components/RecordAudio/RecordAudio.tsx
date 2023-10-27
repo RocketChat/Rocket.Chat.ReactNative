@@ -118,23 +118,20 @@ export const RecordAudio = (): ReactElement => {
 				style={{
 					borderTopWidth: 1,
 					paddingHorizontal: 16,
+					paddingBottom: 12,
 					backgroundColor: colors.surfaceLight,
 					borderTopColor: colors.strokeLight
 				}}
 			>
 				<Text style={{ marginLeft: 12, fontSize: 16, ...sharedStyles.textRegular, color: colors.fontDefault }}>REVIEW</Text>
-				<View style={{ flexDirection: 'row' }}>
+				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 					<BaseButton
 						onPress={() => cancelRecording()}
 						testID='message-composer-delete-audio'
 						accessibilityLabel='tbd'
 						icon='delete'
 					/>
-					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-						<Text style={{ fontSize: 14, ...sharedStyles.textRegular, color: colors.fontSecondaryInfo }}>
-							Recording audio message
-						</Text>
-					</View>
+					<View style={{ flex: 1 }} />
 					<BaseButton
 						onPress={() => sendAudio()}
 						testID='message-composer-send'
@@ -152,6 +149,7 @@ export const RecordAudio = (): ReactElement => {
 			style={{
 				borderTopWidth: 1,
 				paddingHorizontal: 16,
+				paddingBottom: 8,
 				backgroundColor: colors.surfaceLight,
 				borderTopColor: colors.strokeLight
 			}}
@@ -160,7 +158,7 @@ export const RecordAudio = (): ReactElement => {
 				<CustomIcon name='microphone' size={24} color={colors.fontDanger} />
 				<Duration ref={durationRef} />
 			</View>
-			<View style={{ flexDirection: 'row' }}>
+			<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 				<BaseButton
 					onPress={() => cancelRecording()}
 					testID='message-composer-delete-audio'
