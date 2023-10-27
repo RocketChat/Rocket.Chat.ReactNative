@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutChangeEvent, View, TextInput, TextInputProps } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, PanGestureHandlerGestureEvent, TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Animated, {
 	SharedValue,
 	runOnJS,
@@ -26,6 +26,23 @@ interface ISeek {
 	onChangeTime: (time: number) => Promise<void>;
 }
 
+function clamp(value: number, min: number, max: number) {
+	'worklet';
+
+	return Math.min(Math.max(value, min), max);
+}
+
+// https://docs.swmansion.com/react-native-reanimated/docs/2.x/fundamentals/worklets/
+const formatTime = (ms: number) => {
+	'worklet';
+
+	const minutes = Math.floor(ms / 60);
+	const remainingSeconds = Math.floor(ms % 60);
+	const formattedMinutes = String(minutes).padStart(2, '0');
+	const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+	return `${formattedMinutes}:${formattedSeconds}`;
+};
+
 const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
 
@@ -34,7 +51,6 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
 	const isHandlePan = useSharedValue(false);
-	const onEndGestureHandler = useSharedValue(false);
 	const isTimeChanged = useSharedValue(false);
 
 	const styleLine = useAnimatedStyle(() => ({
@@ -42,59 +58,30 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	}));
 
 	const styleThumb = useAnimatedStyle(() => ({
-		transform: [{ translateX: timePosition.value }, { scale: scale.value }]
+		transform: [{ translateX: timePosition.value - THUMB_SEEK_SIZE / 2 }, { scale: scale.value }]
 	}));
 
 	const onLayout = (event: LayoutChangeEvent) => {
 		const { width } = event.nativeEvent.layout;
-		maxWidth.value = width - THUMB_SEEK_SIZE;
+		maxWidth.value = width;
 	};
 
-	const onGestureEvent = useAnimatedGestureHandler({
-		onStart: (_, ctx: any) => {
-			ctx.startX = timePosition.value;
+	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
+		onStart: (_, ctx) => {
+			ctx.offsetX = timePosition.value;
 			isHandlePan.value = true;
 		},
-		onActive: (event, ctx: any) => {
-			const moveInX: number = ctx.startX + event.translationX;
-			if (moveInX < 0) {
-				timePosition.value = 0;
-			} else if (moveInX > maxWidth.value) {
-				timePosition.value = maxWidth.value;
-			} else {
-				timePosition.value = moveInX;
-			}
+		onActive: ({ translationX }, ctx) => {
+			timePosition.value = clamp(ctx.offsetX + translationX + (THUMB_SEEK_SIZE / 2) * Math.sign(translationX), 0, maxWidth.value);
 			isTimeChanged.value = true;
 			scale.value = 1.3;
 		},
 		onEnd: () => {
 			scale.value = 1;
 			isHandlePan.value = false;
-			onEndGestureHandler.value = true;
+			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
 		}
 	});
-
-	const wrapper = async (time: number) => {
-		await onChangeTime(Math.round(time * 1000));
-		onEndGestureHandler.value = false;
-	};
-
-	useDerivedValue(() => {
-		if (onEndGestureHandler.value) {
-			runOnJS(wrapper)(currentTime.value);
-		}
-	});
-
-	// https://docs.swmansion.com/react-native-reanimated/docs/2.x/fundamentals/worklets/
-	const formatTime = (ms: number) => {
-		'worklet';
-
-		const minutes = Math.floor(ms / 60);
-		const remainingSeconds = Math.floor(ms % 60);
-		const formattedMinutes = String(minutes).padStart(2, '0');
-		const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-		return `${formattedMinutes}:${formattedSeconds}`;
-	};
 
 	useDerivedValue(() => {
 		if (isHandlePan.value) {
@@ -125,25 +112,27 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
 
 	return (
-		<View style={styles.seekContainer}>
-			<AnimatedTextInput
-				defaultValue={DEFAULT_TIME_LABEL}
-				editable={false}
-				style={[styles.duration, { color: colors.fontDefault }]}
-				animatedProps={getCurrentTime}
-			/>
-			<View style={styles.seek} onLayout={onLayout}>
-				<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
-					<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
+		<TouchableNativeFeedback>
+			<View style={styles.seekContainer}>
+				<AnimatedTextInput
+					defaultValue={DEFAULT_TIME_LABEL}
+					editable={false}
+					style={[styles.duration, { color: colors.fontDefault }]}
+					animatedProps={getCurrentTime}
+				/>
+				<View style={styles.seek} onLayout={onLayout}>
+					<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
+						<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
+					</View>
+					<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent}>
+						<Animated.View
+							hitSlop={AUDIO_BUTTON_HIT_SLOP}
+							style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]}
+						/>
+					</PanGestureHandler>
 				</View>
-				<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent}>
-					<Animated.View
-						hitSlop={AUDIO_BUTTON_HIT_SLOP}
-						style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]}
-					/>
-				</PanGestureHandler>
 			</View>
-		</View>
+		</TouchableNativeFeedback>
 	);
 };
 
