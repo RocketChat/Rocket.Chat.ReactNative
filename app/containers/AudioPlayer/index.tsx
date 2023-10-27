@@ -11,7 +11,7 @@ import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
 import audioPlayer from '../../lib/methods/audioPlayer';
-import { AVAILABLE_SPEEDS } from './utils';
+import { AVAILABLE_SPEEDS } from './constants';
 
 interface IAudioPlayerProps {
 	fileUri: string;

@@ -5,7 +5,7 @@ import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import RCActivityIndicator from '../ActivityIndicator';
-import { AUDIO_BUTTON_HIT_SLOP } from './utils';
+import { AUDIO_BUTTON_HIT_SLOP } from './constants';
 
 interface IButton {
 	loading: boolean;

@@ -4,7 +4,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
-import { AVAILABLE_SPEEDS } from './utils';
+import { AVAILABLE_SPEEDS } from './constants';
 
 const PlaybackSpeed = ({
 	onChange,
