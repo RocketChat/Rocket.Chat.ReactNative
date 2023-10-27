@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { Text, TouchableOpacity } from 'react-native';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
@@ -23,13 +22,13 @@ const PlaybackSpeed = ({
 	};
 
 	return (
-		<Touchable
+		<TouchableOpacity
 			disabled={!loaded}
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
 			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{AVAILABLE_SPEEDS[rateIndex]}x</Text>
-		</Touchable>
+		</TouchableOpacity>
 	);
 };
 

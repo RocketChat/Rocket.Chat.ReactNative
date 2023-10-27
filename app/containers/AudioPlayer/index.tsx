@@ -9,7 +9,7 @@ import { useTheme } from '../../theme';
 import styles from './styles';
 import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
-import PlayButton from './PlayButton';
+import PlayButton, { TAudioState } from './PlayButton';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { AVAILABLE_SPEEDS } from './constants';
 
@@ -132,9 +132,20 @@ const AudioPlayer = ({
 		};
 	}, [navigation]);
 
+	let audioState: TAudioState = 'to-download';
+	if (loading) {
+		audioState = 'loading';
+	}
+	if (isReadyToPlay && paused) {
+		audioState = 'paused';
+	}
+	if (isReadyToPlay && !paused) {
+		audioState = 'playing';
+	}
+
 	return (
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
-			<PlayButton disabled={disabled} loading={loading} paused={paused} isReadyToPlay={isReadyToPlay} onPress={onPress} />
+			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
 			<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} rateIndex={rateIndex} />
 		</View>
