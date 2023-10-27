@@ -25,21 +25,16 @@ export const RecordAudio = (): ReactElement => {
 	const recordingRef = useRef<Audio.Recording>();
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
-	const [permissionResponse, requestPermission] = Audio.usePermissions();
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
 	const server = useAppSelector(state => state.server.server);
 	const user = useAppSelector(state => ({ id: state.login.user.id, token: state.login.user.token }), shallowEqual);
 	const permissionToUpload = useCanUploadFile(rid);
 	useKeepAwake();
-	console.log('🚀 ~ file: RecordAudio.tsx:28 ~ RecordAudio ~ user:', user);
-	console.log('🚀 ~ file: RecordAudio.tsx:14 ~ RecordAudio ~ recordingRef:', recordingRef.current);
-	console.log('🚀 ~ file: RecordAudio.tsx:16 ~ RecordAudio ~ permissionResponse:', permissionResponse);
 
 	useEffect(() => {
 		const record = async () => {
 			try {
-				await requestPermission();
 				await Audio.setAudioModeAsync(RECORDING_MODE);
 				recordingRef.current = new Audio.Recording();
 				await recordingRef.current.prepareToRecordAsync(RECORDING_SETTINGS);
