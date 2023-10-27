@@ -18,6 +18,7 @@ import { useRoomContext } from '../../../../views/RoomView/context';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, IDurationRef } from './Duration';
+import { RECORDING_MODE, RECORDING_SETTINGS } from './constants';
 
 export const RecordAudio = (): ReactElement => {
 	const { colors } = useTheme();
@@ -39,12 +40,9 @@ export const RecordAudio = (): ReactElement => {
 		const record = async () => {
 			try {
 				await requestPermission();
-				await Audio.setAudioModeAsync({
-					allowsRecordingIOS: true,
-					playsInSilentModeIOS: true
-				});
+				await Audio.setAudioModeAsync(RECORDING_MODE);
 				recordingRef.current = new Audio.Recording();
-				await recordingRef.current.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+				await recordingRef.current.prepareToRecordAsync(RECORDING_SETTINGS);
 				recordingRef.current.setOnRecordingStatusUpdate(durationRef.current.onRecordingStatusUpdate);
 				await recordingRef.current.startAsync();
 			} catch (error) {
