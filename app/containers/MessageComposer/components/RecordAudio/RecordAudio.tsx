@@ -16,10 +16,12 @@ import log from '../../../../lib/methods/helpers/log';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
+import { Duration, IDurationRef } from './Duration';
 
 export const RecordAudio = (): ReactElement => {
 	const { colors } = useTheme();
 	const recordingRef = useRef<Audio.Recording>();
+	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
 	const [permissionResponse, requestPermission] = Audio.usePermissions();
 	const { setRecordingAudio } = useMessageComposerApi();
@@ -41,11 +43,9 @@ export const RecordAudio = (): ReactElement => {
 				});
 				recordingRef.current = new Audio.Recording();
 				await recordingRef.current.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+				recordingRef.current.setOnRecordingStatusUpdate(durationRef.current.onRecordingStatusUpdate);
 				await recordingRef.current.startAsync();
-				// You are now recording!
 			} catch (error) {
-				// An error occurred!
-				alert('error');
 				console.error(error);
 			}
 		};
@@ -158,7 +158,7 @@ export const RecordAudio = (): ReactElement => {
 		>
 			<View style={{ flexDirection: 'row', paddingVertical: 24, justifyContent: 'center', alignItems: 'center' }}>
 				<CustomIcon name='microphone' size={24} color={colors.fontDanger} />
-				<Text style={{ marginLeft: 12, fontSize: 16, ...sharedStyles.textRegular, color: colors.fontDefault }}>00:01</Text>
+				<Duration ref={durationRef} />
 			</View>
 			<View style={{ flexDirection: 'row' }}>
 				<BaseButton
