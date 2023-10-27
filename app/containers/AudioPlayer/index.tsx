@@ -12,22 +12,19 @@ import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton, { TAudioState } from './PlayButton';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { AVAILABLE_SPEEDS } from './constants';
+import { TDownloadState } from '../../lib/methods/handleMediaDownload';
 
 interface IAudioPlayerProps {
 	fileUri: string;
-	loading: boolean;
-	isReadyToPlay: boolean;
 	disabled?: boolean;
-	onPlayButtonPressCallback?: Function;
+	onPlayButtonPress?: Function;
+	downloadState: TDownloadState;
 }
 
-const AudioPlayer = ({
-	fileUri,
-	disabled = false,
-	loading = true,
-	isReadyToPlay = false,
-	onPlayButtonPressCallback = () => {}
-}: IAudioPlayerProps) => {
+const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, downloadState }: IAudioPlayerProps) => {
+	const loading = downloadState === 'loading';
+	const isReadyToPlay = downloadState === 'downloaded';
+
 	const [paused, setPaused] = useState(true);
 	const [rateIndex, setRateIndex] = useState(0);
 	const duration = useSharedValue(0);
@@ -96,7 +93,7 @@ const AudioPlayer = ({
 	};
 
 	const onPress = () => {
-		onPlayButtonPressCallback();
+		onPlayButtonPress();
 		if (loading) {
 			return;
 		}
