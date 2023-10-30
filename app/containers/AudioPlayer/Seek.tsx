@@ -66,15 +66,20 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	};
 
 	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
-		onStart: (_, ctx) => {
-			ctx.offsetX = translateX.value;
+		onStart: (event, ctx) => {
 			isPanning.value = true;
+			// event.x == 0 is the begin of the thumb view, or the pi/180˚ of the trigonometric circle
+			// when clicking at the beginning of the thumb view, the thumb should move the center to your click
+			// when clicking at the hit slop of the thumb view, the thumb should move the center to your click
+			const fineTweak = event.x - THUMB_SEEK_SIZE / 2;
+			translateX.value = clamp(translateX.value + fineTweak, 0, maxWidth.value);
+			ctx.offsetX = translateX.value;
 		},
 		onActive: ({ translationX }, ctx) => {
 			translateX.value = clamp(ctx.offsetX + translationX, 0, maxWidth.value);
 			scale.value = 1.3;
 		},
-		onEnd: () => {
+		onFinish() {
 			scale.value = 1;
 			isPanning.value = false;
 			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
