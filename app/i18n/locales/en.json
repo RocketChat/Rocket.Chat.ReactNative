@@ -692,9 +692,9 @@
   "Call_ended": "Call ended",
   "Call_was_not_answered": "Call was not answered",
   "Call_rejected": "Call rejected",
-  "Call_back": "Call Back",
-  "Call_again": "Call Again",
-  "Call_ongoing": "Call Ongoing",
+  "Call_back": "Call back",
+  "Call_again": "Call again",
+  "Call_ongoing": "Call ongoing",
   "Call_issue": "Call issue",
   "Joined": "Joined",
   "Calling": "Calling",
@@ -751,5 +751,8 @@
   "Message_has_been_shared": "Message has been shared",
   "No_channels_in_team": "No Channels on this team",
   "Room_not_found": "Room not found",
-  "The_room_does_not_exist": "The room does not exist or you may not have access permission"
+  "The_room_does_not_exist": "The room does not exist or you may not have access permission",
+  "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
+  "Supported_versions_expired_description": "An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.",
+  "Supported_versions_warning_update_required": "Update required"
 }

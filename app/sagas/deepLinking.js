@@ -14,7 +14,7 @@ import { loginRequest } from '../actions/login';
 import log from '../lib/methods/helpers/log';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { callJitsi, callJitsiWithoutServer, canOpenRoom } from '../lib/methods';
+import { callJitsi, callJitsiWithoutServer, canOpenRoom, getServerInfo } from '../lib/methods';
 import { Services } from '../lib/services';
 
 const roomTypes = {
@@ -163,7 +163,7 @@ const handleOpen = function* handleOpen({ params }) {
 			// do nothing?
 		}
 		// if deep link is from a different server
-		const result = yield Services.getServerInfo(host);
+		const result = yield getServerInfo(host);
 		if (!result.success) {
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();
