@@ -16,6 +16,7 @@ import { useTheme } from '../../theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE } from './constants';
 
 const DEFAULT_TIME_LABEL = '00:00';
+const ACTIVE_OFFSET_X = 0.001;
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
@@ -68,11 +69,6 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
 		onStart: (event, ctx) => {
 			isPanning.value = true;
-			// event.x == 0 is the begin of the thumb view, or the pi/180˚ of the trigonometric circle
-			// when clicking at the beginning of the thumb view, the thumb should move the center to your click
-			// when clicking at the hit slop of the thumb view, the thumb should move the center to your click
-			const fineTweak = event.x - THUMB_SEEK_SIZE / 2;
-			translateX.value = clamp(translateX.value + fineTweak, 0, maxWidth.value);
 			ctx.offsetX = translateX.value;
 		},
 		onActive: ({ translationX }, ctx) => {
@@ -124,7 +120,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 					<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
 						<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
 					</View>
-					<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent}>
+					<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent} activeOffsetX={[-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X]}>
 						<Animated.View hitSlop={SEEK_HIT_SLOP} style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]} />
 					</PanGestureHandler>
 				</View>
