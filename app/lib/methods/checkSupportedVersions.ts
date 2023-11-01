@@ -16,7 +16,7 @@ export const getMessage = ({
 		return;
 	}
 	const sortedMessages = messages.sort((a, b) => a.remainingDays - b.remainingDays);
-	return sortedMessages.find(({ remainingDays }) => moment(expiration).diff(new Date(), 'days') <= remainingDays);
+	return sortedMessages.find(({ remainingDays }) => moment(expiration).diff(new Date(), 'hours') <= remainingDays * 24);
 };
 
 const getStatus = ({ expiration, message }: { expiration?: string; message?: TSVMessage }): TSVStatus => {
