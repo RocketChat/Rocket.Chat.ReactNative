@@ -1,6 +1,7 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useReducer } from 'react';
 import { FlatList, Text, View } from 'react-native';
+import { shallowEqual } from 'react-redux';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -73,12 +74,15 @@ const RoomMembersView = (): React.ReactElement => {
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
 
-	const { isMasterDetail, serverVersion, useRealName, user } = useAppSelector(state => ({
-		isMasterDetail: state.app.isMasterDetail,
-		useRealName: state.settings.UI_Use_Real_Name,
-		user: getUserSelector(state),
-		serverVersion: state.server.version
-	}));
+	const { isMasterDetail, serverVersion, useRealName, user } = useAppSelector(
+		state => ({
+			isMasterDetail: state.app.isMasterDetail,
+			useRealName: state.settings.UI_Use_Real_Name,
+			user: getUserSelector(state),
+			serverVersion: state.server.version
+		}),
+		shallowEqual
+	);
 
 	const [state, updateState] = useReducer(
 		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
