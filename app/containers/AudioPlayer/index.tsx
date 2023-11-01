@@ -11,9 +11,10 @@ import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
 import audioPlayer from '../../lib/methods/audioPlayer';
-import { AVAILABLE_SPEEDS } from './constants';
+import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TDownloadState } from '../../lib/methods/handleMediaDownload';
 import { TAudioState } from './types';
+import { useUserPreferences } from '../../lib/methods';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -26,8 +27,8 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 	const loading = downloadState === 'loading';
 	const isReadyToPlay = downloadState === 'downloaded';
 
+	const [playbackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
 	const [paused, setPaused] = useState(true);
-	const [speedIndex, setSpeedIndex] = useState(1);
 	const duration = useSharedValue(0);
 	const currentTime = useSharedValue(0);
 	const { colors } = useTheme();
@@ -58,7 +59,6 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 			if (currentSecond <= durationSeconds) {
 				currentTime.value = currentSecond;
 			}
-			setSpeedIndex(AVAILABLE_SPEEDS.indexOf(data.rate));
 		}
 	};
 
@@ -89,9 +89,9 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 		}
 	};
 
-	const onChangeRate = async (value = 1.0) => {
-		await audioPlayer.setRateAsync(audioUri.current, value);
-	};
+	useEffect(() => {
+		audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
+	}, [playbackSpeed]);
 
 	const onPress = () => {
 		onPlayButtonPress();
@@ -145,7 +145,7 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
-			<PlaybackSpeed onChange={onChangeRate} audioState={audioState} speedIndex={speedIndex} />
+			<PlaybackSpeed audioState={audioState} />
 		</View>
 	);
 };

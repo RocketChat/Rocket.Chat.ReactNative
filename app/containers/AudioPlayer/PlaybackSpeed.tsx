@@ -3,23 +3,18 @@ import { Text, TouchableOpacity } from 'react-native';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
-import { AVAILABLE_SPEEDS } from './constants';
+import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TAudioState } from './types';
+import { useUserPreferences } from '../../lib/methods';
 
-const PlaybackSpeed = ({
-	onChange,
-	speedIndex = 0,
-	audioState
-}: {
-	onChange: (value: number) => void;
-	speedIndex: number;
-	audioState: TAudioState;
-}) => {
+const PlaybackSpeed = ({ audioState }: { audioState: TAudioState }) => {
+	const [playbackSpeed, setPlaybackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
 	const { colors } = useTheme();
 
 	const onPress = () => {
+		const speedIndex = AVAILABLE_SPEEDS.indexOf(playbackSpeed);
 		const nextSpeedIndex = speedIndex + 1 >= AVAILABLE_SPEEDS.length ? 0 : speedIndex + 1;
-		onChange(AVAILABLE_SPEEDS[nextSpeedIndex]);
+		setPlaybackSpeed(AVAILABLE_SPEEDS[nextSpeedIndex]);
 	};
 
 	return (
@@ -28,7 +23,7 @@ const PlaybackSpeed = ({
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
-			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{AVAILABLE_SPEEDS[speedIndex]}x</Text>
+			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{playbackSpeed}x</Text>
 		</TouchableOpacity>
 	);
 };
