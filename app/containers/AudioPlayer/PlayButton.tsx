@@ -17,7 +17,7 @@ type TCustomIconName = 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled'
 
 export type TAudioState = 'loading' | 'paused' | 'to-download' | 'playing';
 
-const IconToRender = ({ audioState, disabled }: { audioState: TAudioState; disabled: boolean }) => {
+const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boolean }) => {
 	const { colors } = useTheme();
 
 	if (audioState === 'loading') {
@@ -45,7 +45,7 @@ const PlayButton = ({ onPress, disabled = false, audioState }: IButton) => {
 			onPress={onPress}
 			hitSlop={AUDIO_BUTTON_HIT_SLOP}
 		>
-			<IconToRender audioState={audioState} disabled={disabled} />
+			<Icon audioState={audioState} disabled={disabled} />
 		</TouchableOpacity>
 	);
 };
