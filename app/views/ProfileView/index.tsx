@@ -307,7 +307,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		if (I18n.isTranslated(e.error)) {
 			return showErrorAlert(I18n.t(e.error));
 		}
-		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
+		let msg = I18n.t('There_was_an_error_while_action', { action: I18n.t(action) });
+		let title = '';
+		if (typeof e.reason === 'string') {
+			title = msg;
+			msg = e.reason;
+		}
+		showErrorAlert(msg, title);
 	};
 
 	handleEditAvatar = () => {
