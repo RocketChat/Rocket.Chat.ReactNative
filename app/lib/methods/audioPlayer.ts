@@ -1,5 +1,4 @@
 import { AVPlaybackStatus, Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { Sound } from 'expo-av/build/Audio/Sound';
 
 const AUDIO_MODE = {
 	allowsRecordingIOS: false,
@@ -12,7 +11,7 @@ const AUDIO_MODE = {
 };
 
 class AudioPlayer {
-	private audioQueue: { [uri: string]: Sound };
+	private audioQueue: { [uri: string]: Audio.Sound };
 	private audioPlaying: string;
 
 	constructor() {
@@ -20,7 +19,7 @@ class AudioPlayer {
 		this.audioPlaying = '';
 	}
 
-	async loadAudio(uri: string): Promise<Sound> {
+	async loadAudio(uri: string): Promise<Audio.Sound> {
 		if (this.audioQueue[uri]) {
 			return this.audioQueue[uri];
 		}
