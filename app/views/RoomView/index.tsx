@@ -93,6 +93,7 @@ import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IListContainerRef, TListRef } from './List/definitions';
+import { getThreadById } from '../../lib/database/services/Thread';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -1167,13 +1168,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			if (!name) {
-				const result = await this.getThreadName(item.tmid, jumpToMessageId);
-				// test if there isn't a thread
-				if (!result) {
-					sendLoadingEvent({ visible: false });
-					return;
+				const threadRecord = await getThreadById(item.tmid);
+				if (threadRecord?.t === 'rm') {
+					name = I18n.t('Thread');
+				} else {
+					const result = await this.getThreadName(item.tmid, jumpToMessageId);
+					// test if there isn't a thread
+					if (!result) {
+						sendLoadingEvent({ visible: false });
+						return;
+					}
+					name = result;
 				}
-				name = result;
 			}
 			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
