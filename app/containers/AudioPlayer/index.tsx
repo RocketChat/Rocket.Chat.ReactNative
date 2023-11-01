@@ -9,10 +9,11 @@ import { useTheme } from '../../theme';
 import styles from './styles';
 import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
-import PlayButton, { TAudioState } from './PlayButton';
+import PlayButton from './PlayButton';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { AVAILABLE_SPEEDS } from './constants';
 import { TDownloadState } from '../../lib/methods/handleMediaDownload';
+import { TAudioState } from './types';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -144,7 +145,7 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
-			<PlaybackSpeed onChange={onChangeRate} loaded={!disabled && isReadyToPlay} speedIndex={speedIndex} />
+			<PlaybackSpeed onChange={onChangeRate} audioState={audioState} speedIndex={speedIndex} />
 		</View>
 	);
 };

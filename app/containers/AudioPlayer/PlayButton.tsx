@@ -6,6 +6,7 @@ import { useTheme } from '../../theme';
 import styles from './styles';
 import RCActivityIndicator from '../ActivityIndicator';
 import { AUDIO_BUTTON_HIT_SLOP } from './constants';
+import { TAudioState } from './types';
 
 interface IButton {
 	disabled?: boolean;
@@ -14,8 +15,6 @@ interface IButton {
 }
 
 type TCustomIconName = 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled';
-
-export type TAudioState = 'loading' | 'paused' | 'to-download' | 'playing';
 
 const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boolean }) => {
 	const { colors } = useTheme();

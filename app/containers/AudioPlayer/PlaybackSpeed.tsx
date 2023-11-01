@@ -4,15 +4,16 @@ import { Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { AVAILABLE_SPEEDS } from './constants';
+import { TAudioState } from './types';
 
 const PlaybackSpeed = ({
 	onChange,
-	loaded = false,
-	speedIndex = 0
+	speedIndex = 0,
+	audioState
 }: {
 	onChange: (value: number) => void;
-	loaded: boolean;
 	speedIndex: number;
+	audioState: TAudioState;
 }) => {
 	const { colors } = useTheme();
 
@@ -23,7 +24,7 @@ const PlaybackSpeed = ({
 
 	return (
 		<TouchableOpacity
-			disabled={!loaded}
+			disabled={!(audioState === 'playing')}
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
