@@ -145,7 +145,7 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
-			<PlaybackSpeed audioState={audioState} />
+			{audioState === 'playing' ? <PlaybackSpeed audioState={audioState} /> : null}
 		</View>
 	);
 };

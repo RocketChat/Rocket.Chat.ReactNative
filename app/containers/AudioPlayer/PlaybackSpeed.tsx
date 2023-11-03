@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TAudioState } from './types';
 import { useUserPreferences } from '../../lib/methods';
+import NativeButton from '../NativeButton';
 
 const PlaybackSpeed = ({ audioState }: { audioState: TAudioState }) => {
 	const [playbackSpeed, setPlaybackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
@@ -18,13 +19,13 @@ const PlaybackSpeed = ({ audioState }: { audioState: TAudioState }) => {
 	};
 
 	return (
-		<TouchableOpacity
+		<NativeButton
 			disabled={!(audioState === 'playing')}
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>
 			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{playbackSpeed}x</Text>
-		</TouchableOpacity>
+		</NativeButton>
 	);
 };
 

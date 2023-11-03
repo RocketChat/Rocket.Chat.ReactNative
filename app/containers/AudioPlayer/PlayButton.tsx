@@ -1,5 +1,4 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
@@ -7,6 +6,7 @@ import styles from './styles';
 import RCActivityIndicator from '../ActivityIndicator';
 import { AUDIO_BUTTON_HIT_SLOP } from './constants';
 import { TAudioState } from './types';
+import NativeButton from '../NativeButton';
 
 interface IButton {
 	disabled?: boolean;
@@ -38,14 +38,14 @@ const PlayButton = ({ onPress, disabled = false, audioState }: IButton) => {
 	const { colors } = useTheme();
 
 	return (
-		<TouchableOpacity
+		<NativeButton
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
 			disabled={disabled}
 			onPress={onPress}
 			hitSlop={AUDIO_BUTTON_HIT_SLOP}
 		>
 			<Icon audioState={audioState} disabled={disabled} />
-		</TouchableOpacity>
+		</NativeButton>
 	);
 };
 
