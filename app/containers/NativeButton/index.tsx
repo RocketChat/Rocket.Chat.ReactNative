@@ -9,7 +9,7 @@ const NativeButton = (props: TouchableOpacityProps) => {
 	}
 
 	return (
-		<TouchableNativeFeedback useForeground {...props}>
+		<TouchableNativeFeedback {...props}>
 			<View style={props.style}>{props.children}</View>
 		</TouchableNativeFeedback>
 	);
