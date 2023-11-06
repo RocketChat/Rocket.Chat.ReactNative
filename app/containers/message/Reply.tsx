@@ -96,21 +96,21 @@ interface IMessageReply {
 
 const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
-		const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
-		return (
-			<View style={styles.authorContainer}>
-				{attachment.author_name ? (
-					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>
-						{attachment.author_name}
-					</Text>
-				) : null}
-				{time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
-				{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
-			</View>
-		);
+	  const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format('YYYY-MM-DD HH:mm:ss') : null; // Modify the format here
+	  return (
+		<View style={styles.authorContainer}>
+		  {attachment.author_name ? (
+			<Text numberOfLines={1} style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>
+			  {attachment.author_name}
+			</Text>
+		  ) : null}
+		  {time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
+		  {attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
+		</View>
+	  );
 	}
-);
-
+  );
+  
 const Description = React.memo(
 	({
 		attachment,
