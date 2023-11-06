@@ -1,40 +1,38 @@
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { sha256 } from 'js-sha256';
 import React from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
-import { connect } from 'react-redux';
-import { sha256 } from 'js-sha256';
 import RNPickerSelect from 'react-native-picker-select';
-import { dequal } from 'dequal';
-import omit from 'lodash/omit';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { connect } from 'react-redux';
 
-import Touch from '../../containers/Touch';
-import KeyboardView from '../../containers/KeyboardView';
-import sharedStyles from '../Styles';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { showErrorAlert, showConfirmationAlert, compareServerVersion } from '../../lib/methods/helpers';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { FormTextInput } from '../../containers/TextInput';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import I18n from '../../i18n';
-import Button from '../../containers/Button';
-import { AvatarWithEdit } from '../../containers/Avatar';
 import { setUser } from '../../actions/login';
-import * as HeaderButton from '../../containers/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import SafeAreaView from '../../containers/SafeAreaView';
-import styles from './styles';
-import { ProfileStackParamList } from '../../stacks/types';
-import { Services } from '../../lib/services';
-import { IApplicationState, IAvatarButton, IBaseScreen, IProfileParams, IUser } from '../../definitions';
-import { twoFactor } from '../../lib/services/twoFactor';
-import { TwoFactorMethods } from '../../definitions/ITotp';
-import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
-import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
+import { AvatarWithEdit } from '../../containers/Avatar';
+import Button from '../../containers/Button';
+import * as HeaderButton from '../../containers/HeaderButton';
+import KeyboardView from '../../containers/KeyboardView';
+import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
+import { FormTextInput } from '../../containers/TextInput';
+import { LISTENER } from '../../containers/Toast';
+import Touch from '../../containers/Touch';
+import { IApplicationState, IAvatarButton, IBaseScreen, IProfileParams, IUser } from '../../definitions';
+import { TwoFactorMethods } from '../../definitions/ITotp';
+import I18n from '../../i18n';
+import { themes } from '../../lib/constants';
+import { compareServerVersion, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import { Services } from '../../lib/services';
+import { twoFactor } from '../../lib/services/twoFactor';
+import { getUserSelector } from '../../selectors/login';
+import { ProfileStackParamList } from '../../stacks/types';
+import { TSupportedThemes, withTheme } from '../../theme';
+import sharedStyles from '../Styles';
+import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import styles from './styles';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -81,6 +79,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private newPassword?: TextInput | null;
 	private nickname?: TextInput | null;
 	private bio?: TextInput | null;
+	private focusListener = () => {};
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
@@ -116,20 +115,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	componentDidMount() {
-		this.init();
+		this.focusListener = this.props.navigation.addListener('focus', () => {
+			this.init();
+		});
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps: IProfileViewProps) {
-		const { user } = this.props;
-		/*
-		 * We need to ignore status because on Android ImagePicker
-		 * changes the activity, so, the user status changes and
-		 * it's resetting the avatar right after
-		 * select some image from gallery.
-		 */
-		if (!dequal(omit(user, ['status']), omit(nextProps.user, ['status']))) {
-			this.init(nextProps.user);
-		}
+	componentWillUnmount() {
+		this.focusListener();
 	}
 
 	init = (user?: IUser) => {
@@ -260,11 +252,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
+					this.setState({ ...this.state, customFields, ...params });
 				} else {
 					dispatch(setUser({ ...params }));
+					this.setState({ ...this.state, ...params });
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
-				this.init();
 			}
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
 		} catch (e: any) {
@@ -306,7 +299,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		if (I18n.isTranslated(e.error)) {
 			return showErrorAlert(I18n.t(e.error));
 		}
-		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
+		let msg = I18n.t('There_was_an_error_while_action', { action: I18n.t(action) });
+		let title = '';
+		if (typeof e.reason === 'string') {
+			title = msg;
+			msg = e.reason;
+		}
+		showErrorAlert(msg, title);
 	};
 
 	handleEditAvatar = () => {
