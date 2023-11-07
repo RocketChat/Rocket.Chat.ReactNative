@@ -24,8 +24,8 @@ interface IAudioPlayerProps {
 }
 
 const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, downloadState }: IAudioPlayerProps) => {
-	const loading = downloadState === 'loading';
-	const isReadyToPlay = downloadState === 'downloaded';
+	const isLoading = downloadState === 'loading';
+	const isDownloaded = downloadState === 'downloaded';
 
 	const [playbackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
 	const [paused, setPaused] = useState(true);
@@ -95,10 +95,10 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 
 	const onPress = () => {
 		onPlayButtonPress();
-		if (loading) {
+		if (isLoading) {
 			return;
 		}
-		if (isReadyToPlay) {
+		if (isDownloaded) {
 			togglePlayPause();
 		}
 	};
@@ -131,20 +131,20 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 	}, [navigation]);
 
 	let audioState: TAudioState = 'to-download';
-	if (loading) {
+	if (isLoading) {
 		audioState = 'loading';
 	}
-	if (isReadyToPlay && paused) {
+	if (isDownloaded && paused) {
 		audioState = 'paused';
 	}
-	if (isReadyToPlay && !paused) {
+	if (isDownloaded && !paused) {
 		audioState = 'playing';
 	}
 
 	return (
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
-			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isReadyToPlay} onChangeTime={setPosition} />
+			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isDownloaded} onChangeTime={setPosition} />
 			{audioState === 'playing' ? <PlaybackSpeed audioState={audioState} /> : null}
 		</View>
 	);

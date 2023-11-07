@@ -20,7 +20,7 @@ const PlaybackSpeed = ({ audioState }: { audioState: TAudioState }) => {
 
 	return (
 		<NativeButton
-			disabled={!(audioState === 'playing')}
+			disabled={audioState !== 'playing'}
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
 		>

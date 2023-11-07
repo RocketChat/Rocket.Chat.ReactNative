@@ -13,10 +13,7 @@ import Animated, {
 
 import styles from './styles';
 import { useTheme } from '../../theme';
-import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE } from './constants';
-
-const DEFAULT_TIME_LABEL = '00:00';
-const ACTIVE_OFFSET_X = 0.001;
+import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
