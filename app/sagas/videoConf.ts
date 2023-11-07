@@ -51,7 +51,8 @@ function* onDirectCall(payload: ICallInfo) {
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	const hasAnotherCall = calls.find(c => c.action === 'call');
 	if (hasAnotherCall && hasAnotherCall.callId !== payload.callId) return;
-	if (!currentCall) {
+	const foreground = yield* appSelector(state => state.app.foreground);
+	if (!currentCall && foreground) {
 		yield put(setVideoConfCall(payload));
 		EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, {
 			// @ts-ignore - Component props do not match Event emitter props
