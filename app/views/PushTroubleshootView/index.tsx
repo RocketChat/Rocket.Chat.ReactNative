@@ -12,9 +12,10 @@ import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import CustomListSection from './components/CustomListSection';
 import ListPercentage from './components/ListPercentage';
-import { isIOS, showErrorAlert } from '../../lib/methods/helpers';
+import { compareServerVersion, isIOS, showErrorAlert } from '../../lib/methods/helpers';
 import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { Services } from '../../lib/services';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
@@ -30,15 +31,19 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		isCommunityEdition,
 		isCustomPushGateway,
 		isPushGatewayConnected,
-		foreground
+		foreground,
+		serverVersion
 	} = useAppSelector(state => ({
 		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
 		isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
 		isPushGatewayConnected: state.troubleshootingNotification.isPushGatewayConnected,
 		isCustomPushGateway: state.troubleshootingNotification.isCustomPushGateway,
 		consumptionPercentage: state.troubleshootingNotification.consumptionPercentage,
-		foreground: state.app.foreground
+		foreground: state.app.foreground,
+		serverVersion: state.server.version
 	}));
+
+	const [testPushNotificationsPermission] = usePermissions(['test-push-notifications']);
 
 	useEffect(() => {
 		if (foreground) {
@@ -76,8 +81,16 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		}
 	};
 
-	const handleTestPushNotification = () => {
-		// do nothing
+	const handleTestPushNotification = async () => {
+		let message = '';
+		try {
+			const result = await Services.pushTest();
+			message = I18n.t('Your_push_was_sent_to_s_devices', { s: result.params[0] });
+		} catch (error: any) {
+			message = I18n.isTranslated(error?.error) ? I18n.t(error?.error) : error?.message;
+		} finally {
+			Alert.alert(I18n.t('Test_push_notification'), message);
+		}
 	};
 
 	let pushGatewayInfoDescription = 'Push_gateway_not_connected_description';
@@ -122,20 +135,22 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 					</List.Section>
 				) : null}
 
-				<CustomListSection
-					title={isCustomPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
-					statusColor={pushGatewayStatusColor}
-				>
-					<List.Separator />
-					<List.Item
-						title='Test_push_notification'
-						disabled={!isPushGatewayConnected}
-						onPress={handleTestPushNotification}
-						testID='push-troubleshoot-view-push-gateway-connection'
-					/>
-					<List.Separator />
-					<List.Info info={pushGatewayInfoDescription} />
-				</CustomListSection>
+				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.5.0') ? (
+					<CustomListSection
+						title={isCustomPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
+						statusColor={pushGatewayStatusColor}
+					>
+						<List.Separator />
+						<List.Item
+							title='Test_push_notification'
+							disabled={!isPushGatewayConnected || !testPushNotificationsPermission}
+							onPress={handleTestPushNotification}
+							testID='push-troubleshoot-view-push-gateway-connection'
+						/>
+						<List.Separator />
+						<List.Info info={pushGatewayInfoDescription} />
+					</CustomListSection>
+				) : null}
 
 				<List.Section title='Notification_delay'>
 					<List.Separator />

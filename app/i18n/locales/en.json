@@ -770,5 +770,6 @@
   "Jitsi_authentication_before_making_calls": "Jitsi may require authentication before making calls. To learn more about their policies, visit the Jitsi website.",
   "Jitsi_authentication_before_making_calls_ask_admin": "If you believe there are problems with Jitsi and its authentication, ask a workspace administrator for help.",
   "Continue": "Continue",
-  "Troubleshooting": "Troubleshooting"
+  "Troubleshooting": "Troubleshooting",
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
 }

@@ -901,6 +901,8 @@ export const removePushToken = (): Promise<boolean | void> => {
 	return Promise.resolve();
 };
 
+export const pushTest = (): Promise<{ message: string; params: number[] }> => sdk.methodCallWrapper('push_test');
+
 export const sendEmailCode = () => {
 	const { username } = reduxStore.getState().login.user as IUser;
 	// RC 3.1.0
