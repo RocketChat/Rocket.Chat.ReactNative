@@ -1,6 +1,6 @@
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View, Rationale } from 'react-native';
+import { BackHandler, FlatList, Keyboard, ScrollView, Text, View, Rationale } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
@@ -24,7 +24,7 @@ import styles from './styles';
 import ShareListHeader from './Header';
 import { TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
+import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
 
 interface IDataFromShare {
 	value: string;
@@ -282,8 +282,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	askForPermission = async (data: IDataFromShare[]) => {
 		const mediaIndex = data.findIndex(item => item.type === 'media');
 		if (mediaIndex !== -1) {
-			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, permission);
-			if (result !== PermissionsAndroid.RESULTS.GRANTED) {
+			const result = await askAndroidMediaPermissions();
+			if (!result) {
 				this.setState({ needsPermission: true });
 				return Promise.reject();
 			}
