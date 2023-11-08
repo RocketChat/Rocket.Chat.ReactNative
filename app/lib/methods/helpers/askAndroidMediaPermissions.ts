@@ -1,6 +1,6 @@
 import { Permission, PermissionsAndroid, Platform, Rationale } from 'react-native';
 
-import i18n from '../../i18n';
+import i18n from '../../../i18n';
 
 // Define a type for the permissions map
 type PermissionsMap = { [key: string]: string };
