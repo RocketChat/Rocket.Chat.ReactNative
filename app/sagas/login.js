@@ -41,7 +41,7 @@ import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
-import { askAndroidMediaPermissions, localAuthenticate, showErrorAlert } from '../lib/methods/helpers';
+import { localAuthenticate, showErrorAlert } from '../lib/methods/helpers';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
@@ -233,7 +233,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
-		yield call(askAndroidMediaPermissions);
 		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
