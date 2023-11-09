@@ -217,7 +217,7 @@
 		"jest-junit": "^15.0.0",
 		"metro-react-native-babel-preset": "^0.67.0",
 		"otp.js": "1.2.0",
-		"patch-package": "6.4.7",
+		"patch-package": "8.0.0",
 		"prettier": "^2.3.2",
 		"react-dom": "17.0.1",
 		"react-native-dotenv": "^3.4.8",
