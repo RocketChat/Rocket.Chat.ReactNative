@@ -75,15 +75,14 @@ export const RoomInfoButtons = ({
 }: IRoomInfoButtons): React.ReactElement => {
 	const room = roomFromRid || roomFromProps;
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
-	const isDmWithMyself = room?.uids && room.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
-
+	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
 	const isFromDm = room?.t === SubscriptionType.DIRECT;
 	const isDirectFromSaved = isDirect && fromRid && room;
 	const isIgnored = room?.ignored?.includes?.(roomUserId || '');
 	const isBlocked = room?.blocker;
 
 	const renderIgnoreUser = isDirectFromSaved && !isFromDm && !isDmWithMyself;
-	const renderBlockUser = isDirectFromSaved && isFromDm;
+	const renderBlockUser = isDirectFromSaved && isFromDm && !isDmWithMyself;
 
 	return (
 		<View style={styles.roomButtonsContainer}>
