@@ -5641,8 +5641,8 @@
   integrity sha512-WgaWLMCFWcmhRb7cEm1Q8GoD8lgpPuTniG27Qmfw8k86MuZfdHj+cdOfhvkmdNORxx181RhfksTO0k6IkRxh6A==
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
-  version "1.3.0-mobile"
-  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ad71e7daa5bcb1a3b457b5de20fb0fc86581d04d"
+  version "1.3.1-mobile"
+  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/501cd6ceec5f198af288aadc355f2fbbeda2b353"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
