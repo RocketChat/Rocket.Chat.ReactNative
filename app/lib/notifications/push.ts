@@ -39,8 +39,8 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 
 		Notifications.setCategories([notificationCategory]);
 
-		const acceptAction = new NotificationAction('ACCEPT_ACTION', 'foreground', 'Accept', true);
-		const rejectAction = new NotificationAction('REJECT_ACTION', 'foreground', 'Reject', true);
+		const acceptAction = new NotificationAction('ACCEPT_ACTION', 'foreground', I18n.t('accept'), true);
+		const rejectAction = new NotificationAction('DECLINE_ACTION', 'foreground', I18n.t('decline'), true);
 		const videoConfCategory = new NotificationCategory('VIDEOCONF', [acceptAction, rejectAction]);
 
 		Notifications.setCategories([videoConfCategory]);
