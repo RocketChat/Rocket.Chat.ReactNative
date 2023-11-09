@@ -3699,6 +3699,7 @@ const emojis: { [key: string]: string } = {
 	':lacrosse:': '🥍',
 	':large_blue_diamond:': '🔷',
 	':large_orange_diamond:': '🔶',
+	':large_blue_circle:': '🔵',
 	':last_quarter_moon:': '🌗',
 	':last_quarter_moon_with_face:': '🌜',
 	':satisfied:': '😆',
