@@ -17,7 +17,7 @@ import { E2eEndpoints } from './e2e';
 import { SubscriptionsEndpoints } from './subscriptions';
 import { VideoConferenceEndpoints } from './videoConference';
 import { CommandsEndpoints } from './commands';
-import { PushTokenEndpoints } from './pushToken';
+import { PushEndpoints } from './push';
 import { DirectoryEndpoint } from './directory';
 import { AutoTranslateEndpoints } from './autotranslate';
 
@@ -40,6 +40,6 @@ export type Endpoints = ChannelsEndpoints &
 	SubscriptionsEndpoints &
 	VideoConferenceEndpoints &
 	CommandsEndpoints &
-	PushTokenEndpoints &
+	PushEndpoints &
 	DirectoryEndpoint &
 	AutoTranslateEndpoints;
