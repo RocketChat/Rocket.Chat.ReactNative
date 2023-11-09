@@ -39,7 +39,7 @@ type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
 const RoomInfoView = (): React.ReactElement => {
 	const {
-		params: { rid, t, fromRid, member, room: roomParam, showCloseModal }
+		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
 	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
 
@@ -157,7 +157,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadUser = async () => {
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = getUidDirectMessage(room || { rid, t });
+				const roomUserId = getUidDirectMessage(room || { rid, t, itsMe });
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
