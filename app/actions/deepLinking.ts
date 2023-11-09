@@ -23,3 +23,10 @@ export function deepLinkingOpen(params: Partial<IParams>): IDeepLinkingOpen {
 		params
 	};
 }
+
+export function deepLinkingClickCallPush(params: any): IDeepLinkingOpen {
+	return {
+		type: DEEP_LINKING.OPEN_VIDEO_CONF,
+		params
+	};
+}

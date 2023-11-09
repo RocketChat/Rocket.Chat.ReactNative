@@ -12,4 +12,5 @@ export interface INotification {
 		soundname: string;
 	};
 	identifier: string;
+	action?: { identifier: 'REPLY_ACTION' | 'ACCEPT_ACTION' | 'REJECT_ACTION' };
 }
