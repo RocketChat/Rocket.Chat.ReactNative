@@ -692,9 +692,9 @@
   "Call_ended": "Call ended",
   "Call_was_not_answered": "Call was not answered",
   "Call_rejected": "Call rejected",
-  "Call_back": "Call Back",
-  "Call_again": "Call Again",
-  "Call_ongoing": "Call Ongoing",
+  "Call_back": "Call back",
+  "Call_again": "Call again",
+  "Call_ongoing": "Call ongoing",
   "Call_issue": "Call issue",
   "Joined": "Joined",
   "Calling": "Calling",
@@ -771,5 +771,10 @@
   "Jitsi_authentication_before_making_calls_ask_admin": "If you believe there are problems with Jitsi and its authentication, ask a workspace administrator for help.",
   "Continue": "Continue",
   "Troubleshooting": "Troubleshooting",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
+  "Room_not_found": "Room not found",
+  "The_room_does_not_exist": "The room does not exist or you may not have access permission",
+  "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
+  "Supported_versions_expired_description": "An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.",
+  "Supported_versions_warning_update_required": "Update required"
 }

@@ -17,6 +17,7 @@ import { TActionUserTyping } from '../../actions/usersTyping';
 import { TActionPermissions } from '../../actions/permissions';
 import { TActionEnterpriseModules } from '../../actions/enterpriseModules';
 import { TActionVideoConf } from '../../actions/videoConf';
+import { TActionSupportedVersions } from '../../actions/supportedVersions';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { IApp } from '../../reducers/app';
@@ -40,6 +41,7 @@ import { TActionUsersRoles } from '../../actions/usersRoles';
 import { TUsersRoles } from '../../reducers/usersRoles';
 import { ITroubleshootingNotification } from '../../reducers/troubleshootingNotification';
 import { TActionTroubleshootingNotification } from '../../actions/troubleshootingNotification';
+import { ISupportedVersionsState } from '../../reducers/supportedVersions';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -66,6 +68,7 @@ export interface IApplicationState {
 	videoConf: IVideoConf;
 	usersRoles: TUsersRoles;
 	troubleshootingNotification: ITroubleshootingNotification;
+	supportedVersions: ISupportedVersionsState;
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -87,4 +90,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionEnterpriseModules &
 	TActionVideoConf &
 	TActionUsersRoles &
-	TActionTroubleshootingNotification;
+	TActionTroubleshootingNotification &
+	TActionSupportedVersions;

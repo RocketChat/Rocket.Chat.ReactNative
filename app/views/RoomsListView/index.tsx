@@ -26,7 +26,7 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { IApplicationState, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, ISubscription, IUser, TSVStatus, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
@@ -44,8 +44,9 @@ import {
 	isTablet,
 	compareServerVersion
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
+import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
+import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -73,6 +74,7 @@ interface IRoomsListViewProps {
 	useRealName: boolean;
 	isMasterDetail: boolean;
 	notificationPresenceCap: boolean;
+	supportedVersionsStatus: TSVStatus;
 	subscribedRoom: string;
 	width: number;
 	insets: {
@@ -145,7 +147,8 @@ const shouldUpdateProps = [
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
 	'createDiscussionPermission',
-	'inAlertNotification'
+	'inAlertNotification',
+	'supportedVersionsStatus'
 ];
 
 const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
@@ -332,7 +335,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDiscussionPermission,
 			showAvatar,
 			displayMode,
-			inAlertNotification
+			inAlertNotification,
+			supportedVersionsStatus
 		} = this.props;
 		const { item } = this.state;
 
@@ -356,7 +360,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
 			notificationPresenceCap !== prevProps.notificationPresenceCap ||
-			inAlertNotification !== prevProps.inAlertNotification
+			inAlertNotification !== prevProps.inAlertNotification ||
+			supportedVersionsStatus !== prevProps.supportedVersionsStatus
 		) {
 			this.setHeader();
 		}
@@ -409,7 +414,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, inAlertNotification, theme } = this.props;
+		const { navigation, isMasterDetail, notificationPresenceCap, inAlertNotification, supportedVersionsStatus, theme } =
+			this.props;
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
@@ -425,6 +431,16 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			};
 		}
 
+		const getBadge = () => {
+			if (supportedVersionsStatus === 'warn') {
+				return <HeaderButton.BadgeWarn color={colors[theme].dangerColor} />;
+			}
+			if (notificationPresenceCap) {
+				return <HeaderButton.BadgeWarn color={STATUS_COLORS.disabled} />;
+			}
+			return null;
+		};
+
 		return {
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
@@ -439,7 +455,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
-					badge={() => (notificationPresenceCap ? <HeaderButton.BadgeWarn /> : null)}
+					badge={() => getBadge()}
+					disabled={supportedVersionsStatus === 'expired'}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
@@ -452,10 +469,25 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						color={inAlertNotification ? themes[theme].fontDanger : themes[theme].headerTintColor}
 					/>
 					{canCreateRoom ? (
-						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
+						<HeaderButton.Item
+							iconName='create'
+							onPress={this.goToNewMessage}
+							testID='rooms-list-view-create-channel'
+							disabled={supportedVersionsStatus === 'expired'}
+						/>
 					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
-					<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
+					<HeaderButton.Item
+						iconName='search'
+						onPress={this.initSearching}
+						testID='rooms-list-view-search'
+						disabled={supportedVersionsStatus === 'expired'}
+					/>
+					<HeaderButton.Item
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
+						disabled={supportedVersionsStatus === 'expired'}
+					/>
 				</HeaderButton.Container>
 			)
 		};
@@ -914,12 +946,16 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode } = this.props;
+		const { theme, refreshing, displayMode, supportedVersionsStatus } = this.props;
 
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
 			return <ActivityIndicator />;
+		}
+
+		if (supportedVersionsStatus === 'expired') {
+			return <SupportedVersionsExpired />;
 		}
 
 		return (
@@ -967,6 +1003,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	notificationPresenceCap: state.app.notificationPresenceCap,
+	supportedVersionsStatus: state.supportedVersions.status,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,

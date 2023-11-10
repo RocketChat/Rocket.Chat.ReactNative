@@ -71,9 +71,7 @@ const Button = ({
 			{loading ? (
 				<ActivityIndicator color={textColor} />
 			) : (
-				<Text style={[styles.text, { color: textColor, fontSize }, styleText]} accessibilityLabel={title}>
-					{title}
-				</Text>
+				<Text style={[styles.text, { color: textColor, fontSize }, styleText]}>{title}</Text>
 			)}
 		</Touchable>
 	);

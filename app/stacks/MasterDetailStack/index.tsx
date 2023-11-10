@@ -77,6 +77,7 @@ import {
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
 import { TNavigation } from '../stackType';
+import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -186,6 +187,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 				<ModalStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 				<ModalStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
+				<ModalStack.Screen name='SupportedVersionsWarning' component={SupportedVersionsWarning} />
 			</ModalStack.Navigator>
 		</ModalContainer>
 	);

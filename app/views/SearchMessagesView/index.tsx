@@ -55,6 +55,7 @@ export interface IRoomInfoParam {
 	rid: string;
 	t: SubscriptionType;
 	joined?: boolean;
+	itsMe?: boolean;
 }
 
 interface INavigationOption {

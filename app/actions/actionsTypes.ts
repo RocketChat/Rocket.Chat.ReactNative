@@ -97,3 +97,4 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 	'SET_CALLING'
 ]);
 export const TROUBLESHOOTING_NOTIFICATION = createRequestTypes('TROUBLESHOOTING_NOTIFICATION', ['REQUEST', 'SET']);
+export const SUPPORTED_VERSIONS = createRequestTypes('SUPPORTED_VERSIONS', ['SET']);
