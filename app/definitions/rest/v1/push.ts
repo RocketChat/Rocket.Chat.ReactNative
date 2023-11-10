@@ -1,4 +1,10 @@
-export type PushTokenEndpoints = {
+type TPushInfo = {
+	pushGatewayEnabled: boolean;
+	defaultPushGateway: boolean;
+	success: boolean;
+};
+
+export type PushEndpoints = {
 	'push.token': {
 		POST: (params: { value: string; type: string; appName: string }) => {
 			result: {
@@ -8,5 +14,8 @@ export type PushTokenEndpoints = {
 				userId: string;
 			};
 		};
+	};
+	'push.info': {
+		GET: () => TPushInfo;
 	};
 };

@@ -23,12 +23,3 @@ export function setTroubleshootingNotification(payload: Partial<ITroubleshooting
 		payload
 	};
 }
-
-export function setInAlertTroubleshootingNotification(
-	payload: Pick<ITroubleshootingNotification, 'inAlertNotification'>
-): TSetInAlertTroubleshootingNotification {
-	return {
-		type: TROUBLESHOOTING_NOTIFICATION.SET_IN_ALERT,
-		payload
-	};
-}

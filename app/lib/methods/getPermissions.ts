@@ -60,7 +60,8 @@ export const SUPPORTED_PERMISSIONS = [
 	'view-canned-responses',
 	'mobile-upload-file',
 	'delete-own-message',
-	'call-management'
+	'call-management',
+	'test-push-notifications'
 ] as const;
 
 export async function setPermissions(): Promise<void> {

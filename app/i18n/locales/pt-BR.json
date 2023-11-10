@@ -756,5 +756,6 @@
   "decline": "Recusar",
   "accept": "Aceitar",
   "Incoming_call_from": "Chamada recebida de",
-  "Call_started": "Chamada Iniciada"
+  "Call_started": "Chamada Iniciada",
+  "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos"
 }
