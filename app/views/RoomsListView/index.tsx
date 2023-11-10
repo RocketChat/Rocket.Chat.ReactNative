@@ -15,7 +15,6 @@ import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/Roo
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -200,8 +199,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { navigation, dispatch } = this.props;
 		this.handleHasPermission();
 		this.mounted = true;
-
-		dispatch(requestTroubleshootingNotification());
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			this.animated = true;
 			// Check if there were changes with sort preference, then call getSubscription to remount the list

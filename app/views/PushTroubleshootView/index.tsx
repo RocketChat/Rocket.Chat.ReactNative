@@ -11,11 +11,12 @@ import I18n from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import CustomListSection from './components/CustomListSection';
-import ListPercentage from './components/ListPercentage';
 import { compareServerVersion, isIOS, showErrorAlert } from '../../lib/methods/helpers';
 import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { Services } from '../../lib/services';
+// TODO: This will be used in the near future when the consumption percentage is implemented on the server.
+// import ListPercentage from './components/ListPercentage';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
@@ -25,23 +26,18 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	const { colors } = useTheme();
 
 	const dispatch = useDispatch();
-	const {
-		consumptionPercentage,
-		deviceNotificationEnabled,
-		isCommunityEdition,
-		isCustomPushGateway,
-		isPushGatewayConnected,
-		foreground,
-		serverVersion
-	} = useAppSelector(state => ({
-		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
-		isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
-		isPushGatewayConnected: state.troubleshootingNotification.isPushGatewayConnected,
-		isCustomPushGateway: state.troubleshootingNotification.isCustomPushGateway,
-		consumptionPercentage: state.troubleshootingNotification.consumptionPercentage,
-		foreground: state.app.foreground,
-		serverVersion: state.server.version
-	}));
+	const { deviceNotificationEnabled, defaultPushGateway, pushGatewayEnabled, foreground, serverVersion } = useAppSelector(
+		state => ({
+			deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
+			pushGatewayEnabled: state.troubleshootingNotification.pushGatewayEnabled,
+			defaultPushGateway: state.troubleshootingNotification.defaultPushGateway,
+			foreground: state.app.foreground,
+			serverVersion: state.server.version
+			// TODO: This will be used in the near future when the consumption percentage is implemented on the server.
+			// isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
+			// consumptionPercentage: state.troubleshootingNotification.consumptionPercentage,
+		})
+	);
 
 	const [testPushNotificationsPermission] = usePermissions(['test-push-notifications']);
 
@@ -69,9 +65,10 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		);
 	};
 
-	const alertWorkspaceConsumption = () => {
-		Alert.alert(I18n.t('Push_consumption_alert_title'), I18n.t('Push_consumption_alert_description'));
-	};
+	// TODO: This will be used in the near future when the consumption percentage is implemented on the server.
+	// const alertWorkspaceConsumption = () => {
+	// 	Alert.alert(I18n.t('Push_consumption_alert_title'), I18n.t('Push_consumption_alert_description'));
+	// };
 
 	const goToNotificationSettings = () => {
 		if (isIOS) {
@@ -95,11 +92,11 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 
 	let pushGatewayInfoDescription = 'Push_gateway_not_connected_description';
 	let pushGatewayStatusColor = colors.userPresenceBusy;
-	if (isPushGatewayConnected) {
+	if (pushGatewayEnabled) {
 		pushGatewayStatusColor = colors.userPresenceOnline;
 		pushGatewayInfoDescription = 'Push_gateway_connected_description';
 	}
-	if (isPushGatewayConnected && isCustomPushGateway) {
+	if (pushGatewayEnabled && !defaultPushGateway) {
 		pushGatewayStatusColor = colors.badgeBackgroundLevel3;
 		pushGatewayInfoDescription = 'Custom_push_gateway_connected_description';
 	}
@@ -121,6 +118,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 					<List.Separator />
 				</CustomListSection>
 
+				{/* TODO: This will be used in the near future when the consumption percentage is implemented on the server.
 				{isCommunityEdition ? (
 					<List.Section title='Community_edition_push_quota'>
 						<List.Separator />
@@ -133,17 +131,17 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 						<List.Separator />
 						<List.Info info='Workspace_consumption_description' />
 					</List.Section>
-				) : null}
+				) : null} */}
 
 				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.5.0') ? (
 					<CustomListSection
-						title={isCustomPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
+						title={!defaultPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
 						statusColor={pushGatewayStatusColor}
 					>
 						<List.Separator />
 						<List.Item
 							title='Test_push_notification'
-							disabled={!isPushGatewayConnected || !testPushNotificationsPermission}
+							disabled={!pushGatewayEnabled || !testPushNotificationsPermission}
 							onPress={handleTestPushNotification}
 							testID='push-troubleshoot-view-push-gateway-connection'
 						/>

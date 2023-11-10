@@ -3,34 +3,39 @@ import { put, takeEvery } from 'redux-saga/effects';
 import { call } from 'typed-redux-saga';
 import notifee from '@notifee/react-native';
 
-import { ITroubleshootingNotification } from '../reducers/troubleshootingNotification';
 import { TROUBLESHOOTING_NOTIFICATION } from '../actions/actionsTypes';
-import { setInAlertTroubleshootingNotification, setTroubleshootingNotification } from '../actions/troubleshootingNotification';
-import { appSelector } from '../lib/hooks';
+import { setTroubleshootingNotification } from '../actions/troubleshootingNotification';
+import { pushInfo } from '../lib/services/restApi';
+import log from '../lib/methods/helpers/log';
 
 interface IGenericAction extends Action {
 	type: string;
 }
 
-type TSetGeneric = IGenericAction & {
-	payload: ITroubleshootingNotification;
-};
-
 function* request() {
-	const settings = yield* call(notifee.getNotificationSettings);
-	yield put(setTroubleshootingNotification({ deviceNotificationEnabled: !!settings.authorizationStatus }));
-}
+	let deviceNotificationEnabled = false;
+	let defaultPushGateway = false;
+	let pushGatewayEnabled = false;
 
-function* setNotification({ payload }: { payload: ITroubleshootingNotification }) {
-	const troubleshootingNotification = yield* appSelector(state => state.troubleshootingNotification);
-	const newState = { ...troubleshootingNotification, ...payload };
-	// TODO: add properly the conditions to set inAlertNotification bias on each expected settings
-	// For now there is only the deviceNotificationEnabled properly, waiting for the next settings to fix
-	const inAlertNotification = !newState.deviceNotificationEnabled;
-	yield put(setInAlertTroubleshootingNotification({ inAlertNotification }));
+	try {
+		const { authorizationStatus } = yield* call(notifee.getNotificationSettings);
+		deviceNotificationEnabled = authorizationStatus > 0;
+		const pushInfoResult = yield* call(pushInfo);
+		if (pushInfoResult.success) {
+			pushGatewayEnabled = pushInfoResult.pushGatewayEnabled;
+			defaultPushGateway = pushInfoResult.defaultPushGateway;
+		}
+		// If Any of the items that can have red values: notification settings, CE quota, or gateway connection; the red icon should show.
+		// Then inAlertNotification has to be true
+		const inAlertNotification = !deviceNotificationEnabled || !pushGatewayEnabled;
+		yield put(
+			setTroubleshootingNotification({ deviceNotificationEnabled, defaultPushGateway, pushGatewayEnabled, inAlertNotification })
+		);
+	} catch (e) {
+		log(e);
+	}
 }
 
 export default function* root(): Generator {
 	yield takeEvery<IGenericAction>(TROUBLESHOOTING_NOTIFICATION.REQUEST, request);
-	yield takeEvery<TSetGeneric>(TROUBLESHOOTING_NOTIFICATION.SET, setNotification);
 }

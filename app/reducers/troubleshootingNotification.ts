@@ -3,30 +3,24 @@ import { TActionTroubleshootingNotification } from '../actions/troubleshootingNo
 
 export interface ITroubleshootingNotification {
 	deviceNotificationEnabled: boolean;
-	isCommunityEdition: boolean;
-	isPushGatewayConnected: boolean;
-	isCustomPushGateway: boolean;
-	consumptionPercentage: number;
+	pushGatewayEnabled: boolean;
+	defaultPushGateway: boolean;
 	inAlertNotification: boolean;
 }
 
 export const initialState: ITroubleshootingNotification = {
-	consumptionPercentage: 0,
 	deviceNotificationEnabled: false,
-	isCommunityEdition: false,
-	isPushGatewayConnected: false,
-	isCustomPushGateway: false,
+	pushGatewayEnabled: false,
+	defaultPushGateway: false,
 	inAlertNotification: false
+	// TODO: This will be used in the near future when the consumption percentage is implemented on the server.
+	// consumptionPercentage: 0,
+	// isCommunityEdition: false,
 };
 
 export default (state = initialState, action: TActionTroubleshootingNotification): ITroubleshootingNotification => {
 	switch (action.type) {
 		case TROUBLESHOOTING_NOTIFICATION.SET:
-			return {
-				...state,
-				...action.payload
-			};
-		case TROUBLESHOOTING_NOTIFICATION.SET_IN_ALERT:
 			return {
 				...state,
 				...action.payload
