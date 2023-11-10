@@ -16,7 +16,6 @@ function* request() {
 	let deviceNotificationEnabled = false;
 	let defaultPushGateway = false;
 	let pushGatewayEnabled = false;
-
 	try {
 		const { authorizationStatus } = yield* call(notifee.getNotificationSettings);
 		deviceNotificationEnabled = authorizationStatus > 0;
@@ -25,14 +24,15 @@ function* request() {
 			pushGatewayEnabled = pushInfoResult.pushGatewayEnabled;
 			defaultPushGateway = pushInfoResult.defaultPushGateway;
 		}
+	} catch (e) {
+		log(e);
+	} finally {
 		// If Any of the items that can have red values: notification settings, CE quota, or gateway connection; the red icon should show.
 		// Then inAlertNotification has to be true
 		const inAlertNotification = !deviceNotificationEnabled || !pushGatewayEnabled;
 		yield put(
 			setTroubleshootingNotification({ deviceNotificationEnabled, defaultPushGateway, pushGatewayEnabled, inAlertNotification })
 		);
-	} catch (e) {
-		log(e);
 	}
 }
 
