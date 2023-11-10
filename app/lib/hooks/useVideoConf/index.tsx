@@ -45,7 +45,7 @@ export const useVideoConf = (
 				return true;
 			} catch (error: any) {
 				const isAdmin = !!user.roles?.includes('admin');
-				handleErrors(isAdmin, error?.error || 'NOT_CONFIGURED');
+				handleErrors(isAdmin, error?.data?.error || availabilityErrors.NOT_CONFIGURED);
 				return false;
 			}
 		}
