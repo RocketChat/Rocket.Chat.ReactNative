@@ -19,13 +19,14 @@ class AudioPlayer {
 		this.audioPlaying = '';
 	}
 
-	async loadAudio({ audioKey, uri }: { audioKey: string; uri: string }): Promise<Audio.Sound> {
+	async loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
+		const audioKey = `${msgId}-${rid}-${uri}`;
 		if (this.audioQueue[audioKey]) {
-			return this.audioQueue[audioKey];
+			return audioKey;
 		}
 		const { sound } = await Audio.Sound.createAsync({ uri }, { androidImplementation: 'MediaPlayer' });
 		this.audioQueue[audioKey] = sound;
-		return sound;
+		return audioKey;
 	}
 
 	onPlaybackStatusUpdate(audioKey: string, status: AVPlaybackStatus, callback: (status: AVPlaybackStatus) => void) {
@@ -101,6 +102,27 @@ class AudioPlayer {
 		if (this.audioPlaying) {
 			await this.unloadAudio(this.audioPlaying);
 		}
+	}
+
+	async unloadRoomAudios(rid?: string) {
+		if (!rid) {
+			return;
+		}
+		const regExp = new RegExp(rid);
+		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => regExp.test(audioKey));
+		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
+		try {
+			await Promise.all(
+				roomAudiosLoaded.map(async audio => {
+					await audio?.stopAsync();
+					await audio?.unloadAsync();
+				})
+			);
+		} catch {
+			// Do nothing
+		}
+		roomAudioKeysLoaded.forEach(key => delete this.audioQueue[key]);
+		this.audioPlaying = '';
 	}
 
 	async unloadAllAudios() {

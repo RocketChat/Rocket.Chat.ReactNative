@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { InteractionManager, View } from 'react-native';
 import { AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
@@ -21,10 +21,19 @@ interface IAudioPlayerProps {
 	disabled?: boolean;
 	onPlayButtonPress?: Function;
 	downloadState: TDownloadState;
+	rid: string;
+	// It's optional when comes from MessagesView
 	msgId?: string;
 }
 
-const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, downloadState, msgId }: IAudioPlayerProps) => {
+const AudioPlayer = ({
+	fileUri,
+	disabled = false,
+	onPlayButtonPress = () => {},
+	downloadState,
+	msgId,
+	rid
+}: IAudioPlayerProps) => {
 	const isLoading = downloadState === 'loading';
 	const isDownloaded = downloadState === 'downloaded';
 
@@ -105,13 +114,11 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 	};
 
 	useEffect(() => {
-		const loadAudio = async (uri: string) => {
-			audioUri.current = `${msgId}-${uri}`;
-			await audioPlayer.loadAudio({ audioKey: audioUri.current, uri });
+		InteractionManager.runAfterInteractions(async () => {
+			audioUri.current = await audioPlayer.loadAudio({ msgId, rid, uri: fileUri });
 			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
 			audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
-		};
-		loadAudio(fileUri);
+		});
 	}, [fileUri]);
 
 	useEffect(() => {

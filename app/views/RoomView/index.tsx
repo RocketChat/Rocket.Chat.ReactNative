@@ -407,6 +407,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	async componentWillUnmount() {
 		const { editing, room } = this.state;
+		if (!this.tmid) {
+			// TODO: Refactor when audio becomes global
+			await audioPlayer.unloadRoomAudios(this.rid);
+		}
 		const db = database.active;
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {

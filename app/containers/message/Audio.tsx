@@ -24,7 +24,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const [downloadState, setDownloadState] = useState<TDownloadState>('loading');
 	const [fileUri, setFileUri] = useState('');
 
-	const { baseUrl, user, id } = useContext(MessageContext);
+	const { baseUrl, user, id, rid } = useContext(MessageContext);
 
 	const { cdnPrefix } = useAppSelector(state => ({
 		cdnPrefix: state.settings.CDN_PREFIX as string
@@ -112,6 +112,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 				downloadState={downloadState}
 				disabled={isReply}
 				onPlayButtonPress={onPlayButtonPress}
+				rid={rid}
 			/>
 		</>
 	);
