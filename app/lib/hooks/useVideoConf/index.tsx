@@ -20,7 +20,9 @@ const availabilityErrors = {
 
 const handleErrors = (isAdmin: boolean, error: keyof typeof availabilityErrors) => {
 	const key = isAdmin ? `admin-${error}` : error;
-	showErrorAlert(i18n.t(`${key}-body`), i18n.t(`${key}-header`));
+	const body = `${key}-body`;
+	const header = `${key}-header`;
+	if (i18n.isTranslated(body) && i18n.isTranslated(header)) showErrorAlert(i18n.t(body), i18n.t(header));
 };
 
 export const useVideoConf = (
