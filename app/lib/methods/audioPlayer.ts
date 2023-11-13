@@ -81,7 +81,11 @@ class AudioPlayer {
 	}
 
 	async setRateAsync(uri: string, value = 1.0) {
-		await this.audioQueue[uri].setRateAsync(value, true);
+		try {
+			await this.audioQueue[uri].setRateAsync(value, true);
+		} catch {
+			// Do nothing
+		}
 	}
 
 	async unloadAudio(uri: string) {
