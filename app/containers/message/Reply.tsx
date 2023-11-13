@@ -96,8 +96,8 @@ interface IMessageReply {
 
 const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
-	  const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format('YYYY-MM-DD HH:mm:ss') : null; // Modify the format here
-	  return (
+	const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt); 
+	 return (
 		<View style={styles.authorContainer}>
 		  {attachment.author_name ? (
 			<Text numberOfLines={1} style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>
