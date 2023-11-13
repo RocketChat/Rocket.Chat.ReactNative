@@ -21,9 +21,10 @@ interface IAudioPlayerProps {
 	disabled?: boolean;
 	onPlayButtonPress?: Function;
 	downloadState: TDownloadState;
+	msgId?: string;
 }
 
-const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, downloadState }: IAudioPlayerProps) => {
+const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, downloadState, msgId }: IAudioPlayerProps) => {
 	const isLoading = downloadState === 'loading';
 	const isDownloaded = downloadState === 'downloaded';
 
@@ -104,10 +105,10 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 	};
 
 	useEffect(() => {
-		const loadAudio = async (audio: string) => {
-			await audioPlayer.loadAudio(audio);
-			audioUri.current = audio;
-			audioPlayer.setOnPlaybackStatusUpdate(audio, onPlaybackStatusUpdate);
+		const loadAudio = async (uri: string) => {
+			audioUri.current = `${msgId}-${uri}`;
+			await audioPlayer.loadAudio({ audioKey: audioUri.current, uri });
+			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
 			audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
 		};
 		loadAudio(fileUri);

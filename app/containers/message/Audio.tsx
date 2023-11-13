@@ -24,7 +24,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const [downloadState, setDownloadState] = useState<TDownloadState>('loading');
 	const [fileUri, setFileUri] = useState('');
 
-	const { baseUrl, user } = useContext(MessageContext);
+	const { baseUrl, user, id } = useContext(MessageContext);
 
 	const { cdnPrefix } = useAppSelector(state => ({
 		cdnPrefix: state.settings.CDN_PREFIX as string
@@ -106,7 +106,13 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<AudioPlayer fileUri={fileUri} downloadState={downloadState} disabled={isReply} onPlayButtonPress={onPlayButtonPress} />
+			<AudioPlayer
+				msgId={id}
+				fileUri={fileUri}
+				downloadState={downloadState}
+				disabled={isReply}
+				onPlayButtonPress={onPlayButtonPress}
+			/>
 		</>
 	);
 };

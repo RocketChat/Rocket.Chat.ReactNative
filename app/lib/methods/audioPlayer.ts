@@ -11,7 +11,7 @@ const AUDIO_MODE = {
 };
 
 class AudioPlayer {
-	private audioQueue: { [uri: string]: Audio.Sound };
+	private audioQueue: { [audioKey: string]: Audio.Sound };
 	private audioPlaying: string;
 
 	constructor() {
@@ -19,27 +19,27 @@ class AudioPlayer {
 		this.audioPlaying = '';
 	}
 
-	async loadAudio(uri: string): Promise<Audio.Sound> {
-		if (this.audioQueue[uri]) {
-			return this.audioQueue[uri];
+	async loadAudio({ audioKey, uri }: { audioKey: string; uri: string }): Promise<Audio.Sound> {
+		if (this.audioQueue[audioKey]) {
+			return this.audioQueue[audioKey];
 		}
 		const { sound } = await Audio.Sound.createAsync({ uri }, { androidImplementation: 'MediaPlayer' });
-		this.audioQueue[uri] = sound;
+		this.audioQueue[audioKey] = sound;
 		return sound;
 	}
 
-	onPlaybackStatusUpdate(uri: string, status: AVPlaybackStatus, callback: (status: AVPlaybackStatus) => void) {
+	onPlaybackStatusUpdate(audioKey: string, status: AVPlaybackStatus, callback: (status: AVPlaybackStatus) => void) {
 		if (status) {
 			callback(status);
-			this.onEnd(uri, status);
+			this.onEnd(audioKey, status);
 		}
 	}
 
-	async onEnd(uri: string, status: AVPlaybackStatus) {
+	async onEnd(audioKey: string, status: AVPlaybackStatus) {
 		if (status.isLoaded) {
 			if (status.didJustFinish) {
 				try {
-					await this.audioQueue[uri]?.stopAsync();
+					await this.audioQueue[audioKey]?.stopAsync();
 					this.audioPlaying = '';
 				} catch {
 					// do nothing
@@ -48,21 +48,23 @@ class AudioPlayer {
 		}
 	}
 
-	setOnPlaybackStatusUpdate(uri: string, callback: (status: AVPlaybackStatus) => void): void {
-		return this.audioQueue[uri]?.setOnPlaybackStatusUpdate(status => this.onPlaybackStatusUpdate(uri, status, callback));
+	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AVPlaybackStatus) => void): void {
+		return this.audioQueue[audioKey]?.setOnPlaybackStatusUpdate(status =>
+			this.onPlaybackStatusUpdate(audioKey, status, callback)
+		);
 	}
 
-	async playAudio(uri: string) {
+	async playAudio(audioKey: string) {
 		if (this.audioPlaying) {
 			await this.pauseAudio(this.audioPlaying);
 		}
 		await Audio.setAudioModeAsync(AUDIO_MODE);
-		await this.audioQueue[uri]?.playAsync();
-		this.audioPlaying = uri;
+		await this.audioQueue[audioKey]?.playAsync();
+		this.audioPlaying = audioKey;
 	}
 
-	async pauseAudio(uri: string) {
-		await this.audioQueue[uri]?.pauseAsync();
+	async pauseAudio(audioKey: string) {
+		await this.audioQueue[audioKey]?.pauseAsync();
 		this.audioPlaying = '';
 	}
 
@@ -72,26 +74,26 @@ class AudioPlayer {
 		}
 	}
 
-	async setPositionAsync(uri: string, time: number) {
+	async setPositionAsync(audioKey: string, time: number) {
 		try {
-			await this.audioQueue[uri]?.setPositionAsync(time);
+			await this.audioQueue[audioKey]?.setPositionAsync(time);
 		} catch {
 			// Do nothing
 		}
 	}
 
-	async setRateAsync(uri: string, value = 1.0) {
+	async setRateAsync(audioKey: string, value = 1.0) {
 		try {
-			await this.audioQueue[uri].setRateAsync(value, true);
+			await this.audioQueue[audioKey].setRateAsync(value, true);
 		} catch {
 			// Do nothing
 		}
 	}
 
-	async unloadAudio(uri: string) {
-		await this.audioQueue[uri]?.stopAsync();
-		await this.audioQueue[uri]?.unloadAsync();
-		delete this.audioQueue[uri];
+	async unloadAudio(audioKey: string) {
+		await this.audioQueue[audioKey]?.stopAsync();
+		await this.audioQueue[audioKey]?.unloadAsync();
+		delete this.audioQueue[audioKey];
 		this.audioPlaying = '';
 	}
 
