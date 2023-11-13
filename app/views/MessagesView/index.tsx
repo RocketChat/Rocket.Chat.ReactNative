@@ -131,10 +131,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	};
 
 	navToRoomInfo = (navParam: IRoomInfoParam) => {
-		const { navigation, user } = this.props;
-		if (navParam.rid === user.id) {
-			return;
-		}
+		const { navigation } = this.props;
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
