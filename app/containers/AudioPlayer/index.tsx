@@ -108,6 +108,7 @@ const AudioPlayer = ({ fileUri, disabled = false, onPlayButtonPress = () => {}, 
 			await audioPlayer.loadAudio(audio);
 			audioUri.current = audio;
 			audioPlayer.setOnPlaybackStatusUpdate(audio, onPlaybackStatusUpdate);
+			audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
 		};
 		loadAudio(fileUri);
 	}, [fileUri]);
