@@ -10,6 +10,7 @@ import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 import { getServerById } from '../database/services/Server';
+import log from './helpers/log';
 
 interface IServerInfoFailure {
 	success: false;
@@ -75,6 +76,14 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 
 				const cloudInfo = await getCloudInfo(server);
 
+				// Allows airgapped servers to use the app until enforcementStartDate
+				if (!cloudInfo) {
+					return {
+						...jsonRes,
+						success: true
+					};
+				}
+
 				// Makes use of signed JWT to get supported versions
 				const supportedVersionsCloud = verifyJWT(cloudInfo?.signed);
 
@@ -119,7 +128,12 @@ const getUniqueId = async (server: string): Promise<string> => {
 };
 
 export const getCloudInfo = async (domain: string): Promise<TCloudInfo | null> => {
-	const uniqueId = await getUniqueId(domain);
-	const response = await getSupportedVersionsCloud(uniqueId, domain);
-	return response.json() as unknown as TCloudInfo;
+	try {
+		const uniqueId = await getUniqueId(domain);
+		const response = await getSupportedVersionsCloud(uniqueId, domain);
+		return response.json() as unknown as TCloudInfo;
+	} catch (e) {
+		log(e);
+		return null;
+	}
 };
