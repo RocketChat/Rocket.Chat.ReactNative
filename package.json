@@ -44,7 +44,7 @@
 		"@nozbe/watermelondb": "0.23.0",
 		"@react-native-async-storage/async-storage": "^1.17.11",
 		"@react-native-camera-roll/camera-roll": "5.6.1",
-		"@react-native-clipboard/clipboard": "^1.8.5",
+		"@react-native-clipboard/clipboard": "^1.12.1",
 		"@react-native-community/art": "^1.2.0",
 		"@react-native-community/blur": "^4.1.0",
 		"@react-native-community/datetimepicker": "3.5.2",
