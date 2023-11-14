@@ -12,7 +12,7 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 	if (!showLastMessage) {
 		return '';
 	}
-	if (!lastMessage || !lastMessage.u || lastMessage.pinned) {
+	if (!lastMessage || !lastMessage.u) {
 		return I18n.t('No_Message');
 	}
 	if (lastMessage.t === 'jitsi_call_started') {
