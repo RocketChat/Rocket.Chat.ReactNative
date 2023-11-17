@@ -275,6 +275,15 @@ export default schemaMigrations({
 					columns: [{ name: 'sanitized_fname', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 23,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'unmuted', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });
