@@ -29,6 +29,8 @@ const Italic = ({ value }: IItalicProps) => (
 					return <Strike value={block.value} />;
 				case 'BOLD':
 					return <Bold value={block.value} />;
+				case 'MENTION_CHANNEL':
+					return <Plain value={`#${block.value.value}`} />;
 				default:
 					return null;
 			}
