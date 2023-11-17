@@ -296,9 +296,9 @@ export const togglePinMessage = (messageId: string, pinned?: boolean) => {
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
-export const reportMessage = (messageId: string) =>
+export const reportMessage = (messageId: string, description: string) =>
 	// RC 0.64.0
-	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
+	sdk.post('chat.reportMessage', { messageId, description });
 
 export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0

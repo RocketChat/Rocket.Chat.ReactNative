@@ -2,6 +2,7 @@ import { IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
 import log from './log';
 
 type TEventEmitterEmmitArgs =
+	| { dialog: object }
 	| { rid: string }
 	| { server: string }
 	| { message: string }

@@ -12,6 +12,7 @@ import AppContainer from './AppContainer';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Toast from './containers/Toast';
+import Dialog from './containers/Dialog';
 import TwoFactor from './containers/TwoFactor';
 import Loading from './containers/Loading';
 import { IThemePreference } from './definitions/ITheme';
@@ -233,6 +234,7 @@ export default class Root extends React.Component<{}, IState> {
 									<ChangePasscodeView />
 									<InAppNotification />
 									<Toast />
+									<Dialog />
 									<Loading />
 								</ActionSheetProvider>
 							</GestureHandlerRootView>
