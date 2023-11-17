@@ -1114,6 +1114,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return getThreadName(rid, tmid, messageId);
 	};
 
+	fetchThreadName = async (tmid: string, messageId: string) => {
+		const { rid } = this.state.room;
+		const threadRecord = await getThreadById(tmid);
+		if (threadRecord?.t === 'rm') {
+			return I18n.t('Message_removed');
+		}
+		return getThreadName(rid, tmid, messageId);
+	};
+
 	toggleFollowThread = async (isFollowingThread: boolean, tmid?: string) => {
 		try {
 			const threadMessageId = tmid ?? this.tmid;
@@ -1326,7 +1335,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isThreadRoom={!!this.tmid}
 					isIgnored={this.isIgnored(item)}
 					previousItem={previousItem}
-					fetchThreadName={this.getThreadName}
+					fetchThreadName={this.fetchThreadName}
 					onReactionPress={this.onReactionPress}
 					onReactionLongPress={this.onReactionLongPress}
 					onLongPress={this.onMessageLongPress}
