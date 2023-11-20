@@ -350,9 +350,9 @@ const MessageActions = React.memo(
 				description = description.length <= 20 ? description : `${description.slice(0, 20)} ...`;
 				EventEmitter.emit(LISTENER_DIALOG, {
 					dialog: {
-						title: 'Report this message?',
+						title: I18n.t('Report_this_message?'),
 						description,
-						inputLabel: 'Why do you want to report?',
+						inputLabel: I18n.t('Why_do_you_want_to_report?'),
 						data: { id: message.id }
 					}
 				});

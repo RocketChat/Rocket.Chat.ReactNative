@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import RNDialog from 'react-native-dialog';
 
 import EventEmitter from '../lib/methods/helpers/events';
@@ -9,6 +9,7 @@ import log, { logEvent } from '../lib/methods/helpers/log';
 import events from '../lib/methods/helpers/log/events';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
+import { showToast } from '../lib/methods/helpers/showToast';
 
 const styles = StyleSheet.create({
 	title: {
@@ -27,8 +28,6 @@ const styles = StyleSheet.create({
 
 export const LISTENER_DIALOG = 'Dialog';
 
-let listener: Function;
-
 interface IMessage {
 	title: string;
 	description: string;
@@ -39,14 +38,16 @@ interface IMessage {
 const Dialog = (): React.ReactElement => {
 	const { colors } = useTheme();
 
+	const listener = useRef<Function | null>(null);
+
 	const [isVisible, setIsVisible] = useState(false);
 	const [text, setText] = useState('');
 	const [dialog, setDialog] = useState<IMessage | null>(null);
 
 	const reportMessage = async () => {
 		try {
-			await Services.reportMessage(dialog?.data?.id, text);
-			Alert.alert(I18n.t('Message_Reported'));
+			await Services.reportMessage(dialog?.data?.id, text || 'Message reported by user');
+			showToast(I18n.t('Message_Reported'));
 		} catch (e) {
 			logEvent(events.ROOM_MSG_ACTION_REPORT_F);
 			log(e);
@@ -68,9 +69,9 @@ const Dialog = (): React.ReactElement => {
 	};
 
 	useEffect(() => {
-		listener = EventEmitter.addEventListener(LISTENER_DIALOG, showDialog);
+		listener.current = EventEmitter.addEventListener(LISTENER_DIALOG, showDialog);
 		return () => {
-			EventEmitter.removeListener(LISTENER_DIALOG, listener);
+			EventEmitter.removeListener(LISTENER_DIALOG, listener.current as Function);
 		};
 	}, []);
 
@@ -79,8 +80,13 @@ const Dialog = (): React.ReactElement => {
 			<RNDialog.Title style={[styles.title, { color: colors.infoText }]}>{dialog?.title}</RNDialog.Title>
 			<RNDialog.Description style={[styles.description, { color: colors.bodyText }]}>{dialog?.description}</RNDialog.Description>
 			<RNDialog.Input label={dialog?.inputLabel} value={text} onChangeText={t => setText(t)} />
-			<RNDialog.Button style={styles.buttonText} color={colors.cancelButton} label='Cancel' onPress={handleCancel} />
-			<RNDialog.Button style={styles.buttonText} color={colors.dangerColor} label='Report!' onPress={reportMessage} />
+			<RNDialog.Button style={styles.buttonText} color={colors.cancelButton} label={I18n.t('Cancel')} onPress={handleCancel} />
+			<RNDialog.Button
+				style={styles.buttonText}
+				color={colors.dangerColor}
+				label={`${I18n.t('Report')}!`}
+				onPress={reportMessage}
+			/>
 		</RNDialog.Container>
 	);
 };
