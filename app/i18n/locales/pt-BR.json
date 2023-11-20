@@ -223,7 +223,6 @@
   "Members": "Membros",
   "Mentions": "Menções",
   "Message_actions": "Ações",
-  "Message_pinned": "Fixou uma mensagem",
   "Message_removed": "mensagem removida",
   "Message_starred": "Mensagem adicionada aos favoritos",
   "Message_unstarred": "Mensagem removida dos favoritos",
@@ -754,5 +753,9 @@
   "Call_started": "Chamada iniciada",
   "Supported_versions_expired_title": "{{workspace_name}} está executando uma versão não suportada do Rocket.Chat",
   "Supported_versions_expired_description": "Um administrador precisa atualizar o espaço de trabalho para uma versão suportada a fim de reabilitar o acesso a partir de aplicativos móveis e de desktop.",
-  "Supported_versions_warning_update_required": "Atualização necessária"
+  "Supported_versions_warning_update_required": "Atualização necessária",
+  "The_user_wont_be_able_to_type_in_roomName": "O usuário não poderá digitar em {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "O usuário poderá digitar em {{roomName}}",
+  "Enable_writing_in_room": "Permitir escrita na sala",
+  "Disable_writing_in_room": "Desabilitar escrita na sala"
 }
