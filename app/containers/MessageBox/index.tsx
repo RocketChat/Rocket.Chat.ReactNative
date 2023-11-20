@@ -911,31 +911,31 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				title: I18n.t('Take_a_photo'),
 				icon: 'camera-photo',
 				onPress: this.takePhoto,
-				disabled: !permissionToUpload
+				enabled: permissionToUpload
 			},
 			{
 				title: I18n.t('Take_a_video'),
 				icon: 'camera',
 				onPress: this.takeVideo,
-				disabled: !permissionToUpload
+				enabled: permissionToUpload
 			},
 			{
 				title: I18n.t('Choose_from_library'),
 				icon: 'image',
 				onPress: this.chooseFromLibrary,
-				disabled: !permissionToUpload
+				enabled: permissionToUpload
 			},
 			{
 				title: I18n.t('Choose_file'),
 				icon: 'attach',
 				onPress: this.chooseFile,
-				disabled: !permissionToUpload
+				enabled: permissionToUpload
 			},
 			{
 				title: I18n.t('Create_Discussion'),
 				icon: 'discussions',
 				onPress: this.createDiscussion,
-				disabled: !hasCreateDiscussionPermission
+				enabled: hasCreateDiscussionPermission
 			}
 		);
 

@@ -13,6 +13,7 @@ export interface IActionSheetItem {
 }
 
 export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
+	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const onPress = () => {
 		hide();
@@ -23,13 +24,13 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	if (item.danger) {
 		textColor = colors.dangerColor;
 	}
-	if (item.disabled) {
+	if (!enabled) {
 		textColor = colors.fontDisabled;
 	}
 
 	return (
 		<Touch
-			enabled={!item.disabled}
+			enabled={enabled}
 			onPress={onPress}
 			style={[styles.item, { backgroundColor: colors.focusedBackground }]}
 			testID={item.testID}
