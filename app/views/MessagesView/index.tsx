@@ -34,6 +34,7 @@ import {
 } from '../../definitions';
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
+import audioPlayer from '../../lib/methods/audioPlayer';
 
 interface IMessagesViewProps {
 	user: {
@@ -98,6 +99,10 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 	componentDidMount() {
 		this.load();
+	}
+
+	componentWillUnmount(): void {
+		audioPlayer.pauseCurrentAudio();
 	}
 
 	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: IMessagesViewState) {
