@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { themes } from '../../lib/constants';
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { TActionSheetOptionsItem } from './Provider';
@@ -14,25 +13,30 @@ export interface IActionSheetItem {
 }
 
 export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const onPress = () => {
 		hide();
 		item?.onPress();
 	};
 
+	let textColor = colors.bodyText;
+	if (item.danger) {
+		textColor = colors.dangerColor;
+	}
+	if (item.disabled) {
+		textColor = colors.fontDisabled;
+	}
+
 	return (
-		<Touch onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]} testID={item.testID}>
-			{item.icon ? (
-				<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
-			) : null}
+		<Touch
+			enabled={!item.disabled}
+			onPress={onPress}
+			style={[styles.item, { backgroundColor: colors.focusedBackground }]}
+			testID={item.testID}
+		>
+			{item.icon ? <CustomIcon name={item.icon} size={20} color={textColor} /> : null}
 			<View style={styles.titleContainer}>
-				<Text
-					numberOfLines={1}
-					style={[
-						styles.title,
-						{ color: item.danger ? themes[theme].dangerColor : themes[theme].bodyText, marginLeft: item.icon ? 16 : 0 }
-					]}
-				>
+				<Text numberOfLines={1} style={[styles.title, { color: textColor, marginLeft: item.icon ? 16 : 0 }]}>
 					{item.title}
 				</Text>
 			</View>

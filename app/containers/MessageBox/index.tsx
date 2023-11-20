@@ -37,6 +37,7 @@ import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
 import { TActionSheetOptionsItem, withActionSheet } from '../ActionSheet';
+import { NotPermissionHeader } from '../ActionSheet/CustomHeader';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
 import { forceJpgExtension } from './forceJpgExtension';
@@ -904,40 +905,49 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				onPress: () => goToCannedResponses()
 			});
 		}
-		if (permissionToUpload) {
-			options.push(
-				{
-					title: I18n.t('Take_a_photo'),
-					icon: 'camera-photo',
-					onPress: this.takePhoto
-				},
-				{
-					title: I18n.t('Take_a_video'),
-					icon: 'camera',
-					onPress: this.takeVideo
-				},
-				{
-					title: I18n.t('Choose_from_library'),
-					icon: 'image',
-					onPress: this.chooseFromLibrary
-				},
-				{
-					title: I18n.t('Choose_file'),
-					icon: 'attach',
-					onPress: this.chooseFile
-				}
-			);
-		}
 
-		if (hasCreateDiscussionPermission) {
-			options.push({
+		options.push(
+			{
+				title: I18n.t('Take_a_photo'),
+				icon: 'camera-photo',
+				onPress: this.takePhoto,
+				disabled: !permissionToUpload
+			},
+			{
+				title: I18n.t('Take_a_video'),
+				icon: 'camera',
+				onPress: this.takeVideo,
+				disabled: !permissionToUpload
+			},
+			{
+				title: I18n.t('Choose_from_library'),
+				icon: 'image',
+				onPress: this.chooseFromLibrary,
+				disabled: !permissionToUpload
+			},
+			{
+				title: I18n.t('Choose_file'),
+				icon: 'attach',
+				onPress: this.chooseFile,
+				disabled: !permissionToUpload
+			},
+			{
 				title: I18n.t('Create_Discussion'),
 				icon: 'discussions',
-				onPress: this.createDiscussion
-			});
+				onPress: this.createDiscussion,
+				disabled: !hasCreateDiscussionPermission
+			}
+		);
+
+		let customHeader: React.ReactElement | null = null;
+		if (!permissionToUpload || !hasCreateDiscussionPermission) {
+			customHeader = <NotPermissionHeader />;
 		}
 
-		this.closeEmojiAndAction(showActionSheet, { options });
+		this.closeEmojiAndAction(showActionSheet, {
+			options,
+			customHeader
+		});
 	};
 
 	editCancel = () => {
