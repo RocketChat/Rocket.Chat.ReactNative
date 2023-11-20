@@ -8,6 +8,8 @@ import log from './helpers/log';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
+export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
+
 const defaultType = {
 	audio: 'mp3',
 	image: 'jpg',
