@@ -21,6 +21,10 @@ export function getUidDirectMessage(room) {
 		return null;
 	}
 
+	if (room.itsMe) {
+		return userId;
+	}
+
 	// legacy method
 	if (!room?.uids && room.rid && room.t === 'd' && userId) {
 		return room.rid.replace(userId, '').trim();
