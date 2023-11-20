@@ -687,9 +687,6 @@
   "Waiting_for_answer": "Väntar på svar",
   "Call_ended": "Samtal avslutat",
   "Call_was_not_answered": "Samtalet besvarades inte",
-  "Call_back": "Ring upp",
-  "Call_again": "Ring igen",
-  "Call_ongoing": "Samtal pågår",
   "Joined": "Anslöt",
   "Calling": "Ringer upp",
   "Start_a_call": "Starta ett samtal",
@@ -698,5 +695,7 @@
   "room_archived": "arkiverade rum",
   "room_unarchived": "avarkiverade rum",
   "and_N_more": "och ytterligare {{count}}",
-  "Audio": "Ljud"
+  "Audio": "Ljud",
+  "The_user_wont_be_able_to_type_in_roomName": "Användaren kan inte ange {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "Användaren kan ange {{roomName}}"
 }

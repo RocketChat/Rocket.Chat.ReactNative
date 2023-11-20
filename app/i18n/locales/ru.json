@@ -659,14 +659,13 @@
   "Waiting_for_answer": "Ожидание ответа",
   "Call_ended": "Звонок завершен",
   "Call_was_not_answered": "Звонок не был отвечен",
-  "Call_back": "Обратный звонок",
-  "Call_again": "Позвонить снова",
-  "Call_ongoing": "Идет вызов",
   "Joined": "участвовал",
   "Calling": "Идет вызов",
   "Start_a_call": "Начать звонок",
   "Call": "Звонок",
   "Reply_in_direct_message": "Ответить в личном сообщении",
   "and_N_more": "и еще {{count}}",
-  "Audio": "Аудио"
+  "Audio": "Аудио",
+  "The_user_wont_be_able_to_type_in_roomName": "Пользователь не сможет писать сообщения в {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "Пользователь сможет писать сообщения в {{roomName}}"
 }

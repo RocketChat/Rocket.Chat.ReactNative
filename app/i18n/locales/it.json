@@ -521,5 +521,7 @@
   "Open_Livechats": "Chat in corso",
   "Broadcast_hint": "Solo gli utenti autorizzati possono scrivere messaggi, ma gli altri utenti saranno in grado di rispondere",
   "and_N_more": "e altri {{count}}",
-  "Audio": "Audio"
+  "Audio": "Audio",
+  "The_user_wont_be_able_to_type_in_roomName": "L'utente non potrà scrivere in {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "L'utente potrà scrivere in {{roomName}}"
 }

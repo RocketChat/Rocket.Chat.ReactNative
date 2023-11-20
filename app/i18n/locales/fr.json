@@ -616,5 +616,7 @@
   "Empty": "Vide",
   "Broadcast_hint": "Seuls les utilisateurs autorisés peuvent écrire de nouveaux messages, mais les autres utilisateurs pourront répondre.",
   "and_N_more": "et {{count}} de plus",
-  "Audio": "Audio"
+  "Audio": "Audio",
+  "The_user_wont_be_able_to_type_in_roomName": "L'utilisateur ne pourra pas écrire dans {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "L'utilisateur pourra écrire dans {{roomName}}"
 }
