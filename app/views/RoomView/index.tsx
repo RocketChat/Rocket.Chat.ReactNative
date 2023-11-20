@@ -140,7 +140,8 @@ const roomAttrsUpdate = [
 	'onHold',
 	't',
 	'autoTranslate',
-	'autoTranslateLanguage'
+	'autoTranslateLanguage',
+	'unmuted'
 ] as TRoomUpdate[];
 
 interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {

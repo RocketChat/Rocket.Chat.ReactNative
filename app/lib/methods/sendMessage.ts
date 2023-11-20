@@ -143,6 +143,7 @@ export async function sendMessage(
 							tm.status = messagesStatus.SENT; // Original message was sent already
 							tm.u = tMessageRecord.u;
 							tm.t = message.t;
+							tm.attachments = tMessageRecord.attachments;
 							if (message.t === E2E_MESSAGE_TYPE) {
 								tm.e2e = E2E_STATUS.DONE as E2EType;
 							}
