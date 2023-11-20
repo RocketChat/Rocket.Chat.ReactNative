@@ -67,6 +67,11 @@ export const merge = (
 		} else {
 			mergedSubscription.muted = [];
 		}
+		if (room?.unmuted?.length) {
+			mergedSubscription.unmuted = room.unmuted.filter(unmuted => !!unmuted);
+		} else {
+			mergedSubscription.unmuted = [];
+		}
 		if (room?.v) {
 			mergedSubscription.visitor = room.v;
 		}

@@ -223,7 +223,6 @@
   "Members": "Members",
   "Mentions": "Mentions",
   "Message_actions": "Message actions",
-  "Message_pinned": "Message pinned",
   "Message_removed": "message removed",
   "Message_starred": "Message starred",
   "Message_unstarred": "Message unstarred",
@@ -754,5 +753,10 @@
   "The_room_does_not_exist": "The room does not exist or you may not have access permission",
   "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
   "Supported_versions_expired_description": "An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.",
-  "Supported_versions_warning_update_required": "Update required"
+  "Supported_versions_warning_update_required": "Update required",
+  "The_user_wont_be_able_to_type_in_roomName": "The user won't be able to type in {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "The user will be able to type in {{roomName}}",
+  "Enable_writing_in_room": "Enable writing in room",
+  "Disable_writing_in_room": "Disable writing in room",
+  "Pinned_a_message": "Pinned a message:"
 }
