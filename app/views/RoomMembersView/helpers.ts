@@ -37,7 +37,7 @@ export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, up
 
 export const handleMute = async (user: TUserModel, rid: string) => {
 	try {
-		await Services.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
+		await Services.toggleMuteUserInRoom(rid, user?.username, !user.muted);
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
 		});
