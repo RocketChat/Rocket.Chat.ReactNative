@@ -79,7 +79,7 @@ const Dialog = (): React.ReactElement => {
 		<RNDialog.Container visible={isVisible}>
 			<RNDialog.Title style={[styles.title, { color: colors.infoText }]}>{dialog?.title}</RNDialog.Title>
 			<RNDialog.Description style={[styles.description, { color: colors.bodyText }]}>{dialog?.description}</RNDialog.Description>
-			<RNDialog.Input label={dialog?.inputLabel} value={text} onChangeText={t => setText(t)} />
+			<RNDialog.Input label={dialog?.inputLabel} value={text} onChangeText={setText} />
 			<RNDialog.Button style={styles.buttonText} color={colors.cancelButton} label={I18n.t('Cancel')} onPress={handleCancel} />
 			<RNDialog.Button
 				style={styles.buttonText}
