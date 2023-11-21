@@ -40,10 +40,6 @@ import ScreenLockedView from './views/ScreenLockedView';
 RNScreens.enableScreens();
 initStore(store);
 
-if (!isFDroidBuild && isAndroid) {
-	require('./lib/notifications/videoConf/backgroundNotificationHandler');
-}
-
 interface IDimensions {
 	width: number;
 	height: number;
