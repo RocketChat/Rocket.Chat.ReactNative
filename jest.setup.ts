@@ -42,11 +42,17 @@ jest.mock('expo-haptics', () => jest.fn(() => null));
 
 jest.mock('./app/lib/database', () => jest.fn(() => null));
 
-const mockedNavigate = jest.fn();
-
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
-	useNavigation: () => mockedNavigate
+	useNavigation: () => ({
+		navigate: jest.fn(),
+		addListener: jest.fn().mockImplementation((event, callback) => {
+			callback();
+			return {
+				remove: jest.fn()
+			};
+		})
+	})
 }));
 
 jest.mock('react-native-notifications', () => ({
@@ -81,3 +87,8 @@ jest.mock('react-native-math-view', () => {
 		MathText: react.View // {...} Named export
 	};
 });
+
+jest.mock('expo-av', () => ({
+	InterruptionModeIOS: { DoNotMix: 1 },
+	InterruptionModeAndroid: { DoNotMix: 1 }
+}));
