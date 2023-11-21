@@ -158,7 +158,7 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		case 'subscription-role-removed':
 			return I18n.t('Removed_user_as_role', { user: msg, role });
 		case 'message_pinned':
-			return I18n.t('Message_pinned');
+			return I18n.t('Pinned_a_message');
 
 		// without author name
 		case 'ul':
