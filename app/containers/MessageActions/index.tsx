@@ -516,11 +516,11 @@ const MessageActions = React.memo(
 				});
 
 				const showNotPermissionHeader =
-					permissions.hasCreateDirectMessagePermission ||
-					permissions.hasCreateDiscussionOtherUserPermission ||
-					allowEdit(message) ||
-					permissions?.hasPinPermission ||
-					allowDelete(message);
+					!permissions.hasCreateDirectMessagePermission ||
+					!permissions.hasCreateDiscussionOtherUserPermission ||
+					!allowEdit(message) ||
+					!permissions?.hasPinPermission ||
+					!allowDelete(message);
 
 				return { options, showNotPermissionHeader };
 			};
