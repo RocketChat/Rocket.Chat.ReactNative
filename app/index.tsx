@@ -18,7 +18,7 @@ import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
-import { debounce, isAndroid, isTablet } from './lib/methods/helpers';
+import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import {
