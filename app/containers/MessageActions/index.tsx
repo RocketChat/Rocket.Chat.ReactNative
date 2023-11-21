@@ -515,20 +515,20 @@ const MessageActions = React.memo(
 					enabled: allowDelete(message)
 				});
 
-				const shouldShowNotPermissionHeader =
+				const showNotPermissionHeader =
 					permissions.hasCreateDirectMessagePermission ||
 					permissions.hasCreateDiscussionOtherUserPermission ||
 					allowEdit(message) ||
 					permissions?.hasPinPermission ||
 					allowDelete(message);
 
-				return { options, shouldShowNotPermissionHeader };
+				return { options, showNotPermissionHeader };
 			};
 
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
-				const { options, shouldShowNotPermissionHeader } = getOptions(message);
+				const { options, showNotPermissionHeader } = getOptions(message);
 				showActionSheet({
 					options,
 					headerHeight: HEADER_HEIGHT,
@@ -537,11 +537,7 @@ const MessageActions = React.memo(
 							{!isReadOnly || room.reactWhenReadOnly ? (
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
-							{shouldShowNotPermissionHeader ? (
-								<>
-									<NotPermissionHeader />
-								</>
-							) : null}
+							{showNotPermissionHeader ? <NotPermissionHeader /> : null}
 						</>
 					)
 				});
