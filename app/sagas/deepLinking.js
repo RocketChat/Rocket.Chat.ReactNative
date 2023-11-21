@@ -201,7 +201,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 				action: 'accepted',
 				params: { uid, rid, callId }
 			});
-			yield videoConfJoin(callId);
+			yield videoConfJoin(callId, true, false, true);
 		} else if (event === 'decline') {
 			yield call(Services.notifyUser, `${uid}/video-conference`, {
 				action: 'rejected',

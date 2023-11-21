@@ -759,5 +759,6 @@
   "The_user_will_be_able_to_type_in_roomName": "The user will be able to type in {{roomName}}",
   "Enable_writing_in_room": "Enable writing in room",
   "Disable_writing_in_room": "Disable writing in room",
-  "Pinned_a_message": "Pinned a message:"
+  "Pinned_a_message": "Pinned a message:",
+  "Missed_call": "Missed call"
 }
