@@ -1,5 +1,6 @@
 import notifee, { AndroidCategory, AndroidImportance, AndroidVisibility, Event } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ejson from 'ejson';
 
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
@@ -34,20 +35,24 @@ const createChannel = () =>
 
 const handleBackgroundEvent = async (event: Event) => {
 	const { pressAction, notification } = event.detail;
-
-	if (pressAction?.id === 'accept' || pressAction?.id === 'decline') {
-		const notificationData = notification?.data;
-		if (typeof notificationData?.caller === 'object' && (notificationData.caller as Caller)._id) {
+	const notificationData = notification?.data;
+	if (
+		typeof notificationData?.caller === 'object' &&
+		(notificationData.caller as Caller)?._id &&
+		(event.type === 1 || event.type === 2)
+	) {
+		if (store?.getState()?.app.ready) {
 			store.dispatch(deepLinkingClickCallPush({ ...notificationData, event: pressAction?.id }));
-			await notifee.cancelNotification(
-				`${notificationData.rid}${(notificationData.caller as Caller)._id}`.replace(/[^A-Za-z0-9]/g, '')
-			);
+		} else {
+			AsyncStorage.setItem('pushNotification', JSON.stringify({ ...notificationData, event: pressAction?.id }));
 		}
+		await notifee.cancelNotification(
+			`${notificationData.rid}${(notificationData.caller as Caller)._id}`.replace(/[^A-Za-z0-9]/g, '')
+		);
 	}
 };
 
 const backgroundNotificationHandler = () => {
-	createChannel();
 	notifee.onBackgroundEvent(handleBackgroundEvent);
 };
 
@@ -87,15 +92,19 @@ const displayVideoConferenceNotification = async (notification: NotificationData
 			loopSound: true,
 			sound: 'ringtone',
 			autoCancel: false,
-			ongoing: true
+			ongoing: true,
+			pressAction: {
+				id: 'default',
+				launchActivity: 'default'
+			}
 		}
 	});
 };
 
 const setBackgroundNotificationHandler = () => {
+	createChannel();
 	messaging().setBackgroundMessageHandler(async message => {
 		const notification: NotificationData = ejson.parse(message?.data?.ejson as string);
-
 		if (notification?.notificationType === VIDEO_CONF_TYPE) {
 			if (notification.status === 0) {
 				await displayVideoConferenceNotification(notification);
