@@ -1,5 +1,4 @@
 import RNFetchBlob from 'rn-fetch-blob';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 import moment from 'moment';
 
@@ -11,6 +10,7 @@ import I18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 import { getServerById } from '../database/services/Server';
 import log from './helpers/log';
+import customHeaders from './customHeaders';
 
 interface IServerInfoFailure {
 	success: false;
@@ -46,7 +46,7 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
 		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, {
-			...RocketChatSettings.customHeaders
+			...customHeaders.getHeaders()
 		});
 		try {
 			const jsonRes: IApiServerInfo = response.json();

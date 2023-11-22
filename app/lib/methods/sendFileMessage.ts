@@ -1,5 +1,4 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import isEmpty from 'lodash/isEmpty';
 import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
@@ -10,6 +9,7 @@ import database from '../database';
 import FileUpload from './helpers/fileUpload';
 import { IFileUpload } from './helpers/fileUpload/interfaces';
 import log from './helpers/log';
+import customHeaders from './customHeaders';
 
 const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
@@ -115,7 +115,7 @@ export function sendFileMessage(
 			}
 
 			const headers = {
-				...RocketChatSettings.customHeaders,
+				...customHeaders.getHeaders(),
 				'Content-Type': 'multipart/form-data',
 				'X-Auth-Token': token,
 				'X-User-Id': id
