@@ -184,7 +184,8 @@ const ImageContainer = ({
 		}
 		if (!cached && !loading) {
 			const isImageCached = await handleGetMediaCache();
-			if (isImageCached) {
+			if (isImageCached && showAttachment) {
+				showAttachment(imageCached);
 				return;
 			}
 			if (isDownloadActive(imgUrlToCache)) {
@@ -192,6 +193,7 @@ const ImageContainer = ({
 				return;
 			}
 			handleDownload();
+			return;
 		}
 		if (!showAttachment) {
 			return;
