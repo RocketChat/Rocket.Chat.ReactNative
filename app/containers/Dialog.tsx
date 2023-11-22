@@ -83,7 +83,7 @@ const Dialog = (): React.ReactElement => {
 					{dialog?.description}
 				</RNDialog.Description>
 			</ScrollView>
-			<RNDialog.Input label={dialog?.inputLabel} value={text} onChangeText={t => setText(t)} />
+			<RNDialog.Input label={dialog?.inputLabel} value={text} onChangeText={setText} />
 			<RNDialog.Button style={styles.buttonText} color={colors.cancelButton} label={I18n.t('Cancel')} onPress={handleCancel} />
 			<RNDialog.Button
 				style={styles.buttonText}
