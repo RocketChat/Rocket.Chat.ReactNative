@@ -183,6 +183,11 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			return;
 		}
 		if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
+			const isVideoCached = await handleGetMediaCache();
+			if (isVideoCached && showAttachment) {
+				showAttachment(videoCached);
+				return;
+			}
 			if (isDownloadActive(video)) {
 				handleResumeDownload();
 				return;

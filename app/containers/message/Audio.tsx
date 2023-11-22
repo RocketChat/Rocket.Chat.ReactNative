@@ -5,7 +5,13 @@ import Markdown from '../markdown';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../definitions';
-import { TDownloadState, downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
+import {
+	TDownloadState,
+	downloadMediaFile,
+	getMediaCache,
+	isDownloadActive,
+	resumeMediaFile
+} from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import AudioPlayer from '../AudioPlayer';
 import { useAppSelector } from '../../lib/hooks';
@@ -23,9 +29,7 @@ interface IMessageAudioProps {
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMessageAudioProps) => {
 	const [downloadState, setDownloadState] = useState<TDownloadState>('loading');
 	const [fileUri, setFileUri] = useState('');
-
 	const { baseUrl, user, id, rid } = useContext(MessageContext);
-
 	const { cdnPrefix } = useAppSelector(state => ({
 		cdnPrefix: state.settings.CDN_PREFIX as string
 	}));
@@ -38,8 +42,12 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		return url;
 	};
 
-	const onPlayButtonPress = () => {
+	const onPlayButtonPress = async () => {
 		if (downloadState === 'to-download') {
+			const isAudioCached = await handleGetMediaCache();
+			if (isAudioCached) {
+				return;
+			}
 			handleDownload();
 		}
 	};
@@ -79,20 +87,44 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		}
 	};
 
+	const handleGetMediaCache = async () => {
+		const cachedAudioResult = await getMediaCache({
+			type: 'audio',
+			mimeType: file.audio_type,
+			urlToCache: getUrl()
+		});
+		if (cachedAudioResult?.exists) {
+			setFileUri(cachedAudioResult.uri);
+			setDownloadState('downloaded');
+		}
+		return !!cachedAudioResult?.exists;
+	};
+
+	const handleResumeDownload = async () => {
+		try {
+			setDownloadState('loading');
+			const url = getUrl();
+			if (url) {
+				const videoUri = await resumeMediaFile({
+					downloadUrl: url
+				});
+				setFileUri(videoUri);
+				setDownloadState('downloaded');
+			}
+		} catch (e) {
+			setDownloadState('to-download');
+		}
+	};
+
 	useEffect(() => {
 		const handleCache = async () => {
-			const cachedAudioResult = await getMediaCache({
-				type: 'audio',
-				mimeType: file.audio_type,
-				urlToCache: getUrl()
-			});
-			if (cachedAudioResult?.exists) {
-				setFileUri(cachedAudioResult.uri);
-				setDownloadState('downloaded');
+			const isAudioCached = await handleGetMediaCache();
+			if (isAudioCached) {
 				return;
 			}
-			if (isReply) {
-				setDownloadState('to-download');
+			const audioUrl = getUrl();
+			if (audioUrl && isDownloadActive(audioUrl)) {
+				await handleResumeDownload();
 				return;
 			}
 			await handleAutoDownload();
@@ -106,14 +138,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<AudioPlayer
-				msgId={id}
-				fileUri={fileUri}
-				downloadState={downloadState}
-				disabled={isReply}
-				onPlayButtonPress={onPlayButtonPress}
-				rid={rid}
-			/>
+			<AudioPlayer msgId={id} fileUri={fileUri} downloadState={downloadState} onPlayButtonPress={onPlayButtonPress} rid={rid} />
 		</>
 	);
 };
