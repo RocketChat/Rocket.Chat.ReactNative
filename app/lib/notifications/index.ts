@@ -12,7 +12,6 @@ interface IEjson {
 	sender: { username: string; name: string };
 	type: string;
 	host: string;
-	messageType: string;
 	messageId: string;
 }
 
@@ -20,7 +19,7 @@ export const onNotification = (push: INotification): void => {
 	if (push.payload) {
 		try {
 			const notification = push.payload;
-			const { rid, name, sender, type, host, messageType, messageId }: IEjson = EJSON.parse(notification.ejson);
+			const { rid, name, sender, type, host, messageId }: IEjson = EJSON.parse(notification.ejson);
 
 			const types: Record<string, string> = {
 				c: 'channel',
@@ -37,8 +36,7 @@ export const onNotification = (push: INotification): void => {
 				host,
 				rid,
 				messageId,
-				path: `${types[type]}/${roomName}`,
-				isCall: messageType === 'jitsi_call_started'
+				path: `${types[type]}/${roomName}`
 			};
 			store.dispatch(deepLinkingOpen(params));
 		} catch (e) {

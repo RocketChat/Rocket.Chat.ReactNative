@@ -160,7 +160,8 @@ export async function getSettings(): Promise<void> {
 			/* eslint-disable no-await-in-loop */
 			const response = await fetch(
 				`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}
-				&offset=${offset}`);
+				&offset=${offset}`
+			);
 
 			const result = await response.json();
 
@@ -172,7 +173,7 @@ export async function getSettings(): Promise<void> {
 			settings = [...settings, ...result.settings];
 			remaining = result.total - settings.length;
 			/* eslint-enable no-await-in-loop */
-		} while(remaining > 0);
+		} while (remaining > 0);
 
 		const data: IData[] = settings;
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
