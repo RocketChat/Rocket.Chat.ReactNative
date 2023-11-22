@@ -53,10 +53,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="https"
-                    android:host="go.rocket.chat"
-                    android:path="/invite" />
+                <data android:scheme="https" android:host="go.rocket.chat" android:path="/invite" />
+                <data android:scheme="https" android:host="go.rocket.chat" android:path="/auth" />
+                <data android:scheme="https" android:host="go.rocket.chat" android:path="/room" />
+                <data android:scheme="rocketchat" />
             </intent-filter>
         </activity>
         <activity
