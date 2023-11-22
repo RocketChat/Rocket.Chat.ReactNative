@@ -3,8 +3,11 @@ import { Text, View } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
+import EventEmitter from '../../lib/methods/helpers/events';
+import I18n from '../../i18n';
 import { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
+import { LISTENER } from '../Toast';
 import Touch from '../Touch';
 
 export interface IActionSheetItem {
@@ -16,8 +19,12 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const onPress = () => {
-		hide();
-		item?.onPress();
+		if (enabled) {
+			hide();
+			item?.onPress();
+		} else {
+			EventEmitter.emit(LISTENER, { message: I18n.t('You_dont_have_permission') });
+		}
 	};
 
 	let textColor = colors.bodyText;
@@ -29,12 +36,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	}
 
 	return (
-		<Touch
-			enabled={enabled}
-			onPress={onPress}
-			style={[styles.item, { backgroundColor: colors.focusedBackground }]}
-			testID={item.testID}
-		>
+		<Touch onPress={onPress} style={[styles.item, { backgroundColor: colors.focusedBackground }]} testID={item.testID}>
 			{item.icon ? <CustomIcon name={item.icon} size={20} color={textColor} /> : null}
 			<View style={styles.titleContainer}>
 				<Text numberOfLines={1} style={[styles.title, { color: textColor, marginLeft: item.icon ? 16 : 0 }]}>

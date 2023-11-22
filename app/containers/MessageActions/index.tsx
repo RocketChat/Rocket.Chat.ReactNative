@@ -19,7 +19,6 @@ import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscription
 import { getPermalinkMessage } from '../../lib/methods';
 import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
-import { NotPermissionHeader } from '../ActionSheet/CustomHeader';
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -515,29 +514,20 @@ const MessageActions = React.memo(
 					enabled: allowDelete(message)
 				});
 
-				const showNotPermissionHeader =
-					!permissions.hasCreateDirectMessagePermission ||
-					!permissions.hasCreateDiscussionOtherUserPermission ||
-					!allowEdit(message) ||
-					!permissions?.hasPinPermission ||
-					!allowDelete(message);
-
-				return { options, showNotPermissionHeader };
+				return options;
 			};
 
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
-				const { options, showNotPermissionHeader } = getOptions(message);
 				showActionSheet({
-					options,
+					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
 					customHeader: (
 						<>
 							{!isReadOnly || room.reactWhenReadOnly ? (
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
-							{showNotPermissionHeader ? <NotPermissionHeader /> : null}
 						</>
 					)
 				});

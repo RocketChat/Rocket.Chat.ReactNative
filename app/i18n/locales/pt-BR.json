@@ -757,5 +757,6 @@
   "The_user_wont_be_able_to_type_in_roomName": "O usuário não poderá digitar em {{roomName}}",
   "The_user_will_be_able_to_type_in_roomName": "O usuário poderá digitar em {{roomName}}",
   "Enable_writing_in_room": "Permitir escrita na sala",
-  "Disable_writing_in_room": "Desabilitar escrita na sala"
+  "Disable_writing_in_room": "Desabilitar escrita na sala",
+  "You_dont_have_permission": "Você não tem permissão para realizar esta ação. Verifique com o proprietário da sala."
 }

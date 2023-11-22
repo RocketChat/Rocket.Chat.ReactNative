@@ -37,7 +37,6 @@ import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
 import { TActionSheetOptionsItem, withActionSheet } from '../ActionSheet';
-import { NotPermissionHeader } from '../ActionSheet/CustomHeader';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../CustomIcon';
 import { forceJpgExtension } from './forceJpgExtension';
@@ -939,14 +938,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			}
 		);
 
-		let customHeader: React.ReactElement | null = null;
-		if (!permissionToUpload || !hasCreateDiscussionPermission) {
-			customHeader = <NotPermissionHeader />;
-		}
-
 		this.closeEmojiAndAction(showActionSheet, {
-			options,
-			customHeader
+			options
 		});
 	};
 
