@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import RNDialog from 'react-native-dialog';
 
 import EventEmitter from '../lib/methods/helpers/events';
@@ -76,9 +76,13 @@ const Dialog = (): React.ReactElement => {
 	}, []);
 
 	return (
-		<RNDialog.Container visible={isVisible}>
+		<RNDialog.Container visible={isVisible} onBackdropPress={handleCancel}>
 			<RNDialog.Title style={[styles.title, { color: colors.infoText }]}>{dialog?.title}</RNDialog.Title>
-			<RNDialog.Description style={[styles.description, { color: colors.bodyText }]}>{dialog?.description}</RNDialog.Description>
+			<ScrollView persistentScrollbar style={{ maxHeight: 100, marginBottom: 25 }}>
+				<RNDialog.Description style={[styles.description, { color: colors.bodyText }]}>
+					{dialog?.description}
+				</RNDialog.Description>
+			</ScrollView>
 			<RNDialog.Input label={dialog?.inputLabel} value={text} onChangeText={t => setText(t)} />
 			<RNDialog.Button style={styles.buttonText} color={colors.cancelButton} label={I18n.t('Cancel')} onPress={handleCancel} />
 			<RNDialog.Button

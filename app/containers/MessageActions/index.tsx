@@ -346,8 +346,7 @@ const MessageActions = React.memo(
 
 			const handleReport = (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_REPORT);
-				let description = message.msg ?? '';
-				description = description.length <= 20 ? description : `${description.slice(0, 20)} ...`;
+				const description = message.msg ?? '';
 				EventEmitter.emit(LISTENER_DIALOG, {
 					dialog: {
 						title: I18n.t('Report_this_message?'),
