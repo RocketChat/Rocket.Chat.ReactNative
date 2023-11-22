@@ -49,13 +49,16 @@
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="https" android:host="go.rocket.chat" android:path="/invite" />
                 <data android:scheme="https" android:host="go.rocket.chat" android:path="/auth" />
                 <data android:scheme="https" android:host="go.rocket.chat" android:path="/room" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="rocketchat" />
             </intent-filter>
         </activity>
