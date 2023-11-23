@@ -211,7 +211,7 @@ const Reply = React.memo(
 		const onPress = async () => {
 			let url = attachment.title_link || attachment.author_link;
 			if (attachment.message_link) {
-				return jumpToMessage(attachment.message_link);
+				return jumpToMessage(attachment.message_link, true);
 			}
 			if (!url) {
 				return;
