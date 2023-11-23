@@ -1495,6 +1495,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					replyInit={this.onReplyInit}
 					reactionInit={this.onReactionInit}
 					onReactionPress={this.onReactionPress}
+					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
 				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
