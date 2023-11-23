@@ -19,6 +19,7 @@ import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, IDurationRef } from './Duration';
 import { RECORDING_MODE, RECORDING_SETTINGS } from './constants';
+import AudioPlayer from '../../../AudioPlayer';
 
 export const RecordAudio = (): ReactElement => {
 	const { colors } = useTheme();
@@ -118,7 +119,9 @@ export const RecordAudio = (): ReactElement => {
 					borderTopColor: colors.strokeLight
 				}}
 			>
-				<Text style={{ marginLeft: 12, fontSize: 16, ...sharedStyles.textRegular, color: colors.fontDefault }}>REVIEW</Text>
+				<View style={{ paddingVertical: 8 }}>
+					<AudioPlayer fileUri={recordingRef.current?.getURI() ?? ''} rid={rid} downloadState='downloaded' />
+				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 					<BaseButton
 						onPress={() => cancelRecording()}
