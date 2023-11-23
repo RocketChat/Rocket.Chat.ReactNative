@@ -206,7 +206,6 @@
   "Members": "メンバー",
   "Mentions": "メンション",
   "Message_actions": "メッセージアクション",
-  "Message_pinned": "メッセージをピン留め",
   "Message_removed": "メッセージを除く",
   "message": "メッセージ",
   "messages": "メッセージ",
@@ -408,5 +407,6 @@
   "Displays_action_text": "アクションテキストを表示",
   "Direct_message_someone": "ユーザーへダイレクトメッセージする",
   "Mute_someone_in_room": "ルーム内のいずれかのユーザーをミュート",
-  "Unmute_someone_in_room": "ルームのいずれかのユーザーのミュートを解除"
+  "Unmute_someone_in_room": "ルームのいずれかのユーザーのミュートを解除",
+  "Audio": "音声"
 }

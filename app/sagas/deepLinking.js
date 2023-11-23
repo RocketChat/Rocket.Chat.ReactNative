@@ -14,7 +14,7 @@ import { loginRequest } from '../actions/login';
 import log from '../lib/methods/helpers/log';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { callJitsi, callJitsiWithoutServer, canOpenRoom } from '../lib/methods';
+import { canOpenRoom, getServerInfo } from '../lib/methods';
 import { Services } from '../lib/services';
 
 const roomTypes = {
@@ -59,9 +59,6 @@ const navigate = function* navigate({ params }) {
 				const jumpToMessageId = params.messageId;
 
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
-				if (params.isCall) {
-					callJitsi(item);
-				}
 			}
 		} else {
 			yield handleInviteLink({ params });
@@ -91,20 +88,6 @@ const handleOpen = function* handleOpen({ params }) {
 	const serversCollection = serversDB.get('servers');
 
 	let { host } = params;
-	if (params.isCall && !host) {
-		const servers = yield serversCollection.query().fetch();
-		// search from which server is that call
-		servers.forEach(({ uniqueID, id }) => {
-			if (params.path.includes(uniqueID)) {
-				host = id;
-			}
-		});
-
-		if (!host && params.fullURL) {
-			callJitsiWithoutServer(params.fullURL);
-			return;
-		}
-	}
 
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
@@ -163,7 +146,7 @@ const handleOpen = function* handleOpen({ params }) {
 			// do nothing?
 		}
 		// if deep link is from a different server
-		const result = yield Services.getServerInfo(host);
+		const result = yield getServerInfo(host);
 		if (!result.success) {
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();

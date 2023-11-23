@@ -223,7 +223,6 @@
   "Members": "Jäsenet",
   "Mentions": "Maininnat",
   "Message_actions": "Viestitoimet",
-  "Message_pinned": "Viesti kiinnitetty",
   "Message_removed": "viesti poistettu",
   "Message_starred": "Viesti merkitty tähdellä",
   "Message_unstarred": "Viestin tähtimerkintä poistettu",
@@ -555,7 +554,6 @@
   "Enabled_E2E_Encryption_for_this_room": "otti täyden salauksen käyttöön tässä huoneessa",
   "Disabled_E2E_Encryption_for_this_room": "poisti täyden salauksen käytöstä tässä huoneessa",
   "Teams": "Tiimit",
-  "No_team_channels_found": "Kanavia ei löydy",
   "Team_not_found": "Tiimiä ei löydy",
   "Create_Team": "Luo tiimi",
   "Team_Name": "Tiimin nimi",
@@ -723,5 +721,6 @@
   "Displays_action_text": "Näyttää toimintotekstin",
   "Direct_message_someone": "Lähetä suora viesti käyttäjälle",
   "Mute_someone_in_room": "Mykistä joku huoneessa",
-  "Unmute_someone_in_room": "Kumoa jonkun mykistys huoneessa"
+  "Unmute_someone_in_room": "Kumoa jonkun mykistys huoneessa",
+  "Audio": "Ääni"
 }

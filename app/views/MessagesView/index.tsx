@@ -34,6 +34,7 @@ import {
 } from '../../definitions';
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
+import audioPlayer from '../../lib/methods/audioPlayer';
 
 interface IMessagesViewProps {
 	user: {
@@ -100,6 +101,10 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		this.load();
 	}
 
+	componentWillUnmount(): void {
+		audioPlayer.pauseCurrentAudio();
+	}
+
 	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: IMessagesViewState) {
 		const { loading, messages, fileLoading } = this.state;
 		const { theme } = this.props;
@@ -126,10 +131,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	};
 
 	navToRoomInfo = (navParam: IRoomInfoParam) => {
-		const { navigation, user } = this.props;
-		if (navParam.rid === user.id) {
-			return;
-		}
+		const { navigation } = this.props;
 		navigation.navigate('RoomInfoView', navParam);
 	};
 

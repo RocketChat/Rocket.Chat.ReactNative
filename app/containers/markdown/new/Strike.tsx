@@ -29,6 +29,8 @@ const Strike = ({ value }: IStrikeProps) => (
 					return <Bold value={block.value} />;
 				case 'ITALIC':
 					return <Italic value={block.value} />;
+				case 'MENTION_CHANNEL':
+					return <Plain value={`#${block.value.value}`} />;
 				default:
 					return null;
 			}

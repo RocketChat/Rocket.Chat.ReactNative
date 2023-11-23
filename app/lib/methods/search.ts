@@ -107,12 +107,18 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	}
 
 	let localSearchData = [];
-	if (rid && filterUsers) {
+	// the users provided by localSearchUsersMessageByRid return the username properly, data.username
+	// Example: Diego Mello's user -> {name: "Diego Mello", username: "diego.mello"}
+	// Meanwhile, the username provided by localSearchSubscription is in name's property
+	// Example: Diego Mello's subscription -> {fname: "Diego Mello",  name: "diego.mello"}
+	let usernames = [];
+	if (rid) {
 		localSearchData = await localSearchUsersMessageByRid({ text, rid });
+		usernames = localSearchData.map(sub => sub.username as string);
 	} else {
 		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });
+		usernames = localSearchData.map(sub => sub.name as string);
 	}
-	const usernames = localSearchData.map(sub => ('username' in sub ? sub.username : sub.name) as string);
 
 	const data: TSearch[] = localSearchData;
 
@@ -126,7 +132,13 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 			if (filterUsers) {
 				users
 					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-					.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+					.filter(
+						user =>
+							!data.some(sub =>
+								// Check comments at usernames' declaration
+								rid && 'username' in sub ? user.username === sub.username : user.username === sub.name
+							)
+					) // Make sure to remove users already on local database
 					.forEach(user => {
 						data.push({
 							...user,

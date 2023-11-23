@@ -123,7 +123,6 @@
   "Members": "Miembros",
   "Mentions": "Menciones",
   "Message_actions": "Acciones de mensaje",
-  "Message_pinned": "Mensaje fijado",
   "Message_removed": "Mensaje eliminado",
   "message": "mensaje",
   "messages": "mensajes",
@@ -298,5 +297,6 @@
   "Displays_action_text": "Mostrar texto de acción",
   "Direct_message_someone": "Enviar mensaje directo a alguien",
   "Mute_someone_in_room": "Silenciar a alguien en la sala",
-  "Unmute_someone_in_room": "Reactivar audio de un usuario de la sala"
+  "Unmute_someone_in_room": "Reactivar audio de un usuario de la sala",
+  "Audio": "Audio"
 }

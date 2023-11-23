@@ -91,6 +91,7 @@ import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSh
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { IRoomContext, RoomContext, TMessageAction } from './context';
+import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 
@@ -140,7 +141,8 @@ const roomAttrsUpdate = [
 	'onHold',
 	't',
 	'autoTranslate',
-	'autoTranslateLanguage'
+	'autoTranslateLanguage',
+	'unmuted'
 ] as TRoomUpdate[];
 
 interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -226,6 +228,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		cancel: () => void;
 	};
 	private sub?: RoomClass;
+	private unsubscribeBlur?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -304,6 +307,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
+		const { navigation } = this.props;
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
@@ -330,6 +334,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
+		// TODO: Refactor when audio becomes global
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			audioPlayer.pauseCurrentAudio();
+		});
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -402,7 +410,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	componentWillUnmount() {
+	async componentWillUnmount() {
 		this.mounted = false;
 		this.unsubscribe();
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
@@ -421,8 +429,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.retryInitTimeout) {
 			clearTimeout(this.retryInitTimeout);
 		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
+		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
+		if (!this.tmid) {
+			// TODO: Refactor when audio becomes global
+			await audioPlayer.unloadRoomAudios(this.rid);
+		}
 	}
 
 	canForwardGuest = async () => {
@@ -1152,13 +1167,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	navToRoomInfo = (navParam: any) => {
-		const { navigation, user, isMasterDetail } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const { room } = this.state;
-
 		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
-		if (navParam.rid === user.id) {
-			return;
-		}
 		navParam.fromRid = room.rid;
 		if (isMasterDetail) {
 			navParam.showCloseModal = true;

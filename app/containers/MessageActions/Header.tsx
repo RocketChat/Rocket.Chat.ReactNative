@@ -31,6 +31,7 @@ interface THeaderFooter {
 	theme: TSupportedThemes;
 }
 
+export const HEADER_HEIGHT = 54;
 const ITEM_SIZE = 36;
 const CONTAINER_MARGIN = 8;
 const ITEM_MARGIN = 8;
@@ -38,7 +39,8 @@ const ITEM_MARGIN = 8;
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		marginHorizontal: CONTAINER_MARGIN
+		marginHorizontal: CONTAINER_MARGIN,
+		paddingBottom: 16
 	},
 	headerItem: {
 		height: ITEM_SIZE,

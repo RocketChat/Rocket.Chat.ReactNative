@@ -223,7 +223,6 @@
   "Members": "Mitglieder",
   "Mentions": "Erwähnungen",
   "Message_actions": "Nachrichtenaktionen",
-  "Message_pinned": "Eine Nachricht wurde angeheftet",
   "Message_removed": "Nachricht entfernt",
   "Message_starred": "Nachricht favorisiert",
   "Message_unstarred": "Nachricht nicht mehr favorisiert",
@@ -555,7 +554,6 @@
   "Enabled_E2E_Encryption_for_this_room": "hat E2E-Verschlüsselung für diesen Raum aktiviert",
   "Disabled_E2E_Encryption_for_this_room": "hat E2E-Verschlüsselung für diesen Raum deaktiviert",
   "Teams": "Teams",
-  "No_team_channels_found": "Keine Kanäle gefunden",
   "Team_not_found": "Team nicht gefunden",
   "Create_Team": "Team erstellen",
   "Team_Name": "Team-Name",
@@ -691,6 +689,7 @@
   "Waiting_for_answer": "Warten auf Antwort",
   "Call_ended": "Anruf beendet",
   "Call_was_not_answered": "Anruf wurde nicht beantwortet",
+  "Call_rejected": "Anruf abgelehnt",
   "Call_back": "Rückruf",
   "Call_again": "Erneut anrufen",
   "Call_ongoing": "Aufruf laufend",
@@ -746,5 +745,10 @@
   "Displays_action_text": "Zeigt den Aktionstext",
   "Direct_message_someone": "Jemandem eine Direktnachricht schicken",
   "Mute_someone_in_room": "Jemandem in einem Raum das Chatten verbieten",
-  "Unmute_someone_in_room": "Jemandem das Chatten in einem Raum wieder erlauben"
+  "Unmute_someone_in_room": "Jemandem das Chatten in einem Raum wieder erlauben",
+  "Audio": "Audio",
+  "decline": "Ablehnen",
+  "accept": "Annehmen",
+  "Incoming_call_from": "Eingehender Anruf von",
+  "Call_started": "Anruf gestartet"
 }

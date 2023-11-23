@@ -5,6 +5,18 @@ import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/asy
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
+jest.mock('react-native-safe-area-context', () => {
+	const inset = { top: 0, right: 0, bottom: 0, left: 0 };
+	return {
+		...jest.requireActual('react-native-safe-area-context'),
+		SafeAreaProvider: jest.fn(({ children }) => children),
+		SafeAreaConsumer: jest.fn(({ children }) => children(inset)),
+		useSafeAreaInsets: jest.fn(() => inset),
+		useSafeAreaFrame: jest.fn(() => ({ x: 0, y: 0, width: 390, height: 844 }))
+	};
+});
+
+// @ts-ignore
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
@@ -51,7 +63,15 @@ const mockedNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
-	useNavigation: () => mockedNavigate
+	useNavigation: () => ({
+		navigate: jest.fn(),
+		addListener: jest.fn().mockImplementation((event, callback) => {
+			callback();
+			return {
+				remove: jest.fn()
+			};
+		})
+	})
 }));
 
 jest.mock('react-native-notifications', () => ({
@@ -97,3 +117,8 @@ jest.mock('react-native-ui-lib/keyboard', () => {
 		})
 	};
 });
+
+jest.mock('expo-av', () => ({
+	InterruptionModeIOS: { DoNotMix: 1 },
+	InterruptionModeAndroid: { DoNotMix: 1 }
+}));

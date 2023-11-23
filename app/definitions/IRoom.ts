@@ -39,6 +39,7 @@ export interface IRoom {
 	default?: boolean;
 	featured?: boolean;
 	muted?: string[];
+	unmuted?: string[];
 	teamId?: string;
 	ignored?: string;
 

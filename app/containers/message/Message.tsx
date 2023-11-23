@@ -91,6 +91,11 @@ const Message = React.memo((props: IMessage) => {
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
+						{props.isInfo && props.type === 'message_pinned' ? (
+							<View pointerEvents='none'>
+								<Attachments {...props} />
+							</View>
+						) : null}
 					</View>
 				</View>
 			</View>

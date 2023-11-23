@@ -211,7 +211,6 @@
   "Members": "Leden",
   "Mentions": "Vermeldingen",
   "Message_actions": "Berichtacties",
-  "Message_pinned": "Bericht vastgezet",
   "Message_removed": "Bericht verwijderd",
   "Message_starred": "Bericht met ster",
   "Message_unstarred": "Bericht zonder ster",
@@ -520,7 +519,6 @@
   "Enter_workspace_URL": "Voer de werkruimte-URL in",
   "Workspace_URL_Example": "Vb. uw-bedrijf.rocket.chat",
   "Teams": "Teams",
-  "No_team_channels_found": "Geen kanalen gevonden",
   "Team_not_found": "Team niet gevonden",
   "Create_Team": "Team aanmaken",
   "Team_Name": "Teamnaam",
@@ -639,5 +637,6 @@
   "Displays_action_text": "Geeft actietekst weer",
   "Direct_message_someone": "Stuur iemand een privébericht",
   "Mute_someone_in_room": "Demp iemand in de kamer",
-  "Unmute_someone_in_room": "Schakel het dempen van iemand in de kamer uit"
+  "Unmute_someone_in_room": "Schakel het dempen van iemand in de kamer uit",
+  "Audio": "Audio"
 }

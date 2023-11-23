@@ -246,5 +246,8 @@ export const defaultSettings = {
 	Omnichannel_call_provider: {
 		type: 'valueAsBoolean'
 	},
+	CDN_PREFIX: {
+		type: 'valueAsString'
+	},
 	...deprecatedSettings
 } as const;

@@ -219,7 +219,6 @@
   "Members": "Пользователи",
   "Mentions": "Упоминания",
   "Message_actions": "Действия с сообщением",
-  "Message_pinned": "Сообщение прикреплено",
   "Message_removed": "Сообщение удалено",
   "Message_starred": "Сообщение отмечено звездой",
   "Message_unstarred": "Отметка сообщения звездой удалена",
@@ -531,7 +530,6 @@
   "Enter_workspace_URL": "Введите URL вашего рабочего пространства",
   "Workspace_URL_Example": "Например, your-company.rocket.chat",
   "Teams": "Команды",
-  "No_team_channels_found": "Каналы не найдены",
   "Team_not_found": "Команда не найдена",
   "Create_Team": "Создать Команду",
   "Team_Name": "Имя Команды",
@@ -691,5 +689,6 @@
   "Displays_action_text": "Показать текст действия",
   "Direct_message_someone": "Личная переписка с кем-нибудь",
   "Mute_someone_in_room": "Заглушить кого-нибудь в комнате",
-  "Unmute_someone_in_room": "Сделать незаглушенным кого-нибудь в комнате"
+  "Unmute_someone_in_room": "Сделать незаглушенным кого-нибудь в комнате",
+  "Audio": "Аудио"
 }

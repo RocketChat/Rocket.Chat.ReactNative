@@ -204,7 +204,6 @@
   "Members": "成員",
   "Mentions": "被提及",
   "Message_actions": "訊息操作",
-  "Message_pinned": "訊息被釘選",
   "Message_removed": "訊息被刪除",
   "Message_starred": "訊息被標註",
   "Message_unstarred": "訊息被取消標註",
@@ -511,5 +510,6 @@
   "Displays_action_text": "顯示文字行動",
   "Direct_message_someone": "私訊其他人",
   "Mute_someone_in_room": "在房間中有人靜音",
-  "Unmute_someone_in_room": "有人在房間取消靜音"
+  "Unmute_someone_in_room": "有人在房間取消靜音",
+  "Audio": "音訊"
 }
