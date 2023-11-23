@@ -107,7 +107,7 @@ export const RecordAudio = (): ReactElement => {
 					borderTopColor: colors.strokeLight
 				}}
 			>
-				<View style={{ paddingVertical: 8 }}>
+				<View style={{ flexDirection: 'row', paddingVertical: 8 }}>
 					<AudioPlayer fileUri={recordingRef.current?.getURI() ?? ''} rid={rid} downloadState='downloaded' />
 				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
