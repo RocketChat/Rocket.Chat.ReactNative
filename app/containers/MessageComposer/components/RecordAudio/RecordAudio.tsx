@@ -91,7 +91,7 @@ export const RecordAudio = (): ReactElement => {
 			const fileURI = recordingRef.current?.getURI();
 			const fileData = await getInfoAsync(fileURI as string);
 			const fileInfo = {
-				name: `${Date.now()}.m4a`,
+				name: `${Date.now()}.aac`,
 				mime: 'audio/aac',
 				type: 'audio/aac',
 				store: 'Uploads',
