@@ -20,6 +20,7 @@ import { useCanUploadFile } from '../../hooks';
 import { Duration, IDurationRef } from './Duration';
 import { RECORDING_MODE, RECORDING_SETTINGS } from './constants';
 import AudioPlayer from '../../../AudioPlayer';
+import { CancelButton } from './CancelButton';
 
 export const RecordAudio = (): ReactElement => {
 	const { colors } = useTheme();
@@ -123,12 +124,7 @@ export const RecordAudio = (): ReactElement => {
 					<AudioPlayer fileUri={recordingRef.current?.getURI() ?? ''} rid={rid} downloadState='downloaded' />
 				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-					<BaseButton
-						onPress={() => cancelRecording()}
-						testID='message-composer-delete-audio'
-						accessibilityLabel='tbd'
-						icon='delete'
-					/>
+					<CancelButton onPress={() => cancelRecording()} />
 					<View style={{ flex: 1 }} />
 					<BaseButton
 						onPress={() => sendAudio()}
@@ -157,12 +153,7 @@ export const RecordAudio = (): ReactElement => {
 				<Duration ref={durationRef} />
 			</View>
 			<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-				<BaseButton
-					onPress={() => cancelRecording()}
-					testID='message-composer-delete-audio'
-					accessibilityLabel='tbd'
-					icon='delete'
-				/>
+				<CancelButton onPress={() => cancelRecording()} />
 				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 					<Text style={{ fontSize: 14, ...sharedStyles.textRegular, color: colors.fontSecondaryInfo }}>
 						Recording audio message
