@@ -211,7 +211,6 @@
   "Members": "Membres",
   "Mentions": "Mentions",
   "Message_actions": "Actions de message",
-  "Message_pinned": "Message épinglé",
   "Message_removed": "Message supprimé",
   "Message_starred": "Message suivi",
   "Message_unstarred": "Message non suivi",
@@ -520,7 +519,6 @@
   "Enter_workspace_URL": "Entrez l'URL de l'espace de travail",
   "Workspace_URL_Example": "Ex. votre-société.rocket.chat",
   "Teams": "Equipes",
-  "No_team_channels_found": "Aucun canal trouvé",
   "Team_not_found": "Equipe non trouvée",
   "Create_Team": "Créer une équipe",
   "Team_Name": "Nom de l'équipe",
@@ -639,5 +637,6 @@
   "Displays_action_text": "Affiche le texte d'action",
   "Direct_message_someone": "Envoyer un message direct à quelqu'un",
   "Mute_someone_in_room": "Mettre en sourdine un membre du salon",
-  "Unmute_someone_in_room": "Réactiver le son d'un utilisateur du salon"
+  "Unmute_someone_in_room": "Réactiver le son d'un utilisateur du salon",
+  "Audio": "Audio"
 }

@@ -1,4 +1,7 @@
 export const mappedIcons = {
+	'play-shape-filled': 59842,
+	'pause-shape-filled': 59843,
+	'loading': 59844,
 	'add': 59872,
 	'administration': 59662,
 	'adobe-reader-monochromatic': 59663,

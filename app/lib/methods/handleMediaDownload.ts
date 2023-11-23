@@ -8,6 +8,8 @@ import log from './helpers/log';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
+export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
+
 const defaultType = {
 	audio: 'mp3',
 	image: 'jpg',
@@ -41,7 +43,7 @@ export const getFilename = ({
 	mimeType?: string;
 }) => {
 	const isTitleTyped = mime.lookup(title);
-	const extension = getExtension(type, mimeType);
+	const extension = getExtension(type, mimeType, url);
 	if (isTitleTyped && title) {
 		if (isTitleTyped === mimeType) {
 			return title;
@@ -65,18 +67,20 @@ export const getFilename = ({
 	return `${filenameFromUrl}.${extension}`;
 };
 
-const getExtension = (type: MediaTypes, mimeType?: string) => {
+const getExtension = (type: MediaTypes, mimeType?: string, url?: string) => {
 	if (!mimeType) {
 		return defaultType[type];
+	}
+	// support audio from older versions
+	if (url?.split('.').pop() === 'm4a') {
+		return 'm4a';
 	}
 	// The library is returning mpag instead of mp3 for audio/mpeg
 	if (mimeType === 'audio/mpeg') {
 		return 'mp3';
 	}
-	// Audios sent by Android devices are in the audio/aac format, which cannot be converted to mp3 by iOS.
-	// However, both platforms support the m4a format, so they can maintain the same behavior.
 	if (mimeType === 'audio/aac') {
-		return 'm4a';
+		return 'aac';
 	}
 	// The return of mime.extension('video/quicktime') is .qt,
 	// this format the iOS isn't recognize and can't save on gallery
@@ -197,8 +201,7 @@ export function downloadMediaFile({
 		try {
 			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 			if (!path) {
-				reject();
-				return;
+				return reject();
 			}
 			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
@@ -206,9 +209,9 @@ export function downloadMediaFile({
 			if (result?.uri) {
 				return resolve(result.uri);
 			}
-			reject();
+			return reject();
 		} catch {
-			reject();
+			return reject();
 		} finally {
 			delete downloadQueue[downloadKey];
 		}

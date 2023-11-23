@@ -1,11 +1,11 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
-import { useMessages, useRefresh, useScroll } from './hooks';
-import { useDebounce } from '../../../lib/methods/helpers';
-import { RefreshControl, EmptyRoom, List } from './components';
+import { isAndroid, useDebounce } from '../../../lib/methods/helpers';
+import { EmptyRoom, List } from './components';
 import { IListContainerProps, IListContainerRef, IListProps } from './definitions';
+import { useMessages, useScroll } from './hooks';
 
 const styles = StyleSheet.create({
 	inverted: {
@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
 	}
 });
 
+const Container = ({ children }: { children: React.ReactElement }) =>
+	isAndroid ? <View style={{ flex: 1, scaleY: -1 }}>{children}</View> : <>{children}</>;
+
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef, loading }, ref) => {
 		const [messages, messagesIds, fetchMessages] = useMessages({
@@ -26,7 +29,6 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
-		const [refreshing, refresh] = useRefresh({ rid, tmid, messagesLength: messages.length });
 		const {
 			jumpToBottom,
 			jumpToMessage,
@@ -59,7 +61,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
-				<RefreshControl refreshing={refreshing} onRefresh={refresh}>
+				<Container>
 					<List
 						listRef={listRef}
 						data={messages}
@@ -71,7 +73,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 						jumpToBottom={jumpToBottom}
 						isThread={!!tmid}
 					/>
-				</RefreshControl>
+				</Container>
 			</>
 		);
 	}

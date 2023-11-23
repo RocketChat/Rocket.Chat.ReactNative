@@ -206,7 +206,6 @@
   "Members": "Membros",
   "Mentions": "Menções",
   "Message_actions": "Acções de mensagem",
-  "Message_pinned": "Mensagem afixada",
   "Message_removed": "Mensagem removida",
   "Message_starred": "Mensagem estrelada",
   "Message_unstarred": "Mensagem não estrelada",
@@ -369,5 +368,7 @@
   "Displays_action_text": "Exibe texto da acção",
   "Direct_message_someone": "Enviar mensagem directa para alguém",
   "Mute_someone_in_room": "Silenciar alguém na sala",
-  "Unmute_someone_in_room": "Remover silenciar de alguém na sala"
+  "Unmute_someone_in_room": "Remover silenciar de alguém na sala",
+  "Audio": "Áudio",
+  "Pinned_a_message": "Fixou uma mensagem:"
 }

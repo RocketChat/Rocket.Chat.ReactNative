@@ -83,6 +83,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					archived: s.archived,
 					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
+					unmuted: s.unmuted,
 					ignored: s.ignored,
 					broadcast: s.broadcast,
 					prid: s.prid,

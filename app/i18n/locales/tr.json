@@ -202,7 +202,6 @@
   "Members": "Üyeler",
   "Mentions": "Bahsetmeler",
   "Message_actions": "İleti işlemleri",
-  "Message_pinned": "İleti sabitlendi",
   "Message_removed": "İleti kaldırıldı",
   "Message_starred": "İletia yıldız eklendi",
   "Message_unstarred": "İletiın yıldızı kaldırıldı",
@@ -524,5 +523,6 @@
   "Displays_action_text": "Görüntüler aksiyon metni",
   "Direct_message_someone": "Birine doğrudan ileti gönder",
   "Mute_someone_in_room": "Odadaki birini sustur",
-  "Unmute_someone_in_room": "Odadaki birinin sesini aç"
+  "Unmute_someone_in_room": "Odadaki birinin sesini aç",
+  "Audio": "Ses"
 }

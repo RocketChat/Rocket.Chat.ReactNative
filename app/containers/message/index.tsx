@@ -410,6 +410,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		return (
 			<MessageContext.Provider
 				value={{
+					id,
+					rid,
 					user,
 					baseUrl,
 					onPress: this.onPressAction,

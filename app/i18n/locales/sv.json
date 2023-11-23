@@ -223,7 +223,6 @@
   "Members": "Medlemmar",
   "Mentions": "Omnämnanden",
   "Message_actions": "Åtgärder för meddelanden",
-  "Message_pinned": "Meddelandet har fästs",
   "Message_removed": "meddelande borttaget",
   "Message_starred": "Meddelandet har stjärnmarkerats",
   "Message_unstarred": "Stjärnmarkering borttagen för meddelande",
@@ -553,7 +552,6 @@
   "Enabled_E2E_Encryption_for_this_room": "aktivera E2E-kryptering för det här rummet",
   "Disabled_E2E_Encryption_for_this_room": "inaktivera E2E-kryptering för det här rummet",
   "Teams": "Team",
-  "No_team_channels_found": "Inga kanaler hittades",
   "Team_not_found": "Teamet hittades inte",
   "Create_Team": "Skapa team",
   "Team_Name": "Teamnamn",
@@ -721,5 +719,6 @@
   "Displays_action_text": "Visar åtgärdstext",
   "Direct_message_someone": "Skicka direktmeddelande till någon",
   "Mute_someone_in_room": "Tysta någon i rummet",
-  "Unmute_someone_in_room": "Slå på ljud för någon i rummet"
+  "Unmute_someone_in_room": "Slå på ljud för någon i rummet",
+  "Audio": "Ljud"
 }

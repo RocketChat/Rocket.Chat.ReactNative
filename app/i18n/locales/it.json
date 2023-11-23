@@ -218,7 +218,6 @@
   "Members": "Membri",
   "Mentions": "Menzioni",
   "Message_actions": "Azioni messaggio",
-  "Message_pinned": "Messaggio appuntato",
   "Message_removed": "Messaggio rimosso",
   "Message_starred": "Messaggio importante",
   "Message_unstarred": "Messaggio non importante",
@@ -541,5 +540,6 @@
   "Displays_action_text": "Mostra il testo di azione",
   "Direct_message_someone": "Invia un messaggio diretto",
   "Mute_someone_in_room": "Silenzia qualcuno nel canale",
-  "Unmute_someone_in_room": "Smuta a qualcuno nel canale"
+  "Unmute_someone_in_room": "Smuta a qualcuno nel canale",
+  "Audio": "Audio"
 }

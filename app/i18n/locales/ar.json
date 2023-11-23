@@ -204,7 +204,6 @@
   "Members": "أفراد",
   "Mentions": "الإشارات",
   "Message_actions": "إجراءات الرسالة",
-  "Message_pinned": "الرسالة مثبتة",
   "Message_removed": "الرسالة حذفت",
   "Message_starred": "الرسالة مميزة",
   "Message_unstarred": "الرسالة غير مميزة",
@@ -491,5 +490,6 @@
   "Displays_action_text": "يعرض نص الإجراء",
   "Direct_message_someone": "رسالة مباشرة لشخص ما",
   "Mute_someone_in_room": "كتم صوت شخص ما في الغرفة",
-  "Unmute_someone_in_room": "إلغاء كتم صوت شخص ما في الغرفة"
+  "Unmute_someone_in_room": "إلغاء كتم صوت شخص ما في الغرفة",
+  "Audio": "صوت"
 }
