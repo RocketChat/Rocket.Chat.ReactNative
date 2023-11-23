@@ -1,6 +1,6 @@
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 
-const RECORDING_EXTENSION = '.aac';
+export const RECORDING_EXTENSION = '.aac';
 export const RECORDING_SETTINGS = {
 	android: {
 		// Settings related to audio encoding.

@@ -18,7 +18,7 @@ import { useRoomContext } from '../../../../views/RoomView/context';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, IDurationRef } from './Duration';
-import { RECORDING_MODE, RECORDING_SETTINGS } from './constants';
+import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from './constants';
 import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 
@@ -56,11 +56,8 @@ export const RecordAudio = (): ReactElement => {
 	const cancelRecording = async () => {
 		try {
 			await recordingRef.current?.stopAndUnloadAsync();
-			// await recordingRef.current?.pauseAsync();
-			// Do something with the URI, like upload it to firebase
 		} catch (error) {
-			// Do something with the error or handle it
-			console.error(error);
+			// Do nothing
 		} finally {
 			setRecordingAudio(false);
 		}
@@ -70,18 +67,8 @@ export const RecordAudio = (): ReactElement => {
 		try {
 			await recordingRef.current?.stopAndUnloadAsync();
 			setStatus('reviewing');
-			// const uri = recordingRef.current?.getURI();
-
-			// // TODO: temp only. Remove after new player is implemented
-			// const sound = new Audio.Sound();
-			// await sound.loadAsync({ uri: uri! });
-			// await sound.playAsync();
-			// Don't forget to unload the sound from memory
-			// when you are done using the Sound object
-			// await sound.unloadAsync();
 		} catch (error) {
-			// An error occurred!
-			console.error(error);
+			// Do nothing
 		}
 	};
 
@@ -91,7 +78,7 @@ export const RecordAudio = (): ReactElement => {
 			const fileURI = recordingRef.current?.getURI();
 			const fileData = await getInfoAsync(fileURI as string);
 			const fileInfo = {
-				name: `${Date.now()}.aac`,
+				name: `${Date.now()}${RECORDING_EXTENSION}`,
 				mime: 'audio/aac',
 				type: 'audio/aac',
 				store: 'Uploads',

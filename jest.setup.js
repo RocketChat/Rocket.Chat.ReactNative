@@ -117,8 +117,3 @@ jest.mock('react-native-ui-lib/keyboard', () => {
 		})
 	};
 });
-
-// jest.mock('expo-av', () => ({
-// 	InterruptionModeIOS: { DoNotMix: 1 },
-// 	InterruptionModeAndroid: { DoNotMix: 1 }
-// }));
