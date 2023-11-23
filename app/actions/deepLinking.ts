@@ -7,7 +7,6 @@ interface IParams {
 	rid: string;
 	messageId: string;
 	host: string;
-	isCall: boolean;
 	fullURL: string;
 	type: string;
 	token: string;
