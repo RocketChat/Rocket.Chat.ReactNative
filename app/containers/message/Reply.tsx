@@ -202,7 +202,7 @@ const Reply = React.memo(
 	({ attachment, timeFormat, index, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
-		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
+		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!attachment) {
 			return null;
@@ -210,9 +210,6 @@ const Reply = React.memo(
 
 		const onPress = async () => {
 			let url = attachment.title_link || attachment.author_link;
-			if (attachment.message_link) {
-				return jumpToMessage(attachment.message_link, true);
-			}
 			if (!url) {
 				return;
 			}
@@ -246,7 +243,7 @@ const Reply = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					disabled={loading}
+					disabled={loading || attachment.message_link}
 				>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
