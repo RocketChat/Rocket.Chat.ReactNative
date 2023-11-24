@@ -8,7 +8,7 @@ import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import database from '../lib/database';
-import { callJitsi, callJitsiWithoutServer, canOpenRoom, getServerInfo } from '../lib/methods';
+import { canOpenRoom, getServerInfo } from '../lib/methods';
 import { getUidDirectMessage } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
@@ -60,9 +60,6 @@ const navigate = function* navigate({ params }) {
 				const jumpToMessageId = params.messageId;
 
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
-				if (params.isCall) {
-					callJitsi(item);
-				}
 			}
 		} else {
 			yield handleInviteLink({ params });
@@ -92,20 +89,6 @@ const handleOpen = function* handleOpen({ params }) {
 	const serversCollection = serversDB.get('servers');
 
 	let { host } = params;
-	if (params.isCall && !host) {
-		const servers = yield serversCollection.query().fetch();
-		// search from which server is that call
-		servers.forEach(({ uniqueID, id }) => {
-			if (params.path.includes(uniqueID)) {
-				host = id;
-			}
-		});
-
-		if (!host && params.fullURL) {
-			callJitsiWithoutServer(params.fullURL);
-			return;
-		}
-	}
 
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
