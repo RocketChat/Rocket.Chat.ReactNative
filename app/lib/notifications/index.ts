@@ -1,10 +1,10 @@
 import EJSON from 'ejson';
 
-import { store } from '../store/auxStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
-import { isFDroidBuild } from '../constants';
-import { deviceToken, pushNotificationConfigure, setNotificationsBadgeCount, removeAllNotifications } from './push';
 import { INotification, SubscriptionType } from '../../definitions';
+import { isFDroidBuild } from '../constants';
+import { store } from '../store/auxStore';
+import { deviceToken, pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
 interface IEjson {
 	rid: string;
