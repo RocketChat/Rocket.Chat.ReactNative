@@ -1,5 +1,5 @@
-import React, { ReactElement, useRef, useImperativeHandle, useEffect, useCallback } from 'react';
-import { View, StyleSheet, NativeModules, Keyboard } from 'react-native';
+import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
+import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -28,6 +28,7 @@ import { Services } from '../../lib/services';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
+import { useKeyboardListener } from './hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,26 +60,9 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { setKeyboardHeight, openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
+	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
-
-	useEffect(() => {
-		const showListener = Keyboard.addListener('keyboardWillShow', async () => {
-			if (trackingViewRef?.current) {
-				const props = await trackingViewRef.current.getNativeProps();
-				setKeyboardHeight(props.keyboardHeight);
-			}
-		});
-
-		const hideListener = Keyboard.addListener('keyboardWillHide', () => {
-			setKeyboardHeight(0);
-		});
-
-		return () => {
-			showListener.remove();
-			hideListener.remove();
-		};
-	}, [trackingViewRef]);
+	useKeyboardListener(trackingViewRef);
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction
