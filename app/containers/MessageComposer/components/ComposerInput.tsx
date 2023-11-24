@@ -3,19 +3,25 @@ import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 
-import { IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
+import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useFocused, useMessageComposerApi } from '../context';
-import { loadDraftMessage, saveDraftMessage } from '../helpers';
+import { loadDraftMessage, saveDraftMessage, fetchIsAllOrHere } from '../helpers';
 import { useSubscription } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
-import { MIN_HEIGHT, markdownStyle } from '../constants';
+import { MIN_HEIGHT, NO_CANNED_RESPONSES, markdownStyle } from '../constants';
 import database from '../../../lib/database';
+import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { getMessageById } from '../../../lib/database/services/Message';
+import { generateTriggerId } from '../../../lib/methods';
+import getMentionRegexp from '../../MessageBox/getMentionRegexp';
+import { Services } from '../../../lib/services';
+import log from '../../../lib/methods/helpers/log';
+import { useAppSelector } from '../../../lib/hooks';
 
 const styles = StyleSheet.create({
 	textInput: {
@@ -45,6 +51,7 @@ export const ComposerInput = memo(
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
+		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		// TODO: i18n
 		let placeholder = tmid ? 'Add thread reply' : 'Message ';
 		if (subscription && !tmid) {
@@ -105,7 +112,8 @@ export const ComposerInput = memo(
 			getText: () => textRef.current,
 			getSelection: () => selectionRef.current,
 			setInput,
-			focus
+			focus,
+			onAutocompleteItemSelected
 		}));
 
 		const setInput: TSetInput = (text, selection) => {
@@ -149,7 +157,82 @@ export const ComposerInput = memo(
 			setTrackingViewHeight(e.nativeEvent.layout.height);
 		};
 
-		// TODO: duplicated
+		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
+			if (item.type === 'loading') {
+				return null;
+			}
+
+			// If it's slash command preview, we need to execute the command
+			if (item.type === '/preview') {
+				try {
+					const db = database.active;
+					const commandsCollection = db.get('slash_commands');
+					const commandRecord = await commandsCollection.find(item.text);
+					const { appId } = commandRecord;
+					const triggerId = generateTriggerId(appId);
+					Services.executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
+				} catch (e) {
+					log(e);
+				}
+				requestAnimationFrame(() => {
+					stopAutocomplete();
+					setInput('', { start: 0, end: 0 });
+				});
+				return;
+			}
+
+			// If it's canned response, but there's no canned responses, we open the canned responses view
+			if (item.type === '!' && item.id === NO_CANNED_RESPONSES) {
+				const params = { rid };
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });
+				} else {
+					Navigation.navigate('CannedResponsesListView', params);
+				}
+				stopAutocomplete();
+				return;
+			}
+
+			const text = textRef.current;
+			const { start, end } = selectionRef.current;
+			const cursor = Math.max(start, end);
+			const regexp = getMentionRegexp();
+			let result = text.substr(0, cursor).replace(regexp, '');
+			// Remove the ! after select the canned response
+			if (item.type === '!') {
+				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
+				result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
+			}
+			let mention = '';
+			switch (item.type) {
+				case '@':
+					mention = fetchIsAllOrHere(item) ? item.title : item.subtitle || item.title;
+					break;
+				case '#':
+					mention = item.subtitle ? item.subtitle : '';
+					break;
+				case ':':
+					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
+					break;
+				case '/':
+					mention = item.title;
+					break;
+				case '!':
+					mention = item.subtitle ? item.subtitle : '';
+					break;
+				default:
+					mention = '';
+			}
+			const newText = `${result}${mention} ${text.slice(cursor)}`;
+
+			const newCursor = cursor + mention.length;
+			setInput(newText, { start: newCursor, end: newCursor });
+			focus();
+			requestAnimationFrame(() => {
+				stopAutocomplete();
+			});
+		};
+
 		const stopAutocomplete = () => {
 			emitter.emit('setAutocomplete', { text: '', type: null, params: '' });
 		};
