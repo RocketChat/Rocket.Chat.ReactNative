@@ -112,7 +112,6 @@ export const ComposerInput = memo(
 			getText: () => textRef.current,
 			getSelection: () => selectionRef.current,
 			setInput,
-			focus,
 			onAutocompleteItemSelected
 		}));
 

@@ -18,7 +18,6 @@ export interface IComposerInput {
 	getText: () => string;
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
-	focus: () => void;
 	onAutocompleteItemSelected: (item: TAutocompleteItem) => void;
 }
 

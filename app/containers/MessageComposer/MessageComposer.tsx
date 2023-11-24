@@ -51,7 +51,6 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 		getText: () => '',
 		getSelection: () => ({ start: 0, end: 0 }),
 		setInput: () => {},
-		focus: () => {},
 		onAutocompleteItemSelected: () => {}
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
