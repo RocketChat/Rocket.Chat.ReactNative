@@ -49,14 +49,18 @@ export const RecordAudio = (): ReactElement => {
 		record();
 
 		return () => {
-			recordingRef.current?.stopAndUnloadAsync();
+			try {
+				recordingRef.current?.stopAndUnloadAsync();
+			} catch {
+				// Do nothing
+			}
 		};
 	}, []);
 
 	const cancelRecording = async () => {
 		try {
 			await recordingRef.current?.stopAndUnloadAsync();
-		} catch (error) {
+		} catch {
 			// Do nothing
 		} finally {
 			setRecordingAudio(false);
@@ -67,7 +71,7 @@ export const RecordAudio = (): ReactElement => {
 		try {
 			await recordingRef.current?.stopAndUnloadAsync();
 			setStatus('reviewing');
-		} catch (error) {
+		} catch {
 			// Do nothing
 		}
 	};
