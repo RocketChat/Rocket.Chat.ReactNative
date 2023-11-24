@@ -12,7 +12,7 @@ import {
 	sleep,
 	checkRoomTitle,
 	mockMessage,
-	tryTapping
+	jumpToQuotedMessage
 } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
@@ -145,8 +145,7 @@ describe('Broadcast room', () => {
 		await waitFor(element(by[textMatcher](message)))
 			.toExist()
 			.withTimeout(10000);
-		await tryTapping(element(by[textMatcher](message)), 2000, true);
-		await element(by[textMatcher]('Jump to message')).atIndex(0).tap();
+		await jumpToQuotedMessage(element(by[textMatcher](message)));
 		await sleep(300); // wait for animation
 		await checkRoomTitle(room);
 	});
