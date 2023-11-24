@@ -118,3 +118,5 @@ export const goRoom = async ({
 
 	return navigate({ item, isMasterDetail, popToRoot, ...props });
 };
+
+export const navigateToRoom = navigate;

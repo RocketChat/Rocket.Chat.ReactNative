@@ -749,6 +749,7 @@
   "Continue": "Continue",
   "Message_has_been_shared": "Message has been shared",
   "No_channels_in_team": "No Channels on this team",
+  "conference_call": "Conference call",
   "Room_not_found": "Room not found",
   "The_room_does_not_exist": "The room does not exist or you may not have access permission",
   "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
@@ -759,5 +760,6 @@
   "Enable_writing_in_room": "Enable writing in room",
   "Disable_writing_in_room": "Disable writing in room",
   "Pinned_a_message": "Pinned a message:",
-  "Jump_to_message": "Jump to message"
+  "Jump_to_message": "Jump to message",
+  "Missed_call": "Missed call"
 }
