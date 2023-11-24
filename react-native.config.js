@@ -14,6 +14,16 @@ module.exports = {
 			platforms: {
 				android: null
 			}
+		},
+		'@react-native-firebase/messaging': {
+			platforms: {
+				ios: null
+			}
+		},
+		'@notifee/react-native': {
+			platforms: {
+				ios: null
+			}
 		}
 	}
 };

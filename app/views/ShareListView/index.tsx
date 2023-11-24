@@ -436,7 +436,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
 					>
 						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{I18n.t('Read_External_Permission')}</Text>
-						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{I18n.t('Read_External_Permission_Message')}</Text>
+						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>
+							{I18n.t('Read_External_Permission_Message')}
+						</Text>
 					</ScrollView>
 				</SafeAreaView>
 			);
