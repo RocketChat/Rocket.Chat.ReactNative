@@ -18,9 +18,7 @@ interface IEjson {
 }
 
 export const onNotification = (push: INotification): void => {
-	Alert.alert('onNotification', JSON.stringify(push));
-	Clipboard.setString(JSON.stringify(push));
-	const identifier = String(push?.action?.identifier);
+	const identifier = String(push?.payload?.action?.identifier);
 	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
 		if (push.payload) {
 			const notification = EJSON.parse(push.payload.ejson);
@@ -68,4 +66,28 @@ export const initializePushNotifications = (): Promise<INotification> | undefine
 		setBadgeCount();
 		return pushNotificationConfigure(onNotification);
 	}
+};
+
+const d = {
+	payload: {
+		body: 'Conference Call',
+		identifier: '3D96ED2D-ECCE-4356-8DBF-72EC7C9EDDF6',
+		messageFrom: 'push',
+		action: { identifier: 'ACCEPT_ACTION' },
+		category: 'VIDEOCONF',
+		title: '@xdani',
+		date: '2023-11-24T21:15:41.613-03:00',
+		aps: {
+			category: 'VIDEOCONF',
+			'mutable-content': 1,
+			badge: 0,
+			'thread-id': '-336844140',
+			alert: { body: 'Conference Call', title: '@xdani' },
+			sound: 'default'
+		},
+		ejson:
+			'{"avatar":"/avatar/xdani","callId":"65613cabe3a89243a8ab41a3","caller":{"_id":"3wPpCChMAKbF8DgY5","name":"xdani","username":"xdani"},"host":"https://candidate.rocket.chat/","notificationType":"videoconf","rid":"3wPpCChMAKbF8DgY5gJRnW27czkp3ksKgH","status":0}',
+		thread: '-336844140'
+	},
+	identifier: '3D96ED2D-ECCE-4356-8DBF-72EC7C9EDDF6'
 };
