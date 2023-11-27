@@ -8,6 +8,7 @@ type Events = {
 		text: string;
 		params?: string;
 	};
+	toolbarMention: undefined;
 	addMarkdown: {
 		style: TMarkdownStyle;
 	};

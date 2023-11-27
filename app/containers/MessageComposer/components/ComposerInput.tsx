@@ -100,7 +100,18 @@ export const ComposerInput = memo(
 					end: start === end ? start + markdown.length : end + markdown.length
 				});
 			});
-			return () => emitter.off('addMarkdown');
+			emitter.on('toolbarMention', () => {
+				const { start, end } = selectionRef.current;
+				const text = textRef.current;
+				const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
+				console.log('🚀 ~ file: ComposerInput.tsx:108 ~ emitter.on ~ newText:', newText);
+				setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
+				emitter.emit('setAutocomplete', { text: '', type: '@' });
+			});
+			return () => {
+				emitter.off('addMarkdown');
+				emitter.off('toolbarMention');
+			};
 		}, [rid]);
 
 		useImperativeHandle(ref, () => ({
@@ -122,7 +133,7 @@ export const ComposerInput = memo(
 			}
 			if (selection) {
 				selectionRef.current = selection;
-				inputRef.current.setSelection?.(selection.start, selection.end);
+				inputRef.current?.setSelection?.(selection.start, selection.end);
 			}
 			setMicOrSend(text.length === 0 ? 'mic' : 'send');
 		};

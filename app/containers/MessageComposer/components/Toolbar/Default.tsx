@@ -6,6 +6,7 @@ import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
 import { Gap } from '../Gap';
 import { CancelEdit } from '../CancelEdit';
+import { emitter } from '../../emitter';
 
 export const Default = (): ReactElement | null => {
 	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
@@ -28,7 +29,12 @@ export const Default = (): ReactElement | null => {
 				icon='text-format'
 			/>
 			<Gap />
-			<BaseButton onPress={() => alert('tbd')} testID='message-composer-mention' accessibilityLabel='TBD' icon='mention' />
+			<BaseButton
+				onPress={() => emitter.emit('toolbarMention')}
+				testID='message-composer-mention'
+				accessibilityLabel='TBD'
+				icon='mention'
+			/>
 			<EmptySpace />
 			<CancelEdit />
 			<MicOrSendButton />
