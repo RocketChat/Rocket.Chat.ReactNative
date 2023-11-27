@@ -1187,19 +1187,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
+			const threadRecord = await getThreadById(item.tmid);
+			if (threadRecord?.t === 'rm') {
+				name = I18n.t('Thread');
+			}
 			if (!name) {
-				const threadRecord = await getThreadById(item.tmid);
-				if (threadRecord?.t === 'rm') {
-					name = I18n.t('Thread');
-				} else {
-					const result = await this.getThreadName(item.tmid, jumpToMessageId);
-					// test if there isn't a thread
-					if (!result) {
-						sendLoadingEvent({ visible: false });
-						return;
-					}
-					name = result;
+				const result = await this.getThreadName(item.tmid, jumpToMessageId);
+				// test if there isn't a thread
+				if (!result) {
+					sendLoadingEvent({ visible: false });
+					return;
 				}
+				name = result;
 			}
 			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
