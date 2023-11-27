@@ -1,5 +1,4 @@
 import EJSON from 'ejson';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
 import { INotification, SubscriptionType } from '../../definitions';
@@ -17,7 +16,6 @@ interface IEjson {
 }
 
 export const onNotification = (push: INotification): void => {
-	Clipboard.setString(JSON.stringify(push));
 	const identifier = String(push?.payload?.action?.identifier);
 	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
 		if (push.payload) {
