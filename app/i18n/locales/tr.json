@@ -504,5 +504,7 @@
   "Open_Livechats": "Devam Eden Sohbetler",
   "Broadcast_hint": "Yalnızca yetkili kullanıcılar yeni ileti yazabilir, ancak diğer kullanıcılar yanıt verebilir",
   "and_N_more": "ve {{count}} daha",
-  "Audio": "Ses"
+  "Audio": "Ses",
+  "The_user_wont_be_able_to_type_in_roomName": "Kullanıcı {{roomName}} içinde yazamayacak",
+  "The_user_will_be_able_to_type_in_roomName": "Kullanıcı {{roomName}} içinde yazabilecek"
 }

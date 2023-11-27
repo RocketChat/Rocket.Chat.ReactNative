@@ -469,5 +469,7 @@
   "Open_Livechats": "محادثات مباشرة جارية",
   "Broadcast_hint": "يمكن فقط للمستخدمين المصرح لهم كتابة رسائل جديدة، ولكن سيتمكن المستخدمون الآخرون من الرد",
   "and_N_more": "و{{count}} آخرين",
-  "Audio": "صوت"
+  "Audio": "صوت",
+  "The_user_wont_be_able_to_type_in_roomName": "المستخدم لن يتمكن من الكتابة في {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "المستخدم سيتمكن من الكتابة في {{roomName}}"
 }
