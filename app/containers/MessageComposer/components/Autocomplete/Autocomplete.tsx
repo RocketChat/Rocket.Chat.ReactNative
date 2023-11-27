@@ -1,47 +1,32 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { View, FlatList } from 'react-native';
 
-import { useKeyboardHeight, useTrackingViewHeight } from '../../context';
+import { useAutocompleteParams, useKeyboardHeight, useTrackingViewHeight } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { useTheme } from '../../../../theme';
-import { IAutocompleteItemProps, TAutocompleteType } from '../../interfaces';
+import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
-import { emitter } from '../../emitter';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
-interface IAutocompleteData {
-	type: TAutocompleteType;
-	text: string;
-	params?: string;
-}
-
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
-	console.count('Autocomplete');
 	const { rid } = useRoomContext();
 	const trackingViewHeight = useTrackingViewHeight();
 	const keyboardHeight = useKeyboardHeight();
-	const [autocompleteData, setAutocompleteData] = useState<IAutocompleteData>({ type: null, text: '', params: '' });
+	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
-		text: autocompleteData.text,
-		type: autocompleteData.type,
-		commandParams: autocompleteData.params
+		text,
+		type,
+		commandParams: params
 	});
 	const { colors } = useTheme();
 
-	useEffect(() => {
-		emitter.on('setAutocomplete', ({ text, type, params = '' }) => {
-			setAutocompleteData({ text, type, params });
-		});
-		return () => emitter.off('setAutocomplete');
-	}, [rid]);
-
-	if (items.length === 0 || !autocompleteData.type) {
+	if (items.length === 0 || !type) {
 		return null;
 	}
 
-	if (autocompleteData.type !== '/preview') {
+	if (type !== '/preview') {
 		return (
 			<View
 				style={{
@@ -75,7 +60,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		);
 	}
 
-	if (autocompleteData.type === '/preview') {
+	if (type === '/preview') {
 		return (
 			<View
 				style={{

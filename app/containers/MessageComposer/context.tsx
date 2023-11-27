@@ -1,7 +1,7 @@
 import React, { createContext, ReactElement, useContext, useMemo, useReducer } from 'react';
 
 import { IEmoji } from '../../definitions';
-import { TMicOrSend } from './interfaces';
+import { IAutocompleteBase, TMicOrSend } from './interfaces';
 
 type TMessageComposerContextApi = {
 	setKeyboardHeight: (height: number) => void;
@@ -15,6 +15,7 @@ type TMessageComposerContextApi = {
 	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
 	setAlsoSendThreadToChannel(alsoSendThreadToChannel: boolean): void;
 	setRecordingAudio(recordingAudio: boolean): void;
+	setAutocompleteParams(params: IAutocompleteBase): void;
 };
 
 const FocusedContext = createContext<State['focused']>({} as State['focused']);
@@ -26,6 +27,7 @@ const KeyboardHeightContext = createContext<State['keyboardHeight']>({} as State
 const TrackingViewHeightContext = createContext<State['trackingViewHeight']>({} as State['trackingViewHeight']);
 const AlsoSendThreadToChannelContext = createContext<State['alsoSendThreadToChannel']>({} as State['alsoSendThreadToChannel']);
 const RecordingAudioContext = createContext<State['recordingAudio']>({} as State['recordingAudio']);
+const AutocompleteParamsContext = createContext<State['autocompleteParams']>({} as State['autocompleteParams']);
 const MessageComposerContextApi = createContext<TMessageComposerContextApi>({} as TMessageComposerContextApi);
 
 export const useMessageComposerApi = (): TMessageComposerContextApi => useContext(MessageComposerContextApi);
@@ -38,6 +40,7 @@ export const useKeyboardHeight = (): State['keyboardHeight'] => useContext(Keybo
 export const useTrackingViewHeight = (): State['trackingViewHeight'] => useContext(TrackingViewHeightContext);
 export const useAlsoSendThreadToChannel = (): State['alsoSendThreadToChannel'] => useContext(AlsoSendThreadToChannelContext);
 export const useRecordingAudio = (): State['recordingAudio'] => useContext(RecordingAudioContext);
+export const useAutocompleteParams = (): State['autocompleteParams'] => useContext(AutocompleteParamsContext);
 
 // TODO: rename
 type TMessageInnerContext = {
@@ -64,6 +67,7 @@ type State = {
 	showMarkdownToolbar: boolean;
 	alsoSendThreadToChannel: boolean;
 	recordingAudio: boolean;
+	autocompleteParams: IAutocompleteBase;
 };
 
 type Actions =
@@ -79,7 +83,8 @@ type Actions =
 	| { type: 'setMicOrSend'; micOrSend: TMicOrSend }
 	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean }
 	| { type: 'setAlsoSendThreadToChannel'; alsoSendThreadToChannel: boolean }
-	| { type: 'setRecordingAudio'; recordingAudio: boolean };
+	| { type: 'setRecordingAudio'; recordingAudio: boolean }
+	| { type: 'setAutocompleteParams'; params: IAutocompleteBase };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -109,11 +114,13 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, alsoSendThreadToChannel: action.alsoSendThreadToChannel };
 		case 'setRecordingAudio':
 			return { ...state, recordingAudio: action.recordingAudio };
+		case 'setAutocompleteParams':
+			return { ...state, autocompleteParams: action.params };
 	}
 };
 
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
-	const [state, dispatch] = useReducer(reducer, {} as State);
+	const [state, dispatch] = useReducer(reducer, { autocompleteParams: { text: '', type: null } } as State);
 
 	const api = useMemo(() => {
 		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
@@ -140,6 +147,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 		const setRecordingAudio = (recordingAudio: boolean) => dispatch({ type: 'setRecordingAudio', recordingAudio });
 
+		const setAutocompleteParams = (params: IAutocompleteBase) => dispatch({ type: 'setAutocompleteParams', params });
+
 		return {
 			setFocused,
 			setKeyboardHeight,
@@ -151,7 +160,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 			setMicOrSend,
 			setMarkdownToolbar,
 			setAlsoSendThreadToChannel,
-			setRecordingAudio
+			setRecordingAudio,
+			setAutocompleteParams
 		};
 	}, []);
 
@@ -165,7 +175,9 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 								<ShowMarkdownToolbarContext.Provider value={state.showMarkdownToolbar}>
 									<AlsoSendThreadToChannelContext.Provider value={state.alsoSendThreadToChannel}>
 										<RecordingAudioContext.Provider value={state.recordingAudio}>
-											<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+											<AutocompleteParamsContext.Provider value={state.autocompleteParams}>
+												<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+											</AutocompleteParamsContext.Provider>
 										</RecordingAudioContext.Provider>
 									</AlsoSendThreadToChannelContext.Provider>
 								</ShowMarkdownToolbarContext.Provider>

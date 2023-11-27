@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
-import { useFocused, useMessageComposerApi } from '../context';
+import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
 import { loadDraftMessage, saveDraftMessage, fetchIsAllOrHere } from '../helpers';
 import { useSubscription } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -46,7 +46,8 @@ export const ComposerInput = memo(
 		const { colors, theme } = useTheme();
 		const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
 		const focused = useFocused();
-		const { setFocused, setTrackingViewHeight, setMicOrSend } = useMessageComposerApi();
+		const { setFocused, setTrackingViewHeight, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
+		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = React.useRef('');
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
@@ -101,18 +102,20 @@ export const ComposerInput = memo(
 				});
 			});
 			emitter.on('toolbarMention', () => {
+				if (autocompleteType) {
+					return;
+				}
 				const { start, end } = selectionRef.current;
 				const text = textRef.current;
 				const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
-				console.log('🚀 ~ file: ComposerInput.tsx:108 ~ emitter.on ~ newText:', newText);
 				setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
-				emitter.emit('setAutocomplete', { text: '', type: '@' });
+				setAutocompleteParams({ text: '', type: '@' });
 			});
 			return () => {
 				emitter.off('addMarkdown');
 				emitter.off('toolbarMention');
 			};
-		}, [rid]);
+		}, [rid, autocompleteType]);
 
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
@@ -244,7 +247,7 @@ export const ComposerInput = memo(
 		};
 
 		const stopAutocomplete = () => {
-			emitter.emit('setAutocomplete', { text: '', type: null, params: '' });
+			setAutocompleteParams({ text: '', type: null, params: '' });
 		};
 
 		const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
@@ -275,30 +278,30 @@ export const ComposerInput = memo(
 					try {
 						const commandRecord = await commandsCollection.find(command);
 						if (commandRecord.providesPreview) {
-							emitter.emit('setAutocomplete', { params, text: command, type: '/preview' });
+							setAutocompleteParams({ params, text: command, type: '/preview' });
 							return;
 						}
 					} catch (e) {
 						// do nothing
 					}
 				}
-				emitter.emit('setAutocomplete', { text: autocompleteText, type: '/' });
+				setAutocompleteParams({ text: autocompleteText, type: '/' });
 				return;
 			}
 			if (lastWord.match(/^#/)) {
-				emitter.emit('setAutocomplete', { text: autocompleteText, type: '#' });
+				setAutocompleteParams({ text: autocompleteText, type: '#' });
 				return;
 			}
 			if (lastWord.match(/^@/)) {
-				emitter.emit('setAutocomplete', { text: autocompleteText, type: '@' });
+				setAutocompleteParams({ text: autocompleteText, type: '@' });
 				return;
 			}
 			if (lastWord.match(/^:/)) {
-				emitter.emit('setAutocomplete', { text: autocompleteText, type: ':' });
+				setAutocompleteParams({ text: autocompleteText, type: ':' });
 				return;
 			}
 			if (lastWord.match(/^!/) && subscription?.t === 'l') {
-				emitter.emit('setAutocomplete', { text: autocompleteText, type: '!' });
+				setAutocompleteParams({ text: autocompleteText, type: '!' });
 				return;
 			}
 
