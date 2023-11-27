@@ -8,6 +8,8 @@ import { useTheme } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import I18n from '../../i18n';
+import UserAvatarAndName from './UserAvatarAndName';
+import styles from './styles';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
@@ -33,8 +35,8 @@ const ReportUserView = () => {
 	return (
 		<>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='report-user-view'>
-				<></>
+			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
+				<UserAvatarAndName username={username} rid={rid} name={name} />
 			</SafeAreaView>
 		</>
 	);
