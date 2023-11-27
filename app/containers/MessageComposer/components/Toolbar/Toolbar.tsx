@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { AnimatePresence, MotiView } from 'moti';
 
 import { useFocused, useShowEmojiKeyboard, useShowEmojiSearchbar, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';
@@ -24,9 +25,50 @@ export const Toolbar = (): ReactElement | null => {
 		return null;
 	}
 
-	if (showMarkdownToolbar) {
-		return <Markdown />;
-	}
+	// if (showMarkdownToolbar) {
+	// 	return <Markdown />;
+	// }
 
-	return <Default />;
+	// return <Default />;
+
+	return (
+		<AnimatePresence exitBeforeEnter>
+			{showMarkdownToolbar && (
+				<MotiView
+					from={{
+						opacity: 0,
+						transform: [{ translateY: 10 }]
+					}}
+					animate={{
+						opacity: 1,
+						transform: [{ translateY: 0 }]
+					}}
+					exit={{
+						opacity: 0
+					}}
+					key='a'
+				>
+					<Markdown />
+				</MotiView>
+			)}
+			{!showMarkdownToolbar && (
+				<MotiView
+					from={{
+						opacity: 0,
+						transform: [{ translateY: 10 }]
+					}}
+					animate={{
+						opacity: 1,
+						transform: [{ translateY: 0 }]
+					}}
+					exit={{
+						opacity: 0
+					}}
+					key='b'
+				>
+					<Default />
+				</MotiView>
+			)}
+		</AnimatePresence>
+	);
 };
