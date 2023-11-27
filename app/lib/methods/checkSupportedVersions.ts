@@ -52,22 +52,12 @@ export const checkSupportedVersions = function ({
 	}
 
 	const versionInfo = sv.versions.find(({ version }) => satisfies(coerce(version)?.version ?? '', serverVersionTilde));
-	if (versionInfo && new Date(versionInfo.expiration) >= new Date()) {
-		const messages = versionInfo?.messages || sv?.messages;
-		const message = getMessage({ messages, expiration: versionInfo.expiration });
-		return {
-			status: getStatus({ expiration: versionInfo?.expiration, message }),
-			message,
-			i18n: message ? sv?.i18n : undefined,
-			expiration: versionInfo?.expiration
-		};
-	}
-
-	// Exceptions
 	const exception = sv.exceptions?.versions?.find(({ version }) => satisfies(coerce(version)?.version ?? '', serverVersionTilde));
-	const messages = exception?.messages || sv.exceptions?.messages || versionInfo?.messages || sv.messages;
-	const message = getMessage({ messages, expiration: exception?.expiration });
-	const status = getStatus({ expiration: exception?.expiration, message });
+	const messages =
+		exception?.messages || (exception ? sv.exceptions?.messages : undefined) || versionInfo?.messages || sv.messages;
+	const expiration = exception?.expiration || versionInfo?.expiration;
+	const message = getMessage({ messages, expiration });
+	const status = getStatus({ message, expiration });
 
 	// TODO: enforcement start date is temp only. Remove after a few releases.
 	if (status === 'expired' && sv?.enforcementStartDate && new Date(sv.enforcementStartDate) > new Date()) {
