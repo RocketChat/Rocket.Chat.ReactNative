@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 22,
+	version: 23,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -65,7 +65,8 @@ export default appSchema({
 				{ name: 'on_hold', type: 'boolean', isOptional: true },
 				{ name: 'source', type: 'string', isOptional: true },
 				{ name: 'hide_mention_status', type: 'boolean', isOptional: true },
-				{ name: 'users_count', type: 'number', isOptional: true }
+				{ name: 'users_count', type: 'number', isOptional: true },
+				{ name: 'unmuted', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

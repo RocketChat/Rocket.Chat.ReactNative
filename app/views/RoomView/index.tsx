@@ -92,6 +92,7 @@ import {
 import { Services } from '../../lib/services';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getThreadById } from '../../lib/database/services/Thread';
 
@@ -141,7 +142,8 @@ const roomAttrsUpdate = [
 	'onHold',
 	't',
 	'autoTranslate',
-	'autoTranslateLanguage'
+	'autoTranslateLanguage',
+	'unmuted'
 ] as TRoomUpdate[];
 
 interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -227,6 +229,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		cancel: () => void;
 	};
 	private sub?: RoomClass;
+	private unsubscribeBlur?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -304,6 +307,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
+		const { navigation } = this.props;
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
@@ -330,6 +334,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
+		// TODO: Refactor when audio becomes global
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			audioPlayer.pauseCurrentAudio();
+		});
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -446,8 +454,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.retryInitTimeout) {
 			clearTimeout(this.retryInitTimeout);
 		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
+		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
+		if (!this.tmid) {
+			// TODO: Refactor when audio becomes global
+			await audioPlayer.unloadRoomAudios(this.rid);
+		}
 	}
 
 	canForwardGuest = async () => {

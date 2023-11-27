@@ -1,5 +1,4 @@
 import { ERoomTypes } from '../../definitions';
-import { store } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
 import { Services } from '../services';
@@ -63,17 +62,10 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 	}
 }
 
-export async function canOpenRoom({ rid, path, isCall }: { rid: string; isCall: boolean; path: string }): Promise<any> {
+export async function canOpenRoom({ rid, path }: { rid: string; path: string }): Promise<any> {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
-
-		if (isCall && !rid) {
-			// Extract rid from a Jitsi URL
-			// Eg.: [Jitsi_URL_Room_Prefix][uniqueID][rid][?jwt]
-			const { Jitsi_URL_Room_Prefix, uniqueID } = store.getState().settings;
-			rid = path.replace(`${Jitsi_URL_Room_Prefix}${uniqueID}`, '').replace(/\?(.*)/g, '');
-		}
 
 		if (rid) {
 			try {
