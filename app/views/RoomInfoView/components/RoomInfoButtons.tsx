@@ -8,6 +8,7 @@ import i18n from '../../../i18n';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
+import { compareServerVersion } from '../../../lib/methods/helpers';
 
 function BaseButton({
 	danger,
@@ -59,7 +60,9 @@ interface IRoomInfoButtons {
 	handleCreateDirectMessage: () => void;
 	handleIgnoreUser: () => void;
 	handleBlockUser: () => void;
+	handleReportUser: () => void;
 	roomFromRid: ISubscription | undefined;
+	serverVersion: string | null;
 }
 
 export const RoomInfoButtons = ({
@@ -71,7 +74,9 @@ export const RoomInfoButtons = ({
 	handleCreateDirectMessage,
 	handleIgnoreUser,
 	handleBlockUser,
-	roomFromRid
+	handleReportUser,
+	roomFromRid,
+	serverVersion
 }: IRoomInfoButtons): React.ReactElement => {
 	const room = roomFromRid || roomFromProps;
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
@@ -83,6 +88,8 @@ export const RoomInfoButtons = ({
 
 	const renderIgnoreUser = isDirectFromSaved && !isFromDm && !isDmWithMyself;
 	const renderBlockUser = isDirectFromSaved && isFromDm && !isDmWithMyself;
+	const renderReportUser =
+		isDirectFromSaved && !isDmWithMyself && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0');
 
 	return (
 		<View style={styles.roomButtonsContainer}>
@@ -93,15 +100,16 @@ export const RoomInfoButtons = ({
 				label={i18n.t(isIgnored ? 'Unignore' : 'Ignore')}
 				iconName='ignore'
 				showIcon={!!renderIgnoreUser}
-				danger
+				danger={!renderReportUser}
 			/>
 			<BaseButton
 				onPress={handleBlockUser}
-				label={i18n.t(`${isBlocked ? 'Unblock' : 'Block'}_user`)}
+				label={i18n.t(`${isBlocked ? 'Unblock' : 'Block'}`)}
 				iconName='ignore'
 				showIcon={!!renderBlockUser}
-				danger
+				danger={!renderReportUser}
 			/>
+			<BaseButton onPress={handleReportUser} label={i18n.t('Report')} iconName='warning' showIcon={!!renderReportUser} danger />
 		</View>
 	);
 };
