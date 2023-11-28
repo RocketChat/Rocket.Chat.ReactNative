@@ -12,7 +12,16 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	nameText: {
+		marginLeft: 8,
 		fontSize: 16,
-		...sharedStyles.textBold
+		...sharedStyles.textMedium
+	},
+	textInput: {
+		height: 100
+	},
+	labelTextInput: {
+		marginBottom: 4,
+		fontSize: 14,
+		...sharedStyles.textMedium
 	}
 });

@@ -763,5 +763,7 @@
   "Missed_call": "Missed call",
   "Unblock": "Unblock",
   "Block": "Block",
-  "Report_user": "Report user"
+  "Report_user": "Report user",
+  "Report_sent_successfully": "Report sent successfully",
+  "Why_do_you_want_to_report": "Why do you want to report?"
 }

@@ -277,7 +277,6 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	const handleReportUser = () => {
-		console.log('🚀 ~ file: index.tsx:287 ~ handleReportUser ~ handleReportUser:');
 		navigate('ReportUserView', {
 			name: roomUser?.name,
 			rid: room?.rid,

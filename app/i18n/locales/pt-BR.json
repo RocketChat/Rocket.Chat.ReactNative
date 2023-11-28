@@ -757,5 +757,8 @@
   "The_user_will_be_able_to_type_in_roomName": "O usuário poderá digitar em {{roomName}}",
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Disable_writing_in_room": "Desabilitar escrita na sala",
-  "Missed_call": "Chamada perdida"
+  "Missed_call": "Chamada perdida",
+  "Report_user": "Reportar usuário",
+  "Report_sent_successfully": "Reporte enviado com sucesso",
+  "Why_do_you_want_to_report": "Por que você deseja reportar?"
 }
