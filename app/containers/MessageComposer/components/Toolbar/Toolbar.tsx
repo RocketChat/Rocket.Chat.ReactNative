@@ -43,6 +43,10 @@ export const Toolbar = (): ReactElement | null => {
 						opacity: 1,
 						transform: [{ translateY: 0 }]
 					}}
+					transition={{
+						type: 'timing',
+						duration: 100
+					}}
 					exit={{
 						opacity: 0
 					}}
@@ -60,6 +64,10 @@ export const Toolbar = (): ReactElement | null => {
 					animate={{
 						opacity: 1,
 						transform: [{ translateY: 0 }]
+					}}
+					transition={{
+						type: 'timing',
+						duration: 100
 					}}
 					exit={{
 						opacity: 0
