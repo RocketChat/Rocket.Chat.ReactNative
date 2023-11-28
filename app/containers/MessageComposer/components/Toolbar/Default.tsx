@@ -1,18 +1,16 @@
 import React, { ReactElement } from 'react';
 
-import { MicOrSendButton, ActionsButton, BaseButton } from '..';
+import { ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
-import { Container } from './Container';
-import { EmptySpace } from './EmptySpace';
 import { Gap } from '../Gap';
-import { CancelEdit } from '../CancelEdit';
 import { emitter } from '../../emitter';
+import { AnimatedToolbar } from './AnimatedToolbar';
 
 export const Default = (): ReactElement | null => {
 	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
 
 	return (
-		<Container>
+		<AnimatedToolbar key='default'>
 			<ActionsButton />
 			<Gap />
 			<BaseButton
@@ -35,9 +33,6 @@ export const Default = (): ReactElement | null => {
 				accessibilityLabel='TBD'
 				icon='mention'
 			/>
-			<EmptySpace />
-			<CancelEdit />
-			<MicOrSendButton />
-		</Container>
+		</AnimatedToolbar>
 	);
 };

@@ -1,10 +1,14 @@
 import React, { ReactElement } from 'react';
-import { AnimatePresence, MotiView } from 'moti';
+import { AnimatePresence } from 'moti';
 
 import { useFocused, useShowEmojiKeyboard, useShowEmojiSearchbar, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';
 import { Default } from './Default';
 import { EmojiKeyboard } from './EmojiKeyboard';
+import { Container } from './Container';
+import { MicOrSendButton } from '../Buttons';
+import { EmptySpace } from './EmptySpace';
+import { CancelEdit } from '../CancelEdit';
 
 export const Toolbar = (): ReactElement | null => {
 	console.count('[MessageComposer] Toolbar');
@@ -25,58 +29,12 @@ export const Toolbar = (): ReactElement | null => {
 		return null;
 	}
 
-	// if (showMarkdownToolbar) {
-	// 	return <Markdown />;
-	// }
-
-	// return <Default />;
-
 	return (
-		<AnimatePresence exitBeforeEnter>
-			{showMarkdownToolbar && (
-				<MotiView
-					from={{
-						opacity: 0,
-						transform: [{ translateY: 10 }]
-					}}
-					animate={{
-						opacity: 1,
-						transform: [{ translateY: 0 }]
-					}}
-					transition={{
-						type: 'timing',
-						duration: 100
-					}}
-					exit={{
-						opacity: 0
-					}}
-					key='a'
-				>
-					<Markdown />
-				</MotiView>
-			)}
-			{!showMarkdownToolbar && (
-				<MotiView
-					from={{
-						opacity: 0,
-						transform: [{ translateY: 10 }]
-					}}
-					animate={{
-						opacity: 1,
-						transform: [{ translateY: 0 }]
-					}}
-					transition={{
-						type: 'timing',
-						duration: 100
-					}}
-					exit={{
-						opacity: 0
-					}}
-					key='b'
-				>
-					<Default />
-				</MotiView>
-			)}
-		</AnimatePresence>
+		<Container>
+			<AnimatePresence exitBeforeEnter>{showMarkdownToolbar ? <Markdown /> : <Default />}</AnimatePresence>
+			<EmptySpace />
+			<CancelEdit />
+			<MicOrSendButton />
+		</Container>
 	);
 };

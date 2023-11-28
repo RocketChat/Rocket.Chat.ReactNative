@@ -1,22 +1,19 @@
 import React, { ReactElement } from 'react';
 
-import { MicOrSendButton, BaseButton } from '..';
+import { BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
-import { Container } from './Container';
-import { EmptySpace } from './EmptySpace';
 import { Gap } from '../Gap';
-import { CancelEdit } from '../CancelEdit';
 import { TMarkdownStyle } from '../../interfaces';
 import { emitter } from '../../emitter';
+import { AnimatedToolbar } from './AnimatedToolbar';
 
 export const Markdown = (): ReactElement => {
 	const { setMarkdownToolbar } = useMessageComposerApi();
 
 	const onPress = (style: TMarkdownStyle) => emitter.emit('addMarkdown', { style });
 
-	// TODO: animate enter/leave
 	return (
-		<Container>
+		<AnimatedToolbar key='markdown'>
 			<BaseButton
 				onPress={() => setMarkdownToolbar(false)}
 				testID='message-composer-close-markdown'
@@ -38,9 +35,6 @@ export const Markdown = (): ReactElement => {
 				accessibilityLabel='TBD'
 				icon='code-block'
 			/>
-			<EmptySpace />
-			<CancelEdit />
-			<MicOrSendButton />
-		</Container>
+		</AnimatedToolbar>
 	);
 };
