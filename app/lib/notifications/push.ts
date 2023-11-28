@@ -30,13 +30,20 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 	if (isIOS) {
 		// init
 		Notifications.ios.registerRemoteNotifications();
-		// setCategories
+
 		const notificationAction = new NotificationAction('REPLY_ACTION', 'background', I18n.t('Reply'), true, {
 			buttonTitle: I18n.t('Reply'),
 			placeholder: I18n.t('Type_message')
 		});
 		const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
+
 		Notifications.setCategories([notificationCategory]);
+
+		const acceptAction = new NotificationAction('ACCEPT_ACTION', 'foreground', I18n.t('accept'), true);
+		const rejectAction = new NotificationAction('DECLINE_ACTION', 'foreground', I18n.t('decline'), true);
+		const videoConfCategory = new NotificationCategory('VIDEOCONF', [acceptAction, rejectAction]);
+
+		Notifications.setCategories([videoConfCategory]);
 	} else if (Platform.OS === 'android' && Platform.constants.Version >= 33) {
 		// @ts-ignore
 		PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS').then(permissionStatus => {
