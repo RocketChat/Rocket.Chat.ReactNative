@@ -10,6 +10,7 @@ export interface INotification {
 		from: string;
 		image: string;
 		soundname: string;
+		action?: { identifier: 'REPLY_ACTION' | 'ACCEPT_ACTION' | 'DECLINE_ACTION' };
 	};
 	identifier: string;
 }

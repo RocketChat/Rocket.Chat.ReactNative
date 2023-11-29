@@ -747,7 +747,6 @@
   "decline": "Recusar",
   "accept": "Aceitar",
   "Incoming_call_from": "Chamada recebida de",
-  "Call_started": "Chamada Iniciada",
   "Room_not_found": "Sala não encontrada",
   "The_room_does_not_exist": "A sala não existe ou você pode não ter permissão de acesso",
   "Call_started": "Chamada iniciada",
@@ -758,5 +757,6 @@
   "The_user_will_be_able_to_type_in_roomName": "O usuário poderá digitar em {{roomName}}",
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Disable_writing_in_room": "Desabilitar escrita na sala",
-  "You_dont_have_permission_to_perform_this_action": "Você não tem permissão para realizar esta ação. Verifique com o proprietário da sala."
+  "You_dont_have_permission_to_perform_this_action": "Você não tem permissão para realizar esta ação. Verifique com o proprietário da sala.",
+  "Missed_call": "Chamada perdida"
 }

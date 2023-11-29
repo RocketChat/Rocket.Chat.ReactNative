@@ -26,7 +26,7 @@ export const handleAndroidBltPermission = async (): Promise<void> => {
 	}
 };
 
-export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean): Promise<void> => {
+export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
 	try {
 		const result = await Services.videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
@@ -38,7 +38,11 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 			}
 		}
 	} catch (e) {
-		showErrorAlert(i18n.t('error-init-video-conf'));
+		if (fromPush) {
+			showErrorAlert(i18n.t('Missed_call'));
+		} else {
+			showErrorAlert(i18n.t('error-init-video-conf'));
+		}
 		log(e);
 	}
 };
