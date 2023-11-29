@@ -1,5 +1,18 @@
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+index 97255d2..d780e17 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+@@ -410,7 +410,7 @@ - (void)_updateScrollViewInsets
+     {
+         UIEdgeInsets insets = self.scrollViewToManage.contentInset;
+         CGFloat bottomSafeArea = [self getBottomSafeArea];
+-        CGFloat bottomInset = MAX(self.bounds.size.height, _ObservingInputAccessoryViewTemp.keyboardHeight + _ObservingInputAccessoryViewTemp.height);
++        CGFloat bottomInset = self.bounds.size.height; //MAX(self.bounds.size.height, _ObservingInputAccessoryViewTemp.keyboardHeight + _ObservingInputAccessoryViewTemp.height);
+         
+         CGFloat originalBottomInset = self.scrollIsInverted ? insets.top : insets.bottom;
+         CGPoint originalOffset = self.scrollViewToManage.contentOffset;
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-index 1ca52e8..323a04c 100644
+index 1ca52e8..7571e6f 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
 +++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
 @@ -115,21 +115,25 @@ - (void)setHeight:(CGFloat)height
@@ -9,10 +22,10 @@ index 1ca52e8..323a04c 100644
 -    _keyboardState = KeyboardStateWillShow;
 +    if (_keyboardState != KeyboardStateShown) {
 +        _keyboardState = KeyboardStateWillShow;
-         
+     
 -    [self invalidateIntrinsicContentSize];
 +        [self invalidateIntrinsicContentSize];
-         
+     
 -    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
 -    {
 -        [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
@@ -28,7 +41,7 @@ index 1ca52e8..323a04c 100644
 -    _keyboardState = KeyboardStateShown;
 +    if (_keyboardState != KeyboardStateShown) {
 +        _keyboardState = KeyboardStateShown;
-         
+     
 -    [self invalidateIntrinsicContentSize];
 +        [self invalidateIntrinsicContentSize];
 +    }
