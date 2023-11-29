@@ -64,8 +64,12 @@ export const useVideoConf = (
 				});
 
 				if (!permission?.granted) {
-					requestPermission();
-					handleAndroidBltPermission();
+					try {
+						await requestPermission();
+						handleAndroidBltPermission();
+					} catch (error) {
+						log(error);
+					}
 				}
 			}
 		} catch (error) {
