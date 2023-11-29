@@ -5,7 +5,6 @@ import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { TMarkdownStyle } from '../../interfaces';
 import { emitter } from '../../emitter';
-import { AnimatedToolbar } from './AnimatedToolbar';
 
 export const Markdown = (): ReactElement => {
 	const { setMarkdownToolbar } = useMessageComposerApi();
@@ -13,7 +12,7 @@ export const Markdown = (): ReactElement => {
 	const onPress = (style: TMarkdownStyle) => emitter.emit('addMarkdown', { style });
 
 	return (
-		<AnimatedToolbar key='markdown'>
+		<>
 			<BaseButton
 				onPress={() => setMarkdownToolbar(false)}
 				testID='message-composer-close-markdown'
@@ -35,6 +34,6 @@ export const Markdown = (): ReactElement => {
 				accessibilityLabel='TBD'
 				icon='code-block'
 			/>
-		</AnimatedToolbar>
+		</>
 	);
 };

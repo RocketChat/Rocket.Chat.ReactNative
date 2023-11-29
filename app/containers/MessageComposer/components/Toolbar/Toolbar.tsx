@@ -31,7 +31,7 @@ export const Toolbar = (): ReactElement | null => {
 
 	return (
 		<Container>
-			<AnimatePresence exitBeforeEnter>{showMarkdownToolbar ? <Markdown /> : <Default />}</AnimatePresence>
+			{showMarkdownToolbar ? <Markdown /> : <Default />}
 			<EmptySpace />
 			<CancelEdit />
 			<MicOrSendButton />

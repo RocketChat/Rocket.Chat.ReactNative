@@ -4,13 +4,12 @@ import { ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../emitter';
-import { AnimatedToolbar } from './AnimatedToolbar';
 
 export const Default = (): ReactElement | null => {
 	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
 
 	return (
-		<AnimatedToolbar key='default'>
+		<>
 			<ActionsButton />
 			<Gap />
 			<BaseButton
@@ -33,6 +32,6 @@ export const Default = (): ReactElement | null => {
 				accessibilityLabel='TBD'
 				icon='mention'
 			/>
-		</AnimatedToolbar>
+		</>
 	);
 };
