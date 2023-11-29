@@ -5,6 +5,7 @@ import Orientation from 'react-native-orientation-locker';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
@@ -133,6 +134,7 @@ export default class Root extends React.Component<{}, IState> {
 		const deepLinking = await Linking.getInitialURL();
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
 		if (parsedDeepLinkingURL) {
+			Clipboard.setString(JSON.stringify(parsedDeepLinkingURL));
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
 		}
