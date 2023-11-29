@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { AnimatePresence } from 'moti';
 
 import { useFocused, useShowEmojiKeyboard, useShowEmojiSearchbar, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';
