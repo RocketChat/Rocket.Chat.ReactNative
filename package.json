@@ -122,7 +122,7 @@
 		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto#0.5.2",
 		"react-native-skeleton-placeholder": "^5.2.3",
 		"react-native-slowlog": "^1.0.2",
-		"react-native-svg": "^13.8.0",
+		"react-native-svg": "13.8.0",
 		"react-native-ui-lib": "RocketChat/react-native-ui-lib#ef50151b8d9c1627ef527c620a1472868f9f4df8",
 		"react-native-url-polyfill": "2.0.0",
 		"react-native-vector-icons": "9.1.0",
