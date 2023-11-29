@@ -89,6 +89,7 @@ const ReportUserView = () => {
 					multiline
 					inputStyle={styles.textInput}
 					labelStyle={[styles.labelTextInput, { color: colors.fontDefault }]}
+					testID='report-user-view-input'
 				/>
 				<Button
 					title={I18n.t('Report')}
@@ -96,7 +97,7 @@ const ReportUserView = () => {
 					backgroundColor={colors.dangerColor}
 					disabled={!isValid}
 					onPress={handleSubmit(submit)}
-					testID='profile-view-delete-my-account'
+					testID='report-user-view-submit'
 					loading={loading}
 				/>
 			</SafeAreaView>
