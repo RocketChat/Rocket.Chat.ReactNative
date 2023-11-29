@@ -38,17 +38,19 @@ const schema = yup.object().shape({
 
 const ReportUserView = () => {
 	const [loading, setLoading] = useState(false);
+	const { colors } = useTheme();
+	const navigation = useNavigation<TReportUserViewNavigationProp>();
+	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
+
 	const {
 		params: { username, rid, userId, name }
 	} = useRoute<TReportUserViewRouteProp>();
-	const { colors } = useTheme();
-	const navigation = useNavigation<TReportUserViewNavigationProp>();
+
 	const {
 		control,
 		handleSubmit,
 		formState: { isValid }
 	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema), defaultValues: { description: '' } });
-	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({

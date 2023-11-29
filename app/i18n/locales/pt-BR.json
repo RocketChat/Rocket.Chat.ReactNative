@@ -758,6 +758,8 @@
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Disable_writing_in_room": "Desabilitar escrita na sala",
   "Missed_call": "Chamada perdida",
+  "Unblock": "Desbloquear",
+  "Block": "Bloquear",
   "Report_user": "Reportar usuário",
   "Report_sent_successfully": "Reporte enviado com sucesso",
   "Why_do_you_want_to_report": "Por que você deseja reportar?"
