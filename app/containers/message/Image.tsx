@@ -97,7 +97,7 @@ const ImageContainer = ({
 					return;
 				}
 				if (isDownloadActive(imgUrlToCache)) {
-					await handleResumeDownload();
+					handleResumeDownload();
 					return;
 				}
 				setLoading(false);

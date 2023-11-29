@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';

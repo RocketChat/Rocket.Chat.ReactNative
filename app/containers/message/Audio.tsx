@@ -124,7 +124,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			}
 			const audioUrl = getUrl();
 			if (audioUrl && isDownloadActive(audioUrl)) {
-				await handleResumeDownload();
+				handleResumeDownload();
 				return;
 			}
 			await handleAutoDownload();

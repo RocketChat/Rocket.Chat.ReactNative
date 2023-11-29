@@ -104,7 +104,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 					return;
 				}
 				if (isDownloadActive(video)) {
-					await handleResumeDownload();
+					handleResumeDownload();
 					return;
 				}
 				await handleAutoDownload();
