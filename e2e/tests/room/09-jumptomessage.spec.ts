@@ -1,7 +1,16 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, tapBack, login, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
+import {
+	navigateToLogin,
+	tapBack,
+	login,
+	sleep,
+	platformTypes,
+	TTextMatcher,
+	navigateToRoom,
+	jumpToQuotedMessage
+} from '../../helpers/app';
 
 let textMatcher: TTextMatcher;
 let alertButtonType: string;
@@ -74,7 +83,7 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await sleep(2000);
-		await element(by[textMatcher]('1')).atIndex(0).tap();
+		await jumpToQuotedMessage(element(by[textMatcher]('1')).atIndex(0));
 		await waitForLoading();
 		await waitFor(element(by[textMatcher]('1')).atIndex(0))
 			.toExist()
@@ -230,7 +239,7 @@ describe('Threads', () => {
 		await waitFor(element(by[textMatcher]("Go to jumping-thread's thread")).atIndex(0))
 			.toExist()
 			.withTimeout(5000);
-		await element(by[textMatcher]("Go to jumping-thread's thread")).atIndex(0).tap();
+		await jumpToQuotedMessage(element(by[textMatcher]("Go to jumping-thread's thread")).atIndex(0));
 		await expectThreadMessages("Go to jumping-thread's thread");
 		await tapBack();
 	});
@@ -260,7 +269,7 @@ describe('Threads', () => {
 		await waitFor(element(by[textMatcher]('quoted')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by[textMatcher]('quoted')).atIndex(0).tap();
+		await jumpToQuotedMessage(element(by[textMatcher]('quoted')).atIndex(0));
 		await expectThreadMessages('quoted');
 		await tapBack();
 	});
