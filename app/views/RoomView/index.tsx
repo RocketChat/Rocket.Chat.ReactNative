@@ -972,7 +972,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return true;
 	};
 
-	jumpToMessageByUrl = async (messageUrl?: string) => {
+	jumpToMessageByUrl = async (messageUrl?: string, isFromReply?: boolean) => {
 		if (!messageUrl) {
 			return;
 		}
@@ -980,14 +980,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const parsedUrl = parse(messageUrl, true);
 			const messageId = parsedUrl.query.msg;
 			if (messageId) {
-				await this.jumpToMessage(messageId);
+				await this.jumpToMessage(messageId, isFromReply);
 			}
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	jumpToMessage = async (messageId: string) => {
+	jumpToMessage = async (messageId: string, isFromReply?: boolean) => {
 		try {
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			const message = await RoomServices.getMessageInfo(messageId);
@@ -1019,8 +1019,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
 				this.cancelJumpToMessage();
 			}
-		} catch (e) {
-			log(e);
+		} catch (error: any) {
+			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
+				showErrorAlert(I18n.t('The_room_does_not_exist'), I18n.t('Room_not_found'));
+			} else {
+				log(error);
+			}
 			this.cancelJumpToMessage();
 		}
 	};
@@ -1505,6 +1509,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					replyInit={this.onReplyInit}
 					reactionInit={this.onReactionInit}
 					onReactionPress={this.onReactionPress}
+					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
 				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
