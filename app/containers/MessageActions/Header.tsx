@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
@@ -8,7 +8,6 @@ import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { addFrequentlyUsed } from '../../lib/methods';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
 import { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
@@ -32,7 +31,7 @@ interface THeaderFooter {
 	theme: TSupportedThemes;
 }
 
-export const HEADER_HEIGHT = 36;
+export const HEADER_HEIGHT = 54;
 const ITEM_SIZE = 36;
 const CONTAINER_MARGIN = 8;
 const ITEM_MARGIN = 8;
@@ -40,7 +39,8 @@ const ITEM_MARGIN = 8;
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		marginHorizontal: CONTAINER_MARGIN
+		marginHorizontal: CONTAINER_MARGIN,
+		paddingBottom: 16
 	},
 	headerItem: {
 		height: ITEM_SIZE,
@@ -86,11 +86,10 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 );
 
 const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
-	const { width, height } = useDimensions();
+	const { width } = useWindowDimensions();
 	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);
-	const isLandscape = width > height;
-	const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
+	const size = (isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
 	const quantity = Math.trunc(size / (ITEM_SIZE + ITEM_MARGIN * 2) - 1);
 
 	const onReaction: TOnReaction = ({ emoji }) => {

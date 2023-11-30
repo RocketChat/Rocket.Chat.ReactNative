@@ -34,6 +34,7 @@ import { E2E_MESSAGE_TYPE } from '../../constants';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
+import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/videoConf';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -82,6 +83,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					archived: s.archived,
 					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
+					unmuted: s.unmuted,
 					ignored: s.ignored,
 					broadcast: s.broadcast,
 					prid: s.prid,
@@ -212,7 +214,6 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			if (messageRecord) {
 				batch.push(
 					messageRecord.prepareUpdate(() => {
-						// @ts-ignore
 						Object.assign(messageRecord, lastMessage);
 					})
 				);
@@ -254,6 +255,8 @@ const debouncedUpdate = (subscription: ISubscription) => {
 					if (batch[key]) {
 						if (/SUB/.test(key)) {
 							const sub = batch[key] as ISubscription;
+							// When calling the api subscriptions.read passing readThreads as true it does not return this prop
+							if (!sub.tunread) sub.tunread = [];
 							const roomQueueId = getRoomQueueId(sub.rid);
 							const room = batch[roomQueueId] as IRoom;
 							delete batch[roomQueueId];
@@ -307,6 +310,12 @@ export default function subscribeRooms() {
 			}
 			if (unset?.avatarETag) {
 				store.dispatch(setUser({ avatarETag: '' }));
+			}
+			if (diff?.bio) {
+				store.dispatch(setUser({ bio: diff.bio }));
+			}
+			if (diff?.nickname) {
+				store.dispatch(setUser({ nickname: diff.nickname }));
 			}
 		}
 		if (/subscriptions/.test(ev)) {
@@ -408,6 +417,10 @@ export default function subscribeRooms() {
 			} catch (e) {
 				log(e);
 			}
+		}
+		if (/video-conference/.test(ev)) {
+			const [action, params] = ddpMessage.fields.args;
+			store.dispatch(handleVideoConfIncomingWebsocketMessages({ action, params }));
 		}
 	});
 

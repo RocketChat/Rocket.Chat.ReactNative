@@ -29,6 +29,8 @@ export default class Subscription extends Model {
 
 	@field('fname') fname;
 
+	@field('sanitized_fname') sanitizedFname;
+
 	@field('rid') rid;
 
 	@field('open') open;
@@ -76,6 +78,8 @@ export default class Subscription extends Model {
 	@field('notifications') notifications;
 
 	@json('muted', sanitizer) muted;
+
+	@json('unmuted', sanitizer) unmuted;
 
 	@json('ignored', sanitizer) ignored;
 
@@ -140,4 +144,70 @@ export default class Subscription extends Model {
 	@field('users_count') usersCount;
 
 	@json('source', sanitizer) source;
+
+	asPlain() {
+		return {
+			_id: this._id,
+			f: this.f,
+			t: this.t,
+			ts: this.ts,
+			ls: this.ls,
+			name: this.name,
+			fname: this.fname,
+			sanitizedFname: this.sanitizedFname,
+			rid: this.rid,
+			open: this.open,
+			alert: this.alert,
+			roles: this.roles,
+			unread: this.unread,
+			userMentions: this.userMentions,
+			groupMentions: this.groupMentions,
+			tunread: this.tunread,
+			tunreadUser: this.tunreadUser,
+			tunreadGroup: this.tunreadGroup,
+			roomUpdatedAt: this.roomUpdatedAt,
+			ro: this.ro,
+			lastOpen: this.lastOpen,
+			description: this.description,
+			announcement: this.announcement,
+			bannerClosed: this.bannerClosed,
+			topic: this.topic,
+			blocked: this.blocked,
+			blocker: this.blocker,
+			reactWhenReadOnly: this.reactWhenReadOnly,
+			archived: this.archived,
+			joinCodeRequired: this.joinCodeRequired,
+			notifications: this.notifications,
+			muted: this.muted,
+			ignored: this.ignored,
+			broadcast: this.broadcast,
+			prid: this.prid,
+			draftMessage: this.draftMessage,
+			lastThreadSync: this.lastThreadSync,
+			jitsiTimeout: this.jitsiTimeout,
+			autoTranslate: this.autoTranslate,
+			autoTranslateLanguage: this.autoTranslateLanguage,
+			lastMessage: this.lastMessage,
+			hideUnreadStatus: this.hideUnreadStatus,
+			hideMentionStatus: this.hideMentionStatus,
+			sysMes: this.sysMes,
+			uids: this.uids,
+			usernames: this.usernames,
+			visitor: this.visitor,
+			departmentId: this.departmentId,
+			servedBy: this.servedBy,
+			livechatData: this.livechatData,
+			tags: this.tags,
+			E2EKey: this.E2EKey,
+			E2ESuggestedKey: this.E2ESuggestedKey,
+			encrypted: this.encrypted,
+			e2eKeyId: this.e2eKeyId,
+			avatarETag: this.avatarETag,
+			teamId: this.teamId,
+			teamMain: this.teamMain,
+			onHold: this.onHold,
+			usersCount: this.usersCount,
+			source: this.source
+		};
+	}
 }

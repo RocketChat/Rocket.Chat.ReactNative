@@ -91,7 +91,7 @@ interface IMessageReply {
 	timeFormat?: string;
 	index: number;
 	getCustomEmoji: TGetCustomEmoji;
-	messageId: string;
+	msg?: string;
 }
 
 const Title = React.memo(
@@ -198,7 +198,7 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji, messageId }: IMessageReply) => {
+	({ attachment, timeFormat, index, getCustomEmoji, msg }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
@@ -239,7 +239,7 @@ const Reply = React.memo(
 					style={[
 						styles.button,
 						index > 0 && styles.marginTop,
-						attachment.description && styles.marginBottom,
+						msg && styles.marginBottom,
 						{
 							borderColor
 						}
@@ -257,7 +257,6 @@ const Reply = React.memo(
 							timeFormat={timeFormat}
 							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
 							isReply
-							id={messageId}
 						/>
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{loading ? (
@@ -273,7 +272,7 @@ const Reply = React.memo(
 						) : null}
 					</View>
 				</Touchable>
-				<Markdown msg={attachment.description} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);
 	},

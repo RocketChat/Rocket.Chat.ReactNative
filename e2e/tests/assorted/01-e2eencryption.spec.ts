@@ -15,7 +15,7 @@ import {
 	tryTapping
 } from '../../helpers/app';
 import data from '../../data';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const checkServer = async (server: string) => {
@@ -83,6 +83,8 @@ describe('E2E Encryption', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 
+	const deleteUsersAfterAll: IDeleteCreateUser[] = [];
+
 	beforeAll(async () => {
 		user = await createRandomUser();
 		otherUser = await createRandomUser();
@@ -90,6 +92,10 @@ describe('E2E Encryption', () => {
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(user.username, user.password);
+	});
+
+	afterAll(async () => {
+		await deleteCreatedUsers(deleteUsersAfterAll);
 	});
 
 	describe('Banner', () => {
@@ -396,6 +402,7 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
+			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 
 			await checkServer(data.alternateServer);
 		});

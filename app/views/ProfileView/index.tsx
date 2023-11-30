@@ -1,40 +1,42 @@
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { sha256 } from 'js-sha256';
 import React from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
-import { connect } from 'react-redux';
-import { sha256 } from 'js-sha256';
 import RNPickerSelect from 'react-native-picker-select';
-import { dequal } from 'dequal';
-import omit from 'lodash/omit';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { connect } from 'react-redux';
 
-import Touch from '../../containers/Touch';
-import KeyboardView from '../../containers/KeyboardView';
-import sharedStyles from '../Styles';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { showErrorAlert, showConfirmationAlert } from '../../lib/methods/helpers';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { FormTextInput } from '../../containers/TextInput';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import I18n from '../../i18n';
-import Button from '../../containers/Button';
-import { AvatarWithEdit } from '../../containers/Avatar';
 import { setUser } from '../../actions/login';
-import * as HeaderButton from '../../containers/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import SafeAreaView from '../../containers/SafeAreaView';
-import styles from './styles';
-import { ProfileStackParamList } from '../../stacks/types';
-import { Services } from '../../lib/services';
-import { IApplicationState, IAvatarButton, IBaseScreen, IProfileParams, IUser } from '../../definitions';
-import { twoFactor } from '../../lib/services/twoFactor';
-import { TwoFactorMethods } from '../../definitions/ITotp';
-import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
-import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
+import { AvatarWithEdit } from '../../containers/Avatar';
+import Button from '../../containers/Button';
+import * as HeaderButton from '../../containers/HeaderButton';
+import KeyboardView from '../../containers/KeyboardView';
+import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
+import { FormTextInput } from '../../containers/TextInput';
+import { LISTENER } from '../../containers/Toast';
+import Touch from '../../containers/Touch';
+import { IApplicationState, IAvatarButton, IBaseScreen, IProfileParams, IUser } from '../../definitions';
+import { TwoFactorMethods } from '../../definitions/ITotp';
+import I18n from '../../i18n';
+import { themes } from '../../lib/constants';
+import { compareServerVersion, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import { Services } from '../../lib/services';
+import { twoFactor } from '../../lib/services/twoFactor';
+import { getUserSelector } from '../../selectors/login';
+import { ProfileStackParamList } from '../../stacks/types';
+import { TSupportedThemes, withTheme } from '../../theme';
+import sharedStyles from '../Styles';
+import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import styles from './styles';
+
+// https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
+const MAX_BIO_LENGTH = 260;
+const MAX_NICKNAME_LENGTH = 120;
 
 interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
@@ -48,6 +50,7 @@ interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileSta
 	theme: TSupportedThemes;
 	Accounts_AllowDeleteOwnAccount: boolean;
 	isMasterDetail: boolean;
+	serverVersion: string;
 }
 
 interface IProfileViewState {
@@ -55,6 +58,8 @@ interface IProfileViewState {
 	name: string;
 	username: string;
 	email: string | null;
+	bio?: string;
+	nickname?: string;
 	newPassword: string | null;
 	currentPassword: string | null;
 	customFields: {
@@ -69,9 +74,12 @@ interface IProfileViewState {
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
 	private name?: TextInput | null;
 	private username?: TextInput | null;
-	private email?: TextInput;
-	private avatarUrl?: TextInput;
-	private newPassword?: TextInput;
+	private email?: TextInput | null;
+	private avatarUrl?: TextInput | null;
+	private newPassword?: TextInput | null;
+	private nickname?: TextInput | null;
+	private bio?: TextInput | null;
+	private focusListener = () => {};
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
@@ -98,6 +106,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		name: '',
 		username: '',
 		email: '',
+		bio: '',
+		nickname: '',
 		newPassword: '',
 		currentPassword: '',
 		customFields: {},
@@ -105,25 +115,18 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	componentDidMount() {
-		this.init();
+		this.focusListener = this.props.navigation.addListener('focus', () => {
+			this.init();
+		});
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps: IProfileViewProps) {
-		const { user } = this.props;
-		/*
-		 * We need to ignore status because on Android ImagePicker
-		 * changes the activity, so, the user status changes and
-		 * it's resetting the avatar right after
-		 * select some image from gallery.
-		 */
-		if (!dequal(omit(user, ['status']), omit(nextProps.user, ['status']))) {
-			this.init(nextProps.user);
-		}
+	componentWillUnmount() {
+		this.focusListener();
 	}
 
 	init = (user?: IUser) => {
 		const { user: userProps } = this.props;
-		const { name, username, emails, customFields } = user || userProps;
+		const { name, username, emails, customFields, bio, nickname } = user || userProps;
 
 		this.setState({
 			name: name as string,
@@ -131,12 +134,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			email: emails ? emails[0].address : null,
 			newPassword: null,
 			currentPassword: null,
-			customFields: customFields || {}
+			customFields: customFields || {},
+			bio,
+			nickname
 		});
 	};
 
 	formIsChanged = () => {
-		const { name, username, email, newPassword, customFields } = this.state;
+		const { name, username, email, newPassword, customFields, bio, nickname } = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
 
@@ -152,6 +157,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		return !(
 			user.name === name &&
 			user.username === username &&
+			user.bio === bio &&
+			user.nickname === nickname &&
 			!newPassword &&
 			user.emails &&
 			user.emails[0].address === email &&
@@ -168,7 +175,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		this.setState({ saving: true });
 
-		const { name, username, email, newPassword, currentPassword, customFields, twoFactorCode } = this.state;
+		const { name, username, email, newPassword, currentPassword, customFields, twoFactorCode, bio, nickname } = this.state;
 		const { user, dispatch } = this.props;
 		const params = {} as IProfileParams;
 
@@ -185,6 +192,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		// Email
 		if (user.emails && user.emails[0].address !== email) {
 			params.email = email;
+		}
+
+		if (user.bio !== bio) {
+			params.bio = bio;
+		}
+
+		if (user.nickname !== nickname) {
+			params.nickname = nickname;
 		}
 
 		// newPassword
@@ -214,8 +229,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						}}
 						onCancel={this.props.hideActionSheet}
 					/>
-				),
-				headerHeight: 225
+				)
 			});
 			return;
 		}
@@ -232,15 +246,18 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
-				params.name = params.realname;
-				delete params.realname;
+				if ('realname' in params) {
+					params.name = params.realname;
+					delete params.realname;
+				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
+					this.setState({ ...this.state, customFields, ...params });
 				} else {
 					dispatch(setUser({ ...params }));
+					this.setState({ ...this.state, ...params });
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
-				this.init();
 			}
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
 		} catch (e: any) {
@@ -282,7 +299,13 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		if (I18n.isTranslated(e.error)) {
 			return showErrorAlert(I18n.t(e.error));
 		}
-		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
+		let msg = I18n.t('There_was_an_error_while_action', { action: I18n.t(action) });
+		let title = '';
+		if (typeof e.reason === 'string') {
+			title = msg;
+			msg = e.reason;
+		}
+		showErrorAlert(msg, title);
 	};
 
 	handleEditAvatar = () => {
@@ -392,13 +415,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	deleteOwnAccount = () => {
 		logEvent(events.DELETE_OWN_ACCOUNT);
 		this.props.showActionSheet({
-			children: <DeleteAccountActionSheetContent />,
-			headerHeight: 225
+			children: <DeleteAccountActionSheetContent />
 		});
 	};
 
 	render() {
-		const { name, username, email, newPassword, customFields, saving } = this.state;
+		const { name, username, email, newPassword, customFields, saving, nickname, bio } = this.state;
 		const {
 			user,
 			theme,
@@ -408,7 +430,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
 			Accounts_CustomFields,
-			Accounts_AllowDeleteOwnAccount
+			Accounts_AllowDeleteOwnAccount,
+			serverVersion
 		} = this.props;
 
 		return (
@@ -429,9 +452,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowRealNameChange}
 							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
-							inputRef={e => {
-								this.name = e;
-							}}
+							inputRef={e => (this.name = e)}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
 							value={name}
@@ -444,9 +465,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowUsernameChange}
 							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
-							inputRef={e => {
-								this.username = e;
-							}}
+							inputRef={e => (this.username = e)}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
 							value={username}
@@ -459,28 +478,48 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
-							inputRef={e => {
-								if (e) {
-									this.email = e;
-								}
-							}}
+							inputRef={e => (this.email = e)}
 							label={I18n.t('Email')}
 							placeholder={I18n.t('Email')}
 							value={email || undefined}
 							onChangeText={value => this.setState({ email: value })}
 							onSubmitEditing={() => {
-								this.newPassword?.focus();
+								this.nickname?.focus();
 							}}
 							testID='profile-view-email'
 						/>
+						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
+							<FormTextInput
+								inputRef={e => (this.nickname = e)}
+								label={I18n.t('Nickname')}
+								value={nickname}
+								onChangeText={value => this.setState({ nickname: value })}
+								onSubmitEditing={() => {
+									this.bio?.focus();
+								}}
+								testID='profile-view-nickname'
+								maxLength={MAX_NICKNAME_LENGTH}
+							/>
+						) : null}
+						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
+							<FormTextInput
+								inputRef={e => (this.bio = e)}
+								label={I18n.t('Bio')}
+								inputStyle={styles.inputBio}
+								multiline
+								maxLength={MAX_BIO_LENGTH}
+								value={bio}
+								onChangeText={value => this.setState({ bio: value })}
+								onSubmitEditing={() => {
+									this.newPassword?.focus();
+								}}
+								testID='profile-view-bio'
+							/>
+						) : null}
 						<FormTextInput
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							inputRef={e => {
-								if (e) {
-									this.newPassword = e;
-								}
-							}}
+							inputRef={e => (this.newPassword = e)}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
 							value={newPassword || undefined}
@@ -537,6 +576,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
 	baseUrl: state.server.server,
+	serverVersion: state.server.version,
 	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 });
 

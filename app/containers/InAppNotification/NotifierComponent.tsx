@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
-import { Notifier } from 'react-native-notifier';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Avatar from '../Avatar';
@@ -12,8 +11,8 @@ import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { useOrientation } from '../../dimensions';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
+import { hideNotification } from '../../lib/methods/helpers/notifications';
 
 export interface INotifierComponent {
 	notification: {
@@ -21,6 +20,7 @@ export interface INotifierComponent {
 		payload: {
 			sender: { username: string };
 			type: SubscriptionType;
+			message?: { message: string; t?: string };
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
 		avatar: string;
@@ -72,13 +72,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const hideNotification = () => Notifier.hideNotification();
-
 const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
-	const { isLandscape } = useOrientation();
-
 	const { text, payload } = notification;
 	const { type, rid } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
@@ -105,7 +101,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 		<View
 			style={[
 				styles.container,
-				(isMasterDetail || isLandscape) && styles.small,
+				isMasterDetail && styles.small,
 				{
 					backgroundColor: themes[theme].focusedBackground,
 					borderColor: themes[theme].separatorColor,

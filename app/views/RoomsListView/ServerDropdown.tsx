@@ -185,7 +185,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, themes[theme!].backdropOpacity]
+			outputRange: [0, themes[theme].backdropOpacity]
 		});
 		return (
 			<>
@@ -194,7 +194,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						style={[
 							styles.backdrop,
 							{
-								backgroundColor: themes[theme!].backdropColor,
+								backgroundColor: themes[theme].backdropColor,
 								opacity: backdropOpacity,
 								top: heightDestination
 							}
@@ -206,16 +206,16 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						styles.dropdownContainer,
 						{
 							transform: [{ translateY }],
-							backgroundColor: themes[theme!].backgroundColor,
-							borderColor: themes[theme!].separatorColor
+							backgroundColor: themes[theme].backgroundColor,
+							borderColor: themes[theme].separatorColor
 						}
 					]}
 					testID='rooms-list-header-server-dropdown'
 				>
-					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme!].separatorColor }]}>
-						<Text style={[styles.serverHeaderText, { color: themes[theme!].auxiliaryText }]}>{I18n.t('Server')}</Text>
+					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme].separatorColor }]}>
+						<Text style={[styles.serverHeaderText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>
-							<Text style={[styles.serverHeaderAdd, { color: themes[theme!].tintColor }]}>{I18n.t('Add_Server')}</Text>
+							<Text style={[styles.serverHeaderAdd, { color: themes[theme].tintColor }]}>{I18n.t('Add_Server')}</Text>
 						</TouchableOpacity>
 					</View>
 					<FlatList
@@ -233,7 +233,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						onPress={this.createWorkspace}
 						testID='rooms-list-header-create-workspace-button'
 						style={styles.buttonCreateWorkspace}
-						color={themes[theme!].tintColor}
+						color={themes[theme].tintColor}
 						styleText={[styles.serverHeaderAdd, { textAlign: 'center' }]}
 					/>
 				</Animated.View>

@@ -112,6 +112,7 @@ export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & Mast
 	isActionsEnabled: boolean;
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
+	createDiscussionPermission: string[];
 	goToCannedResponses: () => void | null;
 	serverVersion: string;
 }
@@ -130,6 +131,7 @@ interface IMessageBoxState {
 	tshow: boolean;
 	mentionLoading: boolean;
 	permissionToUpload: boolean;
+	hasCreateDiscussionPermission: boolean;
 	showEmojiSearchbar: boolean;
 }
 
@@ -184,7 +186,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tshow: this.sendThreadToChannel,
 			mentionLoading: false,
 			permissionToUpload: true,
-			showEmojiSearchbar: false
+			showEmojiSearchbar: false,
+			hasCreateDiscussionPermission: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -325,6 +328,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			mentionLoading,
 			trackingType,
 			permissionToUpload,
+			hasCreateDiscussionPermission,
 			showEmojiSearchbar
 		} = this.state;
 
@@ -337,6 +341,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			theme,
 			usedCannedResponse,
 			uploadFilePermission,
+			createDiscussionPermission,
 			goToCannedResponses
 		} = this.props;
 		if (nextProps.theme !== theme) {
@@ -378,6 +383,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextState.permissionToUpload !== permissionToUpload) {
 			return true;
 		}
+		if (nextState.hasCreateDiscussionPermission !== hasCreateDiscussionPermission) {
+			return true;
+		}
 		if (!dequal(nextState.mentions, mentions)) {
 			return true;
 		}
@@ -390,6 +398,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (!dequal(nextProps.uploadFilePermission, uploadFilePermission)) {
 			return true;
 		}
+		if (!dequal(nextProps.createDiscussionPermission, createDiscussionPermission)) {
+			return true;
+		}
 		if (nextProps.usedCannedResponse !== usedCannedResponse) {
 			return true;
 		}
@@ -400,13 +411,18 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	componentDidUpdate(prevProps: IMessageBoxProps) {
-		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled } = this.props;
+		const { uploadFilePermission, goToCannedResponses, replyWithMention, threadsEnabled, createDiscussionPermission } =
+			this.props;
 		if (prevProps.replyWithMention !== replyWithMention) {
 			if (threadsEnabled && replyWithMention) {
 				this.setState({ tshow: this.sendThreadToChannel });
 			}
 		}
-		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission) || prevProps.goToCannedResponses !== goToCannedResponses) {
+		if (
+			!dequal(prevProps.uploadFilePermission, uploadFilePermission) ||
+			!dequal(prevProps.createDiscussionPermission, createDiscussionPermission) ||
+			prevProps.goToCannedResponses !== goToCannedResponses
+		) {
 			this.setOptions();
 		}
 	}
@@ -441,7 +457,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	setOptions = async () => {
-		const { uploadFilePermission, rid } = this.props;
+		const { uploadFilePermission, rid, createDiscussionPermission } = this.props;
 
 		// Servers older than 4.2
 		if (!uploadFilePermission) {
@@ -449,8 +465,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return;
 		}
 
-		const permissionToUpload = await hasPermission([uploadFilePermission], rid);
-		this.setState({ permissionToUpload: permissionToUpload[0] });
+		const permissions = await hasPermission([uploadFilePermission, createDiscussionPermission], rid);
+		this.setState({ permissionToUpload: permissions[0], hasCreateDiscussionPermission: permissions[1] });
 	};
 
 	onChangeText: any = (text: string): void => {
@@ -877,7 +893,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { permissionToUpload } = this.state;
+		const { permissionToUpload, hasCreateDiscussionPermission } = this.state;
 		const { showActionSheet, goToCannedResponses } = this.props;
 
 		const options: TActionSheetOptionsItem[] = [];
@@ -913,11 +929,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			);
 		}
 
-		options.push({
-			title: I18n.t('Create_Discussion'),
-			icon: 'discussions',
-			onPress: this.createDiscussion
-		});
+		if (hasCreateDiscussionPermission) {
+			options.push({
+				title: I18n.t('Create_Discussion'),
+				icon: 'discussions',
+				onPress: this.createDiscussion
+			});
+		}
 
 		this.closeEmojiAndAction(showActionSheet, { options });
 	};
@@ -966,7 +984,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { showEmojiKeyboard } = this.state;
 
 		this.closeEmoji();
-		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : undefined);
+		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI : null);
 	};
 
 	submit = async () => {
@@ -1316,6 +1334,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
 	uploadFilePermission: state.permissions['mobile-upload-file'],
+	createDiscussionPermission: state.permissions['start-discussion'],
 	serverVersion: state.server.version
 });
 

@@ -19,18 +19,17 @@ const handleBltPermission = async (): Promise<Permission[]> => {
 	return [PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
 };
 
-export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean): Promise<void> => {
+export const handleAndroidBltPermission = async (): Promise<void> => {
+	if (isAndroid) {
+		const bltPermission = await handleBltPermission();
+		await PermissionsAndroid.requestMultiple(bltPermission);
+	}
+};
+
+export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
 	try {
 		const result = await Services.videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
-			if (isAndroid) {
-				const bltPermission = await handleBltPermission();
-				await PermissionsAndroid.requestMultiple([
-					PermissionsAndroid.PERMISSIONS.CAMERA,
-					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-					...bltPermission
-				]);
-			}
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
@@ -39,19 +38,11 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 			}
 		}
 	} catch (e) {
-		showErrorAlert(i18n.t('error-init-video-conf'));
-		log(e);
-	}
-};
-
-export const videoConfStartAndJoin = async ({ rid, cam, mic }: { rid: string; cam?: boolean; mic?: boolean }): Promise<void> => {
-	try {
-		const videoConfResponse = await Services.videoConferenceStart(rid);
-		if (videoConfResponse.success) {
-			videoConfJoin(videoConfResponse.data.callId, cam, mic);
+		if (fromPush) {
+			showErrorAlert(i18n.t('Missed_call'));
+		} else {
+			showErrorAlert(i18n.t('error-init-video-conf'));
 		}
-	} catch (e) {
-		showErrorAlert(i18n.t('error-init-video-conf'));
 		log(e);
 	}
 };

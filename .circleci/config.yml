@@ -1,17 +1,13 @@
 defaults: &defaults
   working_directory: ~/repo
 
-android-img: &android-img
-  docker:
-    - image: cimg/android:2023.04.1-node
-
 orbs:
   android: circleci/android@2.1.2
 
 macos: &macos
   macos:
     xcode: "14.2.0"
-  resource_class: macos.m1.large.gen1
+  resource_class: macos.m1.medium.gen1
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
@@ -58,13 +54,14 @@ save-gems-cache: &save-gems-cache
 update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
+    echo "ruby-2.7.7" > ~/.ruby-version
     bundle install
   working_directory: ios
 
 update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
-    bundle config set --local deployment 'true'
+    echo "ruby-2.7.7" > ~/.ruby-version
     bundle install
   working_directory: android
 
@@ -99,25 +96,32 @@ commands:
             - ~/.pods
             - ios/Pods
 
+  fetch-supported-versions:
+    description: "Fetch supported versions from Cloud"
+    steps:
+      - run:
+          name: "Fetch supported versions from Cloud"
+          command: sh ./scripts/fetch-supported-versions.sh
+      - store_artifacts:
+          path: ./app-supportedversions.json
+
   android-build:
     description: "Build Android app"
     steps:
       - checkout
-
       - restore_cache: *restore-npm-cache-linux
-
       - run: *install-npm-modules
-
       - restore_cache: *restore-gradle-cache
+      - fetch-supported-versions
 
       - run:
           name: Configure Gradle
           command: |
             echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
-            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
@@ -150,9 +154,7 @@ commands:
 
       - run:
           name: Build App
-          no_output_timeout: 40m
           command: |
-            sudo apt install -y libicu-dev
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
@@ -172,16 +174,16 @@ commands:
                 --api-key=$BUGSNAG_KEY_OFFICIAL \
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/officialPlayRelease/index.android.bundle.map \
-                --bundle android/app/build/ASSETS/createBundleOfficialPlayReleaseJsAndAssets/index.android.bundle
+                --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
+                --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               npx bugsnag-source-maps upload-react-native \
                 --api-key=$BUGSNAG_KEY \
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlayRelease/index.android.bundle.map \
-                --bundle android/app/build/ASSETS/createBundleExperimentalPlayReleaseJsAndAssets/index.android.bundle
+                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
+                --bundle android/app/build/generated/assets/react/experimentalPlay/release/app.bundle
             fi
 
       - store_artifacts:
@@ -205,6 +207,7 @@ commands:
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
+      - fetch-supported-versions
       - run:
           name: Set Google Services
           command: |
@@ -325,6 +328,7 @@ commands:
           at: ios
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
       - run:
@@ -389,45 +393,50 @@ jobs:
   # Android builds
   android-build-experimental:
     <<: *defaults
-    <<: *android-img
+    docker:
+      - image: cimg/android:2022.03.1-node
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: xlarge
+    resource_class: large
     steps:
       - android-build
 
     # Android automatic builds
   android-automatic-build-experimental:
     <<: *defaults
-    <<: *android-img
+    docker:
+      - image: circleci/android:api-29-node
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: xlarge
+    resource_class: large
     steps:
       - android-build
 
   android-build-official:
     <<: *defaults
-    <<: *android-img
+    docker:
+      - image: cimg/android:2022.03.1-node
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: xlarge
+    resource_class: large
     steps:
       - android-build
 
   android-internal-app-sharing-experimental:
     <<: *defaults
-    <<: *android-img
+    docker:
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-internal-app-sharing
 
   android-google-play-beta-experimental:
     <<: *defaults
-    <<: *android-img
+    docker:
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:
@@ -435,13 +444,15 @@ jobs:
 
   android-google-play-production-experimental:
     <<: *defaults
-    <<: *android-img
+    docker:
+      - image: cimg/android:2022.03.1-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
-    <<: *android-img
+    docker:
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:
@@ -451,8 +462,8 @@ jobs:
     <<: *defaults
     executor:
       name: android/android-machine
-      resource-class: xlarge
-      tag: 2023.04.1
+      resource-class: large
+      tag: 2022.12.1
     environment:
       <<: *android-env
     steps:
@@ -469,7 +480,6 @@ jobs:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
-            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
             echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
@@ -482,7 +492,6 @@ jobs:
           working_directory: android
       - run:
           name: Build Android
-          no_output_timeout: 20m
           command: |
             export RUNNING_E2E_TESTS=true
             yarn e2e:android-build
@@ -500,8 +509,8 @@ jobs:
     <<: *defaults
     executor:
       name: android/android-machine
-      resource-class: xlarge
-      tag: 2023.04.1
+      resource-class: large
+      tag: 2022.12.1
     parallelism: 4
     steps:
       - checkout
@@ -522,10 +531,6 @@ jobs:
             echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
             echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
             echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
-      - android/start-emulator:
-          avd-name: Pixel_API_31_AOSP
-          verbose: true
-          post-emulator-launch-assemble-command: ''
       - run:
           name: Run Detox Tests
           command: |
@@ -582,7 +587,6 @@ jobs:
             brew install applesimutils
       - run:
           name: Build
-          no_output_timeout: 20m
           command: |
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist

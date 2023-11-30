@@ -17,7 +17,7 @@ import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 export interface IMessageActionsProps {
@@ -30,6 +30,7 @@ export interface IMessageActionsProps {
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
+	serverVersion?: string | null;
 	Message_AllowDeleting?: boolean;
 	Message_AllowDeleting_BlockDeleteInMinutes?: number;
 	Message_AllowEditing?: boolean;
@@ -43,6 +44,7 @@ export interface IMessageActionsProps {
 	deleteOwnMessagePermission?: string[];
 	pinMessagePermission?: string[];
 	createDirectMessagePermission?: string[];
+	createDiscussionOtherUserPermission?: string[];
 }
 
 export interface IMessageActions {
@@ -74,7 +76,9 @@ const MessageActions = React.memo(
 				forceDeleteMessagePermission,
 				deleteOwnMessagePermission,
 				pinMessagePermission,
-				createDirectMessagePermission
+				createDirectMessagePermission,
+				createDiscussionOtherUserPermission,
+				serverVersion
 			},
 			ref
 		) => {
@@ -83,7 +87,9 @@ const MessageActions = React.memo(
 				hasDeletePermission: false,
 				hasForceDeletePermission: false,
 				hasPinPermission: false,
-				hasDeleteOwnPermission: false
+				hasDeleteOwnPermission: false,
+				hasCreateDirectMessagePermission: false,
+				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
 
@@ -94,7 +100,9 @@ const MessageActions = React.memo(
 						deleteMessagePermission,
 						forceDeleteMessagePermission,
 						pinMessagePermission,
-						deleteOwnMessagePermission
+						deleteOwnMessagePermission,
+						createDirectMessagePermission,
+						createDiscussionOtherUserPermission
 					];
 					const result = await hasPermission(permission, room.rid);
 					permissions = {
@@ -102,7 +110,9 @@ const MessageActions = React.memo(
 						hasDeletePermission: result[1],
 						hasForceDeletePermission: result[2],
 						hasPinPermission: result[3],
-						hasDeleteOwnPermission: result[4]
+						hasDeleteOwnPermission: result[4],
+						hasCreateDirectMessagePermission: result[5],
+						hasCreateDiscussionOtherUserPermission: result[6]
 					};
 				} catch {
 					// Do nothing
@@ -185,6 +195,15 @@ const MessageActions = React.memo(
 					Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
 				} else {
 					Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+				}
+			};
+
+			const handleShareMessage = (message: TAnyMessageModel) => {
+				const params = { message };
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'ForwardMessageView', params });
+				} else {
+					Navigation.navigate('NewMessageStackNavigator', { screen: 'ForwardMessageView', params });
 				}
 			};
 
@@ -311,7 +330,7 @@ const MessageActions = React.memo(
 					const db = database.active;
 					await db.write(async () => {
 						await message.update(m => {
-							m.autoTranslate = !m.autoTranslate;
+							m.autoTranslate = m.autoTranslate !== null ? !m.autoTranslate : false;
 							m._updatedAt = new Date();
 						});
 					});
@@ -374,7 +393,7 @@ const MessageActions = React.memo(
 				}
 
 				// Reply in DM
-				if (room.t !== 'd' && room.t !== 'l' && createDirectMessagePermission && !videoConfBlock) {
+				if (room.t !== 'd' && room.t !== 'l' && permissions.hasCreateDirectMessagePermission && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
@@ -383,11 +402,21 @@ const MessageActions = React.memo(
 				}
 
 				// Create Discussion
-				options.push({
-					title: I18n.t('Start_a_Discussion'),
-					icon: 'discussions',
-					onPress: () => handleCreateDiscussion(message)
-				});
+				if (permissions.hasCreateDiscussionOtherUserPermission) {
+					options.push({
+						title: I18n.t('Start_a_Discussion'),
+						icon: 'discussions',
+						onPress: () => handleCreateDiscussion(message)
+					});
+				}
+
+				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
+					options.push({
+						title: I18n.t('Forward'),
+						icon: 'arrow-forward',
+						onPress: () => handleShareMessage(message)
+					});
+				}
 
 				// Permalink
 				options.push({
@@ -460,7 +489,7 @@ const MessageActions = React.memo(
 				// Toggle Auto-translate
 				if (room.autoTranslate && message.u && message.u._id !== user.id) {
 					options.push({
-						title: I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'),
+						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
 						onPress: () => handleToggleTranslation(message)
 					});
@@ -508,6 +537,7 @@ const MessageActions = React.memo(
 );
 const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
+	serverVersion: state.server.version,
 	Message_AllowDeleting: state.settings.Message_AllowDeleting as boolean,
 	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes as number,
 	Message_AllowEditing: state.settings.Message_AllowEditing as boolean,
@@ -521,7 +551,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	deleteOwnMessagePermission: state.permissions['delete-own-message'],
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
 	pinMessagePermission: state.permissions['pin-message'],
-	createDirectMessagePermission: state.permissions['create-d']
+	createDirectMessagePermission: state.permissions['create-d'],
+	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);

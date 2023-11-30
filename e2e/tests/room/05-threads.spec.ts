@@ -9,18 +9,20 @@ import {
 	TTextMatcher,
 	tapAndWaitFor,
 	navigateToRoom,
-	mockMessage
+	mockMessage,
+	tryTapping
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser } from '../../helpers/data_setup';
 
 describe('Threads', () => {
 	let room: string;
 	let textMatcher: TTextMatcher;
+	let alertButtonType: string;
 
 	beforeAll(async () => {
 		const user = await createRandomUser();
 		({ name: room } = await createRandomRoom(user));
-		({ textMatcher } = platformTypes[device.getPlatform()]);
+		({ textMatcher, alertButtonType } = platformTypes[device.getPlatform()]);
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(user.username, user.password);
@@ -79,7 +81,7 @@ describe('Threads', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Reply in Thread')).atIndex(0).tap();
+				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).replaceText('replied');
 				await waitFor(element(by.id('messagebox-send-message')))
 					.toExist()
@@ -219,6 +221,33 @@ describe('Threads', () => {
 
 				await tapAndWaitFor(element(by.id(`message-thread-button-${thread}`)), element(by.id(`room-view-title-${thread}`)), 2000);
 				await expect(element(by.id('messagebox-input-thread'))).toHaveText('');
+				await tapBack();
+			});
+
+			it('should create thread delete the message and the thread show the correct number of messages', async () => {
+				thread = await mockMessage('thread-message-count');
+				await element(by[textMatcher](thread)).atIndex(0).tap();
+				await element(by[textMatcher](thread)).atIndex(0).longPress();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).replaceText('replied');
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by.id(`thread-count-1`)))
+					.toExist()
+					.withTimeout(5000);
+				await element(by.id(`message-thread-button-${thread}`)).tap();
+				await tryTapping(element(by[textMatcher]('replied')).atIndex(0), 2000, true);
+				// Fix android flaky test. Close the action sheet, then re-open again
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(1000); // wait for animation
+				await element(by.id('action-sheet')).swipe('up', 'fast', 0.5);
+				await sleep(300); // wait for animation
+				await element(by[textMatcher]('Delete')).atIndex(0).tap();
+				await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
+				await tapBack();
+				await waitFor(element(by.id(`thread-count-0`)))
+					.toExist()
+					.withTimeout(5000);
 			});
 		});
 	});

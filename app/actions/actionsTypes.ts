@@ -46,7 +46,8 @@ export const APP = createRequestTypes('APP', [
 	'INIT',
 	'INIT_LOCAL_SETTINGS',
 	'SET_MASTER_DETAIL',
-	'SET_NOTIFICATION_PRESENCE_CAP'
+	'SET_NOTIFICATION_PRESENCE_CAP',
+	'SET_NET_INFO_STATE'
 ]);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
@@ -64,7 +65,7 @@ export const METEOR = createRequestTypes('METEOR_CONNECT', [...defaultTypes, 'DI
 export const LOGOUT = 'LOGOUT'; // logout is always success
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
-export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
+export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN', 'OPEN_VIDEO_CONF']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET', 'CLEAR']);
@@ -84,3 +85,15 @@ export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DEC
 
 export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
 export const ROLES = createRequestTypes('ROLES', ['SET', 'UPDATE', 'REMOVE']);
+export const USERS_ROLES = createRequestTypes('USERS_ROLES', ['SET']);
+export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
+	'HANDLE_INCOMING_WEBSOCKET_MESSAGES',
+	'SET',
+	'REMOVE',
+	'CLEAR',
+	'INIT_CALL',
+	'CANCEL_CALL',
+	'ACCEPT_CALL',
+	'SET_CALLING'
+]);
+export const SUPPORTED_VERSIONS = createRequestTypes('SUPPORTED_VERSIONS', ['SET']);

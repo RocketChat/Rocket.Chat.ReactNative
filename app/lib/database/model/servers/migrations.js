@@ -103,6 +103,49 @@ export default schemaMigrations({
 					columns: [{ name: 'enable_message_parser_early_adoption', type: 'boolean', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 13,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'nickname', type: 'string', isOptional: true },
+						{ name: 'bio', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 14,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'supported_versions', type: 'string', isOptional: true },
+						{
+							name: 'supported_versions_warning_at',
+							type: 'number',
+							isOptional: true
+						}
+					]
+				})
+			]
+		},
+		{
+			toVersion: 15,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{
+							name: 'supported_versions_updated_at',
+							type: 'number',
+							isOptional: true
+						}
+					]
+				})
+			]
 		}
 	]
 });

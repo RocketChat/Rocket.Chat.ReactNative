@@ -14,7 +14,7 @@ export async function setRoles(): Promise<void> {
 	const db = database.active;
 	const rolesCollection = db.get('roles');
 	const allRoles = await rolesCollection.query().fetch();
-	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description || item.id }), {});
+	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description || item.name || item.id }), {});
 	reduxStore.dispatch(setRolesAction(parsed));
 }
 

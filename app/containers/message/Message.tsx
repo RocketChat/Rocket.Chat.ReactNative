@@ -22,6 +22,19 @@ import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	if (props.isPreview) {
+		return (
+			<>
+				<User {...props} />
+				<>
+					<Content {...props} />
+					<Attachments {...props} />
+				</>
+				<Urls {...props} />
+			</>
+		);
+	}
+
 	if (props.type === 'discussion-created') {
 		return (
 			<>
@@ -78,6 +91,11 @@ const Message = React.memo((props: IMessage) => {
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
+						{props.isInfo && props.type === 'message_pinned' ? (
+							<View pointerEvents='none'>
+								<Attachments {...props} />
+							</View>
+						) : null}
 					</View>
 				</View>
 			</View>

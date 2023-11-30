@@ -1,25 +1,40 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString } from '../database/utils';
+import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, IUserMessage, SubscriptionType } from '../../definitions';
-import { isGroupChat } from './helpers';
+import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { isGroupChat, isReadOnly } from './helpers';
 
 export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearchSubscription = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
+export const localSearchSubscription = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	filterMessagingAllowed = false
+}): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
+	const slugifiedString = slugifyLikeString(searchText);
 	let subscriptions = await db
 		.get('subscriptions')
 		.query(
-			Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))),
-			Q.sortBy('room_updated_at', Q.desc)
+			Q.or(
+				// `sanitized_fname` is an optional column, so it's going to start null and it's going to get filled over time
+				Q.where('sanitized_fname', Q.like(`%${slugifiedString}%`)),
+				// TODO: Remove the conditionals below at some point. It is merged at 4.39
+				// the param 'name' is slugified by the server when the slugify setting is enable, just for channels and teams
+				Q.where('name', Q.like(`%${slugifiedString}%`)),
+				// Still need the below conditionals because at the first moment the the sanitized_fname won't be filled
+				Q.where('name', Q.like(`%${likeString}%`)),
+				Q.where('fname', Q.like(`%${likeString}%`))
+			),
+			Q.experimentalSortBy('room_updated_at', Q.desc)
 		)
 		.fetch();
 
@@ -27,6 +42,17 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		subscriptions = subscriptions.filter(item => item.t === 'd' && !isGroupChat(item));
 	} else if (!filterUsers && filterRooms) {
 		subscriptions = subscriptions.filter(item => item.t !== 'd' || isGroupChat(item));
+	}
+
+	if (filterMessagingAllowed) {
+		const username = reduxStore.getState().login.user.username as string;
+		const filteredSubscriptions = await Promise.all(
+			subscriptions.map(async item => {
+				const isItemReadOnly = await isReadOnly(item, username);
+				return isItemReadOnly ? null : item;
+			})
+		);
+		subscriptions = filteredSubscriptions.filter(item => item !== null) as TSubscriptionModel[];
 	}
 
 	const search = subscriptions.slice(0, 7).map(item => ({
@@ -39,7 +65,9 @@ export const localSearchSubscription = async ({ text = '', filterUsers = true, f
 		encrypted: item.encrypted,
 		lastMessage: item.lastMessage,
 		status: item.status,
-		teamMain: item.teamMain
+		teamMain: item.teamMain,
+		prid: item.prid,
+		f: item.f
 	})) as ISearchLocal[];
 
 	return search;
@@ -55,8 +83,8 @@ export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }): Pro
 		.get('messages')
 		.query(
 			Q.and(Q.where('rid', rid), Q.where('u', Q.notLike(`%${userId}%`)), Q.where('t', null)),
-			Q.sortBy('ts', Q.desc),
-			Q.take(50)
+			Q.experimentalSortBy('ts', Q.desc),
+			Q.experimentalTake(50)
 		)
 		.fetch();
 
@@ -79,12 +107,18 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	}
 
 	let localSearchData = [];
+	// the users provided by localSearchUsersMessageByRid return the username properly, data.username
+	// Example: Diego Mello's user -> {name: "Diego Mello", username: "diego.mello"}
+	// Meanwhile, the username provided by localSearchSubscription is in name's property
+	// Example: Diego Mello's subscription -> {fname: "Diego Mello",  name: "diego.mello"}
+	let usernames = [];
 	if (rid) {
 		localSearchData = await localSearchUsersMessageByRid({ text, rid });
+		usernames = localSearchData.map(sub => sub.username as string);
 	} else {
 		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });
+		usernames = localSearchData.map(sub => sub.name as string);
 	}
-	const usernames = localSearchData.map(sub => sub.name as string);
 
 	const data: TSearch[] = localSearchData;
 
@@ -98,7 +132,13 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 			if (filterUsers) {
 				users
 					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-					.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+					.filter(
+						user =>
+							!data.some(sub =>
+								// Check comments at usernames' declaration
+								rid && 'username' in sub ? user.username === sub.username : user.username === sub.name
+							)
+					) // Make sure to remove users already on local database
 					.forEach(user => {
 						data.push({
 							...user,

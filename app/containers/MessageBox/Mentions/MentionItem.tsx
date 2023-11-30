@@ -31,7 +31,7 @@ const MentionItemContent = React.memo(({ trackingType, item }: IMessageBoxMentio
 			return (
 				<>
 					<MentionEmoji item={item} />
-					<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>:{item.name ?? item}:</Text>
+					<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>:{item.name || item}:</Text>
 				</>
 			);
 		case MENTIONS_TRACKING_TYPE_COMMANDS:
@@ -57,7 +57,7 @@ const MentionItemContent = React.memo(({ trackingType, item }: IMessageBoxMentio
 			return (
 				<>
 					<Avatar style={styles.avatar} text={item.username || item.name} size={30} type={item.t} />
-					<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.username ?? item.name ?? item}</Text>
+					<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.username || item.name || item}</Text>
 				</>
 			);
 	}

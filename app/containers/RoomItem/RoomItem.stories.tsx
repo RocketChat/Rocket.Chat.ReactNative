@@ -41,32 +41,20 @@ export const Touch = () => <RoomItem onPress={() => alert('on press')} onLongPre
 
 export const User = () => (
 	<>
-		<RoomItem name='diego.mello' avatar='diego.mello' />
-		<RoomItem name={longText} />
+		<RoomItem name='diego.mello' avatar='diego.mello' userId='abc' />
+		<RoomItem name={longText} userId='abc' />
 	</>
 );
 
 export const Type = () => (
 	<>
-		<RoomItem type='d' />
+		<RoomItem type='d' userId='abc' />
 		<RoomItem type='c' />
 		<RoomItem type='p' />
 		<RoomItem type='l' />
 		<RoomItem type='discussion' />
 		<RoomItem type='d' isGroupChat />
 		<RoomItem type='&' />
-	</>
-);
-
-export const UserStatus = () => (
-	<>
-		<RoomItem status='online' />
-		<RoomItem status='away' />
-		<RoomItem status='busy' />
-		<RoomItem status='offline' />
-		<RoomItem status='loading' />
-		<RoomItem status='disabled' />
-		<RoomItem status='wrong' />
 	</>
 );
 
@@ -159,7 +147,6 @@ export const ExpandedRoomItemWithoutAvatar = () => (
 			showAvatar={false}
 		/>
 		<RoomItem
-			status='online'
 			showLastMessage
 			alert
 			tunread={[1]}
@@ -167,14 +154,7 @@ export const ExpandedRoomItemWithoutAvatar = () => (
 			displayMode={DisplayMode.Expanded}
 			showAvatar={false}
 		/>
-		<RoomItem
-			status='online'
-			showLastMessage
-			alert
-			lastMessage={lastMessage}
-			displayMode={DisplayMode.Expanded}
-			showAvatar={false}
-		/>
+		<RoomItem showLastMessage alert lastMessage={lastMessage} displayMode={DisplayMode.Expanded} showAvatar={false} />
 	</>
 );
 

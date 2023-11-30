@@ -13,6 +13,7 @@ export interface IHeaderButtonItem extends Omit<ICustomIcon, 'name' | 'size' | '
 	testID?: string;
 	badge?(): void;
 	color?: string;
+	disabled?: boolean;
 }
 
 export const BUTTON_HIT_SLOP = {
@@ -39,10 +40,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ title, iconName, onPress, testID, badge, color, ...props }: IHeaderButtonItem): React.ReactElement => {
+const Item = ({ title, iconName, onPress, testID, badge, color, disabled, ...props }: IHeaderButtonItem): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
-		<PlatformPressable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
+		<PlatformPressable
+			onPress={onPress}
+			testID={testID}
+			hitSlop={BUTTON_HIT_SLOP}
+			disabled={disabled}
+			style={[
+				styles.container,
+				{
+					opacity: disabled ? 0.5 : 1
+				}
+			]}
+		>
 			<>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={color || colors.headerTintColor} {...props} />

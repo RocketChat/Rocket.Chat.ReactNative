@@ -1,5 +1,4 @@
-import RNFetchBlob from 'rn-fetch-blob';
-import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -8,7 +7,6 @@ import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
-import { selectServerFailure } from '../../actions/server';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../actions/login';
@@ -19,7 +17,7 @@ import { connectRequest, connectSuccess, disconnect as disconnectAction } from '
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
-import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
+import { defaultSettings } from '../constants';
 import {
 	getSettings,
 	IActiveUsers,
@@ -49,7 +47,7 @@ let notifyAllListener: any;
 let rolesListener: any;
 let notifyLoggedListener: any;
 
-function connect({ server, logoutOnError = false }: { server: string; logoutOnError: boolean }): Promise<void> {
+function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
@@ -304,7 +302,9 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			isFromWebView,
 			showMessageInMainThread,
 			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel
+			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
+			bio: result.me.bio,
+			nickname: result.me.nickname
 		};
 		return user;
 	}
@@ -399,51 +399,11 @@ function disconnect() {
 	return sdk.disconnect();
 }
 
-async function getServerInfo(server: string) {
-	try {
-		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, { ...RocketChatSettings.customHeaders });
-		try {
-			// Try to resolve as json
-			const jsonRes: { version?: string; success: boolean } = response.json();
-			if (!jsonRes?.success) {
-				return {
-					success: false,
-					message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
-				};
-			}
-			if (compareServerVersion(jsonRes.version, 'lowerThan', MIN_ROCKETCHAT_VERSION)) {
-				return {
-					success: false,
-					message: I18n.t('Invalid_server_version', {
-						currentVersion: jsonRes.version,
-						minVersion: MIN_ROCKETCHAT_VERSION
-					})
-				};
-			}
-			return jsonRes;
-		} catch (error) {
-			// Request is successful, but response isn't a json
-		}
-	} catch (e: any) {
-		if (e?.message) {
-			if (e.message === 'Aborted') {
-				store.dispatch(selectServerFailure());
-				throw e;
-			}
-			return {
-				success: false,
-				message: e.message
-			};
-		}
-	}
-
-	return {
-		success: false,
-		message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
-	};
-}
-
-async function getWebsocketInfo({ server }: { server: string }) {
+async function getWebsocketInfo({
+	server
+}: {
+	server: string;
+}): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
 	try {
@@ -528,7 +488,6 @@ export {
 	abort,
 	connect,
 	disconnect,
-	getServerInfo,
 	getWebsocketInfo,
 	stopListener,
 	getLoginServices,

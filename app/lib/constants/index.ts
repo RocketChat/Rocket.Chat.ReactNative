@@ -10,5 +10,7 @@ export * from './messagesStatus';
 export * from './messageTypeLoad';
 export * from './notifications';
 export * from './defaultSettings';
+export * from './supportedVersions';
 export * from './tablet';
+export * from './mediaAutoDownload';
 export * from './userAgent';
