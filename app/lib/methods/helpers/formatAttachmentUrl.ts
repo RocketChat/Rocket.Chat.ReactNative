@@ -25,7 +25,7 @@ export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: s
 		return setParamInUrl({ url: attachmentUrl, token, userId });
 	}
 	const cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
-	if (cdnPrefix) {
+	if (cdnPrefix && cdnPrefix.startsWith('http')) {
 		server = cdnPrefix.trim().replace(/\/+$/, '');
 	}
 	return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
