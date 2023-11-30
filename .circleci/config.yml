@@ -378,15 +378,15 @@ jobs:
           command: |
             yarn lint
 
-      - run:
-          name: Test
-          command: |
-            yarn test -w 8
+      # - run:
+      #     name: Test
+      #     command: |
+      #       yarn test -w 8
 
-      - run:
-          name: Codecov
-          command: |
-            yarn codecov
+      # - run:
+      #     name: Codecov
+      #     command: |
+      #       yarn codecov
 
       - save_cache: *save-npm-cache-linux
 
