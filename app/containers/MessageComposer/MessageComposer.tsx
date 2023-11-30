@@ -3,6 +3,7 @@ import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel } from './components';
@@ -62,6 +63,12 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	useKeyboardListener(trackingViewRef);
+
+	useFocusEffect(
+		useCallback(() => {
+			trackingViewRef.current?.resetTracking();
+		}, [])
+	);
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction
