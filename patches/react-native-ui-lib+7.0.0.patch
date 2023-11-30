@@ -1,13 +1,25 @@
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+index 97255d2..4e0fe05 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+@@ -364,6 +364,7 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
+ - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
+ {
+     _bottomViewHeight = kBottomViewHeightTemp;
++    _ObservingInputAccessoryViewTemp.height = 0;
+     [self updateBottomViewFrame];
+ }
+ 
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-index 1ca52e8..8656901 100644
+index 1ca52e8..bfa1d5f 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
 +++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-@@ -115,21 +115,25 @@ - (void)setHeight:(CGFloat)height
+@@ -115,40 +115,52 @@ - (void)setHeight:(CGFloat)height
  
  - (void)_keyboardWillShowNotification:(NSNotification*)notification
  {
 -    _keyboardState = KeyboardStateWillShow;
-+    if (_keyboardState != KeyboardStateShown) {
++    if (_keyboardState == KeyboardStateHidden) {
 +        _keyboardState = KeyboardStateWillShow;
      
 -    [self invalidateIntrinsicContentSize];
@@ -26,7 +38,7 @@ index 1ca52e8..8656901 100644
  - (void)_keyboardDidShowNotification:(NSNotification*)notification
  {
 -    _keyboardState = KeyboardStateShown;
-+    if (_keyboardState != KeyboardStateShown) {
++    if (_keyboardState == KeyboardStateWillShow) {
 +        _keyboardState = KeyboardStateShown;
      
 -    [self invalidateIntrinsicContentSize];
@@ -35,12 +47,37 @@ index 1ca52e8..8656901 100644
  }
  
  - (void)_keyboardWillHideNotification:(NSNotification*)notification
-@@ -149,6 +153,8 @@ - (void)_keyboardDidHideNotification:(NSNotification*)notification
-     _keyboardState = KeyboardStateHidden;
-     
-     [self invalidateIntrinsicContentSize];
-+    
-+    [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
+ {
+-    _keyboardState = KeyboardStateWillHide;
++    if (_keyboardState == KeyboardStateShown) {
++        _keyboardState = KeyboardStateWillHide;
+         
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
+         
+-    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
+-    {
+-        [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++        
++        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
++        {
++            [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        }
+     }
+ }
+ 
+ - (void)_keyboardDidHideNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateHidden;
++    if (_keyboardState == KeyboardStateWillHide) {
++        _keyboardState = KeyboardStateHidden;
+         
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
++        
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++    }
  }
  
  - (void)_keyboardWillChangeFrameNotification:(NSNotification*)notification

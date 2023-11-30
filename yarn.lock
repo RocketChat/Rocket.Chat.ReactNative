@@ -17677,7 +17677,7 @@ react-native-document-picker@^8.1.2:
   dependencies:
     invariant "^2.2.4"
 
-react-native-dotenv@^3.4.8:
+react-native-dotenv@3.4.8:
   version "3.4.8"
   resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-3.4.8.tgz#42284070a9994076cd700805c2dd28051c9e1432"
   integrity sha512-fg9F8X/cG1kDTwRLgLz3t+AMbsULoFHbUVltdQarmrJ3kNllD1Zq7ZgY85bp8BnPwk0DnYQzKbooiLsUoKd10w==
