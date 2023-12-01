@@ -17,7 +17,8 @@ export default StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	textInput: {
-		height: 100
+		height: 100,
+		textAlignVertical: 'top'
 	},
 	labelTextInput: {
 		marginBottom: 4,

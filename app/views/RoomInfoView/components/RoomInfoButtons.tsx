@@ -63,6 +63,7 @@ interface IRoomInfoButtons {
 	handleReportUser: () => void;
 	roomFromRid: ISubscription | undefined;
 	serverVersion: string | null;
+	itsMe?: boolean;
 }
 
 export const RoomInfoButtons = ({
@@ -76,7 +77,8 @@ export const RoomInfoButtons = ({
 	handleBlockUser,
 	handleReportUser,
 	roomFromRid,
-	serverVersion
+	serverVersion,
+	itsMe
 }: IRoomInfoButtons): React.ReactElement => {
 	const room = roomFromRid || roomFromProps;
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
@@ -87,9 +89,9 @@ export const RoomInfoButtons = ({
 	const isBlocked = room?.blocker;
 
 	const renderIgnoreUser = isDirectFromSaved && !isFromDm && !isDmWithMyself;
-	const renderBlockUser = isDirectFromSaved && isFromDm && !isDmWithMyself;
+	const renderBlockUser = !itsMe && isDirectFromSaved && isFromDm && !isDmWithMyself;
 	const renderReportUser =
-		isDirectFromSaved && !isDmWithMyself && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0');
+		!itsMe && isDirectFromSaved && !isDmWithMyself && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0');
 
 	return (
 		<View style={styles.roomButtonsContainer}>

@@ -317,6 +317,7 @@ const RoomInfoView = (): React.ReactElement => {
 						roomUserId={roomUser?._id}
 						roomFromRid={roomFromRid}
 						serverVersion={serverVersion}
+						itsMe={itsMe}
 					/>
 				</View>
 				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} />
