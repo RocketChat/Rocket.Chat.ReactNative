@@ -27,7 +27,7 @@ export interface IUrlFromServer {
 	headers: {
 		contentType: string;
 	};
-	parsedUrl: {
+	parsedUrl?: {
 		host: string;
 		hash: any;
 		pathname: string;
