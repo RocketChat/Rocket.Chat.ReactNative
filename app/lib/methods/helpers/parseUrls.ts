@@ -1,4 +1,5 @@
 import { IUrl, IUrlFromServer } from '../../../definitions';
+import { buildImageURL } from './buildUrlImage';
 
 export default (urls: IUrlFromServer[]): IUrl[] =>
 	urls
@@ -16,9 +17,17 @@ export default (urls: IUrlFromServer[]): IUrl[] =>
 			tmp.image = decodedOgImage || meta.twitterImage || meta.oembedThumbnailUrl;
 			if (tmp.image) {
 				if (tmp.image.indexOf('//') === 0) {
-					tmp.image = `${url.parsedUrl.protocol}${tmp.image}`;
-				} else if (tmp.image.indexOf('/') === 0 && url.parsedUrl && url.parsedUrl.host) {
-					tmp.image = `${url.parsedUrl.protocol}//${url.parsedUrl.host}${tmp.image}`;
+					if (url.parsedUrl?.protocol) {
+						tmp.image = `${url.parsedUrl.protocol}${tmp.image}`;
+					} else {
+						tmp.image = buildImageURL(url.url, tmp.image);
+					}
+				} else if (tmp.image.indexOf('/') === 0) {
+					if (url.parsedUrl && url.parsedUrl?.host && url.parsedUrl?.protocol) {
+						tmp.image = `${url.parsedUrl.protocol}//${url.parsedUrl.host}${tmp.image}`;
+					} else {
+						tmp.image = buildImageURL(url.url, tmp.image);
+					}
 				}
 			}
 			tmp.url = url.url;
