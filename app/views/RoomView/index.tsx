@@ -94,6 +94,7 @@ import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSh
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
+import { getThreadById } from '../../lib/database/services/Thread';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -971,7 +972,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return true;
 	};
 
-	jumpToMessageByUrl = async (messageUrl?: string) => {
+	jumpToMessageByUrl = async (messageUrl?: string, isFromReply?: boolean) => {
 		if (!messageUrl) {
 			return;
 		}
@@ -979,14 +980,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const parsedUrl = parse(messageUrl, true);
 			const messageId = parsedUrl.query.msg;
 			if (messageId) {
-				await this.jumpToMessage(messageId);
+				await this.jumpToMessage(messageId, isFromReply);
 			}
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	jumpToMessage = async (messageId: string) => {
+	jumpToMessage = async (messageId: string, isFromReply?: boolean) => {
 		try {
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			const message = await RoomServices.getMessageInfo(messageId);
@@ -1018,8 +1019,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
 				this.cancelJumpToMessage();
 			}
-		} catch (e) {
-			log(e);
+		} catch (error: any) {
+			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
+				showErrorAlert(I18n.t('The_room_does_not_exist'), I18n.t('Room_not_found'));
+			} else {
+				log(error);
+			}
 			this.cancelJumpToMessage();
 		}
 	};
@@ -1128,6 +1133,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return getThreadName(rid, tmid, messageId);
 	};
 
+	fetchThreadName = async (tmid: string, messageId: string) => {
+		const { rid } = this.state.room;
+		const threadRecord = await getThreadById(tmid);
+		if (threadRecord?.t === 'rm') {
+			return I18n.t('Message_removed');
+		}
+		return getThreadName(rid, tmid, messageId);
+	};
+
 	toggleFollowThread = async (isFollowingThread: boolean, tmid?: string) => {
 		try {
 			const threadMessageId = tmid ?? this.tmid;
@@ -1177,6 +1191,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
+			const threadRecord = await getThreadById(item.tmid);
+			if (threadRecord?.t === 'rm') {
+				name = I18n.t('Thread');
+			}
 			if (!name) {
 				const result = await this.getThreadName(item.tmid, jumpToMessageId);
 				// test if there isn't a thread
@@ -1335,7 +1353,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isThreadRoom={!!this.tmid}
 					isIgnored={this.isIgnored(item)}
 					previousItem={previousItem}
-					fetchThreadName={this.getThreadName}
+					fetchThreadName={this.fetchThreadName}
 					onReactionPress={this.onReactionPress}
 					onReactionLongPress={this.onReactionLongPress}
 					onLongPress={this.onMessageLongPress}
@@ -1491,6 +1509,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					replyInit={this.onReplyInit}
 					reactionInit={this.onReactionInit}
 					onReactionPress={this.onReactionPress}
+					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
 				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
