@@ -177,6 +177,7 @@ export const ComposerInput = memo(
 
 		const onBlur: TextInputProps['onBlur'] = () => {
 			setFocused(false);
+			stopAutocomplete();
 		};
 
 		const handleLayout: TextInputProps['onLayout'] = e => {
