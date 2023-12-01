@@ -97,7 +97,7 @@ public class CustomPushNotification extends PushNotification {
         bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
         bundle.putString("avatarUri", loadedEjson.getAvatarUri());
 
-        if (loadedEjson.notificationType.equals("videoconf")) {
+        if (loadedEjson.notificationType != null && loadedEjson.notificationType.equals("videoconf")) {
             notifyReceivedToJS();
         } else {
             notificationMessages.get(notId).add(bundle);
