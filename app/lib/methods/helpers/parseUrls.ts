@@ -1,5 +1,5 @@
 import { IUrl, IUrlFromServer } from '../../../definitions';
-import { buildImageURL } from './buildUrlImage';
+import { buildImageURL } from './buildImageURL';
 
 export default (urls: IUrlFromServer[]): IUrl[] =>
 	urls

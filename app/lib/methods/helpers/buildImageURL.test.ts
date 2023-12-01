@@ -1,4 +1,4 @@
-import { buildImageURL } from './buildUrlImage';
+import { buildImageURL } from './buildImageURL';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/5c145e3170f04e341be93a2a60f09b6cbdc46c73/apps/meteor/tests/unit/client/views/room/MessageList/lib/buildImageURL.spec.ts#L8
 describe('buildImageURL', () => {
