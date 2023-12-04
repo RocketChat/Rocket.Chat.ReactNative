@@ -115,10 +115,10 @@ export const RecordAudio = (): ReactElement => {
 					<AudioPlayer fileUri={recordingRef.current?.getURI() ?? ''} rid={rid} downloadState='downloaded' />
 				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-					<CancelButton onPress={() => cancelRecording()} />
+					<CancelButton onPress={cancelRecording} />
 					<View style={{ flex: 1 }} />
 					<BaseButton
-						onPress={() => sendAudio()}
+						onPress={sendAudio}
 						testID='message-composer-send'
 						accessibilityLabel='Send_message'
 						icon='send-filled'

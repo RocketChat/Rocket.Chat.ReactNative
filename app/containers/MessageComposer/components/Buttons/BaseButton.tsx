@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IBaseButton {
+export interface IBaseButton {
 	testID: string;
 	accessibilityLabel: string;
 	icon: TIconsName;
@@ -33,7 +33,7 @@ export const hitSlop = {
 export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
 	const { colors } = useTheme();
 	return (
-		<BorderlessButton style={styles.button} onPress={onPress} testID={testID} hitSlop={hitSlop}>
+		<BorderlessButton style={styles.button} onPress={() => onPress()} testID={testID} hitSlop={hitSlop}>
 			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
 				<CustomIcon name={icon} size={24} color={color || colors.fontSecondaryInfo} />
 			</View>

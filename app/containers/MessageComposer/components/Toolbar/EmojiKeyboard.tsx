@@ -14,7 +14,7 @@ export const EmojiKeyboard = (): ReactElement => {
 			<ActionsButton />
 			<Gap />
 			<BaseButton
-				onPress={() => closeEmojiKeyboard()}
+				onPress={closeEmojiKeyboard}
 				testID='message-composer-close-emoji'
 				accessibilityLabel='Close_emoji_selector'
 				icon='keyboard'

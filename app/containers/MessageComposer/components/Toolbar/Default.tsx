@@ -13,7 +13,7 @@ export const Default = (): ReactElement | null => {
 			<ActionsButton />
 			<Gap />
 			<BaseButton
-				onPress={() => openEmojiKeyboard()}
+				onPress={openEmojiKeyboard}
 				testID='message-composer-open-emoji'
 				accessibilityLabel='Open_emoji_selector'
 				icon='emoji'

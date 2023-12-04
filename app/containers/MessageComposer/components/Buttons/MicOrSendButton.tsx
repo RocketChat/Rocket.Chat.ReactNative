@@ -32,7 +32,7 @@ export const MicOrSendButton = () => {
 	if (micOrSend === 'send') {
 		return (
 			<BaseButton
-				onPress={() => sendMessage()}
+				onPress={sendMessage}
 				testID='message-composer-send'
 				accessibilityLabel='Send_message'
 				icon='send-filled'
@@ -44,7 +44,7 @@ export const MicOrSendButton = () => {
 	if (Message_AudioRecorderEnabled && permissionToUpload) {
 		return (
 			<BaseButton
-				onPress={() => startRecording()}
+				onPress={startRecording}
 				testID='message-composer-send-audio'
 				accessibilityLabel='Send_audio_message'
 				icon='microphone'
