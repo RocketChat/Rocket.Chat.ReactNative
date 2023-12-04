@@ -154,8 +154,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				// logEvent(events.MB_EMOJI_SELECTED);
 				let emojiText = '';
 				if (typeof emoji === 'string') {
-					const shortname = `:${emoji}:`;
-					emojiText = shortnameToUnicode(shortname);
+					emojiText = shortnameToUnicode(`:${emoji}:`);
 				} else {
 					emojiText = `:${emoji.name}:`;
 				}
