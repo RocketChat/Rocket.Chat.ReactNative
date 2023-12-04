@@ -63,23 +63,18 @@ export const useAutocomplete = ({
 
 				if (type === '@' || type === '#') {
 					const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
-					const parsedRes: IAutocompleteUserRoom[] = res.map(item => ({
-						// @ts-ignore
-						id: type === '@' ? item._id : item.rid,
-						// @ts-ignore
-						title: item.fname || item.name || item.username,
-						// @ts-ignore
-						subtitle: item.username || item.name,
-						// @ts-ignore
-						outside: item.outside,
-						// @ts-ignore
-						t: item.t ?? 'd',
-						// @ts-ignore
-						status: item.status,
-						// @ts-ignore
-						teamMain: item.teamMain,
-						type
-					}));
+					const parsedRes: IAutocompleteUserRoom[] = res
+						// TODO: need to refactor search to have a more predictable return type
+						.map((item: any) => ({
+							id: type === '@' ? item._id : item.rid,
+							title: item.fname || item.name || item.username,
+							subtitle: item.username || item.name,
+							outside: item.outside,
+							t: item.t ?? 'd',
+							status: item.status,
+							teamMain: item.teamMain,
+							type
+						})) as IAutocompleteUserRoom[];
 					if (type === '@') {
 						if ('all'.includes(text.toLocaleLowerCase())) {
 							parsedRes.push({
