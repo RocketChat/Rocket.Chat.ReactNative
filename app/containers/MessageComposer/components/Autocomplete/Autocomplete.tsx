@@ -9,6 +9,13 @@ import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
+/**
+ * TODO: Come up with a better way to calculate both of these values.
+ * Maybe from KeyboardAccessoryView? There's a logic there to get both tracking view and keyboard height.
+ *  */
+const MAX_HEIGHT = 216;
+const getBottom = (trackingViewHeight: number, keyboardHeight: number): number => trackingViewHeight + keyboardHeight + 50;
+
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
 	const { rid } = useRoomContext();
 	const trackingViewHeight = useTrackingViewHeight();
@@ -30,12 +37,12 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		return (
 			<View
 				style={{
-					maxHeight: 216,
+					maxHeight: MAX_HEIGHT,
 					left: 8,
 					right: 8,
 					backgroundColor: colors.surfaceNeutral,
 					position: 'absolute',
-					bottom: trackingViewHeight + keyboardHeight + 50,
+					bottom: getBottom(trackingViewHeight, keyboardHeight),
 					borderRadius: 4,
 					shadowColor: '#000',
 					shadowOffset: {
@@ -64,12 +71,12 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		return (
 			<View
 				style={{
-					maxHeight: 216,
+					maxHeight: MAX_HEIGHT,
 					left: 8,
 					right: 8,
 					backgroundColor: colors.surfaceLight,
 					position: 'absolute',
-					bottom: trackingViewHeight + keyboardHeight + 50,
+					bottom: getBottom(trackingViewHeight, keyboardHeight),
 					borderRadius: 4,
 					shadowColor: '#000',
 					shadowOffset: {
