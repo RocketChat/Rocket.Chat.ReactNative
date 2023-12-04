@@ -1,5 +1,5 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
@@ -68,10 +68,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 
 	return (
 		<TouchableWithoutFeedback
-			style={{
-				flexDirection: 'row',
-				alignItems: 'center'
-			}}
+			style={styles.container}
 			onPress={() => setAlsoSendThreadToChannel(!alsoSendThreadToChannel)}
 			testID='composer-send-to-channel'
 		>
@@ -81,9 +78,19 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				size={24}
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.strokeDark}
 			/>
-			<Text style={{ fontSize: 14, marginLeft: 8, ...sharedStyles.textRegular, color: colors.fontSecondaryInfo }}>
-				{I18n.t('Messagebox_Send_to_channel')}
-			</Text>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Messagebox_Send_to_channel')}</Text>
 		</TouchableWithoutFeedback>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	text: {
+		fontSize: 14,
+		marginLeft: 8,
+		...sharedStyles.textRegular
+	}
+});
