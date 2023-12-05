@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
 import { IAutocompleteUserRoom } from '../../interfaces';
 import Avatar from '../../../Avatar';
 import RoomTypeIcon from '../../../RoomTypeIcon';

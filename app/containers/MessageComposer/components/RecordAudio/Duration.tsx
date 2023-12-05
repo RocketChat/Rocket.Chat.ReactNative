@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Text } from 'react-native';
+import { FontVariant, Text } from 'react-native';
 import { Audio } from 'expo-av';
 
 import sharedStyles from '../../../../views/Styles';
@@ -36,7 +36,7 @@ function useStyle() {
 			fontSize: 16,
 			...sharedStyles.textRegular,
 			color: colors.fontDefault,
-			fontVariant: ['tabular-nums']
+			fontVariant: ['tabular-nums'] as FontVariant[]
 		}
 	} as const;
 	return [styles, colors] as const;
