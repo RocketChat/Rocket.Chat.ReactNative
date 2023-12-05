@@ -1,6 +1,7 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
 import { setPermissions } from '../../actions/permissions';
@@ -38,9 +39,11 @@ const initialContext = {
 
 const Render = ({ context }: { context?: Partial<IRoomContext> }) => (
 	<Provider store={mockedStore}>
-		<RoomContext.Provider value={{ ...initialContext, ...context }}>
-			<MessageComposerContainer />
-		</RoomContext.Provider>
+		<NavigationContainer>
+			<RoomContext.Provider value={{ ...initialContext, ...context }}>
+				<MessageComposerContainer />
+			</RoomContext.Provider>
+		</NavigationContainer>
 	</Provider>
 );
 
@@ -153,6 +156,7 @@ describe('Markdown', () => {
 
 		await act(async () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			// await waitFor(() => fireEvent.press(screen.getByTestId('message-composer-open-markdown')), { timeout: 1000 });
 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
 			await fireEvent.press(screen.getByTestId('message-composer-bold'));
 			await fireEvent.press(screen.getByTestId('message-composer-send'));

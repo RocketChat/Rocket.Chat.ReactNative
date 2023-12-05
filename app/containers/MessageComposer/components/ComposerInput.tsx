@@ -85,12 +85,15 @@ export const ComposerInput = memo(
 
 		useFocusEffect(
 			useCallback(() => {
+				console.log('focus effect use callback');
 				const task = InteractionManager.runAfterInteractions(() => {
+					console.log('after interaction');
 					emitter.on('addMarkdown', ({ style }) => {
 						const { start, end } = selectionRef.current;
 						const text = textRef.current;
 						const markdown = markdownStyle[style];
 						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+						console.log('🚀 ~ file: ComposerInput.tsx:95 ~ emitter.on ~ newText:', newText);
 						setInput(newText, {
 							start: start + markdown.length,
 							end: start === end ? start + markdown.length : end + markdown.length
