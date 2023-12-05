@@ -41,7 +41,8 @@ export default StyleSheet.create({
 	roomUsername: {
 		fontSize: 18,
 		...sharedStyles.textAlignCenter,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		paddingHorizontal: 20
 	},
 	roomTitleRow: {
 		flexDirection: 'row',
