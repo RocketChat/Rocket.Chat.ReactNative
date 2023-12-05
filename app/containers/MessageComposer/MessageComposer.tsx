@@ -219,7 +219,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				bottomViewColor={backgroundColor}
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 			/>
-			<Autocomplete onPress={composerInputComponentRef.current.onAutocompleteItemSelected} />
+			<Autocomplete onPress={composerInputComponentRef.current?.onAutocompleteItemSelected} />
 		</MessageInnerContext.Provider>
 	);
 };

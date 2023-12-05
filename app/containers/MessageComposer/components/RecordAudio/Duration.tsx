@@ -11,7 +11,7 @@ export interface IDurationRef {
 }
 
 export const Duration = forwardRef<IDurationRef>((_, ref) => {
-	const { colors } = useTheme();
+	const [styles] = useStyle();
 	const [duration, setDuration] = React.useState('00:00');
 
 	useImperativeHandle(ref, () => ({
@@ -25,17 +25,19 @@ export const Duration = forwardRef<IDurationRef>((_, ref) => {
 		setDuration(formatTime(Math.floor(status.durationMillis / 1000)));
 	};
 
-	return (
-		<Text
-			style={{
-				marginLeft: 12,
-				fontSize: 16,
-				...sharedStyles.textRegular,
-				color: colors.fontDefault,
-				fontVariant: ['tabular-nums']
-			}}
-		>
-			{duration}
-		</Text>
-	);
+	return <Text style={styles.text}>{duration}</Text>;
 });
+
+function useStyle() {
+	const { colors } = useTheme();
+	const styles = {
+		text: {
+			marginLeft: 12,
+			fontSize: 16,
+			...sharedStyles.textRegular,
+			color: colors.fontDefault,
+			fontVariant: ['tabular-nums']
+		}
+	} as const;
+	return [styles, colors] as const;
+}

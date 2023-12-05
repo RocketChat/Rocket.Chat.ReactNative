@@ -11,7 +11,7 @@ import { useAppSelector } from '../../../../lib/hooks';
 import { MarkdownPreview } from '../../../markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
-	const { colors } = useTheme();
+	const [styles, colors] = useStyle();
 	const message = useMessage(messageId);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
 	const { onRemoveQuoteMessage } = useRoomContext();
@@ -31,47 +31,13 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 	}
 
 	return (
-		<View
-			style={{
-				backgroundColor: colors.surfaceTint,
-				height: 64,
-				width: 320,
-				borderColor: colors.strokeExtraLight,
-				borderLeftColor: colors.strokeMedium,
-				borderWidth: 1,
-				borderTopRightRadius: 4,
-				borderBottomRightRadius: 4,
-				paddingLeft: 16,
-				padding: 8,
-				marginRight: 8
-			}}
-			testID={`composer-quote-${message.id}`}
-		>
-			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-				<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
-					<Text
-						style={{
-							...sharedStyles.textBold,
-							color: colors.fontTitlesLabels,
-							fontSize: 14,
-							lineHeight: 20,
-							flexShrink: 1,
-							paddingRight: 4
-						}}
-						numberOfLines={1}
-					>
+		<View style={styles.root} testID={`composer-quote-${message.id}`}>
+			<View style={styles.header}>
+				<View style={styles.title}>
+					<Text style={styles.username} numberOfLines={1}>
 						{username}
 					</Text>
-					<Text
-						style={{
-							...sharedStyles.textRegular,
-							color: colors.fontAnnotation,
-							fontSize: 12,
-							lineHeight: 16
-						}}
-					>
-						{time}
-					</Text>
+					<Text style={styles.time}>{time}</Text>
 				</View>
 				<BaseButton
 					icon='close'
@@ -81,19 +47,49 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 					testID={`composer-quote-remove-${message.id}`}
 				/>
 			</View>
-			<MarkdownPreview
-				style={[
-					{
-						...sharedStyles.textRegular,
-						// @ts-ignore
-						color: colors.fontDefault,
-						fontSize: 14,
-						lineHeight: 20
-					}
-				]}
-				numberOfLines={1}
-				msg={msg}
-			/>
+			<MarkdownPreview style={[styles.message]} numberOfLines={1} msg={msg} />
 		</View>
 	);
 };
+
+function useStyle() {
+	const { colors } = useTheme();
+	const style = {
+		root: {
+			backgroundColor: colors.surfaceTint,
+			height: 64,
+			width: 320,
+			borderColor: colors.strokeExtraLight,
+			borderLeftColor: colors.strokeMedium,
+			borderWidth: 1,
+			borderTopRightRadius: 4,
+			borderBottomRightRadius: 4,
+			paddingLeft: 16,
+			padding: 8,
+			marginRight: 8
+		},
+		header: { flexDirection: 'row', alignItems: 'center' },
+		title: { flexDirection: 'row', flex: 1, alignItems: 'center' },
+		username: {
+			...sharedStyles.textBold,
+			color: colors.fontTitlesLabels,
+			fontSize: 14,
+			lineHeight: 20,
+			flexShrink: 1,
+			paddingRight: 4
+		},
+		time: {
+			...sharedStyles.textRegular,
+			color: colors.fontAnnotation,
+			fontSize: 12,
+			lineHeight: 16
+		},
+		message: {
+			...sharedStyles.textRegular,
+			color: colors.fontDefault,
+			fontSize: 14,
+			lineHeight: 20
+		}
+	} as const;
+	return [style, colors] as const;
+}

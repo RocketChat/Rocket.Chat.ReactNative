@@ -12,7 +12,7 @@ import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
-import { MIN_HEIGHT, NO_CANNED_RESPONSES, markdownStyle } from '../constants';
+import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, markdownStyle } from '../constants';
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../emitter';
@@ -23,21 +23,6 @@ import getMentionRegexp from '../../MessageBox/getMentionRegexp';
 import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector } from '../../../lib/hooks';
-
-const styles = StyleSheet.create({
-	textInput: {
-		flex: 1,
-		minHeight: MIN_HEIGHT,
-		maxHeight: 200,
-		paddingTop: 12,
-		// TODO: check glitch on iOS selector pin with several lines
-		paddingBottom: 12,
-		fontSize: 16,
-		textAlignVertical: 'center',
-		...sharedStyles.textRegular,
-		lineHeight: 22
-	}
-});
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -350,3 +335,18 @@ export const ComposerInput = memo(
 		);
 	})
 );
+
+const styles = StyleSheet.create({
+	textInput: {
+		flex: 1,
+		minHeight: MIN_HEIGHT,
+		maxHeight: MAX_HEIGHT,
+		paddingTop: 12,
+		// TODO: check glitch on iOS selector pin with several lines
+		paddingBottom: 12,
+		fontSize: 16,
+		textAlignVertical: 'center',
+		...sharedStyles.textRegular,
+		lineHeight: 22
+	}
+});

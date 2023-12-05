@@ -6,15 +6,6 @@ import I18n from '../../../../i18n';
 import { CustomIcon, TIconsName } from '../../../CustomIcon';
 import { useTheme } from '../../../../theme';
 
-const styles = StyleSheet.create({
-	button: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: 24,
-		height: 24
-	}
-});
-
 export interface IBaseButton {
 	testID: string;
 	accessibilityLabel: string;
@@ -40,3 +31,12 @@ export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }:
 		</BorderlessButton>
 	);
 };
+
+const styles = StyleSheet.create({
+	button: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 24,
+		height: 24
+	}
+});

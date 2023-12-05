@@ -23,7 +23,7 @@ import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 
 export const RecordAudio = (): ReactElement => {
-	const { colors } = useTheme();
+	const [styles, colors] = useStyle();
 	const recordingRef = useRef<Audio.Recording>();
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
@@ -102,19 +102,11 @@ export const RecordAudio = (): ReactElement => {
 
 	if (status === 'reviewing') {
 		return (
-			<View
-				style={{
-					borderTopWidth: 1,
-					paddingHorizontal: 16,
-					paddingBottom: 12,
-					backgroundColor: colors.surfaceLight,
-					borderTopColor: colors.strokeLight
-				}}
-			>
-				<View style={{ flexDirection: 'row', paddingVertical: 8 }}>
+			<View style={styles.review}>
+				<View style={styles.audioPlayer}>
 					<AudioPlayer fileUri={recordingRef.current?.getURI() ?? ''} rid={rid} downloadState='downloaded' />
 				</View>
-				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+				<View style={styles.buttons}>
 					<CancelButton onPress={cancelRecording} />
 					<View style={{ flex: 1 }} />
 					<BaseButton
@@ -130,28 +122,65 @@ export const RecordAudio = (): ReactElement => {
 	}
 
 	return (
-		<View
-			style={{
-				borderTopWidth: 1,
-				paddingHorizontal: 16,
-				paddingBottom: 8,
-				backgroundColor: colors.surfaceLight,
-				borderTopColor: colors.strokeLight
-			}}
-		>
-			<View style={{ flexDirection: 'row', paddingVertical: 24, justifyContent: 'center', alignItems: 'center' }}>
+		<View style={styles.recording}>
+			<View style={styles.duration}>
 				<CustomIcon name='microphone' size={24} color={colors.fontDanger} />
 				<Duration ref={durationRef} />
 			</View>
-			<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-				<CancelButton onPress={() => cancelRecording()} />
-				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-					<Text style={{ fontSize: 14, ...sharedStyles.textRegular, color: colors.fontSecondaryInfo }}>
-						Recording audio message
-					</Text>
+			<View style={styles.buttons}>
+				<CancelButton onPress={cancelRecording} />
+				<View style={styles.recordingNote}>
+					<Text style={styles.recordingNoteText}>Recording audio message</Text>
 				</View>
 				<ReviewButton onPress={goReview} />
 			</View>
 		</View>
 	);
 };
+
+function useStyle() {
+	const { colors } = useTheme();
+	const style = {
+		review: {
+			borderTopWidth: 1,
+			paddingHorizontal: 16,
+			paddingBottom: 12,
+			backgroundColor: colors.surfaceLight,
+			borderTopColor: colors.strokeLight
+		},
+		recording: {
+			borderTopWidth: 1,
+			paddingHorizontal: 16,
+			paddingBottom: 8,
+			backgroundColor: colors.surfaceLight,
+			borderTopColor: colors.strokeLight
+		},
+		duration: {
+			flexDirection: 'row',
+			paddingVertical: 24,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		audioPlayer: {
+			flexDirection: 'row',
+			paddingVertical: 8
+		},
+		buttons: {
+			flex: 1,
+			flexDirection: 'row',
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		recordingNote: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		recordingNoteText: {
+			fontSize: 14,
+			...sharedStyles.textRegular,
+			color: colors.fontSecondaryInfo
+		}
+	} as const;
+	return [style, colors] as const;
+}

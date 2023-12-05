@@ -4,17 +4,10 @@ import { View, FlatList } from 'react-native';
 import { useAutocompleteParams, useKeyboardHeight, useTrackingViewHeight } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
-import { useTheme } from '../../../../theme';
 import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
-
-/**
- * TODO: Come up with a better way to calculate both of these values.
- * Maybe from KeyboardAccessoryView? There's a logic there to get both tracking view and keyboard height.
- *  */
-const MAX_HEIGHT = 216;
-const getBottom = (trackingViewHeight: number, keyboardHeight: number): number => trackingViewHeight + keyboardHeight + 50;
+import { useStyle, getBottom } from './styles';
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
 	const { rid } = useRoomContext();
@@ -27,7 +20,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		type,
 		commandParams: params
 	});
-	const { colors } = useTheme();
+	const [styles, colors] = useStyle();
 
 	if (items.length === 0 || !type) {
 		return null;
@@ -36,29 +29,15 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 	if (type !== '/preview') {
 		return (
 			<View
-				style={{
-					maxHeight: MAX_HEIGHT,
-					left: 8,
-					right: 8,
-					backgroundColor: colors.surfaceNeutral,
-					position: 'absolute',
-					bottom: getBottom(trackingViewHeight, keyboardHeight),
-					borderRadius: 4,
-					shadowColor: '#000',
-					shadowOffset: {
-						width: 0,
-						height: 2
-					},
-					shadowOpacity: 0.5,
-					shadowRadius: 2,
-					elevation: 4
-				}}
+				style={[
+					styles.root,
+					{
+						bottom: getBottom(trackingViewHeight, keyboardHeight)
+					}
+				]}
 			>
 				<FlatList
-					contentContainerStyle={{
-						borderRadius: 4,
-						overflow: 'hidden'
-					}}
+					contentContainerStyle={styles.listContentContainer}
 					data={items}
 					renderItem={({ item }) => <AutocompleteItem item={item} onPress={onPress} />}
 					keyboardShouldPersistTaps='always'
@@ -70,30 +49,11 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 	if (type === '/preview') {
 		return (
 			<View
-				style={{
-					maxHeight: MAX_HEIGHT,
-					left: 8,
-					right: 8,
-					backgroundColor: colors.surfaceLight,
-					position: 'absolute',
-					bottom: getBottom(trackingViewHeight, keyboardHeight),
-					borderRadius: 4,
-					shadowColor: '#000',
-					shadowOffset: {
-						width: 0,
-						height: 2
-					},
-					shadowOpacity: 0.5,
-					shadowRadius: 2,
-					elevation: 4
-				}}
+				style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: getBottom(trackingViewHeight, keyboardHeight) }]}
 			>
 				<FlatList
-					contentContainerStyle={{
-						borderRadius: 4,
-						overflow: 'hidden'
-					}}
-					style={{ margin: 8 }}
+					contentContainerStyle={styles.listContentContainer}
+					style={styles.list}
 					horizontal
 					data={items}
 					renderItem={({ item }) => <AutocompletePreview item={item} onPress={onPress} />}

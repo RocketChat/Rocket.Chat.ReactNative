@@ -17,40 +17,6 @@ import { events, logEvent } from '../../../lib/methods/helpers/log';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
-const styles = StyleSheet.create({
-	listContainer: {
-		height: EMOJI_BUTTON_SIZE,
-		margin: 8,
-		flexGrow: 1
-	},
-	searchContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginRight: 12,
-		marginBottom: 12
-	},
-	backButton: {
-		width: 32,
-		height: 32,
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderRadius: 4
-	},
-	emptyContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	emptyText: {
-		...sharedStyles.textRegular,
-		fontSize: 16
-	},
-	inputContainer: {
-		flex: 1
-	}
-});
-
 export const EmojiSearchbar = (): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
@@ -112,3 +78,37 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	listContainer: {
+		height: EMOJI_BUTTON_SIZE,
+		margin: 8,
+		flexGrow: 1
+	},
+	searchContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight: 12,
+		marginBottom: 12
+	},
+	backButton: {
+		width: 32,
+		height: 32,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4
+	},
+	emptyContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	emptyText: {
+		...sharedStyles.textRegular,
+		fontSize: 16
+	},
+	inputContainer: {
+		flex: 1
+	}
+});
