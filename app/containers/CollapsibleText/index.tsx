@@ -61,14 +61,12 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 			style={[styles.text, { color: colors.bodyText, height: !showTruncated ? undefined : 0 }, ...style]}
 			testID={`collapsible-text-${m}`}
 			onTextLayout={event => {
-				// get all lines
 				const { lines } = event.nativeEvent;
 				if (lines.length > linesToTruncate) {
 					const text = lines
 						.splice(0, linesToTruncate)
 						.map(line => line.text)
 						.join('');
-					// 12 is equal the
 					const truncatedTextLengthWithShowMore = text.length - (4 + I18n.t('Show_more').length);
 					const clippedText = text.slice(0, truncatedTextLengthWithShowMore);
 					setTruncatedText(clippedText);
