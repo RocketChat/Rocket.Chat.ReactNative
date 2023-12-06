@@ -38,17 +38,11 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 
 	if (truncatedText && showTruncated) {
 		return (
-			<Text
-				testID={`collapsible-text-${truncatedText}`}
-				accessibilityLabel={truncatedText}
-				style={[styles.text, { color: colors.bodyText }, ...style]}
-			>
-				{`${truncatedText}... `}
-				<Text
-					testID='collapsible-text-show-more'
-					onPress={() => setShowTruncated(false)}
-					style={[styles.textInfo, { color: colors.fontInfo }]}
-				>
+			<Text testID={`collapsible-text-truncated-${m}`}>
+				<Text accessibilityLabel={truncatedText} style={[styles.text, { color: colors.bodyText }, ...style]}>
+					{`${truncatedText}... `}
+				</Text>
+				<Text onPress={() => setShowTruncated(false)} style={[styles.textInfo, { color: colors.fontInfo }]}>
 					{I18n.t('Show_more')}
 				</Text>
 			</Text>
