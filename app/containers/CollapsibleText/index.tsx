@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { TextStyle, Text, StyleSheet } from 'react-native';
 
-import sharedStyles from '../views/Styles';
-import { useTheme } from '../theme';
-import { previewFormatText } from './markdown/previewFormatText';
-import I18n from '../i18n';
+import sharedStyles from '../../views/Styles';
+import { useTheme } from '../../theme';
+import { previewFormatText } from '../markdown/previewFormatText';
+import I18n from '../../i18n';
 
 interface ICollapsibleText {
 	msg?: string;
-	testID?: string;
 	style?: TextStyle[];
 	linesToTruncate?: number;
 }
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const CollapsibleText = ({ msg, style = [], testID, linesToTruncate = 1 }: ICollapsibleText) => {
+const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleText) => {
 	const [truncatedText, setTruncatedText] = useState('');
 	const [showTruncated, setShowTruncated] = useState(true);
 
@@ -39,9 +38,17 @@ const CollapsibleText = ({ msg, style = [], testID, linesToTruncate = 1 }: IColl
 
 	if (truncatedText && showTruncated) {
 		return (
-			<Text accessibilityLabel={truncatedText} style={[styles.text, { color: colors.bodyText }, ...style]}>
+			<Text
+				testID={`collapsible-text-${truncatedText}`}
+				accessibilityLabel={truncatedText}
+				style={[styles.text, { color: colors.bodyText }, ...style]}
+			>
 				{`${truncatedText}... `}
-				<Text onPress={() => setShowTruncated(false)} style={[styles.textInfo, { color: colors.fontInfo }]}>
+				<Text
+					testID='collapsible-text-show-more'
+					onPress={() => setShowTruncated(false)}
+					style={[styles.textInfo, { color: colors.fontInfo }]}
+				>
 					{I18n.t('Show_more')}
 				</Text>
 			</Text>
@@ -52,7 +59,7 @@ const CollapsibleText = ({ msg, style = [], testID, linesToTruncate = 1 }: IColl
 		<Text
 			accessibilityLabel={m}
 			style={[styles.text, { color: colors.bodyText, height: !showTruncated ? undefined : 0 }, ...style]}
-			testID={testID || `markdown-preview-${m}`}
+			testID={`collapsible-text-${m}`}
 			onTextLayout={event => {
 				// get all lines
 				const { lines } = event.nativeEvent;
@@ -72,7 +79,11 @@ const CollapsibleText = ({ msg, style = [], testID, linesToTruncate = 1 }: IColl
 		>
 			{m}
 			{truncatedText ? (
-				<Text onPress={() => setShowTruncated(true)} style={[styles.textInfo, { color: colors.fontInfo }]}>
+				<Text
+					testID='collapsible-text-show-less'
+					onPress={() => setShowTruncated(true)}
+					style={[styles.textInfo, { color: colors.fontInfo }]}
+				>
 					{` ${I18n.t('Show_less')}`}
 				</Text>
 			) : null}
