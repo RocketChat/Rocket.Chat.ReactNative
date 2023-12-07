@@ -19,10 +19,5 @@ export default StyleSheet.create({
 	textInput: {
 		height: 100,
 		textAlignVertical: 'top'
-	},
-	labelTextInput: {
-		marginBottom: 4,
-		fontSize: 14,
-		...sharedStyles.textMedium
 	}
 });

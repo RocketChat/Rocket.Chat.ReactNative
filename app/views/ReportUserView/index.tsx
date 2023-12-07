@@ -87,7 +87,6 @@ const ReportUserView = () => {
 				returnKeyType='send'
 				multiline
 				inputStyle={styles.textInput}
-				labelStyle={[styles.labelTextInput, { color: colors.fontDefault }]}
 				testID='report-user-view-input'
 			/>
 			<Button
