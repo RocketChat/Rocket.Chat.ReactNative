@@ -16,7 +16,7 @@ import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATIO
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
-import { getPermalinkMessage } from '../../lib/methods';
+import { getPermalinkMessage, getQuoteMessageLink } from '../../lib/methods';
 import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
@@ -28,6 +28,7 @@ export interface IMessageActionsProps {
 	reactionInit: (message: TAnyMessageModel) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
+	jumpToMessage?: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
 	serverVersion?: string | null;
@@ -62,6 +63,7 @@ const MessageActions = React.memo(
 				reactionInit,
 				onReactionPress,
 				replyInit,
+				jumpToMessage,
 				isReadOnly,
 				Message_AllowDeleting,
 				Message_AllowDeleting_BlockDeleteInMinutes,
@@ -373,6 +375,16 @@ const MessageActions = React.memo(
 			const getOptions = (message: TAnyMessageModel) => {
 				const options: TActionSheetOptionsItem[] = [];
 				const videoConfBlock = message.t === 'videoconf';
+
+				// Jump to message
+				const quoteMessageLink = getQuoteMessageLink(message.attachments);
+				if (quoteMessageLink && jumpToMessage) {
+					options.push({
+						title: I18n.t('Jump_to_message'),
+						icon: 'jump-to-message',
+						onPress: () => jumpToMessage(quoteMessageLink, true)
+					});
+				}
 
 				// Quote
 				if (!isReadOnly && !videoConfBlock) {
