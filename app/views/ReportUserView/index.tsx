@@ -76,32 +76,30 @@ const ReportUserView = () => {
 	};
 
 	return (
-		<>
+		<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
 			<StatusBar />
-			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
-				<UserAvatarAndName username={username} rid={rid} name={name} />
-				<ControlledFormTextInput
-					name='description'
-					control={control}
-					label={I18n.t('Why_do_you_want_to_report')}
-					onSubmitEditing={handleSubmit(submit)}
-					returnKeyType='send'
-					multiline
-					inputStyle={styles.textInput}
-					labelStyle={[styles.labelTextInput, { color: colors.fontDefault }]}
-					testID='report-user-view-input'
-				/>
-				<Button
-					title={I18n.t('Report')}
-					type='primary'
-					backgroundColor={colors.dangerColor}
-					disabled={!isValid}
-					onPress={handleSubmit(submit)}
-					testID='report-user-view-submit'
-					loading={loading}
-				/>
-			</SafeAreaView>
-		</>
+			<UserAvatarAndName username={username} rid={rid} name={name} />
+			<ControlledFormTextInput
+				name='description'
+				control={control}
+				label={I18n.t('Why_do_you_want_to_report')}
+				onSubmitEditing={handleSubmit(submit)}
+				returnKeyType='send'
+				multiline
+				inputStyle={styles.textInput}
+				labelStyle={[styles.labelTextInput, { color: colors.fontDefault }]}
+				testID='report-user-view-input'
+			/>
+			<Button
+				title={I18n.t('Report')}
+				type='primary'
+				backgroundColor={colors.dangerColor}
+				disabled={!isValid}
+				onPress={handleSubmit(submit)}
+				testID='report-user-view-submit'
+				loading={loading}
+			/>
+		</SafeAreaView>
 	);
 };
 
