@@ -757,6 +757,6 @@
   "The_user_will_be_able_to_type_in_roomName": "O usuário poderá digitar em {{roomName}}",
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Disable_writing_in_room": "Desabilitar escrita na sala",
-  "You_dont_have_permission_to_perform_this_action": "Você não tem permissão para realizar esta ação. Verifique com o proprietário da sala.",
+  "You_dont_have_permission_to_perform_this_action": "Você não tem permissão para realizar esta ação. Verifique com um administrador do espaço de trabalho.",
   "Missed_call": "Chamada perdida"
 }
