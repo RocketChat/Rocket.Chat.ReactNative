@@ -1,6 +1,6 @@
 import EJSON from 'ejson';
 
-import { deepLinkingOpen } from '../../actions/deepLinking';
+import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
 import { INotification, SubscriptionType } from '../../definitions';
 import { isFDroidBuild } from '../constants';
 import { store } from '../store/auxStore';
@@ -16,6 +16,14 @@ interface IEjson {
 }
 
 export const onNotification = (push: INotification): void => {
+	const identifier = String(push?.payload?.action?.identifier);
+	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
+		if (push.payload) {
+			const notification = EJSON.parse(push.payload.ejson);
+			store.dispatch(deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' }));
+			return;
+		}
+	}
 	if (push.payload) {
 		try {
 			const notification = push.payload;

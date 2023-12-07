@@ -217,3 +217,21 @@ export function downloadMediaFile({
 		}
 	});
 }
+
+export function resumeMediaFile({ downloadUrl }: { downloadUrl: string }): Promise<string> {
+	return new Promise(async (resolve, reject) => {
+		let downloadKey = '';
+		try {
+			downloadKey = mediaDownloadKey(downloadUrl);
+			const result = await downloadQueue[downloadKey].resumeAsync();
+			if (result?.uri) {
+				return resolve(result.uri);
+			}
+			return reject();
+		} catch {
+			return reject();
+		} finally {
+			delete downloadQueue[downloadKey];
+		}
+	});
+}
