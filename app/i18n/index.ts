@@ -25,6 +25,26 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/en.json')
 	},
 	{
+		label: 'हिन्दी',
+		value: 'hi',
+		file: () => require('./locales/hi-IN.json')
+	},
+	{
+		label: 'বাংলা',
+		value: 'bn',
+		file: () => require('./locales/bn-IN.json')
+	},
+	{
+		label: 'தமிழ்',
+		value: 'ta',
+		file: () => require('./locales/ta-IN.json')
+	},
+	{
+		label: 'తెలుగు',
+		value: 'te',
+		file: () => require('./locales/te-IN.json')
+	},
+	{
 		label: 'العربية',
 		value: 'ar',
 		file: () => require('./locales/ar.json')
