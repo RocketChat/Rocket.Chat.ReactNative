@@ -133,7 +133,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 					</List.Section>
 				) : null} */}
 
-				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.5.0') ? (
+				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') ? (
 					<CustomListSection
 						title={!defaultPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
 						statusColor={pushGatewayStatusColor}

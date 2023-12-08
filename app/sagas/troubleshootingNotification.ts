@@ -7,12 +7,15 @@ import { TROUBLESHOOTING_NOTIFICATION } from '../actions/actionsTypes';
 import { setTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import { pushInfo } from '../lib/services/restApi';
 import log from '../lib/methods/helpers/log';
+import { appSelector } from '../lib/hooks';
+import { compareServerVersion } from '../lib/methods/helpers';
 
 interface IGenericAction extends Action {
 	type: string;
 }
 
 function* request() {
+	const serverVersion = yield* appSelector(state => state.server.version);
 	let deviceNotificationEnabled = false;
 	let defaultPushGateway = false;
 	let pushGatewayEnabled = false;
@@ -29,7 +32,8 @@ function* request() {
 	} finally {
 		// If Any of the items that can have red values: notification settings, CE quota, or gateway connection; the red icon should show.
 		// Then inAlertNotification has to be true
-		const inAlertNotification = !deviceNotificationEnabled || !pushGatewayEnabled;
+		const inAlertNotification =
+			!deviceNotificationEnabled || (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') && !pushGatewayEnabled);
 		yield put(
 			setTroubleshootingNotification({ deviceNotificationEnabled, defaultPushGateway, pushGatewayEnabled, inAlertNotification })
 		);
