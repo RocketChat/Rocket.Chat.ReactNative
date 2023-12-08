@@ -72,6 +72,7 @@ export interface ISubscription {
 	archived: boolean;
 	joinCodeRequired?: boolean;
 	muted?: string[];
+	unmuted?: string[];
 	ignored?: string[];
 	broadcast?: boolean;
 	prid?: string;

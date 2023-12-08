@@ -1,6 +1,6 @@
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View, Rationale } from 'react-native';
+import { BackHandler, FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
@@ -24,7 +24,7 @@ import styles from './styles';
 import ShareListHeader from './Header';
 import { TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
+import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
 
 interface IDataFromShare {
 	value: string;
@@ -62,12 +62,6 @@ interface IShareListViewProps extends INavigationOption {
 	userId: string;
 	theme: TSupportedThemes;
 }
-
-const permission: Rationale = {
-	title: I18n.t('Read_External_Permission'),
-	message: I18n.t('Read_External_Permission_Message'),
-	buttonPositive: 'Ok'
-};
 
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TSubscriptionModel) => item.rid;
@@ -282,8 +276,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	askForPermission = async (data: IDataFromShare[]) => {
 		const mediaIndex = data.findIndex(item => item.type === 'media');
 		if (mediaIndex !== -1) {
-			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, permission);
-			if (result !== PermissionsAndroid.RESULTS.GRANTED) {
+			const result = await askAndroidMediaPermissions();
+			if (!result) {
 				this.setState({ needsPermission: true });
 				return Promise.reject();
 			}
@@ -441,8 +435,10 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 						style={{ backgroundColor: themes[theme].backgroundColor }}
 						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
 					>
-						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
-						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
+						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{I18n.t('Read_External_Permission')}</Text>
+						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>
+							{I18n.t('Read_External_Permission_Message')}
+						</Text>
 					</ScrollView>
 				</SafeAreaView>
 			);

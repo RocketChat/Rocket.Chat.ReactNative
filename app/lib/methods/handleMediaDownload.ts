@@ -8,6 +8,8 @@ import log from './helpers/log';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
+export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
+
 const defaultType = {
 	audio: 'mp3',
 	image: 'jpg',
@@ -204,6 +206,24 @@ export function downloadMediaFile({
 			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
+			if (result?.uri) {
+				return resolve(result.uri);
+			}
+			return reject();
+		} catch {
+			return reject();
+		} finally {
+			delete downloadQueue[downloadKey];
+		}
+	});
+}
+
+export function resumeMediaFile({ downloadUrl }: { downloadUrl: string }): Promise<string> {
+	return new Promise(async (resolve, reject) => {
+		let downloadKey = '';
+		try {
+			downloadKey = mediaDownloadKey(downloadUrl);
+			const result = await downloadQueue[downloadKey].resumeAsync();
 			if (result?.uri) {
 				return resolve(result.uri);
 			}

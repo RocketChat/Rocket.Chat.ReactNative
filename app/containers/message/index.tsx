@@ -389,7 +389,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 		let message = msg;
 		let isTranslated = false;
-		const otherUserMessage = u.username !== user.username;
+		const otherUserMessage = u?.username !== user?.username;
 		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
 		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
 		if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage && otherUserMessage) {
@@ -403,6 +403,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		return (
 			<MessageContext.Provider
 				value={{
+					id,
+					rid,
 					user,
 					baseUrl,
 					onPress: this.onPressAction,

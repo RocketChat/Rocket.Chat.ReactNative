@@ -27,6 +27,10 @@ const MOCK: ISupportedVersionsData = {
 			expiration: '2023-05-10T00:00:00.000Z'
 		},
 		{
+			version: '2.4.0',
+			expiration: '2023-04-10T00:00:00.000Z'
+		},
+		{
 			version: '1.4.0',
 			expiration: '2023-04-10T00:00:00.000Z'
 		},
@@ -47,6 +51,10 @@ const MOCK: ISupportedVersionsData = {
 		domain: 'https://open.rocket.chat',
 		uniqueId: '123',
 		versions: [
+			{
+				version: '2.4.0',
+				expiration: '2023-05-01T00:00:00.000Z'
+			},
 			{
 				version: '1.3.0',
 				expiration: '2023-05-01T00:00:00.000Z'
@@ -220,6 +228,17 @@ describe('checkSupportedVersions', () => {
 					link: 'Docs page'
 				},
 				i18n: MOCK_I18N
+			});
+		});
+
+		test('valid version and valid exception', () => {
+			expect(
+				checkSupportedVersions({
+					supportedVersions: MOCK,
+					serverVersion: '2.4.0'
+				})
+			).toMatchObject({
+				status: 'supported'
 			});
 		});
 

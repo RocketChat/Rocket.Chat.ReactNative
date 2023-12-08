@@ -5,7 +5,13 @@ import FastImage from 'react-native-fast-image';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../lib/methods/handleMediaDownload';
+import {
+	cancelDownload,
+	downloadMediaFile,
+	getMediaCache,
+	isDownloadActive,
+	resumeMediaFile
+} from '../../lib/methods/handleMediaDownload';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import { useTheme } from '../../theme';
 import Markdown from '../markdown';
@@ -86,25 +92,12 @@ const ImageContainer = ({
 	useEffect(() => {
 		const handleCache = async () => {
 			if (img) {
-				const cachedImageResult = await getMediaCache({
-					type: 'image',
-					mimeType: imageCached.image_type,
-					urlToCache: imgUrlToCache
-				});
-				if (cachedImageResult?.exists) {
-					setImageCached(prev => ({
-						...prev,
-						title_link: cachedImageResult?.uri
-					}));
-					setLoading(false);
-					setCached(true);
-					return;
-				}
-				if (isReply) {
-					setLoading(false);
+				const isImageCached = await handleGetMediaCache();
+				if (isImageCached) {
 					return;
 				}
 				if (isDownloadActive(imgUrlToCache)) {
+					handleResumeDownload();
 					return;
 				}
 				setLoading(false);
@@ -131,6 +124,41 @@ const ImageContainer = ({
 		}
 	};
 
+	const updateImageCached = (imgUri: string) => {
+		setImageCached(prev => ({
+			...prev,
+			title_link: imgUri
+		}));
+		setCached(true);
+	};
+
+	const handleGetMediaCache = async () => {
+		const cachedImageResult = await getMediaCache({
+			type: 'image',
+			mimeType: imageCached.image_type,
+			urlToCache: imgUrlToCache
+		});
+		if (cachedImageResult?.exists) {
+			updateImageCached(cachedImageResult.uri);
+			setLoading(false);
+		}
+		return !!cachedImageResult?.exists;
+	};
+
+	const handleResumeDownload = async () => {
+		try {
+			setLoading(true);
+			const imageUri = await resumeMediaFile({
+				downloadUrl: imgUrlToCache
+			});
+			updateImageCached(imageUri);
+		} catch (e) {
+			setCached(false);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const handleDownload = async () => {
 		try {
 			setLoading(true);
@@ -139,11 +167,7 @@ const ImageContainer = ({
 				type: 'image',
 				mimeType: imageCached.image_type
 			});
-			setImageCached(prev => ({
-				...prev,
-				title_link: imageUri
-			}));
-			setCached(true);
+			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
 		} finally {
@@ -151,7 +175,7 @@ const ImageContainer = ({
 		}
 	};
 
-	const onPress = () => {
+	const onPress = async () => {
 		if (loading && isDownloadActive(imgUrlToCache)) {
 			cancelDownload(imgUrlToCache);
 			setLoading(false);
@@ -159,6 +183,15 @@ const ImageContainer = ({
 			return;
 		}
 		if (!cached && !loading) {
+			const isImageCached = await handleGetMediaCache();
+			if (isImageCached && showAttachment) {
+				showAttachment(imageCached);
+				return;
+			}
+			if (isDownloadActive(imgUrlToCache)) {
+				handleResumeDownload();
+				return;
+			}
 			handleDownload();
 			return;
 		}
@@ -172,7 +205,7 @@ const ImageContainer = ({
 		return (
 			<View>
 				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
-				<Button disabled={isReply} onPress={onPress}>
+				<Button onPress={onPress}>
 					<MessageImage imgUri={img} cached={cached} loading={loading} />
 				</Button>
 			</View>
@@ -180,7 +213,7 @@ const ImageContainer = ({
 	}
 
 	return (
-		<Button disabled={isReply} onPress={onPress}>
+		<Button onPress={onPress}>
 			<MessageImage imgUri={img} cached={cached} loading={loading} />
 		</Button>
 	);

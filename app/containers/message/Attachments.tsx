@@ -8,7 +8,6 @@ import Video from './Video';
 import Reply from './Reply';
 import Button from '../Button';
 import MessageContext from './Context';
-import { useTheme } from '../../theme';
 import { IAttachment, TGetCustomEmoji } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
 import openLink from '../../lib/methods/helpers/openLink';
@@ -56,7 +55,6 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
-		const { theme } = useTheme();
 		const { translateLanguage } = useContext(MessageContext);
 
 		if (!attachments || attachments.length === 0) {
@@ -88,7 +86,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						isReply={isReply}
 						style={style}
-						theme={theme}
 						author={author}
 						msg={msg}
 					/>
@@ -119,7 +116,15 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 
 			return (
-				<Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} msg={msg} />
+				<Reply
+					key={index}
+					index={index}
+					attachment={file}
+					timeFormat={timeFormat}
+					getCustomEmoji={getCustomEmoji}
+					msg={msg}
+					showAttachment={showAttachment}
+				/>
 			);
 		});
 		return <>{attachmentsElements}</>;

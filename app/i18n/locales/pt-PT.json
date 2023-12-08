@@ -206,7 +206,6 @@
   "Members": "Membros",
   "Mentions": "Menções",
   "Message_actions": "Acções de mensagem",
-  "Message_pinned": "Mensagem afixada",
   "Message_removed": "Mensagem removida",
   "Message_starred": "Mensagem estrelada",
   "Message_unstarred": "Mensagem não estrelada",
@@ -350,5 +349,6 @@
   "Open_Livechats": "Chats em andamento",
   "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder",
   "and_N_more": "e mais {{count}}",
-  "Audio": "Áudio"
+  "Audio": "Áudio",
+  "Pinned_a_message": "Fixou uma mensagem:"
 }
