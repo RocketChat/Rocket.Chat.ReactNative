@@ -405,22 +405,22 @@ const MessageActions = React.memo(
 				}
 
 				// Reply in DM
-				if (room.t !== 'd' && room.t !== 'l' && !videoConfBlock) {
+				if (room.t !== 'd' && room.t !== 'l' && permissions.hasCreateDirectMessagePermission && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
-						onPress: () => handleReplyInDM(message),
-						enabled: permissions.hasCreateDirectMessagePermission
+						onPress: () => handleReplyInDM(message)
 					});
 				}
 
 				// Create Discussion
-				options.push({
-					title: I18n.t('Start_a_Discussion'),
-					icon: 'discussions',
-					onPress: () => handleCreateDiscussion(message),
-					enabled: permissions.hasCreateDiscussionOtherUserPermission
-				});
+				if (permissions.hasCreateDiscussionOtherUserPermission) {
+					options.push({
+						title: I18n.t('Start_a_Discussion'),
+						icon: 'discussions',
+						onPress: () => handleCreateDiscussion(message)
+					});
+				}
 
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
@@ -454,22 +454,20 @@ const MessageActions = React.memo(
 				});
 
 				// Edit
-				if (!videoConfBlock) {
+				if (allowEdit(message) && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Edit'),
 						icon: 'edit',
-						onPress: () => handleEdit(message),
-						enabled: allowEdit(message)
+						onPress: () => handleEdit(message)
 					});
 				}
 
 				// Pin
-				if (Message_AllowPinning && !videoConfBlock) {
+				if (Message_AllowPinning && permissions?.hasPinPermission && !videoConfBlock) {
 					options.push({
 						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
-						onPress: () => handlePin(message),
-						enabled: permissions?.hasPinPermission
+						onPress: () => handlePin(message)
 					});
 				}
 
@@ -518,13 +516,14 @@ const MessageActions = React.memo(
 				});
 
 				// Delete
-				options.push({
-					title: I18n.t('Delete'),
-					icon: 'delete',
-					danger: true,
-					onPress: () => handleDelete(message),
-					enabled: allowDelete(message)
-				});
+				if (allowDelete(message)) {
+					options.push({
+						title: I18n.t('Delete'),
+						icon: 'delete',
+						danger: true,
+						onPress: () => handleDelete(message)
+					});
+				}
 
 				return options;
 			};
@@ -535,13 +534,10 @@ const MessageActions = React.memo(
 				showActionSheet({
 					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
-					customHeader: (
-						<>
-							{!isReadOnly || room.reactWhenReadOnly ? (
-								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
-							) : null}
-						</>
-					)
+					customHeader:
+						!isReadOnly || room.reactWhenReadOnly ? (
+							<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
+						) : null
 				});
 			};
 

@@ -904,43 +904,40 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				onPress: () => goToCannedResponses()
 			});
 		}
+		if (permissionToUpload) {
+			options.push(
+				{
+					title: I18n.t('Take_a_photo'),
+					icon: 'camera-photo',
+					onPress: this.takePhoto
+				},
+				{
+					title: I18n.t('Take_a_video'),
+					icon: 'camera',
+					onPress: this.takeVideo
+				},
+				{
+					title: I18n.t('Choose_from_library'),
+					icon: 'image',
+					onPress: this.chooseFromLibrary
+				},
+				{
+					title: I18n.t('Choose_file'),
+					icon: 'attach',
+					onPress: this.chooseFile
+				}
+			);
+		}
 
-		options.push(
-			{
-				title: I18n.t('Take_a_photo'),
-				icon: 'camera-photo',
-				onPress: this.takePhoto,
-				enabled: permissionToUpload
-			},
-			{
-				title: I18n.t('Take_a_video'),
-				icon: 'camera',
-				onPress: this.takeVideo,
-				enabled: permissionToUpload
-			},
-			{
-				title: I18n.t('Choose_from_library'),
-				icon: 'image',
-				onPress: this.chooseFromLibrary,
-				enabled: permissionToUpload
-			},
-			{
-				title: I18n.t('Choose_file'),
-				icon: 'attach',
-				onPress: this.chooseFile,
-				enabled: permissionToUpload
-			},
-			{
+		if (hasCreateDiscussionPermission) {
+			options.push({
 				title: I18n.t('Create_Discussion'),
 				icon: 'discussions',
-				onPress: this.createDiscussion,
-				enabled: hasCreateDiscussionPermission
-			}
-		);
+				onPress: this.createDiscussion
+			});
+		}
 
-		this.closeEmojiAndAction(showActionSheet, {
-			options
-		});
+		this.closeEmojiAndAction(showActionSheet, { options });
 	};
 
 	editCancel = () => {
