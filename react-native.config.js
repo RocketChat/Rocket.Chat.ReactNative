@@ -19,11 +19,6 @@ module.exports = {
 			platforms: {
 				ios: null
 			}
-		},
-		'@notifee/react-native': {
-			platforms: {
-				ios: null
-			}
 		}
 	}
 };
