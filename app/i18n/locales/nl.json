@@ -372,6 +372,7 @@
   "This_room_is_blocked": "Deze kamer is geblokkeerd",
   "This_room_is_read_only": "Deze kamer is alleen-lezen",
   "Threads": "Draden",
+  "Thread": "Draad",
   "Timezone": "Tijdzone",
   "topic": "onderwerp",
   "Topic": "Onderwerp",
@@ -616,5 +617,7 @@
   "Empty": "Leeg",
   "Broadcast_hint": "Alleen geautoriseerde gebruikers kunnen nieuwe berichten schrijven, maar de andere gebruikers zullen kunnen antwoorden",
   "and_N_more": "en nog {{count}}",
-  "Audio": "Audio"
+  "Audio": "Audio",
+  "The_user_wont_be_able_to_type_in_roomName": "De gebruiker zal in {{roomName}} niet kunnen typen",
+  "The_user_will_be_able_to_type_in_roomName": "De gebruiker zal in {{roomName}} kunnen typen"
 }

@@ -761,5 +761,7 @@
   "Enable_writing_in_room": "Enable writing in room",
   "Disable_writing_in_room": "Disable writing in room",
   "Pinned_a_message": "Pinned a message:",
+  "You_dont_have_permission_to_perform_this_action": "You don’t have permission to perform this action. Check with a workspace administrator.",
+  "Jump_to_message": "Jump to message",
   "Missed_call": "Missed call"
 }

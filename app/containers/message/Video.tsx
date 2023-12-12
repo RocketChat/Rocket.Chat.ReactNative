@@ -7,7 +7,13 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../lib/methods/handleMediaDownload';
+import {
+	cancelDownload,
+	downloadMediaFile,
+	getMediaCache,
+	isDownloadActive,
+	resumeMediaFile
+} from '../../lib/methods/handleMediaDownload';
 import { isIOS } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
@@ -93,26 +99,12 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 	useEffect(() => {
 		const handleVideoSearchAndDownload = async () => {
 			if (video) {
-				const cachedVideoResult = await getMediaCache({
-					type: 'video',
-					mimeType: file.video_type,
-					urlToCache: video
-				});
-				const downloadActive = isDownloadActive(video);
-				if (cachedVideoResult?.exists) {
-					setVideoCached(prev => ({
-						...prev,
-						video_url: cachedVideoResult?.uri
-					}));
-					setLoading(false);
-					setCached(true);
-					if (downloadActive) {
-						cancelDownload(video);
-					}
+				const isVideoCached = await handleGetMediaCache();
+				if (isVideoCached) {
 					return;
 				}
-				if (isReply) {
-					setLoading(false);
+				if (isDownloadActive(video)) {
+					handleResumeDownload();
 					return;
 				}
 				await handleAutoDownload();
@@ -134,6 +126,41 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 		setLoading(false);
 	};
 
+	const updateVideoCached = (videoUri: string) => {
+		setVideoCached(prev => ({
+			...prev,
+			video_url: videoUri
+		}));
+		setCached(true);
+	};
+
+	const handleGetMediaCache = async () => {
+		const cachedVideoResult = await getMediaCache({
+			type: 'video',
+			mimeType: file.video_type,
+			urlToCache: video
+		});
+		if (cachedVideoResult?.exists) {
+			updateVideoCached(cachedVideoResult.uri);
+			setLoading(false);
+		}
+		return !!cachedVideoResult?.exists;
+	};
+
+	const handleResumeDownload = async () => {
+		try {
+			setLoading(true);
+			const videoUri = await resumeMediaFile({
+				downloadUrl: video
+			});
+			updateVideoCached(videoUri);
+		} catch (e) {
+			setCached(false);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const handleDownload = async () => {
 		setLoading(true);
 		try {
@@ -142,11 +169,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 				type: 'video',
 				mimeType: file.video_type
 			});
-			setVideoCached(prev => ({
-				...prev,
-				video_url: videoUri
-			}));
-			setCached(true);
+			updateVideoCached(videoUri);
 		} catch {
 			setCached(false);
 		} finally {
@@ -160,6 +183,15 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			return;
 		}
 		if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
+			const isVideoCached = await handleGetMediaCache();
+			if (isVideoCached && showAttachment) {
+				showAttachment(videoCached);
+				return;
+			}
+			if (isDownloadActive(video)) {
+				handleResumeDownload();
+				return;
+			}
 			handleDownload();
 			return;
 		}
@@ -197,7 +229,6 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 		<>
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable
-				disabled={isReply}
 				onPress={onPress}
 				style={[styles.button, messageStyles.mustWrapBlur, { backgroundColor: themes[theme].videoBackground }]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}

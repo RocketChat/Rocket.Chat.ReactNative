@@ -186,6 +186,7 @@ describe('Auto Translate', () => {
 
 		await waitForVisible('action-sheet-handle');
 		await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+		await element(by[textMatcher]('Get link')).atIndex(0).swipe('up', 'fast', 0.5);
 
 		await waitForVisibleTextMatcher('View original', textMatcher);
 		await element(by[textMatcher]('View original')).atIndex(0).tap();
