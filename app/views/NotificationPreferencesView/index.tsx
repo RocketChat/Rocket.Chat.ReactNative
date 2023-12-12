@@ -92,7 +92,7 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 const NotificationPreferencesView = (): React.ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { rid, room } = route.params;
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'RoomsListView'>>();
+	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { serverVersion, isMasterDetail } = useAppSelector(state => ({
 		serverVersion: state.server.version,
 		isMasterDetail: state.app.isMasterDetail
