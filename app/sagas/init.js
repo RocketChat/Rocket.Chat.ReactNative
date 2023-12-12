@@ -1,5 +1,6 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -12,6 +13,7 @@ import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods';
+import { deepLinkingClickCallPush } from '../actions/deepLinking';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
@@ -70,6 +72,11 @@ const restore = function* restore() {
 		}
 
 		yield put(appReady({}));
+		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
+		if (pushNotification) {
+			const pushNotification = yield call(AsyncStorage.removeItem, 'pushNotification');
+			yield call(deepLinkingClickCallPush, JSON.parse(pushNotification));
+		}
 	} catch (e) {
 		log(e);
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));

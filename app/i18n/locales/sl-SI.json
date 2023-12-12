@@ -380,6 +380,7 @@
   "This_room_is_blocked": "Ta soba je blokirana",
   "This_room_is_read_only": "Ta soba se samo bere",
   "Threads": "Niti",
+  "Thread": "Nit",
   "Timezone": "Časovni pas",
   "topic": "tema",
   "Topic": "Tema",
@@ -653,5 +654,7 @@
   "Direct_message_someone": "Pošlji neposredno sporočilo",
   "Mute_someone_in_room": "Utišaj nekoga v sobi",
   "Unmute_someone_in_room": "Vklopite nekoga v sobi",
-  "Audio": "Zvok"
+  "Audio": "Zvok",
+  "The_user_wont_be_able_to_type_in_roomName": "Uporabnik ne bo mogel vtipkavati v {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "Uporabnik bo lahko vtipkal {{roomName}}"
 }

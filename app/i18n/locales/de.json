@@ -397,6 +397,7 @@
   "This_room_is_blocked": "Dieser Room ist gesperrt",
   "This_room_is_read_only": "Dieser Room kann nur gelesen werden",
   "Threads": "Threads",
+  "Thread": "Thread",
   "Timezone": "Zeitzone",
   "topic": "Thema",
   "Topic": "Thema",
@@ -690,9 +691,6 @@
   "Call_ended": "Anruf beendet",
   "Call_was_not_answered": "Anruf wurde nicht beantwortet",
   "Call_rejected": "Anruf abgelehnt",
-  "Call_back": "Rückruf",
-  "Call_again": "Erneut anrufen",
-  "Call_ongoing": "Aufruf laufend",
   "Joined": "Beigetreten",
   "Calling": "Rufe …",
   "Start_a_call": "Anruf starten",
@@ -750,5 +748,7 @@
   "decline": "Ablehnen",
   "accept": "Annehmen",
   "Incoming_call_from": "Eingehender Anruf von",
-  "Call_started": "Anruf gestartet"
+  "Call_started": "Anruf gestartet",
+  "The_user_wont_be_able_to_type_in_roomName": "Dem Nutzer wird es nicht möglich sein in {{roomName}} zu schreiben",
+  "The_user_will_be_able_to_type_in_roomName": "Der Nutzer wird in {{roomName}} schreiben können"
 }

@@ -1,3 +1,5 @@
+export const BACKGROUND_PUSH_COLOR = '#F5455C';
+
 export const STATUS_COLORS: any = {
 	online: '#2de0a5',
 	busy: '#f5455c',
@@ -296,6 +298,7 @@ export const colors = {
 		strokeExtraLight: '#EBECEF',
 		strokeLight: '#CBCED1',
 		surfaceTint: '#F7F8FA',
+		fontDisabled: '#CBCED1',
 		...mentions,
 		...callButtons
 	},
@@ -385,6 +388,7 @@ export const colors = {
 		strokeExtraLight: '#2F343D',
 		strokeLight: '#333842',
 		surfaceTint: '#1F2329',
+		fontDisabled: '#60646C',
 		...mentions,
 		...callButtons
 	},
@@ -474,6 +478,7 @@ export const colors = {
 		strokeExtraLight: '#2F343D',
 		strokeLight: '#333842',
 		surfaceTint: '#1F2329',
+		fontDisabled: '#60646C',
 		...mentions,
 		...callButtons
 	}

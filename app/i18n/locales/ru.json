@@ -383,6 +383,7 @@
   "This_room_is_blocked": "Этот чат заблокирован",
   "This_room_is_read_only": "Этот чат доступен только для чтения",
   "Threads": "Треды",
+  "Thread": "Тред",
   "Timezone": "Часовой пояс",
   "topic": "тема",
   "Topic": "Тема",
@@ -659,9 +660,6 @@
   "Waiting_for_answer": "Ожидание ответа",
   "Call_ended": "Звонок завершен",
   "Call_was_not_answered": "Звонок не был отвечен",
-  "Call_back": "Обратный звонок",
-  "Call_again": "Позвонить снова",
-  "Call_ongoing": "Идет вызов",
   "Joined": "участвовал",
   "Calling": "Идет вызов",
   "Start_a_call": "Начать звонок",
@@ -690,5 +688,7 @@
   "Direct_message_someone": "Личная переписка с кем-нибудь",
   "Mute_someone_in_room": "Заглушить кого-нибудь в комнате",
   "Unmute_someone_in_room": "Сделать незаглушенным кого-нибудь в комнате",
-  "Audio": "Аудио"
+  "Audio": "Аудио",
+  "The_user_wont_be_able_to_type_in_roomName": "Пользователь не сможет писать сообщения в {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "Пользователь сможет писать сообщения в {{roomName}}"
 }

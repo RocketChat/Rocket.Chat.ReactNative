@@ -165,6 +165,13 @@ async function tryTapping(
 	}
 }
 
+async function jumpToQuotedMessage(theElement: Detox.IndexableNativeElement | Detox.NativeElement): Promise<void> {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	await tryTapping(theElement, 2000, true);
+	await element(by[textMatcher]('Jump to message')).atIndex(0).tap();
+}
+
 async function tapAndWaitFor(
 	elementToTap: Detox.IndexableNativeElement | Detox.NativeElement,
 	elementToWaitFor: Detox.IndexableNativeElement | Detox.NativeElement,
@@ -255,5 +262,6 @@ export {
 	checkRoomTitle,
 	checkServer,
 	platformTypes,
-	expectValidRegisterOrRetry
+	expectValidRegisterOrRetry,
+	jumpToQuotedMessage
 };
