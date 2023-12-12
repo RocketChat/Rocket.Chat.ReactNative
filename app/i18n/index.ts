@@ -25,29 +25,14 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/en.json')
 	},
 	{
-		label: 'हिन्दी',
-		value: 'hi',
-		file: () => require('./locales/hi-IN.json')
+		label: 'العربية',
+		value: 'ar',
+		file: () => require('./locales/ar.json')
 	},
 	{
 		label: 'বাংলা',
 		value: 'bn',
 		file: () => require('./locales/bn-IN.json')
-	},
-	{
-		label: 'தமிழ்',
-		value: 'ta',
-		file: () => require('./locales/ta-IN.json')
-	},
-	{
-		label: 'తెలుగు',
-		value: 'te',
-		file: () => require('./locales/te-IN.json')
-	},
-	{
-		label: 'العربية',
-		value: 'ar',
-		file: () => require('./locales/ar.json')
 	},
 	{
 		label: 'Deutsch',
@@ -69,6 +54,12 @@ export const LANGUAGES: ILanguage[] = [
 		value: 'fr',
 		file: () => require('./locales/fr.json')
 	},
+	{
+		label: 'हिन्दी',
+		value: 'hi',
+		file: () => require('./locales/hi-IN.json')
+	},
+
 	{
 		label: 'Italiano',
 		value: 'it',
@@ -108,6 +99,16 @@ export const LANGUAGES: ILanguage[] = [
 		label: 'Swedish',
 		value: 'sv',
 		file: () => require('./locales/sv.json')
+	},
+	{
+		label: 'தமிழ்',
+		value: 'ta',
+		file: () => require('./locales/ta-IN.json')
+	},
+	{
+		label: 'తెలుగు',
+		value: 'te',
+		file: () => require('./locales/te-IN.json')
 	},
 	{
 		label: 'Türkçe',
