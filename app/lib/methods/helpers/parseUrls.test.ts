@@ -66,7 +66,7 @@ const tmpImagePointingToAnAsset = {
 		{
 			_id: 0,
 			title: 'Rocket.Chat',
-			image: 'assets/favicon_512.png',
+			image: 'https://open.rocket.chat/assets/favicon_512.png',
 			url: 'https://open.rocket.chat/'
 		}
 	]
@@ -117,14 +117,14 @@ const tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl = {
 				contentType: 'text/html; charset=utf-8'
 			},
 			parsedUrl: {
-				host: 'meet.google.com',
-				hash: null,
-				pathname: '/cbr-hysk-azn',
+				hash: '',
+				host: 'open.rocket.chat',
+				hostname: 'open.rocket.chat',
+				pathname: '/',
+				port: '',
 				protocol: 'https:',
-				port: null,
-				query: 'pli=1&authuser=1',
-				search: '?pli=1&authuser=1',
-				hostname: 'meet.google.com'
+				search: '',
+				query: 'pli=1&authuser=1'
 			}
 		}
 	],
@@ -132,7 +132,7 @@ const tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl = {
 		{
 			_id: 0,
 			title: 'Rocket.Chat',
-			image: 'https://meet.google.com/assets/favicon_512.png',
+			image: 'https://open.rocket.chat/assets/favicon_512.png',
 			url: 'https://open.rocket.chat/'
 		}
 	]
@@ -167,7 +167,7 @@ const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl = {
 		{
 			_id: 0,
 			title: 'Rocket.Chat',
-			image: 'https://assets/favicon_512.png',
+			image: 'https://open.rocket.chat/assets/favicon_512.png',
 			url: 'https://open.rocket.chat/'
 		}
 	]
