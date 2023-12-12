@@ -454,12 +454,13 @@ const MessageActions = React.memo(
 				});
 
 				// Edit
-				if (!videoConfBlock) {
+				const isEditAllowed = allowEdit(message);
+				if (!videoConfBlock && (isOwn(message) || isEditAllowed)) {
 					options.push({
 						title: I18n.t('Edit'),
 						icon: 'edit',
 						onPress: () => handleEdit(message),
-						enabled: allowEdit(message)
+						enabled: isEditAllowed
 					});
 				}
 
@@ -518,13 +519,16 @@ const MessageActions = React.memo(
 				});
 
 				// Delete
-				options.push({
-					title: I18n.t('Delete'),
-					icon: 'delete',
-					danger: true,
-					onPress: () => handleDelete(message),
-					enabled: allowDelete(message)
-				});
+				const isDeleteAllowed = allowDelete(message);
+				if (isOwn(message) || isDeleteAllowed) {
+					options.push({
+						title: I18n.t('Delete'),
+						icon: 'delete',
+						danger: true,
+						onPress: () => handleDelete(message),
+						enabled: isDeleteAllowed
+					});
+				}
 
 				return options;
 			};
