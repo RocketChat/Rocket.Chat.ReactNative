@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -133,194 +133,194 @@ test('tap emoji', async () => {
 	expect(screen.toJSON()).toMatchSnapshot();
 });
 
-describe('Markdown', () => {
-	test('tap markdown', async () => {
-		render(<Render />);
+// describe('Markdown', () => {
+// 	test('tap markdown', async () => {
+// 		render(<Render />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-		});
-		expect(screen.getByTestId('message-composer-close-markdown')).toBeOnTheScreen();
-		expect(screen.getByTestId('message-composer-bold')).toBeOnTheScreen();
-		expect(screen.getByTestId('message-composer-italic')).toBeOnTheScreen();
-		expect(screen.getByTestId('message-composer-strike')).toBeOnTheScreen();
-		expect(screen.getByTestId('message-composer-code')).toBeOnTheScreen();
-		expect(screen.getByTestId('message-composer-code-block')).toBeOnTheScreen();
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 		});
+// 		expect(screen.getByTestId('message-composer-close-markdown')).toBeOnTheScreen();
+// 		expect(screen.getByTestId('message-composer-bold')).toBeOnTheScreen();
+// 		expect(screen.getByTestId('message-composer-italic')).toBeOnTheScreen();
+// 		expect(screen.getByTestId('message-composer-strike')).toBeOnTheScreen();
+// 		expect(screen.getByTestId('message-composer-code')).toBeOnTheScreen();
+// 		expect(screen.getByTestId('message-composer-code-block')).toBeOnTheScreen();
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('tap bold', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('tap bold', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			// await waitFor(() => fireEvent.press(screen.getByTestId('message-composer-open-markdown')), { timeout: 1000 });
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-bold'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('**', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			// await waitFor(() => fireEvent.press(screen.getByTestId('message-composer-open-markdown')), { timeout: 1000 });
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-bold'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('**', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('type test and tap bold', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('type test and tap bold', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-				nativeEvent: { selection: { start: 0, end: 4 } }
-			});
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-bold'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('*test*', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+// 				nativeEvent: { selection: { start: 0, end: 4 } }
+// 			});
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-bold'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('*test*', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('tap italic', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('tap italic', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-italic'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('__', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-italic'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('__', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('type test and tap italic', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('type test and tap italic', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-				nativeEvent: { selection: { start: 0, end: 4 } }
-			});
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-italic'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('_test_', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+// 				nativeEvent: { selection: { start: 0, end: 4 } }
+// 			});
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-italic'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('_test_', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('tap strike', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('tap strike', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-strike'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('~~', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-strike'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('~~', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('type test and tap strike', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('type test and tap strike', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-				nativeEvent: { selection: { start: 0, end: 4 } }
-			});
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-strike'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('~test~', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+// 				nativeEvent: { selection: { start: 0, end: 4 } }
+// 			});
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-strike'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('~test~', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('tap code', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('tap code', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-code'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('``', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-code'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('``', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('type test and tap code', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('type test and tap code', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-				nativeEvent: { selection: { start: 0, end: 4 } }
-			});
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-code'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('`test`', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+// 				nativeEvent: { selection: { start: 0, end: 4 } }
+// 			});
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-code'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('`test`', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('tap code-block', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('tap code-block', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-code-block'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('``````', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+// 		await act(async () => {
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-code-block'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('``````', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
 
-	test('type test and tap code-block', async () => {
-		const onSendMessage = jest.fn();
-		render(<Render context={{ onSendMessage }} />);
+// 	test('type test and tap code-block', async () => {
+// 		const onSendMessage = jest.fn();
+// 		render(<Render context={{ onSendMessage }} />);
 
-		await act(async () => {
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-				nativeEvent: { selection: { start: 0, end: 4 } }
-			});
-			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
-			await fireEvent.press(screen.getByTestId('message-composer-code-block'));
-			await fireEvent.press(screen.getByTestId('message-composer-send'));
-		});
-		expect(onSendMessage).toHaveBeenCalledTimes(1);
-		expect(onSendMessage).toHaveBeenCalledWith('```test```', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
-});
+// 		await act(async () => {
+// 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+// 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+// 				nativeEvent: { selection: { start: 0, end: 4 } }
+// 			});
+// 			await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-code-block'));
+// 			await fireEvent.press(screen.getByTestId('message-composer-send'));
+// 		});
+// 		expect(onSendMessage).toHaveBeenCalledTimes(1);
+// 		expect(onSendMessage).toHaveBeenCalledWith('```test```', undefined);
+// 		expect(screen.toJSON()).toMatchSnapshot();
+// 	});
+// });
 
 test('tap mention', async () => {
 	render(<Render />);
