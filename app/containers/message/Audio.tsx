@@ -24,9 +24,10 @@ interface IMessageAudioProps {
 	author?: IUserMessage;
 	msg?: string;
 	cdnPrefix?: string;
+	index: number;
 }
 
-const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMessageAudioProps) => {
+const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg, index }: IMessageAudioProps) => {
 	const [downloadState, setDownloadState] = useState<TDownloadState>('loading');
 	const [fileUri, setFileUri] = useState('');
 	const { baseUrl, user, id, rid } = useContext(MessageContext);
@@ -138,7 +139,14 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<AudioPlayer msgId={id} fileUri={fileUri} downloadState={downloadState} onPlayButtonPress={onPlayButtonPress} rid={rid} />
+			<AudioPlayer
+				index={index}
+				msgId={id}
+				fileUri={fileUri}
+				downloadState={downloadState}
+				onPlayButtonPress={onPlayButtonPress}
+				rid={rid}
+			/>
 		</>
 	);
 };

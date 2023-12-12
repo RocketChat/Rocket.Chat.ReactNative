@@ -1314,7 +1314,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
 	};
 
-	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
+	renderItem = (item: TAnyMessageModel, index: number, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
@@ -1345,6 +1345,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			content = (
 				<Message
 					item={item}
+					index={index}
 					user={user as any}
 					rid={room.rid}
 					archived={'id' in room && room.archived}
