@@ -349,6 +349,5 @@
   "Open_Livechats": "Chats em andamento",
   "Broadcast_hint": "Apenas utilizadores autorizados podem escrever novas mensagens, mas os outros utilizadores poderão responder",
   "and_N_more": "e mais {{count}}",
-  "Audio": "Áudio",
-  "Pinned_a_message": "Fixou uma mensagem:"
+  "Audio": "Áudio"
 }
