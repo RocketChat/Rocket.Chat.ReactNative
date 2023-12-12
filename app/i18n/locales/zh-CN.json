@@ -356,6 +356,7 @@
   "This_room_is_blocked": "这个聊天室被锁了",
   "This_room_is_read_only": "这个聊天室是只读的",
   "Threads": "讨论串",
+  "Thread": "讨论串",
   "Timezone": "时区",
   "topic": "主题",
   "Topic": "主题",
@@ -482,5 +483,7 @@
   "Open_Livechats": "打开即时聊天",
   "Broadcast_hint": "只有经过授权的用户才能写新信息，但其他用户可以回复",
   "and_N_more": "另外{{count}}个",
-  "Audio": "音讯"
+  "Audio": "音讯",
+  "The_user_wont_be_able_to_type_in_roomName": "此用户将无法在 {{roomName}} 中输入",
+  "The_user_will_be_able_to_type_in_roomName": "此用户将可以在 {{roomName}} 中输入"
 }
