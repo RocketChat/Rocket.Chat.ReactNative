@@ -57,7 +57,9 @@ describe('Join protected room', () => {
 				.withTimeout(5000);
 		});
 
-		it('should join room', async () => {
+		// Users on servers version 6.5 cannot access the protected room
+		// TODO: remove the skip when the backend fixes the problem
+		it.skip('should join room', async () => {
 			await openJoinCode();
 			await element(by.id('join-code-input')).replaceText(joinCode);
 			await element(by.id('join-code-submit')).tap();
@@ -71,7 +73,7 @@ describe('Join protected room', () => {
 			await expect(element(by.id('room-view-join'))).toBeNotVisible();
 		});
 
-		it('should send message', async () => {
+		it.skip('should send message', async () => {
 			await mockMessage(`${random()}message`);
 		});
 	});
