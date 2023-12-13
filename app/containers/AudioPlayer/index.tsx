@@ -24,7 +24,7 @@ interface IAudioPlayerProps {
 	rid: string;
 	// It's optional when comes from MessagesView
 	msgId?: string;
-	index: number;
+	index?: number;
 }
 
 const AudioPlayer = ({

@@ -19,7 +19,7 @@ class AudioPlayer {
 		this.audioPlaying = '';
 	}
 
-	async loadAudio({ msgId, rid, uri, index }: { rid: string; msgId?: string; uri: string; index: number }): Promise<string> {
+	async loadAudio({ msgId, rid, uri, index }: { rid: string; msgId?: string; uri: string; index?: number }): Promise<string> {
 		const audioKey = `${msgId}-${rid}-${uri}-${index}`;
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
@@ -47,7 +47,7 @@ class AudioPlayer {
 
 					const nextAudioInSeq = Object.keys(this.audioQueue).find(e => {
 						const itemIndex = parseInt(e.split('-').pop() as string);
-						return itemIndex === audioIndex - 1;
+						return !Number.isNaN(audioIndex) && !Number.isNaN(itemIndex) && itemIndex === audioIndex - 1;
 					});
 
 					if (nextAudioInSeq !== undefined) {

@@ -24,7 +24,7 @@ interface IMessageAudioProps {
 	author?: IUserMessage;
 	msg?: string;
 	cdnPrefix?: string;
-	index: number;
+	index?: number;
 }
 
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg, index }: IMessageAudioProps) => {

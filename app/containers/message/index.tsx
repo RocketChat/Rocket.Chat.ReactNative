@@ -13,7 +13,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constant
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
-	index: number;
+	index?: number;
 	user: {
 		id: string;
 		username: string;
