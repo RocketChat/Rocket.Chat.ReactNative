@@ -42,7 +42,7 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 				<Text accessibilityLabel={truncatedText} style={[styles.text, { color: colors.bodyText }, ...style]}>
 					{`${truncatedText}... `}
 				</Text>
-				<Text onPress={() => setShowTruncated(false)} style={[styles.textInfo, { color: colors.fontInfo }]}>
+				<Text onPress={() => setShowTruncated(false)} style={[styles.textInfo, { color: colors.actionTintColor }]}>
 					{I18n.t('Show_more')}
 				</Text>
 			</Text>
@@ -74,7 +74,7 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 				<Text
 					testID='collapsible-text-show-less'
 					onPress={() => setShowTruncated(true)}
-					style={[styles.textInfo, { color: colors.fontInfo }]}
+					style={[styles.textInfo, { color: colors.actionTintColor }]}
 				>
 					{` ${I18n.t('Show_less')}`}
 				</Text>
