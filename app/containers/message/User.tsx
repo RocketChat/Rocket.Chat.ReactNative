@@ -60,10 +60,24 @@ interface IMessageUser {
 	isEdited: boolean;
 	isReadReceiptEnabled?: boolean;
 	unread?: boolean;
+	isTranslated: boolean;
 }
 
 const User = React.memo(
-	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, navToRoomInfo, type, isEdited, ...props }: IMessageUser) => {
+	({
+		isHeader,
+		useRealName,
+		author,
+		alias,
+		ts,
+		timeFormat,
+		hasError,
+		navToRoomInfo,
+		type,
+		isEdited,
+		isTranslated,
+		...props
+	}: IMessageUser) => {
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
 
@@ -110,6 +124,7 @@ const User = React.memo(
 						hasError={hasError}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						unread={props.unread}
+						isTranslated={isTranslated}
 					/>
 				</View>
 			);
