@@ -1,4 +1,5 @@
 import { IUrl, IUrlFromServer } from '../../../definitions';
+import { buildImageURL } from './buildImageURL';
 
 export default (urls: IUrlFromServer[]): IUrl[] =>
 	urls
@@ -15,11 +16,7 @@ export default (urls: IUrlFromServer[]): IUrl[] =>
 			}
 			tmp.image = decodedOgImage || meta.twitterImage || meta.oembedThumbnailUrl;
 			if (tmp.image) {
-				if (tmp.image.indexOf('//') === 0) {
-					tmp.image = `${url.parsedUrl.protocol}${tmp.image}`;
-				} else if (tmp.image.indexOf('/') === 0 && url.parsedUrl && url.parsedUrl.host) {
-					tmp.image = `${url.parsedUrl.protocol}//${url.parsedUrl.host}${tmp.image}`;
-				}
+				tmp.image = buildImageURL(url.url, tmp.image);
 			}
 			tmp.url = url.url;
 			return tmp;

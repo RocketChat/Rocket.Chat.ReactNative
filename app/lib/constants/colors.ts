@@ -113,6 +113,7 @@ export const colors = {
 		strokeLight: '#CBCED1',
 		surfaceTint: '#F7F8FA',
 		fontInfo: '#095AD2',
+		fontDisabled: '#CBCED1',
 		...mentions,
 		...callButtons
 	},
@@ -201,6 +202,7 @@ export const colors = {
 		strokeLight: '#333842',
 		surfaceTint: '#1F2329',
 		fontInfo: '#739EDE',
+		fontDisabled: '#60646C',
 		...mentions,
 		...callButtons
 	},
@@ -289,6 +291,7 @@ export const colors = {
 		strokeLight: '#333842',
 		surfaceTint: '#1F2329',
 		fontInfo: '#739EDE',
+		fontDisabled: '#60646C',
 		...mentions,
 		...callButtons
 	}
