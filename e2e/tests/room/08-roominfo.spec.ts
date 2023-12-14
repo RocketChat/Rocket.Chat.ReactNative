@@ -287,9 +287,7 @@ describe('Room info screen', () => {
 					.withTimeout(10000);
 				await sleep(400);
 				const textWithShowMore =
-					device.getPlatform() === 'android'
-						? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet odio lectus, nec varius ni... Show more'
-						: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet odio lectus, nec varius... Show more';
+					'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet odio lectus, nec varius... Show more';
 				await waitFor(element(by[textMatcher](`${textWithShowMore}`)))
 					.toExist()
 					.withTimeout(10000);
