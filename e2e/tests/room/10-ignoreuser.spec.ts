@@ -125,60 +125,59 @@ describe('Ignore/Block User', () => {
 					.withTimeout(2000);
 			});
 		});
-		// TODO: Those e2e tests are working with server 6.5.0. Remove the comments when update the mobile.rocket.chat to 6.4.0 or above.
-		// describe('Report user', () => {
-		// 	it('should go to user info view from a DM', async () => {
-		// 		await tapBack();
-		// 		await sleep(300);
-		// 		await navigateToRoom(otherUser.username);
-		// 		await navigateToInfoView();
-		// 	});
-		// 	it('should report a user from a DM', async () => {
-		// 		await waitFor(element(by.id('room-info-view-warning').withDescendant(by[textMatcher]('Report'))))
-		// 			.toBeVisible()
-		// 			.withTimeout(2000);
-		// 		await element(by.id('room-info-view-warning')).tap();
-		// 		await sleep(300);
-		// 		await waitFor(element(by.id('report-user-view')))
-		// 			.toBeVisible()
-		// 			.withTimeout(2000);
-		// 		await waitFor(element(by.id('report-user-view-input')))
-		// 			.toBeVisible()
-		// 			.withTimeout(2000);
-		// 		await element(by.id('report-user-view-input')).replaceText('e2e test');
-		// 		await element(by.id('report-user-view-input')).tapReturnKey();
-		// 		await sleep(500);
-		// 		await checkRoomTitle(otherUser.username);
-		// 	});
-		// 	it('should go to user info view from a channel', async () => {
-		// 		await tapBack();
-		// 		await sleep(300);
-		// 		await navigateToRoom(room);
-		// 		await waitFor(element(by[textMatcher](otherUser.username)).atIndex(0))
-		// 			.toExist()
-		// 			.withTimeout(30000);
-		// 		await element(by[textMatcher](otherUser.username)).atIndex(0).tap();
-		// 		await waitFor(element(by.id('room-info-view')))
-		// 			.toExist()
-		// 			.withTimeout(2000);
-		// 	});
-		// 	it('should report a user from a channel', async () => {
-		// 		await waitFor(element(by.id('room-info-view-warning').withDescendant(by[textMatcher]('Report'))))
-		// 			.toBeVisible()
-		// 			.withTimeout(2000);
-		// 		await element(by.id('room-info-view-warning')).tap();
-		// 		await sleep(300);
-		// 		await waitFor(element(by.id('report-user-view')))
-		// 			.toBeVisible()
-		// 			.withTimeout(2000);
-		// 		await waitFor(element(by.id('report-user-view-input')))
-		// 			.toBeVisible()
-		// 			.withTimeout(2000);
-		// 		await element(by.id('report-user-view-input')).replaceText('e2e test');
-		// 		await element(by.id('report-user-view-input')).tapReturnKey();
-		// 		await sleep(500);
-		// 		await checkRoomTitle(room);
-		// 	});
-		// });
+		describe('Report user', () => {
+			it('should go to user info view from a DM', async () => {
+				await tapBack();
+				await sleep(300);
+				await navigateToRoom(otherUser.username);
+				await navigateToInfoView();
+			});
+			it('should report a user from a DM', async () => {
+				await waitFor(element(by.id('room-info-view-warning').withDescendant(by[textMatcher]('Report'))))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('room-info-view-warning')).tap();
+				await sleep(300);
+				await waitFor(element(by.id('report-user-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await waitFor(element(by.id('report-user-view-input')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('report-user-view-input')).replaceText('e2e test');
+				await element(by.id('report-user-view-input')).tapReturnKey();
+				await sleep(500);
+				await checkRoomTitle(otherUser.username);
+			});
+			it('should go to user info view from a channel', async () => {
+				await tapBack();
+				await sleep(300);
+				await navigateToRoom(room);
+				await waitFor(element(by[textMatcher](otherUser.username)).atIndex(0))
+					.toExist()
+					.withTimeout(30000);
+				await element(by[textMatcher](otherUser.username)).atIndex(0).tap();
+				await waitFor(element(by.id('room-info-view')))
+					.toExist()
+					.withTimeout(2000);
+			});
+			it('should report a user from a channel', async () => {
+				await waitFor(element(by.id('room-info-view-warning').withDescendant(by[textMatcher]('Report'))))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('room-info-view-warning')).tap();
+				await sleep(300);
+				await waitFor(element(by.id('report-user-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await waitFor(element(by.id('report-user-view-input')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('report-user-view-input')).replaceText('e2e test');
+				await element(by.id('report-user-view-input')).tapReturnKey();
+				await sleep(500);
+				await checkRoomTitle(room);
+			});
+		});
 	});
 });
