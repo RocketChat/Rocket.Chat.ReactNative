@@ -763,5 +763,7 @@
   "Pinned_a_message": "Pinned a message:",
   "You_dont_have_permission_to_perform_this_action": "You don’t have permission to perform this action. Check with a workspace administrator.",
   "Jump_to_message": "Jump to message",
-  "Missed_call": "Missed call"
+  "Missed_call": "Missed call",
+  "In_app_message_notifications": "In-app message notifications",
+  "Vibrate": "Vibrate"
 }
