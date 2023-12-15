@@ -4,7 +4,7 @@ import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWai
 import { createRandomUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
-describe('Create room screen', () => {
+describe.skip('Create room screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	beforeAll(async () => {

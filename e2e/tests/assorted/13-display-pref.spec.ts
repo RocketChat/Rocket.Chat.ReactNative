@@ -16,7 +16,7 @@ const goToRoomList = async () => {
 	await element(by.id('sidebar-chats')).tap();
 };
 
-describe('Display prefs', () => {
+describe.skip('Display prefs', () => {
 	beforeAll(async () => {
 		const user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });

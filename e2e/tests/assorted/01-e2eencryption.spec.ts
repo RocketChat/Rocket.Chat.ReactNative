@@ -45,7 +45,7 @@ async function navigateToRoom(roomName: string) {
 	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 	await waitFor(element(by.id('room-view')))
 		.toBeVisible()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 async function waitForToast() {

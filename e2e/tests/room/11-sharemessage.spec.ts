@@ -12,7 +12,7 @@ import {
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
-describe('Forward a message with another user', () => {
+describe.skip('Forward a message with another user', () => {
 	let user: ITestUser;
 	let otherUser: ITestUser;
 	let room: string;

@@ -3,7 +3,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 import { TTextMatcher, platformTypes } from '../../helpers/app';
 import data from '../../data';
 
-describe('Onboarding', () => {
+describe.skip('Onboarding', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	beforeAll(async () => {

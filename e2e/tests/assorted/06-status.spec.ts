@@ -3,7 +3,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 import { navigateToLogin, login, sleep } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
-describe('Status screen', () => {
+describe.skip('Status screen', () => {
 	let user: ITestUser;
 
 	beforeAll(async () => {

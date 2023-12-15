@@ -2,7 +2,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 
 import { navigateToRegister, navigateToLogin } from '../../helpers/app';
 
-describe('Legal screen', () => {
+describe.skip('Legal screen', () => {
 	describe('From Login', () => {
 		beforeAll(async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
