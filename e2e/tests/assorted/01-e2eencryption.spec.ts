@@ -10,9 +10,9 @@ import {
 	platformTypes,
 	TTextMatcher,
 	tapAndWaitFor,
-	expectValidRegisterOrRetry
-	// mockMessage,
-	// tryTapping
+	expectValidRegisterOrRetry,
+	mockMessage,
+	tryTapping
 } from '../../helpers/app';
 import data from '../../data';
 import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
@@ -45,7 +45,7 @@ async function navigateToRoom(roomName: string) {
 	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 	await waitFor(element(by.id('room-view')))
 		.toBeVisible()
-		.withTimeout(10000);
+		.withTimeout(5000);
 }
 
 async function waitForToast() {
@@ -163,40 +163,39 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id(`room-view-title-${room}`)))
 					.toBeVisible()
 					.withTimeout(60000);
-				await tapBack();
 			});
 
-			// it('should send message and be able to read it', async () => {
-			// 	mockedMessageText = await mockMessage('message');
-			// });
+			it('should send message and be able to read it', async () => {
+				mockedMessageText = await mockMessage('message');
+			});
 
-			// it('should quote a message and be able to read both', async () => {
-			// 	const mockedMessageTextToQuote = await mockMessage('message to be quote');
-			// 	const quotedMessage = `${mockedMessageTextToQuote}d`;
-			// 	await tryTapping(element(by[textMatcher](mockedMessageTextToQuote)).atIndex(0), 2000, true);
-			// 	await waitFor(element(by.id('action-sheet')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-			// 	await element(by[textMatcher]('Quote')).atIndex(0).tap();
-			// 	await element(by.id('message-composer-input')).replaceText(quotedMessage);
-			// 	await waitFor(element(by.id('message-composer-send')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await element(by.id('message-composer-send')).tap();
-			// 	await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
-			// 		.toBeVisible()
-			// 		.withTimeout(3000);
-			// 	await waitFor(
-			// 		element(
-			// 			by.id(`reply-${user.name}-${mockedMessageTextToQuote}`).withDescendant(by[textMatcher](mockedMessageTextToQuote))
-			// 		)
-			// 	)
-			// 		.toBeVisible()
-			// 		.withTimeout(3000);
-			// 	await tapBack();
-			// });
+			it('should quote a message and be able to read both', async () => {
+				const mockedMessageTextToQuote = await mockMessage('message to be quote');
+				const quotedMessage = `${mockedMessageTextToQuote}d`;
+				await tryTapping(element(by[textMatcher](mockedMessageTextToQuote)).atIndex(0), 2000, true);
+				await waitFor(element(by.id('action-sheet')))
+					.toExist()
+					.withTimeout(2000);
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by[textMatcher]('Quote')).atIndex(0).tap();
+				await element(by.id('message-composer-input')).replaceText(quotedMessage);
+				await waitFor(element(by.id('message-composer-send')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('message-composer-send')).tap();
+				await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
+					.toBeVisible()
+					.withTimeout(3000);
+				await waitFor(
+					element(
+						by.id(`reply-${user.name}-${mockedMessageTextToQuote}`).withDescendant(by[textMatcher](mockedMessageTextToQuote))
+					)
+				)
+					.toBeVisible()
+					.withTimeout(3000);
+				await tapBack();
+			});
 		});
 	});
 
