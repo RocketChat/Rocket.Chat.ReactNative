@@ -54,9 +54,8 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 };
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, index }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
 		const { translateLanguage } = useContext(MessageContext);
-		const audioIndex = index;
 
 		if (!attachments || attachments.length === 0) {
 			return null;
@@ -89,7 +88,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						style={style}
 						author={author}
 						msg={msg}
-						index={audioIndex}
 					/>
 				);
 			}

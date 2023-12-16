@@ -1,4 +1,10 @@
 import { AVPlaybackStatus, Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { Q } from '@nozbe/watermelondb';
+import moment from 'moment';
+
+import { getMessageById } from '../database/services/Message';
+import database from '../database';
+import { getFilePathAudio } from './getFilePathAudio';
 
 const AUDIO_MODE = {
 	allowsRecordingIOS: false,
@@ -19,8 +25,8 @@ class AudioPlayer {
 		this.audioPlaying = '';
 	}
 
-	async loadAudio({ msgId, rid, uri, index }: { rid: string; msgId?: string; uri: string; index?: number }): Promise<string> {
-		const audioKey = `${msgId}-${rid}-${uri}-${index}`;
+	async loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
+		const audioKey = `${msgId}-${rid}-${uri}`;
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
 		}
@@ -43,15 +49,30 @@ class AudioPlayer {
 					await this.audioQueue[audioKey]?.stopAsync();
 					this.audioPlaying = '';
 
-					const audioIndex = parseInt(audioKey.split('-').pop() as string);
+					const [msgId, rid] = audioKey.split('-');
 
-					const nextAudioInSeq = Object.keys(this.audioQueue).find(e => {
-						const itemIndex = parseInt(e.split('-').pop() as string);
-						return !Number.isNaN(audioIndex) && !Number.isNaN(itemIndex) && itemIndex === audioIndex - 1;
-					});
+					const msg = await getMessageById(msgId);
 
-					if (nextAudioInSeq !== undefined) {
-						this.playAudio(nextAudioInSeq);
+					if (msg) {
+						const db = database.active;
+						const [message] = await db
+							.get('messages')
+							.query(
+								Q.where('rid', rid),
+								Q.experimentalSortBy('ts', Q.asc),
+								Q.where('ts', Q.gt(moment(msg.ts).valueOf())),
+								Q.experimentalTake(1)
+							)
+							.fetch();
+
+						if (message && message.attachments) {
+							const file = message.attachments[0];
+							const nextAudioInSeqKey = `${message.id}-${rid}-${getFilePathAudio(file)}`;
+
+							if (Object.keys(this.audioQueue).includes(nextAudioInSeqKey)) {
+								await this.playAudio(nextAudioInSeqKey);
+							}
+						}
 					}
 				} catch {
 					// do nothing

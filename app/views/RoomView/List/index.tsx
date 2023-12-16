@@ -55,7 +55,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		};
 
 		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
-			<View style={styles.inverted}>{renderRow(item, index, messages[index + 1], highlightedMessageId)}</View>
+			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);
 
 		return (

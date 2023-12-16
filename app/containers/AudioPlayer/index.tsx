@@ -24,7 +24,6 @@ interface IAudioPlayerProps {
 	rid: string;
 	// It's optional when comes from MessagesView
 	msgId?: string;
-	index?: number;
 }
 
 const AudioPlayer = ({
@@ -33,8 +32,7 @@ const AudioPlayer = ({
 	onPlayButtonPress = () => {},
 	downloadState,
 	msgId,
-	rid,
-	index
+	rid
 }: IAudioPlayerProps) => {
 	const isLoading = downloadState === 'loading';
 	const isDownloaded = downloadState === 'downloaded';
@@ -117,7 +115,7 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		InteractionManager.runAfterInteractions(async () => {
-			audioUri.current = await audioPlayer.loadAudio({ msgId, rid, uri: fileUri, index });
+			audioUri.current = await audioPlayer.loadAudio({ msgId, rid, uri: fileUri });
 			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
 			audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
 		});
