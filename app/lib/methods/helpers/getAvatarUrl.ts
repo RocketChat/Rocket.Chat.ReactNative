@@ -49,8 +49,9 @@ export const getAvatarURL = ({
 		query += `&etag=${avatarETag}`;
 	}
 
-	if (cdnPrefix) {
-		server = cdnPrefix.trim().replace(/\/+$/, '');
+	cdnPrefix = cdnPrefix?.trim();
+	if (cdnPrefix && cdnPrefix.startsWith('http')) {
+		server = cdnPrefix.replace(/\/+$/, '');
 	}
 
 	if (avatar) {

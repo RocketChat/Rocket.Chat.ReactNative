@@ -173,6 +173,30 @@ index 7aa2bfb..c1c019c 100644
  
  @interface RNNotificationParser : NSObject
  
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m
+index 62f3043..840acda 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m
+@@ -12,7 +12,18 @@ + (NSDictionary *)parseNotificationUserInfo:(NSDictionary *)userInfo withIdentif
+ }
+ 
+ + (NSDictionary *)parseNotificationResponse:(UNNotificationResponse *)response {
+-    NSDictionary* responseDict = @{@"notification": [RCTConvert UNNotificationPayload:response.notification], @"identifier": response.notification.request.identifier, @"action": [self parseNotificationResponseAction:response]};
++    NSMutableDictionary *notificationPayload = [[RCTConvert UNNotificationPayload:response.notification] mutableCopy];
++
++    NSDictionary *responseAction = [self parseNotificationResponseAction:response];
++    
++    if (responseAction != nil) {
++        [notificationPayload setObject:responseAction forKey:@"action"];
++    }
++    
++    NSDictionary *responseDict = @{
++        @"notification": [notificationPayload copy],
++        @"identifier": response.notification.request.identifier
++    };
+     
+     return responseDict;
+ }
 diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h b/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
 index 4f8a171..7e4f9ca 100644
 --- a/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
