@@ -92,9 +92,7 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 	} catch (e: any) {
 		log(e);
 		if (e?.data?.details?.method === 'createDirectMessage' && e?.data?.errorType === 'error-not-allowed') {
-			EventEmitter.emit(LISTENER, {
-				message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
-			});
+			EventEmitter.emit(LISTENER, { message: I18n.t('You_dont_have_permission_to_perform_this_action') });
 		}
 	}
 };
