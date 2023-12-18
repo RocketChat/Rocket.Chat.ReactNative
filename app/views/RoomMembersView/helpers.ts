@@ -89,8 +89,13 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
 			}
 		}
-	} catch (e) {
+	} catch (e: any) {
 		log(e);
+		if (e?.data?.details?.method === 'createDirectMessage' && e?.data?.errorType === 'error-not-allowed') {
+			EventEmitter.emit(LISTENER, {
+				message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
+			});
+		}
 	}
 };
 
