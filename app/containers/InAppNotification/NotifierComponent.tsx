@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Haptics from 'expo-haptics';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { NOTIFICATION_IN_APP_VIBRATION, themes } from '../../lib/constants';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
-import userPreferences from '../../lib/methods/userPreferences';
 
 export interface INotifierComponent {
 	notification: {
@@ -98,13 +96,6 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 		goRoom({ item, isMasterDetail, jumpToMessageId: _id, popToRoot: true });
 		hideNotification();
 	};
-
-	useEffect(() => {
-		const notificationInAppVibration = userPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
-		if (notificationInAppVibration || notificationInAppVibration === null) {
-			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-		}
-	}, []);
 
 	return (
 		<View
