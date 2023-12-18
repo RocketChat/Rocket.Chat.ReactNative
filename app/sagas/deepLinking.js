@@ -1,20 +1,21 @@
-import { all, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
-import UserPreferences from '../lib/methods/userPreferences';
 import * as types from '../actions/actionsTypes';
-import { selectServerRequest, serverInitAdd } from '../actions/server';
-import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
-import database from '../lib/database';
-import EventEmitter from '../lib/methods/helpers/events';
 import { appInit, appStart } from '../actions/app';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
-import { goRoom } from '../lib/methods/helpers/goRoom';
-import { getUidDirectMessage } from '../lib/methods/helpers';
+import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
-import log from '../lib/methods/helpers/log';
+import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { callJitsi, callJitsiWithoutServer, canOpenRoom, getServerInfo } from '../lib/methods';
+import database from '../lib/database';
+import { canOpenRoom, getServerInfo } from '../lib/methods';
+import { getUidDirectMessage } from '../lib/methods/helpers';
+import EventEmitter from '../lib/methods/helpers/events';
+import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import log from '../lib/methods/helpers/log';
+import UserPreferences from '../lib/methods/userPreferences';
+import { videoConfJoin } from '../lib/methods/videoConf';
 import { Services } from '../lib/services';
 
 const roomTypes = {
@@ -59,9 +60,6 @@ const navigate = function* navigate({ params }) {
 				const jumpToMessageId = params.messageId;
 
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
-				if (params.isCall) {
-					callJitsi(item);
-				}
 			}
 		} else {
 			yield handleInviteLink({ params });
@@ -91,20 +89,6 @@ const handleOpen = function* handleOpen({ params }) {
 	const serversCollection = serversDB.get('servers');
 
 	let { host } = params;
-	if (params.isCall && !host) {
-		const servers = yield serversCollection.query().fetch();
-		// search from which server is that call
-		servers.forEach(({ uniqueID, id }) => {
-			if (params.path.includes(uniqueID)) {
-				host = id;
-			}
-		});
-
-		if (!host && params.fullURL) {
-			callJitsiWithoutServer(params.fullURL);
-			return;
-		}
-	}
 
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
@@ -185,7 +169,90 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 };
 
+const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
+	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+	const db = database.active;
+	const subsCollection = db.get('subscriptions');
+	const room = yield subsCollection.find(params.rid);
+	if (room) {
+		const isMasterDetail = yield select(state => state.app.isMasterDetail);
+		yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
+		const uid = params.caller._id;
+		const { rid, callId, event } = params;
+		if (event === 'accept') {
+			yield call(Services.notifyUser, `${uid}/video-conference`, {
+				action: 'accepted',
+				params: { uid, rid, callId }
+			});
+			yield videoConfJoin(callId, true, false, true);
+		} else if (event === 'decline') {
+			yield call(Services.notifyUser, `${uid}/video-conference`, {
+				action: 'rejected',
+				params: { uid, rid, callId }
+			});
+		}
+	}
+};
+
+const handleClickCallPush = function* handleOpen({ params }) {
+	const serversDB = database.servers;
+	const serversCollection = serversDB.get('servers');
+
+	let { host } = params;
+
+	if (host.slice(-1) === '/') {
+		host = host.slice(0, host.length - 1);
+	}
+
+	const [server, user] = yield all([
+		UserPreferences.getString(CURRENT_SERVER),
+		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+	]);
+
+	if (server === host && user) {
+		const connected = yield select(state => state.server.connected);
+		if (!connected) {
+			yield localAuthenticate(host);
+			yield put(selectServerRequest(host));
+			yield take(types.LOGIN.SUCCESS);
+		}
+		yield handleNavigateCallRoom({ params });
+	} else {
+		// search if deep link's server already exists
+		try {
+			const hostServerRecord = yield serversCollection.find(host);
+			if (hostServerRecord && user) {
+				yield localAuthenticate(host);
+				yield put(selectServerRequest(host, hostServerRecord.version, true, true));
+				yield take(types.LOGIN.SUCCESS);
+				yield handleNavigateCallRoom({ params });
+				return;
+			}
+		} catch (e) {
+			// do nothing?
+		}
+		// if deep link is from a different server
+		const result = yield Services.getServerInfo(host);
+		if (!result.success) {
+			// Fallback to prevent the app from being stuck on splash screen
+			yield fallbackNavigation();
+			return;
+		}
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		yield put(serverInitAdd(server));
+		yield delay(1000);
+		EventEmitter.emit('NewServer', { server: host });
+		if (params.token) {
+			yield take(types.SERVER.SELECT_SUCCESS);
+			yield put(loginRequest({ resume: params.token }, true));
+			yield take(types.LOGIN.SUCCESS);
+			yield handleNavigateCallRoom({ params });
+		}
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(types.DEEP_LINKING.OPEN, handleOpen);
+	yield takeLatest(types.DEEP_LINKING.OPEN_VIDEO_CONF, handleClickCallPush);
 };
 export default root;

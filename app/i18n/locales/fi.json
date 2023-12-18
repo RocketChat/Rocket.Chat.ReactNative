@@ -397,6 +397,7 @@
   "This_room_is_blocked": "Huone on estetty",
   "This_room_is_read_only": "Huone on vain luku -tilassa",
   "Threads": "Ketjut",
+  "Thread": "Ketju",
   "Timezone": "Aikavyöhyke",
   "topic": "aihe",
   "Topic": "Aihe",
@@ -689,9 +690,6 @@
   "Waiting_for_answer": "Odotetaan vastausta",
   "Call_ended": "Puhelu päättyi",
   "Call_was_not_answered": "Puheluun ei vastattu",
-  "Call_back": "Soita takaisin",
-  "Call_again": "Soita uudelleen",
-  "Call_ongoing": "Puhelu käynnissä",
   "Joined": "Liitytty",
   "Calling": "Soitetaan",
   "Start_a_call": "Aloita puhelu",
@@ -700,5 +698,7 @@
   "room_archived": "arkistoi huoneen",
   "room_unarchived": "palautti huoneen arkistosta",
   "and_N_more": "ja {{count}} lisää",
-  "Audio": "Ääni"
+  "Audio": "Ääni",
+  "The_user_wont_be_able_to_type_in_roomName": "Käyttäjä ei voi kirjoittaa huoneessa {{roomName}}",
+  "The_user_will_be_able_to_type_in_roomName": "Käyttäjä voi kirjoittaa huoneessa {{roomName}}"
 }

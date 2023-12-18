@@ -24,9 +24,10 @@ export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: s
 		}
 		return setParamInUrl({ url: attachmentUrl, token, userId });
 	}
-	const cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
-	if (cdnPrefix) {
-		server = cdnPrefix.trim().replace(/\/+$/, '');
+	let cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
+	cdnPrefix = cdnPrefix?.trim();
+	if (cdnPrefix && cdnPrefix.startsWith('http')) {
+		server = cdnPrefix.replace(/\/+$/, '');
 	}
 	return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
 };

@@ -25,7 +25,7 @@ if (__DEV__) {
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();
-	enhancers = compose(applyAppStateMiddleware(), applyMiddleware(sagaMiddleware));
+	enhancers = compose(applyAppStateMiddleware(), applyInternetStateMiddleware(), applyMiddleware(sagaMiddleware));
 }
 
 const store = createStore(reducers, enhancers);

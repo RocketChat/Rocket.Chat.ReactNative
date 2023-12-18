@@ -1,6 +1,5 @@
 .circleci/
 .github/
-.husky
 build/
 node_modules/
 coverage/
