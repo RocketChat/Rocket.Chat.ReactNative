@@ -11,7 +11,8 @@ import {
 	TTextMatcher,
 	sleep,
 	checkRoomTitle,
-	mockMessage
+	mockMessage,
+	jumpToQuotedMessage
 } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
@@ -144,7 +145,7 @@ describe('Broadcast room', () => {
 		await waitFor(element(by[textMatcher](message)))
 			.toExist()
 			.withTimeout(10000);
-		await element(by[textMatcher](message)).tap();
+		await jumpToQuotedMessage(element(by[textMatcher](message)));
 		await sleep(300); // wait for animation
 		await checkRoomTitle(room);
 	});

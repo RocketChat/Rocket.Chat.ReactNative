@@ -397,6 +397,7 @@
   "This_room_is_blocked": "This room is blocked",
   "This_room_is_read_only": "This room is read only",
   "Threads": "Threads",
+  "Thread": "Thread",
   "Timezone": "Timezone",
   "topic": "topic",
   "Topic": "Topic",
@@ -749,6 +750,7 @@
   "Continue": "Continue",
   "Message_has_been_shared": "Message has been shared",
   "No_channels_in_team": "No Channels on this team",
+  "conference_call": "Conference call",
   "Room_not_found": "Room not found",
   "The_room_does_not_exist": "The room does not exist or you may not have access permission",
   "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
@@ -761,4 +763,7 @@
   "Pinned_a_message": "Pinned a message:",
   "Report_this_message?":"Report this message?",
   "Why_do_you_want_to_report?":"Why do you want to report?"
+  "You_dont_have_permission_to_perform_this_action": "You don’t have permission to perform this action. Check with a workspace administrator.",
+  "Jump_to_message": "Jump to message",
+  "Missed_call": "Missed call"
 }
