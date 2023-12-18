@@ -763,5 +763,7 @@
   "Pinned_a_message": "Fixou uma mensagem:",
   "You_dont_have_permission_to_perform_this_action": "Você não tem permissão para realizar esta ação. Verifique com um administrador do espaço de trabalho.",
   "Jump_to_message": "Ir para mensagem",
-  "Missed_call": "Chamada perdida"
+  "Missed_call": "Chamada perdida",
+  "In_app_message_notifications": "Notificações de mensagens no aplicativo",
+  "Vibrate": "Vibrar"
 }
