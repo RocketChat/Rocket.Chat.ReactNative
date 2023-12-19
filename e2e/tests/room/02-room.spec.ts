@@ -179,7 +179,7 @@ describe('Room screen', () => {
 	// 	});
 	// });
 
-	describe.skip('Message', () => {
+	describe('Message', () => {
 		it('should copy link', async () => {
 			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
 			await waitFor(element(by.id('action-sheet')))
