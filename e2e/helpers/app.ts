@@ -98,10 +98,8 @@ async function mockMessage(message: string, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
-	await element(by.id(input)).replaceText(message);
-	await sleep(300);
+	await element(by.id(input)).typeText(message);
 	await element(by.id('message-composer-send')).tap();
-	await sleep(2000);
 	await waitFor(element(by[textMatcher](message)))
 		.toExist()
 		.withTimeout(60000);

@@ -41,6 +41,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					data={items}
 					renderItem={({ item }) => <AutocompleteItem item={item} onPress={onPress} />}
 					keyboardShouldPersistTaps='always'
+					testID='autocomplete'
 				/>
 			</View>
 		);
@@ -58,6 +59,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					data={items}
 					renderItem={({ item }) => <AutocompletePreview item={item} onPress={onPress} />}
 					keyboardShouldPersistTaps='always'
+					testID='autocomplete'
 				/>
 			</View>
 		);
