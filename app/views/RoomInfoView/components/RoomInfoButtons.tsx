@@ -102,14 +102,12 @@ export const RoomInfoButtons = ({
 				label={i18n.t(isIgnored ? 'Unignore' : 'Ignore')}
 				iconName='ignore'
 				showIcon={!!renderIgnoreUser}
-				danger={!renderReportUser}
 			/>
 			<BaseButton
 				onPress={handleBlockUser}
 				label={i18n.t(`${isBlocked ? 'Unblock' : 'Block'}`)}
 				iconName='ignore'
 				showIcon={!!renderBlockUser}
-				danger={!renderReportUser}
 			/>
 			<BaseButton onPress={handleReportUser} label={i18n.t('Report')} iconName='warning' showIcon={!!renderReportUser} danger />
 		</View>
