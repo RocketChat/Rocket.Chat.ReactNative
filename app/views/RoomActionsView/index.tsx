@@ -866,16 +866,15 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={`${blocker ? 'Unblock' : 'Block'}_user`}
+						title={`${blocker ? 'Unblock' : 'Block'}`}
 						onPress={() =>
 							this.onPressTouchable({
 								event: this.toggleBlockUser
 							})
 						}
 						testID='room-actions-block-user'
-						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='ignore' />}
 						showActionIndicator
-						color={themes[theme].dangerColor}
 					/>
 					<List.Separator />
 				</List.Section>
