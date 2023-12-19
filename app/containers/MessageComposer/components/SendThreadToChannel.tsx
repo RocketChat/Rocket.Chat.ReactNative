@@ -70,7 +70,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 		<TouchableWithoutFeedback
 			style={styles.container}
 			onPress={() => setAlsoSendThreadToChannel(!alsoSendThreadToChannel)}
-			testID='composer-send-to-channel'
+			testID='message-composer-send-to-channel'
 		>
 			<CustomIcon
 				testID={alsoSendThreadToChannel ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
