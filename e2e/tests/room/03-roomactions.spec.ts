@@ -8,44 +8,44 @@ import {
 	searchRoom,
 	platformTypes,
 	TTextMatcher,
-	tapAndWaitFor
-	// tryTapping,
-	// mockMessage
+	tapAndWaitFor,
+	tryTapping,
+	mockMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser, post } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const { sendMessage } = require('../../helpers/data_setup');
 
-// async function starMessage(message: string) {
-// 	const deviceType = device.getPlatform();
-// 	const { textMatcher } = platformTypes[deviceType];
-// 	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
-// 	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
-// 	await waitFor(element(by.id('action-sheet')))
-// 		.toExist()
-// 		.withTimeout(2000);
-// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-// 	await element(by[textMatcher]('Star')).atIndex(0).tap();
-// 	await waitFor(element(by.id('action-sheet')))
-// 		.not.toExist()
-// 		.withTimeout(5000);
-// }
+async function starMessage(message: string) {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
+	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
+	await waitFor(element(by.id('action-sheet')))
+		.toExist()
+		.withTimeout(2000);
+	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await element(by[textMatcher]('Star')).atIndex(0).tap();
+	await waitFor(element(by.id('action-sheet')))
+		.not.toExist()
+		.withTimeout(5000);
+}
 
-// async function pinMessage(message: string) {
-// 	const deviceType = device.getPlatform();
-// 	const { textMatcher } = platformTypes[deviceType];
-// 	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
-// 	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
-// 	await waitFor(element(by.id('action-sheet')))
-// 		.toExist()
-// 		.withTimeout(2000);
-// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-// 	await element(by[textMatcher]('Pin')).atIndex(0).tap();
-// 	await waitFor(element(by.id('action-sheet')))
-// 		.not.toExist()
-// 		.withTimeout(5000);
-// }
+async function pinMessage(message: string) {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	await waitFor(element(by[textMatcher](message)).atIndex(0)).toExist();
+	await tryTapping(element(by[textMatcher](message)).atIndex(0), 2000, true);
+	await waitFor(element(by.id('action-sheet')))
+		.toExist()
+		.withTimeout(2000);
+	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await element(by[textMatcher]('Pin')).atIndex(0).tap();
+	await waitFor(element(by.id('action-sheet')))
+		.not.toExist()
+		.withTimeout(5000);
+}
 
 async function navigateToRoomActions() {
 	await searchRoom(room);
@@ -150,80 +150,78 @@ describe('Room actions screen', () => {
 				await backToActions();
 			});
 
-			// FIXME: implement before merging to develop
-			// it('should show starred message and unstar it', async () => {
-			// 	// Go back to room and send a message
-			// 	await tapBack();
-			// 	const messageToStar = await mockMessage('messageToStar');
+			it('should show starred message and unstar it', async () => {
+				// Go back to room and send a message
+				await tapBack();
+				const messageToStar = await mockMessage('messageToStar');
 
-			// 	// Star the message
-			// 	await starMessage(messageToStar);
+				// Star the message
+				await starMessage(messageToStar);
 
-			// 	// Back into Room Actions
-			// 	await element(by.id('room-header')).tap();
-			// 	await waitFor(element(by.id('room-actions-view')))
-			// 		.toExist()
-			// 		.withTimeout(5000);
+				// Back into Room Actions
+				await element(by.id('room-header')).tap();
+				await waitFor(element(by.id('room-actions-view')))
+					.toExist()
+					.withTimeout(5000);
 
-			// 	// Go to starred messages
-			// 	await element(by.id('room-actions-view')).swipe('up');
-			// 	await waitFor(element(by.id('room-actions-starred'))).toExist();
-			// 	await element(by.id('room-actions-starred')).tap();
-			// 	await waitFor(element(by.id('starred-messages-view')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
-			// 		.toExist()
-			// 		.withTimeout(60000);
+				// Go to starred messages
+				await element(by.id('room-actions-view')).swipe('up');
+				await waitFor(element(by.id('room-actions-starred'))).toExist();
+				await element(by.id('room-actions-starred')).tap();
+				await waitFor(element(by.id('starred-messages-view')))
+					.toExist()
+					.withTimeout(2000);
+				await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
+					.toExist()
+					.withTimeout(60000);
 
-			// 	// Unstar message
-			// 	await element(by[textMatcher](messageToStar)).atIndex(0).longPress();
-			// 	await expect(element(by.id('action-sheet'))).toExist();
-			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			// 	await element(by[textMatcher]('Unstar')).atIndex(0).tap();
+				// Unstar message
+				await element(by[textMatcher](messageToStar)).atIndex(0).longPress();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by[textMatcher]('Unstar')).atIndex(0).tap();
 
-			// 	await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
-			// 		.toBeNotVisible()
-			// 		.withTimeout(60000);
-			// 	await backToActions();
-			// });
+				await waitFor(element(by[textMatcher](messageToStar).withAncestor(by.id('starred-messages-view'))))
+					.toBeNotVisible()
+					.withTimeout(60000);
+				await backToActions();
+			});
 
-			// FIXME: implement before merging to develop
-			// it('should show pinned message and unpin it', async () => {
-			// 	// Go back to room and send a message
-			// 	await tapBack();
-			// 	const messageToPin = await mockMessage('messageToPin');
+			it('should show pinned message and unpin it', async () => {
+				// Go back to room and send a message
+				await tapBack();
+				const messageToPin = await mockMessage('messageToPin');
 
-			// 	// Pin the message
-			// 	await pinMessage(messageToPin);
+				// Pin the message
+				await pinMessage(messageToPin);
 
-			// 	// Back into Room Actions
-			// 	await element(by.id('room-header')).tap();
-			// 	await waitFor(element(by.id('room-actions-view')))
-			// 		.toExist()
-			// 		.withTimeout(5000);
-			// 	await element(by.id('room-actions-scrollview')).scrollTo('bottom');
-			// 	await waitFor(element(by.id('room-actions-pinned'))).toExist();
-			// 	await element(by.id('room-actions-pinned')).tap();
-			// 	await waitFor(element(by.id('pinned-messages-view')))
-			// 		.toExist()
-			// 		.withTimeout(2000);
-			// 	await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
-			// 		.toExist()
-			// 		.withTimeout(6000);
-			// 	await element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view')))
-			// 		.atIndex(0)
-			// 		.longPress();
+				// Back into Room Actions
+				await element(by.id('room-header')).tap();
+				await waitFor(element(by.id('room-actions-view')))
+					.toExist()
+					.withTimeout(5000);
+				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
+				await waitFor(element(by.id('room-actions-pinned'))).toExist();
+				await element(by.id('room-actions-pinned')).tap();
+				await waitFor(element(by.id('pinned-messages-view')))
+					.toExist()
+					.withTimeout(2000);
+				await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
+					.toExist()
+					.withTimeout(6000);
+				await element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view')))
+					.atIndex(0)
+					.longPress();
 
-			// 	await expect(element(by.id('action-sheet'))).toExist();
-			// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			// 	await element(by[textMatcher]('Unpin')).atIndex(0).tap();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by[textMatcher]('Unpin')).atIndex(0).tap();
 
-			// 	await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
-			// 		.not.toExist()
-			// 		.withTimeout(6000);
-			// 	await backToActions();
-			// });
+				await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
+					.not.toExist()
+					.withTimeout(6000);
+				await backToActions();
+			});
 		});
 
 		describe('Notification', () => {
@@ -506,24 +504,24 @@ describe('Room actions screen', () => {
 
 				it('should set/remove as mute', async () => {
 					await openActionSheet(otherUser.username);
-					await element(by[textMatcher]('Mute')).atIndex(0).tap();
+					await element(by[textMatcher]('Disable writing in room')).atIndex(0).tap();
 					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by[textMatcher]('Mute').and(by.type(alertButtonType))).tap();
+					await element(by[textMatcher]('Disable writing in room').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(otherUser.username);
-					await element(by[textMatcher]('Unmute')).atIndex(0).tap();
+					await element(by[textMatcher]('Enable writing in room')).atIndex(0).tap();
 					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by[textMatcher]('Unmute').and(by.type(alertButtonType))).tap();
+					await element(by[textMatcher]('Enable writing in room').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(otherUser.username);
 					// Tests if Remove as mute worked
-					await waitFor(element(by[textMatcher]('Mute')))
+					await waitFor(element(by[textMatcher]('Disable writing in room')))
 						.toExist()
 						.withTimeout(5000);
 					await closeActionSheet();
