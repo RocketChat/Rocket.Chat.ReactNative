@@ -76,8 +76,14 @@ describe('Room screen', () => {
 	});
 
 	// describe('Emoji Keyboard', () => {
-	// 	it('should open emoji keyboard, select an emoji and send it', async () => {
-	// 		await element(by.id('messagebox-open-emoji')).tap();
+	// 	it('select an emoji', async () => {
+	// 		await element(by.id('message-composer-input')).tap();
+	// 		await waitFor(element(by.id('message-composer-open-emoji')))
+	// 			.toBeVisible()
+	// 			.withTimeout(2000);
+	// 		await element(by.id('message-composer-open-emoji')).tap();
+
+	// 		// TODO: change it after moved away from messabebox
 	// 		await waitFor(element(by.id('messagebox-keyboard-emoji')))
 	// 			.toExist()
 	// 			.withTimeout(10000);
@@ -85,39 +91,17 @@ describe('Room screen', () => {
 	// 			.toExist()
 	// 			.withTimeout(10000);
 	// 		await element(by.id('emoji-picker-tab-emoji')).tap();
-	// 		await expect(element(by.id('emoji-blush'))).toExist();
+	// 		await waitFor(element(by.id('emoji-blush')))
+	// 			.toBeVisible()
+	// 			.withTimeout(2000);
 	// 		await element(by.id('emoji-blush')).tap();
 	// 		await expect(element(by.id('message-composer-input'))).toHaveText('😊');
-	// 		await element(by.id('message-composer-send')).tap();
-	// 		await waitFor(element(by[textMatcher]('😊')))
-	// 			.toExist()
-	// 			.withTimeout(60000);
-	// 		await element(by[textMatcher]('😊')).atIndex(0).tap();
+	// 		await element(by.id('message-composer-input')).clearText();
 	// 	});
 
-	// 	it('should open emoji keyboard, select an emoji and delete it using emoji keyboards backspace', async () => {
-	// 		await element(by.id('messagebox-open-emoji')).tap();
-	// 		await waitFor(element(by.id('messagebox-keyboard-emoji')))
-	// 			.toExist()
-	// 			.withTimeout(10000);
-	// 		await expect(element(by.id('emoji-picker-tab-emoji'))).toExist();
-	// 		await element(by.id('emoji-picker-tab-emoji')).tap();
-	// 		await expect(element(by.id('emoji-upside_down'))).toExist();
-	// 		await element(by.id('emoji-upside_down')).tap();
-	// 		await expect(element(by.id('message-composer-input'))).toHaveText('🙃');
-	// 		await waitFor(element(by.id('emoji-picker-backspace')))
-	// 			.toExist()
-	// 			.withTimeout(2000);
-	// 		await element(by.id('emoji-picker-backspace')).tap();
-	// 		await expect(element(by.id('message-composer-input'))).toHaveText('');
-	// 		await element(by.id('messagebox-close-emoji')).tap();
-	// 		await waitFor(element(by.id('messagebox-keyboard-emoji')))
-	// 			.not.toBeVisible()
-	// 			.withTimeout(10000);
-	// 	});
-
-	// 	it('should search emoji and send it', async () => {
-	// 		await element(by.id('messagebox-open-emoji')).tap();
+	// 	it('should search emoji', async () => {
+	// 		await element(by.id('message-composer-input')).tap();
+	// 		await element(by.id('message-composer-open-emoji')).tap();
 	// 		await waitFor(element(by.id('emoji-picker-search')))
 	// 			.toExist()
 	// 			.withTimeout(4000);
@@ -131,51 +115,7 @@ describe('Room screen', () => {
 	// 			.withTimeout(2000);
 	// 		await element(by.id('emoji-no_mouth')).tap();
 	// 		await expect(element(by.id('message-composer-input'))).toHaveText('😶');
-	// 		await element(by.id('message-composer-send')).tap();
-	// 		await waitFor(element(by[textMatcher]('😶')))
-	// 			.toExist()
-	// 			.withTimeout(60000);
-	// 		await element(by[textMatcher]('😶')).atIndex(0).tap();
-	// 	});
-
-	// 	it('should search emojis, go back to Emoji keyboard and then close the Emoji keyboard', async () => {
-	// 		await element(by.id('messagebox-open-emoji')).tap();
-	// 		await waitFor(element(by.id('emoji-picker-search')))
-	// 			.toExist()
-	// 			.withTimeout(4000);
-	// 		await element(by.id('emoji-picker-search')).tap();
-	// 		await waitFor(element(by.id('emoji-searchbar-input')))
-	// 			.toExist()
-	// 			.withTimeout(2000);
-	// 		await element(by.id('openback-emoji-keyboard')).tap();
-	// 		await waitFor(element(by.id('emoji-searchbar-input')))
-	// 			.not.toBeVisible()
-	// 			.withTimeout(2000);
-	// 		await expect(element(by.id('messagebox-close-emoji'))).toExist();
-	// 		await element(by.id('messagebox-close-emoji')).tap();
-	// 		await waitFor(element(by.id('messagebox-keyboard-emoji')))
-	// 			.not.toBeVisible()
-	// 			.withTimeout(10000);
-	// 	});
-
-	// 	it('frequently used emojis should contain the recently used emojis', async () => {
-	// 		await element(by.id('messagebox-open-emoji')).tap();
-	// 		await waitFor(element(by.id('emoji-picker-tab-clock')));
-	// 		await element(by.id('emoji-picker-tab-clock')).tap();
-	// 		await waitFor(element(by.id('emoji-blush')))
-	// 			.toExist()
-	// 			.withTimeout(2000);
-	// 		await waitFor(element(by.id('emoji-upside_down')))
-	// 			.toExist()
-	// 			.withTimeout(2000);
-	// 		await waitFor(element(by.id('emoji-no_mouth')))
-	// 			.toExist()
-	// 			.withTimeout(2000);
-	// 		await expect(element(by.id('messagebox-close-emoji'))).toExist();
-	// 		await element(by.id('messagebox-close-emoji')).tap();
-	// 		await waitFor(element(by.id('messagebox-keyboard-emoji')))
-	// 			.not.toBeVisible()
-	// 			.withTimeout(10000);
+	// 		await element(by.id('message-composer-input')).clearText();
 	// 	});
 	// });
 
