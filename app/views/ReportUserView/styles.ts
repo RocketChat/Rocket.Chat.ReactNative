@@ -16,6 +16,9 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
+	containerTextInput: {
+		marginBottom: 24
+	},
 	textInput: {
 		height: 100,
 		textAlignVertical: 'top'

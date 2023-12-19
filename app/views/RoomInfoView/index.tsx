@@ -31,8 +31,8 @@ import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
+StackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
@@ -279,7 +279,6 @@ const RoomInfoView = (): React.ReactElement => {
 	const handleReportUser = () => {
 		navigate('ReportUserView', {
 			name: roomUser?.name,
-			rid: room?.rid,
 			userId: roomUser?._id,
 			username: roomUser.username
 		});

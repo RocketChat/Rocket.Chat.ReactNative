@@ -12,7 +12,7 @@ import { useTheme } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import I18n from '../../i18n';
-import UserAvatarAndName from './UserAvatarAndName';
+import UserInfo from './UserInfo';
 import styles from './styles';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import Button from '../../containers/Button';
@@ -43,7 +43,7 @@ const ReportUserView = () => {
 	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
 
 	const {
-		params: { username, rid, userId, name }
+		params: { username, userId, name }
 	} = useRoute<TReportUserViewRouteProp>();
 
 	const {
@@ -78,16 +78,15 @@ const ReportUserView = () => {
 	return (
 		<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
 			<StatusBar />
-			<UserAvatarAndName username={username} rid={rid} name={name} />
+			<UserInfo username={username} name={name} />
 			<ControlledFormTextInput
 				name='description'
 				control={control}
 				label={I18n.t('Why_do_you_want_to_report')}
-				onSubmitEditing={handleSubmit(submit)}
-				returnKeyType='send'
 				multiline
 				inputStyle={styles.textInput}
 				testID='report-user-view-input'
+				containerStyle={styles.containerTextInput}
 			/>
 			<Button
 				title={I18n.t('Report')}

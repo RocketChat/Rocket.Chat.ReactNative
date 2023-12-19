@@ -174,7 +174,6 @@ export type ChatsStackParamList = {
 	};
 	ReportUserView: {
 		username: string;
-		rid?: string;
 		userId: string;
 		name: string;
 	};
