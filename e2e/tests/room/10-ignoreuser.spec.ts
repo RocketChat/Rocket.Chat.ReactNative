@@ -145,7 +145,7 @@ describe('Ignore/Block User', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('report-user-view-input')).replaceText('e2e test');
-				await element(by.id('report-user-view-input')).tapReturnKey();
+				await element(by.id('report-user-view-submit')).tap();
 				await sleep(500);
 				await checkRoomTitle(otherUser.username);
 			});
@@ -174,7 +174,7 @@ describe('Ignore/Block User', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('report-user-view-input')).replaceText('e2e test');
-				await element(by.id('report-user-view-input')).tapReturnKey();
+				await element(by.id('report-user-view-submit')).tap();
 				await sleep(500);
 				await checkRoomTitle(room);
 			});
