@@ -3,7 +3,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
-describe.skip('Settings screen', () => {
+describe('Settings screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;

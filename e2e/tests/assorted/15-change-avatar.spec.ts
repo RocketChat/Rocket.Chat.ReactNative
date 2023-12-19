@@ -3,7 +3,7 @@ import { device, waitFor, element, by } from 'detox';
 import { navigateToLogin, login, sleep, platformTypes, TTextMatcher, tapBack } from '../../helpers/app';
 import { createRandomUser, getProfileInfo, ITestUser, login as loginSetup } from '../../helpers/data_setup';
 
-describe.skip('Profile screen', () => {
+describe('Profile screen', () => {
 	let scrollViewType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;

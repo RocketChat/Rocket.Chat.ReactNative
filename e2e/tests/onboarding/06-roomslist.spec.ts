@@ -3,7 +3,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 import { login, navigateToLogin, logout, tapBack, searchRoom } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';
 
-describe.skip('Rooms list screen', () => {
+describe('Rooms list screen', () => {
 	beforeAll(async () => {
 		const user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });

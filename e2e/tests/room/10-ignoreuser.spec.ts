@@ -24,7 +24,7 @@ async function navigateToInfoView() {
 		.withTimeout(2000);
 }
 
-describe.skip('Ignore/Block User', () => {
+describe('Ignore/Block User', () => {
 	let user: ITestUser;
 	let otherUser: ITestUser;
 	let room: string;

@@ -66,7 +66,7 @@ function getIndex() {
 	return 0;
 }
 
-describe.skip('Room', () => {
+describe('Room', () => {
 	beforeAll(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);

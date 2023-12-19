@@ -14,8 +14,7 @@ async function navigateToRoomActions() {
 		.withTimeout(5000);
 }
 
-// FIXME: implement before merging to develop
-describe.skip('Join public room', () => {
+describe('Join public room', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;

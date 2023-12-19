@@ -35,7 +35,7 @@ async function openJoinCode() {
 }
 
 // FIXME: implement before merging to develop
-describe.skip('Join protected room', () => {
+describe('Join protected room', () => {
 	let user: ITestUser;
 
 	beforeAll(async () => {

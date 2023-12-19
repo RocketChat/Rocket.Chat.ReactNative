@@ -12,7 +12,7 @@ import {
 } from '../../helpers/app';
 import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
 
-describe.skip('Delete server', () => {
+describe('Delete server', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;

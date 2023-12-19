@@ -7,7 +7,7 @@ const waitForInAppNotificationAnimation = async () => {
 	await sleep(500);
 };
 
-describe.skip('InApp Notification', () => {
+describe('InApp Notification', () => {
 	let dmCreatedRid: string;
 	let sender: ITestUser;
 	let receiver: ITestUser;

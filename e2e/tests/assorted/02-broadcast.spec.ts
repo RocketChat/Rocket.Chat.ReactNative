@@ -17,8 +17,7 @@ import {
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
-// FIXME: implement before merging to develop
-describe.skip('Broadcast room', () => {
+describe('Broadcast room', () => {
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
 	let otherUser: ITestUser;
@@ -140,14 +139,14 @@ describe.skip('Broadcast room', () => {
 	});
 
 	it('should reply broadcasted message', async () => {
-		await element(by.id('message-composer-input')).replaceText(`${random()}broadcastreply`);
-		await sleep(300);
+		await element(by.id('message-composer-input')).typeText(`${random()}broadcastreply`);
+		// await sleep(300);
 		await element(by.id('message-composer-send')).tap();
 		await waitFor(element(by[textMatcher](message)))
 			.toExist()
-			.withTimeout(10000);
+			.withTimeout(60000);
 		await jumpToQuotedMessage(element(by[textMatcher](message)));
-		await sleep(300); // wait for animation
+		// await sleep(300); // wait for animation
 		await checkRoomTitle(room);
 	});
 });

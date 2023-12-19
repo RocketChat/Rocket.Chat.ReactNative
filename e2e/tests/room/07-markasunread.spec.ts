@@ -3,7 +3,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 import { navigateToLogin, login, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
 import { createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
 
-describe.skip('Mark as unread', () => {
+describe('Mark as unread', () => {
 	let user: ITestUser;
 	let otherUser: ITestUser;
 	let textMatcher: TTextMatcher;

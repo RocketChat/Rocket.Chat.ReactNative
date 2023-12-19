@@ -3,7 +3,7 @@ import { device, element, by } from 'detox';
 import { navigateToRegister, expectValidRegisterOrRetry } from '../../helpers/app';
 import data from '../../data';
 
-describe.skip('Create user screen', () => {
+describe('Create user screen', () => {
 	beforeAll(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToRegister();

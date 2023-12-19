@@ -59,7 +59,7 @@ async function navigateToRoomActions(room: string) {
 		.withTimeout(5000);
 }
 
-describe.skip('Move/Convert Team', () => {
+describe('Move/Convert Team', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
