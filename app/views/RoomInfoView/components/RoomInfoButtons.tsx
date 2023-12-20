@@ -109,7 +109,13 @@ export const RoomInfoButtons = ({
 				iconName='ignore'
 				showIcon={!!renderBlockUser}
 			/>
-			<BaseButton onPress={handleReportUser} label={i18n.t('Report')} iconName='warning' showIcon={!!renderReportUser} danger />
+			<BaseButton
+				onPress={handleReportUser}
+				label={i18n.t('Report')}
+				iconName='warning'
+				showIcon={!!renderReportUser}
+				danger
+			/>
 		</View>
 	);
 };
