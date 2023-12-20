@@ -109,7 +109,7 @@ exports[`Quote Adding/removing quotes 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -324,7 +324,7 @@ exports[`Quote Adding/removing quotes 2`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -742,7 +742,7 @@ exports[`Quote Adding/removing quotes 3`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -1345,7 +1345,7 @@ exports[`renders correctly 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -1560,7 +1560,7 @@ exports[`renders correctly with audio recorder disabled 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -1710,7 +1710,7 @@ exports[`renders correctly with audio recorder disabled and without audio upload
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -1860,7 +1860,7 @@ exports[`renders correctly without audio upload permissions 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -1936,7 +1936,7 @@ exports[`renders toolbar when focused 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -2145,7 +2145,7 @@ exports[`renders toolbar when focused 1`] = `
         testID="message-composer-open-markdown"
       >
         <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityLabel="Open markdown tools"
           accessibilityRole="button"
           accessible={true}
         >
@@ -2216,7 +2216,7 @@ exports[`renders toolbar when focused 1`] = `
         testID="message-composer-mention"
       >
         <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityLabel="Open mention autocomplete"
           accessibilityRole="button"
           accessible={true}
         >
@@ -2433,7 +2433,7 @@ exports[`send message 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -2574,7 +2574,7 @@ exports[`tap actions from toolbar 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -2783,7 +2783,7 @@ exports[`tap actions from toolbar 1`] = `
         testID="message-composer-open-markdown"
       >
         <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityLabel="Open markdown tools"
           accessibilityRole="button"
           accessible={true}
         >
@@ -2854,7 +2854,7 @@ exports[`tap actions from toolbar 1`] = `
         testID="message-composer-mention"
       >
         <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityLabel="Open mention autocomplete"
           accessibilityRole="button"
           accessible={true}
         >
@@ -2997,7 +2997,7 @@ exports[`tap emoji 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -3278,7 +3278,7 @@ exports[`tap mention 1`] = `
         onFocus={[Function]}
         onLayout={[Function]}
         onSelectionChange={[Function]}
-        placeholder="Message "
+        placeholder=""
         placeholderTextColor="#9EA2A8"
         style={
           Array [
@@ -3487,7 +3487,7 @@ exports[`tap mention 1`] = `
         testID="message-composer-open-markdown"
       >
         <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityLabel="Open markdown tools"
           accessibilityRole="button"
           accessible={true}
         >
@@ -3558,7 +3558,7 @@ exports[`tap mention 1`] = `
         testID="message-composer-mention"
       >
         <View
-          accessibilityLabel="[missing \\"en.TBD\\" translation]"
+          accessibilityLabel="Open mention autocomplete"
           accessibilityRole="button"
           accessible={true}
         >

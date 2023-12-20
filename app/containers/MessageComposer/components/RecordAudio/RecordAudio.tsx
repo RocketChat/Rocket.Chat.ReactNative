@@ -21,6 +21,7 @@ import { Duration, IDurationRef } from './Duration';
 import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from './constants';
 import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
+import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement => {
 	const [styles, colors] = useStyle();
@@ -130,7 +131,7 @@ export const RecordAudio = (): ReactElement => {
 			<View style={styles.buttons}>
 				<CancelButton onPress={cancelRecording} />
 				<View style={styles.recordingNote}>
-					<Text style={styles.recordingNoteText}>Recording audio message</Text>
+					<Text style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</Text>
 				</View>
 				<ReviewButton onPress={goReview} />
 			</View>

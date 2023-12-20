@@ -8,7 +8,6 @@ import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
-// import { showErrorAlert } from '../../../../lib/methods/helpers';
 
 export const MicOrSendButton = () => {
 	const { rid } = useRoomContext();
@@ -23,9 +22,6 @@ export const MicOrSendButton = () => {
 		const permission = await Audio.requestPermissionsAsync();
 		if (permission.granted) {
 			setRecordingAudio(true);
-		} else {
-			// showErrorAlert('Permission to access microphone was denied!');
-			Linking.openSettings();
 		}
 	};
 

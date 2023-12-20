@@ -272,6 +272,8 @@
   "Online": "Online",
   "Only_authorized_users_can_write_new_messages": "Only authorized users can write new messages",
   "Open_emoji_selector": "Open emoji selector",
+  "Open_markdown_tools": "Open markdown tools",
+  "Open_mention_autocomplete": "Open mention autocomplete",
   "Open_your_authentication_app_and_enter_the_code": "Open your authentication app and enter the code.",
   "OR": "OR",
   "OS": "OS",
@@ -767,8 +769,6 @@
   "Mute_someone_in_room": "Mute someone in the room",
   "Unmute_someone_in_room": "Unmute someone in the room",
   "Remove_quote_message": "Remove quote message",
-  "Message_has_been_shared":"Message has been shared",
-  "No_channels_in_team": "No Channels on this team",
   "Jitsi_may_require_authentication": "Jitsi may require authentication",
   "Jitsi_authentication_before_making_calls_admin": "Jitsi may require authentication before making calls. To learn more about their policies, visit the Jitsi website. You can also update the default app for video calls in the preferences.",
   "Jitsi_authentication_before_making_calls": "Jitsi may require authentication before making calls. To learn more about their policies, visit the Jitsi website.",
@@ -789,5 +789,13 @@
   "Pinned_a_message": "Pinned a message:",
   "You_dont_have_permission_to_perform_this_action": "You don’t have permission to perform this action. Check with a workspace administrator.",
   "Jump_to_message": "Jump to message",
-  "Missed_call": "Missed call"
+  "Missed_call": "Missed call",
+  "Recording_audio_in_progress": "Recording audio message",
+  "Bold": "Bold",
+  "Italic": "Italic",
+  "Strikethrough": "Strikethrough",
+  "Inline_code": "Inline code",
+  "Code_block": "Code block",
+  "Add_thread_reply": "Add thread reply",
+  "Message_roomname": "Message {{roomName}}"
 }

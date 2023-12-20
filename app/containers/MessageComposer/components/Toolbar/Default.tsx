@@ -22,14 +22,14 @@ export const Default = (): ReactElement | null => {
 			<BaseButton
 				onPress={() => setMarkdownToolbar(true)}
 				testID='message-composer-open-markdown'
-				accessibilityLabel='TBD'
+				accessibilityLabel='Open_markdown_tools'
 				icon='text-format'
 			/>
 			<Gap />
 			<BaseButton
 				onPress={() => emitter.emit('toolbarMention')}
 				testID='message-composer-mention'
-				accessibilityLabel='TBD'
+				accessibilityLabel='Open_mention_autocomplete'
 				icon='mention'
 			/>
 		</>

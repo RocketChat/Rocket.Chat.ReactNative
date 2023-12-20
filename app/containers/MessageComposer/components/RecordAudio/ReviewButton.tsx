@@ -17,10 +17,9 @@ export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement =
 				}
 			]}
 			onPress={() => onPress()}
-			testID={'tbd'}
 			hitSlop={hitSlop}
 		>
-			<View accessible accessibilityLabel={'tbd'} accessibilityRole='button'>
+			<View accessible accessibilityLabel={'Cancel_recording'} accessibilityRole='button'>
 				<CustomIcon name={'arrow-right'} size={24} color={colors.fontWhite} />
 			</View>
 		</BorderlessButton>

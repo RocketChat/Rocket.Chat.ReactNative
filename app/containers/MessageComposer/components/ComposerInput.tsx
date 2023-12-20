@@ -4,6 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
+import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
 import { loadDraftMessage, saveDraftMessage, fetchIsAllOrHere } from '../helpers';
@@ -39,11 +40,9 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-		// TODO: i18n
-		let placeholder = tmid ? 'Add thread reply' : 'Message ';
+		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (subscription && !tmid) {
-			placeholder += subscription.t === 'd' ? '@' : '#';
-			placeholder += getRoomTitle(subscription);
+			placeholder = I18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
 		}
 
 		useEffect(() => {
@@ -80,13 +79,11 @@ export const ComposerInput = memo(
 			useCallback(() => {
 				console.log('focus effect use callback');
 				const task = InteractionManager.runAfterInteractions(() => {
-					console.log('after interaction');
 					emitter.on('addMarkdown', ({ style }) => {
 						const { start, end } = selectionRef.current;
 						const text = textRef.current;
 						const markdown = markdownStyle[style];
 						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
-						console.log('🚀 ~ file: ComposerInput.tsx:95 ~ emitter.on ~ newText:', newText);
 						setInput(newText, {
 							start: start + markdown.length,
 							end: start === end ? start + markdown.length : end + markdown.length
