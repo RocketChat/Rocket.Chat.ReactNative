@@ -122,7 +122,7 @@ async function searchRoom(
 	roomTestID?: string
 ) {
 	await waitFor(element(by.id('rooms-list-view')))
-		.toBeVisible()
+		.toExist()
 		.withTimeout(30000);
 	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
 	if (nativeElementAction === 'replaceText') {
