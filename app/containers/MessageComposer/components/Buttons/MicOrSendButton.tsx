@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Audio } from 'expo-av';
-import { Linking } from 'react-native';
 
 import { BaseButton } from './BaseButton';
 import { MessageInnerContext, useMessageComposerApi, useMicOrSend } from '../../context';
