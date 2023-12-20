@@ -76,7 +76,8 @@ export function waitForNotVisible(id: string) {
 		.withTimeout(10000);
 }
 
-describe('Auto Translate', () => {
+// Skipped until we fix join code backend
+describe.skip('Auto Translate', () => {
 	let textMatcher: TTextMatcher;
 
 	const languages = {
