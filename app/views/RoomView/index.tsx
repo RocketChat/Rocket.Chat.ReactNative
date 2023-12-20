@@ -103,7 +103,6 @@ const stateAttrsUpdate = [
 	'lastOpen',
 	'reactionsModalVisible',
 	'canAutoTranslate',
-	'selectedMessage',
 	'loading',
 	'editing',
 	'readOnly',
@@ -260,7 +259,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			member: {},
 			lastOpen: null,
 			reactionsModalVisible: false,
-			selectedMessage: [],
 			selectedMessages,
 			action: selectedMessages.length ? 'quote' : null,
 			canAutoTranslate: false,
@@ -914,11 +912,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionLongPress = (message: TAnyMessageModel) => {
-		this.setState({ selectedMessage: message });
 		const { showActionSheet } = this.props;
-		const { selectedMessage } = this.state;
 		this.handleCloseEmoji(showActionSheet, {
-			children: <ReactionsList reactions={selectedMessage?.reactions} getCustomEmoji={this.getCustomEmoji} />,
+			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%'],
 			enableContentPanningGesture: false
 		});
