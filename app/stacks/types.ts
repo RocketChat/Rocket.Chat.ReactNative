@@ -6,7 +6,7 @@ import { ICannedResponse } from '../definitions/ICannedResponse';
 import { TDataSelect } from '../definitions/IDataSelect';
 import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../definitions/ILivechatTag';
-import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
+import { IMessage, TAnyMessageModel } from '../definitions/IMessage';
 import { IServer } from '../definitions/IServer';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';

@@ -9,7 +9,6 @@ import {
 	searchRoom,
 	platformTypes,
 	TTextMatcher,
-	sleep,
 	checkRoomTitle,
 	mockMessage,
 	jumpToQuotedMessage
