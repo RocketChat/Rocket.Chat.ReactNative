@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { ScrollView, StatusBar } from 'react-native';
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ import { useAppSelector } from '../../lib/hooks';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { Services } from '../../lib/services';
+import KeyboardView from '../../containers/KeyboardView';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
@@ -76,28 +77,36 @@ const ReportUserView = () => {
 	};
 
 	return (
-		<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
-			<StatusBar />
-			<UserInfo username={username} name={name} />
-			<ControlledFormTextInput
-				name='description'
-				control={control}
-				label={I18n.t('Why_do_you_want_to_report')}
-				multiline
-				inputStyle={styles.textInput}
-				testID='report-user-view-input'
-				containerStyle={styles.containerTextInput}
-			/>
-			<Button
-				title={I18n.t('Report')}
-				type='primary'
-				backgroundColor={colors.dangerColor}
-				disabled={!isValid}
-				onPress={handleSubmit(submit)}
-				testID='report-user-view-submit'
-				loading={loading}
-			/>
-		</SafeAreaView>
+		<KeyboardView
+			style={{ backgroundColor: colors.auxiliaryBackground }}
+			contentContainerStyle={styles.container}
+			keyboardVerticalOffset={128}
+		>
+			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
+				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.auxiliaryBackground }]}>
+					<StatusBar />
+					<UserInfo username={username} name={name} />
+					<ControlledFormTextInput
+						name='description'
+						control={control}
+						label={I18n.t('Why_do_you_want_to_report')}
+						multiline
+						inputStyle={styles.textInput}
+						testID='report-user-view-input'
+						containerStyle={styles.containerTextInput}
+					/>
+					<Button
+						title={I18n.t('Report')}
+						type='primary'
+						backgroundColor={colors.dangerColor}
+						disabled={!isValid}
+						onPress={handleSubmit(submit)}
+						testID='report-user-view-submit'
+						loading={loading}
+					/>
+				</ScrollView>
+			</SafeAreaView>
+		</KeyboardView>
 	);
 };
 

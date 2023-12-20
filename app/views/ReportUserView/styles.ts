@@ -3,6 +3,12 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	container: {
+		...sharedStyles.container
+	},
+	scroll: {
+		flex: 1
+	},
 	containerView: {
 		padding: 16
 	},
@@ -20,7 +26,12 @@ export default StyleSheet.create({
 		marginBottom: 24
 	},
 	textInput: {
-		height: 100,
-		textAlignVertical: 'top'
+		minHeight: 100,
+		maxHeight: 480,
+		height: undefined,
+		textAlignVertical: 'top',
+		padding: 16,
+		paddingTop: 16,
+		paddingBottom: 16
 	}
 });
