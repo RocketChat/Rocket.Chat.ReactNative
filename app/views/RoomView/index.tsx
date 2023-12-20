@@ -106,7 +106,6 @@ const stateAttrsUpdate = [
 	'selectedMessage',
 	'loading',
 	'editing',
-	'replying',
 	'readOnly',
 	'member',
 	'canForwardGuest',
@@ -189,12 +188,10 @@ interface IRoomViewState {
 	member: any;
 	lastOpen: Date | null;
 	reactionsModalVisible: boolean;
-	selectedMessage?: TAnyMessageModel;
 	selectedMessages: string[];
 	action: TMessageAction;
 	canAutoTranslate: boolean;
 	loading: boolean;
-	replying: boolean;
 	replyWithMention: boolean;
 	readOnly: boolean;
 	unreadsCount: number | null;
@@ -241,7 +238,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		 * Use `this.tmid` as thread id.
 		 */
 		this.tmid = props.route.params?.tmid;
-		const selectedMessage = props.route.params?.message;
+		const selectedMessages = props.route.params?.messageId ? [props.route.params.messageId] : [];
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
 		const prid = props.route.params?.prid;
@@ -263,12 +260,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			member: {},
 			lastOpen: null,
 			reactionsModalVisible: false,
-			selectedMessage,
-			selectedMessages: [],
-			action: null,
+			selectedMessage: [],
+			selectedMessages,
+			action: selectedMessages.length ? 'quote' : null,
 			canAutoTranslate: false,
 			loading: true,
-			replying: !!selectedMessage,
 			replyWithMention: false,
 			readOnly: false,
 			unreadsCount: null,

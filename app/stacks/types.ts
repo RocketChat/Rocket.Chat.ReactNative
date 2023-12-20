@@ -26,7 +26,7 @@ export type ChatsStackParamList = {
 				rid: string;
 				t: SubscriptionType;
 				tmid?: string;
-				message?: TMessageModel;
+				messageId?: string;
 				name?: string;
 				fname?: string;
 				prid?: string;
