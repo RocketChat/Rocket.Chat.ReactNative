@@ -7,6 +7,7 @@ import RoomTypeIcon from '../RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, useTheme } from '../../theme';
+import { MarkdownPreview } from '../markdown';
 
 export { ROW_HEIGHT };
 
@@ -60,9 +61,11 @@ const DirectoryItem = ({
 						</Text>
 					</View>
 					{description ? (
-						<Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-							{description}
-						</Text>
+						<MarkdownPreview
+							msg={description}
+							style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]}
+							numberOfLines={1}
+						/>
 					) : null}
 				</View>
 				<DirectoryItemLabel text={rightLabel} theme={theme} />
