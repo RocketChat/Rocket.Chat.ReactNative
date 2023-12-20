@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, TextInputProps, Keyboard, InteractionManager } from 'react-native';
+import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
@@ -45,13 +45,6 @@ export const ComposerInput = memo(
 			placeholder += subscription.t === 'd' ? '@' : '#';
 			placeholder += getRoomTitle(subscription);
 		}
-
-		useEffect(() => {
-			const listener = Keyboard.addListener('keyboardWillHide', () => {
-				setFocused(false);
-			});
-			return () => listener.remove();
-		}, []);
 
 		useEffect(() => {
 			const setDraftMessage = async () => {
