@@ -14,7 +14,7 @@ export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCanned
 		return (
 			<View style={styles.canned}>
 				<View style={styles.cannedTitle}>
-					<Text style={styles.cannedTitleText} numberOfLines={1}>
+					<Text style={styles.cannedTitleText}>
 						{I18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{I18n.t('Check_canned_responses')}</Text>
 					</Text>
 					<CustomIcon name='chevron-right' size={24} color={colors.fontHint} />
