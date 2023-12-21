@@ -6,7 +6,7 @@ import { TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
 import { MessageInnerContext } from '../../context';
 import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
@@ -14,6 +14,7 @@ export const ActionsButton = () => {
 	const { rid, tmid } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
+	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
 		rid,
 		tmid,
@@ -33,16 +34,14 @@ export const ActionsButton = () => {
 	};
 
 	const onPress = () => {
-		// const { goToCannedResponses } = this.props;
-
 		const options: TActionSheetOptionsItem[] = [];
-		// if (goToCannedResponses) {
-		// 	options.push({
-		// 		title: I18n.t('Canned_Responses'),
-		// 		icon: 'canned-response',
-		// 		onPress: () => goToCannedResponses()
-		// 	});
-		// }
+		if (permissionToViewCannedResponses) {
+			options.push({
+				title: I18n.t('Canned_Responses'),
+				icon: 'canned-response',
+				onPress: () => Navigation.navigate('CannedResponsesListView', { rid })
+			});
+		}
 		if (permissionToUpload) {
 			options.push(
 				{
