@@ -2,7 +2,7 @@ import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } 
 import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
@@ -24,6 +24,7 @@ import getMentionRegexp from '../../MessageBox/getMentionRegexp';
 import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector } from '../../../lib/hooks';
+import { ChatsStackParamList } from '../../../stacks/types';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -44,12 +45,18 @@ export const ComposerInput = memo(
 		if (subscription && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
 		}
+		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
+		const usedCannedResponse = route.params?.usedCannedResponse;
 
+		// Draft
 		useEffect(() => {
 			const setDraftMessage = async () => {
 				const draftMessage = await loadDraftMessage({ rid, tmid });
-				setInput(draftMessage);
+				if (draftMessage) {
+					setInput(draftMessage);
+				}
 			};
+
 			if (action !== 'edit') {
 				setDraftMessage();
 			}
@@ -61,6 +68,7 @@ export const ComposerInput = memo(
 			};
 		}, [action, rid, tmid]);
 
+		// Edit
 		useEffect(() => {
 			const fetchMessageAndSetInput = async () => {
 				const message = await getMessageById(selectedMessages[0]);
@@ -75,9 +83,15 @@ export const ComposerInput = memo(
 			}
 		}, [action, selectedMessages]);
 
+		// Applied canned response from Canned Responses list or detail screen
+		useEffect(() => {
+			if (usedCannedResponse) {
+				setInput(usedCannedResponse);
+			}
+		}, [usedCannedResponse]);
+
 		useFocusEffect(
 			useCallback(() => {
-				console.log('focus effect use callback');
 				const task = InteractionManager.runAfterInteractions(() => {
 					emitter.on('addMarkdown', ({ style }) => {
 						const { start, end } = selectionRef.current;
