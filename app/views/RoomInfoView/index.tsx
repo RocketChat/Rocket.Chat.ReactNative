@@ -163,6 +163,7 @@ const RoomInfoView = (): React.ReactElement => {
 					const { user } = result;
 					const r = handleRoles(user);
 					setRoomUser({ ...user, roles: r });
+					return;
 				}
 			} catch {
 				// do nothing
