@@ -87,7 +87,8 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginBottom: 12
 	},
 	text: {
 		fontSize: 14,
