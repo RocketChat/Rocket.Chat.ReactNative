@@ -23,7 +23,7 @@ import { generateTriggerId } from '../../../lib/methods';
 import getMentionRegexp from '../../MessageBox/getMentionRegexp';
 import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector, usePrevious } from '../../../lib/hooks';
 import { ChatsStackParamList } from '../../../stacks/types';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
@@ -47,6 +47,7 @@ export const ComposerInput = memo(
 		}
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
+		const prevAction = usePrevious(action);
 
 		// Draft
 		useEffect(() => {
@@ -77,6 +78,9 @@ export const ComposerInput = memo(
 				}
 			};
 
+			if (prevAction === 'edit' && action !== 'edit') {
+				setInput('');
+			}
 			if (action === 'edit' && selectedMessages[0]) {
 				focus();
 				fetchMessageAndSetInput();

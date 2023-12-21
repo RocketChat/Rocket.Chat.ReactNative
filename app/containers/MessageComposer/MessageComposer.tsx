@@ -197,7 +197,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				<SendThreadToChannel />
 			</View>
 		);
-	}, [recordingAudio]);
+	}, [recordingAudio, backgroundColor, colors.strokeLight]);
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
