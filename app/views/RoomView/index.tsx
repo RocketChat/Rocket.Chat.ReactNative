@@ -5,7 +5,7 @@ import parse from 'url-parse';
 import moment from 'moment';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
-import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
@@ -48,13 +48,9 @@ import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
-import { ChatsStackParamList } from '../../stacks/types';
 import {
 	IApplicationState,
 	IAttachment,
-	IBaseScreen,
-	ILastMessage,
-	ILoggedUser,
 	IMessage,
 	IOmnichannelSource,
 	ISubscription,
@@ -62,7 +58,6 @@ import {
 	SubscriptionType,
 	TAnyMessageModel,
 	TSubscriptionModel,
-	ICustomEmojis,
 	IEmoji,
 	TGetCustomEmoji,
 	RoomType
@@ -87,115 +82,16 @@ import {
 	hasPermission
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
-import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
+import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { IRoomContext, RoomContext, TMessageAction } from './context';
+import { IRoomContext, RoomContext } from './context';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
-
-type TStateAttrsUpdate = keyof IRoomViewState;
-
-const stateAttrsUpdate = [
-	'joined',
-	'lastOpen',
-	'reactionsModalVisible',
-	'canAutoTranslate',
-	'loading',
-	'editing',
-	'readOnly',
-	'member',
-	'canForwardGuest',
-	'canReturnQueue',
-	'canViewCannedResponse'
-] as TStateAttrsUpdate[];
-
-type TRoomUpdate = keyof TSubscriptionModel;
-
-const roomAttrsUpdate = [
-	'f',
-	'ro',
-	'blocked',
-	'blocker',
-	'archived',
-	'tunread',
-	'muted',
-	'ignored',
-	'jitsiTimeout',
-	'announcement',
-	'sysMes',
-	'topic',
-	'name',
-	'fname',
-	'roles',
-	'bannerClosed',
-	'visitor',
-	'joinCodeRequired',
-	'teamMain',
-	'teamId',
-	'status',
-	'lastMessage',
-	'onHold',
-	't',
-	'autoTranslate',
-	'autoTranslateLanguage',
-	'unmuted'
-] as TRoomUpdate[];
-
-interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
-	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
-	useRealName?: boolean;
-	isAuthenticated: boolean;
-	Message_GroupingPeriod?: number;
-	Message_TimeFormat?: string;
-	Message_Read_Receipt_Enabled?: boolean;
-	Hide_System_Messages?: string[];
-	baseUrl: string;
-	serverVersion: string | null;
-	customEmojis: ICustomEmojis;
-	isMasterDetail: boolean;
-	replyBroadcast: Function;
-	width: number;
-	insets: EdgeInsets;
-	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
-	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
-	livechatAllowManualOnHold?: boolean;
-}
-
-interface IRoomViewState {
-	[key: string]: any;
-	joined: boolean;
-	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
-		  };
-	roomUpdate: {
-		[K in TRoomUpdate]?: any;
-	};
-	member: any;
-	lastOpen: Date | null;
-	reactionsModalVisible: boolean;
-	selectedMessages: string[];
-	action: TMessageAction;
-	canAutoTranslate: boolean;
-	loading: boolean;
-	replyWithMention: boolean;
-	readOnly: boolean;
-	unreadsCount: number | null;
-	roomUserId?: string | null;
-}
+import { IRoomViewProps, IRoomViewState } from './definitions';
+import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -1417,8 +1313,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const {
 			joined,
 			room,
-			// replying,
-			// replyWithMention,
 			readOnly,
 			loading
 			// canViewCannedResponse
@@ -1437,9 +1331,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('onHold' in room && room.onHold) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
-					<Text accessibilityLabel={I18n.t('Chat_is_on_hold')} style={[styles.previewMode, { color: themes[theme].titleText }]}>
-						{I18n.t('Chat_is_on_hold')}
-					</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('Chat_is_on_hold')}</Text>
 					<Touch
 						onPress={this.resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -1455,12 +1347,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (!joined) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text
-						accessibilityLabel={I18n.t('You_are_in_preview_mode')}
-						style={[styles.previewMode, { color: themes[theme].titleText }]}
-					>
-						{I18n.t('You_are_in_preview_mode')}
-					</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -1476,12 +1363,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (readOnly) {
 			return (
 				<View style={styles.readOnly}>
-					<Text
-						style={[styles.previewMode, { color: themes[theme].titleText }]}
-						accessibilityLabel={I18n.t('This_room_is_read_only')}
-					>
-						{I18n.t('This_room_is_read_only')}
-					</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
