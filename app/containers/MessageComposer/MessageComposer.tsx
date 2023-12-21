@@ -26,7 +26,7 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
@@ -111,7 +111,6 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 			const likeString = sanitizeLikeString(command);
 			const slashCommand = await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch();
 			if (slashCommand.length > 0) {
-				logEvent(events.COMMAND_RUN);
 				try {
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
@@ -139,7 +138,6 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 
 		switch (eventType) {
 			case EventTypes.BACKSPACE_PRESSED:
-				// logEvent(events.MB_BACKSPACE);
 				const emojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
 				let charsToRemove = 1;
 				const lastEmoji = text.substr(cursor > 0 ? cursor - 2 : text.length - 2, cursor > 0 ? cursor : text.length);
@@ -151,7 +149,6 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
 				break;
 			case EventTypes.EMOJI_PRESSED:
-				// logEvent(events.MB_EMOJI_SELECTED);
 				let emojiText = '';
 				if (typeof emoji === 'string') {
 					emojiText = shortnameToUnicode(`:${emoji}:`);
@@ -163,7 +160,6 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
 				break;
 			case EventTypes.SEARCH_PRESSED:
-				// logEvent(events.MB_EMOJI_SEARCH_PRESSED);
 				openSearchEmojiKeyboard();
 				break;
 			default:

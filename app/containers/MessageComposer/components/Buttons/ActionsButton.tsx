@@ -23,7 +23,6 @@ export const ActionsButton = () => {
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const createDiscussion = async () => {
-		// logEvent(events.ROOM_BOX_ACTION_DISCUSSION);
 		const subscription = await getSubscriptionByRoomId(rid);
 		const params = { channel: subscription, showCloseModal: true };
 		if (isMasterDetail) {
@@ -34,7 +33,6 @@ export const ActionsButton = () => {
 	};
 
 	const onPress = () => {
-		// logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		// const { goToCannedResponses } = this.props;
 
 		const options: TActionSheetOptionsItem[] = [];

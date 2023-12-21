@@ -31,7 +31,6 @@ export const useChooseMedia = ({
 	};
 
 	const takePhoto = async () => {
-		// logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
 			let image = await ImagePicker.openCamera({ ...imagePickerConfig, ...libPickerLabels });
 			image = forceJpgExtension(image);
@@ -53,7 +52,6 @@ export const useChooseMedia = ({
 	};
 
 	const takeVideo = async () => {
-		// logEvent(events.ROOM_BOX_ACTION_VIDEO);
 		try {
 			const video = await ImagePicker.openCamera({ ...videoPickerConfig, ...libPickerLabels });
 			const file = video as any; // FIXME: unify those types to remove the need for any
@@ -70,12 +68,10 @@ export const useChooseMedia = ({
 			handleError(canUploadResult.error);
 		} catch (e) {
 			log(e);
-			// logEvent(events.ROOM_BOX_ACTION_VIDEO_F);
 		}
 	};
 
 	const chooseFromLibrary = async () => {
-		// logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
 			// The type can be video or photo, however the lib understands that it is just one of them.
 			let attachments = (await ImagePicker.openPicker({
@@ -86,12 +82,10 @@ export const useChooseMedia = ({
 			openShareView(attachments);
 		} catch (e) {
 			log(e);
-			// logEvent(events.ROOM_BOX_ACTION_LIBRARY_F);
 		}
 	};
 
 	const chooseFile = async () => {
-		// logEvent(events.ROOM_BOX_ACTION_FILE);
 		try {
 			const res = await DocumentPicker.pickSingle({
 				type: [DocumentPicker.types.allFiles]
@@ -114,7 +108,6 @@ export const useChooseMedia = ({
 			handleError(canUploadResult.error);
 		} catch (e: any) {
 			if (!DocumentPicker.isCancel(e)) {
-				// logEvent(events.ROOM_BOX_ACTION_FILE_F);
 				log(e);
 			}
 		}
