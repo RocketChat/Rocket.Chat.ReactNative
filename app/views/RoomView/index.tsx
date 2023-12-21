@@ -1310,20 +1310,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderFooter = () => {
-		const {
-			joined,
-			room,
-			readOnly,
-			loading
-			// canViewCannedResponse
-		} = this.state;
-		const {
-			// navigation,
-			theme
-			// route
-		} = this.props;
-
-		// const usedCannedResponse = route?.params?.usedCannedResponse;
+		const { joined, room, readOnly, loading } = this.state;
+		const { theme } = this.props;
 
 		if (!this.rid) {
 			return null;
@@ -1418,6 +1406,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			<RoomContext.Provider
 				value={{
 					rid,
+					t,
 					tmid: this.tmid,
 					sharing: false,
 					action,

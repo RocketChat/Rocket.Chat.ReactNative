@@ -11,7 +11,7 @@ import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const ActionsButton = () => {
-	const { rid, tmid } = useRoomContext();
+	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
@@ -35,7 +35,7 @@ export const ActionsButton = () => {
 
 	const onPress = () => {
 		const options: TActionSheetOptionsItem[] = [];
-		if (permissionToViewCannedResponses) {
+		if (t === 'l' && permissionToViewCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
 				icon: 'canned-response',

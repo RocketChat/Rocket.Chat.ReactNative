@@ -4,6 +4,7 @@ export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
 
 export interface IRoomContext {
 	rid: string;
+	t: string;
 	tmid?: string;
 	sharing: boolean;
 	action: TMessageAction;
@@ -15,19 +16,20 @@ export interface IRoomContext {
 	onRemoveQuoteMessage: (messageId: string) => void;
 }
 
-const initialContext = {
-	rid: '',
-	tmid: undefined,
-	sharing: false,
-	action: null,
-	selectedMessages: [],
+// const initialContext = {
+// 	rid: '',
+// 	t: '',
+// 	tmid: undefined,
+// 	sharing: false,
+// 	action: null,
+// 	selectedMessages: [],
 
-	editCancel: () => {},
-	editRequest: () => {},
-	onSendMessage: () => {},
-	onRemoveQuoteMessage: () => {}
-};
+// 	editCancel: () => {},
+// 	editRequest: () => {},
+// 	onSendMessage: () => {},
+// 	onRemoveQuoteMessage: () => {}
+// };
 
-export const RoomContext = createContext<IRoomContext>(initialContext);
+export const RoomContext = createContext<IRoomContext>({} as IRoomContext);
 
 export const useRoomContext = () => useContext(RoomContext);
