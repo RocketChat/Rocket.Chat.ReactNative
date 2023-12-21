@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
 import { useRoomContext } from '../../../views/RoomView/context';
-import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
+import { useAlsoSendThreadToChannel, useMessageComposerApi, useShowEmojiSearchbar } from '../context';
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
@@ -17,6 +17,7 @@ import { compareServerVersion } from '../../../lib/methods/helpers';
 export const SendThreadToChannel = (): React.ReactElement | null => {
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { setAlsoSendThreadToChannel } = useMessageComposerApi();
+	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const { tmid } = useRoomContext();
 	const { colors } = useTheme();
 	const subscription = useRef<Subscription>();
@@ -62,7 +63,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 		};
 	}, [tmid, alsoSendThreadToChannelUserPref, serverVersion, setAlsoSendThreadToChannel]);
 
-	if (!tmid) {
+	if (!tmid || showEmojiSearchbar) {
 		return null;
 	}
 
