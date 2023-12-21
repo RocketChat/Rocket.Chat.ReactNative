@@ -66,7 +66,6 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 		return null;
 	}
 
-	// TODO: RNGH
 	return (
 		<TouchableWithoutFeedback
 			style={styles.container}
