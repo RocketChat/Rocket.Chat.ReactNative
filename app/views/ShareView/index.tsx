@@ -333,6 +333,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						t: room.t,
 						tmid: thread.id,
 						sharing: true,
+						selectedMessages: [],
 						onSendMessage: this.send
 					}}
 				>

@@ -8,7 +8,7 @@ export interface IRoomContext {
 	tmid?: string;
 	sharing: boolean;
 	action?: TMessageAction;
-	selectedMessages?: string[];
+	selectedMessages: string[];
 
 	editCancel?: () => void;
 	editRequest?: (message: any) => void;
