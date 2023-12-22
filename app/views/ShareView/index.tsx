@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
 
+import { MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
@@ -33,6 +34,7 @@ import {
 } from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
+import { RoomContext } from '../RoomView/context';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -320,21 +322,30 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	renderContent = () => {
-		const { attachments, selected, room, text } = this.state;
+		const { attachments, selected, room, text, thread } = this.state;
 		const { theme, navigation } = this.props;
 
 		if (attachments.length) {
 			return (
-				<View style={styles.container}>
-					<Preview
-						// using key just to reset zoom/move after change selected
-						key={selected?.path}
-						item={selected}
-						length={attachments.length}
-						theme={theme}
-						isShareExtension={this.isShareExtension}
-					/>
-					<MessageBox
+				<RoomContext.Provider
+					value={{
+						rid: room.rid,
+						t: room.t,
+						tmid: thread.id,
+						sharing: true,
+						onSendMessage: this.send
+					}}
+				>
+					<View style={styles.container}>
+						<Preview
+							// using key just to reset zoom/move after change selected
+							key={selected?.path}
+							item={selected}
+							length={attachments.length}
+							theme={theme}
+							isShareExtension={this.isShareExtension}
+						/>
+						{/* <MessageBox
 						showSend
 						sharing
 						ref={this.messagebox}
@@ -356,8 +367,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							onPress={this.selectFile}
 							onRemove={this.removeFile}
 						/>
-					</MessageBox>
-				</View>
+					</MessageBox> */}
+						<MessageComposerContainer // ref={this.messageComposerRef}
+						/>
+					</View>
+				</RoomContext.Provider>
 			);
 		}
 

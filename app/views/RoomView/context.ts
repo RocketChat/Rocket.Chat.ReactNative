@@ -7,13 +7,13 @@ export interface IRoomContext {
 	t: string;
 	tmid?: string;
 	sharing: boolean;
-	action: TMessageAction;
-	selectedMessages: string[];
+	action?: TMessageAction;
+	selectedMessages?: string[];
 
-	editCancel: () => void;
-	editRequest: (message: any) => void;
+	editCancel?: () => void;
+	editRequest?: (message: any) => void;
+	onRemoveQuoteMessage?: (messageId: string) => void;
 	onSendMessage: (message: string, tshow?: boolean) => void;
-	onRemoveQuoteMessage: (messageId: string) => void;
 }
 
 // const initialContext = {
