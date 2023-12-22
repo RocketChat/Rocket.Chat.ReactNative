@@ -58,6 +58,10 @@ export const ComposerInput = memo(
 				}
 			};
 
+			if (sharing) {
+				return;
+			}
+
 			if (action !== 'edit') {
 				setDraftMessage();
 			}
