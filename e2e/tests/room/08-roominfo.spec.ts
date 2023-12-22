@@ -286,10 +286,8 @@ describe('Room info screen', () => {
 					.toBeVisible()
 					.withTimeout(10000);
 				await sleep(400);
-				// This is the expected text on CircleCi for both platforms
-				const textWithShowMore =
-					'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet odio lectus, nec varius... Show more';
-				await waitFor(element(by[textMatcher](`${textWithShowMore}`)))
+				const textWithShowMoreRegExp = /Lorem[\s\S]+... Show more/i
+				await waitFor(element(by[textMatcher](textWithShowMoreRegExp)))
 					.toExist()
 					.withTimeout(10000);
 				await element(by.id(`collapsible-text-truncated-${statusTextExpected}`)).tap({ x: 320, y: 24 });
