@@ -34,8 +34,9 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		);
 	}
 
+	const itsMe = mention === username;
 	let mentionStyle = {};
-	if (mention === username) {
+	if (itsMe) {
 		mentionStyle = {
 			color: themes[theme].mentionMeColor
 		};
@@ -51,7 +52,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
 			t: 'd',
-			rid: user && user._id
+			rid: user && user._id,
+			itsMe
 		};
 		if (navToRoomInfo) {
 			navToRoomInfo(navParam);
