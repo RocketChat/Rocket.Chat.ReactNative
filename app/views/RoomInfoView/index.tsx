@@ -163,14 +163,14 @@ const RoomInfoView = (): React.ReactElement => {
 					const { user } = result;
 					const r = handleRoles(user);
 					setRoomUser({ ...user, roles: r });
-					return;
 				}
 			} catch {
 				// do nothing
 			}
+		} else {
+			const r = handleRoles(roomUser);
+			if (r) setRoomUser({ ...roomUser, roles: r });
 		}
-		const r = handleRoles(roomUser);
-		if (r) setRoomUser({ ...roomUser, roles: r });
 	};
 
 	const loadRoom = async () => {
