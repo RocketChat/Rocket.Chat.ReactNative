@@ -58,9 +58,7 @@ export const ComposerInput = memo(
 				}
 			};
 
-			if (sharing) {
-				return;
-			}
+			if (sharing) return;
 
 			if (action !== 'edit') {
 				setDraftMessage();
@@ -81,6 +79,8 @@ export const ComposerInput = memo(
 					setInput(message?.msg || '');
 				}
 			};
+
+			if (sharing) return;
 
 			if (prevAction === 'edit' && action !== 'edit') {
 				setInput('');
@@ -283,7 +283,7 @@ export const ComposerInput = memo(
 				stopAutocomplete();
 				return;
 			}
-			if (text.match(/^\//)) {
+			if (!sharing && text.match(/^\//)) {
 				const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 				if (commandParameter) {
 					const db = database.active;
@@ -323,9 +323,7 @@ export const ComposerInput = memo(
 		}, 300); // TODO: 300ms?
 
 		const handleTyping = (isTyping: boolean) => {
-			if (sharing) {
-				return;
-			}
+			if (sharing) return;
 			dispatch(userTyping(rid, isTyping));
 		};
 
