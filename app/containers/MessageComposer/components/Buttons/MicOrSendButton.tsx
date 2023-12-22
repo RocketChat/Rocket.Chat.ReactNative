@@ -9,7 +9,7 @@ import { useCanUploadFile } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const MicOrSendButton = () => {
-	const { rid } = useRoomContext();
+	const { rid, sharing } = useRoomContext();
 	const micOrSend = useMicOrSend();
 	const { sendMessage } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
@@ -24,7 +24,7 @@ export const MicOrSendButton = () => {
 		}
 	};
 
-	if (micOrSend === 'send') {
+	if (micOrSend === 'send' || sharing) {
 		return (
 			<BaseButton
 				onPress={sendMessage}
