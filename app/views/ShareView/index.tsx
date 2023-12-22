@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
 
-import { MessageComposerContainer } from '../../containers/MessageComposer';
+import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
@@ -64,14 +64,8 @@ interface IShareViewProps {
 	replyingMessage?: IMessage;
 }
 
-interface IMessageBoxShareView {
-	text: string;
-	forceUpdate(): void;
-	formatReplyMessage: (replyingMessage: IMessage, message?: any) => Promise<string>;
-}
-
 class ShareView extends Component<IShareViewProps, IShareViewState> {
-	private messagebox: React.RefObject<IMessageBoxShareView>;
+	private messageComposerRef: React.RefObject<IMessageComposerRef>;
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
@@ -81,7 +75,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	constructor(props: IShareViewProps) {
 		super(props);
-		this.messagebox = React.createRef();
+		this.messageComposerRef = React.createRef();
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
@@ -288,7 +282,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	selectFile = (item: IShareAttachment) => {
 		const { attachments, selected } = this.state;
 		if (attachments.length > 0) {
-			const text = this.messagebox.current?.text;
+			const text = this.messageComposerRef.current?.getText();
 			const newAttachments = attachments.map(att => {
 				if (att.path === selected.path) {
 					att.description = text;
@@ -369,8 +363,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							onRemove={this.removeFile}
 						/>
 					</MessageBox> */}
-						<MessageComposerContainer // ref={this.messageComposerRef}
-						/>
+						<MessageComposerContainer ref={this.messageComposerRef} />
 					</View>
 				</RoomContext.Provider>
 			);

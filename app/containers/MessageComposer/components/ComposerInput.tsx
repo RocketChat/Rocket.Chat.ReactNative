@@ -143,7 +143,6 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection) => {
-			textRef.current = text;
 			if (inputRef.current) {
 				inputRef.current.setNativeProps({ text });
 			}
@@ -163,6 +162,7 @@ export const ComposerInput = memo(
 		const onChangeText: TextInputProps['onChangeText'] = text => {
 			// const isTextEmpty = text.length === 0;
 			// setMicOrSend(!isTextEmpty ? 'send' : 'mic');
+			textRef.current = text;
 			debouncedOnChangeText(text);
 			setInput(text);
 		};

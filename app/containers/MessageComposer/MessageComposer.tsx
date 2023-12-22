@@ -56,7 +56,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
-	const { rid, tmid, action, selectedMessages, editRequest, onSendMessage } = useRoomContext();
+	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -71,7 +71,8 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	);
 
 	useImperativeHandle(forwardedRef, () => ({
-		closeEmojiKeyboardAndAction
+		closeEmojiKeyboardAndAction,
+		getText: composerInputComponentRef.current.getText
 	}));
 
 	useBackHandler(() => {
@@ -92,8 +93,14 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 	const sendMessage = async () => {
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
+		// if sharing, only execute onSubmit prop
+		if (sharing) {
+			onSendMessage(textFromInput);
+			return;
+		}
+
 		if (action === 'edit') {
-			return editRequest({ id: selectedMessages[0], msg: textFromInput, rid });
+			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
 		}
 
 		if (action === 'quote') {
