@@ -26,6 +26,7 @@ import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';
+import SortOptions from './SortOptions';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
@@ -233,8 +234,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			<>
 				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
 
-				{/* code for toggleDropdown */}
 				<View style={styles.checkingView}>
+				{/* code for toggleDropdown */}
 				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
 					<View
 						style={[
@@ -355,7 +356,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					/>
 				) : null}
 				{showAdditionalDropdown ? (
-					<Options
+					<SortOptions
 						theme={theme}
 						type={type}
 						globalUsers={globalUsers}
