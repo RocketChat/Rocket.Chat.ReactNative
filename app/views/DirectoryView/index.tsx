@@ -48,6 +48,7 @@ interface IDirectoryViewState {
 	text: string;
 	total: number;
 	showOptionsDropdown: boolean;
+	showAdditionalDropdown: boolean;
 	globalUsers: boolean;
 	type: string;
 }
@@ -71,6 +72,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			text: '',
 			total: -1,
 			showOptionsDropdown: false,
+			showAdditionalDropdown: false,
 			globalUsers: true,
 			type: props.directoryDefaultView
 		};
@@ -141,6 +143,18 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 	};
 
+	changeAdditionalType = (type: string) => {
+		this.setState({ type, data: [] }, () => this.search());
+
+		if (type === 'users') {
+			logEvent(events.DIRECTORY_SEARCH_USERS);
+		} else if (type === 'channels') {
+			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+		} else if (type === 'teams') {
+			logEvent(events.DIRECTORY_SEARCH_TEAMS);
+		}
+	};
+
 	toggleWorkspace = () => {
 		this.setState(
 			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
@@ -149,7 +163,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	toggleDropdown = () => {
-		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
+		this.setState(({ showAdditionalDropdown }) => ({ showAdditionalDropdown: !showAdditionalDropdown }));
 	};
 
 	goRoom = (item: TGoRoomItem) => {
@@ -194,11 +208,16 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 	};
 
+	  toggleAdditionalDropdown = () => {
+		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
+	};
+
 	renderHeader = () => {
 		const { type } = this.state;
 		const { theme } = this.props;
 		let text = 'Users';
 		let icon: TIconsName = 'user';
+		let filter: TIconsName = 'filter';
 
 		if (type === 'channels') {
 			text = 'Channels';
@@ -213,6 +232,9 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		return (
 			<>
 				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
+
+				{/* code for toggleDropdown */}
+				<View style={styles.checkingView}>
 				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
 					<View
 						style={[
@@ -231,6 +253,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						/>
 					</View>
 				</Touch>
+
+				{/* add code for the filterDropdown */}
+        <Touch onPress={this.toggleAdditionalDropdown} style={styles.dropdownAdditionalItemButton} testID='directory-view-additional-dropdown'>
+          <View style={[sharedStyles.separatorVertical, styles.dropdownItemButton, { borderColor: themes[theme].separatorColor }]}>
+            <CustomIcon name={filter} size={20} color={themes[theme].auxiliaryTintColor} style={styles.toggleDropdownIcon} />
+          </View>
+        </Touch>
+				</View>
+
 			</>
 		);
 	};
@@ -294,7 +325,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	render = () => {
-		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
+		const { data, loading, showOptionsDropdown, showAdditionalDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
@@ -319,6 +350,17 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						globalUsers={globalUsers}
 						close={this.toggleDropdown}
 						changeType={this.changeType}
+						toggleWorkspace={this.toggleWorkspace}
+						isFederationEnabled={isFederationEnabled}
+					/>
+				) : null}
+				{showAdditionalDropdown ? (
+					<Options
+						theme={theme}
+						type={type}
+						globalUsers={globalUsers}
+						close={this.toggleAdditionalDropdown}
+						changeType={this.changeAdditionalType}
 						toggleWorkspace={this.toggleWorkspace}
 						isFederationEnabled={isFederationEnabled}
 					/>
