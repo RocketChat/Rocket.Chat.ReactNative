@@ -28,18 +28,18 @@ export default StyleSheet.create({
 		marginHorizontal: 10
 	},
 	roomTitleContainer: {
-		paddingTop: 32,
+		paddingTop: 16,
 		marginHorizontal: 16,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
 	roomTitle: {
-		fontSize: 20,
+		fontSize: 16,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textMedium
 	},
 	roomUsername: {
-		fontSize: 18,
+		fontSize: 14,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
 	},
@@ -75,7 +75,7 @@ export default StyleSheet.create({
 	},
 	roomButtonsContainer: {
 		flexDirection: 'row',
-		paddingTop: 30
+		paddingTop: 16
 	},
 	roomButton: {
 		alignItems: 'center',
@@ -84,5 +84,10 @@ export default StyleSheet.create({
 	},
 	roomButtonText: {
 		marginTop: 5
+	},
+	roomInfoViewTitleContainer: {
+		paddingTop: 16,
+		paddingHorizontal: 20,
+		alignItems: 'center'
 	}
 });

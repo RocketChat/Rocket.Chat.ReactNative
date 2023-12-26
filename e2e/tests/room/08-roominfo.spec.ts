@@ -268,5 +268,33 @@ describe('Room info screen', () => {
 					.withTimeout(10000);
 			});
 		});
+
+		describe('Navigate to user status-test', () => {
+			it('Back to rooms list view', async () => {
+				await tapBack();
+				await sleep(300);
+				await tapBack();
+				await sleep(300);
+				await tapBack();
+				await sleep(300);
+			});
+			it('should see the status text with show more label', async () => {
+				const statusTextExpected =
+					'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet odio lectus, nec varius nisi semper ut porta ante';
+				await navigateToRoomInfo('status-test');
+				await waitFor(element(by.id(`collapsible-text-truncated-${statusTextExpected}`)))
+					.toBeVisible()
+					.withTimeout(10000);
+				await sleep(400);
+				const textWithShowMoreRegExp = /Lorem[\s\S]+... Show more/i
+				await waitFor(element(by[textMatcher](textWithShowMoreRegExp)))
+					.toExist()
+					.withTimeout(10000);
+				await element(by.id(`collapsible-text-truncated-${statusTextExpected}`)).tap({ x: 320, y: 24 });
+				await waitFor(element(by.id(`collapsible-text-${statusTextExpected}`)))
+					.toBeVisible()
+					.withTimeout(10000);
+			});
+		});
 	});
 });
