@@ -44,7 +44,13 @@ const styles = StyleSheet.create({
 
 require('../MessageBox/EmojiKeyboard');
 
-export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactElement | null => {
+export const MessageComposer = ({
+	forwardedRef,
+	children
+}: {
+	forwardedRef: any;
+	children?: ReactElement;
+}): ReactElement | null => {
 	console.count('[MessageComposer] MessageComposer');
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
@@ -202,6 +208,7 @@ export const MessageComposer = ({ forwardedRef }: { forwardedRef: any }): ReactE
 				<Toolbar />
 				<EmojiSearchbar />
 				<SendThreadToChannel />
+				{children}
 			</View>
 		);
 	}, [recordingAudio, backgroundColor, colors.strokeLight]);

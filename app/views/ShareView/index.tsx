@@ -363,7 +363,15 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							onRemove={this.removeFile}
 						/>
 					</MessageBox> */}
-						<MessageComposerContainer ref={this.messageComposerRef} />
+						<MessageComposerContainer ref={this.messageComposerRef}>
+							<Thumbs
+								attachments={attachments}
+								theme={theme}
+								isShareExtension={this.isShareExtension}
+								onPress={this.selectFile}
+								onRemove={this.removeFile}
+							/>
+						</MessageComposerContainer>
 					</View>
 				</RoomContext.Provider>
 			);
