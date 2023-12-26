@@ -98,13 +98,12 @@ export const MessageComposer = ({
 	};
 
 	const sendMessage = async () => {
-		const textFromInput = composerInputComponentRef.current.getTextAndClear();
-
-		// if sharing, only execute onSubmit prop
 		if (sharing) {
-			onSendMessage(textFromInput);
+			onSendMessage();
 			return;
 		}
+
+		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
 		if (action === 'edit') {
 			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });

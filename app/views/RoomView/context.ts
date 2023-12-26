@@ -13,7 +13,7 @@ export interface IRoomContext {
 	editCancel?: () => void;
 	editRequest?: (message: any) => void;
 	onRemoveQuoteMessage?: (messageId: string) => void;
-	onSendMessage: (message: string, tshow?: boolean) => void;
+	onSendMessage: Function;
 }
 
 // const initialContext = {
