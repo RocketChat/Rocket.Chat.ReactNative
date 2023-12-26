@@ -11,6 +11,7 @@ import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscrip
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
+import { useRoomContext } from '../../../views/RoomView/context';
 
 export const useChooseMedia = ({
 	rid,
@@ -22,6 +23,7 @@ export const useChooseMedia = ({
 	permissionToUpload: boolean;
 }) => {
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
+	const { action, selectedMessages } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {
@@ -114,14 +116,6 @@ export const useChooseMedia = ({
 	};
 
 	const openShareView = async (attachments: any) => {
-		// const { message, replyCancel, replyWithMention, replying } = this.props;
-		// // Start a thread with an attachment
-		// let value: TThreadModel | IMessage = this.thread;
-		// if (replyWithMention) {
-		// 	value = message;
-		// 	replyCancel();
-		// }
-
 		const room = await getSubscriptionByRoomId(rid);
 		let thread;
 		if (tmid) {
@@ -133,9 +127,8 @@ export const useChooseMedia = ({
 				room,
 				thread,
 				attachments,
-				replying: false
-				// replyingMessage: message,
-				// closeReply: replyCancel
+				action,
+				selectedMessages
 			});
 		}
 	};

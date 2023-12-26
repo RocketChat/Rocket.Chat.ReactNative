@@ -10,6 +10,7 @@ import { IMessageComposerRef, MessageComposerContainer } from '../../containers/
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
+import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { TSupportedThemes, withTheme } from '../../theme';
@@ -78,9 +79,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
-		this.replying = props.route.params?.replying;
-		this.replyingMessage = props.route.params?.replyingMessage;
-		this.closeReply = props.route.params?.closeReply;
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -220,7 +218,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		await this.selectFile(selected);
 
 		const { attachments, room, text, thread } = this.state;
-		const { navigation, server, user } = this.props;
+		const { navigation, server, user, route } = this.props;
+
+		const action = route.params?.action;
+		const selectedMessages = route.params?.selectedMessages ?? [];
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -233,8 +234,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		let msg: string | undefined;
-		if (this.replying && this.replyingMessage) {
-			msg = await this.messagebox.current?.formatReplyMessage(this.replyingMessage);
+		if (action === 'quote') {
+			msg = await prepareQuoteMessage('', selectedMessages);
 		}
 
 		try {
@@ -316,7 +317,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	renderContent = () => {
 		const { attachments, selected, room, text, thread } = this.state;
-		const { theme } = this.props;
+		const { theme, route } = this.props;
 
 		if (attachments.length) {
 			return (
@@ -326,7 +327,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						t: room.t,
 						tmid: thread.id,
 						sharing: true,
-						selectedMessages: [],
+						action: route.params?.action,
+						selectedMessages: route.params?.selectedMessages,
 						onSendMessage: this.send
 					}}
 				>

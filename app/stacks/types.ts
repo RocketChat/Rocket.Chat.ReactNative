@@ -12,6 +12,7 @@ import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definiti
 import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
 import { ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
+import { TMessageAction } from '../views/RoomView/context';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
@@ -263,9 +264,8 @@ export type InsideStackParamList = {
 		text: string;
 		room: TSubscriptionModel;
 		thread: TThreadModel;
-		replying?: boolean;
-		replyingMessage?: IMessage;
-		closeReply?: Function;
+		action: TMessageAction;
+		selectedMessages: string[];
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
