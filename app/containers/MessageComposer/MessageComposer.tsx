@@ -192,7 +192,7 @@ export const MessageComposer = ({
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
-	const renderContent = useCallback(() => {
+	const renderContent = () => {
 		console.count('[MessageComposer] renderContent');
 		if (recordingAudio) {
 			return <RecordAudio />;
@@ -211,7 +211,7 @@ export const MessageComposer = ({
 				{children}
 			</View>
 		);
-	}, [recordingAudio, backgroundColor, colors.strokeLight]);
+	};
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>

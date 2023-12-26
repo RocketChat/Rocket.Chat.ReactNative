@@ -136,7 +136,7 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 	</ThumbButton>
 );
 
-const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
+const Thumbs = ({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
 	if (attachments?.length > 1) {
 		return (
 			<FlatList
@@ -157,6 +157,6 @@ const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRe
 		);
 	}
 	return null;
-});
+};
 
 export default Thumbs;
