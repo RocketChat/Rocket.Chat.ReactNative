@@ -5,6 +5,7 @@ import { IEmoji, IPreviewItem, TUserStatus } from '../../definitions';
 export interface IMessageComposerRef {
 	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => void;
 	getText: () => string;
+	setInput: TSetInput;
 }
 
 export interface IMessageComposerContainerProps {

@@ -289,13 +289,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				}
 				return att;
 			});
-			return this.setState({ attachments: newAttachments, selected: item });
+			this.setState({ attachments: newAttachments, selected: item });
+			this.messageComposerRef.current?.setInput(item.description || '');
 		}
 	};
 
 	removeFile = (item: IShareAttachment) => {
 		const { selected, attachments } = this.state;
-		let newSelected;
+		let newSelected = selected;
 		if (item.path === selected.path) {
 			const selectedIndex = attachments.findIndex(att => att.path === selected.path);
 			// Selects the next one, if available
@@ -306,9 +307,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
 		}
-		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected }, () => {
-			this.messagebox?.current?.forceUpdate?.();
-		});
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+		this.messageComposerRef.current?.setInput(newSelected.description || '');
 	};
 
 	onChangeText = (text: string) => {

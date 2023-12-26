@@ -143,6 +143,7 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection) => {
+			textRef.current = text;
 			if (inputRef.current) {
 				inputRef.current.setNativeProps({ text });
 			}
