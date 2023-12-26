@@ -34,6 +34,7 @@ import {
 	logout,
 	removeServerData,
 	removeServerDatabase,
+	resendFailedMessages,
 	subscribeSettings,
 	subscribeUsersPresence
 } from '../lib/methods';
@@ -240,6 +241,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			yield put(inviteLinksRequest(inviteLinkToken));
 		}
 		yield showSupportedVersionsWarning(server);
+		yield resendFailedMessages();
 	} catch (e) {
 		log(e);
 	}

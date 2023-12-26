@@ -1,5 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Model } from '@nozbe/watermelondb';
+import { Model, Q } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from './helpers/log';
@@ -8,6 +8,42 @@ import { Encryption } from '../encryption';
 import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
+
+export async function resendFailedMessages(): Promise<void> {
+	try {
+		const db = database.active;
+		const messageRecords = await db
+			.get('messages')
+			.query(
+				Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)),
+				Q.where('tmid', null),
+				Q.experimentalSortBy('ts', Q.asc)
+			)
+			.fetch();
+
+		const threadRecords = await db
+			.get('thread_messages')
+			.query(
+				Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)),
+				Q.experimentalSortBy('ts', Q.asc)
+			)
+			.fetch();
+
+		const resendMsgs: Promise<void>[] = [];
+
+		messageRecords.forEach((message: TMessageModel) => {
+			resendMsgs.push(resendMessage(message));
+		});
+
+		threadRecords.forEach((message: TMessageModel) => {
+			resendMsgs.push(resendMessage(message, message.rid));
+		});
+
+		await Promise.allSettled(resendMsgs);
+	} catch {
+		// do nothing
+	}
+}
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;
