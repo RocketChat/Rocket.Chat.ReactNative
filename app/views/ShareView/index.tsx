@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { NativeModules, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
@@ -14,7 +14,6 @@ import { sendLoadingEvent } from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
-import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
@@ -317,7 +316,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	renderContent = () => {
 		const { attachments, selected, room, text, thread } = this.state;
-		const { theme, navigation } = this.props;
+		const { theme } = this.props;
 
 		if (attachments.length) {
 			return (
@@ -340,29 +339,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							theme={theme}
 							isShareExtension={this.isShareExtension}
 						/>
-						{/* <MessageBox
-						showSend
-						sharing
-						ref={this.messagebox}
-						rid={room.rid}
-						roomType={room.t}
-						theme={theme}
-						onSubmit={this.send}
-						message={this.replyingMessage}
-						navigation={navigation}
-						isFocused={navigation.isFocused}
-						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
-						isActionsEnabled={false}
-						replying={this.replying}
-					>
-						<Thumbs
-							attachments={attachments}
-							theme={theme}
-							isShareExtension={this.isShareExtension}
-							onPress={this.selectFile}
-							onRemove={this.removeFile}
-						/>
-					</MessageBox> */}
 						<MessageComposerContainer ref={this.messageComposerRef}>
 							<Thumbs
 								attachments={attachments}
