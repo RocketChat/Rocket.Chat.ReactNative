@@ -77,6 +77,6 @@ export const checkSupportedVersions = function ({
 		status,
 		message,
 		i18n: message ? sv?.i18n : undefined,
-		expiration: exception?.expiration
+		expiration
 	};
 };
