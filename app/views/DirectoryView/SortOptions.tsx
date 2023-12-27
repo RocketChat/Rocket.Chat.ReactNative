@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, Easing, Text, TouchableWithoutFeedback, View } from 'react-native';
 
-import Touch from '../../containers/Touch';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import Touch from '../../containers/Touch';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import styles from './styles';
+import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
+import styles from './styles';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -17,14 +17,13 @@ const ANIMATION_PROPS = {
 };
 
 interface IDirectoryOptionsProps {
-	type: string;
-	globalUsers: boolean;
-	isFederationEnabled: boolean;
-	close: Function;
-	changeType: Function;
-	toggleWorkspace(): void;
 	theme: TSupportedThemes;
+	close: Function;
+	selected: string;
+	changeSelection: Function;
 }
+
+type Method = "default" | "channel" | "user";
 
 export default class SortOptions extends PureComponent<IDirectoryOptionsProps, any> {
 	private animatedValue: Animated.Value;
@@ -49,29 +48,64 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 		}).start(() => close());
 	};
 
-	renderItem = (itemType: string) => {
-		const { changeType, type: propType, theme } = this.props;
-		let text = 'Users';
-		let icon: TIconsName = 'user';
-		if (itemType === 'channels') {
-			text = 'Channels';
-			icon = 'channel-public';
+	renderItem = (method: Method) => {
+		const { changeSelection, selected, theme } = this.props;
+		let text = 'Ascending';
+		let icon: TIconsName = 'sort-az';
+        let channelIcon: TIconsName = 'channel-public';
+        let userIcon: TIconsName = 'user';
+
+        let ascIcon: TIconsName = 'arrow-up';
+        let descIcon: TIconsName = 'arrow-down';
+        let defaultIcon: TIconsName = 'refresh';
+
+		if (method === 'channel') {
+			text = 'Channel';
+			icon = channelIcon;
+		}
+		if (method === 'user') {
+			text = 'User';
+			icon = userIcon;
+		}
+		if (method === 'default') {
+			text = 'Default';
+			icon = defaultIcon;
 		}
 
-		if (itemType === 'teams') {
-			text = 'Teams';
-			icon = 'teams';
-		}
-
-		return (
-			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
-				<View style={styles.dropdownItemContainer}>
-					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
-					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
-					{propType === itemType ? <Check /> : null}
-				</View>
-			</Touch>
-		);
+        // console.log("text", text)
+        return (
+            <View style={styles.dropdownItemButton}>
+                <View style={styles.dropdownItemContainer}>
+                    {method === "default" ? (
+                        
+                        <Touch style={styles.dropdownItemContainer} onPress={() => changeSelection(method, "default")}>
+                            <View style={styles.dropdownItemContainer}>
+                                <CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
+                                <Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
+                            </View>
+                        </Touch>
+                    ) : (
+                        <View style={styles.dropdownItemContainer}>
+                            <CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
+                            <Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
+                        </View>
+                    )}
+        
+                    {method !== "default" && (
+                        <>
+                            <Touch onPress={() => changeSelection(method, "ascending")}>
+                                <CustomIcon name={ascIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
+                            </Touch>
+                            <Touch onPress={() => changeSelection(method, "descending")}>
+                                <CustomIcon name={descIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
+                            </Touch>
+                        </>
+                    )}
+                </View>
+            </View>
+        );
+        
+        
 	};
 
 	render() {
@@ -79,7 +113,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 			inputRange: [0, 1],
 			outputRange: [-326, 0]
 		});
-		const { globalUsers, toggleWorkspace, isFederationEnabled, theme } = this.props;
+		const { theme } = this.props;
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity]
@@ -93,7 +127,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
 				>
 					{/* <Touch onPress={this.close} accessibilityLabel={I18n.t('Sort_by')}> */}
-					<Touch onPress={this.close} accessibilityLabel="Sort By">
+					<Touch onPress={this.close} accessibilityLabel='Sort By'>
 						<View
 							style={[
 								styles.dropdownContainerHeader,
@@ -111,9 +145,9 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 							/>
 						</View>
 					</Touch>
-					{this.renderItem('channels')}
-					{this.renderItem('users')}
-					{this.renderItem('teams')}
+					{this.renderItem('channel')}
+					{this.renderItem('user')}
+					{this.renderItem('default')}
 				</Animated.View>
 			</>
 		);

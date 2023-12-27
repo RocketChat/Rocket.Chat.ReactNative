@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
-	
 	list: {
 		flex: 1
 	},
@@ -39,19 +38,15 @@ export default StyleSheet.create({
 		// @ts-ignore
 		...StyleSheet.absoluteFill
 	},
-	
-
-	checkingView:{
+	checkingView: {
 		display: 'flex',
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 
 	dropdownAdditionalItemButton: {
 		height: 46,
 		justifyContent: 'center'
 	},
-
-
 	dropdownContainerHeader: {
 		height: 46,
 		borderBottomWidth: StyleSheet.hairlineWidth,

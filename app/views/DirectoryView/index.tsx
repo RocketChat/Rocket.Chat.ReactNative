@@ -1,39 +1,39 @@
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { CompositeNavigationProp } from '@react-navigation/native';
 
-import { ChatsStackParamList } from '../../stacks/types';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import * as List from '../../containers/List';
-import Touch from '../../containers/Touch';
-import DirectoryItem from '../../containers/DirectoryItem';
-import sharedStyles from '../Styles';
-import I18n from '../../i18n';
-import SearchBox from '../../containers/SearchBox';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import DirectoryItem from '../../containers/DirectoryItem';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { debounce } from '../../lib/methods/helpers';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
-import { getUserSelector } from '../../selectors/login';
+import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import SearchBox from '../../containers/SearchBox';
+import StatusBar from '../../containers/StatusBar';
+import Touch from '../../containers/Touch';
 import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
-import styles from './styles';
+import I18n from '../../i18n';
+import { themes } from '../../lib/constants';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { debounce } from '../../lib/methods/helpers';
+import { TGoRoomItem, goRoom } from '../../lib/methods/helpers/goRoom';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { Services } from '../../lib/services';
+import { getUserSelector } from '../../selectors/login';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { ChatsStackParamList } from '../../stacks/types';
+import { TSupportedThemes, withTheme } from '../../theme';
+import sharedStyles from '../Styles';
 import Options from './Options';
 import SortOptions from './SortOptions';
-import { Services } from '../../lib/services';
-import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import styles from './styles';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList>
+	StackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
+	StackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	baseUrl: string;
 	isFederationEnabled: boolean;
@@ -46,12 +46,19 @@ interface IDirectoryViewProps {
 interface IDirectoryViewState {
 	data: IServerRoom[];
 	loading: boolean;
-	text: string;
+
 	total: number;
-	showOptionsDropdown: boolean;
-	showAdditionalDropdown: boolean;
 	globalUsers: boolean;
-	type: string;
+
+	// Search by text
+	text: string;
+	// Search by type: Users, Channels, Teams
+	searchBy: string;
+	sortName: 'default' | 'channel' | 'user';
+	showSearchByDropdown: boolean;
+	// Sort by method: Ascending, Descending
+	sortBy: "ascending" | "descending";
+	showSortByDropdown: boolean;
 }
 
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
@@ -70,12 +77,16 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.state = {
 			data: [],
 			loading: false,
-			text: '',
+
 			total: -1,
-			showOptionsDropdown: false,
-			showAdditionalDropdown: false,
 			globalUsers: true,
-			type: props.directoryDefaultView
+
+			text: '',
+			sortBy: 'ascending',
+			sortName: 'default',
+			showSortByDropdown: false,
+			searchBy: props.directoryDefaultView,
+			showSearchByDropdown: false
 		};
 	}
 
@@ -105,7 +116,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.setState({ loading: true });
 
 		try {
-			const { data, type, globalUsers } = this.state;
+			const { data, searchBy: type, globalUsers } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 			const directories = await Services.getDirectory({
 				query,
@@ -113,9 +124,63 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				count: 50,
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
+
+			console.log("checking sorting state",this.state.sortBy, this.state.sortName);
 			if (directories.success) {
+				const finalData = [...data, ...(directories.result as IServerRoom[])];
+				if (this.state.sortName !== 'default') {
+					switch (this.state.sortName) {
+						case 'channel':
+							if (this.state.sortBy === 'ascending') {
+								finalData.sort((x, y) => {
+									if (x.name && y.name) {
+										return x.name.localeCompare(y.name);
+									}
+									return 0;
+								});
+							}
+							if (this.state.sortBy === 'descending') {
+								finalData.sort((x, y) => {
+									if (x.name && y.name) {
+										return y.name.localeCompare(x.name);
+									}
+									return 0;
+								});
+							}
+							break;
+						case 'user':
+							if (this.state.sortBy === 'ascending') {
+								finalData.sort((x, y) => {
+									// console.log("checking sort data", x, y)
+									if (x.usersCount !== undefined && y.usersCount !== undefined) {
+										return x.usersCount - y.usersCount;
+									}
+									return 0;
+								});
+							}
+							if (this.state.sortBy === 'descending') {
+								finalData.sort((x, y) => {
+									if (x.usersCount !== undefined && y.usersCount !== undefined) {
+										return y.usersCount - x.usersCount;
+									}
+									return 0;
+								});
+							}
+							break;
+					}
+
+
+					// finalData.sort((x, y) => {
+					// 	if (x.name && y.name) {
+					// 		const order = this.state.sortBy === 'ascending' ? 1 : -1;
+					// 		return x.name.localeCompare(y.name) * order;
+					// 	}
+					// 	return 0;
+					// });
+
+				}
 				this.setState({
-					data: [...data, ...(directories.result as IServerRoom[])],
+					data: finalData,
 					loading: false,
 					total: directories.total
 				});
@@ -132,30 +197,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.load({ newSearch: true });
 	};
 
-	changeType = (type: string) => {
-		this.setState({ type, data: [] }, () => this.search());
-
-		if (type === 'users') {
-			logEvent(events.DIRECTORY_SEARCH_USERS);
-		} else if (type === 'channels') {
-			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
-		} else if (type === 'teams') {
-			logEvent(events.DIRECTORY_SEARCH_TEAMS);
-		}
-	};
-
-	changeAdditionalType = (type: string) => {
-		this.setState({ type, data: [] }, () => this.search());
-
-		if (type === 'users') {
-			logEvent(events.DIRECTORY_SEARCH_USERS);
-		} else if (type === 'channels') {
-			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
-		} else if (type === 'teams') {
-			logEvent(events.DIRECTORY_SEARCH_TEAMS);
-		}
-	};
-
 	toggleWorkspace = () => {
 		this.setState(
 			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
@@ -163,8 +204,48 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		);
 	};
 
-	toggleDropdown = () => {
-		this.setState(({ showAdditionalDropdown }) => ({ showAdditionalDropdown: !showAdditionalDropdown }));
+	toggleSearchByDropdown = () => {
+		this.setState(({ showSearchByDropdown }) => ({ showSearchByDropdown: !showSearchByDropdown }));
+	};
+
+	toggleSortByDropdown = () => {
+		this.setState(({ showSortByDropdown }) => ({ showSortByDropdown: !showSortByDropdown }));
+	};
+
+	changeSearchByMethod = (searchBy: string) => {
+		this.setState({ searchBy, data: [], showSearchByDropdown: false }, () => this.search());
+
+		if (searchBy === 'users') {
+			logEvent(events.DIRECTORY_SEARCH_USERS);
+		} else if (searchBy === 'channels') {
+			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+		} else if (searchBy === 'teams') {
+			logEvent(events.DIRECTORY_SEARCH_TEAMS);
+		}
+	};
+
+	changeSortByMethod = (sortName: IDirectoryViewState['sortName'], sortBy: IDirectoryViewState['sortBy']) => {
+		this.setState({ sortName, sortBy, data: [], showSortByDropdown: false }, () => this.search());
+
+		switch (sortName) {
+			// case 'relevance':
+			// 	logEvent(events.DIRECTORY_SORT_RELEVANCE);
+			// 	break;
+			case 'channel':
+				if (sortBy === 'ascending') {
+					logEvent(events.DIRECTORY_CHANNEL_SORT_ASCENDING);
+				} else if (sortBy === 'descending') {
+					logEvent(events.DIRECTORY_CHANNEL_SORT_DESCENDING);
+				}
+				break;
+			case 'user':
+				if (sortBy === 'ascending') {
+					logEvent(events.DIRECTORY_USER_SORT_ASCENDING);
+				} else if (sortBy === 'descending') {
+					logEvent(events.DIRECTORY_USER_SORT_DESCENDING);
+				}
+				break;
+		}
 	};
 
 	goRoom = (item: TGoRoomItem) => {
@@ -173,7 +254,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	onPressItem = async (item: IServerRoom) => {
-		const { type } = this.state;
+		const { searchBy: type } = this.state;
 		if (type === 'users') {
 			const result = await Services.createDirectMessage(item.username as string);
 			if (result.success) {
@@ -209,16 +290,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 	};
 
-	  toggleAdditionalDropdown = () => {
-		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
-	};
-
 	renderHeader = () => {
-		const { type } = this.state;
+		const { searchBy: type } = this.state;
 		const { theme } = this.props;
 		let text = 'Users';
 		let icon: TIconsName = 'user';
-		let filter: TIconsName = 'filter';
+		const filter: TIconsName = 'filter';
 
 		if (type === 'channels') {
 			text = 'Channels';
@@ -234,41 +311,44 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			<>
 				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
 
-				<View style={styles.checkingView}>
 				{/* code for toggleDropdown */}
-				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
-					<View
-						style={[
-							sharedStyles.separatorVertical,
-							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme].separatorColor }
-						]}
+				<View style={styles.checkingView}>
+					<Touch onPress={this.toggleSearchByDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
+						<View
+							style={[
+								sharedStyles.separatorVertical,
+								styles.toggleDropdownContainer,
+								{ borderColor: themes[theme].separatorColor }
+							]}
+						>
+							<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
+							<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
+							<CustomIcon
+								name='chevron-down'
+								size={20}
+								color={themes[theme].auxiliaryTintColor}
+								style={styles.toggleDropdownArrow}
+							/>
+						</View>
+					</Touch>
+					<Touch
+						onPress={this.toggleSortByDropdown}
+						style={styles.dropdownAdditionalItemButton}
+						testID='directory-view-additional-dropdown'
 					>
-						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
-						<CustomIcon
-							name='chevron-down'
-							size={20}
-							color={themes[theme].auxiliaryTintColor}
-							style={styles.toggleDropdownArrow}
-						/>
-					</View>
-				</Touch>
-
-				{/* add code for the filterDropdown */}
-        <Touch onPress={this.toggleAdditionalDropdown} style={styles.dropdownAdditionalItemButton} testID='directory-view-additional-dropdown'>
-          <View style={[sharedStyles.separatorVertical, styles.dropdownItemButton, { borderColor: themes[theme].separatorColor }]}>
-            <CustomIcon name={filter} size={20} color={themes[theme].auxiliaryTintColor} style={styles.toggleDropdownIcon} />
-          </View>
-        </Touch>
+						<View
+							style={[sharedStyles.separatorVertical, styles.dropdownItemButton, { borderColor: themes[theme].separatorColor }]}
+						>
+							<CustomIcon name={filter} size={20} color={themes[theme].auxiliaryTintColor} style={styles.toggleDropdownIcon} />
+						</View>
+					</Touch>
 				</View>
-
 			</>
 		);
 	};
 
 	renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => {
-		const { data, type } = this.state;
+		const { data, searchBy: type } = this.state;
 		const { baseUrl, user, theme } = this.props;
 
 		let style;
@@ -326,7 +406,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	render = () => {
-		const { data, loading, showOptionsDropdown, showAdditionalDropdown, type, globalUsers } = this.state;
+		const {
+			data,
+			loading,
+			showSearchByDropdown,
+			showSortByDropdown,
+			searchBy: type,
+			sortBy,
+			globalUsers
+		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
@@ -344,26 +432,23 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 					onEndReached={() => this.load({})}
 				/>
-				{showOptionsDropdown ? (
+				{showSearchByDropdown ? (
 					<Options
 						theme={theme}
 						type={type}
 						globalUsers={globalUsers}
-						close={this.toggleDropdown}
-						changeType={this.changeType}
+						close={this.toggleSearchByDropdown}
+						changeType={this.changeSearchByMethod}
 						toggleWorkspace={this.toggleWorkspace}
 						isFederationEnabled={isFederationEnabled}
 					/>
 				) : null}
-				{showAdditionalDropdown ? (
+				{showSortByDropdown ? (
 					<SortOptions
 						theme={theme}
-						type={type}
-						globalUsers={globalUsers}
-						close={this.toggleAdditionalDropdown}
-						changeType={this.changeAdditionalType}
-						toggleWorkspace={this.toggleWorkspace}
-						isFederationEnabled={isFederationEnabled}
+						close={this.toggleSortByDropdown}
+						selected={sortBy}
+						changeSelection={this.changeSortByMethod}
 					/>
 				) : null}
 			</SafeAreaView>
