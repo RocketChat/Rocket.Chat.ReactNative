@@ -968,7 +968,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState(...args);
 	};
 
-	handleSendMessage: IRoomContext['onSendMessage'] = (message, tshow) => {
+	handleSendMessage = (message: string, tshow?: boolean) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
 		const { rid } = this.state.room;
 		const { user } = this.props;
