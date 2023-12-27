@@ -125,7 +125,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 				<Animated.View
 					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
 				>
-					<Touch onPress={this.close} accessibilityLabel={I18n.t('Sort_By')}>
+					<Touch onPress={this.close} accessibilityLabel={I18n.t('Sort_by')}>
 						<View
 							style={[
 								styles.dropdownContainerHeader,
@@ -133,7 +133,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 								{ borderColor: themes[theme].separatorColor }
 							]}
 						>
-							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sort_By')}</Text>
+							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sort_by')}</Text>
 							<CustomIcon
 								style={[styles.dropdownItemIcon, styles.inverted]}
 								size={22}
