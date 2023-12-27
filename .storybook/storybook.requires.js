@@ -29,6 +29,7 @@ const getStories = () => {
     require("../app/containers/markdown/Markdown.stories.tsx"),
     require("../app/containers/markdown/new/NewMarkdown.stories.tsx"),
     require("../app/containers/message/Components/CollapsibleQuote/CollapsibleQuote.stories.tsx"),
+    require("../app/containers/CollapsibleText/CollapsibleText.stories.tsx"),
     require("../app/containers/message/Message.stories.tsx"),
     require("../app/containers/ReactionsList/ReactionsList.stories.tsx"),
     require("../app/containers/RoomHeader/RoomHeader.stories.tsx"),
