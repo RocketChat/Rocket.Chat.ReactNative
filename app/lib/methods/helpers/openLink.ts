@@ -6,6 +6,7 @@ import { themes } from '../../constants';
 import { TSupportedThemes } from '../../../theme';
 import UserPreferences from '../userPreferences';
 import ensureSecureProtocol from './ensureSecureProtocol';
+import log from './log';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
 
@@ -38,6 +39,16 @@ const appSchemeURL = (url: string, browser: string): string => {
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
+	const telRegExp = new RegExp(/^(tel:)/)
+	if (telRegExp.test(url)) {
+		try {
+			await Linking.openURL(url);
+			return
+		} catch (e) {
+			log(e)
+		}
+	}
+
 	url = ensureSecureProtocol(url);
 	try {
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
