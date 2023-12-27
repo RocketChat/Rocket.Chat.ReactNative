@@ -72,13 +72,12 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 			icon = defaultIcon;
 		}
 
-        // console.log("text", text)
         return (
             <View style={styles.dropdownItemButton}>
                 <View style={styles.dropdownItemContainer}>
                     {method === "default" ? (
                         
-                        <Touch style={styles.dropdownItemContainer} onPress={() => changeSelection(method, "default")}>
+                        <Touch style={styles.dropdownItemContainerSort} onPress={() => changeSelection(method, "default")}>
                             <View style={styles.dropdownItemContainer}>
                                 <CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
                                 <Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
@@ -94,10 +93,10 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
                     {method !== "default" && (
                         <>
                             <Touch onPress={() => changeSelection(method, "ascending")}>
-                                <CustomIcon name={ascIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
+                                <CustomIcon name={ascIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIconSort} />
                             </Touch>
                             <Touch onPress={() => changeSelection(method, "descending")}>
-                                <CustomIcon name={descIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
+                                <CustomIcon name={descIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIconSort} />
                             </Touch>
                         </>
                     )}
@@ -126,8 +125,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 				<Animated.View
 					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
 				>
-					{/* <Touch onPress={this.close} accessibilityLabel={I18n.t('Sort_by')}> */}
-					<Touch onPress={this.close} accessibilityLabel='Sort By'>
+					<Touch onPress={this.close} accessibilityLabel={I18n.t('Sort_By')}>
 						<View
 							style={[
 								styles.dropdownContainerHeader,
@@ -135,8 +133,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 								{ borderColor: themes[theme].separatorColor }
 							]}
 						>
-							{/* <Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sort_by')}</Text> */}
-							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>Sort By</Text>
+							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sort_By')}</Text>
 							<CustomIcon
 								style={[styles.dropdownItemIcon, styles.inverted]}
 								size={22}

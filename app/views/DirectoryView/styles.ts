@@ -63,6 +63,12 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+	dropdownItemContainerSort: {
+		flex: 1,
+		height: 42,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
 	dropdownItemText: {
 		fontSize: 18,
 		flex: 1,
@@ -84,6 +90,12 @@ export default StyleSheet.create({
 		width: 22,
 		height: 22,
 		marginHorizontal: 15
+	},
+	dropdownItemIconSort: {
+		width: 22,
+		height: 35,
+		marginHorizontal: 15,
+		marginTop: 10
 	},
 	dropdownSeparator: {
 		height: StyleSheet.hairlineWidth,

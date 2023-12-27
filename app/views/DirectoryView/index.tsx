@@ -49,14 +49,10 @@ interface IDirectoryViewState {
 
 	total: number;
 	globalUsers: boolean;
-
-	// Search by text
 	text: string;
-	// Search by type: Users, Channels, Teams
 	searchBy: string;
 	sortName: 'default' | 'channel' | 'user';
 	showSearchByDropdown: boolean;
-	// Sort by method: Ascending, Descending
 	sortBy: "ascending" | "descending";
 	showSortByDropdown: boolean;
 }
@@ -77,10 +73,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.state = {
 			data: [],
 			loading: false,
-
 			total: -1,
 			globalUsers: true,
-
 			text: '',
 			sortBy: 'ascending',
 			sortName: 'default',
@@ -151,7 +145,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						case 'user':
 							if (this.state.sortBy === 'ascending') {
 								finalData.sort((x, y) => {
-									// console.log("checking sort data", x, y)
 									if (x.usersCount !== undefined && y.usersCount !== undefined) {
 										return x.usersCount - y.usersCount;
 									}
@@ -168,15 +161,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 							}
 							break;
 					}
-
-
-					// finalData.sort((x, y) => {
-					// 	if (x.name && y.name) {
-					// 		const order = this.state.sortBy === 'ascending' ? 1 : -1;
-					// 		return x.name.localeCompare(y.name) * order;
-					// 	}
-					// 	return 0;
-					// });
 
 				}
 				this.setState({
@@ -228,9 +212,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.setState({ sortName, sortBy, data: [], showSortByDropdown: false }, () => this.search());
 
 		switch (sortName) {
-			// case 'relevance':
-			// 	logEvent(events.DIRECTORY_SORT_RELEVANCE);
-			// 	break;
 			case 'channel':
 				if (sortBy === 'ascending') {
 					logEvent(events.DIRECTORY_CHANNEL_SORT_ASCENDING);
