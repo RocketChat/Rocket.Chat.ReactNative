@@ -39,13 +39,13 @@ const appSchemeURL = (url: string, browser: string): string => {
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
-	const telRegExp = new RegExp(/^(tel:)/)
+	const telRegExp = new RegExp(/^(tel:)/);
 	if (telRegExp.test(url)) {
 		try {
 			await Linking.openURL(url);
-			return
+			return;
 		} catch (e) {
-			log(e)
+			log(e);
 		}
 	}
 
