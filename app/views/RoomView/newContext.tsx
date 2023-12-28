@@ -28,7 +28,6 @@ type State = {
 		sendMessage: Function;
 		editCancel?: () => void;
 		editRequest?: (message: any) => void;
-		onRemoveQuoteMessage?: (messageId: string) => void;
 	}) => void;
 	setAction: (action: TMessageAction, messageId: string) => void;
 	resetAction: () => void;
@@ -47,10 +46,10 @@ type Actions =
 			sendMessage: Function;
 			editCancel?: () => void;
 			editRequest?: (message: any) => void;
-			onRemoveQuoteMessage?: (messageId: string) => void;
 	  }
 	| { type: 'setAction'; action: TMessageAction; messageId: string }
-	| { type: 'resetAction' };
+	| { type: 'resetAction' }
+	| { type: 'onRemoveQuoteMessage'; messageId: string };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -62,8 +61,7 @@ const reducer = (state: State, action: Actions): State => {
 				tmid: action.tmid,
 				sendMessage: action.sendMessage,
 				editCancel: action.editCancel,
-				editRequest: action.editRequest,
-				onRemoveQuoteMessage: action.onRemoveQuoteMessage
+				editRequest: action.editRequest
 			};
 		case 'setAction':
 			const found = state.selectedMessages.find(id => id === action.messageId);
@@ -75,6 +73,8 @@ const reducer = (state: State, action: Actions): State => {
 			};
 		case 'resetAction':
 			return { ...state, action: null, selectedMessages: [] };
+		case 'onRemoveQuoteMessage':
+			return { ...state, selectedMessages: state.selectedMessages.filter(id => id !== action.messageId) };
 	}
 };
 
@@ -82,17 +82,20 @@ export const RoomProvider = ({ children }: { children: ReactElement }): ReactEle
 	const [state, dispatch] = useReducer(reducer, { action: null, selectedMessages: [] } as unknown as State);
 
 	const api = useMemo(() => {
-		const setRoom: State['setRoom'] = ({ rid, t, tmid, sendMessage, editCancel, editRequest, onRemoveQuoteMessage }) =>
-			dispatch({ type: 'setRoom', rid, t, tmid, sendMessage, editCancel, editRequest, onRemoveQuoteMessage });
+		const setRoom: State['setRoom'] = ({ rid, t, tmid, sendMessage, editCancel, editRequest }) =>
+			dispatch({ type: 'setRoom', rid, t, tmid, sendMessage, editCancel, editRequest });
 
 		const setAction: State['setAction'] = (action, messageId) => dispatch({ type: 'setAction', action, messageId });
 
 		const resetAction = () => dispatch({ type: 'resetAction' });
 
+		const onRemoveQuoteMessage = (messageId: string) => dispatch({ type: 'onRemoveQuoteMessage', messageId });
+
 		return {
 			setRoom,
 			setAction,
-			resetAction
+			resetAction,
+			onRemoveQuoteMessage
 		};
 	}, []);
 

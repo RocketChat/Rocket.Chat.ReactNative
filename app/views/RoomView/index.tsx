@@ -243,7 +243,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				t: this.t,
 				tmid: this.tmid,
 				sendMessage: this.handleSendMessage,
-				onRemoveQuoteMessage: this.onRemoveQuoteMessage,
 				editCancel: this.onEditCancel,
 				editRequest: this.onEditRequest
 			});
@@ -739,9 +738,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onRemoveQuoteMessage = (messageId: string) => {
-		const { selectedMessages } = this.state;
-		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
+		this.context.onRemoveQuoteMessage?.(messageId);
 	};
 
 	resetActions = () => {
