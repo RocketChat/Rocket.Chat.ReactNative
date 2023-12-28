@@ -1,6 +1,6 @@
 import React, { createContext, ReactElement, useContext, useMemo, useReducer } from 'react';
 
-export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
+import { TMessageAction } from '../definitions';
 
 export const RoomContext = createContext<State>({} as State);
 

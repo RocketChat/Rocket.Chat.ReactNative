@@ -1,18 +1,23 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 
-import { TThreadModel } from '../definitions';
-import { IAttachment } from '../definitions/IAttachment';
-import { ICannedResponse } from '../definitions/ICannedResponse';
-import { TDataSelect } from '../definitions/IDataSelect';
-import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../definitions/ILivechatTag';
-import { IMessage, TAnyMessageModel } from '../definitions/IMessage';
-import { IServer } from '../definitions/IServer';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
-import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+import {
+	IAttachment,
+	ICannedResponse,
+	ILivechatDepartment,
+	ILivechatTag,
+	IMessage,
+	IServer,
+	ISubscription,
+	SubscriptionType,
+	TAnyMessageModel,
+	TChangeAvatarViewContext,
+	TDataSelect,
+	TMessageAction,
+	TSubscriptionModel,
+	TThreadModel
+} from '../definitions';
 import { ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
-import { TMessageAction } from '../views/RoomView/context';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;

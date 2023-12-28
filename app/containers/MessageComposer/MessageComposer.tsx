@@ -5,7 +5,7 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { useRoom } from '../../views/RoomView/context';
+import { useRoom } from '../../contexts';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel } from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import {

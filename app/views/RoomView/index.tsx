@@ -85,7 +85,7 @@ import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { RoomContext } from './context';
+import { RoomContext } from '../../contexts';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';

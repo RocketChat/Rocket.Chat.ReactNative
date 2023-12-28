@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BaseButton } from './Buttons';
-import { useRoom } from '../../../views/RoomView/context';
+import { useRoom } from '../../../contexts/RoomContext';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {

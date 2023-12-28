@@ -8,7 +8,7 @@ import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
-import { useRoom } from '../../../../views/RoomView/context';
+import { useRoom } from '../../../../contexts/RoomContext';
 
 export const ActionsButton = () => {
 	const { rid, tmid, t } = useRoom();

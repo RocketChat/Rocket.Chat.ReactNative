@@ -11,7 +11,7 @@ import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscrip
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
-import { useRoom } from '../../../views/RoomView/context';
+import { useRoom } from '../../../contexts/RoomContext';
 
 export const useChooseMedia = ({
 	rid,

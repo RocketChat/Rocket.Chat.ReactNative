@@ -16,7 +16,7 @@ import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
-import { RoomProvider } from './views/RoomView/context';
+import { RoomProvider } from './contexts/RoomContext';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();

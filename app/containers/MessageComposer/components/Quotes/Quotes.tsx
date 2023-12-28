@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
-import { useRoom } from '../../../../views/RoomView/context';
+import { useRoom } from '../../../../contexts/RoomContext';
 
 export const Quotes = (): React.ReactElement | null => {
 	const { selectedMessages, action } = useRoom();

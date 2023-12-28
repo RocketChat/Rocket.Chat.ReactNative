@@ -17,7 +17,7 @@ import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, markdownStyle } from '../c
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../emitter';
-import { useRoom } from '../../../views/RoomView/context';
+import { useRoom } from '../../../contexts';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods';
 import getMentionRegexp from '../../MessageBox/getMentionRegexp';
