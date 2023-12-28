@@ -85,7 +85,6 @@ import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { RoomContext } from './context';
 import { NewRoomContext } from './newContext';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
@@ -700,12 +699,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onEditCancel = () => {
-		this.resetActions();
+		this.resetAction();
 	};
 
 	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 		try {
-			this.resetActions();
+			this.resetAction();
 			await Services.editMessage(message);
 		} catch (e) {
 			log(e);
@@ -741,7 +740,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.context.onRemoveQuoteMessage?.(messageId);
 	};
 
-	resetActions = () => {
+	resetAction = () => {
 		this.context.resetAction();
 	};
 
@@ -759,7 +758,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetActions
+				onClose: this.resetAction
 			});
 		}, 100);
 	};
@@ -777,7 +776,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionClose = () => {
 		const { hideActionSheet } = this.props;
-		this.resetActions();
+		this.resetAction();
 		hideActionSheet();
 	};
 
@@ -984,7 +983,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
 		});
-		this.resetActions();
+		this.resetAction();
 	};
 
 	getCustomEmoji: TGetCustomEmoji = name => {
@@ -1411,40 +1410,25 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		return (
-			<RoomContext.Provider
-				value={{
-					rid,
-					t,
-					tmid: this.tmid,
-					sharing: false,
-					action,
-					selectedMessages,
-					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
-					editCancel: this.onEditCancel,
-					editRequest: this.onEditRequest,
-					onSendMessage: this.handleSendMessage
-				}}
-			>
-				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
-					<StatusBar />
-					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
-					<List
-						ref={this.list}
-						listRef={this.flatList}
-						rid={rid}
-						tmid={this.tmid}
-						renderRow={this.renderItem}
-						loading={loading}
-						hideSystemMessages={this.hideSystemMessages}
-						showMessageInMainThread={user.showMessageInMainThread ?? false}
-						serverVersion={serverVersion}
-					/>
-					{this.renderFooter()}
-					{this.renderActions()}
-					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-				</SafeAreaView>
-			</RoomContext.Provider>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
+				<StatusBar />
+				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
+				<List
+					ref={this.list}
+					listRef={this.flatList}
+					rid={rid}
+					tmid={this.tmid}
+					renderRow={this.renderItem}
+					loading={loading}
+					hideSystemMessages={this.hideSystemMessages}
+					showMessageInMainThread={user.showMessageInMainThread ?? false}
+					serverVersion={serverVersion}
+				/>
+				{this.renderFooter()}
+				{this.renderActions()}
+				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+			</SafeAreaView>
 		);
 	}
 }
