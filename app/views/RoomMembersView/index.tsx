@@ -368,8 +368,8 @@ const RoomMembersView = (): React.ReactElement => {
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
 			? state.members.filter(
-				m =>
-					m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
+					m =>
+						m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
 			  )
 			: null;
 
