@@ -96,7 +96,7 @@ import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	static contextType? = NewRoomContext;
-
+	declare context: React.ContextType<typeof NewRoomContext>;
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
@@ -127,7 +127,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private unsubscribeBlur?: () => void;
 	private unsubscribeFocus?: () => void;
 
-	constructor(props: IRoomViewProps, context) {
+	constructor(props: IRoomViewProps, context: React.ContextType<typeof NewRoomContext>) {
 		super(props, context);
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
@@ -235,7 +235,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			this.context.setRoom({ rid: this.rid, t: this.t, tmid: this.tmid, sendMessage: this.handleSendMessage });
+			if (!this.rid || !this.t) {
+				return;
+			}
+			this.context.setRoom({
+				rid: this.rid,
+				t: this.t,
+				tmid: this.tmid,
+				sendMessage: this.handleSendMessage,
+				onRemoveQuoteMessage: this.onRemoveQuoteMessage,
+				editCancel: this.onEditCancel,
+				editRequest: this.onEditRequest
+			});
 		});
 	}
 
@@ -686,7 +697,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (action) {
 			return;
 		}
-		this.setState({ selectedMessages: [messageId], action: 'edit' });
+		this.context.setAction('edit', messageId);
 	};
 
 	onEditCancel = () => {
@@ -695,7 +706,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 		try {
-			this.setState({ selectedMessages: [], action: null });
+			this.resetActions();
 			await Services.editMessage(message);
 		} catch (e) {
 			log(e);

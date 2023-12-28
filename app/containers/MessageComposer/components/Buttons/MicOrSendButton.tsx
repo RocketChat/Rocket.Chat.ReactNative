@@ -6,10 +6,10 @@ import { MessageInnerContext, useMessageComposerApi, useMicOrSend } from '../../
 import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useRoom } from '../../../../views/RoomView/newContext';
 
 export const MicOrSendButton = () => {
-	const { rid, sharing } = useRoomContext();
+	const { rid, sharing } = useRoom();
 	const micOrSend = useMicOrSend();
 	const { sendMessage } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);

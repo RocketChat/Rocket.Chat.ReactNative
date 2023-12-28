@@ -10,30 +10,61 @@ export const NewRoomContext = createContext<State>({} as State);
 export const useRoom = (): State => useContext(NewRoomContext);
 
 type State = {
-	rid?: string;
-	t?: string;
+	rid: string;
+	t: string;
 	tmid?: string;
 	sharing?: boolean;
 	action: TMessageAction;
 	selectedMessages: string[];
-	setRoom: ({ rid, t, tmid, sendMessage }: { rid: string; t: string; tmid?: string; sendMessage: Function }) => void;
+	setRoom: ({
+		rid,
+		t,
+		tmid,
+		sendMessage
+	}: {
+		rid: string;
+		t: string;
+		tmid?: string;
+		sendMessage: Function;
+		editCancel?: () => void;
+		editRequest?: (message: any) => void;
+		onRemoveQuoteMessage?: (messageId: string) => void;
+	}) => void;
 	setAction: (action: TMessageAction, messageId: string) => void;
 	resetAction: () => void;
 	editCancel?: () => void;
 	editRequest?: (message: any) => void;
 	onRemoveQuoteMessage?: (messageId: string) => void;
-	sendMessage?: Function;
+	sendMessage: Function;
 };
 
 type Actions =
-	| { type: 'setRoom'; rid: string; t: string; tmid?: string; sendMessage: Function }
+	| {
+			type: 'setRoom';
+			rid: string;
+			t: string;
+			tmid?: string;
+			sendMessage: Function;
+			editCancel?: () => void;
+			editRequest?: (message: any) => void;
+			onRemoveQuoteMessage?: (messageId: string) => void;
+	  }
 	| { type: 'setAction'; action: TMessageAction; messageId: string }
 	| { type: 'resetAction' };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
 		case 'setRoom':
-			return { ...state, rid: action.rid, t: action.t, tmid: action.tmid, sendMessage: action.sendMessage };
+			return {
+				...state,
+				rid: action.rid,
+				t: action.t,
+				tmid: action.tmid,
+				sendMessage: action.sendMessage,
+				editCancel: action.editCancel,
+				editRequest: action.editRequest,
+				onRemoveQuoteMessage: action.onRemoveQuoteMessage
+			};
 		case 'setAction':
 			const found = state.selectedMessages.find(id => id === action.messageId);
 			if (found) return state;
@@ -51,7 +82,8 @@ export const RoomProvider = ({ children }: { children: ReactElement }): ReactEle
 	const [state, dispatch] = useReducer(reducer, { action: null, selectedMessages: [] } as unknown as State);
 
 	const api = useMemo(() => {
-		const setRoom: State['setRoom'] = ({ rid, t, tmid, sendMessage }) => dispatch({ type: 'setRoom', rid, t, tmid, sendMessage });
+		const setRoom: State['setRoom'] = ({ rid, t, tmid, sendMessage, editCancel, editRequest, onRemoveQuoteMessage }) =>
+			dispatch({ type: 'setRoom', rid, t, tmid, sendMessage, editCancel, editRequest, onRemoveQuoteMessage });
 
 		const setAction: State['setAction'] = (action, messageId) => dispatch({ type: 'setAction', action, messageId });
 

@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { BaseButton } from './Buttons';
-import { useRoomContext } from '../../../views/RoomView/context';
+import { useRoom } from '../../../views/RoomView/newContext';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {
-	const { action, editCancel } = useRoomContext();
+	const { action, editCancel } = useRoom();
 
 	if (action !== 'edit') {
 		return null;
@@ -13,7 +13,7 @@ export const CancelEdit = () => {
 	return (
 		<>
 			<BaseButton
-				onPress={() => editCancel()}
+				onPress={() => editCancel?.()}
 				testID='message-composer-cancel-edit'
 				accessibilityLabel='Cancel_editing'
 				icon='close'

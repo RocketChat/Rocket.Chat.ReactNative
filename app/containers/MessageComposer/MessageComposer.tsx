@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef, useImperativeHandle, useCallback, useEffect } from 'react';
+import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
 import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
@@ -62,9 +62,8 @@ export const MessageComposer = ({
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
-	const aaa = useRoom();
-	const { rid, tmid, action, selectedMessages, sharing, sendMessage: sendMessageHook } = useRoom();
-	console.log('🚀 ~ file: MessageComposer.tsx:66 ~ rid:', aaa);
+	const { rid, tmid, action, selectedMessages, sharing, sendMessage, editRequest } = useRoom();
+	console.log('🚀 ~ file: MessageComposer.tsx:66 ~ action:', action);
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -99,9 +98,9 @@ export const MessageComposer = ({
 		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
 	};
 
-	const sendMessage = async () => {
+	const handleSendMessage = async () => {
 		if (sharing) {
-			sendMessageHook?.();
+			sendMessage?.();
 			return;
 		}
 
@@ -114,7 +113,7 @@ export const MessageComposer = ({
 		if (action === 'quote') {
 			// TODO: missing threads and threads enabled implementation
 			const quoteMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
-			sendMessageHook?.(quoteMessage);
+			sendMessage?.(quoteMessage);
 			return;
 		}
 
@@ -139,7 +138,7 @@ export const MessageComposer = ({
 		}
 
 		// Text message
-		sendMessageHook?.(textFromInput, alsoSendThreadToChannel);
+		sendMessage?.(textFromInput, alsoSendThreadToChannel);
 	};
 
 	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
@@ -216,7 +215,7 @@ export const MessageComposer = ({
 	};
 
 	return (
-		<MessageInnerContext.Provider value={{ sendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
+		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<KeyboardAccessoryView
 				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 				renderContent={renderContent}

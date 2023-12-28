@@ -8,10 +8,10 @@ import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useRoom } from '../../../../views/RoomView/newContext';
 
 export const ActionsButton = () => {
-	const { rid, tmid, t } = useRoomContext();
+	const { rid, tmid, t } = useRoom();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);

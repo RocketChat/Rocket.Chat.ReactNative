@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useRoom } from '../../../../views/RoomView/newContext';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks';
@@ -14,7 +14,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 	const [styles, colors] = useStyle();
 	const message = useMessage(messageId);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
-	const { onRemoveQuoteMessage } = useRoomContext();
+	const { onRemoveQuoteMessage } = useRoom();
 
 	let username = '';
 	let msg = '';
@@ -42,7 +42,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 				<BaseButton
 					icon='close'
 					color={colors.fontDefault}
-					onPress={() => onRemoveQuoteMessage(message.id)}
+					onPress={() => onRemoveQuoteMessage?.(message.id)}
 					accessibilityLabel='Remove_quote_message'
 					testID={`composer-quote-remove-${message.id}`}
 				/>
