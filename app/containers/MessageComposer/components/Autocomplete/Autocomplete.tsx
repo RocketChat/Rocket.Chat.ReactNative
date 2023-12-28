@@ -6,7 +6,7 @@ import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
-import { useRoom } from '../../../../views/RoomView/newContext';
+import { useRoom } from '../../../../views/RoomView/context';
 import { useStyle, getBottom } from './styles';
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {

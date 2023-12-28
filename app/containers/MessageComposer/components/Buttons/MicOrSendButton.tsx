@@ -6,7 +6,7 @@ import { MessageInnerContext, useMessageComposerApi, useMicOrSend } from '../../
 import { useTheme } from '../../../../theme';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
-import { useRoom } from '../../../../views/RoomView/newContext';
+import { useRoom } from '../../../../views/RoomView/context';
 
 export const MicOrSendButton = () => {
 	const { rid, sharing } = useRoom();

@@ -14,7 +14,7 @@ import { useMessageComposerApi } from '../../context';
 import { sendFileMessage } from '../../../../lib/methods';
 import { IUpload } from '../../../../definitions';
 import log from '../../../../lib/methods/helpers/log';
-import { useRoom } from '../../../../views/RoomView/newContext';
+import { useRoom } from '../../../../views/RoomView/context';
 import { useAppSelector } from '../../../../lib/hooks';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, IDurationRef } from './Duration';

@@ -1,13 +1,10 @@
 import React, { createContext, ReactElement, useContext, useMemo, useReducer } from 'react';
 
-import { IEmoji } from '../../definitions';
-import { IAutocompleteBase, TMicOrSend } from './interfaces';
-
 export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
 
-export const NewRoomContext = createContext<State>({} as State);
+export const RoomContext = createContext<State>({} as State);
 
-export const useRoom = (): State => useContext(NewRoomContext);
+export const useRoom = (): State => useContext(RoomContext);
 
 type State = {
 	rid: string;
@@ -106,5 +103,5 @@ export const RoomProvider = ({ children }: { children: ReactElement }): ReactEle
 		};
 	}, []);
 
-	return <NewRoomContext.Provider value={{ ...api, ...state }}>{children}</NewRoomContext.Provider>;
+	return <RoomContext.Provider value={{ ...api, ...state }}>{children}</RoomContext.Provider>;
 };

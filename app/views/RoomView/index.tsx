@@ -85,7 +85,7 @@ import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { NewRoomContext } from './newContext';
+import { RoomContext } from './context';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
@@ -94,8 +94,8 @@ import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
-	static contextType? = NewRoomContext;
-	declare context: React.ContextType<typeof NewRoomContext>;
+	static contextType? = RoomContext;
+	declare context: React.ContextType<typeof RoomContext>;
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
@@ -126,7 +126,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private unsubscribeBlur?: () => void;
 	private unsubscribeFocus?: () => void;
 
-	constructor(props: IRoomViewProps, context: React.ContextType<typeof NewRoomContext>) {
+	constructor(props: IRoomViewProps, context: React.ContextType<typeof RoomContext>) {
 		super(props, context);
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;

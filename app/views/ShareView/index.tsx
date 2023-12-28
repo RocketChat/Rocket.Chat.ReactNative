@@ -26,7 +26,7 @@ import styles from './styles';
 import { IApplicationState, IServer, IShareAttachment, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { NewRoomContext } from '../RoomView/newContext';
+import { RoomContext } from '../RoomView/context';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -55,15 +55,15 @@ interface IShareViewProps {
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
-	static contextType? = NewRoomContext;
-	declare context: React.ContextType<typeof NewRoomContext>;
+	static contextType? = RoomContext;
+	declare context: React.ContextType<typeof RoomContext>;
 	private messageComposerRef: React.RefObject<IMessageComposerRef>;
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
 	private closeReply?: Function;
 
-	constructor(props: IShareViewProps, context: React.ContextType<typeof NewRoomContext>) {
+	constructor(props: IShareViewProps, context: React.ContextType<typeof RoomContext>) {
 		super(props, context);
 		this.messageComposerRef = React.createRef();
 		this.files = props.route.params?.attachments ?? [];
@@ -218,7 +218,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { attachments, room, text, thread } = this.state;
 		const { navigation, server, user } = this.props;
 		const { action, selectedMessages, resetAction } = this.context;
-		console.log('🚀 ~ file: index.tsx:227 ~ ShareView ~ send= ~ selectedMessages:', selectedMessages, resetAction);
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { useRoom } from '../../../../views/RoomView/newContext';
+import { useRoom } from '../../../../views/RoomView/context';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks';

@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
-import { useRoom } from '../../../views/RoomView/newContext';
+import { useRoom } from '../../../views/RoomView/context';
 import { useAlsoSendThreadToChannel, useMessageComposerApi, useShowEmojiSearchbar } from '../context';
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
