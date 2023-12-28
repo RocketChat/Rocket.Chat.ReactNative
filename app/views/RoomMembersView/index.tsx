@@ -13,7 +13,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import UserItem from '../../containers/UserItem';
-import { TSubscriptionModel, TUserModel } from '../../definitions';
+import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
@@ -50,7 +50,7 @@ interface IRoomMembersViewState {
 	members: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
-	roomRoles: any;
+	roomRoles: IGetRoomRoles[] | null;
 	filter: string;
 	page: number;
 }
@@ -368,8 +368,8 @@ const RoomMembersView = (): React.ReactElement => {
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
 			? state.members.filter(
-					m =>
-						m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
+				m =>
+					m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
 			  )
 			: null;
 
