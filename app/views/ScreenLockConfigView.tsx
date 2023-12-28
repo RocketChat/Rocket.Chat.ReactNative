@@ -1,20 +1,20 @@
+import { StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
 import { Switch } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigationOptions } from '@react-navigation/stack';
 import { Subscription } from 'rxjs';
 
-import I18n from '../i18n';
-import { TSupportedThemes, withTheme } from '../theme';
-import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
+import SafeAreaView from '../containers/SafeAreaView';
+import StatusBar from '../containers/StatusBar';
+import { IApplicationState, TServerModel } from '../definitions';
+import I18n from '../i18n';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, SWITCH_TRACK_COLOR, themes } from '../lib/constants';
 import database from '../lib/database';
 import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../lib/methods/helpers/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes, SWITCH_TRACK_COLOR } from '../lib/constants';
-import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import userPreferences from '../lib/methods/userPreferences';
-import { IApplicationState, TServerModel } from '../definitions';
+import { TSupportedThemes, withTheme } from '../theme';
 
 const DEFAULT_BIOMETRY = false;
 
@@ -178,7 +178,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	renderItem = ({ item }: { item: IItem }) => {
 		const { title, value, disabled } = item;
 		return (
-			<>
+			<React.Fragment key={value}>
 				<List.Item
 					title={title}
 					onPress={() => this.changeAutoLockTime(value)}
@@ -187,7 +187,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					translateTitle={false}
 				/>
 				<List.Separator />
-			</>
+			</React.Fragment>
 		);
 	};
 

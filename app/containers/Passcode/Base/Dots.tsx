@@ -1,10 +1,10 @@
+import range from 'lodash/range';
 import React from 'react';
 import { View } from 'react-native';
-import range from 'lodash/range';
 
-import styles from './styles';
 import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
+import styles from './styles';
 
 const SIZE_EMPTY = 12;
 const SIZE_FULL = 16;
@@ -33,7 +33,7 @@ const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
 				const marginRight = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 				const marginLeft = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 				return (
-					<View style={styles.dotsView}>
+					<View key={val} style={styles.dotsView}>
 						<View
 							style={{
 								height,

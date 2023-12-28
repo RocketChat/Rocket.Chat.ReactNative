@@ -1,6 +1,6 @@
+import { Quote as QuoteProps } from '@rocket.chat/message-parser';
 import React from 'react';
 import { View } from 'react-native';
-import { Quote as QuoteProps } from '@rocket.chat/message-parser';
 
 import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
@@ -17,8 +17,8 @@ const Quote = ({ value }: IQuoteProps) => {
 		<View style={styles.container}>
 			<View style={[styles.quote, { backgroundColor: themes[theme].borderColor }]} />
 			<View style={styles.childContainer}>
-				{value.map(item => (
-					<Paragraph value={item.value} />
+				{value.map((item, index) => (
+					<Paragraph key={`${item.type}-${index}`} value={item.value} />
 				))}
 			</View>
 		</View>
