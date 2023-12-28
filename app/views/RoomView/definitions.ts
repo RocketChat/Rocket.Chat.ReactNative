@@ -3,7 +3,6 @@ import { EdgeInsets } from 'react-native-safe-area-context';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IBaseScreen, ILastMessage, ILoggedUser, TSubscriptionModel, ICustomEmojis } from '../../definitions';
 import { IActionSheetProvider } from '../../containers/ActionSheet';
-import { TMessageAction } from './context';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
@@ -51,8 +50,6 @@ export interface IRoomViewState {
 	member: any;
 	lastOpen: Date | null;
 	reactionsModalVisible: boolean;
-	selectedMessages: string[];
-	action: TMessageAction;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	replyWithMention: boolean;

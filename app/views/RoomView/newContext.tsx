@@ -74,7 +74,8 @@ const reducer = (state: State, action: Actions): State => {
 		case 'resetAction':
 			return { ...state, action: null, selectedMessages: [] };
 		case 'onRemoveQuoteMessage':
-			return { ...state, selectedMessages: state.selectedMessages.filter(id => id !== action.messageId) };
+			const newSelectedMessages = state.selectedMessages.filter(id => id !== action.messageId);
+			return { ...state, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? state.action : null };
 	}
 };
 
