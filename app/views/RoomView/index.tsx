@@ -238,6 +238,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				rid: this.rid,
 				t: this.t,
 				tmid: this.tmid,
+				sharing: false,
 				sendMessage: this.handleSendMessage,
 				editCancel: this.onEditCancel,
 				editRequest: this.onEditRequest

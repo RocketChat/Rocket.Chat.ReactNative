@@ -20,11 +20,15 @@ type State = {
 		rid,
 		t,
 		tmid,
-		sendMessage
+		sharing,
+		sendMessage,
+		editCancel,
+		editRequest
 	}: {
 		rid: string;
 		t: string;
 		tmid?: string;
+		sharing: boolean;
 		sendMessage: Function;
 		editCancel?: () => void;
 		editRequest?: (message: any) => void;
@@ -43,6 +47,7 @@ type Actions =
 			rid: string;
 			t: string;
 			tmid?: string;
+			sharing: boolean;
 			sendMessage: Function;
 			editCancel?: () => void;
 			editRequest?: (message: any) => void;
@@ -59,6 +64,7 @@ const reducer = (state: State, action: Actions): State => {
 				rid: action.rid,
 				t: action.t,
 				tmid: action.tmid,
+				sharing: action.sharing,
 				sendMessage: action.sendMessage,
 				editCancel: action.editCancel,
 				editRequest: action.editRequest
@@ -83,8 +89,8 @@ export const RoomProvider = ({ children }: { children: ReactElement }): ReactEle
 	const [state, dispatch] = useReducer(reducer, { action: null, selectedMessages: [] } as unknown as State);
 
 	const api = useMemo(() => {
-		const setRoom: State['setRoom'] = ({ rid, t, tmid, sendMessage, editCancel, editRequest }) =>
-			dispatch({ type: 'setRoom', rid, t, tmid, sendMessage, editCancel, editRequest });
+		const setRoom: State['setRoom'] = ({ rid, t, tmid, sendMessage, sharing, editCancel, editRequest }) =>
+			dispatch({ type: 'setRoom', rid, t, tmid, sharing, sendMessage, editCancel, editRequest });
 
 		const setAction: State['setAction'] = (action, messageId) => dispatch({ type: 'setAction', action, messageId });
 

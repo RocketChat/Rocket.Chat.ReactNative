@@ -5,7 +5,7 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { useRoom, useRoomApi } from '../../views/RoomView/newContext';
+import { useRoom } from '../../views/RoomView/newContext';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel } from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import {
@@ -63,7 +63,6 @@ export const MessageComposer = ({
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
 	const { rid, tmid, action, selectedMessages, sharing, sendMessage, editRequest } = useRoom();
-	console.log('🚀 ~ file: MessageComposer.tsx:66 ~ action:', action);
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();

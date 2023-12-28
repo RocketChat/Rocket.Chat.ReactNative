@@ -86,6 +86,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			rid: this.state.room.rid,
 			t: this.state.room.t,
 			tmid: this.state.thread.tmid,
+			sharing: true,
 			sendMessage: this.send
 		});
 	}
