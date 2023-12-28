@@ -23,7 +23,7 @@ import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
 
-export const RecordAudio = (): ReactElement => {
+export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
 	const recordingRef = useRef<Audio.Recording>();
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
@@ -79,6 +79,7 @@ export const RecordAudio = (): ReactElement => {
 
 	const sendAudio = async () => {
 		try {
+			if (!rid) return;
 			setRecordingAudio(false);
 			const fileURI = recordingRef.current?.getURI();
 			const fileData = await getInfoAsync(fileURI as string);
@@ -100,6 +101,10 @@ export const RecordAudio = (): ReactElement => {
 			log(e);
 		}
 	};
+
+	if (!rid) {
+		return null;
+	}
 
 	if (status === 'reviewing') {
 		return (

@@ -193,6 +193,7 @@ export const ComposerInput = memo(
 			// If it's slash command preview, we need to execute the command
 			if (item.type === '/preview') {
 				try {
+					if (!rid) return;
 					const db = database.active;
 					const commandsCollection = db.get('slash_commands');
 					const commandRecord = await commandsCollection.find(item.text);
@@ -324,7 +325,7 @@ export const ComposerInput = memo(
 		}, 300); // TODO: 300ms?
 
 		const handleTyping = (isTyping: boolean) => {
-			if (sharing) return;
+			if (sharing || !rid) return;
 			dispatch(userTyping(rid, isTyping));
 		};
 

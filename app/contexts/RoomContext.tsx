@@ -2,13 +2,13 @@ import React, { createContext, ReactElement, useContext, useMemo, useReducer } f
 
 import { TMessageAction } from '../definitions';
 
-export const RoomContext = createContext<State>({} as State);
+export const RoomContext = createContext<TRoomContext>({} as TRoomContext);
 
-export const useRoom = (): State => useContext(RoomContext);
+export const useRoom = (): TRoomContext => useContext(RoomContext);
 
-type State = {
-	rid: string;
-	t: string;
+export type TRoomContext = {
+	rid?: string;
+	t?: string;
 	tmid?: string;
 	sharing?: boolean;
 	action: TMessageAction;
@@ -32,6 +32,7 @@ type State = {
 	}) => void;
 	setAction: (action: TMessageAction, messageId: string) => void;
 	resetAction: () => void;
+	reset: () => void;
 	editCancel?: () => void;
 	editRequest?: (message: any) => void;
 	onRemoveQuoteMessage?: (messageId: string) => void;
@@ -51,9 +52,10 @@ type Actions =
 	  }
 	| { type: 'setAction'; action: TMessageAction; messageId: string }
 	| { type: 'resetAction' }
-	| { type: 'onRemoveQuoteMessage'; messageId: string };
+	| { type: 'onRemoveQuoteMessage'; messageId: string }
+	| { type: 'reset' };
 
-const reducer = (state: State, action: Actions): State => {
+const reducer = (state: TRoomContext, action: Actions): TRoomContext => {
 	switch (action.type) {
 		case 'setRoom':
 			return {
@@ -79,27 +81,32 @@ const reducer = (state: State, action: Actions): State => {
 		case 'onRemoveQuoteMessage':
 			const newSelectedMessages = state.selectedMessages.filter(id => id !== action.messageId);
 			return { ...state, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? state.action : null };
+		case 'reset':
+			return { ...state, rid: undefined, t: undefined, tmid: undefined, sharing: false, action: null, selectedMessages: [] };
 	}
 };
 
 export const RoomProvider = ({ children }: { children: ReactElement }): ReactElement => {
-	const [state, dispatch] = useReducer(reducer, { action: null, selectedMessages: [] } as unknown as State);
+	const [state, dispatch] = useReducer(reducer, { action: null, selectedMessages: [] } as unknown as TRoomContext);
 
 	const api = useMemo(() => {
-		const setRoom: State['setRoom'] = ({ rid, t, tmid, sendMessage, sharing, editCancel, editRequest }) =>
+		const setRoom: TRoomContext['setRoom'] = ({ rid, t, tmid, sendMessage, sharing, editCancel, editRequest }) =>
 			dispatch({ type: 'setRoom', rid, t, tmid, sharing, sendMessage, editCancel, editRequest });
 
-		const setAction: State['setAction'] = (action, messageId) => dispatch({ type: 'setAction', action, messageId });
+		const setAction: TRoomContext['setAction'] = (action, messageId) => dispatch({ type: 'setAction', action, messageId });
 
 		const resetAction = () => dispatch({ type: 'resetAction' });
 
 		const onRemoveQuoteMessage = (messageId: string) => dispatch({ type: 'onRemoveQuoteMessage', messageId });
 
+		const reset = () => dispatch({ type: 'reset' });
+
 		return {
 			setRoom,
 			setAction,
 			resetAction,
-			onRemoveQuoteMessage
+			onRemoveQuoteMessage,
+			reset
 		};
 	}, []);
 

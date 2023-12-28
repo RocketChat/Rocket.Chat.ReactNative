@@ -37,7 +37,7 @@ export const useAutocomplete = ({
 	rid,
 	commandParams
 }: {
-	rid: string;
+	rid?: string;
 	type: TAutocompleteType;
 	text: string;
 	commandParams?: string;
@@ -46,7 +46,7 @@ export const useAutocomplete = ({
 	useEffect(() => {
 		const getAutocomplete = async () => {
 			try {
-				if (!type) {
+				if (!rid || !type) {
 					setItems([]);
 					return;
 				}

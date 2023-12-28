@@ -24,6 +24,7 @@ export const ActionsButton = () => {
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const createDiscussion = async () => {
+		if (!rid) return;
 		const subscription = await getSubscriptionByRoomId(rid);
 		const params = { channel: subscription, showCloseModal: true };
 		if (isMasterDetail) {

@@ -98,6 +98,8 @@ export const MessageComposer = ({
 	};
 
 	const handleSendMessage = async () => {
+		if (!rid) return;
+
 		if (sharing) {
 			sendMessage?.();
 			return;

@@ -18,7 +18,7 @@ export const useChooseMedia = ({
 	tmid,
 	permissionToUpload
 }: {
-	rid: string;
+	rid?: string;
 	tmid?: string;
 	permissionToUpload: boolean;
 }) => {
@@ -116,6 +116,7 @@ export const useChooseMedia = ({
 	};
 
 	const openShareView = async (attachments: any) => {
+		if (!rid) return;
 		const room = await getSubscriptionByRoomId(rid);
 		let thread;
 		if (tmid) {

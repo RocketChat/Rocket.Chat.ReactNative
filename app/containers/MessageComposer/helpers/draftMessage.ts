@@ -3,16 +3,18 @@ import database from '../../../lib/database';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getThreadById } from '../../../lib/database/services/Thread';
 
-export const loadDraftMessage = async ({ rid, tmid }: { rid: string; tmid?: string }): Promise<string> => {
+export const loadDraftMessage = async ({ rid, tmid }: { rid?: string; tmid?: string }): Promise<string> => {
 	if (tmid) {
 		const thread = await getThreadById(tmid);
 		if (thread && thread.draftMessage) {
 			return thread.draftMessage;
 		}
 	}
-	const subscription = await getSubscriptionByRoomId(rid);
-	if (subscription && subscription.draftMessage) {
-		return subscription.draftMessage;
+	if (rid) {
+		const subscription = await getSubscriptionByRoomId(rid);
+		if (subscription && subscription.draftMessage) {
+			return subscription.draftMessage;
+		}
 	}
 
 	return '';
@@ -23,14 +25,14 @@ export const saveDraftMessage = async ({
 	tmid,
 	draftMessage
 }: {
-	rid: string;
+	rid?: string;
 	tmid?: string;
 	draftMessage: string;
 }): Promise<void> => {
 	let obj;
 	if (tmid) {
 		obj = await getThreadById(tmid);
-	} else {
+	} else if (rid) {
 		obj = await getSubscriptionByRoomId(rid);
 	}
 	if (obj && obj.draftMessage !== draftMessage) {

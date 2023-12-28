@@ -13,7 +13,7 @@ import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
-import { IRoomContext, RoomContext } from '../../contexts/RoomContext';
+import { RoomContext } from '../../contexts';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';

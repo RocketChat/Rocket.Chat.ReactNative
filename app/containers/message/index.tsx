@@ -9,7 +9,6 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
 import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
-import { IRoomContext } from '../../contexts/RoomContext';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
 interface IMessageContainerProps {
@@ -52,7 +51,7 @@ interface IMessageContainerProps {
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	handleEnterCall?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
-	onAnswerButtonPress?: IRoomContext['onSendMessage'];
+	onAnswerButtonPress?: Function;
 	threadBadgeColor?: string;
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
