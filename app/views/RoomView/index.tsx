@@ -85,7 +85,8 @@ import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { IRoomContext, RoomContext } from './context';
+import { RoomContext } from './context';
+import { NewRoomContext } from './newContext';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
@@ -94,6 +95,8 @@ import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
+	static contextType? = NewRoomContext;
+
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
@@ -122,9 +125,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
+	private unsubscribeFocus?: () => void;
 
-	constructor(props: IRoomViewProps) {
-		super(props);
+	constructor(props: IRoomViewProps, context) {
+		super(props, context);
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		/**
@@ -229,6 +233,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			audioPlayer.pauseCurrentAudio();
 		});
+
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
+			this.context.setRoom({ rid: this.rid, t: this.t, tmid: this.tmid, sendMessage: this.handleSendMessage });
+		});
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -322,6 +330,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
+		}
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -713,18 +724,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onQuoteInit = (messageId: string) => {
-		const { action } = this.state;
-		if (action === 'quote') {
-			if (!this.state.selectedMessages.includes(messageId)) {
-				this.setState(({ selectedMessages }) => ({ selectedMessages: [...selectedMessages, messageId] }));
-			}
-			return;
-		}
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
-		if (action) {
-			return;
-		}
-		this.setState({ selectedMessages: [messageId], action: 'quote' });
+		this.context.setAction('quote', messageId);
 	};
 
 	onRemoveQuoteMessage = (messageId: string) => {
@@ -734,7 +734,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	resetActions = () => {
-		this.setState({ action: null, selectedMessages: [] });
+		this.context.resetAction();
 	};
 
 	showReactionPicker = () => {

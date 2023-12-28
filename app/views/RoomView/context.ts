@@ -3,17 +3,17 @@ import { createContext, useContext } from 'react';
 export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
 
 export interface IRoomContext {
-	rid: string;
-	t: string;
+	rid?: string;
+	t?: string;
 	tmid?: string;
-	sharing: boolean;
+	sharing?: boolean;
 	action?: TMessageAction;
-	selectedMessages: string[];
+	selectedMessages?: string[];
 
 	editCancel?: () => void;
 	editRequest?: (message: any) => void;
 	onRemoveQuoteMessage?: (messageId: string) => void;
-	onSendMessage: Function;
+	onSendMessage?: Function;
 }
 
 // const initialContext = {

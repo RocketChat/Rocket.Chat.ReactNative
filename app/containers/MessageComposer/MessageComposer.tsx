@@ -1,11 +1,11 @@
-import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
+import React, { ReactElement, useRef, useImperativeHandle, useCallback, useEffect } from 'react';
 import { View, StyleSheet, NativeModules } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { useRoomContext } from '../../views/RoomView/context';
+import { useRoom, useRoomApi } from '../../views/RoomView/newContext';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel } from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import {
@@ -62,7 +62,9 @@ export const MessageComposer = ({
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
-	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
+	const aaa = useRoom();
+	const { rid, tmid, action, selectedMessages, sharing, sendMessage: sendMessageHook } = useRoom();
+	console.log('🚀 ~ file: MessageComposer.tsx:66 ~ rid:', aaa);
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -99,7 +101,7 @@ export const MessageComposer = ({
 
 	const sendMessage = async () => {
 		if (sharing) {
-			onSendMessage();
+			sendMessageHook?.();
 			return;
 		}
 
@@ -112,7 +114,7 @@ export const MessageComposer = ({
 		if (action === 'quote') {
 			// TODO: missing threads and threads enabled implementation
 			const quoteMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
-			onSendMessage(quoteMessage);
+			sendMessageHook?.(quoteMessage);
 			return;
 		}
 
@@ -137,7 +139,7 @@ export const MessageComposer = ({
 		}
 
 		// Text message
-		onSendMessage(textFromInput, alsoSendThreadToChannel);
+		sendMessageHook?.(textFromInput, alsoSendThreadToChannel);
 	};
 
 	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {

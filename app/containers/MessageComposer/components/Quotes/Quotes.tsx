@@ -2,10 +2,10 @@ import React from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useRoom } from '../../../../views/RoomView/newContext';
 
 export const Quotes = (): React.ReactElement | null => {
-	const { selectedMessages, action } = useRoomContext();
+	const { selectedMessages, action } = useRoom();
 
 	if (action !== 'quote') {
 		return null;

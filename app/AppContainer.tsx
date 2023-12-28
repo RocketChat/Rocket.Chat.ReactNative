@@ -16,6 +16,7 @@ import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
+import { RoomProvider } from './views/RoomView/newContext';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();
@@ -45,20 +46,20 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 	const navTheme = navigationTheme(theme);
 
 	return (
-		<NavigationContainer
-			theme={navTheme}
-			ref={Navigation.navigationRef}
-			onStateChange={state => {
-				const previousRouteName = Navigation.routeNameRef.current;
-				const currentRouteName = getActiveRouteName(state);
-				if (previousRouteName !== currentRouteName) {
-					setCurrentScreen(currentRouteName);
-				}
-				Navigation.routeNameRef.current = currentRouteName;
-			}}
-		>
-			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
-				<>
+		<RoomProvider>
+			<NavigationContainer
+				theme={navTheme}
+				ref={Navigation.navigationRef}
+				onStateChange={state => {
+					const previousRouteName = Navigation.routeNameRef.current;
+					const currentRouteName = getActiveRouteName(state);
+					if (previousRouteName !== currentRouteName) {
+						setCurrentScreen(currentRouteName);
+					}
+					Navigation.routeNameRef.current = currentRouteName;
+				}}
+			>
+				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 					{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
 					{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
 					{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
@@ -66,9 +67,9 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 					) : null}
 					{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
 					{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
-				</>
-			</Stack.Navigator>
-		</NavigationContainer>
+				</Stack.Navigator>
+			</NavigationContainer>
+		</RoomProvider>
 	);
 });
 const mapStateToProps = (state: any) => ({
