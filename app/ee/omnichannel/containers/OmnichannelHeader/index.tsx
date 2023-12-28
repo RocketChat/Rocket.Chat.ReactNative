@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Switch, View } from 'react-native';
+import { View } from 'react-native';
 
+import Switch from '../../../../containers/Switch';
 import * as List from '../../../../containers/List';
 import styles from './styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../../../lib/constants';

@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ScrollView, Switch, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
+import Switch from '../../containers/Switch';
 import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';

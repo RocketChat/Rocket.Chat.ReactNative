@@ -1,9 +1,9 @@
 import React from 'react';
-import { Switch } from 'react-native';
 import { connect } from 'react-redux';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { Subscription } from 'rxjs';
 
+import Switch from '../containers/Switch';
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
 import StatusBar from '../containers/StatusBar';
