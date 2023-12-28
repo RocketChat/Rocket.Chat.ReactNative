@@ -4,14 +4,20 @@ import { ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../emitter';
+import { useRoom } from '../../../../contexts';
 
 export const Default = (): ReactElement | null => {
+	const { sharing } = useRoom();
 	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
 
 	return (
 		<>
-			<ActionsButton />
-			<Gap />
+			{sharing ? null : (
+				<>
+					<ActionsButton />
+					<Gap />
+				</>
+			)}
 			<BaseButton
 				onPress={openEmojiKeyboard}
 				testID='message-composer-open-emoji'
