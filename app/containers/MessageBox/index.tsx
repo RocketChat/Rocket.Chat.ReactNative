@@ -1144,7 +1144,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					color={themes[theme].auxiliaryText}
 				/>
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>
-					{I18n.t('Messagebox_Send_to_channel')}
+					{I18n.t('Message_composer_Send_to_channel')}
 				</Text>
 			</TouchableWithoutFeedback>
 		);

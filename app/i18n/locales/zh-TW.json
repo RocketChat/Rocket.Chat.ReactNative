@@ -485,7 +485,7 @@
   "No_threads": "當前沒有討論串",
   "No_threads_following": "當前沒有正在追蹤的討論",
   "No_threads_unread": "當前沒有未讀的討論",
-  "Messagebox_Send_to_channel": "發送至頻道",
+  "Message_composer_Send_to_channel": "發送至頻道",
   "Confirmation": "確認",
   "Open_Livechats": "打開即時聊天",
   "Broadcast_hint": "只有經過授權的使用者才能發送新訊息，但其他使用者可以回覆",

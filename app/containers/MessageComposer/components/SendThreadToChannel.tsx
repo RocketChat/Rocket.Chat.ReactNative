@@ -79,7 +79,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				size={24}
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.strokeDark}
 			/>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Messagebox_Send_to_channel')}</Text>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
 		</TouchableWithoutFeedback>
 	);
 };

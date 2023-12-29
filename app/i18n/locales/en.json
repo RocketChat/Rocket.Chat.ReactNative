@@ -533,7 +533,7 @@
   "No_threads": "There are no threads",
   "No_threads_following": "You are not following any threads",
   "No_threads_unread": "There are no unread threads",
-  "Messagebox_Send_to_channel": "Also send to channel",
+  "Message_composer_Send_to_channel": "Also send to channel",
   "Leader": "Leader",
   "Moderator": "Moderator",
   "Owner": "Owner",

@@ -508,7 +508,7 @@
   "No_threads": "Тредов нет",
   "No_threads_following": "Нет тредов, за которыми вы следите",
   "No_threads_unread": "Непрочитанных тредов нет",
-  "Messagebox_Send_to_channel": "Отправить в чат",
+  "Message_composer_Send_to_channel": "Отправить в чат",
   "Leader": "Лидер",
   "Moderator": "Модератор",
   "Owner": "Владелец",
