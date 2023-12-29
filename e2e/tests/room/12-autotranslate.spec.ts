@@ -114,7 +114,7 @@ describe.skip('Auto Translate', () => {
 		await waitForNotVisible('room-view-join-button');
 		await tapBack();
 		await navigateToRoom('translation-test');
-		await waitForVisible('messagebox');
+		await waitForVisible('message-composer');
 		await expect(element(by.id('room-view-join'))).not.toBeVisible();
 	});
 
