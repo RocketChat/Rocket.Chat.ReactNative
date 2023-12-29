@@ -8,7 +8,7 @@ import { TThreadMessageModel } from './IThreadMessage';
 import { TThreadModel } from './IThread';
 import { IUrl, IUrlFromServer } from './IUrl';
 
-export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
+export type TMessageAction = 'quote' | 'edit' | 'react' | null;
 
 export type MessageType =
 	| 'jitsi_call_started'
