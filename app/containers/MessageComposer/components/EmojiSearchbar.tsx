@@ -52,7 +52,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 				showsHorizontalScrollIndicator={false}
 				ListEmptyComponent={() => (
 					<View style={styles.emptyContainer} testID='no-results-found'>
-						<Text style={[styles.emptyText, { color: colors.auxiliaryText }]}>{I18n.t('No_results_found')}</Text>
+						<Text style={[styles.emptyText, { color: colors.fontHint }]}>{I18n.t('No_results_found')}</Text>
 					</View>
 				)}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
@@ -66,7 +66,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='openback-emoji-keyboard'
 				>
-					<CustomIcon name='chevron-left' size={24} color={colors.auxiliaryTintColor} />
+					<CustomIcon name='chevron-left' size={24} color={colors.fontHint} />
 				</Pressable>
 				<View style={styles.inputContainer}>
 					<EmojiSearch onBlur={closeEmojiKeyboard} onChangeText={handleTextChange} />

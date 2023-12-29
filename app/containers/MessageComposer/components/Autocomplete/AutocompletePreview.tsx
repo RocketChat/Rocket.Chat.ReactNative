@@ -19,7 +19,7 @@ export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) =
 			item.preview.type === 'image' ? (
 				<FastImage style={styles.previewImage} source={{ uri: item.preview.value }} resizeMode={FastImage.resizeMode.cover} />
 			) : (
-				<CustomIcon name='attach' size={36} color={colors.actionTintColor} />
+				<CustomIcon name='attach' size={36} color={colors.fontInfo} />
 			);
 	}
 

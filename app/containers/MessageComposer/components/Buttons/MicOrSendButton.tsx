@@ -31,7 +31,7 @@ export const MicOrSendButton = () => {
 				testID='message-composer-send'
 				accessibilityLabel='Send_message'
 				icon='send-filled'
-				color={colors.buttonBackgroundPrimaryDefault}
+				color={colors.strokeHighlight}
 			/>
 		);
 	}
