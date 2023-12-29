@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-require('../MessageBox/EmojiKeyboard');
+require('./components/EmojiKeyboard');
 
 export const MessageComposer = ({
 	forwardedRef,

@@ -3,13 +3,13 @@ import { View } from 'react-native';
 import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 import { Provider } from 'react-redux';
 
-import store from '../../lib/store';
-import EmojiPicker from '../EmojiPicker';
-import styles from './styles';
-import { ThemeContext, TSupportedThemes } from '../../theme';
-import { EventTypes } from '../EmojiPicker/interfaces';
-import { IEmoji } from '../../definitions';
-import { colors } from '../../lib/constants';
+import store from '../../../lib/store';
+import EmojiPicker from '../../EmojiPicker';
+import styles from '../../MessageBox/styles';
+import { ThemeContext, TSupportedThemes } from '../../../theme';
+import { EventTypes } from '../../EmojiPicker/interfaces';
+import { IEmoji } from '../../../definitions';
+import { colors } from '../../../lib/constants';
 
 const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 	const onItemClicked = (eventType: EventTypes, emoji?: IEmoji) => {
@@ -24,7 +24,7 @@ const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 					colors: colors[theme]
 				}}
 			>
-				<View style={styles.emojiKeyboardContainer} testID='messagebox-keyboard-emoji'>
+				<View style={styles.emojiKeyboardContainer} testID='message-composer-keyboard-emoji'>
 					<EmojiPicker onItemClicked={onItemClicked} isEmojiKeyboard={true} />
 				</View>
 			</ThemeContext.Provider>

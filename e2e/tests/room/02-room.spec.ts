@@ -84,7 +84,7 @@ describe('Room screen', () => {
 	// 		await element(by.id('message-composer-open-emoji')).tap();
 
 	// 		// TODO: change it after moved away from messabebox
-	// 		await waitFor(element(by.id('messagebox-keyboard-emoji')))
+	// 		await waitFor(element(by.id('message-composer-keyboard-emoji')))
 	// 			.toExist()
 	// 			.withTimeout(10000);
 	// 		await waitFor(element(by.id('emoji-picker-tab-emoji')))

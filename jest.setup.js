@@ -43,7 +43,7 @@ jest.mock('expo-haptics', () => jest.fn(() => null));
 
 jest.mock('./app/lib/database', () => jest.fn(() => null));
 
-jest.mock('./app/containers/MessageBox/EmojiKeyboard', () => jest.fn(() => null));
+jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
 
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	useFrequentlyUsedEmoji: () => ({
