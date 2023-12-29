@@ -316,7 +316,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	async componentWillUnmount() {
 		this.mounted = false;
 		this.unsubscribe();
-		this.context.reset();
+		if (this.context.rid === this.rid && this.context.t === this.t) {
+			this.context.reset();
+		}
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
