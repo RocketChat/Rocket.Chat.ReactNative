@@ -32,7 +32,9 @@ function BaseButton({
 		return (
 			<BorderlessButton enabled={enabled} testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
-				<Text style={[styles.roomButtonText, { color }]}>{label}</Text>
+				<Text numberOfLines={1} style={[styles.roomButtonText, { color }]}>
+					{label}
+				</Text>
 			</BorderlessButton>
 		);
 	return null;

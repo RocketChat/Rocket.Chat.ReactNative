@@ -79,10 +79,11 @@ export default StyleSheet.create({
 	},
 	roomButton: {
 		alignItems: 'center',
-		paddingHorizontal: 20,
-		justifyContent: 'space-between'
+		marginHorizontal: 4,
+		justifyContent: 'space-between',
+		width: 80
 	},
 	roomButtonText: {
-		marginTop: 5
+		marginTop: 4
 	}
 });
