@@ -152,7 +152,7 @@ const Thumbs = ({ attachments, theme, isShareExtension, onPress, onRemove }: ITh
 						onRemove={() => onRemove(item)}
 					/>
 				)}
-				style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceLight }]}
 			/>
 		);
 	}
