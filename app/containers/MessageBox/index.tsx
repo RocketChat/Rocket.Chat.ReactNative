@@ -21,7 +21,7 @@ import { themes, emojis } from '../../lib/constants';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { canUploadFile } from '../../lib/methods/helpers/media';
-import getMentionRegexp from './getMentionRegexp';
+import getMentionRegexp from '../MessageComposer/helpers/getMentionRegexp';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {

@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 
 import store from '../../../lib/store';
 import EmojiPicker from '../../EmojiPicker';
-import styles from '../../MessageBox/styles';
 import { ThemeContext, TSupportedThemes } from '../../../theme';
 import { EventTypes } from '../../EmojiPicker/interfaces';
 import { IEmoji } from '../../../definitions';
@@ -24,7 +23,7 @@ const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 					colors: colors[theme]
 				}}
 			>
-				<View style={styles.emojiKeyboardContainer} testID='message-composer-keyboard-emoji'>
+				<View style={{ flex: 1 }} testID='message-composer-keyboard-emoji'>
 					<EmojiPicker onItemClicked={onItemClicked} isEmojiKeyboard={true} />
 				</View>
 			</ThemeContext.Provider>

@@ -1,4 +1,4 @@
-import getMentionRegexp from './getMentionRegexp';
+import { getMentionRegexp } from './getMentionRegexp';
 
 const regexp = getMentionRegexp();
 

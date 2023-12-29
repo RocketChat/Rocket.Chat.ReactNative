@@ -44,7 +44,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 
 	// TODO: Use RNGH
 	return (
-		<View style={{ backgroundColor: colors.messageboxBackground }}>
+		<View style={{ backgroundColor: colors.surfaceLight }}>
 			<FlatList
 				horizontal
 				data={searchText ? emojis : frequentlyUsed}

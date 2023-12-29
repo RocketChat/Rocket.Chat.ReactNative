@@ -146,7 +146,7 @@ export const MessageComposer = ({
 		const { eventType, emoji } = params;
 		const text = composerInputComponentRef.current.getText();
 		let newText = '';
-		// if messagebox has an active cursor
+		// if input has an active cursor
 		const { start, end } = composerInputComponentRef.current.getSelection();
 		const cursor = Math.max(start, end);
 		let newCursor;
