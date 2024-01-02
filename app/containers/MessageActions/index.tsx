@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Alert, Share } from 'react-native';
+import { Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -10,6 +10,7 @@ import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
+import { LISTENER_DIALOG } from '../Dialog';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
@@ -345,15 +346,17 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleReport = async (message: TAnyMessageModel) => {
+			const handleReport = (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_REPORT);
-				try {
-					await Services.reportMessage(message.id);
-					Alert.alert(I18n.t('Message_Reported'));
-				} catch (e) {
-					logEvent(events.ROOM_MSG_ACTION_REPORT_F);
-					log(e);
-				}
+				const description = message.msg ?? '';
+				EventEmitter.emit(LISTENER_DIALOG, {
+					dialog: {
+						title: I18n.t('Report_this_message?'),
+						description,
+						inputLabel: I18n.t('Why_do_you_want_to_report?'),
+						data: { id: message.id }
+					}
+				});
 			};
 
 			const handleDelete = (message: TAnyMessageModel) => {
