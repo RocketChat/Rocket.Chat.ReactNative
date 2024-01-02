@@ -181,6 +181,19 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.load({ newSearch: true });
 	};
 
+	changeType = (type: string) => {
+		this.setState({ type, data: [] }, () => this.search());
+
+		if (type === 'users') {
+			logEvent(events.DIRECTORY_SEARCH_USERS);
+		} else if (type === 'channels') {
+			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+		} else if (type === 'teams') {
+			logEvent(events.DIRECTORY_SEARCH_TEAMS);
+		}
+		this.toggleDropdown()
+	};
+
 	toggleWorkspace = () => {
 		this.setState(
 			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
