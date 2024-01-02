@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Animated, Easing, Text, TouchableWithoutFeedback, View } from 'react-native';
 
-import Check from '../../containers/Check';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Touch from '../../containers/Touch';
 import I18n from '../../i18n';
@@ -49,15 +48,15 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 	};
 
 	renderItem = (method: Method) => {
-		const { changeSelection, selected, theme } = this.props;
+		const { changeSelection, theme } = this.props;
 		let text = 'Ascending';
 		let icon: TIconsName = 'sort-az';
-        let channelIcon: TIconsName = 'channel-public';
-        let userIcon: TIconsName = 'user';
+        const channelIcon: TIconsName = 'channel-public';
+        const userIcon: TIconsName = 'user';
 
-        let ascIcon: TIconsName = 'arrow-up';
-        let descIcon: TIconsName = 'arrow-down';
-        let defaultIcon: TIconsName = 'refresh';
+        const ascIcon: TIconsName = 'arrow-up';
+        const descIcon: TIconsName = 'arrow-down';
+        const defaultIcon: TIconsName = 'refresh';
 
 		if (method === 'channel') {
 			text = 'Channel';

@@ -46,7 +46,7 @@ interface IDirectoryViewProps {
 interface IDirectoryViewState {
 	data: IServerRoom[];
 	loading: boolean;
-
+	type: string;
 	total: number;
 	globalUsers: boolean;
 	text: string;
@@ -80,7 +80,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			sortName: 'default',
 			showSortByDropdown: false,
 			searchBy: props.directoryDefaultView,
-			showSearchByDropdown: false
+			showSearchByDropdown: false,
+			type: props.directoryDefaultView
 		};
 	}
 
@@ -191,7 +192,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		} else if (type === 'teams') {
 			logEvent(events.DIRECTORY_SEARCH_TEAMS);
 		}
-		this.toggleDropdown()
 	};
 
 	toggleWorkspace = () => {
