@@ -20,9 +20,10 @@ interface IDirectoryOptionsProps {
 	close: Function;
 	selected: string;
 	changeSelection: Function;
+	type: string;
 }
 
-type Method = "default" | "channel" | "user";
+type Method = 'default' | 'channelName' | 'userNumber' | 'userName' | 'teamName' | 'channelNumber';
 
 export default class SortOptions extends PureComponent<IDirectoryOptionsProps, any> {
 	private animatedValue: Animated.Value;
@@ -48,7 +49,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 	};
 
 	renderItem = (method: Method) => {
-		const { changeSelection, theme } = this.props;
+		const { changeSelection, theme, type } = this.props;
 		let text = 'Ascending';
 		let icon: TIconsName = 'sort-az';
         const channelIcon: TIconsName = 'channel-public';
@@ -58,19 +59,50 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
         const descIcon: TIconsName = 'arrow-down';
         const defaultIcon: TIconsName = 'refresh';
 
-		if (method === 'channel') {
-			text = 'Channel';
-			icon = channelIcon;
-		}
-		if (method === 'user') {
-			text = 'User';
-			icon = userIcon;
-		}
-		if (method === 'default') {
-			text = 'Default';
-			icon = defaultIcon;
+		const teamIcon: TIconsName = 'team';
+
+		switch (type){
+			case "channels":
+				if (method === 'channelName') {
+					text = 'Channel Name';
+					icon = channelIcon;
+				}
+				if (method === 'userNumber') {
+					text = 'Number of Users';
+					icon = userIcon;
+				}
+				if (method === 'default') {
+					text = 'Default';
+					icon = defaultIcon;
+				}
+				break;
+			case "users":
+				if (method === 'userName') {
+					text = 'User Name';
+					icon = userIcon;
+				}
+				if (method === 'default') {
+					text = 'Default';
+					icon = defaultIcon;
+				}
+				break;
+			case "teams":
+				if (method === 'teamName') {
+					text = 'Team Name';
+					icon = teamIcon;
+				}
+				if (method === 'channelNumber') {
+					text = 'Number of Channels';
+					icon = channelIcon;
+				}
+				if (method === 'default') {
+					text = 'Default';
+					icon = defaultIcon;
+				}
+				break;
 		}
 
+		console.log("selected in sortoptions", type)
         return (
             <View style={styles.dropdownItemButton}>
                 <View style={styles.dropdownItemContainer}>
@@ -91,10 +123,10 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
         
                     {method !== "default" && (
                         <>
-                            <Touch onPress={() => changeSelection(method, "ascending")}>
+                            <Touch onPress={() => changeSelection(type, method, "ascending")}>
                                 <CustomIcon name={ascIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIconSort} />
                             </Touch>
-                            <Touch onPress={() => changeSelection(method, "descending")}>
+                            <Touch onPress={() => changeSelection(type, method, "descending")}>
                                 <CustomIcon name={descIcon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIconSort} />
                             </Touch>
                         </>
@@ -111,7 +143,7 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 			inputRange: [0, 1],
 			outputRange: [-326, 0]
 		});
-		const { theme } = this.props;
+		const { theme, type } = this.props;
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity]
@@ -141,9 +173,26 @@ export default class SortOptions extends PureComponent<IDirectoryOptionsProps, a
 							/>
 						</View>
 					</Touch>
-					{this.renderItem('channel')}
-					{this.renderItem('user')}
-					{this.renderItem('default')}
+					{type === 'channels' && (
+            <>
+              {this.renderItem('channelName')}
+              {this.renderItem('userNumber')}
+              {this.renderItem('default')}
+            </>
+          )}
+		  {type === 'users' && (
+            <>
+              {this.renderItem('userName')}
+              {this.renderItem('default')}
+            </>
+          )}
+		  {type === 'teams' && (
+            <>
+              {this.renderItem('teamName')}
+              {this.renderItem('channelNumber')}
+              {this.renderItem('default')}
+            </>
+          )}
 				</Animated.View>
 			</>
 		);

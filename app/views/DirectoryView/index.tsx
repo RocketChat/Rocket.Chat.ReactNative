@@ -51,10 +51,11 @@ interface IDirectoryViewState {
 	globalUsers: boolean;
 	text: string;
 	searchBy: string;
-	sortName: 'default' | 'channel' | 'user';
+	sortName: 'default' | 'channelName' | 'userNumber' | 'userName' | 'teamName' | 'channelNumber';
 	showSearchByDropdown: boolean;
 	sortBy: "ascending" | "descending";
 	showSortByDropdown: boolean;
+	sortType: "channels" | "users" | "teams";
 }
 
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
@@ -78,6 +79,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			text: '',
 			sortBy: 'ascending',
 			sortName: 'default',
+			sortType: 'channels',
 			showSortByDropdown: false,
 			searchBy: props.directoryDefaultView,
 			showSearchByDropdown: false,
@@ -111,7 +113,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.setState({ loading: true });
 
 		try {
-			const { data, searchBy: type, globalUsers } = this.state;
+			const { data, searchBy: type, globalUsers, sortType } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 			const directories = await Services.getDirectory({
 				query,
@@ -120,48 +122,113 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
 
-			console.log("checking sorting state",this.state.sortBy, this.state.sortName);
 			if (directories.success) {
 				const finalData = [...data, ...(directories.result as IServerRoom[])];
 				if (this.state.sortName !== 'default') {
-					switch (this.state.sortName) {
-						case 'channel':
-							if (this.state.sortBy === 'ascending') {
-								finalData.sort((x, y) => {
-									if (x.name && y.name) {
-										return x.name.localeCompare(y.name);
-									}
-									return 0;
-								});
-							}
-							if (this.state.sortBy === 'descending') {
-								finalData.sort((x, y) => {
-									if (x.name && y.name) {
-										return y.name.localeCompare(x.name);
-									}
-									return 0;
-								});
-							}
-							break;
-						case 'user':
-							if (this.state.sortBy === 'ascending') {
-								finalData.sort((x, y) => {
-									if (x.usersCount !== undefined && y.usersCount !== undefined) {
-										return x.usersCount - y.usersCount;
-									}
-									return 0;
-								});
-							}
-							if (this.state.sortBy === 'descending') {
-								finalData.sort((x, y) => {
-									if (x.usersCount !== undefined && y.usersCount !== undefined) {
-										return y.usersCount - x.usersCount;
-									}
-									return 0;
-								});
-							}
-							break;
+					if(sortType === 'channels'){
+						switch (this.state.sortName) {
+							case 'channelName':
+								if (this.state.sortBy === 'ascending') {
+									finalData.sort((x, y) => {
+										if (x.name && y.name) {
+											return x.name.localeCompare(y.name);
+										}
+										return 0;
+									});
+								}
+								if (this.state.sortBy === 'descending') {
+									finalData.sort((x, y) => {
+										if (x.name && y.name) {
+											return y.name.localeCompare(x.name);
+										}
+										return 0;
+									});
+								}
+								break;
+							case 'userNumber':
+								if (this.state.sortBy === 'ascending') {
+									finalData.sort((x, y) => {
+										if (x.usersCount !== undefined && y.usersCount !== undefined) {
+											return x.usersCount - y.usersCount;
+										}
+										return 0;
+									});
+								}
+								if (this.state.sortBy === 'descending') {
+									finalData.sort((x, y) => {
+										if (x.usersCount !== undefined && y.usersCount !== undefined) {
+											return y.usersCount - x.usersCount;
+										}
+										return 0;
+									});
+								}
+								break;
+						}
 					}
+					else if(sortType === "users"){
+						switch (this.state.sortName) {
+							case 'userName':
+								if (this.state.sortBy === 'ascending') {
+									finalData.sort((x, y) => {
+										if (x.username && y.username) {
+											return x.username.localeCompare(y.username);
+										}
+										return 0;
+									});
+								}
+								if (this.state.sortBy === 'descending') {
+									finalData.sort((x, y) => {
+										if (x.username && y.username) {
+											return y.username.localeCompare(x.username);
+										}
+										return 0;
+									});
+								}
+								break;
+						}
+					}
+
+					else if(sortType === "teams"){
+						switch (this.state.sortName) {
+							case 'teamName':
+								if (this.state.sortBy === 'ascending') {
+									finalData.sort((x, y) => {
+										if (x.name && y.name) {
+											return x.name.localeCompare(y.name);
+										}
+										return 0;
+									});
+								}
+								if (this.state.sortBy === 'descending') {
+									finalData.sort((x, y) => {
+										if (x.name && y.name) {
+											return y.name.localeCompare(x.name);
+										}
+										return 0;
+									});
+								}
+								break;
+							case 'channelNumber':
+								if (this.state.sortBy === 'ascending') {
+									finalData.sort((x, y) => {
+										if (x.roomsCount !== undefined && y.roomsCount !== undefined) {
+											return x.roomsCount - y.roomsCount;
+										}
+										return 0;
+									});
+								}
+								if (this.state.sortBy === 'descending') {
+									finalData.sort((x, y) => {
+										if (x.roomsCount !== undefined && y.roomsCount !== undefined) {
+											return y.roomsCount - x.roomsCount;
+										}
+										return 0;
+									});
+								}
+								break;
+						}
+					}
+
 
 				}
 				this.setState({
@@ -221,25 +288,58 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 	};
 
-	changeSortByMethod = (sortName: IDirectoryViewState['sortName'], sortBy: IDirectoryViewState['sortBy']) => {
-		this.setState({ sortName, sortBy, data: [], showSortByDropdown: false }, () => this.search());
+	changeSortByMethod = (sortType: IDirectoryViewState['sortType'],sortName: IDirectoryViewState['sortName'], sortBy: IDirectoryViewState['sortBy']) => {
+		this.setState({ sortType, sortName, sortBy, data: [], showSortByDropdown: false }, () => this.search());
 
-		switch (sortName) {
-			case 'channel':
-				if (sortBy === 'ascending') {
-					logEvent(events.DIRECTORY_CHANNEL_SORT_ASCENDING);
-				} else if (sortBy === 'descending') {
-					logEvent(events.DIRECTORY_CHANNEL_SORT_DESCENDING);
-				}
-				break;
-			case 'user':
-				if (sortBy === 'ascending') {
-					logEvent(events.DIRECTORY_USER_SORT_ASCENDING);
-				} else if (sortBy === 'descending') {
-					logEvent(events.DIRECTORY_USER_SORT_DESCENDING);
-				}
-				break;
+		if(sortType === 'channels'){
+			switch (sortName) {
+				case 'channelName':
+					if (sortBy === 'ascending') {
+						logEvent(events.DIRECTORY_CHANNEL_NAME_SORT_ASCENDING);
+					} else if (sortBy === 'descending') {
+						logEvent(events.DIRECTORY_CHANNEL_NAME_SORT_DESCENDING);
+					}
+					break;
+				case 'userNumber':
+					if (sortBy === 'ascending') {
+						logEvent(events.DIRECTORY_USER_NUMBER_SORT_ASCENDING);
+					} else if (sortBy === 'descending') {
+						logEvent(events.DIRECTORY_USER_NUMBER_SORT_DESCENDING);
+					}
+					break;
+			}
 		}
+		else if(sortType === "users"){
+			switch (sortName) {
+				case 'userName':
+					if (sortBy === 'ascending') {
+						logEvent(events.DIRECTORY_USER_NAME_SORT_ASCENDING);
+					} else if (sortBy === 'descending') {
+						logEvent(events.DIRECTORY_USER_NAME_SORT_DESCENDING);
+					}
+					break;
+			}
+		}
+
+		else if(sortType === "teams"){
+			switch (sortName) {
+				case 'teamName':
+					if (sortBy === 'ascending') {
+						logEvent(events.DIRECTORY_TEAM_NAME_SORT_ASCENDING);
+					} else if (sortBy === 'descending') {
+						logEvent(events.DIRECTORY_TEAM_NAME_SORT_DESCENDING);
+					}
+					break;
+				case 'channelNumber':
+					if (sortBy === 'ascending') {
+						logEvent(events.DIRECTORY_CHANNEL_NUMBER_SORT_ASCENDING);
+					} else if (sortBy === 'descending') {
+						logEvent(events.DIRECTORY_CHANNEL_NUMBER_SORT_DESCENDING);
+					}
+					break;
+			}
+		}
+
 	};
 
 	goRoom = (item: TGoRoomItem) => {
@@ -300,6 +400,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			text = 'Teams';
 			icon = 'teams';
 		}
+
+		console.log("type ", type)
 
 		return (
 			<>
@@ -443,6 +545,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						close={this.toggleSortByDropdown}
 						selected={sortBy}
 						changeSelection={this.changeSortByMethod}
+						type={type}
 					/>
 				) : null}
 			</SafeAreaView>
