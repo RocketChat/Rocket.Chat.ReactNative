@@ -98,7 +98,7 @@ const IncomingCallHeader = React.memo(
 						<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
 					</Touchable>
 				</View>
-				{audio ? <Ringer ringer={ERingerSounds.RINGTONE} /> : false}
+				{audio ? <Ringer ringer={ERingerSounds.RINGTONE} /> : null}
 			</View>
 		);
 	}
