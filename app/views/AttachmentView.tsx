@@ -18,12 +18,13 @@ import { IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, isIOS, showConfirmationAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
+import { Linking } from 'react-native';
 
 const RenderContent = ({
 	setLoading,
@@ -185,7 +186,24 @@ const AttachmentView = (): React.ReactElement => {
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			const err = e as Error;
+			//check if the error is due to permission in ios and show alert
+			if (isIOS) {
+				if (err?.message.includes('PHPhotosErrorDomain error 3311')) {
+					showConfirmationAlert({
+						title: 'Photos permission not granted',
+						message: 'Photos permission not granted,Click ok to proceed to settings and enable it',
+						confirmationText: 'Ok',
+						onPress: async () => {
+							Linking.openURL('app-settings:').catch(() => {
+								console.error('Failed to open app settings');
+							});
+						}
+					});
+				}
+			} else {
+				EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			}
 		}
 		setLoading(false);
 	};
