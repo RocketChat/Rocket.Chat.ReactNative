@@ -3,7 +3,7 @@ import { HeaderBackground, useHeaderHeight } from '@react-navigation/elements';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { ResizeMode, Video } from 'expo-av';
 import React from 'react';
-import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
+import { PermissionsAndroid, useWindowDimensions, View, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -24,7 +24,6 @@ import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
-import { Linking } from 'react-native';
 
 const RenderContent = ({
 	setLoading,
@@ -147,7 +146,7 @@ const AttachmentView = (): React.ReactElement => {
 
 	const handleSave = async () => {
 		const { title_link, image_url, image_type, video_url, video_type } = attachment;
-		// When the attachment is a video, the video_url refers to local file and the title_link to the link
+		// 	When the attachment is a video, the video_url refers to local file and the title_link to the link
 		const url = video_url || title_link || image_url;
 
 		if (!url) {
@@ -187,7 +186,7 @@ const AttachmentView = (): React.ReactElement => {
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
 			const err = e as Error;
-			//check if the error is due to permission in ios and show alert
+			//	check if the error is due to permission in ios and show alert
 			if (isIOS) {
 				if (err?.message.includes('PHPhotosErrorDomain error 3311')) {
 					showConfirmationAlert({
@@ -195,7 +194,7 @@ const AttachmentView = (): React.ReactElement => {
 						message: 'Photos permission not granted,Click ok to proceed to settings and enable it',
 						confirmationText: 'Ok',
 						onPress: async () => {
-							Linking.openURL('app-settings:').catch(() => {
+							await Linking.openURL('app-settings:').catch(() => {
 								console.error('Failed to open app settings');
 							});
 						}
