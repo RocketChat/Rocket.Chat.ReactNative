@@ -74,7 +74,7 @@ const libraryPickerConfig: Options = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
 	mediaType: 'any',
-	forceJpg: true
+	forceJpg: false
 };
 
 const videoPickerConfig: Options = {
