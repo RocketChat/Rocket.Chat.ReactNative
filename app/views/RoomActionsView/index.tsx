@@ -464,6 +464,20 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
+	handleReportUser = () => {
+		const { navigation } = this.props;
+		const { member } = this.state;
+		const { name, _id: userId, username } = member;
+		if (!name || !userId || !username) {
+			return;
+		}
+		navigation.navigate('ReportUserView', {
+			name,
+			userId,
+			username
+		});
+	};
+
 	toggleEncrypted = async () => {
 		logEvent(events.RA_TOGGLE_ENCRYPTED);
 		const { room } = this.state;
@@ -863,22 +877,39 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 		if (t === 'd' && !isGroupChat(room)) {
 			return (
-				<List.Section>
-					<List.Separator />
-					<List.Item
-						title={`${blocker ? 'Unblock' : 'Block'}_user`}
-						onPress={() =>
-							this.onPressTouchable({
-								event: this.toggleBlockUser
-							})
-						}
-						testID='room-actions-block-user'
-						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
-						showActionIndicator
-						color={themes[theme].dangerColor}
-					/>
-					<List.Separator />
-				</List.Section>
+				<>
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title={`${blocker ? 'Unblock' : 'Block'}`}
+							onPress={() =>
+								this.onPressTouchable({
+									event: this.toggleBlockUser
+								})
+							}
+							testID='room-actions-block-user'
+							left={() => <List.Icon name='ignore' />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</List.Section>
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title={'Report'}
+							onPress={() =>
+								this.onPressTouchable({
+									event: this.handleReportUser
+								})
+							}
+							testID='room-actions-block-user'
+							left={() => <List.Icon name='warning' color={themes[theme].dangerColor} />}
+							showActionIndicator
+							color={themes[theme].dangerColor}
+						/>
+						<List.Separator />
+					</List.Section>
+				</>
 			);
 		}
 
