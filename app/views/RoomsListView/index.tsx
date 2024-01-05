@@ -863,6 +863,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			/>
 		);
 	};
+	
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+			</View>
+		);
+	};
 
 	renderHeader = () => {
 		const { isMasterDetail, theme } = this.props;
@@ -948,6 +957,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
+				ListEmptyComponent={searching ? this.renderEmpty : null}
 				getItemLayout={(data, index) => getItemLayout(data, index, height)}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'

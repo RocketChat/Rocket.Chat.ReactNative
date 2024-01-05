@@ -94,5 +94,15 @@ export default StyleSheet.create({
 	},
 	flexZ: {
 		flex: 0
+	},
+	listEmptyContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginVertical: 10
+	},
+	noDataFound: {
+		fontSize: 14,
+		...sharedStyles.textRegular
 	}
 });

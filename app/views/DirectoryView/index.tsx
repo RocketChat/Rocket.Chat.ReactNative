@@ -293,6 +293,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		);
 	};
 
+	renderEmpty = () => {
+		const { theme } = this.props;
+		return (
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+			</View>
+		);
+	};
+
 	render = () => {
 		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
@@ -306,6 +315,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					extraData={this.state}
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
+					ListEmptyComponent={!loading?this.renderEmpty:null}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={List.Separator}
 					keyboardShouldPersistTaps='always'

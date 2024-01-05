@@ -10,6 +10,7 @@ import styles from './styles';
 import { IItemData } from '.';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
+import I18n from '../../../i18n';
 
 interface IItem {
 	item: IItemData;
@@ -46,6 +47,15 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 	);
 };
 
+const RenderEmpty = () => {
+	const { colors } = useTheme();
+	return (
+		<View style={[styles.listEmptyContainer]}>
+			<Text style={[styles.noDataFound, { color: colors.titleText }]}>{I18n.t('No_results_found')}</Text>
+		</View>
+	);
+};
+
 const Items = ({ items, selected, onSelect }: IItems) => (
 	<FlatList
 		data={items}
@@ -53,6 +63,7 @@ const Items = ({ items, selected, onSelect }: IItems) => (
 		contentContainerStyle={styles.itemContent}
 		keyboardShouldPersistTaps='always'
 		ItemSeparatorComponent={List.Separator}
+		ListEmptyComponent={RenderEmpty}
 		keyExtractor={keyExtractor}
 		renderItem={({ item }) => <Item item={item} onSelect={onSelect} selected={!!selected.find(s => s.value === item.value)} />}
 	/>
