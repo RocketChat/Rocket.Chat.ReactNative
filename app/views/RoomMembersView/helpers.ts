@@ -18,7 +18,7 @@ const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail, popToRoot: true });
 };
 
-export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles: IGetRoomRoles[] | null): boolean => {
+export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IGetRoomRoles[]): boolean => {
 	const userRoleResult = roomRoles?.find((r: any) => r.u._id === selectedUser._id);
 	return !!userRoleResult?.roles.includes(role);
 };

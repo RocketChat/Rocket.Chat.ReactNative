@@ -50,7 +50,7 @@ interface IRoomMembersViewState {
 	members: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
-	roomRoles: IGetRoomRoles[] | null;
+	roomRoles?: IGetRoomRoles[];
 	filter: string;
 	page: number;
 }
@@ -93,7 +93,7 @@ const RoomMembersView = (): React.ReactElement => {
 			members: [],
 			room: params.room || ({} as TSubscriptionModel),
 			end: false,
-			roomRoles: null,
+			roomRoles: undefined,
 			filter: '',
 			page: 0
 		}
