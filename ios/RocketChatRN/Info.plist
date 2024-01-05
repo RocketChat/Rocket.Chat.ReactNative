@@ -54,6 +54,7 @@
 		<string>googlechromes</string>
 		<string>firefox</string>
 		<string>brave</string>
+		<string>tel</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
