@@ -5,17 +5,14 @@ import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring, Sha
 
 import { useTheme } from '../../theme';
 import { ImageComponent } from './ImageComponent';
+import { ImageProps } from './ImageCarousal';
 
-interface ImageViewerProps {
+interface ImageViewerProps extends ImageProps {
 	style?: StyleProp<ImageStyle>;
 	containerStyle?: StyleProp<ViewStyle>;
 	imageContainerStyle?: StyleProp<ViewStyle>;
 
 	uri: string;
-	imageComponentType?: string;
-	width: number;
-	height: number;
-	onLoadEnd?: () => void;
 	translateOuterX: SharedValue<number>;
 	offsetOuterX: SharedValue<number>;
 	currItem: SharedValue<number>;

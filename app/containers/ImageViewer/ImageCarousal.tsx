@@ -5,20 +5,23 @@ import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanima
 
 import { ImageViewer } from './ImageViewer';
 
-interface Data {
-	id: number;
-	uri: string;
-}
-
-interface ImageCarousalProps {
-	data: Data[];
-	firstIndex: number;
+export interface ImageProps {
+	imageComponentType?: string;
 	width: number;
 	height: number;
 	onLoadEnd?: () => void;
 }
 
-const ImageCarousal = ({ data, firstIndex, width, height, ...props }: ImageCarousalProps): React.ReactElement => {
+interface IData {
+	uri: string;
+}
+
+interface ImageCarousalProps extends ImageProps {
+	data: IData[];
+	firstIndex: number;
+}
+
+export const ImageCarousal = ({ data, firstIndex, width, height, ...props }: ImageCarousalProps): React.ReactElement => {
 	const WIDTH_OFFSET = -width;
 
 	const currItem = useSharedValue(firstIndex);
@@ -35,7 +38,7 @@ const ImageCarousal = ({ data, firstIndex, width, height, ...props }: ImageCarou
 				<Animated.View style={[{ flex: 1, flexDirection: 'row' }, style]}>
 					{data.map(item => (
 						<ImageViewer
-							key={item.id}
+							key={item.uri}
 							translateOuterX={translateOuterX}
 							offsetOuterX={offsetOuterX}
 							currItem={currItem}
@@ -58,5 +61,3 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	}
 });
-
-export default ImageCarousal;

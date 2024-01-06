@@ -6,7 +6,7 @@ import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-// import { ImageViewer, types } from '../../containers/ImageViewer';
+import { ImageCarousal, types } from '../../containers/ImageViewer';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
@@ -94,13 +94,15 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
 		if (type?.match(/image/)) {
 			if (allowPreview(isShareExtension, item?.size)) {
-				return null;
-				// <ImageViewer
-				// 	uri={item.path}
-				// 	imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
-				// 	width={width}
-				// 	height={calculatedHeight}
-				// />
+				return (
+					<ImageCarousal
+						firstIndex={0}
+						data={[{ uri: item.path }]}
+						imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
+						width={width}
+						height={calculatedHeight}
+					/>
+				);
 			}
 		}
 		return (
