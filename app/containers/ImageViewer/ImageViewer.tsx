@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View, Text } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-	withTiming,
-	useSharedValue,
-	useAnimatedStyle,
-	withSpring,
-	SharedValue,
-	runOnJS
-} from 'react-native-reanimated';
+import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring, SharedValue } from 'react-native-reanimated';
 
 import { useTheme } from '../../theme';
 import { ImageComponent } from './ImageComponent';
@@ -27,8 +20,6 @@ interface ImageViewerProps {
 	offsetOuterX: SharedValue<number>;
 	currItem: SharedValue<number>;
 	size: number;
-	showHeader: boolean;
-	toggleHeader: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -37,15 +28,6 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		flex: 1
-	},
-	header: {
-		position: 'absolute',
-		height: 40,
-		zIndex: 1,
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
 	}
 });
 
@@ -58,8 +40,6 @@ export const ImageViewer = ({
 	offsetOuterX,
 	currItem,
 	size,
-	showHeader,
-	toggleHeader,
 	...props
 }: ImageViewerProps): React.ReactElement => {
 	console.log(props);
@@ -185,10 +165,6 @@ export const ImageViewer = ({
 			if (scale.value === 1) resetScaleAnimation();
 		});
 
-	const singleTapGesture = Gesture.Tap().onEnd(() => {
-		// runOnJS(toggleHeader)();
-	});
-
 	const doubleTapGesture = Gesture.Tap()
 		.numberOfTaps(2)
 		.maxDelay(120)
@@ -207,7 +183,7 @@ export const ImageViewer = ({
 			}
 		});
 
-	const gesture = Gesture.Simultaneous(pinchGesture, Gesture.Exclusive(panGesture, doubleTapGesture, singleTapGesture));
+	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
 	const Component = ImageComponent({ type: imageComponentType, uri });
 
@@ -226,14 +202,6 @@ export const ImageViewer = ({
 				}
 			]}
 		>
-			{/* {showHeader && (
-				<View style={[styles.header, { width, backgroundColor: colors.previewBackground }]}>
-					<Text>back</Text>
-					<Text>title</Text>
-					<Text>download</Text>
-				</View>
-			)} */}
-
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<Component

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -19,8 +19,6 @@ interface ImageCarousalProps {
 }
 
 const ImageCarousal = ({ data, firstIndex, width, height, ...props }: ImageCarousalProps): React.ReactElement => {
-	const [showHeader, setShowHeader] = useState(false);
-
 	const WIDTH_OFFSET = -width;
 
 	const currItem = useSharedValue(firstIndex);
@@ -30,8 +28,6 @@ const ImageCarousal = ({ data, firstIndex, width, height, ...props }: ImageCarou
 	const style = useAnimatedStyle(() => ({
 		transform: [{ translateX: translateOuterX.value }]
 	}));
-
-	const toggleHeader = () => setShowHeader(e => !e);
 
 	return (
 		<GestureHandlerRootView style={styles.container}>
@@ -47,8 +43,6 @@ const ImageCarousal = ({ data, firstIndex, width, height, ...props }: ImageCarou
 							uri={item.uri}
 							width={width}
 							height={height}
-							showHeader={showHeader}
-							toggleHeader={toggleHeader}
 							{...props}
 						/>
 					))}
