@@ -75,6 +75,7 @@ const RenderContent = ({
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
+		console.log(uri);
 		return (
 			<ImageCarousal
 				data={data}
