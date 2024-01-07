@@ -56,21 +56,6 @@ const RenderContent = ({
 		};
 	}, [navigation]);
 
-	// const data = [
-	// 	{
-	// 		id: 1,
-	// 		uri: 'https://i.pinimg.com/originals/55/51/4d/55514dfd272080a0f6f0e2074205aa80.jpg'
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		uri: 'https://i.pinimg.com/736x/70/01/a5/7001a5091098d3286347c6bb10d10566.jpg'
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		uri: 'https://i.pinimg.com/736x/ef/16/b2/ef16b247843a6ba7f6a693815eab4ef9.jpg'
-	// 	}
-	// ];
-
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
