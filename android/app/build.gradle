@@ -380,6 +380,7 @@ dependencies {
     androidTestImplementation('com.wix:detox:+')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.facebook.soloader:soloader:0.10.4'
+    implementation 'com.facebook.fresco:animated-gif:2.5.0'
 }
 
 if (isNewArchitectureEnabled()) {

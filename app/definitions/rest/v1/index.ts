@@ -20,6 +20,7 @@ import { CommandsEndpoints } from './commands';
 import { PushTokenEndpoints } from './pushToken';
 import { DirectoryEndpoint } from './directory';
 import { AutoTranslateEndpoints } from './autotranslate';
+import { ModerationEndpoints } from './moderation';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -42,4 +43,5 @@ export type Endpoints = ChannelsEndpoints &
 	CommandsEndpoints &
 	PushTokenEndpoints &
 	DirectoryEndpoint &
-	AutoTranslateEndpoints;
+	AutoTranslateEndpoints &
+	ModerationEndpoints;
