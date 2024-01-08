@@ -5,6 +5,8 @@ import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
+import ImagePicker from 'react-native-image-crop-picker';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
@@ -33,6 +35,7 @@ import {
 } from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
+import { CustomIcon } from '../../containers/CustomIcon';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -117,8 +120,43 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}, 300);
 	};
 
+	handleImageCrop = async () => {
+		const { selected, attachments } = this.state;
+	  
+		try {
+		  if (selected && selected.path) {
+			const image = await ImagePicker.openCropper({
+			  mediaType: 'photo',
+			  path: selected.path
+			});
+	  
+			const selectedIndex = attachments.findIndex(att => att.path === selected.path);
+			const updatedAttachment = {
+			  ...attachments[selectedIndex],
+			  size: image.size,
+			  mime: image.mime,
+			  path: image.path
+			};
+	  
+			const updatedAttachments = [...attachments];
+			updatedAttachments[selectedIndex] = updatedAttachment;
+	  
+			this.setState({
+			  selected: updatedAttachment,
+			  attachments: updatedAttachments
+			}, () => {
+			  this.messagebox?.current?.forceUpdate?.();
+			});
+		  }
+
+		} catch (error) {
+		  console.log('Error cropping image', error);
+		}
+	  };
+	  
+
 	setHeader = () => {
-		const { room, thread, readOnly, attachments } = this.state;
+		const { room, thread, readOnly, selected } = this.state;
 		const { navigation, theme } = this.props;
 
 		const options: StackNavigationOptions = {
@@ -132,10 +170,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} color={themes[theme].previewTintColor} />;
 		}
 
-		if (!attachments.length && !readOnly) {
+		if (selected.mime?.startsWith('image/') && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].previewTintColor} />
+					<BorderlessButton onPress={this.handleImageCrop}>
+						<CustomIcon name='edit' size={24} color={themes[theme].previewTintColor} />
+					</BorderlessButton>
 				</HeaderButton.Container>
 			);
 		}
