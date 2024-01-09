@@ -82,12 +82,12 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 			<View style={styles.inner}>
 				<Text numberOfLines={1} style={styles.text}>
 					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>
-						{I18n.t('Sending_to')}{' '}
+						{I18n.t('Sending_to')}
 					</Text>
-					<CustomIcon name={icon} size={16} color={textColor} />
-					<Text style={[styles.name, { color: textColor }]} numberOfLines={1}>
-						{title}
-					</Text>
+				</Text>
+				<CustomIcon name={icon} size={16} color={textColor} />
+				<Text style={[styles.name, { color: textColor }]} numberOfLines={1}>
+					{title}
 				</Text>
 			</View>
 		</View>
