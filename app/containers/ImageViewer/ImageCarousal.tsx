@@ -12,16 +12,26 @@ export interface ImageProps {
 	onLoadEnd?: () => void;
 }
 
-interface IData {
+export interface IImageData {
 	uri: string;
+	title?: string;
+	image_type?: string;
 }
 
 interface ImageCarousalProps extends ImageProps {
-	data: IData[];
+	data: IImageData[];
 	firstIndex: number;
+	showHeader?: boolean;
 }
 
-export const ImageCarousal = ({ data, firstIndex, width, height, ...props }: ImageCarousalProps): React.ReactElement => {
+export const ImageCarousal = ({
+	data,
+	firstIndex,
+	width,
+	height,
+	showHeader = false,
+	...props
+}: ImageCarousalProps): React.ReactElement => {
 	const WIDTH_OFFSET = -width;
 
 	const currItem = useSharedValue(firstIndex);
@@ -36,16 +46,17 @@ export const ImageCarousal = ({ data, firstIndex, width, height, ...props }: Ima
 		<GestureHandlerRootView style={styles.container}>
 			<View style={[{ width: data.length * width, height }]}>
 				<Animated.View style={[{ flex: 1, flexDirection: 'row' }, style]}>
-					{data.map(item => (
+					{data.map((item: IImageData) => (
 						<ImageViewer
 							key={item.uri}
+							item={item}
 							translateOuterX={translateOuterX}
 							offsetOuterX={offsetOuterX}
 							currItem={currItem}
 							size={data.length}
-							uri={item.uri}
 							width={width}
 							height={height}
+							showHeader={showHeader}
 							{...props}
 						/>
 					))}

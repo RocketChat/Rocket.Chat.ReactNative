@@ -1,4 +1,5 @@
 import { IAttachment } from '../definitions';
+import { IImageData } from '../containers/ImageViewer';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 
 export type TNavigation = {
@@ -16,5 +17,7 @@ export type TNavigation = {
 	};
 	AttachmentView: {
 		attachment: IAttachment;
+		images?: IImageData[];
+		firstIndex?: number;
 	};
 };

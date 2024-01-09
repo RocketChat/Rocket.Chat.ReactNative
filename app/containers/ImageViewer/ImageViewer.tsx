@@ -1,22 +1,40 @@
 import React, { useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View, Text } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring, SharedValue } from 'react-native-reanimated';
+import Animated, {
+	withTiming,
+	useSharedValue,
+	useAnimatedStyle,
+	withSpring,
+	SharedValue,
+	runOnJS
+} from 'react-native-reanimated';
+import Touchable from 'react-native-platform-touchable';
+import { shallowEqual } from 'react-redux';
 
 import { useTheme } from '../../theme';
 import { ImageComponent } from './ImageComponent';
-import { ImageProps } from './ImageCarousal';
+import { IImageData, ImageProps } from './ImageCarousal';
+import { useAppNavigation } from '../../lib/hooks/navigation';
+import { CustomIcon } from '../CustomIcon/index';
+import sharedStyles from '../../views/Styles';
+import { handleSave } from '../../views/AttachmentView';
+import RCActivityIndicator from '../ActivityIndicator';
+import { useAppSelector } from '../../lib/hooks';
+import { isImageBase64 } from '../../lib/methods';
+import { getUserSelector } from '../../selectors/login';
 
 interface ImageViewerProps extends ImageProps {
 	style?: StyleProp<ImageStyle>;
 	containerStyle?: StyleProp<ViewStyle>;
 	imageContainerStyle?: StyleProp<ViewStyle>;
 
-	uri: string;
+	item: IImageData;
 	translateOuterX: SharedValue<number>;
 	offsetOuterX: SharedValue<number>;
 	currItem: SharedValue<number>;
 	size: number;
+	showHeader: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -25,11 +43,23 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		flex: 1
+	},
+	header: {
+		position: 'absolute',
+		zIndex: 1,
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		padding: 10
+	},
+	text: {
+		...sharedStyles.textMedium
 	}
 });
 
 export const ImageViewer = ({
-	uri = '',
+	item,
 	imageComponentType,
 	width,
 	height,
@@ -37,11 +67,14 @@ export const ImageViewer = ({
 	offsetOuterX,
 	currItem,
 	size,
+	showHeader,
 	...props
 }: ImageViewerProps): React.ReactElement => {
 	console.log(props);
 	const [centerX, setCenterX] = useState(0);
 	const [centerY, setCenterY] = useState(0);
+	const [loading, setLoading] = useState(false);
+	const [isHeaderVisible, setIsHeaderVisible] = useState(showHeader);
 
 	const WIDTH_OFFSET = -width;
 	const OUTER_EDGE_PAN = 100; // how much to translate when panned on both edges of the outer view
@@ -180,11 +213,32 @@ export const ImageViewer = ({
 			}
 		});
 
-	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
+	const toggleHeader = () => setIsHeaderVisible(s => !s);
 
-	const Component = ImageComponent({ type: imageComponentType, uri });
+	const singleTapGesture = Gesture.Tap()
+		.requireExternalGestureToFail(doubleTapGesture)
+		.onEnd(() => {
+			if (showHeader) {
+				runOnJS(toggleHeader)();
+			}
+		});
+
+	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture, singleTapGesture);
+
+	const Component = ImageComponent({ type: imageComponentType, uri: item.uri });
 
 	const { colors } = useTheme();
+
+	const navigation = useAppNavigation();
+
+	const { baseUrl, user, Allow_Save_Media_to_Gallery } = useAppSelector(
+		state => ({
+			baseUrl: state.server.server,
+			user: { id: getUserSelector(state).id, token: getUserSelector(state).token },
+			Allow_Save_Media_to_Gallery: (state.settings.Allow_Save_Media_to_Gallery as boolean) ?? true
+		}),
+		shallowEqual
+	);
 
 	return (
 		<View
@@ -199,17 +253,39 @@ export const ImageViewer = ({
 				}
 			]}
 		>
+			{isHeaderVisible && (
+				<View style={[styles.header, { width, backgroundColor: colors.previewBackground }]}>
+					<Touchable onPress={navigation.goBack}>
+						<CustomIcon name={'arrow-back'} size={25} color={colors.previewTintColor} />
+					</Touchable>
+
+					<Text numberOfLines={1} style={[styles.text, { color: colors.previewTintColor, maxWidth: '60%' }]}>
+						{decodeURI(item.title as string) || ''}
+					</Text>
+
+					{Allow_Save_Media_to_Gallery && !isImageBase64(item.uri) && (
+						<Touchable
+							onPress={() =>
+								handleSave({ image_url: item.uri, title: item.title, image_type: item.image_type }, user, baseUrl, setLoading)
+							}
+						>
+							<CustomIcon name={'download'} size={25} color={colors.previewTintColor} />
+						</Touchable>
+					)}
+				</View>
+			)}
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<Component
 						// @ts-ignore
 						style={styles.image}
 						resizeMode='contain'
-						source={{ uri }}
+						source={{ uri: item.uri }}
 						{...props}
 					/>
 				</Animated.View>
 			</GestureDetector>
+			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>
 	);
 };

@@ -35,6 +35,8 @@ import {
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
 import audioPlayer from '../../lib/methods/audioPlayer';
+import { IImageData } from '../../containers/ImageViewer/ImageCarousal';
+import { formatAttachmentUrl } from '../../lib/methods/helpers';
 
 interface IMessagesViewProps {
 	user: {
@@ -58,6 +60,7 @@ interface IMessagesViewProps {
 interface IMessagesViewState {
 	loading: boolean;
 	messages: IMessage[];
+	images: IImageData[];
 	message?: IMessage;
 	fileLoading: boolean;
 	total: number;
@@ -88,6 +91,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		this.state = {
 			loading: false,
 			messages: [],
+			images: [],
 			fileLoading: true,
 			total: -1
 		};
@@ -261,6 +265,11 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		}[name];
 	};
 
+	formatImageUrl = (item: any) => {
+		const url = formatAttachmentUrl(item.image_url, this.props.user.id, this.props.user.token, this.props.baseUrl);
+		return encodeURI(url);
+	};
+
 	load = async () => {
 		const { messages, total, loading } = this.state;
 		if (messages.length === total || loading) {
@@ -272,6 +281,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		try {
 			const result = await this.content.fetchFunc();
 			if (result.success) {
+				const images: IImageData[] = [];
 				const urlRenderMessages = result.messages?.map((message: any) => {
 					if (message.urls && message.urls.length > 0) {
 						message.urls = message.urls?.map((url: any, index: any) => {
@@ -287,10 +297,15 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 							return {} as IUrl;
 						});
 					}
+					if (message.typeGroup === 'image') {
+						const uri = this.formatImageUrl(getFileUrlAndTypeFromMessage(message));
+						images.push({ uri, title: message.name, image_type: message.type });
+					}
 					return message;
 				});
 				this.setState({
 					messages: [...messages, ...urlRenderMessages],
+					images,
 					total: result.total,
 					loading: false
 				});
@@ -312,6 +327,12 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
+		if (attachment.image_type) {
+			const currUrl = this.formatImageUrl(attachment);
+			const idx = this.state.images.findIndex(e => e.uri === currUrl);
+			navigation.navigate('AttachmentView', { attachment, images: this.state.images, firstIndex: idx !== -1 ? idx : 0 });
+			return;
+		}
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
