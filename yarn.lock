@@ -3368,9 +3368,9 @@
     regenerator-runtime "^0.13.4"
 
 "@babel/runtime@^7.21.0":
-  version "7.23.7"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.7.tgz#dd7c88deeb218a0f8bd34d5db1aa242e0f203193"
-  integrity sha512-w06OXVOFso7LcbzMiDGt+3X7Rh7Ho8MmgPoWU3rarH+8upf+wSU/grlGbWzQyr3DkdN6ZeuMFjpdwW0Q+HxobA==
+  version "7.23.8"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.8.tgz#8ee6fe1ac47add7122902f257b8ddf55c898f650"
+  integrity sha512-Y7KbAP984rn1VGMbGqKmBLio9V7y5Je9GvU4rQPCPinCyNfUcToxIXl06d59URp/F3LwinvODxab5N/G6qggkw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -17744,9 +17744,9 @@ react-native-gradle-plugin@^0.0.6:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.6.tgz#b61a9234ad2f61430937911003cddd7e15c72b45"
   integrity sha512-eIlgtsmDp1jLC24dRn43hB3kEcZVqx6DUQbR0N1ABXGnMEafm9I3V3dUUeD1vh+Dy5WqijSoEwLNUPLgu5zDMg==
 
-react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#9cdbd22b82ee523dce8e959412ace6e6d1c53609:
+react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#c2a6cf222da1b15712e166e1e2627d342fb7bd78:
   version "0.36.3"
-  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/9cdbd22b82ee523dce8e959412ace6e6d1c53609"
+  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/c2a6cf222da1b15712e166e1e2627d342fb7bd78"
 
 react-native-image-progress@^1.1.1:
   version "1.1.1"

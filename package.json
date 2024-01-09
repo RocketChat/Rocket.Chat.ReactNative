@@ -97,7 +97,7 @@
 		"react-native-fast-image": "RocketChat/react-native-fast-image.git#bump-version",
 		"react-native-file-viewer": "^2.1.4",
 		"react-native-gesture-handler": "2.4.2",
-		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#9cdbd22b82ee523dce8e959412ace6e6d1c53609",
+		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#c2a6cf222da1b15712e166e1e2627d342fb7bd78",
 		"react-native-image-progress": "^1.1.1",
 		"react-native-katex": "^0.5.1",
 		"react-native-linear-gradient": "^2.6.2",
