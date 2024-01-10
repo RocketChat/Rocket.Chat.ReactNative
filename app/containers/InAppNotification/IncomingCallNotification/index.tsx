@@ -36,6 +36,7 @@ const IncomingCallHeader = React.memo(
 	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
+		const [audio, setAudio] = useState(true);
 		const dispatch = useDispatch();
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const styles = useStyle();
@@ -64,12 +65,20 @@ const IncomingCallHeader = React.memo(
 					direct={true}
 				/>
 				<View style={styles.row}>
-					<Touchable hitSlop={BUTTON_HIT_SLOP} onPress={hideNotification} style={styles.closeButton}>
+					<Touchable
+						hitSlop={BUTTON_HIT_SLOP}
+						onPress={() => {
+							setAudio(!audio);
+							hideNotification();
+						}}
+						style={styles.closeButton}
+					>
 						<CustomIcon name='close' size={20} color={colors.gray300} />
 					</Touchable>
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}
 						onPress={() => {
+							setAudio(!audio);
 							hideNotification();
 							dispatch(cancelCall({ callId }));
 						}}
@@ -80,6 +89,7 @@ const IncomingCallHeader = React.memo(
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}
 						onPress={() => {
+							setAudio(!audio);
 							hideNotification();
 							dispatch(acceptCall({ callId }));
 						}}
@@ -88,7 +98,7 @@ const IncomingCallHeader = React.memo(
 						<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
 					</Touchable>
 				</View>
-				<Ringer ringer={ERingerSounds.RINGTONE} />
+				{audio ? <Ringer ringer={ERingerSounds.RINGTONE} /> : null}
 			</View>
 		);
 	}
