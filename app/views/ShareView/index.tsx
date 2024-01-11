@@ -26,7 +26,7 @@ import styles from './styles';
 import { IApplicationState, IServer, IShareAttachment, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { RoomContext } from '../../contexts';
+import { RoomContext } from '../RoomView/context';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -55,16 +55,14 @@ interface IShareViewProps {
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
-	static contextType? = RoomContext;
-	declare context: React.ContextType<typeof RoomContext>;
 	private messageComposerRef: React.RefObject<IMessageComposerRef>;
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
 	private closeReply?: Function;
 
-	constructor(props: IShareViewProps, context: React.ContextType<typeof RoomContext>) {
-		super(props, context);
+	constructor(props: IShareViewProps) {
+		super(props);
 		this.messageComposerRef = React.createRef();
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
@@ -82,13 +80,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
 		};
 		this.getServerInfo();
-		this.context.setRoom({
-			rid: this.state.room.rid,
-			t: this.state.room.t,
-			tmid: this.state.thread.tmid,
-			sharing: true,
-			sendMessage: this.send
-		});
 	}
 
 	componentDidMount = async () => {
@@ -216,8 +207,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		await this.selectFile(selected);
 
 		const { attachments, room, text, thread } = this.state;
-		const { navigation, server, user } = this.props;
-		const { action, selectedMessages, resetAction } = this.context;
+		const { navigation, server, user, route } = this.props;
+
+		const action = route.params?.action;
+		const selectedMessages = route.params?.selectedMessages ?? [];
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -226,7 +219,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 			// if it's not share extension this can close
 		} else {
-			resetAction();
 			navigation.pop();
 		}
 
@@ -313,30 +305,42 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	renderContent = () => {
-		const { attachments, selected, text } = this.state;
-		const { theme } = this.props;
+		const { attachments, selected, text, room, thread } = this.state;
+		const { theme, route } = this.props;
 
 		if (attachments.length) {
 			return (
-				<View style={styles.container}>
-					<Preview
-						// using key just to reset zoom/move after change selected
-						key={selected?.path}
-						item={selected}
-						length={attachments.length}
-						theme={theme}
-						isShareExtension={this.isShareExtension}
-					/>
-					<MessageComposerContainer ref={this.messageComposerRef}>
-						<Thumbs
-							attachments={attachments}
+				<RoomContext.Provider
+					value={{
+						rid: room.rid,
+						t: room.t,
+						tmid: thread.id,
+						sharing: true,
+						action: route.params?.action,
+						selectedMessages: route.params?.selectedMessages,
+						onSendMessage: this.send
+					}}
+				>
+					<View style={styles.container}>
+						<Preview
+							// using key just to reset zoom/move after change selected
+							key={selected?.path}
+							item={selected}
+							length={attachments.length}
 							theme={theme}
 							isShareExtension={this.isShareExtension}
-							onPress={this.selectFile}
-							onRemove={this.removeFile}
 						/>
-					</MessageComposerContainer>
-				</View>
+						<MessageComposerContainer ref={this.messageComposerRef}>
+							<Thumbs
+								attachments={attachments}
+								theme={theme}
+								isShareExtension={this.isShareExtension}
+								onPress={this.selectFile}
+								onRemove={this.removeFile}
+							/>
+						</MessageComposerContainer>
+					</View>
+				</RoomContext.Provider>
 			);
 		}
 

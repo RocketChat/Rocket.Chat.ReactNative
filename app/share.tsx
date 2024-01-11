@@ -20,7 +20,6 @@ import WithoutServersView from './views/WithoutServersView';
 import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
-import { RoomProvider } from './contexts';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
@@ -41,13 +40,11 @@ const InsideStack = () => {
 	screenOptions.headerStyle = { ...screenOptions.headerStyle, height: 57 };
 
 	return (
-		<RoomProvider>
-			<Inside.Navigator screenOptions={screenOptions}>
-				<Inside.Screen name='ShareListView' component={ShareListView} />
-				<Inside.Screen name='ShareView' component={ShareView} />
-				<Inside.Screen name='SelectServerView' component={SelectServerView} />
-			</Inside.Navigator>
-		</RoomProvider>
+		<Inside.Navigator screenOptions={screenOptions}>
+			<Inside.Screen name='ShareListView' component={ShareListView} />
+			<Inside.Screen name='ShareView' component={ShareView} />
+			<Inside.Screen name='SelectServerView' component={SelectServerView} />
+		</Inside.Navigator>
 	);
 };
 

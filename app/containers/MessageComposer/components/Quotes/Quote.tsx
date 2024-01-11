@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { useRoom } from '../../../../contexts/RoomContext';
+import { useRoomContext } from '../../../../views/RoomView/context';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks';
@@ -14,7 +14,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 	const [styles, colors] = useStyle();
 	const message = useMessage(messageId);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
-	const { onRemoveQuoteMessage } = useRoom();
+	const { onRemoveQuoteMessage } = useRoomContext();
 
 	let username = '';
 	let msg = '';

@@ -17,7 +17,7 @@ import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, markdownStyle } from '../c
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../emitter';
-import { useRoom } from '../../../contexts';
+import { useRoomContext } from '../../../views/RoomView/context';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
@@ -31,7 +31,7 @@ export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		console.count('[MessageComposer] ComposerInput');
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, action, selectedMessages } = useRoom();
+		const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
 		const focused = useFocused();
 		const { setFocused, setTrackingViewHeight, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;

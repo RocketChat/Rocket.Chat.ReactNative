@@ -4,11 +4,11 @@ import { View } from 'react-native';
 import { useFocused, useShowEmojiKeyboard, useShowEmojiSearchbar } from '../../context';
 import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
-import { useRoom } from '../../../../contexts';
+import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const Left = () => {
 	console.count('[MessageComposer] Left');
-	const { sharing } = useRoom();
+	const { sharing } = useRoomContext();
 	const focused = useFocused();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();

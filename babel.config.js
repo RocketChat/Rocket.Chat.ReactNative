@@ -4,8 +4,7 @@ module.exports = {
 		['@babel/plugin-proposal-decorators', { legacy: true }],
 		'react-native-reanimated/plugin',
 		'@babel/plugin-transform-named-capturing-groups-regex',
-		['module:react-native-dotenv'],
-		['@babel/plugin-transform-flow-strip-types', { allowDeclareFields: true }]
+		['module:react-native-dotenv']
 	],
 	env: {
 		production: {

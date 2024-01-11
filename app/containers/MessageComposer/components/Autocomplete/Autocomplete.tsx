@@ -6,11 +6,11 @@ import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
-import { useRoom } from '../../../../contexts/RoomContext';
+import { useRoomContext } from '../../../../views/RoomView/context';
 import { useStyle, getBottom } from './styles';
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
-	const { rid } = useRoom();
+	const { rid } = useRoomContext();
 	const trackingViewHeight = useTrackingViewHeight();
 	const keyboardHeight = useKeyboardHeight();
 	const { text, type, params } = useAutocompleteParams();

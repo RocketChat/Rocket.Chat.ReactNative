@@ -4,10 +4,10 @@ import { ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../emitter';
-import { useRoom } from '../../../../contexts';
+import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const Default = (): ReactElement | null => {
-	const { sharing } = useRoom();
+	const { sharing } = useRoomContext();
 	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
 
 	return (

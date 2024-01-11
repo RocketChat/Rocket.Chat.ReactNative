@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
-import { useRoom } from '../../../contexts/RoomContext';
+import { useRoomContext } from '../../../views/RoomView/context';
 import { useAlsoSendThreadToChannel, useMessageComposerApi, useShowEmojiSearchbar } from '../context';
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
@@ -18,7 +18,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { setAlsoSendThreadToChannel } = useMessageComposerApi();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
-	const { tmid } = useRoom();
+	const { tmid } = useRoomContext();
 	const { colors } = useTheme();
 	const subscription = useRef<Subscription>();
 	const alsoSendThreadToChannelUserPref = useAppSelector(state => state.login.user.alsoSendThreadToChannel);

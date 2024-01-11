@@ -85,7 +85,7 @@ import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { RoomContext } from '../../contexts';
+import { RoomContext } from './context';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
@@ -94,8 +94,6 @@ import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
-	static contextType? = RoomContext;
-	declare context: React.ContextType<typeof RoomContext>;
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
@@ -126,8 +124,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private unsubscribeBlur?: () => void;
 	private unsubscribeFocus?: () => void;
 
-	constructor(props: IRoomViewProps, context: React.ContextType<typeof RoomContext>) {
-		super(props, context);
+	constructor(props: IRoomViewProps) {
+		super(props);
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		/**
@@ -149,7 +147,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
+
+		// FIXME: unify replyinDM and messageId
 		this.replyInDM = props.route.params?.replyInDM;
+		const selectedMessages = props.route.params?.replyInDM ? [props.route.params.replyInDM] : [];
 		this.state = {
 			joined: true,
 			room,
@@ -157,6 +158,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			member: {},
 			lastOpen: null,
 			reactionsModalVisible: false,
+			selectedMessages,
+			action: selectedMessages.length ? 'quote' : null,
 			canAutoTranslate: false,
 			loading: true,
 			replyWithMention: false,
@@ -229,21 +232,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			audioPlayer.pauseCurrentAudio();
 		});
-
-		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			if (!this.rid || !this.t) {
-				return;
-			}
-			this.context.setRoom({
-				rid: this.rid,
-				t: this.t,
-				tmid: this.tmid,
-				sharing: false,
-				sendMessage: this.handleSendMessage,
-				editCancel: this.onEditCancel,
-				editRequest: this.onEditRequest
-			});
-		});
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -261,6 +249,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
 		if (stateUpdated) {
+			return true;
+		}
+		if (!dequal(nextState.selectedMessages, state.selectedMessages)) {
 			return true;
 		}
 		if (!dequal(nextProps.insets, insets)) {
@@ -316,9 +307,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	async componentWillUnmount() {
 		this.mounted = false;
 		this.unsubscribe();
-		if (this.context.rid === this.rid && this.context.t === this.t) {
-			this.context.reset();
-		}
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
@@ -688,11 +676,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onEditInit = (messageId: string) => {
+		const { action } = this.state;
 		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
-		if (this.context.action) {
+		if (action) {
 			return;
 		}
-		this.context.setAction('edit', messageId);
+		this.setState({ selectedMessages: [messageId], action: 'edit' });
 	};
 
 	onEditCancel = () => {
@@ -730,20 +719,33 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onQuoteInit = (messageId: string) => {
-		this.context.setAction('quote', messageId);
+		const { action } = this.state;
+		if (action === 'quote') {
+			if (!this.state.selectedMessages.includes(messageId)) {
+				this.setState(({ selectedMessages }) => ({ selectedMessages: [...selectedMessages, messageId] }));
+			}
+			return;
+		}
+		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
+		if (action) {
+			return;
+		}
+		this.setState({ selectedMessages: [messageId], action: 'quote' });
 	};
 
 	onRemoveQuoteMessage = (messageId: string) => {
-		this.context.onRemoveQuoteMessage?.(messageId);
+		const { selectedMessages } = this.state;
+		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
+		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
 	};
 
 	resetAction = () => {
-		this.context.resetAction();
+		this.setState({ action: null, selectedMessages: [] });
 	};
 
 	showReactionPicker = () => {
 		const { showActionSheet } = this.props;
-		const { selectedMessages } = this.context;
+		const { selectedMessages } = this.state;
 		setTimeout(() => {
 			showActionSheet({
 				children: (
@@ -762,11 +764,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionInit = (messageId: string) => {
 		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
-		if (this.context.action) {
+		if (this.state.action) {
 			return;
 		}
 		this.handleCloseEmoji(() => {
-			this.context.setAction('react', messageId);
+			this.setState({ selectedMessages: [messageId], action: 'react' }, this.showReactionPicker);
 			this.showReactionPicker();
 		});
 	};
@@ -778,7 +780,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		const { action } = this.context;
+		const { action } = this.state;
 		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action && action !== 'quote') {
 			return;
@@ -1230,7 +1232,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
-		const { action, selectedMessages } = this.context;
+		const { action, selectedMessages } = this.state;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
@@ -1398,7 +1400,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading } = this.state;
+		const { room, loading, action, selectedMessages } = this.state;
 		const { user, baseUrl, theme, width, serverVersion } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
@@ -1408,25 +1410,40 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
-				<StatusBar />
-				<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
-				<List
-					ref={this.list}
-					listRef={this.flatList}
-					rid={rid}
-					tmid={this.tmid}
-					renderRow={this.renderItem}
-					loading={loading}
-					hideSystemMessages={this.hideSystemMessages}
-					showMessageInMainThread={user.showMessageInMainThread ?? false}
-					serverVersion={serverVersion}
-				/>
-				{this.renderFooter()}
-				{this.renderActions()}
-				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-			</SafeAreaView>
+			<RoomContext.Provider
+				value={{
+					rid,
+					t,
+					tmid: this.tmid,
+					sharing: false,
+					action,
+					selectedMessages,
+					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
+					editCancel: this.onEditCancel,
+					editRequest: this.onEditRequest,
+					onSendMessage: this.handleSendMessage
+				}}
+			>
+				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
+					<StatusBar />
+					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
+					<List
+						ref={this.list}
+						listRef={this.flatList}
+						rid={rid}
+						tmid={this.tmid}
+						renderRow={this.renderItem}
+						loading={loading}
+						hideSystemMessages={this.hideSystemMessages}
+						showMessageInMainThread={user.showMessageInMainThread ?? false}
+						serverVersion={serverVersion}
+					/>
+					{this.renderFooter()}
+					{this.renderActions()}
+					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+				</SafeAreaView>
+			</RoomContext.Provider>
 		);
 	}
 }

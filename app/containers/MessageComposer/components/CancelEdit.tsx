@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { BaseButton } from './Buttons';
-import { useRoom } from '../../../contexts/RoomContext';
+import { useRoomContext } from '../../../views/RoomView/context';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {
-	const { action, editCancel } = useRoom();
+	const { action, editCancel } = useRoomContext();
 
 	if (action !== 'edit') {
 		return null;

@@ -11,7 +11,7 @@ import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscrip
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
-import { useRoom } from '../../../contexts/RoomContext';
+import { useRoomContext } from '../../../views/RoomView/context';
 
 export const useChooseMedia = ({
 	rid,
@@ -23,7 +23,7 @@ export const useChooseMedia = ({
 	permissionToUpload: boolean;
 }) => {
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
-	const { action, selectedMessages } = useRoom();
+	const { action, selectedMessages } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {

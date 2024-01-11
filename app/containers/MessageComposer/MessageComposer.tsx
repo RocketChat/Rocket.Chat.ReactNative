@@ -5,7 +5,7 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { useRoom } from '../../contexts';
+import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel } from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import {
@@ -62,7 +62,7 @@ export const MessageComposer = ({
 	});
 	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
 	const { colors, theme } = useTheme();
-	const { rid, tmid, action, selectedMessages, sharing, sendMessage, editRequest } = useRoom();
+	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -101,7 +101,7 @@ export const MessageComposer = ({
 		if (!rid) return;
 
 		if (sharing) {
-			sendMessage?.();
+			onSendMessage?.();
 			return;
 		}
 
@@ -114,7 +114,7 @@ export const MessageComposer = ({
 		if (action === 'quote') {
 			// TODO: missing threads and threads enabled implementation
 			const quoteMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
-			sendMessage?.(quoteMessage);
+			onSendMessage?.(quoteMessage);
 			return;
 		}
 
@@ -139,7 +139,7 @@ export const MessageComposer = ({
 		}
 
 		// Text message
-		sendMessage?.(textFromInput, alsoSendThreadToChannel);
+		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
 	};
 
 	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
