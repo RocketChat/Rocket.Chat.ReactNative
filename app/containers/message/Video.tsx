@@ -78,12 +78,7 @@ const CancelIndicator = () => {
 const Thumbnail = ({ loading, thumbnailUrl, cached }: { loading: boolean; thumbnailUrl?: string; cached: boolean }) => (
 	<>
 		{thumbnailUrl ? <FastImage style={styles.thumbnailImage} source={{ uri: thumbnailUrl }} /> : null}
-		<BlurComponent
-			iconName={cached ? 'play-filled' : 'arrow-down-circle'}
-			loading={loading}
-			style={styles.button}
-			showOverlay={cached}
-		/>
+		<BlurComponent iconName={cached ? 'play-filled' : 'arrow-down-circle'} loading={loading} style={styles.button} />
 		{loading ? <CancelIndicator /> : null}
 	</>
 );
