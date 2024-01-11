@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 
 import { LISTENER } from '../../containers/Toast';
-import { IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
+import { IGetRoomRoles, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -18,9 +18,9 @@ const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail, popToRoot: true });
 };
 
-export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles: any): boolean => {
-	const userRoleResult = roomRoles.find((r: any) => r.u._id === selectedUser._id);
-	return userRoleResult?.roles.includes(role);
+export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IGetRoomRoles[]): boolean => {
+	const userRoleResult = roomRoles?.find((r: any) => r.u._id === selectedUser._id);
+	return !!userRoleResult?.roles.includes(role);
 };
 
 export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, updateState: any): Promise<void> => {

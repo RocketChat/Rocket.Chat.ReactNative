@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.44.0",
+	"version": "4.45.0",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -192,7 +192,7 @@
 		"babel-loader": "8.3.0",
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"codecov": "^3.8.3",
-		"detox": "^20.1.2",
+		"detox": "20.11.0",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-import": "2.26.0",
