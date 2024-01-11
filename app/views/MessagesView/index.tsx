@@ -271,7 +271,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	};
 
 	load = async () => {
-		const { messages, total, loading } = this.state;
+		const { messages, images, total, loading } = this.state;
 		if (messages.length === total || loading) {
 			return;
 		}
@@ -281,7 +281,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		try {
 			const result = await this.content.fetchFunc();
 			if (result.success) {
-				const images: IImageData[] = [];
+				const imgs: IImageData[] = [];
 				const urlRenderMessages = result.messages?.map((message: any) => {
 					if (message.urls && message.urls.length > 0) {
 						message.urls = message.urls?.map((url: any, index: any) => {
@@ -299,13 +299,13 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					}
 					if (message.typeGroup === 'image') {
 						const uri = this.formatImageUrl(getFileUrlAndTypeFromMessage(message));
-						images.push({ uri, title: message.name, image_type: message.type });
+						imgs.push({ uri, title: message.name, image_type: message.type });
 					}
 					return message;
 				});
 				this.setState({
 					messages: [...messages, ...urlRenderMessages],
-					images,
+					images: [...images, ...imgs],
 					total: result.total,
 					loading: false
 				});
