@@ -95,6 +95,7 @@ import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getThreadById } from '../../lib/database/services/Thread';
+import { focusedThreadRoom, removeFocusedThreadRoom } from '../../actions/room';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -170,18 +171,18 @@ interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
 	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
+	| TSubscriptionModel
+	| {
+		rid: string;
+		t: string;
+		name?: string;
+		fname?: string;
+		prid?: string;
+		joinCodeRequired?: boolean;
+		status?: string;
+		lastMessage?: ILastMessage;
+		sysMes?: boolean;
+		onHold?: boolean;
 		  };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any;
@@ -230,7 +231,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
-	private unsubscribeFocus?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -308,7 +308,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
-		const { navigation } = this.props;
+		const { navigation, dispatch } = this.props;
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
@@ -339,11 +339,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			audioPlayer.pauseCurrentAudio();
 		});
-		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			if (!this.tmid) {
-				this.sub?.removeThreadFocused();
-			}
-		});
+		if (this.tmid) {
+			dispatch(focusedThreadRoom({ tmid: this.tmid }));
+		}
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -414,6 +412,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	async componentWillUnmount() {
+		const { dispatch } = this.props;
 		const { editing, room } = this.state;
 		const db = database.active;
 		this.mounted = false;
@@ -463,11 +462,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
-		if (this.unsubscribeFocus) {
-			this.unsubscribeFocus();
-		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
+		if (this.tmid) {
+			dispatch(removeFocusedThreadRoom());
+		}
 		if (!this.tmid) {
 			// TODO: Refactor when audio becomes global
 			await audioPlayer.unloadRoomAudios(this.rid);
@@ -698,7 +697,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				await RoomServices.getMessages({
 					rid: room.rid,
 					t: room.t as RoomType,
-					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
+					...'lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {}
 				});
 
 				// if room is joined
@@ -1221,7 +1220,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					sendLoadingEvent({ visible: false });
 				}, 300);
 			}
-			this.sub?.setThreadFocused(item.tmid);
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.tmid,
@@ -1233,7 +1231,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('tlm' in item) {
-			this.sub?.setThreadFocused(item.id);
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.id,
@@ -1512,7 +1509,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={ref => this.messageActions = ref}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1523,7 +1520,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions ref={ref => this.messageErrorActions = ref} tmid={this.tmid} />
 			</>
 		);
 	};

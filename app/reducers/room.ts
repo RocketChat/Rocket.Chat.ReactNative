@@ -8,13 +8,15 @@ export interface IRoom {
 	isDeleting: boolean;
 	subscribedRoom: string;
 	historyLoaders: string[];
+	focusedThread: string;
 }
 
 export const initialState: IRoom = {
 	rid: '',
 	isDeleting: false,
 	subscribedRoom: '',
-	historyLoaders: []
+	historyLoaders: [],
+	focusedThread: ''
 };
 
 export default function (state = initialState, action: TActionsRoom): IRoom {
@@ -67,6 +69,16 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 			return {
 				...state,
 				historyLoaders: state.historyLoaders.filter(loaderId => loaderId !== action.loaderId)
+			};
+		case ROOM.FOCUSED_THREAD:
+			return {
+				...state,
+				focusedThread: action.tmid
+			};
+		case ROOM.REMOVE_FOCUSED_THREAD:
+			return {
+				...state,
+				focusedThread: ''
 			};
 		default:
 			return state;

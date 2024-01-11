@@ -42,7 +42,6 @@ export default class RoomSubscription {
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
 	private lastOpen?: Date;
-	private threadFocused?: string;
 
 	constructor(rid: string) {
 		this.rid = rid;
@@ -312,8 +311,9 @@ export default class RoomSubscription {
 
 			// Haptic Feedback when receiving message
 			const { id: userId } = reduxStore.getState().login.user;
+			const { focusedThread } = reduxStore.getState().room;
 			if (
-				((!message.tmid && !message.tlm && !this.threadFocused) || (message.tmid && message.tmid === this.threadFocused)) &&
+				((!message.tmid && !message.tlm && !focusedThread) || (message.tmid && message.tmid === focusedThread)) &&
 				message.u._id !== userId
 			) {
 				const notificationInAppVibration = userPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
@@ -372,13 +372,5 @@ export default class RoomSubscription {
 		this.lastOpen = new Date();
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
 		this.queue[message._id] = message;
-	};
-
-	setThreadFocused = (tmid: string) => {
-		this.threadFocused = tmid;
-	};
-
-	removeThreadFocused = () => {
-		this.threadFocused = '';
 	};
 }

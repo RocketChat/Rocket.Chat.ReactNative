@@ -54,6 +54,10 @@ export interface IRoomHistoryFinished extends Action {
 	loaderId: string;
 }
 
+export interface IFocusedThreadRoom extends Action {
+	tmid: string;
+}
+
 export type TActionsRoom = TSubscribeRoom &
 	TUnsubscribeRoom &
 	ILeaveRoom &
@@ -61,7 +65,8 @@ export type TActionsRoom = TSubscribeRoom &
 	IForwardRoom &
 	IUserTyping &
 	IRoomHistoryRequest &
-	IRoomHistoryFinished;
+	IRoomHistoryFinished &
+	IFocusedThreadRoom;
 
 export function subscribeRoom(rid: string): TSubscribeRoom {
 	return {
@@ -130,5 +135,18 @@ export function roomHistoryFinished({ loaderId }: { loaderId: string }): IRoomHi
 	return {
 		type: ROOM.HISTORY_FINISHED,
 		loaderId
+	};
+}
+
+export function focusedThreadRoom({ tmid }: { tmid: string }): IFocusedThreadRoom {
+	return {
+		type: ROOM.FOCUSED_THREAD,
+		tmid
+	};
+}
+
+export function removeFocusedThreadRoom(): Action {
+	return {
+		type: ROOM.REMOVE_FOCUSED_THREAD
 	};
 }

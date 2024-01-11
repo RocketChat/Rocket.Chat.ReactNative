@@ -1,7 +1,9 @@
 import {
 	deleteRoom,
+	focusedThreadRoom,
 	forwardRoom,
 	leaveRoom,
+	removeFocusedThreadRoom,
 	removedRoom,
 	roomHistoryFinished,
 	roomHistoryRequest,
@@ -68,5 +70,18 @@ describe('test room reducer', () => {
 		mockedStore.dispatch(roomHistoryFinished({ loaderId: 'loader' }));
 		const { historyLoaders } = mockedStore.getState().room;
 		expect(historyLoaders).toEqual([]);
+	});
+
+	it('should return focusedThread with the tmid properly', () => {
+		const tmid = 'focusedThread';
+		mockedStore.dispatch(focusedThreadRoom({ tmid }));
+		const { focusedThread } = mockedStore.getState().room;
+		expect(focusedThread).toEqual(tmid);
+	});
+
+	it('should return focusedThread as empty after call removeFocusedThreadRoom', () => {
+		mockedStore.dispatch(removeFocusedThreadRoom());
+		const { focusedThread } = mockedStore.getState().room;
+		expect(focusedThread).toEqual('');
 	});
 });
