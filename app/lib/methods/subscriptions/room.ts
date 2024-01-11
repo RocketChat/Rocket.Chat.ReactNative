@@ -1,6 +1,7 @@
 import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
@@ -19,6 +20,8 @@ import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
+import userPreferences from '../userPreferences';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../constants';
 
 const WINDOW_TIME = 1000;
 
@@ -39,6 +42,7 @@ export default class RoomSubscription {
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
 	private lastOpen?: Date;
+	private threadFocused?: string;
 
 	constructor(rid: string) {
 		this.rid = rid;
@@ -306,6 +310,17 @@ export default class RoomSubscription {
 				}
 			}
 
+			// Haptic Feedback when receiving message
+			const { id: userId } = reduxStore.getState().login.user;
+			if (
+				((!message.tmid && !message.tlm && !this.threadFocused) || (message.tmid && message.tmid === this.threadFocused)) &&
+				message.u._id !== userId
+			) {
+				const notificationInAppVibration = userPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
+				if (notificationInAppVibration || notificationInAppVibration === null) {
+					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+				}
+			}
 			return resolve();
 		});
 
@@ -357,5 +372,13 @@ export default class RoomSubscription {
 		this.lastOpen = new Date();
 		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
 		this.queue[message._id] = message;
+	};
+
+	setThreadFocused = (tmid: string) => {
+		this.threadFocused = tmid;
+	};
+
+	removeThreadFocused = () => {
+		this.threadFocused = '';
 	};
 }

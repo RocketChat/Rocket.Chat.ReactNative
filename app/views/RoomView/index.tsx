@@ -230,6 +230,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
+	private unsubscribeFocus?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -337,6 +338,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		// TODO: Refactor when audio becomes global
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			audioPlayer.pauseCurrentAudio();
+		});
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
+			if (!this.tmid) {
+				this.sub?.removeThreadFocused();
+			}
 		});
 	}
 
@@ -456,6 +462,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
+		}
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -1212,6 +1221,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					sendLoadingEvent({ visible: false });
 				}, 300);
 			}
+			this.sub?.setThreadFocused(item.tmid);
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.tmid,
@@ -1223,6 +1233,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('tlm' in item) {
+			this.sub?.setThreadFocused(item.id);
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.id,
