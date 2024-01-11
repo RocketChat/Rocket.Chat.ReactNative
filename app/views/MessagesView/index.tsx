@@ -297,7 +297,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 							return {} as IUrl;
 						});
 					}
-					if (message.typeGroup === 'image') {
+					if (message.type?.includes('image')) {
 						const uri = this.formatImageUrl(getFileUrlAndTypeFromMessage(message));
 						imgs.push({ uri, title: message.name, image_type: message.type });
 					}
