@@ -35,9 +35,8 @@ export async function resendFailedMessages(): Promise<void> {
 			resendMsgs.push(resendMessage(message));
 		});
 
-		threadRecords.forEach(async (message: TMessageModel) => {
-			const msg = await db.get('messages').find(message.id); // tshow only exists on this db
-			resendMsgs.push(resendMessage(message, message.rid, msg.tshow));
+		threadRecords.forEach((message: TMessageModel) => {
+			resendMsgs.push(resendMessage(message, message.rid));
 		});
 
 		await Promise.allSettled(resendMsgs);
@@ -100,9 +99,14 @@ async function sendMessageCall(message: any) {
 	return changeMessageStatus(_id, messagesStatus.ERROR, tmid);
 }
 
-export async function resendMessage(message: TMessageModel, tmid?: string, tshow?: boolean) {
+export async function resendMessage(message: TMessageModel, tmid?: string) {
 	const db = database.active;
 	try {
+		let tshow;
+		if (tmid) {
+			tshow = (await db.get('messages').find(message.id)).tshow; // tshow only exists on this db
+		}
+
 		await db.write(async () => {
 			await message.update(m => {
 				m.status = messagesStatus.TEMP;
