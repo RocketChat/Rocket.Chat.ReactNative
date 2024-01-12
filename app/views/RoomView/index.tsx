@@ -113,7 +113,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
-	private replyInDM?: string;
 	// Type of InteractionManager.runAfterInteractions
 	private didMountInteraction?: {
 		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
@@ -147,10 +146,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
-
-		// FIXME: unify replyinDM and messageId
-		this.replyInDM = props.route.params?.replyInDM;
-		const selectedMessages = props.route.params?.replyInDM ? [props.route.params.replyInDM] : [];
+		const selectedMessages = props.route.params?.messageId ? [props.route.params.messageId] : [];
 		this.state = {
 			joined: true,
 			room,
@@ -201,6 +197,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
+		const { selectedMessages } = this.state;
 		const { navigation } = this.props;
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
@@ -223,8 +220,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
-			if (this.replyInDM) {
-				this.onQuoteInit(this.replyInDM);
+			if (selectedMessages.length === 1) {
+				this.onQuoteInit(selectedMessages[0]);
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
