@@ -1,7 +1,7 @@
 import { EdgeInsets } from 'react-native-safe-area-context';
 
 import { ChatsStackParamList } from '../../stacks/types';
-import { IBaseScreen, ILastMessage, ILoggedUser, TSubscriptionModel, ICustomEmojis } from '../../definitions';
+import { IBaseScreen, ILastMessage, ILoggedUser, TSubscriptionModel, ICustomEmojis, TMessageAction } from '../../definitions';
 import { IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -56,4 +56,6 @@ export interface IRoomViewState {
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
+	action: TMessageAction;
+	selectedMessages: string[];
 }
