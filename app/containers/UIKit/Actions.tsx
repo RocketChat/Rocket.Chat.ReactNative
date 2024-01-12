@@ -1,8 +1,8 @@
-import { BlockContext } from '@rocket.chat/ui-kit';
 import React, { useState } from 'react';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
-import I18n from '../../i18n';
 import Button from '../Button';
+import I18n from '../../i18n';
 import { IActions } from './interfaces';
 
 export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
