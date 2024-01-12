@@ -766,7 +766,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		this.handleCloseEmoji(() => {
 			this.setState({ selectedMessages: [messageId], action: 'react' }, this.showReactionPicker);
-			this.showReactionPicker();
 		});
 	};
 
