@@ -1106,7 +1106,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							<>
 								<List.Item
 									title='Members'
-									subtitle={membersCount && membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : undefined}
+									subtitle={membersCount && membersCount > 0 ? `${membersCount} ${I18n.t(membersCount > 1 ? 'members' : 'member' )}` : undefined}
 									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room, joined: this.joined } })}
 									testID='room-actions-members'
 									left={() => <List.Icon name='team' />}

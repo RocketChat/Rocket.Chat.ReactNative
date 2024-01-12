@@ -103,7 +103,7 @@ describe('Room actions screen', () => {
 
 			it('should have members', async () => {
 				await expect(element(by.id('room-actions-members'))).toExist();
-				await expect(element(by[textMatcher]('1 members'))).toExist();
+				await expect(element(by[textMatcher]('1 member'))).toExist();
 			});
 
 			it('should have files', async () => {
