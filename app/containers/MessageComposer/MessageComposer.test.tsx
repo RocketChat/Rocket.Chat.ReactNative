@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
-import { RoomProvider, TRoomContext, useRoom } from '../../contexts';
+import { IRoomContext, RoomContext } from '../../views/RoomView/context';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -26,37 +26,41 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
-// const initialContext = {
-// 	rid: '',
-// 	tmid: undefined,
-// 	sharing: false,
-// 	action: null,
-// 	selectedMessages: [],
-// 	editCancel: jest.fn(),
-// 	editRequest: jest.fn(),
-// 	onSendMessage: jest.fn(),
-// 	onRemoveQuoteMessage: jest.fn()
-// };
+const initialContext = {
+	rid: '',
+	tmid: undefined,
+	sharing: false,
+	action: null,
+	selectedMessages: [],
+	editCancel: jest.fn(),
+	editRequest: jest.fn(),
+	onSendMessage: jest.fn(),
+	onRemoveQuoteMessage: jest.fn()
+};
 
 const Stack = createStackNavigator();
 
-const MockScreen = () => {
-	const { setRoom } = useRoom();
-	useEffect(() => {
-		setRoom({ rid: 'rid', t: 'd', sendMessage: jest.fn(), sharing: false });
-	}, []);
-	return <MessageComposerContainer />;
-};
+// const Navigation = ({ children }: { children: any }) => (
+// 	<NavigationContainer>
+// 		<Stack.Navigator>
+// 			<Stack.Screen name='A' component={children} />
+// 		</Stack.Navigator>
+// 	</NavigationContainer>
+// );
 
-const Render = () => (
+// const Content = () => (
+// 		<MessageComposerContainer />
+// )
+
+const Render = ({ context }: { context?: Partial<IRoomContext> }) => (
 	<Provider store={mockedStore}>
-		<RoomProvider>
+		<RoomContext.Provider value={{ ...initialContext, ...context }}>
 			<NavigationContainer>
 				<Stack.Navigator>
-					<Stack.Screen name='MessageComposer' component={MockScreen} />
+					<Stack.Screen name='MessageComposer' component={MessageComposerContainer} />
 				</Stack.Navigator>
 			</NavigationContainer>
-		</RoomProvider>
+		</RoomContext.Provider>
 	</Provider>
 );
 
@@ -113,7 +117,6 @@ describe.skip('MessageComposer', () => {
 
 	test('send message', async () => {
 		const onSendMessage = jest.fn();
-
 		render(<Render context={{ onSendMessage }} />);
 		expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 		await act(async () => {
