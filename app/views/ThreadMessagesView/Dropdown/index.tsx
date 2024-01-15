@@ -49,8 +49,14 @@ class Dropdown extends React.Component<IDropdownProps> {
 		}).start(() => onClose());
 	};
 
+	handleFilterSelected = (selectedFilter: Filter) => {
+		const { onFilterSelected } = this.props;
+		onFilterSelected(selectedFilter);
+		this.close();
+	  };
+
 	render() {
-		const { isMasterDetail, insets, theme, currentFilter, onFilterSelected } = this.props;
+		const { isMasterDetail, insets, theme, currentFilter } = this.props;
 		const statusBarHeight = insets?.top ?? 0;
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
@@ -87,9 +93,9 @@ class Dropdown extends React.Component<IDropdownProps> {
 				>
 					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
 					<List.Separator />
-					<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Following} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Unread} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={() => this.handleFilterSelected(Filter.All)} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Following} onPress={() => this.handleFilterSelected(Filter.Following)} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Unread} onPress={() => this.handleFilterSelected(Filter.Unread)} />
 				</Animated.View>
 			</>
 		);
