@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1ED0388D2B507B4B00C007D4"
-               BuildableName = "RocketChat Watch App.app"
+               BuildableName = "Rocket.Chat.app"
                BlueprintName = "RocketChat Watch App"
                ReferencedContainer = "container:RocketChatRN.xcodeproj">
             </BuildableReference>
@@ -58,7 +58,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1ED0388D2B507B4B00C007D4"
-            BuildableName = "RocketChat Watch App.app"
+            BuildableName = "Rocket.Chat.app"
             BlueprintName = "RocketChat Watch App"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1ED0388D2B507B4B00C007D4"
-            BuildableName = "RocketChat Watch App.app"
+            BuildableName = "Rocket.Chat.app"
             BlueprintName = "RocketChat Watch App"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>

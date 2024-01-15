@@ -69,6 +69,8 @@
   [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
 
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
+  
+  self.watchConnection = [[WatchConnection alloc] initWithSession:[WCSession defaultSession]];
 
   return YES;
 }
