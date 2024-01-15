@@ -11,10 +11,15 @@ index 97255d2..4e0fe05 100644
  }
  
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-index 1ca52e8..bfa1d5f 100644
+index 1ca52e8..69ac77a 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
 +++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-@@ -115,40 +115,52 @@ - (void)setHeight:(CGFloat)height
+@@ -111,44 +111,57 @@ - (void)setHeight:(CGFloat)height
+     _height = height;
+     
+     [self invalidateIntrinsicContentSize];
++    [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
+ }
  
  - (void)_keyboardWillShowNotification:(NSNotification*)notification
  {
