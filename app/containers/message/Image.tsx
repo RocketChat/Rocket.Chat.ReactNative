@@ -44,7 +44,7 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 		<Touchable
 			disabled={disabled}
 			onPress={onPress}
-			style={[styles.imageContainer, styles.mustWrapBlur]}
+			style={styles.imageContainer}
 			background={Touchable.Ripple(colors.bannerBackground)}
 		>
 			{children}

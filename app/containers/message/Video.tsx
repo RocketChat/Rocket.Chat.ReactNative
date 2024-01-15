@@ -25,7 +25,6 @@ import BlurComponent from './Components/BlurComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import { fileDownload } from './helpers/fileDownload';
-import messageStyles from './styles';
 import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
@@ -225,7 +224,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable
 				onPress={onPress}
-				style={[styles.button, messageStyles.mustWrapBlur, { backgroundColor: themes[theme].videoBackground }]}
+				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<Thumbnail loading={loading} cached={cached} />
