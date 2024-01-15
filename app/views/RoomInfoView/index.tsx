@@ -31,8 +31,8 @@ import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
+StackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
@@ -59,6 +59,7 @@ const RoomInfoView = (): React.ReactElement => {
 		subscribedRoom,
 		usersRoles,
 		roles,
+		serverVersion,
 		// permissions
 		editRoomPermission,
 		editOmnichannelContact,
@@ -68,6 +69,7 @@ const RoomInfoView = (): React.ReactElement => {
 		isMasterDetail: state.app.isMasterDetail,
 		roles: state.roles,
 		usersRoles: state.usersRoles,
+		serverVersion: state.server.version,
 		// permissions
 		editRoomPermission: state.permissions['edit-room'],
 		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
@@ -275,6 +277,14 @@ const RoomInfoView = (): React.ReactElement => {
 		if (r?.rid) handleIgnore(roomUser._id, !isIgnored, r?.rid);
 	};
 
+	const handleReportUser = () => {
+		navigate('ReportUserView', {
+			name: roomUser?.name,
+			userId: roomUser?._id,
+			username: roomUser.username
+		});
+	};
+
 	return (
 		<ScrollView style={[styles.scroll, { backgroundColor: colors.backgroundColor }]}>
 			<StatusBar />
@@ -301,10 +311,13 @@ const RoomInfoView = (): React.ReactElement => {
 						handleBlockUser={handleBlockUser}
 						handleCreateDirectMessage={handleCreateDirectMessage}
 						handleIgnoreUser={handleIgnoreUser}
+						handleReportUser={handleReportUser}
 						isDirect={isDirect}
 						room={room || roomUser}
 						roomUserId={roomUser?._id}
 						roomFromRid={roomFromRid}
+						serverVersion={serverVersion}
+						itsMe={itsMe}
 					/>
 				</View>
 				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} />

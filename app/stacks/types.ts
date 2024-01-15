@@ -177,6 +177,11 @@ export type ChatsStackParamList = {
 		room?: ISubscription;
 		t?: SubscriptionType;
 	};
+	ReportUserView: {
+		username: string;
+		userId: string;
+		name: string;
+	};
 };
 
 export type ProfileStackParamList = {
