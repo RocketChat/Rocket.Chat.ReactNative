@@ -296,6 +296,10 @@ export const togglePinMessage = (messageId: string, pinned?: boolean) => {
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
+export const reportUser = (userId: string, description: string) =>
+	// RC 6.4.0
+	sdk.post('moderation.reportUser', { userId, description });
+
 export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
