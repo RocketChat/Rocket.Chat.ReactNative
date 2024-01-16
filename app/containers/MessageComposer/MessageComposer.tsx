@@ -51,7 +51,6 @@ export const MessageComposer = ({
 	forwardedRef: any;
 	children?: ReactElement;
 }): ReactElement | null => {
-	console.count('[MessageComposer] MessageComposer');
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
@@ -112,7 +111,6 @@ export const MessageComposer = ({
 		}
 
 		if (action === 'quote') {
-			// TODO: missing threads and threads enabled implementation
 			const quoteMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
 			onSendMessage?.(quoteMessage);
 			return;

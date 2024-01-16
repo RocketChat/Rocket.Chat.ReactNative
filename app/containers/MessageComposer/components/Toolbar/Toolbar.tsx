@@ -10,7 +10,6 @@ import { EmptySpace } from './EmptySpace';
 import { CancelEdit } from '../CancelEdit';
 
 export const Toolbar = (): ReactElement | null => {
-	console.count('[MessageComposer] Toolbar');
 	const focused = useFocused();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();

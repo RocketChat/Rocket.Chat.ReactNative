@@ -197,7 +197,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	send = async () => {
-		console.log(`[ShareView] send`);
 		const { loading, selected } = this.state;
 		if (loading) {
 			return;

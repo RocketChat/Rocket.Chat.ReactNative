@@ -29,7 +29,6 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
-		console.count('[MessageComposer] ComposerInput');
 		const { colors, theme } = useTheme();
 		const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
 		const focused = useFocused();
@@ -160,8 +159,6 @@ export const ComposerInput = memo(
 		};
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
-			// const isTextEmpty = text.length === 0;
-			// setMicOrSend(!isTextEmpty ? 'send' : 'mic');
 			textRef.current = text;
 			debouncedOnChangeText(text);
 			setInput(text);
@@ -321,7 +318,7 @@ export const ComposerInput = memo(
 			}
 
 			stopAutocomplete();
-		}, 300); // TODO: 300ms?
+		}, 300);
 
 		const handleTyping = (isTyping: boolean) => {
 			if (sharing || !rid) return;
@@ -356,7 +353,6 @@ const styles = StyleSheet.create({
 		minHeight: MIN_HEIGHT,
 		maxHeight: MAX_HEIGHT,
 		paddingTop: 12,
-		// TODO: check glitch on iOS selector pin with several lines
 		paddingBottom: 12,
 		fontSize: 16,
 		textAlignVertical: 'center',

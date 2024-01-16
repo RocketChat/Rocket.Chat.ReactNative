@@ -7,7 +7,6 @@ import { MIN_HEIGHT } from '../../constants';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const Left = () => {
-	console.count('[MessageComposer] Left');
 	const { sharing } = useRoomContext();
 	const focused = useFocused();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
