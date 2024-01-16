@@ -2,21 +2,21 @@ import { Options } from 'react-native-image-crop-picker';
 
 import { TMarkdownStyle } from './interfaces';
 
-export const imagePickerConfig = {
+export const IMAGE_PICKER_CONFIG = {
 	cropping: true,
 	avoidEmptySpaceAroundImage: false,
 	freeStyleCropEnabled: true,
 	forceJpg: true
 };
 
-export const libraryPickerConfig: Options = {
+export const LIBRARY_PICKER_CONFIG: Options = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
 	mediaType: 'any',
 	forceJpg: true
 };
 
-export const videoPickerConfig: Options = {
+export const VIDEO_PICKER_CONFIG: Options = {
 	mediaType: 'video'
 };
 
@@ -27,7 +27,7 @@ export const MAX_HEIGHT = 200;
 
 export const NO_CANNED_RESPONSES = 'no-canned-responses';
 
-export const markdownStyle: Record<TMarkdownStyle, string> = {
+export const MARKDOWN_STYLES: Record<TMarkdownStyle, string> = {
 	bold: '*',
 	italic: '_',
 	strike: '~',

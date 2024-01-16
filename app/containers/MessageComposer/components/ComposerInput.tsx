@@ -13,7 +13,7 @@ import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { getRoomTitle } from '../../../lib/methods/helpers';
-import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, markdownStyle } from '../constants';
+import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../emitter';
@@ -103,7 +103,7 @@ export const ComposerInput = memo(
 					emitter.on('addMarkdown', ({ style }) => {
 						const { start, end } = selectionRef.current;
 						const text = textRef.current;
-						const markdown = markdownStyle[style];
+						const markdown = MARKDOWN_STYLES[style];
 						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
 						setInput(newText, {
 							start: start + markdown.length,

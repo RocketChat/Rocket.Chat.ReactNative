@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 
-import { imagePickerConfig, libraryPickerConfig, videoPickerConfig } from '../constants';
+import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
 import I18n from '../../../i18n';
 import { canUploadFile } from '../../../lib/methods/helpers';
@@ -34,7 +34,7 @@ export const useChooseMedia = ({
 
 	const takePhoto = async () => {
 		try {
-			let image = await ImagePicker.openCamera({ ...imagePickerConfig, ...libPickerLabels });
+			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
 			image = forceJpgExtension(image);
 			const file = image as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
@@ -55,7 +55,7 @@ export const useChooseMedia = ({
 
 	const takeVideo = async () => {
 		try {
-			const video = await ImagePicker.openCamera({ ...videoPickerConfig, ...libPickerLabels });
+			const video = await ImagePicker.openCamera({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
 			const file = video as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
 				file,
@@ -77,7 +77,7 @@ export const useChooseMedia = ({
 		try {
 			// The type can be video or photo, however the lib understands that it is just one of them.
 			let attachments = (await ImagePicker.openPicker({
-				...libraryPickerConfig,
+				...LIBRARY_PICKER_CONFIG,
 				...libPickerLabels
 			})) as unknown as ImageOrVideo[]; // FIXME: type this
 			attachments = attachments.map(att => forceJpgExtension(att));
