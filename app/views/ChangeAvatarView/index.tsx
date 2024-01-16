@@ -146,8 +146,10 @@ const ChangeAvatarView = () => {
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
 			});
-		} catch (error) {
-			log(error);
+		} catch (error: any) {
+			if(error?.code !== "E_PICKER_CANCELLED") {
+				log(error);
+			}
 		}
 	};
 
