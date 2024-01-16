@@ -125,7 +125,7 @@ export const ComposerInput = memo(
 					emitter.off('toolbarMention');
 					task?.cancel();
 				};
-			}, [rid, tmid])
+			}, [rid, tmid, autocompleteType])
 		);
 
 		useImperativeHandle(ref, () => ({
