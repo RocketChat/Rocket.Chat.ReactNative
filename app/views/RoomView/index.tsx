@@ -1363,6 +1363,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onAnswerButtonPress={this.handleSendMessage}
 					showAttachment={this.showAttachment}
 					reactionInit={this.onReactionInit}
+					replyInit={this.onReplyInit}
 					replyBroadcast={this.replyBroadcast}
 					errorActionsShow={this.errorActionsShow}
 					isSystemMessage={room.sysMes as boolean}
