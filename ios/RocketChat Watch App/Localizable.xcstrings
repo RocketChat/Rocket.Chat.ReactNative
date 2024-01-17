@@ -1,0 +1,16 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Rooms" : {
+
+    },
+    "Servers" : {
+      "comment" : "View title for ServerList.",
+      "extractionState" : "manual"
+    },
+    "Try Again" : {
+
+    }
+  },
+  "version" : "1.0"
+}

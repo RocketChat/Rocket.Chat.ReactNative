@@ -13,7 +13,7 @@ protocol Connection {
 final class WatchConnection: NSObject {
   private let session: WCSession
   
-  init(session: WCSession = .default) {
+  init(session: WCSession) {
     self.session = session
     super.init()
     session.delegate = self
