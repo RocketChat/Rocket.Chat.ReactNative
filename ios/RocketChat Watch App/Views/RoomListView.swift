@@ -1,26 +1,21 @@
 import SwiftUI
 
 struct RoomListView: View {
-    @StateObject var viewModel: RoomListViewModel
+    @StateObject private var viewModel: RoomListViewModel
     
-    @FetchRequest(
-        entity: Room.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \Room.ts, ascending: false)
-        ],
-        predicate: NSPredicate(format: "archived == false"),
-        animation: .default
-    )
-    private var rooms: FetchedResults<Room>
+    @FetchRequest<Room> private var rooms: FetchedResults<Room>
   
     init(dependencies: RoomListViewModel.Dependencies) {
       _viewModel = StateObject(wrappedValue: RoomListViewModel(dependencies: dependencies))
+      _rooms = FetchRequest(fetchRequest: dependencies.server.roomsRequest)
     }
     
     var body: some View {
         List {
             ForEach(rooms) { room in
-              RoomView(viewModel: viewModel.viewModel(for: room))
+                NavigationLink(value: room) {
+                    RoomView(viewModel: viewModel.roomViewModel(for: room))
+                }
             }
         }
         .onAppear {
@@ -28,6 +23,10 @@ struct RoomListView: View {
         }
         .navigationTitle("Rooms")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(for: Room.self) { room in
+            MessageListView(viewModel: viewModel.messageListViewModel(for: room))
+              .environment(\.managedObjectContext, viewModel.viewContext)
+        }
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 Button("Servers") {

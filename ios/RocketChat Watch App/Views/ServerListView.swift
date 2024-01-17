@@ -46,7 +46,6 @@ struct ServerListView: View {
       }
     }
     .navigationTitle("Servers")
-    .padding()
     .onAppear {
       viewModel.loadServers()
     }

@@ -1,12 +1,18 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Message" : {
+
+    },
     "Rooms" : {
 
     },
     "Servers" : {
       "comment" : "View title for ServerList.",
       "extractionState" : "manual"
+    },
+    "This room is read only" : {
+
     },
     "Try Again" : {
 

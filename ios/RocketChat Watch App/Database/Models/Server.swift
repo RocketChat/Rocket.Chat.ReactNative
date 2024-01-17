@@ -52,3 +52,14 @@ public final class Server: NSManagedObject {
 extension Server: Identifiable {
   
 }
+
+extension Server {
+    var roomsRequest: NSFetchRequest<Room> {
+        let request = Room.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "archived == false")
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Room.ts, ascending: false)]
+        
+        return request
+    }
+}

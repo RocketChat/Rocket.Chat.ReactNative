@@ -1,6 +1,15 @@
 import CoreData
 
 extension Room {
+    var messagesRequest: NSFetchRequest<Message> {
+        let request = Message.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "room == %@", self)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Message.ts, ascending: true)]
+        
+        return request
+    }
+  
     var lastMessage: Message? {
         let request = Message.fetchRequest()
         

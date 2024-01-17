@@ -1,8 +1,10 @@
 import Combine
+import CoreData
 import Foundation
 
 protocol RoomListViewModeling {
-  func viewModel(for room: Room) -> RoomViewModel
+  func roomViewModel(for room: Room) -> RoomViewModel
+  func messageListViewModel(for room: Room) -> MessageListViewModel
   
   func loadRooms()
   func logout()
@@ -14,6 +16,10 @@ final class RoomListViewModel: ObservableObject {
     let database: RocketChatDatabase
     let router: RocketChatAppRouter
     let server: Server
+  }
+  
+  var viewContext: NSManagedObjectContext {
+    dependencies.database.viewContext
   }
   
   private let dependencies: Dependencies
@@ -45,8 +51,20 @@ final class RoomListViewModel: ObservableObject {
 // MARK: - RoomListViewModeling
 
 extension RoomListViewModel: RoomListViewModeling {
-  func viewModel(for room: Room) -> RoomViewModel {
-    RoomViewModel(room: room, server: dependencies.server)
+  func roomViewModel(for room: Room) -> RoomViewModel {
+    RoomViewModel(
+      room: room,
+      server: dependencies.server
+    )
+  }
+  
+  func messageListViewModel(for room: Room) -> MessageListViewModel {
+    MessageListViewModel(
+      client: dependencies.client,
+      database: dependencies.database,
+      room: room,
+      server: dependencies.server
+    )
   }
   
   func loadRooms() {

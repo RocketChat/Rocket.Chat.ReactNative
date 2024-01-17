@@ -67,6 +67,15 @@
 		1E29A30E2B58608C0093C03C /* LoggedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30D2B58608C0093C03C /* LoggedUser.swift */; };
 		1E29A3102B5865B80093C03C /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30F2B5865B80093C03C /* RoomViewModel.swift */; };
 		1E29A3122B5866090093C03C /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3112B5866090093C03C /* Room.swift */; };
+		1E29A3142B5868D80093C03C /* MessageListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3132B5868D80093C03C /* MessageListViewModel.swift */; };
+		1E29A3162B5868DF0093C03C /* MessageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3152B5868DF0093C03C /* MessageListView.swift */; };
+		1E29A3182B5868E50093C03C /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3172B5868E50093C03C /* MessageView.swift */; };
+		1E29A31A2B5868EE0093C03C /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3192B5868EE0093C03C /* MessageViewModel.swift */; };
+		1E29A31D2B5871B60093C03C /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A31C2B5871B60093C03C /* Date+Extensions.swift */; };
+		1E29A3202B5871C80093C03C /* RoomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A31F2B5871C80093C03C /* RoomFormatter.swift */; };
+		1E29A3222B5871CE0093C03C /* MessageFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3212B5871CE0093C03C /* MessageFormatter.swift */; };
+		1E29A3242B5874FF0093C03C /* MessageComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3232B5874FF0093C03C /* MessageComposerView.swift */; };
+		1E29A3262B58752D0093C03C /* MessageComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3252B58752D0093C03C /* MessageComposerViewModel.swift */; };
 		1E2F615B25128F9A00871711 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F615A25128F9A00871711 /* API.swift */; };
 		1E2F615D25128FA300871711 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F615C25128FA300871711 /* Response.swift */; };
 		1E2F61642512955D00871711 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61632512955D00871711 /* HTTPMethod.swift */; };
@@ -361,6 +370,15 @@
 		1E29A30D2B58608C0093C03C /* LoggedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedUser.swift; sourceTree = "<group>"; };
 		1E29A30F2B5865B80093C03C /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
 		1E29A3112B5866090093C03C /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		1E29A3132B5868D80093C03C /* MessageListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageListViewModel.swift; sourceTree = "<group>"; };
+		1E29A3152B5868DF0093C03C /* MessageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageListView.swift; sourceTree = "<group>"; };
+		1E29A3172B5868E50093C03C /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		1E29A3192B5868EE0093C03C /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
+		1E29A31C2B5871B60093C03C /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		1E29A31F2B5871C80093C03C /* RoomFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomFormatter.swift; sourceTree = "<group>"; };
+		1E29A3212B5871CE0093C03C /* MessageFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFormatter.swift; sourceTree = "<group>"; };
+		1E29A3232B5874FF0093C03C /* MessageComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposerView.swift; sourceTree = "<group>"; };
+		1E29A3252B58752D0093C03C /* MessageComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposerViewModel.swift; sourceTree = "<group>"; };
 		1E2F615A25128F9A00871711 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		1E2F615C25128FA300871711 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		1E2F61632512955D00871711 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
@@ -628,6 +646,23 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		1E29A31B2B5871AC0093C03C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1E29A31C2B5871B60093C03C /* Date+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1E29A31E2B5871BE0093C03C /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				1E29A31F2B5871C80093C03C /* RoomFormatter.swift */,
+				1E29A3212B5871CE0093C03C /* MessageFormatter.swift */,
+			);
+			path = Formatters;
+			sourceTree = "<group>";
+		};
 		1E2F61622512954500871711 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
@@ -731,6 +766,9 @@
 				1ED033B92B55B5F6004F4930 /* ServerView.swift */,
 				1E29A2CB2B5857F50093C03C /* RoomListView.swift */,
 				1E29A2CF2B58582F0093C03C /* RoomView.swift */,
+				1E29A3152B5868DF0093C03C /* MessageListView.swift */,
+				1E29A3172B5868E50093C03C /* MessageView.swift */,
+				1E29A3232B5874FF0093C03C /* MessageComposerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -741,6 +779,9 @@
 				1ED033B72B55B4BE004F4930 /* ServerListViewModel.swift */,
 				1E29A2CD2B5857FC0093C03C /* RoomListViewModel.swift */,
 				1E29A30F2B5865B80093C03C /* RoomViewModel.swift */,
+				1E29A3132B5868D80093C03C /* MessageListViewModel.swift */,
+				1E29A3192B5868EE0093C03C /* MessageViewModel.swift */,
+				1E29A3252B58752D0093C03C /* MessageComposerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -748,6 +789,8 @@
 		1ED0388F2B507B4C00C007D4 /* RocketChat Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				1E29A31E2B5871BE0093C03C /* Formatters */,
+				1E29A31B2B5871AC0093C03C /* Extensions */,
 				1E29A2D12B585B070093C03C /* Client */,
 				1ED033B42B55B495004F4930 /* ViewModels */,
 				1ED033B12B55B47F004F4930 /* Views */,
@@ -1488,7 +1531,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SOURCE_MAP=\"$TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\" ../node_modules/@bugsnag/react-native/bugsnag-react-native-xcode.sh\n";
+			shellScript = "# SOURCE_MAP=\"$TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\" ../node_modules/@bugsnag/react-native/bugsnag-react-native-xcode.sh\n";
 		};
 		7F13D807CA5B7E43CE899DB3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1762,19 +1805,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E29A3242B5874FF0093C03C /* MessageComposerView.swift in Sources */,
 				1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */,
+				1E29A3162B5868DF0093C03C /* MessageListView.swift in Sources */,
 				1E29A2F42B585B070093C03C /* SubscriptionsResponse.swift in Sources */,
+				1E29A3142B5868D80093C03C /* MessageListViewModel.swift in Sources */,
 				1E29A2F92B585B070093C03C /* SubscriptionsRequest.swift in Sources */,
 				1E29A2F22B585B070093C03C /* HistoryResponse.swift in Sources */,
 				1ED033BA2B55B5F6004F4930 /* ServerView.swift in Sources */,
 				1E29A2D02B58582F0093C03C /* RoomView.swift in Sources */,
 				1E29A2FD2B585B070093C03C /* RoomsRequest.swift in Sources */,
 				1ED038CA2B50A58400C007D4 /* WatchConnection.swift in Sources */,
+				1E29A3222B5871CE0093C03C /* MessageFormatter.swift in Sources */,
 				1E29A3002B585B070093C03C /* JSONAdapter.swift in Sources */,
 				1E29A3022B585B070093C03C /* DateCodingStrategy.swift in Sources */,
 				1ED033B62B55B4A5004F4930 /* ServerListView.swift in Sources */,
+				1E29A3202B5871C80093C03C /* RoomFormatter.swift in Sources */,
 				1E29A3102B5865B80093C03C /* RoomViewModel.swift in Sources */,
 				1E29A2FC2B585B070093C03C /* SendMessageRequest.swift in Sources */,
+				1E29A3262B58752D0093C03C /* MessageComposerViewModel.swift in Sources */,
 				1E29A30C2B585D1D0093C03C /* String+Extensions.swift in Sources */,
 				1ED033CD2B55D671004F4930 /* RocketChatDatabase.swift in Sources */,
 				1E29A3122B5866090093C03C /* Room.swift in Sources */,
@@ -1784,10 +1833,12 @@
 				1E29A3072B585B070093C03C /* RocketChatError.swift in Sources */,
 				1E29A2F12B585B070093C03C /* SendMessageResponse.swift in Sources */,
 				1E29A30E2B58608C0093C03C /* LoggedUser.swift in Sources */,
+				1E29A3182B5868E50093C03C /* MessageView.swift in Sources */,
 				1E29A2FF2B585B070093C03C /* TokenAdapter.swift in Sources */,
 				1E29A3052B585B070093C03C /* Request.swift in Sources */,
 				1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */,
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,
+				1E29A31D2B5871B60093C03C /* Date+Extensions.swift in Sources */,
 				1E29A2F62B585B070093C03C /* UserResponse.swift in Sources */,
 				1ED033AE2B55B1CC004F4930 /* Default.xcdatamodeld in Sources */,
 				1ED033BF2B55BF94004F4930 /* Storage.swift in Sources */,
@@ -1802,6 +1853,7 @@
 				1E29A2F02B585B070093C03C /* AttachmentResponse.swift in Sources */,
 				1ED038912B507B4C00C007D4 /* RocketChatApp.swift in Sources */,
 				1E29A2CC2B5857F50093C03C /* RoomListView.swift in Sources */,
+				1E29A31A2B5868EE0093C03C /* MessageViewModel.swift in Sources */,
 				1ED033B82B55B4BE004F4930 /* ServerListViewModel.swift in Sources */,
 				1ED033C42B55C65C004F4930 /* RocketChatAppRouter.swift in Sources */,
 				1ED033B02B55B25A004F4930 /* Database.swift in Sources */,
