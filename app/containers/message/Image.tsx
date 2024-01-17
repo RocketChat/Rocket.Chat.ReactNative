@@ -15,7 +15,7 @@ import {
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import { useTheme } from '../../theme';
 import Markdown from '../markdown';
-import BlurComponent from './Components/BlurComponent';
+import BlurComponent from './Components/OverlayComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import styles from './styles';

@@ -21,7 +21,7 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import { LISTENER } from '../Toast';
 import Markdown from '../markdown';
-import BlurComponent from './Components/BlurComponent';
+import BlurComponent from './Components/OverlayComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import { fileDownload } from './helpers/fileDownload';

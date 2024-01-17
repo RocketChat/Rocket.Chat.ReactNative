@@ -6,7 +6,7 @@ import { useTheme } from '../../../../theme';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../../../CustomIcon';
 
-const BlurComponent = ({
+const OverlayComponent = ({
 	loading = false,
 	style = {},
 	iconName
@@ -27,4 +27,4 @@ const BlurComponent = ({
 	);
 };
 
-export default BlurComponent;
+export default OverlayComponent;
