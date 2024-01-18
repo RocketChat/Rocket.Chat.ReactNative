@@ -61,7 +61,7 @@
 		"commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
 		"commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
 		"dequal": "^2.0.3",
-		"ejson": "^2.2.3",
+		"ejson": "2.2.3",
 		"expo": "^46.0.9",
 		"expo-apple-authentication": "4.2.1",
 		"expo-av": "11.2.3",
