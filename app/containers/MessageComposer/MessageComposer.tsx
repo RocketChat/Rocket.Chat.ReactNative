@@ -229,7 +229,7 @@ export const MessageComposer = ({
 				bottomViewColor={backgroundColor}
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 			/>
-			<Autocomplete onPress={composerInputComponentRef.current?.onAutocompleteItemSelected} />
+			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>
 	);
 };
