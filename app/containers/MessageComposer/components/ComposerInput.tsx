@@ -253,7 +253,7 @@ export const ComposerInput = memo(
 			}
 			const newText = `${result}${mention} ${text.slice(cursor)}`;
 
-			const newCursor = cursor + mention.length;
+			const newCursor = result.length + mention.length + 1;
 			setInput(newText, { start: newCursor, end: newCursor });
 			focus();
 			requestAnimationFrame(() => {
