@@ -96,6 +96,7 @@ import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { focusedThreadRoom, removeFocusedThreadRoom } from '../../actions/room';
+import HapticFeedback from './components/HapticFeedback';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -1554,6 +1555,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				{this.renderActions()}
 				<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+				<HapticFeedback rid={this.rid} tmid={this.tmid} />
 			</SafeAreaView>
 		);
 	}
