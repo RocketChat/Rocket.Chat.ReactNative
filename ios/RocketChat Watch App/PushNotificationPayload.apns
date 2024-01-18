@@ -1,0 +1,11 @@
+{
+    "aps": {
+        "alert": {
+            "body": "Hey, how is everything going?",
+            "title": "Djorkaeff Pereira",
+            "subtitle": "Optional subtitle"
+        },
+        "category": "MESSAGE"
+    },
+    "Simulator Target Bundle": "chat.rocket.reactnative.watchkitapp"
+}

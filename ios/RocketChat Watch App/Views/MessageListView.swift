@@ -1,48 +1,76 @@
 import SwiftUI
 
 struct MessageListView: View {
-    @StateObject private var viewModel: MessageListViewModel
-    
-    @FetchRequest<Message> private var messages: FetchedResults<Message>
-    
-    init(viewModel: MessageListViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-        _messages = FetchRequest(fetchRequest: viewModel.room.messagesRequest, animation: .none)
-    }
-    
-    var body: some View {
-        ScrollViewReader { reader in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(messages.indices, id: \.self) { index in
-                        let message = messages[index]
-                        let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
-                        
-                        MessageView(viewModel: viewModel.messageViewModel(for: message, and: previousMessage))
-                            .id(message.id)
-                            .transition(.move(edge: .bottom))
-                    }
-                    
-                    MessageComposerView(viewModel: viewModel.composerViewModel())
-                        .padding(.top)
-                }
-            }
-            .padding([.leading, .trailing])
-            .navigationTitle(viewModel.title)
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                viewModel.loadMessages {
-                  reader.scrollTo(messages.last?.id, anchor: .bottom)
-                }
-                
-                viewModel.markAsRead()
-            }
-            .onDisappear {
-                viewModel.stop()
-            }
-            .onReceive(messages.publisher) { _ in
-                viewModel.markAsRead()
-            }
-        }
-    }
+	private let messageComposer = "MESSAGE_COMPOSER_ID"
+	
+	private let client: RocketChatClientProtocol
+	private let database: Database
+	private let messagesLoader: MessagesLoading
+	private let messageSender: MessageSending
+	private let formatter: RoomFormatter
+	private let server: Server
+	private let room: Room
+	
+	@FetchRequest<Message> private var messages: FetchedResults<Message>
+	
+	init(
+		client: RocketChatClientProtocol,
+		database: Database,
+		messagesLoader: MessagesLoading,
+		messageSender: MessageSending,
+		room: Room,
+		server: Server
+	) {
+		self.client = client
+		self.database = database
+		self.messagesLoader = messagesLoader
+		self.messageSender = messageSender
+		self.formatter = RoomFormatter(room: room, server: server)
+		self.room = room
+		self.server = server
+		_messages = FetchRequest(fetchRequest: room.messagesRequest, animation: .none)
+	}
+	
+	var body: some View {
+		ScrollViewReader { reader in
+			ScrollView {
+				VStack(alignment: .leading, spacing: 8) {
+					if room.hasMoreMessages {
+						Button("Load More...") {
+							guard let oldestMessage = room.firstMessage?.ts else { return }
+							
+							messagesLoader.loadMore(from: oldestMessage)
+						}
+					}
+					
+					ForEach(messages.indices, id: \.self) { index in
+						let message = messages[index]
+						let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
+						
+						MessageView(viewModel: .init(message: message, previousMessage: previousMessage, server: server))
+							.transition(.move(edge: .bottom))
+					}
+					
+					MessageComposerView(room: room) {
+						messageSender.sendMessage($0, in: room)
+					}
+					.id(messageComposer)
+				}
+			}
+			.padding([.leading, .trailing])
+			.navigationTitle(formatter.title ?? "")
+			.navigationBarTitleDisplayMode(.inline)
+			.onAppear {
+				guard let roomID = room.id else { return }
+				
+				messagesLoader.start(on: roomID)
+			}
+			.onDisappear {
+				messagesLoader.stop()
+			}
+			.onReceive(messages.publisher) { _ in
+				reader.scrollTo(messageComposer, anchor: .bottom)
+			}
+		}
+	}
 }

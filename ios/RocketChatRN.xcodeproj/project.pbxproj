@@ -35,7 +35,6 @@
 		1E1EA81A2326CD5100E22452 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1EA8192326CD5100E22452 /* libsqlite3.tbd */; };
 		1E25743422CBA2CF005A877F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
 		1E29A2CC2B5857F50093C03C /* RoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CB2B5857F50093C03C /* RoomListView.swift */; };
-		1E29A2CE2B5857FC0093C03C /* RoomListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CD2B5857FC0093C03C /* RoomListViewModel.swift */; };
 		1E29A2D02B58582F0093C03C /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CF2B58582F0093C03C /* RoomView.swift */; };
 		1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D22B585B070093C03C /* RocketChatClient.swift */; };
 		1E29A2F02B585B070093C03C /* AttachmentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D42B585B070093C03C /* AttachmentResponse.swift */; };
@@ -67,7 +66,6 @@
 		1E29A30E2B58608C0093C03C /* LoggedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30D2B58608C0093C03C /* LoggedUser.swift */; };
 		1E29A3102B5865B80093C03C /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30F2B5865B80093C03C /* RoomViewModel.swift */; };
 		1E29A3122B5866090093C03C /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3112B5866090093C03C /* Room.swift */; };
-		1E29A3142B5868D80093C03C /* MessageListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3132B5868D80093C03C /* MessageListViewModel.swift */; };
 		1E29A3162B5868DF0093C03C /* MessageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3152B5868DF0093C03C /* MessageListView.swift */; };
 		1E29A3182B5868E50093C03C /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3172B5868E50093C03C /* MessageView.swift */; };
 		1E29A31A2B5868EE0093C03C /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3192B5868EE0093C03C /* MessageViewModel.swift */; };
@@ -75,7 +73,6 @@
 		1E29A3202B5871C80093C03C /* RoomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A31F2B5871C80093C03C /* RoomFormatter.swift */; };
 		1E29A3222B5871CE0093C03C /* MessageFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3212B5871CE0093C03C /* MessageFormatter.swift */; };
 		1E29A3242B5874FF0093C03C /* MessageComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3232B5874FF0093C03C /* MessageComposerView.swift */; };
-		1E29A3262B58752D0093C03C /* MessageComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3252B58752D0093C03C /* MessageComposerViewModel.swift */; };
 		1E2F615B25128F9A00871711 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F615A25128F9A00871711 /* API.swift */; };
 		1E2F615D25128FA300871711 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F615C25128FA300871711 /* Response.swift */; };
 		1E2F61642512955D00871711 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61632512955D00871711 /* HTTPMethod.swift */; };
@@ -86,6 +83,7 @@
 		1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
 		1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE625150660002BDFBD /* Data+Extensions.swift */; };
 		1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
+		1E6436242B59998A009F0CE1 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6436232B59998A009F0CE1 /* ExtensionDelegate.swift */; };
 		1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
 		1E680ED92512990700C9257A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
@@ -111,6 +109,8 @@
 		1E76CBD825152C870067298C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1E76CBD925152C8C0067298C /* Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61652512958900871711 /* Push.swift */; };
 		1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
+		1E9A71672B599E6300477BA2 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71662B599E6300477BA2 /* NotificationController.swift */; };
+		1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71682B59B6E100477BA2 /* MessageSender.swift */; };
 		1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB375882B55DBFB00AEC3D7 /* Server.swift */; };
 		1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8EF712510F1EE00F352B7 /* Storage.swift */; };
 		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
@@ -155,6 +155,9 @@
 		1ED038C62B50A21800C007D4 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
 		1ED038CA2B50A58400C007D4 /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* WatchConnection.swift */; };
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
+		1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
+		1EDFD1062B58A66E002FEE5F /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1052B58A66E002FEE5F /* CancelBag.swift */; };
+		1EDFD1082B58AA77002FEE5F /* RoomsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */; };
 		1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5FBD0250C109E00614FEA /* Encryption.swift */; };
 		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
 		1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -338,7 +341,6 @@
 		1E1EA8172326CD4B00E22452 /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
 		1E1EA8192326CD5100E22452 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		1E29A2CB2B5857F50093C03C /* RoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListView.swift; sourceTree = "<group>"; };
-		1E29A2CD2B5857FC0093C03C /* RoomListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewModel.swift; sourceTree = "<group>"; };
 		1E29A2CF2B58582F0093C03C /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
 		1E29A2D22B585B070093C03C /* RocketChatClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RocketChatClient.swift; sourceTree = "<group>"; };
 		1E29A2D42B585B070093C03C /* AttachmentResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentResponse.swift; sourceTree = "<group>"; };
@@ -370,7 +372,6 @@
 		1E29A30D2B58608C0093C03C /* LoggedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedUser.swift; sourceTree = "<group>"; };
 		1E29A30F2B5865B80093C03C /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
 		1E29A3112B5866090093C03C /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
-		1E29A3132B5868D80093C03C /* MessageListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageListViewModel.swift; sourceTree = "<group>"; };
 		1E29A3152B5868DF0093C03C /* MessageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageListView.swift; sourceTree = "<group>"; };
 		1E29A3172B5868E50093C03C /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		1E29A3192B5868EE0093C03C /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
@@ -378,7 +379,6 @@
 		1E29A31F2B5871C80093C03C /* RoomFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomFormatter.swift; sourceTree = "<group>"; };
 		1E29A3212B5871CE0093C03C /* MessageFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFormatter.swift; sourceTree = "<group>"; };
 		1E29A3232B5874FF0093C03C /* MessageComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposerView.swift; sourceTree = "<group>"; };
-		1E29A3252B58752D0093C03C /* MessageComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposerViewModel.swift; sourceTree = "<group>"; };
 		1E2F615A25128F9A00871711 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		1E2F615C25128FA300871711 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		1E2F61632512955D00871711 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
@@ -389,9 +389,13 @@
 		1E598AE32515057D002BDFBD /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE625150660002BDFBD /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE825151A63002BDFBD /* SendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessage.swift; sourceTree = "<group>"; };
+		1E6436232B59998A009F0CE1 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotificationService-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E67380324DC529B0009E081 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		1E680ED82512990700C9257A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		1E9A71652B599D3F00477BA2 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		1E9A71662B599E6300477BA2 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		1E9A71682B59B6E100477BA2 /* MessageSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
 		1EB375882B55DBFB00AEC3D7 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		1EB8EF712510F1EE00F352B7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareRocketChatRN.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -425,6 +429,9 @@
 		1ED038C32B50A1F500C007D4 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
 		1ED038C92B50A58400C007D4 /* WatchConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnection.swift; sourceTree = "<group>"; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
+		1EDFD1052B58A66E002FEE5F /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
+		1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsLoader.swift; sourceTree = "<group>"; };
 		1EF5FBD0250C109E00614FEA /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		1EFEB5952493B6640072EDC0 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -777,11 +784,8 @@
 			isa = PBXGroup;
 			children = (
 				1ED033B72B55B4BE004F4930 /* ServerListViewModel.swift */,
-				1E29A2CD2B5857FC0093C03C /* RoomListViewModel.swift */,
 				1E29A30F2B5865B80093C03C /* RoomViewModel.swift */,
-				1E29A3132B5868D80093C03C /* MessageListViewModel.swift */,
 				1E29A3192B5868EE0093C03C /* MessageViewModel.swift */,
-				1E29A3252B58752D0093C03C /* MessageComposerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -789,6 +793,8 @@
 		1ED0388F2B507B4C00C007D4 /* RocketChat Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				1EDFD0FB2B589FC4002FEE5F /* DependencyInjection */,
+				1EDFD0F82B589B82002FEE5F /* Loaders */,
 				1E29A31E2B5871BE0093C03C /* Formatters */,
 				1E29A31B2B5871AC0093C03C /* Extensions */,
 				1E29A2D12B585B070093C03C /* Client */,
@@ -802,7 +808,9 @@
 				1ED038942B507B4D00C007D4 /* Assets.xcassets */,
 				1ED038962B507B4D00C007D4 /* Preview Content */,
 				1ED033C02B55C190004F4930 /* Localizable.xcstrings */,
-				1ED033C72B55CE78004F4930 /* DependencyStore.swift */,
+				1E6436232B59998A009F0CE1 /* ExtensionDelegate.swift */,
+				1E9A71652B599D3F00477BA2 /* PushNotificationPayload.apns */,
+				1E9A71662B599E6300477BA2 /* NotificationController.swift */,
 			);
 			path = "RocketChat Watch App";
 			sourceTree = "<group>";
@@ -832,6 +840,25 @@
 				1ED038C02B50A1E400C007D4 /* DBUser.swift */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		1EDFD0F82B589B82002FEE5F /* Loaders */ = {
+			isa = PBXGroup;
+			children = (
+				1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */,
+				1EDFD1052B58A66E002FEE5F /* CancelBag.swift */,
+				1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */,
+				1E9A71682B59B6E100477BA2 /* MessageSender.swift */,
+			);
+			path = Loaders;
+			sourceTree = "<group>";
+		};
+		1EDFD0FB2B589FC4002FEE5F /* DependencyInjection */ = {
+			isa = PBXGroup;
+			children = (
+				1ED033C72B55CE78004F4930 /* DependencyStore.swift */,
+			);
+			path = DependencyInjection;
 			sourceTree = "<group>";
 		};
 		1EFEB5962493B6640072EDC0 /* NotificationService */ = {
@@ -904,9 +931,9 @@
 				7AC2B09613AA7C3FEBAC9F57 /* Pods */,
 				7890E71355E6C0A3288089E7 /* ExpoModulesProviders */,
 			);
-			indentWidth = 2;
+			indentWidth = 4;
 			sourceTree = "<group>";
-			tabWidth = 2;
+			tabWidth = 4;
 		};
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
@@ -1809,7 +1836,6 @@
 				1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */,
 				1E29A3162B5868DF0093C03C /* MessageListView.swift in Sources */,
 				1E29A2F42B585B070093C03C /* SubscriptionsResponse.swift in Sources */,
-				1E29A3142B5868D80093C03C /* MessageListViewModel.swift in Sources */,
 				1E29A2F92B585B070093C03C /* SubscriptionsRequest.swift in Sources */,
 				1E29A2F22B585B070093C03C /* HistoryResponse.swift in Sources */,
 				1ED033BA2B55B5F6004F4930 /* ServerView.swift in Sources */,
@@ -1821,21 +1847,26 @@
 				1E29A3022B585B070093C03C /* DateCodingStrategy.swift in Sources */,
 				1ED033B62B55B4A5004F4930 /* ServerListView.swift in Sources */,
 				1E29A3202B5871C80093C03C /* RoomFormatter.swift in Sources */,
+				1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */,
 				1E29A3102B5865B80093C03C /* RoomViewModel.swift in Sources */,
 				1E29A2FC2B585B070093C03C /* SendMessageRequest.swift in Sources */,
-				1E29A3262B58752D0093C03C /* MessageComposerViewModel.swift in Sources */,
 				1E29A30C2B585D1D0093C03C /* String+Extensions.swift in Sources */,
 				1ED033CD2B55D671004F4930 /* RocketChatDatabase.swift in Sources */,
 				1E29A3122B5866090093C03C /* Room.swift in Sources */,
 				1E29A3032B585B070093C03C /* FailableDecodable.swift in Sources */,
 				1E29A2FE2B585B070093C03C /* ReadRequest.swift in Sources */,
+				1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */,
 				1E29A3062B585B070093C03C /* RocketChatServer.swift in Sources */,
 				1E29A3072B585B070093C03C /* RocketChatError.swift in Sources */,
+				1E9A71672B599E6300477BA2 /* NotificationController.swift in Sources */,
+				1EDFD1082B58AA77002FEE5F /* RoomsLoader.swift in Sources */,
 				1E29A2F12B585B070093C03C /* SendMessageResponse.swift in Sources */,
 				1E29A30E2B58608C0093C03C /* LoggedUser.swift in Sources */,
 				1E29A3182B5868E50093C03C /* MessageView.swift in Sources */,
+				1EDFD1062B58A66E002FEE5F /* CancelBag.swift in Sources */,
 				1E29A2FF2B585B070093C03C /* TokenAdapter.swift in Sources */,
 				1E29A3052B585B070093C03C /* Request.swift in Sources */,
+				1E6436242B59998A009F0CE1 /* ExtensionDelegate.swift in Sources */,
 				1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */,
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,
 				1E29A31D2B5871B60093C03C /* Date+Extensions.swift in Sources */,
@@ -1845,7 +1876,6 @@
 				1E29A2F82B585B070093C03C /* MessageResponse.swift in Sources */,
 				1E29A3042B585B070093C03C /* HTTPMethod.swift in Sources */,
 				1E29A3012B585B070093C03C /* RequestAdapter.swift in Sources */,
-				1E29A2CE2B5857FC0093C03C /* RoomListViewModel.swift in Sources */,
 				1E29A2F52B585B070093C03C /* RoomsResponse.swift in Sources */,
 				1E29A2F32B585B070093C03C /* MessagesResponse.swift in Sources */,
 				1E29A2FA2B585B070093C03C /* HistoryRequest.swift in Sources */,
