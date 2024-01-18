@@ -3,10 +3,12 @@ import Foundation
 final class MessageFormatter {
 	private let message: Message
 	private let previousMessage: Message?
+	private let lastOpen: Date?
 	
-	init(message: Message, previousMessage: Message?) {
+	init(message: Message, previousMessage: Message?, lastOpen: Date?) {
 		self.message = message
 		self.previousMessage = previousMessage
+		self.lastOpen = lastOpen
 	}
 	
 	func hasDateSeparator() -> Bool {
@@ -17,6 +19,20 @@ final class MessageFormatter {
 			return false
 		}
 		return true
+	}
+	
+	func hasUnreadSeparator() -> Bool {
+		guard let messageTS = message.ts, let lastOpen else {
+			return false
+		}
+		
+		if previousMessage == nil {
+			return messageTS > lastOpen
+		} else if let previousMessage, let previousMessageTS = previousMessage.ts {
+			return messageTS >= lastOpen && previousMessageTS < lastOpen
+		} else {
+			return false
+		}
 	}
 	
 	func isHeader() -> Bool {

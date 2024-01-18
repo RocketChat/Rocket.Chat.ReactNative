@@ -74,8 +74,10 @@ final class MessagesLoader {
 			} receiveValue: { [weak self] messagesResponse in
 				let messages = messagesResponse.messages
 				
-				if let lastMessage = messages.last, self?.database.message(id: lastMessage._id) == nil, messages.count == 20 {
+				if messages.count == HISTORY_MESSAGE_COUNT {
 					room.hasMoreMessages = true
+				} else {
+					room.hasMoreMessages = false
 				}
 				
 				for message in messages {

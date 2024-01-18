@@ -11,6 +11,9 @@ struct MessageListView: View {
 	private let server: Server
 	private let room: Room
 	
+	@State private var lastMessageID: String?
+	@State private var lastOpen: Date?
+	
 	@FetchRequest<Message> private var messages: FetchedResults<Message>
 	
 	init(
@@ -29,6 +32,7 @@ struct MessageListView: View {
 		self.room = room
 		self.server = server
 		_messages = FetchRequest(fetchRequest: room.messagesRequest, animation: .none)
+		_lastOpen = State(wrappedValue: room.updatedSince)
 	}
 	
 	var body: some View {
@@ -47,12 +51,17 @@ struct MessageListView: View {
 						let message = messages[index]
 						let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
 						
-						MessageView(viewModel: .init(message: message, previousMessage: previousMessage, server: server))
-							.transition(.move(edge: .bottom))
+						MessageView(
+							client: client,
+							viewModel: .init(message: message, previousMessage: previousMessage, server: server, lastOpen: lastOpen)
+						)
+						.transition(.move(edge: .bottom))
 					}
 					
 					MessageComposerView(room: room) {
 						messageSender.sendMessage($0, in: room)
+						
+						lastOpen = nil
 					}
 					.id(messageComposer)
 				}
@@ -69,7 +78,10 @@ struct MessageListView: View {
 				messagesLoader.stop()
 			}
 			.onReceive(messages.publisher) { _ in
-				reader.scrollTo(messageComposer, anchor: .bottom)
+				if lastMessageID != messages.last?.id {
+					reader.scrollTo(messageComposer, anchor: .bottom)
+					lastMessageID = messages.last?.id
+				}
 			}
 		}
 	}

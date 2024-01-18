@@ -111,6 +111,8 @@
 		1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
 		1E9A71672B599E6300477BA2 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71662B599E6300477BA2 /* NotificationController.swift */; };
 		1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71682B59B6E100477BA2 /* MessageSender.swift */; };
+		1E9A716F2B59CBCA00477BA2 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */; };
+		1E9A71712B59CC1300477BA2 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71702B59CC1300477BA2 /* Attachment.swift */; };
 		1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB375882B55DBFB00AEC3D7 /* Server.swift */; };
 		1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8EF712510F1EE00F352B7 /* Storage.swift */; };
 		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
@@ -396,6 +398,8 @@
 		1E9A71652B599D3F00477BA2 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		1E9A71662B599E6300477BA2 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		1E9A71682B59B6E100477BA2 /* MessageSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
+		1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
+		1E9A71702B59CC1300477BA2 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		1EB375882B55DBFB00AEC3D7 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		1EB8EF712510F1EE00F352B7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareRocketChatRN.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -738,6 +742,7 @@
 				1EB375882B55DBFB00AEC3D7 /* Server.swift */,
 				1E29A30D2B58608C0093C03C /* LoggedUser.swift */,
 				1E29A3112B5866090093C03C /* Room.swift */,
+				1E9A71702B59CC1300477BA2 /* Attachment.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -776,6 +781,7 @@
 				1E29A3152B5868DF0093C03C /* MessageListView.swift */,
 				1E29A3172B5868E50093C03C /* MessageView.swift */,
 				1E29A3232B5874FF0093C03C /* MessageComposerView.swift */,
+				1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1843,6 +1849,7 @@
 				1E29A2FD2B585B070093C03C /* RoomsRequest.swift in Sources */,
 				1ED038CA2B50A58400C007D4 /* WatchConnection.swift in Sources */,
 				1E29A3222B5871CE0093C03C /* MessageFormatter.swift in Sources */,
+				1E9A716F2B59CBCA00477BA2 /* AttachmentView.swift in Sources */,
 				1E29A3002B585B070093C03C /* JSONAdapter.swift in Sources */,
 				1E29A3022B585B070093C03C /* DateCodingStrategy.swift in Sources */,
 				1ED033B62B55B4A5004F4930 /* ServerListView.swift in Sources */,
@@ -1887,6 +1894,7 @@
 				1ED033B82B55B4BE004F4930 /* ServerListViewModel.swift in Sources */,
 				1ED033C42B55C65C004F4930 /* RocketChatAppRouter.swift in Sources */,
 				1ED033B02B55B25A004F4930 /* Database.swift in Sources */,
+				1E9A71712B59CC1300477BA2 /* Attachment.swift in Sources */,
 				1ED033C82B55CE78004F4930 /* DependencyStore.swift in Sources */,
 				1E29A30A2B585B370093C03C /* Data+Extensions.swift in Sources */,
 				1E29A2F72B585B070093C03C /* ReadResponse.swift in Sources */,

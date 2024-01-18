@@ -1,5 +1,7 @@
 import Foundation
 
+let HISTORY_MESSAGE_COUNT = 50
+
 struct HistoryRequest: Request {
     typealias Response = HistoryResponse
     
@@ -11,6 +13,7 @@ struct HistoryRequest: Request {
         
         queryItems = [
             URLQueryItem(name: "roomId", value: roomId),
+			URLQueryItem(name: "count", value: String(HISTORY_MESSAGE_COUNT)),
             URLQueryItem(name: "latest", value: latest.iso8601withFractionalSeconds)
         ]
     }
