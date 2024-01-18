@@ -38,7 +38,7 @@ struct MessageListView: View {
 	var body: some View {
 		ScrollViewReader { reader in
 			ScrollView {
-				VStack(alignment: .leading, spacing: 8) {
+				LazyVStack(alignment: .leading, spacing: 8) {
 					if room.hasMoreMessages {
 						Button("Load More...") {
 							guard let oldestMessage = room.firstMessage?.ts else { return }

@@ -1,6 +1,6 @@
 import Foundation
 
 struct SendMessageResponse: Codable {
-    let message: MessageResponse
-    let success: Bool
+	let message: MessageResponse
+	let success: Bool
 }

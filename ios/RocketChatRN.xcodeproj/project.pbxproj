@@ -59,7 +59,6 @@
 		1E29A3032B585B070093C03C /* FailableDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E92B585B070093C03C /* FailableDecodable.swift */; };
 		1E29A3042B585B070093C03C /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2EB2B585B070093C03C /* HTTPMethod.swift */; };
 		1E29A3052B585B070093C03C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2EC2B585B070093C03C /* Request.swift */; };
-		1E29A3062B585B070093C03C /* RocketChatServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2ED2B585B070093C03C /* RocketChatServer.swift */; };
 		1E29A3072B585B070093C03C /* RocketChatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2EE2B585B070093C03C /* RocketChatError.swift */; };
 		1E29A30A2B585B370093C03C /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3092B585B370093C03C /* Data+Extensions.swift */; };
 		1E29A30C2B585D1D0093C03C /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30B2B585D1D0093C03C /* String+Extensions.swift */; };
@@ -367,7 +366,6 @@
 		1E29A2E92B585B070093C03C /* FailableDecodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailableDecodable.swift; sourceTree = "<group>"; };
 		1E29A2EB2B585B070093C03C /* HTTPMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		1E29A2EC2B585B070093C03C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		1E29A2ED2B585B070093C03C /* RocketChatServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RocketChatServer.swift; sourceTree = "<group>"; };
 		1E29A2EE2B585B070093C03C /* RocketChatError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RocketChatError.swift; sourceTree = "<group>"; };
 		1E29A3092B585B370093C03C /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		1E29A30B2B585D1D0093C03C /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
@@ -594,7 +592,6 @@
 				1E29A2E82B585B070093C03C /* DateCodingStrategy.swift */,
 				1E29A2E92B585B070093C03C /* FailableDecodable.swift */,
 				1E29A2EA2B585B070093C03C /* HTTP */,
-				1E29A2ED2B585B070093C03C /* RocketChatServer.swift */,
 				1E29A2EE2B585B070093C03C /* RocketChatError.swift */,
 			);
 			path = Client;
@@ -1863,7 +1860,6 @@
 				1E29A3032B585B070093C03C /* FailableDecodable.swift in Sources */,
 				1E29A2FE2B585B070093C03C /* ReadRequest.swift in Sources */,
 				1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */,
-				1E29A3062B585B070093C03C /* RocketChatServer.swift in Sources */,
 				1E29A3072B585B070093C03C /* RocketChatError.swift in Sources */,
 				1E9A71672B599E6300477BA2 /* NotificationController.swift in Sources */,
 				1EDFD1082B58AA77002FEE5F /* RoomsLoader.swift in Sources */,
