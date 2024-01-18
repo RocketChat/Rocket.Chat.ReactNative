@@ -69,7 +69,7 @@ export const ComposerInput = memo(
 			};
 		}, [action, rid, tmid]);
 
-		// Edit
+		// Edit/quote
 		useEffect(() => {
 			const fetchMessageAndSetInput = async () => {
 				const message = await getMessageById(selectedMessages[0]);
@@ -87,7 +87,10 @@ export const ComposerInput = memo(
 				focus();
 				fetchMessageAndSetInput();
 			}
-		}, [action, selectedMessages]);
+			if (action === 'quote' && !focused) {
+				focus();
+			}
+		}, [action, selectedMessages, focused]);
 
 		// Applied canned response from Canned Responses list or detail screen
 		useEffect(() => {
