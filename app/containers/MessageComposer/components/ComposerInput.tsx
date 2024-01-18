@@ -146,8 +146,11 @@ export const ComposerInput = memo(
 				inputRef.current.setNativeProps({ text });
 			}
 			if (selection) {
-				selectionRef.current = selection;
-				inputRef.current?.setSelection?.(selection.start, selection.end);
+				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
+				setTimeout(() => {
+					inputRef.current?.setSelection?.(selection.start, selection.end);
+					selectionRef.current = selection;
+				}, 50);
 			}
 			setMicOrSend(text.length === 0 ? 'mic' : 'send');
 		};
