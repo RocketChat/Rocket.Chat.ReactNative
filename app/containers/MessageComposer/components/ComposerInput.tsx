@@ -47,7 +47,7 @@ export const ComposerInput = memo(
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
 
-		// Draft
+		// Draft/Canned Responses
 		useEffect(() => {
 			const setDraftMessage = async () => {
 				const draftMessage = await loadDraftMessage({ rid, tmid });
@@ -58,8 +58,14 @@ export const ComposerInput = memo(
 
 			if (sharing) return;
 
+			if (usedCannedResponse) {
+				setInput(usedCannedResponse);
+				return;
+			}
+
 			if (action !== 'edit') {
 				setDraftMessage();
+				return;
 			}
 
 			return () => {
@@ -67,7 +73,7 @@ export const ComposerInput = memo(
 					saveDraftMessage({ rid, tmid, draftMessage: textRef.current });
 				}
 			};
-		}, [action, rid, tmid]);
+		}, [action, rid, tmid, usedCannedResponse]);
 
 		// Edit/quote
 		useEffect(() => {
@@ -82,22 +88,17 @@ export const ComposerInput = memo(
 
 			if (prevAction === 'edit' && action !== 'edit') {
 				setInput('');
+				return;
 			}
 			if (action === 'edit' && selectedMessages[0]) {
 				focus();
 				fetchMessageAndSetInput();
+				return;
 			}
 			if (action === 'quote' && selectedMessages.length === 1) {
 				focus();
 			}
 		}, [action, selectedMessages]);
-
-		// Applied canned response from Canned Responses list or detail screen
-		useEffect(() => {
-			if (usedCannedResponse) {
-				setInput(usedCannedResponse);
-			}
-		}, [usedCannedResponse]);
 
 		useFocusEffect(
 			useCallback(() => {
