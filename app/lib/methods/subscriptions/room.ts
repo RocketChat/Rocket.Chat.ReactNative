@@ -1,7 +1,6 @@
 import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
-import * as Haptics from 'expo-haptics';
 
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
@@ -20,8 +19,6 @@ import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
-import userPreferences from '../userPreferences';
-import { NOTIFICATION_IN_APP_VIBRATION } from '../../constants';
 
 const WINDOW_TIME = 1000;
 
@@ -309,18 +306,6 @@ export default class RoomSubscription {
 				}
 			}
 
-			// Haptic Feedback when receiving message
-			const { id: userId } = reduxStore.getState().login.user;
-			const { focusedThread } = reduxStore.getState().room;
-			if (
-				((!message.tmid && !message.tlm && !focusedThread) || (message.tmid && message.tmid === focusedThread)) &&
-				message.u._id !== userId
-			) {
-				const notificationInAppVibration = userPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
-				if (notificationInAppVibration || notificationInAppVibration === null) {
-					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-				}
-			}
 			return resolve();
 		});
 

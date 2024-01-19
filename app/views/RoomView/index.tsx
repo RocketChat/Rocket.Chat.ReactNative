@@ -95,7 +95,6 @@ import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getThreadById } from '../../lib/database/services/Thread';
-import { focusedThreadRoom, removeFocusedThreadRoom } from '../../actions/room';
 import HapticFeedback from './components/HapticFeedback';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
@@ -309,7 +308,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
-		const { navigation, dispatch } = this.props;
+		const { navigation } = this.props;
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
@@ -340,9 +339,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			audioPlayer.pauseCurrentAudio();
 		});
-		if (this.tmid) {
-			dispatch(focusedThreadRoom({ tmid: this.tmid }));
-		}
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -413,7 +409,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	async componentWillUnmount() {
-		const { dispatch } = this.props;
 		const { editing, room } = this.state;
 		const db = database.active;
 		this.mounted = false;
@@ -465,9 +460,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
-		if (this.tmid) {
-			dispatch(removeFocusedThreadRoom());
-		}
 		if (!this.tmid) {
 			// TODO: Refactor when audio becomes global
 			await audioPlayer.unloadRoomAudios(this.rid);
