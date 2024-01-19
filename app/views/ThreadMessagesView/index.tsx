@@ -131,7 +131,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		const options: StackNavigationOptions = {
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Threads'),
-			headerTitleContainerStyle: { },
+			headerTitleContainerStyle: {},
 			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton
