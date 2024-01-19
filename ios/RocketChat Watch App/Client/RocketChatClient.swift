@@ -11,8 +11,17 @@ protocol RocketChatClientProtocol {
 	func sendRead(rid: String) -> AnyPublisher<ReadResponse, RocketChatError>
 }
 
-final class RocketChatClient {
+final class RocketChatClient: NSObject {
 	private let server: Server
+	
+	private lazy var session = URLSession(
+		configuration: .default,
+		delegate: URLSesionClientCertificateHandling(
+			certificate: server.certificate,
+			password: server.password
+		),
+		delegateQueue: nil
+	)
 	
 	init(server: Server) {
 		self.server = server
@@ -32,7 +41,7 @@ final class RocketChatClient {
 		urlRequest.httpMethod = request.method.rawValue
 		urlRequest.httpBody = request.body
 		
-		return URLSession.shared.dataTaskPublisher(for: urlRequest)
+		return session.dataTaskPublisher(for: urlRequest)
 			.tryMap { (data, response) in
 				guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
 					throw RocketChatError.unauthorized

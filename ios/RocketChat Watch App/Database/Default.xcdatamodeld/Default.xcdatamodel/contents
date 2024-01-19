@@ -8,8 +8,10 @@
         <relationship name="server" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="loggedUser" inverseEntity="Server"/>
     </entity>
     <entity name="Server" representedClassName=".Server" syncable="YES">
+        <attribute name="certificate" optional="YES" attributeType="Binary"/>
         <attribute name="iconURL" optional="YES" attributeType="URI"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
         <attribute name="updatedSince" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="url" optional="YES" attributeType="URI"/>
         <attribute name="useRealName" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

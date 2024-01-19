@@ -13,6 +13,8 @@ public final class Server: NSManagedObject {
 	@NSManaged public var url: URL
 	@NSManaged public var useRealName: Bool
 	@NSManaged public var loggedUser: LoggedUser
+	@NSManaged public var certificate: Data?
+	@NSManaged public var password: String?
 	
 	@available(*, unavailable)
 	init() {
@@ -36,7 +38,9 @@ public final class Server: NSManagedObject {
 		updatedSince: Date? = nil,
 		url: URL,
 		useRealName: Bool,
-		loggedUser: LoggedUser
+		loggedUser: LoggedUser,
+		certificate: Data? = nil,
+		password: String? = nil
 	) {
 		let entity = NSEntityDescription.entity(forEntityName: "Server", in: context)!
 		super.init(entity: entity, insertInto: context)
@@ -46,6 +50,8 @@ public final class Server: NSManagedObject {
 		self.url = url
 		self.useRealName = useRealName
 		self.loggedUser = loggedUser
+		self.certificate = certificate
+		self.password = password
 	}
 }
 

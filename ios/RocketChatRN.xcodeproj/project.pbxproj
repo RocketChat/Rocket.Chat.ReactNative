@@ -112,6 +112,9 @@
 		1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71682B59B6E100477BA2 /* MessageSender.swift */; };
 		1E9A716F2B59CBCA00477BA2 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */; };
 		1E9A71712B59CC1300477BA2 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71702B59CC1300477BA2 /* Attachment.swift */; };
+		1E9A71742B59F36E00477BA2 /* ClientSSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71722B59F34E00477BA2 /* ClientSSL.swift */; };
+		1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71722B59F34E00477BA2 /* ClientSSL.swift */; };
+		1E9A71772B59FCA900477BA2 /* URLSessionCertificateHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71762B59FCA900477BA2 /* URLSessionCertificateHandling.swift */; };
 		1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB375882B55DBFB00AEC3D7 /* Server.swift */; };
 		1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8EF712510F1EE00F352B7 /* Storage.swift */; };
 		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
@@ -398,6 +401,8 @@
 		1E9A71682B59B6E100477BA2 /* MessageSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
 		1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		1E9A71702B59CC1300477BA2 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		1E9A71722B59F34E00477BA2 /* ClientSSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientSSL.swift; sourceTree = "<group>"; };
+		1E9A71762B59FCA900477BA2 /* URLSessionCertificateHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionCertificateHandling.swift; sourceTree = "<group>"; };
 		1EB375882B55DBFB00AEC3D7 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		1EB8EF712510F1EE00F352B7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareRocketChatRN.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -593,6 +598,7 @@
 				1E29A2E92B585B070093C03C /* FailableDecodable.swift */,
 				1E29A2EA2B585B070093C03C /* HTTP */,
 				1E29A2EE2B585B070093C03C /* RocketChatError.swift */,
+				1E9A71762B59FCA900477BA2 /* URLSessionCertificateHandling.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -699,6 +705,7 @@
 				1E470E822513A71E00E3DD1D /* RocketChat.swift */,
 				1EB8EF712510F1EE00F352B7 /* Storage.swift */,
 				1ED038A82B5090AD00C007D4 /* MMKV.swift */,
+				1E9A71722B59F34E00477BA2 /* ClientSSL.swift */,
 			);
 			path = RocketChat;
 			sourceTree = "<group>";
@@ -1797,6 +1804,7 @@
 				1E76CBD225152C730067298C /* Data+Extensions.swift in Sources */,
 				1E76CBD125152C710067298C /* Date+Extensions.swift in Sources */,
 				1E76CBD425152C790067298C /* Database.swift in Sources */,
+				1E9A71742B59F36E00477BA2 /* ClientSSL.swift in Sources */,
 				1ED038AD2B50927B00C007D4 /* WatermelonDB+Extensions.swift in Sources */,
 				1ED038A52B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				1E76CBC325152A460067298C /* String+Extensions.swift in Sources */,
@@ -1870,6 +1878,7 @@
 				1E29A2FF2B585B070093C03C /* TokenAdapter.swift in Sources */,
 				1E29A3052B585B070093C03C /* Request.swift in Sources */,
 				1E6436242B59998A009F0CE1 /* ExtensionDelegate.swift in Sources */,
+				1E9A71772B59FCA900477BA2 /* URLSessionCertificateHandling.swift in Sources */,
 				1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */,
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,
 				1E29A31D2B5871B60093C03C /* Date+Extensions.swift in Sources */,
@@ -1955,6 +1964,7 @@
 				7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */,
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
+				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,
 				1ED038AF2B50927B00C007D4 /* WatermelonDB+Extensions.swift in Sources */,
 				1ED038A72B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				7AAB3E26257E6A6E00707CF6 /* String+Extensions.swift in Sources */,
