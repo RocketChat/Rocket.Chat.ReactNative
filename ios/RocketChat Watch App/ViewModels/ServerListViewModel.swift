@@ -7,22 +7,14 @@ enum ServerListState {
 }
 
 final class ServerListViewModel: ObservableObject {
-	struct Dependencies {
-		let connection: Connection
-		let database: ServersDatabase
-		let router: RocketChatAppRouter
-	}
-	
-	private let dependencies: Dependencies
+	@Dependency private var connection: Connection
+	@Dependency private var database: ServersDatabase
+	@Dependency private var router: AppRouting
 	
 	@Published private(set) var state: ServerListState = .loading
 	
-	init(dependencies: Dependencies) {
-		self.dependencies = dependencies
-	}
-	
 	private func handleSuccess(message: WatchMessage) {
-		message.servers.forEach(dependencies.database.process(updatedServer:))
+		message.servers.forEach(database.process(updatedServer:))
 		state = .loaded
 	}
 	
@@ -35,7 +27,7 @@ final class ServerListViewModel: ObservableObject {
 	}
 	
 	func loadServers() {
-		dependencies.connection.sendMessage { [weak self] result in
+		connection.sendMessage { [weak self] result in
 			guard let self else {
 				return
 			}
@@ -50,6 +42,6 @@ final class ServerListViewModel: ObservableObject {
 	}
 	
 	func didTap(server: Server) {
-		dependencies.router.route(to: .roomList(server))
+		router.route(to: .roomList(server))
 	}
 }

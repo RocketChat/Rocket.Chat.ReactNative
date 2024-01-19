@@ -7,7 +7,7 @@ protocol StoreInterface {
 
 final class Store: StoreInterface {
 	private static var factories: [ObjectIdentifier: () -> Any] = [:]
-	private static var cache: [ObjectIdentifier: Any] = [:]
+	private static var cache: [ObjectIdentifier: WeakRef<AnyObject>] = [:]
 	
 	static func register<T>(_ type: T.Type, factory: @autoclosure @escaping () -> T) {
 		let identifier = ObjectIdentifier(type)
@@ -17,13 +17,13 @@ final class Store: StoreInterface {
 	static func resolve<T>(_ type: T.Type) -> T? {
 		let identifier = ObjectIdentifier(type)
 		
-		if let dependency = cache[identifier] {
+		if let dependency = cache[identifier]?.value {
 			return dependency as? T
 		} else {
 			let dependency = factories[identifier]?() as? T
 			
 			if let dependency {
-				cache[identifier] = dependency
+				cache[identifier] = WeakRef(value: dependency as AnyObject)
 			}
 			
 			return dependency
@@ -32,7 +32,7 @@ final class Store: StoreInterface {
 }
 
 private final class WeakRef<T: AnyObject> {
-	weak var value: T?
+	private(set) weak var value: T?
 	
 	init(value: T) {
 		self.value = value

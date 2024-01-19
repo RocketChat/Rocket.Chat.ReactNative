@@ -2,65 +2,27 @@ import SwiftUI
 
 @main
 struct RocketChat_Watch_AppApp: App {
-	private let store: DependencyStore
-	
-	@StateObject var router: RocketChatAppRouter
+	private let router = AppRouter()
 	
 	init() {
-		let store = DependencyStore()
-		
-		self.store = store
-		self._router = StateObject(wrappedValue: RocketChatAppRouter(database: store.database))
+		registerDependencies()
 	}
 	
-	@ViewBuilder
-	private var serverListView: some View {
-		ServerListView(
-			dependencies: .init(
-				connection: store.connection,
-				database: store.database,
-				router: router
-			)
-		)
-	}
-	
-	@ViewBuilder
-	private func roomListView(for server: Server) -> some View {
-		RoomListView(
-			client: store.client(for: server),
-			database: store.database(for: server),
-			messagesLoader: MessagesLoader(
-				client: store.client(for: server),
-				database: store.database(for: server),
-				serversDB: store.database
-			),
-			messageSender: MessageSender(
-				client: store.client(for: server),
-				database: store.database(for: server),
-				server: server
-			),
-			roomsLoader: RoomsLoader(
-				client: store.client(for: server),
-				database: store.database(for: server),
-				serversDB: store.database
-			),
-			router: router,
-			server: server
-		)
+	private func registerDependencies() {
+		Store.register(ServersDatabase.self, factory: DefaultDatabase())
+		Store.register(ServerProviding.self, factory: ServerProvider())
+		Store.register(Connection.self, factory: WatchConnection(session: .default))
+		Store.register(RocketChatClientProtocol.self, factory: RocketChatClient())
+		Store.register(Database.self, factory: RocketChatDatabase())
+		Store.register(MessagesLoading.self, factory: MessagesLoader())
+		Store.register(MessageSending.self, factory: MessageSender())
+		Store.register(RoomsLoading.self, factory: RoomsLoader())
+		Store.register(AppRouting.self, factory: router)
 	}
 	
 	var body: some Scene {
 		WindowGroup {
-			NavigationStack {
-				switch router.route {
-					case .roomList(let server):
-						roomListView(for: server)
-							.environment(\.managedObjectContext, store.database(for: server).viewContext)
-					case .serverList:
-						serverListView
-							.environment(\.managedObjectContext, store.database.viewContext)
-				}
-			}
+			AppView(router: router)
 		}
 	}
 }

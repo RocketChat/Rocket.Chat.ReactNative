@@ -13,21 +13,11 @@ final class MessagesLoader {
 	private var timer: Timer?
 	private var cancellable = CancelBag()
 	
-	private let client: RocketChatClientProtocol
-	private let database: Database
-	private let serversDB: ServersDatabase
+	@Dependency private var client: RocketChatClientProtocol
+	@Dependency private var database: Database
+	@Dependency private var serversDB: ServersDatabase
 	
 	private var roomID: String?
-	
-	init(
-		client: RocketChatClientProtocol,
-		database: Database,
-		serversDB: ServersDatabase
-	) {
-		self.client = client
-		self.database = database
-		self.serversDB = serversDB
-	}
 	
 	private func scheduledSyncMessages(in room: Room, from date: Date) {
 		timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in

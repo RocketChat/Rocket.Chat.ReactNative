@@ -6,8 +6,8 @@ struct ServerListView: View {
 	@FetchRequest(entity: Server.entity(), sortDescriptors: [], animation: .default)
 	private var servers: FetchedResults<Server>
 	
-	init(dependencies: ServerListViewModel.Dependencies) {
-		_viewModel = StateObject(wrappedValue: ServerListViewModel(dependencies: dependencies))
+	init(viewModel: ServerListViewModel) {
+		_viewModel = StateObject(wrappedValue: viewModel)
 	}
 	
 	@ViewBuilder

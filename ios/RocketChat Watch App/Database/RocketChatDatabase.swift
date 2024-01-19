@@ -13,7 +13,7 @@ protocol Database {
 }
 
 final class RocketChatDatabase: Database {
-	private let container: NSPersistentContainer
+	@Dependency private var serverProvider: ServerProviding
 	
 	var viewContext: NSManagedObjectContext {
 		container.viewContext
@@ -28,15 +28,19 @@ final class RocketChatDatabase: Database {
 		return managedObjectModel
 	}()
 	
-	init(name: String) {
-		container = NSPersistentContainer(name: name, managedObjectModel: Self.model)
+	private lazy var container: NSPersistentContainer = {
+		let name = serverProvider.current().url.host ?? "default"
+		
+		let container = NSPersistentContainer(name: name, managedObjectModel: Self.model)
 		
 		container.loadPersistentStores { _, error in
 			if let error { fatalError("Can't load persistent stores: \(error)") }
 		}
 		
 		container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-	}
+		
+		return container
+	}()
 	
 	private func save() {
 		guard container.viewContext.hasChanges else {

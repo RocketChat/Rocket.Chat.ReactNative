@@ -12,7 +12,11 @@ protocol RocketChatClientProtocol {
 }
 
 final class RocketChatClient: NSObject {
-	private let server: Server
+	@Dependency private var serverProvider: ServerProviding
+	
+	private var server: Server {
+		serverProvider.current()
+	}
 	
 	private lazy var session = URLSession(
 		configuration: .default,
@@ -22,10 +26,6 @@ final class RocketChatClient: NSObject {
 		),
 		delegateQueue: nil
 	)
-	
-	init(server: Server) {
-		self.server = server
-	}
 	
 	private var adapters: [RequestAdapter] {
 		[

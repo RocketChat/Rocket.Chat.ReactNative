@@ -1,31 +1,18 @@
 import SwiftUI
 
 struct RoomListView: View {
-	private let client: RocketChatClientProtocol
-	private let database: Database
-	private let messagesLoader: MessagesLoading
-	private let messageSender: MessageSending
-	private let roomsLoader: RoomsLoading
-	private let router: RocketChatAppRouter
+	@Dependency private var client: RocketChatClientProtocol
+	@Dependency private var database: Database
+	@Dependency private var messagesLoader: MessagesLoading
+	@Dependency private var messageSender: MessageSending
+	@Dependency private var roomsLoader: RoomsLoading
+	@Dependency private var router: AppRouting
+	
 	private let server: Server
 	
 	@FetchRequest<Room> private var rooms: FetchedResults<Room>
 	
-	init(
-		client: RocketChatClientProtocol,
-		database: Database,
-		messagesLoader: MessagesLoading,
-		messageSender: MessageSending,
-		roomsLoader: RoomsLoading,
-		router: RocketChatAppRouter,
-		server: Server
-	) {
-		self.client = client
-		self.database = database
-		self.messagesLoader = messagesLoader
-		self.messageSender = messageSender
-		self.roomsLoader = roomsLoader
-		self.router = router
+	init(server: Server) {
 		self.server = server
 		_rooms = FetchRequest(fetchRequest: server.roomsRequest)
 	}
