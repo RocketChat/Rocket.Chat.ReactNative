@@ -82,7 +82,6 @@
 		1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
 		1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE625150660002BDFBD /* Data+Extensions.swift */; };
 		1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
-		1E6436242B59998A009F0CE1 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6436232B59998A009F0CE1 /* ExtensionDelegate.swift */; };
 		1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
 		1E680ED92512990700C9257A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
@@ -108,7 +107,6 @@
 		1E76CBD825152C870067298C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1E76CBD925152C8C0067298C /* Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61652512958900871711 /* Push.swift */; };
 		1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
-		1E9A71672B599E6300477BA2 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71662B599E6300477BA2 /* NotificationController.swift */; };
 		1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71682B59B6E100477BA2 /* MessageSender.swift */; };
 		1E9A716F2B59CBCA00477BA2 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */; };
 		1E9A71712B59CC1300477BA2 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71702B59CC1300477BA2 /* Attachment.swift */; };
@@ -392,12 +390,9 @@
 		1E598AE32515057D002BDFBD /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE625150660002BDFBD /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE825151A63002BDFBD /* SendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessage.swift; sourceTree = "<group>"; };
-		1E6436232B59998A009F0CE1 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotificationService-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E67380324DC529B0009E081 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		1E680ED82512990700C9257A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		1E9A71652B599D3F00477BA2 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		1E9A71662B599E6300477BA2 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		1E9A71682B59B6E100477BA2 /* MessageSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
 		1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		1E9A71702B59CC1300477BA2 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
@@ -818,9 +813,6 @@
 				1ED038942B507B4D00C007D4 /* Assets.xcassets */,
 				1ED038962B507B4D00C007D4 /* Preview Content */,
 				1ED033C02B55C190004F4930 /* Localizable.xcstrings */,
-				1E6436232B59998A009F0CE1 /* ExtensionDelegate.swift */,
-				1E9A71652B599D3F00477BA2 /* PushNotificationPayload.apns */,
-				1E9A71662B599E6300477BA2 /* NotificationController.swift */,
 			);
 			path = "RocketChat Watch App";
 			sourceTree = "<group>";
@@ -1869,7 +1861,6 @@
 				1E29A2FE2B585B070093C03C /* ReadRequest.swift in Sources */,
 				1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */,
 				1E29A3072B585B070093C03C /* RocketChatError.swift in Sources */,
-				1E9A71672B599E6300477BA2 /* NotificationController.swift in Sources */,
 				1EDFD1082B58AA77002FEE5F /* RoomsLoader.swift in Sources */,
 				1E29A2F12B585B070093C03C /* SendMessageResponse.swift in Sources */,
 				1E29A30E2B58608C0093C03C /* LoggedUser.swift in Sources */,
@@ -1877,7 +1868,6 @@
 				1EDFD1062B58A66E002FEE5F /* CancelBag.swift in Sources */,
 				1E29A2FF2B585B070093C03C /* TokenAdapter.swift in Sources */,
 				1E29A3052B585B070093C03C /* Request.swift in Sources */,
-				1E6436242B59998A009F0CE1 /* ExtensionDelegate.swift in Sources */,
 				1E9A71772B59FCA900477BA2 /* URLSessionCertificateHandling.swift in Sources */,
 				1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */,
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,

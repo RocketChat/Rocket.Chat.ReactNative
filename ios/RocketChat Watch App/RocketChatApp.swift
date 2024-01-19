@@ -4,8 +4,6 @@ import SwiftUI
 struct RocketChat_Watch_AppApp: App {
 	private let store: DependencyStore
 	
-	@WKExtensionDelegateAdaptor private var delegate: ExtensionDelegate
-	
 	@StateObject var router: RocketChatAppRouter
 	
 	init() {
@@ -64,7 +62,5 @@ struct RocketChat_Watch_AppApp: App {
 				}
 			}
 		}
-		
-		WKNotificationScene(controller: NotificationController.self, category: "MESSAGE")
 	}
 }
