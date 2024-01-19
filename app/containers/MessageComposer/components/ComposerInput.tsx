@@ -297,8 +297,8 @@ export const ComposerInput = memo(
 						const commandRecord = await commandsCollection.find(command);
 						if (commandRecord.providesPreview) {
 							setAutocompleteParams({ params, text: command, type: '/preview' });
-							return;
 						}
+						return;
 					} catch (e) {
 						// do nothing
 					}
