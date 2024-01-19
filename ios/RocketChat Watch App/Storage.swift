@@ -1,18 +1,22 @@
 import Foundation
 
+enum StorageKey: String {
+	case currentServer = "current_server"
+}
+
 @propertyWrapper
 struct Storage<T: Codable> {
-	private let key: String
+	private let key: StorageKey
 	private let defaultValue: T?
 	
-	init(_ key: String, defaultValue: T? = nil) {
+	init(_ key: StorageKey, defaultValue: T? = nil) {
 		self.key = key
 		self.defaultValue = defaultValue
 	}
 	
 	var wrappedValue: T? {
 		get {
-			guard let data = UserDefaults.standard.object(forKey: key) as? Data else {
+			guard let data = UserDefaults.standard.object(forKey: key.rawValue) as? Data else {
 				return defaultValue
 			}
 			
@@ -22,7 +26,7 @@ struct Storage<T: Codable> {
 		set {
 			let data = try? JSONEncoder().encode(newValue)
 			
-			UserDefaults.standard.set(data, forKey: key)
+			UserDefaults.standard.set(data, forKey: key.rawValue)
 		}
 	}
 }

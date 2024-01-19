@@ -1,7 +1,11 @@
 import Foundation
 
-final class RocketChatAppRouter: ObservableObject {
-	@Storage("current_server") var currentServer: URL?
+protocol RocketChatAppRouting {
+	func route(to route: Route)
+}
+
+final class RocketChatAppRouter: ObservableObject, RocketChatAppRouting {
+	@Storage(.currentServer) private var currentServer: URL?
 	
 	@Published var route: Route = .serverList {
 		didSet {
@@ -38,9 +42,7 @@ final class RocketChatAppRouter: ObservableObject {
 	}
 }
 
-extension RocketChatAppRouter {
-	enum Route {
-		case roomList(Server)
-		case serverList
-	}
+enum Route {
+	case roomList(Server)
+	case serverList
 }
