@@ -124,7 +124,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		options = {
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
-			headerTitleContainerStyle: {  },
+			headerTitleContainerStyle: {},
 			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton
