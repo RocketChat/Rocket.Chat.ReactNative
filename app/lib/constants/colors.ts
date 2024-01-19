@@ -294,6 +294,7 @@ export const colors = {
 	},
 	dark: {
 		...newColorsDark,
+		surfaceLight: '#0b182c',
 
 		backgroundColor: '#030b1b',
 		focusedBackground: '#0b182c',
@@ -374,6 +375,7 @@ export const colors = {
 	},
 	black: {
 		...newColorsDark,
+		surfaceLight: '#0d0d0d',
 
 		backgroundColor: '#000000',
 		focusedBackground: '#0d0d0d',
