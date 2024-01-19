@@ -35,13 +35,12 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 			buttonTitle: I18n.t('Reply'),
 			placeholder: I18n.t('Type_message')
 		});
-
 		const acceptAction = new NotificationAction('ACCEPT_ACTION', 'foreground', I18n.t('accept'), true);
 		const rejectAction = new NotificationAction('DECLINE_ACTION', 'foreground', I18n.t('decline'), true);
 
 		const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
 		const videoConfCategory = new NotificationCategory('VIDEOCONF', [acceptAction, rejectAction]);
-		// @ts-ignore
+
 		Notifications.setCategories([videoConfCategory, notificationCategory]);
 	} else if (Platform.OS === 'android' && Platform.constants.Version >= 33) {
 		// @ts-ignore
