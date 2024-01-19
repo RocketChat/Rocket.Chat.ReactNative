@@ -87,10 +87,10 @@ export const ComposerInput = memo(
 				focus();
 				fetchMessageAndSetInput();
 			}
-			if (action === 'quote' && !focused) {
+			if (action === 'quote' && selectedMessages.length === 1) {
 				focus();
 			}
-		}, [action, selectedMessages, focused]);
+		}, [action, selectedMessages]);
 
 		// Applied canned response from Canned Responses list or detail screen
 		useEffect(() => {
