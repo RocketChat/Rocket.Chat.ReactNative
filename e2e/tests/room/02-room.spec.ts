@@ -254,12 +254,13 @@ describe('Room screen', () => {
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 			await element(by[textMatcher]('Edit')).atIndex(0).tap();
-			await element(by.id('message-composer-input')).replaceText(editedMessage);
+			await element(by.id('message-composer-input')).typeText('ed');
 			await element(by.id('message-composer-send')).tap();
 			await waitFor(element(by[textMatcher](editedMessage)).atIndex(0))
 				.toExist()
 				.withTimeout(60000);
 		});
+
 		let quotedMessage = '';
 		it('should quote message', async () => {
 			const quoteMessage = await mockMessage('quote');
@@ -283,6 +284,7 @@ describe('Room screen', () => {
 				.toBeVisible()
 				.withTimeout(3000);
 		});
+
 		it('should back to rooms list view and see the last message correctly and navigate again to room', async () => {
 			const expectedLastMessage = `You: ${quotedMessage}`;
 			await sleep(300);
