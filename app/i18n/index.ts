@@ -130,6 +130,16 @@ export const LANGUAGES: ILanguage[] = [
 		label: '繁體中文',
 		value: 'zh-TW',
 		file: () => require('./locales/zh-TW.json')
+	},
+	{
+		label: 'Български',
+		value: 'bg',
+		file: () => require('./locales/bg.json')
+	},
+	{
+		label: 'Ελληνικά',
+		value: 'el',
+		file: () => require('./locales/el.json')
 	}
 ];
 
