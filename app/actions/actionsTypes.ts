@@ -97,3 +97,4 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 	'SET_CALLING'
 ]);
 export const SUPPORTED_VERSIONS = createRequestTypes('SUPPORTED_VERSIONS', ['SET']);
+export const IN_APP_FEEDBACK = createRequestTypes('IN_APP_FEEDBACK', ['SET', 'REMOVE']);
