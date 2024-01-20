@@ -29,7 +29,7 @@ final class RocketChatDatabase: Database {
 	}()
 	
 	private lazy var container: NSPersistentContainer = {
-		let name = serverProvider.current().url.host ?? "default"
+		let name = serverProvider.server.url.host ?? "default"
 		
 		let container = NSPersistentContainer(name: name, managedObjectModel: Self.model)
 		

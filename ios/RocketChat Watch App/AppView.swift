@@ -3,8 +3,7 @@ import SwiftUI
 struct AppView: View {
 	@Dependency private var database: Database
 	@Dependency private var serversDB: ServersDatabase
-	
-	@Storage(.currentServer) private var currentURL: URL?
+	@Dependency private var stateProvider: StateProviding
 	
 	@StateObject private var router: AppRouter
 	
@@ -15,12 +14,22 @@ struct AppView: View {
 	var body: some View {
 		NavigationStack {
 			switch router.route {
-				case .roomList(let server):
-					RoomListView(server: server)
-						.environment(\.managedObjectContext, database.viewContext)
-				case .serverList:
-					ServerListView(viewModel: ServerListViewModel())
-						.environment(\.managedObjectContext, serversDB.viewContext)
+			case .loading:
+				ProgressView()
+			case .roomList(let server):
+				RoomListView(server: server)
+					.environment(\.managedObjectContext, database.viewContext)
+			case .serverList:
+				ServerListView()
+					.environment(\.managedObjectContext, serversDB.viewContext)
+			}
+		}
+		.onChange(of: router.route) { newValue in
+			switch newValue {
+			case .roomList(let server):
+				stateProvider.update(to: .loggedIn(server))
+			case .serverList, .loading:
+				stateProvider.update(to: .loggedOut)
 			}
 		}
 		.onAppear {
@@ -29,11 +38,10 @@ struct AppView: View {
 	}
 	
 	private func loadRoute() {
-		if let currentURL, let server = serversDB.server(url: currentURL) {
+		switch stateProvider.state {
+		case .loggedIn(let server):
 			router.route(to: .roomList(server))
-		} else if serversDB.servers().count == 1, let server = serversDB.servers().first {
-			router.route(to: .roomList(server))
-		} else {
+		case .loggedOut:
 			router.route(to: .serverList)
 		}
 	}

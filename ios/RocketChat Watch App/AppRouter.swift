@@ -5,25 +5,17 @@ protocol AppRouting {
 }
 
 final class AppRouter: ObservableObject {
-	@Storage(.currentServer) private var currentURL: URL?
-	
-	@Published private(set) var route: Route = .serverList
+	@Published private(set) var route: Route = .loading
 }
 
 extension AppRouter: AppRouting {
 	func route(to route: Route) {
-		switch route {
-		case .roomList(let server):
-			currentURL = server.url
-		case .serverList:
-			break
-		}
-		
 		self.route = route
 	}
 }
 
-enum Route {
+enum Route: Equatable {
+	case loading
 	case serverList
 	case roomList(Server)
 }

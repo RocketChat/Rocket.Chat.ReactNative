@@ -15,7 +15,7 @@ final class RocketChatClient: NSObject {
 	@Dependency private var serverProvider: ServerProviding
 	
 	private var server: Server {
-		serverProvider.current()
+		serverProvider.server
 	}
 	
 	private lazy var session = URLSession(

@@ -82,6 +82,8 @@
 		1E4AFC1B2B5AFC6A00E2AA7D /* Publisher+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC1A2B5AFC6A00E2AA7D /* Publisher+Extensions.swift */; };
 		1E4AFC1F2B5B0D0500E2AA7D /* ServerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC1E2B5B0D0500E2AA7D /* ServerProvider.swift */; };
 		1E4AFC212B5B1AA000E2AA7D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC202B5B1AA000E2AA7D /* AppView.swift */; };
+		1E4AFC252B5B1DA300E2AA7D /* StateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */; };
+		1E4AFC272B5B23C600E2AA7D /* RetryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC262B5B23C600E2AA7D /* RetryView.swift */; };
 		1E51D962251263CD00DC95DE /* MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D961251263CD00DC95DE /* MessageType.swift */; };
 		1E51D965251263D600DC95DE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D964251263D600DC95DE /* NotificationType.swift */; };
 		1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
@@ -127,11 +129,10 @@
 		1ED033AE2B55B1CC004F4930 /* Default.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033AC2B55B1CC004F4930 /* Default.xcdatamodeld */; };
 		1ED033B02B55B25A004F4930 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033AF2B55B25A004F4930 /* Database.swift */; };
 		1ED033B62B55B4A5004F4930 /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033B52B55B4A5004F4930 /* ServerListView.swift */; };
-		1ED033B82B55B4BE004F4930 /* ServerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033B72B55B4BE004F4930 /* ServerListViewModel.swift */; };
 		1ED033BA2B55B5F6004F4930 /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033B92B55B5F6004F4930 /* ServerView.swift */; };
 		1ED033BF2B55BF94004F4930 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033BE2B55BF94004F4930 /* Storage.swift */; };
 		1ED033C12B55C190004F4930 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1ED033C02B55C190004F4930 /* Localizable.xcstrings */; };
-		1ED033C42B55C65C004F4930 /* RocketChatAppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C32B55C65C004F4930 /* RocketChatAppRouter.swift */; };
+		1ED033C42B55C65C004F4930 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C32B55C65C004F4930 /* AppRouter.swift */; };
 		1ED033CB2B55D4F0004F4930 /* RocketChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C92B55D4F0004F4930 /* RocketChat.xcdatamodeld */; };
 		1ED033CD2B55D671004F4930 /* RocketChatDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033CC2B55D671004F4930 /* RocketChatDatabase.swift */; };
 		1ED038912B507B4C00C007D4 /* RocketChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038902B507B4C00C007D4 /* RocketChatApp.swift */; };
@@ -159,7 +160,7 @@
 		1ED038C42B50A1F500C007D4 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
 		1ED038C52B50A1F500C007D4 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
 		1ED038C62B50A21800C007D4 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
-		1ED038CA2B50A58400C007D4 /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* WatchConnection.swift */; };
+		1ED038CA2B50A58400C007D4 /* ServersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* ServersLoader.swift */; };
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
 		1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
 		1EDFD1062B58A66E002FEE5F /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1052B58A66E002FEE5F /* CancelBag.swift */; };
@@ -394,6 +395,8 @@
 		1E4AFC1A2B5AFC6A00E2AA7D /* Publisher+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Extensions.swift"; sourceTree = "<group>"; };
 		1E4AFC1E2B5B0D0500E2AA7D /* ServerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerProvider.swift; sourceTree = "<group>"; };
 		1E4AFC202B5B1AA000E2AA7D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateProvider.swift; sourceTree = "<group>"; };
+		1E4AFC262B5B23C600E2AA7D /* RetryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryView.swift; sourceTree = "<group>"; };
 		1E51D961251263CD00DC95DE /* MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageType.swift; sourceTree = "<group>"; };
 		1E51D964251263D600DC95DE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		1E598AE32515057D002BDFBD /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -418,11 +421,10 @@
 		1ED033AD2B55B1CC004F4930 /* Default.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Default.xcdatamodel; sourceTree = "<group>"; };
 		1ED033AF2B55B25A004F4930 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		1ED033B52B55B4A5004F4930 /* ServerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
-		1ED033B72B55B4BE004F4930 /* ServerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListViewModel.swift; sourceTree = "<group>"; };
 		1ED033B92B55B5F6004F4930 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
 		1ED033BE2B55BF94004F4930 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		1ED033C02B55C190004F4930 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		1ED033C32B55C65C004F4930 /* RocketChatAppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketChatAppRouter.swift; sourceTree = "<group>"; };
+		1ED033C32B55C65C004F4930 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		1ED033CA2B55D4F0004F4930 /* RocketChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RocketChat.xcdatamodel; sourceTree = "<group>"; };
 		1ED033CC2B55D671004F4930 /* RocketChatDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketChatDatabase.swift; sourceTree = "<group>"; };
 		1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocket.Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -437,7 +439,7 @@
 		1ED038BD2B50A1D400C007D4 /* DBServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBServer.swift; sourceTree = "<group>"; };
 		1ED038C02B50A1E400C007D4 /* DBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUser.swift; sourceTree = "<group>"; };
 		1ED038C32B50A1F500C007D4 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
-		1ED038C92B50A58400C007D4 /* WatchConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnection.swift; sourceTree = "<group>"; };
+		1ED038C92B50A58400C007D4 /* ServersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersLoader.swift; sourceTree = "<group>"; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
 		1EDFD1052B58A66E002FEE5F /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
@@ -690,6 +692,15 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
+		1E4AFC232B5B1D9C00E2AA7D /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				1E4AFC1E2B5B0D0500E2AA7D /* ServerProvider.swift */,
+				1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
 		1E76CBC425152A7F0067298C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -790,6 +801,7 @@
 				1E29A3172B5868E50093C03C /* MessageView.swift */,
 				1E29A3232B5874FF0093C03C /* MessageComposerView.swift */,
 				1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */,
+				1E4AFC262B5B23C600E2AA7D /* RetryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -797,7 +809,6 @@
 		1ED033B42B55B495004F4930 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				1ED033B72B55B4BE004F4930 /* ServerListViewModel.swift */,
 				1E29A30F2B5865B80093C03C /* RoomViewModel.swift */,
 				1E29A3192B5868EE0093C03C /* MessageViewModel.swift */,
 			);
@@ -807,6 +818,7 @@
 		1ED0388F2B507B4C00C007D4 /* RocketChat Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				1E4AFC232B5B1D9C00E2AA7D /* Providers */,
 				1EDFD0FB2B589FC4002FEE5F /* DependencyInjection */,
 				1EDFD0F82B589B82002FEE5F /* Loaders */,
 				1E29A31E2B5871BE0093C03C /* Formatters */,
@@ -816,14 +828,12 @@
 				1ED033B12B55B47F004F4930 /* Views */,
 				1ED033AB2B55B1C2004F4930 /* Database */,
 				1ED038902B507B4C00C007D4 /* RocketChatApp.swift */,
-				1ED033C32B55C65C004F4930 /* RocketChatAppRouter.swift */,
+				1ED033C32B55C65C004F4930 /* AppRouter.swift */,
 				1E4AFC202B5B1AA000E2AA7D /* AppView.swift */,
-				1ED038C92B50A58400C007D4 /* WatchConnection.swift */,
 				1ED033BE2B55BF94004F4930 /* Storage.swift */,
 				1ED038942B507B4D00C007D4 /* Assets.xcassets */,
 				1ED038962B507B4D00C007D4 /* Preview Content */,
 				1ED033C02B55C190004F4930 /* Localizable.xcstrings */,
-				1E4AFC1E2B5B0D0500E2AA7D /* ServerProvider.swift */,
 			);
 			path = "RocketChat Watch App";
 			sourceTree = "<group>";
@@ -858,6 +868,7 @@
 		1EDFD0F82B589B82002FEE5F /* Loaders */ = {
 			isa = PBXGroup;
 			children = (
+				1ED038C92B50A58400C007D4 /* ServersLoader.swift */,
 				1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */,
 				1EDFD1052B58A66E002FEE5F /* CancelBag.swift */,
 				1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */,
@@ -1858,12 +1869,13 @@
 				1ED033BA2B55B5F6004F4930 /* ServerView.swift in Sources */,
 				1E29A2D02B58582F0093C03C /* RoomView.swift in Sources */,
 				1E29A2FD2B585B070093C03C /* RoomsRequest.swift in Sources */,
-				1ED038CA2B50A58400C007D4 /* WatchConnection.swift in Sources */,
+				1ED038CA2B50A58400C007D4 /* ServersLoader.swift in Sources */,
 				1E29A3222B5871CE0093C03C /* MessageFormatter.swift in Sources */,
 				1E9A716F2B59CBCA00477BA2 /* AttachmentView.swift in Sources */,
 				1E29A3002B585B070093C03C /* JSONAdapter.swift in Sources */,
 				1E29A3022B585B070093C03C /* DateCodingStrategy.swift in Sources */,
 				1E4AFC1B2B5AFC6A00E2AA7D /* Publisher+Extensions.swift in Sources */,
+				1E4AFC272B5B23C600E2AA7D /* RetryView.swift in Sources */,
 				1ED033B62B55B4A5004F4930 /* ServerListView.swift in Sources */,
 				1E29A3202B5871C80093C03C /* RoomFormatter.swift in Sources */,
 				1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */,
@@ -1903,8 +1915,8 @@
 				1ED038912B507B4C00C007D4 /* RocketChatApp.swift in Sources */,
 				1E29A2CC2B5857F50093C03C /* RoomListView.swift in Sources */,
 				1E29A31A2B5868EE0093C03C /* MessageViewModel.swift in Sources */,
-				1ED033B82B55B4BE004F4930 /* ServerListViewModel.swift in Sources */,
-				1ED033C42B55C65C004F4930 /* RocketChatAppRouter.swift in Sources */,
+				1ED033C42B55C65C004F4930 /* AppRouter.swift in Sources */,
+				1E4AFC252B5B1DA300E2AA7D /* StateProvider.swift in Sources */,
 				1ED033B02B55B25A004F4930 /* Database.swift in Sources */,
 				1E9A71712B59CC1300477BA2 /* Attachment.swift in Sources */,
 				1E29A30A2B585B370093C03C /* Data+Extensions.swift in Sources */,

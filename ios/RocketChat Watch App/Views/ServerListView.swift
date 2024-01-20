@@ -1,53 +1,80 @@
+import Combine
+import CoreData
 import SwiftUI
 
 struct ServerListView: View {
-	@StateObject var viewModel: ServerListViewModel
+	@Dependency private var router: AppRouting
+	@Dependency private var serversLoader: ServersLoading
 	
-	@FetchRequest(entity: Server.entity(), sortDescriptors: [], animation: .default)
-	private var servers: FetchedResults<Server>
+	@State private var state: ViewState = .loading
 	
-	init(viewModel: ServerListViewModel) {
-		_viewModel = StateObject(wrappedValue: viewModel)
+	@FetchRequest<Server> private var servers: FetchedResults<Server>
+	
+	init() {
+		let fetchRequest = Server.fetchRequest()
+		fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Server.updatedSince, ascending: true)]
+		
+		_servers = FetchRequest(fetchRequest: fetchRequest)
 	}
 	
 	@ViewBuilder
-	private func errorView(_ text: String) -> some View {
-		VStack(alignment: .center) {
-			Text(text)
-			Button("Try Again") {
-				viewModel.loadServers()
+	private var serverList: some View {
+		List {
+			ForEach(servers) { server in
+				ServerView(server: server)
+					.onTapGesture {
+						router.route(to: .roomList(server))
+					}
 			}
 		}
 	}
 	
 	var body: some View {
 		VStack {
-			switch viewModel.state {
-				case .loading:
-					ProgressView()
-				case .loaded where servers.count > 0:
-					List {
-						ForEach(servers) { server in
-							ServerView(server: server)
-								.onTapGesture {
-									viewModel.didTap(server: server)
-								}
-						}
-					}
-				case .loaded:
-					errorView("There are no servers connected.")
-				case .error(let connectionError):
-					switch connectionError {
-						case .needsUnlock:
-							errorView("You need to unlock your iPhone.")
-						case .decoding:
-							errorView("We can't read servers information.")
-					}
+			switch state {
+			case .loading:
+				ProgressView()
+			case .loaded:
+				serverList
+			case .loaded where servers.isEmpty:
+				RetryView("No Connected servers.", action: loadServers)
+			case .error(let error) where error == .locked:
+				RetryView("Please unlock your iPhone.", action: loadServers)
+			case .error(let error) where error == .unactive:
+				RetryView("Could not connect to your iPhone.", action: loadServers)
+			case .error(let error) where error == .unreachable:
+				RetryView("Could not reach your iPhone.", action: loadServers)
+			case .error(let error) where error == .undecodable(error):
+				RetryView("Could not read servers from iPhone.", action: loadServers)
+			default:
+				RetryView("Unexpected error.", action: loadServers)
 			}
 		}
 		.navigationTitle("Servers")
 		.onAppear {
-			viewModel.loadServers()
+			loadServers()
 		}
+	}
+	
+	private func loadServers() {
+		state = .loading
+		
+		serversLoader.loadServers()
+			.receive(on: DispatchQueue.main)
+			.subscribe(Subscribers.Sink { completion in
+				if case .failure(let error) = completion {
+					state = .error(error)
+				}
+			} receiveValue: { _ in
+				state = .loaded
+			})
+	}
+}
+
+extension ServerListView {
+	enum ViewState {
+		case loading
+		case loaded
+		case error(ServersLoadingError)
 	}
 }
