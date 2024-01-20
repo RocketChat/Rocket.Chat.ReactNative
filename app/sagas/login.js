@@ -173,6 +173,10 @@ const fetchRoomsFork = function* fetchRoomsFork() {
 	yield put(roomsRequest());
 };
 
+const resendFailedMessagesFork = function* resendFailedMessagesFork() {
+	yield resendFailedMessages();
+};
+
 const fetchUsersRoles = function* fetchRoomsFork() {
 	const roles = yield Services.getUsersRoles();
 	if (roles.length) {
@@ -196,6 +200,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(subscribeSettingsFork);
 		yield put(encryptionInit());
 		yield fork(fetchUsersRoles);
+		yield fork(resendFailedMessagesFork);
 
 		setLanguage(user?.language);
 
@@ -241,7 +246,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			yield put(inviteLinksRequest(inviteLinkToken));
 		}
 		yield showSupportedVersionsWarning(server);
-		yield resendFailedMessages();
 	} catch (e) {
 		log(e);
 	}

@@ -5,45 +5,71 @@ import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
 import { Encryption } from '../encryption';
-import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
+import { E2EType, IMessage, IUser, TMessageModel, TUploadModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
+import { sendFileMessage } from './sendFileMessage';
+import { store } from '../store/auxStore';
+import { getUserSelector } from '../../selectors/login';
 
 export async function resendFailedMessages(): Promise<void> {
 	try {
 		const db = database.active;
 		const messageRecords = await db
 			.get('messages')
-			.query(
-				Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)),
-				Q.where('tmid', null),
-				Q.experimentalSortBy('ts', Q.asc)
-			)
+			.query(Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)), Q.where('tmid', null))
 			.fetch();
 
 		const threadRecords = await db
 			.get('thread_messages')
-			.query(
-				Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)),
-				Q.experimentalSortBy('ts', Q.asc)
-			)
+			.query(Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)))
 			.fetch();
 
-		const resendMsgs: Promise<void>[] = [];
+		const uploadRecords = await db.get('uploads').query(Q.where('error', true)).fetch();
 
-		messageRecords.forEach((message: TMessageModel) => {
-			resendMsgs.push(resendMessage(message));
+		const allMessages: TMessageModel[] = [...messageRecords, ...threadRecords];
+
+		allMessages.sort((a, b) => {
+			// db ts is always Date
+			const aTs = a.ts as Date;
+			const bTs = b.ts as Date;
+			return aTs.getTime() - bTs.getTime();
 		});
 
-		threadRecords.forEach((message: TMessageModel) => {
-			resendMsgs.push(resendMessage(message, message.rid));
+		uploadRecords.forEach(async (uploadFile: TUploadModel) => {
+			await sendFile(uploadFile);
 		});
 
-		await Promise.allSettled(resendMsgs);
+		for (let i = 0; i < allMessages.length; i++) {
+			if (allMessages[i].tmid === null) {
+				// eslint-disable-next-line no-await-in-loop
+				await resendMessage(allMessages[i]);
+			} else {
+				// eslint-disable-next-line no-await-in-loop
+				await resendMessage(allMessages[i], allMessages[i].rid);
+			}
+		}
 	} catch {
 		// do nothing
 	}
 }
+
+const sendFile = async (item: TUploadModel) => {
+	const { server } = store.getState().server;
+	const user = getUserSelector(store.getState());
+
+	try {
+		const db = database.active;
+		await db.write(async () => {
+			await item.update(() => {
+				item.error = false;
+			});
+		});
+		await sendFileMessage(item.rid as string, item, item.tmid, server, user, true);
+	} catch (e) {
+		log(e);
+	}
+};
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;
