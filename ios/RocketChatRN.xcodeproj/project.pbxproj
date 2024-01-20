@@ -81,7 +81,6 @@
 		1E4AFC172B5AF09C00E2AA7D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC162B5AF09C00E2AA7D /* Store.swift */; };
 		1E4AFC1B2B5AFC6A00E2AA7D /* Publisher+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC1A2B5AFC6A00E2AA7D /* Publisher+Extensions.swift */; };
 		1E4AFC212B5B1AA000E2AA7D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC202B5B1AA000E2AA7D /* AppView.swift */; };
-		1E4AFC252B5B1DA300E2AA7D /* StateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */; };
 		1E4AFC272B5B23C600E2AA7D /* RetryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC262B5B23C600E2AA7D /* RetryView.swift */; };
 		1E51D962251263CD00DC95DE /* MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D961251263CD00DC95DE /* MessageType.swift */; };
 		1E51D965251263D600DC95DE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D964251263D600DC95DE /* NotificationType.swift */; };
@@ -394,7 +393,6 @@
 		1E4AFC162B5AF09C00E2AA7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		1E4AFC1A2B5AFC6A00E2AA7D /* Publisher+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Extensions.swift"; sourceTree = "<group>"; };
 		1E4AFC202B5B1AA000E2AA7D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateProvider.swift; sourceTree = "<group>"; };
 		1E4AFC262B5B23C600E2AA7D /* RetryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryView.swift; sourceTree = "<group>"; };
 		1E51D961251263CD00DC95DE /* MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageType.swift; sourceTree = "<group>"; };
 		1E51D964251263D600DC95DE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
@@ -692,14 +690,6 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
-		1E4AFC232B5B1D9C00E2AA7D /* Providers */ = {
-			isa = PBXGroup;
-			children = (
-				1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */,
-			);
-			path = Providers;
-			sourceTree = "<group>";
-		};
 		1E76CBC425152A7F0067298C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -818,7 +808,6 @@
 		1ED0388F2B507B4C00C007D4 /* RocketChat Watch App */ = {
 			isa = PBXGroup;
 			children = (
-				1E4AFC232B5B1D9C00E2AA7D /* Providers */,
 				1EDFD0FB2B589FC4002FEE5F /* DependencyInjection */,
 				1EDFD0F82B589B82002FEE5F /* Loaders */,
 				1E29A31E2B5871BE0093C03C /* Formatters */,
@@ -1916,7 +1905,6 @@
 				1E29A2CC2B5857F50093C03C /* RoomListView.swift in Sources */,
 				1E29A31A2B5868EE0093C03C /* MessageViewModel.swift in Sources */,
 				1ED033C42B55C65C004F4930 /* AppRouter.swift in Sources */,
-				1E4AFC252B5B1DA300E2AA7D /* StateProvider.swift in Sources */,
 				1ED033B02B55B25A004F4930 /* Database.swift in Sources */,
 				1E9A71712B59CC1300477BA2 /* Attachment.swift in Sources */,
 				1E29A30A2B585B370093C03C /* Data+Extensions.swift in Sources */,

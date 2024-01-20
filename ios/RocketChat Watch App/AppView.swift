@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct AppView: View {
+	@Storage(.currentServer) private var currentURL: URL?
+	
 	@Dependency private var database: ServersDatabase
-	@Dependency private var stateProvider: StateProviding
 	
 	@StateObject private var router: AppRouter
 	
@@ -22,24 +23,17 @@ struct AppView: View {
 					.environment(\.managedObjectContext, database.viewContext)
 			}
 		}
-		.onChange(of: router.route) { newValue in
-			switch newValue {
-			case .roomList(let server):
-				stateProvider.update(to: .loggedIn(server))
-			case .serverList, .loading:
-				stateProvider.update(to: .loggedOut)
-			}
-		}
 		.onAppear {
 			loadRoute()
 		}
 	}
 	
 	private func loadRoute() {
-		switch stateProvider.state {
-		case .loggedIn(let server):
+		if let currentURL, let server = database.server(url: currentURL) {
 			router.route(to: .roomList(server))
-		case .loggedOut:
+		} else if database.servers().count == 1, let server = database.servers().first {
+			router.route(to: .roomList(server))
+		} else {
 			router.route(to: .serverList)
 		}
 	}
