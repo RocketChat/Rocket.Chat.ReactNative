@@ -8,14 +8,19 @@ protocol MessageSending {
 final class MessageSender {
 	@Dependency private var client: RocketChatClientProtocol
 	@Dependency private var database: Database
-	@Dependency private var serverProvider: ServerProviding
+	
+	private let server: Server
+	
+	init(server: Server) {
+		self.server = server
+	}
 }
 
 extension MessageSender: MessageSending {
 	func sendMessage(_ msg: String, in room: Room) {
 		guard let rid = room.id else { return }
 		
-		let messageID = database.createTempMessage(msg: msg, in: room, for: serverProvider.server.loggedUser)
+		let messageID = database.createTempMessage(msg: msg, in: room, for: server.loggedUser)
 		
 		client.sendMessage(id: messageID, rid: rid, msg: msg)
 			.receive(on: DispatchQueue.main)

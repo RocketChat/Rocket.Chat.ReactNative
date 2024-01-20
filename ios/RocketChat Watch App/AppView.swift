@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct AppView: View {
-	@Dependency private var database: Database
-	@Dependency private var serversDB: ServersDatabase
+	@Dependency private var database: ServersDatabase
 	@Dependency private var stateProvider: StateProviding
 	
 	@StateObject private var router: AppRouter
@@ -17,11 +16,10 @@ struct AppView: View {
 			case .loading:
 				ProgressView()
 			case .roomList(let server):
-				RoomListView(server: server)
-					.environment(\.managedObjectContext, database.viewContext)
+				LoggedInView(server: server)
 			case .serverList:
 				ServerListView()
-					.environment(\.managedObjectContext, serversDB.viewContext)
+					.environment(\.managedObjectContext, database.viewContext)
 			}
 		}
 		.onChange(of: router.route) { newValue in

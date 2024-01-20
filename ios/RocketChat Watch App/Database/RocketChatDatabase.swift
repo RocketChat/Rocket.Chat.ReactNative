@@ -13,7 +13,11 @@ protocol Database {
 }
 
 final class RocketChatDatabase: Database {
-	@Dependency private var serverProvider: ServerProviding
+	private let server: Server
+	
+	init(server: Server) {
+		self.server = server
+	}
 	
 	var viewContext: NSManagedObjectContext {
 		container.viewContext
@@ -29,7 +33,7 @@ final class RocketChatDatabase: Database {
 	}()
 	
 	private lazy var container: NSPersistentContainer = {
-		let name = serverProvider.server.url.host ?? "default"
+		let name = server.url.host ?? "default"
 		
 		let container = NSPersistentContainer(name: name, managedObjectModel: Self.model)
 		

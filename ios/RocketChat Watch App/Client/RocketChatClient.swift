@@ -12,10 +12,10 @@ protocol RocketChatClientProtocol {
 }
 
 final class RocketChatClient: NSObject {
-	@Dependency private var serverProvider: ServerProviding
+	private let server: Server
 	
-	private var server: Server {
-		serverProvider.server
+	init(server: Server) {
+		self.server = server
 	}
 	
 	private lazy var session = URLSession(

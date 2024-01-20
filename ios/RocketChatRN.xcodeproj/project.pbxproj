@@ -80,7 +80,6 @@
 		1E4AFC152B5AF09800E2AA7D /* Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC142B5AF09800E2AA7D /* Dependency.swift */; };
 		1E4AFC172B5AF09C00E2AA7D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC162B5AF09C00E2AA7D /* Store.swift */; };
 		1E4AFC1B2B5AFC6A00E2AA7D /* Publisher+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC1A2B5AFC6A00E2AA7D /* Publisher+Extensions.swift */; };
-		1E4AFC1F2B5B0D0500E2AA7D /* ServerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC1E2B5B0D0500E2AA7D /* ServerProvider.swift */; };
 		1E4AFC212B5B1AA000E2AA7D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC202B5B1AA000E2AA7D /* AppView.swift */; };
 		1E4AFC252B5B1DA300E2AA7D /* StateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */; };
 		1E4AFC272B5B23C600E2AA7D /* RetryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC262B5B23C600E2AA7D /* RetryView.swift */; };
@@ -162,6 +161,7 @@
 		1ED038C62B50A21800C007D4 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
 		1ED038CA2B50A58400C007D4 /* ServersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* ServersLoader.swift */; };
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
+		1EDB30F22B5B453A00532C7E /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB30F12B5B453A00532C7E /* LoggedInView.swift */; };
 		1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
 		1EDFD1062B58A66E002FEE5F /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1052B58A66E002FEE5F /* CancelBag.swift */; };
 		1EDFD1082B58AA77002FEE5F /* RoomsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */; };
@@ -393,7 +393,6 @@
 		1E4AFC142B5AF09800E2AA7D /* Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependency.swift; sourceTree = "<group>"; };
 		1E4AFC162B5AF09C00E2AA7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		1E4AFC1A2B5AFC6A00E2AA7D /* Publisher+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Extensions.swift"; sourceTree = "<group>"; };
-		1E4AFC1E2B5B0D0500E2AA7D /* ServerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerProvider.swift; sourceTree = "<group>"; };
 		1E4AFC202B5B1AA000E2AA7D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateProvider.swift; sourceTree = "<group>"; };
 		1E4AFC262B5B23C600E2AA7D /* RetryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryView.swift; sourceTree = "<group>"; };
@@ -441,6 +440,7 @@
 		1ED038C32B50A1F500C007D4 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
 		1ED038C92B50A58400C007D4 /* ServersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersLoader.swift; sourceTree = "<group>"; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		1EDB30F12B5B453A00532C7E /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
 		1EDFD1052B58A66E002FEE5F /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsLoader.swift; sourceTree = "<group>"; };
@@ -695,7 +695,6 @@
 		1E4AFC232B5B1D9C00E2AA7D /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				1E4AFC1E2B5B0D0500E2AA7D /* ServerProvider.swift */,
 				1E4AFC242B5B1DA300E2AA7D /* StateProvider.swift */,
 			);
 			path = Providers;
@@ -802,6 +801,7 @@
 				1E29A3232B5874FF0093C03C /* MessageComposerView.swift */,
 				1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */,
 				1E4AFC262B5B23C600E2AA7D /* RetryView.swift */,
+				1EDB30F12B5B453A00532C7E /* LoggedInView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1905,9 +1905,9 @@
 				1ED033BF2B55BF94004F4930 /* Storage.swift in Sources */,
 				1E29A2F82B585B070093C03C /* MessageResponse.swift in Sources */,
 				1E29A3042B585B070093C03C /* HTTPMethod.swift in Sources */,
-				1E4AFC1F2B5B0D0500E2AA7D /* ServerProvider.swift in Sources */,
 				1E29A3012B585B070093C03C /* RequestAdapter.swift in Sources */,
 				1E29A2F52B585B070093C03C /* RoomsResponse.swift in Sources */,
+				1EDB30F22B5B453A00532C7E /* LoggedInView.swift in Sources */,
 				1E29A2F32B585B070093C03C /* MessagesResponse.swift in Sources */,
 				1E29A2FA2B585B070093C03C /* HistoryRequest.swift in Sources */,
 				1ED038C62B50A21800C007D4 /* WatchMessage.swift in Sources */,
