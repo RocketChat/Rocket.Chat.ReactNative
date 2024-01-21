@@ -429,9 +429,13 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
+		const { displayingThreads, currentFilter } = this.state;
 		try {
 			await Services.toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
+			if (currentFilter === Filter.Following) {
+				this.setState({ displayingThreads: displayingThreads.filter(thread => thread.id !== tmid) });
+			}
 		} catch (e) {
 			log(e);
 		}
