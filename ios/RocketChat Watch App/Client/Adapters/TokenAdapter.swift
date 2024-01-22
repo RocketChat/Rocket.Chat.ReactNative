@@ -8,16 +8,12 @@ struct TokenAdapter: RequestAdapter {
 	}
 	
 	func adapt(_ url: URL) -> URL {
-		var url = url
-		
-		url.append(
+		url.appending(
 			queryItems: [
 				URLQueryItem(name: "rc_token", value: server.loggedUser.token),
 				URLQueryItem(name: "rc_uid", value: server.loggedUser.id)
 			]
 		)
-		
-		return url
 	}
 	
 	func adapt(_ urlRequest: URLRequest) -> URLRequest {

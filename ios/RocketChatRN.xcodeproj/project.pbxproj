@@ -88,6 +88,8 @@
 		1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE625150660002BDFBD /* Data+Extensions.swift */; };
 		1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
 		1E638E992B5F0A2900E645E4 /* ChatScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */; };
+		1E638E9C2B5F0CFD00E645E4 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E638E9B2B5F0CFD00E645E4 /* ViewModifier.swift */; };
+		1E638E9E2B5F0F5800E645E4 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E638E9D2B5F0F5800E645E4 /* URL+Extensions.swift */; };
 		1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
 		1E680ED92512990700C9257A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
@@ -401,6 +403,8 @@
 		1E598AE625150660002BDFBD /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE825151A63002BDFBD /* SendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessage.swift; sourceTree = "<group>"; };
 		1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatScrollView.swift; sourceTree = "<group>"; };
+		1E638E9B2B5F0CFD00E645E4 /* ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifier.swift; sourceTree = "<group>"; };
+		1E638E9D2B5F0F5800E645E4 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotificationService-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E67380324DC529B0009E081 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		1E680ED82512990700C9257A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -662,6 +666,7 @@
 				1E29A3092B585B370093C03C /* Data+Extensions.swift */,
 				1E29A30B2B585D1D0093C03C /* String+Extensions.swift */,
 				1E4AFC1A2B5AFC6A00E2AA7D /* Publisher+Extensions.swift */,
+				1E638E9D2B5F0F5800E645E4 /* URL+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -795,6 +800,7 @@
 				1E4AFC262B5B23C600E2AA7D /* RetryView.swift */,
 				1EDB30F12B5B453A00532C7E /* LoggedInView.swift */,
 				1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */,
+				1E638E9B2B5F0CFD00E645E4 /* ViewModifier.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1893,6 +1899,7 @@
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,
 				1E29A31D2B5871B60093C03C /* Date+Extensions.swift in Sources */,
 				1E29A2F62B585B070093C03C /* UserResponse.swift in Sources */,
+				1E638E9C2B5F0CFD00E645E4 /* ViewModifier.swift in Sources */,
 				1ED033AE2B55B1CC004F4930 /* Default.xcdatamodeld in Sources */,
 				1ED033BF2B55BF94004F4930 /* Storage.swift in Sources */,
 				1E29A2F82B585B070093C03C /* MessageResponse.swift in Sources */,
@@ -1904,6 +1911,7 @@
 				1E29A2FA2B585B070093C03C /* HistoryRequest.swift in Sources */,
 				1ED038C62B50A21800C007D4 /* WatchMessage.swift in Sources */,
 				1E29A2F02B585B070093C03C /* AttachmentResponse.swift in Sources */,
+				1E638E9E2B5F0F5800E645E4 /* URL+Extensions.swift in Sources */,
 				1ED038912B507B4C00C007D4 /* RocketChatApp.swift in Sources */,
 				1E29A2CC2B5857F50093C03C /* RoomListView.swift in Sources */,
 				1E29A31A2B5868EE0093C03C /* MessageViewModel.swift in Sources */,
@@ -2328,7 +2336,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Debug;
 		};
@@ -2370,7 +2378,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Release;
 		};

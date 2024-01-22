@@ -92,6 +92,7 @@ final class RocketChatDatabase: Database {
 		message.room = room
 		message.status = "temp" // TODO:
 		message.msg = msg
+		message.groupable = true
 		
 		let user = user(id: loggedUser.id) ?? createUser(id: loggedUser.id)
 		user.username = loggedUser.username

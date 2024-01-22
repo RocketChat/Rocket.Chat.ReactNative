@@ -20,7 +20,17 @@ struct RoomListView: View {
 	var body: some View {
 		List {
 			ForEach(rooms) { room in
-				NavigationLink(value: room) {
+				NavigationLink {
+					MessageListView(
+						client: client,
+						database: database,
+						messagesLoader: messagesLoader,
+						messageSender: messageSender,
+						room: room,
+						server: server
+					)
+						.environment(\.managedObjectContext, database.viewContext)
+				} label: {
 					RoomView(viewModel: .init(room: room, server: server))
 				}
 			}
@@ -33,17 +43,6 @@ struct RoomListView: View {
 		}
 		.navigationTitle("Rooms")
 		.navigationBarTitleDisplayMode(.inline)
-		.navigationDestination(for: Room.self) { room in
-			MessageListView(
-				client: client,
-				database: database,
-				messagesLoader: messagesLoader,
-				messageSender: messageSender,
-				room: room,
-				server: server
-			)
-				.environment(\.managedObjectContext, database.viewContext)
-		}
 		.toolbar {
 			ToolbarItem(placement: .automatic) {
 				Button("Servers") {
