@@ -172,7 +172,6 @@ function useStyle() {
 			paddingVertical: 8
 		},
 		buttons: {
-			flex: 1,
 			flexDirection: 'row',
 			justifyContent: 'center',
 			alignItems: 'center'
