@@ -10,7 +10,8 @@ import styles from './styles';
 import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
-import audioPlayer from '../../lib/methods/audioPlayer';
+import EventEmitter from '../../lib/methods/helpers/events';
+import audioPlayer, { AUDIO_FOCUSED } from '../../lib/methods/audioPlayer';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TDownloadState } from '../../lib/methods/handleMediaDownload';
 import { TAudioState } from './types';
@@ -39,6 +40,7 @@ const AudioPlayer = ({
 
 	const [playbackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
 	const [paused, setPaused] = useState(true);
+	const [focused, setFocused] = useState(false);
 	const duration = useSharedValue(0);
 	const currentTime = useSharedValue(0);
 	const { colors } = useTheme();
@@ -139,6 +141,15 @@ const AudioPlayer = ({
 		};
 	}, [navigation]);
 
+	useEffect(() => {
+		const listener = EventEmitter.addEventListener(AUDIO_FOCUSED, ({ audioFocused }: { audioFocused: string }) => {
+			setFocused(audioFocused === audioUri.current);
+		});
+		return () => {
+			EventEmitter.removeListener(AUDIO_FOCUSED, listener);
+		};
+	}, []);
+
 	let audioState: TAudioState = 'to-download';
 	if (isLoading) {
 		audioState = 'loading';
@@ -154,7 +165,7 @@ const AudioPlayer = ({
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceLight, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isDownloaded} onChangeTime={setPosition} />
-			{audioState === 'playing' ? <PlaybackSpeed audioState={audioState} /> : null}
+			{audioState === 'playing' || focused ? <PlaybackSpeed /> : null}
 		</View>
 	);
 };

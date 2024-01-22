@@ -3,15 +3,18 @@ import { useEffect, useState } from 'react';
 import { SubscriptionType } from '../../../definitions';
 import { getUserSelector } from '../../../selectors/login';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { isRoomFederated } from '../../methods';
 import { compareServerVersion, isReadOnly } from '../../methods/helpers';
 import { useAppSelector } from '../useAppSelector';
 import { usePermissions } from '../usePermissions';
 import { useSetting } from '../useSetting';
-import { isRoomFederated } from '../../methods';
 
-export const useVideoConfCall = (rid: string): { callEnabled: boolean; disabledTooltip?: boolean } => {
+export const useVideoConfCall = (
+	rid: string
+): { callEnabled: boolean; disabledTooltip?: boolean; roomType?: SubscriptionType } => {
 	const [callEnabled, setCallEnabled] = useState(false);
 	const [disabledTooltip, setDisabledTooltip] = useState(false);
+	const [roomType, setRoomType] = useState<SubscriptionType>();
 
 	// OLD SETTINGS
 	const jitsiEnabled = useSetting('Jitsi_Enabled');
@@ -34,6 +37,7 @@ export const useVideoConfCall = (rid: string): { callEnabled: boolean; disabledT
 	const init = async () => {
 		const room = await getSubscriptionByRoomId(rid);
 		if (room) {
+			setRoomType(room.t);
 			if (isServer5OrNewer) {
 				const isReadyOnly = await isReadOnly(room, user.username);
 				const ownUser = room.uids && room.uids.length === 1;
@@ -64,5 +68,5 @@ export const useVideoConfCall = (rid: string): { callEnabled: boolean; disabledT
 		init();
 	}, []);
 
-	return { callEnabled, disabledTooltip };
+	return { callEnabled, disabledTooltip, roomType };
 };
