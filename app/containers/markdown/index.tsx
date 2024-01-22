@@ -16,7 +16,7 @@ import MarkdownTableRow from './TableRow';
 import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
-import { isValidURL } from '../../lib/methods/helpers/url';
+import { isValidUrl } from '../../lib/methods/helpers/isValidUrl';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
@@ -246,7 +246,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderImage = ({ src }: { src: string }) => {
-		if (!isValidURL(src)) {
+		if (!isValidUrl(src)) {
 			return null;
 		}
 
