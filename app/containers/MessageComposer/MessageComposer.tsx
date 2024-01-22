@@ -72,7 +72,7 @@ export const MessageComposer = ({
 	useFocusEffect(
 		useCallback(() => {
 			trackingViewRef.current?.resetTracking();
-		}, [])
+		}, [recordingAudio])
 	);
 
 	useImperativeHandle(forwardedRef, () => ({
