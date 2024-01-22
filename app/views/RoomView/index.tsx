@@ -95,6 +95,7 @@ import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getThreadById } from '../../lib/database/services/Thread';
+import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -164,6 +165,7 @@ interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackPar
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
+	inAppFeedback?: { [key: string]: string };
 }
 
 interface IRoomViewState {
@@ -307,7 +309,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
-		const { navigation } = this.props;
+		const { navigation, dispatch } = this.props;
+		dispatch(clearInAppFeedback());
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
@@ -408,7 +411,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	async componentWillUnmount() {
+		const { dispatch } = this.props;
 		const { editing, room } = this.state;
+		dispatch(clearInAppFeedback());
 		const db = database.active;
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
@@ -1314,10 +1319,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
 	};
 
+	hapticFeedback = (msgId: string) => {
+		const { dispatch } = this.props;
+		dispatch(removeInAppFeedback(msgId));
+		// VIBRAR AQUIIII
+	};
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
-		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
-			this.props;
+		const {
+			user,
+			Message_GroupingPeriod,
+			Message_TimeFormat,
+			useRealName,
+			baseUrl,
+			Message_Read_Receipt_Enabled,
+			theme,
+			inAppFeedback
+		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -1342,6 +1361,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			};
 			content = <LoadMore rid={room.rid} t={room.t as RoomType} loaderId={item.id} type={item.t} runOnRender={runOnRender()} />;
 		} else {
+			if (inAppFeedback?.[item.id]) {
+				this.hapticFeedback(item.id);
+			}
 			content = (
 				<Message
 					item={item}
@@ -1527,6 +1549,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			({ bannerClosed, announcement } = room);
 		}
 
+		console.count('🌇🌇🌇🌇🌇ROOM VIEW COUNT');
+
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
 				<StatusBar />
@@ -1565,7 +1589,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+	inAppFeedback: state.inAppFeedback
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));

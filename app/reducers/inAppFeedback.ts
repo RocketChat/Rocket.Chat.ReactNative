@@ -19,6 +19,8 @@ export default function activeUsers(state = initialState, action: TApplicationAc
 			const newState = { ...state };
 			delete newState[action.msgId];
 			return newState;
+		case IN_APP_FEEDBACK.CLEAR:
+			return initialState;
 		default:
 			return state;
 	}

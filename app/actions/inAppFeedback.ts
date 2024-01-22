@@ -21,3 +21,9 @@ export function removeInAppFeedback(msgId: string): TInAppFeedbackAction {
 		msgId
 	};
 }
+
+export function clearInAppFeedback(): Action {
+	return {
+		type: IN_APP_FEEDBACK.CLEAR
+	};
+}
