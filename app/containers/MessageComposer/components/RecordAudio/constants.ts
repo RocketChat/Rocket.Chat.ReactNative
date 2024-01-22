@@ -1,7 +1,8 @@
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { Audio, AudioMode, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { RecordingOptions } from 'expo-av/build/Audio';
 
 export const RECORDING_EXTENSION = '.aac';
-export const RECORDING_SETTINGS = {
+export const RECORDING_SETTINGS: RecordingOptions = {
 	android: {
 		// Settings related to audio encoding.
 		extension: RECORDING_EXTENSION,
@@ -26,7 +27,7 @@ export const RECORDING_SETTINGS = {
 	keepAudioActiveHint: true
 };
 
-export const RECORDING_MODE = {
+export const RECORDING_MODE: AudioMode = {
 	allowsRecordingIOS: true,
 	playsInSilentModeIOS: true,
 	staysActiveInBackground: true,
