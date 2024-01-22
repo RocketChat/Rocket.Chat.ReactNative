@@ -7,6 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
+import * as Haptics from 'expo-haptics';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
@@ -1322,7 +1323,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	hapticFeedback = (msgId: string) => {
 		const { dispatch } = this.props;
 		dispatch(removeInAppFeedback(msgId));
-		// VIBRAR AQUIIII
+		try {
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+		} catch {
+			// Do nothing: Haptic is unavailable
+		}
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
