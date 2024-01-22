@@ -11,7 +11,6 @@ struct MessageListView: View {
 	private let server: Server
 	private let room: Room
 	
-	@State private var lastMessageID: String?
 	@State private var lastOpen: Date?
 	
 	@FetchRequest<Message> private var messages: FetchedResults<Message>
@@ -37,7 +36,7 @@ struct MessageListView: View {
 	
 	var body: some View {
 		ScrollViewReader { reader in
-			ScrollView {
+			ChatScrollView {
 				LazyVStack(alignment: .leading, spacing: 8) {
 					if room.hasMoreMessages {
 						Button("Load More...") {
@@ -76,12 +75,6 @@ struct MessageListView: View {
 			}
 			.onDisappear {
 				messagesLoader.stop()
-			}
-			.onReceive(messages.publisher) { _ in
-				if lastMessageID != messages.last?.id {
-					reader.scrollTo(messageComposer, anchor: .bottom)
-					lastMessageID = messages.last?.id
-				}
 			}
 		}
 	}
