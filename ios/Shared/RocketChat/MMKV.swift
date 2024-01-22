@@ -14,25 +14,25 @@ extension MMKV {
 		return mmkv
 	}
 	
-	func userToken(for userId: String) -> String {
+	func userToken(for userId: String) -> String? {
 		guard let userToken = string(forKey: "reactnativemeteor_usertoken-\(userId)") else {
-			fatalError("userToken is nil for userId \(userId)")
+			return nil
 		}
 		
 		return userToken
 	}
 	
-	func userId(for server: String) -> String {
+	func userId(for server: String) -> String? {
 		guard let userId = string(forKey: "reactnativemeteor_usertoken-\(server)") else {
-			fatalError("userId is nil for server \(server)")
+			return nil
 		}
 		
 		return userId
 	}
 	
-	func privateKey(for server: String) -> String {
+	func privateKey(for server: String) -> String? {
 		guard let privateKey = string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") else {
-			fatalError("privateKey is nil for server \(server)")
+			return nil
 		}
 		
 		return privateKey

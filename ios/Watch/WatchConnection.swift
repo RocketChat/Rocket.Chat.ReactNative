@@ -41,8 +41,10 @@ final class WatchConnection: NSObject {
 		let serversQuery = database.query(raw: "select * from servers") as [DBServer]
 		
 		let servers = serversQuery.compactMap { item -> WatchMessage.Server? in
-			let userId = mmkv.userId(for: item.identifier)
-			let userToken = mmkv.userToken(for: userId)
+			guard let userId = mmkv.userId(for: item.identifier), let userToken = mmkv.userToken(for: userId) else {
+				return nil
+			}
+			
 			let clientSSL = mmkv.clientSSL(for: item.url)
 			
 			let usersQuery = database.query(raw: "select * from users where token == ? limit 1", [userToken]) as [DBUser]
