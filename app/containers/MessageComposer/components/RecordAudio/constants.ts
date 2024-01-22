@@ -22,7 +22,8 @@ export const RECORDING_SETTINGS = {
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
 		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate
 	},
-	web: {}
+	web: {},
+	keepAudioActiveHint: true
 };
 
 export const RECORDING_MODE = {
