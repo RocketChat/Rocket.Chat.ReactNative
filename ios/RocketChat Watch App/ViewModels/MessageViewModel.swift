@@ -5,7 +5,7 @@ final class MessageViewModel: ObservableObject {
 	@Published private(set) var message: Message
 	@Published private(set) var previousMessage: Message?
 	
-	let messageFormatter: MessageFormatter
+	private let messageFormatter: MessageFormatter
 	
 	init(message: Message, previousMessage: Message? = nil, server: Server?, lastOpen: Date?) {
 		self.message = message
@@ -20,6 +20,30 @@ final class MessageViewModel: ObservableObject {
 	
 	var sender: String? {
 		server?.useRealName == true ? message.user?.name : message.user?.username
+	}
+	
+	var date: String? {
+		messageFormatter.date()
+	}
+	
+	var time: String? {
+		messageFormatter.time()
+	}
+	
+	var info: String? {
+		messageFormatter.info()
+	}
+	
+	var hasDateSeparator: Bool {
+		messageFormatter.hasDateSeparator()
+	}
+	
+	var hasUnreadSeparator: Bool {
+		messageFormatter.hasUnreadSeparator()
+	}
+	
+	var isHeader: Bool {
+		messageFormatter.isHeader()
 	}
 	
 }

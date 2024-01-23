@@ -16,7 +16,7 @@ struct RoomView: View {
 						.frame(width: 16, height: 16)
 						.scaledToFit()
 				}
-				Text(viewModel.formatter.title ?? "")
+				Text(viewModel.title ?? "")
 					.lineLimit(1)
 					.font(.caption.weight(isUnread ? .bold : .medium))
 					.foregroundStyle(.primary)

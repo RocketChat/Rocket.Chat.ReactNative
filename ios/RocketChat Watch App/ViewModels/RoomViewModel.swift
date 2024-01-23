@@ -4,12 +4,16 @@ final class RoomViewModel: ObservableObject {
 	@Published var room: Room
 	@Published var server: Server
 	
-	let formatter: RoomFormatter
+	private let formatter: RoomFormatter
 	
 	init(room: Room, server: Server) {
 		self.room = room
 		self.server = server
 		self.formatter = RoomFormatter(room: room, server: server)
+	}
+	
+	var title: String? {
+		formatter.title
 	}
 	
 	var iconName: String? {

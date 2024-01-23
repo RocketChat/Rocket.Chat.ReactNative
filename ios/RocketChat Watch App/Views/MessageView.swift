@@ -32,7 +32,7 @@ struct MessageView: View {
 				Divider()
 					.overlay(.secondary)
 			}
-			Text(viewModel.messageFormatter.date() ?? "")
+			Text(viewModel.date ?? "")
 				.lineLimit(1)
 				.font(.footnote)
 				.foregroundStyle(.secondary)
@@ -46,24 +46,24 @@ struct MessageView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			if viewModel.messageFormatter.hasDateSeparator() {
+			if viewModel.hasDateSeparator {
 				dateSeparator
-			} else if viewModel.messageFormatter.hasUnreadSeparator() {
+			} else if viewModel.hasUnreadSeparator {
 				unreadSeparator
 			}
-			if viewModel.messageFormatter.isHeader() {
+			if viewModel.isHeader {
 				HStack(alignment: .center) {
 					Text(viewModel.sender ?? "")
 						.lineLimit(1)
 						.font(.caption.bold())
 						.foregroundStyle(.primary)
-					Text(viewModel.messageFormatter.time() ?? "")
+					Text(viewModel.time ?? "")
 						.lineLimit(1)
 						.font(.footnote)
 						.foregroundStyle(.secondary)
 				}
 			}
-			if let text = viewModel.messageFormatter.info() {
+			if let text = viewModel.info {
 				Text(text)
 					.font(.caption.italic())
 					.foregroundStyle(.primary)
