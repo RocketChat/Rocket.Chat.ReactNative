@@ -60,12 +60,8 @@ export const ComposerInput = memo(
 
 			if (usedCannedResponse) {
 				setInput(usedCannedResponse);
-				return;
-			}
-
-			if (action !== 'edit') {
+			} else if (action !== 'edit') {
 				setDraftMessage();
-				return;
 			}
 
 			return () => {

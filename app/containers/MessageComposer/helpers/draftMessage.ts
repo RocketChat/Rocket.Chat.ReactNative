@@ -9,8 +9,7 @@ export const loadDraftMessage = async ({ rid, tmid }: { rid?: string; tmid?: str
 		if (thread && thread.draftMessage) {
 			return thread.draftMessage;
 		}
-	}
-	if (rid) {
+	} else if (rid) {
 		const subscription = await getSubscriptionByRoomId(rid);
 		if (subscription && subscription.draftMessage) {
 			return subscription.draftMessage;
