@@ -6,8 +6,7 @@ struct ServerView: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			Text(server.name)
-				.font(.caption)
-				.fontWeight(.bold)
+				.font(.caption.bold())
 				.foregroundStyle(.primary)
 			Text(server.url.host ?? "")
 				.font(.caption)

@@ -55,8 +55,7 @@ struct MessageView: View {
 				HStack(alignment: .center) {
 					Text(viewModel.sender ?? "")
 						.lineLimit(1)
-						.font(.caption)
-						.fontWeight(.bold)
+						.font(.caption.bold())
 						.foregroundStyle(.primary)
 					Text(viewModel.messageFormatter.time() ?? "")
 						.lineLimit(1)
@@ -66,9 +65,8 @@ struct MessageView: View {
 			}
 			if let text = viewModel.messageFormatter.info() {
 				Text(text)
-					.font(.caption)
+					.font(.caption.italic())
 					.foregroundStyle(.primary)
-					.italic()
 			} else if let text = viewModel.message.msg {
 				Text(text)
 					.font(.caption)

@@ -11,8 +11,7 @@ struct MessageComposerView: View {
 			HStack {
 				Spacer()
 				Text("This room is read only")
-					.font(.caption)
-					.fontWeight(.bold)
+					.font(.caption.bold())
 					.foregroundStyle(.white)
 					.multilineTextAlignment(.center)
 				Spacer()

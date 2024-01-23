@@ -91,7 +91,6 @@ extension ServersLoader: ServersLoading {
 				}
 			}
 		}
-			.retryWithDelay(retries: 3, delay: 1, scheduler: DispatchQueue.global())
 			.eraseToAnyPublisher()
 	}
 }

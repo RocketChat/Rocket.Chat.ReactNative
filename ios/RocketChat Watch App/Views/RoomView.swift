@@ -18,14 +18,12 @@ struct RoomView: View {
 				}
 				Text(viewModel.formatter.title ?? "")
 					.lineLimit(1)
-					.font(.caption)
-					.fontWeight(isUnread ? .bold : .medium)
+					.font(.caption.weight(isUnread ? .bold : .medium))
 					.foregroundStyle(.primary)
 				Spacer()
 				Text(viewModel.updatedAt ?? "")
 					.lineLimit(1)
-					.font(.footnote)
-					.fontWeight(isUnread ? .bold : .medium)
+					.font(.footnote.weight(isUnread ? .bold : .medium))
 					.foregroundStyle(isUnread ? .blue : .primary)
 			}
 			HStack(alignment: .top) {
@@ -36,8 +34,7 @@ struct RoomView: View {
 				Spacer()
 				if isUnread, viewModel.room.unread > 0 {
 					Text(String(viewModel.room.unread))
-						.font(.footnote)
-						.fontWeight(.bold)
+						.font(.footnote.bold())
 						.padding(6)
 						.background(
 							Circle()
