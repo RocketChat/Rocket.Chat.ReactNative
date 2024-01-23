@@ -14,6 +14,7 @@ export interface IUpload {
 	error?: boolean;
 	subscription?: { id: string };
 	msg?: string;
+	ts: Date;
 }
 
 export type TUploadModel = IUpload & Model;

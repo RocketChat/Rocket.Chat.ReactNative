@@ -1,73 +1,103 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Model, Q } from '@nozbe/watermelondb';
-// import moment from 'moment';
+import moment from 'moment';
 
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
 import { Encryption } from '../encryption';
-import { E2EType, IMessage, IUser, TMessageModel, TUploadModel } from '../../definitions';
+import { E2EType, IMessage, IUser, TMessageModel, TThreadMessageModel, TUploadModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
 import { sendFileMessage } from './sendFileMessage';
 import { store } from '../store/auxStore';
 import { getUserSelector } from '../../selectors/login';
 
-// console.log(moment.unix(0).toDate());
-
 export async function resendFailedMessages(): Promise<void> {
 	try {
 		const db = database.active;
+		const batch: (TMessageModel | TThreadMessageModel | TUploadModel)[] = [];
+
 		const messageRecords = await db
 			.get('messages')
 			.query(Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)), Q.where('tmid', null))
 			.fetch();
+
+		messageRecords.forEach(message => {
+			batch.push(
+				message.prepareUpdate(m => {
+					m.status = messagesStatus.TEMP;
+				})
+			);
+		});
 
 		const threadRecords = await db
 			.get('thread_messages')
 			.query(Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)))
 			.fetch();
 
+		threadRecords.forEach(message => {
+			batch.push(
+				message.prepareUpdate(m => {
+					m.status = messagesStatus.TEMP;
+				})
+			);
+		});
+
 		const uploadRecords = await db.get('uploads').query(Q.where('error', true)).fetch();
 
-		const allMessages: TMessageModel[] = [...messageRecords, ...threadRecords];
-
-		allMessages.sort((a, b) => {
-			// db ts is always Date
-			const aTs = a.ts as Date;
-			const bTs = b.ts as Date;
-			return aTs.getTime() - bTs.getTime();
+		uploadRecords.forEach(upload => {
+			batch.push(
+				upload.prepareUpdate(m => {
+					m.error = false;
+				})
+			);
 		});
 
-		uploadRecords.forEach(async (uploadFile: TUploadModel) => {
-			await sendFile(uploadFile);
+		// don't let user automatically send messages until resend fails
+		await db.write(async () => {
+			await db.batch(...batch);
 		});
+
+		// filter all uploads initiated before migration
+		const defaultDate = moment.unix(0).toDate();
+		const filteredUploadRecords = uploadRecords.filter(
+			(uploadFile: TUploadModel) => uploadFile.ts.getTime() !== defaultDate.getTime()
+		);
+
+		// FIXME: change any to proper type
+		const allMessages: any = [...messageRecords, ...threadRecords, ...filteredUploadRecords];
+
+		// db ts is always Date
+		allMessages.sort((a: any, b: any) => (a.ts as Date).getTime() - (b.ts as Date).getTime());
+
+		const { server } = store.getState().server;
+		const user = getUserSelector(store.getState());
 
 		for (let i = 0; i < allMessages.length; i++) {
-			if (allMessages[i].tmid === null) {
-				// eslint-disable-next-line no-await-in-loop
-				await resendMessage(allMessages[i]);
-			} else {
-				// eslint-disable-next-line no-await-in-loop
-				await resendMessage(allMessages[i], allMessages[i].rid);
+			try {
+				// FIXME: find any other way
+				if (allMessages[i].size) {
+					// eslint-disable-next-line no-await-in-loop
+					await sendFile(allMessages[i], server, user);
+				} else if (allMessages[i].tmid === null) {
+					// eslint-disable-next-line no-await-in-loop
+					await resendMessage(allMessages[i], undefined, true);
+				} else {
+					// eslint-disable-next-line no-await-in-loop
+					await resendMessage(allMessages[i], allMessages[i].rid, true);
+				}
+			} catch (e) {
+				// do nothing
 			}
 		}
 	} catch {
-		// do nothing
+		// let user initiate the retry
 	}
 }
 
-const sendFile = async (item: TUploadModel) => {
-	const { server } = store.getState().server;
-	const user = getUserSelector(store.getState());
-
+const sendFile = async (item: TUploadModel, server: string, user: IUser) => {
 	try {
-		const db = database.active;
-		await db.write(async () => {
-			await item.update(() => {
-				item.error = false;
-			});
-		});
 		await sendFileMessage(item.rid as string, item, item.tmid, server, user, true);
 	} catch (e) {
 		log(e);
@@ -128,7 +158,7 @@ async function sendMessageCall(message: any) {
 	return changeMessageStatus(_id, messagesStatus.ERROR, tmid);
 }
 
-export async function resendMessage(message: TMessageModel, tmid?: string) {
+export async function resendMessage(message: TMessageModel, tmid?: string, isAutoResend?: boolean) {
 	const db = database.active;
 	try {
 		let tshow;
@@ -136,17 +166,20 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 			tshow = (await db.get('messages').find(message.id)).tshow; // tshow only exists on this db
 		}
 
-		await db.write(async () => {
-			await message.update(m => {
-				m.status = messagesStatus.TEMP;
+		if (!isAutoResend) {
+			await db.write(async () => {
+				await message.update(m => {
+					m.status = messagesStatus.TEMP;
+				});
 			});
-		});
+		}
+
 		const m = await Encryption.encryptMessage({
 			_id: message.id,
 			rid: message.subscription ? message.subscription.id : '',
 			msg: message.msg,
 			...(tmid && { tmid }),
-			...(tshow && { tshow })
+			...(tmid && tshow && { tshow })
 		} as IMessage);
 
 		await sendMessageCall(m);
