@@ -71,7 +71,14 @@ import {
 	TGetCustomEmoji,
 	RoomType
 } from '../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
+import {
+	E2E_MESSAGE_TYPE,
+	E2E_STATUS,
+	MESSAGE_TYPE_ANY_LOAD,
+	MessageTypeLoad,
+	themes,
+	NOTIFICATION_IN_APP_VIBRATION
+} from '../../lib/constants';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
@@ -97,6 +104,7 @@ import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
+import UserPreferences from '../../lib/methods/userPreferences';
 
 type TStateAttrsUpdate = keyof IRoomViewState;
 
@@ -173,18 +181,18 @@ interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
 	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
+	| TSubscriptionModel
+	| {
+		rid: string;
+		t: string;
+		name?: string;
+		fname?: string;
+		prid?: string;
+		joinCodeRequired?: boolean;
+		status?: string;
+		lastMessage?: ILastMessage;
+		sysMes?: boolean;
+		onHold?: boolean;
 		  };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any;
@@ -695,7 +703,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				await RoomServices.getMessages({
 					rid: room.rid,
 					t: room.t as RoomType,
-					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
+					...'lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {}
 				});
 
 				// if room is joined
@@ -1323,10 +1331,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	hapticFeedback = (msgId: string) => {
 		const { dispatch } = this.props;
 		dispatch(removeInAppFeedback(msgId));
-		try {
-			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-		} catch {
-			// Do nothing: Haptic is unavailable
+		const notificationInAppVibration = UserPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
+		if (notificationInAppVibration || notificationInAppVibration === null) {
+			try {
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+			} catch {
+				// Do nothing: Haptic is unavailable
+			}
 		}
 	};
 
@@ -1528,7 +1539,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={ref => this.messageActions = ref}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1539,7 +1550,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions ref={ref => this.messageErrorActions = ref} tmid={this.tmid} />
 			</>
 		);
 	};
@@ -1553,8 +1564,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('id' in room) {
 			({ bannerClosed, announcement } = room);
 		}
-
-		console.count('🌇🌇🌇🌇🌇ROOM VIEW COUNT');
 
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
