@@ -46,7 +46,13 @@ export async function resendFailedMessages(): Promise<void> {
 
 		const uploadRecords = await db.get('uploads').query(Q.where('error', true)).fetch();
 
-		uploadRecords.forEach(upload => {
+		// filter all uploads initiated before migration
+		const defaultTimeStamp = moment.unix(0).toDate().getTime();
+		const filteredUploadRecords = uploadRecords.filter(
+			(uploadFile: TUploadModel) => (uploadFile.ts as Date).getTime() !== defaultTimeStamp
+		);
+
+		filteredUploadRecords.forEach(upload => {
 			batch.push(
 				upload.prepareUpdate(m => {
 					m.error = false;
@@ -58,12 +64,6 @@ export async function resendFailedMessages(): Promise<void> {
 		await db.write(async () => {
 			await db.batch(...batch);
 		});
-
-		// filter all uploads initiated before migration
-		const defaultDate = moment.unix(0).toDate();
-		const filteredUploadRecords = uploadRecords.filter(
-			(uploadFile: TUploadModel) => uploadFile.ts.getTime() !== defaultDate.getTime()
-		);
 
 		// FIXME: change any to proper type
 		const allMessages: any = [...messageRecords, ...threadRecords, ...filteredUploadRecords];
@@ -97,10 +97,13 @@ export async function resendFailedMessages(): Promise<void> {
 }
 
 const sendFile = async (item: TUploadModel, server: string, user: IUser) => {
+	const db = database.active;
 	try {
+		// if user presses cancel before the upload is initiated then no need to resend
+		await db.get('uploads').find(item.id);
 		await sendFileMessage(item.rid as string, item, item.tmid, server, user, true);
 	} catch (e) {
-		log(e);
+		// do nothing
 	}
 };
 
