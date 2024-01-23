@@ -116,6 +116,19 @@ index f9c858b..94ea188 100644
  
  public abstract class NotificationManagerCompatFacade {
      public static NotificationManagerCompat from(@NonNull Context context) {
+diff --git a/node_modules/react-native-notifications/lib/dist/Notifications.d.ts b/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
+index 6e49fd4..5fe9515 100644
+--- a/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
++++ b/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
+@@ -32,7 +32,7 @@ export declare class NotificationsRoot {
+     /**
+      * setCategories
+      */
+-    setCategories(categories: [NotificationCategory?]): void;
++    setCategories(categories: NotificationCategory[]): void;
+     /**
+      * cancelLocalNotification
+     */
 diff --git a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h b/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
 index 8b2c269..8667351 100644
 --- a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
@@ -139,6 +152,31 @@ index 4bc5292..71df0bc 100644
 +#import <UserNotifications/UserNotifications.h>
  
  @interface RNNotificationCenter : NSObject
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
+index afd5c73..ec4dd85 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
+@@ -48,14 +48,15 @@ - (void)requestPermissions:(NSDictionary *)options {
+ }
+ 
+ - (void)setCategories:(NSArray *)json {
+-    NSMutableSet<UNNotificationCategory *>* categories = nil;
++    NSMutableSet<UNNotificationCategory *>* categories = [NSMutableSet new];
+     
+-    if ([json count] > 0) {
+-        categories = [NSMutableSet new];
+-        for (NSDictionary* categoryJson in json) {
+-            [categories addObject:[RCTConvert UNMutableUserNotificationCategory:categoryJson]];
++    for (NSDictionary* categoryJson in json) {
++        UNNotificationCategory *category = [RCTConvert UNMutableUserNotificationCategory:categoryJson];
++        if (category) {
++            [categories addObject:category];
+         }
+     }
++
+     [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:categories];
+ }
  
 diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenterListener.h b/node_modules/react-native-notifications/lib/ios/RNNotificationCenterListener.h
 index 77a67dd..eaf0043 100644
