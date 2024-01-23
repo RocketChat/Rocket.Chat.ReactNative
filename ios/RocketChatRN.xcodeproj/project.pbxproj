@@ -113,6 +113,7 @@
 		1E76CBD825152C870067298C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1E76CBD925152C8C0067298C /* Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61652512958900871711 /* Push.swift */; };
 		1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
+		1E8979472B6063FC001D99F0 /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8979462B6063FC001D99F0 /* WatchSession.swift */; };
 		1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71682B59B6E100477BA2 /* MessageSender.swift */; };
 		1E9A716F2B59CBCA00477BA2 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */; };
 		1E9A71712B59CC1300477BA2 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71702B59CC1300477BA2 /* Attachment.swift */; };
@@ -404,6 +405,7 @@
 		1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotificationService-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E67380324DC529B0009E081 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		1E680ED82512990700C9257A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		1E8979462B6063FC001D99F0 /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
 		1E9A71682B59B6E100477BA2 /* MessageSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
 		1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		1E9A71702B59CC1300477BA2 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
@@ -865,6 +867,7 @@
 				1EDFD1052B58A66E002FEE5F /* CancelBag.swift */,
 				1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */,
 				1E9A71682B59B6E100477BA2 /* MessageSender.swift */,
+				1E8979462B6063FC001D99F0 /* WatchSession.swift */,
 			);
 			path = Loaders;
 			sourceTree = "<group>";
@@ -1185,7 +1188,6 @@
 					};
 					1ED0388D2B507B4B00C007D4 = {
 						CreatedOnToolsVersion = 15.0;
-						DevelopmentTeam = S6UPZG7ZR3;
 						ProvisioningStyle = Automatic;
 					};
 					1EFEB5942493B6640072EDC0 = {
@@ -1876,6 +1878,7 @@
 				1ED033CD2B55D671004F4930 /* RocketChatDatabase.swift in Sources */,
 				1E29A3122B5866090093C03C /* Room.swift in Sources */,
 				1E29A3032B585B070093C03C /* FailableDecodable.swift in Sources */,
+				1E8979472B6063FC001D99F0 /* WatchSession.swift in Sources */,
 				1E29A2FE2B585B070093C03C /* ReadRequest.swift in Sources */,
 				1E9A71692B59B6E100477BA2 /* MessageSender.swift in Sources */,
 				1E29A3072B585B070093C03C /* RocketChatError.swift in Sources */,
@@ -2307,7 +2310,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"RocketChat Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
