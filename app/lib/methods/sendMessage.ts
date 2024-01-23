@@ -1,5 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Model, Q } from '@nozbe/watermelondb';
+// import moment from 'moment';
 
 import database from '../database';
 import log from './helpers/log';
@@ -11,6 +12,8 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
 import { sendFileMessage } from './sendFileMessage';
 import { store } from '../store/auxStore';
 import { getUserSelector } from '../../selectors/login';
+
+// console.log(moment.unix(0).toDate());
 
 export async function resendFailedMessages(): Promise<void> {
 	try {
