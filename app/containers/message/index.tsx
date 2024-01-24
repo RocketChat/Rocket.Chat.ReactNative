@@ -1,5 +1,6 @@
 import React from 'react';
-import { Keyboard, ViewStyle } from 'react-native';
+import { Keyboard, ViewStyle, Animated } from 'react-native';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -45,6 +46,7 @@ interface IMessageContainerProps {
 	errorActionsShow?: (item: TAnyMessageModel) => void;
 	replyBroadcast?: (item: TAnyMessageModel) => void;
 	reactionInit?: (item: TAnyMessageModel) => void;
+	replyInit?: (message: TAnyMessageModel, mention: boolean) => void;
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	showAttachment?: (file: IAttachment) => void;
 	onReactionLongPress?: (item: TAnyMessageModel) => void;
@@ -76,9 +78,24 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		theme: 'light' as TSupportedThemes
 	};
 
-	state = { isManualUnignored: false };
+	state = { isManualUnignored: false, swipeX: new Animated.Value(0) };
 
 	private subscription?: Function;
+
+	onGestureEvent = Animated.event([{ nativeEvent: { translationX: this.state.swipeX } }], { useNativeDriver: false });
+
+	onHandlerStateChange = (event: any) => {
+		if (event.nativeEvent.oldState === State.ACTIVE) {
+			const { translationX } = event.nativeEvent;
+			if (translationX > 0) {
+				this.replyInit();
+			}
+			Animated.spring(this.state.swipeX, {
+				toValue: 0,
+				useNativeDriver: false
+			}).start();
+		}
+	};
 
 	componentDidMount() {
 		const { item } = this.props;
@@ -313,6 +330,13 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 	};
 
+	replyInit = () => {
+		const { replyInit, item } = this.props;
+		if (replyInit) {
+			replyInit(item, false);
+		}
+	};
+
 	replyBroadcast = () => {
 		const { replyBroadcast, item } = this.props;
 		if (replyBroadcast) {
@@ -401,85 +425,96 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
 
 		return (
-			<MessageContext.Provider
-				value={{
-					id,
-					rid,
-					user,
-					baseUrl,
-					onPress: this.onPressAction,
-					onLongPress: this.onLongPress,
-					reactionInit: this.reactionInit,
-					onErrorPress: this.onErrorPress,
-					replyBroadcast: this.replyBroadcast,
-					onReactionPress: this.onReactionPress,
-					onEncryptedPress: this.onEncryptedPress,
-					onDiscussionPress: this.onDiscussionPress,
-					onReactionLongPress: this.onReactionLongPress,
-					onLinkPress: this.onLinkPress,
-					onAnswerButtonPress: this.onAnswerButtonPress,
-					jumpToMessage,
-					threadBadgeColor,
-					toggleFollowThread,
-					replies,
-					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined
-				}}
-			>
-				{/* @ts-ignore*/}
-				<Message
-					id={id}
-					msg={message}
-					md={md}
-					rid={rid}
-					author={u}
-					ts={ts}
-					type={t}
-					attachments={attachments}
-					blocks={blocks}
-					urls={urls}
-					reactions={reactions}
-					alias={alias}
-					avatar={avatar}
-					emoji={emoji}
-					timeFormat={timeFormat}
-					style={style}
-					archived={archived}
-					broadcast={broadcast}
-					useRealName={useRealName}
-					isReadReceiptEnabled={isReadReceiptEnabled}
-					unread={unread}
-					role={role}
-					drid={drid}
-					dcount={dcount}
-					dlm={dlm}
-					tmid={tmid}
-					tcount={tcount}
-					tlm={tlm}
-					tmsg={tmsg}
-					fetchThreadName={fetchThreadName}
-					mentions={mentions}
-					channels={channels}
-					isIgnored={this.isIgnored}
-					isEdited={(editedBy && !!editedBy.username) ?? false}
-					isHeader={this.isHeader}
-					isThreadReply={this.isThreadReply}
-					isThreadSequential={this.isThreadSequential}
-					isThreadRoom={!!isThreadRoom}
-					isInfo={this.isInfo}
-					isTemp={this.isTemp}
-					isEncrypted={this.isEncrypted}
-					hasError={this.hasError}
-					showAttachment={showAttachment}
-					getCustomEmoji={getCustomEmoji}
-					navToRoomInfo={navToRoomInfo}
-					handleEnterCall={handleEnterCall}
-					blockAction={blockAction}
-					highlighted={highlighted}
-					comment={comment}
-					isTranslated={isTranslated}
-					isPreview={isPreview}
-				/>
-			</MessageContext.Provider>
+			<PanGestureHandler
+				activeOffsetX={[-20, 20]}
+				onGestureEvent={this.onGestureEvent}
+				onHandlerStateChange={this.onHandlerStateChange}
+				enabled={!this.isInfo && !this.hasError && !this.isEncrypted && !this.props.archived && !tmid}>
+				<Animated.View
+					style={{
+						transform: [{ translateX: this.state.swipeX }]
+					}}>
+					<MessageContext.Provider
+						value={{
+							id,
+							rid,
+							user,
+							baseUrl,
+							onPress: this.onPressAction,
+							onLongPress: this.onLongPress,
+							reactionInit: this.reactionInit,
+							replyInit: this.replyInit,
+							onErrorPress: this.onErrorPress,
+							replyBroadcast: this.replyBroadcast,
+							onReactionPress: this.onReactionPress,
+							onEncryptedPress: this.onEncryptedPress,
+							onDiscussionPress: this.onDiscussionPress,
+							onReactionLongPress: this.onReactionLongPress,
+							onLinkPress: this.onLinkPress,
+							onAnswerButtonPress: this.onAnswerButtonPress,
+							jumpToMessage,
+							threadBadgeColor,
+							toggleFollowThread,
+							replies,
+							translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined
+						}}>
+						{/* @ts-ignore*/}
+						<Message
+							id={id}
+							msg={message}
+							md={md}
+							rid={rid}
+							author={u}
+							ts={ts}
+							type={t}
+							attachments={attachments}
+							blocks={blocks}
+							urls={urls}
+							reactions={reactions}
+							alias={alias}
+							avatar={avatar}
+							emoji={emoji}
+							timeFormat={timeFormat}
+							style={style}
+							archived={archived}
+							broadcast={broadcast}
+							useRealName={useRealName}
+							isReadReceiptEnabled={isReadReceiptEnabled}
+							unread={unread}
+							role={role}
+							drid={drid}
+							dcount={dcount}
+							dlm={dlm}
+							tmid={tmid}
+							tcount={tcount}
+							tlm={tlm}
+							tmsg={tmsg}
+							fetchThreadName={fetchThreadName}
+							mentions={mentions}
+							channels={channels}
+							isIgnored={this.isIgnored}
+							isEdited={(editedBy && !!editedBy.username) ?? false}
+							isHeader={this.isHeader}
+							isThreadReply={this.isThreadReply}
+							isThreadSequential={this.isThreadSequential}
+							isThreadRoom={!!isThreadRoom}
+							isInfo={this.isInfo}
+							isTemp={this.isTemp}
+							isEncrypted={this.isEncrypted}
+							hasError={this.hasError}
+							showAttachment={showAttachment}
+							getCustomEmoji={getCustomEmoji}
+							navToRoomInfo={navToRoomInfo}
+							handleEnterCall={handleEnterCall}
+							blockAction={blockAction}
+							highlighted={highlighted}
+							comment={comment}
+							isTranslated={isTranslated}
+							isPreview={isPreview}
+						/>
+					</MessageContext.Provider>
+				</Animated.View>
+			</PanGestureHandler>
 		);
 	}
 }
