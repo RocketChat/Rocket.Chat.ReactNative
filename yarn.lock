@@ -17775,9 +17775,9 @@ react-native-gradle-plugin@^0.0.6:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.6.tgz#b61a9234ad2f61430937911003cddd7e15c72b45"
   integrity sha512-eIlgtsmDp1jLC24dRn43hB3kEcZVqx6DUQbR0N1ABXGnMEafm9I3V3dUUeD1vh+Dy5WqijSoEwLNUPLgu5zDMg==
 
-react-native-image-crop-picker@RocketChat/react-native-image-crop-picker:
+react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#54e1e1c7e7d4b731c74ce9dd1bf9eb5148065092:
   version "0.36.3"
-  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/35f5c90576cadcdd4c0eb5cef83a9f1b7b7e26e3"
+  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/54e1e1c7e7d4b731c74ce9dd1bf9eb5148065092"
 
 react-native-image-progress@^1.1.1:
   version "1.1.1"

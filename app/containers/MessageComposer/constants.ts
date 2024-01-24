@@ -12,8 +12,7 @@ export const IMAGE_PICKER_CONFIG = {
 export const LIBRARY_PICKER_CONFIG: Options = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
-	mediaType: 'any',
-	forceJpg: true
+	mediaType: 'any'
 };
 
 export const VIDEO_PICKER_CONFIG: Options = {
