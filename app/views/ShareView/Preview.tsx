@@ -17,7 +17,7 @@ import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 import { IShareAttachment } from '../../definitions';
 
-const MESSAGEBOX_HEIGHT = 56;
+const MESSAGE_COMPOSER_HEIGHT = 56;
 
 const styles = StyleSheet.create({
 	fileContainer: {
@@ -70,7 +70,7 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 	const insets = useSafeAreaInsets();
 	const headerHeight = useHeaderHeight();
 	const thumbsHeight = length > 1 ? THUMBS_HEIGHT : 0;
-	const calculatedHeight = height - insets.top - insets.bottom - MESSAGEBOX_HEIGHT - thumbsHeight - headerHeight;
+	const calculatedHeight = height - insets.top - insets.bottom - MESSAGE_COMPOSER_HEIGHT - thumbsHeight - headerHeight;
 
 	if (item?.canUpload) {
 		// Disable video preview on iOS to save memory

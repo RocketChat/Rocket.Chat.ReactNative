@@ -11,12 +11,12 @@ import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 
 interface IReactionPickerProps {
-	message?: any;
+	messageId?: string;
 	reactionClose: () => void;
 	onEmojiSelected: (emoji: IEmoji, id: string) => void;
 }
 
-const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
+const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReactionPickerProps): React.ReactElement => {
 	const [searchedEmojis, setSearchedEmojis] = React.useState<IEmoji[]>([]);
 	const [searching, setSearching] = React.useState<boolean>(false);
 
@@ -33,8 +33,8 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 
 	const handleEmojiSelect = (_eventType: EventTypes, emoji?: IEmoji) => {
 		logEvent(events.REACTION_PICKER_EMOJI_SELECTED);
-		if (message && emoji) {
-			onEmojiSelected(emoji, message.id);
+		if (messageId && emoji) {
+			onEmojiSelected(emoji, messageId);
 		}
 		reactionClose();
 	};
