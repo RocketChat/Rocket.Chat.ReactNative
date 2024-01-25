@@ -37,7 +37,11 @@ export type TMarkdownStyle = 'bold' | 'italic' | 'strike' | 'code' | 'code-block
 
 export interface ITrackingView {
 	resetTracking: () => void;
-	getNativeProps: () => any;
+}
+
+export interface ITrackingViewHeightEvent {
+	height: number;
+	keyboardHeight: number;
 }
 
 export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;

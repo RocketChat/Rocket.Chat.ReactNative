@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
+import { View, StyleSheet, NativeModules, NativeSyntheticEvent } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -16,7 +16,7 @@ import {
 	useShowEmojiKeyboard,
 	useShowEmojiSearchbar
 } from './context';
-import { IComposerInput, ITrackingView } from './interfaces';
+import { IComposerInput, ITrackingView, ITrackingViewHeightEvent } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { useTheme } from '../../theme';
@@ -29,7 +29,6 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
-import { useKeyboardListener } from './hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,15 +58,14 @@ export const MessageComposer = ({
 		setInput: () => {},
 		onAutocompleteItemSelected: () => {}
 	});
-	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
+	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {} });
 	const { colors, theme } = useTheme();
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
+	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard, setHeight } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
-	useKeyboardListener(trackingViewRef);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -190,6 +188,10 @@ export const MessageComposer = ({
 		}
 	};
 
+	const onHeightChange = (event: NativeSyntheticEvent<ITrackingViewHeightEvent>) => {
+		setHeight(event.nativeEvent.keyboardHeight, event.nativeEvent.height);
+	};
+
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 	const renderContent = () => {
@@ -228,6 +230,7 @@ export const MessageComposer = ({
 				addBottomView
 				bottomViewColor={backgroundColor}
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
+				onHeightChange={onHeightChange}
 			/>
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>

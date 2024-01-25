@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { View, FlatList } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAutocompleteParams, useKeyboardHeight, useTrackingViewHeight } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
@@ -13,6 +14,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 	const { rid } = useRoomContext();
 	const trackingViewHeight = useTrackingViewHeight();
 	const keyboardHeight = useKeyboardHeight();
+	const { bottom } = useSafeAreaInsets();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
@@ -26,13 +28,15 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		return null;
 	}
 
+	const viewBottom = getBottom(trackingViewHeight, keyboardHeight, bottom);
+
 	if (type !== '/preview') {
 		return (
 			<View
 				style={[
 					styles.root,
 					{
-						bottom: getBottom(trackingViewHeight, keyboardHeight)
+						bottom: viewBottom
 					}
 				]}
 			>
@@ -49,9 +53,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 
 	if (type === '/preview') {
 		return (
-			<View
-				style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: getBottom(trackingViewHeight, keyboardHeight) }]}
-			>
+			<View style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: viewBottom }]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}
