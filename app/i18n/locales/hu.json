@@ -528,7 +528,7 @@
   "No_threads": "Nincsenek szálak",
   "No_threads_following": "Nem követ egyetlen szálat sem",
   "No_threads_unread": "Nincsenek olvasatlan szálak",
-  "Messagebox_Send_to_channel": "Küldés a csatornához",
+  "Message_composer_Send_to_channel": "Küldés a csatornához",
   "Leader": "Vezető",
   "Moderator": "Moderátor",
   "Owner": "Tulajdonos",
