@@ -131,6 +131,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		const options: StackNavigationOptions = {
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Threads'),
+			headerTitleContainerStyle: {},
 			headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton
@@ -424,7 +425,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onFilterSelected = (filter: Filter) => {
 		const { messages, subscription } = this.state;
 		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
-		this.setState({ currentFilter: filter, displayingThreads });
+		this.setState({ currentFilter: filter, displayingThreads, showFilterDropdown: false });
 	};
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
