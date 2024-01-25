@@ -358,8 +358,6 @@ PODS:
     - glog
   - react-native-background-timer (2.4.1):
     - React-Core
-  - react-native-blur (4.3.2):
-    - React-Core
   - react-native-cameraroll (5.6.1):
     - React-Core
   - react-native-cookies (6.2.1):
@@ -565,7 +563,7 @@ PODS:
     - Yoga
   - RNRootView (1.0.3):
     - React
-  - RNScreens (3.13.1):
+  - RNScreens (3.29.0):
     - React-Core
     - React-RCTImage
   - RNSVG (13.8.0):
@@ -623,7 +621,6 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
-  - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
@@ -770,8 +767,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
-  react-native-blur:
-    :path: "../node_modules/@react-native-community/blur"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-cookies:
@@ -932,7 +927,6 @@ SPEC CHECKSUMS:
   React-jsinspector: cab4d37ebde480f84c79ac89568abbf76b916c3e
   React-logger: b75b80500ea80457b2cf169427d66de986cdcb29
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
-  react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
   react-native-cameraroll: 2f08db1ecc9b73dbc01f89335d6d5179fac2894c
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
@@ -980,7 +974,7 @@ SPEC CHECKSUMS:
   RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
   RNReanimated: 64573e25e078ae6bec03b891586d50b9ec284393
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
-  RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
+  RNScreens: fa9b582d85ae5d62c91c66003b5278458fed7aaa
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
