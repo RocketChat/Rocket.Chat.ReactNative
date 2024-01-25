@@ -68,6 +68,10 @@ export const getFilename = ({
 };
 
 const getExtension = (type: MediaTypes, mimeType?: string, url?: string) => {
+	// support url with gif extension and mimetype undefined, ex.: using the app tenor and giphy.
+	if (url?.split('.').pop() === 'gif') {
+		return 'gif';
+	}
 	if (!mimeType) {
 		return defaultType[type];
 	}

@@ -4,7 +4,8 @@
 		"alert": {
 			"title": "Hey!",
 			"body": "You have a new push"
-		}
+		},
+		"category": "MESSAGE"
 	},
 	"ejson": "{ \"host\": \"https://open.rocket.chat/\", \"rid\": \"GENERAL\", \"type\": \"c\", \"name\": \"general\" }"
 }

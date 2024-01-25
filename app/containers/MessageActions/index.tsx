@@ -24,10 +24,11 @@ export interface IMessageActionsProps {
 	room: TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
-	editInit: (message: TAnyMessageModel) => void;
-	reactionInit: (message: TAnyMessageModel) => void;
+	editInit: (messageId: string) => void;
+	reactionInit: (messageId: string) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
-	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
+	replyInit: (messageId: string) => void;
+	quoteInit: (messageId: string) => void;
 	jumpToMessage?: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
@@ -63,6 +64,7 @@ const MessageActions = React.memo(
 				reactionInit,
 				onReactionPress,
 				replyInit,
+				quoteInit,
 				jumpToMessage,
 				isReadOnly,
 				Message_AllowDeleting,
@@ -180,14 +182,14 @@ const MessageActions = React.memo(
 
 			const getPermalink = (message: TAnyMessageModel) => getPermalinkMessage(message);
 
-			const handleReply = (message: TAnyMessageModel) => {
+			const handleReply = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_REPLY);
-				replyInit(message, true);
+				replyInit(messageId);
 			};
 
-			const handleEdit = (message: TAnyMessageModel) => {
+			const handleEdit = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_EDIT);
-				editInit(message);
+				editInit(messageId);
 			};
 
 			const handleCreateDiscussion = (message: TAnyMessageModel) => {
@@ -263,9 +265,9 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleQuote = (message: TAnyMessageModel) => {
+			const handleQuote = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_QUOTE);
-				replyInit(message, false);
+				quoteInit(messageId);
 			};
 
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
@@ -278,7 +280,7 @@ const MessageActions = React.memo(
 							name: getRoomTitle(room),
 							t: room.t,
 							roomUserId: getUidDirectMessage(room),
-							replyInDM: message
+							messageId: message.id
 						};
 						Navigation.replace('RoomView', params);
 					}
@@ -311,7 +313,7 @@ const MessageActions = React.memo(
 				if (emoji) {
 					onReactionPress(emoji, message.id);
 				} else {
-					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
+					setTimeout(() => reactionInit(message.id), ACTION_SHEET_ANIMATION_DURATION);
 				}
 				hideActionSheet();
 			};
@@ -391,7 +393,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
-						onPress: () => handleQuote(message)
+						onPress: () => handleQuote(message.id)
 					});
 				}
 
@@ -400,7 +402,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Reply_in_Thread'),
 						icon: 'threads',
-						onPress: () => handleReply(message)
+						onPress: () => handleReply(message.id)
 					});
 				}
 
@@ -454,12 +456,13 @@ const MessageActions = React.memo(
 				});
 
 				// Edit
-				if (!videoConfBlock) {
+				const isEditAllowed = allowEdit(message);
+				if (!videoConfBlock && (isOwn(message) || isEditAllowed)) {
 					options.push({
 						title: I18n.t('Edit'),
 						icon: 'edit',
-						onPress: () => handleEdit(message),
-						enabled: allowEdit(message)
+						onPress: () => handleEdit(message.id),
+						enabled: isEditAllowed
 					});
 				}
 
@@ -518,13 +521,16 @@ const MessageActions = React.memo(
 				});
 
 				// Delete
-				options.push({
-					title: I18n.t('Delete'),
-					icon: 'delete',
-					danger: true,
-					onPress: () => handleDelete(message),
-					enabled: allowDelete(message)
-				});
+				const isDeleteAllowed = allowDelete(message);
+				if (isOwn(message) || isDeleteAllowed) {
+					options.push({
+						title: I18n.t('Delete'),
+						icon: 'delete',
+						danger: true,
+						onPress: () => handleDelete(message),
+						enabled: isDeleteAllowed
+					});
+				}
 
 				return options;
 			};

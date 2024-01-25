@@ -1,6 +1,7 @@
 export class MMKVLoader {
+	// eslint-disable-next-line no-useless-constructor
 	constructor() {
-		console.log('MMKVLoader constructor mock');
+		// console.log('MMKVLoader constructor mock');
 	}
 
 	setProcessingMode = jest.fn().mockImplementation(() => ({

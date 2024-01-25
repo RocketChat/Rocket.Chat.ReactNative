@@ -4,9 +4,9 @@ import { Text, View } from 'react-native';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
-import { MarkdownPreview } from '../../../containers/markdown';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import { getRoomTitle } from '../../../lib/methods/helpers';
+import CollapsibleText from '../../../containers/CollapsibleText';
 
 interface IRoomInfoViewTitle {
 	room?: ISubscription;
@@ -20,7 +20,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 	const { colors } = useTheme();
 	if (type === SubscriptionType.DIRECT) {
 		return (
-			<>
+			<View style={styles.roomInfoViewTitleContainer}>
 				<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.titleText }]}>
 					{name}
 				</Text>
@@ -32,10 +32,14 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				)}
 				{!!statusText && (
 					<View testID='room-info-view-custom-status'>
-						<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: colors.auxiliaryText }]} />
+						<CollapsibleText
+							linesToTruncate={2}
+							msg={statusText}
+							style={[styles.roomUsername, { color: colors.auxiliaryText }]}
+						/>
 					</View>
 				)}
-			</>
+			</View>
 		);
 	}
 	return (

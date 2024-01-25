@@ -129,6 +129,14 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 
+	let backgroundColor = undefined;
+	if (props.isBeingEdited) {
+		backgroundColor = themes[theme].statusBackgroundWarning2;
+	}
+	if (props.highlighted) {
+		backgroundColor = themes[theme].headerBackground;
+	}
+
 	if (props.hasError) {
 		return (
 			<View>
@@ -142,7 +150,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor: props.highlighted ? themes[theme].headerBackground : undefined }}
+			style={{ backgroundColor }}
 		>
 			<View>
 				<Message {...props} />

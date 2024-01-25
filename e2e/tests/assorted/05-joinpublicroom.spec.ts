@@ -54,8 +54,8 @@ describe('Join public room', () => {
 				await expect(element(by.id('room-view-join-button'))).toBeVisible();
 			});
 
-			it('should not have messagebox', async () => {
-				await expect(element(by.id('messagebox'))).toBeNotVisible();
+			it('should not have message composer', async () => {
+				await expect(element(by.id('message-composer'))).toBeNotVisible();
 			});
 		});
 
@@ -123,10 +123,10 @@ describe('Join public room', () => {
 				.withTimeout(2000);
 			await tapBack();
 			await navigateToRoom(room);
-			await waitFor(element(by.id('messagebox')))
+			await waitFor(element(by.id('message-composer')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await expect(element(by.id('messagebox'))).toBeVisible();
+			await expect(element(by.id('message-composer'))).toBeVisible();
 			await expect(element(by.id('room-view-join'))).toBeNotVisible();
 		});
 

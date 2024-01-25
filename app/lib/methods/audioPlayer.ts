@@ -6,6 +6,10 @@ import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
 
+import EventEmitter from './helpers/events';
+
+export const AUDIO_FOCUSED = 'AUDIO_FOCUSED';
+
 const AUDIO_MODE = {
 	allowsRecordingIOS: false,
 	playsInSilentModeIOS: true,
@@ -50,6 +54,8 @@ class AudioPlayer {
 				try {
 					await this.audioQueue[audioKey]?.stopAsync();
 					this.audioPlaying = '';
+          EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: '' });
+
 					await this.playNextAudioInSequence(audioKey);
 				} catch {
 					// do nothing
@@ -71,6 +77,7 @@ class AudioPlayer {
 		await Audio.setAudioModeAsync(AUDIO_MODE);
 		await this.audioQueue[audioKey]?.playAsync();
 		this.audioPlaying = audioKey;
+		EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: audioKey });
 	}
 
 	async playNextAudioInSequence(previousAudioKey: string) {
