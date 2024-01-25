@@ -5,7 +5,6 @@ import moment from 'moment';
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
-
 import EventEmitter from './helpers/events';
 
 export const AUDIO_FOCUSED = 'AUDIO_FOCUSED';
@@ -54,7 +53,7 @@ class AudioPlayer {
 				try {
 					await this.audioQueue[audioKey]?.stopAsync();
 					this.audioPlaying = '';
-          EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: '' });
+					EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: '' });
 
 					await this.playNextAudioInSequence(audioKey);
 				} catch {
