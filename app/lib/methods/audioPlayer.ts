@@ -16,6 +16,8 @@ const AUDIO_MODE = {
 	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
 
+const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
+
 class AudioPlayer {
 	private audioQueue: { [audioKey: string]: Audio.Sound };
 	private audioPlaying: string;
@@ -26,7 +28,7 @@ class AudioPlayer {
 	}
 
 	async loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
-		const audioKey = `${msgId}-${rid}-${uri}`;
+		const audioKey = getAudioKey({ msgId, rid, uri });
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
 		}
@@ -48,32 +50,7 @@ class AudioPlayer {
 				try {
 					await this.audioQueue[audioKey]?.stopAsync();
 					this.audioPlaying = '';
-
-					const [msgId, rid] = audioKey.split('-');
-
-					const msg = await getMessageById(msgId);
-
-					if (msg) {
-						const db = database.active;
-						const [message] = await db
-							.get('messages')
-							.query(
-								Q.where('rid', rid),
-								Q.experimentalSortBy('ts', Q.asc),
-								Q.where('ts', Q.gt(moment(msg.ts).valueOf())),
-								Q.experimentalTake(1)
-							)
-							.fetch();
-
-						if (message && message.attachments) {
-							const file = message.attachments[0];
-							const nextAudioInSeqKey = `${message.id}-${rid}-${getFilePathAudio(file)}`;
-
-							if (Object.keys(this.audioQueue).includes(nextAudioInSeqKey)) {
-								await this.playAudio(nextAudioInSeqKey);
-							}
-						}
-					}
+					await this.playNextAudioInSequence(audioKey);
 				} catch {
 					// do nothing
 				}
@@ -94,6 +71,34 @@ class AudioPlayer {
 		await Audio.setAudioModeAsync(AUDIO_MODE);
 		await this.audioQueue[audioKey]?.playAsync();
 		this.audioPlaying = audioKey;
+	}
+
+	async playNextAudioInSequence(previousAudioKey: string) {
+		const [msgId, rid] = previousAudioKey.split('-');
+
+		const msg = await getMessageById(msgId);
+
+		if (msg) {
+			const db = database.active;
+			const [message] = await db
+				.get('messages')
+				.query(
+					Q.where('rid', rid),
+					Q.experimentalSortBy('ts', Q.asc),
+					Q.where('ts', Q.gt(moment(msg.ts).valueOf())),
+					Q.experimentalTake(1)
+				)
+				.fetch();
+
+			if (message && message.attachments) {
+				const file = message.attachments[0];
+				const nextAudioInSeqKey = getAudioKey({ msgId: message.id, rid, uri: getFilePathAudio(file) });
+
+				if (this.audioQueue?.[nextAudioInSeqKey]) {
+					await this.playAudio(nextAudioInSeqKey);
+				}
+			}
+		}
 	}
 
 	async pauseAudio(audioKey: string) {
