@@ -136,6 +136,11 @@ export default async function updateMessages({
 			try {
 				return message.prepareUpdate(
 					protectedFunction((m: TMessageModel) => {
+						// Clean the blocks when a message needs to update and there isn't the property block into the newMessage object
+						// The previous message has blocks, but now should remove those blocks
+						if (m.blocks?.length && newMessage && !newMessage?.blocks) {
+							newMessage.blocks = null;
+						}
 						Object.assign(m, newMessage);
 					})
 				);
