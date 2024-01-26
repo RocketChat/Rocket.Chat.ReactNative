@@ -31,8 +31,8 @@ import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
-StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
-StackNavigationProp<MasterDetailInsideStackParamList>
+	StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
+	StackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
