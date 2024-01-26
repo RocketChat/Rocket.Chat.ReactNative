@@ -5,8 +5,7 @@ import { IAutocompleteBase, TMicOrSend } from './interfaces';
 import { animateNextTransition } from '../../lib/methods/helpers';
 
 type TMessageComposerContextApi = {
-	setKeyboardHeight: (height: number) => void;
-	setTrackingViewHeight: (height: number) => void;
+	setHeight: (keyboardHeight: number, trackingViewHeight: number) => void;
 	openEmojiKeyboard(): void;
 	closeEmojiKeyboard(): void;
 	openSearchEmojiKeyboard(): void;
@@ -75,8 +74,7 @@ type Actions =
 	| { type: 'updateEmojiKeyboard'; showEmojiKeyboard: boolean }
 	| { type: 'updateEmojiSearchbar'; showEmojiSearchbar: boolean }
 	| { type: 'updateFocused'; focused: boolean }
-	| { type: 'updateTrackingViewHeight'; trackingViewHeight: number }
-	| { type: 'updateKeyboardHeight'; keyboardHeight: number }
+	| { type: 'updateHeight'; trackingViewHeight: number; keyboardHeight: number }
 	| { type: 'openEmojiKeyboard' }
 	| { type: 'closeEmojiKeyboard' }
 	| { type: 'openSearchEmojiKeyboard' }
@@ -96,10 +94,8 @@ const reducer = (state: State, action: Actions): State => {
 		case 'updateFocused':
 			animateNextTransition();
 			return { ...state, focused: action.focused };
-		case 'updateTrackingViewHeight':
-			return { ...state, trackingViewHeight: action.trackingViewHeight };
-		case 'updateKeyboardHeight':
-			return { ...state, keyboardHeight: action.keyboardHeight };
+		case 'updateHeight':
+			return { ...state, trackingViewHeight: action.trackingViewHeight, keyboardHeight: action.keyboardHeight };
 		case 'openEmojiKeyboard':
 			return { ...state, showEmojiKeyboard: true, showEmojiSearchbar: false };
 		case 'openSearchEmojiKeyboard':
@@ -127,12 +123,10 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 	const [state, dispatch] = useReducer(reducer, { keyboardHeight: 0, autocompleteParams: { text: '', type: null } } as State);
 
 	const api = useMemo(() => {
-		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
+		const setFocused: TMessageComposerContextApi['setFocused'] = focused => dispatch({ type: 'updateFocused', focused });
 
-		const setKeyboardHeight = (keyboardHeight: number) => dispatch({ type: 'updateKeyboardHeight', keyboardHeight });
-
-		const setTrackingViewHeight = (trackingViewHeight: number) =>
-			dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight });
+		const setHeight: TMessageComposerContextApi['setHeight'] = (keyboardHeight, trackingViewHeight) =>
+			dispatch({ type: 'updateHeight', keyboardHeight, trackingViewHeight });
 
 		const openEmojiKeyboard = () => dispatch({ type: 'openEmojiKeyboard' });
 
@@ -142,21 +136,23 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 		const closeSearchEmojiKeyboard = () => dispatch({ type: 'closeSearchEmojiKeyboard' });
 
-		const setMicOrSend = (micOrSend: TMicOrSend) => dispatch({ type: 'setMicOrSend', micOrSend });
+		const setMicOrSend: TMessageComposerContextApi['setMicOrSend'] = micOrSend => dispatch({ type: 'setMicOrSend', micOrSend });
 
-		const setMarkdownToolbar = (showMarkdownToolbar: boolean) => dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
+		const setMarkdownToolbar: TMessageComposerContextApi['setMarkdownToolbar'] = showMarkdownToolbar =>
+			dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
 
-		const setAlsoSendThreadToChannel = (alsoSendThreadToChannel: boolean) =>
+		const setAlsoSendThreadToChannel: TMessageComposerContextApi['setAlsoSendThreadToChannel'] = alsoSendThreadToChannel =>
 			dispatch({ type: 'setAlsoSendThreadToChannel', alsoSendThreadToChannel });
 
-		const setRecordingAudio = (recordingAudio: boolean) => dispatch({ type: 'setRecordingAudio', recordingAudio });
+		const setRecordingAudio: TMessageComposerContextApi['setRecordingAudio'] = recordingAudio =>
+			dispatch({ type: 'setRecordingAudio', recordingAudio });
 
-		const setAutocompleteParams = (params: IAutocompleteBase) => dispatch({ type: 'setAutocompleteParams', params });
+		const setAutocompleteParams: TMessageComposerContextApi['setAutocompleteParams'] = params =>
+			dispatch({ type: 'setAutocompleteParams', params });
 
 		return {
 			setFocused,
-			setKeyboardHeight,
-			setTrackingViewHeight,
+			setHeight,
 			openEmojiKeyboard,
 			closeEmojiKeyboard,
 			openSearchEmojiKeyboard,
