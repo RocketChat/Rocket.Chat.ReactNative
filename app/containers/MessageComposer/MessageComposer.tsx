@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
-import { View, StyleSheet, NativeModules, NativeSyntheticEvent } from 'react-native';
+import { View, StyleSheet, NativeModules, NativeSyntheticEvent, TextInputProps } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -17,7 +17,7 @@ import {
 	useShowEmojiSearchbar
 } from './context';
 import { IComposerInput, ITrackingView, ITrackingViewHeightEvent } from './interfaces';
-import { isIOS } from '../../lib/methods/helpers';
+import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
@@ -192,6 +192,10 @@ export const MessageComposer = ({
 		setHeight(event.nativeEvent.keyboardHeight, event.nativeEvent.height);
 	};
 
+	const handleLayout: TextInputProps['onLayout'] = e => {
+		setHeight(0, e.nativeEvent.layout.height);
+	};
+
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 	const renderContent = () => {
@@ -216,23 +220,25 @@ export const MessageComposer = ({
 	};
 
 	return (
-		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			<KeyboardAccessoryView
-				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
-				renderContent={renderContent}
-				kbInputRef={composerInputRef}
-				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-				kbInitialProps={{ theme }}
-				onKeyboardResigned={onKeyboardResigned}
-				onItemSelected={onKeyboardItemSelected}
-				trackInteractive
-				requiresSameParentToManageScrollView
-				addBottomView
-				bottomViewColor={backgroundColor}
-				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
-				onHeightChange={onHeightChange}
-			/>
-			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
-		</MessageInnerContext.Provider>
+		<View onLayout={isAndroid ? handleLayout : undefined}>
+			<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
+				<KeyboardAccessoryView
+					ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
+					renderContent={renderContent}
+					kbInputRef={composerInputRef}
+					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					kbInitialProps={{ theme }}
+					onKeyboardResigned={onKeyboardResigned}
+					onItemSelected={onKeyboardItemSelected}
+					trackInteractive
+					requiresSameParentToManageScrollView
+					addBottomView
+					bottomViewColor={backgroundColor}
+					iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
+					onHeightChange={onHeightChange}
+				/>
+				<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
+			</MessageInnerContext.Provider>
+		</View>
 	);
 };
