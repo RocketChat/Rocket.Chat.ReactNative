@@ -16,11 +16,43 @@ export const MicOrSendButton = () => {
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
 	const { colors } = useTheme();
 	const { setRecordingAudio } = useMessageComposerApi();
+	const [permissionResponse, requestPermission] = Audio.usePermissions();
+
+	const requestPermissionAndStartToRecordAudio = async () => {
+		try {
+			const permission = await requestPermission();
+			if (permission.status === Audio.PermissionStatus.GRANTED) {
+				// hack to avoid permission not set before recording
+				setTimeout(() => {
+					setRecordingAudio(true);
+				}, 100);
+			} else {
+				// TODO: Implement this function to show user-friendly error message and why we need permission
+			}
+		} catch (error) {
+			// TODO: ask user to close and open app again
+			console.error('Error requesting permission:', error);
+		}
+	};
 
 	const startRecording = async () => {
-		const permission = await Audio.requestPermissionsAsync();
-		if (permission.granted) {
-			setRecordingAudio(true);
+		const status = permissionResponse?.status;
+		switch (status) {
+			case Audio.PermissionStatus.GRANTED:
+				setRecordingAudio(true);
+				break;
+			case Audio.PermissionStatus.UNDETERMINED:
+				await requestPermissionAndStartToRecordAudio();
+				break;
+			case Audio.PermissionStatus.DENIED:
+				if (permissionResponse?.canAskAgain) {
+					await requestPermissionAndStartToRecordAudio();
+				} else {
+					// TODO: Implement this function to guide users to enable permission in settings
+				}
+				break;
+			default:
+				console.log('Permission to record audio denied or an unknown error occurred');
 		}
 	};
 
