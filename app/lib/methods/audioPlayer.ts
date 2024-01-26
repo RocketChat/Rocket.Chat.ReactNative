@@ -4,8 +4,10 @@ import moment from 'moment';
 
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
-import { getFilePathAudio } from './getFilePathAudio';
+import { getFilePathAudio } from '../../containers/message/hooks/useGetFilePathAudio';
 import EventEmitter from './helpers/events';
+import { store } from '../store/auxStore';
+import { getUserSelector } from '../../selectors/login';
 
 export const AUDIO_FOCUSED = 'AUDIO_FOCUSED';
 
@@ -98,7 +100,15 @@ class AudioPlayer {
 
 			if (message && message.attachments) {
 				const file = message.attachments[0];
-				const nextAudioInSeqKey = getAudioKey({ msgId: message.id, rid, uri: getFilePathAudio(file) });
+				const baseUrl = store.getState().server.server;
+				const cdnPrefix = store.getState().settings.CDN_PREFIX as string;
+				const user = getUserSelector(store.getState());
+
+				const nextAudioInSeqKey = getAudioKey({
+					msgId: message.id,
+					rid,
+					uri: getFilePathAudio(file.audio_url as string, file.audio_type as string, baseUrl, cdnPrefix, user.id, user.token)
+				});
 
 				if (this.audioQueue?.[nextAudioInSeqKey]) {
 					await this.playAudio(nextAudioInSeqKey);
