@@ -89,6 +89,18 @@ export default {
 	DIRECTORY_SEARCH_CHANNELS: 'directory_search_channels',
 	DIRECTORY_SEARCH_TEAMS: 'directory_search_teams',
 
+	// DIRECTORY VIEW SORTING
+	DIRECTORY_CHANNEL_NAME_SORT_ASCENDING: 'directory_channel_name_sort_ascending',
+	DIRECTORY_CHANNEL_NAME_SORT_DESCENDING: 'directory_channel_name_sort_descending',
+	DIRECTORY_CHANNEL_NUMBER_SORT_ASCENDING: 'directory_channel_number_sort_ascending',
+	DIRECTORY_CHANNEL_NUMBER_SORT_DESCENDING: 'directory_channel_number_sort_descending',
+	DIRECTORY_USER_NAME_SORT_ASCENDING: 'directory_user_name_sort_ascending',
+	DIRECTORY_USER_NAME_SORT_DESCENDING: 'directory_user_name_sort_descending',
+	DIRECTORY_USER_NUMBER_SORT_ASCENDING: 'directory_user_number_sort_ascending',
+	DIRECTORY_USER_NUMBER_SORT_DESCENDING: 'directory_user_number_sort_descending',
+	DIRECTORY_TEAM_NAME_SORT_ASCENDING: 'directory_team_name_sort_ascending',
+	DIRECTORY_TEAM_NAME_SORT_DESCENDING: 'directory_team_name_sort_descending',
+
 	// NEW MESSAGE VIEW
 	NEW_MSG_CREATE_CHANNEL: 'new_msg_create_channel',
 	NEW_MSG_CREATE_TEAM: 'new_msg_create_team',

@@ -38,6 +38,15 @@ export default StyleSheet.create({
 		// @ts-ignore
 		...StyleSheet.absoluteFill
 	},
+	checkingView: {
+		display: 'flex',
+		flexDirection: 'row'
+	},
+
+	dropdownAdditionalItemButton: {
+		height: 46,
+		justifyContent: 'center'
+	},
 	dropdownContainerHeader: {
 		height: 46,
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -45,11 +54,18 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	dropdownItemButton: {
+		flex: 1.5,
 		height: 46,
 		justifyContent: 'center'
 	},
 	dropdownItemContainer: {
 		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	dropdownItemContainerSort: {
+		flex: 1,
+		height: 42,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -74,6 +90,12 @@ export default StyleSheet.create({
 		width: 22,
 		height: 22,
 		marginHorizontal: 15
+	},
+	dropdownItemIconSort: {
+		width: 22,
+		height: 35,
+		marginHorizontal: 15,
+		marginTop: 10
 	},
 	dropdownSeparator: {
 		height: StyleSheet.hairlineWidth,
