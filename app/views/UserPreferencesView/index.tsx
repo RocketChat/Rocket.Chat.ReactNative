@@ -92,7 +92,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 							onChangeValue={setAlsoSendThreadToChannel}
 							preference='alsoSendThreadToChannel'
 							value={alsoSendThreadToChannel}
-							title='Messagebox_Send_to_channel'
+							title='Message_composer_Send_to_channel'
 							testID='preferences-view-enable-message-parser'
 						/>
 						<List.Separator />

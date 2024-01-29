@@ -7,9 +7,12 @@ import { TColors, TSupportedThemes } from '../theme';
 
 export * from './ERoomType';
 export * from './IAttachment';
+export * from './ICannedResponse';
 export * from './ICertificate';
 export * from './ICredentials';
 export * from './IEmoji';
+export * from './ILivechatDepartment';
+export * from './ILivechatTag';
 export * from './ILoggedUser';
 export * from './IMessage';
 export * from './INotification';
@@ -32,6 +35,8 @@ export * from './IUrl';
 export * from './IUser';
 export * from './redux';
 export * from './redux/TRootEnum';
+export * from './TChangeAvatarViewContext';
+export * from './IDataSelect';
 export * from './TUserStatus';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {

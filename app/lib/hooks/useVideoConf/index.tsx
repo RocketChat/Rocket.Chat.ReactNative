@@ -31,7 +31,7 @@ export const useVideoConf = (
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
 
-	const { callEnabled, disabledTooltip } = useVideoConfCall(rid);
+	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
 
 	const [permission, requestPermission] = Camera.useCameraPermissions();
 	const { showActionSheet } = useActionSheet();
@@ -59,7 +59,7 @@ export const useVideoConf = (
 			const canInit = await canInitAnCall();
 			if (canInit) {
 				showActionSheet({
-					children: <StartACallActionSheet rid={rid} />,
+					children: <StartACallActionSheet rid={rid} roomType={roomType} />,
 					snaps: [480]
 				});
 
