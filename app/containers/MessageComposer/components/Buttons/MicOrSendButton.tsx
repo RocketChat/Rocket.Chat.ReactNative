@@ -1,10 +1,10 @@
 import { Audio } from 'expo-av';
 import React, { useContext } from 'react';
 import { Alert } from 'react-native';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks';
+import { useUserPreferences } from '../../../../lib/methods';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
 import { useTheme } from '../../../../theme';
 import { useRoomContext } from '../../../../views/RoomView/context';
@@ -21,30 +21,35 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const { setRecordingAudio } = useMessageComposerApi();
 
-	const { setItem: setAskedForAudioPermission, getItem: getAskedForAudioPermission } = useAsyncStorage(
+	const [alreadyAskedForAudioPermission, setAskedForAudioPermission] = useUserPreferences<boolean>(
 		'ALREADY_ASKED_FOR_AUDIO_PERMISSION'
 	);
 
-	const requestPermissionAndStartToRecordAudio = async (alreadyAskedForAudioPermission = true) => {
+	const requestPermissionAndStartToRecordAudio = async (askedPermission: boolean) => {
+		// request permission
 		const { granted } = await Audio.requestPermissionsAsync();
 		if (granted) {
-			// hack to avoid permission not set before recording
-			setTimeout(() => setRecordingAudio(true), alreadyAskedForAudioPermission ? 0 : 100);
+			if (askedPermission) {
+				setRecordingAudio(true);
+			} else {
+				// double check on permission
+				await Audio.requestPermissionsAsync();
+				setRecordingAudio(true);
+			}
 		}
 	};
 
 	const startRecording = async () => {
-		const alreadyAskedForAudioPermission = await getAskedForAudioPermission();
 		if (!alreadyAskedForAudioPermission) {
-			setAskedForAudioPermission('true');
 			requestPermissionAndStartToRecordAudio(false);
+			setAskedForAudioPermission(true);
 			return;
 		}
 		const permission = await Audio.getPermissionsAsync();
 		if (permission.granted) {
 			setRecordingAudio(true);
 		} else if (permission.canAskAgain) {
-			requestPermissionAndStartToRecordAudio();
+			requestPermissionAndStartToRecordAudio(true);
 		} else {
 			Alert.alert(
 				i18n.t('Microphone_access_needed_to_record_audio'),
