@@ -124,7 +124,11 @@ const reducer = (state: State, action: Actions): State => {
 };
 
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
-	const [state, dispatch] = useReducer(reducer, { keyboardHeight: 0, autocompleteParams: { text: '', type: null } } as State);
+	const [state, dispatch] = useReducer(reducer, {
+		keyboardHeight: 0,
+		trackingViewHeight: 0,
+		autocompleteParams: { text: '', type: null }
+	} as State);
 
 	const api = useMemo(() => {
 		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });

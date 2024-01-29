@@ -65,7 +65,8 @@ export const MessageComposer = ({
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard } = useMessageComposerApi();
+	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard, setTrackingViewHeight } =
+		useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	useKeyboardListener(trackingViewRef);
 
@@ -190,6 +191,10 @@ export const MessageComposer = ({
 		}
 	};
 
+	const onHeightChanged = (height: number) => {
+		setTrackingViewHeight(height);
+	};
+
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 	const renderContent = () => {
@@ -228,6 +233,7 @@ export const MessageComposer = ({
 				addBottomView
 				bottomViewColor={backgroundColor}
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
+				onHeightChanged={onHeightChanged}
 			/>
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>

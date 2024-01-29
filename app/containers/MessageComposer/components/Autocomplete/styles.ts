@@ -2,7 +2,6 @@ import sharedStyles from '../../../../views/Styles';
 import { useTheme } from '../../../../theme';
 
 const MAX_HEIGHT = 216;
-export const getBottom = (trackingViewHeight: number, keyboardHeight: number): number => trackingViewHeight + keyboardHeight + 50;
 
 export const useStyle = () => {
 	const { colors } = useTheme();

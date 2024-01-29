@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { View, FlatList } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAutocompleteParams, useKeyboardHeight, useTrackingViewHeight } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
@@ -7,12 +8,13 @@ import { useAutocomplete } from '../../hooks';
 import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
-import { useStyle, getBottom } from './styles';
+import { useStyle } from './styles';
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
 	const { rid } = useRoomContext();
 	const trackingViewHeight = useTrackingViewHeight();
 	const keyboardHeight = useKeyboardHeight();
+	const { bottom } = useSafeAreaInsets();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
@@ -21,6 +23,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
+	const viewBottom = trackingViewHeight + keyboardHeight + (keyboardHeight > 0 ? 0 : bottom) - 4;
 
 	if (items.length === 0 || !type) {
 		return null;
@@ -32,7 +35,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 				style={[
 					styles.root,
 					{
-						bottom: getBottom(trackingViewHeight, keyboardHeight)
+						bottom: viewBottom
 					}
 				]}
 			>
@@ -49,9 +52,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 
 	if (type === '/preview') {
 		return (
-			<View
-				style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: getBottom(trackingViewHeight, keyboardHeight) }]}
-			>
+			<View style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: viewBottom }]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}
