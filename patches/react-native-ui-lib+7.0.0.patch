@@ -1,18 +1,105 @@
+diff --git a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
+index cfe1d35..a191c82 100644
+--- a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
++++ b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
+@@ -123,7 +123,12 @@ class KeyboardAccessoryView extends Component {
+      * Whether or not to handle SafeArea
+      * default: true
+      */
+-    useSafeArea: PropTypes.bool
++    useSafeArea: PropTypes.bool,
++
++    onHeightChange: PropTypes.shape({
++      height: PropTypes.number,
++      keyboardHeight: PropTypes.number
++    })
+   };
+ 
+   static iosScrollBehaviors = IOS_SCROLL_BEHAVIORS;
+@@ -271,6 +276,7 @@ class KeyboardAccessoryView extends Component {
+         addBottomView={addBottomView}
+         bottomViewColor={this.props.bottomViewColor}
+         allowHitsOutsideBounds={allowHitsOutsideBounds}
++        onHeightChange={this.props.onHeightChange}
+       >
+         {renderContent && renderContent()}
+         <CustomKeyboardView
+diff --git a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardTracking/KeyboardTrackingView.ios.js b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardTracking/KeyboardTrackingView.ios.js
+index 60e3fe6..cad78a6 100644
+--- a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardTracking/KeyboardTrackingView.ios.js
++++ b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardTracking/KeyboardTrackingView.ios.js
+@@ -33,7 +33,8 @@ class KeyboardTrackingView extends PureComponent {
+     /**
+      * Allow control safe area
+      */
+-    useSafeArea: PropTypes.bool
++    useSafeArea: PropTypes.bool,
++    onHeightChange: PropTypes.func,
+   };
+ 
+   /** V6 should be change to default false */
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+index 97255d2..3e5537c 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+@@ -54,6 +54,7 @@ @interface KeyboardTrackingViewTemp : UIView
+ @property (nonatomic) BOOL useSafeArea;
+ @property (nonatomic) BOOL scrollToFocusedInput;
+ @property (nonatomic) BOOL allowHitsOutsideBounds;
++@property (nonatomic, copy) RCTBubblingEventBlock onHeightChange;
+ 
+ @end
+ 
+@@ -364,6 +365,7 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
+ - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
+ {
+     _bottomViewHeight = kBottomViewHeightTemp;
++    _ObservingInputAccessoryViewTemp.height = 0;
+     [self updateBottomViewFrame];
+ }
+ 
+@@ -554,6 +556,11 @@ -(void)updateTransformAndInsets
+     
+     self.transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);
+     [self _updateScrollViewInsets];
++    
++    if (self.onHeightChange) {
++        self.onHeightChange(@{ @"height": @(self.bounds.size.height), @"keyboardHeight": @(_ObservingInputAccessoryViewTemp.keyboardHeight) });
++    }
++    
+ }
+ 
+ - (void)performScrollToFocusedInput
+@@ -673,6 +680,9 @@ @implementation KeyboardTrackingViewTempManager
+ RCT_REMAP_VIEW_PROPERTY(scrollToFocusedInput, scrollToFocusedInput, BOOL)
+ RCT_REMAP_VIEW_PROPERTY(allowHitsOutsideBounds, allowHitsOutsideBounds, BOOL)
+ 
++RCT_EXPORT_VIEW_PROPERTY(onHeightChange, RCTBubblingEventBlock)
++
++
+ + (BOOL)requiresMainQueueSetup
+ {
+     return YES;
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-index 1ca52e8..323a04c 100644
+index 1ca52e8..69ac77a 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
 +++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-@@ -115,21 +115,25 @@ - (void)setHeight:(CGFloat)height
+@@ -111,44 +111,57 @@ - (void)setHeight:(CGFloat)height
+     _height = height;
+     
+     [self invalidateIntrinsicContentSize];
++    [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
+ }
  
  - (void)_keyboardWillShowNotification:(NSNotification*)notification
  {
 -    _keyboardState = KeyboardStateWillShow;
-+    if (_keyboardState != KeyboardStateShown) {
++    if (_keyboardState == KeyboardStateHidden) {
 +        _keyboardState = KeyboardStateWillShow;
-         
+     
 -    [self invalidateIntrinsicContentSize];
 +        [self invalidateIntrinsicContentSize];
-         
+     
 -    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
 -    {
 -        [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
@@ -26,12 +113,46 @@ index 1ca52e8..323a04c 100644
  - (void)_keyboardDidShowNotification:(NSNotification*)notification
  {
 -    _keyboardState = KeyboardStateShown;
-+    if (_keyboardState != KeyboardStateShown) {
++    if (_keyboardState == KeyboardStateWillShow) {
 +        _keyboardState = KeyboardStateShown;
-         
+     
 -    [self invalidateIntrinsicContentSize];
 +        [self invalidateIntrinsicContentSize];
 +    }
  }
  
  - (void)_keyboardWillHideNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateWillHide;
++    if (_keyboardState == KeyboardStateShown) {
++        _keyboardState = KeyboardStateWillHide;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
+     
+-    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
+-    {
+-        [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++        
++        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
++        {
++            [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        }
+     }
+ }
+ 
+ - (void)_keyboardDidHideNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateHidden;
++    if (_keyboardState == KeyboardStateWillHide) {
++        _keyboardState = KeyboardStateHidden;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
++        
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++    }
+ }
+ 
+ - (void)_keyboardWillChangeFrameNotification:(NSNotification*)notification
