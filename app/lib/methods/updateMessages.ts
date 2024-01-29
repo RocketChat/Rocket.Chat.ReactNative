@@ -138,7 +138,7 @@ export default async function updateMessages({
 					protectedFunction((m: TMessageModel) => {
 						// Clean the blocks when a message needs to update and there isn't the property block into the newMessage object
 						// The previous message has blocks, but now should remove those blocks
-						if (m.blocks?.length && newMessage && !newMessage?.blocks) {
+						if (newMessage && !newMessage?.blocks) {
 							newMessage.blocks = null;
 						}
 						Object.assign(m, newMessage);
@@ -165,6 +165,11 @@ export default async function updateMessages({
 			try {
 				return threadMessage.prepareUpdate(
 					protectedFunction((tm: TThreadMessageModel) => {
+						// Clean the blocks when a message needs to update and there isn't the property block into the newMessage object
+						// The previous message has blocks, but now should remove those blocks
+						if (newThreadMessage && !newThreadMessage?.blocks) {
+							newThreadMessage.blocks = null;
+						}
 						Object.assign(tm, newThreadMessage);
 						if (threadMessage.tmid) {
 							tm.rid = threadMessage.tmid;
