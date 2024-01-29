@@ -7,6 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
+import * as Haptics from 'expo-haptics';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
@@ -62,7 +63,14 @@ import {
 	TGetCustomEmoji,
 	RoomType
 } from '../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
+import {
+	E2E_MESSAGE_TYPE,
+	E2E_STATUS,
+	MESSAGE_TYPE_ANY_LOAD,
+	MessageTypeLoad,
+	themes,
+	NOTIFICATION_IN_APP_VIBRATION
+} from '../../lib/constants';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
@@ -90,6 +98,8 @@ import audioPlayer from '../../lib/methods/audioPlayer';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
+import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
+import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 
@@ -197,8 +207,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
+		const { navigation, dispatch } = this.props;
 		const { selectedMessages } = this.state;
-		const { navigation } = this.props;
+		dispatch(clearInAppFeedback());
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
@@ -302,6 +313,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	async componentWillUnmount() {
+		const { dispatch } = this.props;
+		dispatch(clearInAppFeedback());
 		this.mounted = false;
 		this.unsubscribe();
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
@@ -1224,10 +1237,31 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
 	};
 
+	hapticFeedback = (msgId: string) => {
+		const { dispatch } = this.props;
+		dispatch(removeInAppFeedback(msgId));
+		const notificationInAppVibration = UserPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
+		if (notificationInAppVibration || notificationInAppVibration === null) {
+			try {
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+			} catch {
+				// Do nothing: Haptic is unavailable
+			}
+		}
+	};
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
-		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
-			this.props;
+		const {
+			user,
+			Message_GroupingPeriod,
+			Message_TimeFormat,
+			useRealName,
+			baseUrl,
+			Message_Read_Receipt_Enabled,
+			theme,
+			inAppFeedback
+		} = this.props;
 		const { action, selectedMessages } = this.state;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -1254,6 +1288,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			};
 			content = <LoadMore rid={room.rid} t={room.t as RoomType} loaderId={item.id} type={item.t} runOnRender={runOnRender()} />;
 		} else {
+			if (inAppFeedback?.[item.id]) {
+				this.hapticFeedback(item.id);
+			}
 			content = (
 				<Message
 					item={item}
@@ -1458,7 +1495,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+	inAppFeedback: state.inAppFeedback
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
