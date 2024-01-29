@@ -32,7 +32,7 @@ export const ComposerInput = memo(
 		const { colors, theme } = useTheme();
 		const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
 		const focused = useFocused();
-		const { setFocused, setTrackingViewHeight, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
+		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = React.useRef('');
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
@@ -178,10 +178,6 @@ export const ComposerInput = memo(
 		const onBlur: TextInputProps['onBlur'] = () => {
 			setFocused(false);
 			stopAutocomplete();
-		};
-
-		const handleLayout: TextInputProps['onLayout'] = e => {
-			setTrackingViewHeight(e.nativeEvent.layout.height);
 		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
@@ -330,7 +326,6 @@ export const ComposerInput = memo(
 
 		return (
 			<TextInput
-				onLayout={handleLayout}
 				style={[styles.textInput, { color: colors.fontDefault }]}
 				placeholder={placeholder}
 				placeholderTextColor={colors.fontAnnotation}
