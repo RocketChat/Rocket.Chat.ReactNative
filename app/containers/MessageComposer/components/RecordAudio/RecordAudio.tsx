@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import React, { ReactElement, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system';
@@ -45,6 +45,9 @@ export const RecordAudio = (): ReactElement | null => {
 				recordingRef.current.setOnRecordingStatusUpdate(durationRef.current.onRecordingStatusUpdate);
 				await recordingRef.current.startAsync();
 			} catch (error: any) {
+				if (numberOfTriesRef.current === 0) {
+					Alert.alert(JSON.stringify(error));
+				}
 				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
 					if (numberOfTriesRef.current < 3) {
 						recordingRef.current = undefined;
