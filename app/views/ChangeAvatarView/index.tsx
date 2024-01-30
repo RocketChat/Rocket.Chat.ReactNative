@@ -130,7 +130,7 @@ const ChangeAvatarView = () => {
 		return navigation.goBack();
 	};
 
-	const pickImage = async () => {
+	const pickImage = async (isCam: boolean) => {
 		const options = {
 			cropping: true,
 			compressImageQuality: 0.8,
@@ -138,10 +138,11 @@ const ChangeAvatarView = () => {
 			cropperAvoidEmptySpaceAroundImage: false,
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
+			includeBase64: true,
+			useFrontCamera: true
 		};
 		try {
-			const response: Image = await ImagePicker.openPicker(options);
+			const response: Image = isCam ? await ImagePicker.openCamera(options) : await ImagePicker.openPicker(options);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
@@ -218,11 +219,19 @@ const ChangeAvatarView = () => {
 						/>
 					) : null}
 					<Button
+						title={I18n.t('Take_a_photo')}
+						type='secondary'
+						disabled={saving}
+						backgroundColor={colors.editAndUploadButtonAvatar}
+						onPress={() => pickImage(true)}
+						testID='change-avatar-view-upload-image'
+					/>
+					<Button
 						title={I18n.t('Upload_image')}
 						type='secondary'
 						disabled={saving}
 						backgroundColor={colors.editAndUploadButtonAvatar}
-						onPress={pickImage}
+						onPress={() => pickImage(false)}
 						testID='change-avatar-view-upload-image'
 					/>
 					{context === 'room' ? (
