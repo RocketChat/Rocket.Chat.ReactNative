@@ -1,4 +1,4 @@
-import { View, Text, Alert } from 'react-native';
+import { View, Text } from 'react-native';
 import React, { ReactElement, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system';
