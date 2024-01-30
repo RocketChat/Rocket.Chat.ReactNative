@@ -224,7 +224,7 @@ const ChangeAvatarView = () => {
 						disabled={saving}
 						backgroundColor={colors.editAndUploadButtonAvatar}
 						onPress={() => pickImage(true)}
-						testID='change-avatar-view-upload-image'
+						testID='change-avatar-view-take-a-photo'
 					/>
 					<Button
 						title={I18n.t('Upload_image')}
