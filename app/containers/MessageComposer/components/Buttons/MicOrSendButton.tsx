@@ -1,10 +1,10 @@
 import { Audio } from 'expo-av';
 import React, { useContext } from 'react';
 import { Alert } from 'react-native';
+import { PermissionStatus } from 'expo-camera';
 
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks';
-import { useUserPreferences } from '../../../../lib/methods';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
 import { useTheme } from '../../../../theme';
 import { useRoomContext } from '../../../../views/RoomView/context';
@@ -21,52 +21,32 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const { setRecordingAudio } = useMessageComposerApi();
 
-	const [alreadyAskedForAudioPermission, setAskedForAudioPermission] = useUserPreferences<boolean>(
-		'ALREADY_ASKED_FOR_AUDIO_PERMISSION'
-	);
-
-	const requestPermissionAndStartToRecordAudio = async (askedPermission: boolean) => {
-		// request permission
-		const { granted } = await Audio.requestPermissionsAsync();
-		if (granted) {
-			if (askedPermission) {
-				setRecordingAudio(true);
-			} else {
-				// double check on permission
-				await Audio.requestPermissionsAsync();
-				setRecordingAudio(true);
-			}
-		}
-	};
+	const requestPermissionAndStartToRecordAudio = () =>
+		Audio.requestPermissionsAsync()
+			.then(({ granted }) => setRecordingAudio(granted))
+			.catch(() => {});
 
 	const startRecording = async () => {
-		if (!alreadyAskedForAudioPermission) {
-			requestPermissionAndStartToRecordAudio(false);
-			setAskedForAudioPermission(true);
-			return;
-		}
-		const permission = await Audio.getPermissionsAsync();
-		if (permission.granted) {
-			setRecordingAudio(true);
-		} else if (permission.canAskAgain) {
-			requestPermissionAndStartToRecordAudio(true);
-		} else {
-			Alert.alert(
-				i18n.t('Microphone_access_needed_to_record_audio'),
-				i18n.t('Go_to_your_device_settings_and_allow_microphone'),
-				[
-					{
-						text: i18n.t('Cancel'),
-						style: 'cancel'
-					},
-					{
-						text: i18n.t('Settings'),
-						onPress: openAppSettings
-					}
-				],
-				{ cancelable: false }
-			);
-		}
+		const { status, granted, canAskAgain } = await Audio.getPermissionsAsync();
+		if (granted) return setRecordingAudio(true);
+		if (status === PermissionStatus.UNDETERMINED) return requestPermissionAndStartToRecordAudio();
+		if (canAskAgain) return requestPermissionAndStartToRecordAudio();
+
+		Alert.alert(
+			i18n.t('Microphone_access_needed_to_record_audio'),
+			i18n.t('Go_to_your_device_settings_and_allow_microphone'),
+			[
+				{
+					text: i18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: i18n.t('Settings'),
+					onPress: openAppSettings
+				}
+			],
+			{ cancelable: false }
+		);
 	};
 
 	if (micOrSend === 'send' || sharing) {
