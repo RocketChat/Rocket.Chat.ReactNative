@@ -130,7 +130,7 @@ const ChangeAvatarView = () => {
 		return navigation.goBack();
 	};
 
-	const pickImage = async (isCam: boolean) => {
+	const pickImage = async (isCam = false) => {
 		const options = {
 			cropping: true,
 			compressImageQuality: 0.8,
@@ -139,7 +139,7 @@ const ChangeAvatarView = () => {
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
 			includeBase64: true,
-			useFrontCamera: true
+			useFrontCamera: isCam
 		};
 		try {
 			const response: Image = isCam ? await ImagePicker.openCamera(options) : await ImagePicker.openPicker(options);
@@ -231,7 +231,7 @@ const ChangeAvatarView = () => {
 						type='secondary'
 						disabled={saving}
 						backgroundColor={colors.editAndUploadButtonAvatar}
-						onPress={() => pickImage(false)}
+						onPress={pickImage}
 						testID='change-avatar-view-upload-image'
 					/>
 					{context === 'room' ? (
