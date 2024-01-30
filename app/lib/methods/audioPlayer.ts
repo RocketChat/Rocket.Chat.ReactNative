@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
-import { getFilePathAudio } from '../../containers/message/hooks/useGetFilePathAudio';
+import { getFilePathAudio } from './getFilePathAudio';
 import EventEmitter from './helpers/events';
 import { store } from '../store/auxStore';
 import { getUserSelector } from '../../selectors/login';
@@ -99,15 +99,18 @@ class AudioPlayer {
 				.fetch();
 
 			if (message && message.attachments) {
-				const file = message.attachments[0];
+				const { audio_url: audioUrl, audio_type: audioType } = message.attachments[0];
 				const baseUrl = store.getState().server.server;
 				const cdnPrefix = store.getState().settings.CDN_PREFIX as string;
-				const user = getUserSelector(store.getState());
-
+				const { id: userId, token } = getUserSelector(store.getState());
+				const uri = getFilePathAudio({ audioUrl, audioType, baseUrl, cdnPrefix, userId, token });
+				if (!uri) {
+					return;
+				}
 				const nextAudioInSeqKey = getAudioKey({
 					msgId: message.id,
 					rid,
-					uri: getFilePathAudio(file.audio_url as string, file.audio_type as string, baseUrl, cdnPrefix, user.id, user.token)
+					uri
 				});
 
 				if (this.audioQueue?.[nextAudioInSeqKey]) {
