@@ -45,11 +45,9 @@ export const RecordAudio = (): ReactElement | null => {
 				recordingRef.current.setOnRecordingStatusUpdate(durationRef.current.onRecordingStatusUpdate);
 				await recordingRef.current.startAsync();
 			} catch (error: any) {
-				if (numberOfTriesRef.current === 0) {
-					Alert.alert(JSON.stringify(error));
-				}
+				// error only occurs on iOS devices
 				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
-					if (numberOfTriesRef.current < 3) {
+					if (numberOfTriesRef.current <= 5) {
 						recordingRef.current = undefined;
 						numberOfTriesRef.current += 1;
 						setTimeout(() => {
