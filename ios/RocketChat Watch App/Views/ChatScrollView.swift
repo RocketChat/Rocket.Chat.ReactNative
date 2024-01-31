@@ -12,17 +12,23 @@ struct ChatScrollView<Content: View>: View {
 	}
 	
 	var body: some View {
-		if #available(watchOS 10.0, *) {
-			ScrollView {
-				content()
-			}
-			.defaultScrollAnchor(.bottom)
-		} else {
-			ScrollView(showsIndicators: false) {
-				content()
-					.rotationEffect(.degrees(180))
-			}
-			.rotationEffect(.degrees(180))
+		ScrollView(showsIndicators: false) {
+			content()
+				.rotationEffect(.degrees(180))
 		}
+		.rotationEffect(.degrees(180))
 	}
 }
+
+// if #available(watchOS 10.0, *) {
+// 	ScrollView {
+// 		content()
+// 	}
+// 	.defaultScrollAnchor(.bottom)
+// } else {
+// 	ScrollView(showsIndicators: false) {
+// 		content()
+// 			.rotationEffect(.degrees(180))
+// 	}
+// 	.rotationEffect(.degrees(180))
+// }
