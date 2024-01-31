@@ -794,6 +794,8 @@
   "You_dont_have_permission_to_perform_this_action": "Você não tem permissão para realizar esta ação. Verifique com um administrador do espaço de trabalho.",
   "Jump_to_message": "Ir para mensagem",
   "Missed_call": "Chamada perdida",
+  "Microphone_access_needed_to_record_audio": "Acesso ao microfone necessário para gravar áudio",
+  "Go_to_your_device_settings_and_allow_microphone": "Vá para as configurações do seu dispositivo e permita o acesso ao microfone pelo aplicativo Rocket.Chat",
   "In_app_message_notifications": "Notificações de mensagens in-app",
   "Vibrate": "Vibrar"
 }
