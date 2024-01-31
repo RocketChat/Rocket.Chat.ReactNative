@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.46.0",
+	"version": "4.47.0",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -37,7 +37,6 @@
 		"@react-native-camera-roll/camera-roll": "5.6.1",
 		"@react-native-clipboard/clipboard": "^1.8.5",
 		"@react-native-community/art": "^1.2.0",
-		"@react-native-community/blur": "^4.1.0",
 		"@react-native-community/datetimepicker": "3.5.2",
 		"@react-native-community/hooks": "2.6.0",
 		"@react-native-community/netinfo": "6.0.0",
@@ -79,6 +78,7 @@
 		"jsrsasign": "^10.8.6",
 		"lint-staged": "11.1.0",
 		"lodash": "4.17.21",
+		"mitt": "^3.0.1",
 		"moment": "2.29.4",
 		"pretty-bytes": "5.6.0",
 		"prop-types": "15.7.2",
@@ -97,7 +97,7 @@
 		"react-native-fast-image": "RocketChat/react-native-fast-image.git#bump-version",
 		"react-native-file-viewer": "^2.1.4",
 		"react-native-gesture-handler": "2.4.2",
-		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
+		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#54e1e1c7e7d4b731c74ce9dd1bf9eb5148065092",
 		"react-native-image-progress": "^1.1.1",
 		"react-native-katex": "^0.5.1",
 		"react-native-linear-gradient": "^2.6.2",
@@ -118,12 +118,12 @@
 		"react-native-reanimated": "2.8.0",
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "3.2.0",
-		"react-native-screens": "3.13.1",
+		"react-native-screens": "3.29.0",
 		"react-native-scrollable-tab-view": "ptomasroos/react-native-scrollable-tab-view",
 		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto#0.5.2",
 		"react-native-skeleton-placeholder": "^5.2.3",
 		"react-native-slowlog": "^1.0.2",
-		"react-native-svg": "^13.8.0",
+		"react-native-svg": "13.8.0",
 		"react-native-ui-lib": "RocketChat/react-native-ui-lib#ef50151b8d9c1627ef527c620a1472868f9f4df8",
 		"react-native-url-polyfill": "2.0.0",
 		"react-native-vector-icons": "9.1.0",
@@ -138,7 +138,7 @@
 		"rn-extensions-share": "RocketChat/rn-extensions-share",
 		"rn-fetch-blob": "^0.12.0",
 		"rn-root-view": "RocketChat/rn-root-view",
-		"semver": "^7.3.8",
+		"semver": "7.3.8",
 		"transliteration": "^2.3.5",
 		"typed-redux-saga": "^1.5.0",
 		"ua-parser-js": "^1.0.32",
@@ -167,7 +167,7 @@
 		"@storybook/react-native": "^6.0.1-beta.7",
 		"@testing-library/jest-native": "^5.4.2",
 		"@testing-library/react-hooks": "^8.0.1",
-		"@testing-library/react-native": "^12.1.2",
+		"@testing-library/react-native": "^12.4.1",
 		"@types/bytebuffer": "^5.0.44",
 		"@types/ejson": "^2.1.3",
 		"@types/i18n-js": "^3.8.3",
@@ -211,7 +211,7 @@
 		"patch-package": "8.0.0",
 		"prettier": "^2.3.2",
 		"react-dom": "17.0.1",
-		"react-native-dotenv": "^3.4.8",
+		"react-native-dotenv": "3.4.8",
 		"react-test-renderer": "17.0.2",
 		"reactotron-redux": "3.1.3",
 		"reactotron-redux-saga": "4.2.3",
@@ -234,7 +234,7 @@
 			".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
 		},
 		"setupFilesAfterEnv": [
-			"./jest.setup.ts"
+			"./jest.setup.js"
 		]
 	},
 	"jest-junit": {

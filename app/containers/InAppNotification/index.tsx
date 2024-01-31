@@ -1,11 +1,13 @@
 import React, { ElementType, memo, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
+import { useDispatch } from 'react-redux';
 
 import NotifierComponent, { INotifierComponent } from './NotifierComponent';
 import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getActiveRoute } from '../../lib/methods/helpers/navigation';
 import { useAppSelector } from '../../lib/hooks';
+import { setInAppFeedback } from '../../actions/inAppFeedback';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
@@ -14,6 +16,8 @@ const InAppNotification = memo(() => {
 		subscribedRoom: state.room.subscribedRoom,
 		appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 	}));
+
+	const dispatch = useDispatch();
 
 	const show = (
 		notification: INotifierComponent['notification'] & {
@@ -30,7 +34,13 @@ const InAppNotification = memo(() => {
 		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
 		if (payload?.rid || notification.customNotification) {
-			if (payload?.rid === subscribedRoom || route?.name === 'JitsiMeetView' || payload?.message?.t === 'videoconf') return;
+			if (route?.name === 'JitsiMeetView' || payload?.message?.t === 'videoconf') return;
+
+			if (payload?.rid === subscribedRoom) {
+				const msgId = payload._id;
+				dispatch(setInAppFeedback(msgId));
+				return;
+			}
 
 			Notifier.showNotification({
 				showEasing: Easing.inOut(Easing.quad),

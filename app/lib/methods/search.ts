@@ -112,7 +112,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	// Meanwhile, the username provided by localSearchSubscription is in name's property
 	// Example: Diego Mello's subscription -> {fname: "Diego Mello",  name: "diego.mello"}
 	let usernames = [];
-	if (rid) {
+	if (rid && filterUsers) {
 		localSearchData = await localSearchUsersMessageByRid({ text, rid });
 		usernames = localSearchData.map(sub => sub.username as string);
 	} else {

@@ -76,7 +76,7 @@ describe('Ignore/Block User', () => {
 					.toBeVisible()
 					.withTimeout(5000);
 				await tapBack();
-				await waitFor(element(by.id('messagebox')))
+				await waitFor(element(by.id('message-composer')))
 					.toBeVisible()
 					.withTimeout(2000);
 				await tapBack();
