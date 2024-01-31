@@ -67,8 +67,8 @@ final class RetriableWatchSession: WatchSessionProtocol {
 			switch result {
 			case .success(let message):
 				completionHandler(.success(message))
-			case .failure where retries > 0:
-				session.sendMessage(completionHandler: completionHandler)
+			case .failure where self.retries > 0:
+				self.session.sendMessage(completionHandler: completionHandler)
 			case .failure(let error):
 				completionHandler(.failure(error))
 			}

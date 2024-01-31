@@ -35,7 +35,7 @@ extension MessageSender: MessageSending {
 				
 				let message = messageResponse.message
 				
-				database.process(updatedMessage: message, in: room)
+				self.database.process(updatedMessage: message, in: room)
 			})
 	}
 }
