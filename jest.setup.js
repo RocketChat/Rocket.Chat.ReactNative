@@ -68,9 +68,7 @@ jest.mock('@react-navigation/native', () => ({
 		navigate: jest.fn(),
 		addListener: jest.fn().mockImplementation((event, callback) => {
 			callback();
-			return {
-				remove: jest.fn()
-			};
+			return jest.fn();
 		})
 	})
 }));
