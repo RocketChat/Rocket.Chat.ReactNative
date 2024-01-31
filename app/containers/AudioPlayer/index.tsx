@@ -116,11 +116,13 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		InteractionManager.runAfterInteractions(async () => {
-			audioUri.current = await audioPlayer.loadAudio({ msgId, rid, uri: fileUri });
-			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-			audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
-		});
+		if (fileUri) {
+			InteractionManager.runAfterInteractions(async () => {
+				audioUri.current = await audioPlayer.loadAudio({ msgId, rid, uri: fileUri });
+				audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+				audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
+			});
+		}
 	}, [fileUri]);
 
 	useEffect(() => {
@@ -134,10 +136,15 @@ const AudioPlayer = ({
 	useEffect(() => {
 		const unsubscribeFocus = navigation.addListener('focus', () => {
 			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+			audioPlayer.addAudioRendered(audioUri.current);
+		});
+		const unsubscribeBlur = navigation.addListener('blur', () => {
+			audioPlayer.removeAudioRendered(audioUri.current);
 		});
 
 		return () => {
 			unsubscribeFocus();
+			unsubscribeBlur();
 		};
 	}, [navigation]);
 
