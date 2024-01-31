@@ -150,7 +150,7 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(AUDIO_FOCUSED, ({ audioFocused }: { audioFocused: string }) => {
-			setFocused(audioFocused === audioUri.current);
+			setFocused(!!audioFocused && audioFocused === audioUri.current);
 		});
 		return () => {
 			EventEmitter.removeListener(AUDIO_FOCUSED, listener);
