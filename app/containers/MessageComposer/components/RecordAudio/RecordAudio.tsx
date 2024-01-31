@@ -27,6 +27,7 @@ export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
 	const recordingRef = useRef<Audio.Recording>();
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
+	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
@@ -43,8 +44,21 @@ export const RecordAudio = (): ReactElement | null => {
 				await recordingRef.current.prepareToRecordAsync(RECORDING_SETTINGS);
 				recordingRef.current.setOnRecordingStatusUpdate(durationRef.current.onRecordingStatusUpdate);
 				await recordingRef.current.startAsync();
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				// error only occurs on iOS devices
+				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
+					if (numberOfTriesRef.current <= 5) {
+						recordingRef.current = undefined;
+						numberOfTriesRef.current += 1;
+						setTimeout(() => {
+							record();
+						}, 100);
+					} else {
+						console.error(error);
+					}
+				} else {
+					console.error(error);
+				}
 			}
 		};
 		record();
