@@ -2327,7 +2327,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
 				PRODUCT_NAME = Rocket.Chat;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -2374,7 +2374,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
 				PRODUCT_NAME = Rocket.Chat;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
