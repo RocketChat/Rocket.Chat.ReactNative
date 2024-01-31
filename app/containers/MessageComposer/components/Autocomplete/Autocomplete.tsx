@@ -8,7 +8,7 @@ import { useAutocomplete } from '../../hooks';
 import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
-import { useStyle, getBottom } from './styles';
+import { useStyle } from './styles';
 
 export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
 	const { rid } = useRoomContext();
@@ -23,12 +23,11 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
+	const viewBottom = trackingViewHeight + keyboardHeight + (keyboardHeight > 0 ? 0 : bottom) - 4;
 
 	if (items.length === 0 || !type) {
 		return null;
 	}
-
-	const viewBottom = getBottom(trackingViewHeight, keyboardHeight, bottom);
 
 	if (type !== '/preview') {
 		return (
