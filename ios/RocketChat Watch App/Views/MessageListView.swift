@@ -13,6 +13,8 @@ struct MessageListView: View {
 	
 	@State private var lastOpen: Date?
 	
+	@Environment(\.scenePhase) private var scenePhase
+	
 	@FetchRequest<Message> private var messages: FetchedResults<Message>
 	
 	init(
@@ -75,6 +77,18 @@ struct MessageListView: View {
 			}
 			.onDisappear {
 				messagesLoader.stop()
+			}
+			.onChange(of: scenePhase) { phase in
+				switch phase {
+				case .active:
+					guard let roomID = room.id else { return }
+					
+					messagesLoader.start(on: roomID)
+				case .background, .inactive:
+					messagesLoader.stop()
+				@unknown default:
+					break
+				}
 			}
 		}
 	}

@@ -34,10 +34,10 @@ struct ServerListView: View {
 			switch state {
 			case .loading:
 				ProgressView()
-			case .loaded:
-				serverList
 			case .loaded where servers.isEmpty:
 				RetryView("No Connected servers.", action: loadServers)
+			case .loaded:
+				serverList
 			case .error(let error) where error == .locked:
 				RetryView("Please unlock your iPhone.", action: loadServers)
 			case .error(let error) where error == .unactive:

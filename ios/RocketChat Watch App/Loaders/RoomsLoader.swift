@@ -61,6 +61,8 @@ final class RoomsLoader {
 
 extension RoomsLoader: RoomsLoading {
 	func start(in url: URL) {
+		stop()
+		
 		guard let server = serversDB.server(url: url) else { return }
 		
 		loadRooms(in: server)

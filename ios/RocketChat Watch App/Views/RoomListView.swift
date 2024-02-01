@@ -10,6 +10,8 @@ struct RoomListView: View {
 	
 	private let server: Server
 	
+	@Environment(\.scenePhase) private var scenePhase
+	
 	@FetchRequest<Room> private var rooms: FetchedResults<Room>
 	
 	init(server: Server) {
@@ -41,8 +43,17 @@ struct RoomListView: View {
 		.onDisappear {
 			roomsLoader.stop()
 		}
+		.onChange(of: scenePhase) { phase in
+			switch phase {
+			case .active:
+				roomsLoader.start(in: server.url)
+			case .background, .inactive:
+				roomsLoader.stop()
+			@unknown default:
+				break
+			}
+		}
 		.navigationTitle("Rooms")
-		.navigationBarTitleDisplayMode(.inline)
 		.toolbar {
 			ToolbarItem(placement: .automatic) {
 				Button("Servers") {
