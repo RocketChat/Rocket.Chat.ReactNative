@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -14,13 +14,17 @@ import { styles } from './styles';
 import { LEARN_MORE_URL } from './constants';
 import { selectServerRequest } from '../../actions/server';
 
+const checkAgainTimeout = 3000;
+
 export const SupportedVersionsExpired = () => {
 	const { colors } = useTheme();
+	const [checking, setChecking] = useState(false);
 	const { name, server } = useAppSelector(state => state.server);
 	const dispatch = useDispatch();
 
 	const checkAgain = async () => {
 		try {
+			setChecking(true);
 			const serversDB = database.servers;
 			const serverRecord = await getServerById(server);
 			if (serverRecord) {
@@ -31,9 +35,13 @@ export const SupportedVersionsExpired = () => {
 					});
 				});
 				dispatch(selectServerRequest(server));
+				// forces loading state a little longer until redux is finished
+				await new Promise(res => setTimeout(res, checkAgainTimeout));
 			}
 		} catch (e) {
 			log(e);
+		} finally {
+			setChecking(false);
 		}
 	};
 
@@ -46,7 +54,7 @@ export const SupportedVersionsExpired = () => {
 				{I18n.t('Supported_versions_expired_title', { workspace_name: name })}
 			</Text>
 			<Text style={[styles.description, { color: colors.bodyText }]}>{I18n.t('Supported_versions_expired_description')}</Text>
-			<Button title={I18n.t('Check_again')} type='primary' onPress={checkAgain} />
+			<Button title={I18n.t('Check_again')} type='primary' onPress={checkAgain} loading={checking} />
 			<Button
 				title={I18n.t('Learn_more')}
 				type='secondary'
