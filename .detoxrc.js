@@ -57,7 +57,7 @@ module.exports = {
 		emulator: {
 			type: 'android.emulator',
 			device: {
-				avdName: 'Pixel_API_31_AOSP'
+				avdName: 'Pixel_4_API_31'
 			},
 			headless: process.env.CI ? true : false
 		}
