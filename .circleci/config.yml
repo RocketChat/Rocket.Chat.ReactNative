@@ -54,7 +54,7 @@ save-gems-cache: &save-gems-cache
 update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
-    echo "ruby-2.7.7" > ~/.ruby-version
+    rbenv install 2.7.7
     bundle install
   working_directory: ios
 
