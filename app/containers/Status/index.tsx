@@ -21,7 +21,7 @@ const StatusContainer = ({ id, style, status, size = 32, ...props }: IStatus): R
 	});
 
 	useEffect(() => {
-		if (connected && statusState === 'loading') {
+		if (connected && statusState === 'loading' && !status) {
 			getUserPresence(id);
 		}
 	}, [connected, statusState]);

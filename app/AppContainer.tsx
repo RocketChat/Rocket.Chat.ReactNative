@@ -58,15 +58,13 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 			}}
 		>
 			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
-				<>
-					{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
-					{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
-					{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
-						<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
-					) : null}
-					{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
-					{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
-				</>
+				{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
+				{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
+				{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
+					<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
+				) : null}
+				{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
+				{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
