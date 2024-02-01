@@ -805,5 +805,6 @@
   "Add_thread_reply": "Add thread reply",
   "Message_roomname": "Message {{roomName}}",
   "Microphone_access_needed_to_record_audio": "Microphone access needed to record audio",
-  "Go_to_your_device_settings_and_allow_microphone": "Go to your device settings and allow microphone access for Rocket.Chat"
+  "Go_to_your_device_settings_and_allow_microphone": "Go to your device settings and allow microphone access for Rocket.Chat",
+  "Check_again": "Check again"
 }
