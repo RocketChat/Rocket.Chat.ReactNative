@@ -31,8 +31,8 @@ import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
-StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
-StackNavigationProp<MasterDetailInsideStackParamList>
+	StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
+	StackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
@@ -43,7 +43,7 @@ const RoomInfoView = (): React.ReactElement => {
 	} = useRoute<TRoomInfoViewRouteProp>();
 	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
 
-	const [room, setRoom] = useState(roomParam);
+	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
 	const [roomUser, setRoomUser] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
@@ -225,7 +225,7 @@ const RoomInfoView = (): React.ReactElement => {
 		const params = {
 			rid: r?.rid,
 			name: getRoomTitle(r),
-			t: r?.t,
+			t: roomType,
 			roomUserId: getUidDirectMessage(r)
 		};
 

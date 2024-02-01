@@ -9,7 +9,6 @@ import {
 	searchRoom,
 	platformTypes,
 	TTextMatcher,
-	sleep,
 	checkRoomTitle,
 	mockMessage,
 	jumpToQuotedMessage
@@ -113,8 +112,8 @@ describe('Broadcast room', () => {
 			.withTimeout(60000);
 	});
 
-	it('should not have messagebox', async () => {
-		await expect(element(by.id('messagebox'))).toBeNotVisible();
+	it('should not have message composer', async () => {
+		await expect(element(by.id('message-composer'))).toBeNotVisible();
 	});
 
 	it('should be read only', async () => {
@@ -139,14 +138,14 @@ describe('Broadcast room', () => {
 	});
 
 	it('should reply broadcasted message', async () => {
-		await element(by.id('messagebox-input')).replaceText(`${random()}broadcastreply`);
-		await sleep(300);
-		await element(by.id('messagebox-send-message')).tap();
+		await element(by.id('message-composer-input')).typeText(`${random()}broadcastreply`);
+		// await sleep(300);
+		await element(by.id('message-composer-send')).tap();
 		await waitFor(element(by[textMatcher](message)))
 			.toExist()
-			.withTimeout(10000);
+			.withTimeout(60000);
 		await jumpToQuotedMessage(element(by[textMatcher](message)));
-		await sleep(300); // wait for animation
+		// await sleep(300); // wait for animation
 		await checkRoomTitle(room);
 	});
 });

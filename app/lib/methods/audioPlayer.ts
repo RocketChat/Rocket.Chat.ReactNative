@@ -1,5 +1,9 @@
 import { AVPlaybackStatus, Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 
+import EventEmitter from './helpers/events';
+
+export const AUDIO_FOCUSED = 'AUDIO_FOCUSED';
+
 const AUDIO_MODE = {
 	allowsRecordingIOS: false,
 	playsInSilentModeIOS: true,
@@ -42,6 +46,7 @@ class AudioPlayer {
 				try {
 					await this.audioQueue[audioKey]?.stopAsync();
 					this.audioPlaying = '';
+					EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: '' });
 				} catch {
 					// do nothing
 				}
@@ -62,6 +67,7 @@ class AudioPlayer {
 		await Audio.setAudioModeAsync(AUDIO_MODE);
 		await this.audioQueue[audioKey]?.playAsync();
 		this.audioPlaying = audioKey;
+		EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: audioKey });
 	}
 
 	async pauseAudio(audioKey: string) {
