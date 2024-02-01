@@ -3368,9 +3368,9 @@
     regenerator-runtime "^0.13.4"
 
 "@babel/runtime@^7.21.0":
-  version "7.23.8"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.8.tgz#8ee6fe1ac47add7122902f257b8ddf55c898f650"
-  integrity sha512-Y7KbAP984rn1VGMbGqKmBLio9V7y5Je9GvU4rQPCPinCyNfUcToxIXl06d59URp/F3LwinvODxab5N/G6qggkw==
+  version "7.23.9"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.9.tgz#47791a15e4603bb5f905bc0753801cf21d6345f7"
+  integrity sha512-0CX6F+BI2s9dkUqr08KFrAIZgNFj75rdBU/DjCyYLIaV/quFjkk6T+EJ2LkZHyZTbEV4L5p97mNkUsHl2wLFAw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -9365,15 +9365,15 @@ commondir@^1.0.1:
     pascalcase "^0.1.1"
     xss-filters "^1.2.6"
 
-"commonmark@git+https://github.com/RocketChat/commonmark.js.git":
-  version "0.29.0"
-  resolved "git+https://github.com/RocketChat/commonmark.js.git#5d293fe9ba83a3e6f842d5d3f41a9b57c35bea1f"
+commonmark@RocketChat/commonmark.js#bb03ae0b380152a3286f910fddc9d4d66a978ad4:
+  version "0.29.2"
+  resolved "https://codeload.github.com/RocketChat/commonmark.js/tar.gz/bb03ae0b380152a3286f910fddc9d4d66a978ad4"
   dependencies:
-    entities "~ 1.1.1"
-    mdurl "~ 1.0.1"
-    minimist "~ 1.2.0"
+    entities "~2.0"
+    mdurl "~1.0.1"
+    minimist ">=1.2.2"
     string.prototype.repeat "^0.2.0"
-    xregexp "4.1.1"
+    xregexp "^4.3.0"
 
 commons-validator-js@^1.0.237:
   version "1.0.1668"
@@ -10559,7 +10559,7 @@ enquirer@^2.3.5, enquirer@^2.3.6:
   dependencies:
     ansi-colors "^4.1.1"
 
-entities@^1.1.1, entities@^1.1.2, "entities@~ 1.1.1":
+entities@^1.1.1, entities@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
   integrity sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==
@@ -10573,6 +10573,11 @@ entities@^4.2.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-4.4.0.tgz#97bdaba170339446495e653cfd2db78962900174"
   integrity sha512-oYp7156SP8LkeGD0GF85ad1X9Ai79WtRsZ2gxJqtBuzH+98YUV6jkHEKlZkMbcrjJjIVJNIDP/3WL9wQkoPbWA==
+
+entities@~2.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.3.tgz#5c487e5742ab93c15abb5da22759b8590ec03b7f"
+  integrity sha512-MyoZ0jgnLvB2X3Lg5HqpFmn1kybDiIfEQmKzTb5apr51Rb+T3KdmMiqa70T+bhGnyv7bQ6WMj2QMHpGMmlrUYQ==
 
 env-editor@^0.4.1:
   version "0.4.2"
@@ -15101,7 +15106,7 @@ mdn-data@2.0.14:
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.14.tgz#7113fc4281917d63ce29b43446f701e68c25ba50"
   integrity sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow==
 
-mdurl@^1.0.0, "mdurl@~ 1.0.1":
+mdurl@^1.0.0, mdurl@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
   integrity sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
@@ -15638,7 +15643,12 @@ minimatch@^5.0.1:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5, minimist@^1.2.6, "minimist@~ 1.2.0":
+minimist@>=1.2.2:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
+  integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
+
+minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5, minimist@^1.2.6:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
   integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
@@ -19681,7 +19691,7 @@ string.prototype.padstart@^3.0.0:
 string.prototype.repeat@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/string.prototype.repeat/-/string.prototype.repeat-0.2.0.tgz#aba36de08dcee6a5a337d49b2ea1da1b28fc0ecf"
-  integrity sha1-q6Nt4I3O5qWjN9SbLqHaGyj8Ds8=
+  integrity sha512-1BH+X+1hSthZFW+X+JaUkjkkUPwIlLEMJBLANN3hOob3RhEk5snLWNECDnYbgn/m5c5JV7Ersu1Yubaf+05cIA==
 
 string.prototype.trimend@^1.0.0:
   version "1.0.1"
@@ -21556,15 +21566,17 @@ xmldom-sre@0.1.31:
   resolved "https://registry.yarnpkg.com/xmldom-sre/-/xmldom-sre-0.1.31.tgz#10860d5bab2c603144597d04bf2c4980e98067f4"
   integrity sha512-f9s+fUkX04BxQf+7mMWAp5zk61pciie+fFLC9hX9UVvCeJQfNHRHXpeo5MPcR0EUf57PYLdt+ZO4f3Ipk2oZUw==
 
-xregexp@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.1.1.tgz#eb8a032aa028d403f7b1b22c47a5f16c24b21d8d"
-  integrity sha512-QJ1gfSUV7kEOLfpKFCjBJRnfPErUzkNKFMso4kDSmGpp3x6ZgkyKf74inxI7PnnQCFYq5TqYJCd7DrgDN8Q05A==
-
 xregexp@5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-5.0.2.tgz#798aa7757836f39cdbdeeba3daf94d75f7a9dcc1"
   integrity sha512-JPNfN40YMNSDxZrahMrmtNH1QqPJp0/qNeEJM2nnOlhcBdfCCjekPYFV2OnwKxwvpEYglH1RBotbpRRaEuCG8Q==
+  dependencies:
+    "@babel/runtime-corejs3" "^7.12.1"
+
+xregexp@^4.3.0:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.4.1.tgz#c84a88fa79e9ab18ca543959712094492185fe65"
+  integrity sha512-2u9HwfadaJaY9zHtRRnH6BY6CQVNQKkYm3oLtC9gJXXzfsbACg5X5e4EZZGVAH+YIfa+QA9lsFQTTe3HURF3ag==
   dependencies:
     "@babel/runtime-corejs3" "^7.12.1"
 
