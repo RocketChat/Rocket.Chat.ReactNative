@@ -905,7 +905,7 @@ export const removePushToken = (): Promise<boolean | void> => {
 	return Promise.resolve();
 };
 
-export const pushTest = (): Promise<{ message: string; params: number[] }> => sdk.methodCallWrapper('push_test');
+export const pushTest = () => sdk.post('push.test');
 
 // RC 6.5.0
 export const pushInfo = () => sdk.get('push.info');

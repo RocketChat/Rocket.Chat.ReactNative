@@ -820,5 +820,6 @@
   "Go_to_your_device_settings_and_allow_microphone": "Vá para as configurações do seu dispositivo e permita o acesso ao microfone pelo aplicativo Rocket.Chat",
   "In_app_message_notifications": "Notificações de mensagens in-app",
   "Vibrate": "Vibrar",
-  "Check_again": "Verificar novamente"
+  "Check_again": "Verificar novamente",
+  "error-no-tokens-for-this-user": "Não existem tokens para este usuário"
 }

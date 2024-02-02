@@ -82,9 +82,11 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		let message = '';
 		try {
 			const result = await Services.pushTest();
-			message = I18n.t('Your_push_was_sent_to_s_devices', { s: result.params[0] });
+			if (result.success) {
+				message = I18n.t('Your_push_was_sent_to_s_devices', { s: result.tokensCount });
+			} 
 		} catch (error: any) {
-			message = I18n.isTranslated(error?.error) ? I18n.t(error?.error) : error?.message;
+			message = I18n.isTranslated(error?.data?.errorType) ? I18n.t(error?.data?.errorType) : error?.data?.error;
 		} finally {
 			Alert.alert(I18n.t('Test_push_notification'), message);
 		}

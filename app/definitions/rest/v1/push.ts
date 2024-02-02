@@ -18,4 +18,7 @@ export type PushEndpoints = {
 	'push.info': {
 		GET: () => TPushInfo;
 	};
+	'push.test': {
+		POST: () => { tokensCount: number };
+	};
 };
