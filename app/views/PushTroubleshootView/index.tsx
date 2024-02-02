@@ -15,8 +15,6 @@ import { compareServerVersion, isIOS, showErrorAlert } from '../../lib/methods/h
 import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { Services } from '../../lib/services';
-// TODO: This will be used in the near future when the consumption percentage is implemented on the server.
-// import ListPercentage from './components/ListPercentage';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
@@ -33,9 +31,6 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 			defaultPushGateway: state.troubleshootingNotification.defaultPushGateway,
 			foreground: state.app.foreground,
 			serverVersion: state.server.version
-			// TODO: This will be used in the near future when the consumption percentage is implemented on the server.
-			// isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
-			// consumptionPercentage: state.troubleshootingNotification.consumptionPercentage,
 		})
 	);
 
@@ -65,11 +60,6 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 		);
 	};
 
-	// TODO: This will be used in the near future when the consumption percentage is implemented on the server.
-	// const alertWorkspaceConsumption = () => {
-	// 	Alert.alert(I18n.t('Push_consumption_alert_title'), I18n.t('Push_consumption_alert_description'));
-	// };
-
 	const goToNotificationSettings = () => {
 		if (isIOS) {
 			Linking.openURL('app-settings:');
@@ -84,7 +74,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 			const result = await Services.pushTest();
 			if (result.success) {
 				message = I18n.t('Your_push_was_sent_to_s_devices', { s: result.tokensCount });
-			} 
+			}
 		} catch (error: any) {
 			message = I18n.isTranslated(error?.data?.errorType) ? I18n.t(error?.data?.errorType) : error?.data?.error;
 		} finally {
@@ -119,21 +109,6 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 					/>
 					<List.Separator />
 				</CustomListSection>
-
-				{/* TODO: This will be used in the near future when the consumption percentage is implemented on the server.
-				{isCommunityEdition ? (
-					<List.Section title='Community_edition_push_quota'>
-						<List.Separator />
-						<ListPercentage
-							title='Workspace_consumption'
-							onPress={alertWorkspaceConsumption}
-							testID='push-troubleshoot-view-workspace-consumption'
-							value={consumptionPercentage}
-						/>
-						<List.Separator />
-						<List.Info info='Workspace_consumption_description' />
-					</List.Section>
-				) : null} */}
 
 				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') ? (
 					<CustomListSection
