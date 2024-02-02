@@ -31,11 +31,16 @@ function* request() {
 		log(e);
 	} finally {
 		// If Any of the items that can have red values: notification settings, CE quota, or gateway connection; the red icon should show.
-		// Then inAlertNotification has to be true
-		const inAlertNotification =
+		// Then highlightTroubleshooting has to be true
+		const highlightTroubleshooting =
 			!deviceNotificationEnabled || (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') && !pushGatewayEnabled);
 		yield put(
-			setTroubleshootingNotification({ deviceNotificationEnabled, defaultPushGateway, pushGatewayEnabled, inAlertNotification })
+			setTroubleshootingNotification({
+				deviceNotificationEnabled,
+				defaultPushGateway,
+				pushGatewayEnabled,
+				highlightTroubleshooting
+			})
 		);
 	}
 }

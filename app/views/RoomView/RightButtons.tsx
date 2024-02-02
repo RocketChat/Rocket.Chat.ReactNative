@@ -46,7 +46,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	rid?: string;
 	theme?: TSupportedThemes;
 	colors?: TColors;
-	inAlertNotification: boolean;
+	highlightTroubleshooting: boolean;
 }
 
 interface IRigthButtonsState {
@@ -95,7 +95,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions, theme, inAlertNotification } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme, highlightTroubleshooting } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -111,7 +111,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (nextState.isFollowingThread !== isFollowingThread) {
 			return true;
 		}
-		if (nextProps.inAlertNotification !== inAlertNotification) {
+		if (nextProps.highlightTroubleshooting !== highlightTroubleshooting) {
 			return true;
 		}
 		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
@@ -301,12 +301,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	goToNotification = () => {
 		const { room } = this;
-		const { rid, navigation, isMasterDetail, inAlertNotification } = this.props;
+		const { rid, navigation, isMasterDetail, highlightTroubleshooting } = this.props;
 
 		if (!rid || !room) {
 			return;
 		}
-		if (!inAlertNotification && room) {
+		if (!highlightTroubleshooting && room) {
 			if (isMasterDetail) {
 				navigation.navigate('ModalStackNavigator', {
 					screen: 'NotificationPrefView',
@@ -357,7 +357,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, inAlertNotification } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, highlightTroubleshooting } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -383,7 +383,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return (
 			<HeaderButton.Container>
 				<HeaderButton.Item
-					color={inAlertNotification ? colors!.fontDanger : colors!.headerTintColor}
+					color={highlightTroubleshooting ? colors!.fontDanger : colors!.headerTintColor}
 					iconName='notification-disabled'
 					onPress={this.goToNotification}
 					testID='room-view-push-troubleshoot'
@@ -408,7 +408,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	threadsEnabled: state.settings.Threads_enabled as boolean,
 	isMasterDetail: state.app.isMasterDetail,
 	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
-	inAlertNotification: state.troubleshootingNotification.inAlertNotification
+	highlightTroubleshooting: state.troubleshootingNotification.highlightTroubleshooting
 });
 
 export default connect(mapStateToProps)(withTheme(RightButtonsContainer));
