@@ -16,6 +16,10 @@ export default StyleSheet.create({
 	contentContainer: {
 		flex: 1
 	},
+	messageContainer:{
+	    flexDirection:"row",
+		alignItems:"center"
+	},
 	messageContent: {
 		flex: 1,
 		marginLeft: 46

@@ -19,7 +19,7 @@ const mentions = {
 	tunreadColor: '#1d74f5',
 	mentionMeColor: '#F5455C',
 	mentionGroupColor: '#F38C39',
-	mentionOtherColor: '#F3BE08'
+	mentionOtherColor: '#titleF3BE08'
 };
 
 const callButtons = {
