@@ -20,13 +20,14 @@ function* request() {
 	let defaultPushGateway = false;
 	let pushGatewayEnabled = false;
 	try {
-		const { authorizationStatus } = yield* call(notifee.getNotificationSettings);
+		const { authorizationStatus } = yield * call(notifee.getNotificationSettings);
 		deviceNotificationEnabled = authorizationStatus > 0;
-		const pushInfoResult = yield* call(pushInfo);
+		const pushInfoResult = yield * call(pushInfo);
 		if (pushInfoResult.success) {
 			pushGatewayEnabled = pushInfoResult.pushGatewayEnabled;
 			defaultPushGateway = pushInfoResult.defaultPushGateway;
 		}
+		// TODO: Need to request the information of push quota and if the server is a community edition
 	} catch (e) {
 		log(e);
 	} finally {
