@@ -77,7 +77,8 @@ const UserNotificationPreferencesView = () => {
 		} else {
 			navigation.navigate('PushTroubleshootView');
 		}
-		
+	};
+
 	const toggleInAppVibration = () => {
 		setInAppVibration(!inAppVibration);
 	};
