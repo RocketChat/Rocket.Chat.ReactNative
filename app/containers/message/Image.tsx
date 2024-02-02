@@ -15,7 +15,7 @@ import {
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import { useTheme } from '../../theme';
 import Markdown from '../markdown';
-import BlurComponent from './Components/BlurComponent';
+import BlurComponent from './Components/OverlayComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import styles from './styles';
@@ -44,7 +44,7 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 		<Touchable
 			disabled={disabled}
 			onPress={onPress}
-			style={[styles.imageContainer, styles.mustWrapBlur]}
+			style={styles.imageContainer}
 			background={Touchable.Ripple(colors.bannerBackground)}
 		>
 			{children}

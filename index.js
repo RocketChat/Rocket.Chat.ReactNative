@@ -24,7 +24,6 @@ if (!isFDroidBuild && isAndroid) {
 	require('./app/lib/notifications/videoConf/backgroundNotificationHandler');
 }
 
-
 AppRegistry.registerComponent(appName, () => require('./app/index').default);
 AppRegistry.registerComponent(shareName, () => require('./app/share').default);
 

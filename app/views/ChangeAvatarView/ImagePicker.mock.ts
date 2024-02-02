@@ -31,6 +31,31 @@ export function openPicker(_options: any): Promise<any> {
 	});
 }
 
+export function openCamera(_options: any): Promise<any> {
+	return Promise.resolve({
+		exif: null,
+		filename: 'IMG_0007.PNG',
+		path: `/tmp/react-native-image-crop-picker/${random(20)}.jpg`,
+		height: 152,
+		width: 152,
+		data: mockImageRocketBase64,
+		modificationDate: null,
+		localIdentifier: 'CEEE9916-81FD-4544-9D86-7044DB6C4374/L0/001',
+		size: 5006,
+		sourceURL: `/tmp/react-native-image-crop-picker/${random(20)}.jpg`,
+		mime: 'image/jpeg',
+		cropRect: {
+			width: 152,
+			height: 152,
+			x: 134,
+			y: 0
+		},
+		duration: null,
+		creationDate: '1679327100'
+	});
+}
+
 export default {
-	openPicker
+	openPicker,
+	openCamera
 };
