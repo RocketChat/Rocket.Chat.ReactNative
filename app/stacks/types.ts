@@ -1,15 +1,21 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 
-import { TThreadModel } from '../definitions';
-import { IAttachment } from '../definitions/IAttachment';
-import { ICannedResponse } from '../definitions/ICannedResponse';
-import { TDataSelect } from '../definitions/IDataSelect';
-import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../definitions/ILivechatTag';
-import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
-import { IServer } from '../definitions/IServer';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
-import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+import {
+	IAttachment,
+	ICannedResponse,
+	ILivechatDepartment,
+	ILivechatTag,
+	IMessage,
+	IServer,
+	ISubscription,
+	SubscriptionType,
+	TAnyMessageModel,
+	TChangeAvatarViewContext,
+	TDataSelect,
+	TMessageAction,
+	TSubscriptionModel,
+	TThreadModel
+} from '../definitions';
 import { ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
 
@@ -26,7 +32,7 @@ export type ChatsStackParamList = {
 				rid: string;
 				t: SubscriptionType;
 				tmid?: string;
-				message?: TMessageModel;
+				messageId?: string;
 				name?: string;
 				fname?: string;
 				prid?: string;
@@ -36,7 +42,6 @@ export type ChatsStackParamList = {
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
 				status?: string;
-				replyInDM?: TAnyMessageModel;
 		  }
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
@@ -173,6 +178,11 @@ export type ChatsStackParamList = {
 		room?: ISubscription;
 		t?: SubscriptionType;
 	};
+	ReportUserView: {
+		username: string;
+		userId: string;
+		name: string;
+	};
 };
 
 export type ProfileStackParamList = {
@@ -266,9 +276,8 @@ export type InsideStackParamList = {
 		text: string;
 		room: TSubscriptionModel;
 		thread: TThreadModel;
-		replying?: boolean;
-		replyingMessage?: IMessage;
-		closeReply?: Function;
+		action: TMessageAction;
+		selectedMessages: string[];
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;

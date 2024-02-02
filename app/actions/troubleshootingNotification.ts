@@ -5,8 +5,7 @@ import { ITroubleshootingNotification } from '../reducers/troubleshootingNotific
 
 type TSetTroubleshootingNotification = Action & { payload: Partial<ITroubleshootingNotification> };
 
-
-export type TActionTroubleshootingNotification = Action & TSetTroubleshootingNotification; 
+export type TActionTroubleshootingNotification = Action & TSetTroubleshootingNotification;
 
 export function requestTroubleshootingNotification(): Action {
 	return {

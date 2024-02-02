@@ -136,7 +136,7 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 	</ThumbButton>
 );
 
-const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
+const Thumbs = ({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
 	if (attachments?.length > 1) {
 		return (
 			<FlatList
@@ -152,11 +152,11 @@ const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRe
 						onRemove={() => onRemove(item)}
 					/>
 				)}
-				style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceLight }]}
 			/>
 		);
 	}
 	return null;
-});
+};
 
 export default Thumbs;

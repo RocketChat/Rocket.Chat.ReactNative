@@ -18,6 +18,7 @@ import { TActionPermissions } from '../../actions/permissions';
 import { TActionEnterpriseModules } from '../../actions/enterpriseModules';
 import { TActionVideoConf } from '../../actions/videoConf';
 import { TActionSupportedVersions } from '../../actions/supportedVersions';
+import { TInAppFeedbackAction } from '../../actions/inAppFeedback';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { IApp } from '../../reducers/app';
@@ -42,6 +43,7 @@ import { TUsersRoles } from '../../reducers/usersRoles';
 import { ITroubleshootingNotification } from '../../reducers/troubleshootingNotification';
 import { TActionTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import { ISupportedVersionsState } from '../../reducers/supportedVersions';
+import { IInAppFeedbackState } from '../../reducers/inAppFeedback';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -69,6 +71,7 @@ export interface IApplicationState {
 	usersRoles: TUsersRoles;
 	troubleshootingNotification: ITroubleshootingNotification;
 	supportedVersions: ISupportedVersionsState;
+	inAppFeedback: IInAppFeedbackState;
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -91,4 +94,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionVideoConf &
 	TActionUsersRoles &
 	TActionTroubleshootingNotification &
-	TActionSupportedVersions;
+	TActionSupportedVersions &
+	TInAppFeedbackAction;

@@ -25,6 +25,7 @@ import videoConf from './videoConf';
 import usersRoles from './usersRoles';
 import troubleshootingNotification from './troubleshootingNotification';
 import supportedVersions from './supportedVersions';
+import inAppFeedback from './inAppFeedback';
 
 export default combineReducers({
 	settings,
@@ -51,5 +52,6 @@ export default combineReducers({
 	videoConf,
 	usersRoles,
 	troubleshootingNotification,
-	supportedVersions
+	supportedVersions,
+	inAppFeedback
 });

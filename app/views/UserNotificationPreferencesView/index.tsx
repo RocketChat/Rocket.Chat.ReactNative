@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { Switch } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
@@ -15,6 +16,8 @@ import { useAppSelector } from '../../lib/hooks';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { useUserPreferences } from '../../lib/methods';
+import { NOTIFICATION_IN_APP_VIBRATION, SWITCH_TRACK_COLOR } from '../../lib/constants';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
@@ -22,6 +25,7 @@ type TNavigation = CompositeNavigationProp<
 >;
 
 const UserNotificationPreferencesView = () => {
+	const [inAppVibration, setInAppVibration] = useUserPreferences<boolean>(NOTIFICATION_IN_APP_VIBRATION, true);
 	const [preferences, setPreferences] = useState({} as INotificationPreferences);
 	const [loading, setLoading] = useState(true);
 
@@ -73,6 +77,9 @@ const UserNotificationPreferencesView = () => {
 		} else {
 			navigation.navigate('PushTroubleshootView');
 		}
+		
+	const toggleInAppVibration = () => {
+		setInAppVibration(!inAppVibration);
 	};
 
 	return (
@@ -114,6 +121,18 @@ const UserNotificationPreferencesView = () => {
 							/>
 							<List.Separator />
 							<List.Info info='Push_Notifications_Alert_Info' />
+						</List.Section>
+
+						<List.Section title='In_app_message_notifications'>
+							<List.Separator />
+							<List.Item
+								title='Vibrate'
+								testID='user-notification-preference-view-in-app-vibration'
+								right={() => (
+									<Switch value={inAppVibration} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleInAppVibration} />
+								)}
+							/>
+							<List.Separator />
 						</List.Section>
 
 						<List.Section title='Email'>

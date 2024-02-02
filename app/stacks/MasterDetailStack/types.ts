@@ -200,6 +200,11 @@ export type ModalStackParamList = {
 	SupportedVersionsWarning: {
 		showCloseButton?: boolean;
 	};
+	ReportUserView: {
+		username: string;
+		userId: string;
+		name: string;
+	};
 };
 
 export type MasterDetailInsideStackParamList = {

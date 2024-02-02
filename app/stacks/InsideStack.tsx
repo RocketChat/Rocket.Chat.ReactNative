@@ -11,6 +11,7 @@ import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
+import ReportUserView from '../views/ReportUserView';
 import RoomInfoEditView from '../views/RoomInfoEditView';
 import RoomMembersView from '../views/RoomMembersView';
 import SearchMessagesView from '../views/SearchMessagesView';
@@ -100,6 +101,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 			<ChatsStack.Screen name='SelectListView' component={SelectListView} options={SelectListView.navigationOptions} />
 			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} />
+			<ChatsStack.Screen name='ReportUserView' component={ReportUserView} />
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
 			<ChatsStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
