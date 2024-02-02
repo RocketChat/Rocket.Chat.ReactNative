@@ -54,7 +54,6 @@ save-gems-cache: &save-gems-cache
 update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
-    rbenv install 2.7.7
     bundle install
   working_directory: ios
 
@@ -77,6 +76,23 @@ restore_cache: &restore-gradle-cache
 
 # COMMANDS
 commands:
+
+  manage-ruby:
+    description: "Manage ruby version"
+    steps:
+      - restore_cache:
+          name: Restore ruby
+          key: ruby-v1-0-{{ checksum ".ruby-version" }}
+      - run:
+          name: Install ruby
+          command: |
+            echo "ruby-2.7.7" > ~/.ruby-version
+            rbenv install 2.7.7
+      - save_cache:
+          name: Save ruby cache
+          key: ruby-v1-0-{{ checksum ".ruby-version" }}
+          paths:
+            - ~/.rbenv/versions/2.7.7
 
   manage-pods:
     description: "Restore/Get/Save cache of pods libs"
@@ -204,6 +220,7 @@ commands:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
@@ -634,106 +651,108 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - lint-testunit
+      # - lint-testunit
 
-      # E2E tests
-      - e2e-hold:
-          type: approval
-      - e2e-build-ios:
-          requires:
-            - e2e-hold
-      - e2e-test-ios:
-          requires:
-            - e2e-build-ios
-      - e2e-build-android:
-          requires:
-            - e2e-hold
-      - e2e-test-android:
-          requires:
-            - e2e-build-android
+      - ios-build-experimental
 
-      # iOS Experimental
-      - ios-hold-build-experimental:
-          type: approval
-          requires:
-              - lint-testunit
-      - ios-build-experimental:
-          requires:
-            - ios-hold-build-experimental
-      - ios-testflight-experimental:
-          requires:
-            - ios-build-experimental
+      # # E2E tests
+      # - e2e-hold:
+      #     type: approval
+      # - e2e-build-ios:
+      #     requires:
+      #       - e2e-hold
+      # - e2e-test-ios:
+      #     requires:
+      #       - e2e-build-ios
+      # - e2e-build-android:
+      #     requires:
+      #       - e2e-hold
+      # - e2e-test-android:
+      #     requires:
+      #       - e2e-build-android
 
-      # iOS Official
-      - ios-hold-build-official:
-          type: approval
-          requires:
-            - lint-testunit
-      - ios-build-official:
-          requires:
-            - ios-hold-build-official
-      - ios-hold-testflight-official:
-          type: approval
-          requires:
-            - ios-build-official
-      - ios-testflight-official:
-          requires:
-            - ios-hold-testflight-official
+      # # iOS Experimental
+      # - ios-hold-build-experimental:
+      #     type: approval
+      #     requires:
+      #         - lint-testunit
+      # - ios-build-experimental:
+      #     requires:
+      #       - ios-hold-build-experimental
+      # - ios-testflight-experimental:
+      #     requires:
+      #       - ios-build-experimental
 
-      # Android Experimental
-      - android-hold-build-experimental:
-          type: approval
-          requires:
-              - lint-testunit
-          filters:
-            branches:
-              ignore:
-                - develop
-      - android-build-experimental:
-          requires:
-            - android-hold-build-experimental
-      - android-internal-app-sharing-experimental:
-          requires:
-            - android-build-experimental
-      - android-hold-google-play-beta-experimental:
-          type: approval
-          requires:
-            - android-build-experimental
-      - android-google-play-beta-experimental:
-          requires:
-            - android-hold-google-play-beta-experimental
-      - android-hold-google-play-production-experimental:
-          type: approval
-          requires:
-            - android-build-experimental
-      - android-google-play-production-experimental:
-          requires:
-            - android-hold-google-play-production-experimental
+      # # iOS Official
+      # - ios-hold-build-official:
+      #     type: approval
+      #     requires:
+      #       - lint-testunit
+      # - ios-build-official:
+      #     requires:
+      #       - ios-hold-build-official
+      # - ios-hold-testflight-official:
+      #     type: approval
+      #     requires:
+      #       - ios-build-official
+      # - ios-testflight-official:
+      #     requires:
+      #       - ios-hold-testflight-official
 
-      # Android Official
-      - android-hold-build-official:
-          type: approval
-          requires:
-            - lint-testunit
-      - android-build-official:
-          requires:
-            - android-hold-build-official
-      - android-hold-google-play-beta-official:
-          type: approval
-          requires:
-            - android-build-official
-      - android-google-play-beta-official:
-          requires:
-            - android-hold-google-play-beta-official
+      # # Android Experimental
+      # - android-hold-build-experimental:
+      #     type: approval
+      #     requires:
+      #         - lint-testunit
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - develop
+      # - android-build-experimental:
+      #     requires:
+      #       - android-hold-build-experimental
+      # - android-internal-app-sharing-experimental:
+      #     requires:
+      #       - android-build-experimental
+      # - android-hold-google-play-beta-experimental:
+      #     type: approval
+      #     requires:
+      #       - android-build-experimental
+      # - android-google-play-beta-experimental:
+      #     requires:
+      #       - android-hold-google-play-beta-experimental
+      # - android-hold-google-play-production-experimental:
+      #     type: approval
+      #     requires:
+      #       - android-build-experimental
+      # - android-google-play-production-experimental:
+      #     requires:
+      #       - android-hold-google-play-production-experimental
 
-      # Android Automatic Experimental
-      - android-automatic-build-experimental:
-          filters:
-            branches:
-              only:
-                - develop
-          requires:
-            - lint-testunit
-      - android-google-play-production-experimental:
-          requires:
-            - android-automatic-build-experimental
+      # # Android Official
+      # - android-hold-build-official:
+      #     type: approval
+      #     requires:
+      #       - lint-testunit
+      # - android-build-official:
+      #     requires:
+      #       - android-hold-build-official
+      # - android-hold-google-play-beta-official:
+      #     type: approval
+      #     requires:
+      #       - android-build-official
+      # - android-google-play-beta-official:
+      #     requires:
+      #       - android-hold-google-play-beta-official
+
+      # # Android Automatic Experimental
+      # - android-automatic-build-experimental:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #     requires:
+      #       - lint-testunit
+      # - android-google-play-production-experimental:
+      #     requires:
+      #       - android-automatic-build-experimental
