@@ -173,7 +173,7 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 
 const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
 
-export const mediaDownloadKey = (messageUrl: string) => `${sanitizeString(messageUrl)}`;
+export const mediaDownloadKey = (messageUrl: string) => `${sanitizeLikeString(messageUrl)}`;
 
 export function isDownloadActive(messageUrl: string): boolean {
 	return !!downloadQueue[mediaDownloadKey(messageUrl)];
