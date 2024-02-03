@@ -97,11 +97,9 @@ async function logout() {
 async function mockMessage(message: string, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
-	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
-	await element(by.id(input)).replaceText(message);
-	await sleep(300);
-	await element(by.id('messagebox-send-message')).tap();
-	await sleep(2000);
+	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
+	await element(by.id(input)).typeText(message);
+	await element(by.id('message-composer-send')).tap();
 	await waitFor(element(by[textMatcher](message)))
 		.toExist()
 		.withTimeout(60000);
@@ -124,7 +122,7 @@ async function searchRoom(
 	roomTestID?: string
 ) {
 	await waitFor(element(by.id('rooms-list-view')))
-		.toBeVisible()
+		.toExist()
 		.withTimeout(30000);
 	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
 	if (nativeElementAction === 'replaceText') {
@@ -163,6 +161,13 @@ async function tryTapping(
 		}
 		return tryTapping(theElement, timeout - 100);
 	}
+}
+
+async function jumpToQuotedMessage(theElement: Detox.IndexableNativeElement | Detox.NativeElement): Promise<void> {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	await tryTapping(theElement, 2000, true);
+	await element(by[textMatcher]('Jump to message')).atIndex(0).tap();
 }
 
 async function tapAndWaitFor(
@@ -255,5 +260,6 @@ export {
 	checkRoomTitle,
 	checkServer,
 	platformTypes,
-	expectValidRegisterOrRetry
+	expectValidRegisterOrRetry,
+	jumpToQuotedMessage
 };

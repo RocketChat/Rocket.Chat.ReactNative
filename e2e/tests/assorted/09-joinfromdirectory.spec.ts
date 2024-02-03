@@ -76,7 +76,6 @@ describe('Join room from directory', () => {
 				.withTimeout(2000);
 			await element(by.id('directory-view-dropdown')).tap();
 			await element(by.label('Users')).atIndex(0).tap();
-			await element(by.label('Search by')).atIndex(0).tap();
 			await navigateToRoom(otherUser.username);
 		});
 
@@ -88,7 +87,6 @@ describe('Join room from directory', () => {
 				.withTimeout(2000);
 			await element(by.id('directory-view-dropdown')).tap();
 			await element(by.label('Teams')).atIndex(0).tap();
-			await element(by.label('Search by')).atIndex(0).tap();
 			await navigateToRoom(team);
 		});
 	});

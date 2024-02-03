@@ -68,6 +68,10 @@ export const getFilename = ({
 };
 
 const getExtension = (type: MediaTypes, mimeType?: string, url?: string) => {
+	// support url with gif extension and mimetype undefined, ex.: using the app tenor and giphy.
+	if (url?.split('.').pop() === 'gif') {
+		return 'gif';
+	}
 	if (!mimeType) {
 		return defaultType[type];
 	}
@@ -206,6 +210,24 @@ export function downloadMediaFile({
 			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
+			if (result?.uri) {
+				return resolve(result.uri);
+			}
+			return reject();
+		} catch {
+			return reject();
+		} finally {
+			delete downloadQueue[downloadKey];
+		}
+	});
+}
+
+export function resumeMediaFile({ downloadUrl }: { downloadUrl: string }): Promise<string> {
+	return new Promise(async (resolve, reject) => {
+		let downloadKey = '';
+		try {
+			downloadKey = mediaDownloadKey(downloadUrl);
+			const result = await downloadQueue[downloadKey].resumeAsync();
 			if (result?.uri) {
 				return resolve(result.uri);
 			}
