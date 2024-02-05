@@ -597,6 +597,7 @@ jobs:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - save_cache: *save-npm-cache-mac
