@@ -22,8 +22,9 @@ interface IPushTroubleshootViewProps {
 
 const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {
 	const { colors } = useTheme();
-
 	const dispatch = useDispatch();
+	const [testPushNotificationsPermission] = usePermissions(['test-push-notifications']);
+
 	const { deviceNotificationEnabled, defaultPushGateway, pushGatewayEnabled, foreground, serverVersion } = useAppSelector(
 		state => ({
 			deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
@@ -33,8 +34,6 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 			serverVersion: state.server.version
 		})
 	);
-
-	const [testPushNotificationsPermission] = usePermissions(['test-push-notifications']);
 
 	useEffect(() => {
 		if (foreground) {
