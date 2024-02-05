@@ -7,12 +7,12 @@ import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
-import { loadDraftMessage, saveDraftMessage, fetchIsAllOrHere, getMentionRegexp } from '../helpers';
+import { loadDraftMessage, fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useSubscription } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
-import { getRoomTitle } from '../../../lib/methods/helpers';
+import { getRoomTitle, parseJson } from '../../../lib/methods/helpers';
 import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
@@ -24,17 +24,19 @@ import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector, usePrevious } from '../../../lib/hooks';
 import { ChatsStackParamList } from '../../../stacks/types';
+import { useAutoSaveDraft } from '../hooks/useDraft';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
+		const { rid, tmid, sharing, action, selectedMessages, restoreQuoteMessages } = useRoomContext();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = React.useRef('');
+		const firstRender = React.useRef(false);
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
@@ -47,29 +49,30 @@ export const ComposerInput = memo(
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
 
+		useAutoSaveDraft(textRef.current);
+
 		// Draft/Canned Responses
 		useEffect(() => {
 			const setDraftMessage = async () => {
 				const draftMessage = await loadDraftMessage({ rid, tmid });
 				if (draftMessage) {
-					setInput(draftMessage);
+					const parsedDraft = parseJson(draftMessage);
+					if (parsedDraft?.msg || parsedDraft?.quotes) {
+						setInput(parsedDraft.msg);
+						if (parsedDraft.quotes) restoreQuoteMessages?.(parsedDraft.quotes);
+					} else {
+						setInput(draftMessage);
+					}
 				}
 			};
 
 			if (sharing) return;
-
-			if (usedCannedResponse) {
-				setInput(usedCannedResponse);
-			} else if (action !== 'edit') {
+			if (usedCannedResponse) setInput(usedCannedResponse);
+			if (action !== 'edit' && !firstRender.current) {
+				firstRender.current = true;
 				setDraftMessage();
 			}
-
-			return () => {
-				if (action !== 'edit') {
-					saveDraftMessage({ rid, tmid, draftMessage: textRef.current });
-				}
-			};
-		}, [action, rid, tmid, usedCannedResponse]);
+		}, [action, rid, tmid, usedCannedResponse, firstRender.current]);
 
 		// Edit/quote
 		useEffect(() => {
@@ -91,7 +94,7 @@ export const ComposerInput = memo(
 				fetchMessageAndSetInput();
 				return;
 			}
-			if (action === 'quote' && selectedMessages.length === 1) {
+			if (action === 'quote' && selectedMessages.length) {
 				focus();
 			}
 		}, [action, selectedMessages]);

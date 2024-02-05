@@ -23,7 +23,7 @@ export const useChooseMedia = ({
 	permissionToUpload: boolean;
 }) => {
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
-	const { action, selectedMessages } = useRoomContext();
+	const { action } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {
@@ -128,8 +128,7 @@ export const useChooseMedia = ({
 				room,
 				thread,
 				attachments,
-				action,
-				selectedMessages
+				action
 			});
 		}
 	};

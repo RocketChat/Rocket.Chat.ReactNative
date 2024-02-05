@@ -743,6 +743,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessages: [messageId], action: 'quote' });
 	};
 
+	restoreQuoteMessages = (quotes: string[]) => {
+		this.setState({ selectedMessages: quotes, action: 'quote' });
+	};
+
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
@@ -1454,7 +1458,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
 					editCancel: this.onEditCancel,
 					editRequest: this.onEditRequest,
-					onSendMessage: this.handleSendMessage
+					onSendMessage: this.handleSendMessage,
+					restoreQuoteMessages: this.restoreQuoteMessages
 				}}
 			>
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
