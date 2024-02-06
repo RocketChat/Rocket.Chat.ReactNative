@@ -23,7 +23,7 @@ import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import { IServer, IShareAttachment, IUser, TMessageAction, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IApplicationState, IServer, IShareAttachment, IUser, TMessageAction, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
