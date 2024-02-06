@@ -6,7 +6,7 @@ orbs:
 
 macos: &macos
   macos:
-    xcode: "14.2.0"
+    xcode: "15.2.0"
   resource_class: macos.m1.medium.gen1
 
 bash-env: &bash-env
@@ -54,7 +54,6 @@ save-gems-cache: &save-gems-cache
 update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
-    echo "ruby-2.7.7" > ~/.ruby-version
     bundle install
   working_directory: ios
 
@@ -77,6 +76,27 @@ restore_cache: &restore-gradle-cache
 
 # COMMANDS
 commands:
+
+  manage-ruby:
+    description: "Manage ruby version"
+    steps:
+      - restore_cache:
+          name: Restore ruby
+          key: ruby-v2-{{ checksum ".ruby-version" }}
+      - run:
+          name: Install ruby
+          command: |
+            echo "ruby-2.7.7" > ~/.ruby-version
+            if [ -d ~/.rbenv/versions/2.7.7 ]; then
+              echo "Ruby already installed"
+            else
+              rbenv install 2.7.7
+            fi
+      - save_cache:
+          name: Save ruby cache
+          key: ruby-v2-{{ checksum ".ruby-version" }}
+          paths:
+            - ~/.rbenv/versions/2.7.7
 
   manage-pods:
     description: "Restore/Get/Save cache of pods libs"
@@ -204,6 +224,7 @@ commands:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
@@ -328,6 +349,7 @@ commands:
           at: ios
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
@@ -575,6 +597,7 @@ jobs:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - save_cache: *save-npm-cache-mac
