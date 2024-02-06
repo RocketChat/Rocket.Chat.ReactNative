@@ -31,7 +31,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, action, selectedMessages, restoreQuoteMessages } = useRoomContext();
+		const { rid, tmid, sharing, action, selectedMessages, setQuotesAndText } = useRoomContext();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
@@ -58,8 +58,7 @@ export const ComposerInput = memo(
 				if (draftMessage) {
 					const parsedDraft = parseJson(draftMessage);
 					if (parsedDraft?.msg || parsedDraft?.quotes) {
-						setInput(parsedDraft.msg);
-						if (parsedDraft.quotes) restoreQuoteMessages?.(parsedDraft.quotes);
+						setQuotesAndText?.(parsedDraft.msg, parsedDraft.quotes);
 					} else {
 						setInput(draftMessage);
 					}

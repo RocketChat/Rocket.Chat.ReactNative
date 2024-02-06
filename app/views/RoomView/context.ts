@@ -13,7 +13,8 @@ export interface IRoomContext {
 	editRequest?: (message: any) => void;
 	onRemoveQuoteMessage?: (messageId: string) => void;
 	onSendMessage?: Function;
-	restoreQuoteMessages?: (quotes: string[]) => void;
+	setQuotesAndText?: (text: string, quotes: string[]) => void;
+	getText?: () => string | undefined;
 }
 
 export const RoomContext = createContext<IRoomContext>({} as IRoomContext);

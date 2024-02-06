@@ -743,10 +743,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ selectedMessages: [messageId], action: 'quote' });
 	};
 
-	restoreQuoteMessages = (quotes: string[]) => {
-		this.setState({ selectedMessages: quotes, action: 'quote' });
-	};
-
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
@@ -1254,6 +1250,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
+	setQuotesAndText = (text: string, quotes: string[]) => {
+		if (quotes.length) this.setState({ selectedMessages: quotes, action: 'quote' });
+		else this.setState({ action: null, selectedMessages: [] });
+		this.messageComposerRef.current?.setInput(text || '');
+	};
+
+	getText = () => this.messageComposerRef.current?.getText();
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -1459,7 +1463,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					editCancel: this.onEditCancel,
 					editRequest: this.onEditRequest,
 					onSendMessage: this.handleSendMessage,
-					restoreQuoteMessages: this.restoreQuoteMessages
+					setQuotesAndText: this.setQuotesAndText,
+					getText: this.getText
 				}}
 			>
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
