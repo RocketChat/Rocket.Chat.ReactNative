@@ -16,7 +16,7 @@ import { getRoomTitle } from '../../../lib/methods/helpers';
 import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
-import { emitter } from '../emitter';
+import { emitter } from '../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods';

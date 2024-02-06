@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 
-import { TMarkdownStyle } from './interfaces';
+import { TMarkdownStyle } from '../../../containers/MessageComposer/interfaces';
 
 type Events = {
 	toolbarMention: undefined;
