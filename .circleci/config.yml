@@ -86,10 +86,10 @@ commands:
       - run:
           name: Install ruby
           command: |
+            echo "ruby-2.7.7" > ~/.ruby-version
             if [ -d ~/.rbenv/versions/2.7.7 ]; then
               echo "Ruby already installed"
             else
-              echo "ruby-2.7.7" > ~/.ruby-version
               rbenv install 2.7.7
             fi
       - save_cache:
