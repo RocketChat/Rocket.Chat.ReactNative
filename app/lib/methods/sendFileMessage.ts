@@ -198,8 +198,10 @@ const addTheFilePath = async (msgId: string, filePath: string, tmid?: string) =>
 	const msgCollection = db.get('messages');
 	try {
 		const messageRecord = await msgCollection.find(msgId);
-		messageRecord.prepareUpdate(m => (m.filePath = filePath));
-	} catch (e) {
+		await messageRecord.update(m => {
+			m.filePath = filePath;
+		});
+	} catch {
 		const msgSubscribe = msgCollection
 			.query(Q.where('id', msgId))
 			.observe()
@@ -214,8 +216,26 @@ const addTheFilePath = async (msgId: string, filePath: string, tmid?: string) =>
 			});
 	}
 
-	// if (tmid) {
-	// 	const threadMessagesCollection = db.get('thread_messages');
-
-	// }
+	if (tmid) {
+		const threadMessagesCollection = db.get('thread_messages');
+		try {
+			const threadMessageRecord = await threadMessagesCollection.find(msgId);
+			await threadMessageRecord.update(m => {
+				m.filePath = filePath;
+			});
+		} catch {
+			const threadMsgSubscribe = threadMessagesCollection
+				.query(Q.where('id', msgId))
+				.observe()
+				.subscribe(async threadMessage => {
+					if (threadMessage.length > 0) {
+						const threadMessageRecord = threadMessage[0];
+						await threadMessageRecord.update(m => {
+							m.filePath = filePath;
+						});
+						threadMsgSubscribe.unsubscribe();
+					}
+				});
+		}
+	}
 };

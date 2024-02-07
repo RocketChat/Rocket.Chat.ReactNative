@@ -200,7 +200,8 @@ export default appSchema({
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true },
-				{ name: 'e2e', type: 'string', isOptional: true }
+				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'file_path', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

@@ -78,6 +78,8 @@ export default class ThreadMessage extends Model {
 
 	@field('e2e') e2e;
 
+	@field('file_path') filePath;
+
 	asPlain() {
 		return {
 			id: this.id,
@@ -112,7 +114,8 @@ export default class ThreadMessage extends Model {
 			autoTranslate: this.autoTranslate,
 			translations: this.translations,
 			draftMessage: this.draftMessage,
-			e2e: this.e2e
+			e2e: this.e2e,
+			filePath: this.filePath
 		};
 	}
 }
