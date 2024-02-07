@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { BlockContext } from '@rocket.chat/ui-kit';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { BlockContext } from '@rocket.chat/ui-kit';
 
-import { TSupportedThemes, withTheme } from '../theme';
-import { themes } from '../lib/constants';
-import { FormTextInput } from '../containers/TextInput';
+import Button from '../containers/Button';
 import KeyboardView from '../containers/KeyboardView';
-import I18n from '../i18n';
+import SafeAreaView from '../containers/SafeAreaView';
+import { FormTextInput } from '../containers/TextInput';
 import { LISTENER } from '../containers/Toast';
+import { MultiSelect } from '../containers/UIKit/MultiSelect';
+import { IApplicationState, IUser } from '../definitions';
+import { ICustomFields, IInputsRefs, ILivechat, ITitle, TParams } from '../definitions/ILivechatEditView';
+import I18n from '../i18n';
+import { themes } from '../lib/constants';
+import { usePermissions } from '../lib/hooks';
 import EventEmitter from '../lib/methods/helpers/events';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
-import { getUserSelector } from '../selectors/login';
-import Button from '../containers/Button';
-import SafeAreaView from '../containers/SafeAreaView';
-import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
-import { IApplicationState, IUser } from '../definitions';
-import { ChatsStackParamList } from '../stacks/types';
-import sharedStyles from './Styles';
 import { Services } from '../lib/services';
-import { usePermissions } from '../lib/hooks';
+import { getUserSelector } from '../selectors/login';
+import { ChatsStackParamList } from '../stacks/types';
+import { TSupportedThemes, withTheme } from '../theme';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -231,6 +231,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
 						<FormTextInput
+							key={key}
 							label={key}
 							defaultValue={value}
 							inputRef={e => {
@@ -273,6 +274,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array: any) => (
 						<FormTextInput
+							key={key}
 							label={key}
 							defaultValue={value}
 							inputRef={e => {

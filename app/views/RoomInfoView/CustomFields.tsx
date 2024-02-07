@@ -8,7 +8,7 @@ const CustomFields = ({ customFields }: { customFields?: { [key: string]: string
 			<>
 				{Object.keys(customFields).map((title: string) => {
 					if (!customFields[title]) return null;
-					return <Item label={title} content={customFields[title]} />;
+					return <Item key={title} label={title} content={customFields[title]} />;
 				})}
 			</>
 		);

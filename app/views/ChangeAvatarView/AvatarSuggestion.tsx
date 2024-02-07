@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { IAvatar } from '../../definitions';
-import { Services } from '../../lib/services';
 import I18n from '../../i18n';
-import styles from './styles';
+import { Services } from '../../lib/services';
 import { useTheme } from '../../theme';
 import AvatarSuggestionItem from './AvatarSuggestionItem';
+import styles from './styles';
 
 const AvatarSuggestion = ({
 	onPress,
@@ -45,8 +45,8 @@ const AvatarSuggestion = ({
 				{username && resetAvatar ? (
 					<AvatarSuggestionItem text={`@${username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />
 				) : null}
-				{avatarSuggestions.slice(0, 7).map(item => (
-					<AvatarSuggestionItem item={item} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
+				{avatarSuggestions.slice(0, 7).map((item, index) => (
+					<AvatarSuggestionItem key={index} item={item} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
 				))}
 			</View>
 		</View>

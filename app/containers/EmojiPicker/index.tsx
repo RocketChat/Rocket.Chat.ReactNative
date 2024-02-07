@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import TabBar from './TabBar';
-import EmojiCategory from './EmojiCategory';
-import Footer from './Footer';
-import styles from './styles';
+import { ICustomEmojis, IEmoji } from '../../definitions';
 import { categories, emojisByCategory } from '../../lib/constants';
-import { useTheme } from '../../theme';
-import { IEmoji, ICustomEmojis } from '../../definitions';
 import { useAppSelector, useFrequentlyUsedEmoji } from '../../lib/hooks';
 import { addFrequentlyUsed } from '../../lib/methods';
-import { IEmojiPickerProps, EventTypes } from './interfaces';
+import { useTheme } from '../../theme';
+import EmojiCategory from './EmojiCategory';
+import Footer from './Footer';
+import TabBar from './TabBar';
+import { EventTypes, IEmojiPickerProps } from './interfaces';
+import styles from './styles';
 
 const EmojiPicker = ({
 	onItemClicked,
@@ -54,6 +54,7 @@ const EmojiPicker = ({
 		}
 		return (
 			<EmojiCategory
+				key={category}
 				parentWidth={parentWidth}
 				emojis={emojis}
 				onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}

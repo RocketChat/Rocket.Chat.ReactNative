@@ -1,9 +1,9 @@
+import { Code as CodeProps } from '@rocket.chat/message-parser';
 import React from 'react';
 import { View } from 'react-native';
-import { Code as CodeProps } from '@rocket.chat/message-parser';
 
-import styles from '../styles';
 import { useTheme } from '../../../theme';
+import styles from '../styles';
 import CodeLine from './CodeLine';
 
 interface ICodeProps {
@@ -23,10 +23,11 @@ const Code = ({ value }: ICodeProps): React.ReactElement => {
 				}
 			]}
 		>
-			{value.map(block => {
+			{value.map((block, index) => {
+				const key = `${block.type}-${index}`;
 				switch (block.type) {
 					case 'CODE_LINE':
-						return <CodeLine value={block.value} />;
+						return <CodeLine key={key} value={block.value} />;
 					default:
 						return null;
 				}
