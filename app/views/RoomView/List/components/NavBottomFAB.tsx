@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -27,65 +27,60 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = ({
-	visible,
-	onPress,
-	isThread
-}: {
-	visible: boolean;
-	onPress: Function;
-	isThread: boolean;
-}): React.ReactElement | null => {
-	const { colors } = useTheme();
-	const [keyboardHeight, setKeyboardHeight] = useState(0);
-	const [composerHeight, setComposerHeight] = useState(0);
-	const { bottom } = useSafeAreaInsets();
+const NavBottomFAB = memo(
+	({ visible, onPress, isThread }: { visible: boolean; onPress: Function; isThread: boolean }): React.ReactElement | null => {
+		console.count(`NavBottomFAB${isThread ? 'Thread' : ''}`);
+		const { colors } = useTheme();
+		const [keyboardHeight, setKeyboardHeight] = useState(0);
+		const [composerHeight, setComposerHeight] = useState(0);
+		const { bottom } = useSafeAreaInsets();
 
-	useEffect(() => {
-		const keyboardEvent: TKeyEmitterEvent = `setKeyboardHeight${isThread ? 'Thread' : ''}`;
-		const composerEvent: TKeyEmitterEvent = `setComposerHeight${isThread ? 'Thread' : ''}`;
-		emitter.on(keyboardEvent, height => {
-			setKeyboardHeight(height);
-		});
-		emitter.on(composerEvent, height => {
-			setComposerHeight(height);
-		});
+		useEffect(() => {
+			const keyboardEvent: TKeyEmitterEvent = `setKeyboardHeight${isThread ? 'Thread' : ''}`;
+			const composerEvent: TKeyEmitterEvent = `setComposerHeight${isThread ? 'Thread' : ''}`;
+			emitter.on(keyboardEvent, height => {
+				setKeyboardHeight(height);
+			});
+			emitter.on(composerEvent, height => {
+				setComposerHeight(height);
+			});
 
-		return () => {
-			emitter.off(keyboardEvent);
-			emitter.off(composerEvent);
-		};
-	}, [isThread]);
+			return () => {
+				emitter.off(keyboardEvent);
+				emitter.off(composerEvent);
+			};
+		}, [isThread]);
 
-	if (!visible) {
-		return null;
+		if (!visible) {
+			return null;
+		}
+
+		return (
+			<View
+				style={[
+					styles.container,
+					{
+						...Platform.select({
+							ios: {
+								bottom: keyboardHeight + composerHeight + (keyboardHeight ? 0 : bottom) + EDGE_DISTANCE
+							},
+							android: {
+								top: 15,
+								scaleY: -1
+							}
+						})
+					}
+				]}
+				testID='nav-jump-to-bottom'
+			>
+				<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: colors.backgroundColor }]}>
+					<View style={[styles.content, { borderColor: colors.borderColor }]}>
+						<CustomIcon name='chevron-down' color={colors.auxiliaryTintColor} size={36} />
+					</View>
+				</Touch>
+			</View>
+		);
 	}
-
-	return (
-		<View
-			style={[
-				styles.container,
-				{
-					...Platform.select({
-						ios: {
-							bottom: keyboardHeight + composerHeight + (keyboardHeight ? 0 : bottom) + EDGE_DISTANCE
-						},
-						android: {
-							top: 15,
-							scaleY: -1
-						}
-					})
-				}
-			]}
-			testID='nav-jump-to-bottom'
-		>
-			<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: colors.backgroundColor }]}>
-				<View style={[styles.content, { borderColor: colors.borderColor }]}>
-					<CustomIcon name='chevron-down' color={colors.auxiliaryTintColor} size={36} />
-				</View>
-			</Touch>
-		</View>
-	);
-};
+);
 
 export default NavBottomFAB;
