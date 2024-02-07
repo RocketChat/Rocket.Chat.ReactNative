@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import Touch from '../../../../containers/Touch';
+import { emitter, TKeyEmitterEvent } from '../../../../lib/methods/helpers/emitter';
+
+const EDGE_DISTANCE = 15;
 
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		right: 15
+		right: EDGE_DISTANCE
 	},
 	button: {
 		borderRadius: 25
@@ -33,6 +37,25 @@ const NavBottomFAB = ({
 	isThread: boolean;
 }): React.ReactElement | null => {
 	const { colors } = useTheme();
+	const [keyboardHeight, setKeyboardHeight] = useState(0);
+	const [composerHeight, setComposerHeight] = useState(0);
+	const { bottom } = useSafeAreaInsets();
+
+	useEffect(() => {
+		const keyboardEvent: TKeyEmitterEvent = `setKeyboardHeight${isThread ? 'Thread' : ''}`;
+		const composerEvent: TKeyEmitterEvent = `setComposerHeight${isThread ? 'Thread' : ''}`;
+		emitter.on(keyboardEvent, height => {
+			setKeyboardHeight(height);
+		});
+		emitter.on(composerEvent, height => {
+			setComposerHeight(height);
+		});
+
+		return () => {
+			emitter.off(keyboardEvent);
+			emitter.off(composerEvent);
+		};
+	}, [isThread]);
 
 	if (!visible) {
 		return null;
@@ -45,7 +68,7 @@ const NavBottomFAB = ({
 				{
 					...Platform.select({
 						ios: {
-							bottom: 100 + (isThread ? 40 : 0)
+							bottom: keyboardHeight + composerHeight + (keyboardHeight ? 0 : bottom) + EDGE_DISTANCE
 						},
 						android: {
 							top: 15,
