@@ -289,6 +289,7 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	},
@@ -370,6 +371,7 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	},
@@ -451,6 +453,7 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	}
