@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
 
 const NavBottomFAB = memo(
 	({ visible, onPress, isThread }: { visible: boolean; onPress: Function; isThread: boolean }): React.ReactElement | null => {
-		console.count(`NavBottomFAB${isThread ? 'Thread' : ''}`);
 		const { colors } = useTheme();
 		const [keyboardHeight, setKeyboardHeight] = useState(0);
 		const [composerHeight, setComposerHeight] = useState(0);
@@ -39,17 +38,21 @@ const NavBottomFAB = memo(
 			const keyboardEvent: TKeyEmitterEvent = `setKeyboardHeight${isThread ? 'Thread' : ''}`;
 			const composerEvent: TKeyEmitterEvent = `setComposerHeight${isThread ? 'Thread' : ''}`;
 			emitter.on(keyboardEvent, height => {
-				setKeyboardHeight(height);
+				if (height !== keyboardHeight) {
+					setKeyboardHeight(height);
+				}
 			});
 			emitter.on(composerEvent, height => {
-				setComposerHeight(height);
+				if (height !== composerHeight) {
+					setComposerHeight(height);
+				}
 			});
 
 			return () => {
 				emitter.off(keyboardEvent);
 				emitter.off(composerEvent);
 			};
-		}, [isThread]);
+		}, [isThread, keyboardHeight, composerHeight]);
 
 		if (!visible) {
 			return null;
