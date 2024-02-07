@@ -19,10 +19,10 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 				<View style={styles.row}>
 					<Text style={[styles.text, { color: colors.bodyText }]}>
 						<CustomIcon
-							testID={item.status ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
+							testID={item.status ? 'task-list-checked' : 'task-list-unchecked'}
 							name={item.status ? 'checkbox-checked' : 'checkbox-unchecked'}
 							size={24}
-							color='#9297a2'
+							color={colors.taskBoxColor}
 						/>
 					</Text>
 					<Text style={[styles.inline, { color: colors.bodyText }]}>
