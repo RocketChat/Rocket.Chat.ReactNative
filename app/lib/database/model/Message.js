@@ -86,6 +86,8 @@ export default class Message extends Model {
 
 	@field('comment') comment;
 
+	@field('file_path') filePath;
+
 	asPlain() {
 		return {
 			id: this.id,
@@ -125,7 +127,8 @@ export default class Message extends Model {
 			e2e: this.e2e,
 			tshow: this.tshow,
 			md: this.md,
-			comment: this.comment
+			comment: this.comment,
+			filePath: this.filePath
 		};
 	}
 }

@@ -284,6 +284,15 @@ export default schemaMigrations({
 					columns: [{ name: 'unmuted', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 24,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [{ name: 'file_path', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

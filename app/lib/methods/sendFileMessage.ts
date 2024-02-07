@@ -3,6 +3,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import isEmpty from 'lodash/isEmpty';
 import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 
 import { IUpload, IUser, TUploadModel } from '../../definitions';
 import i18n from '../../i18n';
@@ -138,6 +139,15 @@ export function sendFileMessage(
 			uploadQueue[uploadPath].then(async response => {
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
 					// If response is all good...
+					// TENHO QUE COLOCAR AQUI NO DB O RETORNO
+					try {
+						const msgId = JSON.parse(response.respInfo._response).message._id;
+						addTheFilePath(msgId, fileInfo.path, tmid);
+					} catch (e) {
+						console.log('🚀 ~ returnnewPromise ~ e:', e);
+						// Do nothing
+					}
+
 					try {
 						await db.write(async () => {
 							await uploadRecord.destroyPermanently();
@@ -181,3 +191,31 @@ export function sendFileMessage(
 		}
 	});
 }
+
+// passar o tmid
+const addTheFilePath = async (msgId: string, filePath: string, tmid?: string) => {
+	const db = database.active;
+	const msgCollection = db.get('messages');
+	try {
+		const messageRecord = await msgCollection.find(msgId);
+		messageRecord.prepareUpdate(m => (m.filePath = filePath));
+	} catch (e) {
+		const msgSubscribe = msgCollection
+			.query(Q.where('id', msgId))
+			.observe()
+			.subscribe(async message => {
+				if (message.length > 0) {
+					const messageRecord = message[0];
+					await messageRecord.update(m => {
+						m.filePath = filePath;
+					});
+					msgSubscribe.unsubscribe();
+				}
+			});
+	}
+
+	// if (tmid) {
+	// 	const threadMessagesCollection = db.get('thread_messages');
+
+	// }
+};
