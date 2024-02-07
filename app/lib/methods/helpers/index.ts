@@ -16,3 +16,4 @@ export * from './isValidEmail';
 export * from './random';
 export * from './image';
 export * from './askAndroidMediaPermissions';
+export * from './parseJson';
