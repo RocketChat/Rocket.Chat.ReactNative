@@ -1,5 +1,6 @@
 import { MutableRefObject, useEffect } from 'react';
 import { Keyboard } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useMessageComposerApi } from '../context';
 import { ITrackingView } from '../interfaces';
@@ -9,7 +10,11 @@ import { useRoomContext } from '../../../views/RoomView/context';
 export const useKeyboardListener = (ref: MutableRefObject<ITrackingView>) => {
 	const { setKeyboardHeight } = useMessageComposerApi();
 	const { tmid } = useRoomContext();
+	const isFocused = useIsFocused();
 	useEffect(() => {
+		if (!isFocused) {
+			return;
+		}
 		const keyboardEvent: TKeyEmitterEvent = `setKeyboardHeight${tmid ? 'Thread' : ''}`;
 		const showListener = Keyboard.addListener('keyboardWillShow', async () => {
 			if (ref?.current) {
@@ -28,5 +33,5 @@ export const useKeyboardListener = (ref: MutableRefObject<ITrackingView>) => {
 			showListener.remove();
 			hideListener.remove();
 		};
-	}, [ref, setKeyboardHeight, tmid]);
+	}, [ref, setKeyboardHeight, tmid, isFocused]);
 };
