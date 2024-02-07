@@ -217,6 +217,7 @@ export const colors = {
 
 		backgroundColor: '#ffffff',
 		focusedBackground: '#ffffff',
+		chatComponentBackground: '#f3f4f5',
 		grayBackgroundComponent: '#CBCED1',
 		auxiliaryBackground: '#efeff4',
 		bannerBackground: '#f1f2f4',
@@ -297,6 +298,7 @@ export const colors = {
 
 		backgroundColor: '#030b1b',
 		focusedBackground: '#0b182c',
+		chatComponentBackground: '#192132',
 		grayBackgroundComponent: '#0B182C',
 		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
@@ -377,6 +379,7 @@ export const colors = {
 
 		backgroundColor: '#000000',
 		focusedBackground: '#0d0d0d',
+		chatComponentBackground: '#16181a',
 		grayBackgroundComponent: '#16181a',
 		auxiliaryBackground: '#080808',
 		bannerBackground: '#1f2329',
