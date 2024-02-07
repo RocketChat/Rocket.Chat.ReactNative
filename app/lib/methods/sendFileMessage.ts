@@ -139,12 +139,10 @@ export function sendFileMessage(
 			uploadQueue[uploadPath].then(async response => {
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
 					// If response is all good...
-					// TENHO QUE COLOCAR AQUI NO DB O RETORNO
 					try {
-						const msgId = JSON.parse(response.respInfo._response).message._id;
-						addTheFilePath(msgId, fileInfo.path, tmid);
+						const msgId = response.json()?.message?._id;
+						addTheFilePath({ msgId, filePath: fileInfo.path, tmid });
 					} catch (e) {
-						console.log('🚀 ~ returnnewPromise ~ e:', e);
 						// Do nothing
 					}
 
@@ -192,8 +190,7 @@ export function sendFileMessage(
 	});
 }
 
-// passar o tmid
-const addTheFilePath = async (msgId: string, filePath: string, tmid?: string) => {
+const addTheFilePath = async ({ msgId, filePath, tmid }: { msgId: string; filePath: string; tmid?: string }) => {
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	try {

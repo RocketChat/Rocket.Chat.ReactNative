@@ -10,8 +10,8 @@ class Upload {
 		this.formData = new FormData();
 	}
 
-	then = (callback: (param: { respInfo: XMLHttpRequest }) => XMLHttpRequest) => {
-		this.xhr.onload = () => callback({ respInfo: this.xhr });
+	then = (callback: (param: { respInfo: XMLHttpRequest; json(): any }) => XMLHttpRequest) => {
+		this.xhr.onload = () => callback({ respInfo: this.xhr, json: () => JSON.parse(this.xhr.responseText) });
 		this.xhr.send(this.formData);
 	};
 
