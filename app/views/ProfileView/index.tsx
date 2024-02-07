@@ -237,8 +237,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		try {
 			const twoFactorOptions = params.currentPassword
 				? {
-						twoFactorCode: params.currentPassword,
-						twoFactorMethod: TwoFactorMethods.PASSWORD
+					twoFactorCode: params.currentPassword,
+					twoFactorMethod: TwoFactorMethods.PASSWORD
 				  }
 				: null;
 
@@ -258,6 +258,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 					this.setState({ ...this.state, ...params });
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
+				this.props.navigation.goBack();
 			}
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
 		} catch (e: any) {
@@ -404,6 +405,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				try {
 					await Services.logoutOtherLocations();
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
+					this.props.navigation.goBack();
 				} catch {
 					logEvent(events.PL_OTHER_LOCATIONS_F);
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
@@ -452,7 +454,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowRealNameChange}
 							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
-							inputRef={e => (this.name = e)}
+							inputRef={e => this.name = e}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
 							value={name}
@@ -465,7 +467,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowUsernameChange}
 							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
-							inputRef={e => (this.username = e)}
+							inputRef={e => this.username = e}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
 							value={username}
@@ -478,7 +480,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
-							inputRef={e => (this.email = e)}
+							inputRef={e => this.email = e}
 							label={I18n.t('Email')}
 							placeholder={I18n.t('Email')}
 							value={email || undefined}
@@ -490,7 +492,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 							<FormTextInput
-								inputRef={e => (this.nickname = e)}
+								inputRef={e => this.nickname = e}
 								label={I18n.t('Nickname')}
 								value={nickname}
 								onChangeText={value => this.setState({ nickname: value })}
@@ -503,7 +505,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						) : null}
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
 							<FormTextInput
-								inputRef={e => (this.bio = e)}
+								inputRef={e => this.bio = e}
 								label={I18n.t('Bio')}
 								inputStyle={styles.inputBio}
 								multiline
@@ -519,7 +521,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							inputRef={e => (this.newPassword = e)}
+							inputRef={e => this.newPassword = e}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
 							value={newPassword || undefined}
