@@ -23,7 +23,15 @@ import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import { IApplicationState, IServer, IShareAttachment, IUser, TMessageAction, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	IApplicationState,
+	IServer,
+	IShareAttachment,
+	IUser,
+	TMessageAction,
+	TSubscriptionModel,
+	TThreadModel
+} from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
@@ -40,7 +48,6 @@ interface IShareViewState {
 	mediaAllowList?: string;
 	selectedMessages: string[];
 	action: TMessageAction;
-	sentMessage: boolean;
 }
 
 interface IShareViewProps {
@@ -63,6 +70,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
+	private sentMessage: boolean;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -71,6 +79,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 		this.finishShareView = props.route.params?.finishShareView;
+		this.sentMessage = false;
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -85,8 +94,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				? this.serverInfo?.FileUpload_MediaTypeWhiteList
 				: props.FileUpload_MediaTypeWhiteList,
 			selectedMessages: [],
-			action: props.route.params?.action,
-			sentMessage: false
+			action: props.route.params?.action
 		};
 		this.getServerInfo();
 	}
@@ -100,7 +108,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	componentWillUnmount = () => {
 		console.countReset(`${this.constructor.name}.render calls`);
-		if (this.finishShareView && !this.state.sentMessage) {
+		if (this.finishShareView && !this.sentMessage) {
 			const text = this.messageComposerRef.current?.getText();
 			this.finishShareView(text, this.state.selectedMessages);
 		}
@@ -228,10 +236,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 			// if it's not share extension this can close
 		} else {
-			this.setState({ sentMessage: true }, () => {
-				this.finishShareView('', []);
-				navigation.pop();
-			});
+			this.sentMessage = true;
+			this.finishShareView('', []);
+			navigation.pop();
 		}
 
 		let msg: string | undefined;
