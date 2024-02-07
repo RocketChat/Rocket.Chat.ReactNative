@@ -371,6 +371,100 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(60000);
 			await element(by[textMatcher](replyMessage)).atIndex(0).tap();
+			await tapBack();
 		});
+
+		it('should save message and quote draft correctly', async () => {
+			const newUser = await createRandomUser();
+			const { name: draftRoom } = await createRandomRoom(newUser, 'c');
+			const draftMessage = 'draft';
+			const originalMessage = '123';
+			const quoteMessage = '123456';
+			await sendMessage(newUser, draftRoom, originalMessage);
+			await waitFor(element(by.id('rooms-list-view')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await navigateToRoom(draftRoom);
+			await waitFor(element(by[textMatcher](originalMessage)).atIndex(0))
+				.toBeVisible()
+				.withTimeout(10000);
+			await element(by.id('room-view-join-button')).tap();
+			await waitFor(element(by.id('room-view-join-button')))
+				.not.toBeVisible()
+				.withTimeout(10000);
+			// add draft
+			await element(by.id('message-composer-input')).typeText(draftMessage);
+			await tapBack();
+			await navigateToRoom(draftRoom);
+			await sleep(300); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText(draftMessage);
+			// add quote to draft
+			await tryTapping(element(by[textMatcher](originalMessage)).atIndex(0), 2000, true);
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(2000);
+			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await element(by[textMatcher]('Quote')).atIndex(0).tap();
+			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
+				.toBeVisible()
+				.withTimeout(10000);
+			await tapBack();
+			await navigateToRoom(draftRoom);
+			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
+				.toBeVisible()
+				.withTimeout(10000);
+			// edit draft with quote
+			await element(by.id('message-composer-input')).replaceText(quoteMessage);
+			await tapBack();
+			await navigateToRoom(draftRoom);
+			await sleep(300); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText(quoteMessage);
+			// send message
+			await waitFor(element(by.id('message-composer-send')))
+				.toExist()
+				.withTimeout(2000);
+			await element(by.id('message-composer-send')).tap();
+			await waitFor(element(by.id(`reply-${newUser.name}-${originalMessage}`).withDescendant(by[textMatcher](originalMessage))))
+				.toBeVisible()
+				.withTimeout(3000);
+			await expect(element(by.id('message-composer-input'))).toHaveText('');
+		});
+
+		// This test doesn't work, because there are two composers on the screen, so detox doesn't know which one to render.
+		// At some point in the future it will be worth identifying them.
+		//
+		// it('should edit message on shareview and after close the text needs to be changed on roomView', async () => {
+		// 	const draftShareMessage = 'draftShare';
+		// 	const originalMessage = '123';
+		// 	await element(by.id('message-composer-input')).typeText(draftShareMessage);
+		// 	await element(by.id('message-composer-actions')).tap();
+		// 	await waitFor(element(by.id('action-sheet')))
+		// 		.toExist()
+		// 		.withTimeout(2000);
+		// 	await element(by[textMatcher]('Choose from library')).atIndex(0).tap();
+		// 	await sleep(300); // wait for animation
+		// 	await expect(element(by.id('message-composer-input'))).toHaveText(draftShareMessage);
+		// 	await element(by.id('message-composer-input')).replaceText(draftShareMessage + originalMessage);
+		// 	await element(by.id('share-view-close')).tap();
+		// 	await sleep(500); // wait for animation
+		// 	await expect(element(by.id('message-composer-input'))).toHaveText(draftShareMessage + originalMessage);
+		// 	// add quote to draft
+		// 	await tryTapping(element(by[textMatcher](originalMessage)).atIndex(0), 2000, true);
+		// 	await waitFor(element(by.id('action-sheet')))
+		// 		.toExist()
+		// 		.withTimeout(2000);
+		// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+		// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+		// 	await element(by[textMatcher]('Quote')).atIndex(0).tap();
+		// 	await element(by.id('message-composer-actions')).tap();
+		// 	await waitFor(element(by.id('action-sheet')))
+		// 		.toExist()
+		// 		.withTimeout(2000);
+		// 	await element(by[textMatcher]('Choose from library')).atIndex(0).tap();
+		// 	await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
+		// 		.toBeVisible()
+		// 		.withTimeout(10000);
+		// });
 	});
 });
