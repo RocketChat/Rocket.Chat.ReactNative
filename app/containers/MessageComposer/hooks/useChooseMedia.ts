@@ -115,7 +115,6 @@ export const useChooseMedia = ({
 		}
 	};
 
-	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 	const startShareView = () => {
 		const text = getText?.() || '';
 		return {
@@ -123,6 +122,8 @@ export const useChooseMedia = ({
 			text
 		};
 	};
+
+	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
 	const openShareView = async (attachments: any) => {
 		if (!rid) return;

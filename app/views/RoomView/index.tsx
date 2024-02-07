@@ -1251,8 +1251,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	setQuotesAndText = (text: string, quotes: string[]) => {
-		if (quotes.length) this.setState({ selectedMessages: quotes, action: 'quote' });
-		else this.setState({ action: null, selectedMessages: [] });
+		if (quotes.length) {
+			this.setState({ selectedMessages: quotes, action: 'quote' });
+		} else {
+			this.setState({ action: null, selectedMessages: [] });
+		}
 		this.messageComposerRef.current?.setInput(text || '');
 	};
 
