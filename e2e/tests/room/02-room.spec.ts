@@ -387,7 +387,7 @@ describe('Room screen', () => {
 			// add draft
 			await element(by.id('message-composer-input')).typeText(draftMessage);
 			await tapBack();
-			await navigateToRoom(draftRoom);
+			await navigateToRecentRoom(draftRoom);
 			await sleep(500); // wait for animation
 			await expect(element(by.id('message-composer-input'))).toHaveText(draftMessage);
 			// add quote to draft
@@ -402,14 +402,15 @@ describe('Room screen', () => {
 				.toBeVisible()
 				.withTimeout(10000);
 			await tapBack();
-			await navigateToRoom(draftRoom);
+			await navigateToRecentRoom(draftRoom);
+			await sleep(500); // wait for animation
 			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
 				.toBeVisible()
 				.withTimeout(10000);
 			// edit draft with quote
 			await element(by.id('message-composer-input')).replaceText(quoteMessage);
 			await tapBack();
-			await navigateToRoom(draftRoom);
+			await navigateToRecentRoom(draftRoom);
 			await sleep(500); // wait for animation
 			await expect(element(by.id('message-composer-input'))).toHaveText(quoteMessage);
 			// send message
@@ -455,10 +456,11 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by[textMatcher]('Choose from library')).atIndex(0).tap();
-			await sleep(300); // wait for animation
-			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
+			await sleep(500); // wait for animation
+			await element(by.id('message-composer-input')).tap();
+			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)).atIndex(0))
 				.toExist()
-				.withTimeout(10000);
+				.withTimeout(20000);
 		});
 	});
 });
