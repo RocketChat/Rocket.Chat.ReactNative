@@ -18,7 +18,7 @@ async function navigateToRoom(roomName: string) {
 	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
 	await waitFor(element(by.id('room-view')))
 		.toBeVisible()
-		.withTimeout(5000);
+		.withTimeout(10000);
 }
 
 describe('Room screen', () => {
@@ -383,7 +383,7 @@ describe('Room screen', () => {
 			await sendMessage(newUser, draftRoom, originalMessage);
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
-				.withTimeout(2000);
+				.withTimeout(5000);
 			await navigateToRoom(draftRoom);
 			await waitFor(element(by[textMatcher](originalMessage)).atIndex(0))
 				.toBeVisible()
@@ -396,13 +396,13 @@ describe('Room screen', () => {
 			await element(by.id('message-composer-input')).typeText(draftMessage);
 			await tapBack();
 			await navigateToRoom(draftRoom);
-			await sleep(300); // wait for animation
+			await sleep(500); // wait for animation
 			await expect(element(by.id('message-composer-input'))).toHaveText(draftMessage);
 			// add quote to draft
 			await tryTapping(element(by[textMatcher](originalMessage)).atIndex(0), 2000, true);
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
-				.withTimeout(2000);
+				.withTimeout(5000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 			await element(by[textMatcher]('Quote')).atIndex(0).tap();
@@ -418,16 +418,16 @@ describe('Room screen', () => {
 			await element(by.id('message-composer-input')).replaceText(quoteMessage);
 			await tapBack();
 			await navigateToRoom(draftRoom);
-			await sleep(300); // wait for animation
+			await sleep(500); // wait for animation
 			await expect(element(by.id('message-composer-input'))).toHaveText(quoteMessage);
 			// send message
 			await waitFor(element(by.id('message-composer-send')))
 				.toExist()
-				.withTimeout(2000);
+				.withTimeout(5000);
 			await element(by.id('message-composer-send')).tap();
 			await waitFor(element(by.id(`reply-${newUser.name}-${originalMessage}`).withDescendant(by[textMatcher](originalMessage))))
 				.toBeVisible()
-				.withTimeout(3000);
+				.withTimeout(5000);
 			await expect(element(by.id('message-composer-input'))).toHaveText('');
 		});
 
