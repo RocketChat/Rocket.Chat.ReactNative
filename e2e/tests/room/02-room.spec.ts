@@ -9,7 +9,8 @@ import {
 	platformTypes,
 	TTextMatcher,
 	mockMessage,
-	navigateToRoom
+	navigateToRoom,
+	navigateToRecentRoom
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
 
