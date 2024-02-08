@@ -3,6 +3,7 @@ import { ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TKeyEmitterEvent, emitter } from '../../../../../lib/methods/helpers';
+import { EDGE_DISTANCE } from '../../constants';
 
 export const useNavBottomStyle = (isThread: boolean): ViewStyle => {
 	const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -30,6 +31,6 @@ export const useNavBottomStyle = (isThread: boolean): ViewStyle => {
 	}, [isThread, keyboardHeight, composerHeight]);
 
 	return {
-		bottom: keyboardHeight + composerHeight + (keyboardHeight ? 0 : bottom) + 15
+		bottom: keyboardHeight + composerHeight + (keyboardHeight ? 0 : bottom) + EDGE_DISTANCE
 	};
 };

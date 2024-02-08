@@ -5,8 +5,7 @@ import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import Touch from '../../../../containers/Touch';
 import { useNavBottomStyle } from '../hooks';
-
-const EDGE_DISTANCE = 15;
+import { EDGE_DISTANCE } from '../constants';
 
 const styles = StyleSheet.create({
 	container: {

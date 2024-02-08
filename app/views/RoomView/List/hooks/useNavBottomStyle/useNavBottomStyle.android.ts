@@ -1,6 +1,8 @@
 import { ViewStyle } from 'react-native';
 
+import { EDGE_DISTANCE } from '../../constants';
+
 export const useNavBottomStyle = (): ViewStyle => ({
-	top: 15,
+	top: EDGE_DISTANCE,
 	scaleY: -1
 });
