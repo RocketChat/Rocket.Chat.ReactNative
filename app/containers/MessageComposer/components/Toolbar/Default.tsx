@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 import { ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
-import { emitter } from '../../emitter';
+import { emitter } from '../../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const Default = (): ReactElement | null => {

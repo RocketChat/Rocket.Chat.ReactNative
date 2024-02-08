@@ -30,6 +30,7 @@ import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
+import { emitter } from '../../lib/methods/helpers/emitter';
 
 const styles = StyleSheet.create({
 	container: {
@@ -193,6 +194,7 @@ export const MessageComposer = ({
 
 	const onHeightChanged = (height: number) => {
 		setTrackingViewHeight(height);
+		emitter.emit(`setComposerHeight${tmid ? 'Thread' : ''}`, height);
 	};
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
