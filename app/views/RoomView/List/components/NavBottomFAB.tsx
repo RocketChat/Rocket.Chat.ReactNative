@@ -1,11 +1,10 @@
-import React, { memo, useEffect, useState } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { memo } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import Touch from '../../../../containers/Touch';
-import { emitter, TKeyEmitterEvent } from '../../../../lib/methods/helpers/emitter';
+import { useNavBottomStyle } from '../hooks';
 
 const EDGE_DISTANCE = 15;
 
@@ -30,52 +29,14 @@ const styles = StyleSheet.create({
 const NavBottomFAB = memo(
 	({ visible, onPress, isThread }: { visible: boolean; onPress: Function; isThread: boolean }): React.ReactElement | null => {
 		const { colors } = useTheme();
-		const [keyboardHeight, setKeyboardHeight] = useState(0);
-		const [composerHeight, setComposerHeight] = useState(0);
-		const { bottom } = useSafeAreaInsets();
-
-		useEffect(() => {
-			const keyboardEvent: TKeyEmitterEvent = `setKeyboardHeight${isThread ? 'Thread' : ''}`;
-			const composerEvent: TKeyEmitterEvent = `setComposerHeight${isThread ? 'Thread' : ''}`;
-			emitter.on(keyboardEvent, height => {
-				if (height !== keyboardHeight) {
-					setKeyboardHeight(height);
-				}
-			});
-			emitter.on(composerEvent, height => {
-				if (height !== composerHeight) {
-					setComposerHeight(height);
-				}
-			});
-
-			return () => {
-				emitter.off(keyboardEvent);
-				emitter.off(composerEvent);
-			};
-		}, [isThread, keyboardHeight, composerHeight]);
+		const positionStyle = useNavBottomStyle(isThread);
 
 		if (!visible) {
 			return null;
 		}
 
 		return (
-			<View
-				style={[
-					styles.container,
-					{
-						...Platform.select({
-							ios: {
-								bottom: keyboardHeight + composerHeight + (keyboardHeight ? 0 : bottom) + EDGE_DISTANCE
-							},
-							android: {
-								top: 15,
-								scaleY: -1
-							}
-						})
-					}
-				]}
-				testID='nav-jump-to-bottom'
-			>
+			<View style={[styles.container, positionStyle]} testID='nav-jump-to-bottom'>
 				<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: colors.backgroundColor }]}>
 					<View style={[styles.content, { borderColor: colors.borderColor }]}>
 						<CustomIcon name='chevron-down' color={colors.auxiliaryTintColor} size={36} />
