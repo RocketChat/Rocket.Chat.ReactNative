@@ -48,7 +48,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	}, [navigation]);
 
 	const openNotificationDocumentation = async () => {
-		await Linking.openURL('https://docs.rocket.chat/use-rocket.chat/rocket.chat-mobile/push-notifications');
+		await Linking.openURL('https://go.rocket.chat/i/push-notifications');
 	};
 
 	const alertDeviceNotificationSettings = () => {
