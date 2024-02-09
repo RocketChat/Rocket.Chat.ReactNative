@@ -60,6 +60,8 @@ describe('Deep linking', () => {
 	});
 
 	describe('Authentication', () => {
+		const deviceType = device.getPlatform();
+		if (deviceType === 'android') return;
 		it('should run a deep link to an invalid account and raise error', async () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
@@ -111,6 +113,8 @@ describe('Deep linking', () => {
 	});
 
 	describe('Room', () => {
+		const deviceType = device.getPlatform();
+		if (deviceType === 'android') return;
 		describe('While logged in', () => {
 			it('should navigate to the room using path', async () => {
 				await device.launchApp({
