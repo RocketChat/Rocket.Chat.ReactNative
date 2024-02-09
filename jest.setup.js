@@ -1,6 +1,5 @@
 import React from 'react';
 import '@testing-library/react-native/extend-expect';
-import '@testing-library/jest-native/legacy-extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
@@ -16,6 +15,10 @@ jest.mock('react-native-safe-area-context', () => {
 		useSafeAreaFrame: jest.fn(() => ({ x: 0, y: 0, width: 390, height: 844 }))
 	};
 });
+
+jest.mock('./node_modules/react-native/Libraries/Interaction/InteractionManager', () => ({
+	runAfterInteractions: callback => callback()
+}));
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
@@ -61,19 +64,24 @@ jest.mock('./app/lib/database/services/Message', () => ({
 }));
 
 const mockedNavigate = jest.fn();
-
-jest.mock('@react-navigation/native', () => ({
-	...jest.requireActual('@react-navigation/native'),
-	useNavigation: () => ({
+jest.mock('@react-navigation/native', () => {
+	const actualNav = jest.requireActual('@react-navigation/native');
+	const { useEffect } = require('react');
+	return {
+		...actualNav,
+		useFocusEffect: useEffect,
+		isFocused: () => true,
+		useIsFocused: () => true,
+		useRoute: () => jest.fn(),
+		useNavigation: () => ({
+			navigate: jest.fn(),
+			addListener: () => jest.fn()
+		}),
+		createNavigationContainerRef: jest.fn(),
 		navigate: jest.fn(),
-		addListener: jest.fn().mockImplementation((event, callback) => {
-			callback();
-			return {
-				remove: jest.fn()
-			};
-		})
-	})
-}));
+		addListener: jest.fn(() => jest.fn())
+	};
+});
 
 jest.mock('react-native-notifications', () => ({
 	Notifications: {
