@@ -13,8 +13,6 @@ import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
 
-// jest.useFakeTimers();
-
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
 	mockedStore.dispatch(selectServerRequest(baseUrl, '6.4.0'));
@@ -161,7 +159,6 @@ describe('MessageComposer', () => {
 
 				await act(async () => {
 					await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-					// await waitFor(() => fireEvent.press(screen.getByTestId('message-composer-open-markdown')), { timeout: 1000 });
 					await fireEvent.press(screen.getByTestId('message-composer-open-markdown'));
 					await fireEvent.press(screen.getByTestId('message-composer-bold'));
 					await fireEvent.press(screen.getByTestId('message-composer-send'));
@@ -342,7 +339,7 @@ describe('MessageComposer', () => {
 		});
 	});
 
-	describe.only('edit message', () => {
+	describe('edit message', () => {
 		const onSendMessage = jest.fn();
 		const editCancel = jest.fn();
 		const editRequest = jest.fn();
@@ -379,58 +376,64 @@ describe('MessageComposer', () => {
 		});
 	});
 
-	// const messageIds = ['abc', 'def'];
-	// jest.mock('./hooks/useMessage', () => ({
-	// 	useMessage: (messageId: string) => {
-	// 		if (!messageIds.includes(messageId)) {
-	// 			return null;
-	// 		}
-	// 		const message = {
-	// 			id: messageId,
-	// 			msg: 'quote this',
-	// 			u: {
-	// 				username: 'rocket.cat'
-	// 			}
-	// 		} as IMessage;
-	// 		return message;
-	// 	}
-	// }));
+	const messageIds = ['abc', 'def'];
+	jest.mock('./hooks/useMessage', () => ({
+		useMessage: (messageId: string) => {
+			if (!messageIds.includes(messageId)) {
+				return null;
+			}
+			const message = {
+				id: messageId,
+				msg: 'quote this',
+				u: {
+					username: 'rocket.cat'
+				}
+			} as IMessage;
+			return message;
+		}
+	}));
 
-	// jest.mock('../../lib/store/auxStore', () => ({
-	// 	store: {
-	// 		getState: () => mockedStore.getState()
-	// 	}
-	// }));
+	jest.mock('../../lib/store/auxStore', () => ({
+		store: {
+			getState: () => mockedStore.getState()
+		}
+	}));
 
-	// describe('Quote', () => {
-	// 	test('Adding/removing quotes', () => {
-	// 		const onRemoveQuoteMessage = jest.fn();
+	describe('Quote', () => {
+		test('Adding/removing quotes', async () => {
+			const onRemoveQuoteMessage = jest.fn();
 
-	// 		// Render without quotes
-	// 		const { rerender } = render(<Render context={{ selectedMessages: [], onRemoveQuoteMessage }} />);
-	// 		expect(screen.queryByTestId('composer-quote-abc')).toBeNull();
-	// 		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
-	// 		// expect(screen.toJSON()).toMatchSnapshot();
+			// Render without quotes
+			const { rerender } = render(<Render context={{ selectedMessages: [], onRemoveQuoteMessage }} />);
+			await screen.findByTestId('message-composer');
+			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
+			expect(screen.queryByTestId('composer-quote-def')).not.toBeOnTheScreen();
+			expect(screen.toJSON()).toMatchSnapshot();
 
-	// 		// Add a quote
-	// 		rerender(<Render context={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }} />);
-	// 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-	// 		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
-	// 		// expect(screen.toJSON()).toMatchSnapshot();
+			// Add a quote
+			await act(async () => {
+				await rerender(<Render context={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }} />);
+			});
+			await waitFor(() => expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen());
+			expect(screen.queryByTestId('composer-quote-def')).not.toBeOnTheScreen();
+			expect(screen.toJSON()).toMatchSnapshot();
 
-	// 		// Add another quote
-	// 		rerender(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }} />);
-	// 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-	// 		expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen();
-	// 		// expect(screen.toJSON()).toMatchSnapshot();
+			// Add another quote
+			rerender(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }} />);
+			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+			await waitFor(() => expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen());
+			expect(screen.toJSON()).toMatchSnapshot();
 
-	// 		// Remove a quote
-	// 		fireEvent.press(screen.getByTestId('composer-quote-remove-def'));
-	// 		expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
-	// 		expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
-	// 	});
+			// Remove a quote
+			await act(async () => {
+				await fireEvent.press(screen.getByTestId('composer-quote-remove-def'));
+			});
+			await screen.findByTestId('composer-quote-def');
+			expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
+			expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
+		});
 
-	// 	// TODO: need to create proper mocks for getMessageById and getPermalinkMessage
-	// 	// test('Send message with a quote', async () => {});
-	// });
+		// TODO: need to create proper mocks for getMessageById and getPermalinkMessage
+		// test('Send message with a quote', async () => {});
+	});
 });
