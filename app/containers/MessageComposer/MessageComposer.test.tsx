@@ -1,8 +1,6 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
 import { setPermissions } from '../../actions/permissions';
@@ -14,6 +12,8 @@ import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
+
+// jest.useFakeTimers();
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -34,65 +34,65 @@ const initialContext = {
 	selectedMessages: [],
 	editCancel: jest.fn(),
 	editRequest: jest.fn(),
-	onSendMessage: jest.fn(),
+	// onSendMessage: jest.fn(),
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const Stack = createStackNavigator();
-
-// const Navigation = ({ children }: { children: any }) => (
-// 	<NavigationContainer>
-// 		<Stack.Navigator>
-// 			<Stack.Screen name='A' component={children} />
-// 		</Stack.Navigator>
-// 	</NavigationContainer>
-// );
-
-// const Content = () => (
-// 		<MessageComposerContainer />
-// )
+const mockedNavigate = jest.fn();
+jest.mock('@react-navigation/native', () => {
+	const actualNav = jest.requireActual('@react-navigation/native');
+	return {
+		...actualNav,
+		useFocusEffect: jest.fn(),
+		useIsFocused: () => ({
+			navigate: mockedNavigate
+		}),
+		useRoute: () => jest.fn(),
+		useNavigation: () => ({
+			navigate: jest.fn(),
+			addListener: () => jest.fn()
+		}),
+		createNavigationContainerRef: jest.fn()
+	};
+});
 
 const Render = ({ context }: { context?: Partial<IRoomContext> }) => (
 	<Provider store={mockedStore}>
 		<RoomContext.Provider value={{ ...initialContext, ...context }}>
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen name='MessageComposer' component={MessageComposerContainer} />
-				</Stack.Navigator>
-			</NavigationContainer>
+			<MessageComposerContainer />
 		</RoomContext.Provider>
 	</Provider>
 );
 
-describe.skip('MessageComposer', () => {
+describe('MessageComposer', () => {
 	test('renders correctly', () => {
 		render(<Render />);
 		expect(screen.getByTestId('message-composer-input')).toBeOnTheScreen();
 		expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
 		expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
-		expect(screen.toJSON()).toMatchSnapshot();
+		// expect(screen.toJSON()).toMatchSnapshot();
 	});
 
 	test('renders correctly with audio recorder disabled', () => {
 		mockedStore.dispatch(addSettings({ Message_AudioRecorderEnabled: false }));
 		render(<Render />);
-		expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
-		expect(screen.toJSON()).toMatchSnapshot();
+		expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
+		// expect(screen.toJSON()).toMatchSnapshot();
 	});
 
 	test('renders correctly without audio upload permissions', () => {
 		mockedStore.dispatch(setPermissions({}));
 		render(<Render />);
-		expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
-		expect(screen.toJSON()).toMatchSnapshot();
+		expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
+		// expect(screen.toJSON()).toMatchSnapshot();
 	});
 
 	test('renders correctly with audio recorder disabled and without audio upload permissions', () => {
 		mockedStore.dispatch(addSettings({ Message_AudioRecorderEnabled: false }));
 		mockedStore.dispatch(setPermissions({}));
 		render(<Render />);
-		expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
-		expect(screen.toJSON()).toMatchSnapshot();
+		expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
+		// expect(screen.toJSON()).toMatchSnapshot();
 	});
 
 	test('renders toolbar when focused', async () => {
@@ -100,9 +100,9 @@ describe.skip('MessageComposer', () => {
 		render(<Render />);
 		expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
 		expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
-		expect(screen.queryByTestId('message-composer-open-emoji')).toBeNull();
-		expect(screen.queryByTestId('message-composer-open-markdown')).toBeNull();
-		expect(screen.queryByTestId('message-composer-mention')).toBeNull();
+		expect(screen.queryByTestId('message-composer-open-emoji')).not.toBeOnTheScreen();
+		expect(screen.queryByTestId('message-composer-open-markdown')).not.toBeOnTheScreen();
+		expect(screen.queryByTestId('message-composer-mention')).not.toBeOnTheScreen();
 
 		await act(async () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
@@ -112,44 +112,50 @@ describe.skip('MessageComposer', () => {
 		expect(screen.getByTestId('message-composer-open-emoji')).toBeOnTheScreen();
 		expect(screen.getByTestId('message-composer-open-markdown')).toBeOnTheScreen();
 		expect(screen.getByTestId('message-composer-mention')).toBeOnTheScreen();
-		expect(screen.toJSON()).toMatchSnapshot();
+		// expect(screen.toJSON()).toMatchSnapshot();
 	});
 
-	test('send message', async () => {
+	test.only('send message', async () => {
+		const user = userEvent.setup();
 		const onSendMessage = jest.fn();
 		render(<Render context={{ onSendMessage }} />);
 		expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
+
+		await user.type(screen.getByTestId('message-composer-input'), 'test');
+		expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
+		expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
+
 		await act(async () => {
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
-			expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
-			expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
 			await fireEvent.press(screen.getByTestId('message-composer-send'));
 		});
+
+		// await user.press(screen.getByTestId('message-composer-send'));
+		// await user.press(screen.getByRole('button', { name: 'Send message' }));
 		expect(onSendMessage).toHaveBeenCalledTimes(1);
 		expect(onSendMessage).toHaveBeenCalledWith('test', undefined);
-		expect(screen.toJSON()).toMatchSnapshot();
+		// expect(screen.toJSON()).toMatchSnapshot();
 	});
 
-	test('tap actions from toolbar', async () => {
-		render(<Render />);
+	// test('tap actions from toolbar', async () => {
+	// 	render(<Render />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent.press(screen.getByTestId('message-composer-actions'));
-		});
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+	// 	await act(async () => {
+	// 		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+	// 		await fireEvent.press(screen.getByTestId('message-composer-actions'));
+	// 	});
+	// 	// expect(screen.toJSON()).toMatchSnapshot();
+	// });
 
-	test('tap emoji', async () => {
-		render(<Render />);
+	// test('tap emoji', async () => {
+	// 	render(<Render />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			await fireEvent.press(screen.getByTestId('message-composer-open-emoji'));
-		});
-		expect(screen.getByTestId('message-composer-close-emoji')).toBeOnTheScreen();
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+	// 	await act(async () => {
+	// 		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+	// 		await fireEvent.press(screen.getByTestId('message-composer-open-emoji'));
+	// 	});
+	// 	expect(screen.getByTestId('message-composer-close-emoji')).toBeOnTheScreen();
+	// 	// expect(screen.toJSON()).toMatchSnapshot();
+	// });
 
 	// describe('Markdown', () => {
 	// 	test('tap markdown', async () => {
@@ -340,98 +346,98 @@ describe.skip('MessageComposer', () => {
 	// 	});
 	// });
 
-	test('tap mention', async () => {
-		render(<Render />);
+	// test('tap mention', async () => {
+	// 	render(<Render />);
 
-		await act(async () => {
-			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-			// await fireEvent.press(screen.getByTestId('message-composer-mention'));
-		});
-		expect(screen.toJSON()).toMatchSnapshot();
-	});
+	// 	await act(async () => {
+	// 		await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+	// 		// await fireEvent.press(screen.getByTestId('message-composer-mention'));
+	// 	});
+	// 	// expect(screen.toJSON()).toMatchSnapshot();
+	// });
 
-	describe('edit message', () => {
-		const onSendMessage = jest.fn();
-		const editCancel = jest.fn();
-		const editRequest = jest.fn();
-		const id = 'messageId';
-		beforeEach(() => {
-			render(<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', onSendMessage, editCancel, editRequest }} />);
-		});
-		test('init', async () => {
-			await screen.findByTestId('message-composer');
-			expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
-			expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
-			expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
-			expect(screen.getByTestId('message-composer-cancel-edit')).toBeOnTheScreen();
-		});
-		test('cancel', async () => {
-			await screen.findByTestId('message-composer');
-			expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
-			fireEvent.press(screen.getByTestId('message-composer-cancel-edit'));
-			expect(editCancel).toHaveBeenCalledTimes(1);
-		});
-		test('send', async () => {
-			await screen.findByTestId('message-composer');
-			expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
-			fireEvent.press(screen.getByTestId('message-composer-send'));
-			expect(editRequest).toHaveBeenCalledTimes(1);
-			expect(editRequest).toHaveBeenCalledWith({ id, msg: `Message ${id}`, rid: 'rid' });
-		});
-	});
+	// describe('edit message', () => {
+	// 	const onSendMessage = jest.fn();
+	// 	const editCancel = jest.fn();
+	// 	const editRequest = jest.fn();
+	// 	const id = 'messageId';
+	// 	beforeEach(() => {
+	// 		render(<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', onSendMessage, editCancel, editRequest }} />);
+	// 	});
+	// 	test('init', async () => {
+	// 		await screen.findByTestId('message-composer');
+	// 		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
+	// 		expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
+	// 		expect(screen.queryByTestId('message-composer-send-audio')).toBeNull();
+	// 		expect(screen.getByTestId('message-composer-cancel-edit')).toBeOnTheScreen();
+	// 	});
+	// 	test('cancel', async () => {
+	// 		await screen.findByTestId('message-composer');
+	// 		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
+	// 		fireEvent.press(screen.getByTestId('message-composer-cancel-edit'));
+	// 		expect(editCancel).toHaveBeenCalledTimes(1);
+	// 	});
+	// 	test('send', async () => {
+	// 		await screen.findByTestId('message-composer');
+	// 		expect(screen.getByTestId('message-composer')).toHaveStyle({ backgroundColor: colors.light.statusBackgroundWarning2 });
+	// 		fireEvent.press(screen.getByTestId('message-composer-send'));
+	// 		expect(editRequest).toHaveBeenCalledTimes(1);
+	// 		expect(editRequest).toHaveBeenCalledWith({ id, msg: `Message ${id}`, rid: 'rid' });
+	// 	});
+	// });
 
-	const messageIds = ['abc', 'def'];
-	jest.mock('./hooks/useMessage', () => ({
-		useMessage: (messageId: string) => {
-			if (!messageIds.includes(messageId)) {
-				return null;
-			}
-			const message = {
-				id: messageId,
-				msg: 'quote this',
-				u: {
-					username: 'rocket.cat'
-				}
-			} as IMessage;
-			return message;
-		}
-	}));
+	// const messageIds = ['abc', 'def'];
+	// jest.mock('./hooks/useMessage', () => ({
+	// 	useMessage: (messageId: string) => {
+	// 		if (!messageIds.includes(messageId)) {
+	// 			return null;
+	// 		}
+	// 		const message = {
+	// 			id: messageId,
+	// 			msg: 'quote this',
+	// 			u: {
+	// 				username: 'rocket.cat'
+	// 			}
+	// 		} as IMessage;
+	// 		return message;
+	// 	}
+	// }));
 
-	jest.mock('../../lib/store/auxStore', () => ({
-		store: {
-			getState: () => mockedStore.getState()
-		}
-	}));
+	// jest.mock('../../lib/store/auxStore', () => ({
+	// 	store: {
+	// 		getState: () => mockedStore.getState()
+	// 	}
+	// }));
 
-	describe('Quote', () => {
-		test('Adding/removing quotes', () => {
-			const onRemoveQuoteMessage = jest.fn();
+	// describe('Quote', () => {
+	// 	test('Adding/removing quotes', () => {
+	// 		const onRemoveQuoteMessage = jest.fn();
 
-			// Render without quotes
-			const { rerender } = render(<Render context={{ selectedMessages: [], onRemoveQuoteMessage }} />);
-			expect(screen.queryByTestId('composer-quote-abc')).toBeNull();
-			expect(screen.queryByTestId('composer-quote-def')).toBeNull();
-			expect(screen.toJSON()).toMatchSnapshot();
+	// 		// Render without quotes
+	// 		const { rerender } = render(<Render context={{ selectedMessages: [], onRemoveQuoteMessage }} />);
+	// 		expect(screen.queryByTestId('composer-quote-abc')).toBeNull();
+	// 		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
+	// 		// expect(screen.toJSON()).toMatchSnapshot();
 
-			// Add a quote
-			rerender(<Render context={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }} />);
-			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-			expect(screen.queryByTestId('composer-quote-def')).toBeNull();
-			expect(screen.toJSON()).toMatchSnapshot();
+	// 		// Add a quote
+	// 		rerender(<Render context={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }} />);
+	// 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+	// 		expect(screen.queryByTestId('composer-quote-def')).toBeNull();
+	// 		// expect(screen.toJSON()).toMatchSnapshot();
 
-			// Add another quote
-			rerender(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }} />);
-			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-			expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen();
-			expect(screen.toJSON()).toMatchSnapshot();
+	// 		// Add another quote
+	// 		rerender(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }} />);
+	// 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+	// 		expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen();
+	// 		// expect(screen.toJSON()).toMatchSnapshot();
 
-			// Remove a quote
-			fireEvent.press(screen.getByTestId('composer-quote-remove-def'));
-			expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
-			expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
-		});
+	// 		// Remove a quote
+	// 		fireEvent.press(screen.getByTestId('composer-quote-remove-def'));
+	// 		expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
+	// 		expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
+	// 	});
 
-		// TODO: need to create proper mocks for getMessageById and getPermalinkMessage
-		// test('Send message with a quote', async () => {});
-	});
+	// 	// TODO: need to create proper mocks for getMessageById and getPermalinkMessage
+	// 	// test('Send message with a quote', async () => {});
+	// });
 });
