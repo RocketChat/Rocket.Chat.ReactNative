@@ -47,6 +47,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	theme?: TSupportedThemes;
 	colors?: TColors;
 	highlightTroubleshooting: boolean;
+	disableNotifications?: boolean;
 }
 
 interface IRigthButtonsState {
@@ -95,7 +96,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions, theme, highlightTroubleshooting } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme, highlightTroubleshooting, disableNotifications } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -112,6 +113,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextProps.highlightTroubleshooting !== highlightTroubleshooting) {
+			return true;
+		}
+		if (nextProps.disableNotifications !== disableNotifications) {
 			return true;
 		}
 		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
@@ -357,7 +361,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, highlightTroubleshooting } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, highlightTroubleshooting, disableNotifications } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -382,12 +386,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				<HeaderButton.Item
-					color={highlightTroubleshooting ? colors!.fontDanger : colors!.headerTintColor}
-					iconName='notification-disabled'
-					onPress={this.goToNotification}
-					testID='room-view-push-troubleshoot'
-				/>
+				{highlightTroubleshooting || disableNotifications ? (
+					<HeaderButton.Item
+						color={highlightTroubleshooting ? colors!.fontDanger : colors!.headerTintColor}
+						iconName='notification-disabled'
+						onPress={this.goToNotification}
+						testID='room-view-push-troubleshoot'
+					/>
+				) : null}
 				{rid ? <HeaderCallButton rid={rid} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item

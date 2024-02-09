@@ -515,6 +515,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					toggleFollowThread={this.toggleFollowThread}
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
+					// The properties of notification are saved on the object of room too
+					// @ts-ignore
+					disableNotifications={room.disableNotifications}
 				/>
 			)
 		});
