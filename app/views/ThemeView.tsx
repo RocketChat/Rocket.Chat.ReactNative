@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useColorScheme } from 'react-native';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -84,6 +85,7 @@ const Item = ({
 
 const ThemeView = (): React.ReactElement => {
 	const { themePreferences, setTheme } = useTheme();
+	const colorScheme = useColorScheme();
 	const { setOptions } = useNavigation();
 
 	useLayoutEffect(() => {
@@ -144,20 +146,22 @@ const ThemeView = (): React.ReactElement => {
 						))}
 					</>
 				</List.Section>
-				<List.Section title='Dark_level'>
-					<List.Separator />
-					<>
-						{darkGroup.map(theme => (
-							<Item
-								onPress={() => onClick(theme)}
-								label={theme.label}
-								value={theme.value}
-								isSelected={!!isSelected(theme)}
-								key={theme.label}
-							/>
-						))}
-					</>
-				</List.Section>
+				{(themePreferences?.currentTheme === 'dark' || (themePreferences?.currentTheme === 'automatic' && colorScheme === 'dark')) && (
+					<List.Section title='Dark_level'>
+						<List.Separator />
+						<>
+							{darkGroup.map(theme => (
+								<Item
+									onPress={() => onClick(theme)}
+									label={theme.label}
+									value={theme.value}
+									isSelected={!!isSelected(theme)}
+									key={theme.label}
+								/>
+							))}
+						</>
+					</List.Section>
+				) || null}
 			</List.Container>
 		</SafeAreaView>
 	);
