@@ -770,7 +770,7 @@
   "Go_to_device_settings": "Ir para configurações do dispositivo",
   "Community_edition_push_quota": "Cota de notificações push Community Edition",
   "Workspace_consumption": "Consumo do Workspace",
-  "Workspace_consumption_description": "Existe uma quantidade definida de notificações push permitidas por mês.",
+  "Workspace_consumption_description": "Existe uma quantidade definida de notificações push por mês",
   "Push_gateway_connection": "Conexão com o Gateway de Push",
   "Custom_push_gateway_connection": "Conexão Personalizada com o Gateway",
   "Test_push_notification": "Testar notificação push",
