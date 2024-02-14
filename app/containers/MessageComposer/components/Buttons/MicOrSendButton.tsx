@@ -1,14 +1,18 @@
-import React, { useContext } from 'react';
 import { Audio } from 'expo-av';
+import React, { useContext } from 'react';
+import { Alert } from 'react-native';
+import { PermissionStatus } from 'expo-camera';
 
-import { BaseButton } from './BaseButton';
-import { MessageInnerContext, useMessageComposerApi, useMicOrSend } from '../../context';
-import { useTheme } from '../../../../theme';
+import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks';
-import { useCanUploadFile } from '../../hooks';
+import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
+import { useTheme } from '../../../../theme';
 import { useRoomContext } from '../../../../views/RoomView/context';
+import { MessageInnerContext, useMessageComposerApi, useMicOrSend } from '../../context';
+import { useCanUploadFile } from '../../hooks';
+import { BaseButton } from './BaseButton';
 
-export const MicOrSendButton = () => {
+export const MicOrSendButton = (): React.ReactElement | null => {
 	const { rid, sharing } = useRoomContext();
 	const micOrSend = useMicOrSend();
 	const { sendMessage } = useContext(MessageInnerContext);
@@ -17,11 +21,32 @@ export const MicOrSendButton = () => {
 	const { colors } = useTheme();
 	const { setRecordingAudio } = useMessageComposerApi();
 
+	const requestPermissionAndStartToRecordAudio = () =>
+		Audio.requestPermissionsAsync()
+			.then(({ granted }) => setRecordingAudio(granted))
+			.catch(() => {});
+
 	const startRecording = async () => {
-		const permission = await Audio.requestPermissionsAsync();
-		if (permission.granted) {
-			setRecordingAudio(true);
-		}
+		const { status, granted, canAskAgain } = await Audio.getPermissionsAsync();
+		if (granted) return setRecordingAudio(true);
+		if (status === PermissionStatus.UNDETERMINED) return requestPermissionAndStartToRecordAudio();
+		if (canAskAgain) return requestPermissionAndStartToRecordAudio();
+
+		Alert.alert(
+			i18n.t('Microphone_access_needed_to_record_audio'),
+			i18n.t('Go_to_your_device_settings_and_allow_microphone'),
+			[
+				{
+					text: i18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: i18n.t('Settings'),
+					onPress: openAppSettings
+				}
+			],
+			{ cancelable: false }
+		);
 	};
 
 	if (micOrSend === 'send' || sharing) {
