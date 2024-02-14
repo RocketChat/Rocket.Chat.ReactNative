@@ -305,6 +305,7 @@ export const colors = {
 		surfaceTint: '#F7F8FA',
 		fontDisabled: '#CBCED1',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	},
@@ -402,6 +403,7 @@ export const colors = {
 		surfaceTint: '#1F2329',
 		fontDisabled: '#60646C',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	},
@@ -499,6 +501,7 @@ export const colors = {
 		surfaceTint: '#1F2329',
 		fontDisabled: '#60646C',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	}

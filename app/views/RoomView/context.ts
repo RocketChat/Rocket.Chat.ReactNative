@@ -9,11 +9,12 @@ export interface IRoomContext {
 	sharing?: boolean;
 	action?: TMessageAction;
 	selectedMessages: string[];
-
 	editCancel?: () => void;
 	editRequest?: (message: any) => void;
 	onRemoveQuoteMessage?: (messageId: string) => void;
 	onSendMessage?: Function;
+	setQuotesAndText?: (text: string, quotes: string[]) => void;
+	getText?: () => string | undefined;
 }
 
 export const RoomContext = createContext<IRoomContext>({} as IRoomContext);
