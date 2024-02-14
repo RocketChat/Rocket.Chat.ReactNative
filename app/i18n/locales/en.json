@@ -219,6 +219,7 @@
   "Max_number_of_uses": "Max number of uses",
   "Max_number_of_users_allowed_is_number": "Max number of users allowed is {{maxUsers}}",
   "members": "members",
+  "member":"member",
   "Members": "Members",
   "Mentions": "Mentions",
   "Message_actions": "Message actions",
