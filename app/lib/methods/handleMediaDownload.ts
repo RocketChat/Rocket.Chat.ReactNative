@@ -18,18 +18,8 @@ const defaultType = {
 
 export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 
-const sanitizeString = (value: string) => {
-	const urlWithoutQueryString = value.split('?')[0];
-	return sanitizeLikeString(urlWithoutQueryString.substring(urlWithoutQueryString.lastIndexOf('/') + 1));
-};
-
-const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeString(serverURL)}/`;
-
-const sanitizeFileName = (value: string) => {
-	const extension = value.substring(value.lastIndexOf('.') + 1);
-	const toSanitize = value.substring(0, value.lastIndexOf('.'));
-	return `${sanitizeString(toSanitize)}.${extension}`;
-};
+// https://open.rocket.chat -> https___open_rocket_chat/
+const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeLikeString(serverURL)}/`;
 
 export const getFilename = ({
 	title,
@@ -106,6 +96,12 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	}
 	await FileSystem.makeDirectoryAsync(dir, { intermediates });
 	return ensureDirAsync(dir, intermediates);
+};
+
+const sanitizeFileName = (value: string) => {
+	const extension = value.substring(value.lastIndexOf('.') + 1);
+	const toSanitize = value.substring(0, value.lastIndexOf('.'));
+	return `${sanitizeLikeString(toSanitize)}.${extension}`;
 };
 
 const getFilePath = ({ type, mimeType, urlToCache }: { type: MediaTypes; mimeType?: string; urlToCache?: string }) => {
