@@ -37,58 +37,55 @@ struct MessageListView: View {
 	}
 	
 	var body: some View {
-		ScrollViewReader { reader in
-			ChatScrollView {
-				LazyVStack(alignment: .leading, spacing: 8) {
-					if room.hasMoreMessages {
-						Button("Load More...") {
-							guard let oldestMessage = room.firstMessage?.ts else { return }
-							
-							messagesLoader.loadMore(from: oldestMessage)
-						}
-					}
-					
-					ForEach(messages.indices, id: \.self) { index in
-						let message = messages[index]
-						let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
+		ChatScrollView {
+			VStack(alignment: .leading, spacing: 8) {
+				if room.hasMoreMessages {
+					Button("Load More...") {
+						guard let oldestMessage = room.firstMessage?.ts else { return }
 						
-						MessageView(
-							client: client,
-							viewModel: .init(message: message, previousMessage: previousMessage, server: server, lastOpen: lastOpen)
-						)
-						.transition(.move(edge: .bottom))
+						messagesLoader.loadMore(from: oldestMessage)
 					}
-					
-					MessageComposerView(room: room) {
-						messageSender.sendMessage($0, in: room)
-						
-						lastOpen = nil
-					}
-					.id(messageComposer)
 				}
+				
+				ForEach(messages.indices, id: \.self) { index in
+					let message = messages[index]
+					let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
+					
+					MessageView(
+						client: client,
+						viewModel: .init(message: message, previousMessage: previousMessage, server: server, lastOpen: lastOpen)
+					)
+				}
+				
+				MessageComposerView(room: room) {
+					messageSender.sendMessage($0, in: room)
+					
+					lastOpen = nil
+				}
+				.id(messageComposer)
 			}
-			.padding([.leading, .trailing])
-			.navigationTitle(formatter.title ?? "")
-			.navigationBarTitleDisplayMode(.inline)
-			.onAppear {
+		}
+		.padding([.leading, .trailing])
+		.navigationTitle(formatter.title ?? "")
+		.navigationBarTitleDisplayMode(.inline)
+		.onAppear {
+			guard let roomID = room.id else { return }
+			
+			messagesLoader.start(on: roomID)
+		}
+		.onDisappear {
+			messagesLoader.stop()
+		}
+		.onChange(of: scenePhase) { phase in
+			switch phase {
+			case .active:
 				guard let roomID = room.id else { return }
 				
 				messagesLoader.start(on: roomID)
-			}
-			.onDisappear {
+			case .background, .inactive:
 				messagesLoader.stop()
-			}
-			.onChange(of: scenePhase) { phase in
-				switch phase {
-				case .active:
-					guard let roomID = room.id else { return }
-					
-					messagesLoader.start(on: roomID)
-				case .background, .inactive:
-					messagesLoader.stop()
-				@unknown default:
-					break
-				}
+			@unknown default:
+				break
 			}
 		}
 	}
