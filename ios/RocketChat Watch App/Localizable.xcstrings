@@ -1,10 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Delete" : {
+
+    },
     "Load More..." : {
 
     },
     "Message" : {
+
+    },
+    "Resend" : {
 
     },
     "Rooms" : {

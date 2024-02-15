@@ -8,6 +8,8 @@ protocol ServersDatabase {
 	func user(id: String) -> LoggedUser?
 	func servers() -> [Server]
 	
+	func remove(_ server: Server)
+	
 	func save()
 	
 	func process(updatedServer: WatchMessage.Server)
@@ -65,6 +67,12 @@ final class DefaultDatabase: ServersDatabase {
 		let request = Server.fetchRequest()
 		
 		return (try? viewContext.fetch(request)) ?? []
+	}
+	
+	func remove(_ server: Server) {
+		viewContext.delete(server)
+		
+		save()
 	}
 	
 	func process(updatedServer: WatchMessage.Server) {

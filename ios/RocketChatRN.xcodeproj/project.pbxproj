@@ -19,6 +19,8 @@
 		1E01C82D2511337700FEF824 /* RoomKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C82C2511337700FEF824 /* RoomKey.swift */; };
 		1E0426E6251A5467008F022C /* RoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0426E5251A5467008F022C /* RoomType.swift */; };
 		1E0426E7251A54B4008F022C /* RoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0426E5251A5467008F022C /* RoomType.swift */; };
+		1E06561B2B7E91FB0081B01F /* ErrorActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */; };
+		1E06561D2B7E9C1C0081B01F /* MessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */; };
 		1E068CFE24FD2DC700A0FFC1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */; };
 		1E068CFF24FD2DC700A0FFC1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */; };
 		1E068D0124FD2E0500A0FFC1 /* AppGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E068D0024FD2E0500A0FFC1 /* AppGroup.m */; };
@@ -336,6 +338,8 @@
 		1E01C82A2511335A00FEF824 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		1E01C82C2511337700FEF824 /* RoomKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomKey.swift; sourceTree = "<group>"; };
 		1E0426E5251A5467008F022C /* RoomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomType.swift; sourceTree = "<group>"; };
+		1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorActionHandler.swift; sourceTree = "<group>"; };
+		1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageActionView.swift; sourceTree = "<group>"; };
 		1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		1E068D0024FD2E0500A0FFC1 /* AppGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppGroup.m; sourceTree = "<group>"; };
 		1E1C2F7F250FCB69005DCE7D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -572,6 +576,14 @@
 			name = RocketChatRN;
 			sourceTree = "<group>";
 		};
+		1E0656192B7E91F00081B01F /* ActionHandler */ = {
+			isa = PBXGroup;
+			children = (
+				1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */,
+			);
+			path = ActionHandler;
+			sourceTree = "<group>";
+		};
 		1E068CFB24FD2DAF00A0FFC1 /* AppGroup */ = {
 			isa = PBXGroup;
 			children = (
@@ -797,6 +809,7 @@
 				1E4AFC262B5B23C600E2AA7D /* RetryView.swift */,
 				1EDB30F12B5B453A00532C7E /* LoggedInView.swift */,
 				1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */,
+				1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -813,6 +826,7 @@
 		1ED0388F2B507B4C00C007D4 /* RocketChat Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				1E0656192B7E91F00081B01F /* ActionHandler */,
 				1EDFD0FB2B589FC4002FEE5F /* DependencyInjection */,
 				1EDFD0F82B589B82002FEE5F /* Loaders */,
 				1E29A31E2B5871BE0093C03C /* Formatters */,
@@ -1855,6 +1869,7 @@
 			files = (
 				1E29A3242B5874FF0093C03C /* MessageComposerView.swift in Sources */,
 				1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */,
+				1E06561D2B7E9C1C0081B01F /* MessageActionView.swift in Sources */,
 				1E29A3162B5868DF0093C03C /* MessageListView.swift in Sources */,
 				1E4AFC172B5AF09C00E2AA7D /* Store.swift in Sources */,
 				1E29A2F42B585B070093C03C /* SubscriptionsResponse.swift in Sources */,
@@ -1874,6 +1889,7 @@
 				1E29A3202B5871C80093C03C /* RoomFormatter.swift in Sources */,
 				1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */,
 				1E29A3102B5865B80093C03C /* RoomViewModel.swift in Sources */,
+				1E06561B2B7E91FB0081B01F /* ErrorActionHandler.swift in Sources */,
 				1E29A2FC2B585B070093C03C /* SendMessageRequest.swift in Sources */,
 				1E29A30C2B585D1D0093C03C /* String+Extensions.swift in Sources */,
 				1ED033CD2B55D671004F4930 /* RocketChatDatabase.swift in Sources */,
@@ -2325,6 +2341,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
 				PRODUCT_NAME = Rocket.Chat;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
@@ -2372,6 +2389,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
 				PRODUCT_NAME = Rocket.Chat;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";

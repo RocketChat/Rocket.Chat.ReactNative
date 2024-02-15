@@ -6,10 +6,14 @@ protocol Database {
 	func room(id: String) -> Room?
 	func message(id: String) -> Message?
 	func createTempMessage(msg: String, in room: Room, for loggedUser: LoggedUser) -> String
+	func updateMessage(_ id: String, status: String)
+	func remove(_ message: Message)
 	
 	func process(subscription: SubscriptionsResponse.Subscription)
 	func process(subscription: SubscriptionsResponse.Subscription?, in updatedRoom: RoomsResponse.Room)
 	func process(updatedMessage: MessageResponse, in room: Room)
+	
+	func remove()
 }
 
 final class RocketChatDatabase: Database {
@@ -100,6 +104,19 @@ final class RocketChatDatabase: Database {
 		message.user = user
 		
 		return id
+	}
+	
+	func updateMessage(_ id: String, status: String) {
+		let message = message(id: id) ?? createMessage(id: id)
+		message.status = status
+		
+		save()
+	}
+	
+	func remove(_ message: Message) {
+		viewContext.delete(message)
+		
+		save()
 	}
 	
 	func user(id: String) -> User? {
@@ -224,5 +241,17 @@ final class RocketChatDatabase: Database {
 		}
 		
 		save()
+	}
+	
+	func remove() {
+		guard let path = container.persistentStoreDescriptions.first?.url?.path else {
+			return
+		}
+		
+		do {
+			try FileManager.default.removeItem(atPath: path)
+		} catch {
+			print(error)
+		}
 	}
 }

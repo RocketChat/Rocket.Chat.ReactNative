@@ -1,11 +1,19 @@
 import SwiftUI
 
+enum MessageAction {
+	case resend(String, String)
+	case delete(Message)
+}
+
 struct MessageView: View {
 	@ObservedObject private var viewModel: MessageViewModel
+	@State private var message: Message?
 	
+	private let action: (MessageAction) -> Void
 	private let client: RocketChatClientProtocol
 	
-	init(client: RocketChatClientProtocol, viewModel: MessageViewModel) {
+	init(client: RocketChatClientProtocol, viewModel: MessageViewModel, action: @escaping (MessageAction) -> Void) {
+		self.action = action
 		self.client = client
 		self.viewModel = viewModel
 	}
@@ -68,15 +76,37 @@ struct MessageView: View {
 					.font(.caption.italic())
 					.foregroundStyle(.primary)
 			} else if let text = viewModel.message.msg {
-				Text(text)
-					.font(.caption)
-					.foregroundStyle(viewModel.message.status == "temp" ? .secondary : .primary)
+				HStack {
+					Text(text)
+						.font(.caption)
+						.foregroundStyle(viewModel.message.status == "temp" ? .secondary : .primary)
+					
+					if viewModel.message.status == "error" {
+						Button(
+							action: {
+								message = viewModel.message
+							},
+							label: {
+								Image(systemName: "exclamationmark.circle")
+									.font(.caption)
+									.foregroundStyle(.red)
+							}
+						)
+						.buttonStyle(PlainButtonStyle())
+					}
+				}
 			}
 			if let attachments = viewModel.message.attachments?.allObjects as? Array<Attachment> {
 				ForEach(attachments) { attachment in
 					AttachmentView(attachment: attachment, client: client)
 				}
 			}
+		}
+		.sheet(item: $message) { message in
+			MessageActionView(
+				message: message,
+				action: action
+			)
 		}
 	}
 }

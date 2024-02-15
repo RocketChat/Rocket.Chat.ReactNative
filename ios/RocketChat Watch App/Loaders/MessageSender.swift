@@ -3,6 +3,7 @@ import Foundation
 
 protocol MessageSending {
 	func sendMessage(_ msg: String, in room: Room)
+	func resendMessage(messageID: String, msg: String, in room: Room)
 }
 
 final class MessageSender {
@@ -18,15 +19,21 @@ final class MessageSender {
 
 extension MessageSender: MessageSending {
 	func sendMessage(_ msg: String, in room: Room) {
-		guard let rid = room.id else { return }
-		
 		let messageID = database.createTempMessage(msg: msg, in: room, for: server.loggedUser)
+		
+		resendMessage(messageID: messageID, msg: msg, in: room)
+	}
+	
+	func resendMessage(messageID: String, msg: String, in room: Room) {
+		guard let rid = room.id else { return }
 		
 		client.sendMessage(id: messageID, rid: rid, msg: msg)
 			.receive(on: DispatchQueue.main)
-			.subscribe(Subscribers.Sink { completion in
-				if case .failure(let error) = completion {
-					print(error)
+			.subscribe(Subscribers.Sink { [weak self] completion in
+				guard let self else { return }
+				
+				if case .failure = completion {
+					self.database.updateMessage(messageID, status: "error")
 				}
 			} receiveValue: { [weak self] messageResponse in
 				guard let self else {

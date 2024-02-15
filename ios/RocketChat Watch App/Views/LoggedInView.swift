@@ -17,6 +17,7 @@ struct LoggedInView: View {
 		Store.register(Database.self, factory: database)
 		Store.register(RocketChatClientProtocol.self, factory: RocketChatClient(server: server))
 		Store.register(MessageSending.self, factory: MessageSender(server: server))
+		Store.register(ErrorActionHandling.self, factory: ErrorActionHandler(server: server))
 	}
 	
 	var body: some View {

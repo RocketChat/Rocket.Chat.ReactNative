@@ -54,7 +54,16 @@ struct MessageListView: View {
 					MessageView(
 						client: client,
 						viewModel: .init(message: message, previousMessage: previousMessage, server: server, lastOpen: lastOpen)
-					)
+					) { action in
+						switch action {
+						case .resend(let id, let msg):
+							messageSender.resendMessage(messageID: id, msg: msg, in: room)
+							
+							lastOpen = nil
+						case .delete(let message):
+							database.remove(message)
+						}
+					}
 				}
 				
 				MessageComposerView(room: room) {
