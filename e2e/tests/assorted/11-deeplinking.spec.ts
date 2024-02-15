@@ -22,7 +22,7 @@ import random from '../../helpers/random';
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 
-let amp = '&';
+const amp = '&';
 
 const getDeepLink = (method: string, server: string, params?: string) => {
 	const deeplink = `rocketchat://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}${amp}${params}`;
@@ -47,7 +47,6 @@ describe('Deep linking', () => {
 		const loginResult = await login(user.username, user.password);
 		({ userId, authToken } = loginResult);
 		const deviceType = device.getPlatform();
-		amp = deviceType === 'android' ? '\\&' : '&';
 		({ textMatcher } = platformTypes[deviceType]);
 		// create a thread with api
 		const result = await sendMessage(user, room, threadMessage);
