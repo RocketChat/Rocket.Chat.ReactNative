@@ -1,3 +1,5 @@
+import Foundation
+
 protocol ErrorActionHandling {
 	func handle(error: RocketChatError)
 }
@@ -12,18 +14,26 @@ final class ErrorActionHandler {
 	init(server: Server) {
 		self.server = server
 	}
-}
-
-extension ErrorActionHandler: ErrorActionHandling {
-	func handle(error: RocketChatError) {
+	
+	private func handleOnMain(error: RocketChatError) {
 		switch error {
+		case .server(let response):
+			router.present(error: response)
 		case .unauthorized:
 			router.route(to: .serverList)
 			
 			database.remove()
 			serversDB.remove(server)
-		default:
-			break
+		case .unknown:
+			print("Unexpected error on Client.")
+		}
+	}
+}
+
+extension ErrorActionHandler: ErrorActionHandling {
+	func handle(error: RocketChatError) {
+		DispatchQueue.main.async {
+			self.handleOnMain(error: error)
 		}
 	}
 }

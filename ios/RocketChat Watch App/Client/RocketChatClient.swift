@@ -12,6 +12,8 @@ protocol RocketChatClientProtocol {
 }
 
 final class RocketChatClient: NSObject {
+	@Dependency private var errorActionHandler: ErrorActionHandling
+	
 	private let server: Server
 	
 	init(server: Server) {
@@ -42,22 +44,27 @@ final class RocketChatClient: NSObject {
 		urlRequest.httpBody = request.body
 		
 		return session.dataTaskPublisher(for: urlRequest)
-			.tryMap { (data, response) in
-				guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
+			.tryMap { data, response in
+				if let response = response as? HTTPURLResponse, response.statusCode == 401 {
 					throw RocketChatError.unauthorized
 				}
 				
-				return try data.decode(T.Response.self)
-			}
-			.mapError { error in
-				if let error = error as? DecodingError {
-					return .decoding(error: error)
-				}
-				if let error = error as? RocketChatError {
-					return error
+				let decoder = JSONDecoder()
+
+				if let response = try? decoder.decode(T.Response.self, from: data) {
+					return response
 				}
 				
-				return .unknown(error: error)
+				let response = try decoder.decode(ErrorResponse.self, from: data)
+				throw RocketChatError.server(response: response)
+			}
+			.mapError { [weak self] error in
+				guard let error = error as? RocketChatError else {
+					return .unknown
+				}
+				
+				self?.errorActionHandler.handle(error: error)
+				return error
 			}
 			.eraseToAnyPublisher()
 	}

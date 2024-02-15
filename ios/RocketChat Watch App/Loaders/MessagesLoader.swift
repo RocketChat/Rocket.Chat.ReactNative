@@ -16,7 +16,6 @@ final class MessagesLoader {
 	@Dependency private var client: RocketChatClientProtocol
 	@Dependency private var database: Database
 	@Dependency private var serversDB: ServersDatabase
-	@Dependency private var errorActionHandler: ErrorActionHandling
 	
 	private var roomID: String?
 	
@@ -34,8 +33,8 @@ final class MessagesLoader {
 		client.syncMessages(rid: rid, updatedSince: date)
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] completion in
-				if case .failure(let error) = completion {
-					self?.errorActionHandler.handle(error: error)
+				if case .failure = completion {
+					self?.scheduledSyncMessages(in: room, from: newUpdatedSince)
 				}
 			} receiveValue: { [weak self] messagesResponse in
 				let messages = messagesResponse.result.updated
@@ -58,9 +57,9 @@ final class MessagesLoader {
 		
 		client.getHistory(rid: rid, t: room.t ?? "", latest: date)
 			.receive(on: DispatchQueue.main)
-			.sink { [weak self] completion in
+			.sink { completion in
 				if case .failure(let error) = completion {
-					self?.errorActionHandler.handle(error: error)
+					print(error)
 				}
 			} receiveValue: { [weak self] messagesResponse in
 				let messages = messagesResponse.messages
@@ -85,9 +84,9 @@ final class MessagesLoader {
 		
 		client.sendRead(rid: rid)
 			.receive(on: DispatchQueue.main)
-			.sink { [weak self] completion in
+			.sink { completion in
 				if case .failure(let error) = completion {
-					self?.errorActionHandler.handle(error: error)
+					print(error)
 				}
 			} receiveValue: { _ in
 				

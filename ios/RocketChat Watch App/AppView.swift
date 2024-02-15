@@ -26,6 +26,11 @@ struct AppView: View {
 		.onAppear {
 			loadRoute()
 		}
+		.sheet(item: $router.error) { error in
+			Text(error.error)
+				.multilineTextAlignment(.center)
+				.padding()
+		}
 	}
 	
 	private func loadRoute() {

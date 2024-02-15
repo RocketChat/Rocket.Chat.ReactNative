@@ -11,7 +11,6 @@ final class RoomsLoader {
 	@Dependency private var client: RocketChatClientProtocol
 	@Dependency private var database: Database
 	@Dependency private var serversDB: ServersDatabase
-	@Dependency private var errorActionHandler: ErrorActionHandling
 	
 	private var timer: Timer?
 	private var cancellable = CancelBag()
@@ -33,8 +32,8 @@ final class RoomsLoader {
 		)
 		.receive(on: DispatchQueue.main)
 		.sink { [weak self] completion in
-			if case .failure(let error) = completion {
-				self?.errorActionHandler.handle(error: error)
+			if case .failure = completion {
+				self?.scheduledLoadRooms(in: server)
 			}
 		} receiveValue: { (roomsResponse, subscriptionsResponse) in
 			let rooms = roomsResponse.update
