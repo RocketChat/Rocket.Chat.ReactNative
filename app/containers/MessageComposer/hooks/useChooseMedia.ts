@@ -1,6 +1,5 @@
 import { Alert } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
@@ -12,6 +11,7 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
 import { useRoomContext } from '../../../views/RoomView/context';
+import ImagePicker, { ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 
 export const useChooseMedia = ({
 	rid,
