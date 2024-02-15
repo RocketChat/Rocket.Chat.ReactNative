@@ -6,29 +6,23 @@ import SwiftUI
 /// We hide the indicators for the flipped scroll view, since they appear reversed.
 struct ChatScrollView<Content: View>: View {
 	private let content: () -> Content
-		
+	
 	init(@ViewBuilder content: @escaping () -> Content) {
 		self.content = content
 	}
 	
 	var body: some View {
-		ScrollView(showsIndicators: false) {
-			content()
-				.rotationEffect(.degrees(180))
+		if #available(watchOS 10.0, *) {
+			ScrollView {
+				content()
+			}
+			.defaultScrollAnchor(.bottom)
+		} else {
+			ScrollView(showsIndicators: false) {
+				content()
+					.rotationEffect(.degrees(180))
+			}
+			.rotationEffect(.degrees(180))
 		}
-		.rotationEffect(.degrees(180))
 	}
 }
-
-// if #available(watchOS 10.0, *) {
-// 	ScrollView {
-// 		content()
-// 	}
-// 	.defaultScrollAnchor(.bottom)
-// } else {
-// 	ScrollView(showsIndicators: false) {
-// 		content()
-// 			.rotationEffect(.degrees(180))
-// 	}
-// 	.rotationEffect(.degrees(180))
-// }
