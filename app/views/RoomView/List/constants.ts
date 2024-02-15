@@ -5,3 +5,5 @@ export const VIEWABILITY_CONFIG = {
 };
 
 export const SCROLL_LIMIT = 200;
+
+export const EDGE_DISTANCE = 15;
