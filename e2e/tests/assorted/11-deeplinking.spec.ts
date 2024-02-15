@@ -22,7 +22,7 @@ import random from '../../helpers/random';
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 
-let amp = '&';
+const amp = '&';
 
 const getDeepLink = (method: string, server: string, params?: string) => {
 	const deeplink = `rocketchat://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}${amp}${params}`;
@@ -47,7 +47,6 @@ describe('Deep linking', () => {
 		const loginResult = await login(user.username, user.password);
 		({ userId, authToken } = loginResult);
 		const deviceType = device.getPlatform();
-		amp = deviceType === 'android' ? '\\&' : '&';
 		({ textMatcher } = platformTypes[deviceType]);
 		// create a thread with api
 		const result = await sendMessage(user, room, threadMessage);
@@ -60,8 +59,6 @@ describe('Deep linking', () => {
 	});
 
 	describe('Authentication', () => {
-		const deviceType = device.getPlatform();
-		if (deviceType === 'android') return;
 		it('should run a deep link to an invalid account and raise error', async () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
@@ -113,8 +110,6 @@ describe('Deep linking', () => {
 	});
 
 	describe('Room', () => {
-		const deviceType = device.getPlatform();
-		if (deviceType === 'android') return;
 		describe('While logged in', () => {
 			it('should navigate to the room using path', async () => {
 				await device.launchApp({
