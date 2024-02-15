@@ -8,7 +8,7 @@ struct RoomListView: View {
 	@Dependency private var roomsLoader: RoomsLoading
 	@Dependency private var router: AppRouting
 	
-	private let server: Server
+	@ObservedObject private var server: Server
 	
 	@Environment(\.scenePhase) private var scenePhase
 	
@@ -59,6 +59,11 @@ struct RoomListView: View {
 				Button("Servers") {
 					router.route(to: .serverList)
 				}
+			}
+		}
+		.overlay {
+			if server.updatedSince == nil {
+				ProgressView()
 			}
 		}
 	}
