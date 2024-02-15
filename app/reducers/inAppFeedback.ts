@@ -7,7 +7,7 @@ export interface IInAppFeedbackState {
 
 export const initialState: IInAppFeedbackState = {};
 
-export default function activeUsers(state = initialState, action: TApplicationActions): IInAppFeedbackState {
+export default function inAppFeedback(state = initialState, action: TApplicationActions): IInAppFeedbackState {
 	switch (action.type) {
 		case IN_APP_FEEDBACK.SET:
 			const { msgId } = action;

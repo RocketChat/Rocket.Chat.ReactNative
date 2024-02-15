@@ -12,7 +12,8 @@ import {
 	navigateToRoom,
 	navigateToRecentRoom
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, deleteCreatedUsers, ITestUser, sendMessage } from '../../helpers/data_setup';
+import data from '../../data';
 
 describe('Room screen', () => {
 	let room: string;
@@ -235,6 +236,39 @@ describe('Room screen', () => {
 				.withTimeout(4000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
+		});
+
+		it('should open the profile view tapping on his username', async () => {
+			const { username } = user;
+			await waitFor(element(by.id(`username-header-${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await element(by.id(`username-header-${username}`)).tap();
+			await waitFor(element(by.id('room-info-view-username')))
+				.toExist()
+				.withTimeout(2000);
+			await waitFor(element(by[textMatcher](`@${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await tapBack();
+		});
+
+		it('should open the profile view tapping on other username', async () => {
+			const otherUser = await createRandomUser();
+			const { username } = otherUser;
+			await sendMessage(otherUser, room, 'new message');
+			await waitFor(element(by.id(`username-header-${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await element(by.id(`username-header-${username}`)).tap();
+			await waitFor(element(by.id('room-info-view-username')))
+				.toExist()
+				.withTimeout(2000);
+			await waitFor(element(by[textMatcher](`@${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await tapBack();
+			await deleteCreatedUsers([{ server: data.server, username }]);
 		});
 
 		it('should edit message', async () => {
