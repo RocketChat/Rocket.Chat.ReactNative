@@ -44,6 +44,20 @@ jest.mock('react-native-file-viewer', () => ({
 
 jest.mock('expo-haptics', () => jest.fn(() => null));
 
+jest.mock('expo-av', () => ({
+	...jest.requireActual('expo-av'),
+	Audio: {
+		...jest.requireActual('expo-av').Audio,
+		getPermissionsAsync: jest.fn(() => ({ status: 'granted', granted: true, canAskAgain: true })),
+		Recording: jest.fn(() => ({
+			prepareToRecordAsync: jest.fn(),
+			startAsync: jest.fn(),
+			stopAndUnloadAsync: jest.fn(),
+			setOnRecordingStatusUpdate: jest.fn()
+		}))
+	}
+}));
+
 jest.mock('./app/lib/database', () => jest.fn(() => null));
 
 jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));

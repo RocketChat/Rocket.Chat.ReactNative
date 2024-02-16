@@ -432,8 +432,16 @@ describe('MessageComposer', () => {
 			expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
 			expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
 		});
+	});
 
-		// TODO: need to create proper mocks for getMessageById and getPermalinkMessage
-		// test('Send message with a quote', async () => {});
+	describe('Audio', () => {
+		test('tap record', async () => {
+			render(<Render />);
+			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
+			await act(async () => {
+				await fireEvent.press(screen.getByTestId('message-composer-send-audio'));
+			});
+			expect(screen.toJSON()).toMatchSnapshot();
+		});
 	});
 });

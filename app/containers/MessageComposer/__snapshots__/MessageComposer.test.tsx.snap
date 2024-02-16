@@ -1,5 +1,240 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`MessageComposer Audio tap record 1`] = `
+<keyboard-accessory-view-mock>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "borderTopColor": "#CBCED1",
+        "borderTopWidth": 1,
+        "paddingBottom": 8,
+        "paddingHorizontal": 16,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingVertical": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          Array [
+            Object {
+              "color": "#D40C26",
+              "fontSize": 24,
+            },
+            Array [
+              Object {
+                "lineHeight": 24,
+              },
+              undefined,
+            ],
+            Object {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            Object {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        style={
+          Object {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": Array [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "marginLeft": 12,
+            "textAlign": "left",
+          }
+        }
+      >
+        00:00
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={204}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 16,
+            "left": 16,
+            "right": 16,
+            "top": 16,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 24,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+        testID="message-composer-delete-audio"
+      >
+        <View
+          accessibilityLabel="Cancel"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#6C727A",
+                  "fontSize": 24,
+                },
+                Array [
+                  Object {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "backgroundColor": "transparent",
+              "color": "#6C727A",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          Recording audio message
+        </Text>
+      </View>
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        handlerTag={205}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          Object {
+            "bottom": 16,
+            "left": 16,
+            "right": 16,
+            "top": 16,
+          }
+        }
+        onActiveStateChange={[Function]}
+        onGestureEvent={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#156FF5",
+            "borderRadius": 16,
+            "height": 32,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 32,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Cancel_recording"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#FFFFFF",
+                  "fontSize": 24,
+                },
+                Array [
+                  Object {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</keyboard-accessory-view-mock>
+`;
+
 exports[`MessageComposer Quote Adding/removing quotes 1`] = `
 <keyboard-accessory-view-mock>
   <View
