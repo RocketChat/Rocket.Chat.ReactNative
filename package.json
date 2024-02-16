@@ -99,7 +99,7 @@
 		"react-native-gesture-handler": "2.4.2",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#54e1e1c7e7d4b731c74ce9dd1bf9eb5148065092",
 		"react-native-image-progress": "^1.1.1",
-		"react-native-katex": "^0.5.1",
+		"react-native-katex-v2": "0.3.0",
 		"react-native-linear-gradient": "^2.6.2",
 		"react-native-localize": "2.1.1",
 		"react-native-math-view": "^3.9.5",
