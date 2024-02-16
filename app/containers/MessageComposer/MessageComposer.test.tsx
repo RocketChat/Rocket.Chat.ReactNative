@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
@@ -400,37 +400,35 @@ describe('MessageComposer', () => {
 	}));
 
 	describe('Quote', () => {
-		test('Adding/removing quotes', async () => {
-			const onRemoveQuoteMessage = jest.fn();
-
-			// Render without quotes
-			const { rerender } = render(<Render context={{ selectedMessages: [], onRemoveQuoteMessage }} />);
-			await screen.findByTestId('message-composer');
-			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
-			expect(screen.queryByTestId('composer-quote-def')).not.toBeOnTheScreen();
-			expect(screen.toJSON()).toMatchSnapshot();
-
-			// Add a quote
+		test('Add quote `abc`', async () => {
+			render(<Render context={{ action: 'quote', selectedMessages: ['abc'] }} />);
 			await act(async () => {
-				await rerender(<Render context={{ action: 'quote', selectedMessages: ['abc'], onRemoveQuoteMessage }} />);
+				await screen.findByTestId('composer-quote-abc');
+				expect(screen.queryByTestId('composer-quote-abc')).toBeOnTheScreen();
+				expect(screen.toJSON()).toMatchSnapshot();
 			});
-			await waitFor(() => expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen());
-			expect(screen.queryByTestId('composer-quote-def')).not.toBeOnTheScreen();
-			expect(screen.toJSON()).toMatchSnapshot();
+		});
 
-			// Add another quote
-			rerender(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }} />);
-			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-			await waitFor(() => expect(screen.getByTestId('composer-quote-def')).toBeOnTheScreen());
-			expect(screen.toJSON()).toMatchSnapshot();
-
-			// Remove a quote
+		test('Add quote `def`', async () => {
+			render(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'] }} />);
 			await act(async () => {
+				await screen.findByTestId('composer-quote-abc');
+				expect(screen.queryByTestId('composer-quote-abc')).toBeOnTheScreen();
+				expect(screen.queryByTestId('composer-quote-def')).toBeOnTheScreen();
+				expect(screen.toJSON()).toMatchSnapshot();
+			});
+		});
+
+		test('Remove a quote', async () => {
+			const onRemoveQuoteMessage = jest.fn();
+			render(<Render context={{ action: 'quote', selectedMessages: ['abc', 'def'], onRemoveQuoteMessage }} />);
+			await act(async () => {
+				await screen.findByTestId('composer-quote-def');
 				await fireEvent.press(screen.getByTestId('composer-quote-remove-def'));
 			});
-			await screen.findByTestId('composer-quote-def');
 			expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);
 			expect(onRemoveQuoteMessage).toHaveBeenCalledWith('def');
+			expect(screen.toJSON()).toMatchSnapshot();
 		});
 	});
 
