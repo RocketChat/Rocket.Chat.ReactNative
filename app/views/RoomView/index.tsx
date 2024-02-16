@@ -687,7 +687,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onEditInit = (messageId: string) => {
 		const { action } = this.state;
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action) {
 			return;
 		}
@@ -736,7 +735,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			return;
 		}
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action) {
 			return;
 		}
@@ -773,7 +771,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionInit = (messageId: string) => {
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (this.state.action) {
 			return;
 		}
@@ -790,7 +787,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
 		const { action } = this.state;
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action && action !== 'quote') {
 			return;
 		}
