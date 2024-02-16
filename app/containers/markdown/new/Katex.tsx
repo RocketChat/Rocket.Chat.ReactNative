@@ -20,7 +20,9 @@ export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 		<MathView
 			math={value}
 			style={{ color: colors.bodyText }}
-			renderError={<Katex expression={value} style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]} />}
+			renderError={() => (
+				<Katex expression={value} style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]} />
+			)}
 		/>
 	);
 };
