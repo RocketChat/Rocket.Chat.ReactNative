@@ -91,7 +91,7 @@
 		"react-native-config-reader": "^4.1.1",
 		"react-native-console-time-polyfill": "1.2.3",
 		"react-native-device-info": "^10.3.0",
-		"react-native-document-picker": "^8.1.2",
+		"react-native-document-picker": "^9.1.1",
 		"react-native-easy-grid": "^0.2.2",
 		"react-native-easy-toast": "1.2.0",
 		"react-native-fast-image": "RocketChat/react-native-fast-image.git#bump-version",
