@@ -11,7 +11,7 @@ import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
 import EventEmitter from '../../lib/methods/helpers/events';
-import audioPlayer, { AUDIO_FOCUSED } from '../../lib/methods/audioPlayer';
+import AudioManager, { AUDIO_FOCUSED } from '../../lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TDownloadState } from '../../lib/methods/handleMediaDownload';
 import { TAudioState } from './types';
@@ -86,15 +86,15 @@ const AudioPlayer = ({
 	};
 
 	const setPosition = async (time: number) => {
-		await audioPlayer.setPositionAsync(audioUri.current, time);
+		await AudioManager.setPositionAsync(audioUri.current, time);
 	};
 
 	const togglePlayPause = async () => {
 		try {
 			if (!paused) {
-				await audioPlayer.pauseAudio(audioUri.current);
+				await AudioManager.pauseAudio(audioUri.current);
 			} else {
-				await audioPlayer.playAudio(audioUri.current);
+				await AudioManager.playAudio(audioUri.current);
 			}
 		} catch {
 			// Do nothing
@@ -102,7 +102,7 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
+		AudioManager.setRateAsync(audioUri.current, playbackSpeed);
 	}, [playbackSpeed]);
 
 	const onPress = () => {
@@ -118,9 +118,9 @@ const AudioPlayer = ({
 	useEffect(() => {
 		if (fileUri) {
 			InteractionManager.runAfterInteractions(async () => {
-				audioUri.current = await audioPlayer.loadAudio({ msgId, rid, uri: fileUri });
-				audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-				audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
+				audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+				AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+				AudioManager.setRateAsync(audioUri.current, playbackSpeed);
 			});
 		}
 	}, [fileUri]);
@@ -135,11 +135,11 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		const unsubscribeFocus = navigation.addListener('focus', () => {
-			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-			audioPlayer.addAudioRendered(audioUri.current);
+			AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+			AudioManager.addAudioRendered(audioUri.current);
 		});
 		const unsubscribeBlur = navigation.addListener('blur', () => {
-			audioPlayer.removeAudioRendered(audioUri.current);
+			AudioManager.removeAudioRendered(audioUri.current);
 		});
 
 		return () => {

@@ -24,7 +24,7 @@ const AUDIO_MODE = {
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
-class AudioPlayer {
+class AudioManagerClass {
 	private audioQueue: { [audioKey: string]: Audio.Sound };
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
@@ -227,5 +227,5 @@ class AudioPlayer {
 	}
 }
 
-const audioPlayer = new AudioPlayer();
-export default audioPlayer;
+const AudioManager = new AudioManagerClass();
+export default AudioManager;
