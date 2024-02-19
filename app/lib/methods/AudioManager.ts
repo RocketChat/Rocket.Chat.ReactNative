@@ -6,8 +6,6 @@ import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
 import EventEmitter from './helpers/events';
-import { store } from '../store/auxStore';
-import { getUserSelector } from '../../selectors/login';
 import { TMessageModel } from '../../definitions';
 import { AUDIO_MODE } from '../constants';
 
@@ -88,10 +86,7 @@ class AudioManagerClass {
 			return;
 		}
 		const { audio_url: audioUrl, audio_type: audioType } = message.attachments[0];
-		const baseUrl = store.getState().server.server;
-		const cdnPrefix = store.getState().settings.CDN_PREFIX as string;
-		const { id: userId, token } = getUserSelector(store.getState());
-		const uri = getFilePathAudio({ audioUrl, audioType, baseUrl, cdnPrefix, userId, token });
+		const uri = getFilePathAudio({ audioUrl, audioType });
 		if (!uri) {
 			return;
 		}
