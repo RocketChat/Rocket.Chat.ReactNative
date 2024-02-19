@@ -236,9 +236,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
-		// TODO: Refactor when audio becomes global
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
-			AudioManager.pauseCurrentAudio();
+			AudioManager.pauseAudio();
 		});
 	}
 

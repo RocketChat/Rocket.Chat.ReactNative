@@ -134,14 +134,10 @@ class AudioManagerClass {
 		}
 	}
 
-	async pauseAudio(audioKey: string) {
-		await this.audioQueue[audioKey]?.pauseAsync();
-		this.audioPlaying = '';
-	}
-
-	async pauseCurrentAudio() {
+	async pauseAudio() {
 		if (this.audioPlaying) {
-			await this.pauseAudio(this.audioPlaying);
+			await this.audioQueue[this.audioPlaying]?.pauseAsync();
+			this.audioPlaying = '';
 		}
 	}
 

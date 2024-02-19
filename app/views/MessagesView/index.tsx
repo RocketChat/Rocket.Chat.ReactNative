@@ -102,7 +102,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	}
 
 	componentWillUnmount(): void {
-		AudioManager.pauseCurrentAudio();
+		AudioManager.pauseAudio();
 	}
 
 	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: IMessagesViewState) {

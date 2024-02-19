@@ -92,7 +92,7 @@ const AudioPlayer = ({
 	const togglePlayPause = async () => {
 		try {
 			if (!paused) {
-				await AudioManager.pauseAudio(audioUri.current);
+				await AudioManager.pauseAudio();
 			} else {
 				await AudioManager.playAudio(audioUri.current);
 			}
