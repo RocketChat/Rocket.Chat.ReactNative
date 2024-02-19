@@ -97,40 +97,39 @@ class AudioManagerClass {
 		});
 	};
 
-	async playNextAudioInSequence(previousAudioKey: string) {
-		const [msgId, rid] = previousAudioKey.split('-');
+	async getNextAudio(msgId: string, rid: string) {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
-			const whereClause = [
+			const whereClause: Q.Clause[] = [
 				Q.experimentalSortBy('ts', Q.asc),
 				Q.where('ts', Q.gt(moment(msg.ts).valueOf())),
 				Q.experimentalTake(1)
-			] as (Q.WhereDescription | Q.Or)[];
+			];
 
 			if (msg.tlm || msg.tmid) {
-				const [message] = await db
-					.get('messages')
-					.query(Q.where('tmid', msg.tmid || msg.id), ...whereClause)
-					.fetch();
-				if (message && message.attachments) {
-					const nextAudioInSeqKey = this.getNextAudioKey({ message, rid });
-					if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
-						await this.playAudio(nextAudioInSeqKey);
-						return;
-					}
-				}
+				whereClause.push(Q.where('tmid', msg.tmid || msg.id));
+			} else {
+				whereClause.push(Q.where('rid', rid));
 			}
 
 			const [message] = await db
 				.get('messages')
-				.query(Q.where('rid', rid), ...whereClause)
+				.query(...whereClause)
 				.fetch();
-			if (message && message.attachments) {
-				const nextAudioInSeqKey = this.getNextAudioKey({ message, rid });
-				if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
-					await this.playAudio(nextAudioInSeqKey);
-				}
+			return message;
+		}
+
+		return null;
+	}
+
+	async playNextAudioInSequence(previousAudioKey: string) {
+		const [msgId, rid] = previousAudioKey.split('-');
+		const message = await this.getNextAudio(msgId, rid);
+		if (message && message.attachments) {
+			const nextAudioInSeqKey = this.getNextAudioKey({ message, rid });
+			if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
+				await this.playAudio(nextAudioInSeqKey);
 			}
 		}
 	}
