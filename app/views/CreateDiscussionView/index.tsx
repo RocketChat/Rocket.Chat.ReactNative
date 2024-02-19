@@ -23,6 +23,7 @@ import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } fro
 import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
+import * as List from '../../containers/List';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;
@@ -180,8 +181,13 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 						/>
 						{this.isEncryptionEnabled ? (
 							<>
-								<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
-								<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
+								<List.Item
+									title='Encrypted'
+									testID='room-actions-encrypt'
+									right={() => (
+										<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
+									)}
+								/>
 							</>
 						) : null}
 					</ScrollView>

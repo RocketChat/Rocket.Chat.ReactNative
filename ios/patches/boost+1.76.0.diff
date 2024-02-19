@@ -1,0 +1,13 @@
+diff --git a/cocoapods-patch-20240202-23940-12mtcm3/boost/boost/container_hash/hash.hpp b/Pods/boost/boost/container_hash/hash.hpp
+index 6059fee19..b665976de 100644
+--- a/cocoapods-patch-20240202-23940-12mtcm3/boost/boost/container_hash/hash.hpp
++++ b/Pods/boost/boost/container_hash/hash.hpp
+@@ -128,7 +128,7 @@ namespace boost
+         };
+ #else
+         template <typename T>
+-        struct hash_base : std::unary_function<T, std::size_t> {};
++        struct hash_base : std::__unary_function<T, std::size_t> {};
+ #endif
+ 
+         struct enable_hash_value { typedef std::size_t type; };
