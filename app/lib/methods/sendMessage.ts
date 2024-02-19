@@ -1,13 +1,111 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Model } from '@nozbe/watermelondb';
+import { Model, Q } from '@nozbe/watermelondb';
+import moment from 'moment';
 
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
 import { Encryption } from '../encryption';
-import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
+import { E2EType, IMessage, IUser, TMessageModel, TThreadMessageModel, TUploadModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
+import { sendFileMessage } from './sendFileMessage';
+import { store } from '../store/auxStore';
+import { getUserSelector } from '../../selectors/login';
+
+export async function resendFailedMessages(): Promise<void> {
+	try {
+		const db = database.active;
+		const batch: (TMessageModel | TThreadMessageModel | TUploadModel)[] = [];
+
+		const messageRecords = await db
+			.get('messages')
+			.query(Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)), Q.where('tmid', null))
+			.fetch();
+
+		messageRecords.forEach(message => {
+			batch.push(
+				message.prepareUpdate(m => {
+					m.status = messagesStatus.TEMP;
+				})
+			);
+		});
+
+		const threadRecords = await db
+			.get('thread_messages')
+			.query(Q.or(Q.where('status', messagesStatus.ERROR), Q.where('status', messagesStatus.TEMP)))
+			.fetch();
+
+		threadRecords.forEach(message => {
+			batch.push(
+				message.prepareUpdate(m => {
+					m.status = messagesStatus.TEMP;
+				})
+			);
+		});
+
+		const uploadRecords = await db.get('uploads').query(Q.where('error', true)).fetch();
+
+		// filter all uploads initiated before migration
+		const defaultTimeStamp = moment.unix(0).toDate().getTime();
+		const filteredUploadRecords = uploadRecords.filter(
+			(uploadFile: TUploadModel) => (uploadFile.ts as Date).getTime() !== defaultTimeStamp
+		);
+
+		filteredUploadRecords.forEach(upload => {
+			batch.push(
+				upload.prepareUpdate(m => {
+					m.error = false;
+				})
+			);
+		});
+
+		// don't let user automatically send messages until resend fails
+		await db.write(async () => {
+			await db.batch(...batch);
+		});
+
+		// FIXME: change any to proper type
+		const allMessages: any = [...messageRecords, ...threadRecords, ...filteredUploadRecords];
+
+		// db ts is always Date
+		allMessages.sort((a: any, b: any) => (a.ts as Date).getTime() - (b.ts as Date).getTime());
+
+		const { server } = store.getState().server;
+		const user = getUserSelector(store.getState());
+
+		for (let i = 0; i < allMessages.length; i++) {
+			try {
+				// FIXME: find any other way
+				if (allMessages[i].size) {
+					// eslint-disable-next-line no-await-in-loop
+					await sendFile(allMessages[i], server, user);
+				} else if (allMessages[i].tmid === null) {
+					// eslint-disable-next-line no-await-in-loop
+					await resendMessage(allMessages[i], undefined, true);
+				} else {
+					// eslint-disable-next-line no-await-in-loop
+					await resendMessage(allMessages[i], allMessages[i].rid, true);
+				}
+			} catch (e) {
+				// do nothing
+			}
+		}
+	} catch {
+		// let user initiate the retry
+	}
+}
+
+const sendFile = async (item: TUploadModel, server: string, user: IUser) => {
+	const db = database.active;
+	try {
+		// if user presses cancel before the upload is initiated then no need to resend
+		await db.get('uploads').find(item.id);
+		await sendFileMessage(item.rid as string, item, item.tmid, server, user, true);
+	} catch (e) {
+		// do nothing
+	}
+};
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;
@@ -63,19 +161,28 @@ async function sendMessageCall(message: any) {
 	return changeMessageStatus(_id, messagesStatus.ERROR, tmid);
 }
 
-export async function resendMessage(message: TMessageModel, tmid?: string) {
+export async function resendMessage(message: TMessageModel, tmid?: string, isAutoResend?: boolean) {
 	const db = database.active;
 	try {
-		await db.write(async () => {
-			await message.update(m => {
-				m.status = messagesStatus.TEMP;
+		let tshow;
+		if (tmid) {
+			tshow = (await db.get('messages').find(message.id)).tshow; // tshow only exists on this db
+		}
+
+		if (!isAutoResend) {
+			await db.write(async () => {
+				await message.update(m => {
+					m.status = messagesStatus.TEMP;
+				});
 			});
-		});
+		}
+
 		const m = await Encryption.encryptMessage({
 			_id: message.id,
 			rid: message.subscription ? message.subscription.id : '',
 			msg: message.msg,
-			...(tmid && { tmid })
+			...(tmid && { tmid }),
+			...(tmid && tshow && { tshow })
 		} as IMessage);
 
 		await sendMessageCall(m);

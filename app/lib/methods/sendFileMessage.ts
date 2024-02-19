@@ -60,7 +60,10 @@ export function sendFileMessage(
 			const db = database.active;
 			const uploadsCollection = db.get('uploads');
 			const uploadPath = getUploadPath(fileInfo.path, rid);
+
+			const uploadDate = new Date();
 			let uploadRecord: TUploadModel;
+
 			try {
 				uploadRecord = await uploadsCollection.find(uploadPath);
 				if (uploadRecord.id && !isForceTryAgain) {
@@ -72,6 +75,7 @@ export function sendFileMessage(
 						uploadRecord = await uploadsCollection.create(u => {
 							u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
 							Object.assign(u, fileInfo);
+							u.ts = uploadDate;
 							if (tmid) {
 								u.tmid = tmid;
 							}
