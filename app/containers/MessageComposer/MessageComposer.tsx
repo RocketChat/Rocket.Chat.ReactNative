@@ -200,7 +200,6 @@ export const MessageComposer = ({
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 	const renderContent = () => {
-		console.count('[MessageComposer] renderContent');
 		if (recordingAudio) {
 			return <RecordAudio />;
 		}

@@ -1,6 +1,5 @@
 import React from 'react';
 import '@testing-library/react-native/extend-expect';
-import '@testing-library/jest-native/legacy-extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
@@ -16,6 +15,10 @@ jest.mock('react-native-safe-area-context', () => {
 		useSafeAreaFrame: jest.fn(() => ({ x: 0, y: 0, width: 390, height: 844 }))
 	};
 });
+
+jest.mock('./node_modules/react-native/Libraries/Interaction/InteractionManager', () => ({
+	runAfterInteractions: callback => callback()
+}));
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
@@ -41,6 +44,24 @@ jest.mock('react-native-file-viewer', () => ({
 
 jest.mock('expo-haptics', () => jest.fn(() => null));
 
+jest.mock('expo-av', () => ({
+	...jest.requireActual('expo-av'),
+	Audio: {
+		...jest.requireActual('expo-av').Audio,
+		getPermissionsAsync: jest.fn(() => ({ status: 'granted', granted: true, canAskAgain: true })),
+		Recording: jest.fn(() => ({
+			prepareToRecordAsync: jest.fn(),
+			startAsync: jest.fn(),
+			stopAndUnloadAsync: jest.fn(),
+			setOnRecordingStatusUpdate: jest.fn()
+		}))
+	}
+}));
+
+jest.mock('./app/lib/methods/search', () => ({
+	search: () => []
+}));
+
 jest.mock('./app/lib/database', () => jest.fn(() => null));
 
 jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
@@ -60,20 +81,24 @@ jest.mock('./app/lib/database/services/Message', () => ({
 	})
 }));
 
-const mockedNavigate = jest.fn();
-
-jest.mock('@react-navigation/native', () => ({
-	...jest.requireActual('@react-navigation/native'),
-	useNavigation: () => ({
+jest.mock('@react-navigation/native', () => {
+	const actualNav = jest.requireActual('@react-navigation/native');
+	const { useEffect } = require('react');
+	return {
+		...actualNav,
+		useFocusEffect: useEffect,
+		isFocused: () => true,
+		useIsFocused: () => true,
+		useRoute: () => jest.fn(),
+		useNavigation: () => ({
+			navigate: jest.fn(),
+			addListener: () => jest.fn()
+		}),
+		createNavigationContainerRef: jest.fn(),
 		navigate: jest.fn(),
-		addListener: jest.fn().mockImplementation((event, callback) => {
-			callback();
-			return {
-				remove: jest.fn()
-			};
-		})
-	})
-}));
+		addListener: jest.fn(() => jest.fn())
+	};
+});
 
 jest.mock('react-native-notifications', () => ({
 	Notifications: {
