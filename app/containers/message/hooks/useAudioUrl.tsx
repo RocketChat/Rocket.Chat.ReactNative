@@ -12,6 +12,9 @@ export const useAudioUrl = ({ audioUrl }: { audioUrl?: string }): string => {
 	}));
 
 	useEffect(() => {
+		if (!audioUrl) {
+			return;
+		}
 		const url = getAudioUrl({ baseUrl, cdnPrefix, audioUrl });
 		if (url) {
 			setFilePath(url);
