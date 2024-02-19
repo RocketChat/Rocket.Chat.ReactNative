@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useAppSelector } from '../../../lib/hooks';
 import { getAudioUrl } from '../../../lib/methods/getAudioUrl';
 
-export const useGetAudioUrl = ({ audioUrl }: { audioUrl?: string }): string => {
+export const useAudioUrl = ({ audioUrl }: { audioUrl?: string }): string => {
 	const [filePath, setFilePath] = useState<string>('');
 
 	const { cdnPrefix, baseUrl } = useAppSelector(state => ({

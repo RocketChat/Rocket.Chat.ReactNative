@@ -14,7 +14,7 @@ import {
 } from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import AudioPlayer from '../AudioPlayer';
-import { useGetAudioUrl } from './hooks/useGetAudioUrl';
+import { useAudioUrl } from './hooks/useAudioUrl';
 import { getAudioUrlToCache } from '../../lib/methods/getAudioUrl';
 
 interface IMessageAudioProps {
@@ -32,7 +32,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const [fileUri, setFileUri] = useState('');
 	const { baseUrl, user, id, rid } = useContext(MessageContext);
 
-	const audioUrl = useGetAudioUrl({ audioUrl: file.audio_url });
+	const audioUrl = useAudioUrl({ audioUrl: file.audio_url });
 
 	const onPlayButtonPress = async () => {
 		if (downloadState === 'to-download') {
