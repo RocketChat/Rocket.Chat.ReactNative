@@ -1,4 +1,4 @@
-import { AVPlaybackStatus, Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { AVPlaybackStatus, Audio } from 'expo-av';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
 
@@ -9,18 +9,9 @@ import EventEmitter from './helpers/events';
 import { store } from '../store/auxStore';
 import { getUserSelector } from '../../selectors/login';
 import { TMessageModel } from '../../definitions';
+import { AUDIO_MODE } from '../constants';
 
 export const AUDIO_FOCUSED = 'AUDIO_FOCUSED';
-
-const AUDIO_MODE = {
-	allowsRecordingIOS: false,
-	playsInSilentModeIOS: true,
-	staysActiveInBackground: true,
-	shouldDuckAndroid: true,
-	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
-};
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
