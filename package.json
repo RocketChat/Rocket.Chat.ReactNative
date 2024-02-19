@@ -165,9 +165,8 @@
 		"@storybook/addon-storyshots": "6.3",
 		"@storybook/react": "6.3",
 		"@storybook/react-native": "^6.0.1-beta.7",
-		"@testing-library/jest-native": "^5.4.2",
 		"@testing-library/react-hooks": "^8.0.1",
-		"@testing-library/react-native": "^12.4.1",
+		"@testing-library/react-native": "^12.4.3",
 		"@types/bytebuffer": "^5.0.44",
 		"@types/ejson": "^2.1.3",
 		"@types/i18n-js": "^3.8.3",
@@ -224,7 +223,7 @@
 			"node_modules"
 		],
 		"transformIgnorePatterns": [
-			"node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation|expo)"
+			"node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
 		],
 		"preset": "./jest.preset.js",
 		"coverageDirectory": "./coverage/",
