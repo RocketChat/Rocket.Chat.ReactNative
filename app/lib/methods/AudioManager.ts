@@ -110,7 +110,7 @@ class AudioManagerClass {
 			if (msg.tlm || msg.tmid) {
 				whereClause.push(Q.where('tmid', msg.tmid || msg.id));
 			} else {
-				whereClause.push(Q.where('rid', rid));
+				whereClause.push(Q.where('rid', rid), Q.where('tmid', null));
 			}
 
 			const [message] = await db
