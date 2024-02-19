@@ -97,7 +97,7 @@ class AudioManagerClass {
 		});
 	};
 
-	async getNextAudio(msgId: string, rid: string) {
+	async getNextAudioMessage(msgId: string, rid: string) {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
@@ -125,9 +125,9 @@ class AudioManagerClass {
 
 	async playNextAudioInSequence(previousAudioKey: string) {
 		const [msgId, rid] = previousAudioKey.split('-');
-		const message = await this.getNextAudio(msgId, rid);
-		if (message && message.attachments) {
-			const nextAudioInSeqKey = this.getNextAudioKey({ message, rid });
+		const nextMessage = await this.getNextAudioMessage(msgId, rid);
+		if (nextMessage && nextMessage.attachments) {
+			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid });
 			if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
 				await this.playAudio(nextAudioInSeqKey);
 			}
