@@ -90,16 +90,14 @@ class AudioManagerClass {
 	}
 
 	async onEnd(audioKey: string, status: AVPlaybackStatus) {
-		if (status.isLoaded) {
-			if (status.didJustFinish) {
-				try {
-					await this.audioQueue[audioKey]?.stopAsync();
-					this.audioPlaying = '';
-					EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: '' });
-					await this.playNextAudioInSequence(audioKey);
-				} catch {
-					// do nothing
-				}
+		if (status.isLoaded && status.didJustFinish) {
+			try {
+				await this.audioQueue[audioKey]?.stopAsync();
+				this.audioPlaying = '';
+				EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: '' });
+				await this.playNextAudioInSequence(audioKey);
+			} catch {
+				// do nothing
 			}
 		}
 	}
