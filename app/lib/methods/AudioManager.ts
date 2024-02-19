@@ -161,19 +161,6 @@ class AudioManagerClass {
 		}
 	}
 
-	async unloadAudio(audioKey: string) {
-		await this.audioQueue[audioKey]?.stopAsync();
-		await this.audioQueue[audioKey]?.unloadAsync();
-		delete this.audioQueue[audioKey];
-		this.audioPlaying = '';
-	}
-
-	async unloadCurrentAudio() {
-		if (this.audioPlaying) {
-			await this.unloadAudio(this.audioPlaying);
-		}
-	}
-
 	async unloadRoomAudios(rid?: string) {
 		if (!rid) {
 			return;
@@ -193,22 +180,6 @@ class AudioManagerClass {
 		}
 		roomAudioKeysLoaded.forEach(key => delete this.audioQueue[key]);
 		this.audioPlaying = '';
-	}
-
-	async unloadAllAudios() {
-		const audiosLoaded = Object.values(this.audioQueue);
-		try {
-			await Promise.all(
-				audiosLoaded.map(async audio => {
-					await audio?.stopAsync();
-					await audio?.unloadAsync();
-				})
-			);
-		} catch {
-			// Do nothing
-		}
-		this.audioPlaying = '';
-		this.audioQueue = {};
 	}
 }
 
