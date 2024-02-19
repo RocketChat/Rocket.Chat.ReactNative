@@ -43,11 +43,50 @@ class AudioManagerClass {
 		return audioKey;
 	}
 
+	async playAudio(audioKey: string) {
+		if (this.audioPlaying) {
+			await this.pauseAudio();
+		}
+		await Audio.setAudioModeAsync(AUDIO_MODE);
+		await this.audioQueue[audioKey]?.playAsync();
+		this.audioPlaying = audioKey;
+		EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: audioKey });
+	}
+
+	async pauseAudio() {
+		if (this.audioPlaying) {
+			await this.audioQueue[this.audioPlaying]?.pauseAsync();
+			this.audioPlaying = '';
+		}
+	}
+
+	async setPositionAsync(audioKey: string, time: number) {
+		try {
+			await this.audioQueue[audioKey]?.setPositionAsync(time);
+		} catch {
+			// Do nothing
+		}
+	}
+
+	async setRateAsync(audioKey: string, value = 1.0) {
+		try {
+			await this.audioQueue[audioKey].setRateAsync(value, true);
+		} catch {
+			// Do nothing
+		}
+	}
+
 	onPlaybackStatusUpdate(audioKey: string, status: AVPlaybackStatus, callback: (status: AVPlaybackStatus) => void) {
 		if (status) {
 			callback(status);
 			this.onEnd(audioKey, status);
 		}
+	}
+
+	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AVPlaybackStatus) => void): void {
+		return this.audioQueue[audioKey]?.setOnPlaybackStatusUpdate(status =>
+			this.onPlaybackStatusUpdate(audioKey, status, callback)
+		);
 	}
 
 	async onEnd(audioKey: string, status: AVPlaybackStatus) {
@@ -63,22 +102,6 @@ class AudioManagerClass {
 				}
 			}
 		}
-	}
-
-	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AVPlaybackStatus) => void): void {
-		return this.audioQueue[audioKey]?.setOnPlaybackStatusUpdate(status =>
-			this.onPlaybackStatusUpdate(audioKey, status, callback)
-		);
-	}
-
-	async playAudio(audioKey: string) {
-		if (this.audioPlaying) {
-			await this.pauseAudio(this.audioPlaying);
-		}
-		await Audio.setAudioModeAsync(AUDIO_MODE);
-		await this.audioQueue[audioKey]?.playAsync();
-		this.audioPlaying = audioKey;
-		EventEmitter.emit(AUDIO_FOCUSED, { audioFocused: audioKey });
 	}
 
 	getNextAudioKey = ({ message, rid }: { message: TMessageModel; rid: string }) => {
@@ -131,29 +154,6 @@ class AudioManagerClass {
 			if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
 				await this.playAudio(nextAudioInSeqKey);
 			}
-		}
-	}
-
-	async pauseAudio() {
-		if (this.audioPlaying) {
-			await this.audioQueue[this.audioPlaying]?.pauseAsync();
-			this.audioPlaying = '';
-		}
-	}
-
-	async setPositionAsync(audioKey: string, time: number) {
-		try {
-			await this.audioQueue[audioKey]?.setPositionAsync(time);
-		} catch {
-			// Do nothing
-		}
-	}
-
-	async setRateAsync(audioKey: string, value = 1.0) {
-		try {
-			await this.audioQueue[audioKey].setRateAsync(value, true);
-		} catch {
-			// Do nothing
 		}
 	}
 
