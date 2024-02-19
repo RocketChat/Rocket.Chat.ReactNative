@@ -44,7 +44,7 @@ const methods: IMethods = {
 		keyboardType: 'numeric'
 	},
 	email: {
-		text: 'Verify_your_email_for_the_code_we_sent',
+		text: 'Enter_the_code',
 		keyboardType: 'numeric'
 	},
 	password: {
@@ -129,7 +129,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 					/>
 					{isEmail ? (
 						<Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>
-							{I18n.t('Send_me_the_code_again')}
+							{I18n.t('Resend_email')}
 						</Text>
 					) : null}
 					<View style={styles.buttonContainer}>
@@ -140,7 +140,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 							style={styles.button}
 							onPress={onCancel}
 						/>
-						<Button title={I18n.t('Send')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
+						<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
 					</View>
 				</View>
 			</View>

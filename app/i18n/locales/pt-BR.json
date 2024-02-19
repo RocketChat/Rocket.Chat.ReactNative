@@ -365,7 +365,6 @@
   "Send_audio_message": "Enviar mensagem de áudio",
   "Send_crash_report": "Enviar relatório de erros",
   "Send_message": "Enviar mensagem",
-  "Send_me_the_code_again": "Envie-me o código novamente",
   "Send_to": "Enviar para...",
   "Sending_to": "Envio para",
   "Server": "Workspace",
@@ -435,7 +434,6 @@
   "Uses_server_configuration": "Usar configuração da workspace",
   "Registration_Succeeded": "Registrado com sucesso!",
   "Verify_email_desc": "Nós lhe enviamos um e-mail para confirmar o seu registro. Se você não receber um e-mail em breve, por favor retorne e tente novamente.",
-  "Verify_your_email_for_the_code_we_sent": "Verifique em seu e-mail o código que enviamos",
   "View_Original": "Visualizar original",
   "Waiting_for_network": "Aguardando rede...",
   "Websocket_disabled": "Websocket está desativado para essa workspace.\n{{contact}}",
@@ -798,5 +796,8 @@
   "Go_to_your_device_settings_and_allow_microphone": "Vá para as configurações do seu dispositivo e permita o acesso ao microfone pelo aplicativo Rocket.Chat",
   "In_app_message_notifications": "Notificações de mensagens in-app",
   "Vibrate": "Vibrar",
-  "Check_again": "Verificar novamente"
+  "Check_again": "Verificar novamente",
+  "Enter_the_code": "Insira o código que acabamos de enviar por e-mail.",
+  "Resend_email": "Reenviar e-mail",
+  "Verify": "Verificar"
 }
