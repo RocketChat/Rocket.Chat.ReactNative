@@ -107,7 +107,7 @@ class AudioManagerClass {
 				Q.experimentalTake(1)
 			];
 
-			if (msg.tlm || msg.tmid) {
+			if (msg.tmid) {
 				whereClause.push(Q.where('tmid', msg.tmid || msg.id));
 			} else {
 				whereClause.push(Q.where('rid', rid), Q.where('tmid', null));
