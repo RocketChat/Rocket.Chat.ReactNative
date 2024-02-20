@@ -21,12 +21,12 @@ export default function CommunityEditionPushQuota(): React.ReactElement | null {
 
 	const percentage = `${Math.floor(consumptionPercentage)}%`;
 
-	let percentageColor = colors.statusFontOnSuccess;
+	let percentageColor = colors.statusFontSuccess;
 	if (consumptionPercentage > WARNING_MINIMUM_VALUE && consumptionPercentage < WARNING_MAXIMUM_VALUE) {
-		percentageColor = colors.statusFontOnWarning;
+		percentageColor = colors.statusFontWarning;
 	}
 	if (consumptionPercentage >= WARNING_MAXIMUM_VALUE) {
-		percentageColor = colors.statusFontOnDanger;
+		percentageColor = colors.statusFontDanger;
 	}
 
 	const alertWorkspaceConsumption = () => {
