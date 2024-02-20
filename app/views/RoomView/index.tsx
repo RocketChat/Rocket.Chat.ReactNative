@@ -94,7 +94,7 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
-import audioPlayer from '../../lib/methods/audioPlayer';
+import AudioManager from '../../lib/methods/AudioManager';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
@@ -236,9 +236,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
-		// TODO: Refactor when audio becomes global
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
-			audioPlayer.pauseCurrentAudio();
+			AudioManager.pauseAudio();
 		});
 	}
 
@@ -342,8 +341,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		if (!this.tmid) {
-			// TODO: Refactor when audio becomes global
-			await audioPlayer.unloadRoomAudios(this.rid);
+			await AudioManager.unloadRoomAudios(this.rid);
 		}
 	}
 

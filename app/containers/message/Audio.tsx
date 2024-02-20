@@ -14,7 +14,8 @@ import {
 } from '../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
 import AudioPlayer from '../AudioPlayer';
-import { useAppSelector } from '../../lib/hooks';
+import { useAudioUrl } from './hooks/useAudioUrl';
+import { getAudioUrlToCache } from '../../lib/methods/getAudioUrl';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -30,17 +31,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const [downloadState, setDownloadState] = useState<TDownloadState>('loading');
 	const [fileUri, setFileUri] = useState('');
 	const { baseUrl, user, id, rid } = useContext(MessageContext);
-	const { cdnPrefix } = useAppSelector(state => ({
-		cdnPrefix: state.settings.CDN_PREFIX as string
-	}));
 
-	const getUrl = () => {
-		let url = file.audio_url;
-		if (url && !url.startsWith('http')) {
-			url = `${cdnPrefix || baseUrl}${file.audio_url}`;
-		}
-		return url;
-	};
+	const audioUrl = useAudioUrl({ audioUrl: file.audio_url });
 
 	const onPlayButtonPress = async () => {
 		if (downloadState === 'to-download') {
@@ -55,10 +47,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const handleDownload = async () => {
 		setDownloadState('loading');
 		try {
-			const url = getUrl();
-			if (url) {
+			if (audioUrl) {
 				const audio = await downloadMediaFile({
-					downloadUrl: `${url}?rc_uid=${user.id}&rc_token=${user.token}`,
+					downloadUrl: getAudioUrlToCache({ token: user.token, userId: user.id, url: audioUrl }),
 					type: 'audio',
 					mimeType: file.audio_type
 				});
@@ -71,9 +62,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	};
 
 	const handleAutoDownload = async () => {
-		const url = getUrl();
 		try {
-			if (url) {
+			if (audioUrl) {
 				const isCurrentUserAuthor = author?._id === user.id;
 				const isAutoDownloadEnabled = fetchAutoDownloadEnabled('audioPreferenceDownload');
 				if (isAutoDownloadEnabled || isCurrentUserAuthor) {
@@ -91,7 +81,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		const cachedAudioResult = await getMediaCache({
 			type: 'audio',
 			mimeType: file.audio_type,
-			urlToCache: getUrl()
+			urlToCache: audioUrl
 		});
 		if (cachedAudioResult?.exists) {
 			setFileUri(cachedAudioResult.uri);
@@ -103,10 +93,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const handleResumeDownload = async () => {
 		try {
 			setDownloadState('loading');
-			const url = getUrl();
-			if (url) {
+			if (audioUrl) {
 				const videoUri = await resumeMediaFile({
-					downloadUrl: url
+					downloadUrl: audioUrl
 				});
 				setFileUri(videoUri);
 				setDownloadState('downloaded');
@@ -122,19 +111,21 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			if (isAudioCached) {
 				return;
 			}
-			const audioUrl = getUrl();
 			if (audioUrl && isDownloadActive(audioUrl)) {
 				handleResumeDownload();
 				return;
 			}
 			await handleAutoDownload();
 		};
-		handleCache();
-	}, []);
+		if (audioUrl) {
+			handleCache();
+		}
+	}, [audioUrl]);
 
 	if (!baseUrl) {
 		return null;
 	}
+
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
