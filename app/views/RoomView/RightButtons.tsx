@@ -303,7 +303,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		showActionSheet({ options });
 	};
 
-	goToNotification = () => {
+	navigateToNotificationOrPushTroubleshoot = () => {
 		const { room } = this;
 		const { rid, navigation, isMasterDetail, issuesWithNotifications } = this.props;
 
@@ -390,7 +390,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 					<HeaderButton.Item
 						color={issuesWithNotifications ? colors!.fontDanger : colors!.headerTintColor}
 						iconName='notification-disabled'
-						onPress={this.goToNotification}
+						onPress={this.navigateToNotificationOrPushTroubleshoot}
 						testID='room-view-push-troubleshoot'
 					/>
 				) : null}
