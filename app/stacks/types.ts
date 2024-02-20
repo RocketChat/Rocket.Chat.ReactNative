@@ -277,7 +277,8 @@ export type InsideStackParamList = {
 		room: TSubscriptionModel;
 		thread: TThreadModel;
 		action: TMessageAction;
-		selectedMessages: string[];
+		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
+		startShareView: () => { text: string; selectedMessages: string[] };
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
