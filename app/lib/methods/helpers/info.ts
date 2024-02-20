@@ -12,8 +12,7 @@ export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
 		const seconds = errorMessage.replace(/\D/g, '');
 		errorMessage = I18n.t('error-too-many-requests', { seconds });
 	} else {
-		const errorKey = errorMessage;
-		errorMessage = I18n.isTranslated(errorKey) ? I18n.t(errorKey) : errorMessage;
+		errorMessage = I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
 	}
 
 	showErrorAlert(errorMessage, title);
