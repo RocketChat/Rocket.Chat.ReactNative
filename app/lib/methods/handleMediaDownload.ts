@@ -108,9 +108,17 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	return ensureDirAsync(dir, intermediates);
 };
 
-const getFilePath = ({ type, mimeType, urlToCache }: { type: MediaTypes; mimeType?: string; urlToCache?: string }) => {
+export const getFilePath = ({
+	type,
+	mimeType,
+	urlToCache
+}: {
+	type: MediaTypes;
+	mimeType?: string;
+	urlToCache?: string;
+}): string | null => {
 	if (!urlToCache) {
-		return;
+		return null;
 	}
 	const folderPath = getFolderPath(urlToCache);
 	const urlWithoutQueryString = urlToCache.split('?')[0];

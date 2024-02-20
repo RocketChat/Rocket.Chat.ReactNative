@@ -11,6 +11,7 @@ export type TEmitterEvents = {
 	setKeyboardHeightThread: number;
 	setComposerHeight: number;
 	setComposerHeightThread: number;
+	audioFocused: string;
 };
 
 export type TKeyEmitterEvent = keyof TEmitterEvents;
