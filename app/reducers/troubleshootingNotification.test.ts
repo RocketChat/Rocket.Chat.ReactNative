@@ -1,4 +1,4 @@
-import { setTroubleshootingNotification, requestTroubleshootingNotification } from '../actions/troubleshootingNotification';
+import { setTroubleshootingNotification, initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import { mockedStore } from './mockedStore';
 import { ITroubleshootingNotification, initialState } from './troubleshootingNotification';
 
@@ -8,8 +8,8 @@ describe('test troubleshootingNotification reducer', () => {
 		expect(state).toEqual(initialState);
 	});
 
-	it('should return correctly the value after call requestTroubleshootingNotification action', () => {
-		mockedStore.dispatch(requestTroubleshootingNotification());
+	it('should return correctly the value after call initTroubleshootingNotification action', () => {
+		mockedStore.dispatch(initTroubleshootingNotification());
 		const state = mockedStore.getState().troubleshootingNotification;
 		expect(state).toEqual(initialState);
 	});
