@@ -47,7 +47,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	theme?: TSupportedThemes;
 	colors?: TColors;
 	issuesWithNotifications: boolean;
-	disableNotifications?: boolean;
+	notificationsDisabled?: boolean;
 }
 
 interface IRigthButtonsState {
@@ -96,7 +96,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions, theme, issuesWithNotifications, disableNotifications } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme, issuesWithNotifications, notificationsDisabled } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -115,7 +115,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (nextProps.issuesWithNotifications !== issuesWithNotifications) {
 			return true;
 		}
-		if (nextProps.disableNotifications !== disableNotifications) {
+		if (nextProps.notificationsDisabled !== notificationsDisabled) {
 			return true;
 		}
 		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
@@ -361,7 +361,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, disableNotifications } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
@@ -386,7 +386,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				{issuesWithNotifications || disableNotifications ? (
+				{issuesWithNotifications || notificationsDisabled ? (
 					<HeaderButton.Item
 						color={issuesWithNotifications ? colors!.fontDanger : colors!.headerTintColor}
 						iconName='notification-disabled'
