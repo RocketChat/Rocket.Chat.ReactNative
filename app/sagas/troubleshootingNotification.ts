@@ -13,7 +13,7 @@ interface IGenericAction extends Action {
 	type: string;
 }
 
-function* request() {
+function* init() {
 	const serverVersion = yield* appSelector(state => state.server.version);
 	let deviceNotificationEnabled = false;
 	let defaultPushGateway = false;
@@ -21,14 +21,22 @@ function* request() {
 	try {
 		const { authorizationStatus } = yield* call(notifee.getNotificationSettings);
 		deviceNotificationEnabled = authorizationStatus > AuthorizationStatus.DENIED;
-		const pushInfoResult = yield* call(pushInfo);
-		if (pushInfoResult.success) {
-			pushGatewayEnabled = pushInfoResult.pushGatewayEnabled;
-			defaultPushGateway = pushInfoResult.defaultPushGateway;
+	} catch (e) {
+		log(e);
+	}
+
+	try {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.5.0')) {
+			const pushInfoResult = yield* call(pushInfo);
+			if (pushInfoResult.success) {
+				pushGatewayEnabled = pushInfoResult.pushGatewayEnabled;
+				defaultPushGateway = pushInfoResult.defaultPushGateway;
+			}
 		}
 	} catch (e) {
 		log(e);
 	}
+
 	const issuesWithNotifications =
 		!deviceNotificationEnabled || (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') && !pushGatewayEnabled);
 	yield put(
@@ -42,5 +50,5 @@ function* request() {
 }
 
 export default function* root(): Generator {
-	yield takeLatest<IGenericAction>(TROUBLESHOOTING_NOTIFICATION.REQUEST, request);
+	yield takeLatest<IGenericAction>(TROUBLESHOOTING_NOTIFICATION.INIT, init);
 }

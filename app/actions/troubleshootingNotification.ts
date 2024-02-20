@@ -7,9 +7,9 @@ type TSetTroubleshootingNotification = Action & { payload: Partial<ITroubleshoot
 
 export type TActionTroubleshootingNotification = Action & TSetTroubleshootingNotification;
 
-export function requestTroubleshootingNotification(): Action {
+export function initTroubleshootingNotification(): Action {
 	return {
-		type: TROUBLESHOOTING_NOTIFICATION.REQUEST
+		type: TROUBLESHOOTING_NOTIFICATION.INIT
 	};
 }
 
