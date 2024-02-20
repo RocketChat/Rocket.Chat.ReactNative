@@ -15,6 +15,7 @@ import { compareServerVersion, isIOS, showErrorAlert } from '../../lib/methods/h
 import { requestTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { Services } from '../../lib/services';
+import ListPercentage from './components/ListPercentage';
 
 interface IPushTroubleshootViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
@@ -24,16 +25,23 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const [testPushNotificationsPermission] = usePermissions(['test-push-notifications']);
-
-	const { deviceNotificationEnabled, defaultPushGateway, pushGatewayEnabled, foreground, serverVersion } = useAppSelector(
-		state => ({
-			deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
-			pushGatewayEnabled: state.troubleshootingNotification.pushGatewayEnabled,
-			defaultPushGateway: state.troubleshootingNotification.defaultPushGateway,
-			foreground: state.app.foreground,
-			serverVersion: state.server.version
-		})
-	);
+	const {
+		deviceNotificationEnabled,
+		defaultPushGateway,
+		pushGatewayEnabled,
+		consumptionPercentage,
+		isCommunityEdition,
+		foreground,
+		serverVersion
+	} = useAppSelector(state => ({
+		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled,
+		pushGatewayEnabled: state.troubleshootingNotification.pushGatewayEnabled,
+		defaultPushGateway: state.troubleshootingNotification.defaultPushGateway,
+		foreground: state.app.foreground,
+		serverVersion: state.server.version,
+		isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
+		consumptionPercentage: state.troubleshootingNotification.consumptionPercentage
+	}));
 
 	useEffect(() => {
 		if (foreground) {
@@ -57,6 +65,10 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 			I18n.t('Device_notifications_alert_title'),
 			goToNotificationSettings
 		);
+	};
+
+	const alertWorkspaceConsumption = () => {
+		Alert.alert(I18n.t('Push_consumption_alert_title'), I18n.t('Push_consumption_alert_description'));
 	};
 
 	const goToNotificationSettings = () => {
@@ -108,6 +120,20 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 					/>
 					<List.Separator />
 				</CustomListSection>
+
+				{isCommunityEdition ? (
+					<List.Section title='Community_edition_push_quota'>
+						<List.Separator />
+						<ListPercentage
+							title='Workspace_consumption'
+							onPress={alertWorkspaceConsumption}
+							testID='push-troubleshoot-view-workspace-consumption'
+							value={consumptionPercentage}
+						/>
+						<List.Separator />
+						<List.Info info='Workspace_consumption_description' />
+					</List.Section>
+				) : null}
 
 				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') ? (
 					<CustomListSection

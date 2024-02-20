@@ -19,7 +19,9 @@ describe('test troubleshootingNotification reducer', () => {
 			deviceNotificationEnabled: true,
 			highlightTroubleshooting: false,
 			defaultPushGateway: true,
-			pushGatewayEnabled: true
+			pushGatewayEnabled: true,
+			consumptionPercentage: 0,
+			isCommunityEdition: false
 		};
 		mockedStore.dispatch(setTroubleshootingNotification(payload));
 		const state = mockedStore.getState().troubleshootingNotification;

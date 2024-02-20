@@ -6,13 +6,17 @@ export interface ITroubleshootingNotification {
 	pushGatewayEnabled: boolean;
 	defaultPushGateway: boolean;
 	highlightTroubleshooting: boolean;
+	consumptionPercentage: number;
+	isCommunityEdition: boolean;
 }
 
 export const initialState: ITroubleshootingNotification = {
 	deviceNotificationEnabled: false,
 	pushGatewayEnabled: false,
 	defaultPushGateway: false,
-	highlightTroubleshooting: false
+	highlightTroubleshooting: false,
+	consumptionPercentage: 0,
+	isCommunityEdition: false
 };
 
 export default (state = initialState, action: TActionTroubleshootingNotification): ITroubleshootingNotification => {
