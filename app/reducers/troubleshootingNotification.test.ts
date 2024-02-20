@@ -17,7 +17,7 @@ describe('test troubleshootingNotification reducer', () => {
 	it('should return correctly value after call troubleshootingNotification action', () => {
 		const payload: ITroubleshootingNotification = {
 			deviceNotificationEnabled: true,
-			highlightTroubleshooting: false,
+			issuesWithNotifications: false,
 			defaultPushGateway: true,
 			pushGatewayEnabled: true,
 			consumptionPercentage: 0,

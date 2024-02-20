@@ -92,7 +92,7 @@ interface IRoomsListViewProps {
 	createPrivateChannelPermission: [];
 	createDiscussionPermission: [];
 	serverVersion: string;
-	highlightTroubleshooting: boolean;
+	issuesWithNotifications: boolean;
 }
 
 interface IRoomsListViewState {
@@ -147,7 +147,7 @@ const shouldUpdateProps = [
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
 	'createDiscussionPermission',
-	'highlightTroubleshooting',
+	'issuesWithNotifications',
 	'supportedVersionsStatus'
 ];
 
@@ -335,7 +335,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDiscussionPermission,
 			showAvatar,
 			displayMode,
-			highlightTroubleshooting,
+			issuesWithNotifications,
 			supportedVersionsStatus
 		} = this.props;
 		const { item } = this.state;
@@ -360,7 +360,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
 			notificationPresenceCap !== prevProps.notificationPresenceCap ||
-			highlightTroubleshooting !== prevProps.highlightTroubleshooting ||
+			issuesWithNotifications !== prevProps.issuesWithNotifications ||
 			supportedVersionsStatus !== prevProps.supportedVersionsStatus
 		) {
 			this.setHeader();
@@ -414,7 +414,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, highlightTroubleshooting, supportedVersionsStatus, theme } =
+		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme } =
 			this.props;
 		if (searching) {
 			return {
@@ -462,7 +462,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			headerTitle: () => <RoomsListHeaderView />,
 			headerRight: () => (
 				<HeaderButton.Container>
-					{highlightTroubleshooting ? (
+					{issuesWithNotifications ? (
 						<HeaderButton.Item
 							iconName='notification-disabled'
 							onPress={this.goPushTroubleshoot}
@@ -1030,7 +1030,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createPrivateChannelPermission: state.permissions['create-p'],
 	createDiscussionPermission: state.permissions['start-discussion'],
 	serverVersion: state.server.version,
-	highlightTroubleshooting: state.troubleshootingNotification.highlightTroubleshooting
+	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));

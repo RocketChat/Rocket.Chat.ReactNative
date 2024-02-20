@@ -1,7 +1,6 @@
 import { Action } from 'redux';
-import { put, takeEvery } from 'redux-saga/effects';
-import { call } from 'typed-redux-saga';
-import notifee from '@notifee/react-native';
+import { call, takeLatest, put } from 'typed-redux-saga';
+import notifee, { AuthorizationStatus } from '@notifee/react-native';
 
 import { TROUBLESHOOTING_NOTIFICATION } from '../actions/actionsTypes';
 import { setTroubleshootingNotification } from '../actions/troubleshootingNotification';
@@ -20,32 +19,28 @@ function* request() {
 	let defaultPushGateway = false;
 	let pushGatewayEnabled = false;
 	try {
-		const { authorizationStatus } = yield * call(notifee.getNotificationSettings);
-		deviceNotificationEnabled = authorizationStatus > 0;
-		const pushInfoResult = yield * call(pushInfo);
+		const { authorizationStatus } = yield* call(notifee.getNotificationSettings);
+		deviceNotificationEnabled = authorizationStatus > AuthorizationStatus.DENIED;
+		const pushInfoResult = yield* call(pushInfo);
 		if (pushInfoResult.success) {
 			pushGatewayEnabled = pushInfoResult.pushGatewayEnabled;
 			defaultPushGateway = pushInfoResult.defaultPushGateway;
 		}
-		// TODO: Need to request the information of push quota and if the server is a community edition
 	} catch (e) {
 		log(e);
-	} finally {
-		// If Any of the items that can have red values: notification settings, CE quota, or gateway connection; the red icon should show.
-		// Then highlightTroubleshooting has to be true
-		const highlightTroubleshooting =
-			!deviceNotificationEnabled || (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') && !pushGatewayEnabled);
-		yield put(
-			setTroubleshootingNotification({
-				deviceNotificationEnabled,
-				defaultPushGateway,
-				pushGatewayEnabled,
-				highlightTroubleshooting
-			})
-		);
 	}
+	const issuesWithNotifications =
+		!deviceNotificationEnabled || (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.6.0') && !pushGatewayEnabled);
+	yield put(
+		setTroubleshootingNotification({
+			deviceNotificationEnabled,
+			defaultPushGateway,
+			pushGatewayEnabled,
+			issuesWithNotifications
+		})
+	);
 }
 
 export default function* root(): Generator {
-	yield takeEvery<IGenericAction>(TROUBLESHOOTING_NOTIFICATION.REQUEST, request);
+	yield takeLatest<IGenericAction>(TROUBLESHOOTING_NOTIFICATION.REQUEST, request);
 }
