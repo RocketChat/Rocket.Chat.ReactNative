@@ -39,7 +39,7 @@ export default function DeviceNotificationSettings(): React.ReactElement {
 		>
 			<List.Separator />
 			<List.Item
-				title={!deviceNotificationEnabled ? 'Allow_push_notifications_for_rocket_chat' : 'Go_to_device_settings'}
+				title={!deviceNotificationEnabled ? 'Allow_push_notifications_for_rocket_chat' : 'No_further_action_is_needed'}
 				onPress={alertDeviceNotificationSettings}
 				testID='push-troubleshoot-view-allow-push-notifications'
 				disabled={deviceNotificationEnabled}

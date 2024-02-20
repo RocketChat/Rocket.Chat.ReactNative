@@ -747,7 +747,7 @@
   "Push_Troubleshooting": "Push Troubleshooting",
   "Device_notification_settings": "Device notification settings",
   "Allow_push_notifications_for_rocket_chat": "Allow push notifications for Rocket.Chat",
-  "Go_to_device_settings": "Go to device settings",
+  "No_further_action_is_needed": "No further action is needed",
   "Community_edition_push_quota": "Community push quota",
   "Workspace_consumption": "Workspace consumption",
   "Workspace_consumption_description": "There’s a set amount of push notifications per month",
