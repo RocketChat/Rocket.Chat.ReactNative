@@ -465,7 +465,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					{issuesWithNotifications ? (
 						<HeaderButton.Item
 							iconName='notification-disabled'
-							onPress={this.goPushTroubleshoot}
+							onPress={this.navigateToPushTroubleshootView}
 							testID='rooms-list-view-push-troubleshoot'
 							color={themes[theme].fontDanger}
 						/>
@@ -787,7 +787,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	goPushTroubleshoot = () => {
+	navigateToPushTroubleshootView = () => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
