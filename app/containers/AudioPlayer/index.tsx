@@ -10,10 +10,10 @@ import styles from './styles';
 import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
-import EventEmitter from '../../lib/methods/helpers/events';
-import AudioManager, { AUDIO_FOCUSED } from '../../lib/methods/AudioManager';
+import AudioManager from '../../lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TDownloadState } from '../../lib/methods/handleMediaDownload';
+import { emitter } from '../../lib/methods/helpers';
 import { TAudioState } from './types';
 import { useUserPreferences } from '../../lib/methods';
 
@@ -149,11 +149,12 @@ const AudioPlayer = ({
 	}, [navigation]);
 
 	useEffect(() => {
-		const listener = EventEmitter.addEventListener(AUDIO_FOCUSED, ({ audioFocused }: { audioFocused: string }) => {
+		const audioFocusedEventHandler = (audioFocused: string) => {
 			setFocused(!!audioFocused && audioFocused === audioUri.current);
-		});
+		};
+		emitter.on('audioFocused', audioFocusedEventHandler);
 		return () => {
-			EventEmitter.removeListener(AUDIO_FOCUSED, listener);
+			emitter.off('audioFocused', audioFocusedEventHandler);
 		};
 	}, []);
 
