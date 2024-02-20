@@ -112,7 +112,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 		});
 	}, []);
 
-	const goPushTroubleshoot = () => {
+	const navigateToPushTroubleshootView = () => {
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
 		} else {
@@ -216,7 +216,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 					<List.Separator />
 					<List.Item
 						title='Troubleshooting'
-						onPress={goPushTroubleshoot}
+						onPress={navigateToPushTroubleshootView}
 						testID='notification-preference-view-troubleshooting'
 						showActionIndicator
 					/>
