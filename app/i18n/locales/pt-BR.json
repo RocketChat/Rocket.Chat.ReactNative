@@ -365,7 +365,6 @@
   "Send_audio_message": "Enviar mensagem de áudio",
   "Send_crash_report": "Enviar relatório de erros",
   "Send_message": "Enviar mensagem",
-  "Send_me_the_code_again": "Envie-me o código novamente",
   "Send_to": "Enviar para...",
   "Sending_to": "Envio para",
   "Server": "Workspace",
@@ -435,7 +434,6 @@
   "Uses_server_configuration": "Usar configuração da workspace",
   "Registration_Succeeded": "Registrado com sucesso!",
   "Verify_email_desc": "Nós lhe enviamos um e-mail para confirmar o seu registro. Se você não receber um e-mail em breve, por favor retorne e tente novamente.",
-  "Verify_your_email_for_the_code_we_sent": "Verifique em seu e-mail o código que enviamos",
   "View_Original": "Visualizar original",
   "Waiting_for_network": "Aguardando rede...",
   "Websocket_disabled": "Websocket está desativado para essa workspace.\n{{contact}}",
@@ -785,10 +783,6 @@
   "Jitsi_authentication_before_making_calls": "Jitsi pode exigir autenticação antes de fazer chamadas. Para saber mais sobre suas políticas, visite o site do Jitsi.",
   "Jitsi_authentication_before_making_calls_ask_admin": "Se você acredita que há problemas com o Jitsi e sua autenticação, peça ajuda a um administrador do espaço de trabalho.",
   "Continue": "Continuar",
-  "decline": "Recusar",
-  "accept": "Aceitar",
-  "Incoming_call_from": "Chamada recebida de",
-  "Call_started": "Chamada Iniciada",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
   "Message_has_been_shared": "Menssagem foi compartilhada",
   "No_channels_in_team": "Nenhum canal nesta equipe",
@@ -816,5 +810,8 @@
   "In_app_message_notifications": "Notificações de mensagens in-app",
   "Vibrate": "Vibrar",
   "Check_again": "Verificar novamente",
-  "error-no-tokens-for-this-user": "Não existem tokens para este usuário"
+  "error-no-tokens-for-this-user": "Não existem tokens para este usuário",
+  "Enter_the_code": "Insira o código que acabamos de enviar por e-mail.",
+  "Resend_email": "Reenviar e-mail",
+  "Verify": "Verificar"
 }

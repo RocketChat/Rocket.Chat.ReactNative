@@ -7,7 +7,8 @@ const defaultTextStyle: TextStyle = {
 	backgroundColor: 'transparent',
 	...Platform.select({
 		android: {
-			includeFontPadding: false
+			includeFontPadding: false,
+			alignSelf: 'stretch'
 		}
 	})
 };
