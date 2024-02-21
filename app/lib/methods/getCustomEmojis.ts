@@ -146,6 +146,8 @@ export function getCustomEmojis() {
 			if (changedEmojis) {
 				setCustomEmojis();
 			}
+
+			return resolve();
 		} catch (e) {
 			log(e);
 			return resolve();
