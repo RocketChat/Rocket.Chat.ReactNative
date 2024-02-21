@@ -9,7 +9,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
-import CommunityEditionPushQuota from './components/CommunityEditionPushQuota';
+// import CommunityEditionPushQuota from './components/CommunityEditionPushQuota';
 import DeviceNotificationSettings from './components/DeviceNotificationSettings';
 import NotificationDelay from './components/NotificationDelay';
 import PushGatewayConnection from './components/PushGatewayConnection';
@@ -38,7 +38,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 			<StatusBar />
 			<List.Container testID='push-troubleshoot-view-list'>
 				<DeviceNotificationSettings />
-				<CommunityEditionPushQuota />
+				{/* <CommunityEditionPushQuota /> */}
 				<PushGatewayConnection />
 				<NotificationDelay />
 			</List.Container>
