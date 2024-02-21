@@ -1,0 +1,44 @@
+name: organize translations
+
+on:
+  push:
+    paths:
+      - 'app/i18n/locales/**.json'
+
+jobs:
+  organize-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18 
+
+    - name: Run script to organize JSON keys
+      run: node scripts/organize-translations.js
+
+    - name: Get changed files
+      id: git-check
+      uses: tj-actions/changed-files@v42
+      with:  
+        files: |
+              **.json
+
+    - name: List all changed files
+      if: steps.git-check.outputs.any_changed == 'true'
+      env:
+        ALL_CHANGED_FILES: ${{ steps.git-check.outputs.all_changed_files }}
+      run: |
+        for file in ${ALL_CHANGED_FILES}; do
+          echo "$file was changed"
+        done
+
+    - name: Commit and push if changes
+      if: steps.git-check.outputs.any_changed == 'true'
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: 'action: organized translations'
