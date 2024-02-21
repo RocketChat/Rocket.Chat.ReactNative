@@ -144,7 +144,6 @@
 		1ED038912B507B4C00C007D4 /* RocketChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038902B507B4C00C007D4 /* RocketChatApp.swift */; };
 		1ED038952B507B4D00C007D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038942B507B4D00C007D4 /* Assets.xcassets */; };
 		1ED038982B507B4D00C007D4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038972B507B4D00C007D4 /* Preview Assets.xcassets */; };
-		1ED0389B2B507B4D00C007D4 /* Rocket.Chat.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1ED038A12B508FE700C007D4 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038A02B508FE700C007D4 /* FileManager+Extensions.swift */; };
 		1ED038A22B508FE700C007D4 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038A02B508FE700C007D4 /* FileManager+Extensions.swift */; };
 		1ED038A32B508FE700C007D4 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038A02B508FE700C007D4 /* FileManager+Extensions.swift */; };
@@ -169,6 +168,82 @@
 		1ED038CA2B50A58400C007D4 /* ServersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* ServersLoader.swift */; };
 		1ED1EC892B867E2400F6620C /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */; };
 		1ED1EC8B2B86817100F6620C /* Deeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1EC8A2B86817100F6620C /* Deeplink.swift */; };
+		1ED1EC902B86997F00F6620C /* MessageComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3232B5874FF0093C03C /* MessageComposerView.swift */; };
+		1ED1EC912B86997F00F6620C /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB375882B55DBFB00AEC3D7 /* Server.swift */; };
+		1ED1EC922B86997F00F6620C /* MessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */; };
+		1ED1EC932B86997F00F6620C /* MessageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3152B5868DF0093C03C /* MessageListView.swift */; };
+		1ED1EC942B86997F00F6620C /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC162B5AF09C00E2AA7D /* Store.swift */; };
+		1ED1EC952B86997F00F6620C /* Deeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1EC8A2B86817100F6620C /* Deeplink.swift */; };
+		1ED1EC962B86997F00F6620C /* SubscriptionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D82B585B070093C03C /* SubscriptionsResponse.swift */; };
+		1ED1EC972B86997F00F6620C /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */; };
+		1ED1EC982B86997F00F6620C /* SubscriptionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2DE2B585B070093C03C /* SubscriptionsRequest.swift */; };
+		1ED1EC992B86997F00F6620C /* HistoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D62B585B070093C03C /* HistoryResponse.swift */; };
+		1ED1EC9A2B86997F00F6620C /* Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC142B5AF09800E2AA7D /* Dependency.swift */; };
+		1ED1EC9B2B86997F00F6620C /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033B92B55B5F6004F4930 /* ServerView.swift */; };
+		1ED1EC9C2B86997F00F6620C /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CF2B58582F0093C03C /* RoomView.swift */; };
+		1ED1EC9D2B86997F00F6620C /* RoomsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E22B585B070093C03C /* RoomsRequest.swift */; };
+		1ED1EC9E2B86997F00F6620C /* ServersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* ServersLoader.swift */; };
+		1ED1EC9F2B86997F00F6620C /* MessageFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3212B5871CE0093C03C /* MessageFormatter.swift */; };
+		1ED1ECA02B86997F00F6620C /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A716E2B59CBCA00477BA2 /* AttachmentView.swift */; };
+		1ED1ECA12B86997F00F6620C /* JSONAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E62B585B070093C03C /* JSONAdapter.swift */; };
+		1ED1ECA22B86997F00F6620C /* DateCodingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E82B585B070093C03C /* DateCodingStrategy.swift */; };
+		1ED1ECA32B86997F00F6620C /* RetryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC262B5B23C600E2AA7D /* RetryView.swift */; };
+		1ED1ECA42B86997F00F6620C /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033B52B55B4A5004F4930 /* ServerListView.swift */; };
+		1ED1ECA52B86997F00F6620C /* RoomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A31F2B5871C80093C03C /* RoomFormatter.swift */; };
+		1ED1ECA62B86997F00F6620C /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
+		1ED1ECA72B86997F00F6620C /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30F2B5865B80093C03C /* RoomViewModel.swift */; };
+		1ED1ECA82B86997F00F6620C /* ErrorActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */; };
+		1ED1ECA92B86997F00F6620C /* SendMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E12B585B070093C03C /* SendMessageRequest.swift */; };
+		1ED1ECAA2B86997F00F6620C /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30B2B585D1D0093C03C /* String+Extensions.swift */; };
+		1ED1ECAB2B86997F00F6620C /* RocketChatDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033CC2B55D671004F4930 /* RocketChatDatabase.swift */; };
+		1ED1ECAC2B86997F00F6620C /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3112B5866090093C03C /* Room.swift */; };
+		1ED1ECAD2B86997F00F6620C /* FailableDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E92B585B070093C03C /* FailableDecodable.swift */; };
+		1ED1ECAE2B86997F00F6620C /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8979462B6063FC001D99F0 /* WatchSession.swift */; };
+		1ED1ECAF2B86997F00F6620C /* ReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E32B585B070093C03C /* ReadRequest.swift */; };
+		1ED1ECB02B86997F00F6620C /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71682B59B6E100477BA2 /* MessageSender.swift */; };
+		1ED1ECB12B86997F00F6620C /* RocketChatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2EE2B585B070093C03C /* RocketChatError.swift */; };
+		1ED1ECB22B86997F00F6620C /* RoomsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */; };
+		1ED1ECB32B86997F00F6620C /* SendMessageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D52B585B070093C03C /* SendMessageResponse.swift */; };
+		1ED1ECB42B86997F00F6620C /* LoggedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A30D2B58608C0093C03C /* LoggedUser.swift */; };
+		1ED1ECB52B86997F00F6620C /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3172B5868E50093C03C /* MessageView.swift */; };
+		1ED1ECB62B86997F00F6620C /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1052B58A66E002FEE5F /* CancelBag.swift */; };
+		1ED1ECB72B86997F00F6620C /* TokenAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E52B585B070093C03C /* TokenAdapter.swift */; };
+		1ED1ECB82B86997F00F6620C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2EC2B585B070093C03C /* Request.swift */; };
+		1ED1ECB92B86997F00F6620C /* URLSessionCertificateHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71762B59FCA900477BA2 /* URLSessionCertificateHandling.swift */; };
+		1ED1ECBA2B86997F00F6620C /* RocketChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D22B585B070093C03C /* RocketChatClient.swift */; };
+		1ED1ECBB2B86997F00F6620C /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC202B5B1AA000E2AA7D /* AppView.swift */; };
+		1ED1ECBC2B86997F00F6620C /* MessagesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E02B585B070093C03C /* MessagesRequest.swift */; };
+		1ED1ECBD2B86997F00F6620C /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A31C2B5871B60093C03C /* Date+Extensions.swift */; };
+		1ED1ECBE2B86997F00F6620C /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2DA2B585B070093C03C /* UserResponse.swift */; };
+		1ED1ECBF2B86997F00F6620C /* Default.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033AC2B55B1CC004F4930 /* Default.xcdatamodeld */; };
+		1ED1ECC02B86997F00F6620C /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033BE2B55BF94004F4930 /* Storage.swift */; };
+		1ED1ECC12B86997F00F6620C /* MessageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2DC2B585B070093C03C /* MessageResponse.swift */; };
+		1ED1ECC22B86997F00F6620C /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2EB2B585B070093C03C /* HTTPMethod.swift */; };
+		1ED1ECC32B86997F00F6620C /* RequestAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2E72B585B070093C03C /* RequestAdapter.swift */; };
+		1ED1ECC42B86997F00F6620C /* RoomsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D92B585B070093C03C /* RoomsResponse.swift */; };
+		1ED1ECC52B86997F00F6620C /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB30F12B5B453A00532C7E /* LoggedInView.swift */; };
+		1ED1ECC62B86997F00F6620C /* MessagesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D72B585B070093C03C /* MessagesResponse.swift */; };
+		1ED1ECC72B86997F00F6620C /* HistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2DF2B585B070093C03C /* HistoryRequest.swift */; };
+		1ED1ECC82B86997F00F6620C /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
+		1ED1ECC92B86997F00F6620C /* AttachmentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D42B585B070093C03C /* AttachmentResponse.swift */; };
+		1ED1ECCA2B86997F00F6620C /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E638E9D2B5F0F5800E645E4 /* URL+Extensions.swift */; };
+		1ED1ECCB2B86997F00F6620C /* RocketChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038902B507B4C00C007D4 /* RocketChatApp.swift */; };
+		1ED1ECCC2B86997F00F6620C /* RoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CB2B5857F50093C03C /* RoomListView.swift */; };
+		1ED1ECCD2B86997F00F6620C /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3192B5868EE0093C03C /* MessageViewModel.swift */; };
+		1ED1ECCE2B86997F00F6620C /* ChatScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */; };
+		1ED1ECCF2B86997F00F6620C /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C32B55C65C004F4930 /* AppRouter.swift */; };
+		1ED1ECD02B86997F00F6620C /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033AF2B55B25A004F4930 /* Database.swift */; };
+		1ED1ECD12B86997F00F6620C /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71702B59CC1300477BA2 /* Attachment.swift */; };
+		1ED1ECD22B86997F00F6620C /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A3092B585B370093C03C /* Data+Extensions.swift */; };
+		1ED1ECD32B86997F00F6620C /* ReadResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2DB2B585B070093C03C /* ReadResponse.swift */; };
+		1ED1ECD42B86997F00F6620C /* RocketChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C92B55D4F0004F4930 /* RocketChat.xcdatamodeld */; };
+		1ED1ECD72B86997F00F6620C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038972B507B4D00C007D4 /* Preview Assets.xcassets */; };
+		1ED1ECD82B86997F00F6620C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038942B507B4D00C007D4 /* Assets.xcassets */; };
+		1ED1ECD92B86997F00F6620C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1ED033C02B55C190004F4930 /* Localizable.xcstrings */; };
+		1ED1ECE42B8699E900F6620C /* Rocket.Chat.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1ED1ECE72B8699ED00F6620C /* Rocket.Chat Experimental.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1ED1ECEA2B869A4A00F6620C /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
+		1ED1ECEC2B869B1300F6620C /* Experimental.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */; };
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
 		1EDB30F22B5B453A00532C7E /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB30F12B5B453A00532C7E /* LoggedInView.swift */; };
 		1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
@@ -258,12 +333,12 @@
 			remoteGlobalIDString = 1EC6ACAF22CB9FC300A41C61;
 			remoteInfo = ShareRocketChatRN;
 		};
-		1ED038992B507B4D00C007D4 /* PBXContainerItemProxy */ = {
+		1ED1ECE52B8699E900F6620C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1ED0388D2B507B4B00C007D4;
-			remoteInfo = "RocketChat Watch App";
+			remoteInfo = Rocket.Chat.Watch;
 		};
 		1EFEB59A2493B6640072EDC0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -307,7 +382,18 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				1ED0389B2B507B4D00C007D4 /* Rocket.Chat.app in Embed Watch Content */,
+				1ED1ECE72B8699ED00F6620C /* Rocket.Chat Experimental.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1ED1ECE32B8699DD00F6620C /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				1ED1ECE42B8699E900F6620C /* Rocket.Chat.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +541,7 @@
 		1ED038C92B50A58400C007D4 /* ServersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersLoader.swift; sourceTree = "<group>"; };
 		1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		1ED1EC8A2B86817100F6620C /* Deeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deeplink.swift; sourceTree = "<group>"; };
+		1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1EDB30F12B5B453A00532C7E /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
@@ -527,6 +614,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1ED0388B2B507B4B00C007D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1ED1ECD52B86997F00F6620C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -999,6 +1093,7 @@
 				1EFEB5952493B6640072EDC0 /* NotificationService.appex */,
 				7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */,
 				1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */,
+				1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1092,7 +1187,6 @@
 			dependencies = (
 				1EC6ACBA22CB9FC300A41C61 /* PBXTargetDependency */,
 				1EFEB59B2493B6640072EDC0 /* PBXTargetDependency */,
-				1ED0389A2B507B4D00C007D4 /* PBXTargetDependency */,
 			);
 			name = RocketChatRN;
 			productName = "Hello World";
@@ -1119,9 +1213,9 @@
 			productReference = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		1ED0388D2B507B4B00C007D4 /* RocketChat Watch App */ = {
+		1ED0388D2B507B4B00C007D4 /* Rocket.Chat.Watch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1ED0389F2B507B4F00C007D4 /* Build configuration list for PBXNativeTarget "RocketChat Watch App" */;
+			buildConfigurationList = 1ED0389F2B507B4F00C007D4 /* Build configuration list for PBXNativeTarget "Rocket.Chat.Watch" */;
 			buildPhases = (
 				1ED0388A2B507B4B00C007D4 /* Sources */,
 				1ED0388B2B507B4B00C007D4 /* Frameworks */,
@@ -1131,9 +1225,26 @@
 			);
 			dependencies = (
 			);
-			name = "RocketChat Watch App";
+			name = Rocket.Chat.Watch;
 			productName = "RocketChat Watch App";
 			productReference = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1ED1EC8E2B86997F00F6620C /* RocketChatRN Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1ED1ECDA2B86997F00F6620C /* Build configuration list for PBXNativeTarget "RocketChatRN Watch" */;
+			buildPhases = (
+				1ED1EC8F2B86997F00F6620C /* Sources */,
+				1ED1ECD52B86997F00F6620C /* Frameworks */,
+				1ED1ECD62B86997F00F6620C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RocketChatRN Watch";
+			productName = "RocketChat Watch App";
+			productReference = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1EFEB5942493B6640072EDC0 /* NotificationService */ = {
@@ -1170,12 +1281,14 @@
 				7A10288726B1D15200E47EF8 /* Upload source maps to Bugsnag */,
 				4CC99291A49CC4B7F5883239 /* [CP] Embed Pods Frameworks */,
 				B237EE54305A08A30FCABFA0 /* [CP] Copy Pods Resources */,
+				1ED1ECE32B8699DD00F6620C /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				7AAB3E0E257E6A6E00707CF6 /* PBXTargetDependency */,
 				7AAB3E10257E6A6E00707CF6 /* PBXTargetDependency */,
+				1ED1ECE62B8699E900F6620C /* PBXTargetDependency */,
 			);
 			name = Rocket.Chat;
 			productName = "Hello World";
@@ -1227,6 +1340,10 @@
 						DevelopmentTeam = S6UPZG7ZR3;
 						ProvisioningStyle = Manual;
 					};
+					1ED1EC8E2B86997F00F6620C = {
+						DevelopmentTeam = S6UPZG7ZR3;
+						ProvisioningStyle = Manual;
+					};
 					1EFEB5942493B6640072EDC0 = {
 						CreatedOnToolsVersion = 11.5;
 						DevelopmentTeam = S6UPZG7ZR3;
@@ -1256,7 +1373,8 @@
 				1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */,
 				1EFEB5942493B6640072EDC0 /* NotificationService */,
 				7AAB3E0D257E6A6E00707CF6 /* Rocket.Chat */,
-				1ED0388D2B507B4B00C007D4 /* RocketChat Watch App */,
+				1ED0388D2B507B4B00C007D4 /* Rocket.Chat.Watch */,
+				1ED1EC8E2B86997F00F6620C /* RocketChatRN Watch */,
 			);
 		};
 /* End PBXProject section */
@@ -1291,9 +1409,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ED1ECEA2B869A4A00F6620C /* Official.xcassets in Resources */,
 				1ED038982B507B4D00C007D4 /* Preview Assets.xcassets in Resources */,
 				1ED038952B507B4D00C007D4 /* Assets.xcassets in Resources */,
 				1ED033C12B55C190004F4930 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1ED1ECD62B86997F00F6620C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1ED1ECD72B86997F00F6620C /* Preview Assets.xcassets in Resources */,
+				1ED1ECD82B86997F00F6620C /* Assets.xcassets in Resources */,
+				1ED1ECD92B86997F00F6620C /* Localizable.xcstrings in Resources */,
+				1ED1ECEC2B869B1300F6620C /* Experimental.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1963,6 +2093,82 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1ED1EC8F2B86997F00F6620C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1ED1EC902B86997F00F6620C /* MessageComposerView.swift in Sources */,
+				1ED1EC912B86997F00F6620C /* Server.swift in Sources */,
+				1ED1EC922B86997F00F6620C /* MessageActionView.swift in Sources */,
+				1ED1EC932B86997F00F6620C /* MessageListView.swift in Sources */,
+				1ED1EC942B86997F00F6620C /* Store.swift in Sources */,
+				1ED1EC952B86997F00F6620C /* Deeplink.swift in Sources */,
+				1ED1EC962B86997F00F6620C /* SubscriptionsResponse.swift in Sources */,
+				1ED1EC972B86997F00F6620C /* ExtensionDelegate.swift in Sources */,
+				1ED1EC982B86997F00F6620C /* SubscriptionsRequest.swift in Sources */,
+				1ED1EC992B86997F00F6620C /* HistoryResponse.swift in Sources */,
+				1ED1EC9A2B86997F00F6620C /* Dependency.swift in Sources */,
+				1ED1EC9B2B86997F00F6620C /* ServerView.swift in Sources */,
+				1ED1EC9C2B86997F00F6620C /* RoomView.swift in Sources */,
+				1ED1EC9D2B86997F00F6620C /* RoomsRequest.swift in Sources */,
+				1ED1EC9E2B86997F00F6620C /* ServersLoader.swift in Sources */,
+				1ED1EC9F2B86997F00F6620C /* MessageFormatter.swift in Sources */,
+				1ED1ECA02B86997F00F6620C /* AttachmentView.swift in Sources */,
+				1ED1ECA12B86997F00F6620C /* JSONAdapter.swift in Sources */,
+				1ED1ECA22B86997F00F6620C /* DateCodingStrategy.swift in Sources */,
+				1ED1ECA32B86997F00F6620C /* RetryView.swift in Sources */,
+				1ED1ECA42B86997F00F6620C /* ServerListView.swift in Sources */,
+				1ED1ECA52B86997F00F6620C /* RoomFormatter.swift in Sources */,
+				1ED1ECA62B86997F00F6620C /* MessagesLoader.swift in Sources */,
+				1ED1ECA72B86997F00F6620C /* RoomViewModel.swift in Sources */,
+				1ED1ECA82B86997F00F6620C /* ErrorActionHandler.swift in Sources */,
+				1ED1ECA92B86997F00F6620C /* SendMessageRequest.swift in Sources */,
+				1ED1ECAA2B86997F00F6620C /* String+Extensions.swift in Sources */,
+				1ED1ECAB2B86997F00F6620C /* RocketChatDatabase.swift in Sources */,
+				1ED1ECAC2B86997F00F6620C /* Room.swift in Sources */,
+				1ED1ECAD2B86997F00F6620C /* FailableDecodable.swift in Sources */,
+				1ED1ECAE2B86997F00F6620C /* WatchSession.swift in Sources */,
+				1ED1ECAF2B86997F00F6620C /* ReadRequest.swift in Sources */,
+				1ED1ECB02B86997F00F6620C /* MessageSender.swift in Sources */,
+				1ED1ECB12B86997F00F6620C /* RocketChatError.swift in Sources */,
+				1ED1ECB22B86997F00F6620C /* RoomsLoader.swift in Sources */,
+				1ED1ECB32B86997F00F6620C /* SendMessageResponse.swift in Sources */,
+				1ED1ECB42B86997F00F6620C /* LoggedUser.swift in Sources */,
+				1ED1ECB52B86997F00F6620C /* MessageView.swift in Sources */,
+				1ED1ECB62B86997F00F6620C /* CancelBag.swift in Sources */,
+				1ED1ECB72B86997F00F6620C /* TokenAdapter.swift in Sources */,
+				1ED1ECB82B86997F00F6620C /* Request.swift in Sources */,
+				1ED1ECB92B86997F00F6620C /* URLSessionCertificateHandling.swift in Sources */,
+				1ED1ECBA2B86997F00F6620C /* RocketChatClient.swift in Sources */,
+				1ED1ECBB2B86997F00F6620C /* AppView.swift in Sources */,
+				1ED1ECBC2B86997F00F6620C /* MessagesRequest.swift in Sources */,
+				1ED1ECBD2B86997F00F6620C /* Date+Extensions.swift in Sources */,
+				1ED1ECBE2B86997F00F6620C /* UserResponse.swift in Sources */,
+				1ED1ECBF2B86997F00F6620C /* Default.xcdatamodeld in Sources */,
+				1ED1ECC02B86997F00F6620C /* Storage.swift in Sources */,
+				1ED1ECC12B86997F00F6620C /* MessageResponse.swift in Sources */,
+				1ED1ECC22B86997F00F6620C /* HTTPMethod.swift in Sources */,
+				1ED1ECC32B86997F00F6620C /* RequestAdapter.swift in Sources */,
+				1ED1ECC42B86997F00F6620C /* RoomsResponse.swift in Sources */,
+				1ED1ECC52B86997F00F6620C /* LoggedInView.swift in Sources */,
+				1ED1ECC62B86997F00F6620C /* MessagesResponse.swift in Sources */,
+				1ED1ECC72B86997F00F6620C /* HistoryRequest.swift in Sources */,
+				1ED1ECC82B86997F00F6620C /* WatchMessage.swift in Sources */,
+				1ED1ECC92B86997F00F6620C /* AttachmentResponse.swift in Sources */,
+				1ED1ECCA2B86997F00F6620C /* URL+Extensions.swift in Sources */,
+				1ED1ECCB2B86997F00F6620C /* RocketChatApp.swift in Sources */,
+				1ED1ECCC2B86997F00F6620C /* RoomListView.swift in Sources */,
+				1ED1ECCD2B86997F00F6620C /* MessageViewModel.swift in Sources */,
+				1ED1ECCE2B86997F00F6620C /* ChatScrollView.swift in Sources */,
+				1ED1ECCF2B86997F00F6620C /* AppRouter.swift in Sources */,
+				1ED1ECD02B86997F00F6620C /* Database.swift in Sources */,
+				1ED1ECD12B86997F00F6620C /* Attachment.swift in Sources */,
+				1ED1ECD22B86997F00F6620C /* Data+Extensions.swift in Sources */,
+				1ED1ECD32B86997F00F6620C /* ReadResponse.swift in Sources */,
+				1ED1ECD42B86997F00F6620C /* RocketChat.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1EFEB5912493B6640072EDC0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2054,10 +2260,10 @@
 			target = 1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */;
 			targetProxy = 1EC6ACB922CB9FC300A41C61 /* PBXContainerItemProxy */;
 		};
-		1ED0389A2B507B4D00C007D4 /* PBXTargetDependency */ = {
+		1ED1ECE62B8699E900F6620C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1ED0388D2B507B4B00C007D4 /* RocketChat Watch App */;
-			targetProxy = 1ED038992B507B4D00C007D4 /* PBXContainerItemProxy */;
+			target = 1ED0388D2B507B4B00C007D4 /* Rocket.Chat.Watch */;
+			targetProxy = 1ED1ECE52B8699E900F6620C /* PBXContainerItemProxy */;
 		};
 		1EFEB59B2493B6640072EDC0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2342,6 +2548,103 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "\"RocketChat Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = S6UPZG7ZR3;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = chat.rocket.reactnative;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.watchkitapp;
+				PRODUCT_NAME = Rocket.Chat;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Debug;
+		};
+		1ED0389E2B507B4F00C007D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"RocketChat Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = S6UPZG7ZR3;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = chat.rocket.reactnative;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.watchkitapp;
+				PRODUCT_NAME = Rocket.Chat;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Release;
+		};
+		1ED1ECDB2B86997F00F6620C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -2371,7 +2674,7 @@
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
-				PRODUCT_NAME = Rocket.Chat;
+				PRODUCT_NAME = "Rocket.Chat Experimental";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;
@@ -2385,7 +2688,7 @@
 			};
 			name = Debug;
 		};
-		1ED0389E2B507B4F00C007D4 /* Release */ = {
+		1ED1ECDC2B86997F00F6620C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2419,7 +2722,7 @@
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
-				PRODUCT_NAME = Rocket.Chat;
+				PRODUCT_NAME = "Rocket.Chat Experimental";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;
@@ -2738,11 +3041,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1ED0389F2B507B4F00C007D4 /* Build configuration list for PBXNativeTarget "RocketChat Watch App" */ = {
+		1ED0389F2B507B4F00C007D4 /* Build configuration list for PBXNativeTarget "Rocket.Chat.Watch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1ED0389D2B507B4F00C007D4 /* Debug */,
 				1ED0389E2B507B4F00C007D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1ED1ECDA2B86997F00F6620C /* Build configuration list for PBXNativeTarget "RocketChatRN Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1ED1ECDB2B86997F00F6620C /* Debug */,
+				1ED1ECDC2B86997F00F6620C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

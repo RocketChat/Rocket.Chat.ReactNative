@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1ED0388D2B507B4B00C007D4"
-               BuildableName = "Rocket.Chat.app"
-               BlueprintName = "Rocket.Chat.Watch"
-               ReferencedContainer = "container:RocketChatRN.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+               BlueprintIdentifier = "1ED1EC8E2B86997F00F6620C"
                BuildableName = "Rocket.Chat Experimental.app"
-               BlueprintName = "RocketChatRN"
+               BlueprintName = "RocketChatRN Watch"
                ReferencedContainer = "container:RocketChatRN.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -57,9 +43,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1ED0388D2B507B4B00C007D4"
-            BuildableName = "Rocket.Chat.app"
-            BlueprintName = "Rocket.Chat.Watch"
+            BlueprintIdentifier = "1ED1EC8E2B86997F00F6620C"
+            BuildableName = "Rocket.Chat Experimental.app"
+            BlueprintName = "RocketChatRN Watch"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -74,9 +60,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1ED0388D2B507B4B00C007D4"
-            BuildableName = "Rocket.Chat.app"
-            BlueprintName = "Rocket.Chat.Watch"
+            BlueprintIdentifier = "1ED1EC8E2B86997F00F6620C"
+            BuildableName = "Rocket.Chat Experimental.app"
+            BlueprintName = "RocketChatRN Watch"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
