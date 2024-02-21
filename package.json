@@ -16,6 +16,7 @@
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
 		"build-icon-set": "node scripts/build-icon-set.js",
+		"organize-translations": "node scripts/organize-translations.js",
 		"e2e:android-build-debug": "yarn detox build -c android.emu.debug",
 		"e2e:android-test-debug": "yarn detox test -c android.emu.debug",
 		"e2e:android-build": "yarn detox build -c android.emu.release",
