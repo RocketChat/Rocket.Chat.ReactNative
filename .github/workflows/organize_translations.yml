@@ -21,18 +21,14 @@ jobs:
     - name: Run script to organize JSON keys
       run: node scripts/organize-translations.js
 
-    - name: Check for changes
+    - name: Get changed files
       id: git-check
-      run: |
-        git diff
-        if git diff --quiet; then
-          echo "::set-output name=changed::false"
-        else
-          echo "::set-output name=changed::true"
-        fi
+      uses: tj-actions/changed-files@v42  
+      with:
+        since_last_remote_commit: true 
 
     - name: Commit and push if changes
-      if: steps.git-check.outputs.changed == 'true'
+      if: steps.git-check.outputs.any_changed == 'true'
       uses: EndBug/add-and-commit@v9
       with:
-        message: 'Your commit message'
+        message: 'updated translations'
