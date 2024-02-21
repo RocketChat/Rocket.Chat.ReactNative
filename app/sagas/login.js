@@ -241,7 +241,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			yield put(inviteLinksRequest(inviteLinkToken));
 		}
 		yield showSupportedVersionsWarning(server);
-		yield fork(initTroubleshootingNotification);
+		yield put(initTroubleshootingNotification());
 	} catch (e) {
 		log(e);
 	}
