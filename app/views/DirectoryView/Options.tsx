@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import Touch from '../../containers/Touch';
@@ -26,73 +26,75 @@ interface IDirectoryOptionsProps {
 	theme: TSupportedThemes;
 }
 
-export default class DirectoryOptions extends PureComponent<IDirectoryOptionsProps, any> {
-	private animatedValue: Animated.Value;
+const DirectoryOptions = memo(
+	({
+		type: propType,
+		globalUsers,
+		isFederationEnabled,
+		close: onClose,
+		changeType,
+		toggleWorkspace,
+		theme
+	}: IDirectoryOptionsProps) => {
+		const animatedValue = useRef(new Animated.Value(0)).current;
 
-	constructor(props: IDirectoryOptionsProps) {
-		super(props);
-		this.animatedValue = new Animated.Value(0);
-	}
+		useEffect(() => {
+			Animated.timing(animatedValue, {
+				toValue: 1,
+				...ANIMATION_PROPS
+			}).start();
+		}, [animatedValue]);
 
-	componentDidMount() {
-		Animated.timing(this.animatedValue, {
-			toValue: 1,
-			...ANIMATION_PROPS
-		}).start();
-	}
+		const close = () => {
+			Animated.timing(animatedValue, {
+				toValue: 0,
+				...ANIMATION_PROPS
+			}).start(() => onClose());
+		};
 
-	close = () => {
-		const { close } = this.props;
-		Animated.timing(this.animatedValue, {
-			toValue: 0,
-			...ANIMATION_PROPS
-		}).start(() => close());
-	};
+		const renderItem = (itemType: string) => {
+			let text = 'Users';
+			let icon: TIconsName = 'user';
+			if (itemType === 'channels') {
+				text = 'Channels';
+				icon = 'channel-public';
+			}
 
-	renderItem = (itemType: string) => {
-		const { changeType, type: propType, theme } = this.props;
-		let text = 'Users';
-		let icon: TIconsName = 'user';
-		if (itemType === 'channels') {
-			text = 'Channels';
-			icon = 'channel-public';
-		}
+			if (itemType === 'teams') {
+				text = 'Teams';
+				icon = 'teams';
+			}
 
-		if (itemType === 'teams') {
-			text = 'Teams';
-			icon = 'teams';
-		}
+			return (
+				<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
+					<View style={styles.dropdownItemContainer}>
+						<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
+						<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
+						{propType === itemType ? <Check /> : null}
+					</View>
+				</Touch>
+			);
+		};
 
-		return (
-			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
-				<View style={styles.dropdownItemContainer}>
-					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
-					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
-					{propType === itemType ? <Check /> : null}
-				</View>
-			</Touch>
-		);
-	};
-
-	render() {
-		const translateY = this.animatedValue.interpolate({
+		const translateY = animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [-326, 0]
 		});
-		const { globalUsers, toggleWorkspace, isFederationEnabled, theme } = this.props;
-		const backdropOpacity = this.animatedValue.interpolate({
+
+		const backdropOpacity = animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity]
 		});
+
 		return (
 			<>
-				<TouchableWithoutFeedback onPress={this.close}>
+				<TouchableWithoutFeedback onPress={close}>
 					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
 				>
-					<Touch onPress={this.close} accessibilityLabel={I18n.t('Search_by')}>
+					<Touch onPress={close} accessibilityLabel={I18n.t('Search_by')}>
 						<View
 							style={[
 								styles.dropdownContainerHeader,
@@ -109,9 +111,9 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 							/>
 						</View>
 					</Touch>
-					{this.renderItem('channels')}
-					{this.renderItem('users')}
-					{this.renderItem('teams')}
+					{renderItem('channels')}
+					{renderItem('users')}
+					{renderItem('teams')}
 					{isFederationEnabled ? (
 						<>
 							<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].separatorColor }]} />
@@ -132,4 +134,6 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 			</>
 		);
 	}
-}
+);
+
+export default DirectoryOptions;
