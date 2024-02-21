@@ -145,6 +145,8 @@ export default class Subscription extends Model {
 
 	@json('source', sanitizer) source;
 
+	@field('disable_notifications') disableNotifications;
+
 	asPlain() {
 		return {
 			_id: this._id,
@@ -207,7 +209,8 @@ export default class Subscription extends Model {
 			teamMain: this.teamMain,
 			onHold: this.onHold,
 			usersCount: this.usersCount,
-			source: this.source
+			source: this.source,
+			disableNotifications: this.disableNotifications
 		};
 	}
 }
