@@ -3,7 +3,7 @@ import Combine
 import Foundation
 
 protocol RoomsLoading {
-	func start(in url: URL)
+	func start()
 	func stop()
 }
 
@@ -15,13 +15,19 @@ final class RoomsLoader {
 	private var timer: Timer?
 	private var cancellable = CancelBag()
 	
-	private func scheduledLoadRooms(in server: Server) {
+	private let server: Server
+	
+	init(server: Server) {
+		self.server = server
+	}
+	
+	private func scheduledLoadRooms() {
 		timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
-			self?.loadRooms(in: server)
+			self?.loadRooms()
 		}
 	}
 	
-	private func loadRooms(in server: Server) {
+	private func loadRooms() {
 		let newUpdatedSince = Date()
 		
 		let updatedSince = server.updatedSince
@@ -33,7 +39,7 @@ final class RoomsLoader {
 		.receive(on: DispatchQueue.main)
 		.sink { [weak self] completion in
 			if case .failure = completion {
-				self?.scheduledLoadRooms(in: server)
+				self?.scheduledLoadRooms()
 			}
 		} receiveValue: { (roomsResponse, subscriptionsResponse) in
 			let rooms = roomsResponse.update
@@ -49,9 +55,9 @@ final class RoomsLoader {
 				self.database.process(subscription: subscription)
 			}
 			
-			self.scheduledLoadRooms(in: server)
+			self.scheduledLoadRooms()
 			
-			server.updatedSince = newUpdatedSince
+			self.server.updatedSince = newUpdatedSince
 			self.serversDB.save()
 		}
 		.store(in: &cancellable)
@@ -59,12 +65,10 @@ final class RoomsLoader {
 }
 
 extension RoomsLoader: RoomsLoading {
-	func start(in url: URL) {
+	func start() {
 		stop()
 		
-		guard let server = serversDB.server(url: url) else { return }
-		
-		loadRooms(in: server)
+		loadRooms()
 	}
 	
 	func stop() {

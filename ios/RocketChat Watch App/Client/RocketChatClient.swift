@@ -49,13 +49,11 @@ final class RocketChatClient: NSObject {
 					throw RocketChatError.unauthorized
 				}
 				
-				let decoder = JSONDecoder()
-
-				if let response = try? decoder.decode(T.Response.self, from: data) {
+				if let response = try? data.decode(T.Response.self) {
 					return response
 				}
 				
-				let response = try decoder.decode(ErrorResponse.self, from: data)
+				let response = try data.decode(ErrorResponse.self)
 				throw RocketChatError.server(response: response)
 			}
 			.mapError { [weak self] error in

@@ -83,6 +83,10 @@
 		1E4AFC172B5AF09C00E2AA7D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC162B5AF09C00E2AA7D /* Store.swift */; };
 		1E4AFC212B5B1AA000E2AA7D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC202B5B1AA000E2AA7D /* AppView.swift */; };
 		1E4AFC272B5B23C600E2AA7D /* RetryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC262B5B23C600E2AA7D /* RetryView.swift */; };
+		1E5141182B856673007BE94A /* SSLPinning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5141172B856673007BE94A /* SSLPinning.swift */; };
+		1E5141192B856673007BE94A /* SSLPinning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5141172B856673007BE94A /* SSLPinning.swift */; };
+		1E51411C2B85683C007BE94A /* SSLPinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E51411B2B85683C007BE94A /* SSLPinning.m */; };
+		1E51411D2B85683C007BE94A /* SSLPinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E51411B2B85683C007BE94A /* SSLPinning.m */; };
 		1E51D962251263CD00DC95DE /* MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D961251263CD00DC95DE /* MessageType.swift */; };
 		1E51D965251263D600DC95DE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D964251263D600DC95DE /* NotificationType.swift */; };
 		1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
@@ -399,6 +403,8 @@
 		1E4AFC162B5AF09C00E2AA7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		1E4AFC202B5B1AA000E2AA7D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		1E4AFC262B5B23C600E2AA7D /* RetryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryView.swift; sourceTree = "<group>"; };
+		1E5141172B856673007BE94A /* SSLPinning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinning.swift; sourceTree = "<group>"; };
+		1E51411B2B85683C007BE94A /* SSLPinning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSLPinning.m; sourceTree = "<group>"; };
 		1E51D961251263CD00DC95DE /* MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageType.swift; sourceTree = "<group>"; };
 		1E51D964251263D600DC95DE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		1E598AE32515057D002BDFBD /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -706,6 +712,15 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
+		1E51411A2B856820007BE94A /* SSLPinning */ = {
+			isa = PBXGroup;
+			children = (
+				1E5141172B856673007BE94A /* SSLPinning.swift */,
+				1E51411B2B85683C007BE94A /* SSLPinning.m */,
+			);
+			path = SSLPinning;
+			sourceTree = "<group>";
+		};
 		1E76CBC425152A7F0067298C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -950,6 +965,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1E51411A2B856820007BE94A /* SSLPinning */,
 				1ED038B82B50A1A500C007D4 /* Watch */,
 				1E76CBC425152A7F0067298C /* Shared */,
 				1E068CFB24FD2DAF00A0FFC1 /* AppGroup */,
@@ -1813,7 +1829,9 @@
 			files = (
 				1ED038A92B5090AD00C007D4 /* MMKV.swift in Sources */,
 				1E76CBCB25152C250067298C /* Sender.swift in Sources */,
+				1E5141182B856673007BE94A /* SSLPinning.swift in Sources */,
 				1E76CBD825152C870067298C /* Request.swift in Sources */,
+				1E51411C2B85683C007BE94A /* SSLPinning.m in Sources */,
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
 				1E76CBC2251529560067298C /* Storage.swift in Sources */,
 				1E76CBD925152C8C0067298C /* Push.swift in Sources */,
@@ -1979,7 +1997,9 @@
 			files = (
 				1ED038AB2B5090AD00C007D4 /* MMKV.swift in Sources */,
 				7AAB3E15257E6A6E00707CF6 /* Sender.swift in Sources */,
+				1E5141192B856673007BE94A /* SSLPinning.swift in Sources */,
 				7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */,
+				1E51411D2B85683C007BE94A /* SSLPinning.m in Sources */,
 				7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */,
 				7AAB3E18257E6A6E00707CF6 /* Storage.swift in Sources */,
 				7AAB3E19257E6A6E00707CF6 /* Push.swift in Sources */,

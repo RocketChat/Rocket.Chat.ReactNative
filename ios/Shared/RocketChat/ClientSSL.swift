@@ -7,7 +7,7 @@ struct ClientSSL: Codable {
 
 extension MMKV {
 	func clientSSL(for url: URL) -> ClientSSL? {
-		guard let host = url.host else {
+		guard let host = url.host?.removeTrailingSlash() else {
 			return nil
 		}
 		

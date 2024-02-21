@@ -27,6 +27,13 @@ struct ServerListView: View {
 					}
 			}
 		}
+		.toolbar {
+			ToolbarItem(placement: .automatic) {
+				Button("Refresh") {
+					loadServers()
+				}
+			}
+		}
 	}
 	
 	var body: some View {

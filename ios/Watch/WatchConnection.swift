@@ -18,25 +18,6 @@ final class WatchConnection: NSObject {
 		}
 	}
 	
-	private func getClientSSL(from clientSSL: ClientSSL?) -> WatchMessage.Server.ClientSSL? {
-		guard let clientSSL else {
-			return nil
-		}
-		
-		guard FileManager.default.fileExists(atPath: clientSSL.path) else {
-			return nil
-		}
-		
-		guard let certificate = NSData(contentsOfFile: clientSSL.path) else {
-			return nil
-		}
-
-		return .init(
-			certificate: Data(referencing: certificate),
-			password: clientSSL.password
-		)
-	}
-	
 	private func getMessage() -> WatchMessage {
 		let serversQuery = database.query(raw: "select * from servers") as [DBServer]
 		
@@ -45,7 +26,7 @@ final class WatchConnection: NSObject {
 				return nil
 			}
 			
-			let clientSSL = mmkv.clientSSL(for: item.url)
+			let clientSSL = SSLPinning().getCertificate(server: item.url.absoluteString.removeTrailingSlash())
 			
 			let usersQuery = database.query(raw: "select * from users where token == ? limit 1", [userToken]) as [DBUser]
 			
@@ -64,7 +45,12 @@ final class WatchConnection: NSObject {
 					name: user.name,
 					username: user.username
 				),
-				clientSSL: getClientSSL(from: clientSSL)
+				clientSSL: clientSSL.map {
+					.init(
+						certificate: $0.certificate,
+						password: $0.password
+					)
+				}
 			)
 		}
 		

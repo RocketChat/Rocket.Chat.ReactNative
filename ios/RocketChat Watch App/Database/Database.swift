@@ -51,7 +51,7 @@ final class DefaultDatabase: ServersDatabase {
 	
 	func server(url: URL) -> Server? {
 		let request = Server.fetchRequest()
-		request.predicate = NSPredicate(format: "url == %@", url.absoluteString)
+		request.predicate = NSPredicate(format: "url == %@", url.absoluteString.removeTrailingSlash())
 		
 		return try? viewContext.fetch(request).first
 	}
@@ -117,5 +117,15 @@ final class DefaultDatabase: ServersDatabase {
 			token: updatedUser.token,
 			username: updatedUser.username
 		)
+	}
+}
+
+extension String {
+	func removeTrailingSlash() -> String {
+		var url = self
+		if (url.last == "/") {
+			url.removeLast()
+		}
+		return url
 	}
 }

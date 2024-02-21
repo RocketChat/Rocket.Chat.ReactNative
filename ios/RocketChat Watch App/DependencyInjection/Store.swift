@@ -12,6 +12,7 @@ final class Store: StoreInterface {
 	static func register<T>(_ type: T.Type, factory: @autoclosure @escaping () -> T) {
 		let identifier = ObjectIdentifier(type)
 		factories[identifier] = factory
+		cache[identifier] = nil
 	}
 	
 	static func resolve<T>(_ type: T.Type) -> T? {

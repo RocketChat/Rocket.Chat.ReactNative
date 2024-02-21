@@ -38,7 +38,7 @@ struct RoomListView: View {
 			}
 		}
 		.onAppear {
-			roomsLoader.start(in: server.url)
+			roomsLoader.start()
 		}
 		.onDisappear {
 			roomsLoader.stop()
@@ -46,7 +46,7 @@ struct RoomListView: View {
 		.onChange(of: scenePhase) { phase in
 			switch phase {
 			case .active:
-				roomsLoader.start(in: server.url)
+				roomsLoader.start()
 			case .background, .inactive:
 				roomsLoader.stop()
 			@unknown default:

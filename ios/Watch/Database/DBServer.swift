@@ -7,7 +7,7 @@ struct DBServer: Codable {
   let iconURL: URL
   
   var identifier: String {
-    url.absoluteString
+	  url.absoluteString.removeTrailingSlash()
   }
   
   enum CodingKeys: String, CodingKey {
