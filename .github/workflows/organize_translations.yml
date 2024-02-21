@@ -1,4 +1,4 @@
-name: Organize JSON Keys on Translations and Commit Changes
+name: organize translations
 
 on:
   push:
