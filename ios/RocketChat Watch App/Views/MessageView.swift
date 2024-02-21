@@ -6,15 +6,16 @@ enum MessageAction {
 }
 
 struct MessageView: View {
+	@Dependency private var client: RocketChatClientProtocol
+	
 	@ObservedObject private var viewModel: MessageViewModel
+	
 	@State private var message: Message?
 	
 	private let action: (MessageAction) -> Void
-	private let client: RocketChatClientProtocol
 	
-	init(client: RocketChatClientProtocol, viewModel: MessageViewModel, action: @escaping (MessageAction) -> Void) {
+	init(viewModel: MessageViewModel, action: @escaping (MessageAction) -> Void) {
 		self.action = action
-		self.client = client
 		self.viewModel = viewModel
 	}
 	

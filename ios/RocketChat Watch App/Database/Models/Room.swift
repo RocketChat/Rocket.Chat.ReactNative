@@ -29,4 +29,8 @@ extension Room {
 		
 		return try? managedObjectContext?.fetch(request).first
 	}
+	
+	var rid: String {
+		id ?? ""
+	}
 }

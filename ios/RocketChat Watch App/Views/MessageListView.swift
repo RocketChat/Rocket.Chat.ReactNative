@@ -3,10 +3,10 @@ import SwiftUI
 struct MessageListView: View {
 	private let messageComposer = "MESSAGE_COMPOSER_ID"
 	
-	private let client: RocketChatClientProtocol
-	private let database: Database
-	private let messagesLoader: MessagesLoading
-	private let messageSender: MessageSending
+	@Dependency private var database: Database
+	@Dependency private var messagesLoader: MessagesLoading
+	@Dependency private var messageSender: MessageSending
+	
 	private let formatter: RoomFormatter
 	private let server: Server
 	private let room: Room
@@ -17,18 +17,7 @@ struct MessageListView: View {
 	
 	@FetchRequest<Message> private var messages: FetchedResults<Message>
 	
-	init(
-		client: RocketChatClientProtocol,
-		database: Database,
-		messagesLoader: MessagesLoading,
-		messageSender: MessageSending,
-		room: Room,
-		server: Server
-	) {
-		self.client = client
-		self.database = database
-		self.messagesLoader = messagesLoader
-		self.messageSender = messageSender
+	init(room: Room, server: Server) {
 		self.formatter = RoomFormatter(room: room, server: server)
 		self.room = room
 		self.server = server
@@ -52,8 +41,12 @@ struct MessageListView: View {
 					let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
 					
 					MessageView(
-						client: client,
-						viewModel: .init(message: message, previousMessage: previousMessage, server: server, lastOpen: lastOpen)
+						viewModel: .init(
+							message: message,
+							previousMessage: previousMessage,
+							server: server,
+							lastOpen: lastOpen
+						)
 					) { action in
 						switch action {
 						case .resend(let id, let msg):

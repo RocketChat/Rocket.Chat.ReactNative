@@ -1,10 +1,7 @@
 import SwiftUI
 
 struct RoomListView: View {
-	@Dependency private var client: RocketChatClientProtocol
 	@Dependency private var database: Database
-	@Dependency private var messagesLoader: MessagesLoading
-	@Dependency private var messageSender: MessageSending
 	@Dependency private var roomsLoader: RoomsLoading
 	@Dependency private var router: AppRouting
 	
@@ -14,27 +11,20 @@ struct RoomListView: View {
 	
 	@FetchRequest<Room> private var rooms: FetchedResults<Room>
 	
+	@State private var roomID: String?
+	
 	init(server: Server) {
 		self.server = server
 		_rooms = FetchRequest(fetchRequest: server.roomsRequest)
 	}
 	
 	var body: some View {
-		List {
-			ForEach(rooms) { room in
-				NavigationLink {
-					MessageListView(
-						client: client,
-						database: database,
-						messagesLoader: messagesLoader,
-						messageSender: messageSender,
-						room: room,
-						server: server
-					)
-						.environment(\.managedObjectContext, database.viewContext)
-				} label: {
-					RoomView(viewModel: .init(room: room, server: server))
-				}
+		List(rooms, id: \.id) { room in
+			NavigationLink(tag: room.rid, selection: $roomID) {
+				MessageListView(room: room, server: server)
+					.environment(\.managedObjectContext, database.viewContext)
+			} label: {
+				RoomView(viewModel: .init(room: room, server: server))
 			}
 		}
 		.onAppear {

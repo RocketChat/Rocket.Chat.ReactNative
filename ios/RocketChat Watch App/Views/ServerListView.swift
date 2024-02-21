@@ -10,6 +10,8 @@ struct ServerListView: View {
 	
 	@FetchRequest<Server> private var servers: FetchedResults<Server>
 	
+	@Environment(\.scenePhase) private var scenePhase
+	
 	init() {
 		let fetchRequest = Server.fetchRequest()
 		fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Server.updatedSince, ascending: true)]

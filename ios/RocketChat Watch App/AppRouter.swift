@@ -9,11 +9,22 @@ final class AppRouter: ObservableObject {
 	@Published private(set) var route: Route = .loading
 	
 	@Published var error: ErrorResponse?
+	
+	@Storage(.currentServer) private var currentURL: URL?
 }
 
 extension AppRouter: AppRouting {
 	func route(to route: Route) {
 		self.route = route
+		
+		switch route {
+		case .roomList(let server):
+			currentURL = server.url
+		case .serverList:
+			currentURL = nil
+		default:
+			break
+		}
 	}
 	
 	func present(error: ErrorResponse) {

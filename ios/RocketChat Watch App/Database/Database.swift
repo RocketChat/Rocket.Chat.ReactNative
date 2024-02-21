@@ -102,7 +102,6 @@ final class DefaultDatabase: ServersDatabase {
 	
 	private func user(from updatedUser: WatchMessage.Server.LoggedUser) -> LoggedUser {
 		if let user = user(id: updatedUser.id) {
-			user.id = updatedUser.id
 			user.name = updatedUser.name
 			user.username = updatedUser.username
 			user.token = updatedUser.token

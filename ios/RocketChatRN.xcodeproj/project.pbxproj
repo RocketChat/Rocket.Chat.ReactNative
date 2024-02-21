@@ -167,6 +167,8 @@
 		1ED038C52B50A1F500C007D4 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
 		1ED038C62B50A21800C007D4 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C32B50A1F500C007D4 /* WatchMessage.swift */; };
 		1ED038CA2B50A58400C007D4 /* ServersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* ServersLoader.swift */; };
+		1ED1EC892B867E2400F6620C /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */; };
+		1ED1EC8B2B86817100F6620C /* Deeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1EC8A2B86817100F6620C /* Deeplink.swift */; };
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
 		1EDB30F22B5B453A00532C7E /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB30F12B5B453A00532C7E /* LoggedInView.swift */; };
 		1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
@@ -451,6 +453,8 @@
 		1ED038C02B50A1E400C007D4 /* DBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUser.swift; sourceTree = "<group>"; };
 		1ED038C32B50A1F500C007D4 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
 		1ED038C92B50A58400C007D4 /* ServersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersLoader.swift; sourceTree = "<group>"; };
+		1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		1ED1EC8A2B86817100F6620C /* Deeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deeplink.swift; sourceTree = "<group>"; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1EDB30F12B5B453A00532C7E /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
@@ -857,6 +861,8 @@
 				1ED038942B507B4D00C007D4 /* Assets.xcassets */,
 				1ED038962B507B4D00C007D4 /* Preview Content */,
 				1ED033C02B55C190004F4930 /* Localizable.xcstrings */,
+				1ED1EC8A2B86817100F6620C /* Deeplink.swift */,
+				1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */,
 			);
 			path = "RocketChat Watch App";
 			sourceTree = "<group>";
@@ -1890,7 +1896,9 @@
 				1E06561D2B7E9C1C0081B01F /* MessageActionView.swift in Sources */,
 				1E29A3162B5868DF0093C03C /* MessageListView.swift in Sources */,
 				1E4AFC172B5AF09C00E2AA7D /* Store.swift in Sources */,
+				1ED1EC8B2B86817100F6620C /* Deeplink.swift in Sources */,
 				1E29A2F42B585B070093C03C /* SubscriptionsResponse.swift in Sources */,
+				1ED1EC892B867E2400F6620C /* ExtensionDelegate.swift in Sources */,
 				1E29A2F92B585B070093C03C /* SubscriptionsRequest.swift in Sources */,
 				1E29A2F22B585B070093C03C /* HistoryResponse.swift in Sources */,
 				1E4AFC152B5AF09800E2AA7D /* Dependency.swift in Sources */,
