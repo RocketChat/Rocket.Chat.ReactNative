@@ -23,9 +23,19 @@ jobs:
 
     - name: Get changed files
       id: git-check
-      uses: tj-actions/changed-files@v42  
-      with:
-        since_last_remote_commit: true 
+      uses: tj-actions/changed-files@v42
+      with:  
+        files: |
+              **.json
+
+    - name: List all changed files
+      if: steps.git-check.outputs.any_changed == 'true'
+      env:
+        ALL_CHANGED_FILES: ${{ steps.git-check.outputs.all_changed_files }}
+      run: |
+        for file in ${ALL_CHANGED_FILES}; do
+          echo "$file was changed"
+        done
 
     - name: Commit and push if changes
       if: steps.git-check.outputs.any_changed == 'true'
