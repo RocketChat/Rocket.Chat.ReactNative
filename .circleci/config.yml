@@ -416,7 +416,7 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2023.11-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -428,7 +428,7 @@ jobs:
   android-automatic-build-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2023.11-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -439,7 +439,7 @@ jobs:
   android-build-official:
     <<: *defaults
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2023.11-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -450,7 +450,7 @@ jobs:
   android-internal-app-sharing-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-internal-app-sharing
@@ -458,7 +458,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-google-play-beta:
@@ -467,14 +467,14 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2023.11-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-google-play-beta:
