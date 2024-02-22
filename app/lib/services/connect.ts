@@ -178,14 +178,20 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
 			const [, status, statusText] = userStatus;
-			const newStatus = { status: STATUSES[status], statusText };
-			// @ts-ignore
-			store.dispatch(setActiveUsers({ [uid]: newStatus }));
+			let newStatus = status;
+
+			const serverVersion = store.getState().server.version;
+			if (compareServerVersion(serverVersion, 'lowerThan', '6.6.0')) {
+				newStatus = STATUSES[status];
+			}
+
+			const newUserPresence = { status: newStatus, statusText };
+			store.dispatch(setActiveUsers({ [uid]: newUserPresence }));
 
 			const { user: loggedUser } = store.getState().login;
 			if (loggedUser && loggedUser.id === uid) {
 				// @ts-ignore
-				store.dispatch(setUser(newStatus));
+				store.dispatch(setUser(newUserPresence));
 			}
 		});
 
