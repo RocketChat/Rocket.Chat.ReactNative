@@ -51,8 +51,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 		 *  */
 		if (alsoSendThreadToChannelUserPref === 'default') {
 			const db = database.active;
-			const observable = db.get('threads').query(Q.where('tmid', tmid)).observe();
-
+			const observable = db.get('threads').query(Q.where('id', tmid)).observe();
 			subscription.current = observable.subscribe(result => {
 				setAlsoSendThreadToChannel(!result.length);
 			});
