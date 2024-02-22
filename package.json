@@ -58,7 +58,7 @@
 		"@rocket.chat/ui-kit": "^0.31.19",
 		"bytebuffer": "^5.0.1",
 		"color2k": "1.2.4",
-		"commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
+		"commonmark": "https://github.com/RocketChat/commonmark.js.git",
 		"commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
 		"dequal": "^2.0.3",
 		"ejson": "^2.2.3",
