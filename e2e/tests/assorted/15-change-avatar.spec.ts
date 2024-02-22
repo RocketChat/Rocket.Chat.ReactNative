@@ -90,5 +90,31 @@ describe('Profile screen', () => {
 				throw new Error('Failed to update the avatar');
 			}
 		});
+
+		it('should change the avatar taking a photo using a base64 image mocked', async () => {
+			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
+			await element(by.id('avatar-edit-button')).tap();
+			const previousUserInfo = await getProfileInfo({ userId });
+			const previousAvatarEtag = previousUserInfo.avatarETag;
+			await sleep(500);
+			await waitFor(element(by.id('change-avatar-view-upload-image')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('change-avatar-view-upload-image')).tap();
+			await waitFor(element(by.id('change-avatar-view-submit')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('change-avatar-view-submit')).tap();
+			await waitFor(element(by.id('profile-view')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await sleep(300);
+			const newUserInfo = await getProfileInfo({ userId });
+			const newAvatarEtag = newUserInfo.avatarETag;
+			await sleep(500);
+			if (previousAvatarEtag === newAvatarEtag) {
+				throw new Error('Failed to update the avatar');
+			}
+		});
 	});
 });

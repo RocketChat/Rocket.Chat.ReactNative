@@ -159,7 +159,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadUser = async () => {
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = getUidDirectMessage(room || { rid, t, itsMe });
+				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;

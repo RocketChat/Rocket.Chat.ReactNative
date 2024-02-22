@@ -80,8 +80,8 @@ export interface IServer {
 	enterpriseModules: IEnterpriseModules;
 	E2E_Enable: boolean;
 	supportedVersions?: ISupportedVersionsData;
-	supportedVersionsWarningAt?: Date;
-	supportedVersionsUpdatedAt?: Date;
+	supportedVersionsWarningAt?: Date | null;
+	supportedVersionsUpdatedAt?: Date | null;
 }
 
 export type TServerModel = IServer & Model;

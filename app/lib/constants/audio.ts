@@ -36,3 +36,13 @@ export const RECORDING_MODE: AudioMode = {
 	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
 	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };
+
+export const AUDIO_MODE: AudioMode = {
+	allowsRecordingIOS: false,
+	playsInSilentModeIOS: true,
+	staysActiveInBackground: true,
+	shouldDuckAndroid: true,
+	playThroughEarpieceAndroid: false,
+	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
+};

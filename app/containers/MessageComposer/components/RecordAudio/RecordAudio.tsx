@@ -12,13 +12,13 @@ import sharedStyles from '../../../../views/Styles';
 import { ReviewButton } from './ReviewButton';
 import { useMessageComposerApi } from '../../context';
 import { sendFileMessage } from '../../../../lib/methods';
-import { IUpload } from '../../../../definitions';
-import log from '../../../../lib/methods/helpers/log';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants';
 import { useAppSelector } from '../../../../lib/hooks';
+import log from '../../../../lib/methods/helpers/log';
+import { IUpload } from '../../../../definitions';
+import { useRoomContext } from '../../../../views/RoomView/context';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, IDurationRef } from './Duration';
-import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from './constants';
 import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
@@ -27,6 +27,7 @@ export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
 	const recordingRef = useRef<Audio.Recording>();
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
+	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
@@ -43,8 +44,21 @@ export const RecordAudio = (): ReactElement | null => {
 				await recordingRef.current.prepareToRecordAsync(RECORDING_SETTINGS);
 				recordingRef.current.setOnRecordingStatusUpdate(durationRef.current.onRecordingStatusUpdate);
 				await recordingRef.current.startAsync();
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				// error only occurs on iOS devices
+				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
+					if (numberOfTriesRef.current <= 5) {
+						recordingRef.current = undefined;
+						numberOfTriesRef.current += 1;
+						setTimeout(() => {
+							record();
+						}, 100);
+					} else {
+						console.error(error);
+					}
+				} else {
+					console.error(error);
+				}
 			}
 		};
 		record();
