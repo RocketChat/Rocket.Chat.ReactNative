@@ -8619,7 +8619,6 @@ builtins@^1.0.3:
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
   integrity sha512-uYBjakWipfaO/bXI7E8rq6kpwHRZK5cNYrUv2OzZSI/FvmdMyXJ2tG9dKcjEC5YHmHpUAwsargWIZNWdxb/bnQ==
 
-
 bunyamin@^1.5.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/bunyamin/-/bunyamin-1.5.2.tgz#681db204c0b16531369d5c1f6c89dc8d760b7558"
@@ -9382,9 +9381,9 @@ commondir@^1.0.1:
     pascalcase "^0.1.1"
     xss-filters "^1.2.6"
 
-commonmark@RocketChat/commonmark.js#bb03ae0b380152a3286f910fddc9d4d66a978ad4:
-  version "0.29.2"
-  resolved "https://codeload.github.com/RocketChat/commonmark.js/tar.gz/bb03ae0b380152a3286f910fddc9d4d66a978ad4"
+"commonmark@https://github.com/RocketChat/commonmark.js.git":
+  version "0.29.4"
+  resolved "https://github.com/RocketChat/commonmark.js.git#7ce50a3b3c30a80a5a5d08a70f7695a29e7398ab"
   dependencies:
     entities "~2.0"
     mdurl "~1.0.1"
