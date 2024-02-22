@@ -19,14 +19,16 @@ android-env: &android-env
 
 install-npm-modules: &install-npm-modules
   name: Install NPM modules
-  command: yarn
+  command: |
+    yarn global add node-gyp
+    yarn
 
 restore-npm-cache-linux: &restore-npm-cache-linux
   name: Restore NPM cache
-  key: node-modules-{{ checksum "yarn.lock" }}
+  key: node-modules-v99-{{ checksum "yarn.lock" }}
 
 save-npm-cache-linux: &save-npm-cache-linux
-  key: node-modules-{{ checksum "yarn.lock" }}
+  key: node-modules-v99-{{ checksum "yarn.lock" }}
   name: Save NPM cache
   paths:
     - ./node_modules
