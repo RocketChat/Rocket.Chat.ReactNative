@@ -3,26 +3,25 @@ import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
-import { themes } from '../../../lib/constants';
-import { TSupportedThemes } from '../../../theme';
 import { headerHeight } from '../../../lib/methods/helpers/navigation';
 import * as List from '../../../containers/List';
 import { Filter } from '../filters';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
+import { useTheme } from '../../../theme';
 
 const ANIMATION_DURATION = 200;
 
 interface IDropdownProps {
 	isMasterDetail?: boolean;
-	theme: TSupportedThemes;
 	currentFilter: Filter;
 	onClose: () => void;
 	onFilterSelected: (value: Filter) => void;
 }
 
-const Dropdown = ({ isMasterDetail, theme, currentFilter, onClose, onFilterSelected }: IDropdownProps) => {
+const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: IDropdownProps) => {
 	const animatedValue = useRef(new Animated.Value(0)).current;
+	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 
 	useEffect(() => {
@@ -43,8 +42,7 @@ const Dropdown = ({ isMasterDetail, theme, currentFilter, onClose, onFilterSelec
 		}).start(() => onClose());
 	};
 
-	const statusBarHeight = insets?.top ?? 0;
-	const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
+	const heightDestination = isMasterDetail ? headerHeight + insets.top : 0;
 
 	const translateY = animatedValue.interpolate({
 		inputRange: [0, 1],
@@ -53,7 +51,7 @@ const Dropdown = ({ isMasterDetail, theme, currentFilter, onClose, onFilterSelec
 
 	const backdropOpacity = animatedValue.interpolate({
 		inputRange: [0, 1],
-		outputRange: [0, themes[theme].backdropOpacity]
+		outputRange: [0, colors.backdropOpacity]
 	});
 
 	return (
@@ -63,7 +61,7 @@ const Dropdown = ({ isMasterDetail, theme, currentFilter, onClose, onFilterSelec
 					style={[
 						styles.backdrop,
 						{
-							backgroundColor: themes[theme].backdropColor,
+							backgroundColor: colors.backdropColor,
 							opacity: backdropOpacity,
 							top: heightDestination
 						}
@@ -75,8 +73,8 @@ const Dropdown = ({ isMasterDetail, theme, currentFilter, onClose, onFilterSelec
 					styles.dropdownContainer,
 					{
 						transform: [{ translateY }],
-						backgroundColor: themes[theme].backgroundColor,
-						borderColor: themes[theme].separatorColor
+						backgroundColor: colors.backgroundColor,
+						borderColor: colors.separatorColor
 					}
 				]}
 			>
