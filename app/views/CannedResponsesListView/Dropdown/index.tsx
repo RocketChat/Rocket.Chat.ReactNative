@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, FlatList, TouchableWithoutFeedback } from 'react-native';
 
 import styles from '../styles';
-import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import DropdownItemFilter from './DropdownItemFilter';
@@ -11,6 +10,8 @@ import { ROW_HEIGHT } from './DropdownItem';
 import { ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
 
 const ANIMATION_DURATION = 200;
+const HEIGHT_DESTINATION = 0;
+const MAX_ROWS = 5;
 
 interface IDropdownProps {
 	currentDepartment: ILivechatDepartment;
@@ -21,7 +22,7 @@ interface IDropdownProps {
 
 const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, departments }: IDropdownProps) => {
 	const animatedValue = useRef(new Animated.Value(0)).current;
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	useEffect(() => {
 		Animated.timing(animatedValue, {
@@ -41,17 +42,14 @@ const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, department
 		}).start(() => onClose());
 	};
 
-	const heightDestination = 0;
-	const maxRows = 5;
-
 	const translateY = animatedValue.interpolate({
 		inputRange: [0, 1],
-		outputRange: [-300, heightDestination] // approximated height of the component when closed/open
+		outputRange: [-300, HEIGHT_DESTINATION] // approximated height of the component when closed/open
 	});
 
 	const backdropOpacity = animatedValue.interpolate({
 		inputRange: [0, 1],
-		outputRange: [0, themes[theme!].backdropOpacity]
+		outputRange: [0, colors.backdropOpacity]
 	});
 
 	return (
@@ -61,9 +59,9 @@ const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, department
 					style={[
 						styles.backdrop,
 						{
-							backgroundColor: themes[theme!].backdropColor,
+							backgroundColor: colors.backdropColor,
 							opacity: backdropOpacity,
-							top: heightDestination
+							top: HEIGHT_DESTINATION
 						}
 					]}
 				/>
@@ -73,15 +71,15 @@ const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, department
 					styles.dropdownContainer,
 					{
 						transform: [{ translateY }],
-						backgroundColor: themes[theme!].backgroundColor,
-						borderColor: themes[theme!].separatorColor
+						backgroundColor: colors.backgroundColor,
+						borderColor: colors.separatorColor
 					}
 				]}
 			>
 				<DropdownItemHeader department={currentDepartment} onPress={close} />
 				<List.Separator />
 				<FlatList
-					style={{ maxHeight: maxRows * ROW_HEIGHT }}
+					style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}
 					data={departments}
 					keyExtractor={item => item._id}
 					renderItem={({ item }) => (

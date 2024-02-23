@@ -315,7 +315,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				/>
 				{showOptionsDropdown ? (
 					<Options
-						theme={theme}
 						type={type}
 						globalUsers={globalUsers}
 						close={this.toggleDropdown}
