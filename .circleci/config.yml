@@ -404,7 +404,7 @@ jobs:
       - run:
           name: Test
           command: |
-            yarn test -w 8
+            yarn test --runInBand
 
       - run:
           name: Codecov
