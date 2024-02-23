@@ -80,9 +80,9 @@ final class RocketChatDatabase: Database {
 		return message
 	}
 	
-	func createAttachment(url: String) -> Attachment {
+	func createAttachment(identifier: String) -> Attachment {
 		let attachment = Attachment(context: viewContext)
-		attachment.imageURL = URL(string: url)
+		attachment.id = identifier
 		
 		return attachment
 	}
@@ -140,9 +140,9 @@ final class RocketChatDatabase: Database {
 		return try? viewContext.fetch(request).first
 	}
 	
-	func attachment(url: String) -> Attachment? {
+	func attachment(identifier: String) -> Attachment? {
 		let request = Attachment.fetchRequest()
-		request.predicate = NSPredicate(format: "imageURL == %@", url)
+		request.predicate = NSPredicate(format: "id == %@", identifier)
 		
 		return try? viewContext.fetch(request).first
 	}
@@ -169,6 +169,7 @@ final class RocketChatDatabase: Database {
 		message.user = user
 		message.t = updatedMessage.t
 		message.groupable = updatedMessage.groupable ?? true
+		message.editedAt = updatedMessage.editedAt
 		
 		updatedMessage.attachments?.forEach { attachment in
 			process(updatedAttachment: attachment, in: message)
@@ -178,11 +179,13 @@ final class RocketChatDatabase: Database {
 	}
 	
 	func process(updatedAttachment: AttachmentResponse, in message: Message) {
-		guard let url = updatedAttachment.imageURL?.absoluteString else {
+		let identifier = updatedAttachment.imageURL ?? updatedAttachment.audioURL
+		
+		guard let identifier = identifier?.absoluteString ?? updatedAttachment.title else {
 			return
 		}
 		
-		let attachment = attachment(url: url) ?? createAttachment(url: url)
+		let attachment = attachment(identifier: identifier) ?? createAttachment(identifier: identifier)
 		
 		attachment.msg = updatedAttachment.description
 		attachment.message = message

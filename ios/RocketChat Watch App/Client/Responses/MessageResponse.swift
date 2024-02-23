@@ -9,4 +9,5 @@ struct MessageResponse: Codable, Hashable {
 	let attachments: [AttachmentResponse]?
 	let t: String?
 	let groupable: Bool?
+	let editedAt: Date?
 }

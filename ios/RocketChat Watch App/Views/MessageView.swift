@@ -70,6 +70,11 @@ struct MessageView: View {
 						.lineLimit(1)
 						.font(.footnote)
 						.foregroundStyle(.secondary)
+					if viewModel.message.editedAt != nil {
+						Image(systemName: "pencil")
+							.font(.caption)
+							.foregroundStyle(.secondary)
+					}
 				}
 			}
 			if let text = viewModel.info {
@@ -77,7 +82,7 @@ struct MessageView: View {
 					.font(.caption.italic())
 					.foregroundStyle(.primary)
 			} else if let text = viewModel.message.msg {
-				HStack {
+				HStack(alignment: .top) {
 					Text(text)
 						.font(.caption)
 						.foregroundStyle(viewModel.message.status == "temp" ? .secondary : .primary)
@@ -95,11 +100,17 @@ struct MessageView: View {
 						)
 						.buttonStyle(PlainButtonStyle())
 					}
+					
+					if viewModel.message.editedAt != nil && !viewModel.isHeader {
+						Image(systemName: "pencil")
+							.font(.caption)
+							.foregroundStyle(.secondary)
+					}
 				}
 			}
 			if let attachments = viewModel.message.attachments?.allObjects as? Array<Attachment> {
 				ForEach(attachments) { attachment in
-					AttachmentView(attachment: attachment, client: client)
+					AttachmentView(attachment: attachment)
 				}
 			}
 		}
