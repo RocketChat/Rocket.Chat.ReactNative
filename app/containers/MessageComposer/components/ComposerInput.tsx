@@ -340,7 +340,8 @@ export const ComposerInput = memo(
 				defaultValue=''
 				multiline
 				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-				testID={`message-composer-input${tmid ? '-thread' : ''}`}
+				// eslint-disable-next-line no-nested-ternary
+				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
 			/>
 		);
 	})

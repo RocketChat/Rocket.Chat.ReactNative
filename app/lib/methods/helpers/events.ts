@@ -12,8 +12,7 @@ type TEventEmitterEmmitArgs =
 	| { visible: boolean; onCancel?: null | Function }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }
-	| IEmitUserInteraction
-	| { audioFocused: string };
+	| IEmitUserInteraction;
 
 class EventEmitter {
 	private events: { [key: string]: any };

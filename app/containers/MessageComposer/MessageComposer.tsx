@@ -66,8 +66,13 @@ export const MessageComposer = ({
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard, setTrackingViewHeight } =
-		useMessageComposerApi();
+	const {
+		openSearchEmojiKeyboard,
+		closeEmojiKeyboard,
+		closeSearchEmojiKeyboard,
+		setTrackingViewHeight,
+		setAlsoSendThreadToChannel
+	} = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	useKeyboardListener(trackingViewRef);
 
@@ -100,6 +105,10 @@ export const MessageComposer = ({
 
 	const handleSendMessage = async () => {
 		if (!rid) return;
+
+		if (alsoSendThreadToChannel) {
+			setAlsoSendThreadToChannel(false);
+		}
 
 		if (sharing) {
 			onSendMessage?.();
@@ -200,7 +209,6 @@ export const MessageComposer = ({
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 	const renderContent = () => {
-		console.count('[MessageComposer] renderContent');
 		if (recordingAudio) {
 			return <RecordAudio />;
 		}

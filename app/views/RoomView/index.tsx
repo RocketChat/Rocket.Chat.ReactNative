@@ -94,7 +94,7 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
-import audioPlayer from '../../lib/methods/audioPlayer';
+import AudioManager from '../../lib/methods/AudioManager';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
@@ -236,9 +236,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
-		// TODO: Refactor when audio becomes global
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
-			audioPlayer.pauseCurrentAudio();
+			AudioManager.pauseAudio();
 		});
 	}
 
@@ -342,8 +341,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		if (!this.tmid) {
-			// TODO: Refactor when audio becomes global
-			await audioPlayer.unloadRoomAudios(this.rid);
+			await AudioManager.unloadRoomAudios(this.rid);
 		}
 	}
 
@@ -687,7 +685,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onEditInit = (messageId: string) => {
 		const { action } = this.state;
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action) {
 			return;
 		}
@@ -736,7 +733,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			return;
 		}
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action) {
 			return;
 		}
@@ -773,7 +769,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionInit = (messageId: string) => {
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (this.state.action) {
 			return;
 		}
@@ -790,7 +785,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
 		const { action } = this.state;
-		// TODO: implement multiple actions running. Quoting, then edit. Edit then quote.
 		if (action && action !== 'quote') {
 			return;
 		}
@@ -873,11 +867,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
 			.observeWithColumns(['unread']);
 
-		this.queryUnreads = observable.subscribe(data => {
-			const { unreadsCount } = this.state;
-			const newUnreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
-			if (unreadsCount !== newUnreadsCount) {
-				this.setState({ unreadsCount: newUnreadsCount }, () => this.setHeader());
+		this.queryUnreads = observable.subscribe(rooms => {
+			const unreadsCount = rooms.reduce(
+				(unreadCount, room) => (room.unread > 0 && !room.hideUnreadStatus ? unreadCount + room.unread : unreadCount),
+				0
+			);
+			if (this.state.unreadsCount !== unreadsCount) {
+				this.setState({ unreadsCount }, this.setHeader);
 			}
 		});
 	};
