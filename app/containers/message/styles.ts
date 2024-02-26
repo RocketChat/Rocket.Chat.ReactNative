@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { isAndroid, isTablet } from '../../lib/methods/helpers';
+import { isTablet } from '../../lib/methods/helpers';
 
 export default StyleSheet.create({
 	root: {
@@ -184,9 +184,5 @@ export default StyleSheet.create({
 		position: 'absolute',
 		justifyContent: 'center',
 		alignItems: 'center'
-	},
-	mustWrapBlur: {
-		// https://github.com/Kureev/react-native-blur/issues/520#issuecomment-1378339192 Fix BlurView
-		overflow: isAndroid ? 'hidden' : 'visible'
 	}
 });

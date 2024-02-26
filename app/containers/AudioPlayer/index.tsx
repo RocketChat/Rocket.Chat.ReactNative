@@ -10,9 +10,10 @@ import styles from './styles';
 import Seek from './Seek';
 import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
-import audioPlayer from '../../lib/methods/audioPlayer';
+import AudioManager from '../../lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TDownloadState } from '../../lib/methods/handleMediaDownload';
+import { emitter } from '../../lib/methods/helpers';
 import { TAudioState } from './types';
 import { useUserPreferences } from '../../lib/methods';
 
@@ -39,6 +40,7 @@ const AudioPlayer = ({
 
 	const [playbackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
 	const [paused, setPaused] = useState(true);
+	const [focused, setFocused] = useState(false);
 	const duration = useSharedValue(0);
 	const currentTime = useSharedValue(0);
 	const { colors } = useTheme();
@@ -84,15 +86,15 @@ const AudioPlayer = ({
 	};
 
 	const setPosition = async (time: number) => {
-		await audioPlayer.setPositionAsync(audioUri.current, time);
+		await AudioManager.setPositionAsync(audioUri.current, time);
 	};
 
 	const togglePlayPause = async () => {
 		try {
 			if (!paused) {
-				await audioPlayer.pauseAudio(audioUri.current);
+				await AudioManager.pauseAudio();
 			} else {
-				await audioPlayer.playAudio(audioUri.current);
+				await AudioManager.playAudio(audioUri.current);
 			}
 		} catch {
 			// Do nothing
@@ -100,7 +102,7 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
+		AudioManager.setRateAsync(audioUri.current, playbackSpeed);
 	}, [playbackSpeed]);
 
 	const onPress = () => {
@@ -114,11 +116,13 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		InteractionManager.runAfterInteractions(async () => {
-			audioUri.current = await audioPlayer.loadAudio({ msgId, rid, uri: fileUri });
-			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-			audioPlayer.setRateAsync(audioUri.current, playbackSpeed);
-		});
+		if (fileUri) {
+			InteractionManager.runAfterInteractions(async () => {
+				audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+				AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+				AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+			});
+		}
 	}, [fileUri]);
 
 	useEffect(() => {
@@ -131,13 +135,28 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		const unsubscribeFocus = navigation.addListener('focus', () => {
-			audioPlayer.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+			AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+			AudioManager.addAudioRendered(audioUri.current);
+		});
+		const unsubscribeBlur = navigation.addListener('blur', () => {
+			AudioManager.removeAudioRendered(audioUri.current);
 		});
 
 		return () => {
 			unsubscribeFocus();
+			unsubscribeBlur();
 		};
 	}, [navigation]);
+
+	useEffect(() => {
+		const audioFocusedEventHandler = (audioFocused: string) => {
+			setFocused(!!audioFocused && audioFocused === audioUri.current);
+		};
+		emitter.on('audioFocused', audioFocusedEventHandler);
+		return () => {
+			emitter.off('audioFocused', audioFocusedEventHandler);
+		};
+	}, []);
 
 	let audioState: TAudioState = 'to-download';
 	if (isLoading) {
@@ -151,10 +170,10 @@ const AudioPlayer = ({
 	}
 
 	return (
-		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
+		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceLight, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isDownloaded} onChangeTime={setPosition} />
-			{audioState === 'playing' ? <PlaybackSpeed audioState={audioState} /> : null}
+			{audioState === 'playing' || focused ? <PlaybackSpeed /> : null}
 		</View>
 	);
 };

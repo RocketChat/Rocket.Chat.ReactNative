@@ -27,7 +27,7 @@ const CannedResponseItem = ({
 	text,
 	tags = []
 }: ICannedResponseItem): JSX.Element => (
-	<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].messageboxBackground }]}>
+	<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].surfaceLight }]}>
 		<>
 			<View style={styles.cannedRow}>
 				<View style={styles.cannedWrapShortcutScope}>

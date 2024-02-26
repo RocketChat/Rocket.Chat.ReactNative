@@ -49,7 +49,7 @@ export const Itens = () => (
 			tags={item[0]?.tags}
 			text={item[0].text}
 			onPressDetail={() => alert('navigation to CannedResponseDetail')}
-			onPressUse={() => alert('Back to RoomView and wrote in MessageBox')}
+			onPressUse={() => alert('Back to RoomView and wrote in Message Composer')}
 		/>
 		<CannedResponseItem
 			theme={theme}
@@ -58,7 +58,7 @@ export const Itens = () => (
 			tags={item[1]?.tags}
 			text={item[1].text}
 			onPressDetail={() => alert('navigation to CannedResponseDetail')}
-			onPressUse={() => alert('Back to RoomView and wrote in MessageBox')}
+			onPressUse={() => alert('Back to RoomView and wrote in Message Composer')}
 		/>
 	</>
 );

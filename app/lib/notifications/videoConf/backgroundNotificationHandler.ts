@@ -1,4 +1,4 @@
-import notifee, { AndroidCategory, AndroidImportance, AndroidVisibility, Event } from '@notifee/react-native';
+import notifee, { AndroidCategory, AndroidFlags, AndroidImportance, AndroidVisibility, Event } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ejson from 'ejson';
@@ -96,7 +96,8 @@ const displayVideoConferenceNotification = async (notification: NotificationData
 			pressAction: {
 				id: 'default',
 				launchActivity: 'default'
-			}
+			},
+			flags: [AndroidFlags.FLAG_NO_CLEAR]
 		}
 	});
 };

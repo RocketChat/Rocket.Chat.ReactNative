@@ -41,6 +41,9 @@ class EventEmitter {
 		}
 	}
 
+	/**
+	 * @deprecated use lib/methods/helpers/emitter.ts
+	 */
 	emit(event: string, ...args: TEventEmitterEmmitArgs[]) {
 		if (typeof this.events[event] === 'object') {
 			this.events[event].forEach((listener: Function) => {
