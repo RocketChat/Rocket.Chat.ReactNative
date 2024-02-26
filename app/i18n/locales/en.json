@@ -807,5 +807,12 @@
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "you": "you",
-  "you_were_mentioned": "you were mentioned"
+  "you_were_mentioned": "you were mentioned",
+  "User_not_found_or": "User not found or incorrect password",
+  "Invalid_Email": "Invalid Email",
+  "Login_has_been_temporarily_blocked_for_this_IP": "Login has been temporarily blocked for this IP",
+  "Login_has_been_temporarily_blocked_for_this_User": "Login has been temporarily blocked for this User",
+  "The_maximum_number_of_users_has_been_reached": "The maximum number of users has been reached.",
+  "App_users_are_not_allowed_to_log_in_directly": "App users are not allowed to log in directly.",
+  "Before_you_can_login": "Before you can login, your account must be manually activated by an administrator."
 }
