@@ -70,6 +70,7 @@ export function getSlashCommands() {
 					return allRecords.length;
 				});
 			}
+			return resolve();
 		} catch (e) {
 			log(e);
 			return resolve();

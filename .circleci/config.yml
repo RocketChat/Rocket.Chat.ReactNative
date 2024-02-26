@@ -19,7 +19,9 @@ android-env: &android-env
 
 install-npm-modules: &install-npm-modules
   name: Install NPM modules
-  command: yarn
+  command: |
+    yarn global add node-gyp
+    yarn
 
 restore-npm-cache-linux: &restore-npm-cache-linux
   name: Restore NPM cache
@@ -60,8 +62,7 @@ update-fastlane-ios: &update-fastlane-ios
 update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
-    echo "ruby-2.7.7" > ~/.ruby-version
-    bundle install
+    bundle install --path gems
   working_directory: android
 
 save-gradle-cache: &save-gradle-cache
@@ -403,7 +404,7 @@ jobs:
       - run:
           name: Test
           command: |
-            yarn test -w 8
+            yarn test --runInBand
 
       - run:
           name: Codecov
@@ -416,7 +417,7 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -428,7 +429,7 @@ jobs:
   android-automatic-build-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2023.11-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -439,7 +440,7 @@ jobs:
   android-build-official:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -450,7 +451,7 @@ jobs:
   android-internal-app-sharing-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-internal-app-sharing
@@ -458,7 +459,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-google-play-beta:
@@ -467,14 +468,14 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-google-play-beta:
