@@ -16,7 +16,7 @@ class NotificationService: UNNotificationServiceExtension {
         return
       }
       
-      rocketchat = RocketChat.instanceForServer(server: data.host.removeTrailingSlash())
+      rocketchat = RocketChat(server: data.host.removeTrailingSlash())
       
       // If the notification has the content on the payload, show it
       if data.notificationType != .messageIdOnly {
@@ -33,6 +33,10 @@ class NotificationService: UNNotificationServiceExtension {
         }
       }
     }
+  }
+  
+  override func serviceExtensionTimeWillExpire() {
+    rocketchat = nil
   }
   
   func processPayload(payload: Payload) {
