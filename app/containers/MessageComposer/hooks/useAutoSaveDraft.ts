@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { saveDraftMessage } from '../helpers';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useFocused } from '../context';
+import { saveDraftMessage } from '../../../lib/methods/draftMessage';
 
 export const useAutoSaveDraft = (text = '') => {
 	const { rid, tmid, action, selectedMessages } = useRoomContext();
