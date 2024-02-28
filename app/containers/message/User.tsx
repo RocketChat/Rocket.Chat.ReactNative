@@ -60,6 +60,7 @@ interface IMessageUser {
 	isEdited: boolean;
 	isReadReceiptEnabled?: boolean;
 	unread?: boolean;
+	pinned?: boolean;
 }
 
 const User = React.memo(
@@ -110,6 +111,7 @@ const User = React.memo(
 						hasError={hasError}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						unread={props.unread}
+						pinned={props.pinned}
 					/>
 				</View>
 			);
