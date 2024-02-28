@@ -18,35 +18,37 @@ interface IEjson {
 export const onNotification = (push: INotification): void => {
 	const identifier = String(push?.payload?.action?.identifier);
 	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
-		if (push.payload) {
-			const notification = EJSON.parse(push.payload.ejson);
+		if (push?.payload && push?.payload?.ejson) {
+			const notification = EJSON.parse(push?.payload?.ejson);
 			store.dispatch(deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' }));
 			return;
 		}
 	}
-	if (push.payload) {
+	if (push?.payload) {
 		try {
-			const notification = push.payload;
-			const { rid, name, sender, type, host, messageId }: IEjson = EJSON.parse(notification.ejson);
+			const notification = push?.payload;
+			if (notification.ejson) {
+				const { rid, name, sender, type, host, messageId }: IEjson = EJSON.parse(notification.ejson);
 
-			const types: Record<string, string> = {
-				c: 'channel',
-				d: 'direct',
-				p: 'group',
-				l: 'channels'
-			};
-			let roomName = type === SubscriptionType.DIRECT ? sender.username : name;
-			if (type === SubscriptionType.OMNICHANNEL) {
-				roomName = sender.name;
+				const types: Record<string, string> = {
+					c: 'channel',
+					d: 'direct',
+					p: 'group',
+					l: 'channels'
+				};
+				let roomName = type === SubscriptionType.DIRECT ? sender.username : name;
+				if (type === SubscriptionType.OMNICHANNEL) {
+					roomName = sender.name;
+				}
+
+				const params = {
+					host,
+					rid,
+					messageId,
+					path: `${types[type]}/${roomName}`
+				};
+				store.dispatch(deepLinkingOpen(params));
 			}
-
-			const params = {
-				host,
-				rid,
-				messageId,
-				path: `${types[type]}/${roomName}`
-			};
-			store.dispatch(deepLinkingOpen(params));
 		} catch (e) {
 			console.warn(e);
 		}
