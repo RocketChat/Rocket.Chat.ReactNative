@@ -169,10 +169,6 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	}
 };
 
-const fetchRoomsFork = function* fetchRoomsFork() {
-	yield put(roomsRequest());
-};
-
 const fetchUsersRoles = function* fetchRoomsFork() {
 	const roles = yield Services.getUsersRoles();
 	if (roles.length) {
@@ -185,7 +181,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield fork(fetchRoomsFork);
+		yield put(roomsRequest());
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);

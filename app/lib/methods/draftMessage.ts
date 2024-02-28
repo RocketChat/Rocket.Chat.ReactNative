@@ -1,7 +1,7 @@
-import log from '../../../lib/methods/helpers/log';
-import database from '../../../lib/database';
-import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
-import { getThreadById } from '../../../lib/database/services/Thread';
+import database from '../database';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import { getThreadById } from '../database/services/Thread';
+import log from './helpers/log';
 
 export const loadDraftMessage = async ({ rid, tmid }: { rid?: string; tmid?: string }): Promise<string> => {
 	if (tmid) {

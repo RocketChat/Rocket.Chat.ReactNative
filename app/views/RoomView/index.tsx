@@ -868,11 +868,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
 			.observeWithColumns(['unread']);
 
-		this.queryUnreads = observable.subscribe(data => {
-			const { unreadsCount } = this.state;
-			const newUnreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
-			if (unreadsCount !== newUnreadsCount) {
-				this.setState({ unreadsCount: newUnreadsCount }, () => this.setHeader());
+		this.queryUnreads = observable.subscribe(rooms => {
+			const unreadsCount = rooms.reduce(
+				(unreadCount, room) => (room.unread > 0 && !room.hideUnreadStatus ? unreadCount + room.unread : unreadCount),
+				0
+			);
+			if (this.state.unreadsCount !== unreadsCount) {
+				this.setState({ unreadsCount }, this.setHeader);
 			}
 		});
 	};
