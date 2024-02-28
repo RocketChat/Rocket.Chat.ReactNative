@@ -7,7 +7,7 @@ import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
-import { loadDraftMessage, fetchIsAllOrHere, getMentionRegexp } from '../helpers';
+import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useSubscription, useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
@@ -24,6 +24,7 @@ import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector, usePrevious } from '../../../lib/hooks';
 import { ChatsStackParamList } from '../../../stacks/types';
+import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
