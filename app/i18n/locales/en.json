@@ -258,7 +258,7 @@
   "Incoming_call_from": "Incoming call from",
   "Inline_code": "Inline code",
   "Insert_Join_Code": "Insert join code",
-  "Invalid_Email": "Invalid Email",
+  "Invalid_Email": "Invalid email",
   "Invalid_or_expired_invite_token": "Invalid or expired invite token",
   "Invalid_server_version": "The workspace you're trying to connect is using a version that's not supported by the app anymore: {{currentVersion}}.\n\nWe require version {{minVersion}}",
   "Invisible": "Invisible",
