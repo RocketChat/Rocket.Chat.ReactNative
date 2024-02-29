@@ -54,8 +54,8 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 };
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, isEncrypted }: IMessageAttachments) => {
-		const { translateLanguage } = useContext(MessageContext);
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
+		const { translateLanguage, isEncrypted } = useContext(MessageContext);
 
 		if (!attachments || attachments.length === 0) {
 			return null;
