@@ -12,6 +12,7 @@ export interface IMessageAttachments {
 	timeFormat?: string;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
+	isEncrypted: boolean;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;

@@ -54,7 +54,7 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 };
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, isEncrypted }: IMessageAttachments) => {
 		const { translateLanguage } = useContext(MessageContext);
 
 		if (!attachments || attachments.length === 0) {
@@ -62,7 +62,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 		}
 
 		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
-			const msg = getMessageFromAttachment(file, translateLanguage);
+			const msg = isEncrypted ? '' : getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
 				return (
 					<Image
