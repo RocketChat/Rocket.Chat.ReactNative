@@ -19,7 +19,7 @@ describe('Discussion', () => {
 	let user: ITestUser;
 	let room: string;
 	const discussionFromNewMessage = `${random()} Discussion NewMessageView`;
-	const discussionFromMessagebox = `${random()} Discussion Messagebox actions`;
+	const discussionFromMessageComposer = `${random()} Discussion MessageComposer actions`;
 	let discussionFromActionSheet: string;
 	beforeAll(async () => {
 		user = await createRandomUser();
@@ -94,9 +94,9 @@ describe('Discussion', () => {
 			.withTimeout(5000);
 	});
 
-	it('should create discussion from Messagebox Actions', async () => {
+	it('should create discussion from MessageComposer Actions', async () => {
 		await navigateToRoom(room);
-		await element(by.id('messagebox-actions')).tap();
+		await element(by.id('message-composer-actions')).tap();
 		await sleep(300); // wait for animation
 		await waitFor(element(by.id('action-sheet')))
 			.toBeVisible()
@@ -105,7 +105,7 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(2000);
-		await element(by.id('multi-select-discussion-name')).replaceText(discussionFromMessagebox);
+		await element(by.id('multi-select-discussion-name')).replaceText(discussionFromMessageComposer);
 		await waitFor(element(by.id('create-discussion-submit')))
 			.toExist()
 			.withTimeout(10000);
@@ -113,14 +113,14 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('room-view')))
 			.toExist()
 			.withTimeout(10000);
-		await waitFor(element(by.id(`room-view-title-${discussionFromMessagebox}`)))
+		await waitFor(element(by.id(`room-view-title-${discussionFromMessageComposer}`)))
 			.toExist()
 			.withTimeout(5000);
 	});
 
 	describe('Create Discussion from action sheet', () => {
 		it('should send a message', async () => {
-			await waitFor(element(by.id('messagebox')))
+			await waitFor(element(by.id('message-composer')))
 				.toBeVisible()
 				.withTimeout(60000);
 			discussionFromActionSheet = await mockMessage('message');

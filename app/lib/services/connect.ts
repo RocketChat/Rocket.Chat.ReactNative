@@ -138,25 +138,31 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					const { _id, value } = ddpMessage.fields.args[1];
 					const db = database.active;
 					const settingsCollection = db.get('settings');
-					try {
-						const settingsRecord = await settingsCollection.find(_id);
-						// @ts-ignore
-						const { type } = defaultSettings[_id];
-						if (type) {
-							await db.write(async () => {
-								await settingsRecord.update(u => {
-									// @ts-ignore
-									u[type] = value;
-								});
-							});
-						}
-						store.dispatch(updateSettings(_id, value));
 
-						if (_id === 'Presence_broadcast_disabled') {
-							setPresenceCap(value);
+					// Check if the _id exists in defaultSettings
+					if (defaultSettings.hasOwnProperty(_id)) {
+						try {
+							const settingsRecord = await settingsCollection.find(_id);
+							// @ts-ignore
+							const { type } = defaultSettings[_id];
+							if (type) {
+								await db.write(async () => {
+									await settingsRecord.update(u => {
+										// @ts-ignore
+										u[type] = value;
+									});
+								});
+							}
+							store.dispatch(updateSettings(_id, value));
+
+							if (_id === 'Presence_broadcast_disabled') {
+								setPresenceCap(value);
+							}
+						} catch (e) {
+							log(e);
 						}
-					} catch (e) {
-						log(e);
+					} else {
+						console.warn(`Setting with _id '${_id}' is not present in defaultSettings.`);
 					}
 				}
 			})

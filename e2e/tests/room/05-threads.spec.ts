@@ -46,29 +46,6 @@ describe('Threads', () => {
 				await expect(element(by.id('room-view-header-threads'))).toExist();
 			});
 		});
-
-		// Render - Messagebox
-		describe('Messagebox', () => {
-			it('should have messagebox', async () => {
-				await expect(element(by.id('messagebox'))).toExist();
-			});
-
-			it('should have open emoji button', async () => {
-				await expect(element(by.id('messagebox-open-emoji'))).toExist();
-			});
-
-			it('should have message input', async () => {
-				await expect(element(by.id('messagebox-input'))).toExist();
-			});
-
-			it('should have audio button', async () => {
-				await expect(element(by.id('messagebox-send-audio'))).toExist();
-			});
-
-			it('should have actions button', async () => {
-				await expect(element(by.id('messagebox-actions'))).toExist();
-			});
-		});
 	});
 
 	describe('Usage', () => {
@@ -82,31 +59,32 @@ describe('Threads', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).replaceText('replied');
-				await waitFor(element(by.id('messagebox-send-message')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.id(`message-thread-button-${thread}`)))
+				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
 					.withTimeout(5000);
-				await expect(element(by.id(`message-thread-button-${thread}`))).toExist();
+				await element(by.id('message-composer-input-thread')).replaceText('replied');
+				await waitFor(element(by.id('message-composer-send')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('message-composer-send')).tap();
+				await waitFor(element(by[textMatcher]('replied')))
+					.toExist()
+					.withTimeout(60000);
+				await element(by[textMatcher]('replied')).atIndex(0).tap();
 			});
 
 			it('should navigate to thread from button', async () => {
+				await tapBack();
+				await waitFor(element(by.id(`room-view-title-${room}`)))
+					.toExist()
+					.withTimeout(5000);
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
 					.withTimeout(5000);
-				await expect(element(by.id(`room-view-title-${thread}`))).toExist();
-				await tapBack();
 			});
 
 			it('should toggle follow thread', async () => {
-				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id(`room-view-title-${thread}`)))
-					.toExist()
-					.withTimeout(5000);
 				await element(by.id('room-view-header-unfollow')).tap();
 				await waitFor(element(by.id('room-view-header-follow')))
 					.toExist()
@@ -136,12 +114,12 @@ describe('Threads', () => {
 			it('should mark send to channel and show on main channel', async () => {
 				const messageText = 'sendToChannel';
 				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id('messagebox-input-thread')))
+				await waitFor(element(by.id('message-composer-input-thread')))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).replaceText(messageText);
-				await element(by.id('messagebox-send-to-channel')).tap();
-				await element(by.id('messagebox-send-message')).tap();
+				await element(by.id('message-composer-input-thread')).replaceText(messageText);
+				await element(by.id('message-composer-send-to-channel')).tap();
+				await element(by.id('message-composer-send')).tap();
 				await tapBack();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.not.toExist()
@@ -158,12 +136,12 @@ describe('Threads', () => {
 				const messageText = 'navthreadname';
 				await mockMessage('dummymessagebetweenthethread');
 				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id('messagebox-input-thread')))
+				await waitFor(element(by.id('message-composer-input-thread')))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).replaceText(messageText);
-				await element(by.id('messagebox-send-to-channel')).tap();
-				await element(by.id('messagebox-send-message')).tap();
+				await element(by.id('message-composer-input-thread')).replaceText(messageText);
+				await element(by.id('message-composer-send-to-channel')).tap();
+				await element(by.id('message-composer-send')).tap();
 				await tapBack();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.not.toExist()
@@ -211,16 +189,16 @@ describe('Threads', () => {
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).replaceText(`${thread}draft`);
+				await element(by.id('message-composer-input-thread')).replaceText(`${thread}draft`);
 				await tapBack();
 
 				await tapAndWaitFor(element(by.id(`message-thread-button-${thread}`)), element(by.id(`room-view-title-${thread}`)), 2000);
-				await expect(element(by.id('messagebox-input-thread'))).toHaveText(`${thread}draft`);
-				await element(by.id('messagebox-input-thread')).clearText();
+				await expect(element(by.id('message-composer-input-thread'))).toHaveText(`${thread}draft`);
+				await element(by.id('message-composer-input-thread')).clearText();
 				await tapBack();
 
 				await tapAndWaitFor(element(by.id(`message-thread-button-${thread}`)), element(by.id(`room-view-title-${thread}`)), 2000);
-				await expect(element(by.id('messagebox-input-thread'))).toHaveText('');
+				await expect(element(by.id('message-composer-input-thread'))).toHaveText('');
 				await tapBack();
 			});
 
@@ -230,12 +208,11 @@ describe('Threads', () => {
 				await element(by[textMatcher](thread)).atIndex(0).longPress();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).replaceText('replied');
-				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.id(`thread-count-1`)))
+				await waitFor(element(by.id(`room-view-title-thread-message-count`)))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.id(`message-thread-button-${thread}`)).tap();
+				await element(by.id('message-composer-input-thread')).typeText('replied');
+				await element(by.id('message-composer-send')).tap();
 				await tryTapping(element(by[textMatcher]('replied')).atIndex(0), 2000, true);
 				// Fix android flaky test. Close the action sheet, then re-open again
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);

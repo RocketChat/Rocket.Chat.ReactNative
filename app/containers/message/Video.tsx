@@ -21,11 +21,10 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import { LISTENER } from '../Toast';
 import Markdown from '../markdown';
-import BlurComponent from './Components/BlurComponent';
+import BlurComponent from './Components/OverlayComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import { fileDownload } from './helpers/fileDownload';
-import messageStyles from './styles';
 import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
@@ -78,12 +77,7 @@ const CancelIndicator = () => {
 const Thumbnail = ({ loading, thumbnailUrl, cached }: { loading: boolean; thumbnailUrl?: string; cached: boolean }) => (
 	<>
 		{thumbnailUrl ? <FastImage style={styles.thumbnailImage} source={{ uri: thumbnailUrl }} /> : null}
-		<BlurComponent
-			iconName={cached ? 'play-filled' : 'arrow-down-circle'}
-			loading={loading}
-			style={styles.button}
-			showOverlay={cached}
-		/>
+		<BlurComponent iconName={cached ? 'play-filled' : 'arrow-down-circle'} loading={loading} style={styles.button} />
 		{loading ? <CancelIndicator /> : null}
 	</>
 );
@@ -230,7 +224,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable
 				onPress={onPress}
-				style={[styles.button, messageStyles.mustWrapBlur, { backgroundColor: themes[theme].videoBackground }]}
+				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<Thumbnail loading={loading} cached={cached} />

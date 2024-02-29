@@ -1,14 +1,17 @@
+import CookieManager from '@react-native-cookies/cookies';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React, { useCallback, useEffect, useState } from 'react';
-import { BackHandler, Linking, SafeAreaView } from 'react-native';
+import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
 import WebView from 'react-native-webview';
 
 import { userAgent } from '../../lib/constants';
+import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoConfTimer';
+import { getUserSelector } from '../../selectors/login';
 import { ChatsStackParamList } from '../../stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
 
@@ -17,8 +20,31 @@ const JitsiMeetView = (): React.ReactElement => {
 		params: { rid, url, videoConf }
 	} = useRoute<RouteProp<ChatsStackParamList, 'JitsiMeetView'>>();
 	const { goBack } = useNavigation();
+	const user = useAppSelector(state => getUserSelector(state));
+	const serverUrl = useAppSelector(state => state.server.server);
 
 	const [authModal, setAuthModal] = useState(false);
+	const [cookiesSet, setCookiesSet] = useState(false);
+
+	const setCookies = async () => {
+		const date = new Date();
+		date.setDate(date.getDate() + 1);
+		const expires = date.toISOString();
+		const domain = serverUrl.replace(/^https?:\/\//, '');
+		const ck = { domain, version: '1', expires };
+
+		await CookieManager.set(serverUrl, {
+			name: 'rc_uid',
+			value: user.id,
+			...ck
+		});
+		await CookieManager.set(serverUrl, {
+			name: 'rc_token',
+			value: user.token,
+			...ck
+		});
+		setCookiesSet(true);
+	};
 
 	const handleJitsiApp = useCallback(async () => {
 		const callUrl = url.replace(/^https?:\/\//, '');
@@ -71,25 +97,49 @@ const JitsiMeetView = (): React.ReactElement => {
 		};
 	}, [handleJitsiApp, onConferenceJoined, videoConf]);
 
+	useEffect(() => {
+		setCookies();
+	}, []);
+
 	const callUrl = `${url}${url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true`;
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView style={styles.container}>
 			{authModal && <JitsiAuthModal setAuthModal={setAuthModal} callUrl={callUrl} />}
-			<WebView
-				source={{ uri: callUrl.replace(/"/g, "'") }}
-				onNavigationStateChange={onNavigationStateChange}
-				onShouldStartLoadWithRequest={onNavigationStateChange}
-				style={{ flex: 1, backgroundColor: 'rgb(62,62,62)' }}
-				userAgent={userAgent}
-				javaScriptEnabled
-				domStorageEnabled
-				allowsInlineMediaPlayback
-				mediaCapturePermissionGrantType={'grant'}
-				mediaPlaybackRequiresUserAction={isIOS}
-			/>
+			{cookiesSet ? (
+				<WebView
+					source={{
+						uri: callUrl.replace(/"/g, "'"),
+						headers: {
+							Cookie: `rc_uid=${user.id}; rc_token=${user.token}`
+						}
+					}}
+					onNavigationStateChange={onNavigationStateChange}
+					onShouldStartLoadWithRequest={onNavigationStateChange}
+					style={styles.webviewContainer}
+					userAgent={userAgent}
+					javaScriptEnabled
+					domStorageEnabled
+					allowsInlineMediaPlayback
+					mediaCapturePermissionGrantType={'grant'}
+					mediaPlaybackRequiresUserAction={isIOS}
+					sharedCookiesEnabled
+				/>
+			) : (
+				<View style={[styles.webviewContainer, styles.loading]}>
+					<ActivityIndicator />
+				</View>
+			)}
 		</SafeAreaView>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
+	webviewContainer: { flex: 1, backgroundColor: 'rgb(62,62,62)' },
+	loading: { alignItems: 'center', justifyContent: 'center' }
+});
 
 export default JitsiMeetView;

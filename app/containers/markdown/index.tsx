@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, StyleProp, Text, TextStyle } from 'react-native';
+import { Image, StyleProp, Text, TextStyle, View } from 'react-native';
 import { Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import { MarkdownAST } from '@rocket.chat/message-parser';
@@ -16,7 +16,7 @@ import MarkdownTableRow from './TableRow';
 import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
-import { isValidURL } from '../../lib/methods/helpers/url';
+import { isValidUrl } from '../../lib/methods/helpers/isValidUrl';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
@@ -171,19 +171,18 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderCodeBlock = ({ literal }: TLiteral) => {
 		const { theme, style = [] } = this.props;
 		return (
-			<Text
+			<View
 				style={[
 					{
 						...styles.codeBlock,
-						color: themes[theme!].bodyText,
 						backgroundColor: themes[theme!].bannerBackground,
-						borderColor: themes[theme!].bannerBackground
+						borderColor: themes[theme!].borderColor
 					},
 					...style
 				]}
 			>
-				{literal}
-			</Text>
+				<Text style={[styles.codeBlockText, { color: themes[theme!].bodyText }]}>{literal}</Text>
+			</View>
 		);
 	};
 
@@ -246,7 +245,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderImage = ({ src }: { src: string }) => {
-		if (!isValidURL(src)) {
+		if (!isValidUrl(src)) {
 			return null;
 		}
 

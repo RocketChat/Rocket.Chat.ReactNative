@@ -20,7 +20,7 @@ const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boo
 	const { colors } = useTheme();
 
 	if (audioState === 'loading') {
-		return <RCActivityIndicator />;
+		return <RCActivityIndicator size={24} color={colors.buttonFontPrimary} />;
 	}
 
 	let customIconName: TCustomIconName = 'arrow-down';

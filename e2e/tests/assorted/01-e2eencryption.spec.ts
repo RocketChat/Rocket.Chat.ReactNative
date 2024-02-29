@@ -179,11 +179,11 @@ describe('E2E Encryption', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by[textMatcher]('Quote')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).replaceText(quotedMessage);
-				await waitFor(element(by.id('messagebox-send-message')))
+				await element(by.id('message-composer-input')).replaceText(quotedMessage);
+				await waitFor(element(by.id('message-composer-send')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.id('messagebox-send-message')).tap();
+				await element(by.id('message-composer-send')).tap();
 				await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
 					.toBeVisible()
 					.withTimeout(3000);

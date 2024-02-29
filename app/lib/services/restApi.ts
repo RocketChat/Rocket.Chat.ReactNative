@@ -296,6 +296,10 @@ export const togglePinMessage = (messageId: string, pinned?: boolean) => {
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
+export const reportUser = (userId: string, description: string) =>
+	// RC 6.4.0
+	sdk.post('moderation.reportUser', { userId, description });
+
 export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
@@ -866,8 +870,8 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
 }
 
-export const editMessage = async (message: IMessage) => {
-	const { rid, msg } = await Encryption.encryptMessage(message);
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 };

@@ -11,7 +11,7 @@ import { getUserSelector } from '../../selectors/login';
 import { useAppSelector } from './useAppSelector';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 
-const getPermissionsSelector = createSelector(
+export const getPermissionsSelector = createSelector(
 	[(state: IApplicationState) => state.permissions, (_state: any, permissionsArray: TSupportedPermissions[]) => permissionsArray],
 	(permissions, permissionsArray) => permissionsArray.map(p => permissions[p])
 );
