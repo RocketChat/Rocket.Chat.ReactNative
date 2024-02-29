@@ -11,6 +11,7 @@ import appNavigation from '../../lib/navigation/appNavigation';
 import { Services } from '../../lib/services';
 import database from '../../lib/database';
 import { RoomTypes } from '../../lib/methods';
+import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
@@ -90,10 +91,7 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 			}
 		}
 	} catch (e: any) {
-		log(e);
-		if (e?.data?.details?.method === 'createDirectMessage' && e?.data?.errorType === 'error-not-allowed') {
-			EventEmitter.emit(LISTENER, { message: I18n.t('You_dont_have_permission_to_perform_this_action') });
-		}
+		emitErrorCreateDirectMessage(e?.data);
 	}
 };
 
