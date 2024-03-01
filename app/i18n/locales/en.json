@@ -814,5 +814,7 @@
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "you": "you",
-  "you_were_mentioned": "you were mentioned"
+  "you_were_mentioned": "you were mentioned",
+  "missing_room_e2ee_title": "Check back in a few moments",
+  "missing_room_e2ee_description": "The encryption keys for the room need to be updated, another room member needs to be online for this to happen."
 }

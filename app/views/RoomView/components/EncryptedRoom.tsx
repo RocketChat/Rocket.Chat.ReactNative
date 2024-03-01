@@ -1,8 +1,94 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { ReactElement } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export const EncryptedRoom = () => (
-	<View>
-		<Text>This room is encrypted</Text>
-	</View>
-);
+import { ChatsStackParamList } from '../../../stacks/types';
+import { useTheme } from '../../../theme';
+import { CustomIcon } from '../../../containers/CustomIcon';
+import Button from '../../../containers/Button';
+import sharedStyles from '../../Styles';
+import { useAppSelector } from '../../../lib/hooks';
+import I18n from '../../../i18n';
+
+const GAP = 32;
+
+export const EncryptedRoom = ({
+	navigation
+}: {
+	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
+}): ReactElement => {
+	const { colors } = useTheme();
+	const styles = useStyle();
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+
+	const navigate = () => {
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'E2EEnterYourPasswordView' });
+		} else {
+			navigation.navigate('E2EEnterYourPasswordStackNavigator', { screen: 'E2EEnterYourPasswordView' });
+		}
+	};
+
+	return (
+		<View style={styles.root}>
+			<View style={styles.container}>
+				<View style={styles.textView}>
+					<View style={styles.icon}>
+						<CustomIcon name='encrypted' size={42} color={colors.fontSecondaryInfo} />
+					</View>
+					<Text style={styles.title}>This room is encrypted</Text>
+					<Text style={styles.description}>To view its contents you must enter your encryption password.</Text>
+				</View>
+				<Button title={I18n.t('Enter_Your_E2E_Password')} onPress={navigate} />
+				<Button
+					title={I18n.t('Learn_more')}
+					type='secondary'
+					backgroundColor={colors.chatComponentBackground}
+					onPress={() => alert('learn more')} // TODO: missing url
+				/>
+			</View>
+		</View>
+	);
+};
+
+const useStyle = () => {
+	const { colors } = useTheme();
+	const styles = StyleSheet.create({
+		root: {
+			flex: 1,
+			backgroundColor: colors.surfaceRoom
+		},
+		container: {
+			flex: 1,
+			marginHorizontal: 24,
+			justifyContent: 'center'
+		},
+		textView: { alignItems: 'center' },
+		icon: {
+			width: 58,
+			height: 58,
+			borderRadius: 30,
+			marginBottom: GAP,
+			backgroundColor: colors.surfaceNeutral,
+			alignItems: 'center',
+			justifyContent: 'center'
+		},
+		title: {
+			...sharedStyles.textBold,
+			fontSize: 24,
+			lineHeight: 32,
+			textAlign: 'center',
+			color: colors.fontTitlesLabels,
+			marginBottom: GAP
+		},
+		description: {
+			...sharedStyles.textRegular,
+			fontSize: 16,
+			lineHeight: 24,
+			textAlign: 'center',
+			color: colors.fontDefault,
+			marginBottom: GAP
+		}
+	});
+	return styles;
+};

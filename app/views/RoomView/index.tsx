@@ -245,8 +245,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
 		const { roomUpdate, member, isOnHold } = state;
-		const { theme, insets, route } = this.props;
+		const { theme, insets, route, encryptionEnabled } = this.props;
 		if (theme !== nextProps.theme) {
+			return true;
+		}
+		if (encryptionEnabled !== nextProps.encryptionEnabled) {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
@@ -1442,7 +1445,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, loading, action, selectedMessages } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, encryptionEnabled } = this.props;
+		const { user, baseUrl, theme, width, serverVersion, encryptionEnabled, navigation } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
@@ -1457,7 +1460,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		// Encrypted room, but user session is not encrypted
 		if (!encryptionEnabled && 'encrypted' in room && room.encrypted) {
-			return <EncryptedRoom />;
+			return <EncryptedRoom navigation={navigation} />;
 		}
 
 		return (
