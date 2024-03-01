@@ -26,7 +26,7 @@ interface IRightIcons {
 
 const RightIcons = ({ type, msg, isEdited, hasError, isReadReceiptEnabled, unread, pinned }: IRightIcons): React.ReactElement => (
 	<View style={styles.actionIcons}>
-		<Pinned pinned={pinned} />
+		<Pinned pinned={pinned} testID={`${msg}-pinned`} />
 		<Encrypted type={type} />
 		<Edited testID={`${msg}-edited`} isEdited={isEdited} />
 		<MessageError hasError={hasError} />
