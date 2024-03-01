@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native';
 import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
 import { DisplayMode, SortBy } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';

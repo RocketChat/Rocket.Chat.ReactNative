@@ -1,8 +1,8 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { Switch } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../../containers/Switch';
 import { setUser } from '../../actions/login';
 import I18n from '../../i18n';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
