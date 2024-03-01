@@ -1,5 +1,6 @@
 import EJSON from 'ejson';
 
+import { appInit } from '../../actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
 import { INotification, SubscriptionType } from '../../definitions';
 import { isFDroidBuild } from '../constants';
@@ -48,11 +49,13 @@ export const onNotification = (push: INotification): void => {
 					path: `${types[type]}/${roomName}`
 				};
 				store.dispatch(deepLinkingOpen(params));
+				return;
 			}
 		} catch (e) {
 			console.warn(e);
 		}
 	}
+	store.dispatch(appInit());
 };
 
 export const getDeviceToken = (): string => deviceToken;
