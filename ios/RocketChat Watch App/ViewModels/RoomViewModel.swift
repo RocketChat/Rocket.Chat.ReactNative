@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 final class RoomViewModel: ObservableObject {
 	@Published var room: Room
@@ -36,27 +36,27 @@ final class RoomViewModel: ObservableObject {
 	
 	var lastMessage: String {
 		guard let user = room.lastMessage?.user else {
-			return "No Message"
+			return String(localized: "No Message")
 		}
 		
 		let isLastMessageSentByMe = user.username == server.loggedUser.username
-		let username = isLastMessageSentByMe ? "You" : ((server.useRealName ? user.name : user.username) ?? "")
-		let message = room.lastMessage?.msg ?? "No message"
+		let username = isLastMessageSentByMe ? String(localized: "You") : ((server.useRealName ? user.name : user.username) ?? "")
+		let message = room.lastMessage?.msg ?? String(localized: "No Message")
 		
 		if room.lastMessage?.t == "jitsi_call_started" {
-			return "Call started by: \(username)"
+			return String(localized: "Call started by: \(username)")
 		}
 		
 		if room.lastMessage?.attachments?.allObjects.isEmpty == false {
-			return "\(username) sent an attachment"
+			return String(localized: "\(username) sent an attachment")
 		}
 		
 		if room.lastMessage?.t == "e2e" {
-			return "Encrypted message"
+			return String(localized: "Encrypted message")
 		}
 		
 		if room.lastMessage?.t == "videoconf" {
-			return "Call started"
+			return String(localized: "Call started")
 		}
 		
 		if room.t == "d", !isLastMessageSentByMe {

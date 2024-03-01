@@ -14,7 +14,7 @@ struct ServerListView: View {
 	
 	init() {
 		let fetchRequest = Server.fetchRequest()
-		fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Server.updatedSince, ascending: true)]
+		fetchRequest.sortDescriptors = []
 		
 		_servers = FetchRequest(fetchRequest: fetchRequest)
 	}

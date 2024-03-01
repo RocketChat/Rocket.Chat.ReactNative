@@ -19,6 +19,8 @@
 		1E01C82D2511337700FEF824 /* RoomKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C82C2511337700FEF824 /* RoomKey.swift */; };
 		1E0426E6251A5467008F022C /* RoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0426E5251A5467008F022C /* RoomType.swift */; };
 		1E0426E7251A54B4008F022C /* RoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0426E5251A5467008F022C /* RoomType.swift */; };
+		1E044F992B92798E00BCA2FD /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1E044F982B92798E00BCA2FD /* Localizable.xcstrings */; };
+		1E044F9A2B92798E00BCA2FD /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1E044F982B92798E00BCA2FD /* Localizable.xcstrings */; };
 		1E06561B2B7E91FB0081B01F /* ErrorActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */; };
 		1E06561D2B7E9C1C0081B01F /* MessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */; };
 		1E068CFE24FD2DC700A0FFC1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */; };
@@ -137,7 +139,6 @@
 		1ED033B62B55B4A5004F4930 /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033B52B55B4A5004F4930 /* ServerListView.swift */; };
 		1ED033BA2B55B5F6004F4930 /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033B92B55B5F6004F4930 /* ServerView.swift */; };
 		1ED033BF2B55BF94004F4930 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033BE2B55BF94004F4930 /* Storage.swift */; };
-		1ED033C12B55C190004F4930 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1ED033C02B55C190004F4930 /* Localizable.xcstrings */; };
 		1ED033C42B55C65C004F4930 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C32B55C65C004F4930 /* AppRouter.swift */; };
 		1ED033CB2B55D4F0004F4930 /* RocketChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C92B55D4F0004F4930 /* RocketChat.xcdatamodeld */; };
 		1ED033CD2B55D671004F4930 /* RocketChatDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033CC2B55D671004F4930 /* RocketChatDatabase.swift */; };
@@ -239,9 +240,8 @@
 		1ED1ECD42B86997F00F6620C /* RocketChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1ED033C92B55D4F0004F4930 /* RocketChat.xcdatamodeld */; };
 		1ED1ECD72B86997F00F6620C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038972B507B4D00C007D4 /* Preview Assets.xcassets */; };
 		1ED1ECD82B86997F00F6620C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038942B507B4D00C007D4 /* Assets.xcassets */; };
-		1ED1ECD92B86997F00F6620C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1ED033C02B55C190004F4930 /* Localizable.xcstrings */; };
-		1ED1ECE42B8699E900F6620C /* Rocket.Chat.Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat.Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		1ED1ECE72B8699ED00F6620C /* Rocket.Chat.Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat.Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1ED1ECE42B8699E900F6620C /* Rocket.Chat.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1ED1ECE72B8699ED00F6620C /* Rocket.Chat Experimental.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1ED1ECEA2B869A4A00F6620C /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
 		1ED1ECEC2B869B1300F6620C /* Experimental.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */; };
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
@@ -389,7 +389,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				1ED1ECE72B8699ED00F6620C /* Rocket.Chat.Watch.app in Embed Watch Content */,
+				1ED1ECE72B8699ED00F6620C /* Rocket.Chat Experimental.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,7 +400,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				1ED1ECE42B8699E900F6620C /* Rocket.Chat.Watch.app in Embed Watch Content */,
+				1ED1ECE42B8699E900F6620C /* Rocket.Chat.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +437,7 @@
 		1E01C82A2511335A00FEF824 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		1E01C82C2511337700FEF824 /* RoomKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomKey.swift; sourceTree = "<group>"; };
 		1E0426E5251A5467008F022C /* RoomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomType.swift; sourceTree = "<group>"; };
+		1E044F982B92798E00BCA2FD /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorActionHandler.swift; sourceTree = "<group>"; };
 		1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageActionView.swift; sourceTree = "<group>"; };
 		1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
@@ -529,11 +530,10 @@
 		1ED033B52B55B4A5004F4930 /* ServerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
 		1ED033B92B55B5F6004F4930 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
 		1ED033BE2B55BF94004F4930 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
-		1ED033C02B55C190004F4930 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		1ED033C32B55C65C004F4930 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		1ED033CA2B55D4F0004F4930 /* RocketChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RocketChat.xcdatamodel; sourceTree = "<group>"; };
 		1ED033CC2B55D671004F4930 /* RocketChatDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketChatDatabase.swift; sourceTree = "<group>"; };
-		1ED0388E2B507B4B00C007D4 /* Rocket.Chat.Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocket.Chat.Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocket.Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ED038902B507B4C00C007D4 /* RocketChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketChatApp.swift; sourceTree = "<group>"; };
 		1ED038942B507B4D00C007D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1ED038972B507B4D00C007D4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -548,7 +548,7 @@
 		1ED038C92B50A58400C007D4 /* ServersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersLoader.swift; sourceTree = "<group>"; };
 		1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		1ED1EC8A2B86817100F6620C /* Deeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deeplink.swift; sourceTree = "<group>"; };
-		1ED1ECDD2B86997F00F6620C /* Rocket.Chat.Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocket.Chat.Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1EDB30F12B5B453A00532C7E /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
@@ -961,9 +961,9 @@
 				1ED033BE2B55BF94004F4930 /* Storage.swift */,
 				1ED038942B507B4D00C007D4 /* Assets.xcassets */,
 				1ED038962B507B4D00C007D4 /* Preview Content */,
-				1ED033C02B55C190004F4930 /* Localizable.xcstrings */,
 				1ED1EC8A2B86817100F6620C /* Deeplink.swift */,
 				1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */,
+				1E044F982B92798E00BCA2FD /* Localizable.xcstrings */,
 			);
 			path = "RocketChat Watch App";
 			sourceTree = "<group>";
@@ -1099,8 +1099,8 @@
 				1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */,
 				1EFEB5952493B6640072EDC0 /* NotificationService.appex */,
 				7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */,
-				1ED0388E2B507B4B00C007D4 /* Rocket.Chat.Watch.app */,
-				1ED1ECDD2B86997F00F6620C /* Rocket.Chat.Watch.app */,
+				1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */,
+				1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1235,7 +1235,7 @@
 			);
 			name = Rocket.Chat.Watch;
 			productName = "RocketChat Watch App";
-			productReference = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat.Watch.app */;
+			productReference = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1ED1EC8E2B86997F00F6620C /* RocketChatRN Watch */ = {
@@ -1252,7 +1252,7 @@
 			);
 			name = "RocketChatRN Watch";
 			productName = "RocketChat Watch App";
-			productReference = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat.Watch.app */;
+			productReference = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1EFEB5942493B6640072EDC0 /* NotificationService */ = {
@@ -1371,6 +1371,8 @@
 				English,
 				en,
 				Base,
+				"pt-BR",
+				ja,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -1419,8 +1421,8 @@
 			files = (
 				1ED1ECEA2B869A4A00F6620C /* Official.xcassets in Resources */,
 				1ED038982B507B4D00C007D4 /* Preview Assets.xcassets in Resources */,
+				1E044F992B92798E00BCA2FD /* Localizable.xcstrings in Resources */,
 				1ED038952B507B4D00C007D4 /* Assets.xcassets in Resources */,
-				1ED033C12B55C190004F4930 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1430,7 +1432,7 @@
 			files = (
 				1ED1ECD72B86997F00F6620C /* Preview Assets.xcassets in Resources */,
 				1ED1ECD82B86997F00F6620C /* Assets.xcassets in Resources */,
-				1ED1ECD92B86997F00F6620C /* Localizable.xcstrings in Resources */,
+				1E044F9A2B92798E00BCA2FD /* Localizable.xcstrings in Resources */,
 				1ED1ECEC2B869B1300F6620C /* Experimental.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2591,7 +2593,7 @@
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.watchkitapp;
-				PRODUCT_NAME = Rocket.Chat.Watch;
+				PRODUCT_NAME = Rocket.Chat;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;
@@ -2640,7 +2642,7 @@
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.watchkitapp;
-				PRODUCT_NAME = Rocket.Chat.Watch;
+				PRODUCT_NAME = Rocket.Chat;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;
@@ -2687,7 +2689,7 @@
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
-				PRODUCT_NAME = Rocket.Chat.Watch;
+				PRODUCT_NAME = "Rocket.Chat Experimental";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;
@@ -2735,7 +2737,7 @@
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
-				PRODUCT_NAME = Rocket.Chat.Watch;
+				PRODUCT_NAME = "Rocket.Chat Experimental";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
 				SDKROOT = watchos;

@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 final class MessageFormatter {
 	private let message: Message
@@ -51,7 +51,7 @@ final class MessageFormatter {
 		return true
 	}
 	
-	func info() -> String? {
+	func info() -> LocalizedStringKey? {
 		switch message.t {
 			case "rm":
 				return "Message Removed"

@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct RetryView: View {
-	private let label: String
+	private let label: LocalizedStringKey
 	private let action: () -> Void
 	
-	init(_ label: String, action: @escaping () -> Void) {
+	init(_ label: LocalizedStringKey, action: @escaping () -> Void) {
 		self.label = label
 		self.action = action
 	}

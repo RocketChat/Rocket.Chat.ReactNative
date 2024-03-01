@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 final class MessageViewModel: ObservableObject {
 	@Published private(set) var server: Server?
@@ -30,7 +30,7 @@ final class MessageViewModel: ObservableObject {
 		messageFormatter.time()
 	}
 	
-	var info: String? {
+	var info: LocalizedStringKey? {
 		messageFormatter.info()
 	}
 	
