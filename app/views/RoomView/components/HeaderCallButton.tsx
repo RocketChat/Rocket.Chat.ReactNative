@@ -3,7 +3,7 @@ import React from 'react';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 
-export default function HeaderCallButton({ rid }: { rid: string }): React.ReactElement | null {
+export const HeaderCallButton = ({ rid }: { rid: string }): React.ReactElement | null => {
 	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 
 	if (callEnabled)
@@ -16,4 +16,4 @@ export default function HeaderCallButton({ rid }: { rid: string }): React.ReactE
 			/>
 		);
 	return null;
-}
+};

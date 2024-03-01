@@ -20,7 +20,7 @@ import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
-import HeaderCallButton from './components/HeaderCallButton';
+import { HeaderCallButton } from './components';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;

@@ -102,6 +102,7 @@ import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeed
 import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
+import { EncryptedRoom, MissingRoomE2EEKey } from './components';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -1441,12 +1442,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, loading, action, selectedMessages } = this.state;
-		const { user, baseUrl, theme, width, serverVersion } = this.props;
+		const { user, baseUrl, theme, width, serverVersion, encryptionEnabled } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
 		if ('id' in room) {
 			({ bannerClosed, announcement } = room);
+		}
+
+		// Missing room encryption key
+		if (encryptionEnabled && 'encrypted' in room && room.encrypted && 'E2EKey' in room && !room.E2EKey) {
+			return <MissingRoomE2EEKey />;
+		}
+
+		// Encrypted room, but user session is not encrypted
+		if (!encryptionEnabled && 'encrypted' in room && room.encrypted) {
+			return <EncryptedRoom />;
 		}
 
 		return (
@@ -1505,7 +1516,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
-	inAppFeedback: state.inAppFeedback
+	inAppFeedback: state.inAppFeedback,
+	encryptionEnabled: state.encryption.enabled
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
