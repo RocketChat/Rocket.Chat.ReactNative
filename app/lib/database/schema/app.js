@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 23,
+	version: 24,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -124,7 +124,8 @@ export default appSchema({
 				{ name: 'e2e', type: 'string', isOptional: true },
 				{ name: 'tshow', type: 'boolean', isOptional: true },
 				{ name: 'md', type: 'string', isOptional: true },
-				{ name: 'comment', type: 'string', isOptional: true }
+				{ name: 'comment', type: 'string', isOptional: true },
+				{ name: 'file_path', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -199,7 +200,8 @@ export default appSchema({
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true },
-				{ name: 'e2e', type: 'string', isOptional: true }
+				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'file_path', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

@@ -3,6 +3,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import isEmpty from 'lodash/isEmpty';
 import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 
 import { IUpload, IUser, TUploadModel } from '../../definitions';
 import i18n from '../../i18n';
@@ -139,6 +140,13 @@ export function sendFileMessage(
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
 					// If response is all good...
 					try {
+						const msgId = response.json()?.message?._id;
+						addTheFilePath({ msgId, filePath: fileInfo.path, tmid });
+					} catch (e) {
+						// Do nothing
+					}
+
+					try {
 						await db.write(async () => {
 							await uploadRecord.destroyPermanently();
 						});
@@ -181,3 +189,50 @@ export function sendFileMessage(
 		}
 	});
 }
+
+const addTheFilePath = async ({ msgId, filePath, tmid }: { msgId: string; filePath: string; tmid?: string }) => {
+	const db = database.active;
+	const msgCollection = db.get('messages');
+	try {
+		const messageRecord = await msgCollection.find(msgId);
+		await messageRecord.update(m => {
+			m.filePath = filePath;
+		});
+	} catch {
+		const msgSubscribe = msgCollection
+			.query(Q.where('id', msgId))
+			.observe()
+			.subscribe(async message => {
+				if (message.length > 0) {
+					const messageRecord = message[0];
+					await messageRecord.update(m => {
+						m.filePath = filePath;
+					});
+					msgSubscribe.unsubscribe();
+				}
+			});
+	}
+
+	if (tmid) {
+		const threadMessagesCollection = db.get('thread_messages');
+		try {
+			const threadMessageRecord = await threadMessagesCollection.find(msgId);
+			await threadMessageRecord.update(m => {
+				m.filePath = filePath;
+			});
+		} catch {
+			const threadMsgSubscribe = threadMessagesCollection
+				.query(Q.where('id', msgId))
+				.observe()
+				.subscribe(async threadMessage => {
+					if (threadMessage.length > 0) {
+						const threadMessageRecord = threadMessage[0];
+						await threadMessageRecord.update(m => {
+							m.filePath = filePath;
+						});
+						threadMsgSubscribe.unsubscribe();
+					}
+				});
+		}
+	}
+};
