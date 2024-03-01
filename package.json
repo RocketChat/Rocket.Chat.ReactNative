@@ -148,7 +148,7 @@
 		"use-debounce": "^8.0.4",
 		"use-deep-compare-effect": "1.6.1",
 		"xregexp": "5.0.2",
-		"yup": "^0.32.11"
+		"yup": "0.32.11"
 	},
 	"resolutions": {
 		"ua-parser-js": "^1.0.2",
@@ -210,6 +210,7 @@
 		"otp.js": "1.2.0",
 		"patch-package": "8.0.0",
 		"prettier": "^2.3.2",
+		"react-16-node-hanging-test-fix": "^1.0.0",
 		"react-dom": "17.0.1",
 		"react-native-dotenv": "3.4.8",
 		"react-test-renderer": "17.0.2",
@@ -217,25 +218,6 @@
 		"reactotron-redux-saga": "4.2.3",
 		"ts-node": "^10.9.1",
 		"typescript": "^4.3.5"
-	},
-	"jest": {
-		"testPathIgnorePatterns": [
-			"e2e",
-			"node_modules"
-		],
-		"transformIgnorePatterns": [
-			"node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
-		],
-		"preset": "./jest.preset.js",
-		"coverageDirectory": "./coverage/",
-		"collectCoverage": true,
-		"moduleNameMapper": {
-			".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
-			".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
-		},
-		"setupFilesAfterEnv": [
-			"./jest.setup.js"
-		]
 	},
 	"jest-junit": {
 		"addFileAttribute": "true"
